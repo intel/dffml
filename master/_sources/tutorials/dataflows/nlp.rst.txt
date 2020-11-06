@@ -17,8 +17,9 @@ Internally, both of these operations use `spacy <https://spacy.io/usage/spacy-10
 To install DNNClassifier model and the above mentioned operations run:
 
 .. code-block:: console
+    :test:
 
-    $ pip install -U dffml-model-tensorflow dffml-operations-nlp
+    $ python -m pip install --use-feature=2020-resolver -U dffml-model-tensorflow dffml-operations-nlp
 
 Operation `remove_stopwords` cleans the text by removing most commanly used words which give the text little or no information eg. but, or, yet, it, is, am, etc.
 These words are called `StopWords`. 
@@ -28,23 +29,52 @@ You can use other models like `en_core_web_md`, `en_core_web_lg` for better resu
 Let's first download the `en_core_web_sm` model.
 
 .. code-block:: console
+    :test:
 
     $ python -m spacy download en_core_web_sm
 
 Create training data:
 
-.. literalinclude:: /../examples/nlp/train_data.sh
+**train_data.csv**
+
+.. code-block::
+    :test:
+    :filepath: train_data.csv
+
+    sentence,sentiment
+    What a pleasant morning,1
+    Those were bad days,0
+    My puppy plays all day,1
+    Cats are evil,0
 
 Now we will create a dataflow to describe how the text feature (`sentence`) will be processed.
 
-.. literalinclude:: /../examples/nlp/create_dataflow.sh
+.. code-block:: console
+    :test:
+
+    $ dffml dataflow create get_single remove_stopwords get_embedding \
+        -inputs \
+          '["embedding"]'=get_single_spec \
+          "en_core_web_sm"=spacy_model_name_def \
+          "<PAD>"=pad_token_def 10=max_len_def \
+        -flow \
+          '[{"seed": ["sentence"]}]'=remove_stopwords.inputs.text \
+          '[{"seed": ["spacy_model_name_def"]}]'=get_embedding.inputs.spacy_model \
+          '[{"seed": ["pad_token_def"]}]'=get_embedding.inputs.pad_token \
+          '[{"seed": ["max_len_def"]}]'=get_embedding.inputs.max_len \
+          '[{"remove_stopwords": "result"}]'=get_embedding.inputs.text \
+          '[{"remove_stopwords": "result"}]'=get_embedding.inputs.text | \
+        tee nlp_ops_dataflow.json
 
 Operation `get_embedding` takes `pad_token` as input (here `<PAD>`) to append to sentences of length smaller
 than `max_len` (here 10). A sentence which has length greater than `max_len` is truncated to have length equal to `max_len`.
 
 To visualize the dataflow run:
 
-.. literalinclude:: /../examples/nlp/dataflow_diagram.sh
+.. code-block:: console
+    :test:
+
+    $ dffml dataflow diagram -stage processing -- nlp_ops_dataflow.json
 
 Copy and pasting the output of the above code into the
 `mermaidjs live editor <https://mermaidjs.github.io/mermaid-live-editor>`_
@@ -54,7 +84,24 @@ results in the graph.
 
 We can now use this dataflow to preprocess the data and make it ready to be fed into model:
 
-.. literalinclude:: /../examples/nlp/train.sh
+.. code-block:: console
+    :test:
+
+    $ dffml train \
+        -model tfdnnc \
+        -model-batchsize 100 \
+        -model-hidden 5 2 \
+        -model-clstype int \
+        -model-predict sentiment:int:1 \
+        -model-classifications 0 1 \
+        -model-directory tempdir \
+        -model-features embedding:float:[1,10,96] \
+        -sources text=df \
+        -source-text-dataflow nlp_ops_dataflow.json \
+        -source-text-features sentence:str:1 \
+        -source-text-source csv \
+        -source-text-source-filename train_data.csv \
+        -log debug
 
 As shown in the above command, a single input feature to model (here embedding) is of shape `(1, max_len, size_of_embedding)`.
 Here we have taken `max_len` as 10 and the embedding size of `en_core_web_sm` is 96. So the resulting size of one input feature
@@ -62,26 +109,57 @@ is (1,10,96).
 
 Assess accuracy:
 
-.. literalinclude:: /../examples/nlp/accuracy.sh
-
-The output is:
-
 .. code-block:: console
+    :test:
 
+    $ dffml accuracy \
+        -model tfdnnc \
+        -model-batchsize 100 \
+        -model-hidden 5 2 \
+        -model-clstype int \
+        -model-predict sentiment:int:1 \
+        -model-classifications 0 1 \
+        -model-directory tempdir \
+        -model-features embedding:float:[1,10,96] \
+        -sources text=df \
+        -source-text-dataflow nlp_ops_dataflow.json \
+        -source-text-features sentence:str:1 \
+        -source-text-source csv \
+        -source-text-source-filename train_data.csv \
+        -log debug
     0.5
 
 Create test data:
 
-.. literalinclude:: /../examples/nlp/test_data.sh
+**test_data.csv**
 
+.. code-block::
+    :test:
+    :filepath: test_data.csv
+
+    sentence
+    Cats play a lot
 
 Make prediction on test data:
 
-.. literalinclude:: /../examples/nlp/predict.sh
-
-The output is:
-
 .. code-block:: console
+    :test:
+
+    $ dffml predict all \
+        -model tfdnnc \
+        -model-batchsize 100 \
+        -model-hidden 5 2 \
+        -model-clstype int \
+        -model-predict sentiment:int:1 \
+        -model-classifications 0 1 \
+        -model-directory tempdir \
+        -model-features embedding:float:[1,10,96] \
+        -sources text=df \
+        -source-text-dataflow nlp_ops_dataflow.json \
+        -source-text-features sentence:str:1 \
+        -source-text-source csv \
+        -source-text-source-filename test_data.csv \
+        -pretty
 
             Key:    0
                                                        Record Features
@@ -98,16 +176,33 @@ The output is:
     |           Value:  1           |                               Confidence:   0.5122595429420471                               |
     +------------------------------------------------------------------------------------------------------------------------------+
 
-    
+
 Preprocessing data and training Naive Bayes Classifier model
 ------------------------------------------------------------
 
 Now we will see how to use traditional ML algorithm like Naive Bayes Classifier available in ``dffml-model-scikit`` (:ref:`plugin_model_dffml_model_scikit`) for
 classification.
 
+Install the Naive Bayes Classifier by installing ``dffml-model-scikit``
+
+.. code-block:: console
+    :test:
+
+    $ python -m pip install --use-feature=2020-resolver -U dffml-model-scikit
+
 Create training data:
 
-.. literalinclude:: /../examples/nlp/train_data.sh
+**train_data.csv**
+
+.. code-block::
+    :test:
+    :filepath: train_data.csv
+
+    sentence,sentiment
+    What a pleasant morning,1
+    Those were bad days,0
+    My puppy plays all day,1
+    Cats are evil,0
 
 But before we feed the data to model we need to convert it to vectors of numeric values.
 Here we will use ``tfidf_vectorizer`` operation (:ref:`plugin_operation_dffml_operations_nlp_tfidf_vectorizer`) which is a wrapper around
@@ -122,37 +217,109 @@ which will return the array corresponding to each sentence.
 
 So, Let's modify the dataflow to use our new operations.
 
-.. literalinclude:: /../examples/nlp/sklearn/create_dataflow.sh
+.. TODO(#870) Need to implement length() method for all sources
+   Then we can get rid of passing 4 as the source_length
+
+.. code-block:: console
+    :test:
+
+    $ dffml dataflow create \
+        -inputs \
+          '["extract_array_from_matrix.outputs.result"]'=get_single_spec \
+          4=source_length \
+        -flow \
+          '[{"seed": ["sentence"]}]'=remove_stopwords.inputs.text \
+          '[{"seed": ["source_length"]}]'=collect_output.inputs.length \
+          '[{"remove_stopwords": "result"}]'=collect_output.inputs.sentence \
+          '[{"collect_output": "all"}]'=tfidf_vectorizer.inputs.text \
+          '[{"remove_stopwords": "result"}]'=extract_array_from_matrix.inputs.single_text_example \
+          '[{"collect_output": "all"}]'=extract_array_from_matrix.inputs.collected_text \
+          '[{"tfidf_vectorizer": "result"}]'=extract_array_from_matrix.inputs.input_matrix \
+        -- \
+          get_single \
+          remove_stopwords \
+          collect_output \
+          extract_array_from_matrix \
+          tfidf_vectorizer | \
+        tee nlp_ops_dataflow.json
 
 To visualize the dataflow run:
 
-.. literalinclude:: /../examples/nlp/sklearn/dataflow_diagram.sh
+.. code-block:: console
+    :test:
+
+    $ dffml dataflow diagram -stage processing -- nlp_ops_dataflow.json
 
 We can now use this dataflow to preprocess the data and make it ready to be fed into model:
 
-.. literalinclude:: /../examples/nlp/sklearn/train.sh
+.. code-block:: console
+    :test:
+
+    $ dffml train \
+        -model scikitgnb \
+        -model-features extract_array_from_matrix.outputs.result:float:1 \
+        -model-predict sentiment:int:1 \
+        -model-directory tempdir \
+        -sources text=df \
+        -source-text-dataflow nlp_ops_dataflow.json \
+        -source-text-features sentence:str:1 \
+        -source-text-source csv \
+        -source-text-source-filename train_data.csv \
+        -log debug
 
 Assess accuracy:
 
-.. literalinclude:: /../examples/nlp/sklearn/accuracy.sh
-
-The output is:
-
 .. code-block:: console
+    :test:
 
+    $ dffml accuracy \
+        -model scikitgnb \
+        -model-features extract_array_from_matrix.outputs.result:float:1 \
+        -model-predict sentiment:int:1 \
+        -model-directory tempdir \
+        -sources text=df \
+        -source-text-dataflow nlp_ops_dataflow.json \
+        -source-text-features sentence:str:1 \
+        -source-text-source csv \
+        -source-text-source-filename train_data.csv \
+        -log debug
     1.0
 
 Create test data:
 
-.. literalinclude:: /../examples/nlp/sklearn/test_data.sh
+**test_data.csv**
+
+.. code-block::
+    :test:
+    :filepath: test_data.csv
+
+    sentence
+    Such a pleasant morning
+    Those were good days
+    My cat plays all day
+    Dogs are evil
 
 Make prediction on test data:
 
-.. literalinclude:: /../examples/nlp/sklearn/predict.sh
+.. note::
 
-The output is:
+    Processing of sentences occurs concurrently, resulting in seemingly
+    randomized output order.
 
 .. code-block:: console
+    :test:
+
+    $ dffml predict all \
+        -model scikitgnb \
+        -model-features extract_array_from_matrix.outputs.result:float:1 \
+        -model-predict sentiment:int:1 \
+        -model-directory tempdir \
+        -sources text=df \
+        -source-text-dataflow nlp_ops_dataflow.json \
+        -source-text-features sentence:str:1 \
+        -source-text-source csv \
+        -source-text-source-filename test_data.csv \
+        -pretty
 
             Key:	1
                                             Record Features
