@@ -376,16 +376,16 @@
 <span class="sd">    &gt;&gt;&gt; from dffml import cached_download_unpack_archive</span>
 <span class="sd">    &gt;&gt;&gt;</span>
 <span class="sd">    &gt;&gt;&gt; @cached_download_unpack_archive(</span>
-<span class="sd">    ...     &quot;https://github.com/intel/dffml/archive/152c2b92535fac6beec419236f8639b0d75d707d.tar.gz&quot;,</span>
+<span class="sd">    ...     &quot;https://github.com/intel/dffml/archive/c4469abfe6007a50144858d485537324046ff229.tar.gz&quot;,</span>
 <span class="sd">    ...     &quot;dffml.tar.gz&quot;,</span>
 <span class="sd">    ...     &quot;dffml&quot;,</span>
-<span class="sd">    ...     &quot;32ba082cd8056ff4ddcb68691a590c3cb8fea2ff75c0265b8d844c5edc7eaef54136160c6090750e562059b957355b15&quot;,</span>
+<span class="sd">    ...     &quot;bb9bb47c4e6e4c6b7147bb3c000bc4069d69c0c77a3e560b69f476a78e6b5084adf5467ee83cbbcc47ba5a4a0696fdfc&quot;,</span>
 <span class="sd">    ... )</span>
-<span class="sd">    ... async def files_in_dffml_commit_152c2b(dffml_dir):</span>
+<span class="sd">    ... async def files_in_dffml_commit_c4469a(dffml_dir):</span>
 <span class="sd">    ...     return len(list(dffml_dir.rglob(&quot;**/*&quot;)))</span>
 <span class="sd">    &gt;&gt;&gt;</span>
-<span class="sd">    &gt;&gt;&gt; asyncio.run(files_in_dffml_commit_152c2b())</span>
-<span class="sd">    594</span>
+<span class="sd">    &gt;&gt;&gt; asyncio.run(files_in_dffml_commit_c4469a())</span>
+<span class="sd">    124</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">directory_path</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">directory_path</span><span class="p">)</span>
 
