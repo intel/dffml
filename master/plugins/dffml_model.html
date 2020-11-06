@@ -7303,169 +7303,184 @@ as opposed to more exotic types of data like images and videos). With careful pa
 <p>No description</p>
 <p><strong>Args</strong></p>
 <ul class="simple">
+<li><p>features: List of features</p>
+<ul>
+<li><p>Features to train on</p></li>
+</ul>
+</li>
 <li><p>predict: Feature</p>
 <ul>
 <li><p>Label or the value to be predicted</p></li>
 </ul>
 </li>
-<li><p>features: List of features</p>
-<ul>
-<li><p>Features on which to train the model</p></li>
-</ul>
-</li>
 <li><p>directory: Path</p>
 <ul>
-<li><p>Directory where model should be saved</p></li>
+<li><p>Directory where state should be saved</p></li>
 </ul>
 </li>
 <li><p>time_left_for_this_task: Integer</p>
 <ul>
 <li><p>default: 3600</p></li>
-<li><p>Time limit in seconds for the search of appropriate models</p></li>
+<li><p>Time limit in seconds for the search of appropriate models. By increasing this value, <em>auto-sklearn</em> has a higher chance of finding better models.</p></li>
 </ul>
 </li>
 <li><p>per_run_time_limit: Integer</p>
 <ul>
-<li><p>default: 360</p></li>
-<li><p>Time limit for the single call to the machine learning model</p></li>
+<li><p>default: None</p></li>
+<li><p>Time limit for a single call to the machine learning model. Model fitting will be terminated if the machine learning algorithm runs over the time limit. Set this value high enough so that typical machine learning algorithms can be fit on the training data.</p></li>
 </ul>
 </li>
 <li><p>initial_configurations_via_metalearning: Integer</p>
 <ul>
 <li><p>default: 25</p></li>
-<li><p>Initialize the hyperparameter optimization algorithm with this many configurations which worked well on previously seen datasets</p></li>
+<li><p>Initialize the hyperparameter optimization algorithm with this many configurations which worked well on previously seen datasets. Disable if the hyperparameter optimization algorithm should start from scratch.</p></li>
 </ul>
 </li>
 <li><p>ensemble_size: Integer</p>
 <ul>
 <li><p>default: 50</p></li>
-<li><p>Number of models added to the ensemble built by Ensemble selection from libraries of models. Models are drawn with replacement</p></li>
+<li><p>Number of models added to the ensemble built by <em>Ensemble selection from libraries of models</em>. Models are drawn with replacement.</p></li>
 </ul>
 </li>
 <li><p>ensemble_nbest: Integer</p>
 <ul>
 <li><p>default: 50</p></li>
-<li><p>Only consider the ensemble_nbest models when building an ensemble</p></li>
+<li><p>Only consider the <code class="docutils literal notranslate"><span class="pre">ensemble_nbest</span></code> models when building an ensemble.</p></li>
 </ul>
 </li>
 <li><p>max_models_on_disc: Integer</p>
 <ul>
 <li><p>default: 50</p></li>
-<li><p>Defines the maximum number of models that are kept in the disc</p></li>
+<li><p>Defines the maximum number of models that are kept in the disc. The additional number of models are permanently deleted. Due to the nature of this variable, it sets the upper limit on how many models can be used for an ensemble. It must be an integer greater or equal than 1. If set to None, all models are kept on the disc.</p></li>
 </ul>
 </li>
 <li><p>ensemble_memory_limit: Integer</p>
 <ul>
 <li><p>default: 1024</p></li>
-<li><p>Memory limit in MB for the ensemble building process</p></li>
+<li><p>Memory limit in MB for the ensemble building process. <cite>auto-sklearn</cite> will reduce the number of considered models (<code class="docutils literal notranslate"><span class="pre">ensemble_nbest</span></code>) if the memory limit is reached. If <code class="docutils literal notranslate"><span class="pre">None</span></code>, no memory limit is enforced.</p></li>
 </ul>
 </li>
 <li><p>seed: Integer</p>
 <ul>
 <li><p>default: 1</p></li>
-<li><p>Used to seed SMAC. Will determine the output file names</p></li>
+<li><p>Used to seed SMAC. Will determine the output file names.</p></li>
 </ul>
 </li>
 <li><p>ml_memory_limit: Integer</p>
 <ul>
 <li><p>default: 3072</p></li>
-<li><p>Memory limit in MB for the machine learning algorithm</p></li>
+<li><p>Memory limit in MB for the machine learning algorithm. <cite>auto-sklearn</cite> will stop fitting the machine learning algorithm if it tries to allocate more than <cite>ml_memory_limit</cite> MB. If None is provided, no memory limit is set. In case of multi-processing, <cite>ml_memory_limit</cite> will be per job.</p></li>
 </ul>
 </li>
-<li><p>include_estimators: List of strings</p>
+<li><p>include_estimators: typing.Any</p>
 <ul>
 <li><p>default: None</p></li>
-<li><p>Specify the set of estimators to use</p></li>
+<li><p>If None, all possible estimators are used. Otherwise specifies set of estimators to use.</p></li>
 </ul>
 </li>
-<li><p>exclude_estimators: List of strings</p>
+<li><p>exclude_estimators: typing.Any</p>
 <ul>
 <li><p>default: None</p></li>
-<li><p>Specify the set of estimators not to use</p></li>
+<li><p>If None, all possible estimators are used. Otherwise specifies set of estimators not to use. Incompatible with include_estimators.</p></li>
 </ul>
 </li>
-<li><p>include_preprocessors: List of strings</p>
+<li><p>include_preprocessors: typing.Any</p>
 <ul>
 <li><p>default: None</p></li>
-<li><p>Specify the set of preprocessors to use</p></li>
+<li><p>If None all possible preprocessors are used. Otherwise specifies set of preprocessors to use.</p></li>
 </ul>
 </li>
-<li><p>exclude_preprocessors: List of strings</p>
+<li><p>exclude_preprocessors: typing.Any</p>
 <ul>
 <li><p>default: None</p></li>
-<li><p>Specify the set of preprocessors not to use</p></li>
+<li><p>If None all possible preprocessors are used. Otherwise specifies set of preprocessors not to use. Incompatible with include_preprocessors.</p></li>
 </ul>
 </li>
 <li><p>resampling_strategy: String</p>
 <ul>
 <li><p>default: holdout</p></li>
-<li><p>How to to handle overfitting</p></li>
+<li><p>how to to handle overfitting, might need ‘resampling_strategy_arguments’  fit where possible ‘folds’ in scikit-learn model_selection module in scikit-learn model_selection module in scikit-learn model_selection module</p></li>
 </ul>
 </li>
-<li><p>resampling_strategy_arguments: typing.Dict[str, int]</p>
+<li><p>resampling_strategy_arguments: dict</p>
 <ul>
-<li><p>default: {‘train_size default’: 0.67}</p></li>
-<li><p>Additional arguments for resampling_strategy</p></li>
+<li><p>default: None</p></li>
+<li><ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">train_size</span></code> should be between 0.0 and 1.0 and represent the proportion of the dataset to include in the train split. * <code class="docutils literal notranslate"><span class="pre">shuffle</span></code> determines whether the data is shuffled prior to splitting it into train and validation.   required by chosen class as specified in scikit-learn documentation. If arguments are not provided, scikit-learn defaults are used. If no defaults are available, an exception is raised. Refer to the ‘n_splits’ argument as ‘folds’.</p></li>
+</ul>
+</li>
 </ul>
 </li>
 <li><p>tmp_folder: String</p>
 <ul>
 <li><p>default: None</p></li>
-<li><p>Folder to store configuration output and log files</p></li>
+<li><p>folder to store configuration output and log files, if <code class="docutils literal notranslate"><span class="pre">None</span></code> automatically use <code class="docutils literal notranslate"><span class="pre">/tmp/autosklearn_tmp_$pid_$random_number</span></code></p></li>
 </ul>
 </li>
 <li><p>output_folder: String</p>
 <ul>
 <li><p>default: None</p></li>
-<li><p>Folder to store predictions for optional test set</p></li>
+<li><p>folder to store predictions for optional test set, if <code class="docutils literal notranslate"><span class="pre">None</span></code> automatically use <code class="docutils literal notranslate"><span class="pre">/tmp/autosklearn_output_$pid_$random_number</span></code></p></li>
 </ul>
 </li>
 <li><p>delete_tmp_folder_after_terminate: String</p>
 <ul>
 <li><p>default: True</p></li>
-<li><p>Remove tmp_folder, when finished</p></li>
+<li><p>remove tmp_folder, when finished. If tmp_folder is None tmp_dir will always be deleted</p></li>
 </ul>
 </li>
 <li><p>delete_output_folder_after_terminate: String</p>
 <ul>
 <li><p>default: True</p></li>
-<li><p>Remove output_folder, when finished</p></li>
+<li><p>remove output_folder, when finished. If output_folder is None output_dir will always be deleted</p></li>
 </ul>
 </li>
-<li><p>n_jobs: typing.Union[int, NoneType]</p>
+<li><p>n_jobs: Integer</p>
 <ul>
 <li><p>default: None</p></li>
-<li><p>The number of jobs to run in parallel for fit()</p></li>
+<li><p>The number of jobs to run in parallel for <code class="docutils literal notranslate"><span class="pre">fit()</span></code>. <code class="docutils literal notranslate"><span class="pre">-1</span></code> means using all processors. By default, Auto-sklearn uses a single core for fitting the machine learning model and a single core for fitting an ensemble. Ensemble building is not affected by <code class="docutils literal notranslate"><span class="pre">n_jobs</span></code> but can be controlled by the number of models in the ensemble. In contrast to most scikit-learn models, <code class="docutils literal notranslate"><span class="pre">n_jobs</span></code> given in the constructor is not applied to the <code class="docutils literal notranslate"><span class="pre">predict()</span></code> method. If <code class="docutils literal notranslate"><span class="pre">dask_client</span></code> is None, a new dask client is created.</p></li>
+</ul>
+</li>
+<li><p>dask_client: typing.Any</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>User-created dask client, can be used to start a dask cluster and then attach auto-sklearn to it.</p></li>
 </ul>
 </li>
 <li><p>disable_evaluator_output: String</p>
 <ul>
 <li><p>default: False</p></li>
-<li><p>Disable model and prediction output</p></li>
+<li><p>If True, disable model and prediction output. Cannot be used together with ensemble building. <code class="docutils literal notranslate"><span class="pre">predict()</span></code> cannot be used when setting this True. Can also be used as a list to pass more fine-grained information on what to save. Allowed elements in the  optimization/validation set, which would later on be used to build an ensemble.</p></li>
 </ul>
 </li>
-<li><p>get_smac_object_callback: callable</p>
+<li><p>smac_scenario_args: dict</p>
 <ul>
 <li><p>default: None</p></li>
-<li><p>Callback function to create an object of class smac.optimizer.smbo.SMBO</p></li>
+<li><p>Additional arguments inserted into the scenario of SMAC. See the for a list of available arguments.</p></li>
 </ul>
 </li>
-<li><p>smac_scenario_args: typing.Dict[str, str]</p>
+<li><p>get_smac_object_callback: typing.Any</p>
 <ul>
 <li><p>default: None</p></li>
-<li><p>Additional arguments inserted into the scenario of SMAC</p></li>
+<li><p>Callback function to create an object of class The function must accept the arguments <code class="docutils literal notranslate"><span class="pre">scenario_dict</span></code>, <code class="docutils literal notranslate"><span class="pre">instances</span></code>, <code class="docutils literal notranslate"><span class="pre">num_params</span></code>, <code class="docutils literal notranslate"><span class="pre">runhistory</span></code>, <code class="docutils literal notranslate"><span class="pre">seed</span></code> and <code class="docutils literal notranslate"><span class="pre">ta</span></code>. This is an advanced feature. Use only if you are familiar with</p></li>
 </ul>
 </li>
-<li><p>logging_config: typing.Dict[str, typing.Any]</p>
+<li><p>logging_config: dict</p>
 <ul>
 <li><p>default: None</p></li>
-<li><p>dictionary object specifying the logger configuration</p></li>
+<li><p>dictionary object specifying the logger configuration. If None, the default logging.yaml file is used, which can be found in the directory <code class="docutils literal notranslate"><span class="pre">util/logging.yaml</span></code> relative to the installation.</p></li>
 </ul>
 </li>
 <li><p>metadata_directory: String</p>
 <ul>
 <li><p>default: None</p></li>
-<li><p>Path to the metadata directory</p></li>
+<li><p>path to the metadata directory. If None, the default directory (autosklearn.metalearning.files) is used.</p></li>
+</ul>
+</li>
+<li><p>metric: typing.Any</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Metrics`_. If None is provided, a default metric is selected depending on the task.</p></li>
 </ul>
 </li>
 </ul>
@@ -7476,169 +7491,184 @@ as opposed to more exotic types of data like images and videos). With careful pa
 <p>No description</p>
 <p><strong>Args</strong></p>
 <ul class="simple">
+<li><p>features: List of features</p>
+<ul>
+<li><p>Features to train on</p></li>
+</ul>
+</li>
 <li><p>predict: Feature</p>
 <ul>
 <li><p>Label or the value to be predicted</p></li>
 </ul>
 </li>
-<li><p>features: List of features</p>
-<ul>
-<li><p>Features on which to train the model</p></li>
-</ul>
-</li>
 <li><p>directory: Path</p>
 <ul>
-<li><p>Directory where model should be saved</p></li>
+<li><p>Directory where state should be saved</p></li>
 </ul>
 </li>
 <li><p>time_left_for_this_task: Integer</p>
 <ul>
 <li><p>default: 3600</p></li>
-<li><p>Time limit in seconds for the search of appropriate models</p></li>
+<li><p>Time limit in seconds for the search of appropriate models. By increasing this value, <em>auto-sklearn</em> has a higher chance of finding better models.</p></li>
 </ul>
 </li>
 <li><p>per_run_time_limit: Integer</p>
 <ul>
-<li><p>default: 360</p></li>
-<li><p>Time limit for the single call to the machine learning model</p></li>
+<li><p>default: None</p></li>
+<li><p>Time limit for a single call to the machine learning model. Model fitting will be terminated if the machine learning algorithm runs over the time limit. Set this value high enough so that typical machine learning algorithms can be fit on the training data.</p></li>
 </ul>
 </li>
 <li><p>initial_configurations_via_metalearning: Integer</p>
 <ul>
 <li><p>default: 25</p></li>
-<li><p>Initialize the hyperparameter optimization algorithm with this many configurations which worked well on previously seen datasets</p></li>
+<li><p>Initialize the hyperparameter optimization algorithm with this many configurations which worked well on previously seen datasets. Disable if the hyperparameter optimization algorithm should start from scratch.</p></li>
 </ul>
 </li>
 <li><p>ensemble_size: Integer</p>
 <ul>
 <li><p>default: 50</p></li>
-<li><p>Number of models added to the ensemble built by Ensemble selection from libraries of models. Models are drawn with replacement</p></li>
+<li><p>Number of models added to the ensemble built by <em>Ensemble selection from libraries of models</em>. Models are drawn with replacement.</p></li>
 </ul>
 </li>
 <li><p>ensemble_nbest: Integer</p>
 <ul>
 <li><p>default: 50</p></li>
-<li><p>Only consider the ensemble_nbest models when building an ensemble</p></li>
+<li><p>Only consider the <code class="docutils literal notranslate"><span class="pre">ensemble_nbest</span></code> models when building an ensemble.</p></li>
 </ul>
 </li>
 <li><p>max_models_on_disc: Integer</p>
 <ul>
 <li><p>default: 50</p></li>
-<li><p>Defines the maximum number of models that are kept in the disc</p></li>
+<li><p>Defines the maximum number of models that are kept in the disc. The additional number of models are permanently deleted. Due to the nature of this variable, it sets the upper limit on how many models can be used for an ensemble. It must be an integer greater or equal than 1. If set to None, all models are kept on the disc.</p></li>
 </ul>
 </li>
 <li><p>ensemble_memory_limit: Integer</p>
 <ul>
 <li><p>default: 1024</p></li>
-<li><p>Memory limit in MB for the ensemble building process</p></li>
+<li><p>Memory limit in MB for the ensemble building process. <cite>auto-sklearn</cite> will reduce the number of considered models (<code class="docutils literal notranslate"><span class="pre">ensemble_nbest</span></code>) if the memory limit is reached. If <code class="docutils literal notranslate"><span class="pre">None</span></code>, no memory limit is enforced.</p></li>
 </ul>
 </li>
 <li><p>seed: Integer</p>
 <ul>
 <li><p>default: 1</p></li>
-<li><p>Used to seed SMAC. Will determine the output file names</p></li>
+<li><p>Used to seed SMAC. Will determine the output file names.</p></li>
 </ul>
 </li>
 <li><p>ml_memory_limit: Integer</p>
 <ul>
 <li><p>default: 3072</p></li>
-<li><p>Memory limit in MB for the machine learning algorithm</p></li>
+<li><p>Memory limit in MB for the machine learning algorithm. <cite>auto-sklearn</cite> will stop fitting the machine learning algorithm if it tries to allocate more than <cite>ml_memory_limit</cite> MB. If None is provided, no memory limit is set. In case of multi-processing, <cite>ml_memory_limit</cite> will be per job.</p></li>
 </ul>
 </li>
-<li><p>include_estimators: List of strings</p>
+<li><p>include_estimators: typing.Any</p>
 <ul>
 <li><p>default: None</p></li>
-<li><p>Specify the set of estimators to use</p></li>
+<li><p>If None, all possible estimators are used. Otherwise specifies set of estimators to use.</p></li>
 </ul>
 </li>
-<li><p>exclude_estimators: List of strings</p>
+<li><p>exclude_estimators: typing.Any</p>
 <ul>
 <li><p>default: None</p></li>
-<li><p>Specify the set of estimators not to use</p></li>
+<li><p>If None, all possible estimators are used. Otherwise specifies set of estimators not to use. Incompatible with include_estimators.</p></li>
 </ul>
 </li>
-<li><p>include_preprocessors: List of strings</p>
+<li><p>include_preprocessors: typing.Any</p>
 <ul>
 <li><p>default: None</p></li>
-<li><p>Specify the set of preprocessors to use</p></li>
+<li><p>If None all possible preprocessors are used. Otherwise specifies set of preprocessors to use.</p></li>
 </ul>
 </li>
-<li><p>exclude_preprocessors: List of strings</p>
+<li><p>exclude_preprocessors: typing.Any</p>
 <ul>
 <li><p>default: None</p></li>
-<li><p>Specify the set of preprocessors not to use</p></li>
+<li><p>If None all possible preprocessors are used. Otherwise specifies set of preprocessors not to use. Incompatible with include_preprocessors.</p></li>
 </ul>
 </li>
 <li><p>resampling_strategy: String</p>
 <ul>
 <li><p>default: holdout</p></li>
-<li><p>How to to handle overfitting</p></li>
+<li><p>how to to handle overfitting, might need ‘resampling_strategy_arguments’  fit where possible ‘folds’ in scikit-learn model_selection module in scikit-learn model_selection module in scikit-learn model_selection module</p></li>
 </ul>
 </li>
-<li><p>resampling_strategy_arguments: typing.Dict[str, int]</p>
+<li><p>resampling_strategy_arguments: dict</p>
 <ul>
-<li><p>default: {‘train_size default’: 0.67}</p></li>
-<li><p>Additional arguments for resampling_strategy</p></li>
+<li><p>default: None</p></li>
+<li><ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">train_size</span></code> should be between 0.0 and 1.0 and represent the proportion of the dataset to include in the train split. * <code class="docutils literal notranslate"><span class="pre">shuffle</span></code> determines whether the data is shuffled prior to splitting it into train and validation.   required by chosen class as specified in scikit-learn documentation. If arguments are not provided, scikit-learn defaults are used. If no defaults are available, an exception is raised. Refer to the ‘n_splits’ argument as ‘folds’.</p></li>
+</ul>
+</li>
 </ul>
 </li>
 <li><p>tmp_folder: String</p>
 <ul>
 <li><p>default: None</p></li>
-<li><p>Folder to store configuration output and log files</p></li>
+<li><p>folder to store configuration output and log files, if <code class="docutils literal notranslate"><span class="pre">None</span></code> automatically use <code class="docutils literal notranslate"><span class="pre">/tmp/autosklearn_tmp_$pid_$random_number</span></code></p></li>
 </ul>
 </li>
 <li><p>output_folder: String</p>
 <ul>
 <li><p>default: None</p></li>
-<li><p>Folder to store predictions for optional test set</p></li>
+<li><p>folder to store predictions for optional test set, if <code class="docutils literal notranslate"><span class="pre">None</span></code> automatically use <code class="docutils literal notranslate"><span class="pre">/tmp/autosklearn_output_$pid_$random_number</span></code></p></li>
 </ul>
 </li>
 <li><p>delete_tmp_folder_after_terminate: String</p>
 <ul>
 <li><p>default: True</p></li>
-<li><p>Remove tmp_folder, when finished</p></li>
+<li><p>remove tmp_folder, when finished. If tmp_folder is None tmp_dir will always be deleted</p></li>
 </ul>
 </li>
 <li><p>delete_output_folder_after_terminate: String</p>
 <ul>
 <li><p>default: True</p></li>
-<li><p>Remove output_folder, when finished</p></li>
+<li><p>remove output_folder, when finished. If output_folder is None output_dir will always be deleted</p></li>
 </ul>
 </li>
-<li><p>n_jobs: typing.Union[int, NoneType]</p>
+<li><p>n_jobs: Integer</p>
 <ul>
 <li><p>default: None</p></li>
-<li><p>The number of jobs to run in parallel for fit()</p></li>
+<li><p>The number of jobs to run in parallel for <code class="docutils literal notranslate"><span class="pre">fit()</span></code>. <code class="docutils literal notranslate"><span class="pre">-1</span></code> means using all processors. By default, Auto-sklearn uses a single core for fitting the machine learning model and a single core for fitting an ensemble. Ensemble building is not affected by <code class="docutils literal notranslate"><span class="pre">n_jobs</span></code> but can be controlled by the number of models in the ensemble. In contrast to most scikit-learn models, <code class="docutils literal notranslate"><span class="pre">n_jobs</span></code> given in the constructor is not applied to the <code class="docutils literal notranslate"><span class="pre">predict()</span></code> method. If <code class="docutils literal notranslate"><span class="pre">dask_client</span></code> is None, a new dask client is created.</p></li>
+</ul>
+</li>
+<li><p>dask_client: typing.Any</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>User-created dask client, can be used to start a dask cluster and then attach auto-sklearn to it.</p></li>
 </ul>
 </li>
 <li><p>disable_evaluator_output: String</p>
 <ul>
 <li><p>default: False</p></li>
-<li><p>Disable model and prediction output</p></li>
+<li><p>If True, disable model and prediction output. Cannot be used together with ensemble building. <code class="docutils literal notranslate"><span class="pre">predict()</span></code> cannot be used when setting this True. Can also be used as a list to pass more fine-grained information on what to save. Allowed elements in the  optimization/validation set, which would later on be used to build an ensemble.</p></li>
 </ul>
 </li>
-<li><p>get_smac_object_callback: callable</p>
+<li><p>smac_scenario_args: dict</p>
 <ul>
 <li><p>default: None</p></li>
-<li><p>Callback function to create an object of class smac.optimizer.smbo.SMBO</p></li>
+<li><p>Additional arguments inserted into the scenario of SMAC. See the for a list of available arguments.</p></li>
 </ul>
 </li>
-<li><p>smac_scenario_args: typing.Dict[str, str]</p>
+<li><p>get_smac_object_callback: typing.Any</p>
 <ul>
 <li><p>default: None</p></li>
-<li><p>Additional arguments inserted into the scenario of SMAC</p></li>
+<li><p>Callback function to create an object of class The function must accept the arguments <code class="docutils literal notranslate"><span class="pre">scenario_dict</span></code>, <code class="docutils literal notranslate"><span class="pre">instances</span></code>, <code class="docutils literal notranslate"><span class="pre">num_params</span></code>, <code class="docutils literal notranslate"><span class="pre">runhistory</span></code>, <code class="docutils literal notranslate"><span class="pre">seed</span></code> and <code class="docutils literal notranslate"><span class="pre">ta</span></code>. This is an advanced feature. Use only if you are familiar with</p></li>
 </ul>
 </li>
-<li><p>logging_config: typing.Dict[str, typing.Any]</p>
+<li><p>logging_config: dict</p>
 <ul>
 <li><p>default: None</p></li>
-<li><p>dictionary object specifying the logger configuration</p></li>
+<li><p>dictionary object specifying the logger configuration. If None, the default logging.yaml file is used, which can be found in the directory <code class="docutils literal notranslate"><span class="pre">util/logging.yaml</span></code> relative to the installation.</p></li>
 </ul>
 </li>
 <li><p>metadata_directory: String</p>
 <ul>
 <li><p>default: None</p></li>
-<li><p>Path to the metadata directory</p></li>
+<li><p>path to the metadata directory. If None, the default directory (autosklearn.metalearning.files) is used.</p></li>
+</ul>
+</li>
+<li><p>metric: typing.Any</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Metrics`_. If None is provided, a default metric is selected depending on the task.</p></li>
 </ul>
 </li>
 </ul>

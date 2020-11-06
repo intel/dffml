@@ -5435,142 +5435,152 @@ No description
 
 **Args**
 
+- features: List of features
+
+  - Features to train on
+
 - predict: Feature
 
   - Label or the value to be predicted
 
-- features: List of features
-
-  - Features on which to train the model
-
 - directory: Path
 
-  - Directory where model should be saved
+  - Directory where state should be saved
 
 - time_left_for_this_task: Integer
 
   - default: 3600
-  - Time limit in seconds for the search of appropriate models
+  - Time limit in seconds for the search of appropriate models. By increasing this value, *auto-sklearn* has a higher chance of finding better models.
 
 - per_run_time_limit: Integer
 
-  - default: 360
-  - Time limit for the single call to the machine learning model
+  - default: None
+  - Time limit for a single call to the machine learning model. Model fitting will be terminated if the machine learning algorithm runs over the time limit. Set this value high enough so that typical machine learning algorithms can be fit on the training data.
 
 - initial_configurations_via_metalearning: Integer
 
   - default: 25
-  - Initialize the hyperparameter optimization algorithm with this many configurations which worked well on previously seen datasets
+  - Initialize the hyperparameter optimization algorithm with this many configurations which worked well on previously seen datasets. Disable if the hyperparameter optimization algorithm should start from scratch.
 
 - ensemble_size: Integer
 
   - default: 50
-  - Number of models added to the ensemble built by Ensemble selection from libraries of models. Models are drawn with replacement
+  - Number of models added to the ensemble built by *Ensemble selection from libraries of models*. Models are drawn with replacement.
 
 - ensemble_nbest: Integer
 
   - default: 50
-  - Only consider the ensemble_nbest models when building an ensemble
+  - Only consider the ``ensemble_nbest`` models when building an ensemble.
 
 - max_models_on_disc: Integer
 
   - default: 50
-  - Defines the maximum number of models that are kept in the disc
+  - Defines the maximum number of models that are kept in the disc. The additional number of models are permanently deleted. Due to the nature of this variable, it sets the upper limit on how many models can be used for an ensemble. It must be an integer greater or equal than 1. If set to None, all models are kept on the disc.
 
 - ensemble_memory_limit: Integer
 
   - default: 1024
-  - Memory limit in MB for the ensemble building process
+  - Memory limit in MB for the ensemble building process. `auto-sklearn` will reduce the number of considered models (``ensemble_nbest``) if the memory limit is reached. If ``None``, no memory limit is enforced.
 
 - seed: Integer
 
   - default: 1
-  - Used to seed SMAC. Will determine the output file names
+  - Used to seed SMAC. Will determine the output file names.
 
 - ml_memory_limit: Integer
 
   - default: 3072
-  - Memory limit in MB for the machine learning algorithm
+  - Memory limit in MB for the machine learning algorithm. `auto-sklearn` will stop fitting the machine learning algorithm if it tries to allocate more than `ml_memory_limit` MB. If None is provided, no memory limit is set. In case of multi-processing, `ml_memory_limit` will be per job.
 
-- include_estimators: List of strings
-
-  - default: None
-  - Specify the set of estimators to use
-
-- exclude_estimators: List of strings
+- include_estimators: typing.Any
 
   - default: None
-  - Specify the set of estimators not to use
+  - If None, all possible estimators are used. Otherwise specifies set of estimators to use.
 
-- include_preprocessors: List of strings
-
-  - default: None
-  - Specify the set of preprocessors to use
-
-- exclude_preprocessors: List of strings
+- exclude_estimators: typing.Any
 
   - default: None
-  - Specify the set of preprocessors not to use
+  - If None, all possible estimators are used. Otherwise specifies set of estimators not to use. Incompatible with include_estimators.
+
+- include_preprocessors: typing.Any
+
+  - default: None
+  - If None all possible preprocessors are used. Otherwise specifies set of preprocessors to use.
+
+- exclude_preprocessors: typing.Any
+
+  - default: None
+  - If None all possible preprocessors are used. Otherwise specifies set of preprocessors not to use. Incompatible with include_preprocessors.
 
 - resampling_strategy: String
 
   - default: holdout
-  - How to to handle overfitting
+  - how to to handle overfitting, might need 'resampling_strategy_arguments'  fit where possible 'folds' in scikit-learn model_selection module in scikit-learn model_selection module in scikit-learn model_selection module
 
-- resampling_strategy_arguments: typing.Dict[str, int]
+- resampling_strategy_arguments: dict
 
-  - default: {'train_size default': 0.67}
-  - Additional arguments for resampling_strategy
+  - default: None
+  - * ``train_size`` should be between 0.0 and 1.0 and represent the proportion of the dataset to include in the train split. * ``shuffle`` determines whether the data is shuffled prior to splitting it into train and validation.   required by chosen class as specified in scikit-learn documentation. If arguments are not provided, scikit-learn defaults are used. If no defaults are available, an exception is raised. Refer to the 'n_splits' argument as 'folds'.
 
 - tmp_folder: String
 
   - default: None
-  - Folder to store configuration output and log files
+  - folder to store configuration output and log files, if ``None`` automatically use ``/tmp/autosklearn_tmp_$pid_$random_number``
 
 - output_folder: String
 
   - default: None
-  - Folder to store predictions for optional test set
+  - folder to store predictions for optional test set, if ``None`` automatically use ``/tmp/autosklearn_output_$pid_$random_number``
 
 - delete_tmp_folder_after_terminate: String
 
   - default: True
-  - Remove tmp_folder, when finished
+  - remove tmp_folder, when finished. If tmp_folder is None tmp_dir will always be deleted
 
 - delete_output_folder_after_terminate: String
 
   - default: True
-  - Remove output_folder, when finished
+  - remove output_folder, when finished. If output_folder is None output_dir will always be deleted
 
-- n_jobs: typing.Union[int, NoneType]
+- n_jobs: Integer
 
   - default: None
-  - The number of jobs to run in parallel for fit()
+  - The number of jobs to run in parallel for ``fit()``. ``-1`` means using all processors. By default, Auto-sklearn uses a single core for fitting the machine learning model and a single core for fitting an ensemble. Ensemble building is not affected by ``n_jobs`` but can be controlled by the number of models in the ensemble. In contrast to most scikit-learn models, ``n_jobs`` given in the constructor is not applied to the ``predict()`` method. If ``dask_client`` is None, a new dask client is created.
+
+- dask_client: typing.Any
+
+  - default: None
+  - User-created dask client, can be used to start a dask cluster and then attach auto-sklearn to it.
 
 - disable_evaluator_output: String
 
   - default: False
-  - Disable model and prediction output
+  - If True, disable model and prediction output. Cannot be used together with ensemble building. ``predict()`` cannot be used when setting this True. Can also be used as a list to pass more fine-grained information on what to save. Allowed elements in the  optimization/validation set, which would later on be used to build an ensemble.
 
-- get_smac_object_callback: callable
-
-  - default: None
-  - Callback function to create an object of class smac.optimizer.smbo.SMBO
-
-- smac_scenario_args: typing.Dict[str, str]
+- smac_scenario_args: dict
 
   - default: None
-  - Additional arguments inserted into the scenario of SMAC
+  - Additional arguments inserted into the scenario of SMAC. See the for a list of available arguments.
 
-- logging_config: typing.Dict[str, typing.Any]
+- get_smac_object_callback: typing.Any
 
   - default: None
-  - dictionary object specifying the logger configuration
+  - Callback function to create an object of class The function must accept the arguments ``scenario_dict``, ``instances``, ``num_params``, ``runhistory``, ``seed`` and ``ta``. This is an advanced feature. Use only if you are familiar with
+
+- logging_config: dict
+
+  - default: None
+  - dictionary object specifying the logger configuration. If None, the default logging.yaml file is used, which can be found in the directory ``util/logging.yaml`` relative to the installation.
 
 - metadata_directory: String
 
   - default: None
-  - Path to the metadata directory
+  - path to the metadata directory. If None, the default directory (autosklearn.metalearning.files) is used.
+
+- metric: typing.Any
+
+  - default: None
+  - Metrics`_. If None is provided, a default metric is selected depending on the task.
 
 .. _plugin_model_dffml_model_autosklearn_autoregressor:
 
@@ -5583,139 +5593,149 @@ No description
 
 **Args**
 
+- features: List of features
+
+  - Features to train on
+
 - predict: Feature
 
   - Label or the value to be predicted
 
-- features: List of features
-
-  - Features on which to train the model
-
 - directory: Path
 
-  - Directory where model should be saved
+  - Directory where state should be saved
 
 - time_left_for_this_task: Integer
 
   - default: 3600
-  - Time limit in seconds for the search of appropriate models
+  - Time limit in seconds for the search of appropriate models. By increasing this value, *auto-sklearn* has a higher chance of finding better models.
 
 - per_run_time_limit: Integer
 
-  - default: 360
-  - Time limit for the single call to the machine learning model
+  - default: None
+  - Time limit for a single call to the machine learning model. Model fitting will be terminated if the machine learning algorithm runs over the time limit. Set this value high enough so that typical machine learning algorithms can be fit on the training data.
 
 - initial_configurations_via_metalearning: Integer
 
   - default: 25
-  - Initialize the hyperparameter optimization algorithm with this many configurations which worked well on previously seen datasets
+  - Initialize the hyperparameter optimization algorithm with this many configurations which worked well on previously seen datasets. Disable if the hyperparameter optimization algorithm should start from scratch.
 
 - ensemble_size: Integer
 
   - default: 50
-  - Number of models added to the ensemble built by Ensemble selection from libraries of models. Models are drawn with replacement
+  - Number of models added to the ensemble built by *Ensemble selection from libraries of models*. Models are drawn with replacement.
 
 - ensemble_nbest: Integer
 
   - default: 50
-  - Only consider the ensemble_nbest models when building an ensemble
+  - Only consider the ``ensemble_nbest`` models when building an ensemble.
 
 - max_models_on_disc: Integer
 
   - default: 50
-  - Defines the maximum number of models that are kept in the disc
+  - Defines the maximum number of models that are kept in the disc. The additional number of models are permanently deleted. Due to the nature of this variable, it sets the upper limit on how many models can be used for an ensemble. It must be an integer greater or equal than 1. If set to None, all models are kept on the disc.
 
 - ensemble_memory_limit: Integer
 
   - default: 1024
-  - Memory limit in MB for the ensemble building process
+  - Memory limit in MB for the ensemble building process. `auto-sklearn` will reduce the number of considered models (``ensemble_nbest``) if the memory limit is reached. If ``None``, no memory limit is enforced.
 
 - seed: Integer
 
   - default: 1
-  - Used to seed SMAC. Will determine the output file names
+  - Used to seed SMAC. Will determine the output file names.
 
 - ml_memory_limit: Integer
 
   - default: 3072
-  - Memory limit in MB for the machine learning algorithm
+  - Memory limit in MB for the machine learning algorithm. `auto-sklearn` will stop fitting the machine learning algorithm if it tries to allocate more than `ml_memory_limit` MB. If None is provided, no memory limit is set. In case of multi-processing, `ml_memory_limit` will be per job.
 
-- include_estimators: List of strings
-
-  - default: None
-  - Specify the set of estimators to use
-
-- exclude_estimators: List of strings
+- include_estimators: typing.Any
 
   - default: None
-  - Specify the set of estimators not to use
+  - If None, all possible estimators are used. Otherwise specifies set of estimators to use.
 
-- include_preprocessors: List of strings
-
-  - default: None
-  - Specify the set of preprocessors to use
-
-- exclude_preprocessors: List of strings
+- exclude_estimators: typing.Any
 
   - default: None
-  - Specify the set of preprocessors not to use
+  - If None, all possible estimators are used. Otherwise specifies set of estimators not to use. Incompatible with include_estimators.
+
+- include_preprocessors: typing.Any
+
+  - default: None
+  - If None all possible preprocessors are used. Otherwise specifies set of preprocessors to use.
+
+- exclude_preprocessors: typing.Any
+
+  - default: None
+  - If None all possible preprocessors are used. Otherwise specifies set of preprocessors not to use. Incompatible with include_preprocessors.
 
 - resampling_strategy: String
 
   - default: holdout
-  - How to to handle overfitting
+  - how to to handle overfitting, might need 'resampling_strategy_arguments'  fit where possible 'folds' in scikit-learn model_selection module in scikit-learn model_selection module in scikit-learn model_selection module
 
-- resampling_strategy_arguments: typing.Dict[str, int]
+- resampling_strategy_arguments: dict
 
-  - default: {'train_size default': 0.67}
-  - Additional arguments for resampling_strategy
+  - default: None
+  - * ``train_size`` should be between 0.0 and 1.0 and represent the proportion of the dataset to include in the train split. * ``shuffle`` determines whether the data is shuffled prior to splitting it into train and validation.   required by chosen class as specified in scikit-learn documentation. If arguments are not provided, scikit-learn defaults are used. If no defaults are available, an exception is raised. Refer to the 'n_splits' argument as 'folds'.
 
 - tmp_folder: String
 
   - default: None
-  - Folder to store configuration output and log files
+  - folder to store configuration output and log files, if ``None`` automatically use ``/tmp/autosklearn_tmp_$pid_$random_number``
 
 - output_folder: String
 
   - default: None
-  - Folder to store predictions for optional test set
+  - folder to store predictions for optional test set, if ``None`` automatically use ``/tmp/autosklearn_output_$pid_$random_number``
 
 - delete_tmp_folder_after_terminate: String
 
   - default: True
-  - Remove tmp_folder, when finished
+  - remove tmp_folder, when finished. If tmp_folder is None tmp_dir will always be deleted
 
 - delete_output_folder_after_terminate: String
 
   - default: True
-  - Remove output_folder, when finished
+  - remove output_folder, when finished. If output_folder is None output_dir will always be deleted
 
-- n_jobs: typing.Union[int, NoneType]
+- n_jobs: Integer
 
   - default: None
-  - The number of jobs to run in parallel for fit()
+  - The number of jobs to run in parallel for ``fit()``. ``-1`` means using all processors. By default, Auto-sklearn uses a single core for fitting the machine learning model and a single core for fitting an ensemble. Ensemble building is not affected by ``n_jobs`` but can be controlled by the number of models in the ensemble. In contrast to most scikit-learn models, ``n_jobs`` given in the constructor is not applied to the ``predict()`` method. If ``dask_client`` is None, a new dask client is created.
+
+- dask_client: typing.Any
+
+  - default: None
+  - User-created dask client, can be used to start a dask cluster and then attach auto-sklearn to it.
 
 - disable_evaluator_output: String
 
   - default: False
-  - Disable model and prediction output
+  - If True, disable model and prediction output. Cannot be used together with ensemble building. ``predict()`` cannot be used when setting this True. Can also be used as a list to pass more fine-grained information on what to save. Allowed elements in the  optimization/validation set, which would later on be used to build an ensemble.
 
-- get_smac_object_callback: callable
-
-  - default: None
-  - Callback function to create an object of class smac.optimizer.smbo.SMBO
-
-- smac_scenario_args: typing.Dict[str, str]
+- smac_scenario_args: dict
 
   - default: None
-  - Additional arguments inserted into the scenario of SMAC
+  - Additional arguments inserted into the scenario of SMAC. See the for a list of available arguments.
 
-- logging_config: typing.Dict[str, typing.Any]
+- get_smac_object_callback: typing.Any
 
   - default: None
-  - dictionary object specifying the logger configuration
+  - Callback function to create an object of class The function must accept the arguments ``scenario_dict``, ``instances``, ``num_params``, ``runhistory``, ``seed`` and ``ta``. This is an advanced feature. Use only if you are familiar with
+
+- logging_config: dict
+
+  - default: None
+  - dictionary object specifying the logger configuration. If None, the default logging.yaml file is used, which can be found in the directory ``util/logging.yaml`` relative to the installation.
 
 - metadata_directory: String
 
   - default: None
-  - Path to the metadata directory
+  - path to the metadata directory. If None, the default directory (autosklearn.metalearning.files) is used.
+
+- metric: typing.Any
+
+  - default: None
+  - Metrics`_. If None is provided, a default metric is selected depending on the task.
