@@ -55,17 +55,26 @@ We're going to install the ``dffml-config-yaml`` package so that we don't have
 to look at JSON.
 
 .. code-block:: console
+    :test:
 
-    $ python3 -m pip install dffml-config-yaml
+    $ python -m pip install --use-feature=2020-resolver dffml-config-yaml
 
 We'll be working from the top level directory of the ``shouldi`` package we
-created in the :doc:`/examples/shouldi`.
+created in the :doc:`/examples/shouldi` example.
 
 The source for that package is also available under the ``examples/shouldi``
 directory of the DFFML source code.
 
-.. code-block:: console
+If you'd like to skip :doc:`/examples/shouldi` example, clone the dffml repo
+Then change directory into the ``shouldi`` source code you would have written in
+the :doc:`/examples/shouldi` example.
 
+.. code-block:: console
+    :test:
+    :replace: cmds[0][-2] = ctx["root"]
+
+    $ git clone --depth=1 https://github.com/intel/dffml dffml
+    $ cd dffml
     $ cd examples/shouldi
 
 Config files are named after the dataflow they are associated with. In the
@@ -76,6 +85,7 @@ Config files are named after the dataflow they are associated with. In the
 The ``df`` directory is contains the main dataflows to be deployed.
 
 .. code-block:: console
+    :test:
 
     $ tree shouldi/deploy/
     shouldi/deploy/
@@ -104,8 +114,9 @@ communication are URL paths (Example: ``/some/url/path``).
 Let's install the HTTP API service.
 
 .. code-block:: console
+    :test:
 
-    $ python3 -m pip install dffml-service-http
+    $ python -m pip --use-feature=2020-resolver install dffml-service-http
 
 HTTP Channel Config
 -------------------
@@ -119,6 +130,7 @@ used to deploy. Then config file itself then goes under the name of the
 ``MultiComm`` its associated with, ``http`` in this instance.
 
 .. code-block:: console
+    :test:
 
     $ mkdir -p shouldi/deploy/mc/http
 
@@ -145,19 +157,23 @@ We now start the http server and tell it that the ``MultiComm`` configuration
 directory can be found in ``shouldi/deploy``.
 
 .. code-block:: console
+    :test:
+    :daemon: 8080
 
-    $ dffml service http server -insecure -mc-config shouldi/deploy
+    $ dffml service http server -port 8080 -insecure -mc-config shouldi/deploy
 
 In another terminal, you can send a ``POST`` request containing the ``Input``
 items that you want evaluated.
 
 .. code-block:: console
+    :test:
+    :replace: cmds[0][-5] = cmds[0][-5].replace("8080", str(ctx["HTTP_SERVER"]["8080"]))
 
     $ curl -s \
       --header "Content-Type: application/json" \
       --request POST \
       --data '{"insecure-package": [{"value":"insecure-package","definition":"safety_check.inputs.package"}]}' \
-      http://localhost:8080/shouldi | python3 -m json.tool
+      http://localhost:8080/shouldi | python -m json.tool
     {
         "insecure-package": {
             "safety_check.outputs.result": 1,
@@ -189,8 +205,9 @@ operations can be found on the :doc:`/plugins/dffml_operation` plugins page).
 We'll be using those operations, so we need to install them
 
 .. code-block:: console
+    :test:
 
-    $ python3 -m pip install dffml-feature-git
+    $ python -m pip install --use-feature=2020-resolver dffml-feature-git
 
 The ``lines_of_code_to_comments`` operation will give use the ratio of the
 number of lines of comments to the number of lines of code.
@@ -198,23 +215,29 @@ number of lines of comments to the number of lines of code.
 You need to install `tokei <https://github.com/XAMPPRocky/tokei>`_ before you
 can use ``lines_of_code_to_comments``.
 
-On Linux
+.. tabs::
 
-.. code-block:: console
+    .. group-tab:: Linux
 
-    $ curl -sSL 'https://github.com/XAMPPRocky/tokei/releases/download/v10.1.1/tokei-v10.1.1-x86_64-apple-darwin.tar.gz' \
-      | tar -xvz && \
-      echo '22699e16e71f07ff805805d26ee86ecb9b1052d7879350f7eb9ed87beb0e6b84fbb512963d01b75cec8e80532e4ea29a tokei' | sha384sum -c - && \
-      sudo mv tokei /usr/local/bin/
+        .. code-block:: console
+            :test:
+            :replace: import os; cmds[-1].pop(0); cmds[-1][-1] = os.path.join(ctx["venv"], "bin")
 
-On OSX
+            $ curl -sSL 'https://github.com/XAMPPRocky/tokei/releases/download/v10.1.1/tokei-v10.1.1-x86_64-unknown-linux-gnu.tar.gz' | tar -xvz
+            tokei
+            $ echo '22699e16e71f07ff805805d26ee86ecb9b1052d7879350f7eb9ed87beb0e6b84fbb512963d01b75cec8e80532e4ea29a tokei' | sha384sum -c -
+            tokei: OK
+            $ sudo mv tokei /usr/bin/
 
-.. code-block:: console
+    .. group-tab:: MacOS
 
-    $ curl -sSL 'https://github.com/XAMPPRocky/tokei/releases/download/v10.1.1/tokei-v10.1.1-x86_64-apple-darwin.tar.gz' \
-      | tar -xvz && \
-      echo '8c8a1d8d8dd4d8bef93dabf5d2f6e27023777f8553393e269765d7ece85e68837cba4374a2615d83f071dfae22ba40e2 tokei' | sha384sum -c - && \
-      sudo mv tokei /usr/local/bin/
+        .. code-block:: console
+
+            $ curl -sSL 'https://github.com/XAMPPRocky/tokei/releases/download/v10.1.1/tokei-v10.1.1-x86_64-apple-darwin.tar.gz' | tar -xvz
+            tokei
+            $ echo '8c8a1d8d8dd4d8bef93dabf5d2f6e27023777f8553393e269765d7ece85e68837cba4374a2615d83f071dfae22ba40e2 tokei' | sha384sum -c -
+            tokei: OK
+            $ sudo mv tokei /usr/bin/
 
 The ``lines_of_code_to_comments`` operation needs the output given by
 ``lines_of_code_by_language``, which needs a Git repos source code.
@@ -241,6 +264,7 @@ want to add to the ``shouldi`` dataflow, and how we want to connect those
 operations with the existing ones.
 
 .. code-block:: console
+    :test:
 
     mkdir -p shouldi/deploy/override
 
@@ -248,24 +272,26 @@ Use the ``dataflow create`` command to make a new dataflow that will be combined
 with the existing flow.
 
 .. code-block:: console
+    :test:
 
     $ dffml dataflow create \
-      -configloader yaml \
-      -inputs \
-        directory=key \
-        safety_check.outputs.result,run_bandit.outputs.result,language_to_comment_ratio=get_single_spec \
-      -flow \
-        '[{"dffml.mapping.create": "mapping"}]=lines_of_code_by_language.inputs.repo' \
-        '[{"pypi_package_contents": "directory"}]="dffml.mapping.create".inputs.value' \
-      -- \
-        dffml.mapping.create \
-        lines_of_code_by_language \
-        lines_of_code_to_comments \
-      | tee shouldi/deploy/override/shouldi.yaml
+        -configloader yaml \
+        -inputs \
+          directory=key \
+          safety_check.outputs.result,run_bandit.outputs.result,language_to_comment_ratio=get_single_spec \
+        -flow \
+          '[{"dffml.mapping.create": "mapping"}]=lines_of_code_by_language.inputs.repo' \
+          '[{"pypi_package_contents": "directory"}]="dffml.mapping.create".inputs.value' \
+        -- \
+          dffml.mapping.create \
+          lines_of_code_by_language \
+          lines_of_code_to_comments \
+        | tee shouldi/deploy/override/shouldi.yaml
 
 The final directory structure should look like this
 
 .. code-block:: console
+    :test:
 
     $ tree shouldi/deploy
     shouldi/deploy
@@ -301,6 +327,7 @@ We've modified the flow to create the following dataflow
 The diagram above can be re-generated with the following commands
 
 .. code-block:: console
+    :test:
 
     $ dffml dataflow merge \
         shouldi/deploy/df/shouldi.json \
@@ -319,18 +346,23 @@ We can now stop the server we had running, and start it again with the new
 configs.
 
 .. code-block:: console
+    :test:
+    :daemon: 8080
 
-    $ dffml service http server -insecure -mc-config shouldi/deploy
+    $ dffml service http server -port 8080 -insecure -mc-config shouldi/deploy
 
 Here's an example of evaluating two packages using the new DataFlow.
 
 .. code-block:: console
+    :test:
+    :replace: cmds[0][-5] = cmds[0][-5].replace("8080", str(ctx["HTTP_SERVER"]["8080"]))
+    :poll-until: bool(stdout.count(b"language_to_comment_ratio") == 2)
 
     $ curl -s \
       --header "Content-Type: application/json" \
       --request POST \
       --data '{"insecure-package": [{"value":"insecure-package","definition":"safety_check.inputs.package"}], "dffml": [{"value":"dffml","definition":"safety_check.inputs.package"}]}' \
-      http://localhost:8080/shouldi | python3 -m json.tool
+      http://localhost:8080/shouldi | python -m json.tool
     {
         "insecure-package": {
             "safety_check.outputs.result": 1,
@@ -348,24 +380,26 @@ Here's an example of evaluating two packages using the new DataFlow.
                 "CONFIDENCE.HIGH_AND_SEVERITY.LOW": 0,
                 "CONFIDENCE.HIGH_AND_SEVERITY.MEDIUM": 0,
                 "CONFIDENCE.HIGH_AND_SEVERITY.HIGH": 0
-            }
+            },
+            "language_to_comment_ratio": 19
         },
         "dffml": {
             "safety_check.outputs.result": 0,
             "run_bandit.outputs.result": {
                 "CONFIDENCE.HIGH": 24.0,
-                "CONFIDENCE.LOW": 0.0,
+                "CONFIDENCE.LOW": 4.0,
                 "CONFIDENCE.MEDIUM": 0.0,
                 "CONFIDENCE.UNDEFINED": 0.0,
                 "SEVERITY.HIGH": 1.0,
                 "SEVERITY.LOW": 10.0,
-                "SEVERITY.MEDIUM": 13.0,
+                "SEVERITY.MEDIUM": 17.0,
                 "SEVERITY.UNDEFINED": 0.0,
                 "loc": 13289,
                 "nosec": 0,
                 "CONFIDENCE.HIGH_AND_SEVERITY.LOW": 10,
                 "CONFIDENCE.HIGH_AND_SEVERITY.MEDIUM": 13,
                 "CONFIDENCE.HIGH_AND_SEVERITY.HIGH": 1
-            }
+            },
+            "language_to_comment_ratio": 6
         }
     }
