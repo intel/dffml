@@ -637,6 +637,26 @@ class PipInstallCommand(ConsoleCommand):
 
         await super().run(ctx)
 
+        # Remove dataclasses. See https://github.com/intel/dffml/issues/882
+        cmd = [
+            "python",
+            os.path.abspath(
+                os.path.join(
+                    ROOT_DIR,
+                    "scripts",
+                    "tempfix",
+                    "pytorch",
+                    "pytorch",
+                    "46930.py",
+                ),
+            ),
+        ]
+        if "CONDA_PREFIX" in os.environ:
+            cmd.append(os.environ["CONDA_PREFIX"])
+        elif "VIRTUAL_ENV" in os.environ:
+            cmd.append(os.environ["VIRTUAL_ENV"])
+        await run_commands([cmd], ctx)
+
         return
 
         # TODO Related to the coverage issue
