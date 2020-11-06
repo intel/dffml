@@ -874,7 +874,11 @@ def call_replace(func: str, cmd: List[str], ctx: Dict[str, Any]) -> List[str]:
         cmd_fileobj.seek(0)
         # Write out context
         ctx_fileobj = stack.enter_context(tempfile.NamedTemporaryFile())
-        ctx_fileobj.write(json.dumps(ctx).encode())
+        ctx_serializable = ctx.copy()
+        for remove in ["stack"]:
+            if remove in ctx_serializable:
+                del ctx_serializable["stack"]
+        ctx_fileobj.write(json.dumps(ctx_serializable).encode())
         ctx_fileobj.seek(0)
         # Python file modifies command and json.dumps result to stdout
         return json.loads(
