@@ -50,7 +50,10 @@ if sys.version_info.major == 3 and sys.version_info.minor >= 8:
     ARCHIVE_HASH = "28f82a69e04fa2dfb6e09c94082d6c6100c546e23d2331c78f307601ccc0265374c3c8abedff60ad0caccb6e8fc3995a"
 
 
-@unittest.skipIf(platform.system() == "Windows", "Does not work on Windows")
+@unittest.skipIf(
+    platform.system() in ["Windows", "Darwin"],
+    f"Does not work on {platform.system()}",
+)
 class TestNet(AsyncTestCase):
     def verify_extracted_contents(self, extracted):
         self.assertTrue((extracted / "somedir").is_dir())
