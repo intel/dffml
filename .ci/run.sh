@@ -13,6 +13,11 @@ fi
 
 TEMP_DIRS=()
 
+# Copy temporary fixes to a temporary directory in case we change branches
+TEMPFIX="$(mktemp -d)"
+TEMP_DIRS+=("${TEMPFIX}")
+cp -r ${SRC_ROOT}/scripts/tempfix/* "${TEMPFIX}/"
+
 python_version="py$(${PYTHON} -c 'import sys; print(f"{sys.version_info.major}{sys.version_info.minor}")')"
 
 function run_plugin_examples() {
@@ -70,7 +75,7 @@ function run_plugin() {
     # Install all the plugins so examples can use them
     "${PYTHON}" -m dffml service dev install
     # Remove dataclasses. See https://github.com/intel/dffml/issues/882
-    "${PYTHON}" "${SRC_ROOT}/scripts/tempfix/pytorch/pytorch/46930.py"
+    "${PYTHON}" "${TEMPFIX}/pytorch/pytorch/46930.py"
 
     # Run the examples
     run_plugin_examples
@@ -150,7 +155,7 @@ function run_docs() {
   "${PYTHON}" -m pip install --prefix=~/.local -U -e "${SRC_ROOT}[dev]"
   "${PYTHON}" -m dffml service dev install -user
   # Remove dataclasses. See https://github.com/intel/dffml/issues/882
-  "${PYTHON}" "${SRC_ROOT}/scripts/tempfix/pytorch/pytorch/46930.py" ~/.local
+  "${PYTHON}" "${TEMPFIX}/pytorch/pytorch/46930.py" ~/.local
 
   last_release=$("${PYTHON}" -m dffml service dev setuppy kwarg version setup.py)
 
@@ -187,7 +192,7 @@ function run_docs() {
   "${PYTHON}" -m pip install --prefix=~/.local -U -e "${SRC_ROOT}[dev]"
   "${PYTHON}" -m dffml service dev install -user
   # Remove dataclasses. See https://github.com/intel/dffml/issues/882
-  "${PYTHON}" "${SRC_ROOT}/scripts/tempfix/pytorch/pytorch/46930.py" ~/.local
+  "${PYTHON}" "${TEMPFIX}/pytorch/pytorch/46930.py" ~/.local
   ./scripts/docs.sh
   mv pages "${release_docs}/html"
 
