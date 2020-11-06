@@ -417,14 +417,11 @@ async def run_commands(
     stdout: Union[IO] = None,
     ignore_errors: bool = False,
     daemon: bool = False,
-    replace: Optional[str] = None,
 ):
     proc = None
     procs = []
-    for i, cmd in enumerate(map(sub_env_vars, cmds)):
-        # Run find replace on command if given
-        if replace:
-            cmd = call_replace(replace, cmd, ctx)
+    cmds = list(map(sub_env_vars, cmds))
+    for i, cmd in enumerate(cmds):
         # Keyword arguments for Popen
         kwargs = {}
         # Set stdout to system stdout so it doesn't go to the pty
@@ -527,7 +524,6 @@ class ConsoleCommand(ConsoletestCommand):
                 stdin=self.stdin,
                 ignore_errors=self.ignore_errors,
                 daemon=self.daemon,
-                replace=self.replace,
             )
         else:
             while True:
@@ -538,7 +534,6 @@ class ConsoleCommand(ConsoletestCommand):
                         stdin=self.stdin,
                         stdout=stdout,
                         ignore_errors=self.ignore_errors,
-                        replace=self.replace,
                     )
                     stdout.seek(0)
                     stdout = stdout.read().decode()
@@ -851,16 +846,18 @@ import sys
 import json
 import pathlib
 
-cmd = json.loads(pathlib.Path(sys.argv[1]).read_text())
+cmds = json.loads(pathlib.Path(sys.argv[1]).read_text())
 ctx = json.loads(pathlib.Path(sys.argv[2]).read_text())
 
 {func}
 
-print(json.dumps(cmd))
+print(json.dumps(cmds))
 """
 
 
-def call_replace(func: str, cmd: List[str], ctx: Dict[str, Any]) -> List[str]:
+def call_replace(
+    func: str, cmds: List[List[str]], ctx: Dict[str, Any]
+) -> List[List[str]]:
     with contextlib.ExitStack() as stack:
         # Write out Python script
         python_fileobj = stack.enter_context(tempfile.NamedTemporaryFile())
@@ -870,7 +867,7 @@ def call_replace(func: str, cmd: List[str], ctx: Dict[str, Any]) -> List[str]:
         python_fileobj.seek(0)
         # Write out command
         cmd_fileobj = stack.enter_context(tempfile.NamedTemporaryFile())
-        cmd_fileobj.write(json.dumps(cmd).encode())
+        cmd_fileobj.write(json.dumps(cmds).encode())
         cmd_fileobj.seek(0)
         # Write out context
         ctx_fileobj = stack.enter_context(tempfile.NamedTemporaryFile())
@@ -940,8 +937,10 @@ def CodeBlock_run(func):
                 map(build_command, parse_commands(self.content))
             )
 
+            node["consoletest_commands_replace"] = self.options.get(
+                "replace", None
+            )
             for command in node["consoletest_commands"]:
-                command.replace = self.options.get("replace", None)
                 command.poll_until = self.options.get("poll-until", None)
                 command.ignore_errors = bool("ignore-errors" in self.options)
                 command.stdin = self.options.get("stdin", None)
@@ -1122,6 +1121,24 @@ class ConsoleTestBuilder(DocTestBuilder):
                     print(filepath.read_text(), end="")
                     print()
                 elif node["consoletestnodetype"] == "consoletest":
+                    if node["consoletest_commands_replace"] is not None:
+                        for command, new_cmd in zip(
+                            node["consoletest_commands"],
+                            call_replace(
+                                node["consoletest_commands_replace"],
+                                list(
+                                    map(
+                                        lambda command: command.cmd
+                                        if isinstance(command, ConsoleCommand)
+                                        else [],
+                                        node["consoletest_commands"],
+                                    )
+                                ),
+                                ctx,
+                            ),
+                        ):
+                            if isinstance(command, ConsoleCommand):
+                                command.cmd = new_cmd
                     for command in node["consoletest_commands"]:
                         print()
                         print("Running", ctx, command)
