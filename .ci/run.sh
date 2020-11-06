@@ -245,6 +245,8 @@ function run_lines() {
 
 function run_container() {
   docker build --build-arg DFFML_RELEASE=master -t intelotc/dffml .
+  docker run --rm intelotc/dffml version
+  docker run --rm intelotc/dffml service dev entrypoints list dffml.model
 }
 
 function cleanup_temp_dirs() {

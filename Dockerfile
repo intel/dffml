@@ -123,4 +123,4 @@ RUN /usr/src/dffml/.ci/dffml-install.sh
 # Copy over entrypoint script
 COPY scripts/docker-entrypoint.sh /usr/bin/docker-entrypoint.sh
 
-ENTRYPOINT /usr/bin/docker-entrypoint.sh
+ENTRYPOINT ["/usr/bin/docker-entrypoint.sh"]
