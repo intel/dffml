@@ -232,7 +232,7 @@ have something running on that port.
 
 .. code-block:: console
     :test:
-    :daemon:
+    :daemon: 8000
 
     $ . .venv/bin/activate
     $ python3 -m http.server --cgi 8000
