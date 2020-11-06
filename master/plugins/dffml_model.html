@@ -178,6 +178,11 @@
 <li class="toctree-l4"><a class="reference internal" href="#xgbregressor">xgbregressor</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="#dffml-model-autosklearn">dffml_model_autosklearn</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#autoclassifier">autoclassifier</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#autoregressor">autoregressor</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="dffml_operation.html">Operations</a></li>
@@ -7274,6 +7279,369 @@ as opposed to more exotic types of data like images and videos). With careful pa
 </li>
 </ul>
 </div>
+</div>
+</div>
+<div class="section" id="dffml-model-autosklearn">
+<span id="plugin-model-dffml-model-autosklearn"></span><h2>dffml_model_autosklearn<a class="headerlink" href="#dffml-model-autosklearn" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install dffml-model-autosklearn</span>
+</pre></div>
+</div>
+<p><strong>Ubuntu Installation</strong></p>
+<p>To provide a C++11 building environment and the lateste SWIG version on Ubuntu, run:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> sudo apt-get install build-essential swig
+</pre></div>
+</div>
+<p>Install other PyPi dependencies with</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python3 -m pip install cython liac-arff psutil
+<span class="gp">$</span> curl https://raw.githubusercontent.com/automl/auto-sklearn/master/requirements.txt <span class="p">|</span> xargs -n <span class="m">1</span> -L <span class="m">1</span> python3 -m pip install
+</pre></div>
+</div>
+<p>For more information about installation visit <a class="reference external" href="https://automl.github.io/auto-sklearn/master/installation.html#installation">https://automl.github.io/auto-sklearn/master/installation.html#installation</a></p>
+<div class="section" id="autoclassifier">
+<span id="plugin-model-dffml-model-autosklearn-autoclassifier"></span><h3>autoclassifier<a class="headerlink" href="#autoclassifier" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<p>No description</p>
+<p><strong>Args</strong></p>
+<ul class="simple">
+<li><p>predict: Feature</p>
+<ul>
+<li><p>Label or the value to be predicted</p></li>
+</ul>
+</li>
+<li><p>features: List of features</p>
+<ul>
+<li><p>Features on which to train the model</p></li>
+</ul>
+</li>
+<li><p>directory: Path</p>
+<ul>
+<li><p>Directory where model should be saved</p></li>
+</ul>
+</li>
+<li><p>time_left_for_this_task: Integer</p>
+<ul>
+<li><p>default: 3600</p></li>
+<li><p>Time limit in seconds for the search of appropriate models</p></li>
+</ul>
+</li>
+<li><p>per_run_time_limit: Integer</p>
+<ul>
+<li><p>default: 360</p></li>
+<li><p>Time limit for the single call to the machine learning model</p></li>
+</ul>
+</li>
+<li><p>initial_configurations_via_metalearning: Integer</p>
+<ul>
+<li><p>default: 25</p></li>
+<li><p>Initialize the hyperparameter optimization algorithm with this many configurations which worked well on previously seen datasets</p></li>
+</ul>
+</li>
+<li><p>ensemble_size: Integer</p>
+<ul>
+<li><p>default: 50</p></li>
+<li><p>Number of models added to the ensemble built by Ensemble selection from libraries of models. Models are drawn with replacement</p></li>
+</ul>
+</li>
+<li><p>ensemble_nbest: Integer</p>
+<ul>
+<li><p>default: 50</p></li>
+<li><p>Only consider the ensemble_nbest models when building an ensemble</p></li>
+</ul>
+</li>
+<li><p>max_models_on_disc: Integer</p>
+<ul>
+<li><p>default: 50</p></li>
+<li><p>Defines the maximum number of models that are kept in the disc</p></li>
+</ul>
+</li>
+<li><p>ensemble_memory_limit: Integer</p>
+<ul>
+<li><p>default: 1024</p></li>
+<li><p>Memory limit in MB for the ensemble building process</p></li>
+</ul>
+</li>
+<li><p>seed: Integer</p>
+<ul>
+<li><p>default: 1</p></li>
+<li><p>Used to seed SMAC. Will determine the output file names</p></li>
+</ul>
+</li>
+<li><p>ml_memory_limit: Integer</p>
+<ul>
+<li><p>default: 3072</p></li>
+<li><p>Memory limit in MB for the machine learning algorithm</p></li>
+</ul>
+</li>
+<li><p>include_estimators: List of strings</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Specify the set of estimators to use</p></li>
+</ul>
+</li>
+<li><p>exclude_estimators: List of strings</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Specify the set of estimators not to use</p></li>
+</ul>
+</li>
+<li><p>include_preprocessors: List of strings</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Specify the set of preprocessors to use</p></li>
+</ul>
+</li>
+<li><p>exclude_preprocessors: List of strings</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Specify the set of preprocessors not to use</p></li>
+</ul>
+</li>
+<li><p>resampling_strategy: String</p>
+<ul>
+<li><p>default: holdout</p></li>
+<li><p>How to to handle overfitting</p></li>
+</ul>
+</li>
+<li><p>resampling_strategy_arguments: typing.Dict[str, int]</p>
+<ul>
+<li><p>default: {‘train_size default’: 0.67}</p></li>
+<li><p>Additional arguments for resampling_strategy</p></li>
+</ul>
+</li>
+<li><p>tmp_folder: String</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Folder to store configuration output and log files</p></li>
+</ul>
+</li>
+<li><p>output_folder: String</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Folder to store predictions for optional test set</p></li>
+</ul>
+</li>
+<li><p>delete_tmp_folder_after_terminate: String</p>
+<ul>
+<li><p>default: True</p></li>
+<li><p>Remove tmp_folder, when finished</p></li>
+</ul>
+</li>
+<li><p>delete_output_folder_after_terminate: String</p>
+<ul>
+<li><p>default: True</p></li>
+<li><p>Remove output_folder, when finished</p></li>
+</ul>
+</li>
+<li><p>n_jobs: typing.Union[int, NoneType]</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>The number of jobs to run in parallel for fit()</p></li>
+</ul>
+</li>
+<li><p>disable_evaluator_output: String</p>
+<ul>
+<li><p>default: False</p></li>
+<li><p>Disable model and prediction output</p></li>
+</ul>
+</li>
+<li><p>get_smac_object_callback: callable</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Callback function to create an object of class smac.optimizer.smbo.SMBO</p></li>
+</ul>
+</li>
+<li><p>smac_scenario_args: typing.Dict[str, str]</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Additional arguments inserted into the scenario of SMAC</p></li>
+</ul>
+</li>
+<li><p>logging_config: typing.Dict[str, typing.Any]</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>dictionary object specifying the logger configuration</p></li>
+</ul>
+</li>
+<li><p>metadata_directory: String</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Path to the metadata directory</p></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="autoregressor">
+<span id="plugin-model-dffml-model-autosklearn-autoregressor"></span><h3>autoregressor<a class="headerlink" href="#autoregressor" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<p>No description</p>
+<p><strong>Args</strong></p>
+<ul class="simple">
+<li><p>predict: Feature</p>
+<ul>
+<li><p>Label or the value to be predicted</p></li>
+</ul>
+</li>
+<li><p>features: List of features</p>
+<ul>
+<li><p>Features on which to train the model</p></li>
+</ul>
+</li>
+<li><p>directory: Path</p>
+<ul>
+<li><p>Directory where model should be saved</p></li>
+</ul>
+</li>
+<li><p>time_left_for_this_task: Integer</p>
+<ul>
+<li><p>default: 3600</p></li>
+<li><p>Time limit in seconds for the search of appropriate models</p></li>
+</ul>
+</li>
+<li><p>per_run_time_limit: Integer</p>
+<ul>
+<li><p>default: 360</p></li>
+<li><p>Time limit for the single call to the machine learning model</p></li>
+</ul>
+</li>
+<li><p>initial_configurations_via_metalearning: Integer</p>
+<ul>
+<li><p>default: 25</p></li>
+<li><p>Initialize the hyperparameter optimization algorithm with this many configurations which worked well on previously seen datasets</p></li>
+</ul>
+</li>
+<li><p>ensemble_size: Integer</p>
+<ul>
+<li><p>default: 50</p></li>
+<li><p>Number of models added to the ensemble built by Ensemble selection from libraries of models. Models are drawn with replacement</p></li>
+</ul>
+</li>
+<li><p>ensemble_nbest: Integer</p>
+<ul>
+<li><p>default: 50</p></li>
+<li><p>Only consider the ensemble_nbest models when building an ensemble</p></li>
+</ul>
+</li>
+<li><p>max_models_on_disc: Integer</p>
+<ul>
+<li><p>default: 50</p></li>
+<li><p>Defines the maximum number of models that are kept in the disc</p></li>
+</ul>
+</li>
+<li><p>ensemble_memory_limit: Integer</p>
+<ul>
+<li><p>default: 1024</p></li>
+<li><p>Memory limit in MB for the ensemble building process</p></li>
+</ul>
+</li>
+<li><p>seed: Integer</p>
+<ul>
+<li><p>default: 1</p></li>
+<li><p>Used to seed SMAC. Will determine the output file names</p></li>
+</ul>
+</li>
+<li><p>ml_memory_limit: Integer</p>
+<ul>
+<li><p>default: 3072</p></li>
+<li><p>Memory limit in MB for the machine learning algorithm</p></li>
+</ul>
+</li>
+<li><p>include_estimators: List of strings</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Specify the set of estimators to use</p></li>
+</ul>
+</li>
+<li><p>exclude_estimators: List of strings</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Specify the set of estimators not to use</p></li>
+</ul>
+</li>
+<li><p>include_preprocessors: List of strings</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Specify the set of preprocessors to use</p></li>
+</ul>
+</li>
+<li><p>exclude_preprocessors: List of strings</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Specify the set of preprocessors not to use</p></li>
+</ul>
+</li>
+<li><p>resampling_strategy: String</p>
+<ul>
+<li><p>default: holdout</p></li>
+<li><p>How to to handle overfitting</p></li>
+</ul>
+</li>
+<li><p>resampling_strategy_arguments: typing.Dict[str, int]</p>
+<ul>
+<li><p>default: {‘train_size default’: 0.67}</p></li>
+<li><p>Additional arguments for resampling_strategy</p></li>
+</ul>
+</li>
+<li><p>tmp_folder: String</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Folder to store configuration output and log files</p></li>
+</ul>
+</li>
+<li><p>output_folder: String</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Folder to store predictions for optional test set</p></li>
+</ul>
+</li>
+<li><p>delete_tmp_folder_after_terminate: String</p>
+<ul>
+<li><p>default: True</p></li>
+<li><p>Remove tmp_folder, when finished</p></li>
+</ul>
+</li>
+<li><p>delete_output_folder_after_terminate: String</p>
+<ul>
+<li><p>default: True</p></li>
+<li><p>Remove output_folder, when finished</p></li>
+</ul>
+</li>
+<li><p>n_jobs: typing.Union[int, NoneType]</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>The number of jobs to run in parallel for fit()</p></li>
+</ul>
+</li>
+<li><p>disable_evaluator_output: String</p>
+<ul>
+<li><p>default: False</p></li>
+<li><p>Disable model and prediction output</p></li>
+</ul>
+</li>
+<li><p>get_smac_object_callback: callable</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Callback function to create an object of class smac.optimizer.smbo.SMBO</p></li>
+</ul>
+</li>
+<li><p>smac_scenario_args: typing.Dict[str, str]</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Additional arguments inserted into the scenario of SMAC</p></li>
+</ul>
+</li>
+<li><p>logging_config: typing.Dict[str, typing.Any]</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>dictionary object specifying the logger configuration</p></li>
+</ul>
+</li>
+<li><p>metadata_directory: String</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Path to the metadata directory</p></li>
+</ul>
+</li>
+</ul>
 </div>
 </div>
 </div>
