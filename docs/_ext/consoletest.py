@@ -57,7 +57,7 @@ def chdir(new_path):
 
 
 # Root of DFFML source tree
-ROOT_DIR = os.path.join(os.path.dirname(__file__), "..", "..")
+ROOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 
 # Load file by path
 spec = importlib.util.spec_from_file_location(
@@ -1059,7 +1059,12 @@ class ConsoleTestBuilder(DocTestBuilder):
             tempdir = stack.enter_context(tempfile.TemporaryDirectory())
             venvdir = stack.enter_context(tempfile.TemporaryDirectory())
 
-            ctx = {"cwd": tempdir, "stack": stack}
+            ctx = {
+                "root": ROOT_DIR,
+                "cwd": tempdir,
+                "venv": venvdir,
+                "stack": stack,
+            }
             venvdir = os.path.abspath(venvdir)
 
             # Create a virtualenv for every document
