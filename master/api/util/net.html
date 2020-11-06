@@ -323,16 +323,16 @@ need to override this.</p></li>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">cached_download_unpack_archive</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nd">@cached_download_unpack_archive</span><span class="p">(</span>
-<span class="gp">... </span>    <span class="s2">&quot;https://github.com/intel/dffml/archive/152c2b92535fac6beec419236f8639b0d75d707d.tar.gz&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s2">&quot;https://github.com/intel/dffml/archive/c4469abfe6007a50144858d485537324046ff229.tar.gz&quot;</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="s2">&quot;dffml.tar.gz&quot;</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="s2">&quot;dffml&quot;</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="s2">&quot;32ba082cd8056ff4ddcb68691a590c3cb8fea2ff75c0265b8d844c5edc7eaef54136160c6090750e562059b957355b15&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s2">&quot;bb9bb47c4e6e4c6b7147bb3c000bc4069d69c0c77a3e560b69f476a78e6b5084adf5467ee83cbbcc47ba5a4a0696fdfc&quot;</span><span class="p">,</span>
 <span class="gp">... </span><span class="p">)</span>
-<span class="gp">... </span><span class="k">async</span> <span class="k">def</span> <span class="nf">files_in_dffml_commit_152c2b</span><span class="p">(</span><span class="n">dffml_dir</span><span class="p">):</span>
+<span class="gp">... </span><span class="k">async</span> <span class="k">def</span> <span class="nf">files_in_dffml_commit_c4469a</span><span class="p">(</span><span class="n">dffml_dir</span><span class="p">):</span>
 <span class="gp">... </span>    <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">dffml_dir</span><span class="o">.</span><span class="n">rglob</span><span class="p">(</span><span class="s2">&quot;**/*&quot;</span><span class="p">)))</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">files_in_dffml_commit_152c2b</span><span class="p">())</span>
-<span class="go">594</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">files_in_dffml_commit_c4469a</span><span class="p">())</span>
+<span class="go">124</span>
 </pre></div>
 </div>
 </dd></dl>
