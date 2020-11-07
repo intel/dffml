@@ -110,6 +110,23 @@ function run_plugin() {
   fi
 }
 
+function run_consoletest() {
+  export PLUGIN="${1/docs\//}"
+  export PLUGIN="${PLUGIN//\//_}"
+  export PLUGIN="${PLUGIN/\.rst/}"
+
+  cd "${SRC_ROOT}"
+
+  # Install base package with testing and development utilities
+  "${PYTHON}" -m pip install --use-feature=2020-resolver -U -e ".[dev]"
+
+  RUN_CONSOLETESTS=1 "${PYTHON}" -u setup.py test -s "tests.docs.test_consoletest.TestDocs.test_${PLUGIN}"
+
+  cd "${SRC_ROOT}"
+
+  git status
+}
+
 function run_changelog() {
   # Only run this check on pull requests
   if [ "x$GITHUB_EVENT_NAME" != "xpull_request" ]; then
@@ -273,6 +290,8 @@ elif [ "x${1}" == "xlines" ]; then
   run_lines
 elif [ "x${1}" == "xcontainer" ]; then
   run_container
+elif [ "x${1}" == "xconsoletest" ]; then
+  run_consoletest "${2}"
 elif [ -d "${1}" ]; then
   run_plugin "${1}"
 else

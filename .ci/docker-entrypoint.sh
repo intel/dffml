@@ -36,9 +36,9 @@ export PATH="${HOME}/.local/bin:${PATH}"
 if [ "x${1}" == "x" ]; then
   echo "exec bash" >> /tmp/cmd.sh
 else
-  echo "./.ci/run.sh ${1}" >> /tmp/cmd.sh
+  echo "./.ci/run.sh $@" >> /tmp/cmd.sh
 fi
 
-source ./.ci/deps.sh "${1}"
+source ./.ci/deps.sh $@
 
 runit
