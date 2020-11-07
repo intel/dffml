@@ -9,6 +9,7 @@ import json
 import time
 import copy
 import shlex
+import codecs
 import signal
 import atexit
 import shutil
@@ -991,7 +992,10 @@ def CodeBlock_run(func):
                         "Cannot set poll-until without compare-output"
                     )
                 command.ignore_errors = bool("ignore-errors" in self.options)
-                command.stdin = self.options.get("stdin", None)
+                if "stdin" in self.options:
+                    command.stdin = codecs.getdecoder("unicode_escape")(
+                        self.options["stdin"]
+                    )[0]
 
             # Last command to be run is a daemon
             if "daemon" in self.options:
