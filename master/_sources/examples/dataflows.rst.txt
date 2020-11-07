@@ -69,9 +69,12 @@ If you'd like to skip :doc:`/examples/shouldi` example, clone the dffml repo
 Then change directory into the ``shouldi`` source code you would have written in
 the :doc:`/examples/shouldi` example.
 
+.. We have to install dffml-feature-git with the shouldi install command or else
+   it will downlaod the latest production release from PyPi
+
 .. code-block:: console
     :test:
-    :replace: cmds[0][-2] = ctx["root"]
+    :replace: cmds[0] = ["ln", "-s", ctx["root"], "dffml"]; cmds[-1].append("dffml-feature-git")
 
     $ git clone --depth=1 https://github.com/intel/dffml dffml
     $ cd dffml
