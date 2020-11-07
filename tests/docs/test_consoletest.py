@@ -167,14 +167,48 @@ class TestDockerRunCommand(unittest.TestCase):
         )
 
 
+ROOT_PATH = pathlib.Path(__file__).parent.parent.parent
+DOCS_PATH = ROOT_PATH / "docs"
+
+
 class TestDocs(unittest.TestCase):
     """
     A testcase for each doc will be added to this class
     """
 
+    TESTABLE_DOCS = []
 
-ROOT_PATH = pathlib.Path(__file__).parent.parent.parent
-DOCS_PATH = ROOT_PATH / "docs"
+    def test__all_docs_being_tested(self):
+        """
+        Make sure that there is a jobs.tutorials.strategy.matrix.docs entry for
+        each testable doc.
+        """
+        # Ensure that we identified some docs to test
+        should_have = sorted(self.TESTABLE_DOCS)
+        self.assertTrue(should_have)
+        # Load the ci testing workflow avoid requiring the yaml module as that
+        # has C dependencies
+        docs = list(
+            sorted(
+                map(
+                    lambda i: str(
+                        pathlib.Path(ROOT_PATH, i.strip()[2:])
+                        .relative_to(DOCS_PATH)
+                        .with_suffix("")
+                    ),
+                    filter(
+                        lambda line: line.strip().startswith("- docs/"),
+                        pathlib.Path(
+                            ROOT_PATH, ".github", "workflows", "testing.yml"
+                        )
+                        .read_text()
+                        .split("\n"),
+                    ),
+                )
+            )
+        )
+        # Make sure that we have an entry for all the docs we can test
+        self.assertListEqual(should_have, docs)
 
 
 def mktestcase(filepath: pathlib.Path, relative: pathlib.Path):
@@ -254,7 +288,18 @@ for filepath in DOCS_PATH.rglob("*.rst"):
     if b":test:" not in pathlib.Path(filepath).read_bytes():
         continue
     relative = filepath.relative_to(DOCS_PATH).with_suffix("")
+    TestDocs.TESTABLE_DOCS.append(str(relative))
     name = "test_" + str(relative).replace(os.sep, "_")
+    # Do not add the tests if we are running with GitHub Actions for the main
+    # package. This is because there are seperate jobs for each tutorial test
+    # and the TestDocs.test__all_docs_being_tested ensures that we are running a
+    # job for each tutorial
+    if (
+        "GITHUB_ACTIONS" in os.environ
+        and "PLUGIN" in os.environ
+        and os.environ["PLUGIN"] == "."
+    ):
+        continue
     setattr(
         TestDocs,
         name,
