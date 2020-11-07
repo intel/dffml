@@ -76,6 +76,7 @@ the :doc:`/examples/shouldi` example.
     $ git clone --depth=1 https://github.com/intel/dffml dffml
     $ cd dffml
     $ cd examples/shouldi
+    $ python -m pip install --use-feature=2020-resolver -e .
 
 Config files are named after the dataflow they are associated with. In the
 :ref:`examples_shouldi_visualizing_the_dataflow` section of the
@@ -168,7 +169,7 @@ items that you want evaluated.
     :test:
     :replace: cmds[0][-5] = cmds[0][-5].replace("8080", str(ctx["HTTP_SERVER"]["8080"]))
 
-    $ curl -s \
+    $ curl -sf \
       --header "Content-Type: application/json" \
       --request POST \
       --data '{"insecure-package": [{"value":"insecure-package","definition":"safety_check.inputs.package"}]}' \
@@ -354,9 +355,9 @@ Here's an example of evaluating two packages using the new DataFlow.
 .. code-block:: console
     :test:
     :replace: cmds[0][-5] = cmds[0][-5].replace("8080", str(ctx["HTTP_SERVER"]["8080"]))
-    :poll-until: bool(stdout.count(b"language_to_comment_ratio") == 2)
+    :compare-output: bool(stdout.count(b"language_to_comment_ratio") == 2)
 
-    $ curl -s \
+    $ curl -sf \
       --header "Content-Type: application/json" \
       --request POST \
       --data '{"insecure-package": [{"value":"insecure-package","definition":"safety_check.inputs.package"}], "dffml": [{"value":"dffml","definition":"safety_check.inputs.package"}]}' \

@@ -274,6 +274,7 @@ the <a class="reference internal" href="shouldi.html"><span class="doc">Meta Sta
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> git clone --depth<span class="o">=</span><span class="m">1</span> https://github.com/intel/dffml dffml
 <span class="gp">$</span> <span class="nb">cd</span> dffml
 <span class="gp">$</span> <span class="nb">cd</span> examples/shouldi
+<span class="gp">$</span> python -m pip install --use-feature<span class="o">=</span><span class="m">2020</span>-resolver -e .
 </pre></div>
 </div>
 <p>Config files are named after the dataflow they are associated with. In the
@@ -344,7 +345,7 @@ directory can be found in <code class="docutils literal notranslate"><span class
 </div>
 <p>In another terminal, you can send a <code class="docutils literal notranslate"><span class="pre">POST</span></code> request containing the <code class="docutils literal notranslate"><span class="pre">Input</span></code>
 items that you want evaluated.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> curl -s <span class="se">\</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> curl -sf <span class="se">\</span>
   --header <span class="s2">&quot;Content-Type: application/json&quot;</span> <span class="se">\</span>
   --request POST <span class="se">\</span>
   --data <span class="s1">&#39;{&quot;insecure-package&quot;: [{&quot;value&quot;:&quot;insecure-package&quot;,&quot;definition&quot;:&quot;safety_check.inputs.package&quot;}]}&#39;</span> <span class="se">\</span>
@@ -513,7 +514,7 @@ configs.</p>
 </pre></div>
 </div>
 <p>Here’s an example of evaluating two packages using the new DataFlow.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> curl -s <span class="se">\</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> curl -sf <span class="se">\</span>
   --header <span class="s2">&quot;Content-Type: application/json&quot;</span> <span class="se">\</span>
   --request POST <span class="se">\</span>
   --data <span class="s1">&#39;{&quot;insecure-package&quot;: [{&quot;value&quot;:&quot;insecure-package&quot;,&quot;definition&quot;:&quot;safety_check.inputs.package&quot;}], &quot;dffml&quot;: [{&quot;value&quot;:&quot;dffml&quot;,&quot;definition&quot;:&quot;safety_check.inputs.package&quot;}]}&#39;</span> <span class="se">\</span>

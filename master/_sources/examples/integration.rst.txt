@@ -133,8 +133,9 @@ for connections`` twice in the output.
 
 .. code-block:: console
     :test:
-    :poll-until: bool(stdout.count(b"ready for") == 2)
+    :poll-until:
     :ignore-errors:
+    :compare-output: bool(stdout.count(b"ready for") == 2)
 
     $ docker logs maintained_db 2>&1 | grep 'ready for'
     2020-01-13 21:31:09 0 [Note] mysqld: ready for connections.
@@ -242,8 +243,9 @@ database by calling the API.
 
 .. code-block:: console
     :test:
-    :poll-until: bool(stdout.count(b"github.com") >= 1)
+    :poll-until:
     :ignore-errors:
+    :compare-output: bool(stdout.count(b"github.com") >= 1)
 
     $ curl -v 'http://127.0.0.1:8000/cgi-bin/api.py?action=dump' | \
         python3 -m json.tool
