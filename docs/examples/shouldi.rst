@@ -28,7 +28,7 @@ endpoint rather than a command line application.
 
 .. code-block:: console
 
-    $ curl -s \
+    $ curl -sf \
       --header "Content-Type: application/json" \
       --request POST \
       --data '{"insecure-package": [{"value":"insecure-package","definition":"safety_check.inputs.package"}]}' \
@@ -198,8 +198,9 @@ To get parsable output, we'll run ``safety`` with the ``--json`` flag.
 
 .. code-block:: console
     :test:
-    :poll-until: bool(b"\"insecure-package\"" in stdout)
+    :poll-until:
     :ignore-errors:
+    :compare-output: bool(b"\"insecure-package\"" in stdout)
 
     $ echo insecure-package==0.1.0 | safety check --stdin --json
     [
@@ -613,7 +614,7 @@ new meta static analysis tool over an HTTP interface.
 
 .. code-block:: console
 
-    $ curl -s \
+    $ curl -sf \
       --header "Content-Type: application/json" \
       --request POST \
       --data '{"insecure-package": [{"value":"insecure-package","definition":"safety_check.inputs.package"}]}' \
