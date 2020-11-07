@@ -115,7 +115,7 @@ Let's install the HTTP API service.
 .. code-block:: console
     :test:
 
-    $ python -m pip --use-feature=2020-resolver install dffml-service-http
+    $ python -m pip install --use-feature=2020-resolver dffml-service-http
 
 HTTP Channel Config
 -------------------
