@@ -69,7 +69,8 @@ spec.loader.exec_module(plugins)
 
 class ConsoletestCommand(abc.ABC):
     def __init__(self):
-        self.poll_until = None
+        self.poll_until = False
+        self.compare_output = None
         self.ignore_errors = False
         self.daemon = None
 
@@ -516,6 +517,12 @@ async def stop_daemon(proc):
         proc.wait()
 
 
+class OutputComparisionError(Exception):
+    """
+    Raised when the output of a command was incorrect
+    """
+
+
 class ConsoleCommand(ConsoletestCommand):
     def __init__(self, cmd: List[str]):
         super().__init__()
@@ -528,7 +535,7 @@ class ConsoleCommand(ConsoletestCommand):
     async def run(self, ctx):
         if self.daemon is not None and self.daemon in ctx["daemons"]:
             await stop_daemon(ctx["daemons"][self.daemon].daemon_proc)
-        if self.poll_until is None:
+        if self.compare_output is None:
             self.daemon_proc = await run_commands(
                 pipes(self.cmd),
                 ctx,
@@ -549,9 +556,13 @@ class ConsoleCommand(ConsoletestCommand):
                         ignore_errors=self.ignore_errors,
                     )
                     stdout.seek(0)
-                    stdout = stdout.read().decode()
-                    if call_poll_until(self.poll_until, stdout):
+                    stdout = stdout.read()
+                    if call_compare_output(self.compare_output, stdout):
                         return
+                if not self.poll_until:
+                    raise OutputComparisionError(
+                        f"{self.cmd}: {self.compare_output}: {stdout.decode()}"
+                    )
                 time.sleep(0.1)
 
     async def __aenter__(self):
@@ -839,7 +850,7 @@ sys.exit(int(not func(sys.stdin.buffer.read())))
 """
 
 
-def call_poll_until(func, stdout):
+def call_compare_output(func, stdout):
     with tempfile.NamedTemporaryFile() as fileobj, tempfile.NamedTemporaryFile() as stdin:
         fileobj.write(MAKE_POLL_UNTIL_TEMPLATE.format(func=func).encode())
         fileobj.seek(0)
@@ -949,7 +960,14 @@ def CodeBlock_run(func):
                 "replace", None
             )
             for command in node["consoletest_commands"]:
-                command.poll_until = self.options.get("poll-until", None)
+                command.poll_until = bool("poll-until" in self.options)
+                command.compare_output = self.options.get(
+                    "compare-output", None
+                )
+                if command.poll_until and command.compare_output is None:
+                    raise ValueError(
+                        "Cannot set poll-until without compare-output"
+                    )
                 command.ignore_errors = bool("ignore-errors" in self.options)
                 command.stdin = self.options.get("stdin", None)
 
@@ -970,7 +988,8 @@ CodeBlock.option_spec.update(
     {
         "filepath": directives.unchanged_required,
         "replace": directives.unchanged_required,
-        "poll-until": directives.unchanged_required,
+        "poll-until": directives.flag,
+        "compare-output": directives.unchanged_required,
         "ignore-errors": directives.flag,
         "daemon": directives.unchanged_required,
         "test": directives.flag,
