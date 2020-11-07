@@ -238,7 +238,7 @@ I install Python package X? When it’s done it’ll look like this</p>
 </div>
 <p>In the second half of this tutorial, we’ll deploy the tool as an HTTP API
 endpoint rather than a command line application.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> curl -s <span class="se">\</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> curl -sf <span class="se">\</span>
   --header <span class="s2">&quot;Content-Type: application/json&quot;</span> <span class="se">\</span>
   --request POST <span class="se">\</span>
   --data <span class="s1">&#39;{&quot;insecure-package&quot;: [{&quot;value&quot;:&quot;insecure-package&quot;,&quot;definition&quot;:&quot;safety_check.inputs.package&quot;}]}&#39;</span> <span class="se">\</span>
@@ -1037,7 +1037,7 @@ your own operations as coming from <code class="docutils literal notranslate"><s
 </div>
 <p>The <a class="reference internal" href="dataflows.html"><span class="doc">DataFlow HTTP Deployment</span></a> usage example will show you how to expose your
 new meta static analysis tool over an HTTP interface.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> curl -s <span class="se">\</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> curl -sf <span class="se">\</span>
   --header <span class="s2">&quot;Content-Type: application/json&quot;</span> <span class="se">\</span>
   --request POST <span class="se">\</span>
   --data <span class="s1">&#39;{&quot;insecure-package&quot;: [{&quot;value&quot;:&quot;insecure-package&quot;,&quot;definition&quot;:&quot;safety_check.inputs.package&quot;}]}&#39;</span> <span class="se">\</span>
