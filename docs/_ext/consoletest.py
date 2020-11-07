@@ -669,6 +669,8 @@ class PipInstallCommand(ConsoleCommand):
                 self.directories.append(directory)
 
     async def run(self, ctx):
+        # In case a replace command changed something
+        self.fix_dffml_packages()
 
         await super().run(ctx)
 
