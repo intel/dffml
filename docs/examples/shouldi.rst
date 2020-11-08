@@ -475,12 +475,13 @@ those shortly.
     :diff-files: setup.py
     :filepath: setup.py
 
-Re-install the package via pip
+When we change the ``entry_points`` we need to re-install the package via pip to
+make entrypoint registrations take effect.
 
 .. code-block:: console
     :test:
 
-    $ python -m pip install --use-feature=2020-resolver -e .
+    $ python -m pip install --use-feature=2020-resolver --force-reinstall -e .
 
 Now we should be able to run our new tool via the CLI! (Provided your ``$PATH``
 is set up correctly).
@@ -589,7 +590,7 @@ Re-install the package via pip to make registrations take effect.
 .. code-block:: console
     :test:
 
-    $ python -m pip install --use-feature=2020-resolver -e .
+    $ python -m pip install --use-feature=2020-resolver --force-reinstall -e .
 
 After you've registered the operations, services such as the
 :doc:`/plugins/service/http/index` will have access to your operations.
