@@ -117,7 +117,9 @@ class ActivateVirtualEnvCommand(ConsoletestCommand):
         super().__init__()
         self.directory = directory
         self.old_virtual_env = None
+        self.old_virtual_env_dir = None
         self.old_path = None
+        self.old_pythonpath = None
         self.old_sys_path = []
 
     def __eq__(self, other: "ActivateVirtualEnvCommand"):
@@ -128,15 +130,28 @@ class ActivateVirtualEnvCommand(ConsoletestCommand):
     async def run(self, ctx):
         tempdir = ctx["stack"].enter_context(tempfile.TemporaryDirectory())
         self.old_virtual_env = os.environ.get("VIRTUAL_ENV", None)
+        self.old_virtual_env_dir = os.environ.get("VIRTUAL_ENV_DIR", None)
         self.old_path = os.environ.get("PATH", None)
+        self.old_pythonpath = os.environ.get("PYTHONPATH", None)
         env_path = os.path.abspath(os.path.join(ctx["cwd"], self.directory))
         os.environ["PATH"] = ":".join(
             [os.path.abspath(tempdir), os.path.join(env_path, "bin")]
             + os.environ.get("PATH", "").split(":")
         )
+        os.environ["PYTHONPATH"] = ":".join(
+            os.environ.get("PYTHONPATH", "").split(":")
+            + [
+                os.path.join(
+                    env_path,
+                    "lib",
+                    f"python{sys.version_info.major}.{sys.version_info.minor}",
+                    "site-packages",
+                )
+            ],
+        )
         # conda
         if "CONDA_PREFIX" in os.environ:
-            print("CONDA")
+            print("CONDA", env_path)
             # Bump all prefixes up
             for key, value in filter(
                 lambda i: i[0].startswith("CONDA_PREFIX_"),
@@ -151,8 +166,9 @@ class ActivateVirtualEnvCommand(ConsoletestCommand):
             os.environ["CONDA_PREFIX"] = env_path
             os.environ["CONDA_DEFAULT_ENV"] = env_path
         else:
-            print("VIRTUAL_ENV")
+            print("VIRTUAL_ENV", env_path)
             os.environ["VIRTUAL_ENV"] = env_path
+            os.environ["VIRTUAL_ENV_DIR"] = env_path
 
         # Find full path
         for pathdir in os.environ.get("PATH", "").split(":"):
@@ -214,8 +230,12 @@ class ActivateVirtualEnvCommand(ConsoletestCommand):
     async def __aexit__(self, _exc_type, _exc_value, _traceback):
         if self.old_virtual_env is not None:
             os.environ["VIRTUAL_ENV"] = self.old_virtual_env
+        if self.old_virtual_env_dir is not None:
+            os.environ["VIRTUAL_ENV_DIR"] = self.old_virtual_env_dir
         if self.old_path is not None:
             os.environ["PATH"] = self.old_path
+        if self.old_pythonpath is not None:
+            os.environ["PYTHONPATH"] = self.old_pythonpath
         # conda
         if "CONDA_PREFIX" in os.environ:
             # Decrement shell level
