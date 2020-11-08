@@ -76,7 +76,7 @@ fi
 # Install and upgrade
 # pip and setuptools, which are used to install other packages
 # twine, which is used to upload released packages to PyPi
-python -m pip install --upgrade pip setuptools twine
+python -m pip install --upgrade pip setuptools wheel twine
 
 # Install main package so that other packages have access to it
 python -m pip install -U -e .[dev]
