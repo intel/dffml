@@ -70,11 +70,7 @@ class ModelContext(abc.ABC, BaseDataFlowFacilitatorObjectContext):
             features + [self.parent.config.predict.name]
         )
 
-        return Accuracy(
-            await accuracy_scorer.score(
-                self.predict(sources), [self.parent.config.predict]
-            )
-        )
+        return Accuracy(await accuracy_scorer.score(self, sources))
 
     @abc.abstractmethod
     async def predict(self, sources: SourcesContext) -> AsyncIterator[Record]:
