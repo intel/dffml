@@ -4,7 +4,6 @@ import tempfile
 import contextlib
 
 from PIL import Image
-import numpy as np
 
 from dffml.source.dir import DirectorySource, DirectorySourceConfig
 from dffml.util.asynctestcase import IntegrationCLITestCase
@@ -61,9 +60,11 @@ class TestDirectorySource(IntegrationCLITestCase):
                             [*record.features().keys()],
                             [sctx.parent.config.feature, "label"],
                         )
-                        self.assertIsInstance(
-                            record.features()[sctx.parent.config.feature],
-                            (list, tuple, np.ndarray),
+                        self.assertIn(
+                            record.features()[
+                                sctx.parent.config.feature
+                            ].__class__.__qualname__,
+                            ("list", "tuple", "ndarray"),
                         )
                         self.assertIn(
                             record.features()["label"],
@@ -89,9 +90,11 @@ class TestDirectorySource(IntegrationCLITestCase):
                             [*record.features().keys()],
                             [sctx.parent.config.feature],
                         )
-                        self.assertIsInstance(
-                            record.features()[sctx.parent.config.feature],
-                            (list, tuple, np.ndarray),
+                        self.assertIn(
+                            record.features()[
+                                sctx.parent.config.feature
+                            ].__class__.__qualname__,
+                            ("list", "tuple", "ndarray"),
                         )
                         self.assertEqual(
                             record.features()[
