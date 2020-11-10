@@ -8,7 +8,9 @@ is another good way to install it. You could also use the docker container.
 
 **Windows and MacOS are not officially supported yet**. Support varies by which
 plugins you install. We do not currently have a list of what is supported and
-what is not supported on those OSs.
+what is not supported on those OSs. Most things should work. However, until we
+are testing for everything we won't declare them to be officially supported.
+Please create issues for any problems you encounter.
 
 First make sure you have the latest versions of ``pip``, ``setuptools``, and
 ``wheel``. Some ML libraries require them to be up-to-date.

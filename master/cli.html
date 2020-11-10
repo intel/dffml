@@ -114,16 +114,16 @@
 <li class="toctree-l3"><a class="reference internal" href="#prediction">Prediction</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="#dataflow">DataFlow</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#create">Create</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#run">Run</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#merge">Merge</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#diagram">Diagram</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#edit">Edit</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#record">Record</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#all">All</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#dataflow">DataFlow</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#create">Create</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#merge">Merge</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#run">Run</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#diagram">Diagram</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#config">Config</a><ul>
@@ -237,6 +237,13 @@ command line interface too (and HTTP API).</p>
 see them all.</p>
 <p>Any command can be run with logging. Just add <code class="docutils literal notranslate"><span class="pre">-log</span> <span class="pre">debug</span></code> to it to get all
 logs.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Some of these examples assume you have <code class="docutils literal notranslate"><span class="pre">dffml-config-yaml</span></code> installed.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python -m pip install --use-feature<span class="o">=</span><span class="m">2020</span>-resolver dffml-config-yaml
+</pre></div>
+</div>
+</div>
 <div class="section" id="model">
 <h2>Model<a class="headerlink" href="#model" title="Permalink to this headline">¶</a></h2>
 <p>Train, asses accuracy, and use models for prediction. See the
@@ -331,32 +338,180 @@ more details on this.</p>
 </div>
 </div>
 </div>
+<div class="section" id="dataflow">
+<h2>DataFlow<a class="headerlink" href="#dataflow" title="Permalink to this headline">¶</a></h2>
+<p>Create, modify, run, and visualize DataFlows.</p>
+<div class="section" id="create">
+<h3>Create<a class="headerlink" href="#create" title="Permalink to this headline">¶</a></h3>
+<p>Ouput the dataflow description to standard output using the specified
+configloader format.</p>
+<p>In the following example we create a DataFlow consisting of 2 operations,
+<code class="docutils literal notranslate"><span class="pre">dffml.mapping.create</span></code>, and <code class="docutils literal notranslate"><span class="pre">print_output</span></code>. We use <code class="docutils literal notranslate"><span class="pre">-flow</span></code> to edit the
+DataFlow and have the input of the <code class="docutils literal notranslate"><span class="pre">print_output</span></code> operation come from the
+ouput of the <code class="docutils literal notranslate"><span class="pre">dffml.mapping.create</span></code> operation. If you want to see the
+difference create a diagram of the DataFlow with and without using the <code class="docutils literal notranslate"><span class="pre">-flow</span></code>
+flag during generation.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml dataflow create <span class="se">\</span>
+    -configloader yaml <span class="se">\</span>
+    -flow <span class="s1">&#39;[{&quot;dffml.mapping.create&quot;: &quot;mapping&quot;}]&#39;</span><span class="o">=</span>print_output.inputs.data <span class="se">\</span>
+    -- <span class="se">\</span>
+      dffml.mapping.create <span class="se">\</span>
+      print_output <span class="se">\</span>
+    <span class="p">|</span> tee hello.yaml
+<span class="go">definitions:</span>
+<span class="go">  DataToPrint:</span>
+<span class="go">    name: DataToPrint</span>
+<span class="go">    primitive: generic</span>
+<span class="go">  key:</span>
+<span class="go">    name: key</span>
+<span class="go">    primitive: str</span>
+<span class="go">  mapping:</span>
+<span class="go">    name: mapping</span>
+<span class="go">    primitive: map</span>
+<span class="go">  value:</span>
+<span class="go">    name: value</span>
+<span class="go">    primitive: generic</span>
+<span class="go">flow:</span>
+<span class="go">  dffml.mapping.create:</span>
+<span class="go">    inputs:</span>
+<span class="go">      key:</span>
+<span class="go">      - seed</span>
+<span class="go">      value:</span>
+<span class="go">      - seed</span>
+<span class="go">  print_output:</span>
+<span class="go">    inputs:</span>
+<span class="go">      data:</span>
+<span class="go">      - dffml.mapping.create: mapping</span>
+<span class="go">linked: true</span>
+<span class="go">operations:</span>
+<span class="go">  dffml.mapping.create:</span>
+<span class="go">    inputs:</span>
+<span class="go">      key: key</span>
+<span class="go">      value: value</span>
+<span class="go">    name: dffml.mapping.create</span>
+<span class="go">    outputs:</span>
+<span class="go">      mapping: mapping</span>
+<span class="go">    stage: processing</span>
+<span class="go">  print_output:</span>
+<span class="go">    inputs:</span>
+<span class="go">      data: DataToPrint</span>
+<span class="go">    name: print_output</span>
+<span class="go">    outputs: {}</span>
+<span class="go">    stage: processing</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="run">
+<h3>Run<a class="headerlink" href="#run" title="Permalink to this headline">¶</a></h3>
+<p>Iterate over each record in a source and run a dataflow on it. The records
+unique key can be assigned a definition using the <code class="docutils literal notranslate"><span class="pre">-record-def</span></code> flag.</p>
+<p>More inputs can be given for each record using the <code class="docutils literal notranslate"><span class="pre">-inputs</span></code> flag.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">-no-echo</span></code> flag says that we don’t want the contents of the records echoed
+back to the terminal when the DataFlow completes.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">-no-strict</span></code> flag tell DFFML not to exit if one key fails, continue
+running the dataflow until everything is complete, useful for error prone
+scraping tasks.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml dataflow run contexts <span class="se">\</span>
+    -no-echo <span class="se">\</span>
+    -dataflow hello.yaml <span class="se">\</span>
+    -context-def value <span class="se">\</span>
+    -contexts <span class="se">\</span>
+      world <span class="se">\</span>
+      <span class="nv">$USER</span> <span class="se">\</span>
+    -input <span class="se">\</span>
+      <span class="nv">hello</span><span class="o">=</span>key
+<span class="go">{&#39;hello&#39;: &#39;world&#39;}</span>
+<span class="go">{&#39;hello&#39;: &#39;user&#39;}</span>
+</pre></div>
+</div>
+<p>We can also run the dataflow using a source</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml dataflow run records all <span class="se">\</span>
+    -no-echo <span class="se">\</span>
+    -record-def value <span class="se">\</span>
+    -inputs <span class="nv">hello</span><span class="o">=</span>key <span class="se">\</span>
+    -dataflow hello.yaml <span class="se">\</span>
+    -sources <span class="nv">m</span><span class="o">=</span>memory <span class="se">\</span>
+    -source-records world <span class="nv">$USER</span>
+<span class="go">{&#39;hello&#39;: &#39;world&#39;}</span>
+<span class="go">{&#39;hello&#39;: &#39;user&#39;}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="merge">
+<h3>Merge<a class="headerlink" href="#merge" title="Permalink to this headline">¶</a></h3>
+<p>Combine two dataflows into one. Dataflows must either be all linked or all not
+linked.</p>
+<p>We’ll create another dataflow that contains another <code class="docutils literal notranslate"><span class="pre">print_output</span></code> operation.
+We’ll have the name of this instance of <code class="docutils literal notranslate"><span class="pre">print_output</span></code> be <code class="docutils literal notranslate"><span class="pre">second_print</span></code>. We
+modify the input flow of the <code class="docutils literal notranslate"><span class="pre">second_print</span></code> operation to have it’s data also
+come from the output of the <code class="docutils literal notranslate"><span class="pre">dffml.mapping.create</span></code> operation.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml dataflow create <span class="se">\</span>
+    -flow <span class="s1">&#39;[{&quot;dffml.mapping.create&quot;: &quot;mapping&quot;}]&#39;</span><span class="o">=</span>second_print.inputs.data <span class="se">\</span>
+    -- <span class="nv">second_print</span><span class="o">=</span>print_output <span class="se">\</span>
+    <span class="p">|</span> tee second_print.json
+</pre></div>
+</div>
+<p>We can then merge the two dataflows into a new dataflow, <code class="docutils literal notranslate"><span class="pre">print_twice.json</span></code>.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml dataflow merge hello.yaml second_print.json <span class="p">|</span> tee print_twice.json
+</pre></div>
+</div>
+<p>If we run the dataflow we’ll see each context printed twice now.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml dataflow run contexts <span class="se">\</span>
+    -no-echo <span class="se">\</span>
+    -dataflow print_twice.json <span class="se">\</span>
+    -context-def value <span class="se">\</span>
+    -contexts <span class="se">\</span>
+      world <span class="se">\</span>
+    -input <span class="se">\</span>
+      <span class="nv">hello</span><span class="o">=</span>key
+<span class="go">{&#39;hello&#39;: &#39;world&#39;}</span>
+<span class="go">{&#39;hello&#39;: &#39;world&#39;}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="diagram">
+<h3>Diagram<a class="headerlink" href="#diagram" title="Permalink to this headline">¶</a></h3>
+<p>Output a mermaidjs graph description of a DataFlow.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml dataflow diagram -simple hello.yaml
+</pre></div>
+</div>
+<p>You can now copy the graph description and paste it in the
+<a class="reference external" href="https://mermaidjs.github.io/mermaid-live-editor">mermaidjs live editor</a> (or
+use the CLI tool) to generate an SVG or other format of the graph.</p>
+</div>
+</div>
 <div class="section" id="edit">
 <h2>Edit<a class="headerlink" href="#edit" title="Permalink to this headline">¶</a></h2>
 <p>Edit records present in a source</p>
-<div class="section" id="record">
-<h3>Record<a class="headerlink" href="#record" title="Permalink to this headline">¶</a></h3>
-<p>The edit record command drops you into the Python debugger to edit a <a class="reference internal" href="api/record.html#dffml.record.Record" title="dffml.record.Record"><code class="xref py py-class docutils literal notranslate"><span class="pre">Record</span></code></a>
-in any source manually when a dataflow config file is not provided.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Be sure to check the <a class="reference internal" href="plugins/dffml_source.html"><span class="doc">Sources</span></a> plugin page to see if the
 source your trying to edit is read only be default, and requires you to add
 another flag such as <code class="docutils literal notranslate"><span class="pre">readwrite</span></code> to enable editing.</p>
 </div>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> cat &gt; image.csv <span class="s">&lt;&lt; EOF</span>
-<span class="gp">&gt;</span><span class="s"> key,image</span>
-<span class="gp">&gt;</span><span class="s"> four,image1.mnistpng</span>
-<span class="gp">&gt;</span><span class="s"> five,image2.mnistpng</span>
-<span class="gp">&gt;</span><span class="s"> three,image3.mnistpng</span>
-<span class="gp">&gt;</span><span class="s"> two,image4.mnistpng</span>
-<span class="gp">&gt;</span><span class="s"> EOF</span>
-<span class="gp">$</span> dffml edit record -sources <span class="nv">f</span><span class="o">=</span>csv -source-filename image.csv -source-readwrite -keys three
+<div class="section" id="record">
+<h3>Record<a class="headerlink" href="#record" title="Permalink to this headline">¶</a></h3>
+<p>Edit individual <a class="reference internal" href="api/record.html#dffml.record.Record" title="dffml.record.Record"><code class="xref py py-class docutils literal notranslate"><span class="pre">Records</span></code></a> interactively.</p>
+<p><strong>images.csv</strong></p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">key,image</span>
+<span class="go">four,image1.mnistpng</span>
+<span class="go">five,image2.mnistpng</span>
+<span class="go">three,image3.mnistpng</span>
+<span class="go">two,image4.mnistpng</span>
+</pre></div>
+</div>
+<p>The edit record command drops you into the Python debugger to edit a
+<a class="reference internal" href="api/record.html#dffml.record.Record" title="dffml.record.Record"><code class="xref py py-class docutils literal notranslate"><span class="pre">Record</span></code></a> in any source manually when a dataflow
+config file is not provided.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml edit record -sources <span class="nv">f</span><span class="o">=</span>csv -source-filename images.csv -source-readwrite -keys three
 <span class="gp">&gt;</span> /home/user/Documents/python/dffml/dffml/cli/cli.py<span class="o">(</span><span class="m">45</span><span class="o">)</span>run<span class="o">()</span>
 <span class="go">-&gt; await sctx.update(record)</span>
 <span class="gp gp-VirtualEnv">(Pdb)</span> <span class="go">record.data.features[&quot;image&quot;] += &quot;FEEDFACE&quot;</span>
 <span class="gp gp-VirtualEnv">(Pdb)</span> <span class="go">c</span>
-<span class="gp">$</span> dffml list records -sources <span class="nv">f</span><span class="o">=</span>csv -source-filename image.csv -source-readwrite
+</pre></div>
+</div>
+<p>List the records in the file to verify the edit was successful.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml list records -sources <span class="nv">f</span><span class="o">=</span>csv -source-filename images.csv -source-readwrite
 <span class="go">[</span>
 <span class="go">    {</span>
 <span class="go">        &quot;extra&quot;: {},</span>
@@ -395,81 +550,94 @@ another flag such as <code class="docutils literal notranslate"><span class="pre
 <p>Update all the records in any source using the <a class="reference internal" href="api/source/df.html#dffml.source.df.DataFlowSource" title="dffml.source.df.DataFlowSource"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataFlowSource</span></code></a>.</p>
 <p>For this example, we are using the <cite>multiply</cite> operation which multiplies every value in a record by a
 factor which is 10 in this case. The example dataflow file looks like this:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">definitions</span><span class="p">:</span>
-  <span class="n">multiplicand_def</span><span class="p">:</span>
-    <span class="n">name</span><span class="p">:</span> <span class="n">multiplicand_def</span>
-    <span class="n">primitive</span><span class="p">:</span> <span class="n">generic</span>
-  <span class="n">multiplier_def</span><span class="p">:</span>
-    <span class="n">name</span><span class="p">:</span> <span class="n">multiplier_def</span>
-    <span class="n">primitive</span><span class="p">:</span> <span class="n">generic</span>
-  <span class="n">product_def</span><span class="p">:</span>
-    <span class="n">name</span><span class="p">:</span> <span class="n">product</span>
-    <span class="n">primitive</span><span class="p">:</span> <span class="n">generic</span>
-  <span class="n">associate_spec</span><span class="p">:</span>
-    <span class="n">name</span><span class="p">:</span> <span class="n">associate_spec</span>
-    <span class="n">primitive</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
-  <span class="n">associate_output</span><span class="p">:</span>
-    <span class="n">name</span><span class="p">:</span> <span class="n">associate_output</span>
-    <span class="n">primitive</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span>
-<span class="n">flow</span><span class="p">:</span>
-  <span class="n">multiply</span><span class="p">:</span>
-    <span class="n">inputs</span><span class="p">:</span>
-      <span class="n">multiplicand</span><span class="p">:</span>
-      <span class="o">-</span> <span class="n">seed</span><span class="p">:</span>
-        <span class="o">-</span> <span class="n">Years</span>
-        <span class="o">-</span> <span class="n">Expertise</span>
-        <span class="o">-</span> <span class="n">Trust</span>
-        <span class="o">-</span> <span class="n">Salary</span>
-      <span class="n">multiplier</span><span class="p">:</span>
-      <span class="o">-</span> <span class="n">seed</span>
-  <span class="n">associate_definition</span><span class="p">:</span>
-    <span class="n">inputs</span><span class="p">:</span>
-      <span class="n">spec</span><span class="p">:</span>
-      <span class="o">-</span> <span class="n">seed</span>
-<span class="n">linked</span><span class="p">:</span> <span class="n">true</span>
-<span class="n">operations</span><span class="p">:</span>
-  <span class="n">multiply</span><span class="p">:</span>
-    <span class="n">inputs</span><span class="p">:</span>
-      <span class="n">multiplicand</span><span class="p">:</span> <span class="n">multiplicand_def</span>
-      <span class="n">multiplier</span><span class="p">:</span> <span class="n">multiplier_def</span>
-    <span class="n">name</span><span class="p">:</span> <span class="n">multiply</span>
-    <span class="n">outputs</span><span class="p">:</span>
-      <span class="n">product</span><span class="p">:</span> <span class="n">product_def</span>
-    <span class="n">stage</span><span class="p">:</span> <span class="n">processing</span>
-  <span class="n">associate_definition</span><span class="p">:</span>
-    <span class="n">inputs</span><span class="p">:</span>
-      <span class="n">spec</span><span class="p">:</span> <span class="n">associate_spec</span>
-    <span class="n">name</span><span class="p">:</span> <span class="n">associate_definition</span>
-    <span class="n">outputs</span><span class="p">:</span>
-      <span class="n">output</span><span class="p">:</span> <span class="n">associate_output</span>
-    <span class="n">stage</span><span class="p">:</span> <span class="n">output</span>
-<span class="n">seed</span><span class="p">:</span>
-  <span class="o">-</span> <span class="n">definition</span><span class="p">:</span> <span class="n">associate_spec</span>
-    <span class="n">value</span><span class="p">:</span>
-      <span class="n">Years</span><span class="p">:</span> <span class="n">product</span>
-      <span class="n">Expertise</span><span class="p">:</span> <span class="n">product</span>
-      <span class="n">Trust</span><span class="p">:</span> <span class="n">product</span>
-      <span class="n">Salary</span><span class="p">:</span> <span class="n">product</span>
-  <span class="o">-</span> <span class="n">definition</span><span class="p">:</span> <span class="n">multiplier_def</span>
-    <span class="n">value</span><span class="p">:</span> <span class="mi">10</span>
+<p>Create a source file</p>
+<p><strong>data.csv</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Expertise</span><span class="p">,</span><span class="n">Salary</span><span class="p">,</span><span class="n">Trust</span><span class="p">,</span><span class="n">Years</span>
+<span class="mi">1</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mf">0.1</span><span class="p">,</span><span class="mi">0</span>
+<span class="mi">3</span><span class="p">,</span><span class="mi">20</span><span class="p">,</span><span class="mf">0.2</span><span class="p">,</span><span class="mi">1</span>
+<span class="mi">5</span><span class="p">,</span><span class="mi">30</span><span class="p">,</span><span class="mf">0.3</span><span class="p">,</span><span class="mi">2</span>
+<span class="mi">7</span><span class="p">,</span><span class="mi">40</span><span class="p">,</span><span class="mf">0.4</span><span class="p">,</span><span class="mi">3</span>
 </pre></div>
 </div>
-<p>Create a source file:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> cat &gt; data.csv &lt;&lt; EOF
-<span class="go">Expertise,Salary,Trust,Years</span>
-<span class="go">1,10,0.1,0</span>
-<span class="go">3,20,0.2,1</span>
-<span class="go">5,30,0.3,2</span>
-<span class="go">7,40,0.4,3</span>
-<span class="go">EOF</span>
+<p>Create the dataflow</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml dataflow create <span class="se">\</span>
+    -configloader yaml <span class="se">\</span>
+    -flow <span class="s1">&#39;[{&quot;seed&quot;: [&quot;Years&quot;, &quot;Expertise&quot;, &quot;Trust&quot;, &quot;Salary&quot;]}]&#39;</span><span class="o">=</span>multiply.inputs.multiplicand <span class="se">\</span>
+    -inputs <span class="se">\</span>
+      <span class="nv">10</span><span class="o">=</span>multiplier_def <span class="se">\</span>
+      <span class="s1">&#39;{&quot;Years&quot;: &quot;product&quot;, &quot;Expertise&quot;: &quot;product&quot;, &quot;Trust&quot;: &quot;product&quot;, &quot;Salary&quot;: &quot;product&quot;}&#39;</span><span class="o">=</span>associate_spec <span class="se">\</span>
+    -- <span class="se">\</span>
+      multiply <span class="se">\</span>
+      associate_definition <span class="se">\</span>
+    <span class="p">|</span> tee edit_records.yaml
+<span class="go">definitions:</span>
+<span class="go">  associate_output:</span>
+<span class="go">    name: associate_output</span>
+<span class="go">    primitive: Dict[str, Any]</span>
+<span class="go">  associate_spec:</span>
+<span class="go">    name: associate_spec</span>
+<span class="go">    primitive: List[str]</span>
+<span class="go">  multiplicand_def:</span>
+<span class="go">    name: multiplicand_def</span>
+<span class="go">    primitive: generic</span>
+<span class="go">  multiplier_def:</span>
+<span class="go">    name: multiplier_def</span>
+<span class="go">    primitive: generic</span>
+<span class="go">  product:</span>
+<span class="go">    name: product</span>
+<span class="go">    primitive: generic</span>
+<span class="go">flow:</span>
+<span class="go">  associate_definition:</span>
+<span class="go">    inputs:</span>
+<span class="go">      spec:</span>
+<span class="go">      - seed</span>
+<span class="go">  multiply:</span>
+<span class="go">    inputs:</span>
+<span class="go">      multiplicand:</span>
+<span class="go">      - seed:</span>
+<span class="go">        - Years</span>
+<span class="go">        - Expertise</span>
+<span class="go">        - Trust</span>
+<span class="go">        - Salary</span>
+<span class="go">      multiplier:</span>
+<span class="go">      - seed</span>
+<span class="go">linked: true</span>
+<span class="go">operations:</span>
+<span class="go">  associate_definition:</span>
+<span class="go">    inputs:</span>
+<span class="go">      spec: associate_spec</span>
+<span class="go">    name: associate_definition</span>
+<span class="go">    outputs:</span>
+<span class="go">      output: associate_output</span>
+<span class="go">    stage: output</span>
+<span class="go">  multiply:</span>
+<span class="go">    inputs:</span>
+<span class="go">      multiplicand: multiplicand_def</span>
+<span class="go">      multiplier: multiplier_def</span>
+<span class="go">    name: multiply</span>
+<span class="go">    outputs:</span>
+<span class="go">      product: product</span>
+<span class="go">    stage: processing</span>
+<span class="go">seed:</span>
+<span class="go">- definition: multiplier_def</span>
+<span class="go">  value: 10</span>
+<span class="go">- definition: associate_spec</span>
+<span class="go">  value:</span>
+<span class="go">    Expertise: product</span>
+<span class="go">    Salary: product</span>
+<span class="go">    Trust: product</span>
+<span class="go">    Years: product</span>
 </pre></div>
 </div>
-<p>Run the command:</p>
+<p>Edit records in bulk with the <code class="docutils literal notranslate"><span class="pre">edit</span> <span class="pre">all</span></code> command.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml edit all <span class="se">\</span>
     -sources <span class="nv">f</span><span class="o">=</span>csv -source-filename data.csv -source-readwrite <span class="se">\</span>
     -features Years:int:1 Expertise:int:1 Trust:float:1 Salary:int:1 <span class="se">\</span>
     -dataflow edit_records.yaml
-<span class="gp">$</span> dffml list records -sources <span class="nv">f</span><span class="o">=</span>csv -source-filename data.csv
+</pre></div>
+</div>
+<p>List them to view the edits</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml list records -sources <span class="nv">f</span><span class="o">=</span>csv -source-filename data.csv
 <span class="go">[</span>
 <span class="go">    {</span>
 <span class="go">        &quot;extra&quot;: {},</span>
@@ -516,132 +684,12 @@ factor which is 10 in this case. The example dataflow file looks like this:</p>
 </div>
 </div>
 </div>
-<div class="section" id="dataflow">
-<h2>DataFlow<a class="headerlink" href="#dataflow" title="Permalink to this headline">¶</a></h2>
-<p>Create, modify, run, and visualize DataFlows.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Some of these examples assume you have <code class="docutils literal notranslate"><span class="pre">dffml-config-yaml</span></code> installed.</p>
-</div>
-<div class="section" id="create">
-<h3>Create<a class="headerlink" href="#create" title="Permalink to this headline">¶</a></h3>
-<p>Ouput the dataflow description to standard output using the specified config
-format.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml dataflow create -configloader yaml get_single clone_git_repo &gt; df.yaml
-</pre></div>
-</div>
-</div>
-<div class="section" id="merge">
-<h3>Merge<a class="headerlink" href="#merge" title="Permalink to this headline">¶</a></h3>
-<p>Combine two dataflows into one. Dataflows must either be all linked or all not
-linked.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml dataflow merge base.yaml overrides.yaml
-</pre></div>
-</div>
-</div>
-<div class="section" id="run">
-<h3>Run<a class="headerlink" href="#run" title="Permalink to this headline">¶</a></h3>
-<p>Iterate over each record in a source and run a dataflow on it. The records
-unique key can be assigned a definition using the <code class="docutils literal notranslate"><span class="pre">-record-def</span></code> flag.</p>
-<p>More inputs can be given for each record using the <code class="docutils literal notranslate"><span class="pre">-inputs</span></code> flag.</p>
-<p>The <code class="docutils literal notranslate"><span class="pre">-no-echo</span></code> flag says that we don’t want the contents of the records echoed
-back to the terminal when the DataFlow completes.</p>
-<p>The <code class="docutils literal notranslate"><span class="pre">-no-strict</span></code> flag tell DFFML not to exit if one key fails, continue
-running the dataflow until everything is complete, useful for error prone
-scraping tasks.</p>
-<p>In the following example we create a DataFlow consisting of 2 operations,
-<code class="docutils literal notranslate"><span class="pre">dffml.mapping.create</span></code>, and <code class="docutils literal notranslate"><span class="pre">print_output</span></code>. We use <code class="docutils literal notranslate"><span class="pre">-flow</span></code> to edit the
-DataFlow and have the input of the <code class="docutils literal notranslate"><span class="pre">print_output</span></code> operation come from the
-ouput of the <code class="docutils literal notranslate"><span class="pre">dffml.mapping.create</span></code> operation. If you want to see the
-difference create a diagram of the DataFlow with and without using the <code class="docutils literal notranslate"><span class="pre">-flow</span></code>
-flag during generation.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml dataflow create dffml.mapping.create print_output -configloader yaml <span class="se">\</span>
-    -flow <span class="s1">&#39;[{&quot;dffml.mapping.create&quot;: &quot;mapping&quot;}]&#39;</span><span class="o">=</span>print_output.inputs.data <span class="p">|</span> <span class="se">\</span>
-    tee df.yaml
-<span class="go">definitions:</span>
-<span class="go">  DataToPrint:</span>
-<span class="go">    name: DataToPrint</span>
-<span class="go">    primitive: generic</span>
-<span class="go">  key:</span>
-<span class="go">    name: key</span>
-<span class="go">    primitive: str</span>
-<span class="go">  mapping:</span>
-<span class="go">    name: mapping</span>
-<span class="go">    primitive: map</span>
-<span class="go">  value:</span>
-<span class="go">    name: value</span>
-<span class="go">    primitive: generic</span>
-<span class="go">flow:</span>
-<span class="go">  dffml.mapping.create:</span>
-<span class="go">    inputs:</span>
-<span class="go">      key:</span>
-<span class="go">      - seed</span>
-<span class="go">      value:</span>
-<span class="go">      - seed</span>
-<span class="go">  print_output:</span>
-<span class="go">    inputs:</span>
-<span class="go">      data:</span>
-<span class="go">      - dffml.mapping.create: mapping</span>
-<span class="go">linked: true</span>
-<span class="go">operations:</span>
-<span class="go">  dffml.mapping.create:</span>
-<span class="go">    inputs:</span>
-<span class="go">      key: key</span>
-<span class="go">      value: value</span>
-<span class="go">    name: dffml.mapping.create</span>
-<span class="go">    outputs:</span>
-<span class="go">      mapping: mapping</span>
-<span class="go">    stage: processing</span>
-<span class="go">  print_output:</span>
-<span class="go">    inputs:</span>
-<span class="go">      data: DataToPrint</span>
-<span class="go">    name: print_output</span>
-<span class="go">    outputs: {}</span>
-<span class="go">    stage: processing</span>
-
-<span class="gp">$</span> dffml dataflow run contexts <span class="se">\</span>
-    -no-echo <span class="se">\</span>
-    -dataflow df.yaml <span class="se">\</span>
-    -context-def value <span class="se">\</span>
-    -contexts <span class="se">\</span>
-      world <span class="se">\</span>
-      <span class="nv">$USER</span> <span class="se">\</span>
-    -input <span class="se">\</span>
-      <span class="nv">hello</span><span class="o">=</span>key
-<span class="go">{&#39;hello&#39;: &#39;world&#39;}</span>
-<span class="go">{&#39;hello&#39;: &#39;user&#39;}</span>
-</pre></div>
-</div>
-<p>We can also run the dataflow using a source</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml dataflow run records all <span class="se">\</span>
-    -no-echo <span class="se">\</span>
-    -record-def value <span class="se">\</span>
-    -inputs <span class="nv">hello</span><span class="o">=</span>key <span class="se">\</span>
-    -dataflow df.yaml <span class="se">\</span>
-    -sources <span class="nv">m</span><span class="o">=</span>memory <span class="se">\</span>
-    -source-records world <span class="nv">$USER</span>
-<span class="go">{&#39;hello&#39;: &#39;world&#39;}</span>
-<span class="go">{&#39;hello&#39;: &#39;user&#39;}</span>
-</pre></div>
-</div>
-</div>
-<div class="section" id="diagram">
-<h3>Diagram<a class="headerlink" href="#diagram" title="Permalink to this headline">¶</a></h3>
-<p>Output a mermaidjs graph description of a DataFlow.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml dataflow diagram -simple shouldi.json
-</pre></div>
-</div>
-<p>You can now copy the graph description and paste it in the
-<a class="reference external" href="https://mermaidjs.github.io/mermaid-live-editor">mermaidjs live editor</a> (or
-use the CLI tool) to generate an SVG or other format of the graph.</p>
-</div>
-</div>
 <div class="section" id="config">
 <h2>Config<a class="headerlink" href="#config" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="convert">
 <span id="cli-config-convert"></span><h3>Convert<a class="headerlink" href="#convert" title="Permalink to this headline">¶</a></h3>
 <p>Convert one config file format into another.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml config convert -config-out yaml config_in.json
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml config convert -config-out json hello.yaml
 </pre></div>
 </div>
 </div>
@@ -673,7 +721,7 @@ DFFML right away with the <code class="docutils literal notranslate"><span class
 that other DFFML users can use it in their code or via the CLI. If you don’t
 want to mess with uploading to <code class="docutils literal notranslate"><span class="pre">PyPi</span></code>, you can install it from your git repo
 (wherever it may be that you upload it to).</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python3 -m pip install -U git+https://github.com/<span class="nv">$USER</span>/dffml-model-mycoolmodel
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python -m pip install -U https://github.com/<span class="nv">$USER</span>/dffml-model-mycoolmodel/archive/main.zip
 </pre></div>
 </div>
 <p>Make sure to look in <code class="docutils literal notranslate"><span class="pre">setup.py</span></code> and edit the <code class="docutils literal notranslate"><span class="pre">entry_points</span></code> to match
@@ -740,8 +788,8 @@ flag to <code class="docutils literal notranslate"><span class="pre">pip</span> 
 <h5>kwarg<a class="headerlink" href="#kwarg" title="Permalink to this headline">¶</a></h5>
 <p><code class="docutils literal notranslate"><span class="pre">import</span></code> a <code class="docutils literal notranslate"><span class="pre">setup.py</span></code> file return the value of the specified keyword
 argument.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml service dev setuppy kwarg name model/tensorflow/setup.py
-<span class="go">dffml-model-tensorflow</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml service dev setuppy kwarg name setup.py
+<span class="go">dffml-model-mycoolmodel</span>
 </pre></div>
 </div>
 </div>
