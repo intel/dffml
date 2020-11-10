@@ -151,41 +151,110 @@ class SpacyNERModelContext(ModelContext):
 
 @entrypoint("spacyner")
 class SpacyNERModel(Model):
-    """
+    r"""
     Implemented using `Spacy statistical models <https://spacy.io/usage/training>`_ .
 
     First we create the training and testing datasets.
-    
+
     Training data:
 
-    .. literalinclude:: /../model/spacy/examples/ner/train_data.sh
+    **train.json**
+
+    .. code-block:: json
+        :test:
+        :filepath: train.json
+
+        {
+            "data": [
+                {
+                    "sentence": "I went to London and Berlin.",
+                    "entities": [
+                        {
+                            "start":10,
+                            "end": 16,
+                            "tag": "LOC"
+                        },
+                        {
+                            "start":21,
+                            "end": 27,
+                            "tag": "LOC"
+                        }
+                    ]
+                },
+                {
+                    "sentence": "Who is Alex?",
+                    "entities": [
+                        {
+                            "start":7,
+                            "end": 11,
+                            "tag": "PERSON"
+                        }
+                    ]
+                }
+            ]
+        }
 
     Testing data:
 
-    .. literalinclude:: /../model/spacy/examples/ner/test_data.sh
+    **test.json**
+
+    .. code-block:: json
+        :test:
+        :filepath: test.json
+
+        {
+            "data": [
+                {
+                    "sentence": "Alex went to London?"
+                }
+            ]
+        }
 
     Train the model
 
-    .. literalinclude:: /../model/spacy/examples/ner/train.sh
+    .. code-block:: console
+        :test:
+
+        $ dffml train \
+            -model spacyner \
+            -sources s=op \
+            -source-opimp dffml_model_spacy.ner.utils:parser \
+            -source-args train.json False \
+            -model-model_name_or_path en_core_web_sm \
+            -model-directory temp \
+            -model-n_iter 5 \
+            -log debug
 
     Assess the accuracy
 
-    .. literalinclude:: /../model/spacy/examples/ner/accuracy.sh
+    .. code-block:: console
+        :test:
 
-    Output
-
-    .. code-block::
-
+        $ dffml accuracy \
+            -model spacyner \
+            -sources s=op \
+            -source-opimp dffml_model_spacy.ner.utils:parser \
+            -source-args train.json False \
+            -model-model_name_or_path en_core_web_sm \
+            -model-directory temp \
+            -model-n_iter 5 \
+            -log debug
         0.0
 
     Make a prediction
 
-    .. literalinclude:: /../model/spacy/examples/ner/predict.sh
+    .. code-block:: console
+        :test:
 
-    Output
-
-    .. code-block:: json
-
+        $ dffml predict all \
+            -model spacyner \
+            -sources s=op \
+            -source-opimp dffml_model_spacy.ner.utils:parser \
+            -source-args test.json True \
+            -model-model_name_or_path en_core_web_sm \
+            -model-directory temp \
+            -model-n_iter 5 \
+            -log debug
         [
             {
                 "extra": {},
@@ -223,7 +292,7 @@ class SpacyNERModel(Model):
 
     .. literalinclude:: /../model/spacy/dffml_model_spacy/ner/utils.py
 
-    The location of the function is passed using: 
+    The location of the function is passed using:
 
     .. code-block:: console
 
