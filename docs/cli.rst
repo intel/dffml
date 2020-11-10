@@ -91,6 +91,177 @@ Output
         }
     ]
 
+DataFlow
+--------
+
+Create, modify, run, and visualize DataFlows.
+
+Create
+~~~~~~
+
+Ouput the dataflow description to standard output using the specified
+configloader format.
+
+In the following example we create a DataFlow consisting of 2 operations,
+``dffml.mapping.create``, and ``print_output``. We use ``-flow`` to edit the
+DataFlow and have the input of the ``print_output`` operation come from the
+ouput of the ``dffml.mapping.create`` operation. If you want to see the
+difference create a diagram of the DataFlow with and without using the ``-flow``
+flag during generation.
+
+.. code-block:: console
+    :test:
+
+    $ dffml dataflow create \
+        -configloader yaml \
+        -flow '[{"dffml.mapping.create": "mapping"}]'=print_output.inputs.data \
+        -- \
+          dffml.mapping.create \
+          print_output \
+        | tee hello.yaml
+    definitions:
+      DataToPrint:
+        name: DataToPrint
+        primitive: generic
+      key:
+        name: key
+        primitive: str
+      mapping:
+        name: mapping
+        primitive: map
+      value:
+        name: value
+        primitive: generic
+    flow:
+      dffml.mapping.create:
+        inputs:
+          key:
+          - seed
+          value:
+          - seed
+      print_output:
+        inputs:
+          data:
+          - dffml.mapping.create: mapping
+    linked: true
+    operations:
+      dffml.mapping.create:
+        inputs:
+          key: key
+          value: value
+        name: dffml.mapping.create
+        outputs:
+          mapping: mapping
+        stage: processing
+      print_output:
+        inputs:
+          data: DataToPrint
+        name: print_output
+        outputs: {}
+        stage: processing
+
+Run
+~~~
+
+Iterate over each record in a source and run a dataflow on it. The records
+unique key can be assigned a definition using the ``-record-def`` flag.
+
+More inputs can be given for each record using the ``-inputs`` flag.
+
+The ``-no-echo`` flag says that we don't want the contents of the records echoed
+back to the terminal when the DataFlow completes.
+
+The ``-no-strict`` flag tell DFFML not to exit if one key fails, continue
+running the dataflow until everything is complete, useful for error prone
+scraping tasks.
+
+.. code-block:: console
+    :test:
+
+    $ dffml dataflow run contexts \
+        -no-echo \
+        -dataflow hello.yaml \
+        -context-def value \
+        -contexts \
+          world \
+          $USER \
+        -input \
+          hello=key
+    {'hello': 'world'}
+    {'hello': 'user'}
+
+We can also run the dataflow using a source
+
+.. code-block:: console
+    :test:
+
+    $ dffml dataflow run records all \
+        -no-echo \
+        -record-def value \
+        -inputs hello=key \
+        -dataflow hello.yaml \
+        -sources m=memory \
+        -source-records world $USER
+    {'hello': 'world'}
+    {'hello': 'user'}
+
+Merge
+~~~~~
+
+Combine two dataflows into one. Dataflows must either be all linked or all not
+linked.
+
+We'll create another dataflow that contains another ``print_output`` operation.
+We'll have the name of this instance of ``print_output`` be ``second_print``. We
+modify the input flow of the ``second_print`` operation to have it's data also
+come from the output of the ``dffml.mapping.create`` operation.
+
+.. code-block:: console
+    :test:
+
+    $ dffml dataflow create \
+        -flow '[{"dffml.mapping.create": "mapping"}]'=second_print.inputs.data \
+        -- second_print=print_output \
+        | tee second_print.json
+
+We can then merge the two dataflows into a new dataflow, ``print_twice.json``.
+
+.. code-block:: console
+    :test:
+
+    $ dffml dataflow merge hello.yaml second_print.json | tee print_twice.json
+
+If we run the dataflow we'll see each context printed twice now.
+
+.. code-block:: console
+    :test:
+    :compare-output: bool(stdout.count(b"world") == 2)
+
+    $ dffml dataflow run contexts \
+        -no-echo \
+        -dataflow print_twice.json \
+        -context-def value \
+        -contexts \
+          world \
+        -input \
+          hello=key
+    {'hello': 'world'}
+    {'hello': 'world'}
+
+Diagram
+~~~~~~~
+
+Output a mermaidjs graph description of a DataFlow.
+
+.. code-block:: console
+    :test:
+
+    $ dffml dataflow diagram -simple hello.yaml
+
+You can now copy the graph description and paste it in the
+`mermaidjs live editor <https://mermaidjs.github.io/mermaid-live-editor>`_ (or
+use the CLI tool) to generate an SVG or other format of the graph.
+
 Edit
 ----
 
@@ -326,145 +497,6 @@ List them to view the edits
         }
     ]
 
-DataFlow
---------
-
-Create, modify, run, and visualize DataFlows.
-
-Create
-~~~~~~
-
-Ouput the dataflow description to standard output using the specified
-configloader format.
-
-In the following example we create a DataFlow consisting of 2 operations,
-``dffml.mapping.create``, and ``print_output``. We use ``-flow`` to edit the
-DataFlow and have the input of the ``print_output`` operation come from the
-ouput of the ``dffml.mapping.create`` operation. If you want to see the
-difference create a diagram of the DataFlow with and without using the ``-flow``
-flag during generation.
-
-.. code-block:: console
-    :test:
-
-    $ dffml dataflow create \
-        -configloader yaml \
-        -flow '[{"dffml.mapping.create": "mapping"}]'=print_output.inputs.data \
-        -- \
-          dffml.mapping.create \
-          print_output \
-        | tee hello.yaml
-    definitions:
-      DataToPrint:
-        name: DataToPrint
-        primitive: generic
-      key:
-        name: key
-        primitive: str
-      mapping:
-        name: mapping
-        primitive: map
-      value:
-        name: value
-        primitive: generic
-    flow:
-      dffml.mapping.create:
-        inputs:
-          key:
-          - seed
-          value:
-          - seed
-      print_output:
-        inputs:
-          data:
-          - dffml.mapping.create: mapping
-    linked: true
-    operations:
-      dffml.mapping.create:
-        inputs:
-          key: key
-          value: value
-        name: dffml.mapping.create
-        outputs:
-          mapping: mapping
-        stage: processing
-      print_output:
-        inputs:
-          data: DataToPrint
-        name: print_output
-        outputs: {}
-        stage: processing
-
-Run
-~~~
-
-Iterate over each record in a source and run a dataflow on it. The records
-unique key can be assigned a definition using the ``-record-def`` flag.
-
-More inputs can be given for each record using the ``-inputs`` flag.
-
-The ``-no-echo`` flag says that we don't want the contents of the records echoed
-back to the terminal when the DataFlow completes.
-
-The ``-no-strict`` flag tell DFFML not to exit if one key fails, continue
-running the dataflow until everything is complete, useful for error prone
-scraping tasks.
-
-.. code-block:: console
-    :test:
-
-    $ dffml dataflow run contexts \
-        -no-echo \
-        -dataflow hello.yaml \
-        -context-def value \
-        -contexts \
-          world \
-          $USER \
-        -input \
-          hello=key
-    {'hello': 'world'}
-    {'hello': 'user'}
-
-We can also run the dataflow using a source
-
-.. code-block:: console
-    :test:
-
-    $ dffml dataflow run records all \
-        -no-echo \
-        -record-def value \
-        -inputs hello=key \
-        -dataflow hello.yaml \
-        -sources m=memory \
-        -source-records world $USER
-    {'hello': 'world'}
-    {'hello': 'user'}
-
-Merge
-~~~~~
-
-Combine two dataflows into one. Dataflows must either be all linked or all not
-linked.
-
-.. code-block:: console
-    :test:
-
-    $ dffml dataflow merge hello.yaml edit_records.yaml
-
-Diagram
-~~~~~~~
-
-Output a mermaidjs graph description of a DataFlow.
-
-.. code-block:: console
-    :test:
-
-    $ dffml dataflow diagram -simple hello.yaml
-
-You can now copy the graph description and paste it in the
-`mermaidjs live editor <https://mermaidjs.github.io/mermaid-live-editor>`_ (or
-use the CLI tool) to generate an SVG or other format of the graph.
-
 Config
 ------
 
@@ -522,7 +554,7 @@ want to mess with uploading to ``PyPi``, you can install it from your git repo
 
 .. code-block:: console
 
-    $ python -m pip install -U git+https://github.com/$USER/dffml-model-mycoolmodel
+    $ python -m pip install -U https://github.com/$USER/dffml-model-mycoolmodel/archive/main.zip
 
 Make sure to look in ``setup.py`` and edit the ``entry_points`` to match
 whatever you've edited. This way whatever you make will be usable by others
