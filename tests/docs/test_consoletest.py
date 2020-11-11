@@ -9,12 +9,14 @@ import importlib.util
 
 from dffml.util.asynctestcase import AsyncTestCase
 
+from dffml.util.testing.consoletest.commands import *
+
 
 # Root of DFFML source tree
 ROOT_DIR = os.path.join(os.path.dirname(__file__), "..", "..")
 
 # Load files by path. We have to import literalinclude_diff for diff-files
-for module_name in ["consoletest", "literalinclude_diff"]:
+for module_name in ["literalinclude_diff"]:
     spec = importlib.util.spec_from_file_location(
         module_name,
         os.path.join(ROOT_DIR, "docs", "_ext", f"{module_name}.py"),
@@ -27,7 +29,7 @@ for module_name in ["consoletest", "literalinclude_diff"]:
 class TestFunctions(AsyncTestCase):
     def test_parse_commands_multi_line(self):
         self.assertListEqual(
-            consoletest.parse_commands(
+            parse_commands(
                 [
                     "$ python3 -m \\",
                     "    venv \\",
@@ -52,15 +54,15 @@ class TestFunctions(AsyncTestCase):
         ]:
             with self.subTest(cmd=cmd):
                 with self.assertRaises(NotImplementedError):
-                    consoletest.parse_commands(cmd)
+                    parse_commands(cmd)
 
         cmd = ["$ python3 '`cat feedface`'"]
         with self.subTest(cmd=cmd):
-            consoletest.parse_commands(cmd)
+            parse_commands(cmd)
 
     def test_parse_commands_single_line_with_output(self):
         self.assertListEqual(
-            consoletest.parse_commands(
+            parse_commands(
                 [
                     "$ docker logs maintained_db 2>&1 | grep 'ready for'",
                     "2020-01-13 21:31:09 0 [Note] mysqld: ready for connections.",
@@ -82,13 +84,13 @@ class TestFunctions(AsyncTestCase):
 
     def test_build_command_venv_linux(self):
         self.assertEqual(
-            consoletest.build_command([".", ".venv/bin/activate"],),
-            consoletest.ActivateVirtualEnvCommand(".venv"),
+            build_command([".", ".venv/bin/activate"],),
+            ActivateVirtualEnvCommand(".venv"),
         )
 
     def test_pipes(self):
         self.assertListEqual(
-            consoletest.pipes(
+            pipes(
                 [
                     "python3",
                     "-c",
@@ -103,7 +105,7 @@ class TestFunctions(AsyncTestCase):
 
     async def test_run_commands(self):
         with tempfile.TemporaryFile() as stdout:
-            await consoletest.run_commands(
+            await run_commands(
                 [
                     ["python3", "-c", r"print('Hello\nWorld')"],
                     ["grep", "Hello", "2>&1"],
@@ -118,7 +120,7 @@ class TestFunctions(AsyncTestCase):
 
 class TestPipInstallCommand(unittest.TestCase):
     def test_fix_dffml_packages(self):
-        command = consoletest.PipInstallCommand(
+        command = PipInstallCommand(
             [
                 "python",
                 "-m",
@@ -133,6 +135,7 @@ class TestPipInstallCommand(unittest.TestCase):
                 "aiohttp",
             ]
         )
+        command.fix_dffml_packages({"root": ROOT_DIR})
         self.assertListEqual(
             command.cmd,
             [
@@ -156,7 +159,7 @@ class TestPipInstallCommand(unittest.TestCase):
 class TestDockerRunCommand(unittest.TestCase):
     def test_find_name(self):
         self.assertEqual(
-            consoletest.DockerRunCommand.find_name(
+            DockerRunCommand.find_name(
                 ["docker", "run", "--rm", "-d", "--name", "maintained_db",]
             ),
             (
@@ -284,10 +287,15 @@ def mktestcase(filepath: pathlib.Path, relative: pathlib.Path):
     return testcase
 
 
+SKIP_DOCS = ["plugins/dffml_model"]
+
+
 for filepath in DOCS_PATH.rglob("*.rst"):
     if b":test:" not in pathlib.Path(filepath).read_bytes():
         continue
     relative = filepath.relative_to(DOCS_PATH).with_suffix("")
+    if str(relative) in SKIP_DOCS:
+        continue
     TestDocs.TESTABLE_DOCS.append(str(relative))
     name = "test_" + str(relative).replace(os.sep, "_")
     # Do not add the tests if we are running with GitHub Actions for the main

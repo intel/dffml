@@ -63,7 +63,7 @@ DUPLICATE_PREFER = {
     "list_action": "base",
 }
 # List of modules not to expose
-SKIP = ["cli", "util.cli.cmds"]
+SKIP = ["cli", "util.cli.cmds", "util.testing.consoletest"]
 
 
 for import_name, module in modules(root, package_name, skip=skip):
