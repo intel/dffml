@@ -115,7 +115,8 @@ CORE_PLUGIN_DEPS = {
         "swig": lambda: inpath("swig"),
         "cython": lambda: inpath("cython"),
     }
-    if not python_package_installed("auto_sklearn")
+    if platform.system() not in {"Windows", "Darwin"}
+    and not python_package_installed("auto_sklearn")
     else {},
 }
 
