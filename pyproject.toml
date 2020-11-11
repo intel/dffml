@@ -13,8 +13,8 @@ exclude = '''
     | \.venv
     | _build
     | buck-out
-    | build
-    | dist
+    | build/
+    | dist/
     | examples/maintained/cgi-bin
     | examples/shouldi/tests/downloads
   )

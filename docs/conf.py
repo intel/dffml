@@ -15,8 +15,10 @@ import sys
 import pathlib
 import datetime
 
-sys.path.insert(0, os.path.abspath("."))
-sys.path.append(os.path.abspath("_ext"))
+sys.path.insert(0, os.path.abspath(os.path.dirname(__file__)))
+sys.path.append(
+    os.path.abspath(os.path.join(os.path.dirname(__file__), "_ext"))
+)
 
 from dffml.version import VERSION
 
@@ -45,7 +47,7 @@ extensions = [
     "sphinx.ext.napoleon",
     "sphinx_tabs.tabs",
     "recommonmark",
-    "consoletest",
+    "dffml.util.testing.consoletest.builder",
     "literalinclude_diff",
 ]
 
@@ -90,3 +92,9 @@ def setup(app):
 # -- Extension configuration -------------------------------------------------
 
 napoleon_numpy_docstring = True
+
+consoletest_root = os.path.abspath("..")
+consoletest_docs = os.path.join(consoletest_root, "docs")
+consoletest_test_setup = (
+    pathlib.Path(__file__).parent / "consoletest_test_setup.py"
+).read_text()

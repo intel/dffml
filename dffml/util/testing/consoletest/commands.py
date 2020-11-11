@@ -1,71 +1,24 @@
 """
-Used to test ``code-block:: console`` portions of Sphinx documentation.
+Running of shell commands
 """
 import os
-import io
 import abc
 import sys
 import json
 import time
 import copy
 import shlex
-import codecs
 import signal
 import atexit
-import shutil
 import asyncio
 import pathlib
 import inspect
 import tempfile
-import functools
-import traceback
-import threading
 import contextlib
 import subprocess
-import importlib.util
-from typing import (
-    IO,
-    Any,
-    Dict,
-    List,
-    Union,
-    Tuple,
-    Optional,
-)
+from typing import IO, Any, Dict, List, Union
 
-from docutils import nodes
-from docutils.nodes import Node
-from docutils.parsers.rst import directives
-
-import sphinx
-from sphinx.directives.code import LiteralInclude, CodeBlock
-from sphinx.locale import __
-from sphinx.ext.doctest import DocTestBuilder
-from sphinx.util.docutils import SphinxDirective
-
-
-@contextlib.contextmanager
-def chdir(new_path):
-    """
-    Context manager to change directroy
-    """
-    old_path = os.getcwd()
-    os.chdir(new_path)
-    try:
-        yield
-    finally:
-        os.chdir(old_path)
-
-
-# Root of DFFML source tree
-ROOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
-
-# Load file by path
-spec = importlib.util.spec_from_file_location(
-    "plugins", os.path.join(ROOT_DIR, "dffml", "plugins.py")
-)
-plugins = importlib.util.module_from_spec(spec)
-spec.loader.exec_module(plugins)
+from .... import plugins
 
 
 class ConsoletestCommand(abc.ABC):
@@ -194,40 +147,6 @@ class ActivateVirtualEnvCommand(ConsoletestCommand):
         )
         dffml_path.chmod(0o755)
 
-        return
-
-        # TODO Related to the coverage issue
-        importlib.invalidate_caches()
-
-        # Remove old site-packages and replace it with the one from the
-        # virtual environment
-        sys.path[:] = list(
-            filter(lambda i: f"lib{os.sep}python" in i, sys.path)
-        )
-        for i, entry in enumerate(sys.path):
-            if entry.endswith("site-packages"):
-                sys.path[i] = os.path.abspath(
-                    os.path.join(
-                        ctx["cwd"],
-                        self.directory,
-                        "lib",
-                        f"python{sys.version_info.major}.{sys.version_info.minor}",
-                        "site-packages",
-                    )
-                )
-
-        pkg_resources = importlib.import_module("pkg_resources")
-        importlib.reload(pkg_resources)
-
-        # Replace the working_set so that iter_entry_points will work
-        working_set = pkg_resources.WorkingSet([])
-        for entry in sys.path:
-            if entry not in working_set.entries:
-                working_set.add_entry(entry)
-        pkg_resources.working_set = working_set
-
-        print(sys.path)
-
     async def __aexit__(self, _exc_type, _exc_value, _traceback):
         if self.old_virtual_env is not None:
             os.environ["VIRTUAL_ENV"] = self.old_virtual_env
@@ -256,49 +175,10 @@ class ActivateVirtualEnvCommand(ConsoletestCommand):
                     os.environ["CONDA_DEFAULT_ENV"] = value
                 else:
                     os.environ[f"CONDA_PREFIX_{prefix - 1}"] = value
-        return
-
-        # TODO Related to the coverage issue
-        if self.old_sys_path:
-            sys.path[:] = self.old_sys_path
 
 
 class HTTPServerCMDDoesNotHavePortFlag(Exception):
     pass
-
-
-@contextlib.asynccontextmanager
-async def start_http_server(cmd):
-    # Reload in case we've entered a virtualenv
-    http_service_testing = importlib.import_module(
-        "dffml_service_http.util.testing"
-    )
-    importlib.reload(http_service_testing)
-    http_service_cli = importlib.import_module("dffml_service_http.cli")
-    importlib.reload(http_service_cli)
-    async with http_service_testing.ServerRunner.patch(
-        http_service_cli.HTTPService.server
-    ) as tserver:
-        # Start the HTTP server
-        cli = await tserver.start(
-            http_service_cli.HTTPService.server.cli(*cmd)
-        )
-        yield cli.port
-
-
-class DFFMLProcess:
-    def __init__(self):
-        self.stdout = io.StringIO()
-        self.background = None
-        self.returncode: int = 0
-        return
-
-    async def wait(self):
-        return
-
-    async def stop(self):
-        if self.background is not None:
-            await self.background.__aexit__(None, None, None)
 
 
 async def run_dffml_command(cmd, ctx, kwargs):
@@ -352,59 +232,6 @@ async def run_dffml_command(cmd, ctx, kwargs):
     # Return the newly created process
     return proc
 
-    # TODO the below code is because coverage won't go through subprocess
-    # invocations. IT wasn't working though do to issues with importlib causing
-    # instances of loaded classes within each module to be different
-    # (issubclass(loaded, CMD) in Service of dffml/cli/cli.py.
-
-    # If the command is dffml then import it and run it instead of a
-    # subprocess so that we get coverage information
-    importlib.invalidate_caches()
-    for key, value in sys.modules.items():
-        if key.startswith("dffml"):
-            importlib.reload(value)
-    # If the command is dffml then import it and run it instead of a
-    # subprocess so that we get coverage information
-    # dffml_util_cli = importlib.import_module("dffml.util.cli.cmd")
-    # importlib.reload(dffml_util_cli)
-    # dffml_cli = importlib.import_module("dffml.cli.cli")
-    # importlib.reload(dffml_cli)
-    # Create the process
-    proc = DFFMLProcess()
-    # Use an ExitStack for standard in, out, and error redirection
-    with contextlib.ExitStack() as stack:
-        # Change directory to the current working directory
-        stack.enter_context(chdir(ctx["cwd"]))
-        # Run the DFFML command if its not the http server
-        if cmd[:4] != ["dffml", "service", "http", "server"]:
-            # Make sure the stdout of this command gets redirected
-            stdout = kwargs["stdout"]
-            if stdout == subprocess.PIPE:
-                stdout = proc.stdout
-            with contextlib.redirect_stdout(stdout):
-                # Remove leading "dffml" from command
-                result = await dffml_cli.CLI._main(*cmd[1:])
-                if result == dffml_util_cli.DisplayHelp:
-                    raise RuntimeError(f"dffml command failed: {cmd}")
-        else:
-            # Ensure that the HTTP server is being started with an explit port
-            if "-port" not in cmd:
-                raise HTTPServerCMDDoesNotHavePortFlag(cmd)
-            # Save the port the command gave
-            ctx.setdefault("HTTP_SERVER", {})
-            given_port = cmd[cmd.index("-port") + 1]
-            ctx["HTTP_SERVER"][given_port] = 0
-            # Replace the port that was given with port 0 to bind on any free
-            # port
-            cmd[cmd.index("-port") + 1] = "0"
-            # Create a wrapper around the async server starting
-            server = start_http_server(cmd)
-            # Map the port that was given to the port that was used
-            ctx["HTTP_SERVER"][given_port] = await server.__aenter__()
-            # The server running in the background is the process
-            proc.background = server
-    return proc
-
 
 @contextlib.contextmanager
 def tmpenv(cmd: List[str]) -> List[str]:
@@ -451,7 +278,7 @@ async def run_commands(
         # Check if there is a previous command
         kwargs["stdin"] = stdin if stdin is not None else subprocess.DEVNULL
         if i != 0:
-            # XXX asyncio.create_subprocess_exec doesn't work for piping output
+            # NOTE asyncio.create_subprocess_exec doesn't work for piping output
             # from one process to the next. It will complain about stdin not
             # having a fileno()
             kwargs["stdin"] = proc.stdout
@@ -500,10 +327,7 @@ async def run_commands(
             errors.append(f"Failed to run: {cmd!r}")
     if errors and not ignore_errors:
         raise RuntimeError("\n".join(errors))
-    if daemon or (
-        isinstance(procs[-1], DFFMLProcess)
-        and procs[-1].background is not None
-    ):
+    if daemon:
         return procs[-1]
 
 
@@ -530,12 +354,9 @@ def pipes(cmd):
 
 
 async def stop_daemon(proc):
-    if isinstance(proc, DFFMLProcess):
-        await proc.stop()
-    else:
-        # Send ctrl-c to daemon if running
-        proc.send_signal(signal.SIGINT)
-        proc.wait()
+    # Send ctrl-c to daemon if running
+    proc.send_signal(signal.SIGINT)
+    proc.wait()
 
 
 class OutputComparisionError(Exception):
@@ -644,7 +465,6 @@ class PipInstallCommand(ConsoleCommand):
     def __init__(self, cmd: List[str]):
         super().__init__(cmd)
         self.directories: List[str] = []
-        self.fix_dffml_packages()
         # Ensure that we are running pip using it's module invocation
         if self.cmd[:2] != ["python", "-m"]:
             raise PipNotRunAsModule(cmd)
@@ -657,7 +477,7 @@ class PipInstallCommand(ConsoleCommand):
         ):
             raise PipMissingUseFeature2020Resolver(cmd)
 
-    def fix_dffml_packages(self):
+    def fix_dffml_packages(self, ctx):
         """
         If a piece of the documentation says to install dffml or one of the
         packages, we need to make sure that the version from the current branch
@@ -674,7 +494,7 @@ class PipInstallCommand(ConsoleCommand):
                     if pkg.startswith(package_name + "["):
                         pkg, extras = pkg.split("[", maxsplit=1)
                         directory = package_names_to_directory[pkg]
-                        directory = os.path.join(ROOT_DIR, *directory)
+                        directory = os.path.join(ctx["root"], *directory)
                         directory = os.path.abspath(directory)
                         self.cmd[i] = directory + "[" + extras
                         if self.cmd[i - 1] != "-e":
@@ -682,7 +502,7 @@ class PipInstallCommand(ConsoleCommand):
                         self.directories.append(directory)
             elif pkg in package_names_to_directory:
                 directory = package_names_to_directory[pkg]
-                directory = os.path.join(ROOT_DIR, *directory)
+                directory = os.path.join(ctx["root"], *directory)
                 directory = os.path.abspath(directory)
                 self.cmd[i] = directory
                 if self.cmd[i - 1] != "-e":
@@ -691,7 +511,7 @@ class PipInstallCommand(ConsoleCommand):
 
     async def run(self, ctx):
         # In case a replace command changed something
-        self.fix_dffml_packages()
+        self.fix_dffml_packages(ctx)
 
         await super().run(ctx)
 
@@ -700,7 +520,7 @@ class PipInstallCommand(ConsoleCommand):
             "python",
             os.path.abspath(
                 os.path.join(
-                    ROOT_DIR,
+                    ctx["root"],
                     "scripts",
                     "tempfix",
                     "pytorch",
@@ -715,29 +535,8 @@ class PipInstallCommand(ConsoleCommand):
             cmd.append(os.environ["VIRTUAL_ENV"])
         await run_commands([cmd], ctx)
 
+    async def __aexit__(self, _exc_type, _exc_value, _traceback):
         return
-
-        # TODO Related to the coverage issue
-        for path in self.directories:
-            sys.path.append(path)
-
-        importlib.invalidate_caches()
-
-        pkg_resources = importlib.import_module("pkg_resources")
-        importlib.reload(pkg_resources)
-
-        # Replace the working_set so that iter_entry_points will work
-        working_set = pkg_resources.WorkingSet([])
-        for entry in sys.path:
-            if entry not in working_set.entries:
-                working_set.add_entry(entry)
-        pkg_resources.working_set = working_set
-
-    async def __aexit__(self, _exc_type, _exc_value, traceback):
-        return
-        # TODO Related to the coverage issue
-        for path in self.directories:
-            sys.path.remove(path)
 
 
 class DockerRunCommand(ConsoleCommand):
@@ -914,7 +713,7 @@ def call_replace(
         # Write out context
         ctx_fileobj = stack.enter_context(tempfile.NamedTemporaryFile())
         ctx_serializable = ctx.copy()
-        for remove in ["stack", "daemons"]:
+        for remove in list(ctx["no_serialize"]) + ["no_serialize"]:
             if remove in ctx_serializable:
                 del ctx_serializable[remove]
         ctx_fileobj.write(json.dumps(ctx_serializable).encode())
@@ -930,321 +729,3 @@ def call_replace(
                 ],
             )
         )
-
-
-# Override the literalinclude directive's run method so we can pick up the flags
-# we've added
-def LiteralInclude_run(func):
-    @functools.wraps(func)
-    def wrapper(self) -> List[Node]:
-        retnodes = func(self)
-
-        if "test" in self.options:
-            retnodes[0]["consoletestnodetype"] = "consoletest-literalinclude"
-            retnodes[0]["lines"] = self.options.get("lines", None)
-            retnodes[0]["filepath"] = self.options.get(
-                "filepath", os.path.basename(retnodes[0]["source"])
-            ).split("/")
-
-        return retnodes
-
-    return wrapper
-
-
-LiteralInclude.run = LiteralInclude_run(LiteralInclude.run)
-
-
-LiteralInclude.option_spec.update(
-    {"filepath": directives.unchanged_required, "test": directives.flag}
-)
-
-
-# Override the code-block directive's run method so we can pick up the flags
-# we've added
-def CodeBlock_run(func):
-    @functools.wraps(func)
-    def wrapper(self) -> List[Node]:
-        retnodes = func(self)
-
-        if "filepath" in self.options:
-            node = retnodes[0]
-            node["consoletestnodetype"] = "consoletest-file"
-            node["content"] = self.content
-            node["filepath"] = self.options["filepath"].split("/")
-        elif "test" in self.options:
-            node = retnodes[0]
-            node.setdefault("language", "console")
-            node["consoletestnodetype"] = "consoletest"
-            node["consoletest_commands"] = list(
-                map(build_command, parse_commands(self.content))
-            )
-
-            node["consoletest_commands_replace"] = self.options.get(
-                "replace", None
-            )
-            for command in node["consoletest_commands"]:
-                command.poll_until = bool("poll-until" in self.options)
-                command.compare_output = self.options.get(
-                    "compare-output", None
-                )
-                if command.poll_until and command.compare_output is None:
-                    raise ValueError(
-                        "Cannot set poll-until without compare-output"
-                    )
-                command.ignore_errors = bool("ignore-errors" in self.options)
-                if "stdin" in self.options:
-                    command.stdin = codecs.getdecoder("unicode_escape")(
-                        self.options["stdin"]
-                    )[0]
-
-            # Last command to be run is a daemon
-            if "daemon" in self.options:
-                node["consoletest_commands"][-1].daemon = self.options[
-                    "daemon"
-                ]
-
-        return retnodes
-
-    return wrapper
-
-
-CodeBlock.run = CodeBlock_run(CodeBlock.run)
-
-CodeBlock.option_spec.update(
-    {
-        "filepath": directives.unchanged_required,
-        "replace": directives.unchanged_required,
-        "poll-until": directives.flag,
-        "compare-output": directives.unchanged_required,
-        "ignore-errors": directives.flag,
-        "daemon": directives.unchanged_required,
-        "test": directives.flag,
-        "stdin": directives.unchanged_required,
-    }
-)
-
-
-def copyfile(
-    src: str, dst: str, *, lines: Optional[Union[int, Tuple[int, int]]] = None
-) -> None:
-    dst_path = pathlib.Path(dst)
-    if not dst_path.parent.is_dir():
-        dst_path.parent.mkdir(parents=True)
-
-    if not lines:
-        shutil.copyfile(src, dst)
-        return
-
-    with open(src, "rt") as infile, open(dst, "at") as outfile:
-        outfile.seek(0, io.SEEK_END)
-        for i, line in enumerate(infile):
-            # Line numbers start at 1
-            i += 1
-            if len(lines) == 1 and i == lines[0]:
-                outfile.write(line)
-                break
-            elif i >= lines[0] and i <= lines[1]:
-                outfile.write(line)
-            elif i > lines[1]:
-                break
-
-
-class ConsoleTestBuilder(DocTestBuilder):
-    name = "consoletest"
-    epilog = __(
-        "Testing of consoletests in the sources finished, look at the "
-        "results in %(outdir)s/output.txt."
-    )
-
-    def init(self) -> None:
-        self.total_failures = 0
-        self.total_tries = 0
-
-        date = time.strftime("%Y-%m-%d %H:%M:%S")
-
-        self.outfile = open(
-            os.path.join(self.outdir, "output.txt"), "w", encoding="utf-8"
-        )
-        self.outfile.write(
-            (
-                "Results of %s builder run on %s\n"
-                "===========%s================%s\n"
-            )
-            % (self.name, date, "=" * len(self.name), "=" * len(date))
-        )
-
-    def finish(self) -> None:
-        # write executive summary
-        def s(v: int) -> str:
-            return "s" if v != 1 else ""
-
-        repl = (
-            self.total_tries,
-            s(self.total_tries),
-            self.total_failures,
-            s(self.total_failures),
-        )
-        self._out(
-            f"""
-{self.name} summary
-{"=" * len(self.name)}========
-%5d test%s
-%5d failure%s in tests
-"""
-            % repl
-        )
-        self.outfile.close()
-
-        if self.total_failures:
-            self.app.statuscode = 1
-
-    @staticmethod
-    def condition(node: Node) -> bool:
-        return (
-            isinstance(node, (nodes.literal_block, nodes.comment))
-            and "consoletestnodetype" in node
-        )
-
-    async def _test_doc(
-        self, docname: str, doc_nodes: List[Node], stack: contextlib.ExitStack,
-    ) -> None:
-        async with contextlib.AsyncExitStack() as astack:
-            tempdir = stack.enter_context(tempfile.TemporaryDirectory())
-            venvdir = stack.enter_context(tempfile.TemporaryDirectory())
-
-            ctx = {
-                "root": ROOT_DIR,
-                "cwd": tempdir,
-                "venv": venvdir,
-                "stack": stack,
-                "daemons": {},
-            }
-            venvdir = os.path.abspath(venvdir)
-
-            # Create a virtualenv for every document
-            for command in [
-                CreateVirtualEnvCommand(venvdir),
-                ActivateVirtualEnvCommand(venvdir),
-                PipInstallCommand(
-                    [
-                        "python",
-                        "-m",
-                        "pip",
-                        "install",
-                        "-U",
-                        "pip",
-                        "setuptools",
-                        "wheel",
-                        "dffml",
-                    ]
-                ),
-            ]:
-                print()
-                print("Running", ctx, command)
-                print()
-                await astack.enter_async_context(command)
-                await command.run(ctx)
-
-            for node in doc_nodes:  # type: Element
-                filename = self.get_filename_for_node(node, docname)
-                line_number = self.get_line_number(node)
-
-                if node["consoletestnodetype"] == "consoletest-literalinclude":
-                    lines = node.get("lines", None)
-                    if lines is not None:
-                        lines = tuple(map(int, lines.split("-")))
-
-                    src = os.path.join(ROOT_DIR, "docs", node["source"])
-                    dst = os.path.join(ctx["cwd"], *node["filepath"])
-
-                    print()
-                    print("Copying", ctx, src, dst, lines)
-
-                    copyfile(src, dst, lines=lines)
-                    print(pathlib.Path(dst).read_text(), end="")
-                    print()
-                elif node["consoletestnodetype"] == "consoletest-file":
-                    print()
-                    filepath = pathlib.Path(ctx["cwd"], *node["filepath"])
-                    print("Writing", ctx, filepath)
-
-                    if not filepath.parent.is_dir():
-                        filepath.parent.mkdir(parents=True)
-
-                    filepath.write_text("\n".join(node["content"]) + "\n")
-
-                    print(filepath.read_text(), end="")
-                    print()
-                elif node["consoletestnodetype"] == "consoletest":
-                    if node["consoletest_commands_replace"] is not None:
-                        for command, new_cmd in zip(
-                            node["consoletest_commands"],
-                            call_replace(
-                                node["consoletest_commands_replace"],
-                                list(
-                                    map(
-                                        lambda command: command.cmd
-                                        if isinstance(command, ConsoleCommand)
-                                        else [],
-                                        node["consoletest_commands"],
-                                    )
-                                ),
-                                ctx,
-                            ),
-                        ):
-                            if isinstance(command, ConsoleCommand):
-                                command.cmd = new_cmd
-                    for command in node["consoletest_commands"]:
-                        print()
-                        print("Running", ctx, command)
-                        print()
-                        await astack.enter_async_context(command)
-                        await command.run(ctx)
-
-    def test_doc(self, docname: str, doctree: Node) -> None:
-        # Get all applicable nodes
-        doc_nodes = list(doctree.traverse(self.condition))
-
-        if not doc_nodes:
-            return
-
-        print()
-        print(f"{self.name} testing: {docname}")
-        print()
-
-        self.total_tries += 1
-
-        watcher = asyncio.get_child_watcher()
-        loop = asyncio.new_event_loop()
-        watcher.attach_loop(loop)
-
-        def cleanup():
-            loop.run_until_complete(loop.shutdown_asyncgens())
-            loop.close()
-
-        # The stack that holds the temporary directories which contain the
-        # current working directory must be unwound *after*
-        # loop.shutdown_asyncgens() is called. This is to ensure that if any of
-        # the generators use those directories, they still have access to them
-        # (pdxjohnny) I'm not entirely sure if the above statement is true. I
-        # was testing the shutdown of the HTTP server interacting with the model
-        # directory and it didn't seem to work if I remember correctly.
-        with contextlib.ExitStack() as stack:
-            try:
-                loop.run_until_complete(
-                    self._test_doc(docname, doc_nodes, stack)
-                )
-                cleanup()
-            except:
-                cleanup()
-                self.total_failures += 1
-                traceback.print_exc(file=sys.stderr)
-
-        print()
-        print("No more tempdir")
-        print()
-
-
-def setup(app: "Sphinx") -> Dict[str, Any]:
-    app.add_builder(ConsoleTestBuilder)
-    return {"version": "0.0.1", "parallel_read_safe": True}
