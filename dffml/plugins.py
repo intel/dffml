@@ -116,7 +116,7 @@ CORE_PLUGIN_DEPS = {
         "cython": lambda: inpath("cython"),
     }
     if platform.system() not in {"Windows", "Darwin"}
-    and not python_package_installed("auto_sklearn")
+    and not python_package_installed("autosklearn")
     else {},
 }
 
