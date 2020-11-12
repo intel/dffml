@@ -1,5 +1,6 @@
 import os
 import sys
+import inspect
 import pathlib
 import tempfile
 import unittest
@@ -10,6 +11,7 @@ import importlib.util
 from dffml.util.asynctestcase import AsyncTestCase
 
 from dffml.util.testing.consoletest.commands import *
+from dffml.util.testing.consoletest.parser import parse_nodes, Node
 
 
 # Root of DFFML source tree
@@ -167,6 +169,145 @@ class TestDockerRunCommand(unittest.TestCase):
                 False,
                 ["docker", "run", "--rm", "-d", "--name", "maintained_db",],
             ),
+        )
+
+
+class TestParser(unittest.TestCase):
+    def test_parse_nodes(self):
+        self.maxDiff = None
+        self.assertListEqual(
+            list(
+                filter(
+                    lambda node: node.directive
+                    in {"code-block", "literalinclude"},
+                    parse_nodes(
+                        inspect.cleandoc(
+                            r"""
+                .. code-block:: console
+                    :test:
+
+                    $ echo -e 'Hello\n\n\nWorld'
+                    Hello
+
+
+                    World
+
+                .. literalinclude:: some/file.py
+                    :filepath: myfile.py
+                    :test:
+
+                .. note::
+
+                    .. note::
+
+                        .. code-block:: console
+                            :test:
+                            :daemon: 8080
+
+                            $ echo -e 'Hello\n\n\n    World\n\n\nTest'
+                            Hello
+
+
+                                World
+
+
+                            Test
+
+                    .. code-block:: console
+
+                        $ echo -e 'Hello\n\n\n    World\n\n\n\n'
+                        Hello
+
+
+                            World
+
+
+
+                        $ echo 'feedface'
+                        feedface
+
+                    .. note::
+
+                        .. code-block:: console
+                            :test:
+
+                            $ echo feedface
+                            feedface
+
+                .. code-block:: console
+                    :test:
+
+                    $ echo feedface
+                    feedface
+                """
+                        )
+                    ),
+                )
+            ),
+            [
+                Node(
+                    directive="code-block",
+                    content=[
+                        r"$ echo -e 'Hello\n\n\nWorld'",
+                        "Hello",
+                        "",
+                        "",
+                        "World",
+                    ],
+                    options={"test": True},
+                    node={},
+                ),
+                Node(
+                    directive="literalinclude",
+                    content="",
+                    options={"filepath": "myfile.py", "test": True},
+                    node={"source": "some/file.py"},
+                ),
+                Node(
+                    directive="code-block",
+                    content=[
+                        r"$ echo -e 'Hello\n\n\n    World\n\n\nTest'",
+                        "Hello",
+                        "",
+                        "",
+                        "    World",
+                        "",
+                        "",
+                        "Test",
+                    ],
+                    options={"test": True, "daemon": "8080"},
+                    node={},
+                ),
+                Node(
+                    directive="code-block",
+                    content=[
+                        r"$ echo -e 'Hello\n\n\n    World\n\n\n\n'",
+                        "Hello",
+                        "",
+                        "",
+                        "    World",
+                        "",
+                        "",
+                        "",
+                        "$ echo 'feedface'",
+                        "feedface",
+                    ],
+                    options={},
+                    node={},
+                ),
+                Node(
+                    directive="code-block",
+                    content=["$ echo feedface", "feedface",],
+                    options={"test": True},
+                    node={},
+                ),
+                Node(
+                    directive="code-block",
+                    content=["$ echo feedface", "feedface",],
+                    options={"test": True},
+                    node={},
+                ),
+            ],
         )
 
 
