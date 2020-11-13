@@ -51,27 +51,6 @@ class ModelContext(abc.ABC, BaseDataFlowFacilitatorObjectContext):
         """
         raise NotImplementedError()
 
-    async def accuracy(
-        self, sources: Sources, accuracy_scorer: AccuracyContext
-    ) -> Accuracy:
-        """
-        Evaluates the accuracy of our model after training using the input records
-        as test data.
-        """
-        if not hasattr(self.parent.config, "predict"):
-            raise NotImplementedError()
-
-        # Ensure that when predict calls with_features, it doesn't just pass all
-        # the features, but instead passes the features and the feature we want
-        # to predict on. This way we'll ensure that the score method only
-        # happens on records which have ground truth data.
-        temp = sources.with_features
-        sources.with_features = lambda features: temp(
-            features + [self.parent.config.predict.name]
-        )
-
-        return Accuracy(await accuracy_scorer.score(self, sources))
-
     @abc.abstractmethod
     async def predict(self, sources: SourcesContext) -> AsyncIterator[Record]:
         """
