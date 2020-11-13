@@ -60,52 +60,97 @@ class SLRModel(SimpleModel):
 
     The dataset used for training
 
-    .. literalinclude:: /../examples/model/slr/dataset.sh
+    **dataset.csv**
+
+    .. code-block::
+        :test:
+        :filepath: dataset.csv
+
+        f1,ans
+        0.1,0
+        0.7,1
+        0.6,1
+        0.2,0
+        0.8,1
 
     Train the model
 
-    .. literalinclude:: /../examples/model/slr/train.sh
+    .. code-block:: console
+        :test:
+
+        $ dffml train \
+            -model slr \
+            -model-features f1:float:1 \
+            -model-predict ans:int:1 \
+            -model-directory tempdir \
+            -sources f=csv \
+            -source-filename dataset.csv
 
     Assess the accuracy
 
-    .. literalinclude:: /../examples/model/slr/accuracy.sh
-
-    Output
-
     .. code-block:: console
+        :test:
 
+        $ dffml accuracy \
+            -model slr \
+            -model-features f1:float:1 \
+            -model-predict ans:int:1 \
+            -model-directory tempdir \
+            -sources f=csv \
+            -source-filename dataset.csv
         1.0
 
     Make a prediction
 
-    .. literalinclude:: /../examples/model/slr/predict.sh
+    **predict.csv**
 
-    Output
+    .. code-block::
+        :test:
+        :filepath: predict.csv
+
+        f1
+        0.8
 
     .. code-block:: console
+        :test:
 
+        $ dffml predict all \
+            -model slr \
+            -model-features f1:float:1 \
+            -model-predict ans:int:1 \
+            -model-directory tempdir \
+            -sources f=csv \
+            -source-filename predict.csv
         [
             {
                 "extra": {},
                 "features": {
-                    "ans": 0,
                     "f1": 0.8
                 },
-                "last_updated": "2020-03-19T13:41:08Z",
+                "key": "0",
+                "last_updated": "2020-11-15T16:22:25Z",
                 "prediction": {
                     "ans": {
-                        "confidence": 1.0,
+                        "confidence": 0.9355670103092784,
                         "value": 1
                     }
-                },
-                "key": "0"
+                }
             }
         ]
 
     Example usage of Logistic Regression using Python
 
-    .. literalinclude:: /../examples/model/slr/slr.py
+    **slr.py**
 
+    .. literalinclude:: ../../examples/model/slr/slr.py
+        :test:
+
+    .. code-block:: console
+        :test:
+
+        $ python slr.py
+        Accuracy: 0.9355670103092784
+        {'f1': 0.8, 'ans': 1}
     """
     # The configuration class needs to be set as the CONFIG property
     CONFIG: Type[SLRModelConfig] = SLRModelConfig
@@ -163,6 +208,10 @@ class SLRModel(SimpleModel):
             # Calculate y
             y = m * x + b
             # Set the calculated value with the estimated accuracy
-            record.predicted(self.config.predict.name, y, accuracy)
+            record.predicted(
+                self.config.predict.name,
+                self.config.predict.dtype(y),
+                accuracy,
+            )
             # Yield the record to the caller
             yield record
