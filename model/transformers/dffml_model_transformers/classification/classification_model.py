@@ -38,7 +38,7 @@ class HFClassificationModelConfig:
     model_name_or_path: str = field(
         "Path to pretrained model or model identifier from huggingface.co/models",
     )
-    output_dir: str = field(
+    directory: str = field(
         "The output directory where the model predictions and checkpoints will be written.",
     )
     logging_dir: str = field("Tensorboard log dir.")
@@ -89,8 +89,8 @@ class HFClassificationModelConfig:
         "Activate the trace to record computation graphs and profiling information",
         default=False,
     )
-    overwrite_output_dir: bool = field(
-        "Overwrite the content of the output directory.Use this to continue training if output_dir points to a checkpoint directory.",
+    overwrite_directory: bool = field(
+        "Overwrite the content of the output directory.Use this to continue training if directory points to a checkpoint directory.",
         default=False,
     )
 
@@ -144,7 +144,7 @@ class HFClassificationModelConfig:
         "Save checkpoint every X updates steps.", default=500,
     )
     save_total_limit: int = field(
-        "Limit the total amount of checkpoints.Deletes the older checkpoints in the output_dir. Default is unlimited checkpoints",
+        "Limit the total amount of checkpoints.Deletes the older checkpoints in the directory. Default is unlimited checkpoints",
         default=None,
     )
     no_cuda: bool = field(
@@ -182,6 +182,7 @@ class HFClassificationModelConfig:
         return json.dumps(config_dict, indent=2)
 
     def __post_init__(self):
+        self.output_dir = self.directory
         self.tf = importlib.import_module("tensorflow")
         self.label_list = list(map(self.clstype, self.label_list))
         self.task_name = "sst-2"
