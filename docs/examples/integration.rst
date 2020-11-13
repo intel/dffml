@@ -152,6 +152,7 @@ MariaDB/MySQL with DFFML.
 
 .. code-block:: console
     :test:
+    :replace: cmds[0].append("dffml")
 
     $ python -m pip install --use-feature=2020-resolver -U dffml-source-mysql
 
