@@ -61,7 +61,7 @@ class TestNER(IntegrationCLITestCase):
             writer.writerow(["A", "B"])
             writer.writerows(PREDICT_DATA)
 
-        output_dir = self.mktempdir()
+        directory = self.mktempdir()
         cache_dir = self.mktempdir()
 
         # Train the model
@@ -77,8 +77,8 @@ class TestNER(IntegrationCLITestCase):
             "target:str:1",
             "-model-model_name_or_path",
             "bert-base-cased",
-            "-model-output_dir",
-            output_dir,
+            "-model-directory",
+            directory,
             "-model-cache_dir",
             cache_dir,
             "-model-no_cuda",
@@ -102,8 +102,8 @@ class TestNER(IntegrationCLITestCase):
             "target:str:1",
             "-model-model_name_or_path",
             "bert-base-cased",
-            "-model-output_dir",
-            output_dir,
+            "-model-directory",
+            directory,
             "-model-cache_dir",
             cache_dir,
             "-model-no_cuda",
@@ -129,8 +129,8 @@ class TestNER(IntegrationCLITestCase):
                 "target:str:1",
                 "-model-model_name_or_path",
                 "bert-base-cased",
-                "-model-output_dir",
-                output_dir,
+                "-model-directory",
+                directory,
                 "-model-cache_dir",
                 cache_dir,
                 "-model-no_cuda",
@@ -171,8 +171,8 @@ class TestNER(IntegrationCLITestCase):
                 "target:str:1",
                 "-config-model-model_name_or_path",
                 "bert-base-cased",
-                "-config-model-output_dir",
-                output_dir,
+                "-config-model-directory",
+                directory,
                 "-config-model-cache_dir",
                 cache_dir,
                 "-config-model-no_cuda",

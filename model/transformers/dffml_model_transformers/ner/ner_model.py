@@ -46,7 +46,7 @@ class NERModelConfig:
     model_name_or_path: str = field(
         "Path to pre-trained model or shortcut name listed on https://huggingface.co/models"
     )
-    output_dir: str = field(
+    directory: str = field(
         "The output directory where the model checkpoints will be written",
     )
     cache_dir: str = field(
@@ -64,8 +64,8 @@ class NERModelConfig:
         "Pretrained tokenizer name or path if not the same as model_name",
         default=None,
     )
-    overwrite_output_dir: bool = field(
-        "Overwrite the content of the output directory.Use this to continue training if output_dir points to a checkpoint directory.",
+    overwrite_directory: bool = field(
+        "Overwrite the content of the output directory.Use this to continue training if directory points to a checkpoint directory.",
         default=False,
     )
     max_seq_length: int = field(
@@ -159,7 +159,7 @@ class NERModelConfig:
         "Log every X updates steps.", default=500,
     )
     save_total_limit: int = field(
-        "Limit the total amount of checkpoints.Deletes the older checkpoints in the output_dir. Default is unlimited checkpoints",
+        "Limit the total amount of checkpoints.Deletes the older checkpoints in the directory. Default is unlimited checkpoints",
         default=None,
     )
     fp16_opt_level: str = field(
@@ -200,6 +200,7 @@ class NERModelConfig:
         return json.dumps(config_dict, indent=2)
 
     def __post_init__(self):
+        self.output_dir = self.directory
         self.tf = importlib.import_module("tensorflow")
         if self.fp16:
             self.tf.config.optimizer.set_experimental_options(
