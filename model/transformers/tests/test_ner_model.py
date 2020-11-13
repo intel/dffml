@@ -57,7 +57,7 @@ class TestNERModel(AsyncTestCase):
                 sid=Feature("sentence_id", int, 1),
                 words=Feature("words", str, 1),
                 predict=Feature("ner_tag", str, 1),
-                output_dir=cls.model_dir.name,
+                directory=cls.model_dir.name,
                 model_name_or_path="bert-base-cased",
                 no_cuda=True,
                 cache_dir=cls.cache_dir.name,

@@ -33,7 +33,7 @@ class TestHFClassificationModel(AsyncTestCase):
                 model_name_or_path="bert-base-cased",
                 cache_dir=cls.model_dir.name,
                 logging_dir=cls.model_dir.name,
-                output_dir=cls.model_dir.name,
+                directory=cls.model_dir.name,
                 features=cls.features,
                 predict=Feature("X", int, 1),
                 label_list=["0", "1"],

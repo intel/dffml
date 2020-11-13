@@ -148,7 +148,7 @@ class TestQAModel(IntegrationCLITestCase):
             "bert-base-cased",
             "-model-save_steps",
             "3",
-            "-model-output_dir",
+            "-model-directory",
             directory,
             "-model-cache_dir",
             directory,
@@ -175,7 +175,7 @@ class TestQAModel(IntegrationCLITestCase):
             "bert-base-cased",
             "-model-save_steps",
             "3",
-            "-model-output_dir",
+            "-model-directory",
             directory,
             "-model-cache_dir",
             directory,
@@ -204,7 +204,7 @@ class TestQAModel(IntegrationCLITestCase):
                 "bert-base-cased",
                 "-model-save_steps",
                 "3",
-                "-model-output_dir",
+                "-model-directory",
                 directory,
                 "-model-cache_dir",
                 directory,
@@ -248,7 +248,7 @@ class TestQAModel(IntegrationCLITestCase):
                 "qa_model",
                 "-config-model-model_name_or_path",
                 "bert-base-cased",
-                "-config-model-output_dir",
+                "-config-model-directory",
                 directory,
                 "-config-model-cache_dir",
                 directory,
@@ -274,7 +274,7 @@ class TestQAModel(IntegrationCLITestCase):
             cmnd = " ".join(cmnd).split()
             for idx, word in enumerate(cmnd):
                 cmnd[idx] = word.strip()
-            cmnd[cmnd.index("-model-output_dir") + 1] = directory
+            cmnd[cmnd.index("-model-directory") + 1] = directory
             cmnd[cmnd.index("-model-cache_dir") + 1] = directory
             return cmnd
 

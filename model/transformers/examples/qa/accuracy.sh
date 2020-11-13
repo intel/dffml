@@ -3,7 +3,7 @@ dffml accuracy \
   -model-model_type bert \
   -model-save_steps 3 \
   -model-model_name_or_path bert-base-cased \
-  -model-output_dir qamodel/checkpoints \
+  -model-directory qamodel/checkpoints \
   -model-cache_dir qamodel/cache \
   -model-log_dir qamodel/log \
   -sources s=op \
