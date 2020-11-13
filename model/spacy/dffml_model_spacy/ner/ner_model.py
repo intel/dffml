@@ -27,7 +27,7 @@ from dffml.model.model import ModelContext, ModelNotTrained
 
 @config
 class SpacyNERModelConfig:
-    output_dir: str = field("Output directory")
+    directory: str = field("Output directory")
     model_name_or_path: str = field(
         "Model name or path to saved model. Defaults to blank 'en' model.",
         default=None,
@@ -38,7 +38,7 @@ class SpacyNERModelConfig:
     )
 
     def __post_init__(self):
-        self.output_dir = pathlib.Path(self.output_dir)
+        self.directory = pathlib.Path(self.directory)
 
 
 class SpacyNERModelContext(ModelContext):
@@ -109,22 +109,22 @@ class SpacyNERModelContext(ModelContext):
                     )
                 self.logger.debug(f"Losses: {losses}")
 
-        if self.parent.config.output_dir is not None:
-            if not self.parent.config.output_dir.exists():
-                self.parent.config.output_dir.mkdir(parents=True)
-            self.nlp.to_disk(self.parent.config.output_dir)
+        if self.parent.config.directory is not None:
+            if not self.parent.config.directory.exists():
+                self.parent.config.directory.mkdir(parents=True)
+            self.nlp.to_disk(self.parent.config.directory)
             self.logger.debug(
-                f"Saved model to {self.parent.config.output_dir.name}"
+                f"Saved model to {self.parent.config.directory.name}"
             )
 
     async def predict(
         self, sources: SourcesContext
     ) -> AsyncIterator[Tuple[Record, Any, float]]:
         if not os.path.isdir(
-            os.path.join(self.parent.config.output_dir, "ner")
+            os.path.join(self.parent.config.directory, "ner")
         ):
             raise ModelNotTrained("Train model before prediction.")
-        self.nlp = spacy.load(self.parent.config.output_dir)
+        self.nlp = spacy.load(self.parent.config.directory)
 
         async for record in sources.records():
             doc = self.nlp(record.feature("sentence"))
