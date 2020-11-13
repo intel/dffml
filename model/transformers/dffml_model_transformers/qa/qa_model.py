@@ -63,7 +63,7 @@ class QAModelConfig:
     model_name_or_path: str = field(
         "Path to pretrained model or model identifier from huggingface.co/models",
     )
-    output_dir: str = field(
+    directory: str = field(
         "The output directory where the model checkpoints and predictions will be written.",
     )
     cache_dir: str = field(
@@ -143,7 +143,7 @@ class QAModelConfig:
     no_cuda: bool = field(
         "Whether not to use CUDA when available", default=False
     )
-    overwrite_output_dir: bool = field(
+    overwrite_directory: bool = field(
         "Overwrite the content of the output directory", default=False
     )
     seed: int = field("random seed for initialization", default=2020)
@@ -163,6 +163,7 @@ class QAModelConfig:
     )
 
     def __post_init__(self):
+        self.output_dir = self.directory
         if self.doc_stride >= self.max_seq_length - self.max_query_length:
             logger.warning(
                 "WARNING - You've set a doc stride which may be superior to the document length in some "
