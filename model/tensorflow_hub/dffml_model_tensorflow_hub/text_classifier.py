@@ -304,9 +304,6 @@ class TextClassifierContext(ModelContext):
             )
             yield record
 
-    async def accuracy(self, sources, accuracy_scorer):
-        return Accuracy(await accuracy_scorer.score(self, sources))
-
 
 @entrypoint("text_classifier")
 class TextClassificationModel(Model):
