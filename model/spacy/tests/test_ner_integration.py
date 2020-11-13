@@ -109,7 +109,7 @@ class TestSpacyNERModel(IntegrationCLITestCase):
             "debug",
             "-model-model_name_or_path",
             "en_core_web_sm",
-            "-model-output_dir",
+            "-model-directory",
             directory,
             "-model-n_iter",
             "5",
@@ -130,7 +130,7 @@ class TestSpacyNERModel(IntegrationCLITestCase):
             "debug",
             "-model-model_name_or_path",
             "en_core_web_sm",
-            "-model-output_dir",
+            "-model-directory",
             directory,
             "-model-n_iter",
             "5",
@@ -153,7 +153,7 @@ class TestSpacyNERModel(IntegrationCLITestCase):
                 "debug",
                 "-model-model_name_or_path",
                 "en_core_web_sm",
-                "-model-output_dir",
+                "-model-directory",
                 directory,
                 "-model-n_iter",
                 "5",
@@ -189,7 +189,7 @@ class TestSpacyNERModel(IntegrationCLITestCase):
             "spacyner",
             "-config-model-model_name_or_path",
             "en_core_web_sm",
-            "-config-model-output_dir",
+            "-config-model-directory",
             directory,
         )
         self.assertIn("model_predictions", result)
@@ -206,7 +206,7 @@ class TestSpacyNERModel(IntegrationCLITestCase):
             cmnd = " ".join(cmnd).split()
             for idx, word in enumerate(cmnd):
                 cmnd[idx] = word.strip()
-            cmnd[cmnd.index("-model-output_dir") + 1] = directory
+            cmnd[cmnd.index("-model-directory") + 1] = directory
             return cmnd
 
         with directory_with_csv_files() as tempdir:
