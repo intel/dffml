@@ -6,6 +6,7 @@ import os
 import sys
 import pathlib
 import inspect
+import platform
 import tempfile
 import contextlib
 import subprocess
@@ -33,7 +34,6 @@ CORE_PLUGINS = [
     ("model", "tensorflow_hub"),
     ("model", "transformers"),
     ("model", "vowpalWabbit"),
-    ("model", "autosklearn"),
     ("model", "xgboost"),
     ("model", "pytorch"),
     ("model", "spacy"),
@@ -43,6 +43,11 @@ CORE_PLUGINS = [
 if sys.version_info.major == 3 and sys.version_info.minor < 8:
     CORE_PLUGINS += [
         ("model", "daal4py"),
+    ]
+
+if platform.system() not in {"Windows", "Darwin"}:
+    CORE_PLUGINS += [
+        ("model", "autosklearn"),
     ]
 
 CORE_PLUGINS += [
@@ -110,7 +115,8 @@ CORE_PLUGIN_DEPS = {
         "swig": lambda: inpath("swig"),
         "cython": lambda: inpath("cython"),
     }
-    if not python_package_installed("auto_sklearn")
+    if platform.system() not in {"Windows", "Darwin"}
+    and not python_package_installed("autosklearn")
     else {},
 }
 
