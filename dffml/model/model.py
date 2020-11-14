@@ -69,11 +69,7 @@ class ModelContext(abc.ABC, BaseDataFlowFacilitatorObjectContext):
             features + [self.parent.config.predict.name]
         )
 
-        return Accuracy(
-            await accuracy_scorer.score(
-                self.predict(sources), [self.parent.config.predict]
-            )
-        )
+        return Accuracy(await accuracy_scorer.score(self, sources))
 
     @abc.abstractmethod
     async def predict(self, sources: SourcesContext) -> AsyncIterator[Record]:
@@ -246,5 +242,3 @@ class SimpleModel(Model):
             msg = f"{self.__class__.__qualname__} only supports "
             msg += f"{self.SUPPORTED_LENGTHS} dimensional values"
             raise ValueError(msg)
-
-    accuracy = ModelContext.accuracy
