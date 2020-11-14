@@ -222,5 +222,3 @@ class SimpleModel(Model):
             msg = f"{self.__class__.__qualname__} only supports "
             msg += f"{self.SUPPORTED_LENGTHS} dimensional values"
             raise ValueError(msg)
-
-    accuracy = ModelContext.accuracy
