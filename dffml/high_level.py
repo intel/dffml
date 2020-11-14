@@ -473,7 +473,7 @@ async def accuracy(
             accuracy_scorer = await astack.enter_async_context(accuracy_scorer)
             actx = await astack.enter_async_context(accuracy_scorer())
         # Run accuracy method
-        return float(await mctx.accuracy(sctx, actx))
+        return float(await actx.score(mctx, sctx))
 
 
 async def predict(
