@@ -119,32 +119,6 @@ class SpacyNERModelContext(ModelContext):
                 f"Saved model to {self.parent.config.directory.name}"
             )
 
-    async def accuracy(
-        self, sources: SourcesContext, accuracy_scorer: AccuracyContext
-    ) -> Accuracy:
-        self.logger.warning(
-            "Accuracy scoring will not be used : %s", accuracy_scorer
-        )
-        if not os.path.isdir(
-            os.path.join(self.parent.config.directory, "ner")
-        ):
-            raise ModelNotTrained("Train model before assessing for accuracy.")
-
-        test_examples = await self._preprocess_data(sources)
-        self.nlp = spacy.load(self.parent.config.directory)
-
-        scorer = Scorer()
-        examples = []
-        for input_, annot in test_examples:
-            pred_value = self.nlp(input_)
-            example = Example.from_dict(
-                pred_value, {"entities": annot["entities"]}
-            )
-            example.reference = self.nlp.make_doc(input_)
-            examples.append(example)
-        scores = scorer.score(examples)
-        return Accuracy(scores["token_acc"])
-
     async def predict(
         self, sources: SourcesContext
     ) -> AsyncIterator[Tuple[Record, Any, float]]:
