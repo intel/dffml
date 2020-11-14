@@ -1054,7 +1054,7 @@ Description about pretrianed models can be found <a class="reference external" h
   <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">filename</span> <span class="n">train</span><span class="o">.</span><span class="n">csv</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">epochs</span> <span class="mi">2</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">model_name_or_path</span> <span class="n">bert</span><span class="o">-</span><span class="n">base</span><span class="o">-</span><span class="n">cased</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">output_dir</span> <span class="n">hfclassification</span><span class="o">/</span><span class="n">checkpoints</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">directory</span> <span class="n">hfclassification</span><span class="o">/</span><span class="n">checkpoints</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">cache_dir</span> <span class="n">hfclassification</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">logging_dir</span> <span class="n">hfclassification</span><span class="o">/</span><span class="n">logging</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">no_cuda</span> \
@@ -1074,7 +1074,7 @@ Description about pretrianed models can be found <a class="reference external" h
   <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">filename</span> <span class="n">train</span><span class="o">.</span><span class="n">csv</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">epochs</span> <span class="mi">2</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">model_name_or_path</span> <span class="n">bert</span><span class="o">-</span><span class="n">base</span><span class="o">-</span><span class="n">cased</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">output_dir</span> <span class="n">hfclassification</span><span class="o">/</span><span class="n">checkpoints</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">directory</span> <span class="n">hfclassification</span><span class="o">/</span><span class="n">checkpoints</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">cache_dir</span> <span class="n">hfclassification</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">logging_dir</span> <span class="n">hfclassification</span><span class="o">/</span><span class="n">logging</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">no_cuda</span> \
@@ -1098,7 +1098,7 @@ Description about pretrianed models can be found <a class="reference external" h
   <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">filename</span> <span class="n">test</span><span class="o">.</span><span class="n">csv</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">epochs</span> <span class="mi">2</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">model_name_or_path</span> <span class="n">bert</span><span class="o">-</span><span class="n">base</span><span class="o">-</span><span class="n">cased</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">output_dir</span> <span class="n">hfclassification</span><span class="o">/</span><span class="n">checkpoints</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">directory</span> <span class="n">hfclassification</span><span class="o">/</span><span class="n">checkpoints</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">cache_dir</span> <span class="n">hfclassification</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">logging_dir</span> <span class="n">hfclassification</span><span class="o">/</span><span class="n">logging</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">no_cuda</span> \
@@ -1173,7 +1173,7 @@ of the model.</p>
 <li><p>Path to pretrained model or model identifier from huggingface.co/models</p></li>
 </ul>
 </li>
-<li><p>output_dir: String</p>
+<li><p>directory: String</p>
 <ul>
 <li><p>The output directory where the model predictions and checkpoints will be written.</p></li>
 </ul>
@@ -1267,10 +1267,10 @@ of the model.</p>
 <li><p>Activate the trace to record computation graphs and profiling information</p></li>
 </ul>
 </li>
-<li><p>overwrite_output_dir: String</p>
+<li><p>overwrite_directory: String</p>
 <ul>
 <li><p>default: False</p></li>
-<li><p>Overwrite the content of the output directory.Use this to continue training if output_dir points to a checkpoint directory.</p></li>
+<li><p>Overwrite the content of the output directory.Use this to continue training if directory points to a checkpoint directory.</p></li>
 </ul>
 </li>
 <li><p>evaluate_during_training: String</p>
@@ -1360,7 +1360,7 @@ of the model.</p>
 <li><p>save_total_limit: Integer</p>
 <ul>
 <li><p>default: None</p></li>
-<li><p>Limit the total amount of checkpoints.Deletes the older checkpoints in the output_dir. Default is unlimited checkpoints</p></li>
+<li><p>Limit the total amount of checkpoints.Deletes the older checkpoints in the directory. Default is unlimited checkpoints</p></li>
 </ul>
 </li>
 <li><p>seed: Integer</p>
@@ -1437,7 +1437,7 @@ Description about pretrianed models can be found <a class="reference external" h
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">sid</span> <span class="n">SentenceId</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">1</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">words</span> <span class="n">Words</span><span class="p">:</span><span class="nb">str</span><span class="p">:</span><span class="mi">1</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">predict</span> <span class="n">Tag</span><span class="p">:</span><span class="nb">str</span><span class="p">:</span><span class="mi">1</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">output_dir</span> <span class="n">temp_output_dir</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">directory</span> <span class="n">temp_directory</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">cache_dir</span> <span class="n">temp_cache_dir</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">model_name_or_path</span> <span class="n">bert</span><span class="o">-</span><span class="n">base</span><span class="o">-</span><span class="n">cased</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">no_cuda</span> \
@@ -1453,7 +1453,7 @@ Description about pretrianed models can be found <a class="reference external" h
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">sid</span> <span class="n">SentenceId</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">1</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">words</span> <span class="n">Words</span><span class="p">:</span><span class="nb">str</span><span class="p">:</span><span class="mi">1</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">predict</span> <span class="n">Tag</span><span class="p">:</span><span class="nb">str</span><span class="p">:</span><span class="mi">1</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">output_dir</span> <span class="n">temp_output_dir</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">directory</span> <span class="n">temp_directory</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">cache_dir</span> <span class="n">temp_cache_dir</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">model_name_or_path</span> <span class="n">bert</span><span class="o">-</span><span class="n">base</span><span class="o">-</span><span class="n">cased</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">no_cuda</span> \
@@ -1472,7 +1472,7 @@ Description about pretrianed models can be found <a class="reference external" h
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">sid</span> <span class="n">SentenceId</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">1</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">words</span> <span class="n">Words</span><span class="p">:</span><span class="nb">str</span><span class="p">:</span><span class="mi">1</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">predict</span> <span class="n">Tag</span><span class="p">:</span><span class="nb">str</span><span class="p">:</span><span class="mi">1</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">output_dir</span> <span class="n">temp_output_dir</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">directory</span> <span class="n">temp_directory</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">cache_dir</span> <span class="n">temp_cache_dir</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">model_name_or_path</span> <span class="n">bert</span><span class="o">-</span><span class="n">base</span><span class="o">-</span><span class="n">cased</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">no_cuda</span> \
@@ -1561,7 +1561,7 @@ of the model.</p>
     <span class="n">model_name_or_path</span><span class="o">=</span><span class="s2">&quot;distilbert-base-cased&quot;</span><span class="p">,</span>
     <span class="n">epochs</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
     <span class="n">no_cuda</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-    <span class="n">output_dir</span><span class="o">=</span><span class="s2">&quot;temp_output_dir&quot;</span><span class="p">,</span>
+    <span class="n">directory</span><span class="o">=</span><span class="s2">&quot;temp_directory&quot;</span><span class="p">,</span>
     <span class="n">cache_dir</span><span class="o">=</span><span class="s2">&quot;temp_cache_dir&quot;</span><span class="p">,</span>
 <span class="p">)</span>
 
@@ -1603,7 +1603,7 @@ of the model.</p>
 <li><p>Path to pre-trained model or shortcut name listed on <a class="reference external" href="https://huggingface.co/models">https://huggingface.co/models</a></p></li>
 </ul>
 </li>
-<li><p>output_dir: String</p>
+<li><p>directory: String</p>
 <ul>
 <li><p>The output directory where the model checkpoints will be written</p></li>
 </ul>
@@ -1631,10 +1631,10 @@ of the model.</p>
 <li><p>Pretrained tokenizer name or path if not the same as model_name</p></li>
 </ul>
 </li>
-<li><p>overwrite_output_dir: String</p>
+<li><p>overwrite_directory: String</p>
 <ul>
 <li><p>default: False</p></li>
-<li><p>Overwrite the content of the output directory.Use this to continue training if output_dir points to a checkpoint directory.</p></li>
+<li><p>Overwrite the content of the output directory.Use this to continue training if directory points to a checkpoint directory.</p></li>
 </ul>
 </li>
 <li><p>max_seq_length: Integer</p>
@@ -1802,7 +1802,7 @@ of the model.</p>
 <li><p>save_total_limit: Integer</p>
 <ul>
 <li><p>default: None</p></li>
-<li><p>Limit the total amount of checkpoints.Deletes the older checkpoints in the output_dir. Default is unlimited checkpoints</p></li>
+<li><p>Limit the total amount of checkpoints.Deletes the older checkpoints in the directory. Default is unlimited checkpoints</p></li>
 </ul>
 </li>
 <li><p>fp16_opt_level: String</p>
@@ -1958,7 +1958,7 @@ Description about pretrianed models can be found <a class="reference external" h
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">model_type</span> <span class="n">bert</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">save_steps</span> <span class="mi">3</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">model_name_or_path</span> <span class="n">bert</span><span class="o">-</span><span class="n">base</span><span class="o">-</span><span class="n">cased</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">output_dir</span> <span class="n">qamodel</span><span class="o">/</span><span class="n">checkpoints</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">directory</span> <span class="n">qamodel</span><span class="o">/</span><span class="n">checkpoints</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">cache_dir</span> <span class="n">qamodel</span><span class="o">/</span><span class="n">cache</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">log_dir</span> <span class="n">qamodel</span><span class="o">/</span><span class="n">log</span> \
   <span class="o">-</span><span class="n">sources</span> <span class="n">s</span><span class="o">=</span><span class="n">op</span> \
@@ -1973,7 +1973,7 @@ Description about pretrianed models can be found <a class="reference external" h
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">model_type</span> <span class="n">bert</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">save_steps</span> <span class="mi">3</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">model_name_or_path</span> <span class="n">bert</span><span class="o">-</span><span class="n">base</span><span class="o">-</span><span class="n">cased</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">output_dir</span> <span class="n">qamodel</span><span class="o">/</span><span class="n">checkpoints</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">directory</span> <span class="n">qamodel</span><span class="o">/</span><span class="n">checkpoints</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">cache_dir</span> <span class="n">qamodel</span><span class="o">/</span><span class="n">cache</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">log_dir</span> <span class="n">qamodel</span><span class="o">/</span><span class="n">log</span> \
   <span class="o">-</span><span class="n">sources</span> <span class="n">s</span><span class="o">=</span><span class="n">op</span> \
@@ -1992,7 +1992,7 @@ Description about pretrianed models can be found <a class="reference external" h
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">model_type</span> <span class="n">bert</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">save_steps</span> <span class="mi">3</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">model_name_or_path</span> <span class="n">bert</span><span class="o">-</span><span class="n">base</span><span class="o">-</span><span class="n">cased</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">output_dir</span> <span class="n">qamodel</span><span class="o">/</span><span class="n">checkpoints</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">directory</span> <span class="n">qamodel</span><span class="o">/</span><span class="n">checkpoints</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">cache_dir</span> <span class="n">qamodel</span><span class="o">/</span><span class="n">cache</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">log_dir</span> <span class="n">qamodel</span><span class="o">/</span><span class="n">log</span> \
   <span class="o">-</span><span class="n">sources</span> <span class="n">s</span><span class="o">=</span><span class="n">op</span> \
@@ -2104,7 +2104,7 @@ is value of the flag <cite>is_training</cite>.</p>
 <li><p>Path to pretrained model or model identifier from huggingface.co/models</p></li>
 </ul>
 </li>
-<li><p>output_dir: String</p>
+<li><p>directory: String</p>
 <ul>
 <li><p>The output directory where the model checkpoints and predictions will be written.</p></li>
 </ul>
@@ -2263,7 +2263,7 @@ is value of the flag <cite>is_training</cite>.</p>
 <li><p>Whether not to use CUDA when available</p></li>
 </ul>
 </li>
-<li><p>overwrite_output_dir: String</p>
+<li><p>overwrite_directory: String</p>
 <ul>
 <li><p>default: False</p></li>
 <li><p>Overwrite the content of the output directory</p></li>
@@ -3128,7 +3128,7 @@ Ensure that <cite>predict</cite> and <cite>accuracy</cite> for these algorithms 
   <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">opimp</span> <span class="n">model</span><span class="o">.</span><span class="n">spacy</span><span class="o">.</span><span class="n">dffml_model_spacy</span><span class="o">.</span><span class="n">ner</span><span class="o">.</span><span class="n">utils</span><span class="p">:</span><span class="n">parser</span> \
   <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">args</span> <span class="n">train</span><span class="o">.</span><span class="n">json</span> <span class="kc">False</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">model_name_or_path</span> <span class="n">en_core_web_sm</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">output_dir</span> <span class="n">temp</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">directory</span> <span class="n">temp</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">n_iter</span> <span class="mi">5</span> \
   <span class="o">-</span><span class="n">log</span> <span class="n">debug</span> 
 </pre></div>
@@ -3140,7 +3140,7 @@ Ensure that <cite>predict</cite> and <cite>accuracy</cite> for these algorithms 
   <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">opimp</span> <span class="n">model</span><span class="o">.</span><span class="n">spacy</span><span class="o">.</span><span class="n">dffml_model_spacy</span><span class="o">.</span><span class="n">ner</span><span class="o">.</span><span class="n">utils</span><span class="p">:</span><span class="n">parser</span> \
   <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">args</span> <span class="n">train</span><span class="o">.</span><span class="n">json</span> <span class="kc">False</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">model_name_or_path</span> <span class="n">en_core_web_sm</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">output_dir</span> <span class="n">temp</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">directory</span> <span class="n">temp</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">n_iter</span> <span class="mi">5</span> \
   <span class="o">-</span><span class="n">log</span> <span class="n">debug</span> 
 </pre></div>
@@ -3156,7 +3156,7 @@ Ensure that <cite>predict</cite> and <cite>accuracy</cite> for these algorithms 
   <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">opimp</span> <span class="n">model</span><span class="o">.</span><span class="n">spacy</span><span class="o">.</span><span class="n">dffml_model_spacy</span><span class="o">.</span><span class="n">ner</span><span class="o">.</span><span class="n">utils</span><span class="p">:</span><span class="n">parser</span> \
   <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">args</span> <span class="n">test</span><span class="o">.</span><span class="n">json</span> <span class="kc">True</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">model_name_or_path</span> <span class="n">en_core_web_sm</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">output_dir</span> <span class="n">temp</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">directory</span> <span class="n">temp</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">n_iter</span> <span class="mi">5</span> \
   <span class="o">-</span><span class="n">log</span> <span class="n">debug</span> 
 </pre></div>
@@ -3231,7 +3231,7 @@ is:</p>
 is value of the flag <cite>is_predicting</cite>.</p>
 <p><strong>Args</strong></p>
 <ul class="simple">
-<li><p>output_dir: String</p>
+<li><p>directory: String</p>
 <ul>
 <li><p>Output directory</p></li>
 </ul>
