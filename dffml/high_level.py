@@ -439,7 +439,7 @@ async def accuracy(
     sources = _records_to_sources(*args)
     async with sources as sources, model as model, accuracy_scorer as accuracy_scorer:
         async with sources() as sctx, model() as mctx, accuracy_scorer() as actx:
-            return float(await mctx.accuracy(sctx, actx))
+            return float(await actx.score(mctx, sctx))
 
 
 async def predict(
