@@ -201,7 +201,7 @@ We'll be using the ``dffml merge`` command to take the search results from the
 GitHub API and putting them with their randomly assigned status into our
 database.
 
-.. code-block:: console
+.. code-block::
     :test:
 
     $ dffml merge github=op db=mysql \
@@ -320,7 +320,7 @@ our dataset. The following command creates a ``DataFlow`` description of how
 all the operations within ``dffml-feature-git`` link together. The ``DataFlow``
 is stored in the YAML file **dataflow.yaml**.
 
-.. code-block:: console
+.. code-block::
     :test:
 
     $ dffml dataflow create \
