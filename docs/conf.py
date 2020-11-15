@@ -49,6 +49,7 @@ extensions = [
     "recommonmark",
     "dffml.util.testing.consoletest.builder",
     "literalinclude_diff",
+    "literalinclude_relative",
 ]
 
 intersphinx_mapping = {"python": ("https://docs.python.org/3", None)}
