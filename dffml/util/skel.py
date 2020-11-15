@@ -13,8 +13,8 @@ INSTALL_LOCATION = Path(
 
 class SkelTemplateConfig(NamedTuple):
     """
-    Variables used to find are replace strings starting with REPLACE_ in
-    skel/ sub directories.
+    Variables used to find are replace strings starting with ``REPLACE_`` in
+    ``skel/`` sub directories.
     """
 
     org: str
