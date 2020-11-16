@@ -505,7 +505,7 @@ class NERModel(Model):
                 "last_updated": "2020-06-11T17:40:54Z",
                 "prediction": {
                     "Tag": {
-                        "confidence": NaN,
+                        "confidence": null,
                         "value": [
                             {
                                 "DFFML": "B-MISC"
@@ -536,7 +536,7 @@ class NERModel(Model):
                 "last_updated": "2020-06-11T17:40:57Z",
                 "prediction": {
                     "Tag": {
-                        "confidence": NaN,
+                        "confidence": null,
                         "value": [
                             {
                                 "DFFML": "B-MISC"

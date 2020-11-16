@@ -197,7 +197,7 @@ class SpacyNERModel(Model):
                 "last_updated": "2020-07-27T16:26:18Z",
                 "prediction": {
                     "Answer": {
-                        "confidence": NaN,
+                        "confidence": null,
                         "value": [
                             [
                                 "Alex",

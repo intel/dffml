@@ -71,7 +71,7 @@ class DAAL4PyLRModel(SimpleModel):
                 "last_updated": "2020-07-22T02:53:11Z",
                 "prediction": {
                     "ans": {
-                        "confidence": NaN,
+                        "confidence": null,
                         "value": 1.1907472649730522
                     }
                 }

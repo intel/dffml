@@ -935,7 +935,7 @@ class QAModelContext(ModelContext):
 
 @entrypoint("qa_model")
 class QAModel(Model):
-    """
+    r"""
     Implemented using `HuggingFace Transformers <https://huggingface.co/transformers/index.html>`_ Pytorch based Models.
     Description about pretrianed models can be found `here <https://huggingface.co/transformers/pretrained_models.html>`_
 
@@ -988,7 +988,7 @@ class QAModel(Model):
                 "last_updated": "2020-06-23T17:54:03Z",
                 "prediction": {
                     "Answer": {
-                        "confidence": NaN,
+                        "confidence": null,
                         "value": {
                             "5733be284776f4190066117e": "a copper statue of Christ"
                         }
