@@ -262,11 +262,11 @@ the value given as input and that of the object would be same.</p>
 </pre></div>
 </div>
 <p>But this codeblock gives an output</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>Running dataflow without locked object
-set i = 2, got i = 1
-set i = 1, got i = 1
-set i = 2, got i = 1
-set i = 1, got i = 1
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Running</span> <span class="n">dataflow</span> <span class="n">without</span> <span class="n">locked</span> <span class="nb">object</span>
+<span class="nb">set</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">got</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="nb">set</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">got</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="nb">set</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">got</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="nb">set</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">got</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span>
 </pre></div>
 </div>
 <p>We can see that the output is not what we expect. Since everything is running asynchronously,
@@ -292,11 +292,11 @@ value. This is where locks come handy. We’ll set <code class="docutils literal
 </pre></div>
 </div>
 <p>This time the output is as expected</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>Running dataflow with locked object
-set i = 2, got i = 2
-set i = 1, got i = 1
-set i = 2, got i = 2
-set i = 1, got i = 1
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Running</span> <span class="n">dataflow</span> <span class="k">with</span> <span class="n">locked</span> <span class="nb">object</span>
+<span class="nb">set</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">got</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="nb">set</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">got</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="nb">set</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">got</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="nb">set</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">got</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span>
 </pre></div>
 </div>
 </div>

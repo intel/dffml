@@ -32,51 +32,97 @@ Logistic Regression training one variable to predict another.
 
 The dataset used for training
 
-.. literalinclude:: /../examples/model/slr/dataset.sh
+**dataset.csv**
+
+.. code-block::
+    :test:
+    :filepath: dataset.csv
+
+    f1,ans
+    0.1,0
+    0.7,1
+    0.6,1
+    0.2,0
+    0.8,1
 
 Train the model
 
-.. literalinclude:: /../examples/model/slr/train.sh
+.. code-block:: console
+    :test:
+
+    $ dffml train \
+        -model slr \
+        -model-features f1:float:1 \
+        -model-predict ans:int:1 \
+        -model-directory tempdir \
+        -sources f=csv \
+        -source-filename dataset.csv
 
 Assess the accuracy
 
-.. literalinclude:: /../examples/model/slr/accuracy.sh
-
-Output
-
 .. code-block:: console
+    :test:
 
+    $ dffml accuracy \
+        -model slr \
+        -model-features f1:float:1 \
+        -model-predict ans:int:1 \
+        -model-directory tempdir \
+        -sources f=csv \
+        -source-filename dataset.csv
     1.0
 
 Make a prediction
 
-.. literalinclude:: /../examples/model/slr/predict.sh
+**predict.csv**
 
-Output
+.. code-block::
+    :test:
+    :filepath: predict.csv
+
+    f1
+    0.8
 
 .. code-block:: console
+    :test:
 
+    $ dffml predict all \
+        -model slr \
+        -model-features f1:float:1 \
+        -model-predict ans:int:1 \
+        -model-directory tempdir \
+        -sources f=csv \
+        -source-filename predict.csv
     [
         {
             "extra": {},
             "features": {
-                "ans": 0,
                 "f1": 0.8
             },
-            "last_updated": "2020-03-19T13:41:08Z",
+            "key": "0",
+            "last_updated": "2020-11-15T16:22:25Z",
             "prediction": {
                 "ans": {
-                    "confidence": 1.0,
+                    "confidence": 0.9355670103092784,
                     "value": 1
                 }
-            },
-            "key": "0"
+            }
         }
     ]
 
 Example usage of Logistic Regression using Python
 
-.. literalinclude:: /../examples/model/slr/slr.py
+**slr.py**
+
+.. literalinclude:: ../../examples/model/slr/slr.py
+    :test:
+
+.. code-block:: console
+    :test:
+
+    $ python slr.py
+    Accuracy: 0.9355670103092784
+    {'f1': 0.8, 'ans': 1}
 
 **Args**
 
@@ -280,7 +326,7 @@ Output
             "last_updated": "2019-10-24T15:26:41Z",
             "prediction": {
                 "TARGET" : {
-                    "confidence": NaN,
+                    "confidence": null,
                     "value": 1.1983429193496704
                 }
             },
@@ -292,7 +338,7 @@ Example usage of Tensorflow DNNEstimator model using python API
 
 .. literalinclude:: /../model/tensorflow/examples/tfdnnr/tfdnnr.py
 
-The ``NaN`` in ``confidence`` is the expected behaviour. (See TODO in
+The ``null`` in ``confidence`` is the expected behaviour. (See TODO in
 predict).
 
 **Args**
@@ -827,7 +873,7 @@ Output
             "last_updated": "2020-06-11T17:40:54Z",
             "prediction": {
                 "Tag": {
-                    "confidence": NaN,
+                    "confidence": null,
                     "value": [
                         {
                             "DFFML": "B-MISC"
@@ -858,7 +904,7 @@ Output
             "last_updated": "2020-06-11T17:40:57Z",
             "prediction": {
                 "Tag": {
-                    "confidence": NaN,
+                    "confidence": null,
                     "value": [
                         {
                             "DFFML": "B-MISC"
@@ -1164,7 +1210,7 @@ Output
                         "text": " "
                     }
                 ],
-                "context": "Architecturally, the school has a Catholic character. Atop the Main Building's gold dome is a golden statue of the Virgin Mary. Immediately in front of the Main Building and facing it, is a copper statue of Christ with arms upraised with the legend "Venite Ad Me Omnes". Next to the Main Building is the Basilica of the Sacred Heart. Immediately behind the basilica is the Grotto, a Marian place of prayer and reflection. It is a replica of the grotto at Lourdes, France where the Virgin Mary reputedly appeared to Saint Bernadette Soubirous in 1858. At the end of the main drive (and in a direct line that connects through 3 statues and the Gold Dome), is a simple, modern stone statue of Mary.",
+                "context": "Architecturally, the school has a Catholic character. Atop the Main Building's gold dome is a golden statue of the Virgin Mary. Immediately in front of the Main Building and facing it, is a copper statue of Christ with arms upraised with the legend \"Venite Ad Me Omnes\". Next to the Main Building is the Basilica of the Sacred Heart. Immediately behind the basilica is the Grotto, a Marian place of prayer and reflection. It is a replica of the grotto at Lourdes, France where the Virgin Mary reputedly appeared to Saint Bernadette Soubirous in 1858. At the end of the main drive (and in a direct line that connects through 3 statues and the Gold Dome), is a simple, modern stone statue of Mary.",
                 "is_impossible": false,
                 "question": "What sits on top of the Main Building at Notre Dame?",
                 "start_pos_char": null,
@@ -1174,7 +1220,7 @@ Output
             "last_updated": "2020-06-23T17:54:03Z",
             "prediction": {
                 "Answer": {
-                    "confidence": NaN,
+                    "confidence": null,
                     "value": {
                         "5733be284776f4190066117e": "a copper statue of Christ"
                     }
@@ -1937,38 +1983,116 @@ spacyner
 
 Implemented using `Spacy statistical models <https://spacy.io/usage/training>`_ .
 
+.. note::
+
+    You must download ``en_core_web_sm`` before using this model
+
+    .. code-block:: console
+        :test:
+
+        $ python -m spacy download en_core_web_sm
+
 First we create the training and testing datasets.
 
 Training data:
 
-.. literalinclude:: /../model/spacy/examples/ner/train_data.sh
+**train.json**
+
+.. code-block:: json
+    :test:
+    :filepath: train.json
+
+    {
+        "data": [
+            {
+                "sentence": "I went to London and Berlin.",
+                "entities": [
+                    {
+                        "start":10,
+                        "end": 16,
+                        "tag": "LOC"
+                    },
+                    {
+                        "start":21,
+                        "end": 27,
+                        "tag": "LOC"
+                    }
+                ]
+            },
+            {
+                "sentence": "Who is Alex?",
+                "entities": [
+                    {
+                        "start":7,
+                        "end": 11,
+                        "tag": "PERSON"
+                    }
+                ]
+            }
+        ]
+    }
 
 Testing data:
 
-.. literalinclude:: /../model/spacy/examples/ner/test_data.sh
+**test.json**
+
+.. code-block:: json
+    :test:
+    :filepath: test.json
+
+    {
+        "data": [
+            {
+                "sentence": "Alex went to London?"
+            }
+        ]
+    }
 
 Train the model
 
-.. literalinclude:: /../model/spacy/examples/ner/train.sh
+.. code-block:: console
+    :test:
+
+    $ dffml train \
+        -model spacyner \
+        -sources s=op \
+        -source-opimp dffml_model_spacy.ner.utils:parser \
+        -source-args train.json False \
+        -model-model_name_or_path en_core_web_sm \
+        -model-directory temp \
+        -model-n_iter 5 \
+        -log debug
 
 Assess the accuracy
 
-.. literalinclude:: /../model/spacy/examples/ner/accuracy.sh
+.. code-block:: console
+    :test:
 
-Output
-
-.. code-block::
-
+    $ dffml accuracy \
+        -model spacyner \
+        -sources s=op \
+        -source-opimp dffml_model_spacy.ner.utils:parser \
+        -source-args train.json False \
+        -model-model_name_or_path en_core_web_sm \
+        -model-directory temp \
+        -model-n_iter 5 \
+        -log debug
     0.0
 
 Make a prediction
 
-.. literalinclude:: /../model/spacy/examples/ner/predict.sh
+.. code-block:: console
+    :test:
 
-Output
-
-.. code-block:: json
-
+    $ dffml predict all \
+        -model spacyner \
+        -sources s=op \
+        -source-opimp dffml_model_spacy.ner.utils:parser \
+        -source-args test.json True \
+        -model-model_name_or_path en_core_web_sm \
+        -model-directory temp \
+        -model-n_iter 5 \
+        -log debug
     [
         {
             "extra": {},
@@ -1980,7 +2104,7 @@ Output
             "last_updated": "2020-07-27T16:26:18Z",
             "prediction": {
                 "Answer": {
-                    "confidence": NaN,
+                    "confidence": null,
                     "value": [
                         [
                             "Alex",
@@ -2006,7 +2130,7 @@ is:
 
 .. literalinclude:: /../model/spacy/dffml_model_spacy/ner/utils.py
 
-The location of the function is passed using: 
+The location of the function is passed using:
 
 .. code-block:: console
 

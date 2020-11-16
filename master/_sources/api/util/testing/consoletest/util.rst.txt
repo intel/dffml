@@ -1,0 +1,5 @@
+Util Testing Consoletest Util
+=============================
+
+.. automodule:: dffml.util.testing.consoletest.util
+   :members:

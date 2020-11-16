@@ -979,7 +979,7 @@ The following example shows how to use model_predict.
 ...         print(results)
 >>>
 >>> asyncio.run(main())
-{'model_predictions': {'Salary': {'confidence': 1.0, 'value': 50.0}}}
+{'model_predictions': {'Salary': {'confidence': 1.0, 'value': 50}}}
 
 **Stage: processing**
 

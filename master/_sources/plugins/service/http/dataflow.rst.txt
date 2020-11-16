@@ -17,30 +17,29 @@ HttpChannelConfig
 
 - ``input_mode : str``
 
-    - Mode according to which input data is passed to the dataflow, ``default:default``.
+  - Mode according to which input data is passed to the dataflow, ``default:default``.
 
-        - ``default``
+    - ``default``
 
-            Inputs are expected to be mapping of context to list of input
-            to definition mappings
-            eg:
+        Inputs are expected to be mapping of context to list of input
+        to definition mappings
+        eg:
 
-                .. code-block:: json
+            .. code-block:: json
 
-                                        {
-                                        "insecure-package":
-                                            [
-                                                {
-                                                    "value":"insecure-package",
-                                                    "definition":"package"
-                                                }
-                                            ]
-                                        }
+                {
+                    "insecure-package": [
+                        {
+                            "value": "insecure-package",
+                            "definition": "package"
+                        }
+                    ]
+                }
 
-        - ``preprocess:definition_name``
+    - ``preprocess:definition_name``
 
-                Input as whole is treated as value with the given definition after preprocessing.
-                Supported preprocess tags : [json,text,bytes,stream]
+        - Input as whole is treated as value with the given definition after preprocessing.
+          Supported preprocess tags : [json,text,bytes,stream]
 
 - ``path : str``
 
@@ -53,41 +52,43 @@ HttpChannelConfig
         - ``bytes:content_type:OUTPUT_KEYS``
 
             - OUTPUT_KEYS are ``.`` seperated string which is used as keys to traverse the ouput of the flow.
-            eg:
+              eg:
 
-            .. code-block:: python
+              .. code-block:: python
 
-                results = {
-                    "post_input":
-                        {
-                            "hex":b'speak'
-                        }
-                    }
+                  results = {
+                      "post_input": {
+                          "hex": b'speak'
+                      }
+                  }
 
-            then ``bytes:post_input.hex`` will return ``b'speak'``.
+              then ``bytes:post_input.hex`` will return ``b'speak'``.
 
         - ``text:OUTPUT_KEYS``
 
-        - `json`
+        - ``json``
 
-            - output of dataflow (Dict) is passes as json
+            - Output of dataflow (Dict) is passes as json
 
 - ``immediate_response: Dict[str,Any]``
 
     - If provided with a reponse, server responds immediatly with
       it, whilst scheduling to run the dataflow.
       Expected keys:
-        - status: HTTP status code for the response
-        - content_type: MIME type, if not given, determined
-        from the presence of body/text/json
-        - body/text/json: One of this according to content_type
-        - headers
-        eg:
 
-        .. code-block:: python
+        - ``status``: HTTP status code for the response
 
-            {
-                "status": 200,
-                "content_type": "application/json",
-                "data": {"text": "ok"},
-            }
+        - ``content_type``: MIME type, if not given, determined
+          from the presence of body/text/json
+
+        - ``body/text/json``: One of this according to content_type
+
+        - ``headers``
+
+      .. code-block:: json
+
+          {
+              "status": 200,
+              "content_type": "application/json",
+              "data": {"text": "ok"}
+          }

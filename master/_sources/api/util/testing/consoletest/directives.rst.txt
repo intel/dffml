@@ -1,0 +1,5 @@
+Util Testing Consoletest Directives
+===================================
+
+.. automodule:: dffml.util.testing.consoletest.directives
+   :members:

@@ -165,7 +165,7 @@ $ shouldi project create -add deps.yaml -- .
 
 ## License
 
-shouldi is distributed under the [MIT License](LICENSE).
+shouldi is distributed under the [MIT License](https://spdx.org/licenses/MIT.html).
 
 #### What's This Really Called
 
