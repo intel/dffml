@@ -203,7 +203,7 @@ class DNNRegressionModel(Model):
                 "last_updated": "2019-10-24T15:26:41Z",
                 "prediction": {
                     "TARGET" : {
-                        "confidence": NaN,
+                        "confidence": null,
                         "value": 1.1983429193496704
                     }
                 },
@@ -215,7 +215,7 @@ class DNNRegressionModel(Model):
 
     .. literalinclude:: /../model/tensorflow/examples/tfdnnr/tfdnnr.py
 
-    The ``NaN`` in ``confidence`` is the expected behaviour. (See TODO in
+    The ``null`` in ``confidence`` is the expected behaviour. (See TODO in
     predict).
 
     """
