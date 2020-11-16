@@ -129,7 +129,9 @@ class DAAL4PyLRModel(SimpleModel):
             feature_data = record.features(
                 self.features + [self.parent.config.predict.name]
             )
-            df = self.pd.DataFrame(feature_data, index=[0])
+            # NOTE Duplicate feature data due to regression in oneDAL
+            # See https://github.com/intel/dffml/issues/801
+            df = self.pd.DataFrame([feature_data] * 2, index=[0, 1])
             xdata = df.drop([self.parent.config.predict.name], 1)
             ydata = df[self.parent.config.predict.name]
             self.lm.compute(xdata, ydata)
