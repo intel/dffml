@@ -38,7 +38,7 @@ the value given as input and that of the object would be same.
 
 But this codeblock gives an output
 
-.. code-block:: json
+.. code-block::
 
     Running dataflow without locked object
     set i = 2, got i = 1
@@ -58,7 +58,7 @@ value. This is where locks come handy. We'll set ``run_me`` to take object of de
 
 This time the output is as expected
 
-.. code-block:: json
+.. code-block::
 
     Running dataflow with locked object
     set i = 2, got i = 2

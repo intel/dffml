@@ -225,7 +225,7 @@
 
 <div class="viewcode-block" id="AsyncTestCase"><a class="viewcode-back" href="../../../api/util/asynctestcase.html#dffml.util.asynctestcase.AsyncTestCase">[docs]</a><span class="k">class</span> <span class="nc">AsyncTestCase</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Runs any test_ methods as coroutines in the default event loop.</span>
+<span class="sd">    Runs any ``test_`` methods as coroutines in the default event loop.</span>
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
@@ -243,13 +243,13 @@
 
 <div class="viewcode-block" id="AsyncTestCase.async_wrapper"><a class="viewcode-back" href="../../../api/util/asynctestcase.html#dffml.util.asynctestcase.AsyncTestCase.async_wrapper">[docs]</a>    <span class="k">def</span> <span class="nf">async_wrapper</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coro</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns a function which calls the test_ function which calls</span>
-<span class="sd">        loop.run_until_complete to return the result of the test.</span>
+<span class="sd">        Returns a function which calls the ``test_`` function which calls</span>
+<span class="sd">        ``loop.run_until_complete`` to return the result of the test.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">def</span> <span class="nf">run_it</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
             <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">            Calls the loop&#39;s run_until_complete method.</span>
+<span class="sd">            Calls the loop&#39;s ``run_until_complete`` method.</span>
 <span class="sd">            &quot;&quot;&quot;</span>
             <span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span>
                 <span class="n">level</span><span class="o">=</span><span class="nb">getattr</span><span class="p">(</span>
@@ -266,8 +266,8 @@
 
 <div class="viewcode-block" id="AsyncTestCase.run"><a class="viewcode-back" href="../../../api/util/asynctestcase.html#dffml.util.asynctestcase.AsyncTestCase.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">result</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Convert all test_ methods via async_wrapper so that they are run in the</span>
-<span class="sd">        event loop.</span>
+<span class="sd">        Convert all ``test_`` methods via ``async_wrapper`` so that they are run</span>
+<span class="sd">        in the event loop.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">methods</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">getmembers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">predicate</span><span class="o">=</span><span class="n">inspect</span><span class="o">.</span><span class="n">ismethod</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">method</span> <span class="ow">in</span> <span class="n">methods</span><span class="p">:</span>

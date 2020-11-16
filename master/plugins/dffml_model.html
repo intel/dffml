@@ -283,75 +283,69 @@ abstract the usage of machine learning models.</p>
 <p><em>Official</em></p>
 <p>Logistic Regression training one variable to predict another.</p>
 <p>The dataset used for training</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cat</span> <span class="o">&gt;</span> <span class="n">dataset</span><span class="o">.</span><span class="n">csv</span> <span class="o">&lt;&lt;</span> <span class="n">EOF</span>
-<span class="n">f1</span><span class="p">,</span><span class="n">ans</span>
+<p><strong>dataset.csv</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">f1</span><span class="p">,</span><span class="n">ans</span>
 <span class="mf">0.1</span><span class="p">,</span><span class="mi">0</span>
 <span class="mf">0.7</span><span class="p">,</span><span class="mi">1</span>
 <span class="mf">0.6</span><span class="p">,</span><span class="mi">1</span>
 <span class="mf">0.2</span><span class="p">,</span><span class="mi">0</span>
 <span class="mf">0.8</span><span class="p">,</span><span class="mi">1</span>
-<span class="n">EOF</span>
 </pre></div>
 </div>
 <p>Train the model</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dffml</span> <span class="n">train</span> \
-  <span class="o">-</span><span class="n">model</span> <span class="n">slr</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">features</span> <span class="n">f1</span><span class="p">:</span><span class="nb">float</span><span class="p">:</span><span class="mi">1</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">predict</span> <span class="n">ans</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">1</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">directory</span> <span class="n">tempdir</span> \
-  <span class="o">-</span><span class="n">sources</span> <span class="n">f</span><span class="o">=</span><span class="n">csv</span> \
-  <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">filename</span> <span class="n">dataset</span><span class="o">.</span><span class="n">csv</span> \
-  <span class="o">-</span><span class="n">log</span> <span class="n">debug</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml train <span class="se">\</span>
+    -model slr <span class="se">\</span>
+    -model-features f1:float:1 <span class="se">\</span>
+    -model-predict ans:int:1 <span class="se">\</span>
+    -model-directory tempdir <span class="se">\</span>
+    -sources <span class="nv">f</span><span class="o">=</span>csv <span class="se">\</span>
+    -source-filename dataset.csv
 </pre></div>
 </div>
 <p>Assess the accuracy</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dffml</span> <span class="n">accuracy</span> \
-  <span class="o">-</span><span class="n">model</span> <span class="n">slr</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">features</span> <span class="n">f1</span><span class="p">:</span><span class="nb">float</span><span class="p">:</span><span class="mi">1</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">predict</span> <span class="n">ans</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">1</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">directory</span> <span class="n">tempdir</span> \
-  <span class="o">-</span><span class="n">sources</span> <span class="n">f</span><span class="o">=</span><span class="n">csv</span> \
-  <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">filename</span> <span class="n">dataset</span><span class="o">.</span><span class="n">csv</span> \
-  <span class="o">-</span><span class="n">log</span> <span class="n">debug</span>
-</pre></div>
-</div>
-<p>Output</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">1.0</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml accuracy <span class="se">\</span>
+    -model slr <span class="se">\</span>
+    -model-features f1:float:1 <span class="se">\</span>
+    -model-predict ans:int:1 <span class="se">\</span>
+    -model-directory tempdir <span class="se">\</span>
+    -sources <span class="nv">f</span><span class="o">=</span>csv <span class="se">\</span>
+    -source-filename dataset.csv
+<span class="go">1.0</span>
 </pre></div>
 </div>
 <p>Make a prediction</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">echo</span> <span class="o">-</span><span class="n">e</span> <span class="s1">&#39;f1,ans</span><span class="se">\n</span><span class="s1">0.8,0</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">|</span> \
-  <span class="n">dffml</span> <span class="n">predict</span> <span class="nb">all</span> \
-  <span class="o">-</span><span class="n">model</span> <span class="n">slr</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">features</span> <span class="n">f1</span><span class="p">:</span><span class="nb">float</span><span class="p">:</span><span class="mi">1</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">predict</span> <span class="n">ans</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">1</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">directory</span> <span class="n">tempdir</span> \
-  <span class="o">-</span><span class="n">sources</span> <span class="n">f</span><span class="o">=</span><span class="n">csv</span> \
-  <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">filename</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">stdin</span> \
-  <span class="o">-</span><span class="n">log</span> <span class="n">debug</span>
+<p><strong>predict.csv</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">f1</span>
+<span class="mf">0.8</span>
 </pre></div>
 </div>
-<p>Output</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">[</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml predict all <span class="se">\</span>
+    -model slr <span class="se">\</span>
+    -model-features f1:float:1 <span class="se">\</span>
+    -model-predict ans:int:1 <span class="se">\</span>
+    -model-directory tempdir <span class="se">\</span>
+    -sources <span class="nv">f</span><span class="o">=</span>csv <span class="se">\</span>
+    -source-filename predict.csv
+<span class="go">[</span>
 <span class="go">    {</span>
 <span class="go">        &quot;extra&quot;: {},</span>
 <span class="go">        &quot;features&quot;: {</span>
-<span class="go">            &quot;ans&quot;: 0,</span>
 <span class="go">            &quot;f1&quot;: 0.8</span>
 <span class="go">        },</span>
-<span class="go">        &quot;last_updated&quot;: &quot;2020-03-19T13:41:08Z&quot;,</span>
+<span class="go">        &quot;key&quot;: &quot;0&quot;,</span>
+<span class="go">        &quot;last_updated&quot;: &quot;2020-11-15T16:22:25Z&quot;,</span>
 <span class="go">        &quot;prediction&quot;: {</span>
 <span class="go">            &quot;ans&quot;: {</span>
-<span class="go">                &quot;confidence&quot;: 1.0,</span>
+<span class="go">                &quot;confidence&quot;: 0.9355670103092784,</span>
 <span class="go">                &quot;value&quot;: 1</span>
 <span class="go">            }</span>
-<span class="go">        },</span>
-<span class="go">        &quot;key&quot;: &quot;0&quot;</span>
+<span class="go">        }</span>
 <span class="go">    }</span>
 <span class="go">]</span>
 </pre></div>
 </div>
 <p>Example usage of Logistic Regression using Python</p>
+<p><strong>slr.py</strong></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">Features</span><span class="p">,</span> <span class="n">Feature</span><span class="p">,</span> <span class="n">SLRModel</span>
 <span class="kn">from</span> <span class="nn">dffml.noasync</span> <span class="kn">import</span> <span class="n">train</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">,</span> <span class="n">predict</span>
 
@@ -371,6 +365,11 @@ abstract the usage of machine learning models.</p>
 <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">features</span><span class="p">,</span> <span class="n">prediction</span> <span class="ow">in</span> <span class="n">predict</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;f1&quot;</span><span class="p">:</span> <span class="mf">0.8</span><span class="p">,</span> <span class="s2">&quot;ans&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">}):</span>
     <span class="n">features</span><span class="p">[</span><span class="s2">&quot;ans&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">prediction</span><span class="p">[</span><span class="s2">&quot;ans&quot;</span><span class="p">][</span><span class="s2">&quot;value&quot;</span><span class="p">]</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">features</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python slr.py
+<span class="go">Accuracy: 0.9355670103092784</span>
+<span class="go">{&#39;f1&#39;: 0.8, &#39;ans&#39;: 1}</span>
 </pre></div>
 </div>
 <p><strong>Args</strong></p>
@@ -693,24 +692,24 @@ from where this command is run as it overwrites any existing files.</p></li>
 </pre></div>
 </div>
 <p>Output</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>[
-    {
-        &quot;extra&quot;: {},
-        &quot;features&quot;: {
-            &quot;Feature1&quot;: 0.21,
-            &quot;Feature2&quot;: 0.18,
-            &quot;TARGET&quot;: 0.84
-        },
-        &quot;last_updated&quot;: &quot;2019-10-24T15:26:41Z&quot;,
-        &quot;prediction&quot;: {
-            &quot;TARGET&quot; : {
-                &quot;confidence&quot;: NaN,
-                &quot;value&quot;: 1.1983429193496704
-            }
-        },
-        &quot;key&quot;: 0
-    }
-]
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">[</span>
+    <span class="p">{</span>
+        <span class="nt">&quot;extra&quot;</span><span class="p">:</span> <span class="p">{},</span>
+        <span class="nt">&quot;features&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="nt">&quot;Feature1&quot;</span><span class="p">:</span> <span class="mf">0.21</span><span class="p">,</span>
+            <span class="nt">&quot;Feature2&quot;</span><span class="p">:</span> <span class="mf">0.18</span><span class="p">,</span>
+            <span class="nt">&quot;TARGET&quot;</span><span class="p">:</span> <span class="mf">0.84</span>
+        <span class="p">},</span>
+        <span class="nt">&quot;last_updated&quot;</span><span class="p">:</span> <span class="s2">&quot;2019-10-24T15:26:41Z&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;prediction&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="nt">&quot;TARGET&quot;</span> <span class="p">:</span> <span class="p">{</span>
+                <span class="nt">&quot;confidence&quot;</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
+                <span class="nt">&quot;value&quot;</span><span class="p">:</span> <span class="mf">1.1983429193496704</span>
+            <span class="p">}</span>
+        <span class="p">},</span>
+        <span class="nt">&quot;key&quot;</span><span class="p">:</span> <span class="mi">0</span>
+    <span class="p">}</span>
+<span class="p">]</span>
 </pre></div>
 </div>
 <p>Example usage of Tensorflow DNNEstimator model using python API</p>
@@ -743,7 +742,7 @@ from where this command is run as it overwrites any existing files.</p></li>
     <span class="nb">print</span><span class="p">(</span><span class="n">features</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>The <code class="docutils literal notranslate"><span class="pre">NaN</span></code> in <code class="docutils literal notranslate"><span class="pre">confidence</span></code> is the expected behaviour. (See TODO in
+<p>The <code class="docutils literal notranslate"><span class="pre">null</span></code> in <code class="docutils literal notranslate"><span class="pre">confidence</span></code> is the expected behaviour. (See TODO in
 predict).</p>
 <p><strong>Args</strong></p>
 <ul class="simple">
@@ -1480,70 +1479,70 @@ Description about pretrianed models can be found <a class="reference external" h
 </pre></div>
 </div>
 <p>Output</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>[
-    {
-        &quot;extra&quot;: {},
-        &quot;features&quot;: {
-            &quot;SentenceId&quot;: 1,
-            &quot;Words&quot;: &quot;DFFML models can do NER&quot;
-        },
-        &quot;key&quot;: &quot;0&quot;,
-        &quot;last_updated&quot;: &quot;2020-06-11T17:40:54Z&quot;,
-        &quot;prediction&quot;: {
-            &quot;Tag&quot;: {
-                &quot;confidence&quot;: NaN,
-                &quot;value&quot;: [
-                    {
-                        &quot;DFFML&quot;: &quot;B-MISC&quot;
-                    },
-                    {
-                        &quot;models&quot;: &quot;I-MISC&quot;
-                    },
-                    {
-                        &quot;can&quot;: &quot;O&quot;
-                    },
-                    {
-                        &quot;do&quot;: &quot;B-MISC&quot;
-                    },
-                    {
-                        &quot;NER&quot;: &quot;B-MISC&quot;
-                    }
-                ]
-            }
-        }
-    },
-    {
-        &quot;extra&quot;: {},
-        &quot;features&quot;: {
-            &quot;SentenceId&quot;: 2,
-            &quot;Words&quot;: &quot;DFFML models can do regression&quot;
-        },
-        &quot;key&quot;: &quot;1&quot;,
-        &quot;last_updated&quot;: &quot;2020-06-11T17:40:57Z&quot;,
-        &quot;prediction&quot;: {
-            &quot;Tag&quot;: {
-                &quot;confidence&quot;: NaN,
-                &quot;value&quot;: [
-                    {
-                        &quot;DFFML&quot;: &quot;B-MISC&quot;
-                    },
-                    {
-                        &quot;models&quot;: &quot;I-MISC&quot;
-                    },
-                    {
-                        &quot;can&quot;: &quot;O&quot;
-                    },
-                    {
-                        &quot;do&quot;: &quot;B-MISC&quot;
-                    },
-                    {
-                        &quot;regression&quot;: &quot;I-MISC&quot;
-                    }
-                ]
-            }
-        }
-    }
-]
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">[</span>
+    <span class="p">{</span>
+        <span class="nt">&quot;extra&quot;</span><span class="p">:</span> <span class="p">{},</span>
+        <span class="nt">&quot;features&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="nt">&quot;SentenceId&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="nt">&quot;Words&quot;</span><span class="p">:</span> <span class="s2">&quot;DFFML models can do NER&quot;</span>
+        <span class="p">},</span>
+        <span class="nt">&quot;key&quot;</span><span class="p">:</span> <span class="s2">&quot;0&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;last_updated&quot;</span><span class="p">:</span> <span class="s2">&quot;2020-06-11T17:40:54Z&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;prediction&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="nt">&quot;Tag&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="nt">&quot;confidence&quot;</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
+                <span class="nt">&quot;value&quot;</span><span class="p">:</span> <span class="p">[</span>
+                    <span class="p">{</span>
+                        <span class="nt">&quot;DFFML&quot;</span><span class="p">:</span> <span class="s2">&quot;B-MISC&quot;</span>
+                    <span class="p">},</span>
+                    <span class="p">{</span>
+                        <span class="nt">&quot;models&quot;</span><span class="p">:</span> <span class="s2">&quot;I-MISC&quot;</span>
+                    <span class="p">},</span>
+                    <span class="p">{</span>
+                        <span class="nt">&quot;can&quot;</span><span class="p">:</span> <span class="s2">&quot;O&quot;</span>
+                    <span class="p">},</span>
+                    <span class="p">{</span>
+                        <span class="nt">&quot;do&quot;</span><span class="p">:</span> <span class="s2">&quot;B-MISC&quot;</span>
+                    <span class="p">},</span>
+                    <span class="p">{</span>
+                        <span class="nt">&quot;NER&quot;</span><span class="p">:</span> <span class="s2">&quot;B-MISC&quot;</span>
+                    <span class="p">}</span>
+                <span class="p">]</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="nt">&quot;extra&quot;</span><span class="p">:</span> <span class="p">{},</span>
+        <span class="nt">&quot;features&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="nt">&quot;SentenceId&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+            <span class="nt">&quot;Words&quot;</span><span class="p">:</span> <span class="s2">&quot;DFFML models can do regression&quot;</span>
+        <span class="p">},</span>
+        <span class="nt">&quot;key&quot;</span><span class="p">:</span> <span class="s2">&quot;1&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;last_updated&quot;</span><span class="p">:</span> <span class="s2">&quot;2020-06-11T17:40:57Z&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;prediction&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="nt">&quot;Tag&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="nt">&quot;confidence&quot;</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
+                <span class="nt">&quot;value&quot;</span><span class="p">:</span> <span class="p">[</span>
+                    <span class="p">{</span>
+                        <span class="nt">&quot;DFFML&quot;</span><span class="p">:</span> <span class="s2">&quot;B-MISC&quot;</span>
+                    <span class="p">},</span>
+                    <span class="p">{</span>
+                        <span class="nt">&quot;models&quot;</span><span class="p">:</span> <span class="s2">&quot;I-MISC&quot;</span>
+                    <span class="p">},</span>
+                    <span class="p">{</span>
+                        <span class="nt">&quot;can&quot;</span><span class="p">:</span> <span class="s2">&quot;O&quot;</span>
+                    <span class="p">},</span>
+                    <span class="p">{</span>
+                        <span class="nt">&quot;do&quot;</span><span class="p">:</span> <span class="s2">&quot;B-MISC&quot;</span>
+                    <span class="p">},</span>
+                    <span class="p">{</span>
+                        <span class="nt">&quot;regression&quot;</span><span class="p">:</span> <span class="s2">&quot;I-MISC&quot;</span>
+                    <span class="p">}</span>
+                <span class="p">]</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">]</span>
 </pre></div>
 </div>
 <p>The model can be trained on large datasets to get the expected
@@ -2002,35 +2001,35 @@ Description about pretrianed models can be found <a class="reference external" h
 </pre></div>
 </div>
 <p>Output</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>[
-    {
-        &quot;extra&quot;: {},
-        &quot;features&quot;: {
-            &quot;answer_text&quot;: null,
-            &quot;answers&quot;: [
-                {
-                    &quot;answer_start&quot;: 0,
-                    &quot;text&quot;: &quot; &quot;
-                }
-            ],
-            &quot;context&quot;: &quot;Architecturally, the school has a Catholic character. Atop the Main Building&#39;s gold dome is a golden statue of the Virgin Mary. Immediately in front of the Main Building and facing it, is a copper statue of Christ with arms upraised with the legend &quot;Venite Ad Me Omnes&quot;. Next to the Main Building is the Basilica of the Sacred Heart. Immediately behind the basilica is the Grotto, a Marian place of prayer and reflection. It is a replica of the grotto at Lourdes, France where the Virgin Mary reputedly appeared to Saint Bernadette Soubirous in 1858. At the end of the main drive (and in a direct line that connects through 3 statues and the Gold Dome), is a simple, modern stone statue of Mary.&quot;,
-            &quot;is_impossible&quot;: false,
-            &quot;question&quot;: &quot;What sits on top of the Main Building at Notre Dame?&quot;,
-            &quot;start_pos_char&quot;: null,
-            &quot;title&quot;: &quot;University_of_Notre_Dame&quot;
-        },
-        &quot;key&quot;: &quot;5733be284776f4190066117e&quot;,
-        &quot;last_updated&quot;: &quot;2020-06-23T17:54:03Z&quot;,
-        &quot;prediction&quot;: {
-            &quot;Answer&quot;: {
-                &quot;confidence&quot;: NaN,
-                &quot;value&quot;: {
-                    &quot;5733be284776f4190066117e&quot;: &quot;a copper statue of Christ&quot;
-                }
-            }
-        }
-    }
-]
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">[</span>
+    <span class="p">{</span>
+        <span class="nt">&quot;extra&quot;</span><span class="p">:</span> <span class="p">{},</span>
+        <span class="nt">&quot;features&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="nt">&quot;answer_text&quot;</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
+            <span class="nt">&quot;answers&quot;</span><span class="p">:</span> <span class="p">[</span>
+                <span class="p">{</span>
+                    <span class="nt">&quot;answer_start&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+                    <span class="nt">&quot;text&quot;</span><span class="p">:</span> <span class="s2">&quot; &quot;</span>
+                <span class="p">}</span>
+            <span class="p">],</span>
+            <span class="nt">&quot;context&quot;</span><span class="p">:</span> <span class="s2">&quot;Architecturally, the school has a Catholic character. Atop the Main Building&#39;s gold dome is a golden statue of the Virgin Mary. Immediately in front of the Main Building and facing it, is a copper statue of Christ with arms upraised with the legend \&quot;Venite Ad Me Omnes\&quot;. Next to the Main Building is the Basilica of the Sacred Heart. Immediately behind the basilica is the Grotto, a Marian place of prayer and reflection. It is a replica of the grotto at Lourdes, France where the Virgin Mary reputedly appeared to Saint Bernadette Soubirous in 1858. At the end of the main drive (and in a direct line that connects through 3 statues and the Gold Dome), is a simple, modern stone statue of Mary.&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;is_impossible&quot;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+            <span class="nt">&quot;question&quot;</span><span class="p">:</span> <span class="s2">&quot;What sits on top of the Main Building at Notre Dame?&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;start_pos_char&quot;</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
+            <span class="nt">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;University_of_Notre_Dame&quot;</span>
+        <span class="p">},</span>
+        <span class="nt">&quot;key&quot;</span><span class="p">:</span> <span class="s2">&quot;5733be284776f4190066117e&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;last_updated&quot;</span><span class="p">:</span> <span class="s2">&quot;2020-06-23T17:54:03Z&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;prediction&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="nt">&quot;Answer&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="nt">&quot;confidence&quot;</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
+                <span class="nt">&quot;value&quot;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="nt">&quot;5733be284776f4190066117e&quot;</span><span class="p">:</span> <span class="s2">&quot;a copper statue of Christ&quot;</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">]</span>
 </pre></div>
 </div>
 <p>The model can be trained on large datasets to get the expected
@@ -3072,122 +3071,119 @@ Ensure that <cite>predict</cite> and <cite>accuracy</cite> for these algorithms 
 <span id="plugin-model-dffml-model-spacy-spacyner"></span><h3>spacyner<a class="headerlink" href="#spacyner" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>Implemented using <a class="reference external" href="https://spacy.io/usage/training">Spacy statistical models</a> .</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You must download <code class="docutils literal notranslate"><span class="pre">en_core_web_sm</span></code> before using this model</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python -m spacy download en_core_web_sm
+</pre></div>
+</div>
+</div>
 <p>First we create the training and testing datasets.</p>
 <p>Training data:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cat</span> <span class="o">&gt;</span> <span class="n">train</span><span class="o">.</span><span class="n">json</span> <span class="o">&lt;&lt;</span><span class="n">EOF</span>
-<span class="p">{</span>
-    <span class="s2">&quot;data&quot;</span><span class="p">:[</span>
+<p><strong>train.json</strong></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="nt">&quot;data&quot;</span><span class="p">:</span> <span class="p">[</span>
         <span class="p">{</span>
-            <span class="s2">&quot;sentence&quot;</span><span class="p">:</span> <span class="s2">&quot;I went to London and Berlin.&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;entities&quot;</span><span class="p">:[</span>
+            <span class="nt">&quot;sentence&quot;</span><span class="p">:</span> <span class="s2">&quot;I went to London and Berlin.&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;entities&quot;</span><span class="p">:</span> <span class="p">[</span>
                 <span class="p">{</span>
-                    <span class="s2">&quot;start&quot;</span><span class="p">:</span><span class="mi">10</span><span class="p">,</span>
-                    <span class="s2">&quot;end&quot;</span><span class="p">:</span> <span class="mi">16</span><span class="p">,</span>
-                    <span class="s2">&quot;tag&quot;</span><span class="p">:</span> <span class="s2">&quot;LOC&quot;</span>
+                    <span class="nt">&quot;start&quot;</span><span class="p">:</span><span class="mi">10</span><span class="p">,</span>
+                    <span class="nt">&quot;end&quot;</span><span class="p">:</span> <span class="mi">16</span><span class="p">,</span>
+                    <span class="nt">&quot;tag&quot;</span><span class="p">:</span> <span class="s2">&quot;LOC&quot;</span>
                 <span class="p">},</span>
                 <span class="p">{</span>
-                    <span class="s2">&quot;start&quot;</span><span class="p">:</span><span class="mi">21</span><span class="p">,</span>
-                    <span class="s2">&quot;end&quot;</span><span class="p">:</span> <span class="mi">27</span><span class="p">,</span>
-                    <span class="s2">&quot;tag&quot;</span><span class="p">:</span> <span class="s2">&quot;LOC&quot;</span>
+                    <span class="nt">&quot;start&quot;</span><span class="p">:</span><span class="mi">21</span><span class="p">,</span>
+                    <span class="nt">&quot;end&quot;</span><span class="p">:</span> <span class="mi">27</span><span class="p">,</span>
+                    <span class="nt">&quot;tag&quot;</span><span class="p">:</span> <span class="s2">&quot;LOC&quot;</span>
                 <span class="p">}</span>
-                <span class="p">]</span>
+            <span class="p">]</span>
         <span class="p">},</span>
         <span class="p">{</span>
-            <span class="s2">&quot;sentence&quot;</span><span class="p">:</span><span class="s2">&quot;Who is Alex?&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;entities&quot;</span><span class="p">:[</span>
+            <span class="nt">&quot;sentence&quot;</span><span class="p">:</span> <span class="s2">&quot;Who is Alex?&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;entities&quot;</span><span class="p">:</span> <span class="p">[</span>
                 <span class="p">{</span>
-                    <span class="s2">&quot;start&quot;</span><span class="p">:</span><span class="mi">7</span><span class="p">,</span>
-                    <span class="s2">&quot;end&quot;</span><span class="p">:</span> <span class="mi">11</span><span class="p">,</span>
-                    <span class="s2">&quot;tag&quot;</span><span class="p">:</span> <span class="s2">&quot;PERSON&quot;</span>
+                    <span class="nt">&quot;start&quot;</span><span class="p">:</span><span class="mi">7</span><span class="p">,</span>
+                    <span class="nt">&quot;end&quot;</span><span class="p">:</span> <span class="mi">11</span><span class="p">,</span>
+                    <span class="nt">&quot;tag&quot;</span><span class="p">:</span> <span class="s2">&quot;PERSON&quot;</span>
                 <span class="p">}</span>
             <span class="p">]</span>
         <span class="p">}</span>
-
     <span class="p">]</span>
 <span class="p">}</span>
-<span class="n">EOF</span>
 </pre></div>
 </div>
 <p>Testing data:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cat</span> <span class="o">&gt;</span> <span class="n">test</span><span class="o">.</span><span class="n">json</span> <span class="o">&lt;&lt;</span><span class="n">EOF</span>
-<span class="p">{</span>
-    <span class="s2">&quot;data&quot;</span><span class="p">:[</span>
+<p><strong>test.json</strong></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="nt">&quot;data&quot;</span><span class="p">:</span> <span class="p">[</span>
         <span class="p">{</span>
-            <span class="s2">&quot;sentence&quot;</span><span class="p">:</span><span class="s2">&quot;Alex went to London?&quot;</span>
+            <span class="nt">&quot;sentence&quot;</span><span class="p">:</span> <span class="s2">&quot;Alex went to London?&quot;</span>
         <span class="p">}</span>
-
     <span class="p">]</span>
 <span class="p">}</span>
-<span class="n">EOF</span>
 </pre></div>
 </div>
 <p>Train the model</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dffml</span> <span class="n">train</span> \
-  <span class="o">-</span><span class="n">model</span> <span class="n">spacyner</span> \
-  <span class="o">-</span><span class="n">sources</span> <span class="n">s</span><span class="o">=</span><span class="n">op</span> \
-  <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">opimp</span> <span class="n">model</span><span class="o">.</span><span class="n">spacy</span><span class="o">.</span><span class="n">dffml_model_spacy</span><span class="o">.</span><span class="n">ner</span><span class="o">.</span><span class="n">utils</span><span class="p">:</span><span class="n">parser</span> \
-  <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">args</span> <span class="n">train</span><span class="o">.</span><span class="n">json</span> <span class="kc">False</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">model_name_or_path</span> <span class="n">en_core_web_sm</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">directory</span> <span class="n">temp</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">n_iter</span> <span class="mi">5</span> \
-  <span class="o">-</span><span class="n">log</span> <span class="n">debug</span> 
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml train <span class="se">\</span>
+    -model spacyner <span class="se">\</span>
+    -sources <span class="nv">s</span><span class="o">=</span>op <span class="se">\</span>
+    -source-opimp dffml_model_spacy.ner.utils:parser <span class="se">\</span>
+    -source-args train.json False <span class="se">\</span>
+    -model-model_name_or_path en_core_web_sm <span class="se">\</span>
+    -model-directory temp <span class="se">\</span>
+    -model-n_iter <span class="m">5</span> <span class="se">\</span>
+    -log debug
 </pre></div>
 </div>
 <p>Assess the accuracy</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dffml</span> <span class="n">accuracy</span> \
-  <span class="o">-</span><span class="n">model</span> <span class="n">spacyner</span> \
-  <span class="o">-</span><span class="n">sources</span> <span class="n">s</span><span class="o">=</span><span class="n">op</span> \
-  <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">opimp</span> <span class="n">model</span><span class="o">.</span><span class="n">spacy</span><span class="o">.</span><span class="n">dffml_model_spacy</span><span class="o">.</span><span class="n">ner</span><span class="o">.</span><span class="n">utils</span><span class="p">:</span><span class="n">parser</span> \
-  <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">args</span> <span class="n">train</span><span class="o">.</span><span class="n">json</span> <span class="kc">False</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">model_name_or_path</span> <span class="n">en_core_web_sm</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">directory</span> <span class="n">temp</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">n_iter</span> <span class="mi">5</span> \
-  <span class="o">-</span><span class="n">log</span> <span class="n">debug</span> 
-</pre></div>
-</div>
-<p>Output</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mf">0.0</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml accuracy <span class="se">\</span>
+    -model spacyner <span class="se">\</span>
+    -sources <span class="nv">s</span><span class="o">=</span>op <span class="se">\</span>
+    -source-opimp dffml_model_spacy.ner.utils:parser <span class="se">\</span>
+    -source-args train.json False <span class="se">\</span>
+    -model-model_name_or_path en_core_web_sm <span class="se">\</span>
+    -model-directory temp <span class="se">\</span>
+    -model-n_iter <span class="m">5</span> <span class="se">\</span>
+    -log debug
+<span class="go">0.0</span>
 </pre></div>
 </div>
 <p>Make a prediction</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dffml</span> <span class="n">predict</span> <span class="nb">all</span> \
-  <span class="o">-</span><span class="n">model</span> <span class="n">spacyner</span> \
-  <span class="o">-</span><span class="n">sources</span> <span class="n">s</span><span class="o">=</span><span class="n">op</span> \
-  <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">opimp</span> <span class="n">model</span><span class="o">.</span><span class="n">spacy</span><span class="o">.</span><span class="n">dffml_model_spacy</span><span class="o">.</span><span class="n">ner</span><span class="o">.</span><span class="n">utils</span><span class="p">:</span><span class="n">parser</span> \
-  <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">args</span> <span class="n">test</span><span class="o">.</span><span class="n">json</span> <span class="kc">True</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">model_name_or_path</span> <span class="n">en_core_web_sm</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">directory</span> <span class="n">temp</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">n_iter</span> <span class="mi">5</span> \
-  <span class="o">-</span><span class="n">log</span> <span class="n">debug</span> 
-</pre></div>
-</div>
-<p>Output</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>[
-    {
-        &quot;extra&quot;: {},
-        &quot;features&quot;: {
-            &quot;entities&quot;: [],
-            &quot;sentence&quot;: &quot;Alex went to London?&quot;
-        },
-        &quot;key&quot;: 0,
-        &quot;last_updated&quot;: &quot;2020-07-27T16:26:18Z&quot;,
-        &quot;prediction&quot;: {
-            &quot;Answer&quot;: {
-                &quot;confidence&quot;: NaN,
-                &quot;value&quot;: [
-                    [
-                        &quot;Alex&quot;,
-                        &quot;PERSON&quot;
-                    ],
-                    [
-                        &quot;London&quot;,
-                        &quot;GPE&quot;
-                    ]
-                ]
-            }
-        }
-    }
-]
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml predict all <span class="se">\</span>
+    -model spacyner <span class="se">\</span>
+    -sources <span class="nv">s</span><span class="o">=</span>op <span class="se">\</span>
+    -source-opimp dffml_model_spacy.ner.utils:parser <span class="se">\</span>
+    -source-args test.json True <span class="se">\</span>
+    -model-model_name_or_path en_core_web_sm <span class="se">\</span>
+    -model-directory temp <span class="se">\</span>
+    -model-n_iter <span class="m">5</span> <span class="se">\</span>
+    -log debug
+<span class="go">[</span>
+<span class="go">    {</span>
+<span class="go">        &quot;extra&quot;: {},</span>
+<span class="go">        &quot;features&quot;: {</span>
+<span class="go">            &quot;entities&quot;: [],</span>
+<span class="go">            &quot;sentence&quot;: &quot;Alex went to London?&quot;</span>
+<span class="go">        },</span>
+<span class="go">        &quot;key&quot;: 0,</span>
+<span class="go">        &quot;last_updated&quot;: &quot;2020-07-27T16:26:18Z&quot;,</span>
+<span class="go">        &quot;prediction&quot;: {</span>
+<span class="go">            &quot;Answer&quot;: {</span>
+<span class="go">                &quot;confidence&quot;: null,</span>
+<span class="go">                &quot;value&quot;: [</span>
+<span class="go">                    [</span>
+<span class="go">                        &quot;Alex&quot;,</span>
+<span class="go">                        &quot;PERSON&quot;</span>
+<span class="go">                    ],</span>
+<span class="go">                    [</span>
+<span class="go">                        &quot;London&quot;,</span>
+<span class="go">                        &quot;GPE&quot;</span>
+<span class="go">                    ]</span>
+<span class="go">                ]</span>
+<span class="go">            }</span>
+<span class="go">        }</span>
+<span class="go">    }</span>
+<span class="go">]</span>
 </pre></div>
 </div>
 <p>The model can be trained on large datasets to get the expected

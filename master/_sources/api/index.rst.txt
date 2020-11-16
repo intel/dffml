@@ -15,6 +15,7 @@ API Reference
     log
     df/index
     util/index
+    secret/index
     source/index
     feature/index
     configloader/index

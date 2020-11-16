@@ -252,52 +252,97 @@
 
 <span class="sd">    The dataset used for training</span>
 
-<span class="sd">    .. literalinclude:: /../examples/model/slr/dataset.sh</span>
+<span class="sd">    **dataset.csv**</span>
+
+<span class="sd">    .. code-block::</span>
+<span class="sd">        :test:</span>
+<span class="sd">        :filepath: dataset.csv</span>
+
+<span class="sd">        f1,ans</span>
+<span class="sd">        0.1,0</span>
+<span class="sd">        0.7,1</span>
+<span class="sd">        0.6,1</span>
+<span class="sd">        0.2,0</span>
+<span class="sd">        0.8,1</span>
 
 <span class="sd">    Train the model</span>
 
-<span class="sd">    .. literalinclude:: /../examples/model/slr/train.sh</span>
+<span class="sd">    .. code-block:: console</span>
+<span class="sd">        :test:</span>
+
+<span class="sd">        $ dffml train \</span>
+<span class="sd">            -model slr \</span>
+<span class="sd">            -model-features f1:float:1 \</span>
+<span class="sd">            -model-predict ans:int:1 \</span>
+<span class="sd">            -model-directory tempdir \</span>
+<span class="sd">            -sources f=csv \</span>
+<span class="sd">            -source-filename dataset.csv</span>
 
 <span class="sd">    Assess the accuracy</span>
 
-<span class="sd">    .. literalinclude:: /../examples/model/slr/accuracy.sh</span>
-
-<span class="sd">    Output</span>
-
 <span class="sd">    .. code-block:: console</span>
+<span class="sd">        :test:</span>
 
+<span class="sd">        $ dffml accuracy \</span>
+<span class="sd">            -model slr \</span>
+<span class="sd">            -model-features f1:float:1 \</span>
+<span class="sd">            -model-predict ans:int:1 \</span>
+<span class="sd">            -model-directory tempdir \</span>
+<span class="sd">            -sources f=csv \</span>
+<span class="sd">            -source-filename dataset.csv</span>
 <span class="sd">        1.0</span>
 
 <span class="sd">    Make a prediction</span>
 
-<span class="sd">    .. literalinclude:: /../examples/model/slr/predict.sh</span>
+<span class="sd">    **predict.csv**</span>
 
-<span class="sd">    Output</span>
+<span class="sd">    .. code-block::</span>
+<span class="sd">        :test:</span>
+<span class="sd">        :filepath: predict.csv</span>
+
+<span class="sd">        f1</span>
+<span class="sd">        0.8</span>
 
 <span class="sd">    .. code-block:: console</span>
+<span class="sd">        :test:</span>
 
+<span class="sd">        $ dffml predict all \</span>
+<span class="sd">            -model slr \</span>
+<span class="sd">            -model-features f1:float:1 \</span>
+<span class="sd">            -model-predict ans:int:1 \</span>
+<span class="sd">            -model-directory tempdir \</span>
+<span class="sd">            -sources f=csv \</span>
+<span class="sd">            -source-filename predict.csv</span>
 <span class="sd">        [</span>
 <span class="sd">            {</span>
 <span class="sd">                &quot;extra&quot;: {},</span>
 <span class="sd">                &quot;features&quot;: {</span>
-<span class="sd">                    &quot;ans&quot;: 0,</span>
 <span class="sd">                    &quot;f1&quot;: 0.8</span>
 <span class="sd">                },</span>
-<span class="sd">                &quot;last_updated&quot;: &quot;2020-03-19T13:41:08Z&quot;,</span>
+<span class="sd">                &quot;key&quot;: &quot;0&quot;,</span>
+<span class="sd">                &quot;last_updated&quot;: &quot;2020-11-15T16:22:25Z&quot;,</span>
 <span class="sd">                &quot;prediction&quot;: {</span>
 <span class="sd">                    &quot;ans&quot;: {</span>
-<span class="sd">                        &quot;confidence&quot;: 1.0,</span>
+<span class="sd">                        &quot;confidence&quot;: 0.9355670103092784,</span>
 <span class="sd">                        &quot;value&quot;: 1</span>
 <span class="sd">                    }</span>
-<span class="sd">                },</span>
-<span class="sd">                &quot;key&quot;: &quot;0&quot;</span>
+<span class="sd">                }</span>
 <span class="sd">            }</span>
 <span class="sd">        ]</span>
 
 <span class="sd">    Example usage of Logistic Regression using Python</span>
 
-<span class="sd">    .. literalinclude:: /../examples/model/slr/slr.py</span>
+<span class="sd">    **slr.py**</span>
 
+<span class="sd">    .. literalinclude:: ../../examples/model/slr/slr.py</span>
+<span class="sd">        :test:</span>
+
+<span class="sd">    .. code-block:: console</span>
+<span class="sd">        :test:</span>
+
+<span class="sd">        $ python slr.py</span>
+<span class="sd">        Accuracy: 0.9355670103092784</span>
+<span class="sd">        {&#39;f1&#39;: 0.8, &#39;ans&#39;: 1}</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># The configuration class needs to be set as the CONFIG property</span>
     <span class="n">CONFIG</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">SLRModelConfig</span><span class="p">]</span> <span class="o">=</span> <span class="n">SLRModelConfig</span>
@@ -355,7 +400,11 @@
             <span class="c1"># Calculate y</span>
             <span class="n">y</span> <span class="o">=</span> <span class="n">m</span> <span class="o">*</span> <span class="n">x</span> <span class="o">+</span> <span class="n">b</span>
             <span class="c1"># Set the calculated value with the estimated accuracy</span>
-            <span class="n">record</span><span class="o">.</span><span class="n">predicted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">predict</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">)</span>
+            <span class="n">record</span><span class="o">.</span><span class="n">predicted</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">predict</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">predict</span><span class="o">.</span><span class="n">dtype</span><span class="p">(</span><span class="n">y</span><span class="p">),</span>
+                <span class="n">accuracy</span><span class="p">,</span>
+            <span class="p">)</span>
             <span class="c1"># Yield the record to the caller</span>
             <span class="k">yield</span> <span class="n">record</span></div>
 </pre></div>

@@ -228,11 +228,9 @@ via the HTTP service.</p>
 </div></blockquote>
 </li>
 <li><p><code class="docutils literal notranslate"><span class="pre">input_mode</span> <span class="pre">:</span> <span class="pre">str</span></code></p>
-<blockquote>
-<div><ul>
+<ul>
 <li><p>Mode according to which input data is passed to the dataflow, <code class="docutils literal notranslate"><span class="pre">default:default</span></code>.</p>
-<blockquote>
-<div><ul>
+<ul>
 <li><p><code class="docutils literal notranslate"><span class="pre">default</span></code></p>
 <blockquote>
 <div><p>Inputs are expected to be mapping of context to list of input
@@ -240,11 +238,10 @@ to definition mappings
 eg:</p>
 <blockquote>
 <div><div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="nt">&quot;insecure-package&quot;</span><span class="p">:</span>
-    <span class="p">[</span>
+    <span class="nt">&quot;insecure-package&quot;</span><span class="p">:</span> <span class="p">[</span>
         <span class="p">{</span>
-            <span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="s2">&quot;insecure-package&quot;</span><span class="p">,</span>
-            <span class="nt">&quot;definition&quot;</span><span class="p">:</span><span class="s2">&quot;package&quot;</span>
+            <span class="nt">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;insecure-package&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;definition&quot;</span><span class="p">:</span> <span class="s2">&quot;package&quot;</span>
         <span class="p">}</span>
     <span class="p">]</span>
 <span class="p">}</span>
@@ -255,15 +252,15 @@ eg:</p>
 </li>
 <li><p><code class="docutils literal notranslate"><span class="pre">preprocess:definition_name</span></code></p>
 <blockquote>
-<div><p>Input as whole is treated as value with the given definition after preprocessing.
-Supported preprocess tags : [json,text,bytes,stream]</p>
-</div></blockquote>
-</li>
+<div><ul class="simple">
+<li><p>Input as whole is treated as value with the given definition after preprocessing.
+Supported preprocess tags : [json,text,bytes,stream]</p></li>
 </ul>
 </div></blockquote>
 </li>
 </ul>
-</div></blockquote>
+</li>
+</ul>
 </li>
 <li><p><code class="docutils literal notranslate"><span class="pre">path</span> <span class="pre">:</span> <span class="pre">str</span></code></p>
 <blockquote>
@@ -280,26 +277,26 @@ Supported preprocess tags : [json,text,bytes,stream]</p>
 <div><ul>
 <li><p><code class="docutils literal notranslate"><span class="pre">bytes:content_type:OUTPUT_KEYS</span></code></p>
 <blockquote>
-<div><ul class="simple">
-<li><p>OUTPUT_KEYS are <code class="docutils literal notranslate"><span class="pre">.</span></code> seperated string which is used as keys to traverse the ouput of the flow.</p></li>
-</ul>
-<p>eg:</p>
+<div><ul>
+<li><p>OUTPUT_KEYS are <code class="docutils literal notranslate"><span class="pre">.</span></code> seperated string which is used as keys to traverse the ouput of the flow.
+eg:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">results</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">&quot;post_input&quot;</span><span class="p">:</span>
-        <span class="p">{</span>
-            <span class="s2">&quot;hex&quot;</span><span class="p">:</span><span class="sa">b</span><span class="s1">&#39;speak&#39;</span>
-        <span class="p">}</span>
+    <span class="s2">&quot;post_input&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;hex&quot;</span><span class="p">:</span> <span class="sa">b</span><span class="s1">&#39;speak&#39;</span>
     <span class="p">}</span>
+<span class="p">}</span>
 </pre></div>
 </div>
 <p>then <code class="docutils literal notranslate"><span class="pre">bytes:post_input.hex</span></code> will return <code class="docutils literal notranslate"><span class="pre">b'speak'</span></code>.</p>
+</li>
+</ul>
 </div></blockquote>
 </li>
 <li><p><code class="docutils literal notranslate"><span class="pre">text:OUTPUT_KEYS</span></code></p></li>
-<li><p><cite>json</cite></p>
+<li><p><code class="docutils literal notranslate"><span class="pre">json</span></code></p>
 <blockquote>
 <div><ul class="simple">
-<li><p>output of dataflow (Dict) is passes as json</p></li>
+<li><p>Output of dataflow (Dict) is passes as json</p></li>
 </ul>
 </div></blockquote>
 </li>
@@ -317,21 +314,20 @@ it, whilst scheduling to run the dataflow.
 Expected keys:</p>
 <blockquote>
 <div><ul class="simple">
-<li><p>status: HTTP status code for the response</p></li>
-<li><p>content_type: MIME type, if not given, determined</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">status</span></code>: HTTP status code for the response</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">content_type</span></code>: MIME type, if not given, determined
+from the presence of body/text/json</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">body/text/json</span></code>: One of this according to content_type</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">headers</span></code></p></li>
 </ul>
-<p>from the presence of body/text/json
-- body/text/json: One of this according to content_type
-- headers
-eg:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-    <span class="s2">&quot;status&quot;</span><span class="p">:</span> <span class="mi">200</span><span class="p">,</span>
-    <span class="s2">&quot;content_type&quot;</span><span class="p">:</span> <span class="s2">&quot;application/json&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="s2">&quot;ok&quot;</span><span class="p">},</span>
+</div></blockquote>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="nt">&quot;status&quot;</span><span class="p">:</span> <span class="mi">200</span><span class="p">,</span>
+    <span class="nt">&quot;content_type&quot;</span><span class="p">:</span> <span class="s2">&quot;application/json&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span><span class="nt">&quot;text&quot;</span><span class="p">:</span> <span class="s2">&quot;ok&quot;</span><span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
 </div>
-</div></blockquote>
 </li>
 </ul>
 </div></blockquote>

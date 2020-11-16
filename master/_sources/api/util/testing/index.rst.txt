@@ -7,3 +7,4 @@ Util Testing
 
     docs
     source
+    consoletest/index

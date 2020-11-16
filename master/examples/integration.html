@@ -549,7 +549,7 @@ function) as a source of records.</p>
 <p>We’ll be using the <code class="docutils literal notranslate"><span class="pre">dffml</span> <span class="pre">merge</span></code> command to take the search results from the
 GitHub API and putting them with their randomly assigned status into our
 database.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span>$ dffml merge github=op db=mysql \
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ dffml merge github=op db=mysql \
     -source-github-opimp github_search:get_repos \
     -source-github-args todo $GITHUB_TOKEN \
     -source-db-insecure \
@@ -707,7 +707,7 @@ range. This function / operation was installed when you installed the
 our dataset. The following command creates a <code class="docutils literal notranslate"><span class="pre">DataFlow</span></code> description of how
 all the operations within <code class="docutils literal notranslate"><span class="pre">dffml-feature-git</span></code> link together. The <code class="docutils literal notranslate"><span class="pre">DataFlow</span></code>
 is stored in the YAML file <strong>dataflow.yaml</strong>.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span>$ dffml dataflow create \
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ dffml dataflow create \
     -configloader yaml \
     -inputs \
       10=quarters \
