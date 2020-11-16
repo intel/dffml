@@ -154,6 +154,15 @@ class SpacyNERModel(Model):
     r"""
     Implemented using `Spacy statistical models <https://spacy.io/usage/training>`_ .
 
+    .. note::
+
+        You must download ``en_core_web_sm`` before using this model
+
+        .. code-block:: console
+            :test:
+
+            $ python -m spacy download en_core_web_sm
+
     First we create the training and testing datasets.
 
     Training data:
