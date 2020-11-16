@@ -84,7 +84,7 @@ RUN . "${CONDA_INSTALL_LOCATION}/miniconda${PYTHON_SHORT_VERSION}/bin/activate" 
 # .
 # docs
 RUN . "${CONDA_INSTALL_LOCATION}/miniconda${PYTHON_SHORT_VERSION}/bin/activate" base && \
-  if [ "x${PYTHON_SHORT_VERSION}" != "xpy38" ]; then conda install -y -c intel daal4py==2020.1 daal==2020.1; fi
+  if [ "x${PYTHON_SHORT_VERSION}" != "xpy38" ]; then conda install -y -c conda-forge daal4py==2020.3 daal==2020.3; fi
 
 # operations/nlp
 RUN . "${CONDA_INSTALL_LOCATION}/miniconda${PYTHON_SHORT_VERSION}/bin/activate" base && \
