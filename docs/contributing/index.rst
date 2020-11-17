@@ -18,6 +18,7 @@ or post in the `Gitter Chat <https://gitter.im/dffml/community>`_.
     git
     testing
     docs
+    consoletest
     debugging
     editors/index
     gsoc/index
