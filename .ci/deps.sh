@@ -132,11 +132,9 @@ if [[ "x${PLUGIN}" == "xmodel/vowpalWabbit" ]] || \
   set -e
 fi
 
-if ([[ "x${PLUGIN}" == "xmodel/daal4py" ]] || \
-    [[ "x${PLUGIN}" == "x." ]] || \
-    [[ "x${PLUGIN}" == "xdocs" ]]) &&
-  [[ "${python_version}" != "py38" ]]; then
-  # daal4py only supports ^ Python 3.7
+if [[ "x${PLUGIN}" == "xmodel/daal4py" ]] || \
+   [[ "x${PLUGIN}" == "x." ]] || \
+   [[ "x${PLUGIN}" == "xdocs" ]]; then
   set +e
   # See comment in vowpalWabbit about conda exit codes
   # See https://github.com/intel/dffml/issues/801 for discussion on pinning
