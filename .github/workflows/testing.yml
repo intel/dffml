@@ -258,7 +258,7 @@ jobs:
         pip install -U pip setuptools wheel
         pip install -e .[dev]
         pip install torch===1.7.0 torchvision===0.8.1 -f https://download.pytorch.org/whl/torch_stable.html
-        dffml service dev install -skip model/vowpalWabbit model/daal4py
+        dffml service dev install -skip model/daal4py
         # Remove dataclasses. See https://github.com/intel/dffml/issues/882
         python scripts/tempfix/pytorch/pytorch/46930.py
     - name: Test
