@@ -39,12 +39,7 @@ CORE_PLUGINS = [
     ("model", "spacy"),
 ]
 
-# Models which currently don't support Python 3.8
-if sys.version_info.major == 3 and sys.version_info.minor < 8:
-    CORE_PLUGINS += [
-        ("model", "daal4py"),
-    ]
-
+# Models which currently don't support Windows or MacOS
 if platform.system() not in {"Windows", "Darwin"}:
     CORE_PLUGINS += [
         ("model", "autosklearn"),
