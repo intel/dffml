@@ -74,43 +74,7 @@ def python_package_installed(module_name: str) -> bool:
 
 
 # Dependencies of plugins and how to check if they exist on the system or not
-
-
-def check_boost():
-    # TODO Implement check on Windows
-    if os.name == "nt":
-        return True
-    with tempfile.TemporaryDirectory() as tempdir:
-        c_file = pathlib.Path(tempdir, "main.c")
-        c_file.write_text(
-            inspect.cleandoc(
-                r"""
-            #include <boost/version.hpp>
-
-            int main() {
-                return 0;
-            }
-            """
-            )
-        )
-        return inpath("c++") and bool(
-            subprocess.call(
-                ["c++", str(c_file)],
-                cwd=tempdir,
-                stdout=subprocess.DEVNULL,
-                stderr=subprocess.DEVNULL,
-            )
-            == 0
-        )
-
-
 CORE_PLUGIN_DEPS = {
-    ("model", "vowpalWabbit"): {
-        "cmake": lambda: inpath("cmake"),
-        "boost": check_boost,
-    }
-    if not python_package_installed("vowpalwabbit")
-    else {},
     ("model", "autosklearn"): {
         "swig": lambda: inpath("swig"),
         "cython": lambda: inpath("cython"),
