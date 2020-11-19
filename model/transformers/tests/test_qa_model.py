@@ -7,6 +7,8 @@ from dffml.util.asynctestcase import AsyncTestCase
 from dffml.source.memory import MemorySource, MemorySourceConfig
 from dffml_model_transformers.qa.qa_model import QAModel, QAModelConfig
 
+from .defaults import CACHE_DIR
+
 
 class TestQAModel(AsyncTestCase):
     @classmethod
@@ -61,7 +63,7 @@ class TestQAModel(AsyncTestCase):
         cls.model = QAModel(
             QAModelConfig(
                 model_name_or_path="bert-base-cased",
-                cache_dir=cls.model_dir.name,
+                cache_dir=CACHE_DIR,
                 directory=cls.model_dir.name,
                 log_dir=cls.model_dir.name,
                 model_type="bert",

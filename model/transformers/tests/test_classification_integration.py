@@ -16,6 +16,8 @@ from dffml.util.os import chdir
 from dffml.service.dev import Develop
 from dffml.util.asynctestcase import IntegrationCLITestCase
 
+from .defaults import CACHE_DIR
+
 
 @contextlib.contextmanager
 def directory_with_csv_files():
@@ -103,7 +105,7 @@ class TestHFClassifier(IntegrationCLITestCase):
             "-model-directory",
             directory,
             "-model-cache_dir",
-            directory,
+            CACHE_DIR,
             "-model-logging_dir",
             directory,
             "-sources",
@@ -129,7 +131,7 @@ class TestHFClassifier(IntegrationCLITestCase):
             "-model-directory",
             directory,
             "-model-cache_dir",
-            directory,
+            CACHE_DIR,
             "-model-logging_dir",
             directory,
             "-sources",
@@ -157,7 +159,7 @@ class TestHFClassifier(IntegrationCLITestCase):
                 "-model-directory",
                 directory,
                 "-model-cache_dir",
-                directory,
+                CACHE_DIR,
                 "-model-logging_dir",
                 directory,
                 "-sources",
@@ -201,7 +203,7 @@ class TestHFClassifier(IntegrationCLITestCase):
                 "-config-model-directory",
                 directory,
                 "-config-model-cache_dir",
-                directory,
+                CACHE_DIR,
                 "-config-model-logging_dir",
                 directory,
                 "-config-model-clstype",
@@ -222,7 +224,7 @@ class TestHFClassifier(IntegrationCLITestCase):
             for idx, word in enumerate(cmnd):
                 cmnd[idx] = word.strip()
             cmnd[cmnd.index("-model-directory") + 1] = directory
-            cmnd[cmnd.index("-model-cache_dir") + 1] = directory
+            cmnd[cmnd.index("-model-cache_dir") + 1] = CACHE_DIR
             cmnd[cmnd.index("-model-logging_dir") + 1] = directory
             return cmnd
 

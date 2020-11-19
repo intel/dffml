@@ -17,6 +17,8 @@ from dffml.util.os import chdir
 from dffml.service.dev import Develop
 from dffml.util.asynctestcase import IntegrationCLITestCase
 
+from .defaults import CACHE_DIR
+
 
 @contextlib.contextmanager
 def directory_with_csv_files():
@@ -151,7 +153,7 @@ class TestQAModel(IntegrationCLITestCase):
             "-model-directory",
             directory,
             "-model-cache_dir",
-            directory,
+            CACHE_DIR,
             "-model-log_dir",
             directory,
         )
@@ -178,7 +180,7 @@ class TestQAModel(IntegrationCLITestCase):
             "-model-directory",
             directory,
             "-model-cache_dir",
-            directory,
+            CACHE_DIR,
             "-model-log_dir",
             directory,
         )
@@ -207,7 +209,7 @@ class TestQAModel(IntegrationCLITestCase):
                 "-model-directory",
                 directory,
                 "-model-cache_dir",
-                directory,
+                CACHE_DIR,
                 "-model-log_dir",
                 directory,
             )
@@ -251,7 +253,7 @@ class TestQAModel(IntegrationCLITestCase):
                 "-config-model-directory",
                 directory,
                 "-config-model-cache_dir",
-                directory,
+                CACHE_DIR,
                 "-config-model-log_dir",
                 directory,
                 "-config-model-save_steps",
@@ -275,7 +277,7 @@ class TestQAModel(IntegrationCLITestCase):
             for idx, word in enumerate(cmnd):
                 cmnd[idx] = word.strip()
             cmnd[cmnd.index("-model-directory") + 1] = directory
-            cmnd[cmnd.index("-model-cache_dir") + 1] = directory
+            cmnd[cmnd.index("-model-cache_dir") + 1] = CACHE_DIR
             return cmnd
 
         with directory_with_csv_files() as tempdir:

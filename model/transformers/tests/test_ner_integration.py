@@ -9,6 +9,8 @@ from dffml.df.types import DataFlow
 from dffml.service.dev import Develop
 from dffml.util.asynctestcase import IntegrationCLITestCase
 
+from .defaults import CACHE_DIR
+
 
 class TestNER(IntegrationCLITestCase):
     async def test_run(self):
@@ -62,7 +64,6 @@ class TestNER(IntegrationCLITestCase):
             writer.writerows(PREDICT_DATA)
 
         directory = self.mktempdir()
-        cache_dir = self.mktempdir()
 
         # Train the model
         await CLI.cli(
@@ -80,7 +81,7 @@ class TestNER(IntegrationCLITestCase):
             "-model-directory",
             directory,
             "-model-cache_dir",
-            cache_dir,
+            CACHE_DIR,
             "-model-no_cuda",
             "-sources",
             "training_data=csv",
@@ -105,7 +106,7 @@ class TestNER(IntegrationCLITestCase):
             "-model-directory",
             directory,
             "-model-cache_dir",
-            cache_dir,
+            CACHE_DIR,
             "-model-no_cuda",
             "-sources",
             "test_data=csv",
@@ -132,7 +133,7 @@ class TestNER(IntegrationCLITestCase):
                 "-model-directory",
                 directory,
                 "-model-cache_dir",
-                cache_dir,
+                CACHE_DIR,
                 "-model-no_cuda",
                 "-sources",
                 "predict_data=csv",
@@ -174,7 +175,7 @@ class TestNER(IntegrationCLITestCase):
                 "-config-model-directory",
                 directory,
                 "-config-model-cache_dir",
-                cache_dir,
+                CACHE_DIR,
                 "-config-model-no_cuda",
             )
             self.assertIn("model_predictions", results)
