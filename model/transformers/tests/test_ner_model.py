@@ -10,6 +10,8 @@ from dffml.feature import Feature
 from dffml.source.memory import MemorySource, MemorySourceConfig
 from dffml_model_transformers.ner.ner_model import NERModel, NERModelConfig
 
+from .defaults import CACHE_DIR
+
 
 class TestNERModel(AsyncTestCase):
     @classmethod
@@ -51,7 +53,6 @@ class TestNERModel(AsyncTestCase):
         )
 
         cls.model_dir = tempfile.TemporaryDirectory()
-        cls.cache_dir = tempfile.TemporaryDirectory()
         cls.model = NERModel(
             NERModelConfig(
                 sid=Feature("sentence_id", int, 1),
@@ -60,14 +61,13 @@ class TestNERModel(AsyncTestCase):
                 directory=cls.model_dir.name,
                 model_name_or_path="bert-base-cased",
                 no_cuda=True,
-                cache_dir=cls.cache_dir.name,
+                cache_dir=CACHE_DIR,
             )
         )
 
     @classmethod
     def tearDownClass(cls):
         cls.model_dir.cleanup()
-        cls.cache_dir.cleanup()
 
     async def test_00_train(self):
         async with self.train_sources as sources, self.model as model:

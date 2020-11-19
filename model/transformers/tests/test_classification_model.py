@@ -12,6 +12,8 @@ from dffml_model_transformers.classification.classification_model import (
     HFClassificationModelConfig,
 )
 
+from .defaults import CACHE_DIR
+
 
 class TestHFClassificationModel(AsyncTestCase):
     @classmethod
@@ -31,7 +33,7 @@ class TestHFClassificationModel(AsyncTestCase):
         cls.model = HFClassificationModel(
             HFClassificationModelConfig(
                 model_name_or_path="bert-base-cased",
-                cache_dir=cls.model_dir.name,
+                cache_dir=CACHE_DIR,
                 logging_dir=cls.model_dir.name,
                 directory=cls.model_dir.name,
                 features=cls.features,
