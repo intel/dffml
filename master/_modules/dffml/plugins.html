@@ -266,43 +266,7 @@
 
 
 <span class="c1"># Dependencies of plugins and how to check if they exist on the system or not</span>
-
-
-<span class="k">def</span> <span class="nf">check_boost</span><span class="p">():</span>
-    <span class="c1"># TODO Implement check on Windows</span>
-    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;nt&quot;</span><span class="p">:</span>
-        <span class="k">return</span> <span class="kc">True</span>
-    <span class="k">with</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">TemporaryDirectory</span><span class="p">()</span> <span class="k">as</span> <span class="n">tempdir</span><span class="p">:</span>
-        <span class="n">c_file</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">tempdir</span><span class="p">,</span> <span class="s2">&quot;main.c&quot;</span><span class="p">)</span>
-        <span class="n">c_file</span><span class="o">.</span><span class="n">write_text</span><span class="p">(</span>
-            <span class="n">inspect</span><span class="o">.</span><span class="n">cleandoc</span><span class="p">(</span>
-                <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">            #include &lt;boost/version.hpp&gt;</span>
-
-<span class="sd">            int main() {</span>
-<span class="sd">                return 0;</span>
-<span class="sd">            }</span>
-<span class="sd">            &quot;&quot;&quot;</span>
-            <span class="p">)</span>
-        <span class="p">)</span>
-        <span class="k">return</span> <span class="n">inpath</span><span class="p">(</span><span class="s2">&quot;c++&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">bool</span><span class="p">(</span>
-            <span class="n">subprocess</span><span class="o">.</span><span class="n">call</span><span class="p">(</span>
-                <span class="p">[</span><span class="s2">&quot;c++&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">c_file</span><span class="p">)],</span>
-                <span class="n">cwd</span><span class="o">=</span><span class="n">tempdir</span><span class="p">,</span>
-                <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">DEVNULL</span><span class="p">,</span>
-                <span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">DEVNULL</span><span class="p">,</span>
-            <span class="p">)</span>
-            <span class="o">==</span> <span class="mi">0</span>
-        <span class="p">)</span>
-
-
 <span class="n">CORE_PLUGIN_DEPS</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="p">(</span><span class="s2">&quot;model&quot;</span><span class="p">,</span> <span class="s2">&quot;vowpalWabbit&quot;</span><span class="p">):</span> <span class="p">{</span>
-        <span class="s2">&quot;cmake&quot;</span><span class="p">:</span> <span class="k">lambda</span><span class="p">:</span> <span class="n">inpath</span><span class="p">(</span><span class="s2">&quot;cmake&quot;</span><span class="p">),</span>
-        <span class="s2">&quot;boost&quot;</span><span class="p">:</span> <span class="n">check_boost</span><span class="p">,</span>
-    <span class="p">}</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">python_package_installed</span><span class="p">(</span><span class="s2">&quot;vowpalwabbit&quot;</span><span class="p">)</span>
-    <span class="k">else</span> <span class="p">{},</span>
     <span class="p">(</span><span class="s2">&quot;model&quot;</span><span class="p">,</span> <span class="s2">&quot;autosklearn&quot;</span><span class="p">):</span> <span class="p">{</span>
         <span class="s2">&quot;swig&quot;</span><span class="p">:</span> <span class="k">lambda</span><span class="p">:</span> <span class="n">inpath</span><span class="p">(</span><span class="s2">&quot;swig&quot;</span><span class="p">),</span>
         <span class="s2">&quot;cython&quot;</span><span class="p">:</span> <span class="k">lambda</span><span class="p">:</span> <span class="n">inpath</span><span class="p">(</span><span class="s2">&quot;cython&quot;</span><span class="p">),</span>
