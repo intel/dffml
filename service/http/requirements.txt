@@ -1,0 +1,2 @@
+aiohttp>=3.5.4
+aiohttp_cors>=0.7.0

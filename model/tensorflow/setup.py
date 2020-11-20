@@ -1,6 +1,7 @@
 import os
 import sys
 import ast
+from pathlib import Path
 from io import open
 
 from setuptools import find_packages, setup
@@ -19,7 +20,7 @@ with open(os.path.join(self_path, "README.md"), "r", encoding="utf-8") as f:
     readme = f.read()
 
 # See https://github.com/intel/dffml/issues/816
-INSTALL_REQUIRES = ["tensorflow>=2.0.0,<2.3.0"] + (
+INSTALL_REQUIRES = [] + (
     ["dffml>=0.3.7"]
     if not any(
         list(
@@ -38,6 +39,12 @@ INSTALL_REQUIRES = ["tensorflow>=2.0.0,<2.3.0"] + (
     )
     else []
 )
+
+REQUIREMENTS_TXT_PATH = Path(self_path, "requirements.txt")
+if REQUIREMENTS_TXT_PATH.is_file():
+    INSTALL_REQUIRES += list(
+        map(lambda i: i.strip(), REQUIREMENTS_TXT_PATH.read_text().split("\n"))
+    )
 
 setup(
     name="dffml-model-tensorflow",
