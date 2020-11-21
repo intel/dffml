@@ -19,6 +19,12 @@ ENV CONDA_INSTALL_LOCATION ${CONDA_INSTALL_LOCATION}
 # Set current working directory
 WORKDIR /usr/src/dffml
 
+# Update existing packages
+RUN apt-get update && \
+  apt-get upgrade -y && \
+  apt-get clean && \
+  rm -rf /var/lib/apt/lists/*
+
 # ==========================  END  DOCKER SETUP ================================
 
 
