@@ -231,12 +231,7 @@
     <span class="p">(</span><span class="s2">&quot;model&quot;</span><span class="p">,</span> <span class="s2">&quot;spacy&quot;</span><span class="p">),</span>
 <span class="p">]</span>
 
-<span class="c1"># Models which currently don&#39;t support Python 3.8</span>
-<span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span><span class="o">.</span><span class="n">major</span> <span class="o">==</span> <span class="mi">3</span> <span class="ow">and</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span><span class="o">.</span><span class="n">minor</span> <span class="o">&lt;</span> <span class="mi">8</span><span class="p">:</span>
-    <span class="n">CORE_PLUGINS</span> <span class="o">+=</span> <span class="p">[</span>
-        <span class="p">(</span><span class="s2">&quot;model&quot;</span><span class="p">,</span> <span class="s2">&quot;daal4py&quot;</span><span class="p">),</span>
-    <span class="p">]</span>
-
+<span class="c1"># Models which currently don&#39;t support Windows or MacOS</span>
 <span class="k">if</span> <span class="n">platform</span><span class="o">.</span><span class="n">system</span><span class="p">()</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">&quot;Windows&quot;</span><span class="p">,</span> <span class="s2">&quot;Darwin&quot;</span><span class="p">}:</span>
     <span class="n">CORE_PLUGINS</span> <span class="o">+=</span> <span class="p">[</span>
         <span class="p">(</span><span class="s2">&quot;model&quot;</span><span class="p">,</span> <span class="s2">&quot;autosklearn&quot;</span><span class="p">),</span>
