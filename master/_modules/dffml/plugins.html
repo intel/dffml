@@ -229,6 +229,7 @@
     <span class="p">(</span><span class="s2">&quot;model&quot;</span><span class="p">,</span> <span class="s2">&quot;xgboost&quot;</span><span class="p">),</span>
     <span class="p">(</span><span class="s2">&quot;model&quot;</span><span class="p">,</span> <span class="s2">&quot;pytorch&quot;</span><span class="p">),</span>
     <span class="p">(</span><span class="s2">&quot;model&quot;</span><span class="p">,</span> <span class="s2">&quot;spacy&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;model&quot;</span><span class="p">,</span> <span class="s2">&quot;daal4py&quot;</span><span class="p">),</span>
 <span class="p">]</span>
 
 <span class="c1"># Models which currently don&#39;t support Windows or MacOS</span>
@@ -271,12 +272,10 @@
     <span class="k">else</span> <span class="p">{},</span>
 <span class="p">}</span>
 
-<span class="c1"># Plugins which currently don&#39;t support Python 3.8</span>
-<span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span><span class="o">.</span><span class="n">major</span> <span class="o">==</span> <span class="mi">3</span> <span class="ow">and</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span><span class="o">.</span><span class="n">minor</span> <span class="o">&lt;</span> <span class="mi">8</span><span class="p">:</span>
-    <span class="n">CORE_PLUGIN_DEPS</span><span class="p">[(</span><span class="s2">&quot;model&quot;</span><span class="p">,</span> <span class="s2">&quot;daal4py&quot;</span><span class="p">)]</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="c1"># Must be installed already via conda, do not provide a pypi package yet</span>
-        <span class="s2">&quot;daal4py&quot;</span><span class="p">:</span> <span class="k">lambda</span><span class="p">:</span> <span class="n">python_package_installed</span><span class="p">(</span><span class="s2">&quot;daal4py&quot;</span><span class="p">)</span>
-    <span class="p">}</span>
+<span class="n">CORE_PLUGIN_DEPS</span><span class="p">[(</span><span class="s2">&quot;model&quot;</span><span class="p">,</span> <span class="s2">&quot;daal4py&quot;</span><span class="p">)]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="c1"># Must be installed already via conda, do not provide a pypi package yet</span>
+    <span class="s2">&quot;daal4py&quot;</span><span class="p">:</span> <span class="k">lambda</span><span class="p">:</span> <span class="n">python_package_installed</span><span class="p">(</span><span class="s2">&quot;daal4py&quot;</span><span class="p">)</span>
+<span class="p">}</span>
 
 <span class="c1"># All packages under configloader/ are really named dffml-config-{name}</span>
 <span class="n">ALTERNATIVES</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;configloader&quot;</span><span class="p">:</span> <span class="s2">&quot;config&quot;</span><span class="p">}</span>
