@@ -22,7 +22,7 @@ DFFML aims to be the easiest and most convenient way to use Machine Learning.
 - If you want finer grained control over the model, you can easily do so by
   implementing your own model plugin.
 
-- We make it easy to use and deploy your models.
+- Model usage and deployment is simplified.
 
 - We provide a directed graph concurrent execution environment with managed
   locking which we call DataFlows.
