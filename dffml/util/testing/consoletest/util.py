@@ -106,6 +106,9 @@ def code_block_to_dict(
         for command in node["consoletest_commands"]:
             command.poll_until = bool("poll-until" in options)
             command.compare_output = options.get("compare-output", None)
+            command.compare_output_imports = options.get(
+                "compare-output-imports", None
+            )
             if command.poll_until and command.compare_output is None:
                 raise ValueError(
                     "Cannot set poll-until without compare-output"
@@ -128,6 +131,7 @@ CODE_BLOCK_OPTION_SPEC = {
     "replace": "unchanged_required",
     "poll-until": "flag",
     "compare-output": "unchanged_required",
+    "compare-output-imports": "unchanged_required",
     "ignore-errors": "flag",
     "daemon": "unchanged_required",
     "test": "flag",
