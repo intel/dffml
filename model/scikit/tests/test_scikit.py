@@ -3,6 +3,7 @@ import tempfile
 import numpy as np
 
 from dffml.record import Record
+from dffml.high_level import accuracy
 from dffml.source.source import Sources
 from dffml.source.memory import MemorySource, MemorySourceConfig
 from dffml.feature import Feature, Features
@@ -128,15 +129,13 @@ class TestScikitModel:
                 await mctx.train(sctx)
 
     async def test_01_accuracy(self):
-        async with self.sources as sources, self.model as model, self.scorer as scorer:
-            async with sources() as sctx, model() as mctx, scorer() as actx:
-                res = await mctx.accuracy(sctx, actx)
-                if self.MODEL_TYPE is "CLUSTERING":
-                    self.assertTrue(res is not None)
-                elif self.MODEL_TYPE == "REGRESSION":
-                    self.assertTrue(0 <= res <= float("inf"))
-                else:
-                    self.assertTrue(0 <= res <= 1)
+        res = await accuracy(self.model, self.scorer, self.sources)
+        if self.MODEL_TYPE == "CLUSTERING":
+            self.assertTrue(res is not None)
+        elif self.MODEL_TYPE == "REGRESSION":
+            self.assertTrue(0 <= res <= float("inf"))
+        else:
+            self.assertTrue(0 <= res <= 1)
 
     async def test_02_predict(self):
         async with self.sources as sources, self.model as model:
