@@ -14,6 +14,4 @@ common.KWARGS["entry_points"] = {
     "dffml.source": [f"mysql = {common.IMPORT_NAME}.source:MySQLSource"],
 }
 
-common.KWARGS["tests_require"] = ["docker>=4.0.2"]
-
 setup(**common.KWARGS)

@@ -32,6 +32,15 @@ spec.loader.exec_module(plugins)
 with open("README.md", "r", encoding="utf-8") as f:
     README = f.read()
 
+REQUIREMENTS_DEV_TXT_PATH = pathlib.Path("requirements-dev.txt")
+if REQUIREMENTS_DEV_TXT_PATH.is_file():
+    DEV_REQUIRES = list(
+        map(
+            lambda i: i.strip(),
+            REQUIREMENTS_DEV_TXT_PATH.read_text().split("\n"),
+        )
+    )
+
 setup(
     name="dffml",
     version=VERSION,
@@ -60,20 +69,7 @@ setup(
     include_package_data=True,
     zip_safe=False,
     extras_require={
-        "dev": [
-            "coverage",
-            "codecov",
-            "sphinx>=2.4.4",
-            "sphinx-tabs>=1.3.0",
-            "sphinx_rtd_theme",
-            "recommonmark",
-            "black==19.10b0",
-            "jsbeautifier",
-            "twine",
-            # Test requirements
-            "httptest>=0.0.15",
-            "Pillow>=7.1.2",
-        ],
+        "dev": DEV_REQUIRES,
         **plugins.PACKAGE_NAMES_BY_PLUGIN_INSTALLABLE,
     },
     entry_points={

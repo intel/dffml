@@ -55,6 +55,15 @@ if REQUIREMENTS_TXT_PATH.is_file():
         map(lambda i: i.strip(), REQUIREMENTS_TXT_PATH.read_text().split("\n"))
     )
 
+REQUIREMENTS_DEV_TXT_PATH = Path(SELF_PATH, "requirements-dev.txt")
+if REQUIREMENTS_DEV_TXT_PATH.is_file():
+    TESTS_REQUIRE = list(
+        map(
+            lambda i: i.strip(),
+            REQUIREMENTS_DEV_TXT_PATH.read_text().split("\n"),
+        )
+    )
+
 KWARGS = dict(
     name=NAME,
     version=VERSION,
@@ -80,5 +89,6 @@ KWARGS = dict(
         "Programming Language :: Python :: Implementation :: PyPy",
     ],
     install_requires=INSTALL_REQUIRES,
+    tests_require=TESTS_REQUIRE,
     packages=find_packages(),
 )
