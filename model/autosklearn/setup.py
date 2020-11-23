@@ -9,7 +9,6 @@ spec = importlib.util.spec_from_file_location(
 common = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(common)
 
-common.KWARGS["install_requires"] += ["auto-sklearn>=0.10.0"]
 common.KWARGS["entry_points"] = {
     "dffml.model": [
         "autoclassifier = dffml_model_autosklearn.autoclassifier:AutoSklearnClassifierModel",
