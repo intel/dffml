@@ -31,3 +31,4 @@ docs/changelog.md
 docs/shouldi.md
 docs/contributing/consoletest.md
 /consoletest/
+tests/service/logs.txt
