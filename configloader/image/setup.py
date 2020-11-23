@@ -9,11 +9,6 @@ spec = importlib.util.spec_from_file_location(
 common = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(common)
 
-common.KWARGS["install_requires"] += [
-    "opencv-python>=4.2.0.34",
-    # See https://github.com/intel/dffml/issues/816
-    "numpy>=1.16.2,<1.19.0",
-]
 common.KWARGS["entry_points"] = {
     "dffml.configloader": [
         f"png = {common.IMPORT_NAME}.configloader:PNGConfigLoader",

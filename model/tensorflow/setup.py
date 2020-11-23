@@ -46,6 +46,15 @@ if REQUIREMENTS_TXT_PATH.is_file():
         map(lambda i: i.strip(), REQUIREMENTS_TXT_PATH.read_text().split("\n"))
     )
 
+REQUIREMENTS_DEV_TXT_PATH = Path(self_path, "requirements-dev.txt")
+if REQUIREMENTS_DEV_TXT_PATH.is_file():
+    TESTS_REQUIRE = list(
+        map(
+            lambda i: i.strip(),
+            REQUIREMENTS_DEV_TXT_PATH.read_text().split("\n"),
+        )
+    )
+
 setup(
     name="dffml-model-tensorflow",
     version=version,
@@ -70,11 +79,7 @@ setup(
         "Programming Language :: Python :: Implementation :: PyPy",
     ],
     install_requires=INSTALL_REQUIRES,
-    tests_require=[
-        # See https://github.com/intel/dffml/issues/737
-        "scipy==1.4.1",
-        "scikit-learn>=0.21.2",
-    ],
+    tests_require=TESTS_REQUIRE,
     packages=find_packages(),
     entry_points={
         "dffml.model": [
