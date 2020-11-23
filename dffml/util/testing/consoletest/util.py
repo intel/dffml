@@ -16,6 +16,7 @@ from typing import (
     Optional,
 )
 
+from .parser import Node
 from .commands import build_command, parse_commands
 
 
@@ -132,3 +133,24 @@ CODE_BLOCK_OPTION_SPEC = {
     "test": "flag",
     "stdin": "unchanged_required",
 }
+
+
+def nodes_to_test(nodes: List[Node]) -> List[Node]:
+    """
+    List of nodes to subset of that list which have the ``:test::`` option.
+    """
+    subset_nodes = []
+
+    for node in nodes:
+        if not node.options.get("test", False):
+            continue
+        if node.directive == "code-block":
+            subset_nodes.append(
+                code_block_to_dict(node.content, node.options, node=node.node)
+            )
+        elif node.directive == "literalinclude":
+            subset_nodes.append(
+                literalinclude_to_dict(node.content, node.options, node.node)
+            )
+
+    return subset_nodes
