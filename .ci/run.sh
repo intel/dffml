@@ -40,9 +40,6 @@ function run_plugin() {
   # Install plugin
   "${PYTHON}" -m pip install --use-feature=2020-resolver -U -e .
 
-  # Report installed versions of packages
-  "${PYTHON}" -m pip freeze
-
   # Run the tests but not the long documentation consoletests
   "${PYTHON}" -u setup.py test
 
@@ -75,6 +72,8 @@ function run_plugin() {
     "${PYTHON}" -m dffml service dev install
     # Remove dataclasses. See https://github.com/intel/dffml/issues/882
     "${PYTHON}" "${TEMPFIX}/pytorch/pytorch/46930.py"
+    # Report installed versions of packages
+    "${PYTHON}" -m pip freeze
 
     # Run the examples
     run_plugin_examples
