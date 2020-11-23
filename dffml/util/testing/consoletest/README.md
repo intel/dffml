@@ -91,7 +91,7 @@ Content of command can be replaced using the `:replace:` option. Usually you'll
 want to use this if something you need in the example relies on a value within
 the `ctx` dictionary.
 
-```console
+```rst
 .. code-block:: console
     :test:
     :replace: import os; cmds[-1][-1] = os.path.join(ctx["cwd"], cmds[-1][-1])
