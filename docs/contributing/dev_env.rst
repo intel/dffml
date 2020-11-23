@@ -25,25 +25,43 @@ unless you uninstall it first!
 
     $ python3 -m pip uninstall dffml
 
-Once you're sure DFFML is not installed on your system, install it in
+Once you're sure DFFML is not installed on your system, you'll reinstall it in
 development mode.
-
-Installing to your home directory is the recommended installation method. To do
-this we use the ``--prefix=~/.local`` flag.
 
 .. note::
 
-    ``pip`` sometimes gets confused about the ``--user`` flag (and will blow up
-    in your face if you try to pass it). So we use the ``--prefix=~/.local``
-    flag, which has the same effect but should always work.
+   There are two versions of this documentation.
+
+   The version you want is https://intel.github.io/dffml/master/ if you are
+   working on DFFML itself.
+
+   When working from the Git version of DFFML, the documentation URL you're
+   looking at should say ``/master/`` in the URL. The URL you are currently on
+   should be https://intel.github.io/dffml/master/contributing/dev_env.html
+
+   This docs without ``/master/`` in the URL are built from the latest release.
+
+   The docs with ``/master/`` in the URL are built from the *master* branch.
+   The master branch is what you get when you clone the Git repo, which we're
+   about to do.
+
+Installing to your home directory will reduce permissions issues. To do
+this we use the ``--prefix=~/.local`` flag. ``pip`` sometimes gets confused
+about the ``--user`` flag (and will blow up in your face if you try to pass it).
+So we use the ``--prefix=~/.local`` flag, which has the same effect but should
+always work.
 
 ``[dev]`` tells ``pip`` to install the dependencies you'll need to do
 development work on DFFML (such as documentation generation utilities).
+
+Before installing DFFML, we should update Python's package installation tools to
+their latest versions (``pip setuptools wheel``).
 
 .. code-block:: console
 
     $ git clone https://github.com/intel/dffml
     $ cd dffml
+    $ python3 -m pip install -U pip setuptools wheel
     $ python3 -m pip install --prefix=~/.local -e .[dev]
 
 Verify you can use ``dffml`` from the command line.
