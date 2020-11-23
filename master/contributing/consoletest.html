@@ -297,12 +297,12 @@ currently not supported.</p>
 <p>Content of command can be replaced using the <code class="docutils literal notranslate"><span class="pre">:replace:</span></code> option. Usually you’ll
 want to use this if something you need in the example relies on a value within
 the <code class="docutils literal notranslate"><span class="pre">ctx</span></code> dictionary.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">.. code-block:: console</span>
-<span class="go">    :test:</span>
-<span class="go">    :replace: import os; cmds[-1][-1] = os.path.join(ctx[&quot;cwd&quot;], cmds[-1][-1])</span>
+<div class="highlight-rst notranslate"><div class="highlight"><pre><span></span><span class="p">..</span> <span class="ow">code-block</span><span class="p">::</span> console
+    <span class="nc">:test:</span>
+    <span class="nc">:replace:</span> import os; cmds[-1][-1] = os.path.join(ctx[&quot;cwd&quot;], cmds[-1][-1])
 
-<span class="gp">    $</span> ls -lAFR
-<span class="gp">    $</span> chmod <span class="m">755</span> cgi-bin/api.py
+    $ ls -lAFR
+    $ chmod 755 cgi-bin/api.py
 </pre></div>
 </div>
 <p>Contents of <code class="docutils literal notranslate"><span class="pre">code-block</span></code> directives can also be written to files</p>
