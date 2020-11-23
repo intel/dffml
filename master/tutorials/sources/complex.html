@@ -439,14 +439,11 @@ so.</p>
 <h2>Register your source<a class="headerlink" href="#register-your-source" title="Permalink to this headline">¶</a></h2>
 <p>Modify the <strong>setup.py</strong> file and change the <code class="docutils literal notranslate"><span class="pre">dffml.source</span></code> <code class="docutils literal notranslate"><span class="pre">entrypoint</span></code>’s
 to point to your new source class (not the one ending in <code class="docutils literal notranslate"><span class="pre">Context</span></code>).</p>
-<p>We also need to add <code class="docutils literal notranslate"><span class="pre">aiosqlite</span></code> to our list of dependencies.</p>
 <div class="highlight-udiff notranslate"><div class="highlight"><pre><span></span><span class="gd">--- ./setup.py</span>
 <span class="gi">+++ ./setup.py</span>
-<span class="gu">@@ -9,8 +9,11 @@</span>
- common = importlib.util.module_from_spec(spec)
+<span class="gu">@@ -10,7 +10,9 @@</span>
  spec.loader.exec_module(common)
  
-<span class="gi">+common.KWARGS[&quot;install_requires&quot;] += [&quot;aiosqlite&gt;=0.15.0&quot;]</span>
  common.KWARGS[&quot;entry_points&quot;] = {
 <span class="gd">-    &quot;dffml.source&quot;: [f&quot;misc = {common.IMPORT_NAME}.misc:MiscSource&quot;]</span>
 <span class="gi">+    &quot;dffml.source&quot;: [</span>
@@ -459,6 +456,12 @@ to point to your new source class (not the one ending in <code class="docutils l
 </div>
 <p>This allows you to use your source with the CLI and HTTP API (after you install
 it).</p>
+<p>We also need to make a requirements.txt which tells pip that <code class="docutils literal notranslate"><span class="pre">aiosqlite</span></code> needs
+to be installed, since we will be importing it.</p>
+<p><strong>requirements.txt</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">aiosqlite</span><span class="o">&gt;=</span><span class="mf">0.15</span><span class="o">.</span><span class="mi">0</span>
+</pre></div>
+</div>
 </div>
 <div class="section" id="install-your-package">
 <h2>Install your package<a class="headerlink" href="#install-your-package" title="Permalink to this headline">¶</a></h2>
