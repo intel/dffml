@@ -42,7 +42,7 @@
     <link rel="author" title="About these documents" href="../../../../about.html" />
     <link rel="index" title="Index" href="../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../search.html" />
-    <link rel="next" title="Util Testing Consoletest Runner" href="runner.html" />
+    <link rel="next" title="Util Testing Consoletest Cli" href="cli.html" />
     <link rel="prev" title="Util Testing Consoletest Parser" href="parser.html" /> 
 </head>
 
@@ -322,6 +322,14 @@ as a module. Pip sometimes complains when this is not done.</p>
 </dd></dl>
 
 <dl class="py function">
+<dt id="dffml.util.testing.consoletest.commands.buf_to_fileobj">
+<code class="sig-prename descclassname">dffml.util.testing.consoletest.commands.</code><code class="sig-name descname">buf_to_fileobj</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">buf</span><span class="p">:</span> <span class="n">Union<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a><span class="p">, </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.9)">bytes</a><span class="p">]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/dffml/util/testing/consoletest/commands.html#buf_to_fileobj"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.util.testing.consoletest.commands.buf_to_fileobj" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given a buffer, create a temporary file and write the contents of the string
+of bytes buffer to the file. Seek to the beginning of the file. Yield the
+file object.</p>
+</dd></dl>
+
+<dl class="py function">
 <dt id="dffml.util.testing.consoletest.commands.tmpenv">
 <code class="sig-prename descclassname">dffml.util.testing.consoletest.commands.</code><code class="sig-name descname">tmpenv</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">cmd</span><span class="p">:</span> <span class="n">List<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a><span class="p">]</span></span></em><span class="sig-paren">)</span> &#x2192; List<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a><span class="p">]</span><a class="reference internal" href="../../../../_modules/dffml/util/testing/consoletest/commands.html#tmpenv"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.util.testing.consoletest.commands.tmpenv" title="Permalink to this definition">¶</a></dt>
 <dd><p>Handle temporary environment variables prepended to command</p>
@@ -337,7 +345,7 @@ as a module. Pip sometimes complains when this is not done.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="runner.html" class="btn btn-neutral float-right" title="Util Testing Consoletest Runner" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="cli.html" class="btn btn-neutral float-right" title="Util Testing Consoletest Cli" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="parser.html" class="btn btn-neutral float-left" title="Util Testing Consoletest Parser" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>

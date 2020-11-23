@@ -208,6 +208,7 @@
     <span class="n">Optional</span><span class="p">,</span>
 <span class="p">)</span>
 
+<span class="kn">from</span> <span class="nn">.parser</span> <span class="kn">import</span> <span class="n">Node</span>
 <span class="kn">from</span> <span class="nn">.commands</span> <span class="kn">import</span> <span class="n">build_command</span><span class="p">,</span> <span class="n">parse_commands</span>
 
 
@@ -297,6 +298,9 @@
         <span class="k">for</span> <span class="n">command</span> <span class="ow">in</span> <span class="n">node</span><span class="p">[</span><span class="s2">&quot;consoletest_commands&quot;</span><span class="p">]:</span>
             <span class="n">command</span><span class="o">.</span><span class="n">poll_until</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="s2">&quot;poll-until&quot;</span> <span class="ow">in</span> <span class="n">options</span><span class="p">)</span>
             <span class="n">command</span><span class="o">.</span><span class="n">compare_output</span> <span class="o">=</span> <span class="n">options</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;compare-output&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="n">command</span><span class="o">.</span><span class="n">compare_output_imports</span> <span class="o">=</span> <span class="n">options</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+                <span class="s2">&quot;compare-output-imports&quot;</span><span class="p">,</span> <span class="kc">None</span>
+            <span class="p">)</span>
             <span class="k">if</span> <span class="n">command</span><span class="o">.</span><span class="n">poll_until</span> <span class="ow">and</span> <span class="n">command</span><span class="o">.</span><span class="n">compare_output</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
                     <span class="s2">&quot;Cannot set poll-until without compare-output&quot;</span>
@@ -319,11 +323,33 @@
     <span class="s2">&quot;replace&quot;</span><span class="p">:</span> <span class="s2">&quot;unchanged_required&quot;</span><span class="p">,</span>
     <span class="s2">&quot;poll-until&quot;</span><span class="p">:</span> <span class="s2">&quot;flag&quot;</span><span class="p">,</span>
     <span class="s2">&quot;compare-output&quot;</span><span class="p">:</span> <span class="s2">&quot;unchanged_required&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;compare-output-imports&quot;</span><span class="p">:</span> <span class="s2">&quot;unchanged_required&quot;</span><span class="p">,</span>
     <span class="s2">&quot;ignore-errors&quot;</span><span class="p">:</span> <span class="s2">&quot;flag&quot;</span><span class="p">,</span>
     <span class="s2">&quot;daemon&quot;</span><span class="p">:</span> <span class="s2">&quot;unchanged_required&quot;</span><span class="p">,</span>
     <span class="s2">&quot;test&quot;</span><span class="p">:</span> <span class="s2">&quot;flag&quot;</span><span class="p">,</span>
     <span class="s2">&quot;stdin&quot;</span><span class="p">:</span> <span class="s2">&quot;unchanged_required&quot;</span><span class="p">,</span>
 <span class="p">}</span>
+
+
+<div class="viewcode-block" id="nodes_to_test"><a class="viewcode-back" href="../../../../../api/util/testing/consoletest/util.html#dffml.util.testing.consoletest.util.nodes_to_test">[docs]</a><span class="k">def</span> <span class="nf">nodes_to_test</span><span class="p">(</span><span class="n">nodes</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Node</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Node</span><span class="p">]:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    List of nodes to subset of that list which have the ``:test::`` option.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">subset_nodes</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">nodes</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">node</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;test&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
+            <span class="k">continue</span>
+        <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">directive</span> <span class="o">==</span> <span class="s2">&quot;code-block&quot;</span><span class="p">:</span>
+            <span class="n">subset_nodes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="n">code_block_to_dict</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">content</span><span class="p">,</span> <span class="n">node</span><span class="o">.</span><span class="n">options</span><span class="p">,</span> <span class="n">node</span><span class="o">=</span><span class="n">node</span><span class="o">.</span><span class="n">node</span><span class="p">)</span>
+            <span class="p">)</span>
+        <span class="k">elif</span> <span class="n">node</span><span class="o">.</span><span class="n">directive</span> <span class="o">==</span> <span class="s2">&quot;literalinclude&quot;</span><span class="p">:</span>
+            <span class="n">subset_nodes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="n">literalinclude_to_dict</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">content</span><span class="p">,</span> <span class="n">node</span><span class="o">.</span><span class="n">options</span><span class="p">,</span> <span class="n">node</span><span class="o">.</span><span class="n">node</span><span class="p">)</span>
+            <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">subset_nodes</span></div>
 </pre></div>
 
            </div>
