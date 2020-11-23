@@ -1,6 +1,7 @@
 import os
 import sys
 import ast
+from pathlib import Path
 from io import open
 
 from setuptools import find_packages, setup
@@ -18,17 +19,7 @@ with open(
 with open(os.path.join(self_path, "README.md"), "r", encoding="utf-8") as f:
     readme = f.read()
 
-INSTALL_REQUIRES = [
-    "tensorflow>=2.0.0",
-    "pandas>=0.25.0",
-    # See https://github.com/intel/dffml/issues/816
-    "numpy>=1.16.4,<1.19.0",
-    "seqeval>=0.0.12",
-    "fastprogress>=0.2.2",
-    # See https://github.com/intel/dffml/issues/844
-    "transformers>=3.0.2,<3.1.0",
-    "torch>=1.5.0",
-] + (
+INSTALL_REQUIRES = [] + (
     ["dffml>=0.3.7"]
     if not any(
         list(
@@ -47,6 +38,12 @@ INSTALL_REQUIRES = [
     )
     else []
 )
+
+REQUIREMENTS_TXT_PATH = Path(self_path, "requirements.txt")
+if REQUIREMENTS_TXT_PATH.is_file():
+    INSTALL_REQUIRES += list(
+        map(lambda i: i.strip(), REQUIREMENTS_TXT_PATH.read_text().split("\n"))
+    )
 
 setup(
     name="dffml-model-transformers",
