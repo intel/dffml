@@ -4,6 +4,7 @@ import inspect
 import pathlib
 import tempfile
 import unittest
+import platform
 import contextlib
 import unittest.mock
 import importlib.util
@@ -12,10 +13,15 @@ from dffml.util.asynctestcase import AsyncTestCase
 
 from dffml.util.testing.consoletest.commands import *
 from dffml.util.testing.consoletest.parser import parse_nodes, Node
+from dffml.util.testing.consoletest.runner import run_nodes
+from dffml.util.testing.consoletest.util import nodes_to_test
 
 
 # Root of DFFML source tree
-ROOT_DIR = os.path.join(os.path.dirname(__file__), "..", "..")
+ROOT_DIR = os.path.join(os.path.dirname(__file__), "..", "..", "..")
+CONSOLETEST_README_PATH = pathlib.Path(
+    ROOT_DIR, "dffml", "util", "testing", "consoletest", "README.md"
+)
 
 
 class TestFunctions(AsyncTestCase):
@@ -299,3 +305,17 @@ class TestParser(unittest.TestCase):
                 ),
             ],
         )
+
+
+class TestRunner(AsyncTestCase):
+    @unittest.skipUnless(platform.system() == "Linux", "Only runs on Linux")
+    async def test_run_nodes(self):
+        with contextlib.ExitStack() as stack:
+            await run_nodes(
+                CONSOLETEST_README_PATH.parent,
+                CONSOLETEST_README_PATH.parent,
+                stack,
+                nodes_to_test(
+                    parse_nodes(CONSOLETEST_README_PATH.read_text())
+                ),
+            )
