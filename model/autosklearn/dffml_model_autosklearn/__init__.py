@@ -21,3 +21,6 @@ Install other PyPi dependencies with
 
 For more information about installation visit https://automl.github.io/auto-sklearn/master/installation.html#installation
 """
+
+from .autoregressor import AutoSklearnRegressorModel
+from .autoclassifier import AutoSklearnClassifierModel
