@@ -208,7 +208,7 @@
 <span class="kn">import</span> <span class="nn">tempfile</span>
 <span class="kn">import</span> <span class="nn">contextlib</span>
 <span class="kn">import</span> <span class="nn">subprocess</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">IO</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">IO</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Optional</span>
 
 <span class="kn">from</span> <span class="nn">....</span> <span class="kn">import</span> <span class="n">plugins</span>
 
@@ -217,6 +217,7 @@
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">poll_until</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">compare_output</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">compare_output_imports</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ignore_errors</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">daemon</span> <span class="o">=</span> <span class="kc">None</span>
 
@@ -557,6 +558,21 @@
 <span class="sd">    &quot;&quot;&quot;</span></div>
 
 
+<div class="viewcode-block" id="buf_to_fileobj"><a class="viewcode-back" href="../../../../../api/util/testing/consoletest/commands.html#dffml.util.testing.consoletest.commands.buf_to_fileobj">[docs]</a><span class="nd">@contextlib</span><span class="o">.</span><span class="n">contextmanager</span>
+<span class="k">def</span> <span class="nf">buf_to_fileobj</span><span class="p">(</span><span class="n">buf</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">]):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Given a buffer, create a temporary file and write the contents of the string</span>
+<span class="sd">    of bytes buffer to the file. Seek to the beginning of the file. Yield the</span>
+<span class="sd">    file object.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">buf</span> <span class="o">=</span> <span class="n">buf</span><span class="o">.</span><span class="n">encode</span><span class="p">()</span>
+    <span class="k">with</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">TemporaryFile</span><span class="p">()</span> <span class="k">as</span> <span class="n">fileobj</span><span class="p">:</span>
+        <span class="n">fileobj</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">buf</span><span class="p">)</span>
+        <span class="n">fileobj</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="k">yield</span> <span class="n">fileobj</span></div>
+
+
 <div class="viewcode-block" id="ConsoleCommand"><a class="viewcode-back" href="../../../../../api/util/testing/consoletest/commands.html#dffml.util.testing.consoletest.commands.ConsoleCommand">[docs]</a><span class="k">class</span> <span class="nc">ConsoleCommand</span><span class="p">(</span><span class="n">ConsoletestCommand</span><span class="p">):</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cmd</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
@@ -564,34 +580,45 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">daemon_proc</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">replace</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">stdin</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stdin_fileobj</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">stack</span> <span class="o">=</span> <span class="n">contextlib</span><span class="o">.</span><span class="n">ExitStack</span><span class="p">()</span>
 
     <span class="k">async</span> <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">daemon</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">daemon</span> <span class="ow">in</span> <span class="n">ctx</span><span class="p">[</span><span class="s2">&quot;daemons&quot;</span><span class="p">]:</span>
             <span class="k">await</span> <span class="n">stop_daemon</span><span class="p">(</span><span class="n">ctx</span><span class="p">[</span><span class="s2">&quot;daemons&quot;</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">daemon</span><span class="p">]</span><span class="o">.</span><span class="n">daemon_proc</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">compare_output</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">daemon_proc</span> <span class="o">=</span> <span class="k">await</span> <span class="n">run_commands</span><span class="p">(</span>
-                <span class="n">pipes</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cmd</span><span class="p">),</span>
-                <span class="n">ctx</span><span class="p">,</span>
-                <span class="n">stdin</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">stdin</span><span class="p">,</span>
-                <span class="n">ignore_errors</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ignore_errors</span><span class="p">,</span>
-                <span class="n">daemon</span><span class="o">=</span><span class="nb">bool</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">daemon</span><span class="p">),</span>
-            <span class="p">)</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">daemon</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">ctx</span><span class="p">[</span><span class="s2">&quot;daemons&quot;</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">daemon</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span>
+            <span class="k">with</span> <span class="n">contextlib</span><span class="o">.</span><span class="n">ExitStack</span><span class="p">()</span> <span class="k">as</span> <span class="n">stack</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">daemon_proc</span> <span class="o">=</span> <span class="k">await</span> <span class="n">run_commands</span><span class="p">(</span>
+                    <span class="n">pipes</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cmd</span><span class="p">),</span>
+                    <span class="n">ctx</span><span class="p">,</span>
+                    <span class="n">stdin</span><span class="o">=</span><span class="kc">None</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">stdin</span> <span class="ow">is</span> <span class="kc">None</span>
+                    <span class="k">else</span> <span class="n">stack</span><span class="o">.</span><span class="n">enter_context</span><span class="p">(</span><span class="n">buf_to_fileobj</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stdin</span><span class="p">)),</span>
+                    <span class="n">ignore_errors</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ignore_errors</span><span class="p">,</span>
+                    <span class="n">daemon</span><span class="o">=</span><span class="nb">bool</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">daemon</span><span class="p">),</span>
+                <span class="p">)</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">daemon</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">ctx</span><span class="p">[</span><span class="s2">&quot;daemons&quot;</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">daemon</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
-                <span class="k">with</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">TemporaryFile</span><span class="p">()</span> <span class="k">as</span> <span class="n">stdout</span><span class="p">:</span>
+                <span class="k">with</span> <span class="n">contextlib</span><span class="o">.</span><span class="n">ExitStack</span><span class="p">()</span> <span class="k">as</span> <span class="n">stack</span><span class="p">:</span>
+                    <span class="n">stdout</span> <span class="o">=</span> <span class="n">stack</span><span class="o">.</span><span class="n">enter_context</span><span class="p">(</span><span class="n">tempfile</span><span class="o">.</span><span class="n">TemporaryFile</span><span class="p">())</span>
                     <span class="k">await</span> <span class="n">run_commands</span><span class="p">(</span>
                         <span class="n">pipes</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cmd</span><span class="p">),</span>
                         <span class="n">ctx</span><span class="p">,</span>
-                        <span class="n">stdin</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">stdin</span><span class="p">,</span>
+                        <span class="n">stdin</span><span class="o">=</span><span class="kc">None</span>
+                        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">stdin</span> <span class="ow">is</span> <span class="kc">None</span>
+                        <span class="k">else</span> <span class="n">stack</span><span class="o">.</span><span class="n">enter_context</span><span class="p">(</span><span class="n">buf_to_fileobj</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stdin</span><span class="p">)),</span>
                         <span class="n">stdout</span><span class="o">=</span><span class="n">stdout</span><span class="p">,</span>
                         <span class="n">ignore_errors</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ignore_errors</span><span class="p">,</span>
                     <span class="p">)</span>
                     <span class="n">stdout</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
                     <span class="n">stdout</span> <span class="o">=</span> <span class="n">stdout</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
-                    <span class="k">if</span> <span class="n">call_compare_output</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">compare_output</span><span class="p">,</span> <span class="n">stdout</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="n">call_compare_output</span><span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">compare_output</span><span class="p">,</span>
+                        <span class="n">stdout</span><span class="p">,</span>
+                        <span class="n">imports</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">compare_output_imports</span><span class="p">,</span>
+                    <span class="p">):</span>
                         <span class="k">return</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">poll_until</span><span class="p">:</span>
                     <span class="k">raise</span> <span class="n">OutputComparisionError</span><span class="p">(</span>
@@ -601,11 +628,6 @@
 
     <span class="k">async</span> <span class="k">def</span> <span class="fm">__aenter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="o">.</span><span class="fm">__enter__</span><span class="p">()</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">stdin</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">fileobj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="o">.</span><span class="n">enter_context</span><span class="p">(</span><span class="n">tempfile</span><span class="o">.</span><span class="n">TemporaryFile</span><span class="p">())</span>
-            <span class="n">fileobj</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stdin</span><span class="o">.</span><span class="n">encode</span><span class="p">())</span>
-            <span class="n">fileobj</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">stdin</span> <span class="o">=</span> <span class="n">fileobj</span>
         <span class="k">return</span> <span class="bp">self</span>
 
     <span class="k">async</span> <span class="k">def</span> <span class="fm">__aexit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_exc_type</span><span class="p">,</span> <span class="n">_exc_value</span><span class="p">,</span> <span class="n">_traceback</span><span class="p">):</span>
@@ -857,6 +879,7 @@
 
 <span class="n">MAKE_POLL_UNTIL_TEMPLATE</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
 <span class="s2">import sys</span>
+<span class="si">{imports}</span><span class="s2"></span>
 
 <span class="s2">func = lambda stdout: </span><span class="si">{func}</span><span class="s2"></span>
 
@@ -864,9 +887,14 @@
 <span class="s2">&quot;&quot;&quot;</span>
 
 
-<span class="k">def</span> <span class="nf">call_compare_output</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">stdout</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">call_compare_output</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">stdout</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">imports</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
     <span class="k">with</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">NamedTemporaryFile</span><span class="p">()</span> <span class="k">as</span> <span class="n">fileobj</span><span class="p">,</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">NamedTemporaryFile</span><span class="p">()</span> <span class="k">as</span> <span class="n">stdin</span><span class="p">:</span>
-        <span class="n">fileobj</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">MAKE_POLL_UNTIL_TEMPLATE</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">func</span><span class="o">=</span><span class="n">func</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">())</span>
+        <span class="n">fileobj</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
+            <span class="n">MAKE_POLL_UNTIL_TEMPLATE</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="n">func</span><span class="o">=</span><span class="n">func</span><span class="p">,</span>
+                <span class="n">imports</span><span class="o">=</span><span class="s2">&quot;&quot;</span> <span class="k">if</span> <span class="n">imports</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="s2">&quot;import &quot;</span> <span class="o">+</span> <span class="n">imports</span><span class="p">,</span>
+            <span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">()</span>
+        <span class="p">)</span>
         <span class="n">fileobj</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
         <span class="n">stdin</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">stdout</span><span class="o">.</span><span class="n">encode</span><span class="p">()</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="k">else</span> <span class="n">stdout</span><span class="p">)</span>
         <span class="n">stdin</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>

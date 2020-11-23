@@ -8,6 +8,7 @@ Util Testing Consoletest
     builder
     parser
     commands
+    cli
     runner
     directives
     util
