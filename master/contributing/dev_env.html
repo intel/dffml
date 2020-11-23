@@ -245,20 +245,33 @@ unless you uninstall it first!</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python3 -m pip uninstall dffml
 </pre></div>
 </div>
-<p>Once you’re sure DFFML is not installed on your system, install it in
+<p>Once you’re sure DFFML is not installed on your system, you’ll reinstall it in
 development mode.</p>
-<p>Installing to your home directory is the recommended installation method. To do
-this we use the <code class="docutils literal notranslate"><span class="pre">--prefix=~/.local</span></code> flag.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p><code class="docutils literal notranslate"><span class="pre">pip</span></code> sometimes gets confused about the <code class="docutils literal notranslate"><span class="pre">--user</span></code> flag (and will blow up
-in your face if you try to pass it). So we use the <code class="docutils literal notranslate"><span class="pre">--prefix=~/.local</span></code>
-flag, which has the same effect but should always work.</p>
+<p>There are two versions of this documentation.</p>
+<p>The version you want is <a class="reference external" href="https://intel.github.io/dffml/master/">https://intel.github.io/dffml/master/</a> if you are
+working on DFFML itself.</p>
+<p>When working from the Git version of DFFML, the documentation URL you’re
+looking at should say <code class="docutils literal notranslate"><span class="pre">/master/</span></code> in the URL. The URL you are currently on
+should be <a class="reference external" href="https://intel.github.io/dffml/master/contributing/dev_env.html">https://intel.github.io/dffml/master/contributing/dev_env.html</a></p>
+<p>This docs without <code class="docutils literal notranslate"><span class="pre">/master/</span></code> in the URL are built from the latest release.</p>
+<p>The docs with <code class="docutils literal notranslate"><span class="pre">/master/</span></code> in the URL are built from the <em>master</em> branch.
+The master branch is what you get when you clone the Git repo, which we’re
+about to do.</p>
 </div>
+<p>Installing to your home directory will reduce permissions issues. To do
+this we use the <code class="docutils literal notranslate"><span class="pre">--prefix=~/.local</span></code> flag. <code class="docutils literal notranslate"><span class="pre">pip</span></code> sometimes gets confused
+about the <code class="docutils literal notranslate"><span class="pre">--user</span></code> flag (and will blow up in your face if you try to pass it).
+So we use the <code class="docutils literal notranslate"><span class="pre">--prefix=~/.local</span></code> flag, which has the same effect but should
+always work.</p>
 <p><code class="docutils literal notranslate"><span class="pre">[dev]</span></code> tells <code class="docutils literal notranslate"><span class="pre">pip</span></code> to install the dependencies you’ll need to do
 development work on DFFML (such as documentation generation utilities).</p>
+<p>Before installing DFFML, we should update Python’s package installation tools to
+their latest versions (<code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">setuptools</span> <span class="pre">wheel</span></code>).</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> git clone https://github.com/intel/dffml
 <span class="gp">$</span> <span class="nb">cd</span> dffml
+<span class="gp">$</span> python3 -m pip install -U pip setuptools wheel
 <span class="gp">$</span> python3 -m pip install --prefix<span class="o">=</span>~/.local -e .<span class="o">[</span>dev<span class="o">]</span>
 </pre></div>
 </div>
