@@ -391,37 +391,6 @@ class NERModelContext(ModelContext):
         trainer.save_model()
         self.tokenizer.save_pretrained(self.parent.config.output_dir)
 
-    async def accuracy(
-        self, sources: Sources, accuracy_scorer: AccuracyContext
-    ):
-        self.logger.warning(
-            "Accuracy scoring will not be used : %s", accuracy_scorer
-        )
-        if not os.path.isfile(
-            os.path.join(self.parent.config.output_dir, "tf_model.h5")
-        ):
-            raise ModelNotTrained("Train model before assessing for accuracy.")
-
-        data_df = await self._preprocess_data(sources)
-        eval_dataset = self.get_dataset(data_df, self.tokenizer, mode="eval",)
-        with self.parent.config.strategy.scope():
-            self.model = TFAutoModelForTokenClassification.from_pretrained(
-                self.parent.config.output_dir,
-                config=self.config,
-                cache_dir=self.parent.config.cache_dir,
-            )
-
-        trainer = TFTrainer(
-            model=self.model,
-            args=self.parent.config,
-            train_dataset=None,
-            eval_dataset=eval_dataset.get_dataset(),
-            compute_metrics=self.compute_metrics,
-        )
-
-        result = trainer.evaluate()
-        return Accuracy(result["eval_f1"])
-
     async def predict(
         self, sources: SourcesContext
     ) -> AsyncIterator[Tuple[Record, Any, float]]:
