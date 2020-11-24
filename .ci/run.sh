@@ -107,7 +107,8 @@ function run_plugin() {
     echo "No TWINE_PASSWORD set for ${PLUGIN}. Auto release will fail." >&2
     exit 1
   fi
-  if [ "x${GITHUB_ACTIONS}" == "xtrue" ] && [ "x${GITHUB_REF}" == "xrefs/heads/master" ]; then
+  if [[ "x${GITHUB_ACTIONS}" == "xtrue" ]] && \
+     [[ "x${GITHUB_REF}" =~ xrefs/head/[a-zA-Z0-9]*\.[a-zA-Z0-9]*\.[a-zA-Z0-9]* ]]; then
     git status
     dffml service dev release "${PLUGIN}"
   fi
