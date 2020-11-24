@@ -331,41 +331,6 @@ class HFClassificationModelContext(ModelContext):
         trainer.save_model()
         self.tokenizer.save_pretrained(self.parent.config.output_dir)
 
-    async def accuracy(
-        self, sources: Sources, accuracy_scorer: AccuracyContext
-    ):
-        self.logger.warning(
-            "Accuracy scoring will not be used : %s", accuracy_scorer
-        )
-        if not os.path.isfile(
-            os.path.join(self.parent.config.output_dir, "tf_model.h5")
-        ):
-            raise ModelNotTrained("Train model before assessing for accuracy.")
-
-        config = self.parent.config._asdict()
-        self.tokenizer = AutoTokenizer.from_pretrained(
-            self.parent.config.output_dir
-        )
-        eval_features = await self._preprocess_data(sources)
-        eval_dataset = await self.example_features_to_dataset(eval_features)
-
-        def compute_metrics(p: EvalPrediction) -> Dict:
-            preds = self.np.argmax(p.predictions, axis=1)
-            return classification_compute_metrics(preds, p.label_ids)
-
-        with self.parent.config.strategy.scope():
-            self.model = TFAutoModelForSequenceClassification.from_pretrained(
-                config["directory"]
-            )
-        trainer = TFTrainer(
-            model=self.model,
-            args=self.parent.config,
-            eval_dataset=eval_dataset,
-            compute_metrics=compute_metrics,
-        )
-        result = trainer.evaluate()
-        return Accuracy(result["eval_acc"])
-
     async def predict(
         self, sources: SourcesContext
     ) -> AsyncIterator[Tuple[Record, Any, float]]:
