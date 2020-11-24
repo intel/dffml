@@ -130,7 +130,7 @@ class TestScikitModel:
 
     async def test_01_accuracy(self):
         res = await accuracy(self.model, self.scorer, self.sources)
-        if self.MODEL_TYPE is "CLUSTERING":
+        if self.MODEL_TYPE == "CLUSTERING":
             self.assertTrue(res is not None)
         elif self.MODEL_TYPE == "REGRESSION":
             self.assertTrue(0 <= res <= float("inf"))
