@@ -849,52 +849,6 @@ class QAModelContext(ModelContext):
 
         return predictions
 
-    async def accuracy(
-        self, sources: Sources, accuracy_scorer: AccuracyContext
-    ):
-        self.logger.warning(
-            "Accuracy scoring will not be used : %s", accuracy_scorer
-        )
-        if not os.path.isfile(
-            os.path.join(self.parent.config.output_dir, "pytorch_model.bin")
-        ):
-            raise ModelNotTrained("Train model before assessing for accuracy.")
-        self.tokenizer = AutoTokenizer.from_pretrained(
-            self.parent.config.output_dir,
-            do_lower_case=self.parent.config.do_lower_case,
-        )
-        eval_examples = await self._preprocess_data(sources)
-        features, dataset = squad_convert_examples_to_features(
-            examples=eval_examples,
-            tokenizer=self.tokenizer,
-            max_seq_length=self.parent.config.max_seq_length,
-            doc_stride=self.parent.config.doc_stride,
-            max_query_length=self.parent.config.max_query_length,
-            is_training=False,
-            return_dataset="pt",
-        )
-
-        results = {}
-        if self.parent.config.local_rank in [-1, 0]:
-            logger.info(
-                "Loading checkpoints saved during training for evaluation"
-            )
-            self.model = AutoModelForQuestionAnswering.from_pretrained(
-                self.parent.config.output_dir
-            )
-            self.model.to(self.parent.config.device)
-
-            # Evaluate
-            predictions = await self._custom_accuracy(
-                eval_examples, features, dataset
-            )
-            results = squad_evaluate(eval_examples, predictions)
-
-        logger.info("Results: {}".format(results))
-
-        # return results
-        return Accuracy(results["f1"])
-
     async def predict(
         self, sources: SourcesContext
     ) -> AsyncIterator[Tuple[Record, Any, float]]:
