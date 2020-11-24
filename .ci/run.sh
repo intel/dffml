@@ -72,8 +72,6 @@ function run_plugin() {
     "${PYTHON}" -m dffml service dev install
     # Remove dataclasses. See https://github.com/intel/dffml/issues/882
     "${PYTHON}" "${TEMPFIX}/pytorch/pytorch/46930.py"
-    # Report installed versions of packages
-    "${PYTHON}" -m pip freeze
 
     # Run the examples
     run_plugin_examples
@@ -101,6 +99,9 @@ function run_plugin() {
   fi
 
   cd "${SRC_ROOT}"
+
+  # Report installed versions of packages
+  "${PYTHON}" -m pip freeze
 
   if [ "x${GITHUB_ACTIONS}" == "xtrue" ] && [ "x${GITHUB_REF}" == "xrefs/heads/master" ]; then
     git status
