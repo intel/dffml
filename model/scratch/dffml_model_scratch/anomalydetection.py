@@ -31,6 +31,8 @@ class AnomalyModel(SimpleModel):
     CONFIG: Type = AnomalyModelConfig
 
     async def train(self, sources: SourcesContext) -> None:
+        k = 0.8  # validation set size, currently set to 20% of training set size
+        nof = len(self.features)  # number of features
         # X and Y data
         X = []
         Y = []
@@ -44,22 +46,23 @@ class AnomalyModel(SimpleModel):
                 record_data.extend(
                     [feature] if np.isscalar(feature) else feature
                 )
+
             X.append(record_data)
             Y.append(record.feature(self.parent.config.predict.name))
 
-        def split(a_list):
-            L = int(0.7 * len(a_list))
+        def split(a_list, k):
+            L = int(
+                k * len(a_list)
+            )  # validation set is currently at 20% of training set
             return a_list[:L], a_list[L:]
 
-        X1, Xval = split(X)
+        X1, Xval = split(X, k)
         X = X1
-        Y1, Yval = split(Y)
+        Y1, Yval = split(Y, k)
         Y = Y1
 
-        X = np.reshape(X, (len(X), 2))  # replace 2 by number of features
-        Xval = np.reshape(
-            Xval, (len(Xval), 2)
-        )  # replace 2 by number of features
+        X = np.reshape(X, (len(X), nof))
+        Xval = np.reshape(Xval, (len(Xval), nof))
         Y = np.reshape(Y, (len(Y), 1))
         Yval = np.reshape(Yval, (len(Yval), 1))
 
@@ -101,62 +104,12 @@ class AnomalyModel(SimpleModel):
 
             return p
 
-        """def selectThreshold(yval, pval):
-            F1 = 0
-            bestF1 = 0
-            bestEpsilon = 0
-
-            stepsize = (np.max(pval) - np.min(pval)) / 1000
-
-            epsVec = np.arange(np.min(pval), np.max(pval), stepsize)
-            noe = len(epsVec)
-
-            for eps in range(noe):
-                epsilon = epsVec[eps]
-                pred = pval < epsilon
-                prec, rec = 0, 0
-                tp, fp, fn = 0, 0, 0
-
-                try:
-                    for i in range(np.size(pval, 0)):
-                        if pred[i] == 1 and yval[i] == 1:
-                            tp += 1
-                        elif pred[i] == 1 and yval[i] == 0:
-                            fp += 1
-                        elif pred[i] == 0 and yval[i] == 1:
-                            fn += 1
-                    prec = tp / (tp + fp)
-                    rec = tp / (tp + fn)
-                    F1 = 2 * prec * rec / (prec + rec)
-                    if F1 > bestF1:
-                        bestF1 = F1
-                        bestEpsilon = epsilon
-                except ZeroDivisionError:
-                    print("Warning dividing by zero!!")
-
-            return bestF1, bestEpsilon, prec,rec"""
-
         def findIndices(binVec):
             l = []
             for i in range(len(binVec)):
                 if binVec[i] == 1:
                     l.append(i)
             return l
-
-        """def getF1(outliers, Y):
-            tp,fn,fp = 0,0,0
-            for i in range(np.size(outliers, 0)):
-                if outliers[i] == 1 and Y[i] == 1:
-                    tp += 1
-                elif outliers[i] == 1 and Y[i] == 0:
-                    fp += 1
-                elif outliers[i] == 0 and Y[i] == 1:
-                    fn += 1
-            prec = tp / (tp + fp)
-            rec = tp / (tp + fn)
-            #F1 = 2 * prec * rec / (prec + rec)
-            return prec,rec
-"""
 
         def selectThreshold(Yval, pval):
             bestEpsilon = 0
@@ -166,7 +119,6 @@ class AnomalyModel(SimpleModel):
             epsVec = np.arange(np.min(pval), np.max(pval), stepsize)
             lenv = len(epsVec)
             prec, rec = 0, 0
-            bprec, brec = 0, 0
             tp, fp, fn = 0, 0, 0
             for eps in range(lenv):
                 epsilon = epsVec[eps]
@@ -211,11 +163,12 @@ class AnomalyModel(SimpleModel):
         # Save listOfOl and F1 score
         self.storage["anomalies"] = (
             (listOfOl + listVal),
-            (0.7 * F1train) + (0.3 * F1val),
+            (k * F1train) + ((1 - k) * F1val),
         )
-        print(F1train)
-        print(F1val)
-        print(listOfOl + listVal)
+        # print(F1train)
+        # print(F1val)
+        # print(listOfOl+listVal)
+        # print(nof)
 
     async def accuracy(self, sources: SourcesContext) -> Accuracy:
         # Load saved anomalies
@@ -227,9 +180,16 @@ class AnomalyModel(SimpleModel):
         # two values: listOfOl and F1
         return Accuracy(anomalies[1])
 
+    async def get_input_data(self, sources: SourcesContext) -> list:
+        saved_records = []
+        async for record in sources.with_features(
+            self.config.features.names()
+        ):
+            saved_records.append(record)
+        return saved_records
 
-"""
     async def predict(self, sources: SourcesContext) -> AsyncIterator[Record]:
+
         # Load saved anomalies
         anomalies = self.storage.get("anomalies", None)
         # Ensure the model has been trained before we try to make a prediction
@@ -237,19 +197,20 @@ class AnomalyModel(SimpleModel):
             raise ModelNotTrained("Train model before prediction")
         # Expand the anomalies into named variables
         listOfOl, F1 = anomalies
-        # Iterate through each record that needs a prediction
+        # Grab records and input data (X data)
+        input_data = await self.get_input_data(sources)
+        # Make predictions
         i = 0
-        async for record in sources.with_features([self.config.feature.name]):
-            # Grab the x data from the record
-            x = record.feature(self.config.feature.name)
-            # Calculate y
+        for record in input_data:
+            record_data = []
+            for feature in record.features(self.features).values():
+                record_data.extend(
+                    [feature] if np.isscalar(feature) else feature
+                )
             if i in listOfOl:
                 y = 1
             else:
                 y = 0
-            # Set the calculated value with the estimated accuracy
             record.predicted(self.config.predict.name, y, F1)
-            # Yield the record to the caller
             i = i + 1
             yield record
-"""
