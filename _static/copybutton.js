@@ -3,9 +3,9 @@ $(document).ready(function() {
      * the >>> and ... prompts and the output and thus make the code
      * copyable. */
     var div = $('.highlight-python .highlight,' +
-                '.highlight-python3 .highlight,' +
-                '.highlight-pycon .highlight,' +
-                '.highlight-default .highlight');
+        '.highlight-python3 .highlight,' +
+        '.highlight-pycon .highlight,' +
+        '.highlight-default .highlight');
     var pre = div.find('pre');
 
     // get the styles from the current theme
@@ -16,10 +16,18 @@ $(document).ready(function() {
     var border_style = pre.css('border-top-style');
     var border_color = pre.css('border-top-color');
     var button_styles = {
-        'cursor':'pointer', 'position': 'absolute', 'top': '0', 'right': '0',
-        'border-color': border_color, 'border-style': border_style,
-        'border-width': border_width, 'color': border_color, 'text-size': '75%',
-        'font-family': 'monospace', 'padding-left': '0.2em', 'padding-right': '0.2em',
+        'cursor': 'pointer',
+        'position': 'absolute',
+        'top': '0',
+        'right': '0',
+        'border-color': border_color,
+        'border-style': border_style,
+        'border-width': border_width,
+        'color': border_color,
+        'text-size': '75%',
+        'font-family': 'monospace',
+        'padding-left': '0.2em',
+        'padding-right': '0.2em',
         'border-radius': '0 3px 0 0'
     }
 
@@ -41,7 +49,7 @@ $(document).ready(function() {
     });
 
     // define the behavior of the button when it's clicked
-    $('.copybutton').click(function(e){
+    $('.copybutton').click(function(e) {
         e.preventDefault();
         var button = $(this);
         if (button.data('hidden') === 'false') {
@@ -61,4 +69,3 @@ $(document).ready(function() {
         }
     });
 });
-

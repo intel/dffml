@@ -59,7 +59,7 @@ div.sphinxsidebar {
     margin-left: -100%;
     font-size: 90%;
     word-wrap: break-word;
-    overflow-wrap : break-word;
+    overflow-wrap: break-word;
 }
 
 div.sphinxsidebar ul {
@@ -179,7 +179,7 @@ table.indextable ul {
     list-style-type: none;
 }
 
-table.indextable > tbody > tr > td > ul {
+table.indextable>tbody>tr>td>ul {
     padding-left: 0em;
 }
 
@@ -226,7 +226,10 @@ div.body {
     max-width: 800px;
 }
 
-div.body p, div.body dd, div.body li, div.body blockquote {
+div.body p,
+div.body dd,
+div.body li,
+div.body blockquote {
     -moz-hyphens: auto;
     -ms-hyphens: auto;
     -webkit-hyphens: auto;
@@ -238,25 +241,25 @@ a.headerlink {
 }
 
 a.brackets:before,
-span.brackets > a:before{
+span.brackets>a:before {
     content: "[";
 }
 
 a.brackets:after,
-span.brackets > a:after {
+span.brackets>a:after {
     content: "]";
 }
 
-h1:hover > a.headerlink,
-h2:hover > a.headerlink,
-h3:hover > a.headerlink,
-h4:hover > a.headerlink,
-h5:hover > a.headerlink,
-h6:hover > a.headerlink,
-dt:hover > a.headerlink,
-caption:hover > a.headerlink,
-p.caption:hover > a.headerlink,
-div.code-block-caption:hover > a.headerlink {
+h1:hover>a.headerlink,
+h2:hover>a.headerlink,
+h3:hover>a.headerlink,
+h4:hover>a.headerlink,
+h5:hover>a.headerlink,
+h6:hover>a.headerlink,
+dt:hover>a.headerlink,
+caption:hover>a.headerlink,
+p.caption:hover>a.headerlink,
+div.code-block-caption:hover>a.headerlink {
     visibility: visible;
 }
 
@@ -277,28 +280,35 @@ p.rubric {
     font-weight: bold;
 }
 
-img.align-left, .figure.align-left, object.align-left {
+img.align-left,
+.figure.align-left,
+object.align-left {
     clear: left;
     float: left;
     margin-right: 1em;
 }
 
-img.align-right, .figure.align-right, object.align-right {
+img.align-right,
+.figure.align-right,
+object.align-right {
     clear: right;
     float: right;
     margin-left: 1em;
 }
 
-img.align-center, .figure.align-center, object.align-center {
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
+img.align-center,
+.figure.align-center,
+object.align-center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
 }
 
-img.align-default, .figure.align-default {
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
+img.align-default,
+.figure.align-default {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .align-left {
@@ -334,7 +344,9 @@ p.sidebar-title {
     font-weight: bold;
 }
 
-div.admonition, div.topic, blockquote {
+div.admonition,
+div.topic,
+blockquote {
     clear: left;
 }
 
@@ -376,9 +388,9 @@ div.body p.centered {
 
 /* -- content of sidebars/topics/admonitions -------------------------------- */
 
-div.sidebar > :last-child,
-div.topic > :last-child,
-div.admonition > :last-child {
+div.sidebar> :last-child,
+div.topic> :last-child,
+div.admonition> :last-child {
     margin-bottom: 0;
 }
 
@@ -414,10 +426,10 @@ table caption span.caption-number {
     font-style: italic;
 }
 
-table caption span.caption-text {
-}
+table caption span.caption-text {}
 
-table.docutils td, table.docutils th {
+table.docutils td,
+table.docutils th {
     padding: 1px 8px 1px 5px;
     border-top: 0;
     border-left: 0;
@@ -425,7 +437,8 @@ table.docutils td, table.docutils th {
     border-bottom: 1px solid #aaa;
 }
 
-table.footnote td, table.footnote th {
+table.footnote td,
+table.footnote th {
     border: 0 !important;
 }
 
@@ -443,13 +456,13 @@ table.citation td {
     border-bottom: none;
 }
 
-th > :first-child,
-td > :first-child {
+th> :first-child,
+td> :first-child {
     margin-top: 0px;
 }
 
-th > :last-child,
-td > :last-child {
+th> :last-child,
+td> :last-child {
     margin-bottom: 0px;
 }
 
@@ -468,12 +481,12 @@ div.figure p.caption span.caption-number {
     font-style: italic;
 }
 
-div.figure p.caption span.caption-text {
-}
+div.figure p.caption span.caption-text {}
 
 /* -- field list styles ----------------------------------------------------- */
 
-table.field-list td, table.field-list th {
+table.field-list td,
+table.field-list th {
     border: 0 !important;
 }
 
@@ -526,13 +539,13 @@ ol.upperroman {
     list-style: upper-roman;
 }
 
-:not(li) > ol > li:first-child > :first-child,
-:not(li) > ul > li:first-child > :first-child {
+:not(li)>ol>li:first-child> :first-child,
+:not(li)>ul>li:first-child> :first-child {
     margin-top: 0px;
 }
 
-:not(li) > ol > li:last-child > :last-child,
-:not(li) > ul > li:last-child > :last-child {
+:not(li)>ol>li:last-child> :last-child,
+:not(li)>ul>li:last-child> :last-child {
     margin-bottom: 0px;
 }
 
@@ -543,8 +556,8 @@ ul.simple ul p {
     margin-top: 0;
 }
 
-ol.simple > li:not(:first-child) > p,
-ul.simple > li:not(:first-child) > p {
+ol.simple>li:not(:first-child)>p,
+ul.simple>li:not(:first-child)>p {
     margin-top: 0;
 }
 
@@ -553,19 +566,19 @@ ul.simple p {
     margin-bottom: 0;
 }
 
-dl.footnote > dt,
-dl.citation > dt {
+dl.footnote>dt,
+dl.citation>dt {
     float: left;
     margin-right: 0.5em;
 }
 
-dl.footnote > dd,
-dl.citation > dd {
+dl.footnote>dd,
+dl.citation>dd {
     margin-bottom: 0em;
 }
 
-dl.footnote > dd:after,
-dl.citation > dd:after {
+dl.footnote>dd:after,
+dl.citation>dd:after {
     content: "";
     clear: both;
 }
@@ -575,18 +588,18 @@ dl.field-list {
     grid-template-columns: fit-content(30%) auto;
 }
 
-dl.field-list > dt {
+dl.field-list>dt {
     font-weight: bold;
     word-break: break-word;
     padding-left: 0.5em;
     padding-right: 5px;
 }
 
-dl.field-list > dt:after {
+dl.field-list>dt:after {
     content: ":";
 }
 
-dl.field-list > dd {
+dl.field-list>dd {
     padding-left: 0.5em;
     margin-top: 0em;
     margin-left: 0em;
@@ -597,11 +610,12 @@ dl {
     margin-bottom: 15px;
 }
 
-dd > :first-child {
+dd> :first-child {
     margin-top: 0px;
 }
 
-dd ul, dd table {
+dd ul,
+dd table {
     margin-bottom: 10px;
 }
 
@@ -611,12 +625,13 @@ dd {
     margin-left: 30px;
 }
 
-dl > dd:last-child,
-dl > dd:last-child > :last-child {
+dl>dd:last-child,
+dl>dd:last-child> :last-child {
     margin-bottom: 0;
 }
 
-dt:target, span.highlighted {
+dt:target,
+span.highlighted {
     background-color: #fbe54e;
 }
 
@@ -647,7 +662,7 @@ dl.glossary dt {
     border: 3px solid red;
 }
 
-.footnote:target  {
+.footnote:target {
     background-color: #ffa;
 }
 
@@ -663,7 +678,8 @@ dl.glossary dt {
     margin-left: 1.5em;
 }
 
-.guilabel, .menuselection {
+.guilabel,
+.menuselection {
     font-family: sans-serif;
 }
 
@@ -681,7 +697,8 @@ dl.glossary dt {
     content: ":";
 }
 
-abbr, acronym {
+abbr,
+acronym {
     border-bottom: dotted 1px;
     cursor: help;
 }
@@ -690,10 +707,12 @@ abbr, acronym {
 
 pre {
     overflow: auto;
-    overflow-y: hidden;  /* fixes display issues on Chrome browsers */
+    overflow-y: hidden;
+    /* fixes display issues on Chrome browsers */
 }
 
-pre, div[class*="highlight-"] {
+pre,
+div[class*="highlight-"] {
     clear: both;
 }
 
@@ -749,7 +768,7 @@ table.highlighttable pre {
     margin: 0;
 }
 
-div.code-block-caption + div {
+div.code-block-caption+div {
     margin-top: 0;
 }
 
@@ -765,7 +784,8 @@ div.code-block-caption code {
 
 table.highlighttable td.linenos,
 span.linenos,
-div.doctest > div.highlight span.gp {  /* gp: Generic.Prompt */
+div.doctest>div.highlight span.gp {
+    /* gp: Generic.Prompt */
     user-select: none;
 }
 
@@ -774,8 +794,7 @@ div.code-block-caption span.caption-number {
     font-style: italic;
 }
 
-div.code-block-caption span.caption-text {
-}
+div.code-block-caption span.caption-text {}
 
 div.literal-block-wrapper {
     margin: 1em 0;
@@ -791,12 +810,18 @@ code.descclassname {
     background-color: transparent;
 }
 
-code.xref, a code {
+code.xref,
+a code {
     background-color: transparent;
     font-weight: bold;
 }
 
-h1 code, h2 code, h3 code, h4 code, h5 code, h6 code {
+h1 code,
+h2 code,
+h3 code,
+h4 code,
+h5 code,
+h6 code {
     background-color: transparent;
 }
 
@@ -840,6 +865,7 @@ div.math:hover a.headerlink {
 /* -- printout stylesheet --------------------------------------------------- */
 
 @media print {
+
     div.document,
     div.documentwrapper,
     div.bodywrapper {

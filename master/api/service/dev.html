@@ -1,562 +1,479 @@
-
-
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en">
+
 <head>
-  <meta charset="utf-8">
-  
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
-  <title>Service Dev &mdash; DFFML 0.3.7 documentation</title>
-  
-
-  
-  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/sphinx_tabs/semantic-ui-2.4.1/segment.min.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/sphinx_tabs/semantic-ui-2.4.1/menu.min.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/sphinx_tabs/semantic-ui-2.4.1/tab.min.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/sphinx_tabs/tabs.css" type="text/css" />
-
-  
-  
-  
-  
-
-  
-  <!--[if lt IE 9]>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Service Dev &mdash; DFFML 0.3.7 documentation</title>
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/sphinx_tabs/semantic-ui-2.4.1/segment.min.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/sphinx_tabs/semantic-ui-2.4.1/menu.min.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/sphinx_tabs/semantic-ui-2.4.1/tab.min.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/sphinx_tabs/tabs.css" type="text/css" />
+    <!--[if lt IE 9]>
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
-  
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-        <script src="../../_static/jquery.js"></script>
-        <script src="../../_static/underscore.js"></script>
-        <script src="../../_static/doctools.js"></script>
-        <script src="../../_static/language_data.js"></script>
-        <script src="../../_static/copybutton.js"></script>
-    
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <script src="../../_static/copybutton.js"></script>
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
-
-    
     <link rel="author" title="About these documents" href="../../about.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="Databases" href="../db/index.html" />
-    <link rel="prev" title="Service" href="index.html" /> 
+    <link rel="prev" title="Service" href="index.html" />
 </head>
 
 <body class="wy-body-for-nav">
-
-   
-  <div class="wy-grid-for-nav">
-    
-    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-      <div class="wy-side-scroll">
-        <div class="wy-side-nav-search" >
-          
-
-          
-            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> DFFML
-          
-
-          
-          </a>
-
-          
-            
-            
-              <div class="version">
-                0.3.7
-              </div>
-            
-          
-
-          
-<div role="search">
-  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
-    <input type="hidden" name="check_keywords" value="yes" />
-    <input type="hidden" name="area" value="default" />
-  </form>
-</div>
-
-          
-        </div>
-
-        
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
-              <p class="caption"><span class="caption-text">Introduction</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../about.html">About</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../concepts/index.html">Concepts</a></li>
-</ul>
-<p class="caption"><span class="caption-text">Usage</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../quickstart/model.html">Quickstart</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../examples/index.html">Examples</a></li>
-</ul>
-<p class="caption"><span class="caption-text">Reference</span></p>
-<ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../../plugins/index.html">Plugins</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../cli.html">Command Line</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../plugins/service/http/index.html">HTTP API</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="../index.html">API Reference</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="../high_level.html">High Level</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../base.html">Base</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../record.html">Record</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../version.html">Version</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../plugins.html">Plugins</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../log.html">Log</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../noasync.html">High Level (noasync)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../port/index.html">Port</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../df/index.html">Data Flow</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../cli/index.html">Cli</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../util/index.html">Utilities</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../source/index.html">Sources</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../configloader/index.html">Configloader</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../feature/index.html">Feature</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../model/index.html">Models</a></li>
-<li class="toctree-l2 current"><a class="reference internal" href="index.html">Service</a><ul class="current">
-<li class="toctree-l3 current"><a class="current reference internal" href="#">Service Dev</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="../db/index.html">Databases</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../operation/index.html">Operation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../secret/index.html">Secrets</a></li>
-</ul>
-</li>
-</ul>
-<p class="caption"><span class="caption-text">Subprojects</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../shouldi.html">shouldi</a></li>
-</ul>
-<p class="caption"><span class="caption-text">Community</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference external" href="https://github.com/intel/dffml">GitHub</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../publications.html">Publications</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../contact.html">Contact Us</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../contributing/index.html">Contributing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../changelog.html">Changelog</a></li>
-</ul>
-
-            
-          
-        </div>
-        
-      </div>
-    </nav>
-
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
-          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../../index.html">DFFML</a>
-        
-      </nav>
-
-
-      <div class="wy-nav-content">
-        
-        <div class="rst-content">
-        
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
-  <ul class="wy-breadcrumbs">
-    
-      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
-        
-          <li><a href="../index.html">API Reference</a> &raquo;</li>
-        
-          <li><a href="index.html">Service</a> &raquo;</li>
-        
-      <li>Service Dev</li>
-    
-    
-
-
-      <li class="wy-breadcrumbs-aside">
-        
-            
-            
-              <a href="https://github.com/intel/dffml/blob/master/docs/api/service/dev.rst" class="fa fa-github"> Edit on GitHub</a>
-            
-          
-        
-      </li>
-    
-
-
-  </ul>
-
-  
-  <hr/>
-</div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-           <div itemprop="articleBody">
-            
-  <div class="section" id="module-dffml.service.dev">
-<span id="service-dev"></span><h1>Service Dev<a class="headerlink" href="#module-dffml.service.dev" title="Permalink to this headline">¶</a></h1>
-<dl class="py class">
-<dt id="dffml.service.dev.Bump">
-<em class="property">class </em><code class="sig-prename descclassname">dffml.service.dev.</code><code class="sig-name descname">Bump</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">extra_config</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/service/dev.html#Bump"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.service.dev.Bump" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bump the the main package in the versions plugins, or any or all libraries.</p>
-<dl class="py attribute">
-<dt id="dffml.service.dev.Bump.main">
-<code class="sig-name descname">main</code><a class="headerlink" href="#dffml.service.dev.Bump.main" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <a class="reference internal" href="#dffml.service.dev.BumpMain" title="dffml.service.dev.BumpMain"><code class="xref py py-class docutils literal notranslate"><span class="pre">BumpMain</span></code></a></p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt id="dffml.service.dev.Bump.packages">
-<code class="sig-name descname">packages</code><a class="headerlink" href="#dffml.service.dev.Bump.packages" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <a class="reference internal" href="#dffml.service.dev.BumpPackages" title="dffml.service.dev.BumpPackages"><code class="xref py py-class docutils literal notranslate"><span class="pre">BumpPackages</span></code></a></p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt id="dffml.service.dev.BumpMain">
-<em class="property">class </em><code class="sig-prename descclassname">dffml.service.dev.</code><code class="sig-name descname">BumpMain</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">extra_config</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/service/dev.html#BumpMain"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.service.dev.BumpMain" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bump the version number of the main package within the dependency list of
-each plugin.</p>
-</dd></dl>
-
-<dl class="py class">
-<dt id="dffml.service.dev.BumpPackages">
-<em class="property">class </em><code class="sig-prename descclassname">dffml.service.dev.</code><code class="sig-name descname">BumpPackages</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">extra_config</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/service/dev.html#BumpPackages"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.service.dev.BumpPackages" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bump all the versions of all the packages and increment the version number
-given.</p>
-<dl class="py attribute">
-<dt id="dffml.service.dev.BumpPackages.CONFIG">
-<code class="sig-name descname">CONFIG</code><a class="headerlink" href="#dffml.service.dev.BumpPackages.CONFIG" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <a class="reference internal" href="#dffml.service.dev.BumpPackagesConfig" title="dffml.service.dev.BumpPackagesConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">BumpPackagesConfig</span></code></a></p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt id="dffml.service.dev.BumpPackagesConfig">
-<em class="property">class </em><code class="sig-prename descclassname">dffml.service.dev.</code><code class="sig-name descname">BumpPackagesConfig</code><span class="sig-paren">(</span><em class="sig-param">version: str</em>, <em class="sig-param">skip: List[str] = &lt;factory&gt;</em>, <em class="sig-param">only: List[str] = &lt;factory&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/service/dev.html#BumpPackagesConfig"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.service.dev.BumpPackagesConfig" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py class">
-<dt id="dffml.service.dev.CI">
-<em class="property">class </em><code class="sig-prename descclassname">dffml.service.dev.</code><code class="sig-name descname">CI</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">extra_config</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/service/dev.html#CI"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.service.dev.CI" title="Permalink to this definition">¶</a></dt>
-<dd><p>CI related commands</p>
-<dl class="py attribute">
-<dt id="dffml.service.dev.CI.pindeps">
-<code class="sig-name descname">pindeps</code><a class="headerlink" href="#dffml.service.dev.CI.pindeps" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <a class="reference internal" href="#dffml.service.dev.PinDeps" title="dffml.service.dev.PinDeps"><code class="xref py py-class docutils literal notranslate"><span class="pre">PinDeps</span></code></a></p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt id="dffml.service.dev.Create">
-<em class="property">class </em><code class="sig-prename descclassname">dffml.service.dev.</code><code class="sig-name descname">Create</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">extra_config</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/service/dev.html#Create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.service.dev.Create" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create new models, operations, etc.</p>
-</dd></dl>
-
-<dl class="py class">
-<dt id="dffml.service.dev.Develop">
-<em class="property">class </em><code class="sig-prename descclassname">dffml.service.dev.</code><code class="sig-name descname">Develop</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">extra_config</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/service/dev.html#Develop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.service.dev.Develop" title="Permalink to this definition">¶</a></dt>
-<dd><p>Development utilities for hacking on DFFML itself</p>
-<dl class="py attribute">
-<dt id="dffml.service.dev.Develop.bump">
-<code class="sig-name descname">bump</code><a class="headerlink" href="#dffml.service.dev.Develop.bump" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <a class="reference internal" href="#dffml.service.dev.Bump" title="dffml.service.dev.Bump"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bump</span></code></a></p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt id="dffml.service.dev.Develop.ci">
-<code class="sig-name descname">ci</code><a class="headerlink" href="#dffml.service.dev.Develop.ci" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <a class="reference internal" href="#dffml.service.dev.CI" title="dffml.service.dev.CI"><code class="xref py py-class docutils literal notranslate"><span class="pre">CI</span></code></a></p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt id="dffml.service.dev.Develop.create">
-<code class="sig-name descname">create</code><a class="headerlink" href="#dffml.service.dev.Develop.create" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <a class="reference internal" href="#dffml.service.dev.Create" title="dffml.service.dev.Create"><code class="xref py py-class docutils literal notranslate"><span class="pre">Create</span></code></a></p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt id="dffml.service.dev.Develop.install">
-<code class="sig-name descname">install</code><a class="headerlink" href="#dffml.service.dev.Develop.install" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <a class="reference internal" href="#dffml.service.dev.Install" title="dffml.service.dev.Install"><code class="xref py py-class docutils literal notranslate"><span class="pre">Install</span></code></a></p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt id="dffml.service.dev.Develop.release">
-<code class="sig-name descname">release</code><a class="headerlink" href="#dffml.service.dev.Develop.release" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <a class="reference internal" href="#dffml.service.dev.Release" title="dffml.service.dev.Release"><code class="xref py py-class docutils literal notranslate"><span class="pre">Release</span></code></a></p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt id="dffml.service.dev.Develop.run">
-<code class="sig-name descname">run</code><a class="headerlink" href="#dffml.service.dev.Develop.run" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <a class="reference internal" href="#dffml.service.dev.Run" title="dffml.service.dev.Run"><code class="xref py py-class docutils literal notranslate"><span class="pre">Run</span></code></a></p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt id="dffml.service.dev.Develop.skel">
-<code class="sig-name descname">skel</code><a class="headerlink" href="#dffml.service.dev.Develop.skel" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <a class="reference internal" href="#dffml.service.dev.Skeleton" title="dffml.service.dev.Skeleton"><code class="xref py py-class docutils literal notranslate"><span class="pre">Skeleton</span></code></a></p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt id="dffml.service.dev.ExportConfig">
-<em class="property">class </em><code class="sig-prename descclassname">dffml.service.dev.</code><code class="sig-name descname">ExportConfig</code><span class="sig-paren">(</span><em class="sig-param">export: str</em>, <em class="sig-param">configloader: dffml.configloader.configloader.BaseConfigLoader = &lt;class 'dffml.configloader.json.JSONConfigLoader'&gt;</em>, <em class="sig-param">not_linked: bool = False</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/service/dev.html#ExportConfig"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.service.dev.ExportConfig" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="py attribute">
-<dt id="dffml.service.dev.ExportConfig.configloader">
-<code class="sig-name descname">configloader</code><a class="headerlink" href="#dffml.service.dev.ExportConfig.configloader" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <a class="reference internal" href="../configloader/json.html#dffml.configloader.json.JSONConfigLoader" title="dffml.configloader.json.JSONConfigLoader"><code class="xref py py-class docutils literal notranslate"><span class="pre">dffml.configloader.json.JSONConfigLoader</span></code></a></p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt id="dffml.service.dev.Install">
-<em class="property">class </em><code class="sig-prename descclassname">dffml.service.dev.</code><code class="sig-name descname">Install</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">extra_config</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/service/dev.html#Install"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.service.dev.Install" title="Permalink to this definition">¶</a></dt>
-<dd><p>Uninstall production packages and install dffml in development mode.</p>
-<dl class="py attribute">
-<dt id="dffml.service.dev.Install.CONFIG">
-<code class="sig-name descname">CONFIG</code><a class="headerlink" href="#dffml.service.dev.Install.CONFIG" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <a class="reference internal" href="#dffml.service.dev.InstallConfig" title="dffml.service.dev.InstallConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">InstallConfig</span></code></a></p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="dffml.service.dev.Install.dep_check">
-<em class="property">static </em><code class="sig-name descname">dep_check</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">plugin_deps</span><span class="p">:</span> <span class="n">Dict<span class="p">[</span>Tuple<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a><span class="p">, </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a><span class="p">]</span><span class="p">, </span>Dict<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a><span class="p">, </span>Callable<span class="p">[</span><span class="p">]</span><span class="p">, </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)">bool</a><span class="p">]</span><span class="p">]</span><span class="p">]</span></span></em>, <em class="sig-param"><span class="n">skip</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>List<span class="p">[</span>Tuple<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a><span class="p">, </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a><span class="p">]</span><span class="p">]</span><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/service/dev.html#Install.dep_check"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.service.dev.Install.dep_check" title="Permalink to this definition">¶</a></dt>
-<dd><p>Check if all dependencies are installed prior to running setup.py
-installs of plugins</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt id="dffml.service.dev.InstallConfig">
-<em class="property">class </em><code class="sig-prename descclassname">dffml.service.dev.</code><code class="sig-name descname">InstallConfig</code><span class="sig-paren">(</span><em class="sig-param">skip: List[str] = &lt;factory&gt;</em>, <em class="sig-param">nocheck: bool = False</em>, <em class="sig-param">user: bool = False</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/service/dev.html#InstallConfig"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.service.dev.InstallConfig" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py class">
-<dt id="dffml.service.dev.Link">
-<em class="property">class </em><code class="sig-prename descclassname">dffml.service.dev.</code><code class="sig-name descname">Link</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">extra_config</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/service/dev.html#Link"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.service.dev.Link" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create required symlinks from skel/common to the other template directories</p>
-</dd></dl>
-
-<dl class="py class">
-<dt id="dffml.service.dev.ListEntrypointsConfig">
-<em class="property">class </em><code class="sig-prename descclassname">dffml.service.dev.</code><code class="sig-name descname">ListEntrypointsConfig</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">entrypoint</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/service/dev.html#ListEntrypointsConfig"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.service.dev.ListEntrypointsConfig" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py exception">
-<dt id="dffml.service.dev.MissingDependenciesError">
-<em class="property">exception </em><code class="sig-prename descclassname">dffml.service.dev.</code><code class="sig-name descname">MissingDependenciesError</code><a class="reference internal" href="../../_modules/dffml/service/dev.html#MissingDependenciesError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.service.dev.MissingDependenciesError" title="Permalink to this definition">¶</a></dt>
-<dd><p>Raised when a package has non-pip installable dependencies, or pip
-installable dependencies that must be installed before running the setup.py</p>
-</dd></dl>
-
-<dl class="py class">
-<dt id="dffml.service.dev.PinDeps">
-<em class="property">class </em><code class="sig-prename descclassname">dffml.service.dev.</code><code class="sig-name descname">PinDeps</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">extra_config</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/service/dev.html#PinDeps"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.service.dev.PinDeps" title="Permalink to this definition">¶</a></dt>
-<dd><p>Parse a GitHub Actions log archive to produce pinned dependencies for each
-requirements.txt</p>
-<dl class="py attribute">
-<dt id="dffml.service.dev.PinDeps.CONFIG">
-<code class="sig-name descname">CONFIG</code><a class="headerlink" href="#dffml.service.dev.PinDeps.CONFIG" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <a class="reference internal" href="#dffml.service.dev.PinDepsConfig" title="dffml.service.dev.PinDepsConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">PinDepsConfig</span></code></a></p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="dffml.service.dev.PinDeps.remove_ansi_escape">
-<em class="property">classmethod </em><code class="sig-name descname">remove_ansi_escape</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">contents</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/service/dev.html#PinDeps.remove_ansi_escape"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.service.dev.PinDeps.remove_ansi_escape" title="Permalink to this definition">¶</a></dt>
-<dd><p>Found on Stack Overflow from Martijn Pieters, only modified input variable
-name.
-- <a class="reference external" href="https://stackoverflow.com/a/14693789">https://stackoverflow.com/a/14693789</a>
-- <a class="reference external" href="https://creativecommons.org/licenses/by-sa/4.0/">https://creativecommons.org/licenses/by-sa/4.0/</a></p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="dffml.service.dev.PinDeps.requirement_package_name">
-<em class="property">classmethod </em><code class="sig-name descname">requirement_package_name</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">line</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/service/dev.html#PinDeps.requirement_package_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.service.dev.PinDeps.requirement_package_name" title="Permalink to this definition">¶</a></dt>
-<dd><p>Parse a line from requirements.txt and return the package name</p>
-<p>“Per PEP 508, valid project names must: Consist only of ASCII letters,
-digits, underscores (_), hyphens (-), and/or periods (.), and. Start &amp; end
-with an ASCII letter or digit.”</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt id="dffml.service.dev.PinDepsConfig">
-<em class="property">class </em><code class="sig-prename descclassname">dffml.service.dev.</code><code class="sig-name descname">PinDepsConfig</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">logs</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.9)">pathlib.Path</a></span></em>, <em class="sig-param"><span class="n">update</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)">bool</a></span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/service/dev.html#PinDepsConfig"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.service.dev.PinDepsConfig" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py class">
-<dt id="dffml.service.dev.PinDepsPlugin">
-<em class="property">class </em><code class="sig-prename descclassname">dffml.service.dev.</code><code class="sig-name descname">PinDepsPlugin</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></span></em>, <em class="sig-param"><span class="n">requirements_txt_path</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.9)">pathlib.Path</a></span></em>, <em class="sig-param"><span class="n">requirements_txt_contents</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></span></em>, <em class="sig-param"><span class="n">requirements_txt_pinned</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/service/dev.html#PinDepsPlugin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.service.dev.PinDepsPlugin" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py class">
-<dt id="dffml.service.dev.Release">
-<em class="property">class </em><code class="sig-prename descclassname">dffml.service.dev.</code><code class="sig-name descname">Release</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">extra_config</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/service/dev.html#Release"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.service.dev.Release" title="Permalink to this definition">¶</a></dt>
-<dd><p>Release a package (if not already released)</p>
-<dl class="py attribute">
-<dt id="dffml.service.dev.Release.CONFIG">
-<code class="sig-name descname">CONFIG</code><a class="headerlink" href="#dffml.service.dev.Release.CONFIG" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <a class="reference internal" href="#dffml.service.dev.ReleaseConfig" title="dffml.service.dev.ReleaseConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">ReleaseConfig</span></code></a></p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt id="dffml.service.dev.ReleaseConfig">
-<em class="property">class </em><code class="sig-prename descclassname">dffml.service.dev.</code><code class="sig-name descname">ReleaseConfig</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">package</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.9)">pathlib.Path</a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/service/dev.html#ReleaseConfig"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.service.dev.ReleaseConfig" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py exception">
-<dt id="dffml.service.dev.RepoDirtyError">
-<em class="property">exception </em><code class="sig-prename descclassname">dffml.service.dev.</code><code class="sig-name descname">RepoDirtyError</code><a class="reference internal" href="../../_modules/dffml/service/dev.html#RepoDirtyError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.service.dev.RepoDirtyError" title="Permalink to this definition">¶</a></dt>
-<dd><p>Raised when a release was attempted but there are uncommited changes</p>
-</dd></dl>
-
-<dl class="py class">
-<dt id="dffml.service.dev.Run">
-<em class="property">class </em><code class="sig-prename descclassname">dffml.service.dev.</code><code class="sig-name descname">Run</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">extra_config</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/service/dev.html#Run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.service.dev.Run" title="Permalink to this definition">¶</a></dt>
-<dd><p>Run a single operation</p>
-<dl class="py attribute">
-<dt id="dffml.service.dev.Run.CONFIG">
-<code class="sig-name descname">CONFIG</code><a class="headerlink" href="#dffml.service.dev.Run.CONFIG" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <a class="reference internal" href="#dffml.service.dev.RunConfig" title="dffml.service.dev.RunConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">RunConfig</span></code></a></p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt id="dffml.service.dev.RunConfig">
-<em class="property">class </em><code class="sig-prename descclassname">dffml.service.dev.</code><code class="sig-name descname">RunConfig</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">operation</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/service/dev.html#RunConfig"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.service.dev.RunConfig" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py class">
-<dt id="dffml.service.dev.SetupPyKWArg">
-<em class="property">class </em><code class="sig-prename descclassname">dffml.service.dev.</code><code class="sig-name descname">SetupPyKWArg</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">extra_config</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/service/dev.html#SetupPyKWArg"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.service.dev.SetupPyKWArg" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get a keyword argument from a call to setup in a setup.py file.</p>
-<dl class="py attribute">
-<dt id="dffml.service.dev.SetupPyKWArg.CONFIG">
-<code class="sig-name descname">CONFIG</code><a class="headerlink" href="#dffml.service.dev.SetupPyKWArg.CONFIG" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <a class="reference internal" href="#dffml.service.dev.SetupPyKWArgConfig" title="dffml.service.dev.SetupPyKWArgConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">SetupPyKWArgConfig</span></code></a></p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt id="dffml.service.dev.SetupPyKWArgConfig">
-<em class="property">class </em><code class="sig-prename descclassname">dffml.service.dev.</code><code class="sig-name descname">SetupPyKWArgConfig</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">kwarg</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></span></em>, <em class="sig-param"><span class="n">setupfilepath</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/service/dev.html#SetupPyKWArgConfig"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.service.dev.SetupPyKWArgConfig" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py class">
-<dt id="dffml.service.dev.Skeleton">
-<em class="property">class </em><code class="sig-prename descclassname">dffml.service.dev.</code><code class="sig-name descname">Skeleton</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">extra_config</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/service/dev.html#Skeleton"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.service.dev.Skeleton" title="Permalink to this definition">¶</a></dt>
-<dd><p>Work with the skeleton directories (create service templates)</p>
-<dl class="py attribute">
-<dt id="dffml.service.dev.Skeleton.link">
-<code class="sig-name descname">link</code><a class="headerlink" href="#dffml.service.dev.Skeleton.link" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <a class="reference internal" href="#dffml.service.dev.Link" title="dffml.service.dev.Link"><code class="xref py py-class docutils literal notranslate"><span class="pre">Link</span></code></a></p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py function">
-<dt id="dffml.service.dev.create_from_skel">
-<code class="sig-prename descclassname">dffml.service.dev.</code><code class="sig-name descname">create_from_skel</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">plugin_type</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/service/dev.html#create_from_skel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.service.dev.create_from_skel" title="Permalink to this definition">¶</a></dt>
-<dd><p>Copies samples out of skel/ and does re-naming.</p>
-</dd></dl>
-
-</div>
-
-
-           </div>
-           
-          </div>
-          <footer>
-  
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="../db/index.html" class="btn btn-neutral float-right" title="Databases" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="index.html" class="btn btn-neutral float-left" title="Service" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
+    <div class="wy-grid-for-nav">
+        <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+            <div class="wy-side-scroll">
+                <div class="wy-side-nav-search">
+                    <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> DFFML
+                    </a>
+                    <div class="version">
+                        0.3.7
+                    </div>
+                    <div role="search">
+                        <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+                            <input type="text" name="q" placeholder="Search docs" />
+                            <input type="hidden" name="check_keywords" value="yes" />
+                            <input type="hidden" name="area" value="default" />
+                        </form>
+                    </div>
+                </div>
+                <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+                    <p class="caption"><span class="caption-text">Introduction</span></p>
+                    <ul>
+                        <li class="toctree-l1"><a class="reference internal" href="../../about.html">About</a></li>
+                        <li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+                        <li class="toctree-l1"><a class="reference internal" href="../../concepts/index.html">Concepts</a></li>
+                    </ul>
+                    <p class="caption"><span class="caption-text">Usage</span></p>
+                    <ul>
+                        <li class="toctree-l1"><a class="reference internal" href="../../quickstart/model.html">Quickstart</a></li>
+                        <li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
+                        <li class="toctree-l1"><a class="reference internal" href="../../examples/index.html">Examples</a></li>
+                    </ul>
+                    <p class="caption"><span class="caption-text">Reference</span></p>
+                    <ul class="current">
+                        <li class="toctree-l1"><a class="reference internal" href="../../plugins/index.html">Plugins</a></li>
+                        <li class="toctree-l1"><a class="reference internal" href="../../cli.html">Command Line</a></li>
+                        <li class="toctree-l1"><a class="reference internal" href="../../plugins/service/http/index.html">HTTP API</a></li>
+                        <li class="toctree-l1 current"><a class="reference internal" href="../index.html">API Reference</a>
+                            <ul class="current">
+                                <li class="toctree-l2"><a class="reference internal" href="../high_level.html">High Level</a></li>
+                                <li class="toctree-l2"><a class="reference internal" href="../base.html">Base</a></li>
+                                <li class="toctree-l2"><a class="reference internal" href="../record.html">Record</a></li>
+                                <li class="toctree-l2"><a class="reference internal" href="../version.html">Version</a></li>
+                                <li class="toctree-l2"><a class="reference internal" href="../plugins.html">Plugins</a></li>
+                                <li class="toctree-l2"><a class="reference internal" href="../log.html">Log</a></li>
+                                <li class="toctree-l2"><a class="reference internal" href="../noasync.html">High Level (noasync)</a></li>
+                                <li class="toctree-l2"><a class="reference internal" href="../port/index.html">Port</a></li>
+                                <li class="toctree-l2"><a class="reference internal" href="../df/index.html">Data Flow</a></li>
+                                <li class="toctree-l2"><a class="reference internal" href="../cli/index.html">Cli</a></li>
+                                <li class="toctree-l2"><a class="reference internal" href="../util/index.html">Utilities</a></li>
+                                <li class="toctree-l2"><a class="reference internal" href="../source/index.html">Sources</a></li>
+                                <li class="toctree-l2"><a class="reference internal" href="../configloader/index.html">Configloader</a></li>
+                                <li class="toctree-l2"><a class="reference internal" href="../feature/index.html">Feature</a></li>
+                                <li class="toctree-l2"><a class="reference internal" href="../model/index.html">Models</a></li>
+                                <li class="toctree-l2 current"><a class="reference internal" href="index.html">Service</a>
+                                    <ul class="current">
+                                        <li class="toctree-l3 current"><a class="current reference internal" href="#">Service Dev</a></li>
+                                    </ul>
+                                </li>
+                                <li class="toctree-l2"><a class="reference internal" href="../db/index.html">Databases</a></li>
+                                <li class="toctree-l2"><a class="reference internal" href="../operation/index.html">Operation</a></li>
+                                <li class="toctree-l2"><a class="reference internal" href="../secret/index.html">Secrets</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <p class="caption"><span class="caption-text">Subprojects</span></p>
+                    <ul>
+                        <li class="toctree-l1"><a class="reference internal" href="../../shouldi.html">shouldi</a></li>
+                    </ul>
+                    <p class="caption"><span class="caption-text">Community</span></p>
+                    <ul>
+                        <li class="toctree-l1"><a class="reference external" href="https://github.com/intel/dffml">GitHub</a></li>
+                        <li class="toctree-l1"><a class="reference internal" href="../../publications.html">Publications</a></li>
+                        <li class="toctree-l1"><a class="reference internal" href="../../contact.html">Contact Us</a></li>
+                        <li class="toctree-l1"><a class="reference internal" href="../../contributing/index.html">Contributing</a></li>
+                        <li class="toctree-l1"><a class="reference internal" href="../../changelog.html">Changelog</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+            <nav class="wy-nav-top" aria-label="top navigation">
+                <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+                <a href="../../index.html">DFFML</a>
+            </nav>
+            <div class="wy-nav-content">
+                <div class="rst-content">
+                    <div role="navigation" aria-label="breadcrumbs navigation">
+                        <ul class="wy-breadcrumbs">
+                            <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+                            <li><a href="../index.html">API Reference</a> &raquo;</li>
+                            <li><a href="index.html">Service</a> &raquo;</li>
+                            <li>Service Dev</li>
+                            <li class="wy-breadcrumbs-aside">
+                                <a href="https://github.com/intel/dffml/blob/master/docs/api/service/dev.rst" class="fa fa-github"> Edit on GitHub</a>
+                            </li>
+                        </ul>
+                        <hr />
+                    </div>
+                    <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+                        <div itemprop="articleBody">
+                            <div class="section" id="module-dffml.service.dev">
+                                <span id="service-dev"></span>
+                                <h1>Service Dev<a class="headerlink" href="#module-dffml.service.dev" title="Permalink to this headline">¶</a></h1>
+                                <dl class="py class">
+                                    <dt id="dffml.service.dev.Bump">
+                                        <em class="property">class </em><code class="sig-prename descclassname">dffml.service.dev.</code><code class="sig-name descname">Bump</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">extra_config</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/service/dev.html#Bump"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.service.dev.Bump" title="Permalink to this definition">¶</a></dt>
+                                    <dd>
+                                        <p>Bump the the main package in the versions plugins, or any or all libraries.</p>
+                                        <dl class="py attribute">
+                                            <dt id="dffml.service.dev.Bump.main">
+                                                <code class="sig-name descname">main</code><a class="headerlink" href="#dffml.service.dev.Bump.main" title="Permalink to this definition">¶</a></dt>
+                                            <dd>
+                                                <p>alias of <a class="reference internal" href="#dffml.service.dev.BumpMain" title="dffml.service.dev.BumpMain"><code class="xref py py-class docutils literal notranslate"><span class="pre">BumpMain</span></code></a></p>
+                                            </dd>
+                                        </dl>
+                                        <dl class="py attribute">
+                                            <dt id="dffml.service.dev.Bump.packages">
+                                                <code class="sig-name descname">packages</code><a class="headerlink" href="#dffml.service.dev.Bump.packages" title="Permalink to this definition">¶</a></dt>
+                                            <dd>
+                                                <p>alias of <a class="reference internal" href="#dffml.service.dev.BumpPackages" title="dffml.service.dev.BumpPackages"><code class="xref py py-class docutils literal notranslate"><span class="pre">BumpPackages</span></code></a></p>
+                                            </dd>
+                                        </dl>
+                                    </dd>
+                                </dl>
+                                <dl class="py class">
+                                    <dt id="dffml.service.dev.BumpMain">
+                                        <em class="property">class </em><code class="sig-prename descclassname">dffml.service.dev.</code><code class="sig-name descname">BumpMain</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">extra_config</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/service/dev.html#BumpMain"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.service.dev.BumpMain" title="Permalink to this definition">¶</a></dt>
+                                    <dd>
+                                        <p>Bump the version number of the main package within the dependency list of
+                                            each plugin.</p>
+                                    </dd>
+                                </dl>
+                                <dl class="py class">
+                                    <dt id="dffml.service.dev.BumpPackages">
+                                        <em class="property">class </em><code class="sig-prename descclassname">dffml.service.dev.</code><code class="sig-name descname">BumpPackages</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">extra_config</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/service/dev.html#BumpPackages"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.service.dev.BumpPackages" title="Permalink to this definition">¶</a></dt>
+                                    <dd>
+                                        <p>Bump all the versions of all the packages and increment the version number
+                                            given.</p>
+                                        <dl class="py attribute">
+                                            <dt id="dffml.service.dev.BumpPackages.CONFIG">
+                                                <code class="sig-name descname">CONFIG</code><a class="headerlink" href="#dffml.service.dev.BumpPackages.CONFIG" title="Permalink to this definition">¶</a></dt>
+                                            <dd>
+                                                <p>alias of <a class="reference internal" href="#dffml.service.dev.BumpPackagesConfig" title="dffml.service.dev.BumpPackagesConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">BumpPackagesConfig</span></code></a></p>
+                                            </dd>
+                                        </dl>
+                                    </dd>
+                                </dl>
+                                <dl class="py class">
+                                    <dt id="dffml.service.dev.BumpPackagesConfig">
+                                        <em class="property">class </em><code class="sig-prename descclassname">dffml.service.dev.</code><code class="sig-name descname">BumpPackagesConfig</code><span class="sig-paren">(</span><em class="sig-param">version: str</em>, <em class="sig-param">skip: List[str] = &lt;factory&gt;</em>, <em class="sig-param">only: List[str] = &lt;factory&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/service/dev.html#BumpPackagesConfig"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.service.dev.BumpPackagesConfig" title="Permalink to this definition">¶</a></dt>
+                                    <dd></dd>
+                                </dl>
+                                <dl class="py class">
+                                    <dt id="dffml.service.dev.CI">
+                                        <em class="property">class </em><code class="sig-prename descclassname">dffml.service.dev.</code><code class="sig-name descname">CI</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">extra_config</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/service/dev.html#CI"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.service.dev.CI" title="Permalink to this definition">¶</a></dt>
+                                    <dd>
+                                        <p>CI related commands</p>
+                                        <dl class="py attribute">
+                                            <dt id="dffml.service.dev.CI.pindeps">
+                                                <code class="sig-name descname">pindeps</code><a class="headerlink" href="#dffml.service.dev.CI.pindeps" title="Permalink to this definition">¶</a></dt>
+                                            <dd>
+                                                <p>alias of <a class="reference internal" href="#dffml.service.dev.PinDeps" title="dffml.service.dev.PinDeps"><code class="xref py py-class docutils literal notranslate"><span class="pre">PinDeps</span></code></a></p>
+                                            </dd>
+                                        </dl>
+                                    </dd>
+                                </dl>
+                                <dl class="py class">
+                                    <dt id="dffml.service.dev.Create">
+                                        <em class="property">class </em><code class="sig-prename descclassname">dffml.service.dev.</code><code class="sig-name descname">Create</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">extra_config</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/service/dev.html#Create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.service.dev.Create" title="Permalink to this definition">¶</a></dt>
+                                    <dd>
+                                        <p>Create new models, operations, etc.</p>
+                                    </dd>
+                                </dl>
+                                <dl class="py class">
+                                    <dt id="dffml.service.dev.Develop">
+                                        <em class="property">class </em><code class="sig-prename descclassname">dffml.service.dev.</code><code class="sig-name descname">Develop</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">extra_config</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/service/dev.html#Develop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.service.dev.Develop" title="Permalink to this definition">¶</a></dt>
+                                    <dd>
+                                        <p>Development utilities for hacking on DFFML itself</p>
+                                        <dl class="py attribute">
+                                            <dt id="dffml.service.dev.Develop.bump">
+                                                <code class="sig-name descname">bump</code><a class="headerlink" href="#dffml.service.dev.Develop.bump" title="Permalink to this definition">¶</a></dt>
+                                            <dd>
+                                                <p>alias of <a class="reference internal" href="#dffml.service.dev.Bump" title="dffml.service.dev.Bump"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bump</span></code></a></p>
+                                            </dd>
+                                        </dl>
+                                        <dl class="py attribute">
+                                            <dt id="dffml.service.dev.Develop.ci">
+                                                <code class="sig-name descname">ci</code><a class="headerlink" href="#dffml.service.dev.Develop.ci" title="Permalink to this definition">¶</a></dt>
+                                            <dd>
+                                                <p>alias of <a class="reference internal" href="#dffml.service.dev.CI" title="dffml.service.dev.CI"><code class="xref py py-class docutils literal notranslate"><span class="pre">CI</span></code></a></p>
+                                            </dd>
+                                        </dl>
+                                        <dl class="py attribute">
+                                            <dt id="dffml.service.dev.Develop.create">
+                                                <code class="sig-name descname">create</code><a class="headerlink" href="#dffml.service.dev.Develop.create" title="Permalink to this definition">¶</a></dt>
+                                            <dd>
+                                                <p>alias of <a class="reference internal" href="#dffml.service.dev.Create" title="dffml.service.dev.Create"><code class="xref py py-class docutils literal notranslate"><span class="pre">Create</span></code></a></p>
+                                            </dd>
+                                        </dl>
+                                        <dl class="py attribute">
+                                            <dt id="dffml.service.dev.Develop.install">
+                                                <code class="sig-name descname">install</code><a class="headerlink" href="#dffml.service.dev.Develop.install" title="Permalink to this definition">¶</a></dt>
+                                            <dd>
+                                                <p>alias of <a class="reference internal" href="#dffml.service.dev.Install" title="dffml.service.dev.Install"><code class="xref py py-class docutils literal notranslate"><span class="pre">Install</span></code></a></p>
+                                            </dd>
+                                        </dl>
+                                        <dl class="py attribute">
+                                            <dt id="dffml.service.dev.Develop.release">
+                                                <code class="sig-name descname">release</code><a class="headerlink" href="#dffml.service.dev.Develop.release" title="Permalink to this definition">¶</a></dt>
+                                            <dd>
+                                                <p>alias of <a class="reference internal" href="#dffml.service.dev.Release" title="dffml.service.dev.Release"><code class="xref py py-class docutils literal notranslate"><span class="pre">Release</span></code></a></p>
+                                            </dd>
+                                        </dl>
+                                        <dl class="py attribute">
+                                            <dt id="dffml.service.dev.Develop.run">
+                                                <code class="sig-name descname">run</code><a class="headerlink" href="#dffml.service.dev.Develop.run" title="Permalink to this definition">¶</a></dt>
+                                            <dd>
+                                                <p>alias of <a class="reference internal" href="#dffml.service.dev.Run" title="dffml.service.dev.Run"><code class="xref py py-class docutils literal notranslate"><span class="pre">Run</span></code></a></p>
+                                            </dd>
+                                        </dl>
+                                        <dl class="py attribute">
+                                            <dt id="dffml.service.dev.Develop.skel">
+                                                <code class="sig-name descname">skel</code><a class="headerlink" href="#dffml.service.dev.Develop.skel" title="Permalink to this definition">¶</a></dt>
+                                            <dd>
+                                                <p>alias of <a class="reference internal" href="#dffml.service.dev.Skeleton" title="dffml.service.dev.Skeleton"><code class="xref py py-class docutils literal notranslate"><span class="pre">Skeleton</span></code></a></p>
+                                            </dd>
+                                        </dl>
+                                    </dd>
+                                </dl>
+                                <dl class="py class">
+                                    <dt id="dffml.service.dev.ExportConfig">
+                                        <em class="property">class </em><code class="sig-prename descclassname">dffml.service.dev.</code><code class="sig-name descname">ExportConfig</code><span class="sig-paren">(</span><em class="sig-param">export: str</em>, <em class="sig-param">configloader: dffml.configloader.configloader.BaseConfigLoader = &lt;class 'dffml.configloader.json.JSONConfigLoader'&gt;</em>, <em class="sig-param">not_linked: bool = False</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/service/dev.html#ExportConfig"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.service.dev.ExportConfig" title="Permalink to this definition">¶</a></dt>
+                                    <dd>
+                                        <dl class="py attribute">
+                                            <dt id="dffml.service.dev.ExportConfig.configloader">
+                                                <code class="sig-name descname">configloader</code><a class="headerlink" href="#dffml.service.dev.ExportConfig.configloader" title="Permalink to this definition">¶</a></dt>
+                                            <dd>
+                                                <p>alias of <a class="reference internal" href="../configloader/json.html#dffml.configloader.json.JSONConfigLoader" title="dffml.configloader.json.JSONConfigLoader"><code class="xref py py-class docutils literal notranslate"><span class="pre">dffml.configloader.json.JSONConfigLoader</span></code></a></p>
+                                            </dd>
+                                        </dl>
+                                    </dd>
+                                </dl>
+                                <dl class="py class">
+                                    <dt id="dffml.service.dev.Install">
+                                        <em class="property">class </em><code class="sig-prename descclassname">dffml.service.dev.</code><code class="sig-name descname">Install</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">extra_config</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/service/dev.html#Install"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.service.dev.Install" title="Permalink to this definition">¶</a></dt>
+                                    <dd>
+                                        <p>Uninstall production packages and install dffml in development mode.</p>
+                                        <dl class="py attribute">
+                                            <dt id="dffml.service.dev.Install.CONFIG">
+                                                <code class="sig-name descname">CONFIG</code><a class="headerlink" href="#dffml.service.dev.Install.CONFIG" title="Permalink to this definition">¶</a></dt>
+                                            <dd>
+                                                <p>alias of <a class="reference internal" href="#dffml.service.dev.InstallConfig" title="dffml.service.dev.InstallConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">InstallConfig</span></code></a></p>
+                                            </dd>
+                                        </dl>
+                                        <dl class="py method">
+                                            <dt id="dffml.service.dev.Install.dep_check">
+                                                <em class="property">static </em><code class="sig-name descname">dep_check</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">plugin_deps</span><span class="p">:</span> <span class="n">Dict<span class="p">[</span>Tuple<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a><span class="p">, </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a><span class="p">]</span><span class="p">, </span>Dict<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a><span class="p">, </span>Callable<span class="p">[</span><span class="p">]</span><span class="p">, </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)">bool</a><span class="p">]</span><span class="p">]</span><span class="p">]</span></span></em>, <em class="sig-param"><span class="n">skip</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>List<span class="p">[</span>Tuple<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a><span class="p">, </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a><span class="p">]</span><span class="p">]</span><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/service/dev.html#Install.dep_check"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.service.dev.Install.dep_check" title="Permalink to this definition">¶</a></dt>
+                                            <dd>
+                                                <p>Check if all dependencies are installed prior to running setup.py
+                                                    installs of plugins</p>
+                                            </dd>
+                                        </dl>
+                                    </dd>
+                                </dl>
+                                <dl class="py class">
+                                    <dt id="dffml.service.dev.InstallConfig">
+                                        <em class="property">class </em><code class="sig-prename descclassname">dffml.service.dev.</code><code class="sig-name descname">InstallConfig</code><span class="sig-paren">(</span><em class="sig-param">skip: List[str] = &lt;factory&gt;</em>, <em class="sig-param">nocheck: bool = False</em>, <em class="sig-param">user: bool = False</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/service/dev.html#InstallConfig"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.service.dev.InstallConfig" title="Permalink to this definition">¶</a></dt>
+                                    <dd></dd>
+                                </dl>
+                                <dl class="py class">
+                                    <dt id="dffml.service.dev.Link">
+                                        <em class="property">class </em><code class="sig-prename descclassname">dffml.service.dev.</code><code class="sig-name descname">Link</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">extra_config</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/service/dev.html#Link"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.service.dev.Link" title="Permalink to this definition">¶</a></dt>
+                                    <dd>
+                                        <p>Create required symlinks from skel/common to the other template directories</p>
+                                    </dd>
+                                </dl>
+                                <dl class="py class">
+                                    <dt id="dffml.service.dev.ListEntrypointsConfig">
+                                        <em class="property">class </em><code class="sig-prename descclassname">dffml.service.dev.</code><code class="sig-name descname">ListEntrypointsConfig</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">entrypoint</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/service/dev.html#ListEntrypointsConfig"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.service.dev.ListEntrypointsConfig" title="Permalink to this definition">¶</a></dt>
+                                    <dd></dd>
+                                </dl>
+                                <dl class="py exception">
+                                    <dt id="dffml.service.dev.MissingDependenciesError">
+                                        <em class="property">exception </em><code class="sig-prename descclassname">dffml.service.dev.</code><code class="sig-name descname">MissingDependenciesError</code><a class="reference internal" href="../../_modules/dffml/service/dev.html#MissingDependenciesError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.service.dev.MissingDependenciesError" title="Permalink to this definition">¶</a></dt>
+                                    <dd>
+                                        <p>Raised when a package has non-pip installable dependencies, or pip
+                                            installable dependencies that must be installed before running the setup.py</p>
+                                    </dd>
+                                </dl>
+                                <dl class="py class">
+                                    <dt id="dffml.service.dev.PinDeps">
+                                        <em class="property">class </em><code class="sig-prename descclassname">dffml.service.dev.</code><code class="sig-name descname">PinDeps</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">extra_config</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/service/dev.html#PinDeps"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.service.dev.PinDeps" title="Permalink to this definition">¶</a></dt>
+                                    <dd>
+                                        <p>Parse a GitHub Actions log archive to produce pinned dependencies for each
+                                            requirements.txt</p>
+                                        <dl class="py attribute">
+                                            <dt id="dffml.service.dev.PinDeps.CONFIG">
+                                                <code class="sig-name descname">CONFIG</code><a class="headerlink" href="#dffml.service.dev.PinDeps.CONFIG" title="Permalink to this definition">¶</a></dt>
+                                            <dd>
+                                                <p>alias of <a class="reference internal" href="#dffml.service.dev.PinDepsConfig" title="dffml.service.dev.PinDepsConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">PinDepsConfig</span></code></a></p>
+                                            </dd>
+                                        </dl>
+                                        <dl class="py method">
+                                            <dt id="dffml.service.dev.PinDeps.remove_ansi_escape">
+                                                <em class="property">classmethod </em><code class="sig-name descname">remove_ansi_escape</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">contents</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/service/dev.html#PinDeps.remove_ansi_escape"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.service.dev.PinDeps.remove_ansi_escape" title="Permalink to this definition">¶</a></dt>
+                                            <dd>
+                                                <p>Found on Stack Overflow from Martijn Pieters, only modified input variable
+                                                    name.
+                                                    - <a class="reference external" href="https://stackoverflow.com/a/14693789">https://stackoverflow.com/a/14693789</a>
+                                                    - <a class="reference external" href="https://creativecommons.org/licenses/by-sa/4.0/">https://creativecommons.org/licenses/by-sa/4.0/</a></p>
+                                            </dd>
+                                        </dl>
+                                        <dl class="py method">
+                                            <dt id="dffml.service.dev.PinDeps.requirement_package_name">
+                                                <em class="property">classmethod </em><code class="sig-name descname">requirement_package_name</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">line</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/service/dev.html#PinDeps.requirement_package_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.service.dev.PinDeps.requirement_package_name" title="Permalink to this definition">¶</a></dt>
+                                            <dd>
+                                                <p>Parse a line from requirements.txt and return the package name</p>
+                                                <p>“Per PEP 508, valid project names must: Consist only of ASCII letters,
+                                                    digits, underscores (_), hyphens (-), and/or periods (.), and. Start &amp; end
+                                                    with an ASCII letter or digit.”</p>
+                                            </dd>
+                                        </dl>
+                                    </dd>
+                                </dl>
+                                <dl class="py class">
+                                    <dt id="dffml.service.dev.PinDepsConfig">
+                                        <em class="property">class </em><code class="sig-prename descclassname">dffml.service.dev.</code><code class="sig-name descname">PinDepsConfig</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">logs</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.9)">pathlib.Path</a></span></em>, <em class="sig-param"><span class="n">update</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)">bool</a></span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/service/dev.html#PinDepsConfig"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.service.dev.PinDepsConfig" title="Permalink to this definition">¶</a></dt>
+                                    <dd></dd>
+                                </dl>
+                                <dl class="py class">
+                                    <dt id="dffml.service.dev.PinDepsPlugin">
+                                        <em class="property">class </em><code class="sig-prename descclassname">dffml.service.dev.</code><code class="sig-name descname">PinDepsPlugin</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></span></em>, <em class="sig-param"><span class="n">requirements_txt_path</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.9)">pathlib.Path</a></span></em>, <em class="sig-param"><span class="n">requirements_txt_contents</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></span></em>, <em class="sig-param"><span class="n">requirements_txt_pinned</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/service/dev.html#PinDepsPlugin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.service.dev.PinDepsPlugin" title="Permalink to this definition">¶</a></dt>
+                                    <dd></dd>
+                                </dl>
+                                <dl class="py class">
+                                    <dt id="dffml.service.dev.Release">
+                                        <em class="property">class </em><code class="sig-prename descclassname">dffml.service.dev.</code><code class="sig-name descname">Release</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">extra_config</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/service/dev.html#Release"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.service.dev.Release" title="Permalink to this definition">¶</a></dt>
+                                    <dd>
+                                        <p>Release a package (if not already released)</p>
+                                        <dl class="py attribute">
+                                            <dt id="dffml.service.dev.Release.CONFIG">
+                                                <code class="sig-name descname">CONFIG</code><a class="headerlink" href="#dffml.service.dev.Release.CONFIG" title="Permalink to this definition">¶</a></dt>
+                                            <dd>
+                                                <p>alias of <a class="reference internal" href="#dffml.service.dev.ReleaseConfig" title="dffml.service.dev.ReleaseConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">ReleaseConfig</span></code></a></p>
+                                            </dd>
+                                        </dl>
+                                    </dd>
+                                </dl>
+                                <dl class="py class">
+                                    <dt id="dffml.service.dev.ReleaseConfig">
+                                        <em class="property">class </em><code class="sig-prename descclassname">dffml.service.dev.</code><code class="sig-name descname">ReleaseConfig</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">package</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.9)">pathlib.Path</a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/service/dev.html#ReleaseConfig"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.service.dev.ReleaseConfig" title="Permalink to this definition">¶</a></dt>
+                                    <dd></dd>
+                                </dl>
+                                <dl class="py exception">
+                                    <dt id="dffml.service.dev.RepoDirtyError">
+                                        <em class="property">exception </em><code class="sig-prename descclassname">dffml.service.dev.</code><code class="sig-name descname">RepoDirtyError</code><a class="reference internal" href="../../_modules/dffml/service/dev.html#RepoDirtyError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.service.dev.RepoDirtyError" title="Permalink to this definition">¶</a></dt>
+                                    <dd>
+                                        <p>Raised when a release was attempted but there are uncommited changes</p>
+                                    </dd>
+                                </dl>
+                                <dl class="py class">
+                                    <dt id="dffml.service.dev.Run">
+                                        <em class="property">class </em><code class="sig-prename descclassname">dffml.service.dev.</code><code class="sig-name descname">Run</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">extra_config</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/service/dev.html#Run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.service.dev.Run" title="Permalink to this definition">¶</a></dt>
+                                    <dd>
+                                        <p>Run a single operation</p>
+                                        <dl class="py attribute">
+                                            <dt id="dffml.service.dev.Run.CONFIG">
+                                                <code class="sig-name descname">CONFIG</code><a class="headerlink" href="#dffml.service.dev.Run.CONFIG" title="Permalink to this definition">¶</a></dt>
+                                            <dd>
+                                                <p>alias of <a class="reference internal" href="#dffml.service.dev.RunConfig" title="dffml.service.dev.RunConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">RunConfig</span></code></a></p>
+                                            </dd>
+                                        </dl>
+                                    </dd>
+                                </dl>
+                                <dl class="py class">
+                                    <dt id="dffml.service.dev.RunConfig">
+                                        <em class="property">class </em><code class="sig-prename descclassname">dffml.service.dev.</code><code class="sig-name descname">RunConfig</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">operation</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/service/dev.html#RunConfig"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.service.dev.RunConfig" title="Permalink to this definition">¶</a></dt>
+                                    <dd></dd>
+                                </dl>
+                                <dl class="py class">
+                                    <dt id="dffml.service.dev.SetupPyKWArg">
+                                        <em class="property">class </em><code class="sig-prename descclassname">dffml.service.dev.</code><code class="sig-name descname">SetupPyKWArg</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">extra_config</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/service/dev.html#SetupPyKWArg"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.service.dev.SetupPyKWArg" title="Permalink to this definition">¶</a></dt>
+                                    <dd>
+                                        <p>Get a keyword argument from a call to setup in a setup.py file.</p>
+                                        <dl class="py attribute">
+                                            <dt id="dffml.service.dev.SetupPyKWArg.CONFIG">
+                                                <code class="sig-name descname">CONFIG</code><a class="headerlink" href="#dffml.service.dev.SetupPyKWArg.CONFIG" title="Permalink to this definition">¶</a></dt>
+                                            <dd>
+                                                <p>alias of <a class="reference internal" href="#dffml.service.dev.SetupPyKWArgConfig" title="dffml.service.dev.SetupPyKWArgConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">SetupPyKWArgConfig</span></code></a></p>
+                                            </dd>
+                                        </dl>
+                                    </dd>
+                                </dl>
+                                <dl class="py class">
+                                    <dt id="dffml.service.dev.SetupPyKWArgConfig">
+                                        <em class="property">class </em><code class="sig-prename descclassname">dffml.service.dev.</code><code class="sig-name descname">SetupPyKWArgConfig</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">kwarg</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></span></em>, <em class="sig-param"><span class="n">setupfilepath</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/service/dev.html#SetupPyKWArgConfig"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.service.dev.SetupPyKWArgConfig" title="Permalink to this definition">¶</a></dt>
+                                    <dd></dd>
+                                </dl>
+                                <dl class="py class">
+                                    <dt id="dffml.service.dev.Skeleton">
+                                        <em class="property">class </em><code class="sig-prename descclassname">dffml.service.dev.</code><code class="sig-name descname">Skeleton</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">extra_config</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/service/dev.html#Skeleton"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.service.dev.Skeleton" title="Permalink to this definition">¶</a></dt>
+                                    <dd>
+                                        <p>Work with the skeleton directories (create service templates)</p>
+                                        <dl class="py attribute">
+                                            <dt id="dffml.service.dev.Skeleton.link">
+                                                <code class="sig-name descname">link</code><a class="headerlink" href="#dffml.service.dev.Skeleton.link" title="Permalink to this definition">¶</a></dt>
+                                            <dd>
+                                                <p>alias of <a class="reference internal" href="#dffml.service.dev.Link" title="dffml.service.dev.Link"><code class="xref py py-class docutils literal notranslate"><span class="pre">Link</span></code></a></p>
+                                            </dd>
+                                        </dl>
+                                    </dd>
+                                </dl>
+                                <dl class="py function">
+                                    <dt id="dffml.service.dev.create_from_skel">
+                                        <code class="sig-prename descclassname">dffml.service.dev.</code><code class="sig-name descname">create_from_skel</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">plugin_type</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/service/dev.html#create_from_skel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.service.dev.create_from_skel" title="Permalink to this definition">¶</a></dt>
+                                    <dd>
+                                        <p>Copies samples out of skel/ and does re-naming.</p>
+                                    </dd>
+                                </dl>
+                            </div>
+                        </div>
+                    </div>
+                    <footer>
+                        <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+                            <a href="../db/index.html" class="btn btn-neutral float-right" title="Databases" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+                            <a href="index.html" class="btn btn-neutral float-left" title="Service" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+                        </div>
+                        <hr />
+                        <div role="contentinfo">
+                            <p>
+                                &copy; Copyright 2017 - 2020, Intel
+                            </p>
+                        </div>
+                        Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+                        <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+                        provided by <a href="https://readthedocs.org">Read the Docs</a>.
+                    </footer>
+                </div>
+            </div>
+        </section>
     </div>
-  
-
-  <hr/>
-
-  <div role="contentinfo">
-    <p>
-        
-        &copy; Copyright 2017 - 2020, Intel
-
-    </p>
-  </div>
-    
-    
-    
-    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
-    
-    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
-
-</footer>
-
-        </div>
-      </div>
-
-    </section>
-
-  </div>
-  
-
-  <script type="text/javascript">
-      jQuery(function () {
-          SphinxRtdTheme.Navigation.enable(true);
-      });
-  </script>
-
-  
-  
-    
-   
-
+    <script type="text/javascript">
+    jQuery(function() {
+        SphinxRtdTheme.Navigation.enable(true);
+    });
+    </script>
 </body>
+
 </html>
