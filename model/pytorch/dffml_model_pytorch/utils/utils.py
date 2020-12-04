@@ -22,14 +22,14 @@ def create_layer(layer_dict):
     for name, layer in layer_dict.items():
         if isinstance(layer, dict):
             parameters = {k: v for k, v in layer.items()}
-            layer_name = parameters.pop("name")
+            layer_name = parameters.pop("layer_type")
 
             sequential_dict.add_module(
                 name, getattr(nn, layer_name)(**parameters)
             )
         else:
             parameters = {k: v for k, v in layer_dict.items()}
-            layer_name = parameters.pop("name")
+            layer_name = parameters.pop("layer_type")
             return getattr(nn, layer_name)(**parameters)
     return sequential_dict
 
