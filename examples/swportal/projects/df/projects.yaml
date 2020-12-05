@@ -1,0 +1,36 @@
+definitions:
+  get_single_output:
+    name: get_single_output
+    primitive: map
+  get_single_spec:
+    name: get_single_spec
+    primitive: array
+  operations.projects:projects.outputs.result:
+    name: operations.projects:projects.outputs.result
+    primitive: map
+flow:
+  get_single:
+    inputs:
+      spec:
+      - seed
+  operations.projects:projects:
+    inputs: {}
+linked: true
+operations:
+  get_single:
+    inputs:
+      spec: get_single_spec
+    name: get_single
+    outputs:
+      output: get_single_output
+    stage: output
+  operations.projects:projects:
+    inputs: {}
+    name: operations.projects:projects
+    outputs:
+      result: operations.projects:projects.outputs.result
+    stage: processing
+seed:
+- definition: get_single_spec
+  value:
+  - operations.projects:projects.outputs.result
