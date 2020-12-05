@@ -198,6 +198,7 @@
 <span class="kn">from</span> <span class="nn">..base</span> <span class="kn">import</span> <span class="n">BaseConfig</span>
 <span class="kn">from</span> <span class="nn">..df.base</span> <span class="kn">import</span> <span class="n">BaseOrchestrator</span><span class="p">,</span> <span class="n">OperationImplementation</span>
 <span class="kn">from</span> <span class="nn">..df.types</span> <span class="kn">import</span> <span class="n">DataFlow</span><span class="p">,</span> <span class="n">Stage</span><span class="p">,</span> <span class="n">Operation</span><span class="p">,</span> <span class="n">Input</span><span class="p">,</span> <span class="n">InputFlow</span>
+<span class="kn">from</span> <span class="nn">..df.exceptions</span> <span class="kn">import</span> <span class="n">DefinitionNotFoundInDataFlow</span>
 <span class="kn">from</span> <span class="nn">..df.memory</span> <span class="kn">import</span> <span class="p">(</span>
     <span class="n">MemoryOrchestrator</span><span class="p">,</span>
     <span class="n">MemoryInputSet</span><span class="p">,</span>
@@ -565,16 +566,19 @@
                 <span class="n">dataflow</span> <span class="o">=</span> <span class="n">DataFlow</span><span class="o">.</span><span class="n">_fromdict</span><span class="p">(</span><span class="o">**</span><span class="n">exported</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">dataflow</span>
 
+    <span class="k">def</span> <span class="nf">input_objects</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataflow</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">value</span><span class="p">,</span> <span class="n">def_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">def_name</span> <span class="ow">in</span> <span class="n">dataflow</span><span class="o">.</span><span class="n">definitions</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">DefinitionNotFoundInDataFlow</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">def_name</span><span class="si">!r}</span><span class="s2"> not found in </span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="n">dataflow</span><span class="o">.</span><span class="n">definitions</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="p">)</span>
+            <span class="k">yield</span> <span class="n">Input</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="n">value</span><span class="p">,</span> <span class="n">definition</span><span class="o">=</span><span class="n">dataflow</span><span class="o">.</span><span class="n">definitions</span><span class="p">[</span><span class="n">def_name</span><span class="p">])</span>
+
     <span class="k">async</span> <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">dataflow</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_dataflow</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dataflow</span><span class="p">)</span>
-        <span class="n">dataflow_inputs</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">value</span><span class="p">,</span> <span class="n">def_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="p">:</span>
-            <span class="n">dataflow_inputs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                <span class="n">Input</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="n">value</span><span class="p">,</span> <span class="n">definition</span><span class="o">=</span><span class="n">dataflow</span><span class="o">.</span><span class="n">definitions</span><span class="p">[</span><span class="n">def_name</span><span class="p">],)</span>
-            <span class="p">)</span>
         <span class="k">async</span> <span class="k">for</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">results</span> <span class="ow">in</span> <span class="n">run_dataflow</span><span class="p">(</span>
             <span class="n">dataflow</span><span class="p">,</span>
-            <span class="n">dataflow_inputs</span><span class="p">,</span>
+            <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">input_objects</span><span class="p">(</span><span class="n">dataflow</span><span class="p">)),</span>
             <span class="n">orchestrator</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">orchestrator</span><span class="p">,</span>
             <span class="n">strict</span><span class="o">=</span><span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">no_strict</span><span class="p">,</span>
         <span class="p">):</span>
@@ -602,10 +606,12 @@
 
     <span class="k">async</span> <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">dataflow</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_dataflow</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dataflow</span><span class="p">)</span>
-        <span class="n">common_inputs</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">value</span><span class="p">,</span> <span class="n">def_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="p">:</span>
-            <span class="n">common_inputs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                <span class="n">Input</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="n">value</span><span class="p">,</span> <span class="n">definition</span><span class="o">=</span><span class="n">dataflow</span><span class="o">.</span><span class="n">definitions</span><span class="p">[</span><span class="n">def_name</span><span class="p">],)</span>
+
+        <span class="n">common_inputs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">input_objects</span><span class="p">(</span><span class="n">dataflow</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">context_def</span> <span class="ow">in</span> <span class="n">dataflow</span><span class="o">.</span><span class="n">definitions</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">DefinitionNotFoundInDataFlow</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">context_def</span><span class="si">!r}</span><span class="s2"> not found in </span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="n">dataflow</span><span class="o">.</span><span class="n">definitions</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="si">}</span><span class="s2">&quot;</span>
             <span class="p">)</span>
 
         <span class="n">dataflow_inputs</span> <span class="o">=</span> <span class="p">{</span>

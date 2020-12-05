@@ -5,8 +5,8 @@ Cli
     :maxdepth: 2
     :caption: Contents:
 
-    config
-    dataflow
     list
-    cli
     ml
+    config
+    cli
+    dataflow
