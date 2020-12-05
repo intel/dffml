@@ -9,10 +9,6 @@ DFFML.
 We're going to create a TensorFlow classification model, we'll need to install
 the ``dffml-model-tensorflow`` plugin.
 
-.. code-block:: console
-    :test:
-
-    $ python -m pip install --use-feature=2020-resolver dffml-model-tensorflow
 
 Iris Dataset
 ------------
