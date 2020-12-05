@@ -1,0 +1,57 @@
+definitions:
+  uuid:
+    primitive: string
+  name:
+    primitive: string
+  staticAnalysis:
+    primitive: string
+  legal:
+    primitive: string
+  get_single_output:
+    primitive: map
+  get_single_spec:
+    primitive: array
+flow:
+  get_single:
+    inputs:
+      spec:
+      - seed
+  operations.get_from_http_server:query_an_api:
+    inputs:
+      uuid:
+      - seed
+linked: true
+operations:
+  get_single:
+    inputs:
+      spec: get_single_spec
+    name: get_single
+    outputs:
+      output: get_single_output
+    stage: output
+  # This operation has been added as an example of how we can use DataFlows to
+  # run arbitrary code to generate parts of a project's status
+  operations.get_from_http_server:query_an_api:
+    inputs:
+      uuid: uuid
+    name: operations.get_from_http_server:query_an_api
+    outputs:
+      # We can override the output definition. All operations return a dict.
+      # This operation declares that it's outputs dict will have a result
+      # property. The code for the implementation will specificy it's
+      # definition. However, we can override the definition in the DataFlow.
+      result: staticAnalysis
+    stage: processing
+seed:
+- definition: get_single_spec
+  value:
+  - uuid
+  - name
+  - staticAnalysis
+  - legal
+- definition: uuid
+  value: 72b4720a-a547-4ef7-9729-dbbe3265ddaa
+- definition: name
+  value: "Project ABC"
+- definition: legal
+  value: "PASS"

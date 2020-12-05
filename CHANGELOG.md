@@ -81,6 +81,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Gitter chatbot tutorial.
 - Option to run dataflow without sources from cli.
 - Sphinx extension for automated testing of tutorials (consoletest)
+- Example of software portal using DataFlows and HTTP service
 ### Changed
 - Renamed `-seed` to `-inputs` in `dataflow create` command
 - Renamed configloader/png to configloader/image and added support for loading JPEG and TIFF file formats
