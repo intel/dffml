@@ -39,7 +39,7 @@ async def main(argv: List[str]) -> None:
             optimize=-1,
         )
         local_variables = {}
-        exec(setup, local_variables, local_variables)
+        exec(args.setup, local_variables, local_variables)
         args.setup = local_variables["setup"]
 
     nodes = []
@@ -58,3 +58,5 @@ async def main(argv: List[str]) -> None:
 
     with contextlib.ExitStack() as stack:
         await run_nodes(args.root, args.docs, stack, nodes, setup=args.setup)
+
+    args.infile.close()
