@@ -63,14 +63,6 @@ class PyTorchModelConfig:
                 map(self.clstype, self.classifications)
             )
 
-class LossFunctionNotFoundError(Exception):
-    '''
-        Exception raised when loss function is misspelled.
-    '''
-    def __init__(self, message="Loss function is not valid!"):
-        self.message = message
-        super().__init__(self.message)
-
 class PyTorchModelContext(ModelContext):
     def __init__(self, parent):
         super().__init__(parent)
@@ -96,9 +88,6 @@ class PyTorchModelContext(ModelContext):
             self._model = self.createModel()
 
         self.set_model_parameters()
-
-        if self.parent.config.loss is None:
-            raise LossFunctionNotFoundError()
 
         self.criterion = self.parent.config.loss.function
         self.optimizer = getattr(optim, self.parent.config.optimizer)(
