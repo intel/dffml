@@ -671,13 +671,6 @@
 <span class="sd">    &quot;&quot;&quot;</span></div>
 
 
-<div class="viewcode-block" id="PipMissingUseFeature2020Resolver"><a class="viewcode-back" href="../../../../../api/util/testing/consoletest/commands.html#dffml.util.testing.consoletest.commands.PipMissingUseFeature2020Resolver">[docs]</a><span class="k">class</span> <span class="nc">PipMissingUseFeature2020Resolver</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Raised when a pip install command isn&#39;t upgrading pip and doesn&#39;t have</span>
-<span class="sd">    --use-feature=2020-resolver</span>
-<span class="sd">    &quot;&quot;&quot;</span></div>
-
-
 <div class="viewcode-block" id="PipInstallCommand"><a class="viewcode-back" href="../../../../../api/util/testing/consoletest/commands.html#dffml.util.testing.consoletest.commands.PipInstallCommand">[docs]</a><span class="k">class</span> <span class="nc">PipInstallCommand</span><span class="p">(</span><span class="n">ConsoleCommand</span><span class="p">):</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cmd</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span>
@@ -685,14 +678,6 @@
         <span class="c1"># Ensure that we are running pip using it&#39;s module invocation</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">cmd</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span> <span class="o">!=</span> <span class="p">[</span><span class="s2">&quot;python&quot;</span><span class="p">,</span> <span class="s2">&quot;-m&quot;</span><span class="p">]:</span>
             <span class="k">raise</span> <span class="n">PipNotRunAsModule</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span>
-        <span class="c1"># Ensure command have --use-feature=2020-resolver</span>
-        <span class="c1"># If we are installing pip then we may or may not be upgrading from</span>
-        <span class="c1"># a version that has it, so don&#39;t raise an excption</span>
-        <span class="k">if</span> <span class="p">(</span>
-            <span class="ow">not</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cmd</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s2">&quot;pip&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span> <span class="ow">and</span> <span class="s2">&quot;-U&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">cmd</span><span class="p">)</span>
-            <span class="ow">and</span> <span class="s2">&quot;--use-feature=2020-resolver&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">cmd</span>
-        <span class="p">):</span>
-            <span class="k">raise</span> <span class="n">PipMissingUseFeature2020Resolver</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span>
 
 <div class="viewcode-block" id="PipInstallCommand.fix_dffml_packages"><a class="viewcode-back" href="../../../../../api/util/testing/consoletest/commands.html#dffml.util.testing.consoletest.commands.PipInstallCommand.fix_dffml_packages">[docs]</a>    <span class="k">def</span> <span class="nf">fix_dffml_packages</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
