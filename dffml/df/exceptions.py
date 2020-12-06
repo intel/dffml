@@ -1,3 +1,7 @@
+class DefinitionNotFoundInDataFlow(Exception):
+    pass
+
+
 class OperationAlreadyPresent(Exception):
     pass
 

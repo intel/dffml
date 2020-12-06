@@ -21,6 +21,9 @@ from typing import IO, Any, Dict, List, Union, Optional
 from .... import plugins
 
 
+DFFML_ROOT = pathlib.Path(__file__).parents[4]
+
+
 class ConsoletestCommand(abc.ABC):
     def __init__(self):
         self.poll_until = False
@@ -476,13 +479,6 @@ class PipNotRunAsModule(Exception):
     """
 
 
-class PipMissingUseFeature2020Resolver(Exception):
-    """
-    Raised when a pip install command isn't upgrading pip and doesn't have
-    --use-feature=2020-resolver
-    """
-
-
 class PipInstallCommand(ConsoleCommand):
     def __init__(self, cmd: List[str]):
         super().__init__(cmd)
@@ -490,14 +486,6 @@ class PipInstallCommand(ConsoleCommand):
         # Ensure that we are running pip using it's module invocation
         if self.cmd[:2] != ["python", "-m"]:
             raise PipNotRunAsModule(cmd)
-        # Ensure command have --use-feature=2020-resolver
-        # If we are installing pip then we may or may not be upgrading from
-        # a version that has it, so don't raise an excption
-        if (
-            not (self.cmd.count("pip") == 2 and "-U" in self.cmd)
-            and "--use-feature=2020-resolver" not in self.cmd
-        ):
-            raise PipMissingUseFeature2020Resolver(cmd)
 
     def fix_dffml_packages(self, ctx):
         """
@@ -516,7 +504,7 @@ class PipInstallCommand(ConsoleCommand):
                     if pkg.startswith(package_name + "["):
                         pkg, extras = pkg.split("[", maxsplit=1)
                         directory = package_names_to_directory[pkg]
-                        directory = os.path.join(ctx["root"], *directory)
+                        directory = os.path.join(DFFML_ROOT, *directory)
                         directory = os.path.abspath(directory)
                         self.cmd[i] = directory + "[" + extras
                         if self.cmd[i - 1] != "-e":
@@ -524,7 +512,7 @@ class PipInstallCommand(ConsoleCommand):
                         self.directories.append(directory)
             elif pkg in package_names_to_directory:
                 directory = package_names_to_directory[pkg]
-                directory = os.path.join(ctx["root"], *directory)
+                directory = os.path.join(DFFML_ROOT, *directory)
                 directory = os.path.abspath(directory)
                 self.cmd[i] = directory
                 if self.cmd[i - 1] != "-e":
@@ -540,15 +528,13 @@ class PipInstallCommand(ConsoleCommand):
         # Remove dataclasses. See https://github.com/intel/dffml/issues/882
         cmd = [
             "python",
-            os.path.abspath(
-                os.path.join(
-                    ctx["root"],
-                    "scripts",
-                    "tempfix",
-                    "pytorch",
-                    "pytorch",
-                    "46930.py",
-                ),
+            str(
+                DFFML_ROOT
+                / "scripts"
+                / "tempfix"
+                / "pytorch"
+                / "pytorch"
+                / "46930.py"
             ),
         ]
         if "CONDA_PREFIX" in os.environ:
