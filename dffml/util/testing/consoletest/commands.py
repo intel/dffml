@@ -479,13 +479,6 @@ class PipNotRunAsModule(Exception):
     """
 
 
-class PipMissingUseFeature2020Resolver(Exception):
-    """
-    Raised when a pip install command isn't upgrading pip and doesn't have
-    --use-feature=2020-resolver
-    """
-
-
 class PipInstallCommand(ConsoleCommand):
     def __init__(self, cmd: List[str]):
         super().__init__(cmd)
@@ -493,14 +486,6 @@ class PipInstallCommand(ConsoleCommand):
         # Ensure that we are running pip using it's module invocation
         if self.cmd[:2] != ["python", "-m"]:
             raise PipNotRunAsModule(cmd)
-        # Ensure command have --use-feature=2020-resolver
-        # If we are installing pip then we may or may not be upgrading from
-        # a version that has it, so don't raise an excption
-        if (
-            not (self.cmd.count("pip") == 2 and "-U" in self.cmd)
-            and "--use-feature=2020-resolver" not in self.cmd
-        ):
-            raise PipMissingUseFeature2020Resolver(cmd)
 
     def fix_dffml_packages(self, ctx):
         """
