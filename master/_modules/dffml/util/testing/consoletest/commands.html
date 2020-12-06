@@ -213,6 +213,9 @@
 <span class="kn">from</span> <span class="nn">....</span> <span class="kn">import</span> <span class="n">plugins</span>
 
 
+<span class="n">DFFML_ROOT</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parents</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span>
+
+
 <div class="viewcode-block" id="ConsoletestCommand"><a class="viewcode-back" href="../../../../../api/util/testing/consoletest/commands.html#dffml.util.testing.consoletest.commands.ConsoletestCommand">[docs]</a><span class="k">class</span> <span class="nc">ConsoletestCommand</span><span class="p">(</span><span class="n">abc</span><span class="o">.</span><span class="n">ABC</span><span class="p">):</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">poll_until</span> <span class="o">=</span> <span class="kc">False</span>
@@ -708,7 +711,7 @@
                     <span class="k">if</span> <span class="n">pkg</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">package_name</span> <span class="o">+</span> <span class="s2">&quot;[&quot;</span><span class="p">):</span>
                         <span class="n">pkg</span><span class="p">,</span> <span class="n">extras</span> <span class="o">=</span> <span class="n">pkg</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;[&quot;</span><span class="p">,</span> <span class="n">maxsplit</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
                         <span class="n">directory</span> <span class="o">=</span> <span class="n">package_names_to_directory</span><span class="p">[</span><span class="n">pkg</span><span class="p">]</span>
-                        <span class="n">directory</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ctx</span><span class="p">[</span><span class="s2">&quot;root&quot;</span><span class="p">],</span> <span class="o">*</span><span class="n">directory</span><span class="p">)</span>
+                        <span class="n">directory</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">DFFML_ROOT</span><span class="p">,</span> <span class="o">*</span><span class="n">directory</span><span class="p">)</span>
                         <span class="n">directory</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">directory</span><span class="p">)</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">cmd</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">directory</span> <span class="o">+</span> <span class="s2">&quot;[&quot;</span> <span class="o">+</span> <span class="n">extras</span>
                         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">cmd</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">&quot;-e&quot;</span><span class="p">:</span>
@@ -716,7 +719,7 @@
                         <span class="bp">self</span><span class="o">.</span><span class="n">directories</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">directory</span><span class="p">)</span>
             <span class="k">elif</span> <span class="n">pkg</span> <span class="ow">in</span> <span class="n">package_names_to_directory</span><span class="p">:</span>
                 <span class="n">directory</span> <span class="o">=</span> <span class="n">package_names_to_directory</span><span class="p">[</span><span class="n">pkg</span><span class="p">]</span>
-                <span class="n">directory</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ctx</span><span class="p">[</span><span class="s2">&quot;root&quot;</span><span class="p">],</span> <span class="o">*</span><span class="n">directory</span><span class="p">)</span>
+                <span class="n">directory</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">DFFML_ROOT</span><span class="p">,</span> <span class="o">*</span><span class="n">directory</span><span class="p">)</span>
                 <span class="n">directory</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">directory</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">cmd</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">directory</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">cmd</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">&quot;-e&quot;</span><span class="p">:</span>
@@ -732,15 +735,13 @@
         <span class="c1"># Remove dataclasses. See https://github.com/intel/dffml/issues/882</span>
         <span class="n">cmd</span> <span class="o">=</span> <span class="p">[</span>
             <span class="s2">&quot;python&quot;</span><span class="p">,</span>
-            <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span>
-                <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
-                    <span class="n">ctx</span><span class="p">[</span><span class="s2">&quot;root&quot;</span><span class="p">],</span>
-                    <span class="s2">&quot;scripts&quot;</span><span class="p">,</span>
-                    <span class="s2">&quot;tempfix&quot;</span><span class="p">,</span>
-                    <span class="s2">&quot;pytorch&quot;</span><span class="p">,</span>
-                    <span class="s2">&quot;pytorch&quot;</span><span class="p">,</span>
-                    <span class="s2">&quot;46930.py&quot;</span><span class="p">,</span>
-                <span class="p">),</span>
+            <span class="nb">str</span><span class="p">(</span>
+                <span class="n">DFFML_ROOT</span>
+                <span class="o">/</span> <span class="s2">&quot;scripts&quot;</span>
+                <span class="o">/</span> <span class="s2">&quot;tempfix&quot;</span>
+                <span class="o">/</span> <span class="s2">&quot;pytorch&quot;</span>
+                <span class="o">/</span> <span class="s2">&quot;pytorch&quot;</span>
+                <span class="o">/</span> <span class="s2">&quot;46930.py&quot;</span>
             <span class="p">),</span>
         <span class="p">]</span>
         <span class="k">if</span> <span class="s2">&quot;CONDA_PREFIX&quot;</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">:</span>
