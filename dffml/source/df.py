@@ -50,7 +50,9 @@ class DataFlowSourceConfig:
     no_strict: bool = field(
         "Do not exit on operation exceptions, just log errors", default=False,
     )
-    orchestrator: BaseOrchestrator = MemoryOrchestrator.withconfig({})
+    orchestrator: BaseOrchestrator = field(
+        "Orchestrator", default=MemoryOrchestrator.withconfig({}),
+    )
 
 
 class RecordContextHandle(BaseContextHandle):

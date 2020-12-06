@@ -1168,6 +1168,9 @@ class MemoryOperationImplementationNetwork(
     CONFIG = MemoryOperationImplementationNetworkConfig
 
 
+MEMORYORCHESTRATORCONFIG_MAX_CTXS: int = None
+
+
 @config
 class MemoryOrchestratorConfig:
     input_network: BaseInputNetwork = field(
@@ -1188,6 +1191,8 @@ class MemoryOrchestratorConfig:
         "Redundancy checker to use",
         default_factory=lambda: MemoryRedundancyChecker(),
     )
+    # Maximum number of contexts to run concurrently
+    max_ctxs: int = MEMORYORCHESTRATORCONFIG_MAX_CTXS
 
 
 @config
@@ -1198,7 +1203,7 @@ class MemoryOrchestratorContextConfig:
     # will be created.
     reuse: Dict[str, BaseDataFlowObjectContext] = None
     # Maximum number of contexts to run concurrently
-    max_ctxs: int = 1000
+    max_ctxs: int = MEMORYORCHESTRATORCONFIG_MAX_CTXS
 
 
 class MemoryOrchestratorContext(BaseOrchestratorContext):
@@ -1782,6 +1787,7 @@ class MemoryOrchestrator(BaseOrchestrator, BaseMemoryDataFlowObject):
     ) -> BaseDataFlowObjectContext:
         config = dataflow
         if isinstance(dataflow, DataFlow):
+            kwargs.setdefault("max_ctxs", self.config.max_ctxs)
             config = MemoryOrchestratorContextConfig(
                 uid=secrets.token_hex(), dataflow=dataflow, **kwargs
             )
