@@ -58,3 +58,5 @@ async def main(argv: List[str]) -> None:
 
     with contextlib.ExitStack() as stack:
         await run_nodes(args.root, args.docs, stack, nodes, setup=args.setup)
+
+    args.infile.close()
