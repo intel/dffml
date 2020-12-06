@@ -33,7 +33,7 @@ from .packaging import is_develop
 
 class AsyncTestCase(unittest.TestCase):
     """
-    Runs any test_ methods as coroutines in the default event loop.
+    Runs any ``test_`` methods as coroutines in the default event loop.
 
     Examples
     --------
@@ -51,13 +51,13 @@ class AsyncTestCase(unittest.TestCase):
 
     def async_wrapper(self, coro):
         """
-        Returns a function which calls the test_ function which calls
-        loop.run_until_complete to return the result of the test.
+        Returns a function which calls the ``test_`` function which calls
+        ``loop.run_until_complete`` to return the result of the test.
         """
 
         def run_it(*args, **kwargs):
             """
-            Calls the loop's run_until_complete method.
+            Calls the loop's ``run_until_complete`` method.
             """
             logging.basicConfig(
                 level=getattr(
@@ -74,8 +74,8 @@ class AsyncTestCase(unittest.TestCase):
 
     def run(self, result=None):
         """
-        Convert all test_ methods via async_wrapper so that they are run in the
-        event loop.
+        Convert all ``test_`` methods via ``async_wrapper`` so that they are run
+        in the event loop.
         """
         methods = inspect.getmembers(self, predicate=inspect.ismethod)
         for name, method in methods:

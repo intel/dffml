@@ -536,6 +536,8 @@ class DataFlow:
             by_origin = {}
         if implementations is None:
             implementations = {}
+        if definitions == False:
+            definitions = {}
         validators = {}  # Maps `validator` ops instance_name to op
 
         for operation in args:
@@ -602,6 +604,7 @@ class DataFlow:
         definitions = list(
             set(
                 itertools.chain(
+                    self.definitions.values(),
                     *[
                         itertools.chain(
                             operation.inputs.values(),
@@ -609,7 +612,7 @@ class DataFlow:
                             operation.conditions,
                         )
                         for operation in operations
-                    ]
+                    ],
                 )
             )
         )
@@ -694,7 +697,10 @@ class DataFlow:
         # Import all operations
         if linked:
             kwargs.update(cls._resolve(kwargs))
-            del kwargs["definitions"]
+            kwargs["definitions"] = {
+                name: Definition._fromdict(**definition)
+                for name, definition in kwargs["definitions"].items()
+            }
         kwargs["operations"] = {
             instance_name: Operation._fromdict(
                 instance_name=instance_name, **operation

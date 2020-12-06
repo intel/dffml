@@ -184,16 +184,16 @@ def cached_download_unpack_archive(
     >>> from dffml import cached_download_unpack_archive
     >>>
     >>> @cached_download_unpack_archive(
-    ...     "https://github.com/intel/dffml/archive/152c2b92535fac6beec419236f8639b0d75d707d.tar.gz",
+    ...     "https://github.com/intel/dffml/archive/c4469abfe6007a50144858d485537324046ff229.tar.gz",
     ...     "dffml.tar.gz",
     ...     "dffml",
-    ...     "32ba082cd8056ff4ddcb68691a590c3cb8fea2ff75c0265b8d844c5edc7eaef54136160c6090750e562059b957355b15",
+    ...     "bb9bb47c4e6e4c6b7147bb3c000bc4069d69c0c77a3e560b69f476a78e6b5084adf5467ee83cbbcc47ba5a4a0696fdfc",
     ... )
-    ... async def files_in_dffml_commit_152c2b(dffml_dir):
+    ... async def files_in_dffml_commit_c4469a(dffml_dir):
     ...     return len(list(dffml_dir.rglob("**/*")))
     >>>
-    >>> asyncio.run(files_in_dffml_commit_152c2b())
-    594
+    >>> asyncio.run(files_in_dffml_commit_c4469a())
+    124
     """
     directory_path = pathlib.Path(directory_path)
 

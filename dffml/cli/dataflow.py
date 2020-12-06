@@ -6,6 +6,7 @@ from typing import List, Dict, Any
 from ..base import BaseConfig
 from ..df.base import BaseOrchestrator, OperationImplementation
 from ..df.types import DataFlow, Stage, Operation, Input, InputFlow
+from ..df.exceptions import DefinitionNotFoundInDataFlow
 from ..df.memory import (
     MemoryOrchestrator,
     MemoryInputSet,
@@ -373,16 +374,19 @@ class RunSingle(CMD):
                 dataflow = DataFlow._fromdict(**exported)
         return dataflow
 
+    def input_objects(self, dataflow):
+        for value, def_name in self.inputs:
+            if not def_name in dataflow.definitions:
+                raise DefinitionNotFoundInDataFlow(
+                    f"{def_name!r} not found in {list(dataflow.definitions.keys())}"
+                )
+            yield Input(value=value, definition=dataflow.definitions[def_name])
+
     async def run(self):
         dataflow = await self.get_dataflow(self.dataflow)
-        dataflow_inputs = []
-        for value, def_name in self.inputs:
-            dataflow_inputs.append(
-                Input(value=value, definition=dataflow.definitions[def_name],)
-            )
         async for ctx, results in run_dataflow(
             dataflow,
-            dataflow_inputs,
+            list(self.input_objects(dataflow)),
             orchestrator=self.orchestrator,
             strict=not self.no_strict,
         ):
@@ -410,10 +414,12 @@ class RunContexts(RunSingle):
 
     async def run(self):
         dataflow = await self.get_dataflow(self.dataflow)
-        common_inputs = []
-        for value, def_name in self.inputs:
-            common_inputs.append(
-                Input(value=value, definition=dataflow.definitions[def_name],)
+
+        common_inputs = list(self.input_objects(dataflow))
+
+        if not self.context_def in dataflow.definitions:
+            raise DefinitionNotFoundInDataFlow(
+                f"{self.context_def!r} not found in {list(dataflow.definitions.keys())}"
             )
 
         dataflow_inputs = {

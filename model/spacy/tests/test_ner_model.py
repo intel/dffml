@@ -3,7 +3,7 @@ import tempfile
 
 from dffml.record import Record
 from dffml.source.source import Sources
-from dffml import train, accuracy, predict
+from dffml import train, accuracy, predict, run_consoletest
 from dffml.util.asynctestcase import AsyncTestCase
 from dffml.source.memory import MemorySource, MemorySourceConfig
 from dffml_model_spacy.ner.ner_model import SpacyNERModel, SpacyNERModelConfig
@@ -47,7 +47,7 @@ class TestSpacyNERModel(AsyncTestCase):
         cls.model = SpacyNERModel(
             SpacyNERModelConfig(
                 model_name_or_path="en_core_web_sm",
-                output_dir=cls.model_dir.name,
+                directory=cls.model_dir.name,
                 n_iter=10,
                 dropout=0.4,
             )
@@ -75,6 +75,9 @@ class TestSpacyNERModel(AsyncTestCase):
         self.assertIn(
             predictions[0][2]["Tag"]["value"][0][1], ["ORG", "PERSON", "LOC"]
         )
+
+    async def test_docstring(self):
+        await run_consoletest(SpacyNERModel)
 
 
 TRAIN_DATA = []

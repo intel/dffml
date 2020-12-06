@@ -103,16 +103,16 @@ Make sure to update ``pip`` in case it's old, and install ``setuptools`` and
 .. code-block:: console
     :test:
 
-    $ python3 -m venv .venv
+    $ python -m venv .venv
     $ . .venv/bin/activate
-    $ pip install -U pip setuptools wheel
+    $ python -m pip install -U pip setuptools wheel
 
 Download the Python client libraries for MySQL.
 
 .. code-block:: console
     :test:
 
-    $ pip install -U \
+    $ python -m pip install --use-feature=2020-resolver -U \
         https://dev.mysql.com/get/Downloads/Connector-Python/mysql-connector-python-8.0.21.tar.gz
 
 Start MariaDB (functionally very similar to MySQL which its a fork of).
@@ -133,8 +133,9 @@ for connections`` twice in the output.
 
 .. code-block:: console
     :test:
-    :poll-until: bool(stdout.count(b"ready for") == 2)
+    :poll-until:
     :ignore-errors:
+    :compare-output: bool(stdout.count(b"ready for") == 2)
 
     $ docker logs maintained_db 2>&1 | grep 'ready for'
     2020-01-13 21:31:09 0 [Note] mysqld: ready for connections.
@@ -151,8 +152,9 @@ MariaDB/MySQL with DFFML.
 
 .. code-block:: console
     :test:
+    :replace: cmds[0].append("dffml")
 
-    $ pip install -U dffml-source-mysql
+    $ python -m pip install --use-feature=2020-resolver -U dffml-source-mysql
 
 To get our dummy data, we'll be using the GitHub v4 API to search for "todo".
 The search should return repos implementing a TODO app.
@@ -199,7 +201,7 @@ We'll be using the ``dffml merge`` command to take the search results from the
 GitHub API and putting them with their randomly assigned status into our
 database.
 
-.. code-block:: console
+.. code-block::
     :test:
 
     $ dffml merge github=op db=mysql \
@@ -232,7 +234,7 @@ have something running on that port.
 
 .. code-block:: console
     :test:
-    :daemon:
+    :daemon: 8000
 
     $ . .venv/bin/activate
     $ python3 -m http.server --cgi 8000
@@ -242,8 +244,9 @@ database by calling the API.
 
 .. code-block:: console
     :test:
-    :poll-until: bool(stdout.count(b"github.com") >= 1)
+    :poll-until:
     :ignore-errors:
+    :compare-output: bool(stdout.count(b"github.com") >= 1)
 
     $ curl -v 'http://127.0.0.1:8000/cgi-bin/api.py?action=dump' | \
         python3 -m json.tool
@@ -278,7 +281,7 @@ configs than ``json``.
 .. code-block:: console
     :test:
 
-    $ pip install -U dffml-feature-git dffml-config-yaml
+    $ python -m pip install --use-feature=2020-resolver -U dffml-feature-git dffml-config-yaml
 
 The git operations / features rely on ``tokei``. We need to download and install
 it first.
@@ -317,7 +320,7 @@ our dataset. The following command creates a ``DataFlow`` description of how
 all the operations within ``dffml-feature-git`` link together. The ``DataFlow``
 is stored in the YAML file **dataflow.yaml**.
 
-.. code-block:: console
+.. code-block::
     :test:
 
     $ dffml dataflow create \
@@ -408,7 +411,7 @@ another separate Python package from DFFML which we can install via ``pip``.
 .. code-block:: console
     :test:
 
-    $ pip install -U dffml-model-tensorflow
+    $ python -m pip install --use-feature=2020-resolver -U dffml-model-tensorflow
 
 The model is a generic wrapper around Tensorflow's DNN estimator. We can use it
 to train on our dataset.

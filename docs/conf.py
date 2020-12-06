@@ -15,8 +15,10 @@ import sys
 import pathlib
 import datetime
 
-sys.path.insert(0, os.path.abspath("."))
-sys.path.append(os.path.abspath("_ext"))
+sys.path.insert(0, os.path.abspath(os.path.dirname(__file__)))
+sys.path.append(
+    os.path.abspath(os.path.join(os.path.dirname(__file__), "_ext"))
+)
 
 from dffml.version import VERSION
 
@@ -45,8 +47,9 @@ extensions = [
     "sphinx.ext.napoleon",
     "sphinx_tabs.tabs",
     "recommonmark",
-    "consoletest",
+    "dffml.util.testing.consoletest.builder",
     "literalinclude_diff",
+    "literalinclude_relative",
 ]
 
 intersphinx_mapping = {"python": ("https://docs.python.org/3", None)}
@@ -82,16 +85,6 @@ html_context = {
     "display_github": True,
 }
 
-html_theme_options = {
-    "description": "The easiest way to use Machine Learning",
-    "github_url": "https://github.com/intel/dffml/",
-}
-
-# Add any paths that contain custom static files (such as style sheets) here,
-# relative to this directory. They are copied after the builtin static files,
-# so a file named "default.css" will overwrite the builtin "default.css".
-html_static_path = ["_static"]
-
 
 def setup(app):
     app.add_js_file("copybutton.js")
@@ -100,3 +93,9 @@ def setup(app):
 # -- Extension configuration -------------------------------------------------
 
 napoleon_numpy_docstring = True
+
+consoletest_root = os.path.abspath("..")
+consoletest_docs = os.path.join(consoletest_root, "docs")
+consoletest_test_setup = (
+    pathlib.Path(__file__).parent / "consoletest_test_setup.py"
+).read_text()

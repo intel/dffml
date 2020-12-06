@@ -1,5 +1,6 @@
 import os
 import sys
+import inspect
 import pathlib
 import tempfile
 import unittest
@@ -9,157 +10,21 @@ import importlib.util
 
 from dffml.util.asynctestcase import AsyncTestCase
 
+from dffml.util.testing.consoletest.commands import *
 
-# Root of DFFML source tree
-ROOT_DIR = os.path.join(os.path.dirname(__file__), "..", "..")
+
+ROOT_PATH = pathlib.Path(__file__).parent.parent.parent
+DOCS_PATH = ROOT_PATH / "docs"
+
 
 # Load files by path. We have to import literalinclude_diff for diff-files
-for module_name in ["consoletest", "literalinclude_diff"]:
+for module_name in ["literalinclude_diff"]:
     spec = importlib.util.spec_from_file_location(
-        module_name,
-        os.path.join(ROOT_DIR, "docs", "_ext", f"{module_name}.py"),
+        module_name, str(ROOT_PATH / "docs" / "_ext" / f"{module_name}.py"),
     )
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
     setattr(sys.modules[__name__], module_name, module)
-
-
-class TestFunctions(AsyncTestCase):
-    def test_parse_commands_multi_line(self):
-        self.assertListEqual(
-            consoletest.parse_commands(
-                [
-                    "$ python3 -m \\",
-                    "    venv \\",
-                    "    .venv",
-                    "some shit",
-                    "",
-                    "",
-                    "$ . \\",
-                    "    .venv/bin/activate",
-                    "more asdflkj",
-                    "",
-                ]
-            ),
-            [["python3", "-m", "venv", ".venv"], [".", ".venv/bin/activate"],],
-        )
-
-    def test_parse_commands_substitution(self):
-        for cmd in [
-            ["$ python3 $(cat feedface)"],
-            ["$ python3 `cat feedface`"],
-            ['$ python3 "`cat feedface`"'],
-        ]:
-            with self.subTest(cmd=cmd):
-                with self.assertRaises(NotImplementedError):
-                    consoletest.parse_commands(cmd)
-
-        cmd = ["$ python3 '`cat feedface`'"]
-        with self.subTest(cmd=cmd):
-            consoletest.parse_commands(cmd)
-
-    def test_parse_commands_single_line_with_output(self):
-        self.assertListEqual(
-            consoletest.parse_commands(
-                [
-                    "$ docker logs maintained_db 2>&1 | grep 'ready for'",
-                    "2020-01-13 21:31:09 0 [Note] mysqld: ready for connections.",
-                    "2020-01-13 21:32:16 0 [Note] mysqld: ready for connections.",
-                ]
-            ),
-            [
-                [
-                    "docker",
-                    "logs",
-                    "maintained_db",
-                    "2>&1",
-                    "|",
-                    "grep",
-                    "ready for",
-                ],
-            ],
-        )
-
-    def test_build_command_venv_linux(self):
-        self.assertEqual(
-            consoletest.build_command([".", ".venv/bin/activate"],),
-            consoletest.ActivateVirtualEnvCommand(".venv"),
-        )
-
-    def test_pipes(self):
-        self.assertListEqual(
-            consoletest.pipes(
-                [
-                    "python3",
-                    "-c",
-                    r"print('Hello\nWorld')",
-                    "|",
-                    "grep",
-                    "Hello",
-                ]
-            ),
-            [["python3", "-c", r"print('Hello\nWorld')"], ["grep", "Hello"]],
-        )
-
-    async def test_run_commands(self):
-        with tempfile.TemporaryFile() as stdout:
-            await consoletest.run_commands(
-                [
-                    ["python3", "-c", r"print('Hello\nWorld')"],
-                    ["grep", "Hello", "2>&1"],
-                ],
-                {"cwd": os.getcwd()},
-                stdout=stdout,
-            )
-            stdout.seek(0)
-            stdout = stdout.read().decode().strip()
-            self.assertEqual(stdout, "Hello")
-
-
-class TestPipInstallCommand(unittest.TestCase):
-    def test_fix_dffml_packages(self):
-        command = consoletest.PipInstallCommand(
-            [
-                "pip",
-                "install",
-                "-U",
-                "dffml",
-                "-e",
-                "dffml-model-scikit",
-                "shouldi",
-                "aiohttp",
-            ]
-        )
-        command.fix_dffml_packages()
-        self.assertListEqual(
-            command.cmd,
-            [
-                "pip",
-                "install",
-                "-U",
-                "-e",
-                os.path.abspath(ROOT_DIR),
-                "-e",
-                os.path.abspath(os.path.join(ROOT_DIR, "model", "scikit")),
-                "-e",
-                os.path.abspath(os.path.join(ROOT_DIR, "examples", "shouldi")),
-                "aiohttp",
-            ],
-        )
-
-
-class TestDockerRunCommand(unittest.TestCase):
-    def test_find_name(self):
-        self.assertEqual(
-            consoletest.DockerRunCommand.find_name(
-                ["docker", "run", "--rm", "-d", "--name", "maintained_db",]
-            ),
-            (
-                "maintained_db",
-                False,
-                ["docker", "run", "--rm", "-d", "--name", "maintained_db",],
-            ),
-        )
 
 
 class TestDocs(unittest.TestCase):
@@ -167,9 +32,39 @@ class TestDocs(unittest.TestCase):
     A testcase for each doc will be added to this class
     """
 
+    TESTABLE_DOCS = []
 
-ROOT_PATH = pathlib.Path(__file__).parent.parent.parent
-DOCS_PATH = ROOT_PATH / "docs"
+    def test__all_docs_being_tested(self):
+        """
+        Make sure that there is a jobs.tutorials.strategy.matrix.docs entry for
+        each testable doc.
+        """
+        # Ensure that we identified some docs to test
+        should_have = sorted(self.TESTABLE_DOCS)
+        self.assertTrue(should_have)
+        # Load the ci testing workflow avoid requiring the yaml module as that
+        # has C dependencies
+        docs = list(
+            sorted(
+                map(
+                    lambda i: str(
+                        pathlib.Path(ROOT_PATH, i.strip()[2:])
+                        .relative_to(DOCS_PATH)
+                        .with_suffix("")
+                    ),
+                    filter(
+                        lambda line: line.strip().startswith("- docs/"),
+                        pathlib.Path(
+                            ROOT_PATH, ".github", "workflows", "testing.yml"
+                        )
+                        .read_text()
+                        .split("\n"),
+                    ),
+                )
+            )
+        )
+        # Make sure that we have an entry for all the docs we can test
+        self.assertListEqual(should_have, docs)
 
 
 def mktestcase(filepath: pathlib.Path, relative: pathlib.Path):
@@ -185,7 +80,7 @@ def mktestcase(filepath: pathlib.Path, relative: pathlib.Path):
         )
         from sphinx.environment import BuildEnvironment
 
-        os.chdir(ROOT_DIR)
+        os.chdir(str(ROOT_PATH))
 
         filenames = [str(relative)]
 
@@ -206,7 +101,7 @@ def mktestcase(filepath: pathlib.Path, relative: pathlib.Path):
                 self.env.setup(self)
                 self.env.find_files(self.config, self.builder)
 
-        confdir = os.path.join(ROOT_DIR, "docs")
+        confdir = str(ROOT_PATH / "docs")
 
         pickled_objs = {}
 
@@ -224,7 +119,7 @@ def mktestcase(filepath: pathlib.Path, relative: pathlib.Path):
             "pickle.load", new=pickle_load
         ), tempfile.TemporaryDirectory() as tempdir:
             app = SubSetSphinx(
-                os.path.join(ROOT_DIR, "docs"),
+                str(ROOT_PATH / "docs"),
                 confdir,
                 os.path.join(tempdir, "consoletest"),
                 os.path.join(tempdir, "consoletest", ".doctrees"),
@@ -245,11 +140,27 @@ def mktestcase(filepath: pathlib.Path, relative: pathlib.Path):
     return testcase
 
 
+SKIP_DOCS = ["plugins/dffml_model"]
+
+
 for filepath in DOCS_PATH.rglob("*.rst"):
-    if ":test:" not in pathlib.Path(filepath).read_text():
+    if b":test:" not in pathlib.Path(filepath).read_bytes():
         continue
     relative = filepath.relative_to(DOCS_PATH).with_suffix("")
+    if str(relative) in SKIP_DOCS:
+        continue
+    TestDocs.TESTABLE_DOCS.append(str(relative))
     name = "test_" + str(relative).replace(os.sep, "_")
+    # Do not add the tests if we are running with GitHub Actions for the main
+    # package. This is because there are seperate jobs for each tutorial test
+    # and the TestDocs.test__all_docs_being_tested ensures that we are running a
+    # job for each tutorial
+    if (
+        "GITHUB_ACTIONS" in os.environ
+        and "PLUGIN" in os.environ
+        and os.environ["PLUGIN"] == "."
+    ):
+        continue
     setattr(
         TestDocs,
         name,

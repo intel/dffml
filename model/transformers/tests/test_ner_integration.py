@@ -9,6 +9,8 @@ from dffml.df.types import DataFlow
 from dffml.service.dev import Develop
 from dffml.util.asynctestcase import IntegrationCLITestCase
 
+from .defaults import CACHE_DIR
+
 
 class TestNER(IntegrationCLITestCase):
     async def test_run(self):
@@ -61,8 +63,7 @@ class TestNER(IntegrationCLITestCase):
             writer.writerow(["A", "B"])
             writer.writerows(PREDICT_DATA)
 
-        output_dir = self.mktempdir()
-        cache_dir = self.mktempdir()
+        directory = self.mktempdir()
 
         # Train the model
         await CLI.cli(
@@ -77,10 +78,10 @@ class TestNER(IntegrationCLITestCase):
             "target:str:1",
             "-model-model_name_or_path",
             "bert-base-cased",
-            "-model-output_dir",
-            output_dir,
+            "-model-directory",
+            directory,
             "-model-cache_dir",
-            cache_dir,
+            CACHE_DIR,
             "-model-no_cuda",
             "-sources",
             "training_data=csv",
@@ -102,10 +103,10 @@ class TestNER(IntegrationCLITestCase):
             "target:str:1",
             "-model-model_name_or_path",
             "bert-base-cased",
-            "-model-output_dir",
-            output_dir,
+            "-model-directory",
+            directory,
             "-model-cache_dir",
-            cache_dir,
+            CACHE_DIR,
             "-model-no_cuda",
             "-sources",
             "test_data=csv",
@@ -129,10 +130,10 @@ class TestNER(IntegrationCLITestCase):
                 "target:str:1",
                 "-model-model_name_or_path",
                 "bert-base-cased",
-                "-model-output_dir",
-                output_dir,
+                "-model-directory",
+                directory,
                 "-model-cache_dir",
-                cache_dir,
+                CACHE_DIR,
                 "-model-no_cuda",
                 "-sources",
                 "predict_data=csv",
@@ -171,10 +172,10 @@ class TestNER(IntegrationCLITestCase):
                 "target:str:1",
                 "-config-model-model_name_or_path",
                 "bert-base-cased",
-                "-config-model-output_dir",
-                output_dir,
+                "-config-model-directory",
+                directory,
                 "-config-model-cache_dir",
-                cache_dir,
+                CACHE_DIR,
                 "-config-model-no_cuda",
             )
             self.assertIn("model_predictions", results)

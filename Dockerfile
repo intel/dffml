@@ -19,6 +19,12 @@ ENV CONDA_INSTALL_LOCATION ${CONDA_INSTALL_LOCATION}
 # Set current working directory
 WORKDIR /usr/src/dffml
 
+# Update existing packages
+RUN apt-get update && \
+  apt-get upgrade -y && \
+  apt-get clean && \
+  rm -rf /var/lib/apt/lists/*
+
 # ==========================  END  DOCKER SETUP ================================
 
 
@@ -84,7 +90,7 @@ RUN . "${CONDA_INSTALL_LOCATION}/miniconda${PYTHON_SHORT_VERSION}/bin/activate" 
 # .
 # docs
 RUN . "${CONDA_INSTALL_LOCATION}/miniconda${PYTHON_SHORT_VERSION}/bin/activate" base && \
-  if [ "x${PYTHON_SHORT_VERSION}" != "xpy38" ]; then conda install -y -c intel daal4py==2020.1 daal==2020.1; fi
+  if [ "x${PYTHON_SHORT_VERSION}" != "xpy38" ]; then conda install -y -c conda-forge daal4py==2020.3 daal==2020.3; fi
 
 # operations/nlp
 RUN . "${CONDA_INSTALL_LOCATION}/miniconda${PYTHON_SHORT_VERSION}/bin/activate" base && \
@@ -123,4 +129,4 @@ RUN /usr/src/dffml/.ci/dffml-install.sh
 # Copy over entrypoint script
 COPY scripts/docker-entrypoint.sh /usr/bin/docker-entrypoint.sh
 
-ENTRYPOINT /usr/bin/docker-entrypoint.sh
+ENTRYPOINT ["/usr/bin/docker-entrypoint.sh"]

@@ -27,4 +27,8 @@ doctest/
 *.mnistpng
 docs/plugins/dffml_*.rst
 docs/api/**
-consoletest/
+docs/changelog.md
+docs/shouldi.md
+docs/contributing/consoletest.md
+/consoletest/
+tests/service/logs.txt

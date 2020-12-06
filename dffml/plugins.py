@@ -6,6 +6,7 @@ import os
 import sys
 import pathlib
 import inspect
+import platform
 import tempfile
 import contextlib
 import subprocess
@@ -33,16 +34,16 @@ CORE_PLUGINS = [
     ("model", "tensorflow_hub"),
     ("model", "transformers"),
     ("model", "vowpalWabbit"),
-    ("model", "autosklearn"),
     ("model", "xgboost"),
     ("model", "pytorch"),
     ("model", "spacy"),
+    ("model", "daal4py"),
 ]
 
-# Models which currently don't support Python 3.8
-if sys.version_info.major == 3 and sys.version_info.minor < 8:
+# Models which currently don't support Windows or MacOS
+if platform.system() not in {"Windows", "Darwin"}:
     CORE_PLUGINS += [
-        ("model", "daal4py"),
+        ("model", "autosklearn"),
     ]
 
 CORE_PLUGINS += [
@@ -69,57 +70,20 @@ def python_package_installed(module_name: str) -> bool:
 
 
 # Dependencies of plugins and how to check if they exist on the system or not
-
-
-def check_boost():
-    # TODO Implement check on Windows
-    if os.name == "nt":
-        return True
-    with tempfile.TemporaryDirectory() as tempdir:
-        c_file = pathlib.Path(tempdir, "main.c")
-        c_file.write_text(
-            inspect.cleandoc(
-                r"""
-            #include <boost/version.hpp>
-
-            int main() {
-                return 0;
-            }
-            """
-            )
-        )
-        return inpath("c++") and bool(
-            subprocess.call(
-                ["c++", str(c_file)],
-                cwd=tempdir,
-                stdout=subprocess.DEVNULL,
-                stderr=subprocess.DEVNULL,
-            )
-            == 0
-        )
-
-
 CORE_PLUGIN_DEPS = {
-    ("model", "vowpalWabbit"): {
-        "cmake": lambda: inpath("cmake"),
-        "boost": check_boost,
-    }
-    if not python_package_installed("vowpalwabbit")
-    else {},
     ("model", "autosklearn"): {
         "swig": lambda: inpath("swig"),
         "cython": lambda: inpath("cython"),
     }
-    if not python_package_installed("auto_sklearn")
+    if platform.system() not in {"Windows", "Darwin"}
+    and not python_package_installed("autosklearn")
     else {},
 }
 
-# Plugins which currently don't support Python 3.8
-if sys.version_info.major == 3 and sys.version_info.minor < 8:
-    CORE_PLUGIN_DEPS[("model", "daal4py")] = {
-        # Must be installed already via conda, do not provide a pypi package yet
-        "daal4py": lambda: python_package_installed("daal4py")
-    }
+CORE_PLUGIN_DEPS[("model", "daal4py")] = {
+    # Must be installed already via conda, do not provide a pypi package yet
+    "daal4py": lambda: python_package_installed("daal4py")
+}
 
 # All packages under configloader/ are really named dffml-config-{name}
 ALTERNATIVES = {"configloader": "config"}

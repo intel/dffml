@@ -10,14 +10,7 @@ DESCRIPTION = "DFFML model daal4py"
 AUTHOR_NAME = "Ch.M.Hashim"
 AUTHOR_EMAIL = "hashimchaudry23@gmail.com"
 # Install dffml if it is not installed in development mode
-INSTALL_REQUIRES = [
-    # See https://github.com/intel/dffml/issues/766
-    # "daal4py>=0.2020.0",
-    "pandas>=0.25.0",
-    "joblib>=0.13.2",
-    # See https://github.com/intel/dffml/issues/816
-    "numpy>=1.16.4,<1.19.0",
-] + (
+INSTALL_REQUIRES = [] + (
     ["dffml>=0.3.7"]
     if not any(
         list(
@@ -55,6 +48,12 @@ VERSION = ast.literal_eval(
 )
 
 README = Path(SELF_PATH, "README.md").read_text()
+
+REQUIREMENTS_TXT_PATH = Path(SELF_PATH, "requirements.txt")
+if REQUIREMENTS_TXT_PATH.is_file():
+    INSTALL_REQUIRES += list(
+        map(lambda i: i.strip(), REQUIREMENTS_TXT_PATH.read_text().split("\n"))
+    )
 
 KWARGS = dict(
     name="dffml-model-daal4py",

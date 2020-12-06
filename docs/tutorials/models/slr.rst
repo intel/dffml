@@ -266,7 +266,7 @@ information on the HTTP service.
 .. code-block:: console
     :test:
 
-    $ pip install -U dffml-service-http
+    $ python -m pip install --use-feature=2020-resolver -U dffml-service-http
 
 We start the HTTP service and tell it that we want to make our model accessable
 via the HTTP :ref:`plugin_service_http_api_model` API.
@@ -279,7 +279,7 @@ via the HTTP :ref:`plugin_service_http_api_model` API.
 
 .. code-block:: console
     :test:
-    :daemon:
+    :daemon: 8080
 
     $ dffml service http server -insecure -cors '*' -addr 0.0.0.0 -port 8080 \
         -models mymodel=myslr:MySLRModel \
@@ -292,7 +292,7 @@ assessment.
 
 .. code-block:: console
     :test:
-    :replace: cmd[1] = cmd[1].replace("8080", str(ctx["HTTP_SERVER"]["8080"]))
+    :replace: cmds[0][1] = cmds[0][1].replace("8080", str(ctx["HTTP_SERVER"]["8080"]))
 
     $ curl http://localhost:8080/model/mymodel/predict/0 -v \
         --header "Content-Type: application/json" \

@@ -262,7 +262,11 @@ class CMD(object):
             # In order to use asyncio.subprocess_create_exec from event loops in
             # non-main threads we have to call asyncio.get_child_watcher(). This
             # is only for Python 3.7
-            if sys.version_info.major == 3 and sys.version_info.minor == 7:
+            if (
+                sys.version_info.major == 3
+                and sys.version_info.minor == 7
+                and sys.platform != "win32"
+            ):
                 asyncio.get_child_watcher()
             # Create a new event loop
             loop = asyncio.get_event_loop()

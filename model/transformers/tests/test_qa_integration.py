@@ -17,6 +17,8 @@ from dffml.util.os import chdir
 from dffml.service.dev import Develop
 from dffml.util.asynctestcase import IntegrationCLITestCase
 
+from .defaults import CACHE_DIR
+
 
 @contextlib.contextmanager
 def directory_with_csv_files():
@@ -148,10 +150,10 @@ class TestQAModel(IntegrationCLITestCase):
             "bert-base-cased",
             "-model-save_steps",
             "3",
-            "-model-output_dir",
+            "-model-directory",
             directory,
             "-model-cache_dir",
-            directory,
+            CACHE_DIR,
             "-model-log_dir",
             directory,
         )
@@ -175,10 +177,10 @@ class TestQAModel(IntegrationCLITestCase):
             "bert-base-cased",
             "-model-save_steps",
             "3",
-            "-model-output_dir",
+            "-model-directory",
             directory,
             "-model-cache_dir",
-            directory,
+            CACHE_DIR,
             "-model-log_dir",
             directory,
         )
@@ -204,10 +206,10 @@ class TestQAModel(IntegrationCLITestCase):
                 "bert-base-cased",
                 "-model-save_steps",
                 "3",
-                "-model-output_dir",
+                "-model-directory",
                 directory,
                 "-model-cache_dir",
-                directory,
+                CACHE_DIR,
                 "-model-log_dir",
                 directory,
             )
@@ -248,10 +250,10 @@ class TestQAModel(IntegrationCLITestCase):
                 "qa_model",
                 "-config-model-model_name_or_path",
                 "bert-base-cased",
-                "-config-model-output_dir",
+                "-config-model-directory",
                 directory,
                 "-config-model-cache_dir",
-                directory,
+                CACHE_DIR,
                 "-config-model-log_dir",
                 directory,
                 "-config-model-save_steps",
@@ -274,8 +276,8 @@ class TestQAModel(IntegrationCLITestCase):
             cmnd = " ".join(cmnd).split()
             for idx, word in enumerate(cmnd):
                 cmnd[idx] = word.strip()
-            cmnd[cmnd.index("-model-output_dir") + 1] = directory
-            cmnd[cmnd.index("-model-cache_dir") + 1] = directory
+            cmnd[cmnd.index("-model-directory") + 1] = directory
+            cmnd[cmnd.index("-model-cache_dir") + 1] = CACHE_DIR
             return cmnd
 
         with directory_with_csv_files() as tempdir:

@@ -1,6 +1,7 @@
 import os
 import sys
 import ast
+from pathlib import Path
 from io import open
 
 from setuptools import find_packages, setup
@@ -19,7 +20,7 @@ with open(os.path.join(self_path, "README.md"), "r", encoding="utf-8") as f:
     readme = f.read()
 
 # See https://github.com/intel/dffml/issues/816
-INSTALL_REQUIRES = ["tensorflow>=2.0.0,<2.3.0"] + (
+INSTALL_REQUIRES = [] + (
     ["dffml>=0.3.7"]
     if not any(
         list(
@@ -38,6 +39,21 @@ INSTALL_REQUIRES = ["tensorflow>=2.0.0,<2.3.0"] + (
     )
     else []
 )
+
+REQUIREMENTS_TXT_PATH = Path(self_path, "requirements.txt")
+if REQUIREMENTS_TXT_PATH.is_file():
+    INSTALL_REQUIRES += list(
+        map(lambda i: i.strip(), REQUIREMENTS_TXT_PATH.read_text().split("\n"))
+    )
+
+REQUIREMENTS_DEV_TXT_PATH = Path(self_path, "requirements-dev.txt")
+if REQUIREMENTS_DEV_TXT_PATH.is_file():
+    TESTS_REQUIRE = list(
+        map(
+            lambda i: i.strip(),
+            REQUIREMENTS_DEV_TXT_PATH.read_text().split("\n"),
+        )
+    )
 
 setup(
     name="dffml-model-tensorflow",
@@ -63,11 +79,7 @@ setup(
         "Programming Language :: Python :: Implementation :: PyPy",
     ],
     install_requires=INSTALL_REQUIRES,
-    tests_require=[
-        # See https://github.com/intel/dffml/issues/737
-        "scipy==1.4.1",
-        "scikit-learn>=0.21.2",
-    ],
+    tests_require=TESTS_REQUIRE,
     packages=find_packages(),
     entry_points={
         "dffml.model": [

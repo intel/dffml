@@ -2,6 +2,7 @@ import os
 import sys
 import ast
 from io import open
+from pathlib import Path
 from setuptools import find_packages, setup
 
 ORG = "intel"
@@ -9,13 +10,8 @@ NAME = "dffml-model-vowpalWabbit"
 DESCRIPTION = "DFFML model vowpalWabbit"
 AUTHOR_NAME = "Himanshu Tripathi"
 AUTHOR_EMAIL = "himanshutripathi366@gmail.com"
-INSTALL_REQUIRES = [
-    "vowpalwabbit>=8.8.1",
-    # See https://github.com/intel/dffml/issues/737
-    "scipy==1.4.1",
-    "scikit-learn>=0.21.2",
-    "pandas>=0.25.0",
-] + (
+
+INSTALL_REQUIRES = [] + (
     ["dffml>=0.3.7"]
     if not any(
         list(
@@ -42,6 +38,12 @@ IMPORT_NAME = (
 ).replace("-", "_")
 
 SELF_PATH = os.path.dirname(os.path.realpath(__file__))
+
+REQUIREMENTS_TXT_PATH = Path(SELF_PATH, "requirements.txt")
+if REQUIREMENTS_TXT_PATH.is_file():
+    INSTALL_REQUIRES += list(
+        map(lambda i: i.strip(), REQUIREMENTS_TXT_PATH.read_text().split("\n"))
+    )
 
 with open(os.path.join(SELF_PATH, IMPORT_NAME, "version.py"), "r") as f:
     for line in f:

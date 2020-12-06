@@ -16,6 +16,8 @@ from dffml.util.os import chdir
 from dffml.service.dev import Develop
 from dffml.util.asynctestcase import IntegrationCLITestCase
 
+from .defaults import CACHE_DIR
+
 
 @contextlib.contextmanager
 def directory_with_csv_files():
@@ -100,10 +102,10 @@ class TestHFClassifier(IntegrationCLITestCase):
             "1",
             "-model-model_name_or_path",
             "bert-base-cased",
-            "-model-output_dir",
+            "-model-directory",
             directory,
             "-model-cache_dir",
-            directory,
+            CACHE_DIR,
             "-model-logging_dir",
             directory,
             "-sources",
@@ -126,10 +128,10 @@ class TestHFClassifier(IntegrationCLITestCase):
             "1",
             "-model-model_name_or_path",
             "bert-base-cased",
-            "-model-output_dir",
+            "-model-directory",
             directory,
             "-model-cache_dir",
-            directory,
+            CACHE_DIR,
             "-model-logging_dir",
             directory,
             "-sources",
@@ -154,10 +156,10 @@ class TestHFClassifier(IntegrationCLITestCase):
                 "1",
                 "-model-model_name_or_path",
                 "bert-base-cased",
-                "-model-output_dir",
+                "-model-directory",
                 directory,
                 "-model-cache_dir",
-                directory,
+                CACHE_DIR,
                 "-model-logging_dir",
                 directory,
                 "-sources",
@@ -198,10 +200,10 @@ class TestHFClassifier(IntegrationCLITestCase):
                 "1",
                 "-config-model-model_name_or_path",
                 "bert-base-cased",
-                "-config-model-output_dir",
+                "-config-model-directory",
                 directory,
                 "-config-model-cache_dir",
-                directory,
+                CACHE_DIR,
                 "-config-model-logging_dir",
                 directory,
                 "-config-model-clstype",
@@ -221,8 +223,8 @@ class TestHFClassifier(IntegrationCLITestCase):
             cmnd = " ".join(cmnd).split()
             for idx, word in enumerate(cmnd):
                 cmnd[idx] = word.strip()
-            cmnd[cmnd.index("-model-output_dir") + 1] = directory
-            cmnd[cmnd.index("-model-cache_dir") + 1] = directory
+            cmnd[cmnd.index("-model-directory") + 1] = directory
+            cmnd[cmnd.index("-model-cache_dir") + 1] = CACHE_DIR
             cmnd[cmnd.index("-model-logging_dir") + 1] = directory
             return cmnd
 

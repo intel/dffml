@@ -13,7 +13,12 @@ fi
 
 TEMP_DIRS=()
 
-python_version="py$(${PYTHON} -c 'import sys; print(f"{sys.version_info.major}{sys.version_info.minor}")')"
+# Copy temporary fixes to a temporary directory in case we change branches
+TEMPFIX="$(mktemp -d)"
+TEMP_DIRS+=("${TEMPFIX}")
+cp -r ${SRC_ROOT}/scripts/tempfix/* "${TEMPFIX}/"
+
+python_version="$(${PYTHON} -c 'import sys; print(f"{sys.version_info.major}.{sys.version_info.minor}")')"
 
 function run_plugin_examples() {
   if [ ! -d "${SRC_ROOT}/${PLUGIN}/examples" ]; then
@@ -30,15 +35,11 @@ function run_plugin_examples() {
 function run_plugin() {
   export PLUGIN="${1}"
 
-  # Don't test daal4py on python 3.8, since it doesn't support 3.8
-  if [[ "${python_version}" == "py38" ]] && [[ "x${PLUGIN}" == "xmodel/daal4py" ]]; then
-    return
-  fi
-
   cd "${SRC_ROOT}/${PLUGIN}"
 
   # Install plugin
   "${PYTHON}" -m pip install --use-feature=2020-resolver -U -e .
+
   # Run the tests but not the long documentation consoletests
   "${PYTHON}" -u setup.py test
 
@@ -69,6 +70,8 @@ function run_plugin() {
 
     # Install all the plugins so examples can use them
     "${PYTHON}" -m dffml service dev install
+    # Remove dataclasses. See https://github.com/intel/dffml/issues/882
+    "${PYTHON}" "${TEMPFIX}/pytorch/pytorch/46930.py"
 
     # Run the examples
     run_plugin_examples
@@ -82,7 +85,7 @@ function run_plugin() {
     "${PYTHON}" -m coverage report -m
 
     # Fail if any tests were skipped or errored
-    skipped=$(grep -E '(skipped=.*)' "${check_skips}" | wc -l)
+    skipped=$(tail -n 1 "${check_skips}" | grep -E '(skipped=.*)' | wc -l)
     if [ "$skipped" -ne 0 ]; then
       echo "Tests were skipped" >&2
       exit 1
@@ -97,10 +100,30 @@ function run_plugin() {
 
   cd "${SRC_ROOT}"
 
+  # Report installed versions of packages
+  "${PYTHON}" -m pip freeze
+
   if [ "x${GITHUB_ACTIONS}" == "xtrue" ] && [ "x${GITHUB_REF}" == "xrefs/heads/master" ]; then
     git status
     dffml service dev release "${PLUGIN}"
   fi
+}
+
+function run_consoletest() {
+  export PLUGIN="${1/docs\//}"
+  export PLUGIN="${PLUGIN//\//_}"
+  export PLUGIN="${PLUGIN/\.rst/}"
+
+  cd "${SRC_ROOT}"
+
+  # Install base package with testing and development utilities
+  "${PYTHON}" -m pip install --use-feature=2020-resolver -U -e ".[dev]"
+
+  RUN_CONSOLETESTS=1 "${PYTHON}" -u setup.py test -s "tests.docs.test_consoletest.TestDocs.test_${PLUGIN}"
+
+  cd "${SRC_ROOT}"
+
+  git status
 }
 
 function run_changelog() {
@@ -147,6 +170,8 @@ function run_docs() {
   cd "${SRC_ROOT}"
   "${PYTHON}" -m pip install --prefix=~/.local -U -e "${SRC_ROOT}[dev]"
   "${PYTHON}" -m dffml service dev install -user
+  # Remove dataclasses. See https://github.com/intel/dffml/issues/882
+  "${PYTHON}" "${TEMPFIX}/pytorch/pytorch/46930.py" ~/.local
 
   last_release=$("${PYTHON}" -m dffml service dev setuppy kwarg version setup.py)
 
@@ -182,6 +207,8 @@ function run_docs() {
   rm -rf ~/.local
   "${PYTHON}" -m pip install --prefix=~/.local -U -e "${SRC_ROOT}[dev]"
   "${PYTHON}" -m dffml service dev install -user
+  # Remove dataclasses. See https://github.com/intel/dffml/issues/882
+  "${PYTHON}" "${TEMPFIX}/pytorch/pytorch/46930.py" ~/.local
   ./scripts/docs.sh
   mv pages "${release_docs}/html"
 
@@ -234,6 +261,8 @@ function run_lines() {
 
 function run_container() {
   docker build --build-arg DFFML_RELEASE=master -t intelotc/dffml .
+  docker run --rm intelotc/dffml version
+  docker run --rm intelotc/dffml service dev entrypoints list dffml.model
 }
 
 function cleanup_temp_dirs() {
@@ -260,6 +289,8 @@ elif [ "x${1}" == "xlines" ]; then
   run_lines
 elif [ "x${1}" == "xcontainer" ]; then
   run_container
+elif [ "x${1}" == "xconsoletest" ]; then
+  run_consoletest "${2}"
 elif [ -d "${1}" ]; then
   run_plugin "${1}"
 else

@@ -9,11 +9,6 @@ spec = importlib.util.spec_from_file_location(
 common = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(common)
 
-common.KWARGS["install_requires"] += [
-    "aiohttp>=3.5.4",
-    "bandit>=1.6.2",
-    "safety>=1.8.5",
-]
 common.KWARGS["entry_points"] = {
     "console_scripts": ["shouldi = shouldi.cli:ShouldI.main"],
     "dffml.operation": [
@@ -24,18 +19,5 @@ common.KWARGS["entry_points"] = {
         "cleanup_pypi_package = shouldi.python.pypi:cleanup_pypi_package",
     ],
 }
-
-# Hiding down hear away from operations tutorial
-common.KWARGS["install_requires"] += [
-    "PyYAML>=5.1.2",
-]
-common.KWARGS["entry_points"].update(
-    {
-        "shouldi.project.bom.db": [
-            "yaml = shouldi.project.bom.db.yaml:YAMLDB",
-            "pypi = shouldi.project.bom.db.pypi:PyPiDB",
-        ]
-    }
-)
 
 setup(**common.KWARGS)

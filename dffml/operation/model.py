@@ -94,7 +94,7 @@ async def model_predict(self, features: Dict[str, Any]) -> Dict[str, Any]:
     ...         print(results)
     >>>
     >>> asyncio.run(main())
-    {'model_predictions': {'Salary': {'confidence': 1.0, 'value': 50.0}}}
+    {'model_predictions': {'Salary': {'confidence': 1.0, 'value': 50}}}
     """
 
     async with Sources(

@@ -1,11 +1,20 @@
 # SPDX-License-Identifier: MIT
 # Copyright (c) 2019 Intel Corporation
 import os
+import sys
 import ast
 import pathlib
 from io import open
 import importlib.util
 from setuptools import find_packages, setup
+
+
+class InstallException(Exception):
+    pass
+
+
+if sys.version_info.major != 3 and sys.version_info.minor < 7:
+    raise InstallException("dffml is incompatible with Python version < 3.7!")
 
 with open(pathlib.Path("dffml", "version.py"), "r") as f:
     for line in f:
@@ -22,6 +31,15 @@ spec.loader.exec_module(plugins)
 
 with open("README.md", "r", encoding="utf-8") as f:
     README = f.read()
+
+REQUIREMENTS_DEV_TXT_PATH = pathlib.Path("requirements-dev.txt")
+if REQUIREMENTS_DEV_TXT_PATH.is_file():
+    DEV_REQUIRES = list(
+        map(
+            lambda i: i.strip(),
+            REQUIREMENTS_DEV_TXT_PATH.read_text().split("\n"),
+        )
+    )
 
 setup(
     name="dffml",
@@ -51,27 +69,9 @@ setup(
     include_package_data=True,
     zip_safe=False,
     extras_require={
-        "dev": [
-            "coverage",
-            "codecov",
-            "sphinx>=2.4.4",
-            "sphinx-tabs>=1.3.0",
-            "sphinx_rtd_theme",
-            "recommonmark",
-            "black==19.10b0",
-            "jsbeautifier",
-            "twine",
-        ],
+        "dev": DEV_REQUIRES,
         **plugins.PACKAGE_NAMES_BY_PLUGIN_INSTALLABLE,
     },
-    tests_require=[
-        "sphinx>=2.4.4",
-        "sphinx-tabs>=1.3.0",
-        "httptest>=0.0.15",
-        "Pillow>=7.1.2",
-        # See https://github.com/intel/dffml/issues/816
-        "numpy>=1.16.2,<1.19.0",
-    ],
     entry_points={
         "console_scripts": ["dffml = dffml.cli.cli:CLI.main"],
         "dffml.source": [

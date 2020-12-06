@@ -66,15 +66,17 @@ if [[ "x${PLUGIN}" == "xmodel/daal4py" ]] || \
     conda uninstall numpy
     conda install numpy==1.18.5
   fi
-  if [ -f "${PIP_CACHE_DIR}/miniconda${python_version}/bin/activate" ]; then
-    source "${PIP_CACHE_DIR}/miniconda${python_version}/bin/activate" base
+  where_conda=$(conda info -s | grep CONDA_ROOT | awk '{print $NF}')
+  if [ -f "${where_conda}/etc/profile.d/conda.sh" ]; then
+    source "${where_conda}/etc/profile.d/conda.sh"
   fi
+  conda activate base
 fi
 
 # Install and upgrade
 # pip and setuptools, which are used to install other packages
 # twine, which is used to upload released packages to PyPi
-python -m pip install --upgrade pip setuptools twine
+python -m pip install --upgrade pip setuptools wheel twine
 
 # Install main package so that other packages have access to it
 python -m pip install -U -e .[dev]
@@ -130,15 +132,13 @@ if [[ "x${PLUGIN}" == "xmodel/vowpalWabbit" ]] || \
   set -e
 fi
 
-if ([[ "x${PLUGIN}" == "xmodel/daal4py" ]] || \
-    [[ "x${PLUGIN}" == "x." ]] || \
-    [[ "x${PLUGIN}" == "xdocs" ]]) &&
-  [[ "${python_version}" != "py38" ]]; then
-  # daal4py only supports ^ Python 3.7
+if [[ "x${PLUGIN}" == "xmodel/daal4py" ]] || \
+   [[ "x${PLUGIN}" == "x." ]] || \
+   [[ "x${PLUGIN}" == "xdocs" ]]; then
   set +e
   # See comment in vowpalWabbit about conda exit codes
   # See https://github.com/intel/dffml/issues/801 for discussion on pinning
-  conda install -y -c intel daal4py==2020.1 daal==2020.1
+  conda install -y -c conda-forge daal4py==2020.3 daal==2020.3
   exit_code=$?
   if [[ "x${exit_code}" != "x0" ]]; then
     exit "${exit_code}"

@@ -26,7 +26,7 @@ from dffml.model.model import ModelContext, ModelNotTrained
 
 @config
 class SpacyNERModelConfig:
-    output_dir: str = field("Output directory")
+    directory: str = field("Output directory")
     model_name_or_path: str = field(
         "Model name or path to saved model. Defaults to blank 'en' model.",
         default=None,
@@ -37,7 +37,7 @@ class SpacyNERModelConfig:
     )
 
     def __post_init__(self):
-        self.output_dir = pathlib.Path(self.output_dir)
+        self.directory = pathlib.Path(self.directory)
 
 
 class SpacyNERModelContext(ModelContext):
@@ -108,22 +108,22 @@ class SpacyNERModelContext(ModelContext):
                     )
                 self.logger.debug(f"Losses: {losses}")
 
-        if self.parent.config.output_dir is not None:
-            if not self.parent.config.output_dir.exists():
-                self.parent.config.output_dir.mkdir(parents=True)
-            self.nlp.to_disk(self.parent.config.output_dir)
+        if self.parent.config.directory is not None:
+            if not self.parent.config.directory.exists():
+                self.parent.config.directory.mkdir(parents=True)
+            self.nlp.to_disk(self.parent.config.directory)
             self.logger.debug(
-                f"Saved model to {self.parent.config.output_dir.name}"
+                f"Saved model to {self.parent.config.directory.name}"
             )
 
     async def accuracy(self, sources: SourcesContext) -> Accuracy:
         if not os.path.isdir(
-            os.path.join(self.parent.config.output_dir, "ner")
+            os.path.join(self.parent.config.directory, "ner")
         ):
             raise ModelNotTrained("Train model before assessing for accuracy.")
 
         test_examples = await self._preprocess_data(sources)
-        self.nlp = spacy.load(self.parent.config.output_dir)
+        self.nlp = spacy.load(self.parent.config.directory)
 
         scorer = Scorer()
         for input_, annot in test_examples:
@@ -137,10 +137,10 @@ class SpacyNERModelContext(ModelContext):
         self, sources: SourcesContext
     ) -> AsyncIterator[Tuple[Record, Any, float]]:
         if not os.path.isdir(
-            os.path.join(self.parent.config.output_dir, "ner")
+            os.path.join(self.parent.config.directory, "ner")
         ):
             raise ModelNotTrained("Train model before prediction.")
-        self.nlp = spacy.load(self.parent.config.output_dir)
+        self.nlp = spacy.load(self.parent.config.directory)
 
         async for record in sources.records():
             doc = self.nlp(record.feature("sentence"))
@@ -151,41 +151,119 @@ class SpacyNERModelContext(ModelContext):
 
 @entrypoint("spacyner")
 class SpacyNERModel(Model):
-    """
+    r"""
     Implemented using `Spacy statistical models <https://spacy.io/usage/training>`_ .
 
+    .. note::
+
+        You must download ``en_core_web_sm`` before using this model
+
+        .. code-block:: console
+            :test:
+
+            $ python -m spacy download en_core_web_sm
+
     First we create the training and testing datasets.
-    
+
     Training data:
 
-    .. literalinclude:: /../model/spacy/examples/ner/train_data.sh
+    **train.json**
+
+    .. code-block:: json
+        :test:
+        :filepath: train.json
+
+        {
+            "data": [
+                {
+                    "sentence": "I went to London and Berlin.",
+                    "entities": [
+                        {
+                            "start":10,
+                            "end": 16,
+                            "tag": "LOC"
+                        },
+                        {
+                            "start":21,
+                            "end": 27,
+                            "tag": "LOC"
+                        }
+                    ]
+                },
+                {
+                    "sentence": "Who is Alex?",
+                    "entities": [
+                        {
+                            "start":7,
+                            "end": 11,
+                            "tag": "PERSON"
+                        }
+                    ]
+                }
+            ]
+        }
 
     Testing data:
 
-    .. literalinclude:: /../model/spacy/examples/ner/test_data.sh
+    **test.json**
+
+    .. code-block:: json
+        :test:
+        :filepath: test.json
+
+        {
+            "data": [
+                {
+                    "sentence": "Alex went to London?"
+                }
+            ]
+        }
 
     Train the model
 
-    .. literalinclude:: /../model/spacy/examples/ner/train.sh
+    .. code-block:: console
+        :test:
+
+        $ dffml train \
+            -model spacyner \
+            -sources s=op \
+            -source-opimp dffml_model_spacy.ner.utils:parser \
+            -source-args train.json False \
+            -model-model_name_or_path en_core_web_sm \
+            -model-directory temp \
+            -model-n_iter 5 \
+            -log debug
 
     Assess the accuracy
 
-    .. literalinclude:: /../model/spacy/examples/ner/accuracy.sh
+    .. code-block:: console
+        :test:
 
-    Output
-
-    .. code-block::
-
+        $ dffml accuracy \
+            -model spacyner \
+            -sources s=op \
+            -source-opimp dffml_model_spacy.ner.utils:parser \
+            -source-args train.json False \
+            -model-model_name_or_path en_core_web_sm \
+            -model-directory temp \
+            -model-n_iter 5 \
+            -log debug
         0.0
 
     Make a prediction
 
-    .. literalinclude:: /../model/spacy/examples/ner/predict.sh
+    .. code-block:: console
+        :test:
 
-    Output
-
-    .. code-block:: json
-
+        $ dffml predict all \
+            -model spacyner \
+            -sources s=op \
+            -source-opimp dffml_model_spacy.ner.utils:parser \
+            -source-args test.json True \
+            -model-model_name_or_path en_core_web_sm \
+            -model-directory temp \
+            -model-n_iter 5 \
+            -log debug
         [
             {
                 "extra": {},
@@ -197,7 +275,7 @@ class SpacyNERModel(Model):
                 "last_updated": "2020-07-27T16:26:18Z",
                 "prediction": {
                     "Answer": {
-                        "confidence": NaN,
+                        "confidence": null,
                         "value": [
                             [
                                 "Alex",
@@ -223,7 +301,7 @@ class SpacyNERModel(Model):
 
     .. literalinclude:: /../model/spacy/dffml_model_spacy/ner/utils.py
 
-    The location of the function is passed using: 
+    The location of the function is passed using:
 
     .. code-block:: console
 

@@ -3,7 +3,7 @@
 CONDA_ACTIVATE="${CONDA_INSTALL_LOCATION}/miniconda${PYTHON_SHORT_VERSION}/bin/activate"
 
 if [ -f "${CONDA_ACTIVATE}" ]; then
-  source "${CONDA_ACTIVATE}"
+  source "${CONDA_ACTIVATE}" base
 fi
 
 echo "#!/usr/bin/env bash" > /usr/bin/cmd.sh

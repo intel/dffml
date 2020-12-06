@@ -206,7 +206,7 @@ To install your new source run
 .. code-block:: console
     :test:
 
-    $ python -m pip install -e .
+    $ python -m pip install --use-feature=2020-resolver -e .
 
 CLI Usage
 ---------
@@ -230,6 +230,7 @@ Create a ``.ini`` file with some record data in it.
 To use your newly created source in CLI, try listing some records.
 
 .. code-block:: console
+    :test:
 
     $ dffml list records -sources data=myini -source-filename data.ini
     [
