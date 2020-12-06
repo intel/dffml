@@ -67,11 +67,13 @@ class PyTorchNeuralNetworkContext(PyTorchModelContext):
         """
         if self._model is not None:
             return self._model
-        self.logger.debug(
-            "Loading model with classifications(%d): %r",
-            len(self.classifications),
-            self.classifications,
-        )
+
+        if self.classifications:
+            self.logger.debug(
+                "Loading model with classifications(%d): %r",
+                len(self.classifications),
+                self.classifications,
+            )
 
         model = self.parent.config.network
         self.logger.debug("Model Summary\n%r", model)

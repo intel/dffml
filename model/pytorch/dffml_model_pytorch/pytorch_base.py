@@ -1,3 +1,6 @@
+"""
+Base class for PyTorch models
+"""
 import os
 import pathlib
 from typing import Any, Tuple, AsyncIterator, List, Type, Dict
@@ -104,6 +107,9 @@ class PyTorchModelContext(ModelContext):
         pass
 
     def set_model_parameters(self):
+        """
+        Set model parameters to optimize according to the network
+        """
         self.model_parameters = self._model.parameters()
 
     def _classifications(self, cids):
@@ -142,6 +148,9 @@ class PyTorchModelContext(ModelContext):
         return cids
 
     async def dataset_generator(self, sources: Sources):
+        """
+        Get data from source and convert into Tensor format for further processing
+        """
         self.logger.debug("Training on features: %r", self.features)
         x_cols: Dict[str, Any] = {feature: [] for feature in self.features}
         y_cols = []
@@ -177,6 +186,7 @@ class PyTorchModelContext(ModelContext):
         self.logger.info("-----------------------")
 
         x_cols = x_cols[self.features[0]]
+        # Convert x and y data to tensors and normalize them accordingly
         dataset = NumpyToTensor(
             x_cols,
             y_cols,
@@ -204,6 +214,7 @@ class PyTorchModelContext(ModelContext):
             "Validation": int(self.parent.config.validation_split * size),
         }
 
+        # If validation_split is specified, split the data
         if self.parent.config.validation_split:
             data = dict(
                 zip(
@@ -220,6 +231,8 @@ class PyTorchModelContext(ModelContext):
                     size["Training"], size["Validation"]
                 )
             )
+            # Combine data and perform general preprocessing like making batches, shuffling, etc.
+            # Outputs an iterable variable over the data
             dataloaders = {
                 x: torch.utils.data.DataLoader(
                     data[x],
@@ -241,6 +254,7 @@ class PyTorchModelContext(ModelContext):
 
         since = time.time()
 
+        # Store initial weights of the network
         best_model_wts = copy.deepcopy(self._model.state_dict())
         best_acc = 0.0
 
@@ -252,9 +266,9 @@ class PyTorchModelContext(ModelContext):
 
             for phase in dataloaders.keys():
                 if phase == "Training":
-                    self._model.train()
+                    self._model.train()  # Set model to training phase
                 else:
-                    self._model.eval()
+                    self._model.eval()  # Set model to evaluation phase for validation
 
                 running_loss = 0.0
                 running_corrects = 0
@@ -264,23 +278,27 @@ class PyTorchModelContext(ModelContext):
                     labels = labels.to(self.device)
                     self.optimizer.zero_grad()
 
+                    # Track gradients for computing loss in the network only if the model is in training phase
                     with torch.set_grad_enabled(phase == "Training"):
                         outputs = self._model(inputs)
                         if self.classifications:
                             _, preds = torch.max(outputs, 1)
                         loss = self.criterion(outputs, labels)
 
+                        # Optimize the network when in training phase
                         if phase == "Training":
                             loss.backward()
                             self.optimizer.step()
 
                     running_loss += loss.item() * inputs.size(0)
+                    # If classification labels are specified, add up the the correct predictions
                     if self.classifications:
                         running_corrects += torch.sum(preds == labels.data)
 
                 if phase == "Training":
                     self.exp_lr_scheduler.step()
 
+                # Calculate average accuracy and loss computed in the epoch
                 epoch_loss = running_loss / size[phase]
                 epoch_acc = (
                     running_corrects.double() / size[phase]
@@ -295,6 +313,7 @@ class PyTorchModelContext(ModelContext):
                 )
 
                 if phase == "Validation":
+                    # Update the model weights if current epoch accuracy is more than the previous epoch accuracies
                     if epoch_acc >= best_acc:
                         best_acc = epoch_acc
                         best_model_wts = copy.deepcopy(
@@ -303,6 +322,7 @@ class PyTorchModelContext(ModelContext):
                         self.counter = 0
                     else:
                         self.counter += 1
+                    # To avoid overtraining, stop training after the current epoch
                     if best_acc == 1.0:
                         self.counter = self.parent.config.patience
 
@@ -328,9 +348,13 @@ class PyTorchModelContext(ModelContext):
             )
             self._model.load_state_dict(best_model_wts)
 
+        # Save the model at the specified path
         torch.save(self._model, self.model_path)
 
     async def accuracy(self, sources: Sources) -> Accuracy:
+        """
+        Assess the accuracy of the network on the test data after training on records
+        """
         if not os.path.isfile(os.path.join(self.model_path)):
             raise ModelNotTrained("Train model before assessing for accuracy.")
 
@@ -348,8 +372,8 @@ class PyTorchModelContext(ModelContext):
             running_corrects = 0
 
             for inputs, labels in dataloader:
-                inputs = inputs.to(inputs)
-                labels = labels.to(inputs)
+                inputs = inputs.to(self.device)
+                labels = labels.to(self.device)
 
                 with torch.set_grad_enabled(False):
                     outputs = self._model(inputs)
@@ -390,6 +414,7 @@ class PyTorchModelContext(ModelContext):
             predict = await self.prediction_data_generator(feature_data)
             target = self.parent.config.predict.name
 
+            # Disable gradient calculation for prediction
             with torch.no_grad():
                 for val in predict:
                     val = val.to(self.device)
