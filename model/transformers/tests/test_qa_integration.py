@@ -184,7 +184,7 @@ class TestQAModel(IntegrationCLITestCase):
             "-model-log_dir",
             directory,
             "-scorer",
-            "mse",
+            "tqa",
         )
         with contextlib.redirect_stdout(self.stdout):
             # Make prediction
