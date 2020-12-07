@@ -1,8 +1,7 @@
 import abc
-from typing import AsyncIterator, List
 
-from ..record import Record
-from ..feature import Feature
+from ..model import ModelContext
+from ..source.source import SourcesContext
 from ..util.entrypoint import base_entry_point
 from ..base import (
     config,
@@ -26,18 +25,18 @@ class AccuracyContext(abc.ABC, BaseDataFlowFacilitatorObjectContext):
 
     @abc.abstractmethod
     async def score(
-        self, records: AsyncIterator[Record], features: List[Feature],
+        self, mctx: ModelContext, sources: SourcesContext,
     ) -> float:
         """
         Abstract method to get the score
 
         Parameters
         ----------
-        records : AsyncIterator[Record]
-            The predicted record, which we get by calling the predict method of a model
+        mctx : ModelContext
+            The Model which needs to be used.
 
-        features : List[Feature]
-            The features on which the predtion was done
+        sources : SourcesContext
+            The sources to use to get the accuracy
 
         Returns
         -------
