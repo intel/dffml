@@ -12,6 +12,7 @@ from dffml_model_transformers.classification.classification_model import (
     HFClassificationModel,
     HFClassificationModelConfig,
 )
+from dffml_model_transformers.accuracy import TransformerClassificationAccuracy
 
 
 class TestHFClassificationModel(AsyncTestCase):
@@ -40,7 +41,7 @@ class TestHFClassificationModel(AsyncTestCase):
                 label_list=["0", "1"],
             )
         )
-        cls.scorer = MeanSquaredErrorAccuracy()
+        cls.scorer = TransformerClassificationAccuracy()
 
     @classmethod
     def tearDownClass(cls):
