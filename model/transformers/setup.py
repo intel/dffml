@@ -47,6 +47,11 @@ setup(
             "ner_tagger = dffml_model_transformers.ner.ner_model:NERModel",
             "qa_model = dffml_model_transformers.qa.qa_model:QAModel",
             "hfclassifier = dffml_model_transformers.classification.classification_model:HFClassificationModel",
-        ]
+        ],
+        "dffml.accuracy": [
+            "tclf = dffml_model_transformers.accuracy:TransformerClassificationAccuracy",
+            "tqa = dffml_model_transformers.accuracy:TransformerQaAccuracy",
+            "tner = dffml_model_transformers.accuracy:TransformerNerAccuracy",
+        ],
     },
 )
