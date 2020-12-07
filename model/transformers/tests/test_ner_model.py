@@ -9,7 +9,7 @@ from dffml.source.source import Sources
 from dffml.util.asynctestcase import AsyncTestCase
 from dffml.feature import Feature
 from dffml.source.memory import MemorySource, MemorySourceConfig
-from dffml.accuracy import ClassificationAccuracy
+from dffml_model_transformers.accuracy import TransformerNerAccuracy
 from dffml_model_transformers.ner.ner_model import NERModel, NERModelConfig
 
 from .defaults import CACHE_DIR
@@ -66,7 +66,7 @@ class TestNERModel(AsyncTestCase):
                 cache_dir=CACHE_DIR,
             )
         )
-        cls.scorer = ClassificationAccuracy()
+        cls.scorer = TransformerNerAccuracy()
 
     @classmethod
     def tearDownClass(cls):
