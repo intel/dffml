@@ -114,7 +114,7 @@ class TestNER(IntegrationCLITestCase):
             "-source-filename",
             train_data_filename,
             "-scorer",
-            "mse",
+            "tner",
         )
         with contextlib.redirect_stdout(self.stdout):
             # Make prediction
