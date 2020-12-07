@@ -233,6 +233,7 @@ class HFClassificationModelContext(ModelContext):
             finetuning_task=self.parent.config.task_name,
             cache_dir=self.parent.config.cache_dir,
         )
+        self.classification_compute_metrics = classification_compute_metrics
 
     async def _preprocess_data(self, sources: Sources):
         x_cols: Dict[str, Any] = {feature: [] for feature in self.features}
