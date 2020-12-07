@@ -139,7 +139,7 @@ class TestHFClassifier(IntegrationCLITestCase):
             "-source-filename",
             data_filename,
             "-scorer",
-            "mse",
+            "tclf",
         )
         with contextlib.redirect_stdout(self.stdout):
             # Make prediction
