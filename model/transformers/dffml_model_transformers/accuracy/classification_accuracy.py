@@ -49,8 +49,8 @@ class TransformerClassificationAccuracyContext(AccuracyContext):
                 config["directory"]
             )
         trainer = TFTrainer(
-            model=self.model,
-            args=self.parent.config,
+            model=mctx.model,
+            args=mctx.parent.config,
             eval_dataset=eval_dataset,
             compute_metrics=compute_metrics,
         )
