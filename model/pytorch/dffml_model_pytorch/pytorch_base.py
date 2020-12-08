@@ -63,6 +63,7 @@ class PyTorchModelConfig:
                 map(self.clstype, self.classifications)
             )
 
+
 class PyTorchModelContext(ModelContext):
     def __init__(self, parent):
         super().__init__(parent)

@@ -77,10 +77,10 @@ class NumpyToTensor(Dataset):
 
 
 class LossFunctionNotFoundError(Exception):
-    '''
+    """
     Exception raised when Loss function is misspelled.
-    '''
-    pass
+    """
+
 
 @base_entry_point("dffml.model.pytorch.loss", "loss")
 class PyTorchLoss(BaseDataFlowFacilitatorObject):
@@ -95,10 +95,14 @@ class PyTorchLoss(BaseDataFlowFacilitatorObject):
         for name, loss_class in inspect.getmembers(nn, inspect.isclass):
             if name.endswith("Loss"):
                 if name.lower() == class_name:
-                    loss_function = getattr(sys.modules[__name__], name + "Function")
+                    loss_function = getattr(
+                        sys.modules[__name__], name + "Function"
+                    )
 
         if loss_function is None:
-            raise LossFunctionNotFoundError(f"Loss function is not valid! Function name given was {class_name}")
+            raise LossFunctionNotFoundError(
+                f"Loss function is not valid! Function name given was {class_name}"
+            )
 
         return loss_function
 
