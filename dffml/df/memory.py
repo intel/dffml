@@ -1205,6 +1205,10 @@ class MemoryOrchestratorContextConfig:
     # Maximum number of contexts to run concurrently
     max_ctxs: int = MEMORYORCHESTRATORCONFIG_MAX_CTXS
 
+    def __post_init__(self):
+        if self.reuse is None:
+            self.reuse = {}
+
 
 class MemoryOrchestratorContext(BaseOrchestratorContext):
     def __init__(
@@ -1241,15 +1245,11 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
         }
         # If we were told to reuse a context, don't enter it. Just set the
         # attribute now.
-        remove = []
-        for name in enter:
-            ctx = getattr(self.config, name, None)
-            if ctx is not None:
-                remove.append(name)
+        for name, ctx in self.config.reuse.items():
+            if name in enter:
                 self.logger.debug("Reusing %s: %s", name, ctx)
+                del enter[name]
                 setattr(self, name, ctx)
-        for name in remove:
-            del enter[name]
         # Creat the exit stack and enter all the contexts we won't be reusing
         self._stack = AsyncExitStack()
         self._stack = await aenter_stack(self, enter)
