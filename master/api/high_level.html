@@ -135,6 +135,7 @@
 <p class="caption"><span class="caption-text">Subprojects</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../shouldi.html">shouldi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../swportal.html">Software Portal</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Community</span></p>
 <ul>
@@ -453,11 +454,16 @@ options.</p></li>
 <span class="gp">... </span>    <span class="c1"># For specific records in a source</span>
 <span class="gp">... </span>    <span class="k">async</span> <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">load</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="s2">&quot;1&quot;</span><span class="p">):</span>
 <span class="gp">... </span>        <span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">export</span><span class="p">())</span>
+<span class="gp">...</span>
+<span class="gp">... </span>    <span class="c1"># Lightweight source syntax</span>
+<span class="gp">... </span>    <span class="k">async</span> <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">load</span><span class="p">(</span><span class="s2">&quot;load.csv&quot;</span><span class="p">,</span> <span class="s2">&quot;2&quot;</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">export</span><span class="p">())</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
 <span class="go">{&#39;key&#39;: &#39;1&#39;, &#39;features&#39;: {&#39;A&#39;: 0, &#39;B&#39;: 1}, &#39;extra&#39;: {}}</span>
 <span class="go">{&#39;key&#39;: &#39;2&#39;, &#39;features&#39;: {&#39;A&#39;: 3, &#39;B&#39;: 4}, &#39;extra&#39;: {}}</span>
 <span class="go">{&#39;key&#39;: &#39;1&#39;, &#39;features&#39;: {&#39;A&#39;: 0, &#39;B&#39;: 1}, &#39;extra&#39;: {}}</span>
+<span class="go">{&#39;key&#39;: &#39;2&#39;, &#39;features&#39;: {&#39;A&#39;: 3, &#39;B&#39;: 4}, &#39;extra&#39;: {}}</span>
 </pre></div>
 </div>
 </dd></dl>

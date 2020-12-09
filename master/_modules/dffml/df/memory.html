@@ -114,6 +114,7 @@
 <p class="caption"><span class="caption-text">Subprojects</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../shouldi.html">shouldi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../swportal.html">Software Portal</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Community</span></p>
 <ul>
@@ -1360,6 +1361,9 @@
     <span class="n">CONFIG</span> <span class="o">=</span> <span class="n">MemoryOperationImplementationNetworkConfig</span></div>
 
 
+<span class="n">MEMORYORCHESTRATORCONFIG_MAX_CTXS</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span>
+
+
 <div class="viewcode-block" id="MemoryOrchestratorConfig"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.cli.dataflow.MemoryOrchestratorConfig">[docs]</a><span class="nd">@config</span>
 <span class="k">class</span> <span class="nc">MemoryOrchestratorConfig</span><span class="p">:</span>
     <span class="n">input_network</span><span class="p">:</span> <span class="n">BaseInputNetwork</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
@@ -1379,7 +1383,9 @@
     <span class="n">rchecker</span><span class="p">:</span> <span class="n">BaseRedundancyChecker</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
         <span class="s2">&quot;Redundancy checker to use&quot;</span><span class="p">,</span>
         <span class="n">default_factory</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="n">MemoryRedundancyChecker</span><span class="p">(),</span>
-    <span class="p">)</span></div>
+    <span class="p">)</span>
+    <span class="c1"># Maximum number of contexts to run concurrently</span>
+    <span class="n">max_ctxs</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">MEMORYORCHESTRATORCONFIG_MAX_CTXS</span></div>
 
 
 <div class="viewcode-block" id="MemoryOrchestratorContextConfig"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.cli.dataflow.MemoryOrchestratorContextConfig">[docs]</a><span class="nd">@config</span>
@@ -1388,7 +1394,13 @@
     <span class="n">dataflow</span><span class="p">:</span> <span class="n">DataFlow</span>
     <span class="c1"># Context objects to reuse. If not present in this dict a new context object</span>
     <span class="c1"># will be created.</span>
-    <span class="n">reuse</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">BaseDataFlowObjectContext</span><span class="p">]</span></div>
+    <span class="n">reuse</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">BaseDataFlowObjectContext</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="c1"># Maximum number of contexts to run concurrently</span>
+    <span class="n">max_ctxs</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">MEMORYORCHESTRATORCONFIG_MAX_CTXS</span>
+
+    <span class="k">def</span> <span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">reuse</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">reuse</span> <span class="o">=</span> <span class="p">{}</span></div>
 
 
 <div class="viewcode-block" id="MemoryOrchestratorContext"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.cli.dataflow.MemoryOrchestratorContext">[docs]</a><span class="k">class</span> <span class="nc">MemoryOrchestratorContext</span><span class="p">(</span><span class="n">BaseOrchestratorContext</span><span class="p">):</span>
@@ -1617,8 +1629,22 @@
         <span class="c1"># TODO Make some way to cap the number of context&#39;s who have operations</span>
         <span class="c1"># executing. Or maybe just the number of operations. Or both.</span>
         <span class="n">tasks</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="c1"># Track the number of contexts running</span>
+        <span class="n">num_ctxs</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="c1"># If the max_ctxs is more than the total number of contexts, then set max_ctxs to None</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">max_ctxs</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">max_ctxs</span> <span class="o">&gt;</span> <span class="nb">len</span><span class="p">(</span>
+            <span class="n">ctxs</span>
+        <span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">max_ctxs</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="c1"># Create tasks to wait on the results of each of the contexts submitted</span>
-        <span class="k">for</span> <span class="n">ctx</span> <span class="ow">in</span> <span class="n">ctxs</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">ctxs_index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">ctxs</span><span class="p">)):</span>
+            <span class="k">if</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">max_ctxs</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="ow">and</span> <span class="n">num_ctxs</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">max_ctxs</span>
+            <span class="p">):</span>
+                <span class="k">break</span>
+            <span class="c1"># Grab the context by its index</span>
+            <span class="n">ctx</span> <span class="o">=</span> <span class="n">ctxs</span><span class="p">[</span><span class="n">ctxs_index</span><span class="p">]</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
                 <span class="s2">&quot;kickstarting context: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="p">(</span><span class="k">await</span> <span class="n">ctx</span><span class="o">.</span><span class="n">handle</span><span class="p">())</span><span class="o">.</span><span class="n">as_string</span><span class="p">()</span>
             <span class="p">)</span>
@@ -1627,6 +1653,8 @@
                     <span class="bp">self</span><span class="o">.</span><span class="n">run_operations_for_ctx</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="n">strict</span><span class="p">)</span>
                 <span class="p">)</span>
             <span class="p">)</span>
+            <span class="c1"># Ensure we don&#39;t run more contexts conncurrently than requested</span>
+            <span class="n">num_ctxs</span> <span class="o">+=</span> <span class="mi">1</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="c1"># Return when outstanding operations reaches zero</span>
             <span class="k">while</span> <span class="n">tasks</span><span class="p">:</span>
@@ -1638,6 +1666,7 @@
                 <span class="k">for</span> <span class="n">task</span> <span class="ow">in</span> <span class="n">done</span><span class="p">:</span>
                     <span class="c1"># Remove the task from the set of tasks we are waiting for</span>
                     <span class="n">tasks</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">task</span><span class="p">)</span>
+                    <span class="n">num_ctxs</span> <span class="o">-=</span> <span class="mi">1</span>
                     <span class="c1"># Get the tasks exception if any</span>
                     <span class="n">exception</span> <span class="o">=</span> <span class="n">task</span><span class="o">.</span><span class="n">exception</span><span class="p">()</span>
                     <span class="k">if</span> <span class="n">strict</span> <span class="ow">and</span> <span class="n">exception</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -1654,6 +1683,28 @@
                         <span class="c1"># output operations</span>
                         <span class="n">ctx</span><span class="p">,</span> <span class="n">results</span> <span class="o">=</span> <span class="n">task</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
                         <span class="k">yield</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">results</span>
+                    <span class="c1"># Create more tasks to wait on the results of each of the</span>
+                    <span class="c1"># contexts submitted if we are caping the number of them</span>
+                    <span class="k">while</span> <span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">max_ctxs</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                        <span class="ow">and</span> <span class="n">num_ctxs</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">max_ctxs</span>
+                        <span class="ow">and</span> <span class="n">ctxs_index</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">ctxs</span><span class="p">)</span>
+                    <span class="p">):</span>
+                        <span class="c1"># Grab the context by it&#39;s index</span>
+                        <span class="n">ctx</span> <span class="o">=</span> <span class="n">ctxs</span><span class="p">[</span><span class="n">ctxs_index</span><span class="p">]</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
+                            <span class="s2">&quot;kickstarting context: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span>
+                            <span class="p">(</span><span class="k">await</span> <span class="n">ctx</span><span class="o">.</span><span class="n">handle</span><span class="p">())</span><span class="o">.</span><span class="n">as_string</span><span class="p">(),</span>
+                        <span class="p">)</span>
+                        <span class="n">tasks</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+                            <span class="n">asyncio</span><span class="o">.</span><span class="n">create_task</span><span class="p">(</span>
+                                <span class="bp">self</span><span class="o">.</span><span class="n">run_operations_for_ctx</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="n">strict</span><span class="p">)</span>
+                            <span class="p">)</span>
+                        <span class="p">)</span>
+                        <span class="c1"># Keep track of which index we&#39;re at</span>
+                        <span class="n">ctxs_index</span> <span class="o">+=</span> <span class="mi">1</span>
+                        <span class="c1"># Ensure we don&#39;t run more contexts conncurrently than requested</span>
+                        <span class="n">num_ctxs</span> <span class="o">+=</span> <span class="mi">1</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;ctx.outstanding: </span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">tasks</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
         <span class="k">finally</span><span class="p">:</span>
             <span class="c1"># Cancel tasks which we don&#39;t need anymore now that we know we are done</span>
@@ -1923,14 +1974,17 @@
         <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stack</span><span class="o">.</span><span class="n">aclose</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">dataflow</span><span class="p">:</span> <span class="n">DataFlow</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">dataflow</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">DataFlow</span><span class="p">,</span> <span class="n">MemoryOrchestratorContextConfig</span><span class="p">],</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BaseDataFlowObjectContext</span><span class="p">:</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">CONTEXT</span><span class="p">(</span>
-            <span class="n">MemoryOrchestratorContextConfig</span><span class="p">(</span>
-                <span class="n">uid</span><span class="o">=</span><span class="n">secrets</span><span class="o">.</span><span class="n">token_hex</span><span class="p">(),</span> <span class="n">dataflow</span><span class="o">=</span><span class="n">dataflow</span><span class="p">,</span> <span class="n">reuse</span><span class="o">=</span><span class="n">kwargs</span>
-            <span class="p">),</span>
-            <span class="bp">self</span><span class="p">,</span>
-        <span class="p">)</span></div>
+        <span class="n">config</span> <span class="o">=</span> <span class="n">dataflow</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dataflow</span><span class="p">,</span> <span class="n">DataFlow</span><span class="p">):</span>
+            <span class="n">kwargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;max_ctxs&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">max_ctxs</span><span class="p">)</span>
+            <span class="n">config</span> <span class="o">=</span> <span class="n">MemoryOrchestratorContextConfig</span><span class="p">(</span>
+                <span class="n">uid</span><span class="o">=</span><span class="n">secrets</span><span class="o">.</span><span class="n">token_hex</span><span class="p">(),</span> <span class="n">dataflow</span><span class="o">=</span><span class="n">dataflow</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">CONTEXT</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span></div>
 </pre></div>
 
            </div>

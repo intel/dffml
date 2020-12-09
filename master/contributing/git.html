@@ -114,6 +114,7 @@
 <p class="caption"><span class="caption-text">Subprojects</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../shouldi.html">shouldi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../swportal.html">Software Portal</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Community</span></p>
 <ul class="current">
@@ -353,6 +354,14 @@ causing the tests to fail. This is because they are initialized with random
 weights. Click on the failing test, then re-run it (as of writing this GitHub
 only allows re-running all of the tests).</p></li>
 </ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The last place to check to see if the CI job is failing because of your
+changes or because of something outside of your control is the
+<a class="reference external" href="https://github.com/intel/dffml/labels/kind%2Fci%2Ffailing">kind/ci/failing</a>
+label. If it’s not there it’s likely something in your pull request that
+caused the issue.</p>
+</div>
 </div>
 </div>
 

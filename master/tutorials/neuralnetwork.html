@@ -125,6 +125,7 @@
 <p class="caption"><span class="caption-text">Subprojects</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../shouldi.html">shouldi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../swportal.html">Software Portal</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Community</span></p>
 <ul>
@@ -261,30 +262,30 @@ the forward method which is passed as list of layers under the model name key:</
 <p><strong>model.yaml</strong></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">model</span><span class="p">:</span>
   <span class="n">conv1</span><span class="p">:</span>
-    <span class="n">name</span><span class="p">:</span> <span class="n">Conv2d</span>
+    <span class="n">layer_type</span><span class="p">:</span> <span class="n">Conv2d</span>
     <span class="n">in_channels</span><span class="p">:</span> <span class="mi">3</span>
     <span class="n">out_channels</span><span class="p">:</span> <span class="mi">32</span>
     <span class="n">kernel_size</span><span class="p">:</span> <span class="mi">5</span>
     <span class="n">padding</span><span class="p">:</span> <span class="mi">2</span>
   <span class="n">conv2</span><span class="p">:</span>
-    <span class="n">name</span><span class="p">:</span> <span class="n">Conv2d</span>
+    <span class="n">layer_type</span><span class="p">:</span> <span class="n">Conv2d</span>
     <span class="n">in_channels</span><span class="p">:</span> <span class="mi">32</span>
     <span class="n">out_channels</span><span class="p">:</span> <span class="mi">32</span>
     <span class="n">kernel_size</span><span class="p">:</span> <span class="mi">3</span>
     <span class="n">padding</span><span class="p">:</span> <span class="mi">1</span>
   <span class="n">conv3</span><span class="p">:</span>
-    <span class="n">name</span><span class="p">:</span> <span class="n">Conv2d</span>
+    <span class="n">layer_type</span><span class="p">:</span> <span class="n">Conv2d</span>
     <span class="n">in_channels</span><span class="p">:</span> <span class="mi">32</span>
     <span class="n">out_channels</span><span class="p">:</span> <span class="mi">16</span>
     <span class="n">kernel_size</span><span class="p">:</span> <span class="mi">3</span>
     <span class="n">padding</span><span class="p">:</span> <span class="mi">1</span>
   <span class="n">relu</span><span class="p">:</span>
-    <span class="n">name</span><span class="p">:</span> <span class="n">ReLU</span>
+    <span class="n">layer_type</span><span class="p">:</span> <span class="n">ReLU</span>
   <span class="n">pooling</span><span class="p">:</span>
-    <span class="n">name</span><span class="p">:</span> <span class="n">MaxPool2d</span>
+    <span class="n">layer_type</span><span class="p">:</span> <span class="n">MaxPool2d</span>
     <span class="n">kernel_size</span><span class="p">:</span> <span class="mi">2</span>
   <span class="n">linear</span><span class="p">:</span>
-    <span class="n">name</span><span class="p">:</span> <span class="n">Linear</span>
+    <span class="n">layer_type</span><span class="p">:</span> <span class="n">Linear</span>
     <span class="n">in_features</span><span class="p">:</span> <span class="mi">1296</span>
     <span class="n">out_features</span><span class="p">:</span> <span class="mi">3</span>
 <span class="n">forward</span><span class="p">:</span>

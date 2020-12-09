@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
+- Ablity to specify maximum number of contexts running at a time
 - CLI and Python example usage of Custom Neural Network
 - PyTorch loss function entrypoint style loading
 - Custom Neural Network, last layer support for pre-trained models
@@ -80,6 +81,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Gitter chatbot tutorial.
 - Option to run dataflow without sources from cli.
 - Sphinx extension for automated testing of tutorials (consoletest)
+- Example of software portal using DataFlows and HTTP service
 ### Changed
 - Renamed `-seed` to `-inputs` in `dataflow create` command
 - Renamed configloader/png to configloader/image and added support for loading JPEG and TIFF file formats

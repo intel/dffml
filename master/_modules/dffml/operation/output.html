@@ -114,6 +114,7 @@
 <p class="caption"><span class="caption-text">Subprojects</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../shouldi.html">shouldi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../swportal.html">Software Portal</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Community</span></p>
 <ul>
@@ -611,7 +612,7 @@
     <span class="c1"># input set context, this way the output operations we&#39;ll be running have</span>
     <span class="c1"># access to the data from this data flow rather than a new sub flow.</span>
     <span class="k">async</span> <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">octx</span><span class="o">.</span><span class="n">parent</span><span class="p">(</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">dataflow</span><span class="p">,</span> <span class="n">ictx</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">octx</span><span class="o">.</span><span class="n">ictx</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">dataflow</span><span class="p">,</span> <span class="n">reuse</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;ictx&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">octx</span><span class="o">.</span><span class="n">ictx</span><span class="p">}</span>
     <span class="p">)</span> <span class="k">as</span> <span class="n">octx</span><span class="p">:</span>
         <span class="n">_ctx</span><span class="p">,</span> <span class="n">result</span> <span class="o">=</span> <span class="p">[</span><span class="n">result</span> <span class="k">async</span> <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">octx</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">ctx</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="p">)][</span><span class="mi">0</span><span class="p">]</span>
     <span class="c1"># Remap the output operations to their feature (copied logic</span>

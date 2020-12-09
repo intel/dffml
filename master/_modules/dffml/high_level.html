@@ -114,6 +114,7 @@
 <p class="caption"><span class="caption-text">Subprojects</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../shouldi.html">shouldi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../swportal.html">Software Portal</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Community</span></p>
 <ul>
@@ -506,12 +507,18 @@
 <span class="sd">    ...     # For specific records in a source</span>
 <span class="sd">    ...     async for record in load(source, &quot;1&quot;):</span>
 <span class="sd">    ...         print(record.export())</span>
+<span class="sd">    ...</span>
+<span class="sd">    ...     # Lightweight source syntax</span>
+<span class="sd">    ...     async for record in load(&quot;load.csv&quot;, &quot;2&quot;):</span>
+<span class="sd">    ...         print(record.export())</span>
 <span class="sd">    &gt;&gt;&gt;</span>
 <span class="sd">    &gt;&gt;&gt; asyncio.run(main())</span>
 <span class="sd">    {&#39;key&#39;: &#39;1&#39;, &#39;features&#39;: {&#39;A&#39;: 0, &#39;B&#39;: 1}, &#39;extra&#39;: {}}</span>
 <span class="sd">    {&#39;key&#39;: &#39;2&#39;, &#39;features&#39;: {&#39;A&#39;: 3, &#39;B&#39;: 4}, &#39;extra&#39;: {}}</span>
 <span class="sd">    {&#39;key&#39;: &#39;1&#39;, &#39;features&#39;: {&#39;A&#39;: 0, &#39;B&#39;: 1}, &#39;extra&#39;: {}}</span>
+<span class="sd">    {&#39;key&#39;: &#39;2&#39;, &#39;features&#39;: {&#39;A&#39;: 3, &#39;B&#39;: 4}, &#39;extra&#39;: {}}</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">source</span> <span class="o">=</span> <span class="n">_records_to_sources</span><span class="p">(</span><span class="n">source</span><span class="p">)</span>
     <span class="k">async</span> <span class="k">with</span> <span class="n">source</span><span class="p">:</span>
         <span class="k">async</span> <span class="k">with</span> <span class="n">source</span><span class="p">()</span> <span class="k">as</span> <span class="n">sctx</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">args</span><span class="p">:</span>

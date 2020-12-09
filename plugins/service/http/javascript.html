@@ -210,7 +210,7 @@ following files.</p>
 </pre></div>
 </div>
 <p><strong>index.js</strong></p>
-<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kd">var</span> <span class="nx">runit</span> <span class="o">=</span> <span class="nx">async</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kd">var</span> <span class="nx">runit</span> <span class="o">=</span> <span class="k">async</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
   <span class="c1">// Create an instance of the API class, use the same URL we are on as the</span>
   <span class="c1">// endpoint</span>
   <span class="kd">var</span> <span class="nx">api</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">DFFMLHTTPAPI</span><span class="p">(</span><span class="nb">window</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">origin</span><span class="p">);</span>
@@ -227,10 +227,10 @@ following files.</p>
   <span class="nx">training_csv_contents</span> <span class="o">+=</span> <span class="s2">&quot;2,5,0.6,30\n&quot;</span><span class="p">;</span>
   <span class="nx">training_csv_contents</span> <span class="o">+=</span> <span class="s2">&quot;3,7,0.8,40\n&quot;</span><span class="p">;</span>
 
-  <span class="nx">await</span> <span class="nx">api</span><span class="p">.</span><span class="nx">upload</span><span class="p">(</span><span class="s2">&quot;my_training_dataset.csv&quot;</span><span class="p">,</span> <span class="nx">training_csv_contents</span><span class="p">);</span>
+  <span class="k">await</span> <span class="nx">api</span><span class="p">.</span><span class="nx">upload</span><span class="p">(</span><span class="s2">&quot;my_training_dataset.csv&quot;</span><span class="p">,</span> <span class="nx">training_csv_contents</span><span class="p">);</span>
   <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;Uploaded my_training_dataset.csv&quot;</span><span class="p">);</span>
 
-  <span class="nx">await</span> <span class="nx">training_source</span><span class="p">.</span><span class="nx">configure</span><span class="p">(</span><span class="s2">&quot;csv&quot;</span><span class="p">,</span> <span class="s2">&quot;my_training_dataset&quot;</span><span class="p">,</span> <span class="p">{</span>
+  <span class="k">await</span> <span class="nx">training_source</span><span class="p">.</span><span class="nx">configure</span><span class="p">(</span><span class="s2">&quot;csv&quot;</span><span class="p">,</span> <span class="s2">&quot;my_training_dataset&quot;</span><span class="p">,</span> <span class="p">{</span>
     <span class="s2">&quot;source&quot;</span><span class="o">:</span> <span class="p">{</span>
       <span class="s2">&quot;plugin&quot;</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
       <span class="s2">&quot;config&quot;</span><span class="o">:</span> <span class="p">{</span>
@@ -245,7 +245,7 @@ following files.</p>
   <span class="p">});</span>
   <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;Configured training_source&quot;</span><span class="p">,</span> <span class="nx">training_source</span><span class="p">);</span>
 
-  <span class="kd">var</span> <span class="nx">training_sctx</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">training_source</span><span class="p">.</span><span class="nx">context</span><span class="p">(</span><span class="s2">&quot;my_training_dataset_context&quot;</span><span class="p">);</span>
+  <span class="kd">var</span> <span class="nx">training_sctx</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">training_source</span><span class="p">.</span><span class="nx">context</span><span class="p">(</span><span class="s2">&quot;my_training_dataset_context&quot;</span><span class="p">);</span>
   <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;Created training_sctx&quot;</span><span class="p">,</span> <span class="nx">training_sctx</span><span class="p">);</span>
 
   <span class="c1">// Test data and source</span>
@@ -257,10 +257,10 @@ following files.</p>
   <span class="nx">test_csv_contents</span> <span class="o">+=</span> <span class="s2">&quot;4,9,1.0,50\n&quot;</span><span class="p">;</span>
   <span class="nx">test_csv_contents</span> <span class="o">+=</span> <span class="s2">&quot;5,11,1.2,60\n&quot;</span><span class="p">;</span>
 
-  <span class="nx">await</span> <span class="nx">api</span><span class="p">.</span><span class="nx">upload</span><span class="p">(</span><span class="s2">&quot;my_test_dataset.csv&quot;</span><span class="p">,</span> <span class="nx">test_csv_contents</span><span class="p">);</span>
+  <span class="k">await</span> <span class="nx">api</span><span class="p">.</span><span class="nx">upload</span><span class="p">(</span><span class="s2">&quot;my_test_dataset.csv&quot;</span><span class="p">,</span> <span class="nx">test_csv_contents</span><span class="p">);</span>
   <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;Uploaded my_test_dataset.csv&quot;</span><span class="p">);</span>
 
-  <span class="nx">await</span> <span class="nx">test_source</span><span class="p">.</span><span class="nx">configure</span><span class="p">(</span><span class="s2">&quot;csv&quot;</span><span class="p">,</span> <span class="s2">&quot;my_test_dataset&quot;</span><span class="p">,</span> <span class="p">{</span>
+  <span class="k">await</span> <span class="nx">test_source</span><span class="p">.</span><span class="nx">configure</span><span class="p">(</span><span class="s2">&quot;csv&quot;</span><span class="p">,</span> <span class="s2">&quot;my_test_dataset&quot;</span><span class="p">,</span> <span class="p">{</span>
     <span class="s2">&quot;source&quot;</span><span class="o">:</span> <span class="p">{</span>
       <span class="s2">&quot;plugin&quot;</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
       <span class="s2">&quot;config&quot;</span><span class="o">:</span> <span class="p">{</span>
@@ -275,11 +275,11 @@ following files.</p>
   <span class="p">});</span>
   <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;Configured test_source&quot;</span><span class="p">,</span> <span class="nx">test_source</span><span class="p">);</span>
 
-  <span class="kd">var</span> <span class="nx">test_sctx</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">test_source</span><span class="p">.</span><span class="nx">context</span><span class="p">(</span><span class="s2">&quot;my_test_dataset_context&quot;</span><span class="p">);</span>
+  <span class="kd">var</span> <span class="nx">test_sctx</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">test_source</span><span class="p">.</span><span class="nx">context</span><span class="p">(</span><span class="s2">&quot;my_test_dataset_context&quot;</span><span class="p">);</span>
   <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;Created test_sctx&quot;</span><span class="p">,</span> <span class="nx">test_sctx</span><span class="p">);</span>
 
   <span class="c1">// Create an array of all the records for fun</span>
-  <span class="kd">var</span> <span class="nx">records</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">training_sctx</span><span class="p">.</span><span class="nx">records</span><span class="p">(</span><span class="mf">100</span><span class="p">);</span>
+  <span class="kd">var</span> <span class="nx">records</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">training_sctx</span><span class="p">.</span><span class="nx">records</span><span class="p">(</span><span class="mf">100</span><span class="p">);</span>
   <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;Training records&quot;</span><span class="p">,</span> <span class="nx">records</span><span class="p">);</span>
 
   <span class="kd">var</span> <span class="nx">records_array</span> <span class="o">=</span> <span class="p">[];</span>
@@ -292,7 +292,7 @@ following files.</p>
   <span class="kd">var</span> <span class="nx">model</span> <span class="o">=</span> <span class="nx">api</span><span class="p">.</span><span class="nx">model</span><span class="p">();</span>
   <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;Created model&quot;</span><span class="p">,</span> <span class="nx">model</span><span class="p">);</span>
 
-  <span class="nx">await</span> <span class="nx">model</span><span class="p">.</span><span class="nx">configure</span><span class="p">(</span><span class="s2">&quot;scikitlr&quot;</span><span class="p">,</span> <span class="s2">&quot;mymodel&quot;</span><span class="p">,</span> <span class="p">{</span>
+  <span class="k">await</span> <span class="nx">model</span><span class="p">.</span><span class="nx">configure</span><span class="p">(</span><span class="s2">&quot;scikitlr&quot;</span><span class="p">,</span> <span class="s2">&quot;mymodel&quot;</span><span class="p">,</span> <span class="p">{</span>
     <span class="s2">&quot;model&quot;</span><span class="o">:</span> <span class="p">{</span>
       <span class="s2">&quot;plugin&quot;</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
       <span class="s2">&quot;config&quot;</span><span class="o">:</span> <span class="p">{</span>
@@ -326,16 +326,16 @@ following files.</p>
 
   <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;Configured model&quot;</span><span class="p">,</span> <span class="nx">model</span><span class="p">);</span>
 
-  <span class="kd">var</span> <span class="nx">mctx</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">model</span><span class="p">.</span><span class="nx">context</span><span class="p">(</span><span class="s2">&quot;mymodel_context&quot;</span><span class="p">);</span>
+  <span class="kd">var</span> <span class="nx">mctx</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">model</span><span class="p">.</span><span class="nx">context</span><span class="p">(</span><span class="s2">&quot;mymodel_context&quot;</span><span class="p">);</span>
   <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;Created model context&quot;</span><span class="p">,</span> <span class="nx">mctx</span><span class="p">);</span>
 
-  <span class="nx">await</span> <span class="nx">mctx</span><span class="p">.</span><span class="nx">train</span><span class="p">([</span><span class="nx">training_sctx</span><span class="p">]);</span>
+  <span class="k">await</span> <span class="nx">mctx</span><span class="p">.</span><span class="nx">train</span><span class="p">([</span><span class="nx">training_sctx</span><span class="p">]);</span>
   <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;Trained model context&quot;</span><span class="p">,</span> <span class="nx">mctx</span><span class="p">);</span>
 
-  <span class="kd">var</span> <span class="nx">accuracy</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">mctx</span><span class="p">.</span><span class="nx">accuracy</span><span class="p">([</span><span class="nx">test_sctx</span><span class="p">]);</span>
+  <span class="kd">var</span> <span class="nx">accuracy</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">mctx</span><span class="p">.</span><span class="nx">accuracy</span><span class="p">([</span><span class="nx">test_sctx</span><span class="p">]);</span>
   <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;Model context accuracy&quot;</span><span class="p">,</span> <span class="nx">accuracy</span><span class="p">);</span>
 
-  <span class="kd">var</span> <span class="nx">prediction</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">mctx</span><span class="p">.</span><span class="nx">predict</span><span class="p">({</span>
+  <span class="kd">var</span> <span class="nx">prediction</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">mctx</span><span class="p">.</span><span class="nx">predict</span><span class="p">({</span>
     <span class="s2">&quot;mish_the_smish&quot;</span><span class="o">:</span> <span class="p">{</span>
       <span class="s2">&quot;features&quot;</span><span class="o">:</span> <span class="p">{</span>
         <span class="s2">&quot;Years&quot;</span><span class="o">:</span> <span class="mf">6</span><span class="p">,</span>
