@@ -1,6 +1,13 @@
 import os
+import logging
 
-from transformers import AutoTokenizer
+from transformers import (
+    AutoTokenizer,
+    AutoModelForQuestionAnswering,
+    squad_convert_examples_to_features,
+)
+
+from transformers.data.metrics.squad_metrics import squad_evaluate
 
 from dffml import (
     config,
@@ -11,6 +18,8 @@ from dffml import (
     SourcesContext,
     entrypoint,
 )
+
+logger = logging.getLogger(__name__)
 
 
 @config
@@ -62,7 +71,7 @@ class TransformerQaAccuracyContext(AccuracyContext):
         logger.info("Results: {}".format(results))
 
         # return results
-        return Accuracy(results["f1"])
+        return results["f1"]
 
 
 @entrypoint("tqa")
