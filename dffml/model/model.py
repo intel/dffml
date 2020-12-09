@@ -22,7 +22,6 @@ from .accuracy import Accuracy
 from ..util.entrypoint import base_entry_point
 from ..util.os import MODE_BITS_SECURE
 from ..source.source import Sources, SourcesContext
-from ..accuracy.accuracy import AccuracyContext
 
 
 class ModelNotTrained(Exception):
