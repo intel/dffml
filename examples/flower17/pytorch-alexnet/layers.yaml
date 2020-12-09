@@ -1,16 +1,16 @@
 linear1:
-  name: Linear
+  layer_type: Linear
   in_features: 4096
   out_features: 256
 relu:
-  name: ReLU
+  layer_type: ReLU
 dropout:
-  name: Dropout
+  layer_type: Dropout
   p: 0.2
 linear2:
-  name: Linear
+  layer_type: Linear
   in_features: 256
   out_features: 17
 logsoftmax:
-  name: LogSoftmax
+  layer_type: LogSoftmax
   dim: 1
