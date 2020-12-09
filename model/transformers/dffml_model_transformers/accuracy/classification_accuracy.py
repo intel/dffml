@@ -1,6 +1,8 @@
 import os
+from typing import Dict
 
 from transformers import (
+    EvalPrediction,
     AutoTokenizer,
     TFAutoModelForSequenceClassification,
     TFTrainer,
