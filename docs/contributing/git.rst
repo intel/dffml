@@ -156,3 +156,11 @@ For the tests in the various plugins:
   causing the tests to fail. This is because they are initialized with random
   weights. Click on the failing test, then re-run it (as of writing this GitHub
   only allows re-running all of the tests).
+
+.. note::
+
+    The last place to check to see if the CI job is failing because of your
+    changes or because of something outside of your control is the
+    `kind/ci/failing <https://github.com/intel/dffml/labels/kind%2Fci%2Ffailing>`_
+    label. If it's not there it's likely something in your pull request that
+    caused the issue.
