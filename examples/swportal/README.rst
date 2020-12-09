@@ -17,7 +17,7 @@ Install dependencies
     :test:
 
     $ python -m pip install -U pip setuptools wheel
-    $ python -m pip install -U dffml dffml-service-http
+    $ python -m pip install -U dffml dffml-service-http dffml-config-yaml
     $ python -m pip install -r requirements.txt
 
 Usage
