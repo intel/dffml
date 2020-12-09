@@ -9,5 +9,5 @@ dffml accuracy \
   -sources s=op \
   -source-opimp dffml_model_transformers.qa.utils:parser \
   -source-args train.json False \
-  -scorer mse \
+  -scorer tqa \
   -log debug
