@@ -40,6 +40,8 @@ Run the http service and navigate to http://localhost:8080/
         -mc-atomic \
         -mc-config projects \
         -static html-client \
+        -redirect GET / /index.html \
+        -log debug \
         -insecure
 
 Query all projects
