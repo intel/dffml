@@ -526,17 +526,19 @@ class PipInstallCommand(ConsoleCommand):
         await super().run(ctx)
 
         # Remove dataclasses. See https://github.com/intel/dffml/issues/882
-        cmd = [
-            "python",
-            str(
-                DFFML_ROOT
-                / "scripts"
-                / "tempfix"
-                / "pytorch"
-                / "pytorch"
-                / "46930.py"
-            ),
-        ]
+        # TODO(p0,security) Audit this
+        remove_dataclasses_path = (
+            DFFML_ROOT
+            / "scripts"
+            / "tempfix"
+            / "pytorch"
+            / "pytorch"
+            / "46930.py"
+        )
+        if not remove_dataclasses_path.is_file():
+            return
+
+        cmd = ["python", str(remove_dataclasses_path)]
         if "CONDA_PREFIX" in os.environ:
             cmd.append(os.environ["CONDA_PREFIX"])
         elif "VIRTUAL_ENV" in os.environ:
