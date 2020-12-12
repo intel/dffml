@@ -17,7 +17,8 @@ spec.loader.exec_module(common)
 common.KWARGS["entry_points"] = {
     "dffml.model": [
         "spacyner = dffml_model_spacy.ner.ner_model:SpacyNERModel",
-    ]
+    ],
+    "dffml.accuracy": ["sner = dffml_model_spacy.accuracy:SpacyNerAccuracy",],
 }
 
 setup(**common.KWARGS)
