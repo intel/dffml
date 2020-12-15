@@ -1,6 +1,7 @@
 from dffml import Feature
 from dffml.noasync import train, accuracy, predict
 from myslr import MySLRModel
+from dffml import MeanSquaredErrorAccuracy
 
 # Configure the model
 model = MySLRModel(
@@ -13,7 +14,8 @@ model = MySLRModel(
 train(model, "train.csv")
 
 # Assess accuracy
-print("Accuracy:", accuracy(model, "test.csv"))
+scorer = MeanSquaredErrorAccuracy()
+print("Accuracy:", accuracy(model, scorer, "test.csv"))
 
 # Make predictions
 for i, features, prediction in predict(model, "predict.csv"):
