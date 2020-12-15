@@ -453,13 +453,14 @@ async def accuracy(
     ...         "Accuracy:",
     ...         await accuracy(
     ...             model,
+    ...             MeanSquaredErrorAccuracy(),
     ...             {"Years": 4, "Salary": 50},
     ...             {"Years": 5, "Salary": 60},
     ...         ),
     ...     )
     >>>
     >>> asyncio.run(main())
-    Accuracy: 1.0
+    Accuracy: 0.0
     """
     async with contextlib.AsyncExitStack() as astack:
         # Open sources
