@@ -63,7 +63,7 @@ class TestSLR(IntegrationCLITestCase):
             stdout = subprocess.check_output([sys.executable, filepath])
             lines = stdout.decode().split("\n")
             # Check the Accuracy
-            self.assertIn("Accuracy: 1.0", lines[0])
+            self.assertIn("Accuracy: 0.0", lines[0])
             # Check the salary
             self.assertEqual(ast.literal_eval(lines[1])["Salary"], 110)
 
