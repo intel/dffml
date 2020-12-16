@@ -19,14 +19,11 @@ from .binaries import (
 
 class TestCLIUse(AsyncTestCase):
     async def test_use_python(self):
-        # Issue is B322, use of input in Python 2 is unsafe (eval). DFFML is
-        # Python 3.7+ only, so doesn't effect us (it's the 1 high that will be
-        # found).
         dffml_source_root = list(pathlib.Path(__file__).parents)[3]
         with patch("sys.stdout", new_callable=io.StringIO) as stdout:
             await ShouldI.cli("use", str(dffml_source_root))
             output = stdout.getvalue()
-        self.assertIn("high=1", output)
+        self.assertIn("high=0", output)
 
     @cached_node
     @cached_target_javascript_algorithms
@@ -83,6 +80,6 @@ class TestCLIUse(AsyncTestCase):
                 )
             output = stdout.getvalue()
             # cargo audit
-            self.assertIn("low=7,", output)
+            self.assertIn("low=8,", output)
             # npm audit
             self.assertIn("high=8,", output)
