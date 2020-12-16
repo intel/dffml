@@ -104,6 +104,7 @@ class AnomalyModelConfig:
     features: Features = field("Features to train on")
     predict: Feature = field("Label or the value to be predicted")
     directory: pathlib.Path = field("Directory where state should be saved")
+    k : float = field("Validation set size", default = 0.8)
 
 
 @entrypoint("anomalydetection")
@@ -112,7 +113,6 @@ class AnomalyModel(SimpleModel):
     CONFIG: Type = AnomalyModelConfig
 
     async def train(self, sources: SourcesContext) -> None:
-        k = 0.7  # validation set size, currently set to 30% of training set size
         nof = len(self.features)  # number of features
         # X and Y data
         X = []
@@ -128,7 +128,8 @@ class AnomalyModel(SimpleModel):
 
             X.append(record_data)
             Y.append(record.feature(self.parent.config.predict.name))
-
+        
+        k = self.parent.config.k 
         X1, Xval = split(X, k)
         X = X1
         Y1, Yval = split(Y, k)
@@ -194,7 +195,6 @@ class AnomalyModel(SimpleModel):
 
         Y = np.reshape(Y, (len(Y), 1))
 
-        # mu, sigma2 = estimateGaussian(X)
         mu = np.array(mu)
         sigma2 = np.array(sigma2)
         p = multivariateGaussian(X, mu, sigma2)
@@ -244,3 +244,4 @@ class AnomalyModel(SimpleModel):
         for record, prediction in zip(input_data, predictions):
             record.predicted(self.config.predict.name, int(prediction), float(F1))
             yield record
+
