@@ -12,6 +12,14 @@ fi
 if [ ! -f docs/shouldi.md ]; then
   ln -s "${PWD}/examples/shouldi/README.md" docs/shouldi.md
 fi
+# Software Portal
+if [ ! -f docs/swportal.rst ]; then
+  ln -s "${PWD}/examples/swportal/README.rst" docs/swportal.rst
+fi
+# docs/contributing/consoletest.md
+if [ ! -f docs/contributing/consoletest.md ]; then
+  ln -s "${PWD}/dffml/util/testing/consoletest/README.md" docs/contributing/consoletest.md
+fi
 # HTTP Service
 mkdir -p docs/plugins/service/
 rm -f docs/plugins/service/http

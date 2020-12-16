@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<meta charset="UTF-8">
+<html>
+  <head>
+    <title>Software Portal</title>
+    <script type="text/javascript" src="index.js"></script>
+    <link rel="stylesheet" type="text/css" href="theme.css">
+  </head>
+  <body>
+    <h1>Software Portal</h1>
+
+    <hr />
+
+    <div id="displayProjectContainer" style="display:none">
+      <h3 id="displayProjectName"></h3>
+
+      <table id="displayProjectTable" style="width:400px">
+        <tr>
+          <th>Indicator</th>
+          <th>Status</th>
+        </tr>
+        <tr>
+          <td>Static Analysis</td>
+          <td id="displayProjectStaticAnalysis"></td>
+        </tr>
+        <tr>
+          <td>Legal Compliance</td>
+          <td id="displayProjectLegal"></td>
+        </tr>
+      </table>
+
+      <br />
+      <hr />
+      <br />
+    </div>
+
+    <div>
+      <a href="#" onclick="app.refreshDisplayProject()">Unselect Project</a>
+      <ul id="projectsList"></ul>
+    </div>
+
+  </body>
+</html>

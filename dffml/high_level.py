@@ -314,12 +314,18 @@ async def load(source: BaseSource, *args: str) -> AsyncIterator[Record]:
     ...     # For specific records in a source
     ...     async for record in load(source, "1"):
     ...         print(record.export())
+    ...
+    ...     # Lightweight source syntax
+    ...     async for record in load("load.csv", "2"):
+    ...         print(record.export())
     >>>
     >>> asyncio.run(main())
     {'key': '1', 'features': {'A': 0, 'B': 1}, 'extra': {}}
     {'key': '2', 'features': {'A': 3, 'B': 4}, 'extra': {}}
     {'key': '1', 'features': {'A': 0, 'B': 1}, 'extra': {}}
+    {'key': '2', 'features': {'A': 3, 'B': 4}, 'extra': {}}
     """
+    source = _records_to_sources(source)
     async with source:
         async with source() as sctx:
             if args:

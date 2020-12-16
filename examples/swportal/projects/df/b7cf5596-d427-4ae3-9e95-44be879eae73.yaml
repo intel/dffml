@@ -1,0 +1,42 @@
+definitions:
+  uuid:
+    primitive: string
+  name:
+    primitive: string
+  staticAnalysis:
+    primitive: string
+  legal:
+    primitive: string
+  get_single_output:
+    primitive: map
+  get_single_spec:
+    primitive: array
+flow:
+  get_single:
+    inputs:
+      spec:
+      - seed
+linked: true
+operations:
+  get_single:
+    inputs:
+      spec: get_single_spec
+    name: get_single
+    outputs:
+      output: get_single_output
+    stage: output
+seed:
+- definition: get_single_spec
+  value:
+  - uuid
+  - name
+  - staticAnalysis
+  - legal
+- definition: uuid
+  value: b7cf5596-d427-4ae3-9e95-44be879eae73
+- definition: name
+  value: "Project XYZ"
+- definition: staticAnalysis
+  value: "FAIL"
+- definition: legal
+  value: "FAIL"

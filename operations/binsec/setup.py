@@ -1,6 +1,7 @@
 import os
 import sys
 import ast
+from pathlib import Path
 from io import open
 
 from setuptools import find_packages, setup
@@ -18,7 +19,7 @@ with open(
 with open(os.path.join(self_path, "README.md"), "r", encoding="utf-8") as f:
     readme = f.read()
 
-INSTALL_REQUIRES = ["aiohttp>=3.6.2", "rpmfile>=1.0.2", "pyelftools>=0.25"] + (
+INSTALL_REQUIRES = [] + (
     ["dffml>=0.3.7"]
     if not any(
         list(
@@ -37,6 +38,12 @@ INSTALL_REQUIRES = ["aiohttp>=3.6.2", "rpmfile>=1.0.2", "pyelftools>=0.25"] + (
     )
     else []
 )
+
+REQUIREMENTS_TXT_PATH = Path(self_path, "requirements.txt")
+if REQUIREMENTS_TXT_PATH.is_file():
+    INSTALL_REQUIRES += list(
+        map(lambda i: i.strip(), REQUIREMENTS_TXT_PATH.read_text().split("\n"))
+    )
 
 setup(
     name="dffml_operations_binsec",

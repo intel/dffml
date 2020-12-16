@@ -10,12 +10,7 @@ DESCRIPTION = "DFFML operations image"
 AUTHOR_NAME = "Saksham Arora"
 AUTHOR_EMAIL = "sakshamarora1001@gmail.com"
 # Install dffml if it is not installed in development mode
-INSTALL_REQUIRES = [
-    "opencv-python>=4.2.0.34",
-    # See https://github.com/intel/dffml/issues/816
-    "numpy>=1.16.2,<1.19.0",
-    "mahotas>=1.4.9",
-] + (
+INSTALL_REQUIRES = [] + (
     ["dffml>=0.3.7"]
     if not any(
         list(
@@ -53,6 +48,12 @@ VERSION = ast.literal_eval(
 )
 
 README = Path(SELF_PATH, "README.md").read_text()
+
+REQUIREMENTS_TXT_PATH = Path(SELF_PATH, "requirements.txt")
+if REQUIREMENTS_TXT_PATH.is_file():
+    INSTALL_REQUIRES += list(
+        map(lambda i: i.strip(), REQUIREMENTS_TXT_PATH.read_text().split("\n"))
+    )
 
 KWARGS = dict(
     name=NAME,

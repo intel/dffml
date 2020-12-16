@@ -2,6 +2,7 @@ import os
 import sys
 import ast
 from io import open
+from pathlib import Path
 
 from setuptools import find_packages, setup
 
@@ -18,7 +19,7 @@ with open(
 with open(os.path.join(self_path, "README.md"), "r", encoding="utf-8") as f:
     readme = f.read()
 
-INSTALL_REQUIRES = ["python-dateutil>=2.7.3"] + (
+INSTALL_REQUIRES = [] + (
     ["dffml>=0.3.7"]
     if not any(
         list(
@@ -37,6 +38,12 @@ INSTALL_REQUIRES = ["python-dateutil>=2.7.3"] + (
     )
     else []
 )
+
+REQUIREMENTS_TXT_PATH = Path("requirements.txt")
+if REQUIREMENTS_TXT_PATH.is_file():
+    INSTALL_REQUIRES += list(
+        map(lambda i: i.strip(), REQUIREMENTS_TXT_PATH.read_text().split("\n"))
+    )
 
 setup(
     name="dffml_feature_git",

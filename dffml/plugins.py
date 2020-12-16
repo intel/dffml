@@ -37,6 +37,7 @@ CORE_PLUGINS = [
     ("model", "xgboost"),
     ("model", "pytorch"),
     ("model", "spacy"),
+    ("model", "daal4py"),
 ]
 
 # Models which currently don't support Windows or MacOS
@@ -79,12 +80,10 @@ CORE_PLUGIN_DEPS = {
     else {},
 }
 
-# Plugins which currently don't support Python 3.8
-if sys.version_info.major == 3 and sys.version_info.minor < 8:
-    CORE_PLUGIN_DEPS[("model", "daal4py")] = {
-        # Must be installed already via conda, do not provide a pypi package yet
-        "daal4py": lambda: python_package_installed("daal4py")
-    }
+CORE_PLUGIN_DEPS[("model", "daal4py")] = {
+    # Must be installed already via conda, do not provide a pypi package yet
+    "daal4py": lambda: python_package_installed("daal4py")
+}
 
 # All packages under configloader/ are really named dffml-config-{name}
 ALTERNATIVES = {"configloader": "config"}
