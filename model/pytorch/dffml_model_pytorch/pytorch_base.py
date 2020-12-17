@@ -259,10 +259,10 @@ class PyTorchModelContext(ModelContext):
         best_acc = 0.0
 
         for epoch in range(self.parent.config.epochs):
-            self.logger.debug(
+            self.logger.info(
                 "Epoch {}/{}".format(epoch + 1, self.parent.config.epochs)
             )
-            self.logger.debug("-" * 10)
+            self.logger.info("-" * 10)
 
             for phase in dataloaders.keys():
                 if phase == "Training":
@@ -306,7 +306,7 @@ class PyTorchModelContext(ModelContext):
                     else 1.0 - epoch_loss
                 )
 
-                self.logger.debug(
+                self.logger.info(
                     "{} Loss: {:.4f} Acc: {:.4f}".format(
                         phase, epoch_loss, epoch_acc
                     )
@@ -326,7 +326,7 @@ class PyTorchModelContext(ModelContext):
                     if best_acc == 1.0:
                         self.counter = self.parent.config.patience
 
-            self.logger.debug("")
+            self.logger.info("")
 
             if self.counter == self.parent.config.patience:
                 self.logger.info(
