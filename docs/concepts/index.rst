@@ -2,7 +2,7 @@ Concepts
 ========
 
 Here we explain the main concepts of DFFML. How things work, and the
-philosophies behind why they work they way they do. If anything here is unclear,
+philosophies behind why they work the way they do. If anything here is unclear,
 or you think there's a more user friendly way to do something, please let us
 know. See the :doc:`/contact` page for how to reach us.
 
@@ -66,11 +66,11 @@ Models
 
 A ``Model`` could be any implementation of a machine learning algorithm.
 
-By wrapping various implementations of machine learning algorithms in DFFMLs
+By wrapping various implementations of machine learning algorithms in DFFML's
 API, applications using DFFML via its Python library interface, command line
-interface (, or coming soon its HTTP interface), can benefit from them being
-wrapped in a similar design pattern. This means that switching from a model
-implementing with one major framework to another is painless.
+interface, or HTTP interface, can benefit from them being wrapped in a similar
+design pattern. This means that switching from a model implemented with one
+major framework to another is painless.
 
 .. _intro_data_flow:
 
