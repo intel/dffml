@@ -7133,6 +7133,68 @@ XGBoost is a leading software library for working with standard tabular data (th
 as opposed to more exotic types of data like images and videos). With careful parameter tuning, you can train highly accurate models.</p>
 <div class="section" id="examples">
 <h4>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h4>
+<p>Command line usage</p>
+<p>First download the training and test files, change the headers to DFFML
+format.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ wget http://download.tensorflow.org/data/iris_training.csv
+$ wget http://download.tensorflow.org/data/iris_test.csv
+$ sed -i &#39;s/.*setosa,versicolor,virginica/SepalLength,SepalWidth,PetalLength,PetalWidth,classification/g&#39; iris_training.csv iris_test.csv
+</pre></div>
+</div>
+<p>Run the train command</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml train <span class="se">\</span>
+    -sources <span class="nv">train</span><span class="o">=</span>csv <span class="se">\</span>
+    -source-filename iris_training.csv <span class="se">\</span>
+    -model xgbregressor <span class="se">\</span>
+    -model-features <span class="se">\</span>
+      SepalLength:float:1 <span class="se">\</span>
+      SepalWidth:float:1 <span class="se">\</span>
+      PetalLength:float:1 <span class="se">\</span>
+      PetalWidth:float:1 <span class="se">\</span>
+    -model-predict classification <span class="se">\</span>
+    -model-directory model <span class="se">\</span>
+    -model-max_depth <span class="m">3</span> <span class="se">\</span>
+    -model-learning_rate <span class="m">0</span>.01 <span class="se">\</span>
+    -model-n_estimators <span class="m">200</span> <span class="se">\</span>
+    -model-reg_lambda <span class="m">1</span> <span class="se">\</span>
+    -model-reg_alpha <span class="m">0</span> <span class="se">\</span>
+    -model-gamma <span class="m">0</span> <span class="se">\</span>
+    -model-colsample_bytree <span class="m">0</span> <span class="se">\</span>
+    -model-subsample <span class="m">1</span>
+</pre></div>
+</div>
+<p>Assess the accuracy</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml accuracy <span class="se">\</span>
+    -sources <span class="nv">train</span><span class="o">=</span>csv <span class="se">\</span>
+    -source-filename iris_test.csv <span class="se">\</span>
+    -model xgbregressor <span class="se">\</span>
+    -model-features <span class="se">\</span>
+      SepalLength:float:1 <span class="se">\</span>
+      SepalWidth:float:1 <span class="se">\</span>
+      PetalLength:float:1 <span class="se">\</span>
+      PetalWidth:float:1 <span class="se">\</span>
+    -model-predict classification <span class="se">\</span>
+    -model-directory model
+</pre></div>
+</div>
+<p>Output</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">accuracy</span><span class="p">:</span> <span class="mf">0.8841466984766406</span>
+</pre></div>
+</div>
+<p>Make predictions</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml predict all <span class="se">\</span>
+    -sources <span class="nv">train</span><span class="o">=</span>csv <span class="se">\</span>
+    -source-filename iris_test.csv <span class="se">\</span>
+    -model xgbregressor <span class="se">\</span>
+    -model-features <span class="se">\</span>
+      SepalLength:float:1 <span class="se">\</span>
+      SepalWidth:float:1 <span class="se">\</span>
+      PetalLength:float:1 <span class="se">\</span>
+      PetalWidth:float:1 <span class="se">\</span>
+    -model-predict classification <span class="se">\</span>
+    -model-directory model
+</pre></div>
+</div>
 <p>Python usage</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">load_diabetes</span>
 <span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
