@@ -29,7 +29,6 @@
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
         <script src="../../_static/doctools.js"></script>
-        <script src="../../_static/language_data.js"></script>
         <script src="../../_static/copybutton.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
@@ -227,13 +226,13 @@
 <span id="json"></span><h2>JSON<a class="headerlink" href="#module-dffml.source.json" title="Permalink to this headline">¶</a></h2>
 <dl class="py class">
 <dt id="dffml.source.json.JSONSource">
-<em class="property">class </em><code class="sig-prename descclassname">dffml.source.json.</code><code class="sig-name descname">JSONSource</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">config</span><span class="p">:</span> <span class="n">Type<span class="p">[</span><a class="reference internal" href="../base.html#dffml.base.BaseConfig" title="dffml.base.BaseConfig">dffml.base.BaseConfig</a><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/json.html#JSONSource"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.json.JSONSource" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">dffml.source.json.</code><code class="sig-name descname">JSONSource</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">config</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>Type<span class="p">[</span><a class="reference internal" href="../base.html#dffml.base.BaseConfig" title="dffml.base.BaseConfig">dffml.base.BaseConfig</a><span class="p">]</span><span class="p">]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/json.html#JSONSource"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.json.JSONSource" title="Permalink to this definition">¶</a></dt>
 <dd><p>JSONSource reads and write from a JSON file on open / close. Otherwise
 stored in memory.</p>
 <dl class="py attribute">
 <dt id="dffml.source.json.JSONSource.CONFIG">
 <code class="sig-name descname">CONFIG</code><a class="headerlink" href="#dffml.source.json.JSONSource.CONFIG" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <a class="reference internal" href="#dffml.source.json.JSONSourceConfig" title="dffml.source.json.JSONSourceConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">JSONSourceConfig</span></code></a></p>
+<dd><p>alias of <a class="reference internal" href="#dffml.source.json.JSONSourceConfig" title="dffml.source.json.JSONSourceConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">dffml.source.json.JSONSourceConfig</span></code></a></p>
 </dd></dl>
 
 </dd></dl>
@@ -254,12 +253,12 @@ stored in memory.</p>
 <p>Loads records from a csv file, using columns as features</p>
 <dl class="py class">
 <dt id="dffml.source.csv.CSVSource">
-<em class="property">class </em><code class="sig-prename descclassname">dffml.source.csv.</code><code class="sig-name descname">CSVSource</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">config</span><span class="p">:</span> <span class="n">Type<span class="p">[</span><a class="reference internal" href="../base.html#dffml.base.BaseConfig" title="dffml.base.BaseConfig">dffml.base.BaseConfig</a><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/csv.html#CSVSource"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.csv.CSVSource" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">dffml.source.csv.</code><code class="sig-name descname">CSVSource</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">config</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>Type<span class="p">[</span><a class="reference internal" href="../base.html#dffml.base.BaseConfig" title="dffml.base.BaseConfig">dffml.base.BaseConfig</a><span class="p">]</span><span class="p">]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/csv.html#CSVSource"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.csv.CSVSource" title="Permalink to this definition">¶</a></dt>
 <dd><p>Uses a CSV file as the source of record feature data</p>
 <dl class="py attribute">
 <dt id="dffml.source.csv.CSVSource.CONFIG">
 <code class="sig-name descname">CONFIG</code><a class="headerlink" href="#dffml.source.csv.CSVSource.CONFIG" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <a class="reference internal" href="#dffml.source.csv.CSVSourceConfig" title="dffml.source.csv.CSVSourceConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">CSVSourceConfig</span></code></a></p>
+<dd><p>alias of <a class="reference internal" href="#dffml.source.csv.CSVSourceConfig" title="dffml.source.csv.CSVSourceConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">dffml.source.csv.CSVSourceConfig</span></code></a></p>
 </dd></dl>
 
 <dl class="py method">
@@ -291,11 +290,11 @@ stored in memory.</p>
 <span id="generic-file-based"></span><h2>Generic File Based<a class="headerlink" href="#module-dffml.source.file" title="Permalink to this headline">¶</a></h2>
 <dl class="py class">
 <dt id="dffml.source.file.BinaryFileSource">
-<em class="property">class </em><code class="sig-prename descclassname">dffml.source.file.</code><code class="sig-name descname">BinaryFileSource</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">config</span><span class="p">:</span> <span class="n">Type<span class="p">[</span><a class="reference internal" href="../base.html#dffml.base.BaseConfig" title="dffml.base.BaseConfig">dffml.base.BaseConfig</a><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/file.html#BinaryFileSource"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.file.BinaryFileSource" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">dffml.source.file.</code><code class="sig-name descname">BinaryFileSource</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">config</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>Type<span class="p">[</span><a class="reference internal" href="../base.html#dffml.base.BaseConfig" title="dffml.base.BaseConfig">dffml.base.BaseConfig</a><span class="p">]</span><span class="p">]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/file.html#BinaryFileSource"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.file.BinaryFileSource" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="py attribute">
 <dt id="dffml.source.file.BinaryFileSource.CONFIG">
 <code class="sig-name descname">CONFIG</code><a class="headerlink" href="#dffml.source.file.BinaryFileSource.CONFIG" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <a class="reference internal" href="#dffml.source.file.BinaryFileSourceConfig" title="dffml.source.file.BinaryFileSourceConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">BinaryFileSourceConfig</span></code></a></p>
+<dd><p>alias of <a class="reference internal" href="#dffml.source.file.BinaryFileSourceConfig" title="dffml.source.file.BinaryFileSourceConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">dffml.source.file.BinaryFileSourceConfig</span></code></a></p>
 </dd></dl>
 
 </dd></dl>
@@ -307,12 +306,12 @@ stored in memory.</p>
 
 <dl class="py class">
 <dt id="dffml.source.file.FileSource">
-<em class="property">class </em><code class="sig-prename descclassname">dffml.source.file.</code><code class="sig-name descname">FileSource</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">config</span><span class="p">:</span> <span class="n">Type<span class="p">[</span><a class="reference internal" href="../base.html#dffml.base.BaseConfig" title="dffml.base.BaseConfig">dffml.base.BaseConfig</a><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/file.html#FileSource"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.file.FileSource" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">dffml.source.file.</code><code class="sig-name descname">FileSource</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">config</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>Type<span class="p">[</span><a class="reference internal" href="../base.html#dffml.base.BaseConfig" title="dffml.base.BaseConfig">dffml.base.BaseConfig</a><span class="p">]</span><span class="p">]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/file.html#FileSource"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.file.FileSource" title="Permalink to this definition">¶</a></dt>
 <dd><p>FileSource reads and write from a file on open / close.</p>
 <dl class="py attribute">
 <dt id="dffml.source.file.FileSource.CONFIG">
 <code class="sig-name descname">CONFIG</code><a class="headerlink" href="#dffml.source.file.FileSource.CONFIG" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <a class="reference internal" href="#dffml.source.file.FileSourceConfig" title="dffml.source.file.FileSourceConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">FileSourceConfig</span></code></a></p>
+<dd><p>alias of <a class="reference internal" href="#dffml.source.file.FileSourceConfig" title="dffml.source.file.FileSourceConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">dffml.source.file.FileSourceConfig</span></code></a></p>
 </dd></dl>
 
 </dd></dl>

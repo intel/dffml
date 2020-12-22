@@ -33,7 +33,6 @@
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
         <script src="../../_static/doctools.js"></script>
-        <script src="../../_static/language_data.js"></script>
         <script src="../../_static/copybutton.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
@@ -42,8 +41,8 @@
     <link rel="author" title="About these documents" href="../../about.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Port" href="../port/index.html" />
-    <link rel="prev" title="Configloader Json" href="json.html" /> 
+    <link rel="next" title="Configloader Json" href="json.html" />
+    <link rel="prev" title="Configloader" href="index.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -111,28 +110,28 @@
 <li class="toctree-l1"><a class="reference internal" href="../../plugins/service/http/index.html">HTTP API</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">API Reference</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../version.html">Version</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../base.html">Base</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../plugins.html">Plugins</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../record.html">Record</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../log.html">Log</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../high_level.html">High Level</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../noasync.html">High Level (noasync)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../source/index.html">Sources</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../feature/index.html">Feature</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../base.html">Base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plugins.html">Plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../record.html">Record</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../util/index.html">Utilities</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../df/index.html">Data Flow</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../service/index.html">Service</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../db/index.html">Databases</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../cli/index.html">Cli</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../secret/index.html">Secrets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../model/index.html">Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../operation/index.html">Operation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../port/index.html">Port</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="index.html">Configloader</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="json.html">Configloader Json</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Configloader Configloader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="json.html">Configloader Json</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../port/index.html">Port</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../model/index.html">Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../source/index.html">Sources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../db/index.html">Databases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cli/index.html">Cli</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../df/index.html">Data Flow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../feature/index.html">Feature</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../service/index.html">Service</a></li>
 </ul>
 </li>
 </ul>
@@ -227,10 +226,10 @@
 <span id="configloader-configloader"></span><h1>Configloader Configloader<a class="headerlink" href="#module-dffml.configloader.configloader" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
 <dt id="dffml.configloader.configloader.BaseConfigLoader">
-<em class="property">class </em><code class="sig-prename descclassname">dffml.configloader.configloader.</code><code class="sig-name descname">BaseConfigLoader</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">config</span><span class="p">:</span> <span class="n">Type<span class="p">[</span><a class="reference internal" href="../base.html#dffml.base.BaseConfig" title="dffml.base.BaseConfig">dffml.base.BaseConfig</a><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/configloader/configloader.html#BaseConfigLoader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.configloader.configloader.BaseConfigLoader" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">dffml.configloader.configloader.</code><code class="sig-name descname">BaseConfigLoader</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">config</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>Type<span class="p">[</span><a class="reference internal" href="../base.html#dffml.base.BaseConfig" title="dffml.base.BaseConfig">dffml.base.BaseConfig</a><span class="p">]</span><span class="p">]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/configloader/configloader.html#BaseConfigLoader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.configloader.configloader.BaseConfigLoader" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="py method">
 <dt id="dffml.configloader.configloader.BaseConfigLoader.load_single_file">
-<em class="property">async classmethod </em><code class="sig-name descname">load_single_file</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">parsers</span><span class="p">:</span> <span class="n">Dict<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a><span class="p">, </span><a class="reference internal" href="#dffml.configloader.configloader.BaseConfigLoader" title="dffml.configloader.configloader.BaseConfigLoader">BaseConfigLoader</a><span class="p">]</span></span></em>, <em class="sig-param"><span class="n">exit_stack</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/contextlib.html#contextlib.AsyncExitStack" title="(in Python v3.9)">contextlib.AsyncExitStack</a></span></em>, <em class="sig-param"><span class="n">path</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.9)">pathlib.Path</a></span></em>, <em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">base_dir</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.9)">pathlib.Path</a><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span> &#x2192; Dict<a class="reference internal" href="../../_modules/dffml/configloader/configloader.html#BaseConfigLoader.load_single_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.configloader.configloader.BaseConfigLoader.load_single_file" title="Permalink to this definition">¶</a></dt>
+<em class="property">async classmethod </em><code class="sig-name descname">load_single_file</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">parsers</span><span class="p">:</span> <span class="n">Dict<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a><span class="p">, </span><a class="reference internal" href="#dffml.configloader.configloader.BaseConfigLoader" title="dffml.configloader.configloader.BaseConfigLoader">dffml.configloader.configloader.BaseConfigLoader</a><span class="p">]</span></span></em>, <em class="sig-param"><span class="n">exit_stack</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/contextlib.html#contextlib.AsyncExitStack" title="(in Python v3.9)">contextlib.AsyncExitStack</a></span></em>, <em class="sig-param"><span class="n">path</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.9)">pathlib.Path</a></span></em>, <em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">base_dir</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.9)">pathlib.Path</a><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span> &#x2192; Dict<a class="reference internal" href="../../_modules/dffml/configloader/configloader.html#BaseConfigLoader.load_single_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.configloader.configloader.BaseConfigLoader.load_single_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Load one file and load the ConfigLoader for it if necessary, using the
 AsyncExitStack provided.</p>
 </dd></dl>
@@ -264,7 +263,7 @@ loaders that get loaded as needed (based on filetype).</p>
 <dl class="py attribute">
 <dt id="dffml.configloader.configloader.ConfigLoaders.SINGLETON">
 <code class="sig-name descname">SINGLETON</code><a class="headerlink" href="#dffml.configloader.configloader.ConfigLoaders.SINGLETON" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <a class="reference internal" href="#dffml.configloader.configloader.BaseConfigLoader" title="dffml.configloader.configloader.BaseConfigLoader"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseConfigLoader</span></code></a></p>
+<dd><p>alias of <a class="reference internal" href="#dffml.configloader.configloader.BaseConfigLoader" title="dffml.configloader.configloader.BaseConfigLoader"><code class="xref py py-class docutils literal notranslate"><span class="pre">dffml.configloader.configloader.BaseConfigLoader</span></code></a></p>
 </dd></dl>
 
 </dd></dl>
@@ -279,10 +278,10 @@ loaders that get loaded as needed (based on filetype).</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../port/index.html" class="btn btn-neutral float-right" title="Port" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="json.html" class="btn btn-neutral float-right" title="Configloader Json" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="json.html" class="btn btn-neutral float-left" title="Configloader Json" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="index.html" class="btn btn-neutral float-left" title="Configloader" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

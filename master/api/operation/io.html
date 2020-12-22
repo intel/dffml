@@ -33,7 +33,6 @@
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
         <script src="../../_static/doctools.js"></script>
-        <script src="../../_static/language_data.js"></script>
         <script src="../../_static/copybutton.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
@@ -42,7 +41,7 @@
     <link rel="author" title="About these documents" href="../../about.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Operation Mapping" href="mapping.html" />
+    <link rel="next" title="Operation Output" href="output.html" />
     <link rel="prev" title="Operation Math" href="math.html" /> 
 </head>
 
@@ -111,35 +110,35 @@
 <li class="toctree-l1"><a class="reference internal" href="../../plugins/service/http/index.html">HTTP API</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">API Reference</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../version.html">Version</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../base.html">Base</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../plugins.html">Plugins</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../record.html">Record</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../log.html">Log</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../high_level.html">High Level</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../noasync.html">High Level (noasync)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../source/index.html">Sources</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../feature/index.html">Feature</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../base.html">Base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plugins.html">Plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../record.html">Record</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../util/index.html">Utilities</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../df/index.html">Data Flow</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../service/index.html">Service</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../db/index.html">Databases</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../cli/index.html">Cli</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../secret/index.html">Secrets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../model/index.html">Models</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="index.html">Operation</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="db.html">Operation Db</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mapping.html">Operation Mapping</a></li>
+<li class="toctree-l3"><a class="reference internal" href="preprocess.html">Operation Preprocess</a></li>
+<li class="toctree-l3"><a class="reference internal" href="log.html">Operation Log</a></li>
 <li class="toctree-l3"><a class="reference internal" href="math.html">Operation Math</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Operation Io</a></li>
-<li class="toctree-l3"><a class="reference internal" href="mapping.html">Operation Mapping</a></li>
+<li class="toctree-l3"><a class="reference internal" href="output.html">Operation Output</a></li>
 <li class="toctree-l3"><a class="reference internal" href="model.html">Operation Model</a></li>
 <li class="toctree-l3"><a class="reference internal" href="dataflow.html">Operation Dataflow</a></li>
-<li class="toctree-l3"><a class="reference internal" href="log.html">Operation Log</a></li>
-<li class="toctree-l3"><a class="reference internal" href="output.html">Operation Output</a></li>
-<li class="toctree-l3"><a class="reference internal" href="preprocess.html">Operation Preprocess</a></li>
-<li class="toctree-l3"><a class="reference internal" href="db.html">Operation Db</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../configloader/index.html">Configloader</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../port/index.html">Port</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../model/index.html">Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configloader/index.html">Configloader</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../source/index.html">Sources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../db/index.html">Databases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cli/index.html">Cli</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../df/index.html">Data Flow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../feature/index.html">Feature</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../service/index.html">Service</a></li>
 </ul>
 </li>
 </ul>
@@ -234,7 +233,7 @@
 <span id="operation-io"></span><h1>Operation Io<a class="headerlink" href="#module-dffml.operation.io" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
 <dt id="dffml.operation.io.AcceptUserInput">
-<em class="property">class </em><code class="sig-prename descclassname">dffml.operation.io.</code><code class="sig-name descname">AcceptUserInput</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">config</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/operation/io.html#AcceptUserInput"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.operation.io.AcceptUserInput" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">dffml.operation.io.</code><code class="sig-name descname">AcceptUserInput</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/operation/io.html#AcceptUserInput"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.operation.io.AcceptUserInput" title="Permalink to this definition">¶</a></dt>
 <dd><p>Accept input from stdin using python input()</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -269,7 +268,7 @@
 <dl class="py attribute">
 <dt id="dffml.operation.io.AcceptUserInput.CONTEXT">
 <code class="sig-name descname">CONTEXT</code><a class="headerlink" href="#dffml.operation.io.AcceptUserInput.CONTEXT" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <a class="reference internal" href="#dffml.operation.io.AcceptUserInputContext" title="dffml.operation.io.AcceptUserInputContext"><code class="xref py py-class docutils literal notranslate"><span class="pre">AcceptUserInputContext</span></code></a></p>
+<dd><p>alias of <a class="reference internal" href="#dffml.operation.io.AcceptUserInputContext" title="dffml.operation.io.AcceptUserInputContext"><code class="xref py py-class docutils literal notranslate"><span class="pre">dffml.operation.io.AcceptUserInputContext</span></code></a></p>
 </dd></dl>
 
 </dd></dl>
@@ -328,7 +327,7 @@ object associated with this operation implementation context.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="mapping.html" class="btn btn-neutral float-right" title="Operation Mapping" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="output.html" class="btn btn-neutral float-right" title="Operation Output" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="math.html" class="btn btn-neutral float-left" title="Operation Math" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>

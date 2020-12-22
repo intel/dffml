@@ -5,10 +5,10 @@ Util Testing Consoletest
     :maxdepth: 2
     :caption: Contents:
 
-    util
-    parser
     runner
-    cli
     builder
-    directives
     commands
+    parser
+    util
+    cli
+    directives

@@ -7,21 +7,21 @@ API Reference
     :caption: Contents:
 
     version
-    base
-    plugins
-    record
     log
     high_level
     noasync
-    source/index
-    feature/index
+    base
+    plugins
+    record
     util/index
-    df/index
-    service/index
+    secret/index
+    model/index
+    operation/index
+    port/index
+    configloader/index
+    source/index
     db/index
     cli/index
-    secret/index
-    operation/index
-    configloader/index
-    port/index
-    model/index
+    df/index
+    feature/index
+    service/index

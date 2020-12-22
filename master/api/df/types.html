@@ -33,7 +33,6 @@
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
         <script src="../../_static/doctools.js"></script>
-        <script src="../../_static/language_data.js"></script>
         <script src="../../_static/copybutton.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
@@ -42,8 +41,8 @@
     <link rel="author" title="About these documents" href="../../about.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Df Exceptions" href="exceptions.html" />
-    <link rel="prev" title="Df Log" href="log.html" /> 
+    <link rel="next" title="Data Flow Base Objects" href="base.html" />
+    <link rel="prev" title="Df Multicomm" href="multicomm.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -111,32 +110,32 @@
 <li class="toctree-l1"><a class="reference internal" href="../../plugins/service/http/index.html">HTTP API</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">API Reference</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../version.html">Version</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../base.html">Base</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../plugins.html">Plugins</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../record.html">Record</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../log.html">Log</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../high_level.html">High Level</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../noasync.html">High Level (noasync)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../source/index.html">Sources</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../feature/index.html">Feature</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../base.html">Base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plugins.html">Plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../record.html">Record</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../util/index.html">Utilities</a></li>
-<li class="toctree-l2 current"><a class="reference internal" href="index.html">Data Flow</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="memory.html">Data Flow Memory Objects</a></li>
-<li class="toctree-l3"><a class="reference internal" href="base.html">Data Flow Base Objects</a></li>
-<li class="toctree-l3"><a class="reference internal" href="multicomm.html">Df Multicomm</a></li>
-<li class="toctree-l3"><a class="reference internal" href="log.html">Df Log</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">Data Flow Types</a></li>
-<li class="toctree-l3"><a class="reference internal" href="exceptions.html">Df Exceptions</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="../service/index.html">Service</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../secret/index.html">Secrets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../model/index.html">Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../operation/index.html">Operation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../port/index.html">Port</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configloader/index.html">Configloader</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../source/index.html">Sources</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../db/index.html">Databases</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../cli/index.html">Cli</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../secret/index.html">Secrets</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../operation/index.html">Operation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../configloader/index.html">Configloader</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../port/index.html">Port</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../model/index.html">Models</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Data Flow</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="memory.html">Data Flow Memory Objects</a></li>
+<li class="toctree-l3"><a class="reference internal" href="exceptions.html">Df Exceptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="log.html">Df Log</a></li>
+<li class="toctree-l3"><a class="reference internal" href="multicomm.html">Df Multicomm</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Data Flow Types</a></li>
+<li class="toctree-l3"><a class="reference internal" href="base.html">Data Flow Base Objects</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../feature/index.html">Feature</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../service/index.html">Service</a></li>
 </ul>
 </li>
 </ul>
@@ -231,7 +230,7 @@
 <span id="data-flow-types"></span><h1>Data Flow Types<a class="headerlink" href="#module-dffml.df.types" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
 <dt id="dffml.df.types.Definition">
-<em class="property">class </em><code class="sig-prename descclassname">dffml.df.types.</code><code class="sig-name descname">Definition</code><span class="sig-paren">(</span><em class="sig-param">name: str, primitive: str, default: Any = &lt;dffml.df.types._NO_DEFAULT object&gt;, lock: bool = False, spec: NamedTuple = None, subspec: bool = False, validate: Callable[[Any], Any] = None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/types.html#Definition"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.types.Definition" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">dffml.df.types.</code><code class="sig-name descname">Definition</code><span class="sig-paren">(</span><em class="sig-param">name: str, primitive: str, default: Any = &lt;dffml.df.types._NO_DEFAULT object&gt;, lock: bool = False, spec: Optional[NamedTuple] = None, subspec: bool = False, validate: Optional[Callable[[Any], Any]] = None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/types.html#Definition"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.types.Definition" title="Permalink to this definition">¶</a></dt>
 <dd><p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">Definition</span><span class="p">,</span> <span class="n">Input</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">NamedTuple</span>
@@ -326,14 +325,14 @@ be forwarded to.</p>
 
 <dl class="py class">
 <dt id="dffml.df.types.Input">
-<em class="property">class </em><code class="sig-prename descclassname">dffml.df.types.</code><code class="sig-name descname">Input</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">value</span><span class="p">:</span> <span class="n">Any</span></em>, <em class="sig-param"><span class="n">definition</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#dffml.df.types.Definition" title="dffml.df.types.Definition">dffml.df.types.Definition</a></span></em>, <em class="sig-param"><span class="n">parents</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>List<span class="p">[</span><a class="reference internal" href="#dffml.df.types.Input" title="dffml.df.types.Input">Input</a><span class="p">]</span><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">origin</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>Union<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a><span class="p">, </span>Tuple<span class="p">[</span><a class="reference internal" href="#dffml.df.types.Operation" title="dffml.df.types.Operation">dffml.df.types.Operation</a><span class="p">, </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a><span class="p">]</span><span class="p">]</span><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">'seed'</span></em>, <em class="sig-param"><span class="n">validated</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)">bool</a></span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">uid</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">''</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/types.html#Input"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.types.Input" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">dffml.df.types.</code><code class="sig-name descname">Input</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">value</span><span class="p">:</span> <span class="n">Any</span></em>, <em class="sig-param"><span class="n">definition</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#dffml.df.types.Definition" title="dffml.df.types.Definition">dffml.df.types.Definition</a></span></em>, <em class="sig-param"><span class="n">parents</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>List<span class="p">[</span><a class="reference internal" href="#dffml.df.types.Input" title="dffml.df.types.Input">dffml.df.types.Input</a><span class="p">]</span><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">origin</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>Union<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a><span class="p">, </span>Tuple<span class="p">[</span><a class="reference internal" href="#dffml.df.types.Operation" title="dffml.df.types.Operation">dffml.df.types.Operation</a><span class="p">, </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a><span class="p">]</span><span class="p">]</span><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">'seed'</span></em>, <em class="sig-param"><span class="n">validated</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)">bool</a></span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">uid</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">''</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/types.html#Input"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.types.Input" title="Permalink to this definition">¶</a></dt>
 <dd><p>All inputs have a unique id. Without it they can’t be tracked for locking
 purposes.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt id="dffml.df.types.InputFlow">
-<em class="property">class </em><code class="sig-prename descclassname">dffml.df.types.</code><code class="sig-name descname">InputFlow</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">inputs</span><span class="p">:</span> <span class="n">Dict<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a><span class="p">, </span>List<span class="p">[</span>Dict<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a><span class="p">, </span><a class="reference internal" href="#dffml.df.types.Operation" title="dffml.df.types.Operation">dffml.df.types.Operation</a><span class="p">]</span><span class="p">]</span><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">conditions</span><span class="p">:</span> <span class="n">List<span class="p">[</span>Dict<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a><span class="p">, </span><a class="reference internal" href="#dffml.df.types.Operation" title="dffml.df.types.Operation">dffml.df.types.Operation</a><span class="p">]</span><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/types.html#InputFlow"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.types.InputFlow" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">dffml.df.types.</code><code class="sig-name descname">InputFlow</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">inputs</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>Dict<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a><span class="p">, </span>List<span class="p">[</span>Dict<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a><span class="p">, </span><a class="reference internal" href="#dffml.df.types.Operation" title="dffml.df.types.Operation">dffml.df.types.Operation</a><span class="p">]</span><span class="p">]</span><span class="p">]</span><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">conditions</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>List<span class="p">[</span>Dict<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a><span class="p">, </span><a class="reference internal" href="#dffml.df.types.Operation" title="dffml.df.types.Operation">dffml.df.types.Operation</a><span class="p">]</span><span class="p">]</span><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/types.html#InputFlow"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.types.InputFlow" title="Permalink to this definition">¶</a></dt>
 <dd><p>Inputs of an operation by their name as used by the operation implementation
 mapped to a list of locations they can come from. The list contains strings
 in the format of operation_instance_name.key_in_output_mapping or the
@@ -492,10 +491,10 @@ given operations.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="exceptions.html" class="btn btn-neutral float-right" title="Df Exceptions" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="base.html" class="btn btn-neutral float-right" title="Data Flow Base Objects" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="log.html" class="btn btn-neutral float-left" title="Df Log" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="multicomm.html" class="btn btn-neutral float-left" title="Df Multicomm" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

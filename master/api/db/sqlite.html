@@ -33,7 +33,6 @@
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
         <script src="../../_static/doctools.js"></script>
-        <script src="../../_static/language_data.js"></script>
         <script src="../../_static/copybutton.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
@@ -42,8 +41,8 @@
     <link rel="author" title="About these documents" href="../../about.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="sql" href="sql.html" />
-    <link rel="prev" title="Base Database" href="base.html" /> 
+    <link rel="next" title="Base Database" href="base.html" />
+    <link rel="prev" title="Databases" href="index.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -111,29 +110,29 @@
 <li class="toctree-l1"><a class="reference internal" href="../../plugins/service/http/index.html">HTTP API</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">API Reference</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../version.html">Version</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../base.html">Base</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../plugins.html">Plugins</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../record.html">Record</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../log.html">Log</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../high_level.html">High Level</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../noasync.html">High Level (noasync)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../source/index.html">Sources</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../feature/index.html">Feature</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../base.html">Base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plugins.html">Plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../record.html">Record</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../util/index.html">Utilities</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../df/index.html">Data Flow</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../service/index.html">Service</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../secret/index.html">Secrets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../model/index.html">Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../operation/index.html">Operation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../port/index.html">Port</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configloader/index.html">Configloader</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../source/index.html">Sources</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="index.html">Databases</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="base.html">Base Database</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">sqlite</a></li>
+<li class="toctree-l3"><a class="reference internal" href="base.html">Base Database</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sql.html">sql</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../cli/index.html">Cli</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../secret/index.html">Secrets</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../operation/index.html">Operation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../configloader/index.html">Configloader</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../port/index.html">Port</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../model/index.html">Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../df/index.html">Data Flow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../feature/index.html">Feature</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../service/index.html">Service</a></li>
 </ul>
 </li>
 </ul>
@@ -228,17 +227,17 @@
 <span id="sqlite"></span><h1>sqlite<a class="headerlink" href="#module-dffml.db.sqlite" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
 <dt id="dffml.db.sqlite.SqliteDatabase">
-<em class="property">class </em><code class="sig-prename descclassname">dffml.db.sqlite.</code><code class="sig-name descname">SqliteDatabase</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">config</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/db/sqlite.html#SqliteDatabase"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.db.sqlite.SqliteDatabase" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">dffml.db.sqlite.</code><code class="sig-name descname">SqliteDatabase</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">cfg</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/db/sqlite.html#SqliteDatabase"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.db.sqlite.SqliteDatabase" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="py attribute">
 <dt id="dffml.db.sqlite.SqliteDatabase.CONFIG">
 <code class="sig-name descname">CONFIG</code><a class="headerlink" href="#dffml.db.sqlite.SqliteDatabase.CONFIG" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <a class="reference internal" href="#dffml.db.sqlite.SqliteDatabaseConfig" title="dffml.db.sqlite.SqliteDatabaseConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">SqliteDatabaseConfig</span></code></a></p>
+<dd><p>alias of <a class="reference internal" href="#dffml.db.sqlite.SqliteDatabaseConfig" title="dffml.db.sqlite.SqliteDatabaseConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">dffml.db.sqlite.SqliteDatabaseConfig</span></code></a></p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt id="dffml.db.sqlite.SqliteDatabase.CONTEXT">
 <code class="sig-name descname">CONTEXT</code><a class="headerlink" href="#dffml.db.sqlite.SqliteDatabase.CONTEXT" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <a class="reference internal" href="#dffml.db.sqlite.SqliteDatabaseContext" title="dffml.db.sqlite.SqliteDatabaseContext"><code class="xref py py-class docutils literal notranslate"><span class="pre">SqliteDatabaseContext</span></code></a></p>
+<dd><p>alias of <a class="reference internal" href="#dffml.db.sqlite.SqliteDatabaseContext" title="dffml.db.sqlite.SqliteDatabaseContext"><code class="xref py py-class docutils literal notranslate"><span class="pre">dffml.db.sqlite.SqliteDatabaseContext</span></code></a></p>
 </dd></dl>
 
 </dd></dl>
@@ -296,10 +295,10 @@ in <cite>table_name</cite></p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="sql.html" class="btn btn-neutral float-right" title="sql" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="base.html" class="btn btn-neutral float-right" title="Base Database" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="base.html" class="btn btn-neutral float-left" title="Base Database" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="index.html" class="btn btn-neutral float-left" title="Databases" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

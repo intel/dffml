@@ -29,7 +29,6 @@
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
         <script src="../../_static/doctools.js"></script>
-        <script src="../../_static/language_data.js"></script>
         <script src="../../_static/copybutton.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
@@ -206,13 +205,13 @@ predictions about the value of a feature in the record, and assessing thei
 prediction accuracy.</p>
 <dl class="py class">
 <dt id="dffml.model.model.Model">
-<em class="property">class </em><code class="sig-prename descclassname">dffml.model.model.</code><code class="sig-name descname">Model</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">config</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/model/model.html#Model"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.model.model.Model" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">dffml.model.model.</code><code class="sig-name descname">Model</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">config</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/model/model.html#Model"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.model.model.Model" title="Permalink to this definition">¶</a></dt>
 <dd><p>Abstract base class which should be derived from and implmented using
 various machine learning frameworks or concepts.</p>
 <dl class="py attribute">
 <dt id="dffml.model.model.Model.CONFIG">
 <code class="sig-name descname">CONFIG</code><a class="headerlink" href="#dffml.model.model.Model.CONFIG" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <a class="reference internal" href="#dffml.model.model.ModelConfig" title="dffml.model.model.ModelConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">ModelConfig</span></code></a></p>
+<dd><p>alias of <a class="reference internal" href="#dffml.model.model.ModelConfig" title="dffml.model.model.ModelConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">dffml.model.model.ModelConfig</span></code></a></p>
 </dd></dl>
 
 </dd></dl>
@@ -255,11 +254,11 @@ as test data.</p>
 
 <dl class="py class">
 <dt id="dffml.model.model.SimpleModel">
-<em class="property">class </em><code class="sig-prename descclassname">dffml.model.model.</code><code class="sig-name descname">SimpleModel</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">config</span><span class="p">:</span> <span class="n">BaseConfig</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/model/model.html#SimpleModel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.model.model.SimpleModel" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">dffml.model.model.</code><code class="sig-name descname">SimpleModel</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">config</span><span class="p">:</span> <span class="n">BaseConfig</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/model/model.html#SimpleModel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.model.model.SimpleModel" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="py attribute">
 <dt id="dffml.model.model.SimpleModel.CONTEXT">
 <code class="sig-name descname">CONTEXT</code><a class="headerlink" href="#dffml.model.model.SimpleModel.CONTEXT" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <a class="reference internal" href="#dffml.model.model.SimpleModelNoContext" title="dffml.model.model.SimpleModelNoContext"><code class="xref py py-class docutils literal notranslate"><span class="pre">SimpleModelNoContext</span></code></a></p>
+<dd><p>alias of <a class="reference internal" href="#dffml.model.model.SimpleModelNoContext" title="dffml.model.model.SimpleModelNoContext"><code class="xref py py-class docutils literal notranslate"><span class="pre">dffml.model.model.SimpleModelNoContext</span></code></a></p>
 </dd></dl>
 
 <dl class="py method">
