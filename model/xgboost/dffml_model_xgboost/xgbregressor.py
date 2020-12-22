@@ -62,13 +62,93 @@ class XGBRegressorModelConfig:
 
 @entrypoint("xgbregressor")
 class XGBRegressorModel(SimpleModel):
-    """
+    r"""
     Model using xgboost to perform regression prediction via gradient boosted trees
     XGBoost is a leading software library for working with standard tabular data (the type of data you store in Pandas DataFrames,
     as opposed to more exotic types of data like images and videos). With careful parameter tuning, you can train highly accurate models.
 
     Examples
     --------
+
+    Command line usage
+
+    First download the training and test files, change the headers to DFFML
+    format.
+
+    .. code-block::
+        :test:
+
+        $ wget http://download.tensorflow.org/data/iris_training.csv
+        $ wget http://download.tensorflow.org/data/iris_test.csv
+        $ sed -i 's/.*setosa,versicolor,virginica/SepalLength,SepalWidth,PetalLength,PetalWidth,classification/g' iris_training.csv iris_test.csv
+
+
+    Run the train command
+
+    .. code-block:: console
+        :test:
+
+        $ dffml train \
+            -sources train=csv \
+            -source-filename iris_training.csv \
+            -model xgbregressor \
+            -model-features \
+              SepalLength:float:1 \
+              SepalWidth:float:1 \
+              PetalLength:float:1 \
+              PetalWidth:float:1 \
+            -model-predict classification \
+            -model-directory model \
+            -model-max_depth 3 \
+            -model-learning_rate 0.01 \
+            -model-n_estimators 200 \
+            -model-reg_lambda 1 \
+            -model-reg_alpha 0 \
+            -model-gamma 0 \
+            -model-colsample_bytree 0 \
+            -model-subsample 1  
+
+
+    Assess the accuracy 
+
+    .. code-block:: console
+        :test:
+
+        $ dffml accuracy \
+            -sources train=csv \
+            -source-filename iris_test.csv \
+            -model xgbregressor \
+            -model-features \
+              SepalLength:float:1 \
+              SepalWidth:float:1 \
+              PetalLength:float:1 \
+              PetalWidth:float:1 \
+            -model-predict classification \
+            -model-directory model 
+        
+    Output
+
+    .. code-block::
+
+        accuracy: 0.8841466984766406
+
+
+    Make predictions
+
+    .. code-block:: console
+        :test:
+
+        $ dffml predict all \
+            -sources train=csv \
+            -source-filename iris_test.csv \
+            -model xgbregressor \
+            -model-features \
+              SepalLength:float:1 \
+              SepalWidth:float:1 \
+              PetalLength:float:1 \
+              PetalWidth:float:1 \
+            -model-predict classification \
+            -model-directory model 
 
     Python usage
 

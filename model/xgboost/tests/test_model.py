@@ -10,7 +10,7 @@ from dffml.record import Record
 from dffml.base import config, field
 from dffml.source.source import Sources
 from dffml.model.accuracy import Accuracy
-from dffml import train, accuracy, predict
+from dffml import train, accuracy, predict, run_consoletest
 from dffml.util.entrypoint import entrypoint
 from dffml.util.asynctestcase import IntegrationCLITestCase
 from dffml.feature.feature import Feature, Features
@@ -110,3 +110,8 @@ class TestXGBRegressor(IntegrationCLITestCase):
             "diabetesregression.py",
         )
         subprocess.check_call([sys.executable, filepath])
+
+
+class TestXGBClassifierDocstring(IntegrationCLITestCase):
+    async def test_docstring(self):
+        await run_consoletest(XGBRegressorModel)
