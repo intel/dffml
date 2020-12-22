@@ -69,7 +69,7 @@ A ``Model`` could be any implementation of a machine learning algorithm.
 By wrapping various implementations of machine learning algorithms in DFFML's
 API, applications using DFFML via its Python library interface, command line
 interface, or HTTP interface, can benefit from them being wrapped in a similar
-design pattern. This means that switching from a model implementing with one
+design pattern. This means that switching from a model implemented with one
 major framework to another is painless.
 
 .. _intro_data_flow:
