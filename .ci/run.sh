@@ -39,6 +39,7 @@ function run_plugin() {
 
   # Install plugin
   "${PYTHON}" -m pip install --use-feature=2020-resolver -U -e .
+
   # Run the tests but not the long documentation consoletests
   "${PYTHON}" -u setup.py test
 
@@ -98,6 +99,9 @@ function run_plugin() {
   fi
 
   cd "${SRC_ROOT}"
+
+  # Report installed versions of packages
+  "${PYTHON}" -m pip freeze
 
   if [ "x${GITHUB_ACTIONS}" == "xtrue" ] && [ "x${GITHUB_REF}" == "xrefs/heads/master" ]; then
     git status

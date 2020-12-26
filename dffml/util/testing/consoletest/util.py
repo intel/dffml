@@ -16,6 +16,7 @@ from typing import (
     Optional,
 )
 
+from .parser import Node
 from .commands import build_command, parse_commands
 
 
@@ -105,6 +106,9 @@ def code_block_to_dict(
         for command in node["consoletest_commands"]:
             command.poll_until = bool("poll-until" in options)
             command.compare_output = options.get("compare-output", None)
+            command.compare_output_imports = options.get(
+                "compare-output-imports", None
+            )
             if command.poll_until and command.compare_output is None:
                 raise ValueError(
                     "Cannot set poll-until without compare-output"
@@ -127,8 +131,30 @@ CODE_BLOCK_OPTION_SPEC = {
     "replace": "unchanged_required",
     "poll-until": "flag",
     "compare-output": "unchanged_required",
+    "compare-output-imports": "unchanged_required",
     "ignore-errors": "flag",
     "daemon": "unchanged_required",
     "test": "flag",
     "stdin": "unchanged_required",
 }
+
+
+def nodes_to_test(nodes: List[Node]) -> List[Node]:
+    """
+    List of nodes to subset of that list which have the ``:test::`` option.
+    """
+    subset_nodes = []
+
+    for node in nodes:
+        if not node.options.get("test", False):
+            continue
+        if node.directive == "code-block":
+            subset_nodes.append(
+                code_block_to_dict(node.content, node.options, node=node.node)
+            )
+        elif node.directive == "literalinclude":
+            subset_nodes.append(
+                literalinclude_to_dict(node.content, node.options, node.node)
+            )
+
+    return subset_nodes

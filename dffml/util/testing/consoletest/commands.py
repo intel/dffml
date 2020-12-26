@@ -16,15 +16,19 @@ import inspect
 import tempfile
 import contextlib
 import subprocess
-from typing import IO, Any, Dict, List, Union
+from typing import IO, Any, Dict, List, Union, Optional
 
 from .... import plugins
+
+
+DFFML_ROOT = pathlib.Path(__file__).parents[4]
 
 
 class ConsoletestCommand(abc.ABC):
     def __init__(self):
         self.poll_until = False
         self.compare_output = None
+        self.compare_output_imports = None
         self.ignore_errors = False
         self.daemon = None
 
@@ -365,6 +369,21 @@ class OutputComparisionError(Exception):
     """
 
 
+@contextlib.contextmanager
+def buf_to_fileobj(buf: Union[str, bytes]):
+    """
+    Given a buffer, create a temporary file and write the contents of the string
+    of bytes buffer to the file. Seek to the beginning of the file. Yield the
+    file object.
+    """
+    if isinstance(buf, str):
+        buf = buf.encode()
+    with tempfile.TemporaryFile() as fileobj:
+        fileobj.write(buf)
+        fileobj.seek(0)
+        yield fileobj
+
+
 class ConsoleCommand(ConsoletestCommand):
     def __init__(self, cmd: List[str]):
         super().__init__()
@@ -372,34 +391,45 @@ class ConsoleCommand(ConsoletestCommand):
         self.daemon_proc = None
         self.replace = None
         self.stdin = None
+        self.stdin_fileobj = None
         self.stack = contextlib.ExitStack()
 
     async def run(self, ctx):
         if self.daemon is not None and self.daemon in ctx["daemons"]:
             await stop_daemon(ctx["daemons"][self.daemon].daemon_proc)
         if self.compare_output is None:
-            self.daemon_proc = await run_commands(
-                pipes(self.cmd),
-                ctx,
-                stdin=self.stdin,
-                ignore_errors=self.ignore_errors,
-                daemon=bool(self.daemon),
-            )
-            if self.daemon is not None:
-                ctx["daemons"][self.daemon] = self
+            with contextlib.ExitStack() as stack:
+                self.daemon_proc = await run_commands(
+                    pipes(self.cmd),
+                    ctx,
+                    stdin=None
+                    if self.stdin is None
+                    else stack.enter_context(buf_to_fileobj(self.stdin)),
+                    ignore_errors=self.ignore_errors,
+                    daemon=bool(self.daemon),
+                )
+                if self.daemon is not None:
+                    ctx["daemons"][self.daemon] = self
         else:
             while True:
-                with tempfile.TemporaryFile() as stdout:
+                with contextlib.ExitStack() as stack:
+                    stdout = stack.enter_context(tempfile.TemporaryFile())
                     await run_commands(
                         pipes(self.cmd),
                         ctx,
-                        stdin=self.stdin,
+                        stdin=None
+                        if self.stdin is None
+                        else stack.enter_context(buf_to_fileobj(self.stdin)),
                         stdout=stdout,
                         ignore_errors=self.ignore_errors,
                     )
                     stdout.seek(0)
                     stdout = stdout.read()
-                    if call_compare_output(self.compare_output, stdout):
+                    if call_compare_output(
+                        self.compare_output,
+                        stdout,
+                        imports=self.compare_output_imports,
+                    ):
                         return
                 if not self.poll_until:
                     raise OutputComparisionError(
@@ -409,11 +439,6 @@ class ConsoleCommand(ConsoletestCommand):
 
     async def __aenter__(self):
         self.stack.__enter__()
-        if self.stdin is not None:
-            fileobj = self.stack.enter_context(tempfile.TemporaryFile())
-            fileobj.write(self.stdin.encode())
-            fileobj.seek(0)
-            self.stdin = fileobj
         return self
 
     async def __aexit__(self, _exc_type, _exc_value, _traceback):
@@ -454,13 +479,6 @@ class PipNotRunAsModule(Exception):
     """
 
 
-class PipMissingUseFeature2020Resolver(Exception):
-    """
-    Raised when a pip install command isn't upgrading pip and doesn't have
-    --use-feature=2020-resolver
-    """
-
-
 class PipInstallCommand(ConsoleCommand):
     def __init__(self, cmd: List[str]):
         super().__init__(cmd)
@@ -468,14 +486,6 @@ class PipInstallCommand(ConsoleCommand):
         # Ensure that we are running pip using it's module invocation
         if self.cmd[:2] != ["python", "-m"]:
             raise PipNotRunAsModule(cmd)
-        # Ensure command have --use-feature=2020-resolver
-        # If we are installing pip then we may or may not be upgrading from
-        # a version that has it, so don't raise an excption
-        if (
-            not (self.cmd.count("pip") == 2 and "-U" in self.cmd)
-            and "--use-feature=2020-resolver" not in self.cmd
-        ):
-            raise PipMissingUseFeature2020Resolver(cmd)
 
     def fix_dffml_packages(self, ctx):
         """
@@ -494,7 +504,7 @@ class PipInstallCommand(ConsoleCommand):
                     if pkg.startswith(package_name + "["):
                         pkg, extras = pkg.split("[", maxsplit=1)
                         directory = package_names_to_directory[pkg]
-                        directory = os.path.join(ctx["root"], *directory)
+                        directory = os.path.join(DFFML_ROOT, *directory)
                         directory = os.path.abspath(directory)
                         self.cmd[i] = directory + "[" + extras
                         if self.cmd[i - 1] != "-e":
@@ -502,7 +512,7 @@ class PipInstallCommand(ConsoleCommand):
                         self.directories.append(directory)
             elif pkg in package_names_to_directory:
                 directory = package_names_to_directory[pkg]
-                directory = os.path.join(ctx["root"], *directory)
+                directory = os.path.join(DFFML_ROOT, *directory)
                 directory = os.path.abspath(directory)
                 self.cmd[i] = directory
                 if self.cmd[i - 1] != "-e":
@@ -516,19 +526,19 @@ class PipInstallCommand(ConsoleCommand):
         await super().run(ctx)
 
         # Remove dataclasses. See https://github.com/intel/dffml/issues/882
-        cmd = [
-            "python",
-            os.path.abspath(
-                os.path.join(
-                    ctx["root"],
-                    "scripts",
-                    "tempfix",
-                    "pytorch",
-                    "pytorch",
-                    "46930.py",
-                ),
-            ),
-        ]
+        # TODO(p0,security) Audit this
+        remove_dataclasses_path = (
+            DFFML_ROOT
+            / "scripts"
+            / "tempfix"
+            / "pytorch"
+            / "pytorch"
+            / "46930.py"
+        )
+        if not remove_dataclasses_path.is_file():
+            return
+
+        cmd = ["python", str(remove_dataclasses_path)]
         if "CONDA_PREFIX" in os.environ:
             cmd.append(os.environ["CONDA_PREFIX"])
         elif "VIRTUAL_ENV" in os.environ:
@@ -665,6 +675,7 @@ def build_command(cmd):
 
 MAKE_POLL_UNTIL_TEMPLATE = """
 import sys
+{imports}
 
 func = lambda stdout: {func}
 
@@ -672,9 +683,14 @@ sys.exit(int(not func(sys.stdin.buffer.read())))
 """
 
 
-def call_compare_output(func, stdout):
+def call_compare_output(func, stdout, *, imports: Optional[str] = None):
     with tempfile.NamedTemporaryFile() as fileobj, tempfile.NamedTemporaryFile() as stdin:
-        fileobj.write(MAKE_POLL_UNTIL_TEMPLATE.format(func=func).encode())
+        fileobj.write(
+            MAKE_POLL_UNTIL_TEMPLATE.format(
+                func=func,
+                imports="" if imports is None else "import " + imports,
+            ).encode()
+        )
         fileobj.seek(0)
         stdin.write(stdout.encode() if isinstance(stdout, str) else stdout)
         stdin.seek(0)

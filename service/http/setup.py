@@ -2,6 +2,7 @@ import os
 import sys
 import ast
 from io import open
+from pathlib import Path
 from setuptools import find_packages, setup
 
 ORG = "intel"
@@ -10,7 +11,7 @@ DESCRIPTION = "DFFML HTTP API Service"
 AUTHOR_NAME = "John Andersen"
 AUTHOR_EMAIL = "john.s.andersen@intel.com"
 # Install dffml if it is not installed in development mode
-INSTALL_REQUIRES = ["aiohttp>=3.5.4", "aiohttp_cors>=0.7.0"] + (
+INSTALL_REQUIRES = [] + (
     ["dffml>=0.3.7"]
     if not any(
         list(
@@ -37,6 +38,12 @@ IMPORT_NAME = (
 ).replace("-", "_")
 
 SELF_PATH = os.path.dirname(os.path.realpath(__file__))
+
+REQUIREMENTS_TXT_PATH = Path(SELF_PATH, "requirements.txt")
+if REQUIREMENTS_TXT_PATH.is_file():
+    INSTALL_REQUIRES += list(
+        map(lambda i: i.strip(), REQUIREMENTS_TXT_PATH.read_text().split("\n"))
+    )
 
 with open(os.path.join(SELF_PATH, IMPORT_NAME, "version.py"), "r") as f:
     for line in f:

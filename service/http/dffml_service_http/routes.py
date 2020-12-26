@@ -439,7 +439,11 @@ class Routes(BaseMultiCommContext):
             # HACK This checks if aiohttp's builtin not found handler is going
             # to be called
             # Check if handler is the not found handler
-            if "Not Found" in str(handler):
+            if (
+                "Not Found" in str(handler)
+                or "StaticResource" in str(handler)
+                or "Method Not Allowed" in str(handler)
+            ):
                 # Run get_registered_handler to see if we can find the handler
                 new_handler = await self.get_registered_handler(request)
                 if new_handler is not None:

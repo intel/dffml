@@ -1,9 +1,11 @@
 import os
+import re
 import sys
 import ast
 import json
 import pydoc
 import shutil
+import string
 import asyncio
 import pathlib
 import getpass
@@ -11,6 +13,7 @@ import tempfile
 import importlib
 import subprocess
 import contextlib
+import dataclasses
 import configparser
 import pkg_resources
 import unittest.mock
@@ -658,6 +661,178 @@ class BumpPackages(CMD):
             self.logger.debug("Updated version file %s", version_file)
 
 
+@configdataclass
+class PinDepsConfig:
+    logs: pathlib.Path = field("Path to log file for main plugin")
+    update: bool = field(
+        "Update all requirements.txt files with pinned dependneices",
+        default=False,
+    )
+
+
+@dataclasses.dataclass
+class PinDepsPlugin:
+    path: str
+    requirements_txt_path: pathlib.Path
+    requirements_txt_contents: str
+    requirements_txt_pinned: str
+
+
+class PinDeps(CMD):
+    """
+    Parse a GitHub Actions log archive to produce pinned dependencies for each
+    requirements.txt
+    """
+
+    CONFIG = PinDepsConfig
+    # Lowest supported version of Python by all plugins
+    LOWEST_PYTHON_VERSION = (3, 7)
+
+    @classmethod
+    def requirement_package_name(cls, line):
+        """
+        Parse a line from requirements.txt and return the package name
+
+        "Per PEP 508, valid project names must: Consist only of ASCII letters,
+        digits, underscores (_), hyphens (-), and/or periods (.), and. Start & end
+        with an ASCII letter or digit."
+        """
+        if not line:
+            raise ValueError("line is blank")
+
+        i = 0
+        name = ""
+        while i < len(line) and line[i] in (
+            "_",
+            "-",
+            ".",
+            *string.ascii_letters,
+            *string.digits,
+        ):
+            name += line[i]
+            i += 1
+
+        # Replace _ with - since that's what PyPi uses
+        return name.replace("_", "-")
+
+    @classmethod
+    def remove_ansi_escape(cls, contents):
+        """
+        Found on Stack Overflow from Martijn Pieters, only modified input variable
+        name.
+        - https://stackoverflow.com/a/14693789
+        - https://creativecommons.org/licenses/by-sa/4.0/
+        """
+        # 7-bit and 8-bit C1 ANSI sequences
+        ansi_escape_8bit = re.compile(
+            br"(?:\x1B[@-Z\\-_]|[\x80-\x9A\x9C-\x9F]|(?:\x1B\[|\x9B)[0-?]*[ -/]*[@-~])"
+        )
+        return ansi_escape_8bit.sub(b"", contents)
+
+    @classmethod
+    def parse_github_actions_log_file(cls, contents):
+        lines = (
+            cls.remove_ansi_escape(contents)
+            .replace(b"\r", b"")
+            .decode(errors="ignore")
+            .split("\n")
+        )
+
+        # Map packages to versions that were installed in CI
+        ci_installed = {}
+
+        for line in lines:
+            if "Requirement already satisfied:" in line:
+                # Check for packages that may have been installed previously that would show
+                # up as file:// URLs
+                # Example:
+                #   Requirement already satisfied: vowpalwabbit>=8.8.1 in /usr/share/miniconda/lib/python3.7/site-packages (from dffml-model-vowpalWabbit==0.0.1) (8.8.1)
+                line = line.split()
+                # Get package name
+                package_name = cls.requirement_package_name(
+                    line[line.index("satisfied:") + 1]
+                )
+                if not package_name:
+                    continue
+                # Check if we don't have a version for this package yet
+                if package_name not in ci_installed:
+                    # Get package version, strip ()
+                    ci_installed[package_name] = line[-1][1:-1]
+            elif "==" in line:
+                # Skip any lines that are not in the format of:
+                #   2020-11-23T05:54:36.4861610Z absl-py==0.11.0
+                if line.count("Z ") != 1:
+                    continue
+                line = line.split("Z ")[-1].split("==")
+                if not line[0] or not line[1]:
+                    continue
+                # Get package name
+                package_name = cls.requirement_package_name(line[0])
+                if not package_name:
+                    continue
+                # with contextlib.suppress(Exception):
+                ci_installed[package_name] = line[1]
+
+        return ci_installed
+
+    async def pin_deps(self, contents: bytes):
+        if not b"PLUGIN=" in contents:
+            return
+
+        root = pathlib.Path(__file__).parents[2]
+
+        ci_installed = self.parse_github_actions_log_file(contents)
+
+        for requirements_txt_path in root.rglob("requirements.txt"):
+            self.logger.debug(requirements_txt_path)
+            requirements_txt_contents = requirements_txt_path.read_text()
+            modify_contents = requirements_txt_contents.split("\n")
+            # Add all packages in requirements files to set of required
+            # packages
+            for i, line in enumerate(modify_contents):
+                # Skip comments
+                if line.strip().startswith("#") or not line:
+                    continue
+                package_name = self.requirement_package_name(line)
+                if not package_name:
+                    continue
+                # Ensure package was installed in CI
+                if not package_name in ci_installed:
+                    raise ValueError(
+                        f"Plugin {requirements_txt_path.parent}: {package_name!r} not in {ci_installed}"
+                    )
+                # Modify the line to be a pinned package
+                modify_contents[i] = (
+                    package_name + "==" + ci_installed[package_name]
+                )
+
+                self.logger.debug(f"{line:<40} | {modify_contents[i]}")
+
+            yield PinDepsPlugin(
+                path=str(requirements_txt_path.relative_to(root)),
+                requirements_txt_path=requirements_txt_path,
+                requirements_txt_contents=requirements_txt_contents,
+                requirements_txt_pinned="\n".join(modify_contents),
+            )
+
+    async def run(self):
+        async for plugin in self.pin_deps(
+            pathlib.Path(self.logs).read_bytes()
+        ):
+            if self.update:
+                plugin.requirements_txt_path.write_text(
+                    plugin.requirements_txt_pinned
+                )
+
+
+class CI(CMD):
+    """
+    CI related commands
+    """
+
+    pindeps = PinDeps
+
+
 class Bump(CMD):
     """
     Bump the the main package in the versions plugins, or any or all libraries.
@@ -681,3 +856,4 @@ class Develop(CMD):
     release = Release
     setuppy = SetupPy
     bump = Bump
+    ci = CI

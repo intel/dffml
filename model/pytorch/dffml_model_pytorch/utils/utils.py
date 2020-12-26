@@ -22,15 +22,15 @@ def create_layer(layer_dict):
     for name, layer in layer_dict.items():
         if isinstance(layer, dict):
             parameters = {k: v for k, v in layer.items()}
-            layer_name = parameters.pop("name")
+            layer_type = parameters.pop("layer_type")
 
             sequential_dict.add_module(
-                name, getattr(nn, layer_name)(**parameters)
+                name, getattr(nn, layer_type)(**parameters)
             )
         else:
             parameters = {k: v for k, v in layer_dict.items()}
-            layer_name = parameters.pop("name")
-            return getattr(nn, layer_name)(**parameters)
+            layer_type = parameters.pop("layer_type")
+            return getattr(nn, layer_type)(**parameters)
     return sequential_dict
 
 
@@ -76,6 +76,12 @@ class NumpyToTensor(Dataset):
         return len(self.data)
 
 
+class LossFunctionNotFoundError(Exception):
+    """
+    Exception raised when Loss function is misspelled.
+    """
+
+
 @base_entry_point("dffml.model.pytorch.loss", "loss")
 class PyTorchLoss(BaseDataFlowFacilitatorObject):
     def __init__(self, config):
@@ -84,10 +90,21 @@ class PyTorchLoss(BaseDataFlowFacilitatorObject):
 
     @classmethod
     def load(cls, class_name: str = None):
+        loss_function = None
+
         for name, loss_class in inspect.getmembers(nn, inspect.isclass):
             if name.endswith("Loss"):
                 if name.lower() == class_name:
-                    return getattr(sys.modules[__name__], name + "Function")
+                    loss_function = getattr(
+                        sys.modules[__name__], name + "Function"
+                    )
+
+        if loss_function is None:
+            raise LossFunctionNotFoundError(
+                f"Loss function is not valid! Function name given was {class_name}"
+            )
+
+        return loss_function
 
 
 for name, loss_class in inspect.getmembers(nn, inspect.isclass):

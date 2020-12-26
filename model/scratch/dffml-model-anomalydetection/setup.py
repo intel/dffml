@@ -10,7 +10,9 @@ common = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(common)
 
 common.KWARGS["entry_points"] = {
-    "dffml.model": [f"myslr = {common.IMPORT_NAME}.myslr:MySLRModel"]
+    "dffml.model": [
+        f"anomalydetection = {common.IMPORT_NAME}.anomalydetection:AnomalyModel"
+    ]
 }
 
 setup(**common.KWARGS)

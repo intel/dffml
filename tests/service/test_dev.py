@@ -5,6 +5,7 @@ import json
 import glob
 import shutil
 import inspect
+import pathlib
 import tarfile
 import tempfile
 import unittest
@@ -23,9 +24,11 @@ from dffml.service.dev import (
     BumpPackages,
     MissingDependenciesError,
     Install,
+    PinDeps,
 )
 from dffml.util.os import chdir
 from dffml.util.skel import Skel
+from dffml.util.net import cached_download
 from dffml.util.packaging import is_develop
 from dffml.util.asynctestcase import AsyncTestCase
 
@@ -315,3 +318,13 @@ class TestInstall(AsyncTestCase):
             Install.dep_check(
                 {("model", "vowpalWabbit"): {"feedface": lambda: False}}, []
             )
+
+
+class TestPinDeps(AsyncTestCase):
+    @cached_download(
+        "https://github.com/intel/dffml/files/5587450/l.txt",
+        pathlib.Path(__file__).parent / "logs.txt",
+        "fd16470e45f076550507c015cc102387a2627547cbe8b64753f7fa0f6f273a26c59e619bd7a06b49613c6e574839a08a",
+    )
+    async def test_pin_deps(self, logs):
+        await PinDeps(logs=logs).run()

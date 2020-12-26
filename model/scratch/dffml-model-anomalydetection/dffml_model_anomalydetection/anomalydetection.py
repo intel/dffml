@@ -1,9 +1,9 @@
 import math
 import pathlib
-import statistics
 from typing import AsyncIterator, Type
 
 import numpy as np
+
 from dffml import (
     Accuracy,
     Feature,
@@ -38,7 +38,6 @@ def estimateGaussian(X):
 def multivariateGaussian(X, mu, sigma2):
     n = np.size(sigma2, 1)
     m = np.size(sigma2, 0)
-    # print(m,n)
 
     if n == 1 or m == 1:
         sigma2 = np.diag(sigma2[0, :])
@@ -47,8 +46,10 @@ def multivariateGaussian(X, mu, sigma2):
     pi = math.pi
     det = np.linalg.det(sigma2)
     inv = np.linalg.inv(sigma2)
-    val = np.reshape((-0.5) * np.sum(np.multiply((X @ inv), X), 1), (np.size(X, 0), 1))
-    # print(val.shape)
+    val = np.reshape(
+        (-0.5) * np.sum(np.multiply((X @ inv), X), 1), (np.size(X, 0), 1)
+    )
+
     p = np.power(2 * pi, n / -2) * np.power(det, -0.5) * np.exp(val)
 
     return p
@@ -94,8 +95,7 @@ def getF1(Yval, pred):
         rec = tp / (tp + fn)
         F1 = 2 * prec * rec / (prec + rec)
     except ZeroDivisionError:
-        print("Warning : dividing by zero!")
-
+        raise
     return F1
 
 
@@ -104,7 +104,7 @@ class AnomalyModelConfig:
     features: Features = field("Features to train on")
     predict: Feature = field("Label or the value to be predicted")
     directory: pathlib.Path = field("Directory where state should be saved")
-    k : float = field("Validation set size", default = 0.8)
+    k: float = field("Validation set size", default=0.8)
 
 
 @entrypoint("anomalydetection")
@@ -113,7 +113,8 @@ class AnomalyModel(SimpleModel):
     CONFIG: Type = AnomalyModelConfig
 
     async def train(self, sources: SourcesContext) -> None:
-        nof = len(self.features)  # number of features
+        # Number of features
+        nof = len(self.features)
         # X and Y data
         X = []
         Y = []
@@ -124,12 +125,14 @@ class AnomalyModel(SimpleModel):
         ):
             record_data = []
             for feature in record.features(self.features).values():
-                record_data.extend([feature] if np.isscalar(feature) else feature)
+                record_data.extend(
+                    [feature] if np.isscalar(feature) else feature
+                )
 
             X.append(record_data)
             Y.append(record.feature(self.parent.config.predict.name))
-        
-        k = self.parent.config.k 
+
+        k = self.parent.config.k
         X1, Xval = split(X, k)
         X = X1
         Y1, Yval = split(Y, k)
@@ -153,11 +156,11 @@ class AnomalyModel(SimpleModel):
 
         outliers = p < epsilon
 
-        listOfOl = findIndices(outliers)  # outliers in training set
-        # print(F1val)
-        # Save listOfOl and F1 score
+        # Outliers in training set
+        listOfOl = findIndices(outliers)
+
+        # Save epsilon and F1 score
         self.storage["anomalies"] = (
-            listOfOl,
             epsilon,
             F1val,
             mu.tolist(),
@@ -171,7 +174,7 @@ class AnomalyModel(SimpleModel):
         if anomalies is None:
             raise ModelNotTrained("Train model before assessing for accuracy.")
 
-        listOfOl, epsilon, _F1val, mu, sigma2 = anomalies
+        epsilon, _F1val, mu, sigma2 = anomalies
 
         X = []
         Y = []
@@ -182,14 +185,17 @@ class AnomalyModel(SimpleModel):
         ):
             record_data = []
             for feature in record.features(self.features).values():
-                record_data.extend([feature] if np.isscalar(feature) else feature)
+                record_data.extend(
+                    [feature] if np.isscalar(feature) else feature
+                )
 
             X.append(record_data)
             Y.append(record.feature(self.parent.config.predict.name))
 
         self.logger.debug("Number of test records: %d", len(X))
 
-        nof = len(self.features)  # number of features
+        # Number of features
+        nof = len(self.features)
 
         X = np.reshape(X, (len(X), nof))
 
@@ -207,15 +213,16 @@ class AnomalyModel(SimpleModel):
 
         listOfOl = findIndices(outliers)
 
-        # print(listOfOl)
         accuracy = F1
-        # Update the accuracy, listOfOl
-        self.storage["anomalies"] = listOfOl, epsilon, F1, mu.tolist(), sigma2.tolist()
+        # Update the accuracy
+        self.storage["anomalies"] = epsilon, F1, mu.tolist(), sigma2.tolist()
         return Accuracy(accuracy)
 
     async def get_input_data(self, sources: SourcesContext) -> list:
         saved_records = []
-        async for record in sources.with_features(self.config.features.names()):
+        async for record in sources.with_features(
+            self.config.features.names()
+        ):
             saved_records.append(record)
         return saved_records
 
@@ -227,7 +234,7 @@ class AnomalyModel(SimpleModel):
         if anomalies is None:
             raise ModelNotTrained("Train model before prediction")
         # Expand the anomalies into named variables
-        listOfOl, epsilon, F1, mu, sigma2 = anomalies
+        epsilon, F1, mu, sigma2 = anomalies
         mu = np.array(mu)
         sigma2 = np.array(sigma2)
         # Grab records and input data (X data)
@@ -237,11 +244,14 @@ class AnomalyModel(SimpleModel):
         for record in input_data:
             record_data = []
             for feature in record.features(self.features).values():
-                record_data.extend([feature] if np.isscalar(feature) else feature)
+                record_data.extend(
+                    [feature] if np.isscalar(feature) else feature
+                )
             X.append(record_data)
         p = multivariateGaussian(X, mu, sigma2)
         predictions = (p < epsilon).astype(int)
         for record, prediction in zip(input_data, predictions):
-            record.predicted(self.config.predict.name, int(prediction), float(F1))
+            record.predicted(
+                self.config.predict.name, int(prediction), float(F1)
+            )
             yield record
-
