@@ -174,6 +174,7 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#dffml-model-xgboost">dffml_model_xgboost</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#xgbclassifier">xgbclassifier</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#xgbregressor">xgbregressor</a></li>
 </ul>
 </li>
@@ -7125,14 +7126,231 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install dffml-model-xgboost</span>
 </pre></div>
 </div>
+<div class="section" id="xgbclassifier">
+<span id="plugin-model-dffml-model-xgboost-xgbclassifier"></span><h3>xgbclassifier<a class="headerlink" href="#xgbclassifier" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<p>Model using xgboost to perform classification prediction via gradient boosted trees.
+XGBoost is a leading software library for working with standard tabular data (the type of data you store in Pandas DataFrames,
+as opposed to more exotic types of data like images and videos). With careful parameter tuning, you can train highly accurate models.</p>
+<div class="section" id="examples">
+<h4>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h4>
+<p>Command line usage</p>
+<p>First download the training and test files, change the headers to DFFML
+format. The first row is an encoding of the classifications, we want CSV
+headers for the column names.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ wget http://download.tensorflow.org/data/iris_training.csv
+$ wget http://download.tensorflow.org/data/iris_test.csv
+$ sed -i &#39;s/.*setosa,versicolor,virginica/SepalLength,SepalWidth,PetalLength,PetalWidth,classification/g&#39; iris_training.csv iris_test.csv
+</pre></div>
+</div>
+<p>Run the train command</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml train <span class="se">\</span>
+    -sources <span class="nv">train</span><span class="o">=</span>csv <span class="se">\</span>
+    -source-filename iris_training.csv <span class="se">\</span>
+    -model xgbclassifier <span class="se">\</span>
+    -model-features <span class="se">\</span>
+      SepalLength:float:1 <span class="se">\</span>
+      SepalWidth:float:1 <span class="se">\</span>
+      PetalLength:float:1 <span class="se">\</span>
+      PetalWidth:float:1 <span class="se">\</span>
+    -model-predict classification <span class="se">\</span>
+    -model-directory model <span class="se">\</span>
+    -model-max_depth <span class="m">3</span> <span class="se">\</span>
+    -model-learning_rate <span class="m">0</span>.01 <span class="se">\</span>
+    -model-learning_rate <span class="m">0</span>.01 <span class="se">\</span>
+    -model-n_estimators <span class="m">200</span> <span class="se">\</span>
+    -model-reg_lambda <span class="m">1</span> <span class="se">\</span>
+    -model-reg_alpha <span class="m">0</span> <span class="se">\</span>
+    -model-gamma <span class="m">0</span> <span class="se">\</span>
+    -model-colsample_bytree <span class="m">0</span> <span class="se">\</span>
+    -model-subsample <span class="m">1</span>
+</pre></div>
+</div>
+<p>Assess the accuracy</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml accuracy <span class="se">\</span>
+    -sources <span class="nv">train</span><span class="o">=</span>csv <span class="se">\</span>
+    -source-filename iris_test.csv <span class="se">\</span>
+    -model xgbclassifier <span class="se">\</span>
+    -model-features <span class="se">\</span>
+      SepalLength:float:1 <span class="se">\</span>
+      SepalWidth:float:1 <span class="se">\</span>
+      PetalLength:float:1 <span class="se">\</span>
+      PetalWidth:float:1 <span class="se">\</span>
+    -model-predict classification <span class="se">\</span>
+    -model-directory model
+</pre></div>
+</div>
+<p>Make predictions</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml predict all <span class="se">\</span>
+    -sources <span class="nv">train</span><span class="o">=</span>csv <span class="se">\</span>
+    -source-filename iris_test.csv <span class="se">\</span>
+    -model xgbclassifier <span class="se">\</span>
+    -model-features <span class="se">\</span>
+      SepalLength:float:1 <span class="se">\</span>
+      SepalWidth:float:1 <span class="se">\</span>
+      PetalLength:float:1 <span class="se">\</span>
+      PetalWidth:float:1 <span class="se">\</span>
+    -model-predict classification <span class="se">\</span>
+    -model-directory model
+</pre></div>
+</div>
+<p>Python usage</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">load_iris</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+
+<span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">Feature</span><span class="p">,</span> <span class="n">Features</span>
+<span class="kn">from</span> <span class="nn">dffml.noasync</span> <span class="kn">import</span> <span class="n">train</span><span class="p">,</span> <span class="n">accuracy</span>
+<span class="kn">from</span> <span class="nn">dffml_model_xgboost.xgbclassifier</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">XGBClassifierModel</span><span class="p">,</span>
+    <span class="n">XGBClassifierModelConfig</span><span class="p">,</span>
+<span class="p">)</span>
+
+
+<span class="n">iris</span> <span class="o">=</span> <span class="n">load_iris</span><span class="p">()</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">iris</span><span class="p">[</span><span class="s2">&quot;target&quot;</span><span class="p">]</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">iris</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">]</span>
+<span class="n">trainX</span><span class="p">,</span> <span class="n">testX</span><span class="p">,</span> <span class="n">trainy</span><span class="p">,</span> <span class="n">testy</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span>
+    <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">123</span>
+<span class="p">)</span>
+
+<span class="c1"># Configure the model</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">XGBClassifierModel</span><span class="p">(</span>
+    <span class="n">XGBClassifierModelConfig</span><span class="p">(</span>
+        <span class="n">features</span><span class="o">=</span><span class="n">Features</span><span class="p">(</span><span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">,)),</span>
+        <span class="n">predict</span><span class="o">=</span><span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;target&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+        <span class="n">directory</span><span class="o">=</span><span class="s2">&quot;model&quot;</span><span class="p">,</span>
+        <span class="n">max_depth</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+        <span class="n">learning_rate</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>
+        <span class="n">n_estimators</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span>
+        <span class="n">reg_lambda</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">reg_alpha</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+        <span class="n">gamma</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+        <span class="n">colsample_bytree</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+        <span class="n">subsample</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+
+<span class="c1"># Train the model</span>
+<span class="n">train</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="o">*</span><span class="p">[{</span><span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="n">x</span><span class="p">,</span> <span class="s2">&quot;target&quot;</span><span class="p">:</span> <span class="n">y</span><span class="p">}</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">trainX</span><span class="p">,</span> <span class="n">trainy</span><span class="p">)])</span>
+
+<span class="c1"># Assess accuracy</span>
+<span class="nb">print</span><span class="p">(</span>
+    <span class="s2">&quot;Test accuracy:&quot;</span><span class="p">,</span>
+    <span class="n">accuracy</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="o">*</span><span class="p">[{</span><span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="n">x</span><span class="p">,</span> <span class="s2">&quot;target&quot;</span><span class="p">:</span> <span class="n">y</span><span class="p">}</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">testX</span><span class="p">,</span> <span class="n">testy</span><span class="p">)]),</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span>
+    <span class="s2">&quot;Training accuracy:&quot;</span><span class="p">,</span>
+    <span class="n">accuracy</span><span class="p">(</span>
+        <span class="n">model</span><span class="p">,</span> <span class="o">*</span><span class="p">[{</span><span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="n">x</span><span class="p">,</span> <span class="s2">&quot;target&quot;</span><span class="p">:</span> <span class="n">y</span><span class="p">}</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">trainX</span><span class="p">,</span> <span class="n">trainy</span><span class="p">)]</span>
+    <span class="p">),</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>Output</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Test</span> <span class="n">accuracy</span><span class="p">:</span> <span class="mf">0.933333333333333</span>
+<span class="n">Training</span> <span class="n">accuracy</span><span class="p">:</span> <span class="mf">0.9703703703703703</span>
+</pre></div>
+</div>
+<p><strong>Args</strong></p>
+<ul class="simple">
+<li><p>directory: Path</p>
+<ul>
+<li><p>Directory where model should be saved</p></li>
+</ul>
+</li>
+<li><p>features: List of features</p>
+<ul>
+<li><p>Features on which we train the model</p></li>
+</ul>
+</li>
+<li><p>predict: Feature</p>
+<ul>
+<li><p>Value to be predicted</p></li>
+</ul>
+</li>
+<li><p>learning_rate: float</p>
+<ul>
+<li><p>default: 0.3</p></li>
+<li><p>Learning rate to train with</p></li>
+</ul>
+</li>
+<li><p>n_estimators: Integer</p>
+<ul>
+<li><p>default: 100</p></li>
+<li><p>Number of gradient boosted trees. Equivalent to the number of boosting rounds</p></li>
+</ul>
+</li>
+<li><p>max_depth: Integer</p>
+<ul>
+<li><p>default: 6</p></li>
+<li><p>Maximium tree depth for base learners</p></li>
+</ul>
+</li>
+<li><p>objective: String</p>
+<ul>
+<li><p>default: multi:softmax</p></li>
+<li><p>Objective in training</p></li>
+</ul>
+</li>
+<li><p>subsample: float</p>
+<ul>
+<li><p>default: 1</p></li>
+<li><p>Subsample ratio of the training instance</p></li>
+</ul>
+</li>
+<li><p>gamma: float</p>
+<ul>
+<li><p>default: 0</p></li>
+<li><p>Minimium loss reduction required to make a furthre partition on a leaf node</p></li>
+</ul>
+</li>
+<li><p>n_jobs: Integer</p>
+<ul>
+<li><p>default: -1</p></li>
+<li><p>Number of parallel threads used to run xgboost</p></li>
+</ul>
+</li>
+<li><p>colsample_bytree: float</p>
+<ul>
+<li><p>default: 1</p></li>
+<li><p>Subsample ratio of columns when constructing each tree</p></li>
+</ul>
+</li>
+<li><p>booster: String</p>
+<ul>
+<li><p>default: gbtree</p></li>
+<li><p>Specify which booster to use: gbtree, gblinear or dart</p></li>
+</ul>
+</li>
+<li><p>min_child_weight: float</p>
+<ul>
+<li><p>default: 1</p></li>
+<li><p>Minimum sum of instance weight(hessian) needed in a child</p></li>
+</ul>
+</li>
+<li><p>reg_lambda: float</p>
+<ul>
+<li><p>default: 1</p></li>
+<li><p>L2 regularization term on weights. Increasing this value will make model more conservative</p></li>
+</ul>
+</li>
+<li><p>reg_alpha: float</p>
+<ul>
+<li><p>default: 0</p></li>
+<li><p>L1 regularization term on weights. Increasing this value will make model more conservative</p></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
 <div class="section" id="xgbregressor">
 <span id="plugin-model-dffml-model-xgboost-xgbregressor"></span><h3>xgbregressor<a class="headerlink" href="#xgbregressor" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>Model using xgboost to perform regression prediction via gradient boosted trees
 XGBoost is a leading software library for working with standard tabular data (the type of data you store in Pandas DataFrames,
 as opposed to more exotic types of data like images and videos). With careful parameter tuning, you can train highly accurate models.</p>
-<div class="section" id="examples">
-<h4>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="id5">
+<h4>Examples<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h4>
 <p>Command line usage</p>
 <p>First download the training and test files, change the headers to DFFML
 format.</p>

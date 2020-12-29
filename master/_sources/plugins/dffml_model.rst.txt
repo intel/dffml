@@ -5422,6 +5422,182 @@ dffml_model_xgboost
     pip install dffml-model-xgboost
 
 
+.. _plugin_model_dffml_model_xgboost_xgbclassifier:
+
+xgbclassifier
+~~~~~~~~~~~~~
+
+*Official*
+
+Model using xgboost to perform classification prediction via gradient boosted trees.
+XGBoost is a leading software library for working with standard tabular data (the type of data you store in Pandas DataFrames,
+as opposed to more exotic types of data like images and videos). With careful parameter tuning, you can train highly accurate models.
+
+Examples
+--------
+
+Command line usage
+
+First download the training and test files, change the headers to DFFML
+format. The first row is an encoding of the classifications, we want CSV
+headers for the column names.
+
+.. code-block::
+    :test:
+
+    $ wget http://download.tensorflow.org/data/iris_training.csv
+    $ wget http://download.tensorflow.org/data/iris_test.csv
+    $ sed -i 's/.*setosa,versicolor,virginica/SepalLength,SepalWidth,PetalLength,PetalWidth,classification/g' iris_training.csv iris_test.csv
+
+
+Run the train command
+
+.. code-block:: console
+    :test:
+
+    $ dffml train \
+        -sources train=csv \
+        -source-filename iris_training.csv \
+        -model xgbclassifier \
+        -model-features \
+          SepalLength:float:1 \
+          SepalWidth:float:1 \
+          PetalLength:float:1 \
+          PetalWidth:float:1 \
+        -model-predict classification \
+        -model-directory model \
+        -model-max_depth 3 \
+        -model-learning_rate 0.01 \
+        -model-learning_rate 0.01 \
+        -model-n_estimators 200 \
+        -model-reg_lambda 1 \
+        -model-reg_alpha 0 \
+        -model-gamma 0 \
+        -model-colsample_bytree 0 \
+        -model-subsample 1  
+
+
+Assess the accuracy 
+
+.. code-block:: console
+    :test:
+
+    $ dffml accuracy \
+        -sources train=csv \
+        -source-filename iris_test.csv \
+        -model xgbclassifier \
+        -model-features \
+          SepalLength:float:1 \
+          SepalWidth:float:1 \
+          PetalLength:float:1 \
+          PetalWidth:float:1 \
+        -model-predict classification \
+        -model-directory model 
+
+
+Make predictions
+
+.. code-block:: console
+    :test:
+
+    $ dffml predict all \
+        -sources train=csv \
+        -source-filename iris_test.csv \
+        -model xgbclassifier \
+        -model-features \
+          SepalLength:float:1 \
+          SepalWidth:float:1 \
+          PetalLength:float:1 \
+          PetalWidth:float:1 \
+        -model-predict classification \
+        -model-directory model 
+        
+
+Python usage
+
+.. literalinclude:: /../model/xgboost/examples/iris_classification.py
+
+Output
+
+.. code-block::
+
+    Test accuracy: 0.933333333333333
+    Training accuracy: 0.9703703703703703
+
+**Args**
+
+- directory: Path
+
+  - Directory where model should be saved
+
+- features: List of features
+
+  - Features on which we train the model
+
+- predict: Feature
+
+  - Value to be predicted
+
+- learning_rate: float
+
+  - default: 0.3
+  - Learning rate to train with
+
+- n_estimators: Integer
+
+  - default: 100
+  - Number of gradient boosted trees. Equivalent to the number of boosting rounds
+
+- max_depth: Integer
+
+  - default: 6
+  - Maximium tree depth for base learners
+
+- objective: String
+
+  - default: multi:softmax
+  - Objective in training
+
+- subsample: float
+
+  - default: 1
+  - Subsample ratio of the training instance
+
+- gamma: float
+
+  - default: 0
+  - Minimium loss reduction required to make a furthre partition on a leaf node
+
+- n_jobs: Integer
+
+  - default: -1
+  - Number of parallel threads used to run xgboost
+
+- colsample_bytree: float
+
+  - default: 1
+  - Subsample ratio of columns when constructing each tree
+
+- booster: String
+
+  - default: gbtree
+  - Specify which booster to use: gbtree, gblinear or dart
+
+- min_child_weight: float
+
+  - default: 1
+  - Minimum sum of instance weight(hessian) needed in a child
+
+- reg_lambda: float
+
+  - default: 1
+  - L2 regularization term on weights. Increasing this value will make model more conservative
+
+- reg_alpha: float
+
+  - default: 0
+  - L1 regularization term on weights. Increasing this value will make model more conservative
+
 .. _plugin_model_dffml_model_xgboost_xgbregressor:
 
 xgbregressor
