@@ -209,7 +209,6 @@ class XGBClassifierModel(SimpleModel):
         )
 
         self.saved.fit(x_data, y_data, eval_metric="merror")
-        print("\nTraining Successfully !!")
 
         # Save the trained model
         joblib.dump(self.saved, str(self.saved_filepath))
