@@ -28,7 +28,7 @@ class ConvNet(nn.Module):
         self.relu = nn.ReLU()
         self.pooling = nn.MaxPool2d(kernel_size=2)
 
-        self.linear = nn.Linear(in_features=1296, out_features=3)
+        self.linear = nn.Linear(in_features=16 * 9 * 9, out_features=3)
 
     def forward(self, x):
         # block 1
@@ -44,7 +44,7 @@ class ConvNet(nn.Module):
         x = self.pooling(self.relu(self.conv3(x)))
 
         # fully connected layer
-        x = self.linear(x.view(-1, 1296))
+        x = self.linear(x.view(-1, 16 * 9 * 9))
         return x
 
 
