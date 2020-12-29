@@ -1,0 +1,3 @@
+[dffml.model]
+lgbmclassifier = dffml_model_lightgbm.lgbmclassifier:LGBMClassifierModel
+lgbmregressor = dffml_model_lightgbm.lgbmregressor:LGBMRegressorModel

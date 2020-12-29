@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.4.0] - 2021-02-18
 ### Added
+- Add LGBMRegressor and LGBMClassifier
 - New model for Anomaly Detection
 - Ablity to specify maximum number of contexts running at a time
 - CLI and Python example usage of Custom Neural Network
