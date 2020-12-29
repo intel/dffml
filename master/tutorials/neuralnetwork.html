@@ -290,38 +290,86 @@ the forward method which is passed as list of layers under the model name key:</
 <span class="n">forward</span><span class="p">:</span>
   <span class="n">model</span><span class="p">:</span>
     <span class="c1"># block 1</span>
+    <span class="c1"># Image dimensions at the beginning: torch.Size([batch_size, 32, 150, 150])</span>
     <span class="o">-</span> <span class="n">conv1</span>
     <span class="o">-</span> <span class="n">relu</span>
     <span class="o">-</span> <span class="n">pooling</span>
     <span class="c1"># block 2</span>
+    <span class="c1"># Image dimensions after block 1: torch.Size([batch_size, 32, 75, 75])</span>
     <span class="o">-</span> <span class="n">conv2</span>
     <span class="o">-</span> <span class="n">relu</span>
     <span class="o">-</span> <span class="n">pooling</span>
     <span class="c1"># block 3</span>
+    <span class="c1"># Image dimensions after block 2: torch.Size([batch_size, 32, 37, 37])</span>
     <span class="o">-</span> <span class="n">conv2</span>
     <span class="o">-</span> <span class="n">relu</span>
     <span class="o">-</span> <span class="n">pooling</span>
     <span class="c1"># block 4</span>
+    <span class="c1"># Image dimensions after block 3: torch.Size([batch_size, 32, 18, 18])</span>
     <span class="o">-</span> <span class="n">conv3</span>
     <span class="o">-</span> <span class="n">relu</span>
     <span class="o">-</span> <span class="n">pooling</span>
     <span class="c1"># fully connected layer</span>
+    <span class="c1"># Image dimensions after block 4: torch.Size([batch_size, 16, 9, 9])</span>
+    <span class="c1"># As the `Linear` layer only accepts 1D Tensors (2D if we take into account the batch_size),</span>
+    <span class="c1"># We need to change the shape of the incoming Tensor i.e. flatten it in this case, so we use</span>
+    <span class="c1"># torch&#39;s `view` property which will change the incoming Tensor size to torch.Size([batch_size, 16*9*9]),</span>
+    <span class="c1"># hence the &#39;-1&#39; for the value of batch_size to be inferred from the remaining dimensions which is the </span>
+    <span class="c1"># batch_size specified already in this case. It is good practice not to hard code the batch_size in the network</span>
+    <span class="c1"># as we might want to change it in the future. This is what the Linear layer is fed as &quot;in_features: 1296&quot;.</span>
     <span class="o">-</span> <span class="n">view</span><span class="p">:</span>
       <span class="o">-</span> <span class="o">-</span><span class="mi">1</span>
       <span class="o">-</span> <span class="mi">1296</span>
     <span class="o">-</span> <span class="n">linear</span>
 </pre></div>
 </div>
+<p>To learn more about Tensor Views, visit <a class="reference external" href="https://pytorch.org/docs/stable/tensor_view.html">Tensor Views PyTorch Docs</a></p>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <p>Sequential layers can also be created by indenting the layers under a key!
 The layers definied inside the Sequential layer can be used again while defining the forward method in the
-following syntax: <cite>- key1.layer2</cite></p>
+following syntax: <cite>- block1.conv1</cite>
+More info about PyTorch’s Sequential Layers and other layers used can be found at the
+<a class="reference external" href="https://pytorch.org/docs/stable/nn.html">Official PyTorch Documentation - torch.nn module</a></p>
+<p>An example of creating <cite>Sequential Layers</cite> would be:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">example_model:</span>
+<span class="go">    block1:</span>
+<span class="go">        ...</span>
+<span class="gp">    #</span> One of the many Sequential layers in example_model
+<span class="go">    block2:</span>
+<span class="go">        conv2:</span>
+<span class="go">            name: Conv2d</span>
+<span class="go">            in_channels: 32</span>
+<span class="go">            out_channels: 16</span>
+<span class="go">            kernel_size: 3</span>
+<span class="go">            padding: 1</span>
+<span class="go">        relu:</span>
+<span class="go">            name: ReLU</span>
+<span class="go">        maxpooling:</span>
+<span class="go">            name: MaxPool2d</span>
+<span class="go">            kernel_size: 2</span>
+<span class="go">    block3:</span>
+<span class="go">        ...</span>
+<span class="go">    linear:</span>
+<span class="go">        ...</span>
+<span class="go">forward:</span>
+<span class="go">    model:</span>
+<span class="go">        - block1</span>
+<span class="go">        - block2</span>
+<span class="go">        - block3</span>
+<span class="go">        - block1.conv1 # Re-using a single layer inside another `Sequential Layer`</span>
+<span class="go">        - block2.maxpooling</span>
+<span class="go">        - view:</span>
+<span class="go">            - -1</span>
+<span class="go">            - 1296</span>
+<span class="go">        - linear</span>
+</pre></div>
+</div>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>If the forward method is not given in the YAML file, forward method is automatically created by appending
-the top level layers sequentially.</p>
+<p>If the forward method is not specified in the YAML file, it is automatically created by appending
+the top level layers (Sequential or Single) sequentially in the order they were defined in the file.</p>
 </div>
 <p>Train the model.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>dffml train \
@@ -503,7 +551,7 @@ the top level layers sequentially.</p>
         <span class="bp">self</span><span class="o">.</span><span class="n">relu</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">pooling</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">MaxPool2d</span><span class="p">(</span><span class="n">kernel_size</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">linear</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">in_features</span><span class="o">=</span><span class="mi">1296</span><span class="p">,</span> <span class="n">out_features</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">linear</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">in_features</span><span class="o">=</span><span class="mi">16</span> <span class="o">*</span> <span class="mi">9</span> <span class="o">*</span> <span class="mi">9</span><span class="p">,</span> <span class="n">out_features</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
         <span class="c1"># block 1</span>
@@ -519,7 +567,7 @@ the top level layers sequentially.</p>
         <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pooling</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">conv3</span><span class="p">(</span><span class="n">x</span><span class="p">)))</span>
 
         <span class="c1"># fully connected layer</span>
-        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">linear</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1296</span><span class="p">))</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">linear</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">16</span> <span class="o">*</span> <span class="mi">9</span> <span class="o">*</span> <span class="mi">9</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">x</span>
 
 

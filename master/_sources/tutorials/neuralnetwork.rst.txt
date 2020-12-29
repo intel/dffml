@@ -59,14 +59,54 @@ the forward method which is passed as list of layers under the model name key:
 
 .. literalinclude:: /../examples/rockpaperscissors/model.yaml
 
+To learn more about Tensor Views, visit `Tensor Views PyTorch Docs <https://pytorch.org/docs/stable/tensor_view.html>`_
+
 .. seealso::
     Sequential layers can also be created by indenting the layers under a key!
     The layers definied inside the Sequential layer can be used again while defining the forward method in the
-    following syntax: `- key1.layer2`
+    following syntax: `- block1.conv1`
+    More info about PyTorch's Sequential Layers and other layers used can be found at the
+    `Official PyTorch Documentation - torch.nn module <https://pytorch.org/docs/stable/nn.html>`_
+
+    An example of creating `Sequential Layers` would be:
+
+    .. code-block:: console
+
+        example_model:
+            block1:
+                ...
+            # One of the many Sequential layers in example_model
+            block2:
+                conv2:
+                    name: Conv2d
+                    in_channels: 32
+                    out_channels: 16
+                    kernel_size: 3
+                    padding: 1
+                relu:
+                    name: ReLU
+                maxpooling:
+                    name: MaxPool2d
+                    kernel_size: 2
+            block3:
+                ...
+            linear:
+                ...
+        forward:
+            model:
+                - block1
+                - block2
+                - block3
+                - block1.conv1 # Re-using a single layer inside another `Sequential Layer`
+                - block2.maxpooling
+                - view:
+                    - -1
+                    - 1296
+                - linear
 
 .. Note::
-    If the forward method is not given in the YAML file, forward method is automatically created by appending
-    the top level layers sequentially.
+    If the forward method is not specified in the YAML file, it is automatically created by appending
+    the top level layers (Sequential or Single) sequentially in the order they were defined in the file.
 
 Train the model.
 
