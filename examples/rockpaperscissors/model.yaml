@@ -29,22 +29,33 @@ model:
 forward:
   model:
     # block 1
+    # Image dimensions at the beginning: torch.Size([batch_size, 32, 150, 150])
     - conv1
     - relu
     - pooling
     # block 2
+    # Image dimensions after block 1: torch.Size([batch_size, 32, 75, 75])
     - conv2
     - relu
     - pooling
     # block 3
+    # Image dimensions after block 2: torch.Size([batch_size, 32, 37, 37])
     - conv2
     - relu
     - pooling
     # block 4
+    # Image dimensions after block 3: torch.Size([batch_size, 32, 18, 18])
     - conv3
     - relu
     - pooling
     # fully connected layer
+    # Image dimensions after block 4: torch.Size([batch_size, 16, 9, 9])
+    # As the `Linear` layer only accepts 1D Tensors (2D if we take into account the batch_size),
+    # We need to change the shape of the incoming Tensor i.e. flatten it in this case, so we use
+    # torch's `view` property which will change the incoming Tensor size to torch.Size([batch_size, 16*9*9]),
+    # hence the '-1' for the value of batch_size to be inferred from the remaining dimensions which is the 
+    # batch_size specified already in this case. It is good practice not to hard code the batch_size in the network
+    # as we might want to change it in the future. This is what the Linear layer is fed as "in_features: 1296".
     - view:
       - -1
       - 1296
