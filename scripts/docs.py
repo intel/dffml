@@ -2,6 +2,7 @@
 # Copyright (c) 2019 Intel Corporation
 import os
 import pwd
+import pathlib
 import inspect
 import argparse
 import importlib
@@ -157,10 +158,8 @@ def format_op(op):
     return "\n\n".join(build)
 
 
-def gen_docs(
-    entrypoint: str, modules: List[str], maintenance: str = "Official"
-):
-    per_module = {name: [None, "", []] for name in modules}
+def gen_docs(entrypoint: str, maintenance: str = "Official"):
+    per_module = {}
     packagesconfig = configparser.ConfigParser()
     packagesconfig.read("scripts/packagesconfig.ini")
     # For some reason duplicates are showing up
@@ -174,8 +173,7 @@ def gen_docs(
         if plugin_type == "opimp":
             plugin_type = "operation"
         module_name = i.module_name.split(".")[0]
-        if module_name not in modules:
-            continue
+        per_module.setdefault(module_name, [None, "", []])
         per_module[module_name][0] = importlib.import_module(module_name)
         per_module[module_name][1] = plugin_type
         doc = cls.__doc__
@@ -246,39 +244,21 @@ def main():
         help="Maintained as a part of DFFML or community managed",
     )
 
-    parser.add_argument(
-        "--care",
-        default="scripts/docs/care",
-        help="File with each line being: entrypoint package_name package_name...",
-    )
     args = parser.parse_args()
 
     with unittest.mock.patch("pwd.getpwuid", new=fake_getpwuid):
 
-        if getattr(args, "entrypoint", False) and getattr(
-            args, "modules", False
-        ):
-            print(gen_docs(args.entrypoint, args.modules, args.maintenance))
+        if getattr(args, "entrypoint", False):
+            print(gen_docs(args.entrypoint, args.maintenance))
             return
 
-        with open(args.care, "rb") as genspec:
-            for line in genspec:
-                entrypoint, modules = line.decode("utf-8").split(maxsplit=1)
-                modules = modules.split()
-                template = entrypoint.replace(".", "_") + ".rst"
-                output = os.path.join("docs", "plugins", template)
-                template = os.path.join(
-                    "scripts", "docs", "templates", template
-                )
-                with open(template, "rb") as template_fd, open(
-                    output, "wb"
-                ) as output_fd:
-                    output_fd.write(
-                        (
-                            template_fd.read().decode("utf-8")
-                            + gen_docs(entrypoint, modules)
-                        ).encode("utf-8")
-                    )
+        templates_dir = pathlib.Path("scripts", "docs", "templates")
+
+        for template_path in templates_dir.glob("dffml_*.rst"):
+            entrypoint = template_path.stem.replace("_", ".")
+            pathlib.Path("docs", "plugins", template_path.name).write_text(
+                template_path.read_text() + gen_docs(entrypoint)
+            )
 
 
 if __name__ == "__main__":
