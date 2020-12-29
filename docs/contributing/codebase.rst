@@ -62,9 +62,6 @@ Now that we've created the plugin, we need to add it to a few lists
     - Sample issue format: ``pypi: Add token for dffml-{PLUGIN_TYPE}-{NAME} to
       testing.yml``
 
-- Update ``scripts/docs/care`` to add your plugin name (with underscores instead
-  of hyphens) on the line for the respective plugin type.
-
 One-Two Punch
 -------------
 
