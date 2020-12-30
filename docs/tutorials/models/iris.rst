@@ -12,7 +12,7 @@ the ``dffml-model-tensorflow`` plugin.
 .. code-block:: console
     :test:
 
-    $ python -m pip install --use-feature=2020-resolver dffml-model-tensorflow
+    $ python -m pip install dffml-model-tensorflow
 
 Iris Dataset
 ------------

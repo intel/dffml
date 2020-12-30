@@ -206,7 +206,7 @@ To install your new source run
 .. code-block:: console
     :test:
 
-    $ python -m pip install --use-feature=2020-resolver -e .
+    $ python -m pip install -e .
 
 CLI Usage
 ---------

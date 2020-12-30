@@ -57,7 +57,7 @@ to look at JSON.
 .. code-block:: console
     :test:
 
-    $ python -m pip install --use-feature=2020-resolver dffml-config-yaml
+    $ python -m pip install dffml-config-yaml
 
 We'll be working from the top level directory of the ``shouldi`` package we
 created in the :doc:`/examples/shouldi` example.
@@ -79,7 +79,7 @@ the :doc:`/examples/shouldi` example.
     $ git clone --depth=1 https://github.com/intel/dffml dffml
     $ cd dffml
     $ cd examples/shouldi
-    $ python -m pip install --use-feature=2020-resolver -e .
+    $ python -m pip install -e .
 
 Config files are named after the dataflow they are associated with. In the
 :ref:`examples_shouldi_visualizing_the_dataflow` section of the
@@ -119,7 +119,7 @@ Let's install the HTTP API service.
 .. code-block:: console
     :test:
 
-    $ python -m pip install --use-feature=2020-resolver dffml-service-http
+    $ python -m pip install dffml-service-http
 
 HTTP Channel Config
 -------------------
@@ -210,7 +210,7 @@ We'll be using those operations, so we need to install them
 .. code-block:: console
     :test:
 
-    $ python -m pip install --use-feature=2020-resolver dffml-feature-git
+    $ python -m pip install dffml-feature-git
 
 The ``lines_of_code_to_comments`` operation will give use the ratio of the
 number of lines of comments to the number of lines of code.

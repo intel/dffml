@@ -17,7 +17,7 @@ logs.
     .. code-block:: console
         :test:
 
-        $ python -m pip install --use-feature=2020-resolver dffml-config-yaml
+        $ python -m pip install dffml-config-yaml
 
 Model
 -----

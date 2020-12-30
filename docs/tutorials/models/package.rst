@@ -59,7 +59,7 @@ package.
 
 .. code-block:: console
 
-    $ python -m pip install --use-feature=2020-resolver -e .
+    $ python -m pip install -e .
 
 Testing
 -------
@@ -215,7 +215,7 @@ And remember that any time we modify the **setup.py**, we have to re-install.
 .. code-block:: console
     :test:
 
-    $ python -m pip install --use-feature=2020-resolver -e .
+    $ python -m pip install -e .
 
 Command Line Usage
 ------------------

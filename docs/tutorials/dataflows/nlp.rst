@@ -19,7 +19,7 @@ To install DNNClassifier model and the above mentioned operations run:
 .. code-block:: console
     :test:
 
-    $ python -m pip install --use-feature=2020-resolver -U dffml-model-tensorflow dffml-operations-nlp
+    $ python -m pip install -U dffml-model-tensorflow dffml-operations-nlp
 
 Operation `remove_stopwords` cleans the text by removing most commanly used words which give the text little or no information eg. but, or, yet, it, is, am, etc.
 These words are called `StopWords`. 
@@ -188,7 +188,7 @@ Install the Naive Bayes Classifier by installing ``dffml-model-scikit``
 .. code-block:: console
     :test:
 
-    $ python -m pip install --use-feature=2020-resolver -U dffml-model-scikit
+    $ python -m pip install -U dffml-model-scikit
 
 Create training data:
 
