@@ -388,7 +388,6 @@ class Install(CMD):
             "-m",
             "pip",
             "install",
-            "--use-feature=2020-resolver",
         ]
         # Install to prefix, since --user sometimes fails
         if self.user:

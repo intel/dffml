@@ -179,7 +179,7 @@ fi
 # plugins that they depend on here
 
 if [ "x${PLUGIN}" == "xmodel/tensorflow_hub" ]; then
-  python -m pip install --use-feature=2020-resolver -U -e "./model/tensorflow"
+  python -m pip install -U -e "./model/tensorflow"
 fi
 
 if [[ "x${PLUGIN}" == "xmodel/spacy" ]]; then
@@ -188,17 +188,17 @@ if [[ "x${PLUGIN}" == "xmodel/spacy" ]]; then
 fi
 
 if [[ "x${PLUGIN}" == "xoperations/deploy" ]]; then
-  python -m pip install --use-feature=2020-resolver -U -e "./feature/git"
+  python -m pip install -U -e "./feature/git"
 fi
 
 if [[ "x${PLUGIN}" == "xoperations/nlp" ]]; then
   conda install -y -c conda-forge spacy
   python -m spacy download en_core_web_sm
-  python -m pip install --use-feature=2020-resolver -U -e "./model/tensorflow"
+  python -m pip install -U -e "./model/tensorflow"
 fi
 
 if [ "x${PLUGIN}" = "xexamples/shouldi" ]; then
-  python -m pip install --use-feature=2020-resolver -U -e "./feature/git"
+  python -m pip install -U -e "./feature/git"
 fi
 
 # ===========================  END  INTER DEPENDENCIES =========================

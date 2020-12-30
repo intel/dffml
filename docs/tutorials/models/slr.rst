@@ -266,7 +266,7 @@ information on the HTTP service.
 .. code-block:: console
     :test:
 
-    $ python -m pip install --use-feature=2020-resolver -U dffml-service-http
+    $ python -m pip install -U dffml-service-http
 
 We start the HTTP service and tell it that we want to make our model accessable
 via the HTTP :ref:`plugin_service_http_api_model` API.

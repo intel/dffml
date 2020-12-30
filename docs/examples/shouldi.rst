@@ -189,7 +189,7 @@ dependencies listed in **requirements.txt** as well.
 .. code-block:: console
     :test:
 
-    $ python -m pip install --use-feature=2020-resolver -e .
+    $ python -m pip install -e .
 
 Safety Operation
 ----------------
@@ -482,7 +482,7 @@ make entrypoint registrations take effect.
     :test:
     :replace: cmds[0].append("dffml")
 
-    $ python -m pip install --use-feature=2020-resolver --force-reinstall -e .
+    $ python -m pip install --force-reinstall -e .
 
 Now we should be able to run our new tool via the CLI! (Provided your ``$PATH``
 is set up correctly).
@@ -591,7 +591,7 @@ Re-install the package via pip to make registrations take effect.
 .. code-block:: console
     :test:
 
-    $ python -m pip install --use-feature=2020-resolver --force-reinstall -e .
+    $ python -m pip install --force-reinstall -e .
 
 After you've registered the operations, services such as the
 :doc:`/plugins/service/http/index` will have access to your operations.

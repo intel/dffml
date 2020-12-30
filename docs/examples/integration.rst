@@ -112,7 +112,7 @@ Download the Python client libraries for MySQL.
 .. code-block:: console
     :test:
 
-    $ python -m pip install --use-feature=2020-resolver -U \
+    $ python -m pip install -U \
         https://dev.mysql.com/get/Downloads/Connector-Python/mysql-connector-python-8.0.21.tar.gz
 
 Start MariaDB (functionally very similar to MySQL which its a fork of).
@@ -154,7 +154,7 @@ MariaDB/MySQL with DFFML.
     :test:
     :replace: cmds[0].append("dffml")
 
-    $ python -m pip install --use-feature=2020-resolver -U dffml-source-mysql
+    $ python -m pip install -U dffml-source-mysql
 
 To get our dummy data, we'll be using the GitHub v4 API to search for "todo".
 The search should return repos implementing a TODO app.
@@ -281,7 +281,7 @@ configs than ``json``.
 .. code-block:: console
     :test:
 
-    $ python -m pip install --use-feature=2020-resolver -U dffml-feature-git dffml-config-yaml
+    $ python -m pip install -U dffml-feature-git dffml-config-yaml
 
 The git operations / features rely on ``tokei``. We need to download and install
 it first.
@@ -411,7 +411,7 @@ another separate Python package from DFFML which we can install via ``pip``.
 .. code-block:: console
     :test:
 
-    $ python -m pip install --use-feature=2020-resolver -U dffml-model-tensorflow
+    $ python -m pip install -U dffml-model-tensorflow
 
 The model is a generic wrapper around Tensorflow's DNN estimator. We can use it
 to train on our dataset.
