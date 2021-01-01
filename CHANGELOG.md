@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
+- New model for Anomaly Detection 
 - Ablity to specify maximum number of contexts running at a time
 - CLI and Python example usage of Custom Neural Network
 - PyTorch loss function entrypoint style loading

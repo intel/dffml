@@ -1,4 +1,5 @@
 import random
+import pathlib
 import tempfile
 
 import numpy as np
@@ -13,7 +14,7 @@ from dffml.model.model import SimpleModel, ModelNotTrained
 from dffml.source.memory import MemorySource, MemorySourceConfig
 from dffml import AsyncTestCase, Feature, Features, accuracy, predict, train
 
-from dffml_model_anomalydetection.anomalydetection import AnomalyModel
+from dffml_model_scratch.anomalydetection import AnomalyModel
 
 
 class TestAnomalyModel(AsyncTestCase):
