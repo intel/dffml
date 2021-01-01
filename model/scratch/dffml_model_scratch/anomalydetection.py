@@ -111,8 +111,8 @@ class AnomalyModelConfig:
 class AnomalyModel(SimpleModel):
 
     """
-    Model for Anomaly Detection using multivariate Gaussian distribution to predict probabilities of all records in the dataset 
-    and identify outliers. F1 score is used as the evaluation metric for this model. This model works well as it recognises dependencies 
+    Model for Anomaly Detection using multivariate Gaussian distribution to predict probabilities of all records in the dataset
+    and identify outliers. F1 score is used as the evaluation metric for this model. This model works well as it recognises dependencies
     across various features, and works particularly well if the features have a Gaussian Distribution.
 
     Examples
@@ -123,25 +123,24 @@ class AnomalyModel(SimpleModel):
     Create training and test datasets
 
     .. literalinclude:: /../model/scratch/examples/anomalydetection_ex/trainex.sh
-    
+
     .. literalinclude:: /../model/scratch/examples/anomalydetection_ex/testex.sh
 
-    
+
     Train the model
 
     .. code-block:: console
         :test:
-    
-    
+
+
         $ dffml train \
             - sources f=csv \
             - source-filename trainex.csv \
             - model anomalydetection:AnomalyModel \
             - model-feature A:float:2 \
             - model-predict Y:int:1  \
-            - model-directory tempdir    
+            - model-directory tempdir
 
-    
     Assess the accuracy
 
     .. code-block:: console
@@ -153,14 +152,14 @@ class AnomalyModel(SimpleModel):
             -model anomalydetection:AnomalyModel \
             -model-feature A:float:2 \
             -model-predict Y:int:1 \
-            -model-directory tempdir 
-    
-    
+            -model-directory tempdir
+
+
     Make predictions
 
     .. code-block:: console
         :test:
-        
+
         $ dffml predict all \
             -sources f=csv \
             -source-filename testex.csv \
@@ -171,17 +170,17 @@ class AnomalyModel(SimpleModel):
 
 
     Python usage
-    
+
     .. literalinclude:: /../model/scratch/examples/anomalydetection_ex/detectoutliers.py
-    
-    
+
+
     Output
-    
+
     .. code-block::
 
         Test set F1 score : 0.8
         Training set F1 score : 0.888888888888889
-    
+
     """
 
     # The configuration class needs to be set as the CONFIG property
