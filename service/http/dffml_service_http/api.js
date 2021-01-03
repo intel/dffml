@@ -75,30 +75,6 @@ class DFFMLHTTPAPIModelContext extends DFFMLHTTPAPIObjectContext {
     return response.records;
   }
 
-  async accuracy (sources) {
-    var source_context_names = [];
-    for (var sctx of sources) {
-      source_context_names.push(sctx.label);
-    }
-
-    var response = await this.api.request("/model/" + this.label + "/accuracy", {
-      method: 'POST',
-      mode: 'cors',
-      cache: 'no-cache',
-      credentials: 'omit',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      redirect: 'follow',
-      referrer: 'no-referrer',
-      body: JSON.stringify(source_context_names),
-    });
-
-    response = await response.json();
-
-    return response.records;
-  }
-
   async predict (records) {
     var response = await this.api.request("/model/" + this.label + "/predict/0", {
       method: 'POST',
