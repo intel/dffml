@@ -95,6 +95,32 @@ class DFFMLHTTPAPIModelContext extends DFFMLHTTPAPIObjectContext {
   }
 }
 
+class DFFMLHTTPAPIScorerContext extends DFFMLHTTPAPIObjectContext {
+  async score(sources) {
+    var source_context_names = [];
+    for (var sctx of sources) {
+      source_context_names.push(sctx.label);
+    }
+
+    var response = await this.api.request("/scorer/" + this.label + "/score", {
+      method: 'POST',
+      mode: 'cors',
+      cache: 'no-cache',
+      credentials: 'omit',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      redirect: 'follow',
+      referrer: 'no-referrer',
+      body: JSON.stringify(source_context_names),
+    });
+
+    response = await response.json();
+
+    return response.records;
+  }
+}
+
 class DFFMLHTTPAPIObject {
   constructor(plugin_type, context_cls, api) {
     this.plugin_type = plugin_type;
@@ -149,6 +175,12 @@ class DFFMLHTTPAPIModel extends DFFMLHTTPAPIObject {
   }
 }
 
+class DFFMLHTTPAPIScorer extends DFFMLHTTPAPIObject {
+  constructor(api) {
+    super("scorer", DFFMLHTTPAPIScorerContext, api);
+  }
+}
+
 class DFFMLHTTPAPI {
   constructor(endpoint) {
     this.endpoint = endpoint;
@@ -199,5 +231,9 @@ class DFFMLHTTPAPI {
 
   model() {
     return new DFFMLHTTPAPIModel(this);
+  }
+
+  scorer() {
+    return new DFFMLHTTPAPIScorer(this);
   }
 }
