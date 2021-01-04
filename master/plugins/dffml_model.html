@@ -3,9 +3,9 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>Models &mdash; DFFML 0.3.7 documentation</title>
   
@@ -20,7 +20,10 @@
 
   
   
+
   
+  
+
   
 
   
@@ -56,7 +59,7 @@
           
 
           
-            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> DFFML
+            <a href="../index.html" class="icon icon-home"> DFFML
           
 
           
@@ -230,6 +233,8 @@
         <div class="rst-content">
         
           
+
+
 
 
 
@@ -7764,7 +7769,137 @@ $ sed -i &#39;s/.*setosa,versicolor,virginica/SepalLength,SepalWidth,PetalLength
 <div class="section" id="autoregressor">
 <span id="plugin-model-dffml-model-autosklearn-autoregressor"></span><h3>autoregressor<a class="headerlink" href="#autoregressor" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
-<p>No description</p>
+<p><code class="docutils literal notranslate"><span class="pre">autoregressor</span></code> / <code class="docutils literal notranslate"><span class="pre">AutoSklearnRegressorModel</span></code> will use <code class="docutils literal notranslate"><span class="pre">auto-sklearn</span></code>
+to train the a scikit model for you.</p>
+<p>This is AutoML, it will tune hyperparameters for you.</p>
+<p>Implemented using <a class="reference external" href="https://automl.github.io/auto-sklearn/master/api.html#regression">AutoSklearnRegressor</a>.</p>
+<p>First we create the training and testing datasets</p>
+<p><strong>train.csv</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Feature1</span><span class="p">,</span><span class="n">Feature2</span><span class="p">,</span><span class="n">TARGET</span>
+<span class="mf">0.93</span><span class="p">,</span><span class="mf">0.68</span><span class="p">,</span><span class="mf">3.89</span>
+<span class="mf">0.24</span><span class="p">,</span><span class="mf">0.42</span><span class="p">,</span><span class="mf">1.75</span>
+<span class="mf">0.36</span><span class="p">,</span><span class="mf">0.68</span><span class="p">,</span><span class="mf">2.75</span>
+<span class="mf">0.53</span><span class="p">,</span><span class="mf">0.31</span><span class="p">,</span><span class="mf">2.00</span>
+<span class="mf">0.29</span><span class="p">,</span><span class="mf">0.25</span><span class="p">,</span><span class="mf">1.32</span>
+<span class="mf">0.29</span><span class="p">,</span><span class="mf">0.52</span><span class="p">,</span><span class="mf">2.14</span>
+</pre></div>
+</div>
+<p><strong>test.csv</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Feature1</span><span class="p">,</span><span class="n">Feature2</span><span class="p">,</span><span class="n">TARGET</span>
+<span class="mf">0.57</span><span class="p">,</span><span class="mf">0.84</span><span class="p">,</span><span class="mf">3.65</span>
+<span class="mf">0.95</span><span class="p">,</span><span class="mf">0.19</span><span class="p">,</span><span class="mf">2.46</span>
+<span class="mf">0.23</span><span class="p">,</span><span class="mf">0.15</span><span class="p">,</span><span class="mf">0.93</span>
+</pre></div>
+</div>
+<p>Train the model</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml train <span class="se">\</span>
+    -model autoregressor <span class="se">\</span>
+    -model-predict TARGET:float:1 <span class="se">\</span>
+    -model-clstype int <span class="se">\</span>
+    -sources <span class="nv">f</span><span class="o">=</span>csv <span class="se">\</span>
+    -source-filename train.csv <span class="se">\</span>
+    -model-features <span class="se">\</span>
+      Feature1:float:1 <span class="se">\</span>
+      Feature2:float:1 <span class="se">\</span>
+    -model-time_left_for_this_task <span class="m">120</span> <span class="se">\</span>
+    -model-per_run_time_limit <span class="m">30</span> <span class="se">\</span>
+    -model-ensemble_size <span class="m">50</span> <span class="se">\</span>
+    -model-delete_tmp_folder_after_terminate False <span class="se">\</span>
+    -model-directory tempdir <span class="se">\</span>
+    -log debug
+</pre></div>
+</div>
+<p>Assess the accuracy</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml accuracy <span class="se">\</span>
+    -model autoregressor <span class="se">\</span>
+    -model-predict TARGET:float:1 <span class="se">\</span>
+    -model-directory tempdir <span class="se">\</span>
+    -sources <span class="nv">f</span><span class="o">=</span>csv <span class="se">\</span>
+    -source-filename test.csv <span class="se">\</span>
+    -model-features <span class="se">\</span>
+      Feature1:float:1 <span class="se">\</span>
+      Feature2:float:1 <span class="se">\</span>
+    -log critical
+<span class="go">0.9961211434899032</span>
+</pre></div>
+</div>
+<p>Make a file containing the data to predict on</p>
+<p><strong>predict.csv</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Feature1</span><span class="p">,</span><span class="n">Feature2</span>
+<span class="mf">0.57</span><span class="p">,</span><span class="mf">0.84</span>
+</pre></div>
+</div>
+<p>Make a prediction</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml predict all <span class="se">\</span>
+    -model autoregressor <span class="se">\</span>
+    -model-directory tempdir <span class="se">\</span>
+    -model-predict TARGET:float:1 <span class="se">\</span>
+    -sources <span class="nv">iris</span><span class="o">=</span>csv <span class="se">\</span>
+    -model-features <span class="se">\</span>
+      Feature1:float:1 <span class="se">\</span>
+      Feature2:float:1 <span class="se">\</span>
+    -source-filename predict.csv
+<span class="go">[</span>
+<span class="go">    {</span>
+<span class="go">        &quot;extra&quot;: {},</span>
+<span class="go">        &quot;features&quot;: {</span>
+<span class="go">            &quot;Feature1&quot;: 0.57,</span>
+<span class="go">            &quot;Feature2&quot;: 0.84</span>
+<span class="go">        },</span>
+<span class="go">        &quot;key&quot;: &quot;0&quot;,</span>
+<span class="go">        &quot;last_updated&quot;: &quot;2020-11-23T05:52:13Z&quot;,</span>
+<span class="go">        &quot;prediction&quot;: {</span>
+<span class="go">            &quot;TARGET&quot;: {</span>
+<span class="go">                &quot;confidence&quot;: NaN,</span>
+<span class="go">                &quot;value&quot;: 3.566799074411392</span>
+<span class="go">            }</span>
+<span class="go">        }</span>
+<span class="go">    }</span>
+<span class="go">]</span>
+</pre></div>
+</div>
+<p>The model can be trained on large datasets to get better accuracy
+output. The example shown above is to demonstrate the command line usage
+of the model.</p>
+<p>Example usage of using the model from Python</p>
+<p><strong>run.py</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">Features</span><span class="p">,</span> <span class="n">Feature</span>
+<span class="kn">from</span> <span class="nn">dffml.noasync</span> <span class="kn">import</span> <span class="n">train</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">,</span> <span class="n">predict</span>
+<span class="kn">from</span> <span class="nn">dffml_model_autosklearn</span> <span class="kn">import</span> <span class="n">AutoSklearnRegressorModel</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">AutoSklearnRegressorModel</span><span class="p">(</span>
+    <span class="n">features</span><span class="o">=</span><span class="n">Features</span><span class="p">(</span>
+        <span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;Feature1&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;Feature2&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+    <span class="p">),</span>
+    <span class="n">predict</span><span class="o">=</span><span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;TARGET&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+    <span class="n">directory</span><span class="o">=</span><span class="s2">&quot;tempdir-python&quot;</span><span class="p">,</span>
+    <span class="n">time_left_for_this_task</span><span class="o">=</span><span class="mi">120</span><span class="p">,</span>
+<span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="c1"># Train the model</span>
+    <span class="n">train</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="s2">&quot;train.csv&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Assess accuracy</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Accuracy:&quot;</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="s2">&quot;test.csv&quot;</span><span class="p">))</span>
+
+    <span class="c1"># Make prediction</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">features</span><span class="p">,</span> <span class="n">prediction</span> <span class="ow">in</span> <span class="n">predict</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="s2">&quot;predict.csv&quot;</span><span class="p">):</span>
+        <span class="n">features</span><span class="p">[</span><span class="s2">&quot;TARGET&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">prediction</span><span class="p">[</span><span class="s2">&quot;TARGET&quot;</span><span class="p">][</span><span class="s2">&quot;value&quot;</span><span class="p">]</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">features</span><span class="p">)</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Run the file</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python run.py
+<span class="go">Accuracy: 0.9961211434899032</span>
+<span class="go">{&#39;Feature1&#39;: 0.57, &#39;Feature2&#39;: 0.84, &#39;TARGET&#39;: 3.6180416345596313}</span>
+</pre></div>
+</div>
 <p><strong>Args</strong></p>
 <ul class="simple">
 <li><p>features: List of features</p>
@@ -7957,37 +8092,29 @@ $ sed -i &#39;s/.*setosa,versicolor,virginica/SepalLength,SepalWidth,PetalLength
            
           </div>
           <footer>
-  
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="dffml_operation.html" class="btn btn-neutral float-right" title="Operations" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="dffml_source.html" class="btn btn-neutral float-left" title="Sources" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
+        <a href="dffml_operation.html" class="btn btn-neutral float-right" title="Operations" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="dffml_source.html" class="btn btn-neutral float-left" title="Sources" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
-  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        
-        &copy; Copyright 2017 - 2020, Intel
+        &#169; Copyright 2017 - 2021, Intel.
 
     </p>
   </div>
     
     
     
-    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     
-    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
     
     provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
-
         </div>
       </div>
 
