@@ -1,6 +1,7 @@
 import os
 import sys
 import random
+import pathlib
 import tempfile
 import subprocess
 
@@ -101,17 +102,10 @@ class TestXGBRegressor(IntegrationCLITestCase):
         # Test fails if more than N data points were out of acceptable error
         self.assertLess(unacceptable_error, 10)
 
-    async def test_03_example(self):
-        # Path to target file
-        filepath = os.path.join(
-            os.path.dirname(__file__),
-            "..",
-            "examples",
-            "diabetesregression.py",
-        )
-        subprocess.check_call([sys.executable, filepath])
-
 
 class TestXGBClassifierDocstring(IntegrationCLITestCase):
     async def test_docstring(self):
-        await run_consoletest(XGBRegressorModel)
+        await run_consoletest(
+            XGBRegressorModel,
+            docs_root_dir=pathlib.Path(__file__).parents[3] / "docs",
+        )
