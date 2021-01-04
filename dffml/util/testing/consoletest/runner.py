@@ -44,6 +44,9 @@ async def run_nodes(
                 if lines is not None:
                     lines = tuple(map(int, lines.split("-")))
 
+                if node["source"].startswith("/"):
+                    node["source"] = node["source"][1:]
+
                 src = os.path.join(str(docs_root_dir), node["source"])
                 dst = os.path.join(ctx["cwd"], *node["filepath"])
 
