@@ -448,7 +448,7 @@ Make sure to update <code class="docutils literal notranslate"><span class="pre"
 </pre></div>
 </div>
 <p>Download the Python client libraries for MySQL.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python -m pip install --use-feature<span class="o">=</span><span class="m">2020</span>-resolver -U <span class="se">\</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python -m pip install -U <span class="se">\</span>
     https://dev.mysql.com/get/Downloads/Connector-Python/mysql-connector-python-8.0.21.tar.gz
 </pre></div>
 </div>
@@ -476,7 +476,7 @@ repos for real.</p>
 <p>The randomly assigned maintenance status and URL for the repo will be stored in
 the database. We need to install the <code class="docutils literal notranslate"><span class="pre">dffml-source-mysql</span></code> plugin to use
 MariaDB/MySQL with DFFML.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python -m pip install --use-feature<span class="o">=</span><span class="m">2020</span>-resolver -U dffml-source-mysql
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python -m pip install -U dffml-source-mysql
 </pre></div>
 </div>
 <p>To get our dummy data, we’ll be using the GitHub v4 API to search for “todo”.
@@ -615,7 +615,7 @@ understanding of Operations and DataFlows, see the
 a separate Python package from DFFML which we can install via <code class="docutils literal notranslate"><span class="pre">pip</span></code>. We’ll
 also use the <code class="docutils literal notranslate"><span class="pre">yaml</span></code> configloader, since that creates more user friendly
 configs than <code class="docutils literal notranslate"><span class="pre">json</span></code>.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python -m pip install --use-feature<span class="o">=</span><span class="m">2020</span>-resolver -U dffml-feature-git dffml-config-yaml
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python -m pip install -U dffml-feature-git dffml-config-yaml
 </pre></div>
 </div>
 <p>The git operations / features rely on <code class="docutils literal notranslate"><span class="pre">tokei</span></code>. We need to download and install
@@ -785,7 +785,7 @@ the quarter they were generated for.</p></li>
 <h2>Training our Model<a class="headerlink" href="#training-our-model" title="Permalink to this headline">¶</a></h2>
 <p>The model we’ll be using is a part of <code class="docutils literal notranslate"><span class="pre">dffml-model-tensorflow</span></code>, which is
 another separate Python package from DFFML which we can install via <code class="docutils literal notranslate"><span class="pre">pip</span></code>.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python -m pip install --use-feature<span class="o">=</span><span class="m">2020</span>-resolver -U dffml-model-tensorflow
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python -m pip install -U dffml-model-tensorflow
 </pre></div>
 </div>
 <p>The model is a generic wrapper around Tensorflow’s DNN estimator. We can use it

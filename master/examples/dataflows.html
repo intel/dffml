@@ -266,7 +266,7 @@ without the need to hardcode in <code class="docutils literal notranslate"><span
 representations of DataFlows are not fun to hand edit. YAML looks a lot cleaner.</p>
 <p>We’re going to install the <code class="docutils literal notranslate"><span class="pre">dffml-config-yaml</span></code> package so that we don’t have
 to look at JSON.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python -m pip install --use-feature<span class="o">=</span><span class="m">2020</span>-resolver dffml-config-yaml
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python -m pip install dffml-config-yaml
 </pre></div>
 </div>
 <p>We’ll be working from the top level directory of the <code class="docutils literal notranslate"><span class="pre">shouldi</span></code> package we
@@ -279,7 +279,7 @@ the <a class="reference internal" href="shouldi.html"><span class="doc">Meta Sta
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> git clone --depth<span class="o">=</span><span class="m">1</span> https://github.com/intel/dffml dffml
 <span class="gp">$</span> <span class="nb">cd</span> dffml
 <span class="gp">$</span> <span class="nb">cd</span> examples/shouldi
-<span class="gp">$</span> python -m pip install --use-feature<span class="o">=</span><span class="m">2020</span>-resolver -e .
+<span class="gp">$</span> python -m pip install -e .
 </pre></div>
 </div>
 <p>Config files are named after the dataflow they are associated with. In the
@@ -309,7 +309,7 @@ when a particular word immediately follows the bots name.</p>
 <p>The HTTP server was the first <code class="docutils literal notranslate"><span class="pre">MultiComm</span></code> written for DFFML. It’s channels of
 communication are URL paths (Example: <code class="docutils literal notranslate"><span class="pre">/some/url/path</span></code>).</p>
 <p>Let’s install the HTTP API service.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python -m pip install --use-feature<span class="o">=</span><span class="m">2020</span>-resolver dffml-service-http
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python -m pip install dffml-service-http
 </pre></div>
 </div>
 </div>
@@ -384,7 +384,7 @@ items that you want evaluated.</p>
 Git and source code analysis related operations (a list of all available
 operations can be found on the <a class="reference internal" href="../plugins/dffml_operation.html"><span class="doc">Operations</span></a> plugins page).</p>
 <p>We’ll be using those operations, so we need to install them</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python -m pip install --use-feature<span class="o">=</span><span class="m">2020</span>-resolver dffml-feature-git
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python -m pip install dffml-feature-git
 </pre></div>
 </div>
 <p>The <code class="docutils literal notranslate"><span class="pre">lines_of_code_to_comments</span></code> operation will give use the ratio of the

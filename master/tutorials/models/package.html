@@ -262,7 +262,7 @@ which means anytime Python import’s our package, it’s going to use the versi
 that we’re working on here. If you don’t pass <code class="docutils literal notranslate"><span class="pre">-e</span></code> then anytime you make
 changes in this directory, they won’t take effect until you reinstall the
 package.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python -m pip install --use-feature<span class="o">=</span><span class="m">2020</span>-resolver -e .
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python -m pip install -e .
 </pre></div>
 </div>
 </div>
@@ -442,7 +442,7 @@ path on the right side.</p>
 </pre></div>
 </div>
 <p>And remember that any time we modify the <strong>setup.py</strong>, we have to re-install.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python -m pip install --use-feature<span class="o">=</span><span class="m">2020</span>-resolver -e .
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python -m pip install -e .
 </pre></div>
 </div>
 </div>

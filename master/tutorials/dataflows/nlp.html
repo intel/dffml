@@ -230,7 +230,7 @@ we will be using the tensorflow DNNClassifier model
 <p>We will use two operations <a class="reference internal" href="../../plugins/dffml_operation.html#plugin-operation-dffml-operations-nlp-remove-stopwords"><span class="std std-ref">remove_stopwords</span></a> and <a class="reference internal" href="../../plugins/dffml_operation.html#plugin-operation-dffml-operations-nlp-get-embedding"><span class="std std-ref">get_embedding</span></a>.
 Internally, both of these operations use <a class="reference external" href="https://spacy.io/usage/spacy-101">spacy</a> functions.</p>
 <p>To install DNNClassifier model and the above mentioned operations run:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python -m pip install --use-feature<span class="o">=</span><span class="m">2020</span>-resolver -U dffml-model-tensorflow dffml-operations-nlp
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python -m pip install -U dffml-model-tensorflow dffml-operations-nlp
 </pre></div>
 </div>
 <p>Operation <cite>remove_stopwords</cite> cleans the text by removing most commanly used words which give the text little or no information eg. but, or, yet, it, is, am, etc.
@@ -360,7 +360,7 @@ is (1,10,96).</p>
 <p>Now we will see how to use traditional ML algorithm like Naive Bayes Classifier available in <code class="docutils literal notranslate"><span class="pre">dffml-model-scikit</span></code> (<a class="reference internal" href="../../plugins/dffml_model.html#plugin-model-dffml-model-scikit"><span class="std std-ref">dffml_model_scikit</span></a>) for
 classification.</p>
 <p>Install the Naive Bayes Classifier by installing <code class="docutils literal notranslate"><span class="pre">dffml-model-scikit</span></code></p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python -m pip install --use-feature<span class="o">=</span><span class="m">2020</span>-resolver -U dffml-model-scikit
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python -m pip install -U dffml-model-scikit
 </pre></div>
 </div>
 <p>Create training data:</p>

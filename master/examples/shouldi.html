@@ -384,7 +384,7 @@ the latest version and use that version.</p>
 </div>
 <p>Install the newly created package in development mode to install the
 dependencies listed in <strong>requirements.txt</strong> as well.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python -m pip install --use-feature<span class="o">=</span><span class="m">2020</span>-resolver -e .
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python -m pip install -e .
 </pre></div>
 </div>
 </div>
@@ -927,7 +927,7 @@ those shortly.</p>
 </div>
 <p>When we change the <code class="docutils literal notranslate"><span class="pre">entry_points</span></code> we need to re-install the package via pip to
 make entrypoint registrations take effect.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python -m pip install --use-feature<span class="o">=</span><span class="m">2020</span>-resolver --force-reinstall -e .
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python -m pip install --force-reinstall -e .
 </pre></div>
 </div>
 <p>Now we should be able to run our new tool via the CLI! (Provided your <code class="docutils literal notranslate"><span class="pre">$PATH</span></code>
@@ -1024,7 +1024,7 @@ DFFML, we need to register them with Python’s <code class="docutils literal no
 </pre></div>
 </div>
 <p>Re-install the package via pip to make registrations take effect.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python -m pip install --use-feature<span class="o">=</span><span class="m">2020</span>-resolver --force-reinstall -e .
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python -m pip install --force-reinstall -e .
 </pre></div>
 </div>
 <p>After you’ve registered the operations, services such as the
