@@ -12,7 +12,15 @@ from dffml.util.entrypoint import entrypoint
 from dffml.feature.feature import Feature, Features
 from dffml.model.model import SimpleModel, ModelNotTrained
 from dffml.source.memory import MemorySource, MemorySourceConfig
-from dffml import AsyncTestCase, Feature, Features, accuracy, predict, train, run_consoletest
+from dffml import (
+    AsyncTestCase,
+    Feature,
+    Features,
+    accuracy,
+    predict,
+    train,
+    run_consoletest,
+)
 
 from dffml_model_scratch.anomalydetection import AnomalyModel
 
