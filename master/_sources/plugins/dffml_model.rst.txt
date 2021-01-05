@@ -370,47 +370,415 @@ predict).
   - default: [12, 40, 15]
   - List length is the number of hidden layers in the network. Each entry in the list is the number of nodes in that hidden layer
 
-.. _plugin_model_dffml_model_tensorflow_hub:
+.. _plugin_model_dffml_model_xgboost:
 
-dffml_model_tensorflow_hub
-++++++++++++++++++++++++++
+dffml_model_xgboost
++++++++++++++++++++
 
 .. code-block:: console
 
-    pip install dffml-model-tensorflow-hub
+    pip install dffml-model-xgboost
 
 
-.. _plugin_model_dffml_model_tensorflow_hub_text_classifier:
+.. _plugin_model_dffml_model_xgboost_xgbclassifier:
 
-text_classifier
-~~~~~~~~~~~~~~~
+xgbclassifier
+~~~~~~~~~~~~~
 
 *Official*
 
-Implemented using Tensorflow hub pretrained models.
+Model using xgboost to perform classification prediction via gradient boosted trees.
+XGBoost is a leading software library for working with standard tabular data (the type of data you store in Pandas DataFrames,
+as opposed to more exotic types of data like images and videos). With careful parameter tuning, you can train highly accurate models.
+
+Examples
+--------
+
+Command line usage
+
+First download the training and test files, change the headers to DFFML
+format. The first row is an encoding of the classifications, we want CSV
+headers for the column names.
+
+.. code-block::
+    :test:
+
+    $ wget http://download.tensorflow.org/data/iris_training.csv
+    $ wget http://download.tensorflow.org/data/iris_test.csv
+    $ sed -i 's/.*setosa,versicolor,virginica/SepalLength,SepalWidth,PetalLength,PetalWidth,classification/g' iris_training.csv iris_test.csv
 
 
-.. literalinclude:: /../model/tensorflow_hub/examples/tfhub_text_classifier/train_data.sh
+Run the train command
 
-.. literalinclude:: /../model/tensorflow_hub/examples/tfhub_text_classifier/test_data.sh
+.. code-block:: console
+    :test:
 
-Train the model
+    $ dffml train \
+        -sources train=csv \
+        -source-filename iris_training.csv \
+        -model xgbclassifier \
+        -model-features \
+          SepalLength:float:1 \
+          SepalWidth:float:1 \
+          PetalLength:float:1 \
+          PetalWidth:float:1 \
+        -model-predict classification \
+        -model-directory model \
+        -model-max_depth 3 \
+        -model-learning_rate 0.01 \
+        -model-learning_rate 0.01 \
+        -model-n_estimators 200 \
+        -model-reg_lambda 1 \
+        -model-reg_alpha 0 \
+        -model-gamma 0 \
+        -model-colsample_bytree 0 \
+        -model-subsample 1  
 
-.. literalinclude:: /../model/tensorflow_hub/examples/tfhub_text_classifier/train.sh
 
-Assess the accuracy
+Assess the accuracy 
 
-.. literalinclude:: /../model/tensorflow_hub/examples/tfhub_text_classifier/accuracy.sh
+.. code-block:: console
+    :test:
+
+    $ dffml accuracy \
+        -sources train=csv \
+        -source-filename iris_test.csv \
+        -model xgbclassifier \
+        -model-features \
+          SepalLength:float:1 \
+          SepalWidth:float:1 \
+          PetalLength:float:1 \
+          PetalWidth:float:1 \
+        -model-predict classification \
+        -model-directory model 
+
+
+Make predictions
+
+.. code-block:: console
+    :test:
+
+    $ dffml predict all \
+        -sources train=csv \
+        -source-filename iris_test.csv \
+        -model xgbclassifier \
+        -model-features \
+          SepalLength:float:1 \
+          SepalWidth:float:1 \
+          PetalLength:float:1 \
+          PetalWidth:float:1 \
+        -model-predict classification \
+        -model-directory model 
+        
+
+Python usage
+
+.. literalinclude:: /../model/xgboost/examples/iris_classification.py
 
 Output
 
 .. code-block::
 
-    0.5
+    Test accuracy: 0.933333333333333
+    Training accuracy: 0.9703703703703703
+
+**Args**
+
+- directory: Path
+
+  - Directory where model should be saved
+
+- features: List of features
+
+  - Features on which we train the model
+
+- predict: Feature
+
+  - Value to be predicted
+
+- learning_rate: float
+
+  - default: 0.3
+  - Learning rate to train with
+
+- n_estimators: Integer
+
+  - default: 100
+  - Number of gradient boosted trees. Equivalent to the number of boosting rounds
+
+- max_depth: Integer
+
+  - default: 6
+  - Maximium tree depth for base learners
+
+- objective: String
+
+  - default: multi:softmax
+  - Objective in training
+
+- subsample: float
+
+  - default: 1
+  - Subsample ratio of the training instance
+
+- gamma: float
+
+  - default: 0
+  - Minimium loss reduction required to make a furthre partition on a leaf node
+
+- n_jobs: Integer
+
+  - default: -1
+  - Number of parallel threads used to run xgboost
+
+- colsample_bytree: float
+
+  - default: 1
+  - Subsample ratio of columns when constructing each tree
+
+- booster: String
+
+  - default: gbtree
+  - Specify which booster to use: gbtree, gblinear or dart
+
+- min_child_weight: float
+
+  - default: 1
+  - Minimum sum of instance weight(hessian) needed in a child
+
+- reg_lambda: float
+
+  - default: 1
+  - L2 regularization term on weights. Increasing this value will make model more conservative
+
+- reg_alpha: float
+
+  - default: 0
+  - L1 regularization term on weights. Increasing this value will make model more conservative
+
+.. _plugin_model_dffml_model_xgboost_xgbregressor:
+
+xgbregressor
+~~~~~~~~~~~~
+
+*Official*
+
+Model using xgboost to perform regression prediction via gradient boosted trees
+XGBoost is a leading software library for working with standard tabular data (the type of data you store in Pandas DataFrames,
+as opposed to more exotic types of data like images and videos). With careful parameter tuning, you can train highly accurate models.
+
+Examples
+--------
+
+Command line usage
+
+First download the training and test files, change the headers to DFFML
+format.
+
+.. code-block::
+    :test:
+
+    $ wget http://download.tensorflow.org/data/iris_training.csv
+    $ wget http://download.tensorflow.org/data/iris_test.csv
+    $ sed -i 's/.*setosa,versicolor,virginica/SepalLength,SepalWidth,PetalLength,PetalWidth,classification/g' iris_training.csv iris_test.csv
+
+
+Run the train command
+
+.. code-block:: console
+    :test:
+
+    $ dffml train \
+        -sources train=csv \
+        -source-filename iris_training.csv \
+        -model xgbregressor \
+        -model-features \
+          SepalLength:float:1 \
+          SepalWidth:float:1 \
+          PetalLength:float:1 \
+          PetalWidth:float:1 \
+        -model-predict classification \
+        -model-directory model \
+        -model-max_depth 3 \
+        -model-learning_rate 0.01 \
+        -model-n_estimators 200 \
+        -model-reg_lambda 1 \
+        -model-reg_alpha 0 \
+        -model-gamma 0 \
+        -model-colsample_bytree 0 \
+        -model-subsample 1  
+
+
+Assess the accuracy 
+
+.. code-block:: console
+    :test:
+
+    $ dffml accuracy \
+        -sources train=csv \
+        -source-filename iris_test.csv \
+        -model xgbregressor \
+        -model-features \
+          SepalLength:float:1 \
+          SepalWidth:float:1 \
+          PetalLength:float:1 \
+          PetalWidth:float:1 \
+        -model-predict classification \
+        -model-directory model 
+    
+Output
+
+.. code-block::
+
+    accuracy: 0.8841466984766406
+
+
+Make predictions
+
+.. code-block:: console
+    :test:
+
+    $ dffml predict all \
+        -sources train=csv \
+        -source-filename iris_test.csv \
+        -model xgbregressor \
+        -model-features \
+          SepalLength:float:1 \
+          SepalWidth:float:1 \
+          PetalLength:float:1 \
+          PetalWidth:float:1 \
+        -model-predict classification \
+        -model-directory model 
+
+Python usage
+
+**run.py**
+
+.. literalinclude:: /../model/xgboost/examples/diabetesregression.py
+    :test:
+    :filepath: run.py
+
+Output
+
+.. code-block::
+    :test:
+
+    $ python run.py
+    Test accuracy: 0.6669655406927468
+    Training accuracy: 0.819782501866115
+
+**Args**
+
+- directory: Path
+
+  - Directory where model should be saved
+
+- features: List of features
+
+  - Features on which we train the model
+
+- predict: Feature
+
+  - Value to be predicted
+
+- learning_rate: float
+
+  - default: 0.05
+  - Learning rate to train with
+
+- n_estimators: Integer
+
+  - default: 1000
+  - Number of gradient boosted trees. Equivalent to the number of boosting rounds
+
+- max_depth: Integer
+
+  - default: 6
+  - Maximium tree depth for base learners
+
+- subsample: float
+
+  - default: 1
+  - Subsample ratio of the training instance
+
+- gamma: float
+
+  - default: 0
+  - Minimium loss reduction required to make a furthre partition on a leaf node
+
+- n_jobs: Integer
+
+  - default: -1
+  - Number of parallel threads used to run xgboost
+
+- colsample_bytree: float
+
+  - default: 1
+  - Subsample ratio of columns when constructing each tree
+
+- booster: String
+
+  - default: gbtree
+  - Specify which booster to use: gbtree, gblinear or dart
+
+- min_child_weight: float
+
+  - default: 0
+  - Minimum sum of instance weight(hessian) needed in a child
+
+- reg_lambda: float
+
+  - default: 1
+  - L2 regularization term on weights. Increasing this value will make model more conservative
+
+- reg_alpha: float
+
+  - default: 0
+  - L1 regularization term on weights. Increasing this value will make model more conservative
+
+.. _plugin_model_dffml_model_vowpalWabbit:
+
+dffml_model_vowpalWabbit
+++++++++++++++++++++++++
+
+.. code-block:: console
+
+    pip install dffml-model-vowpalWabbit
+
+
+.. _plugin_model_dffml_model_vowpalWabbit_vwmodel:
+
+vwmodel
+~~~~~~~
+
+*Official*
+
+Implemented using Vowpal Wabbit.
+
+First we create the training and testing datasets
+
+.. literalinclude:: /../model/vowpalWabbit/examples/train_data.sh
+
+.. literalinclude:: /../model/vowpalWabbit/examples/test_data.sh
+
+Train the model
+
+.. literalinclude:: /../model/vowpalWabbit/examples/train.sh
+
+Assess the accuracy
+
+.. literalinclude:: /../model/vowpalWabbit/examples/accuracy.sh
+
+Output
+
+.. code-block::
+
+    0.38683876649129145
+
 
 Make a prediction
 
-.. literalinclude:: /../model/tensorflow_hub/examples/tfhub_text_classifier/predict.sh
+.. literalinclude:: /../model/vowpalWabbit/examples/predict.sh
 
 Output
 
@@ -420,113 +788,75 @@ Output
         {
             "extra": {},
             "features": {
-                "sentence": "I am not feeling good",
-                "sentiment": 0
+                "A": "| price:.46 sqft:.4 age:.10 1924"
             },
             "key": "0",
-            "last_updated": "2020-05-14T20:14:30Z",
+            "last_updated": "2020-05-29T16:36:57Z",
             "prediction": {
-                "sentiment": {
-                    "confidence": 0.9999992847442627,
-                    "value": 1
-                }
-            }
-        },
-        {
-            "extra": {},
-            "features": {
-                "sentence": "Our trip was full of adventures",
-                "sentiment": 1
-            },
-            "key": "1",
-            "last_updated": "2020-05-14T20:14:30Z",
-            "prediction": {
-                "sentiment": {
-                    "confidence": 0.9999088048934937,
-                    "value": 1
+                "B": {
+                    "confidence": 0.38683876649129145,
+                    "value": 0.0
                 }
             }
         }
     ]
 
-
-
-Example usage of Tensorflow_hub Text Classifier model using python API
-
-.. literalinclude:: /../model/tensorflow_hub/examples/tfhub_text_classifier/textclassifier.py
-
 **Args**
-
-- predict: Feature
-
-  - Feature name holding classification value
-
-- classifications: List of strings
-
-  - Options for value of classification
 
 - features: List of features
 
-  - Features to train on
+- predict: Feature
+
+  - Feature to predict
 
 - directory: Path
 
   - Directory where state should be saved
 
-- trainable: String
+- class_cost: List of features
 
-  - default: True
-  - Tweak pretrained model by training again
+  - default: None
+  - Features with name `Cost_{class}` contaning cost of `class` for each input example, used when `csoaa` is used
 
-- batch_size: Integer
+- task: String
 
-  - default: 120
-  - Batch size
+  - default: regression
+  - Task to perform, possible values are `classification`, `regression`
 
-- max_seq_length: Integer
-
-  - default: 256
-  - Length of sentence, used in preprocessing of input for bert embedding
-
-- add_layers: String
+- use_binary_label: String
 
   - default: False
-  - Add layers on the top of pretrianed model/layer
+  - Convert target labels to -1 and 1 for binary classification
 
-- embedType: String
+- vwcmd: List of strings
+
+  - default: []
+  - Command Line Arguements as per vowpal wabbit convention
+
+- namespace: List of strings
+
+  - default: []
+  - Namespace for input features. Should be in format {namespace}_{feature name}
+
+- importance: Feature
 
   - default: None
-  - Type of pretrained embedding model, required to be set to `bert` to use bert pretrained embedding
+  - Feature containing `importance` of each example, used in conversion of input data to vowpal wabbit input format
 
-- layers: List of strings
+- base: Feature
 
   - default: None
-  - Extra layers to be added on top of pretrained model
+  - Feature containing `base` for each example, used for residual regression
 
-- model_path: String
+- tag: Feature
 
-  - default: https://tfhub.dev/google/tf2-preview/gnews-swivel-20dim-with-oov/1
-  - Pretrained model path/url
+  - default: None
+  - Feature to be used as `tag` in conversion of data to vowpal wabbit input format
 
-- optimizer: String
+- noconvert: String
 
-  - default: adam
-  - Optimizer used by model
-
-- metrics: String
-
-  - default: accuracy
-  - Metric used to evaluate model
-
-- clstype: Type
-
-  - default: <class 'str'>
-  - Data type of classifications values
-
-- epochs: Integer
-
-  - default: 10
-  - Number of iterations to pass over all records in a source
+  - default: False
+  - Do not convert record features to vowpal wabbit input format
 
 .. _plugin_model_dffml_model_transformers:
 
@@ -1426,6 +1756,366 @@ is value of the flag `is_training`.
   - default: 1
   - Multiple threads for converting example to features
 
+.. _plugin_model_dffml_model_tensorflow_hub:
+
+dffml_model_tensorflow_hub
+++++++++++++++++++++++++++
+
+.. code-block:: console
+
+    pip install dffml-model-tensorflow-hub
+
+
+.. _plugin_model_dffml_model_tensorflow_hub_text_classifier:
+
+text_classifier
+~~~~~~~~~~~~~~~
+
+*Official*
+
+Implemented using Tensorflow hub pretrained models.
+
+
+.. literalinclude:: /../model/tensorflow_hub/examples/tfhub_text_classifier/train_data.sh
+
+.. literalinclude:: /../model/tensorflow_hub/examples/tfhub_text_classifier/test_data.sh
+
+Train the model
+
+.. literalinclude:: /../model/tensorflow_hub/examples/tfhub_text_classifier/train.sh
+
+Assess the accuracy
+
+.. literalinclude:: /../model/tensorflow_hub/examples/tfhub_text_classifier/accuracy.sh
+
+Output
+
+.. code-block::
+
+    0.5
+
+Make a prediction
+
+.. literalinclude:: /../model/tensorflow_hub/examples/tfhub_text_classifier/predict.sh
+
+Output
+
+.. code-block:: json
+
+    [
+        {
+            "extra": {},
+            "features": {
+                "sentence": "I am not feeling good",
+                "sentiment": 0
+            },
+            "key": "0",
+            "last_updated": "2020-05-14T20:14:30Z",
+            "prediction": {
+                "sentiment": {
+                    "confidence": 0.9999992847442627,
+                    "value": 1
+                }
+            }
+        },
+        {
+            "extra": {},
+            "features": {
+                "sentence": "Our trip was full of adventures",
+                "sentiment": 1
+            },
+            "key": "1",
+            "last_updated": "2020-05-14T20:14:30Z",
+            "prediction": {
+                "sentiment": {
+                    "confidence": 0.9999088048934937,
+                    "value": 1
+                }
+            }
+        }
+    ]
+
+
+
+Example usage of Tensorflow_hub Text Classifier model using python API
+
+.. literalinclude:: /../model/tensorflow_hub/examples/tfhub_text_classifier/textclassifier.py
+
+**Args**
+
+- predict: Feature
+
+  - Feature name holding classification value
+
+- classifications: List of strings
+
+  - Options for value of classification
+
+- features: List of features
+
+  - Features to train on
+
+- directory: Path
+
+  - Directory where state should be saved
+
+- trainable: String
+
+  - default: True
+  - Tweak pretrained model by training again
+
+- batch_size: Integer
+
+  - default: 120
+  - Batch size
+
+- max_seq_length: Integer
+
+  - default: 256
+  - Length of sentence, used in preprocessing of input for bert embedding
+
+- add_layers: String
+
+  - default: False
+  - Add layers on the top of pretrianed model/layer
+
+- embedType: String
+
+  - default: None
+  - Type of pretrained embedding model, required to be set to `bert` to use bert pretrained embedding
+
+- layers: List of strings
+
+  - default: None
+  - Extra layers to be added on top of pretrained model
+
+- model_path: String
+
+  - default: https://tfhub.dev/google/tf2-preview/gnews-swivel-20dim-with-oov/1
+  - Pretrained model path/url
+
+- optimizer: String
+
+  - default: adam
+  - Optimizer used by model
+
+- metrics: String
+
+  - default: accuracy
+  - Metric used to evaluate model
+
+- clstype: Type
+
+  - default: <class 'str'>
+  - Data type of classifications values
+
+- epochs: Integer
+
+  - default: 10
+  - Number of iterations to pass over all records in a source
+
+.. _plugin_model_dffml_model_spacy:
+
+dffml_model_spacy
++++++++++++++++++
+
+.. code-block:: console
+
+    pip install dffml-model-spacy
+
+
+.. _plugin_model_dffml_model_spacy_spacyner:
+
+spacyner
+~~~~~~~~
+
+*Official*
+
+Implemented using `Spacy statistical models <https://spacy.io/usage/training>`_ .
+
+.. note::
+
+    You must download ``en_core_web_sm`` before using this model
+
+    .. code-block:: console
+        :test:
+
+        $ python -m spacy download en_core_web_sm
+
+First we create the training and testing datasets.
+
+Training data:
+
+**train.json**
+
+.. code-block:: json
+    :test:
+    :filepath: train.json
+
+    {
+        "data": [
+            {
+                "sentence": "I went to London and Berlin.",
+                "entities": [
+                    {
+                        "start":10,
+                        "end": 16,
+                        "tag": "LOC"
+                    },
+                    {
+                        "start":21,
+                        "end": 27,
+                        "tag": "LOC"
+                    }
+                ]
+            },
+            {
+                "sentence": "Who is Alex?",
+                "entities": [
+                    {
+                        "start":7,
+                        "end": 11,
+                        "tag": "PERSON"
+                    }
+                ]
+            }
+        ]
+    }
+
+Testing data:
+
+**test.json**
+
+.. code-block:: json
+    :test:
+    :filepath: test.json
+
+    {
+        "data": [
+            {
+                "sentence": "Alex went to London?"
+            }
+        ]
+    }
+
+Train the model
+
+.. code-block:: console
+    :test:
+
+    $ dffml train \
+        -model spacyner \
+        -sources s=op \
+        -source-opimp dffml_model_spacy.ner.utils:parser \
+        -source-args train.json False \
+        -model-model_name_or_path en_core_web_sm \
+        -model-directory temp \
+        -model-n_iter 5 \
+        -log debug
+
+Assess the accuracy
+
+.. code-block:: console
+    :test:
+
+    $ dffml accuracy \
+        -model spacyner \
+        -sources s=op \
+        -source-opimp dffml_model_spacy.ner.utils:parser \
+        -source-args train.json False \
+        -model-model_name_or_path en_core_web_sm \
+        -model-directory temp \
+        -model-n_iter 5 \
+        -log debug
+    0.0
+
+Make a prediction
+
+.. code-block:: console
+    :test:
+
+    $ dffml predict all \
+        -model spacyner \
+        -sources s=op \
+        -source-opimp dffml_model_spacy.ner.utils:parser \
+        -source-args test.json True \
+        -model-model_name_or_path en_core_web_sm \
+        -model-directory temp \
+        -model-n_iter 5 \
+        -log debug
+    [
+        {
+            "extra": {},
+            "features": {
+                "entities": [],
+                "sentence": "Alex went to London?"
+            },
+            "key": 0,
+            "last_updated": "2020-07-27T16:26:18Z",
+            "prediction": {
+                "Answer": {
+                    "confidence": null,
+                    "value": [
+                        [
+                            "Alex",
+                            "PERSON"
+                        ],
+                        [
+                            "London",
+                            "GPE"
+                        ]
+                    ]
+                }
+            }
+        }
+    ]
+
+The model can be trained on large datasets to get the expected
+output. The example shown above is to demonstrate the commandline usage
+of the model.
+
+In the above train, accuracy and predict commands, :ref:`plugin_source_dffml_op` source is used to
+read and parse data from json file before feeding it to the model. The function used by opsource to parse json data
+is:
+
+.. literalinclude:: /../model/spacy/dffml_model_spacy/ner/utils.py
+
+The location of the function is passed using:
+
+.. code-block:: console
+
+        -source-opimp dffml_model_spacy.ner.utils:parser
+
+And the arguments to `parser` are passed by:
+
+.. code-block:: console
+
+        -source-args train.json False
+
+where `train.json` is the name of file containing training data and the bool `False`
+is value of the flag `is_predicting`.
+
+**Args**
+
+- directory: String
+
+  - Output directory
+
+- model_name_or_path: String
+
+  - default: None
+  - Model name or path to saved model. Defaults to blank 'en' model.
+
+- n_iter: Integer
+
+  - default: 10
+  - Number of training iterations
+
+- dropout: float
+
+  - default: 0.5
+  - Dropout rate to be used during training
+
 .. _plugin_model_dffml_model_scratch:
 
 dffml_model_scratch
@@ -1841,330 +2531,6 @@ Ensure that `predict` and `accuracy` for these algorithms uses training data.
   - Directory where state should be saved
 
 
-
-.. _plugin_model_dffml_model_vowpalWabbit:
-
-dffml_model_vowpalWabbit
-++++++++++++++++++++++++
-
-.. code-block:: console
-
-    pip install dffml-model-vowpalWabbit
-
-
-.. _plugin_model_dffml_model_vowpalWabbit_vwmodel:
-
-vwmodel
-~~~~~~~
-
-*Official*
-
-Implemented using Vowpal Wabbit.
-
-First we create the training and testing datasets
-
-.. literalinclude:: /../model/vowpalWabbit/examples/train_data.sh
-
-.. literalinclude:: /../model/vowpalWabbit/examples/test_data.sh
-
-Train the model
-
-.. literalinclude:: /../model/vowpalWabbit/examples/train.sh
-
-Assess the accuracy
-
-.. literalinclude:: /../model/vowpalWabbit/examples/accuracy.sh
-
-Output
-
-.. code-block::
-
-    0.38683876649129145
-
-
-Make a prediction
-
-.. literalinclude:: /../model/vowpalWabbit/examples/predict.sh
-
-Output
-
-.. code-block:: json
-
-    [
-        {
-            "extra": {},
-            "features": {
-                "A": "| price:.46 sqft:.4 age:.10 1924"
-            },
-            "key": "0",
-            "last_updated": "2020-05-29T16:36:57Z",
-            "prediction": {
-                "B": {
-                    "confidence": 0.38683876649129145,
-                    "value": 0.0
-                }
-            }
-        }
-    ]
-
-**Args**
-
-- features: List of features
-
-- predict: Feature
-
-  - Feature to predict
-
-- directory: Path
-
-  - Directory where state should be saved
-
-- class_cost: List of features
-
-  - default: None
-  - Features with name `Cost_{class}` contaning cost of `class` for each input example, used when `csoaa` is used
-
-- task: String
-
-  - default: regression
-  - Task to perform, possible values are `classification`, `regression`
-
-- use_binary_label: String
-
-  - default: False
-  - Convert target labels to -1 and 1 for binary classification
-
-- vwcmd: List of strings
-
-  - default: []
-  - Command Line Arguements as per vowpal wabbit convention
-
-- namespace: List of strings
-
-  - default: []
-  - Namespace for input features. Should be in format {namespace}_{feature name}
-
-- importance: Feature
-
-  - default: None
-  - Feature containing `importance` of each example, used in conversion of input data to vowpal wabbit input format
-
-- base: Feature
-
-  - default: None
-  - Feature containing `base` for each example, used for residual regression
-
-- tag: Feature
-
-  - default: None
-  - Feature to be used as `tag` in conversion of data to vowpal wabbit input format
-
-- noconvert: String
-
-  - default: False
-  - Do not convert record features to vowpal wabbit input format
-
-.. _plugin_model_dffml_model_spacy:
-
-dffml_model_spacy
-+++++++++++++++++
-
-.. code-block:: console
-
-    pip install dffml-model-spacy
-
-
-.. _plugin_model_dffml_model_spacy_spacyner:
-
-spacyner
-~~~~~~~~
-
-*Official*
-
-Implemented using `Spacy statistical models <https://spacy.io/usage/training>`_ .
-
-.. note::
-
-    You must download ``en_core_web_sm`` before using this model
-
-    .. code-block:: console
-        :test:
-
-        $ python -m spacy download en_core_web_sm
-
-First we create the training and testing datasets.
-
-Training data:
-
-**train.json**
-
-.. code-block:: json
-    :test:
-    :filepath: train.json
-
-    {
-        "data": [
-            {
-                "sentence": "I went to London and Berlin.",
-                "entities": [
-                    {
-                        "start":10,
-                        "end": 16,
-                        "tag": "LOC"
-                    },
-                    {
-                        "start":21,
-                        "end": 27,
-                        "tag": "LOC"
-                    }
-                ]
-            },
-            {
-                "sentence": "Who is Alex?",
-                "entities": [
-                    {
-                        "start":7,
-                        "end": 11,
-                        "tag": "PERSON"
-                    }
-                ]
-            }
-        ]
-    }
-
-Testing data:
-
-**test.json**
-
-.. code-block:: json
-    :test:
-    :filepath: test.json
-
-    {
-        "data": [
-            {
-                "sentence": "Alex went to London?"
-            }
-        ]
-    }
-
-Train the model
-
-.. code-block:: console
-    :test:
-
-    $ dffml train \
-        -model spacyner \
-        -sources s=op \
-        -source-opimp dffml_model_spacy.ner.utils:parser \
-        -source-args train.json False \
-        -model-model_name_or_path en_core_web_sm \
-        -model-directory temp \
-        -model-n_iter 5 \
-        -log debug
-
-Assess the accuracy
-
-.. code-block:: console
-    :test:
-
-    $ dffml accuracy \
-        -model spacyner \
-        -sources s=op \
-        -source-opimp dffml_model_spacy.ner.utils:parser \
-        -source-args train.json False \
-        -model-model_name_or_path en_core_web_sm \
-        -model-directory temp \
-        -model-n_iter 5 \
-        -log debug
-    0.0
-
-Make a prediction
-
-.. code-block:: console
-    :test:
-
-    $ dffml predict all \
-        -model spacyner \
-        -sources s=op \
-        -source-opimp dffml_model_spacy.ner.utils:parser \
-        -source-args test.json True \
-        -model-model_name_or_path en_core_web_sm \
-        -model-directory temp \
-        -model-n_iter 5 \
-        -log debug
-    [
-        {
-            "extra": {},
-            "features": {
-                "entities": [],
-                "sentence": "Alex went to London?"
-            },
-            "key": 0,
-            "last_updated": "2020-07-27T16:26:18Z",
-            "prediction": {
-                "Answer": {
-                    "confidence": null,
-                    "value": [
-                        [
-                            "Alex",
-                            "PERSON"
-                        ],
-                        [
-                            "London",
-                            "GPE"
-                        ]
-                    ]
-                }
-            }
-        }
-    ]
-
-The model can be trained on large datasets to get the expected
-output. The example shown above is to demonstrate the commandline usage
-of the model.
-
-In the above train, accuracy and predict commands, :ref:`plugin_source_dffml_op` source is used to
-read and parse data from json file before feeding it to the model. The function used by opsource to parse json data
-is:
-
-.. literalinclude:: /../model/spacy/dffml_model_spacy/ner/utils.py
-
-The location of the function is passed using:
-
-.. code-block:: console
-
-        -source-opimp dffml_model_spacy.ner.utils:parser
-
-And the arguments to `parser` are passed by:
-
-.. code-block:: console
-
-        -source-args train.json False
-
-where `train.json` is the name of file containing training data and the bool `False`
-is value of the flag `is_predicting`.
-
-**Args**
-
-- directory: String
-
-  - Output directory
-
-- model_name_or_path: String
-
-  - default: None
-  - Model name or path to saved model. Defaults to blank 'en' model.
-
-- n_iter: Integer
-
-  - default: 10
-  - Number of training iterations
-
-- dropout: float
-
-  - default: 0.5
-  - Dropout rate to be used during training
 
 .. _plugin_model_dffml_model_pytorch:
 
@@ -5412,371 +5778,151 @@ No description
   - default: None
   - Extra layers to be added on top of pretrained model
 
-.. _plugin_model_dffml_model_xgboost:
+.. _plugin_model_dffml_model_daal4py:
 
-dffml_model_xgboost
+dffml_model_daal4py
 +++++++++++++++++++
 
 .. code-block:: console
 
-    pip install dffml-model-xgboost
+    pip install dffml-model-daal4py
 
 
-.. _plugin_model_dffml_model_xgboost_xgbclassifier:
+.. _plugin_model_dffml_model_daal4py_daal4pylr:
 
-xgbclassifier
-~~~~~~~~~~~~~
+daal4pylr
+~~~~~~~~~
 
 *Official*
 
-Model using xgboost to perform classification prediction via gradient boosted trees.
-XGBoost is a leading software library for working with standard tabular data (the type of data you store in Pandas DataFrames,
-as opposed to more exotic types of data like images and videos). With careful parameter tuning, you can train highly accurate models.
+Implemented using daal4py.
 
-Examples
---------
+First we create the training and testing datasets
 
-Command line usage
-
-First download the training and test files, change the headers to DFFML
-format. The first row is an encoding of the classifications, we want CSV
-headers for the column names.
+**train.csv**
 
 .. code-block::
     :test:
+    :filepath: train.csv
 
-    $ wget http://download.tensorflow.org/data/iris_training.csv
-    $ wget http://download.tensorflow.org/data/iris_test.csv
-    $ sed -i 's/.*setosa,versicolor,virginica/SepalLength,SepalWidth,PetalLength,PetalWidth,classification/g' iris_training.csv iris_test.csv
+    f1,ans
+    12.4,11.2
+    14.3,12.5
+    14.5,12.7
+    14.9,13.1
+    16.1,14.1
+    16.9,14.8
+    16.5,14.4
+    15.4,13.4
+    17.0,14.9
+    17.9,15.6
+    18.8,16.4
+    20.3,17.7
+    22.4,19.6
+    19.4,16.9
+    15.5,14.0
+    16.7,14.6
 
+**test.csv**
 
-Run the train command
+.. code-block::
+    :test:
+    :filepath: test.csv
+
+    f1,ans
+    18.8,16.4
+    20.3,17.7
+    22.4,19.6
+    19.4,16.9
+    15.5,14.0
+    16.7,14.6
+
+Train the model
 
 .. code-block:: console
     :test:
 
     $ dffml train \
-        -sources train=csv \
-        -source-filename iris_training.csv \
-        -model xgbclassifier \
-        -model-features \
-          SepalLength:float:1 \
-          SepalWidth:float:1 \
-          PetalLength:float:1 \
-          PetalWidth:float:1 \
-        -model-predict classification \
-        -model-directory model \
-        -model-max_depth 3 \
-        -model-learning_rate 0.01 \
-        -model-learning_rate 0.01 \
-        -model-n_estimators 200 \
-        -model-reg_lambda 1 \
-        -model-reg_alpha 0 \
-        -model-gamma 0 \
-        -model-colsample_bytree 0 \
-        -model-subsample 1  
+        -model daal4pylr \
+        -model-features f1:float:1 \
+        -model-predict ans:int:1 \
+        -model-directory tempdir \
+        -sources f=csv \
+        -source-filename train.csv
 
-
-Assess the accuracy 
+Assess the accuracy
 
 .. code-block:: console
     :test:
 
     $ dffml accuracy \
-        -sources train=csv \
-        -source-filename iris_test.csv \
-        -model xgbclassifier \
-        -model-features \
-          SepalLength:float:1 \
-          SepalWidth:float:1 \
-          PetalLength:float:1 \
-          PetalWidth:float:1 \
-        -model-predict classification \
-        -model-directory model 
+        -model daal4pylr \
+        -model-features f1:float:1 \
+        -model-predict ans:int:1 \
+        -model-directory tempdir \
+        -sources f=csv \
+        -source-filename test.csv
+    0.6666666666666666
 
-
-Make predictions
+Make a prediction
 
 .. code-block:: console
     :test:
 
-    $ dffml predict all \
-        -sources train=csv \
-        -source-filename iris_test.csv \
-        -model xgbclassifier \
-        -model-features \
-          SepalLength:float:1 \
-          SepalWidth:float:1 \
-          PetalLength:float:1 \
-          PetalWidth:float:1 \
-        -model-predict classification \
-        -model-directory model 
-        
+    $ echo -e 'f1,ans\n0.8,1\n' | \
+      dffml predict all \
+        -model daal4pylr \
+        -model-features f1:float:1 \
+        -model-predict ans:int:1 \
+        -model-directory tempdir \
+        -sources f=csv \
+        -source-filename /dev/stdin
+    [
+        {
+            "extra": {},
+            "features": {
+                "ans": 1,
+                "f1": 0.8
+            },
+            "key": "0",
+            "last_updated": "2020-07-22T02:53:11Z",
+            "prediction": {
+                "ans": {
+                    "confidence": null,
+                    "value": 1.1907472649730522
+                }
+            }
+        }
+    ]
 
-Python usage
-
-.. literalinclude:: /../model/xgboost/examples/iris_classification.py
-
-Output
-
-.. code-block::
-
-    Test accuracy: 0.933333333333333
-    Training accuracy: 0.9703703703703703
-
-**Args**
-
-- directory: Path
-
-  - Directory where model should be saved
-
-- features: List of features
-
-  - Features on which we train the model
-
-- predict: Feature
-
-  - Value to be predicted
-
-- learning_rate: float
-
-  - default: 0.3
-  - Learning rate to train with
-
-- n_estimators: Integer
-
-  - default: 100
-  - Number of gradient boosted trees. Equivalent to the number of boosting rounds
-
-- max_depth: Integer
-
-  - default: 6
-  - Maximium tree depth for base learners
-
-- objective: String
-
-  - default: multi:softmax
-  - Objective in training
-
-- subsample: float
-
-  - default: 1
-  - Subsample ratio of the training instance
-
-- gamma: float
-
-  - default: 0
-  - Minimium loss reduction required to make a furthre partition on a leaf node
-
-- n_jobs: Integer
-
-  - default: -1
-  - Number of parallel threads used to run xgboost
-
-- colsample_bytree: float
-
-  - default: 1
-  - Subsample ratio of columns when constructing each tree
-
-- booster: String
-
-  - default: gbtree
-  - Specify which booster to use: gbtree, gblinear or dart
-
-- min_child_weight: float
-
-  - default: 1
-  - Minimum sum of instance weight(hessian) needed in a child
-
-- reg_lambda: float
-
-  - default: 1
-  - L2 regularization term on weights. Increasing this value will make model more conservative
-
-- reg_alpha: float
-
-  - default: 0
-  - L1 regularization term on weights. Increasing this value will make model more conservative
-
-.. _plugin_model_dffml_model_xgboost_xgbregressor:
-
-xgbregressor
-~~~~~~~~~~~~
-
-*Official*
-
-Model using xgboost to perform regression prediction via gradient boosted trees
-XGBoost is a leading software library for working with standard tabular data (the type of data you store in Pandas DataFrames,
-as opposed to more exotic types of data like images and videos). With careful parameter tuning, you can train highly accurate models.
-
-Examples
---------
-
-Command line usage
-
-First download the training and test files, change the headers to DFFML
-format.
-
-.. code-block::
-    :test:
-
-    $ wget http://download.tensorflow.org/data/iris_training.csv
-    $ wget http://download.tensorflow.org/data/iris_test.csv
-    $ sed -i 's/.*setosa,versicolor,virginica/SepalLength,SepalWidth,PetalLength,PetalWidth,classification/g' iris_training.csv iris_test.csv
-
-
-Run the train command
-
-.. code-block:: console
-    :test:
-
-    $ dffml train \
-        -sources train=csv \
-        -source-filename iris_training.csv \
-        -model xgbregressor \
-        -model-features \
-          SepalLength:float:1 \
-          SepalWidth:float:1 \
-          PetalLength:float:1 \
-          PetalWidth:float:1 \
-        -model-predict classification \
-        -model-directory model \
-        -model-max_depth 3 \
-        -model-learning_rate 0.01 \
-        -model-n_estimators 200 \
-        -model-reg_lambda 1 \
-        -model-reg_alpha 0 \
-        -model-gamma 0 \
-        -model-colsample_bytree 0 \
-        -model-subsample 1  
-
-
-Assess the accuracy 
-
-.. code-block:: console
-    :test:
-
-    $ dffml accuracy \
-        -sources train=csv \
-        -source-filename iris_test.csv \
-        -model xgbregressor \
-        -model-features \
-          SepalLength:float:1 \
-          SepalWidth:float:1 \
-          PetalLength:float:1 \
-          PetalWidth:float:1 \
-        -model-predict classification \
-        -model-directory model 
-    
-Output
-
-.. code-block::
-
-    accuracy: 0.8841466984766406
-
-
-Make predictions
-
-.. code-block:: console
-    :test:
-
-    $ dffml predict all \
-        -sources train=csv \
-        -source-filename iris_test.csv \
-        -model xgbregressor \
-        -model-features \
-          SepalLength:float:1 \
-          SepalWidth:float:1 \
-          PetalLength:float:1 \
-          PetalWidth:float:1 \
-        -model-predict classification \
-        -model-directory model 
-
-Python usage
+Example usage of daal4py Linear Regression model using python API
 
 **run.py**
 
-.. literalinclude:: /../model/xgboost/examples/diabetesregression.py
+.. literalinclude:: /../model/daal4py/examples/lr/lr.py
     :test:
     :filepath: run.py
 
-Output
+Run the file
 
-.. code-block::
+.. code-block:: console
     :test:
 
     $ python run.py
-    Test accuracy: 0.6669655406927468
-    Training accuracy: 0.819782501866115
 
 **Args**
 
-- directory: Path
+- predict: Feature
 
-  - Directory where model should be saved
+  - Label or the value to be predicted
 
 - features: List of features
 
-  - Features on which we train the model
+  - Features to train on. For SLR only 1 allowed
 
-- predict: Feature
+- directory: Path
 
-  - Value to be predicted
-
-- learning_rate: float
-
-  - default: 0.05
-  - Learning rate to train with
-
-- n_estimators: Integer
-
-  - default: 1000
-  - Number of gradient boosted trees. Equivalent to the number of boosting rounds
-
-- max_depth: Integer
-
-  - default: 6
-  - Maximium tree depth for base learners
-
-- subsample: float
-
-  - default: 1
-  - Subsample ratio of the training instance
-
-- gamma: float
-
-  - default: 0
-  - Minimium loss reduction required to make a furthre partition on a leaf node
-
-- n_jobs: Integer
-
-  - default: -1
-  - Number of parallel threads used to run xgboost
-
-- colsample_bytree: float
-
-  - default: 1
-  - Subsample ratio of columns when constructing each tree
-
-- booster: String
-
-  - default: gbtree
-  - Specify which booster to use: gbtree, gblinear or dart
-
-- min_child_weight: float
-
-  - default: 0
-  - Minimum sum of instance weight(hessian) needed in a child
-
-- reg_lambda: float
-
-  - default: 1
-  - L2 regularization term on weights. Increasing this value will make model more conservative
-
-- reg_alpha: float
-
-  - default: 0
-  - L1 regularization term on weights. Increasing this value will make model more conservative
+  - Directory where state should be saved
 
 .. _plugin_model_dffml_model_autosklearn:
 

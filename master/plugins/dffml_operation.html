@@ -152,17 +152,12 @@
 <li class="toctree-l4"><a class="reference internal" href="#work">work</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#dffml-operations-binsec">dffml_operations_binsec</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#cleanup-rpm">cleanup_rpm</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#files-in-rpm">files_in_rpm</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#is-binary-pie">is_binary_pie</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#url-to-urlbytes">url_to_urlbytes</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#urlbytes-to-rpmfile">urlbytes_to_rpmfile</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#urlbytes-to-tarfile">urlbytes_to_tarfile</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="#dffml-feature-auth">dffml_feature_auth</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#scrypt">scrypt</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#shouldi">shouldi</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#cleanup-pypi-package">cleanup_pypi_package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pypi-package-contents">pypi_package_contents</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pypi-package-json">pypi_package_json</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#run-bandit">run_bandit</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#safety-check">safety_check</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#dffml-operations-nlp">dffml_operations_nlp</a><ul>
@@ -187,6 +182,31 @@
 <li class="toctree-l4"><a class="reference internal" href="#flatten">flatten</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#normalize">normalize</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#resize">resize</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#dffml-operations-deploy">dffml_operations_deploy</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#check-if-default-branch">check_if_default_branch</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#check-secret-match">check_secret_match</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#docker-build-image">docker_build_image</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#get-image-tag">get_image_tag</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#get-running-containers">get_running_containers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#get-status-running-containers">get_status_running_containers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#get-url-from-payload">get_url_from_payload</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#parse-docker-commands">parse_docker_commands</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#restart-running-containers">restart_running_containers</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#dffml-operations-binsec">dffml_operations_binsec</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#cleanup-rpm">cleanup_rpm</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#files-in-rpm">files_in_rpm</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#is-binary-pie">is_binary_pie</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#url-to-urlbytes">url_to_urlbytes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#urlbytes-to-rpmfile">urlbytes_to_rpmfile</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#urlbytes-to-tarfile">urlbytes_to_tarfile</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#dffml-feature-auth">dffml_feature_auth</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#scrypt">scrypt</a></li>
 </ul>
 </li>
 </ul>
@@ -1818,110 +1838,77 @@ check it’s releases page to make sure you’re installing the latest version.<
 </ul>
 </div>
 </div>
-<div class="section" id="dffml-operations-binsec">
-<span id="plugin-operation-dffml-operations-binsec"></span><h2>dffml_operations_binsec<a class="headerlink" href="#dffml-operations-binsec" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install dffml-operations-binsec</span>
+<div class="section" id="shouldi">
+<span id="plugin-operation-shouldi"></span><h2>shouldi<a class="headerlink" href="#shouldi" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install shouldi</span>
 </pre></div>
 </div>
-<div class="section" id="cleanup-rpm">
-<span id="plugin-operation-dffml-operations-binsec-cleanup-rpm"></span><h3>cleanup_rpm<a class="headerlink" href="#cleanup-rpm" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="cleanup-pypi-package">
+<span id="plugin-operation-shouldi-cleanup-pypi-package"></span><h3>cleanup_pypi_package<a class="headerlink" href="#cleanup-pypi-package" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
-<p>No description</p>
+<p>Remove the directory containing the source code release.</p>
 <p><strong>Stage: cleanup</strong></p>
 <p><strong>Inputs</strong></p>
 <ul class="simple">
-<li><p>rpm: RPMObject(type: python_obj)</p></li>
+<li><p>directory: run_bandit.inputs.pkg(type: str)</p></li>
 </ul>
 </div>
-<div class="section" id="files-in-rpm">
-<span id="plugin-operation-dffml-operations-binsec-files-in-rpm"></span><h3>files_in_rpm<a class="headerlink" href="#files-in-rpm" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="pypi-package-contents">
+<span id="plugin-operation-shouldi-pypi-package-contents"></span><h3>pypi_package_contents<a class="headerlink" href="#pypi-package-contents" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<p>Download a source code release and extract it to a temporary directory.</p>
+<p><strong>Stage: processing</strong></p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>url: pypi_package_contents.inputs.url(type: str)</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>directory: run_bandit.inputs.pkg(type: str)</p></li>
+</ul>
+</div>
+<div class="section" id="pypi-package-json">
+<span id="plugin-operation-shouldi-pypi-package-json"></span><h3>pypi_package_json<a class="headerlink" href="#pypi-package-json" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<p>Download the information on the package in JSON format.</p>
+<p><strong>Stage: processing</strong></p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>package: safety_check.inputs.package(type: str)</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>version: safety_check.inputs.version(type: str)</p></li>
+<li><p>url: pypi_package_contents.inputs.url(type: str)</p></li>
+</ul>
+</div>
+<div class="section" id="run-bandit">
+<span id="plugin-operation-shouldi-run-bandit"></span><h3>run_bandit<a class="headerlink" href="#run-bandit" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<p>CLI usage: dffml service dev run -log debug shouldi.bandit:run_bandit -pkg .</p>
+<p><strong>Stage: processing</strong></p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>pkg: run_bandit.inputs.pkg(type: str)</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>result: run_bandit.outputs.result(type: map)</p></li>
+</ul>
+</div>
+<div class="section" id="safety-check">
+<span id="plugin-operation-shouldi-safety-check"></span><h3>safety_check<a class="headerlink" href="#safety-check" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>No description</p>
 <p><strong>Stage: processing</strong></p>
 <p><strong>Inputs</strong></p>
 <ul class="simple">
-<li><p>rpm: RPMObject(type: python_obj)</p></li>
+<li><p>package: safety_check.inputs.package(type: str)</p></li>
+<li><p>version: safety_check.inputs.version(type: str)</p></li>
 </ul>
 <p><strong>Outputs</strong></p>
 <ul class="simple">
-<li><p>files: rpm_filename(type: str)</p></li>
-</ul>
-</div>
-<div class="section" id="is-binary-pie">
-<span id="plugin-operation-dffml-operations-binsec-is-binary-pie"></span><h3>is_binary_pie<a class="headerlink" href="#is-binary-pie" title="Permalink to this headline">¶</a></h3>
-<p><em>Official</em></p>
-<p>No description</p>
-<p><strong>Stage: processing</strong></p>
-<p><strong>Inputs</strong></p>
-<ul class="simple">
-<li><p>rpm: RPMObject(type: python_obj)</p></li>
-<li><p>filename: rpm_filename(type: str)</p></li>
-</ul>
-<p><strong>Outputs</strong></p>
-<ul class="simple">
-<li><p>is_pie: binary_is_PIE(type: bool)</p></li>
-</ul>
-</div>
-<div class="section" id="url-to-urlbytes">
-<span id="plugin-operation-dffml-operations-binsec-url-to-urlbytes"></span><h3>url_to_urlbytes<a class="headerlink" href="#url-to-urlbytes" title="Permalink to this headline">¶</a></h3>
-<p><em>Official</em></p>
-<p>No description</p>
-<p><strong>Stage: processing</strong></p>
-<p><strong>Inputs</strong></p>
-<ul class="simple">
-<li><p>URL: URL(type: string)</p></li>
-</ul>
-<p><strong>Outputs</strong></p>
-<ul class="simple">
-<li><p>download: URLBytes(type: python_obj)</p></li>
-</ul>
-</div>
-<div class="section" id="urlbytes-to-rpmfile">
-<span id="plugin-operation-dffml-operations-binsec-urlbytes-to-rpmfile"></span><h3>urlbytes_to_rpmfile<a class="headerlink" href="#urlbytes-to-rpmfile" title="Permalink to this headline">¶</a></h3>
-<p><em>Official</em></p>
-<p>No description</p>
-<p><strong>Stage: processing</strong></p>
-<p><strong>Inputs</strong></p>
-<ul class="simple">
-<li><p>download: URLBytes(type: python_obj)</p></li>
-</ul>
-<p><strong>Outputs</strong></p>
-<ul class="simple">
-<li><p>rpm: RPMObject(type: python_obj)</p></li>
-</ul>
-</div>
-<div class="section" id="urlbytes-to-tarfile">
-<span id="plugin-operation-dffml-operations-binsec-urlbytes-to-tarfile"></span><h3>urlbytes_to_tarfile<a class="headerlink" href="#urlbytes-to-tarfile" title="Permalink to this headline">¶</a></h3>
-<p><em>Official</em></p>
-<p>No description</p>
-<p><strong>Stage: processing</strong></p>
-<p><strong>Inputs</strong></p>
-<ul class="simple">
-<li><p>download: URLBytes(type: python_obj)</p></li>
-</ul>
-<p><strong>Outputs</strong></p>
-<ul class="simple">
-<li><p>rpm: RPMObject(type: python_obj)</p></li>
-</ul>
-</div>
-</div>
-<div class="section" id="dffml-feature-auth">
-<span id="plugin-operation-dffml-feature-auth"></span><h2>dffml_feature_auth<a class="headerlink" href="#dffml-feature-auth" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install dffml-feature-auth</span>
-</pre></div>
-</div>
-<div class="section" id="scrypt">
-<span id="plugin-operation-dffml-feature-auth-scrypt"></span><h3>scrypt<a class="headerlink" href="#scrypt" title="Permalink to this headline">¶</a></h3>
-<p><em>Official</em></p>
-<p>No description</p>
-<p><strong>Stage: processing</strong></p>
-<p><strong>Inputs</strong></p>
-<ul class="simple">
-<li><p>password: UnhashedPassword(type: string)</p></li>
-</ul>
-<p><strong>Outputs</strong></p>
-<ul class="simple">
-<li><p>password: ScryptPassword(type: string)</p></li>
+<li><p>result: safety_check.outputs.result(type: int)</p></li>
 </ul>
 </div>
 </div>
@@ -2436,6 +2423,266 @@ Parameters specific to this operation are described below.</p>
 <p><strong>Outputs</strong></p>
 <ul class="simple">
 <li><p>result: resize.outputs.result(type: array)</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="dffml-operations-deploy">
+<span id="plugin-operation-dffml-operations-deploy"></span><h2>dffml_operations_deploy<a class="headerlink" href="#dffml-operations-deploy" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install dffml-operations-deploy</span>
+</pre></div>
+</div>
+<div class="section" id="check-if-default-branch">
+<span id="plugin-operation-dffml-operations-deploy-check-if-default-branch"></span><h3>check_if_default_branch<a class="headerlink" href="#check-if-default-branch" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<p>No description</p>
+<p><strong>Stage: processing</strong></p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>payload: git_payload(type: Dict[str,Any])</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>is_default_branch: is_default_branch(type: bool)</p></li>
+</ul>
+</div>
+<div class="section" id="check-secret-match">
+<span id="plugin-operation-dffml-operations-deploy-check-secret-match"></span><h3>check_secret_match<a class="headerlink" href="#check-secret-match" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<p>No description</p>
+<p><strong>Stage: processing</strong></p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>headers: webhook_headers(type: Dict[str,Any])</p></li>
+<li><p>body: payload(type: bytes)</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>git_payload: git_payload(type: Dict[str,Any])</p></li>
+</ul>
+<p><strong>Args</strong></p>
+<ul class="simple">
+<li><p>secret: Entrypoint</p></li>
+</ul>
+</div>
+<div class="section" id="docker-build-image">
+<span id="plugin-operation-dffml-operations-deploy-docker-build-image"></span><h3>docker_build_image<a class="headerlink" href="#docker-build-image" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<p>No description</p>
+<p><strong>Stage: processing</strong></p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>docker_commands: docker_commands(type: Dict[str,Any])</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>build_status: is_image_built(type: bool)</p></li>
+</ul>
+<p><strong>Conditions</strong></p>
+<ul class="simple">
+<li><p>is_default_branch: bool</p></li>
+<li><p>got_running_containers: bool</p></li>
+</ul>
+</div>
+<div class="section" id="get-image-tag">
+<span id="plugin-operation-dffml-operations-deploy-get-image-tag"></span><h3>get_image_tag<a class="headerlink" href="#get-image-tag" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<p>No description</p>
+<p><strong>Stage: processing</strong></p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>payload: git_payload(type: Dict[str,Any])</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>image_tag: docker_image_tag(type: str)</p></li>
+</ul>
+</div>
+<div class="section" id="get-running-containers">
+<span id="plugin-operation-dffml-operations-deploy-get-running-containers"></span><h3>get_running_containers<a class="headerlink" href="#get-running-containers" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<p>No description</p>
+<p><strong>Stage: processing</strong></p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>tag: docker_image_tag(type: str)</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>running_containers: docker_running_containers(type: List[str])</p></li>
+</ul>
+</div>
+<div class="section" id="get-status-running-containers">
+<span id="plugin-operation-dffml-operations-deploy-get-status-running-containers"></span><h3>get_status_running_containers<a class="headerlink" href="#get-status-running-containers" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<p>No description</p>
+<p><strong>Stage: processing</strong></p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>containers: docker_running_containers(type: List[str])</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>status: got_running_containers(type: bool)</p></li>
+</ul>
+</div>
+<div class="section" id="get-url-from-payload">
+<span id="plugin-operation-dffml-operations-deploy-get-url-from-payload"></span><h3>get_url_from_payload<a class="headerlink" href="#get-url-from-payload" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<p>No description</p>
+<p><strong>Stage: processing</strong></p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>payload: git_payload(type: Dict[str,Any])</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>url: URL(type: string)</p></li>
+</ul>
+</div>
+<div class="section" id="parse-docker-commands">
+<span id="plugin-operation-dffml-operations-deploy-parse-docker-commands"></span><h3>parse_docker_commands<a class="headerlink" href="#parse-docker-commands" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<p>No description</p>
+<p><strong>Stage: processing</strong></p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>repo: git_repository(type: Dict[str, str])</p>
+<ul>
+<li><p>directory: str</p></li>
+<li><p>URL: str(default: None)</p></li>
+</ul>
+</li>
+<li><p>image_tag: docker_image_tag(type: str)</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>docker_commands: docker_commands(type: Dict[str,Any])</p></li>
+</ul>
+</div>
+<div class="section" id="restart-running-containers">
+<span id="plugin-operation-dffml-operations-deploy-restart-running-containers"></span><h3>restart_running_containers<a class="headerlink" href="#restart-running-containers" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<p>No description</p>
+<p><strong>Stage: processing</strong></p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>docker_commands: docker_commands(type: Dict[str,Any])</p></li>
+<li><p>containers: docker_running_containers(type: List[str])</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>containers: docker_restarted_containers(type: str)</p></li>
+</ul>
+<p><strong>Conditions</strong></p>
+<ul class="simple">
+<li><p>is_image_built: bool</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="dffml-operations-binsec">
+<span id="plugin-operation-dffml-operations-binsec"></span><h2>dffml_operations_binsec<a class="headerlink" href="#dffml-operations-binsec" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install dffml-operations-binsec</span>
+</pre></div>
+</div>
+<div class="section" id="cleanup-rpm">
+<span id="plugin-operation-dffml-operations-binsec-cleanup-rpm"></span><h3>cleanup_rpm<a class="headerlink" href="#cleanup-rpm" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<p>No description</p>
+<p><strong>Stage: cleanup</strong></p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>rpm: RPMObject(type: python_obj)</p></li>
+</ul>
+</div>
+<div class="section" id="files-in-rpm">
+<span id="plugin-operation-dffml-operations-binsec-files-in-rpm"></span><h3>files_in_rpm<a class="headerlink" href="#files-in-rpm" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<p>No description</p>
+<p><strong>Stage: processing</strong></p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>rpm: RPMObject(type: python_obj)</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>files: rpm_filename(type: str)</p></li>
+</ul>
+</div>
+<div class="section" id="is-binary-pie">
+<span id="plugin-operation-dffml-operations-binsec-is-binary-pie"></span><h3>is_binary_pie<a class="headerlink" href="#is-binary-pie" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<p>No description</p>
+<p><strong>Stage: processing</strong></p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>rpm: RPMObject(type: python_obj)</p></li>
+<li><p>filename: rpm_filename(type: str)</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>is_pie: binary_is_PIE(type: bool)</p></li>
+</ul>
+</div>
+<div class="section" id="url-to-urlbytes">
+<span id="plugin-operation-dffml-operations-binsec-url-to-urlbytes"></span><h3>url_to_urlbytes<a class="headerlink" href="#url-to-urlbytes" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<p>No description</p>
+<p><strong>Stage: processing</strong></p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>URL: URL(type: string)</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>download: URLBytes(type: python_obj)</p></li>
+</ul>
+</div>
+<div class="section" id="urlbytes-to-rpmfile">
+<span id="plugin-operation-dffml-operations-binsec-urlbytes-to-rpmfile"></span><h3>urlbytes_to_rpmfile<a class="headerlink" href="#urlbytes-to-rpmfile" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<p>No description</p>
+<p><strong>Stage: processing</strong></p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>download: URLBytes(type: python_obj)</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>rpm: RPMObject(type: python_obj)</p></li>
+</ul>
+</div>
+<div class="section" id="urlbytes-to-tarfile">
+<span id="plugin-operation-dffml-operations-binsec-urlbytes-to-tarfile"></span><h3>urlbytes_to_tarfile<a class="headerlink" href="#urlbytes-to-tarfile" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<p>No description</p>
+<p><strong>Stage: processing</strong></p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>download: URLBytes(type: python_obj)</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>rpm: RPMObject(type: python_obj)</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="dffml-feature-auth">
+<span id="plugin-operation-dffml-feature-auth"></span><h2>dffml_feature_auth<a class="headerlink" href="#dffml-feature-auth" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install dffml-feature-auth</span>
+</pre></div>
+</div>
+<div class="section" id="scrypt">
+<span id="plugin-operation-dffml-feature-auth-scrypt"></span><h3>scrypt<a class="headerlink" href="#scrypt" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<p>No description</p>
+<p><strong>Stage: processing</strong></p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>password: UnhashedPassword(type: string)</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>password: ScryptPassword(type: string)</p></li>
 </ul>
 </div>
 </div>

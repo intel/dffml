@@ -120,8 +120,13 @@
 <li class="toctree-l4"><a class="reference internal" href="#tfdnnr">tfdnnr</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#dffml-model-tensorflow-hub">dffml_model_tensorflow_hub</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#text-classifier">text_classifier</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dffml-model-xgboost">dffml_model_xgboost</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#xgbclassifier">xgbclassifier</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#xgbregressor">xgbregressor</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#dffml-model-vowpalwabbit">dffml_model_vowpalWabbit</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#vwmodel">vwmodel</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#dffml-model-transformers">dffml_model_transformers</a><ul>
@@ -130,19 +135,19 @@
 <li class="toctree-l4"><a class="reference internal" href="#qa-model">qa_model</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#dffml-model-scratch">dffml_model_scratch</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#scratchlgrsag">scratchlgrsag</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="#dffml-model-scikit">dffml_model_scikit</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#dffml-model-vowpalwabbit">dffml_model_vowpalWabbit</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#vwmodel">vwmodel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dffml-model-tensorflow-hub">dffml_model_tensorflow_hub</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#text-classifier">text_classifier</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#dffml-model-spacy">dffml_model_spacy</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#spacyner">spacyner</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="#dffml-model-scratch">dffml_model_scratch</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#scratchlgrsag">scratchlgrsag</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#dffml-model-scikit">dffml_model_scikit</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#dffml-model-pytorch">dffml_model_pytorch</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#alexnet">alexnet</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#densenet121">densenet121</a></li>
@@ -176,9 +181,8 @@
 <li class="toctree-l4"><a class="reference internal" href="#wide-resnet50-2">wide_resnet50_2</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#dffml-model-xgboost">dffml_model_xgboost</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#xgbclassifier">xgbclassifier</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#xgbregressor">xgbregressor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dffml-model-daal4py">dffml_model_daal4py</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#daal4pylr">daal4pylr</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#dffml-model-autosklearn">dffml_model_autosklearn</a><ul>
@@ -788,83 +792,507 @@ predict).</p>
 </ul>
 </div>
 </div>
-<div class="section" id="dffml-model-tensorflow-hub">
-<span id="plugin-model-dffml-model-tensorflow-hub"></span><h2>dffml_model_tensorflow_hub<a class="headerlink" href="#dffml-model-tensorflow-hub" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install dffml-model-tensorflow-hub</span>
+<div class="section" id="dffml-model-xgboost">
+<span id="plugin-model-dffml-model-xgboost"></span><h2>dffml_model_xgboost<a class="headerlink" href="#dffml-model-xgboost" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install dffml-model-xgboost</span>
 </pre></div>
 </div>
-<div class="section" id="text-classifier">
-<span id="plugin-model-dffml-model-tensorflow-hub-text-classifier"></span><h3>text_classifier<a class="headerlink" href="#text-classifier" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="xgbclassifier">
+<span id="plugin-model-dffml-model-xgboost-xgbclassifier"></span><h3>xgbclassifier<a class="headerlink" href="#xgbclassifier" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
-<p>Implemented using Tensorflow hub pretrained models.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>cat &gt; train.csv &lt;&lt; EOF
-sentence,sentiment
-Life is good,1
-This book is amazing,1
-It&#39;s a terrible movie,2
-Global warming is bad,0
-I hate you!!,2
-This movie is horrible,2
-EOF
+<p>Model using xgboost to perform classification prediction via gradient boosted trees.
+XGBoost is a leading software library for working with standard tabular data (the type of data you store in Pandas DataFrames,
+as opposed to more exotic types of data like images and videos). With careful parameter tuning, you can train highly accurate models.</p>
+<div class="section" id="examples">
+<h4>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h4>
+<p>Command line usage</p>
+<p>First download the training and test files, change the headers to DFFML
+format. The first row is an encoding of the classifications, we want CSV
+headers for the column names.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ wget http://download.tensorflow.org/data/iris_training.csv
+$ wget http://download.tensorflow.org/data/iris_test.csv
+$ sed -i &#39;s/.*setosa,versicolor,virginica/SepalLength,SepalWidth,PetalLength,PetalWidth,classification/g&#39; iris_training.csv iris_test.csv
+</pre></div>
+</div>
+<p>Run the train command</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml train <span class="se">\</span>
+    -sources <span class="nv">train</span><span class="o">=</span>csv <span class="se">\</span>
+    -source-filename iris_training.csv <span class="se">\</span>
+    -model xgbclassifier <span class="se">\</span>
+    -model-features <span class="se">\</span>
+      SepalLength:float:1 <span class="se">\</span>
+      SepalWidth:float:1 <span class="se">\</span>
+      PetalLength:float:1 <span class="se">\</span>
+      PetalWidth:float:1 <span class="se">\</span>
+    -model-predict classification <span class="se">\</span>
+    -model-directory model <span class="se">\</span>
+    -model-max_depth <span class="m">3</span> <span class="se">\</span>
+    -model-learning_rate <span class="m">0</span>.01 <span class="se">\</span>
+    -model-learning_rate <span class="m">0</span>.01 <span class="se">\</span>
+    -model-n_estimators <span class="m">200</span> <span class="se">\</span>
+    -model-reg_lambda <span class="m">1</span> <span class="se">\</span>
+    -model-reg_alpha <span class="m">0</span> <span class="se">\</span>
+    -model-gamma <span class="m">0</span> <span class="se">\</span>
+    -model-colsample_bytree <span class="m">0</span> <span class="se">\</span>
+    -model-subsample <span class="m">1</span>
+</pre></div>
+</div>
+<p>Assess the accuracy</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml accuracy <span class="se">\</span>
+    -sources <span class="nv">train</span><span class="o">=</span>csv <span class="se">\</span>
+    -source-filename iris_test.csv <span class="se">\</span>
+    -model xgbclassifier <span class="se">\</span>
+    -model-features <span class="se">\</span>
+      SepalLength:float:1 <span class="se">\</span>
+      SepalWidth:float:1 <span class="se">\</span>
+      PetalLength:float:1 <span class="se">\</span>
+      PetalWidth:float:1 <span class="se">\</span>
+    -model-predict classification <span class="se">\</span>
+    -model-directory model
+</pre></div>
+</div>
+<p>Make predictions</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml predict all <span class="se">\</span>
+    -sources <span class="nv">train</span><span class="o">=</span>csv <span class="se">\</span>
+    -source-filename iris_test.csv <span class="se">\</span>
+    -model xgbclassifier <span class="se">\</span>
+    -model-features <span class="se">\</span>
+      SepalLength:float:1 <span class="se">\</span>
+      SepalWidth:float:1 <span class="se">\</span>
+      PetalLength:float:1 <span class="se">\</span>
+      PetalWidth:float:1 <span class="se">\</span>
+    -model-predict classification <span class="se">\</span>
+    -model-directory model
+</pre></div>
+</div>
+<p>Python usage</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">load_iris</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+
+<span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">Feature</span><span class="p">,</span> <span class="n">Features</span>
+<span class="kn">from</span> <span class="nn">dffml.noasync</span> <span class="kn">import</span> <span class="n">train</span><span class="p">,</span> <span class="n">accuracy</span>
+<span class="kn">from</span> <span class="nn">dffml_model_xgboost.xgbclassifier</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">XGBClassifierModel</span><span class="p">,</span>
+    <span class="n">XGBClassifierModelConfig</span><span class="p">,</span>
+<span class="p">)</span>
+
+
+<span class="n">iris</span> <span class="o">=</span> <span class="n">load_iris</span><span class="p">()</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">iris</span><span class="p">[</span><span class="s2">&quot;target&quot;</span><span class="p">]</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">iris</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">]</span>
+<span class="n">trainX</span><span class="p">,</span> <span class="n">testX</span><span class="p">,</span> <span class="n">trainy</span><span class="p">,</span> <span class="n">testy</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span>
+    <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">123</span>
+<span class="p">)</span>
+
+<span class="c1"># Configure the model</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">XGBClassifierModel</span><span class="p">(</span>
+    <span class="n">XGBClassifierModelConfig</span><span class="p">(</span>
+        <span class="n">features</span><span class="o">=</span><span class="n">Features</span><span class="p">(</span><span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">,)),</span>
+        <span class="n">predict</span><span class="o">=</span><span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;target&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+        <span class="n">directory</span><span class="o">=</span><span class="s2">&quot;model&quot;</span><span class="p">,</span>
+        <span class="n">max_depth</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+        <span class="n">learning_rate</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>
+        <span class="n">n_estimators</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span>
+        <span class="n">reg_lambda</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">reg_alpha</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+        <span class="n">gamma</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+        <span class="n">colsample_bytree</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+        <span class="n">subsample</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+
+<span class="c1"># Train the model</span>
+<span class="n">train</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="o">*</span><span class="p">[{</span><span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="n">x</span><span class="p">,</span> <span class="s2">&quot;target&quot;</span><span class="p">:</span> <span class="n">y</span><span class="p">}</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">trainX</span><span class="p">,</span> <span class="n">trainy</span><span class="p">)])</span>
+
+<span class="c1"># Assess accuracy</span>
+<span class="nb">print</span><span class="p">(</span>
+    <span class="s2">&quot;Test accuracy:&quot;</span><span class="p">,</span>
+    <span class="n">accuracy</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="o">*</span><span class="p">[{</span><span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="n">x</span><span class="p">,</span> <span class="s2">&quot;target&quot;</span><span class="p">:</span> <span class="n">y</span><span class="p">}</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">testX</span><span class="p">,</span> <span class="n">testy</span><span class="p">)]),</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span>
+    <span class="s2">&quot;Training accuracy:&quot;</span><span class="p">,</span>
+    <span class="n">accuracy</span><span class="p">(</span>
+        <span class="n">model</span><span class="p">,</span> <span class="o">*</span><span class="p">[{</span><span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="n">x</span><span class="p">,</span> <span class="s2">&quot;target&quot;</span><span class="p">:</span> <span class="n">y</span><span class="p">}</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">trainX</span><span class="p">,</span> <span class="n">trainy</span><span class="p">)]</span>
+    <span class="p">),</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>Output</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Test</span> <span class="n">accuracy</span><span class="p">:</span> <span class="mf">0.933333333333333</span>
+<span class="n">Training</span> <span class="n">accuracy</span><span class="p">:</span> <span class="mf">0.9703703703703703</span>
+</pre></div>
+</div>
+<p><strong>Args</strong></p>
+<ul class="simple">
+<li><p>directory: Path</p>
+<ul>
+<li><p>Directory where model should be saved</p></li>
+</ul>
+</li>
+<li><p>features: List of features</p>
+<ul>
+<li><p>Features on which we train the model</p></li>
+</ul>
+</li>
+<li><p>predict: Feature</p>
+<ul>
+<li><p>Value to be predicted</p></li>
+</ul>
+</li>
+<li><p>learning_rate: float</p>
+<ul>
+<li><p>default: 0.3</p></li>
+<li><p>Learning rate to train with</p></li>
+</ul>
+</li>
+<li><p>n_estimators: Integer</p>
+<ul>
+<li><p>default: 100</p></li>
+<li><p>Number of gradient boosted trees. Equivalent to the number of boosting rounds</p></li>
+</ul>
+</li>
+<li><p>max_depth: Integer</p>
+<ul>
+<li><p>default: 6</p></li>
+<li><p>Maximium tree depth for base learners</p></li>
+</ul>
+</li>
+<li><p>objective: String</p>
+<ul>
+<li><p>default: multi:softmax</p></li>
+<li><p>Objective in training</p></li>
+</ul>
+</li>
+<li><p>subsample: float</p>
+<ul>
+<li><p>default: 1</p></li>
+<li><p>Subsample ratio of the training instance</p></li>
+</ul>
+</li>
+<li><p>gamma: float</p>
+<ul>
+<li><p>default: 0</p></li>
+<li><p>Minimium loss reduction required to make a furthre partition on a leaf node</p></li>
+</ul>
+</li>
+<li><p>n_jobs: Integer</p>
+<ul>
+<li><p>default: -1</p></li>
+<li><p>Number of parallel threads used to run xgboost</p></li>
+</ul>
+</li>
+<li><p>colsample_bytree: float</p>
+<ul>
+<li><p>default: 1</p></li>
+<li><p>Subsample ratio of columns when constructing each tree</p></li>
+</ul>
+</li>
+<li><p>booster: String</p>
+<ul>
+<li><p>default: gbtree</p></li>
+<li><p>Specify which booster to use: gbtree, gblinear or dart</p></li>
+</ul>
+</li>
+<li><p>min_child_weight: float</p>
+<ul>
+<li><p>default: 1</p></li>
+<li><p>Minimum sum of instance weight(hessian) needed in a child</p></li>
+</ul>
+</li>
+<li><p>reg_lambda: float</p>
+<ul>
+<li><p>default: 1</p></li>
+<li><p>L2 regularization term on weights. Increasing this value will make model more conservative</p></li>
+</ul>
+</li>
+<li><p>reg_alpha: float</p>
+<ul>
+<li><p>default: 0</p></li>
+<li><p>L1 regularization term on weights. Increasing this value will make model more conservative</p></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="xgbregressor">
+<span id="plugin-model-dffml-model-xgboost-xgbregressor"></span><h3>xgbregressor<a class="headerlink" href="#xgbregressor" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<p>Model using xgboost to perform regression prediction via gradient boosted trees
+XGBoost is a leading software library for working with standard tabular data (the type of data you store in Pandas DataFrames,
+as opposed to more exotic types of data like images and videos). With careful parameter tuning, you can train highly accurate models.</p>
+<div class="section" id="id1">
+<h4>Examples<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h4>
+<p>Command line usage</p>
+<p>First download the training and test files, change the headers to DFFML
+format.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ wget http://download.tensorflow.org/data/iris_training.csv
+$ wget http://download.tensorflow.org/data/iris_test.csv
+$ sed -i &#39;s/.*setosa,versicolor,virginica/SepalLength,SepalWidth,PetalLength,PetalWidth,classification/g&#39; iris_training.csv iris_test.csv
+</pre></div>
+</div>
+<p>Run the train command</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml train <span class="se">\</span>
+    -sources <span class="nv">train</span><span class="o">=</span>csv <span class="se">\</span>
+    -source-filename iris_training.csv <span class="se">\</span>
+    -model xgbregressor <span class="se">\</span>
+    -model-features <span class="se">\</span>
+      SepalLength:float:1 <span class="se">\</span>
+      SepalWidth:float:1 <span class="se">\</span>
+      PetalLength:float:1 <span class="se">\</span>
+      PetalWidth:float:1 <span class="se">\</span>
+    -model-predict classification <span class="se">\</span>
+    -model-directory model <span class="se">\</span>
+    -model-max_depth <span class="m">3</span> <span class="se">\</span>
+    -model-learning_rate <span class="m">0</span>.01 <span class="se">\</span>
+    -model-n_estimators <span class="m">200</span> <span class="se">\</span>
+    -model-reg_lambda <span class="m">1</span> <span class="se">\</span>
+    -model-reg_alpha <span class="m">0</span> <span class="se">\</span>
+    -model-gamma <span class="m">0</span> <span class="se">\</span>
+    -model-colsample_bytree <span class="m">0</span> <span class="se">\</span>
+    -model-subsample <span class="m">1</span>
+</pre></div>
+</div>
+<p>Assess the accuracy</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml accuracy <span class="se">\</span>
+    -sources <span class="nv">train</span><span class="o">=</span>csv <span class="se">\</span>
+    -source-filename iris_test.csv <span class="se">\</span>
+    -model xgbregressor <span class="se">\</span>
+    -model-features <span class="se">\</span>
+      SepalLength:float:1 <span class="se">\</span>
+      SepalWidth:float:1 <span class="se">\</span>
+      PetalLength:float:1 <span class="se">\</span>
+      PetalWidth:float:1 <span class="se">\</span>
+    -model-predict classification <span class="se">\</span>
+    -model-directory model
+</pre></div>
+</div>
+<p>Output</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">accuracy</span><span class="p">:</span> <span class="mf">0.8841466984766406</span>
+</pre></div>
+</div>
+<p>Make predictions</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml predict all <span class="se">\</span>
+    -sources <span class="nv">train</span><span class="o">=</span>csv <span class="se">\</span>
+    -source-filename iris_test.csv <span class="se">\</span>
+    -model xgbregressor <span class="se">\</span>
+    -model-features <span class="se">\</span>
+      SepalLength:float:1 <span class="se">\</span>
+      SepalWidth:float:1 <span class="se">\</span>
+      PetalLength:float:1 <span class="se">\</span>
+      PetalWidth:float:1 <span class="se">\</span>
+    -model-predict classification <span class="se">\</span>
+    -model-directory model
+</pre></div>
+</div>
+<p>Python usage</p>
+<p><strong>run.py</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">load_diabetes</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+
+<span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">Feature</span><span class="p">,</span> <span class="n">Features</span>
+<span class="kn">from</span> <span class="nn">dffml.noasync</span> <span class="kn">import</span> <span class="n">train</span><span class="p">,</span> <span class="n">accuracy</span>
+<span class="kn">from</span> <span class="nn">dffml_model_xgboost.xgbregressor</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">XGBRegressorModel</span><span class="p">,</span>
+    <span class="n">XGBRegressorModelConfig</span><span class="p">,</span>
+<span class="p">)</span>
+
+
+<span class="n">diabetes</span> <span class="o">=</span> <span class="n">load_diabetes</span><span class="p">()</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">diabetes</span><span class="p">[</span><span class="s2">&quot;target&quot;</span><span class="p">]</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">diabetes</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">]</span>
+<span class="n">trainX</span><span class="p">,</span> <span class="n">testX</span><span class="p">,</span> <span class="n">trainy</span><span class="p">,</span> <span class="n">testy</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span>
+    <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">123</span>
+<span class="p">)</span>
+
+<span class="c1"># Configure the model</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">XGBRegressorModel</span><span class="p">(</span>
+    <span class="n">XGBRegressorModelConfig</span><span class="p">(</span>
+        <span class="n">features</span><span class="o">=</span><span class="n">Features</span><span class="p">(</span><span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="mi">10</span><span class="p">)),</span>
+        <span class="n">predict</span><span class="o">=</span><span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;target&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+        <span class="n">directory</span><span class="o">=</span><span class="s2">&quot;model&quot;</span><span class="p">,</span>
+        <span class="n">max_depth</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+        <span class="n">learning_rate</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span>
+        <span class="n">n_estimators</span><span class="o">=</span><span class="mi">400</span><span class="p">,</span>
+        <span class="n">reg_lambda</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+        <span class="n">reg_alpha</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+        <span class="n">gamma</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+        <span class="n">colsample_bytree</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span>
+        <span class="n">subsample</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+
+<span class="c1"># Train the model</span>
+<span class="n">train</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="o">*</span><span class="p">[{</span><span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="n">x</span><span class="p">,</span> <span class="s2">&quot;target&quot;</span><span class="p">:</span> <span class="n">y</span><span class="p">}</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">trainX</span><span class="p">,</span> <span class="n">trainy</span><span class="p">)])</span>
+
+<span class="c1"># Assess accuracy</span>
+<span class="nb">print</span><span class="p">(</span>
+    <span class="s2">&quot;Test accuracy:&quot;</span><span class="p">,</span>
+    <span class="n">accuracy</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="o">*</span><span class="p">[{</span><span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="n">x</span><span class="p">,</span> <span class="s2">&quot;target&quot;</span><span class="p">:</span> <span class="n">y</span><span class="p">}</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">testX</span><span class="p">,</span> <span class="n">testy</span><span class="p">)]),</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span>
+    <span class="s2">&quot;Training accuracy:&quot;</span><span class="p">,</span>
+    <span class="n">accuracy</span><span class="p">(</span>
+        <span class="n">model</span><span class="p">,</span> <span class="o">*</span><span class="p">[{</span><span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="n">x</span><span class="p">,</span> <span class="s2">&quot;target&quot;</span><span class="p">:</span> <span class="n">y</span><span class="p">}</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">trainX</span><span class="p">,</span> <span class="n">trainy</span><span class="p">)]</span>
+    <span class="p">),</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>Output</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ python run.py
+Test accuracy: 0.6669655406927468
+Training accuracy: 0.819782501866115
+</pre></div>
+</div>
+<p><strong>Args</strong></p>
+<ul class="simple">
+<li><p>directory: Path</p>
+<ul>
+<li><p>Directory where model should be saved</p></li>
+</ul>
+</li>
+<li><p>features: List of features</p>
+<ul>
+<li><p>Features on which we train the model</p></li>
+</ul>
+</li>
+<li><p>predict: Feature</p>
+<ul>
+<li><p>Value to be predicted</p></li>
+</ul>
+</li>
+<li><p>learning_rate: float</p>
+<ul>
+<li><p>default: 0.05</p></li>
+<li><p>Learning rate to train with</p></li>
+</ul>
+</li>
+<li><p>n_estimators: Integer</p>
+<ul>
+<li><p>default: 1000</p></li>
+<li><p>Number of gradient boosted trees. Equivalent to the number of boosting rounds</p></li>
+</ul>
+</li>
+<li><p>max_depth: Integer</p>
+<ul>
+<li><p>default: 6</p></li>
+<li><p>Maximium tree depth for base learners</p></li>
+</ul>
+</li>
+<li><p>subsample: float</p>
+<ul>
+<li><p>default: 1</p></li>
+<li><p>Subsample ratio of the training instance</p></li>
+</ul>
+</li>
+<li><p>gamma: float</p>
+<ul>
+<li><p>default: 0</p></li>
+<li><p>Minimium loss reduction required to make a furthre partition on a leaf node</p></li>
+</ul>
+</li>
+<li><p>n_jobs: Integer</p>
+<ul>
+<li><p>default: -1</p></li>
+<li><p>Number of parallel threads used to run xgboost</p></li>
+</ul>
+</li>
+<li><p>colsample_bytree: float</p>
+<ul>
+<li><p>default: 1</p></li>
+<li><p>Subsample ratio of columns when constructing each tree</p></li>
+</ul>
+</li>
+<li><p>booster: String</p>
+<ul>
+<li><p>default: gbtree</p></li>
+<li><p>Specify which booster to use: gbtree, gblinear or dart</p></li>
+</ul>
+</li>
+<li><p>min_child_weight: float</p>
+<ul>
+<li><p>default: 0</p></li>
+<li><p>Minimum sum of instance weight(hessian) needed in a child</p></li>
+</ul>
+</li>
+<li><p>reg_lambda: float</p>
+<ul>
+<li><p>default: 1</p></li>
+<li><p>L2 regularization term on weights. Increasing this value will make model more conservative</p></li>
+</ul>
+</li>
+<li><p>reg_alpha: float</p>
+<ul>
+<li><p>default: 0</p></li>
+<li><p>L1 regularization term on weights. Increasing this value will make model more conservative</p></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="section" id="dffml-model-vowpalwabbit">
+<span id="plugin-model-dffml-model-vowpalwabbit"></span><h2>dffml_model_vowpalWabbit<a class="headerlink" href="#dffml-model-vowpalwabbit" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install dffml-model-vowpalWabbit</span>
+</pre></div>
+</div>
+<div class="section" id="vwmodel">
+<span id="plugin-model-dffml-model-vowpalwabbit-vwmodel"></span><h3>vwmodel<a class="headerlink" href="#vwmodel" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<p>Implemented using Vowpal Wabbit.</p>
+<p>First we create the training and testing datasets</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cat</span> <span class="o">&gt;</span> <span class="n">train</span><span class="o">.</span><span class="n">csv</span> <span class="o">&lt;&lt;</span> <span class="n">EOF</span>
+<span class="n">A</span><span class="p">,</span><span class="n">B</span>
+<span class="o">|</span> <span class="n">price</span><span class="p">:</span><span class="o">.</span><span class="mi">23</span> <span class="n">sqft</span><span class="p">:</span><span class="o">.</span><span class="mi">25</span> <span class="n">age</span><span class="p">:</span><span class="o">.</span><span class="mi">05</span> <span class="mi">2006</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span>
+<span class="o">|</span> <span class="n">price</span><span class="p">:</span><span class="o">.</span><span class="mi">18</span> <span class="n">sqft</span><span class="p">:</span><span class="o">.</span><span class="mi">15</span> <span class="n">age</span><span class="p">:</span><span class="o">.</span><span class="mi">35</span> <span class="mi">1976</span><span class="p">,</span><span class="mi">1</span>
+<span class="o">|</span> <span class="n">price</span><span class="p">:</span><span class="o">.</span><span class="mi">53</span> <span class="n">sqft</span><span class="p">:</span><span class="o">.</span><span class="mi">32</span> <span class="n">age</span><span class="p">:</span><span class="o">.</span><span class="mi">87</span> <span class="mi">1924</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span>
+<span class="n">EOF</span>
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cat</span> <span class="o">&gt;</span> <span class="n">test</span><span class="o">.</span><span class="n">csv</span> <span class="o">&lt;&lt;</span> <span class="n">EOF</span>
-<span class="n">sentence</span><span class="p">,</span><span class="n">sentiment</span>
-<span class="n">I</span> <span class="n">am</span> <span class="ow">not</span> <span class="n">feeling</span> <span class="n">good</span><span class="p">,</span><span class="mi">0</span>
-<span class="n">Our</span> <span class="n">trip</span> <span class="n">was</span> <span class="n">full</span> <span class="n">of</span> <span class="n">adventures</span><span class="p">,</span><span class="mi">1</span>
+<span class="n">A</span>
+<span class="o">|</span> <span class="n">price</span><span class="p">:</span><span class="o">.</span><span class="mi">46</span> <span class="n">sqft</span><span class="p">:</span><span class="o">.</span><span class="mi">4</span> <span class="n">age</span><span class="p">:</span><span class="o">.</span><span class="mi">10</span> <span class="mi">1924</span>
 <span class="n">EOF</span>
 </pre></div>
 </div>
 <p>Train the model</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dffml</span> <span class="n">train</span> \
-  <span class="o">-</span><span class="n">model</span> <span class="n">text_classifier</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">epochs</span> <span class="mi">30</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">predict</span> <span class="n">sentiment</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">1</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">directory</span> <span class="n">tempdir</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">classifications</span> <span class="mi">0</span> <span class="mi">1</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">clstype</span> <span class="nb">int</span> \
-  <span class="o">-</span><span class="n">sources</span> <span class="n">f</span><span class="o">=</span><span class="n">csv</span> \
-  <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">filename</span> <span class="n">train</span><span class="o">.</span><span class="n">csv</span> \
+  <span class="o">-</span><span class="n">model</span> <span class="n">vwmodel</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">features</span> \
-    <span class="n">sentence</span><span class="p">:</span><span class="nb">str</span><span class="p">:</span><span class="mi">1</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">model_path</span> <span class="s2">&quot;https://tfhub.dev/google/tf2-preview/gnews-swivel-20dim-with-oov/1&quot;</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">add_layers</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">layers</span> <span class="s2">&quot;Dense(units=512, activation=&#39;relu&#39;)&quot;</span> <span class="s2">&quot;Dense(units=2, activation=&#39;softmax&#39;)&quot;</span> \
-  <span class="o">-</span><span class="n">log</span> <span class="n">debug</span>
+    <span class="n">A</span><span class="p">:</span><span class="nb">str</span><span class="p">:</span><span class="mi">1</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">predict</span> \
+    <span class="n">B</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">1</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">noconvert</span> \
+  <span class="o">-</span><span class="n">sources</span> <span class="n">f</span><span class="o">=</span><span class="n">csv</span> \
+  <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">filename</span> <span class="n">train</span><span class="o">.</span><span class="n">csv</span>
 </pre></div>
 </div>
 <p>Assess the accuracy</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dffml</span> <span class="n">accuracy</span> \
-  <span class="o">-</span><span class="n">model</span> <span class="n">text_classifier</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">predict</span> <span class="n">sentiment</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">1</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">directory</span> <span class="n">tempdir</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">classifications</span> <span class="mi">0</span> <span class="mi">1</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">model_path</span> <span class="s2">&quot;https://tfhub.dev/google/tf2-preview/gnews-swivel-20dim-with-oov/1&quot;</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">clstype</span> <span class="nb">int</span> \
-  <span class="o">-</span><span class="n">sources</span> <span class="n">f</span><span class="o">=</span><span class="n">csv</span> \
-  <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">filename</span> <span class="n">test</span><span class="o">.</span><span class="n">csv</span> \
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dffml</span> <span class="n">accuracy</span>  \
+  <span class="o">-</span><span class="n">model</span> <span class="n">vwmodel</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">features</span> \
-    <span class="n">sentence</span><span class="p">:</span><span class="nb">str</span><span class="p">:</span><span class="mi">1</span> \
-  <span class="o">-</span><span class="n">log</span> <span class="n">critical</span>
+    <span class="n">A</span><span class="p">:</span><span class="nb">str</span><span class="p">:</span><span class="mi">1</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">predict</span> \
+    <span class="n">B</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">1</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">noconvert</span> \
+  <span class="o">-</span><span class="n">sources</span> <span class="n">f</span><span class="o">=</span><span class="n">csv</span> \
+  <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">filename</span> <span class="n">train</span><span class="o">.</span><span class="n">csv</span>
+
 </pre></div>
 </div>
 <p>Output</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mf">0.5</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mf">0.38683876649129145</span>
 </pre></div>
 </div>
 <p>Make a prediction</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dffml</span> <span class="n">predict</span> <span class="nb">all</span> \
-  <span class="o">-</span><span class="n">model</span> <span class="n">text_classifier</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">predict</span> <span class="n">sentiment</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">1</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">directory</span> <span class="n">tempdir</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">classifications</span> <span class="mi">0</span> <span class="mi">1</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">model_path</span> <span class="s2">&quot;https://tfhub.dev/google/tf2-preview/gnews-swivel-20dim-with-oov/1&quot;</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">clstype</span> <span class="nb">int</span> \
-  <span class="o">-</span><span class="n">sources</span> <span class="n">f</span><span class="o">=</span><span class="n">csv</span> \
-  <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">filename</span> <span class="n">test</span><span class="o">.</span><span class="n">csv</span> \
+  <span class="o">-</span><span class="n">model</span> <span class="n">vwmodel</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">features</span> \
-    <span class="n">sentence</span><span class="p">:</span><span class="nb">str</span><span class="p">:</span><span class="mi">1</span> \
-  <span class="o">-</span><span class="n">log</span> <span class="n">debug</span>
+    <span class="n">A</span><span class="p">:</span><span class="nb">str</span><span class="p">:</span><span class="mi">1</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">predict</span> \
+    <span class="n">B</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">1</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">noconvert</span> \
+  <span class="o">-</span><span class="n">sources</span> <span class="n">f</span><span class="o">=</span><span class="n">csv</span> \
+  <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">filename</span> <span class="n">test</span><span class="o">.</span><span class="n">csv</span>
 </pre></div>
 </div>
 <p>Output</p>
@@ -872,78 +1300,26 @@ EOF
     <span class="p">{</span>
         <span class="nt">&quot;extra&quot;</span><span class="p">:</span> <span class="p">{},</span>
         <span class="nt">&quot;features&quot;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="nt">&quot;sentence&quot;</span><span class="p">:</span> <span class="s2">&quot;I am not feeling good&quot;</span><span class="p">,</span>
-            <span class="nt">&quot;sentiment&quot;</span><span class="p">:</span> <span class="mi">0</span>
+            <span class="nt">&quot;A&quot;</span><span class="p">:</span> <span class="s2">&quot;| price:.46 sqft:.4 age:.10 1924&quot;</span>
         <span class="p">},</span>
         <span class="nt">&quot;key&quot;</span><span class="p">:</span> <span class="s2">&quot;0&quot;</span><span class="p">,</span>
-        <span class="nt">&quot;last_updated&quot;</span><span class="p">:</span> <span class="s2">&quot;2020-05-14T20:14:30Z&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;last_updated&quot;</span><span class="p">:</span> <span class="s2">&quot;2020-05-29T16:36:57Z&quot;</span><span class="p">,</span>
         <span class="nt">&quot;prediction&quot;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="nt">&quot;sentiment&quot;</span><span class="p">:</span> <span class="p">{</span>
-                <span class="nt">&quot;confidence&quot;</span><span class="p">:</span> <span class="mf">0.9999992847442627</span><span class="p">,</span>
-                <span class="nt">&quot;value&quot;</span><span class="p">:</span> <span class="mi">1</span>
-            <span class="p">}</span>
-        <span class="p">}</span>
-    <span class="p">},</span>
-    <span class="p">{</span>
-        <span class="nt">&quot;extra&quot;</span><span class="p">:</span> <span class="p">{},</span>
-        <span class="nt">&quot;features&quot;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="nt">&quot;sentence&quot;</span><span class="p">:</span> <span class="s2">&quot;Our trip was full of adventures&quot;</span><span class="p">,</span>
-            <span class="nt">&quot;sentiment&quot;</span><span class="p">:</span> <span class="mi">1</span>
-        <span class="p">},</span>
-        <span class="nt">&quot;key&quot;</span><span class="p">:</span> <span class="s2">&quot;1&quot;</span><span class="p">,</span>
-        <span class="nt">&quot;last_updated&quot;</span><span class="p">:</span> <span class="s2">&quot;2020-05-14T20:14:30Z&quot;</span><span class="p">,</span>
-        <span class="nt">&quot;prediction&quot;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="nt">&quot;sentiment&quot;</span><span class="p">:</span> <span class="p">{</span>
-                <span class="nt">&quot;confidence&quot;</span><span class="p">:</span> <span class="mf">0.9999088048934937</span><span class="p">,</span>
-                <span class="nt">&quot;value&quot;</span><span class="p">:</span> <span class="mi">1</span>
+            <span class="nt">&quot;B&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="nt">&quot;confidence&quot;</span><span class="p">:</span> <span class="mf">0.38683876649129145</span><span class="p">,</span>
+                <span class="nt">&quot;value&quot;</span><span class="p">:</span> <span class="mf">0.0</span>
             <span class="p">}</span>
         <span class="p">}</span>
     <span class="p">}</span>
 <span class="p">]</span>
 </pre></div>
 </div>
-<p>Example usage of Tensorflow_hub Text Classifier model using python API</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">CSVSource</span><span class="p">,</span> <span class="n">Features</span><span class="p">,</span> <span class="n">Feature</span>
-<span class="kn">from</span> <span class="nn">dffml.noasync</span> <span class="kn">import</span> <span class="n">train</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">,</span> <span class="n">predict</span>
-<span class="kn">from</span> <span class="nn">dffml_model_tensorflow_hub.text_classifier</span> <span class="kn">import</span> <span class="n">TextClassificationModel</span>
-
-<span class="n">model</span> <span class="o">=</span> <span class="n">TextClassificationModel</span><span class="p">(</span>
-    <span class="n">features</span><span class="o">=</span><span class="n">Features</span><span class="p">(</span><span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;sentence&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span>
-    <span class="n">predict</span><span class="o">=</span><span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;sentiment&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
-    <span class="n">classifications</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>
-    <span class="n">clstype</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span>
-    <span class="n">directory</span><span class="o">=</span><span class="s2">&quot;tempdir&quot;</span><span class="p">,</span>
-<span class="p">)</span>
-
-<span class="c1"># Train the model</span>
-<span class="n">train</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="s2">&quot;train.csv&quot;</span><span class="p">)</span>
-
-<span class="c1"># Assess accuracy (alternate way of specifying data source)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Accuracy:&quot;</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">CSVSource</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;test.csv&quot;</span><span class="p">)))</span>
-
-<span class="c1"># Make prediction</span>
-<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">features</span><span class="p">,</span> <span class="n">prediction</span> <span class="ow">in</span> <span class="n">predict</span><span class="p">(</span>
-    <span class="n">model</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;sentence&quot;</span><span class="p">:</span> <span class="s2">&quot;This track is horrible&quot;</span><span class="p">},</span>
-<span class="p">):</span>
-    <span class="n">features</span><span class="p">[</span><span class="s2">&quot;sentiment&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">prediction</span><span class="p">[</span><span class="s2">&quot;sentiment&quot;</span><span class="p">][</span><span class="s2">&quot;value&quot;</span><span class="p">]</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">features</span><span class="p">)</span>
-</pre></div>
-</div>
 <p><strong>Args</strong></p>
 <ul class="simple">
+<li><p>features: List of features</p></li>
 <li><p>predict: Feature</p>
 <ul>
-<li><p>Feature name holding classification value</p></li>
-</ul>
-</li>
-<li><p>classifications: List of strings</p>
-<ul>
-<li><p>Options for value of classification</p></li>
-</ul>
-</li>
-<li><p>features: List of features</p>
-<ul>
-<li><p>Features to train on</p></li>
+<li><p>Feature to predict</p></li>
 </ul>
 </li>
 <li><p>directory: Path</p>
@@ -951,70 +1327,58 @@ EOF
 <li><p>Directory where state should be saved</p></li>
 </ul>
 </li>
-<li><p>trainable: String</p>
+<li><p>class_cost: List of features</p>
 <ul>
-<li><p>default: True</p></li>
-<li><p>Tweak pretrained model by training again</p></li>
+<li><p>default: None</p></li>
+<li><p>Features with name <cite>Cost_{class}</cite> contaning cost of <cite>class</cite> for each input example, used when <cite>csoaa</cite> is used</p></li>
 </ul>
 </li>
-<li><p>batch_size: Integer</p>
+<li><p>task: String</p>
 <ul>
-<li><p>default: 120</p></li>
-<li><p>Batch size</p></li>
+<li><p>default: regression</p></li>
+<li><p>Task to perform, possible values are <cite>classification</cite>, <cite>regression</cite></p></li>
 </ul>
 </li>
-<li><p>max_seq_length: Integer</p>
-<ul>
-<li><p>default: 256</p></li>
-<li><p>Length of sentence, used in preprocessing of input for bert embedding</p></li>
-</ul>
-</li>
-<li><p>add_layers: String</p>
+<li><p>use_binary_label: String</p>
 <ul>
 <li><p>default: False</p></li>
-<li><p>Add layers on the top of pretrianed model/layer</p></li>
+<li><p>Convert target labels to -1 and 1 for binary classification</p></li>
 </ul>
 </li>
-<li><p>embedType: String</p>
+<li><p>vwcmd: List of strings</p>
+<ul>
+<li><p>default: []</p></li>
+<li><p>Command Line Arguements as per vowpal wabbit convention</p></li>
+</ul>
+</li>
+<li><p>namespace: List of strings</p>
+<ul>
+<li><p>default: []</p></li>
+<li><p>Namespace for input features. Should be in format {namespace}_{feature name}</p></li>
+</ul>
+</li>
+<li><p>importance: Feature</p>
 <ul>
 <li><p>default: None</p></li>
-<li><p>Type of pretrained embedding model, required to be set to <cite>bert</cite> to use bert pretrained embedding</p></li>
+<li><p>Feature containing <cite>importance</cite> of each example, used in conversion of input data to vowpal wabbit input format</p></li>
 </ul>
 </li>
-<li><p>layers: List of strings</p>
+<li><p>base: Feature</p>
 <ul>
 <li><p>default: None</p></li>
-<li><p>Extra layers to be added on top of pretrained model</p></li>
+<li><p>Feature containing <cite>base</cite> for each example, used for residual regression</p></li>
 </ul>
 </li>
-<li><p>model_path: String</p>
+<li><p>tag: Feature</p>
 <ul>
-<li><p>default: <a class="reference external" href="https://tfhub.dev/google/tf2-preview/gnews-swivel-20dim-with-oov/1">https://tfhub.dev/google/tf2-preview/gnews-swivel-20dim-with-oov/1</a></p></li>
-<li><p>Pretrained model path/url</p></li>
+<li><p>default: None</p></li>
+<li><p>Feature to be used as <cite>tag</cite> in conversion of data to vowpal wabbit input format</p></li>
 </ul>
 </li>
-<li><p>optimizer: String</p>
+<li><p>noconvert: String</p>
 <ul>
-<li><p>default: adam</p></li>
-<li><p>Optimizer used by model</p></li>
-</ul>
-</li>
-<li><p>metrics: String</p>
-<ul>
-<li><p>default: accuracy</p></li>
-<li><p>Metric used to evaluate model</p></li>
-</ul>
-</li>
-<li><p>clstype: Type</p>
-<ul>
-<li><p>default: &lt;class ‘str’&gt;</p></li>
-<li><p>Data type of classifications values</p></li>
-</ul>
-</li>
-<li><p>epochs: Integer</p>
-<ul>
-<li><p>default: 10</p></li>
-<li><p>Number of iterations to pass over all records in a source</p></li>
+<li><p>default: False</p></li>
+<li><p>Do not convert record features to vowpal wabbit input format</p></li>
 </ul>
 </li>
 </ul>
@@ -2307,6 +2671,429 @@ is value of the flag <cite>is_training</cite>.</p>
 </ul>
 </div>
 </div>
+<div class="section" id="dffml-model-tensorflow-hub">
+<span id="plugin-model-dffml-model-tensorflow-hub"></span><h2>dffml_model_tensorflow_hub<a class="headerlink" href="#dffml-model-tensorflow-hub" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install dffml-model-tensorflow-hub</span>
+</pre></div>
+</div>
+<div class="section" id="text-classifier">
+<span id="plugin-model-dffml-model-tensorflow-hub-text-classifier"></span><h3>text_classifier<a class="headerlink" href="#text-classifier" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<p>Implemented using Tensorflow hub pretrained models.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>cat &gt; train.csv &lt;&lt; EOF
+sentence,sentiment
+Life is good,1
+This book is amazing,1
+It&#39;s a terrible movie,2
+Global warming is bad,0
+I hate you!!,2
+This movie is horrible,2
+EOF
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cat</span> <span class="o">&gt;</span> <span class="n">test</span><span class="o">.</span><span class="n">csv</span> <span class="o">&lt;&lt;</span> <span class="n">EOF</span>
+<span class="n">sentence</span><span class="p">,</span><span class="n">sentiment</span>
+<span class="n">I</span> <span class="n">am</span> <span class="ow">not</span> <span class="n">feeling</span> <span class="n">good</span><span class="p">,</span><span class="mi">0</span>
+<span class="n">Our</span> <span class="n">trip</span> <span class="n">was</span> <span class="n">full</span> <span class="n">of</span> <span class="n">adventures</span><span class="p">,</span><span class="mi">1</span>
+<span class="n">EOF</span>
+</pre></div>
+</div>
+<p>Train the model</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dffml</span> <span class="n">train</span> \
+  <span class="o">-</span><span class="n">model</span> <span class="n">text_classifier</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">epochs</span> <span class="mi">30</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">predict</span> <span class="n">sentiment</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">1</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">directory</span> <span class="n">tempdir</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">classifications</span> <span class="mi">0</span> <span class="mi">1</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">clstype</span> <span class="nb">int</span> \
+  <span class="o">-</span><span class="n">sources</span> <span class="n">f</span><span class="o">=</span><span class="n">csv</span> \
+  <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">filename</span> <span class="n">train</span><span class="o">.</span><span class="n">csv</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">features</span> \
+    <span class="n">sentence</span><span class="p">:</span><span class="nb">str</span><span class="p">:</span><span class="mi">1</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">model_path</span> <span class="s2">&quot;https://tfhub.dev/google/tf2-preview/gnews-swivel-20dim-with-oov/1&quot;</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">add_layers</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">layers</span> <span class="s2">&quot;Dense(units=512, activation=&#39;relu&#39;)&quot;</span> <span class="s2">&quot;Dense(units=2, activation=&#39;softmax&#39;)&quot;</span> \
+  <span class="o">-</span><span class="n">log</span> <span class="n">debug</span>
+</pre></div>
+</div>
+<p>Assess the accuracy</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dffml</span> <span class="n">accuracy</span> \
+  <span class="o">-</span><span class="n">model</span> <span class="n">text_classifier</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">predict</span> <span class="n">sentiment</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">1</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">directory</span> <span class="n">tempdir</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">classifications</span> <span class="mi">0</span> <span class="mi">1</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">model_path</span> <span class="s2">&quot;https://tfhub.dev/google/tf2-preview/gnews-swivel-20dim-with-oov/1&quot;</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">clstype</span> <span class="nb">int</span> \
+  <span class="o">-</span><span class="n">sources</span> <span class="n">f</span><span class="o">=</span><span class="n">csv</span> \
+  <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">filename</span> <span class="n">test</span><span class="o">.</span><span class="n">csv</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">features</span> \
+    <span class="n">sentence</span><span class="p">:</span><span class="nb">str</span><span class="p">:</span><span class="mi">1</span> \
+  <span class="o">-</span><span class="n">log</span> <span class="n">critical</span>
+</pre></div>
+</div>
+<p>Output</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mf">0.5</span>
+</pre></div>
+</div>
+<p>Make a prediction</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dffml</span> <span class="n">predict</span> <span class="nb">all</span> \
+  <span class="o">-</span><span class="n">model</span> <span class="n">text_classifier</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">predict</span> <span class="n">sentiment</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">1</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">directory</span> <span class="n">tempdir</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">classifications</span> <span class="mi">0</span> <span class="mi">1</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">model_path</span> <span class="s2">&quot;https://tfhub.dev/google/tf2-preview/gnews-swivel-20dim-with-oov/1&quot;</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">clstype</span> <span class="nb">int</span> \
+  <span class="o">-</span><span class="n">sources</span> <span class="n">f</span><span class="o">=</span><span class="n">csv</span> \
+  <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">filename</span> <span class="n">test</span><span class="o">.</span><span class="n">csv</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">features</span> \
+    <span class="n">sentence</span><span class="p">:</span><span class="nb">str</span><span class="p">:</span><span class="mi">1</span> \
+  <span class="o">-</span><span class="n">log</span> <span class="n">debug</span>
+</pre></div>
+</div>
+<p>Output</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">[</span>
+    <span class="p">{</span>
+        <span class="nt">&quot;extra&quot;</span><span class="p">:</span> <span class="p">{},</span>
+        <span class="nt">&quot;features&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="nt">&quot;sentence&quot;</span><span class="p">:</span> <span class="s2">&quot;I am not feeling good&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;sentiment&quot;</span><span class="p">:</span> <span class="mi">0</span>
+        <span class="p">},</span>
+        <span class="nt">&quot;key&quot;</span><span class="p">:</span> <span class="s2">&quot;0&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;last_updated&quot;</span><span class="p">:</span> <span class="s2">&quot;2020-05-14T20:14:30Z&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;prediction&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="nt">&quot;sentiment&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="nt">&quot;confidence&quot;</span><span class="p">:</span> <span class="mf">0.9999992847442627</span><span class="p">,</span>
+                <span class="nt">&quot;value&quot;</span><span class="p">:</span> <span class="mi">1</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="nt">&quot;extra&quot;</span><span class="p">:</span> <span class="p">{},</span>
+        <span class="nt">&quot;features&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="nt">&quot;sentence&quot;</span><span class="p">:</span> <span class="s2">&quot;Our trip was full of adventures&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;sentiment&quot;</span><span class="p">:</span> <span class="mi">1</span>
+        <span class="p">},</span>
+        <span class="nt">&quot;key&quot;</span><span class="p">:</span> <span class="s2">&quot;1&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;last_updated&quot;</span><span class="p">:</span> <span class="s2">&quot;2020-05-14T20:14:30Z&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;prediction&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="nt">&quot;sentiment&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="nt">&quot;confidence&quot;</span><span class="p">:</span> <span class="mf">0.9999088048934937</span><span class="p">,</span>
+                <span class="nt">&quot;value&quot;</span><span class="p">:</span> <span class="mi">1</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p>Example usage of Tensorflow_hub Text Classifier model using python API</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">CSVSource</span><span class="p">,</span> <span class="n">Features</span><span class="p">,</span> <span class="n">Feature</span>
+<span class="kn">from</span> <span class="nn">dffml.noasync</span> <span class="kn">import</span> <span class="n">train</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">,</span> <span class="n">predict</span>
+<span class="kn">from</span> <span class="nn">dffml_model_tensorflow_hub.text_classifier</span> <span class="kn">import</span> <span class="n">TextClassificationModel</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">TextClassificationModel</span><span class="p">(</span>
+    <span class="n">features</span><span class="o">=</span><span class="n">Features</span><span class="p">(</span><span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;sentence&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span>
+    <span class="n">predict</span><span class="o">=</span><span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;sentiment&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+    <span class="n">classifications</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>
+    <span class="n">clstype</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span>
+    <span class="n">directory</span><span class="o">=</span><span class="s2">&quot;tempdir&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># Train the model</span>
+<span class="n">train</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="s2">&quot;train.csv&quot;</span><span class="p">)</span>
+
+<span class="c1"># Assess accuracy (alternate way of specifying data source)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Accuracy:&quot;</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">CSVSource</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;test.csv&quot;</span><span class="p">)))</span>
+
+<span class="c1"># Make prediction</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">features</span><span class="p">,</span> <span class="n">prediction</span> <span class="ow">in</span> <span class="n">predict</span><span class="p">(</span>
+    <span class="n">model</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;sentence&quot;</span><span class="p">:</span> <span class="s2">&quot;This track is horrible&quot;</span><span class="p">},</span>
+<span class="p">):</span>
+    <span class="n">features</span><span class="p">[</span><span class="s2">&quot;sentiment&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">prediction</span><span class="p">[</span><span class="s2">&quot;sentiment&quot;</span><span class="p">][</span><span class="s2">&quot;value&quot;</span><span class="p">]</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">features</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Args</strong></p>
+<ul class="simple">
+<li><p>predict: Feature</p>
+<ul>
+<li><p>Feature name holding classification value</p></li>
+</ul>
+</li>
+<li><p>classifications: List of strings</p>
+<ul>
+<li><p>Options for value of classification</p></li>
+</ul>
+</li>
+<li><p>features: List of features</p>
+<ul>
+<li><p>Features to train on</p></li>
+</ul>
+</li>
+<li><p>directory: Path</p>
+<ul>
+<li><p>Directory where state should be saved</p></li>
+</ul>
+</li>
+<li><p>trainable: String</p>
+<ul>
+<li><p>default: True</p></li>
+<li><p>Tweak pretrained model by training again</p></li>
+</ul>
+</li>
+<li><p>batch_size: Integer</p>
+<ul>
+<li><p>default: 120</p></li>
+<li><p>Batch size</p></li>
+</ul>
+</li>
+<li><p>max_seq_length: Integer</p>
+<ul>
+<li><p>default: 256</p></li>
+<li><p>Length of sentence, used in preprocessing of input for bert embedding</p></li>
+</ul>
+</li>
+<li><p>add_layers: String</p>
+<ul>
+<li><p>default: False</p></li>
+<li><p>Add layers on the top of pretrianed model/layer</p></li>
+</ul>
+</li>
+<li><p>embedType: String</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Type of pretrained embedding model, required to be set to <cite>bert</cite> to use bert pretrained embedding</p></li>
+</ul>
+</li>
+<li><p>layers: List of strings</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Extra layers to be added on top of pretrained model</p></li>
+</ul>
+</li>
+<li><p>model_path: String</p>
+<ul>
+<li><p>default: <a class="reference external" href="https://tfhub.dev/google/tf2-preview/gnews-swivel-20dim-with-oov/1">https://tfhub.dev/google/tf2-preview/gnews-swivel-20dim-with-oov/1</a></p></li>
+<li><p>Pretrained model path/url</p></li>
+</ul>
+</li>
+<li><p>optimizer: String</p>
+<ul>
+<li><p>default: adam</p></li>
+<li><p>Optimizer used by model</p></li>
+</ul>
+</li>
+<li><p>metrics: String</p>
+<ul>
+<li><p>default: accuracy</p></li>
+<li><p>Metric used to evaluate model</p></li>
+</ul>
+</li>
+<li><p>clstype: Type</p>
+<ul>
+<li><p>default: &lt;class ‘str’&gt;</p></li>
+<li><p>Data type of classifications values</p></li>
+</ul>
+</li>
+<li><p>epochs: Integer</p>
+<ul>
+<li><p>default: 10</p></li>
+<li><p>Number of iterations to pass over all records in a source</p></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="dffml-model-spacy">
+<span id="plugin-model-dffml-model-spacy"></span><h2>dffml_model_spacy<a class="headerlink" href="#dffml-model-spacy" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install dffml-model-spacy</span>
+</pre></div>
+</div>
+<div class="section" id="spacyner">
+<span id="plugin-model-dffml-model-spacy-spacyner"></span><h3>spacyner<a class="headerlink" href="#spacyner" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<p>Implemented using <a class="reference external" href="https://spacy.io/usage/training">Spacy statistical models</a> .</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You must download <code class="docutils literal notranslate"><span class="pre">en_core_web_sm</span></code> before using this model</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python -m spacy download en_core_web_sm
+</pre></div>
+</div>
+</div>
+<p>First we create the training and testing datasets.</p>
+<p>Training data:</p>
+<p><strong>train.json</strong></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="nt">&quot;data&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="nt">&quot;sentence&quot;</span><span class="p">:</span> <span class="s2">&quot;I went to London and Berlin.&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;entities&quot;</span><span class="p">:</span> <span class="p">[</span>
+                <span class="p">{</span>
+                    <span class="nt">&quot;start&quot;</span><span class="p">:</span><span class="mi">10</span><span class="p">,</span>
+                    <span class="nt">&quot;end&quot;</span><span class="p">:</span> <span class="mi">16</span><span class="p">,</span>
+                    <span class="nt">&quot;tag&quot;</span><span class="p">:</span> <span class="s2">&quot;LOC&quot;</span>
+                <span class="p">},</span>
+                <span class="p">{</span>
+                    <span class="nt">&quot;start&quot;</span><span class="p">:</span><span class="mi">21</span><span class="p">,</span>
+                    <span class="nt">&quot;end&quot;</span><span class="p">:</span> <span class="mi">27</span><span class="p">,</span>
+                    <span class="nt">&quot;tag&quot;</span><span class="p">:</span> <span class="s2">&quot;LOC&quot;</span>
+                <span class="p">}</span>
+            <span class="p">]</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="nt">&quot;sentence&quot;</span><span class="p">:</span> <span class="s2">&quot;Who is Alex?&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;entities&quot;</span><span class="p">:</span> <span class="p">[</span>
+                <span class="p">{</span>
+                    <span class="nt">&quot;start&quot;</span><span class="p">:</span><span class="mi">7</span><span class="p">,</span>
+                    <span class="nt">&quot;end&quot;</span><span class="p">:</span> <span class="mi">11</span><span class="p">,</span>
+                    <span class="nt">&quot;tag&quot;</span><span class="p">:</span> <span class="s2">&quot;PERSON&quot;</span>
+                <span class="p">}</span>
+            <span class="p">]</span>
+        <span class="p">}</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Testing data:</p>
+<p><strong>test.json</strong></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="nt">&quot;data&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="nt">&quot;sentence&quot;</span><span class="p">:</span> <span class="s2">&quot;Alex went to London?&quot;</span>
+        <span class="p">}</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Train the model</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml train <span class="se">\</span>
+    -model spacyner <span class="se">\</span>
+    -sources <span class="nv">s</span><span class="o">=</span>op <span class="se">\</span>
+    -source-opimp dffml_model_spacy.ner.utils:parser <span class="se">\</span>
+    -source-args train.json False <span class="se">\</span>
+    -model-model_name_or_path en_core_web_sm <span class="se">\</span>
+    -model-directory temp <span class="se">\</span>
+    -model-n_iter <span class="m">5</span> <span class="se">\</span>
+    -log debug
+</pre></div>
+</div>
+<p>Assess the accuracy</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml accuracy <span class="se">\</span>
+    -model spacyner <span class="se">\</span>
+    -sources <span class="nv">s</span><span class="o">=</span>op <span class="se">\</span>
+    -source-opimp dffml_model_spacy.ner.utils:parser <span class="se">\</span>
+    -source-args train.json False <span class="se">\</span>
+    -model-model_name_or_path en_core_web_sm <span class="se">\</span>
+    -model-directory temp <span class="se">\</span>
+    -model-n_iter <span class="m">5</span> <span class="se">\</span>
+    -log debug
+<span class="go">0.0</span>
+</pre></div>
+</div>
+<p>Make a prediction</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml predict all <span class="se">\</span>
+    -model spacyner <span class="se">\</span>
+    -sources <span class="nv">s</span><span class="o">=</span>op <span class="se">\</span>
+    -source-opimp dffml_model_spacy.ner.utils:parser <span class="se">\</span>
+    -source-args test.json True <span class="se">\</span>
+    -model-model_name_or_path en_core_web_sm <span class="se">\</span>
+    -model-directory temp <span class="se">\</span>
+    -model-n_iter <span class="m">5</span> <span class="se">\</span>
+    -log debug
+<span class="go">[</span>
+<span class="go">    {</span>
+<span class="go">        &quot;extra&quot;: {},</span>
+<span class="go">        &quot;features&quot;: {</span>
+<span class="go">            &quot;entities&quot;: [],</span>
+<span class="go">            &quot;sentence&quot;: &quot;Alex went to London?&quot;</span>
+<span class="go">        },</span>
+<span class="go">        &quot;key&quot;: 0,</span>
+<span class="go">        &quot;last_updated&quot;: &quot;2020-07-27T16:26:18Z&quot;,</span>
+<span class="go">        &quot;prediction&quot;: {</span>
+<span class="go">            &quot;Answer&quot;: {</span>
+<span class="go">                &quot;confidence&quot;: null,</span>
+<span class="go">                &quot;value&quot;: [</span>
+<span class="go">                    [</span>
+<span class="go">                        &quot;Alex&quot;,</span>
+<span class="go">                        &quot;PERSON&quot;</span>
+<span class="go">                    ],</span>
+<span class="go">                    [</span>
+<span class="go">                        &quot;London&quot;,</span>
+<span class="go">                        &quot;GPE&quot;</span>
+<span class="go">                    ]</span>
+<span class="go">                ]</span>
+<span class="go">            }</span>
+<span class="go">        }</span>
+<span class="go">    }</span>
+<span class="go">]</span>
+</pre></div>
+</div>
+<p>The model can be trained on large datasets to get the expected
+output. The example shown above is to demonstrate the commandline usage
+of the model.</p>
+<p>In the above train, accuracy and predict commands, <a class="reference internal" href="dffml_source.html#plugin-source-dffml-op"><span class="std std-ref">op</span></a> source is used to
+read and parse data from json file before feeding it to the model. The function used by opsource to parse json data
+is:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">ast</span>
+<span class="kn">import</span> <span class="nn">json</span>
+
+
+<span class="k">def</span> <span class="nf">parser</span><span class="p">(</span><span class="n">json_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">is_predicting</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">json_file</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">parsed_data</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)[</span><span class="s2">&quot;data&quot;</span><span class="p">]</span>
+        <span class="k">for</span> <span class="nb">id</span><span class="p">,</span> <span class="n">entry</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+            <span class="n">entities</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">sentence</span> <span class="o">=</span> <span class="n">entry</span><span class="p">[</span><span class="s2">&quot;sentence&quot;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">ast</span><span class="o">.</span><span class="n">literal_eval</span><span class="p">(</span><span class="n">is_predicting</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">entity</span> <span class="ow">in</span> <span class="n">entry</span><span class="p">[</span><span class="s2">&quot;entities&quot;</span><span class="p">]:</span>
+                    <span class="n">start</span> <span class="o">=</span> <span class="n">entity</span><span class="p">[</span><span class="s2">&quot;start&quot;</span><span class="p">]</span>
+                    <span class="n">end</span> <span class="o">=</span> <span class="n">entity</span><span class="p">[</span><span class="s2">&quot;end&quot;</span><span class="p">]</span>
+                    <span class="n">tag</span> <span class="o">=</span> <span class="n">entity</span><span class="p">[</span><span class="s2">&quot;tag&quot;</span><span class="p">]</span>
+                    <span class="n">entities</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">tag</span><span class="p">))</span>
+            <span class="n">parsed_data</span><span class="p">[</span><span class="nb">id</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s2">&quot;features&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;sentence&quot;</span><span class="p">:</span> <span class="n">sentence</span><span class="p">,</span> <span class="s2">&quot;entities&quot;</span><span class="p">:</span> <span class="n">entities</span><span class="p">,}</span>
+            <span class="p">}</span>
+        <span class="k">return</span> <span class="n">parsed_data</span>
+</pre></div>
+</div>
+<p>The location of the function is passed using:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">-source-opimp dffml_model_spacy.ner.utils:parser</span>
+</pre></div>
+</div>
+<p>And the arguments to <cite>parser</cite> are passed by:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">-source-args train.json False</span>
+</pre></div>
+</div>
+<p>where <cite>train.json</cite> is the name of file containing training data and the bool <cite>False</cite>
+is value of the flag <cite>is_predicting</cite>.</p>
+<p><strong>Args</strong></p>
+<ul class="simple">
+<li><p>directory: String</p>
+<ul>
+<li><p>Output directory</p></li>
+</ul>
+</li>
+<li><p>model_name_or_path: String</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Model name or path to saved model. Defaults to blank ‘en’ model.</p></li>
+</ul>
+</li>
+<li><p>n_iter: Integer</p>
+<ul>
+<li><p>default: 10</p></li>
+<li><p>Number of training iterations</p></li>
+</ul>
+</li>
+<li><p>dropout: float</p>
+<ul>
+<li><p>default: 0.5</p></li>
+<li><p>Dropout rate to be used during training</p></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
 <div class="section" id="dffml-model-scratch">
 <span id="plugin-model-dffml-model-scratch"></span><h2>dffml_model_scratch<a class="headerlink" href="#dffml-model-scratch" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install dffml-model-scratch</span>
@@ -2913,351 +3700,6 @@ Ensure that <cite>predict</cite> and <cite>accuracy</cite> for these algorithms 
 </ul>
 </li>
 </ul>
-</div>
-<div class="section" id="dffml-model-vowpalwabbit">
-<span id="plugin-model-dffml-model-vowpalwabbit"></span><h2>dffml_model_vowpalWabbit<a class="headerlink" href="#dffml-model-vowpalwabbit" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install dffml-model-vowpalWabbit</span>
-</pre></div>
-</div>
-<div class="section" id="vwmodel">
-<span id="plugin-model-dffml-model-vowpalwabbit-vwmodel"></span><h3>vwmodel<a class="headerlink" href="#vwmodel" title="Permalink to this headline">¶</a></h3>
-<p><em>Official</em></p>
-<p>Implemented using Vowpal Wabbit.</p>
-<p>First we create the training and testing datasets</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cat</span> <span class="o">&gt;</span> <span class="n">train</span><span class="o">.</span><span class="n">csv</span> <span class="o">&lt;&lt;</span> <span class="n">EOF</span>
-<span class="n">A</span><span class="p">,</span><span class="n">B</span>
-<span class="o">|</span> <span class="n">price</span><span class="p">:</span><span class="o">.</span><span class="mi">23</span> <span class="n">sqft</span><span class="p">:</span><span class="o">.</span><span class="mi">25</span> <span class="n">age</span><span class="p">:</span><span class="o">.</span><span class="mi">05</span> <span class="mi">2006</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span>
-<span class="o">|</span> <span class="n">price</span><span class="p">:</span><span class="o">.</span><span class="mi">18</span> <span class="n">sqft</span><span class="p">:</span><span class="o">.</span><span class="mi">15</span> <span class="n">age</span><span class="p">:</span><span class="o">.</span><span class="mi">35</span> <span class="mi">1976</span><span class="p">,</span><span class="mi">1</span>
-<span class="o">|</span> <span class="n">price</span><span class="p">:</span><span class="o">.</span><span class="mi">53</span> <span class="n">sqft</span><span class="p">:</span><span class="o">.</span><span class="mi">32</span> <span class="n">age</span><span class="p">:</span><span class="o">.</span><span class="mi">87</span> <span class="mi">1924</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span>
-<span class="n">EOF</span>
-</pre></div>
-</div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cat</span> <span class="o">&gt;</span> <span class="n">test</span><span class="o">.</span><span class="n">csv</span> <span class="o">&lt;&lt;</span> <span class="n">EOF</span>
-<span class="n">A</span>
-<span class="o">|</span> <span class="n">price</span><span class="p">:</span><span class="o">.</span><span class="mi">46</span> <span class="n">sqft</span><span class="p">:</span><span class="o">.</span><span class="mi">4</span> <span class="n">age</span><span class="p">:</span><span class="o">.</span><span class="mi">10</span> <span class="mi">1924</span>
-<span class="n">EOF</span>
-</pre></div>
-</div>
-<p>Train the model</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dffml</span> <span class="n">train</span> \
-  <span class="o">-</span><span class="n">model</span> <span class="n">vwmodel</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">features</span> \
-    <span class="n">A</span><span class="p">:</span><span class="nb">str</span><span class="p">:</span><span class="mi">1</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">predict</span> \
-    <span class="n">B</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">1</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">noconvert</span> \
-  <span class="o">-</span><span class="n">sources</span> <span class="n">f</span><span class="o">=</span><span class="n">csv</span> \
-  <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">filename</span> <span class="n">train</span><span class="o">.</span><span class="n">csv</span>
-</pre></div>
-</div>
-<p>Assess the accuracy</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dffml</span> <span class="n">accuracy</span>  \
-  <span class="o">-</span><span class="n">model</span> <span class="n">vwmodel</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">features</span> \
-    <span class="n">A</span><span class="p">:</span><span class="nb">str</span><span class="p">:</span><span class="mi">1</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">predict</span> \
-    <span class="n">B</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">1</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">noconvert</span> \
-  <span class="o">-</span><span class="n">sources</span> <span class="n">f</span><span class="o">=</span><span class="n">csv</span> \
-  <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">filename</span> <span class="n">train</span><span class="o">.</span><span class="n">csv</span>
-
-</pre></div>
-</div>
-<p>Output</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mf">0.38683876649129145</span>
-</pre></div>
-</div>
-<p>Make a prediction</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dffml</span> <span class="n">predict</span> <span class="nb">all</span> \
-  <span class="o">-</span><span class="n">model</span> <span class="n">vwmodel</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">features</span> \
-    <span class="n">A</span><span class="p">:</span><span class="nb">str</span><span class="p">:</span><span class="mi">1</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">predict</span> \
-    <span class="n">B</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">1</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">noconvert</span> \
-  <span class="o">-</span><span class="n">sources</span> <span class="n">f</span><span class="o">=</span><span class="n">csv</span> \
-  <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">filename</span> <span class="n">test</span><span class="o">.</span><span class="n">csv</span>
-</pre></div>
-</div>
-<p>Output</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">[</span>
-    <span class="p">{</span>
-        <span class="nt">&quot;extra&quot;</span><span class="p">:</span> <span class="p">{},</span>
-        <span class="nt">&quot;features&quot;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="nt">&quot;A&quot;</span><span class="p">:</span> <span class="s2">&quot;| price:.46 sqft:.4 age:.10 1924&quot;</span>
-        <span class="p">},</span>
-        <span class="nt">&quot;key&quot;</span><span class="p">:</span> <span class="s2">&quot;0&quot;</span><span class="p">,</span>
-        <span class="nt">&quot;last_updated&quot;</span><span class="p">:</span> <span class="s2">&quot;2020-05-29T16:36:57Z&quot;</span><span class="p">,</span>
-        <span class="nt">&quot;prediction&quot;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="nt">&quot;B&quot;</span><span class="p">:</span> <span class="p">{</span>
-                <span class="nt">&quot;confidence&quot;</span><span class="p">:</span> <span class="mf">0.38683876649129145</span><span class="p">,</span>
-                <span class="nt">&quot;value&quot;</span><span class="p">:</span> <span class="mf">0.0</span>
-            <span class="p">}</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
-<span class="p">]</span>
-</pre></div>
-</div>
-<p><strong>Args</strong></p>
-<ul class="simple">
-<li><p>features: List of features</p></li>
-<li><p>predict: Feature</p>
-<ul>
-<li><p>Feature to predict</p></li>
-</ul>
-</li>
-<li><p>directory: Path</p>
-<ul>
-<li><p>Directory where state should be saved</p></li>
-</ul>
-</li>
-<li><p>class_cost: List of features</p>
-<ul>
-<li><p>default: None</p></li>
-<li><p>Features with name <cite>Cost_{class}</cite> contaning cost of <cite>class</cite> for each input example, used when <cite>csoaa</cite> is used</p></li>
-</ul>
-</li>
-<li><p>task: String</p>
-<ul>
-<li><p>default: regression</p></li>
-<li><p>Task to perform, possible values are <cite>classification</cite>, <cite>regression</cite></p></li>
-</ul>
-</li>
-<li><p>use_binary_label: String</p>
-<ul>
-<li><p>default: False</p></li>
-<li><p>Convert target labels to -1 and 1 for binary classification</p></li>
-</ul>
-</li>
-<li><p>vwcmd: List of strings</p>
-<ul>
-<li><p>default: []</p></li>
-<li><p>Command Line Arguements as per vowpal wabbit convention</p></li>
-</ul>
-</li>
-<li><p>namespace: List of strings</p>
-<ul>
-<li><p>default: []</p></li>
-<li><p>Namespace for input features. Should be in format {namespace}_{feature name}</p></li>
-</ul>
-</li>
-<li><p>importance: Feature</p>
-<ul>
-<li><p>default: None</p></li>
-<li><p>Feature containing <cite>importance</cite> of each example, used in conversion of input data to vowpal wabbit input format</p></li>
-</ul>
-</li>
-<li><p>base: Feature</p>
-<ul>
-<li><p>default: None</p></li>
-<li><p>Feature containing <cite>base</cite> for each example, used for residual regression</p></li>
-</ul>
-</li>
-<li><p>tag: Feature</p>
-<ul>
-<li><p>default: None</p></li>
-<li><p>Feature to be used as <cite>tag</cite> in conversion of data to vowpal wabbit input format</p></li>
-</ul>
-</li>
-<li><p>noconvert: String</p>
-<ul>
-<li><p>default: False</p></li>
-<li><p>Do not convert record features to vowpal wabbit input format</p></li>
-</ul>
-</li>
-</ul>
-</div>
-</div>
-<div class="section" id="dffml-model-spacy">
-<span id="plugin-model-dffml-model-spacy"></span><h2>dffml_model_spacy<a class="headerlink" href="#dffml-model-spacy" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install dffml-model-spacy</span>
-</pre></div>
-</div>
-<div class="section" id="spacyner">
-<span id="plugin-model-dffml-model-spacy-spacyner"></span><h3>spacyner<a class="headerlink" href="#spacyner" title="Permalink to this headline">¶</a></h3>
-<p><em>Official</em></p>
-<p>Implemented using <a class="reference external" href="https://spacy.io/usage/training">Spacy statistical models</a> .</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>You must download <code class="docutils literal notranslate"><span class="pre">en_core_web_sm</span></code> before using this model</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python -m spacy download en_core_web_sm
-</pre></div>
-</div>
-</div>
-<p>First we create the training and testing datasets.</p>
-<p>Training data:</p>
-<p><strong>train.json</strong></p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-    <span class="nt">&quot;data&quot;</span><span class="p">:</span> <span class="p">[</span>
-        <span class="p">{</span>
-            <span class="nt">&quot;sentence&quot;</span><span class="p">:</span> <span class="s2">&quot;I went to London and Berlin.&quot;</span><span class="p">,</span>
-            <span class="nt">&quot;entities&quot;</span><span class="p">:</span> <span class="p">[</span>
-                <span class="p">{</span>
-                    <span class="nt">&quot;start&quot;</span><span class="p">:</span><span class="mi">10</span><span class="p">,</span>
-                    <span class="nt">&quot;end&quot;</span><span class="p">:</span> <span class="mi">16</span><span class="p">,</span>
-                    <span class="nt">&quot;tag&quot;</span><span class="p">:</span> <span class="s2">&quot;LOC&quot;</span>
-                <span class="p">},</span>
-                <span class="p">{</span>
-                    <span class="nt">&quot;start&quot;</span><span class="p">:</span><span class="mi">21</span><span class="p">,</span>
-                    <span class="nt">&quot;end&quot;</span><span class="p">:</span> <span class="mi">27</span><span class="p">,</span>
-                    <span class="nt">&quot;tag&quot;</span><span class="p">:</span> <span class="s2">&quot;LOC&quot;</span>
-                <span class="p">}</span>
-            <span class="p">]</span>
-        <span class="p">},</span>
-        <span class="p">{</span>
-            <span class="nt">&quot;sentence&quot;</span><span class="p">:</span> <span class="s2">&quot;Who is Alex?&quot;</span><span class="p">,</span>
-            <span class="nt">&quot;entities&quot;</span><span class="p">:</span> <span class="p">[</span>
-                <span class="p">{</span>
-                    <span class="nt">&quot;start&quot;</span><span class="p">:</span><span class="mi">7</span><span class="p">,</span>
-                    <span class="nt">&quot;end&quot;</span><span class="p">:</span> <span class="mi">11</span><span class="p">,</span>
-                    <span class="nt">&quot;tag&quot;</span><span class="p">:</span> <span class="s2">&quot;PERSON&quot;</span>
-                <span class="p">}</span>
-            <span class="p">]</span>
-        <span class="p">}</span>
-    <span class="p">]</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-<p>Testing data:</p>
-<p><strong>test.json</strong></p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-    <span class="nt">&quot;data&quot;</span><span class="p">:</span> <span class="p">[</span>
-        <span class="p">{</span>
-            <span class="nt">&quot;sentence&quot;</span><span class="p">:</span> <span class="s2">&quot;Alex went to London?&quot;</span>
-        <span class="p">}</span>
-    <span class="p">]</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-<p>Train the model</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml train <span class="se">\</span>
-    -model spacyner <span class="se">\</span>
-    -sources <span class="nv">s</span><span class="o">=</span>op <span class="se">\</span>
-    -source-opimp dffml_model_spacy.ner.utils:parser <span class="se">\</span>
-    -source-args train.json False <span class="se">\</span>
-    -model-model_name_or_path en_core_web_sm <span class="se">\</span>
-    -model-directory temp <span class="se">\</span>
-    -model-n_iter <span class="m">5</span> <span class="se">\</span>
-    -log debug
-</pre></div>
-</div>
-<p>Assess the accuracy</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml accuracy <span class="se">\</span>
-    -model spacyner <span class="se">\</span>
-    -sources <span class="nv">s</span><span class="o">=</span>op <span class="se">\</span>
-    -source-opimp dffml_model_spacy.ner.utils:parser <span class="se">\</span>
-    -source-args train.json False <span class="se">\</span>
-    -model-model_name_or_path en_core_web_sm <span class="se">\</span>
-    -model-directory temp <span class="se">\</span>
-    -model-n_iter <span class="m">5</span> <span class="se">\</span>
-    -log debug
-<span class="go">0.0</span>
-</pre></div>
-</div>
-<p>Make a prediction</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml predict all <span class="se">\</span>
-    -model spacyner <span class="se">\</span>
-    -sources <span class="nv">s</span><span class="o">=</span>op <span class="se">\</span>
-    -source-opimp dffml_model_spacy.ner.utils:parser <span class="se">\</span>
-    -source-args test.json True <span class="se">\</span>
-    -model-model_name_or_path en_core_web_sm <span class="se">\</span>
-    -model-directory temp <span class="se">\</span>
-    -model-n_iter <span class="m">5</span> <span class="se">\</span>
-    -log debug
-<span class="go">[</span>
-<span class="go">    {</span>
-<span class="go">        &quot;extra&quot;: {},</span>
-<span class="go">        &quot;features&quot;: {</span>
-<span class="go">            &quot;entities&quot;: [],</span>
-<span class="go">            &quot;sentence&quot;: &quot;Alex went to London?&quot;</span>
-<span class="go">        },</span>
-<span class="go">        &quot;key&quot;: 0,</span>
-<span class="go">        &quot;last_updated&quot;: &quot;2020-07-27T16:26:18Z&quot;,</span>
-<span class="go">        &quot;prediction&quot;: {</span>
-<span class="go">            &quot;Answer&quot;: {</span>
-<span class="go">                &quot;confidence&quot;: null,</span>
-<span class="go">                &quot;value&quot;: [</span>
-<span class="go">                    [</span>
-<span class="go">                        &quot;Alex&quot;,</span>
-<span class="go">                        &quot;PERSON&quot;</span>
-<span class="go">                    ],</span>
-<span class="go">                    [</span>
-<span class="go">                        &quot;London&quot;,</span>
-<span class="go">                        &quot;GPE&quot;</span>
-<span class="go">                    ]</span>
-<span class="go">                ]</span>
-<span class="go">            }</span>
-<span class="go">        }</span>
-<span class="go">    }</span>
-<span class="go">]</span>
-</pre></div>
-</div>
-<p>The model can be trained on large datasets to get the expected
-output. The example shown above is to demonstrate the commandline usage
-of the model.</p>
-<p>In the above train, accuracy and predict commands, <a class="reference internal" href="dffml_source.html#plugin-source-dffml-op"><span class="std std-ref">op</span></a> source is used to
-read and parse data from json file before feeding it to the model. The function used by opsource to parse json data
-is:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">ast</span>
-<span class="kn">import</span> <span class="nn">json</span>
-
-
-<span class="k">def</span> <span class="nf">parser</span><span class="p">(</span><span class="n">json_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">is_predicting</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">json_file</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-        <span class="n">parsed_data</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)[</span><span class="s2">&quot;data&quot;</span><span class="p">]</span>
-        <span class="k">for</span> <span class="nb">id</span><span class="p">,</span> <span class="n">entry</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
-            <span class="n">entities</span> <span class="o">=</span> <span class="p">[]</span>
-            <span class="n">sentence</span> <span class="o">=</span> <span class="n">entry</span><span class="p">[</span><span class="s2">&quot;sentence&quot;</span><span class="p">]</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">ast</span><span class="o">.</span><span class="n">literal_eval</span><span class="p">(</span><span class="n">is_predicting</span><span class="p">):</span>
-                <span class="k">for</span> <span class="n">entity</span> <span class="ow">in</span> <span class="n">entry</span><span class="p">[</span><span class="s2">&quot;entities&quot;</span><span class="p">]:</span>
-                    <span class="n">start</span> <span class="o">=</span> <span class="n">entity</span><span class="p">[</span><span class="s2">&quot;start&quot;</span><span class="p">]</span>
-                    <span class="n">end</span> <span class="o">=</span> <span class="n">entity</span><span class="p">[</span><span class="s2">&quot;end&quot;</span><span class="p">]</span>
-                    <span class="n">tag</span> <span class="o">=</span> <span class="n">entity</span><span class="p">[</span><span class="s2">&quot;tag&quot;</span><span class="p">]</span>
-                    <span class="n">entities</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">tag</span><span class="p">))</span>
-            <span class="n">parsed_data</span><span class="p">[</span><span class="nb">id</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
-                <span class="s2">&quot;features&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;sentence&quot;</span><span class="p">:</span> <span class="n">sentence</span><span class="p">,</span> <span class="s2">&quot;entities&quot;</span><span class="p">:</span> <span class="n">entities</span><span class="p">,}</span>
-            <span class="p">}</span>
-        <span class="k">return</span> <span class="n">parsed_data</span>
-</pre></div>
-</div>
-<p>The location of the function is passed using:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">-source-opimp dffml_model_spacy.ner.utils:parser</span>
-</pre></div>
-</div>
-<p>And the arguments to <cite>parser</cite> are passed by:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">-source-args train.json False</span>
-</pre></div>
-</div>
-<p>where <cite>train.json</cite> is the name of file containing training data and the bool <cite>False</cite>
-is value of the flag <cite>is_predicting</cite>.</p>
-<p><strong>Args</strong></p>
-<ul class="simple">
-<li><p>directory: String</p>
-<ul>
-<li><p>Output directory</p></li>
-</ul>
-</li>
-<li><p>model_name_or_path: String</p>
-<ul>
-<li><p>default: None</p></li>
-<li><p>Model name or path to saved model. Defaults to blank ‘en’ model.</p></li>
-</ul>
-</li>
-<li><p>n_iter: Integer</p>
-<ul>
-<li><p>default: 10</p></li>
-<li><p>Number of training iterations</p></li>
-</ul>
-</li>
-<li><p>dropout: float</p>
-<ul>
-<li><p>default: 0.5</p></li>
-<li><p>Dropout rate to be used during training</p></li>
-</ul>
-</li>
-</ul>
-</div>
 </div>
 <div class="section" id="dffml-model-pytorch">
 <span id="plugin-model-dffml-model-pytorch"></span><h2>dffml_model_pytorch<a class="headerlink" href="#dffml-model-pytorch" title="Permalink to this headline">¶</a></h2>
@@ -7126,442 +7568,141 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 </ul>
 </div>
 </div>
-<div class="section" id="dffml-model-xgboost">
-<span id="plugin-model-dffml-model-xgboost"></span><h2>dffml_model_xgboost<a class="headerlink" href="#dffml-model-xgboost" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install dffml-model-xgboost</span>
+<div class="section" id="dffml-model-daal4py">
+<span id="plugin-model-dffml-model-daal4py"></span><h2>dffml_model_daal4py<a class="headerlink" href="#dffml-model-daal4py" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install dffml-model-daal4py</span>
 </pre></div>
 </div>
-<div class="section" id="xgbclassifier">
-<span id="plugin-model-dffml-model-xgboost-xgbclassifier"></span><h3>xgbclassifier<a class="headerlink" href="#xgbclassifier" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="daal4pylr">
+<span id="plugin-model-dffml-model-daal4py-daal4pylr"></span><h3>daal4pylr<a class="headerlink" href="#daal4pylr" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
-<p>Model using xgboost to perform classification prediction via gradient boosted trees.
-XGBoost is a leading software library for working with standard tabular data (the type of data you store in Pandas DataFrames,
-as opposed to more exotic types of data like images and videos). With careful parameter tuning, you can train highly accurate models.</p>
-<div class="section" id="examples">
-<h4>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h4>
-<p>Command line usage</p>
-<p>First download the training and test files, change the headers to DFFML
-format. The first row is an encoding of the classifications, we want CSV
-headers for the column names.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ wget http://download.tensorflow.org/data/iris_training.csv
-$ wget http://download.tensorflow.org/data/iris_test.csv
-$ sed -i &#39;s/.*setosa,versicolor,virginica/SepalLength,SepalWidth,PetalLength,PetalWidth,classification/g&#39; iris_training.csv iris_test.csv
+<p>Implemented using daal4py.</p>
+<p>First we create the training and testing datasets</p>
+<p><strong>train.csv</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">f1</span><span class="p">,</span><span class="n">ans</span>
+<span class="mf">12.4</span><span class="p">,</span><span class="mf">11.2</span>
+<span class="mf">14.3</span><span class="p">,</span><span class="mf">12.5</span>
+<span class="mf">14.5</span><span class="p">,</span><span class="mf">12.7</span>
+<span class="mf">14.9</span><span class="p">,</span><span class="mf">13.1</span>
+<span class="mf">16.1</span><span class="p">,</span><span class="mf">14.1</span>
+<span class="mf">16.9</span><span class="p">,</span><span class="mf">14.8</span>
+<span class="mf">16.5</span><span class="p">,</span><span class="mf">14.4</span>
+<span class="mf">15.4</span><span class="p">,</span><span class="mf">13.4</span>
+<span class="mf">17.0</span><span class="p">,</span><span class="mf">14.9</span>
+<span class="mf">17.9</span><span class="p">,</span><span class="mf">15.6</span>
+<span class="mf">18.8</span><span class="p">,</span><span class="mf">16.4</span>
+<span class="mf">20.3</span><span class="p">,</span><span class="mf">17.7</span>
+<span class="mf">22.4</span><span class="p">,</span><span class="mf">19.6</span>
+<span class="mf">19.4</span><span class="p">,</span><span class="mf">16.9</span>
+<span class="mf">15.5</span><span class="p">,</span><span class="mf">14.0</span>
+<span class="mf">16.7</span><span class="p">,</span><span class="mf">14.6</span>
 </pre></div>
 </div>
-<p>Run the train command</p>
+<p><strong>test.csv</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">f1</span><span class="p">,</span><span class="n">ans</span>
+<span class="mf">18.8</span><span class="p">,</span><span class="mf">16.4</span>
+<span class="mf">20.3</span><span class="p">,</span><span class="mf">17.7</span>
+<span class="mf">22.4</span><span class="p">,</span><span class="mf">19.6</span>
+<span class="mf">19.4</span><span class="p">,</span><span class="mf">16.9</span>
+<span class="mf">15.5</span><span class="p">,</span><span class="mf">14.0</span>
+<span class="mf">16.7</span><span class="p">,</span><span class="mf">14.6</span>
+</pre></div>
+</div>
+<p>Train the model</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml train <span class="se">\</span>
-    -sources <span class="nv">train</span><span class="o">=</span>csv <span class="se">\</span>
-    -source-filename iris_training.csv <span class="se">\</span>
-    -model xgbclassifier <span class="se">\</span>
-    -model-features <span class="se">\</span>
-      SepalLength:float:1 <span class="se">\</span>
-      SepalWidth:float:1 <span class="se">\</span>
-      PetalLength:float:1 <span class="se">\</span>
-      PetalWidth:float:1 <span class="se">\</span>
-    -model-predict classification <span class="se">\</span>
-    -model-directory model <span class="se">\</span>
-    -model-max_depth <span class="m">3</span> <span class="se">\</span>
-    -model-learning_rate <span class="m">0</span>.01 <span class="se">\</span>
-    -model-learning_rate <span class="m">0</span>.01 <span class="se">\</span>
-    -model-n_estimators <span class="m">200</span> <span class="se">\</span>
-    -model-reg_lambda <span class="m">1</span> <span class="se">\</span>
-    -model-reg_alpha <span class="m">0</span> <span class="se">\</span>
-    -model-gamma <span class="m">0</span> <span class="se">\</span>
-    -model-colsample_bytree <span class="m">0</span> <span class="se">\</span>
-    -model-subsample <span class="m">1</span>
+    -model daal4pylr <span class="se">\</span>
+    -model-features f1:float:1 <span class="se">\</span>
+    -model-predict ans:int:1 <span class="se">\</span>
+    -model-directory tempdir <span class="se">\</span>
+    -sources <span class="nv">f</span><span class="o">=</span>csv <span class="se">\</span>
+    -source-filename train.csv
 </pre></div>
 </div>
 <p>Assess the accuracy</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml accuracy <span class="se">\</span>
-    -sources <span class="nv">train</span><span class="o">=</span>csv <span class="se">\</span>
-    -source-filename iris_test.csv <span class="se">\</span>
-    -model xgbclassifier <span class="se">\</span>
-    -model-features <span class="se">\</span>
-      SepalLength:float:1 <span class="se">\</span>
-      SepalWidth:float:1 <span class="se">\</span>
-      PetalLength:float:1 <span class="se">\</span>
-      PetalWidth:float:1 <span class="se">\</span>
-    -model-predict classification <span class="se">\</span>
-    -model-directory model
+    -model daal4pylr <span class="se">\</span>
+    -model-features f1:float:1 <span class="se">\</span>
+    -model-predict ans:int:1 <span class="se">\</span>
+    -model-directory tempdir <span class="se">\</span>
+    -sources <span class="nv">f</span><span class="o">=</span>csv <span class="se">\</span>
+    -source-filename test.csv
+<span class="go">0.6666666666666666</span>
 </pre></div>
 </div>
-<p>Make predictions</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml predict all <span class="se">\</span>
-    -sources <span class="nv">train</span><span class="o">=</span>csv <span class="se">\</span>
-    -source-filename iris_test.csv <span class="se">\</span>
-    -model xgbclassifier <span class="se">\</span>
-    -model-features <span class="se">\</span>
-      SepalLength:float:1 <span class="se">\</span>
-      SepalWidth:float:1 <span class="se">\</span>
-      PetalLength:float:1 <span class="se">\</span>
-      PetalWidth:float:1 <span class="se">\</span>
-    -model-predict classification <span class="se">\</span>
-    -model-directory model
+<p>Make a prediction</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> <span class="nb">echo</span> -e <span class="s1">&#39;f1,ans\n0.8,1\n&#39;</span> <span class="p">|</span> <span class="se">\</span>
+  dffml predict all <span class="se">\</span>
+    -model daal4pylr <span class="se">\</span>
+    -model-features f1:float:1 <span class="se">\</span>
+    -model-predict ans:int:1 <span class="se">\</span>
+    -model-directory tempdir <span class="se">\</span>
+    -sources <span class="nv">f</span><span class="o">=</span>csv <span class="se">\</span>
+    -source-filename /dev/stdin
+<span class="go">[</span>
+<span class="go">    {</span>
+<span class="go">        &quot;extra&quot;: {},</span>
+<span class="go">        &quot;features&quot;: {</span>
+<span class="go">            &quot;ans&quot;: 1,</span>
+<span class="go">            &quot;f1&quot;: 0.8</span>
+<span class="go">        },</span>
+<span class="go">        &quot;key&quot;: &quot;0&quot;,</span>
+<span class="go">        &quot;last_updated&quot;: &quot;2020-07-22T02:53:11Z&quot;,</span>
+<span class="go">        &quot;prediction&quot;: {</span>
+<span class="go">            &quot;ans&quot;: {</span>
+<span class="go">                &quot;confidence&quot;: null,</span>
+<span class="go">                &quot;value&quot;: 1.1907472649730522</span>
+<span class="go">            }</span>
+<span class="go">        }</span>
+<span class="go">    }</span>
+<span class="go">]</span>
 </pre></div>
 </div>
-<p>Python usage</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">load_iris</span>
-<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
-
-<span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">Feature</span><span class="p">,</span> <span class="n">Features</span>
-<span class="kn">from</span> <span class="nn">dffml.noasync</span> <span class="kn">import</span> <span class="n">train</span><span class="p">,</span> <span class="n">accuracy</span>
-<span class="kn">from</span> <span class="nn">dffml_model_xgboost.xgbclassifier</span> <span class="kn">import</span> <span class="p">(</span>
-    <span class="n">XGBClassifierModel</span><span class="p">,</span>
-    <span class="n">XGBClassifierModelConfig</span><span class="p">,</span>
-<span class="p">)</span>
-
-
-<span class="n">iris</span> <span class="o">=</span> <span class="n">load_iris</span><span class="p">()</span>
-<span class="n">y</span> <span class="o">=</span> <span class="n">iris</span><span class="p">[</span><span class="s2">&quot;target&quot;</span><span class="p">]</span>
-<span class="n">X</span> <span class="o">=</span> <span class="n">iris</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">]</span>
-<span class="n">trainX</span><span class="p">,</span> <span class="n">testX</span><span class="p">,</span> <span class="n">trainy</span><span class="p">,</span> <span class="n">testy</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span>
-    <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">123</span>
-<span class="p">)</span>
-
-<span class="c1"># Configure the model</span>
-<span class="n">model</span> <span class="o">=</span> <span class="n">XGBClassifierModel</span><span class="p">(</span>
-    <span class="n">XGBClassifierModelConfig</span><span class="p">(</span>
-        <span class="n">features</span><span class="o">=</span><span class="n">Features</span><span class="p">(</span><span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">,)),</span>
-        <span class="n">predict</span><span class="o">=</span><span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;target&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
-        <span class="n">directory</span><span class="o">=</span><span class="s2">&quot;model&quot;</span><span class="p">,</span>
-        <span class="n">max_depth</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
-        <span class="n">learning_rate</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>
-        <span class="n">n_estimators</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span>
-        <span class="n">reg_lambda</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-        <span class="n">reg_alpha</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-        <span class="n">gamma</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-        <span class="n">colsample_bytree</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-        <span class="n">subsample</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-    <span class="p">)</span>
-<span class="p">)</span>
-
-<span class="c1"># Train the model</span>
-<span class="n">train</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="o">*</span><span class="p">[{</span><span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="n">x</span><span class="p">,</span> <span class="s2">&quot;target&quot;</span><span class="p">:</span> <span class="n">y</span><span class="p">}</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">trainX</span><span class="p">,</span> <span class="n">trainy</span><span class="p">)])</span>
-
-<span class="c1"># Assess accuracy</span>
-<span class="nb">print</span><span class="p">(</span>
-    <span class="s2">&quot;Test accuracy:&quot;</span><span class="p">,</span>
-    <span class="n">accuracy</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="o">*</span><span class="p">[{</span><span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="n">x</span><span class="p">,</span> <span class="s2">&quot;target&quot;</span><span class="p">:</span> <span class="n">y</span><span class="p">}</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">testX</span><span class="p">,</span> <span class="n">testy</span><span class="p">)]),</span>
-<span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span>
-    <span class="s2">&quot;Training accuracy:&quot;</span><span class="p">,</span>
-    <span class="n">accuracy</span><span class="p">(</span>
-        <span class="n">model</span><span class="p">,</span> <span class="o">*</span><span class="p">[{</span><span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="n">x</span><span class="p">,</span> <span class="s2">&quot;target&quot;</span><span class="p">:</span> <span class="n">y</span><span class="p">}</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">trainX</span><span class="p">,</span> <span class="n">trainy</span><span class="p">)]</span>
-    <span class="p">),</span>
-<span class="p">)</span>
-</pre></div>
-</div>
-<p>Output</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Test</span> <span class="n">accuracy</span><span class="p">:</span> <span class="mf">0.933333333333333</span>
-<span class="n">Training</span> <span class="n">accuracy</span><span class="p">:</span> <span class="mf">0.9703703703703703</span>
-</pre></div>
-</div>
-<p><strong>Args</strong></p>
-<ul class="simple">
-<li><p>directory: Path</p>
-<ul>
-<li><p>Directory where model should be saved</p></li>
-</ul>
-</li>
-<li><p>features: List of features</p>
-<ul>
-<li><p>Features on which we train the model</p></li>
-</ul>
-</li>
-<li><p>predict: Feature</p>
-<ul>
-<li><p>Value to be predicted</p></li>
-</ul>
-</li>
-<li><p>learning_rate: float</p>
-<ul>
-<li><p>default: 0.3</p></li>
-<li><p>Learning rate to train with</p></li>
-</ul>
-</li>
-<li><p>n_estimators: Integer</p>
-<ul>
-<li><p>default: 100</p></li>
-<li><p>Number of gradient boosted trees. Equivalent to the number of boosting rounds</p></li>
-</ul>
-</li>
-<li><p>max_depth: Integer</p>
-<ul>
-<li><p>default: 6</p></li>
-<li><p>Maximium tree depth for base learners</p></li>
-</ul>
-</li>
-<li><p>objective: String</p>
-<ul>
-<li><p>default: multi:softmax</p></li>
-<li><p>Objective in training</p></li>
-</ul>
-</li>
-<li><p>subsample: float</p>
-<ul>
-<li><p>default: 1</p></li>
-<li><p>Subsample ratio of the training instance</p></li>
-</ul>
-</li>
-<li><p>gamma: float</p>
-<ul>
-<li><p>default: 0</p></li>
-<li><p>Minimium loss reduction required to make a furthre partition on a leaf node</p></li>
-</ul>
-</li>
-<li><p>n_jobs: Integer</p>
-<ul>
-<li><p>default: -1</p></li>
-<li><p>Number of parallel threads used to run xgboost</p></li>
-</ul>
-</li>
-<li><p>colsample_bytree: float</p>
-<ul>
-<li><p>default: 1</p></li>
-<li><p>Subsample ratio of columns when constructing each tree</p></li>
-</ul>
-</li>
-<li><p>booster: String</p>
-<ul>
-<li><p>default: gbtree</p></li>
-<li><p>Specify which booster to use: gbtree, gblinear or dart</p></li>
-</ul>
-</li>
-<li><p>min_child_weight: float</p>
-<ul>
-<li><p>default: 1</p></li>
-<li><p>Minimum sum of instance weight(hessian) needed in a child</p></li>
-</ul>
-</li>
-<li><p>reg_lambda: float</p>
-<ul>
-<li><p>default: 1</p></li>
-<li><p>L2 regularization term on weights. Increasing this value will make model more conservative</p></li>
-</ul>
-</li>
-<li><p>reg_alpha: float</p>
-<ul>
-<li><p>default: 0</p></li>
-<li><p>L1 regularization term on weights. Increasing this value will make model more conservative</p></li>
-</ul>
-</li>
-</ul>
-</div>
-</div>
-<div class="section" id="xgbregressor">
-<span id="plugin-model-dffml-model-xgboost-xgbregressor"></span><h3>xgbregressor<a class="headerlink" href="#xgbregressor" title="Permalink to this headline">¶</a></h3>
-<p><em>Official</em></p>
-<p>Model using xgboost to perform regression prediction via gradient boosted trees
-XGBoost is a leading software library for working with standard tabular data (the type of data you store in Pandas DataFrames,
-as opposed to more exotic types of data like images and videos). With careful parameter tuning, you can train highly accurate models.</p>
-<div class="section" id="id5">
-<h4>Examples<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h4>
-<p>Command line usage</p>
-<p>First download the training and test files, change the headers to DFFML
-format.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ wget http://download.tensorflow.org/data/iris_training.csv
-$ wget http://download.tensorflow.org/data/iris_test.csv
-$ sed -i &#39;s/.*setosa,versicolor,virginica/SepalLength,SepalWidth,PetalLength,PetalWidth,classification/g&#39; iris_training.csv iris_test.csv
-</pre></div>
-</div>
-<p>Run the train command</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml train <span class="se">\</span>
-    -sources <span class="nv">train</span><span class="o">=</span>csv <span class="se">\</span>
-    -source-filename iris_training.csv <span class="se">\</span>
-    -model xgbregressor <span class="se">\</span>
-    -model-features <span class="se">\</span>
-      SepalLength:float:1 <span class="se">\</span>
-      SepalWidth:float:1 <span class="se">\</span>
-      PetalLength:float:1 <span class="se">\</span>
-      PetalWidth:float:1 <span class="se">\</span>
-    -model-predict classification <span class="se">\</span>
-    -model-directory model <span class="se">\</span>
-    -model-max_depth <span class="m">3</span> <span class="se">\</span>
-    -model-learning_rate <span class="m">0</span>.01 <span class="se">\</span>
-    -model-n_estimators <span class="m">200</span> <span class="se">\</span>
-    -model-reg_lambda <span class="m">1</span> <span class="se">\</span>
-    -model-reg_alpha <span class="m">0</span> <span class="se">\</span>
-    -model-gamma <span class="m">0</span> <span class="se">\</span>
-    -model-colsample_bytree <span class="m">0</span> <span class="se">\</span>
-    -model-subsample <span class="m">1</span>
-</pre></div>
-</div>
-<p>Assess the accuracy</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml accuracy <span class="se">\</span>
-    -sources <span class="nv">train</span><span class="o">=</span>csv <span class="se">\</span>
-    -source-filename iris_test.csv <span class="se">\</span>
-    -model xgbregressor <span class="se">\</span>
-    -model-features <span class="se">\</span>
-      SepalLength:float:1 <span class="se">\</span>
-      SepalWidth:float:1 <span class="se">\</span>
-      PetalLength:float:1 <span class="se">\</span>
-      PetalWidth:float:1 <span class="se">\</span>
-    -model-predict classification <span class="se">\</span>
-    -model-directory model
-</pre></div>
-</div>
-<p>Output</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">accuracy</span><span class="p">:</span> <span class="mf">0.8841466984766406</span>
-</pre></div>
-</div>
-<p>Make predictions</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml predict all <span class="se">\</span>
-    -sources <span class="nv">train</span><span class="o">=</span>csv <span class="se">\</span>
-    -source-filename iris_test.csv <span class="se">\</span>
-    -model xgbregressor <span class="se">\</span>
-    -model-features <span class="se">\</span>
-      SepalLength:float:1 <span class="se">\</span>
-      SepalWidth:float:1 <span class="se">\</span>
-      PetalLength:float:1 <span class="se">\</span>
-      PetalWidth:float:1 <span class="se">\</span>
-    -model-predict classification <span class="se">\</span>
-    -model-directory model
-</pre></div>
-</div>
-<p>Python usage</p>
+<p>Example usage of daal4py Linear Regression model using python API</p>
 <p><strong>run.py</strong></p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">load_diabetes</span>
-<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">CSVSource</span><span class="p">,</span> <span class="n">Features</span><span class="p">,</span> <span class="n">Feature</span>
+<span class="kn">from</span> <span class="nn">dffml.noasync</span> <span class="kn">import</span> <span class="n">train</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">,</span> <span class="n">predict</span>
+<span class="kn">from</span> <span class="nn">dffml_model_daal4py.daal4pylr</span> <span class="kn">import</span> <span class="n">DAAL4PyLRModel</span>
 
-<span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">Feature</span><span class="p">,</span> <span class="n">Features</span>
-<span class="kn">from</span> <span class="nn">dffml.noasync</span> <span class="kn">import</span> <span class="n">train</span><span class="p">,</span> <span class="n">accuracy</span>
-<span class="kn">from</span> <span class="nn">dffml_model_xgboost.xgbregressor</span> <span class="kn">import</span> <span class="p">(</span>
-    <span class="n">XGBRegressorModel</span><span class="p">,</span>
-    <span class="n">XGBRegressorModelConfig</span><span class="p">,</span>
-<span class="p">)</span>
-
-
-<span class="n">diabetes</span> <span class="o">=</span> <span class="n">load_diabetes</span><span class="p">()</span>
-<span class="n">y</span> <span class="o">=</span> <span class="n">diabetes</span><span class="p">[</span><span class="s2">&quot;target&quot;</span><span class="p">]</span>
-<span class="n">X</span> <span class="o">=</span> <span class="n">diabetes</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">]</span>
-<span class="n">trainX</span><span class="p">,</span> <span class="n">testX</span><span class="p">,</span> <span class="n">trainy</span><span class="p">,</span> <span class="n">testy</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span>
-    <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">123</span>
-<span class="p">)</span>
-
-<span class="c1"># Configure the model</span>
-<span class="n">model</span> <span class="o">=</span> <span class="n">XGBRegressorModel</span><span class="p">(</span>
-    <span class="n">XGBRegressorModelConfig</span><span class="p">(</span>
-        <span class="n">features</span><span class="o">=</span><span class="n">Features</span><span class="p">(</span><span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="mi">10</span><span class="p">)),</span>
-        <span class="n">predict</span><span class="o">=</span><span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;target&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
-        <span class="n">directory</span><span class="o">=</span><span class="s2">&quot;model&quot;</span><span class="p">,</span>
-        <span class="n">max_depth</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
-        <span class="n">learning_rate</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span>
-        <span class="n">n_estimators</span><span class="o">=</span><span class="mi">400</span><span class="p">,</span>
-        <span class="n">reg_lambda</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
-        <span class="n">reg_alpha</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-        <span class="n">gamma</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
-        <span class="n">colsample_bytree</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span>
-        <span class="n">subsample</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span>
-    <span class="p">)</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">DAAL4PyLRModel</span><span class="p">(</span>
+    <span class="n">features</span><span class="o">=</span><span class="n">Features</span><span class="p">(</span><span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;f1&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span>
+    <span class="n">predict</span><span class="o">=</span><span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;ans&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+    <span class="n">directory</span><span class="o">=</span><span class="s2">&quot;tempdir&quot;</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="c1"># Train the model</span>
-<span class="n">train</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="o">*</span><span class="p">[{</span><span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="n">x</span><span class="p">,</span> <span class="s2">&quot;target&quot;</span><span class="p">:</span> <span class="n">y</span><span class="p">}</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">trainX</span><span class="p">,</span> <span class="n">trainy</span><span class="p">)])</span>
+<span class="n">train</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="s2">&quot;train.csv&quot;</span><span class="p">)</span>
 
-<span class="c1"># Assess accuracy</span>
-<span class="nb">print</span><span class="p">(</span>
-    <span class="s2">&quot;Test accuracy:&quot;</span><span class="p">,</span>
-    <span class="n">accuracy</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="o">*</span><span class="p">[{</span><span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="n">x</span><span class="p">,</span> <span class="s2">&quot;target&quot;</span><span class="p">:</span> <span class="n">y</span><span class="p">}</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">testX</span><span class="p">,</span> <span class="n">testy</span><span class="p">)]),</span>
-<span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span>
-    <span class="s2">&quot;Training accuracy:&quot;</span><span class="p">,</span>
-    <span class="n">accuracy</span><span class="p">(</span>
-        <span class="n">model</span><span class="p">,</span> <span class="o">*</span><span class="p">[{</span><span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="n">x</span><span class="p">,</span> <span class="s2">&quot;target&quot;</span><span class="p">:</span> <span class="n">y</span><span class="p">}</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">trainX</span><span class="p">,</span> <span class="n">trainy</span><span class="p">)]</span>
-    <span class="p">),</span>
-<span class="p">)</span>
+<span class="c1"># Assess accuracy (alternate way of specifying data source)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Accuracy:&quot;</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">CSVSource</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;test.csv&quot;</span><span class="p">)))</span>
+
+<span class="c1"># Make prediction</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">features</span><span class="p">,</span> <span class="n">prediction</span> <span class="ow">in</span> <span class="n">predict</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;f1&quot;</span><span class="p">:</span> <span class="mf">0.8</span><span class="p">,</span> <span class="s2">&quot;ans&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">}):</span>
+    <span class="n">features</span><span class="p">[</span><span class="s2">&quot;ans&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">prediction</span><span class="p">[</span><span class="s2">&quot;ans&quot;</span><span class="p">][</span><span class="s2">&quot;value&quot;</span><span class="p">]</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">features</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Output</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ python run.py
-Test accuracy: 0.6669655406927468
-Training accuracy: 0.819782501866115
+<p>Run the file</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python run.py
 </pre></div>
 </div>
 <p><strong>Args</strong></p>
 <ul class="simple">
-<li><p>directory: Path</p>
+<li><p>predict: Feature</p>
 <ul>
-<li><p>Directory where model should be saved</p></li>
+<li><p>Label or the value to be predicted</p></li>
 </ul>
 </li>
 <li><p>features: List of features</p>
 <ul>
-<li><p>Features on which we train the model</p></li>
+<li><p>Features to train on. For SLR only 1 allowed</p></li>
 </ul>
 </li>
-<li><p>predict: Feature</p>
+<li><p>directory: Path</p>
 <ul>
-<li><p>Value to be predicted</p></li>
-</ul>
-</li>
-<li><p>learning_rate: float</p>
-<ul>
-<li><p>default: 0.05</p></li>
-<li><p>Learning rate to train with</p></li>
-</ul>
-</li>
-<li><p>n_estimators: Integer</p>
-<ul>
-<li><p>default: 1000</p></li>
-<li><p>Number of gradient boosted trees. Equivalent to the number of boosting rounds</p></li>
-</ul>
-</li>
-<li><p>max_depth: Integer</p>
-<ul>
-<li><p>default: 6</p></li>
-<li><p>Maximium tree depth for base learners</p></li>
-</ul>
-</li>
-<li><p>subsample: float</p>
-<ul>
-<li><p>default: 1</p></li>
-<li><p>Subsample ratio of the training instance</p></li>
-</ul>
-</li>
-<li><p>gamma: float</p>
-<ul>
-<li><p>default: 0</p></li>
-<li><p>Minimium loss reduction required to make a furthre partition on a leaf node</p></li>
-</ul>
-</li>
-<li><p>n_jobs: Integer</p>
-<ul>
-<li><p>default: -1</p></li>
-<li><p>Number of parallel threads used to run xgboost</p></li>
-</ul>
-</li>
-<li><p>colsample_bytree: float</p>
-<ul>
-<li><p>default: 1</p></li>
-<li><p>Subsample ratio of columns when constructing each tree</p></li>
-</ul>
-</li>
-<li><p>booster: String</p>
-<ul>
-<li><p>default: gbtree</p></li>
-<li><p>Specify which booster to use: gbtree, gblinear or dart</p></li>
-</ul>
-</li>
-<li><p>min_child_weight: float</p>
-<ul>
-<li><p>default: 0</p></li>
-<li><p>Minimum sum of instance weight(hessian) needed in a child</p></li>
-</ul>
-</li>
-<li><p>reg_lambda: float</p>
-<ul>
-<li><p>default: 1</p></li>
-<li><p>L2 regularization term on weights. Increasing this value will make model more conservative</p></li>
-</ul>
-</li>
-<li><p>reg_alpha: float</p>
-<ul>
-<li><p>default: 0</p></li>
-<li><p>L1 regularization term on weights. Increasing this value will make model more conservative</p></li>
+<li><p>Directory where state should be saved</p></li>
 </ul>
 </li>
 </ul>
-</div>
 </div>
 </div>
 <div class="section" id="dffml-model-autosklearn">

@@ -1718,24 +1718,24 @@ No description
 
 - work: work_spread(type: int)
 
-.. _plugin_operation_dffml_operations_binsec:
+.. _plugin_operation_shouldi:
 
-dffml_operations_binsec
-+++++++++++++++++++++++
+shouldi
++++++++
 
 .. code-block:: console
 
-    pip install dffml-operations-binsec
+    pip install shouldi
 
 
-.. _plugin_operation_dffml_operations_binsec_cleanup_rpm:
+.. _plugin_operation_shouldi_cleanup_pypi_package:
 
-cleanup_rpm
-~~~~~~~~~~~
+cleanup_pypi_package
+~~~~~~~~~~~~~~~~~~~~
 
 *Official*
 
-No description
+Remove the directory containing the source code release.
 
 **Stage: cleanup**
 
@@ -1743,11 +1743,75 @@ No description
 
 **Inputs**
 
-- rpm: RPMObject(type: python_obj)
+- directory: run_bandit.inputs.pkg(type: str)
 
-.. _plugin_operation_dffml_operations_binsec_files_in_rpm:
+.. _plugin_operation_shouldi_pypi_package_contents:
 
-files_in_rpm
+pypi_package_contents
+~~~~~~~~~~~~~~~~~~~~~
+
+*Official*
+
+Download a source code release and extract it to a temporary directory.
+
+**Stage: processing**
+
+
+
+**Inputs**
+
+- url: pypi_package_contents.inputs.url(type: str)
+
+**Outputs**
+
+- directory: run_bandit.inputs.pkg(type: str)
+
+.. _plugin_operation_shouldi_pypi_package_json:
+
+pypi_package_json
+~~~~~~~~~~~~~~~~~
+
+*Official*
+
+Download the information on the package in JSON format.
+
+**Stage: processing**
+
+
+
+**Inputs**
+
+- package: safety_check.inputs.package(type: str)
+
+**Outputs**
+
+- version: safety_check.inputs.version(type: str)
+- url: pypi_package_contents.inputs.url(type: str)
+
+.. _plugin_operation_shouldi_run_bandit:
+
+run_bandit
+~~~~~~~~~~
+
+*Official*
+
+CLI usage: dffml service dev run -log debug shouldi.bandit:run_bandit -pkg .
+
+**Stage: processing**
+
+
+
+**Inputs**
+
+- pkg: run_bandit.inputs.pkg(type: str)
+
+**Outputs**
+
+- result: run_bandit.outputs.result(type: map)
+
+.. _plugin_operation_shouldi_safety_check:
+
+safety_check
 ~~~~~~~~~~~~
 
 *Official*
@@ -1760,127 +1824,12 @@ No description
 
 **Inputs**
 
-- rpm: RPMObject(type: python_obj)
+- package: safety_check.inputs.package(type: str)
+- version: safety_check.inputs.version(type: str)
 
 **Outputs**
 
-- files: rpm_filename(type: str)
-
-.. _plugin_operation_dffml_operations_binsec_is_binary_pie:
-
-is_binary_pie
-~~~~~~~~~~~~~
-
-*Official*
-
-No description
-
-**Stage: processing**
-
-
-
-**Inputs**
-
-- rpm: RPMObject(type: python_obj)
-- filename: rpm_filename(type: str)
-
-**Outputs**
-
-- is_pie: binary_is_PIE(type: bool)
-
-.. _plugin_operation_dffml_operations_binsec_url_to_urlbytes:
-
-url_to_urlbytes
-~~~~~~~~~~~~~~~
-
-*Official*
-
-No description
-
-**Stage: processing**
-
-
-
-**Inputs**
-
-- URL: URL(type: string)
-
-**Outputs**
-
-- download: URLBytes(type: python_obj)
-
-.. _plugin_operation_dffml_operations_binsec_urlbytes_to_rpmfile:
-
-urlbytes_to_rpmfile
-~~~~~~~~~~~~~~~~~~~
-
-*Official*
-
-No description
-
-**Stage: processing**
-
-
-
-**Inputs**
-
-- download: URLBytes(type: python_obj)
-
-**Outputs**
-
-- rpm: RPMObject(type: python_obj)
-
-.. _plugin_operation_dffml_operations_binsec_urlbytes_to_tarfile:
-
-urlbytes_to_tarfile
-~~~~~~~~~~~~~~~~~~~
-
-*Official*
-
-No description
-
-**Stage: processing**
-
-
-
-**Inputs**
-
-- download: URLBytes(type: python_obj)
-
-**Outputs**
-
-- rpm: RPMObject(type: python_obj)
-
-.. _plugin_operation_dffml_feature_auth:
-
-dffml_feature_auth
-++++++++++++++++++
-
-.. code-block:: console
-
-    pip install dffml-feature-auth
-
-
-.. _plugin_operation_dffml_feature_auth_scrypt:
-
-scrypt
-~~~~~~
-
-*Official*
-
-No description
-
-**Stage: processing**
-
-
-
-**Inputs**
-
-- password: UnhashedPassword(type: string)
-
-**Outputs**
-
-- password: ScryptPassword(type: string)
+- result: safety_check.outputs.result(type: int)
 
 .. _plugin_operation_dffml_operations_nlp:
 
@@ -2504,3 +2453,385 @@ Resizes image array to the specified new dimensions
 **Outputs**
 
 - result: resize.outputs.result(type: array)
+
+.. _plugin_operation_dffml_operations_deploy:
+
+dffml_operations_deploy
++++++++++++++++++++++++
+
+.. code-block:: console
+
+    pip install dffml-operations-deploy
+
+
+.. _plugin_operation_dffml_operations_deploy_check_if_default_branch:
+
+check_if_default_branch
+~~~~~~~~~~~~~~~~~~~~~~~
+
+*Official*
+
+No description
+
+**Stage: processing**
+
+
+
+**Inputs**
+
+- payload: git_payload(type: Dict[str,Any])
+
+**Outputs**
+
+- is_default_branch: is_default_branch(type: bool)
+
+.. _plugin_operation_dffml_operations_deploy_check_secret_match:
+
+check_secret_match
+~~~~~~~~~~~~~~~~~~
+
+*Official*
+
+No description
+
+**Stage: processing**
+
+
+
+**Inputs**
+
+- headers: webhook_headers(type: Dict[str,Any])
+- body: payload(type: bytes)
+
+**Outputs**
+
+- git_payload: git_payload(type: Dict[str,Any])
+
+**Args**
+
+- secret: Entrypoint
+
+.. _plugin_operation_dffml_operations_deploy_docker_build_image:
+
+docker_build_image
+~~~~~~~~~~~~~~~~~~
+
+*Official*
+
+No description
+
+**Stage: processing**
+
+
+
+**Inputs**
+
+- docker_commands: docker_commands(type: Dict[str,Any])
+
+**Outputs**
+
+- build_status: is_image_built(type: bool)
+
+**Conditions**
+
+- is_default_branch: bool
+- got_running_containers: bool
+
+.. _plugin_operation_dffml_operations_deploy_get_image_tag:
+
+get_image_tag
+~~~~~~~~~~~~~
+
+*Official*
+
+No description
+
+**Stage: processing**
+
+
+
+**Inputs**
+
+- payload: git_payload(type: Dict[str,Any])
+
+**Outputs**
+
+- image_tag: docker_image_tag(type: str)
+
+.. _plugin_operation_dffml_operations_deploy_get_running_containers:
+
+get_running_containers
+~~~~~~~~~~~~~~~~~~~~~~
+
+*Official*
+
+No description
+
+**Stage: processing**
+
+
+
+**Inputs**
+
+- tag: docker_image_tag(type: str)
+
+**Outputs**
+
+- running_containers: docker_running_containers(type: List[str])
+
+.. _plugin_operation_dffml_operations_deploy_get_status_running_containers:
+
+get_status_running_containers
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+*Official*
+
+No description
+
+**Stage: processing**
+
+
+
+**Inputs**
+
+- containers: docker_running_containers(type: List[str])
+
+**Outputs**
+
+- status: got_running_containers(type: bool)
+
+.. _plugin_operation_dffml_operations_deploy_get_url_from_payload:
+
+get_url_from_payload
+~~~~~~~~~~~~~~~~~~~~
+
+*Official*
+
+No description
+
+**Stage: processing**
+
+
+
+**Inputs**
+
+- payload: git_payload(type: Dict[str,Any])
+
+**Outputs**
+
+- url: URL(type: string)
+
+.. _plugin_operation_dffml_operations_deploy_parse_docker_commands:
+
+parse_docker_commands
+~~~~~~~~~~~~~~~~~~~~~
+
+*Official*
+
+No description
+
+**Stage: processing**
+
+
+
+**Inputs**
+
+- repo: git_repository(type: Dict[str, str])
+
+  - directory: str
+  - URL: str(default: None)
+- image_tag: docker_image_tag(type: str)
+
+**Outputs**
+
+- docker_commands: docker_commands(type: Dict[str,Any])
+
+.. _plugin_operation_dffml_operations_deploy_restart_running_containers:
+
+restart_running_containers
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+*Official*
+
+No description
+
+**Stage: processing**
+
+
+
+**Inputs**
+
+- docker_commands: docker_commands(type: Dict[str,Any])
+- containers: docker_running_containers(type: List[str])
+
+**Outputs**
+
+- containers: docker_restarted_containers(type: str)
+
+**Conditions**
+
+- is_image_built: bool
+
+.. _plugin_operation_dffml_operations_binsec:
+
+dffml_operations_binsec
++++++++++++++++++++++++
+
+.. code-block:: console
+
+    pip install dffml-operations-binsec
+
+
+.. _plugin_operation_dffml_operations_binsec_cleanup_rpm:
+
+cleanup_rpm
+~~~~~~~~~~~
+
+*Official*
+
+No description
+
+**Stage: cleanup**
+
+
+
+**Inputs**
+
+- rpm: RPMObject(type: python_obj)
+
+.. _plugin_operation_dffml_operations_binsec_files_in_rpm:
+
+files_in_rpm
+~~~~~~~~~~~~
+
+*Official*
+
+No description
+
+**Stage: processing**
+
+
+
+**Inputs**
+
+- rpm: RPMObject(type: python_obj)
+
+**Outputs**
+
+- files: rpm_filename(type: str)
+
+.. _plugin_operation_dffml_operations_binsec_is_binary_pie:
+
+is_binary_pie
+~~~~~~~~~~~~~
+
+*Official*
+
+No description
+
+**Stage: processing**
+
+
+
+**Inputs**
+
+- rpm: RPMObject(type: python_obj)
+- filename: rpm_filename(type: str)
+
+**Outputs**
+
+- is_pie: binary_is_PIE(type: bool)
+
+.. _plugin_operation_dffml_operations_binsec_url_to_urlbytes:
+
+url_to_urlbytes
+~~~~~~~~~~~~~~~
+
+*Official*
+
+No description
+
+**Stage: processing**
+
+
+
+**Inputs**
+
+- URL: URL(type: string)
+
+**Outputs**
+
+- download: URLBytes(type: python_obj)
+
+.. _plugin_operation_dffml_operations_binsec_urlbytes_to_rpmfile:
+
+urlbytes_to_rpmfile
+~~~~~~~~~~~~~~~~~~~
+
+*Official*
+
+No description
+
+**Stage: processing**
+
+
+
+**Inputs**
+
+- download: URLBytes(type: python_obj)
+
+**Outputs**
+
+- rpm: RPMObject(type: python_obj)
+
+.. _plugin_operation_dffml_operations_binsec_urlbytes_to_tarfile:
+
+urlbytes_to_tarfile
+~~~~~~~~~~~~~~~~~~~
+
+*Official*
+
+No description
+
+**Stage: processing**
+
+
+
+**Inputs**
+
+- download: URLBytes(type: python_obj)
+
+**Outputs**
+
+- rpm: RPMObject(type: python_obj)
+
+.. _plugin_operation_dffml_feature_auth:
+
+dffml_feature_auth
+++++++++++++++++++
+
+.. code-block:: console
+
+    pip install dffml-feature-auth
+
+
+.. _plugin_operation_dffml_feature_auth_scrypt:
+
+scrypt
+~~~~~~
+
+*Official*
+
+No description
+
+**Stage: processing**
+
+
+
+**Inputs**
+
+- password: UnhashedPassword(type: string)
+
+**Outputs**
+
+- password: ScryptPassword(type: string)
