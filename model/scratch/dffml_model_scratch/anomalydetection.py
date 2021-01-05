@@ -110,7 +110,7 @@ class AnomalyModelConfig:
 @entrypoint("anomalydetection")
 class AnomalyModel(SimpleModel):
 
-    """
+    r"""
     Model for Anomaly Detection using multivariate Gaussian distribution to predict probabilities of all records in the dataset
     and identify outliers. F1 score is used as the evaluation metric for this model. This model works well as it recognises dependencies
     across various features, and works particularly well if the features have a Gaussian Distribution.
@@ -122,10 +122,54 @@ class AnomalyModel(SimpleModel):
 
     Create training and test datasets
 
-    .. literalinclude:: /../model/scratch/examples/anomalydetection_ex/trainex.sh
+    **trainex.csv**
 
-    .. literalinclude:: /../model/scratch/examples/anomalydetection_ex/testex.sh
+    .. code-block::
+        :test:
+        :filepath: trainex.csv
 
+        A,Y
+        0.65,0
+        0.24,0
+        0.93,0
+        0.87,0
+        0.23,0
+        7,1
+        0.86,0
+        0.45,0
+        0.55,0
+        0.29,0
+        5,1
+        0.51,0
+        0.88,0
+        0.24,0
+        0.51,0
+        0.17,0
+        9,1
+        0.37,0
+        0.23,0
+        0.44,0
+        0.62,0
+        3,1
+        0.87,0
+
+    **testex.csv**
+
+    .. code-block::
+        :test:
+        :filepath: testex.csv
+
+        A,Y
+        0.45,0
+        0.23,0
+        0.67,0
+        8,1
+        0.19,0
+        0.34,0
+        0.49,0
+        0.31,0
+        0.47,0
+        4,1
 
     Train the model
 
@@ -134,12 +178,12 @@ class AnomalyModel(SimpleModel):
 
 
         $ dffml train \
-            - sources f=csv \
-            - source-filename trainex.csv \
-            - model anomalydetection:AnomalyModel \
-            - model-feature A:float:2 \
-            - model-predict Y:int:1  \
-            - model-directory tempdir
+            -sources f=csv \
+            -source-filename trainex.csv \
+            -model anomalydetection \
+            -model-feature A:float:2 \
+            -model-predict Y:int:1  \
+            -model-directory tempdir
 
     Assess the accuracy
 
@@ -149,7 +193,7 @@ class AnomalyModel(SimpleModel):
         $ dffml accuracy \
             -sources f=csv \
             -source-filename testex.csv \
-            -model anomalydetection:AnomalyModel \
+            -model anomalydetection \
             -model-feature A:float:2 \
             -model-predict Y:int:1 \
             -model-directory tempdir
@@ -163,7 +207,7 @@ class AnomalyModel(SimpleModel):
         $ dffml predict all \
             -sources f=csv \
             -source-filename testex.csv \
-            -model anomalydetection:AnomalyModel \
+            -model anomalydetection \
             -model-feature A:float:2 \
             -model-predict Y:int:1 \
             -model-directory tempdir
@@ -172,12 +216,15 @@ class AnomalyModel(SimpleModel):
     Python usage
 
     .. literalinclude:: /../model/scratch/examples/anomalydetection_ex/detectoutliers.py
+        :test:
 
 
     Output
 
-    .. code-block::
+    .. code-block:: console
+        :test:
 
+        $ python detectoutliers.py
         Test set F1 score : 0.8
         Training set F1 score : 0.888888888888889
 

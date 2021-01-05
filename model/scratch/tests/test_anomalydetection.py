@@ -12,7 +12,7 @@ from dffml.util.entrypoint import entrypoint
 from dffml.feature.feature import Feature, Features
 from dffml.model.model import SimpleModel, ModelNotTrained
 from dffml.source.memory import MemorySource, MemorySourceConfig
-from dffml import AsyncTestCase, Feature, Features, accuracy, predict, train
+from dffml import AsyncTestCase, Feature, Features, accuracy, predict, train, run_consoletest
 
 from dffml_model_scratch.anomalydetection import AnomalyModel
 
@@ -91,4 +91,10 @@ class TestAnomalyModel(AsyncTestCase):
         self.assertGreater(
             right_prediction,
             (right_prediction + wrong_prediction) * (acceptable),
+        )
+
+    async def test_docstring(self):
+        await run_consoletest(
+            AnomalyModel,
+            docs_root_dir=pathlib.Path(__file__).parents[3] / "docs",
         )
