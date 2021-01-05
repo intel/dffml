@@ -215,7 +215,7 @@ And remember that any time we modify the **setup.py**, we have to re-install.
 .. code-block:: console
     :test:
 
-    $ python -m pip install -e .
+    $ python -m pip install --force-reinstall -e .
 
 Command Line Usage
 ------------------
