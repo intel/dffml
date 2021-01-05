@@ -179,6 +179,7 @@ jobs:
         - docs/tutorials/dataflows/nlp.rst
         - docs/tutorials/models/iris.rst
         - docs/tutorials/models/package.rst
+        - docs/tutorials/models/docs.rst
         - docs/tutorials/models/slr.rst
         - docs/tutorials/sources/complex.rst
         - docs/tutorials/sources/file.rst

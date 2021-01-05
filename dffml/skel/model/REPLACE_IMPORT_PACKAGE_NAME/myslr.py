@@ -35,7 +35,10 @@ def coeff_of_deter(y, regression_line):
     y_mean_line = [statistics.mean(y)] * len(y)
     squared_error_mean = squared_error(y, y_mean_line)
     squared_error_regression = squared_error(y, regression_line)
-    return 1 - (squared_error_regression / squared_error_mean)
+    # Handle 1.0 accuracy case
+    if squared_error_mean == 0:
+        return 1.0
+    return 1.0 - (squared_error_regression / squared_error_mean)
 
 
 def best_fit_line(x, y):
@@ -59,6 +62,117 @@ class MySLRModelConfig:
 
 @entrypoint("myslr")
 class MySLRModel(SimpleModel):
+    r"""
+    Example Logistic Regression training one variable to predict another.
+
+    The dataset used for training
+
+    **train.csv**
+
+    .. code-block::
+        :test:
+        :filepath: train.csv
+
+        x,y
+        0.0,0
+        0.1,1
+        0.2,2
+        0.3,3
+        0.4,4
+        0.5,5
+
+    The dataset used for testing
+
+    **test.csv**
+
+    .. code-block::
+        :test:
+        :filepath: test.csv
+
+        x,y
+        0.6,6
+        0.7,7
+
+    Train the model
+
+    .. code-block:: console
+        :test:
+
+        $ dffml train \
+            -model myslr \
+            -model-feature x:float:1 \
+            -model-predict y:int:1 \
+            -model-directory tempdir \
+            -sources f=csv \
+            -source-filename train.csv
+
+    Assess the accuracy
+
+    .. code-block:: console
+        :test:
+
+        $ dffml accuracy \
+            -model myslr \
+            -model-feature x:float:1 \
+            -model-predict y:int:1 \
+            -model-directory tempdir \
+            -sources f=csv \
+            -source-filename test.csv
+        1.0
+
+    Make a prediction
+
+    **predict.csv**
+
+    .. code-block::
+        :test:
+        :filepath: predict.csv
+
+        x
+        0.8
+
+    .. code-block:: console
+        :test:
+
+        $ dffml predict all \
+            -model myslr \
+            -model-feature x:float:1 \
+            -model-predict y:int:1 \
+            -model-directory tempdir \
+            -sources f=csv \
+            -source-filename predict.csv
+        [
+            {
+                "extra": {},
+                "features": {
+                    "x": 0.8
+                },
+                "key": "0",
+                "last_updated": "2020-11-15T16:22:25Z",
+                "prediction": {
+                    "y": {
+                        "confidence": 1.0,
+                        "value": 7.999999999999998
+                    }
+                }
+            }
+        ]
+
+    Example usage of Logistic Regression using Python
+
+    **example_myslr.py**
+
+    .. literalinclude:: ../examples/example_myslr.py
+        :test:
+        :filepath: example_myslr.py
+
+    .. code-block:: console
+        :test:
+
+        $ python example_myslr.py
+        Accuracy: 1.0
+        {'x': 0.9, 'y': 4}
+    """
     # The configuration class needs to be set as the CONFIG property
     CONFIG: Type = MySLRModelConfig
 
