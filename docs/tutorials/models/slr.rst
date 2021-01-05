@@ -49,7 +49,7 @@ you can copy these.
 
 .. literalinclude:: /../dffml/skel/model/REPLACE_IMPORT_PACKAGE_NAME/myslr.py
     :test:
-    :lines: 18-50
+    :lines: 18-53
 
 Config
 ------
@@ -62,10 +62,6 @@ Anything that a user might want to tweak about a models behavior should go in
 the ``Config`` class for the model. The naming convention is ``TheName`` +
 ``Model`` + ``Config``.
 
-.. literalinclude:: /../dffml/skel/model/REPLACE_IMPORT_PACKAGE_NAME/myslr.py
-    :test:
-    :lines: 53-57
-
 Our model has three configurable properties.
 
 - ``feature``. The feature within each
@@ -77,6 +73,10 @@ Our model has three configurable properties.
   should use as the Y value for the regression line
 
 - ``directory``. The location on disk where we'll save and load our model from
+
+.. literalinclude:: /../dffml/skel/model/REPLACE_IMPORT_PACKAGE_NAME/myslr.py
+    :test:
+    :lines: 56-60
 
 Class
 -----
@@ -92,11 +92,15 @@ model from the DFFML command line and other interfaces.
   models, you can configure all models of the same type by using the string
   provided here.
 
+.. literalinclude:: /../dffml/skel/model/REPLACE_IMPORT_PACKAGE_NAME/myslr.py
+    :test:
+    :lines: 63-64
+
 - We must set the ``CONFIG`` attribute to the respective ``Config`` class.
 
 .. literalinclude:: /../dffml/skel/model/REPLACE_IMPORT_PACKAGE_NAME/myslr.py
     :test:
-    :lines: 60-63
+    :lines: 176-177
 
 Train
 -----
@@ -112,7 +116,7 @@ is saved and loaded from a JSON file on disk.
 
 .. literalinclude:: /../dffml/skel/model/REPLACE_IMPORT_PACKAGE_NAME/myslr.py
     :test:
-    :lines: 65-79
+    :lines: 179-193
 
 Accuracy
 --------
@@ -133,7 +137,7 @@ closer to making the correct prediction for each record.
 
 .. literalinclude:: /../dffml/skel/model/REPLACE_IMPORT_PACKAGE_NAME/myslr.py
     :test:
-    :lines: 81-107
+    :lines: 195-221
 
 Predict
 -------
@@ -148,7 +152,7 @@ confidence in our prediction.
 
 .. literalinclude:: /../dffml/skel/model/REPLACE_IMPORT_PACKAGE_NAME/myslr.py
     :test:
-    :lines: 109-126
+    :lines: 223-240
 
 Python Usage
 ------------
@@ -189,6 +193,8 @@ Let's first create our training, test, and prediction data CSV files.
     8
 
 Then we can write our Python file, **run.py**.
+
+**run.py**
 
 .. literalinclude:: /../examples/tutorials/models/slr/run.py
     :test:
@@ -294,7 +300,7 @@ assessment.
     :test:
     :replace: cmds[0][1] = cmds[0][1].replace("8080", str(ctx["HTTP_SERVER"]["8080"]))
 
-    $ curl http://localhost:8080/model/mymodel/predict/0 -v \
+    $ curl -f http://localhost:8080/model/mymodel/predict/0 \
         --header "Content-Type: application/json" \
         --data '{"0": {"features": {"Years": 8}}}'
     {
