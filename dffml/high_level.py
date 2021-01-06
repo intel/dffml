@@ -39,7 +39,7 @@ def _records_to_sources(*args):
             records.append(arg)
         if isinstance(arg, str) and "." in arg:
             filepath = pathlib.Path(arg)
-            source = BaseSource.load(filepath.suffix.replace(".", ""))
+            source = BaseSource.load(filepath.suffixes[0].replace(".", ""))
             sources.append(source(filename=arg))
     # Create memory source if there are any records
     if records:
