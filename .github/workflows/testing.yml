@@ -172,6 +172,7 @@ jobs:
         - docs/cli.rst
         - docs/examples/dataflows.rst
         - docs/examples/integration.rst
+        - docs/examples/or_covid_data_by_county.rst
         - docs/examples/shouldi.rst
         - docs/installation.rst
         - docs/tutorials/dataflows/io.rst
