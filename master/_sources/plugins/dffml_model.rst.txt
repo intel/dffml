@@ -6009,20 +6009,15 @@ No description
   - default: 50
   - Defines the maximum number of models that are kept in the disc. The additional number of models are permanently deleted. Due to the nature of this variable, it sets the upper limit on how many models can be used for an ensemble. It must be an integer greater or equal than 1. If set to None, all models are kept on the disc.
 
-- ensemble_memory_limit: Integer
-
-  - default: 1024
-  - Memory limit in MB for the ensemble building process. `auto-sklearn` will reduce the number of considered models (``ensemble_nbest``) if the memory limit is reached. If ``None``, no memory limit is enforced.
-
 - seed: Integer
 
   - default: 1
   - Used to seed SMAC. Will determine the output file names.
 
-- ml_memory_limit: Integer
+- memory_limit: Integer
 
   - default: 3072
-  - Memory limit in MB for the machine learning algorithm. `auto-sklearn` will stop fitting the machine learning algorithm if it tries to allocate more than `ml_memory_limit` MB. If None is provided, no memory limit is set. In case of multi-processing, `ml_memory_limit` will be per job.
+  - Memory limit in MB for the machine learning algorithm. `auto-sklearn` will stop fitting the machine learning algorithm if it tries to allocate more than `memory_limit` MB. If None is provided, no memory limit is set. In case of multi-processing, `memory_limit` will be per job. This memory limit also applies to the ensemble creation process.
 
 - include_estimators: typing.Any
 
@@ -6062,7 +6057,7 @@ No description
 - output_folder: String
 
   - default: None
-  - folder to store predictions for optional test set, if ``None`` automatically use ``/tmp/autosklearn_output_$pid_$random_number``
+  - folder to store predictions for optional test set, if ``None`` no output will be generated
 
 - delete_tmp_folder_after_terminate: String
 
@@ -6113,6 +6108,16 @@ No description
 
   - default: None
   - Metrics`_. If None is provided, a default metric is selected depending on the task.
+
+- scoring_functions: typing.Any
+
+  - default: None
+  - List of scorers which will be calculated for each pipeline and results will be available via ``cv_results``
+
+- load_models: String
+
+  - default: True
+  - Whether to load the models after fitting Auto-sklearn.
 
 .. _plugin_model_dffml_model_autosklearn_autoregressor:
 
@@ -6301,20 +6306,15 @@ Run the file
   - default: 50
   - Defines the maximum number of models that are kept in the disc. The additional number of models are permanently deleted. Due to the nature of this variable, it sets the upper limit on how many models can be used for an ensemble. It must be an integer greater or equal than 1. If set to None, all models are kept on the disc.
 
-- ensemble_memory_limit: Integer
-
-  - default: 1024
-  - Memory limit in MB for the ensemble building process. `auto-sklearn` will reduce the number of considered models (``ensemble_nbest``) if the memory limit is reached. If ``None``, no memory limit is enforced.
-
 - seed: Integer
 
   - default: 1
   - Used to seed SMAC. Will determine the output file names.
 
-- ml_memory_limit: Integer
+- memory_limit: Integer
 
   - default: 3072
-  - Memory limit in MB for the machine learning algorithm. `auto-sklearn` will stop fitting the machine learning algorithm if it tries to allocate more than `ml_memory_limit` MB. If None is provided, no memory limit is set. In case of multi-processing, `ml_memory_limit` will be per job.
+  - Memory limit in MB for the machine learning algorithm. `auto-sklearn` will stop fitting the machine learning algorithm if it tries to allocate more than `memory_limit` MB. If None is provided, no memory limit is set. In case of multi-processing, `memory_limit` will be per job. This memory limit also applies to the ensemble creation process.
 
 - include_estimators: typing.Any
 
@@ -6354,7 +6354,7 @@ Run the file
 - output_folder: String
 
   - default: None
-  - folder to store predictions for optional test set, if ``None`` automatically use ``/tmp/autosklearn_output_$pid_$random_number``
+  - folder to store predictions for optional test set, if ``None`` no output will be generated
 
 - delete_tmp_folder_after_terminate: String
 
@@ -6405,3 +6405,13 @@ Run the file
 
   - default: None
   - Metrics`_. If None is provided, a default metric is selected depending on the task.
+
+- scoring_functions: typing.Any
+
+  - default: None
+  - List of scorers which will be calculated for each pipeline and results will be available via ``cv_results``
+
+- load_models: String
+
+  - default: True
+  - Whether to load the models after fitting Auto-sklearn.

@@ -7778,22 +7778,16 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Defines the maximum number of models that are kept in the disc. The additional number of models are permanently deleted. Due to the nature of this variable, it sets the upper limit on how many models can be used for an ensemble. It must be an integer greater or equal than 1. If set to None, all models are kept on the disc.</p></li>
 </ul>
 </li>
-<li><p>ensemble_memory_limit: Integer</p>
-<ul>
-<li><p>default: 1024</p></li>
-<li><p>Memory limit in MB for the ensemble building process. <cite>auto-sklearn</cite> will reduce the number of considered models (<code class="docutils literal notranslate"><span class="pre">ensemble_nbest</span></code>) if the memory limit is reached. If <code class="docutils literal notranslate"><span class="pre">None</span></code>, no memory limit is enforced.</p></li>
-</ul>
-</li>
 <li><p>seed: Integer</p>
 <ul>
 <li><p>default: 1</p></li>
 <li><p>Used to seed SMAC. Will determine the output file names.</p></li>
 </ul>
 </li>
-<li><p>ml_memory_limit: Integer</p>
+<li><p>memory_limit: Integer</p>
 <ul>
 <li><p>default: 3072</p></li>
-<li><p>Memory limit in MB for the machine learning algorithm. <cite>auto-sklearn</cite> will stop fitting the machine learning algorithm if it tries to allocate more than <cite>ml_memory_limit</cite> MB. If None is provided, no memory limit is set. In case of multi-processing, <cite>ml_memory_limit</cite> will be per job.</p></li>
+<li><p>Memory limit in MB for the machine learning algorithm. <cite>auto-sklearn</cite> will stop fitting the machine learning algorithm if it tries to allocate more than <cite>memory_limit</cite> MB. If None is provided, no memory limit is set. In case of multi-processing, <cite>memory_limit</cite> will be per job. This memory limit also applies to the ensemble creation process.</p></li>
 </ul>
 </li>
 <li><p>include_estimators: typing.Any</p>
@@ -7844,7 +7838,7 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>output_folder: String</p>
 <ul>
 <li><p>default: None</p></li>
-<li><p>folder to store predictions for optional test set, if <code class="docutils literal notranslate"><span class="pre">None</span></code> automatically use <code class="docutils literal notranslate"><span class="pre">/tmp/autosklearn_output_$pid_$random_number</span></code></p></li>
+<li><p>folder to store predictions for optional test set, if <code class="docutils literal notranslate"><span class="pre">None</span></code> no output will be generated</p></li>
 </ul>
 </li>
 <li><p>delete_tmp_folder_after_terminate: String</p>
@@ -7905,6 +7899,18 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <ul>
 <li><p>default: None</p></li>
 <li><p>Metrics`_. If None is provided, a default metric is selected depending on the task.</p></li>
+</ul>
+</li>
+<li><p>scoring_functions: typing.Any</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>List of scorers which will be calculated for each pipeline and results will be available via <code class="docutils literal notranslate"><span class="pre">cv_results</span></code></p></li>
+</ul>
+</li>
+<li><p>load_models: String</p>
+<ul>
+<li><p>default: True</p></li>
+<li><p>Whether to load the models after fitting Auto-sklearn.</p></li>
 </ul>
 </li>
 </ul>
@@ -8096,22 +8102,16 @@ of the model.</p>
 <li><p>Defines the maximum number of models that are kept in the disc. The additional number of models are permanently deleted. Due to the nature of this variable, it sets the upper limit on how many models can be used for an ensemble. It must be an integer greater or equal than 1. If set to None, all models are kept on the disc.</p></li>
 </ul>
 </li>
-<li><p>ensemble_memory_limit: Integer</p>
-<ul>
-<li><p>default: 1024</p></li>
-<li><p>Memory limit in MB for the ensemble building process. <cite>auto-sklearn</cite> will reduce the number of considered models (<code class="docutils literal notranslate"><span class="pre">ensemble_nbest</span></code>) if the memory limit is reached. If <code class="docutils literal notranslate"><span class="pre">None</span></code>, no memory limit is enforced.</p></li>
-</ul>
-</li>
 <li><p>seed: Integer</p>
 <ul>
 <li><p>default: 1</p></li>
 <li><p>Used to seed SMAC. Will determine the output file names.</p></li>
 </ul>
 </li>
-<li><p>ml_memory_limit: Integer</p>
+<li><p>memory_limit: Integer</p>
 <ul>
 <li><p>default: 3072</p></li>
-<li><p>Memory limit in MB for the machine learning algorithm. <cite>auto-sklearn</cite> will stop fitting the machine learning algorithm if it tries to allocate more than <cite>ml_memory_limit</cite> MB. If None is provided, no memory limit is set. In case of multi-processing, <cite>ml_memory_limit</cite> will be per job.</p></li>
+<li><p>Memory limit in MB for the machine learning algorithm. <cite>auto-sklearn</cite> will stop fitting the machine learning algorithm if it tries to allocate more than <cite>memory_limit</cite> MB. If None is provided, no memory limit is set. In case of multi-processing, <cite>memory_limit</cite> will be per job. This memory limit also applies to the ensemble creation process.</p></li>
 </ul>
 </li>
 <li><p>include_estimators: typing.Any</p>
@@ -8162,7 +8162,7 @@ of the model.</p>
 <li><p>output_folder: String</p>
 <ul>
 <li><p>default: None</p></li>
-<li><p>folder to store predictions for optional test set, if <code class="docutils literal notranslate"><span class="pre">None</span></code> automatically use <code class="docutils literal notranslate"><span class="pre">/tmp/autosklearn_output_$pid_$random_number</span></code></p></li>
+<li><p>folder to store predictions for optional test set, if <code class="docutils literal notranslate"><span class="pre">None</span></code> no output will be generated</p></li>
 </ul>
 </li>
 <li><p>delete_tmp_folder_after_terminate: String</p>
@@ -8223,6 +8223,18 @@ of the model.</p>
 <ul>
 <li><p>default: None</p></li>
 <li><p>Metrics`_. If None is provided, a default metric is selected depending on the task.</p></li>
+</ul>
+</li>
+<li><p>scoring_functions: typing.Any</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>List of scorers which will be calculated for each pipeline and results will be available via <code class="docutils literal notranslate"><span class="pre">cv_results</span></code></p></li>
+</ul>
+</li>
+<li><p>load_models: String</p>
+<ul>
+<li><p>default: True</p></li>
+<li><p>Whether to load the models after fitting Auto-sklearn.</p></li>
 </ul>
 </li>
 </ul>
