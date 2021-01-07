@@ -140,7 +140,7 @@ def mktestcase(filepath: pathlib.Path, relative: pathlib.Path):
     return testcase
 
 
-SKIP_DOCS = ["plugins/dffml_model"]
+SKIP_DOCS = ["swportal", "plugins/dffml_model"]
 
 
 for filepath in DOCS_PATH.rglob("*.rst"):
