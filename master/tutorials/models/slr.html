@@ -120,6 +120,7 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="package.html">Packaging a Model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="docs.html">Documenting a Model</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../sources/index.html">Sources</a></li>
@@ -292,7 +293,10 @@ you can copy these.</p>
     <span class="n">y_mean_line</span> <span class="o">=</span> <span class="p">[</span><span class="n">statistics</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">y</span><span class="p">)]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
     <span class="n">squared_error_mean</span> <span class="o">=</span> <span class="n">squared_error</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">y_mean_line</span><span class="p">)</span>
     <span class="n">squared_error_regression</span> <span class="o">=</span> <span class="n">squared_error</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">regression_line</span><span class="p">)</span>
-    <span class="k">return</span> <span class="mi">1</span> <span class="o">-</span> <span class="p">(</span><span class="n">squared_error_regression</span> <span class="o">/</span> <span class="n">squared_error_mean</span><span class="p">)</span>
+    <span class="c1"># Handle 1.0 accuracy case</span>
+    <span class="k">if</span> <span class="n">squared_error_mean</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mf">1.0</span>
+    <span class="k">return</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="p">(</span><span class="n">squared_error_regression</span> <span class="o">/</span> <span class="n">squared_error_mean</span><span class="p">)</span>
 
 
 <span class="k">def</span> <span class="nf">best_fit_line</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
@@ -316,13 +320,6 @@ model.</p>
 <p>Anything that a user might want to tweak about a models behavior should go in
 the <code class="docutils literal notranslate"><span class="pre">Config</span></code> class for the model. The naming convention is <code class="docutils literal notranslate"><span class="pre">TheName</span></code> +
 <code class="docutils literal notranslate"><span class="pre">Model</span></code> + <code class="docutils literal notranslate"><span class="pre">Config</span></code>.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@config</span>
-<span class="k">class</span> <span class="nc">MySLRModelConfig</span><span class="p">:</span>
-    <span class="n">feature</span><span class="p">:</span> <span class="n">Feature</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="s2">&quot;Feature to train on&quot;</span><span class="p">)</span>
-    <span class="n">predict</span><span class="p">:</span> <span class="n">Feature</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="s2">&quot;Label or the value to be predicted&quot;</span><span class="p">)</span>
-    <span class="n">directory</span><span class="p">:</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="s2">&quot;Directory where state should be saved&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
 <p>Our model has three configurable properties.</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">feature</span></code>. The feature within each
@@ -333,6 +330,13 @@ value for the regression line</p></li>
 should use as the Y value for the regression line</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">directory</span></code>. The location on disk where we’ll save and load our model from</p></li>
 </ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@config</span>
+<span class="k">class</span> <span class="nc">MySLRModelConfig</span><span class="p">:</span>
+    <span class="n">feature</span><span class="p">:</span> <span class="n">Feature</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="s2">&quot;Feature to train on&quot;</span><span class="p">)</span>
+    <span class="n">predict</span><span class="p">:</span> <span class="n">Feature</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="s2">&quot;Label or the value to be predicted&quot;</span><span class="p">)</span>
+    <span class="n">directory</span><span class="p">:</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="s2">&quot;Directory where state should be saved&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
 </div>
 <div class="section" id="class">
 <h2>Class<a class="headerlink" href="#class" title="Permalink to this headline">¶</a></h2>
@@ -345,11 +349,15 @@ model from the DFFML command line and other interfaces.</p>
 reference the model by. For anything that allows for specifying multiple
 models, you can configure all models of the same type by using the string
 provided here.</p></li>
-<li><p>We must set the <code class="docutils literal notranslate"><span class="pre">CONFIG</span></code> attribute to the respective <code class="docutils literal notranslate"><span class="pre">Config</span></code> class.</p></li>
 </ul>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@entrypoint</span><span class="p">(</span><span class="s2">&quot;myslr&quot;</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">MySLRModel</span><span class="p">(</span><span class="n">SimpleModel</span><span class="p">):</span>
-    <span class="c1"># The configuration class needs to be set as the CONFIG property</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>We must set the <code class="docutils literal notranslate"><span class="pre">CONFIG</span></code> attribute to the respective <code class="docutils literal notranslate"><span class="pre">Config</span></code> class.</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="c1"># The configuration class needs to be set as the CONFIG property</span>
     <span class="n">CONFIG</span><span class="p">:</span> <span class="n">Type</span> <span class="o">=</span> <span class="n">MySLRModelConfig</span>
 </pre></div>
 </div>
@@ -480,27 +488,36 @@ confidence in our prediction.</p>
 </pre></div>
 </div>
 <p>Then we can write our Python file, <strong>run.py</strong>.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">Feature</span>
-<span class="kn">from</span> <span class="nn">dffml.noasync</span> <span class="kn">import</span> <span class="n">train</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">,</span> <span class="n">predict</span>
+<p><strong>run.py</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">asyncio</span>
+
+<span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">Feature</span><span class="p">,</span> <span class="n">train</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">,</span> <span class="n">predict</span>
+
 <span class="kn">from</span> <span class="nn">myslr</span> <span class="kn">import</span> <span class="n">MySLRModel</span>
 
-<span class="c1"># Configure the model</span>
-<span class="n">model</span> <span class="o">=</span> <span class="n">MySLRModel</span><span class="p">(</span>
-    <span class="n">feature</span><span class="o">=</span><span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;Years&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
-    <span class="n">predict</span><span class="o">=</span><span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;Salary&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
-    <span class="n">directory</span><span class="o">=</span><span class="s2">&quot;model&quot;</span><span class="p">,</span>
-<span class="p">)</span>
 
-<span class="c1"># Train the model</span>
-<span class="n">train</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="s2">&quot;train.csv&quot;</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="c1"># Configure the model</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">MySLRModel</span><span class="p">(</span>
+        <span class="n">feature</span><span class="o">=</span><span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;Years&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+        <span class="n">predict</span><span class="o">=</span><span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;Salary&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+        <span class="n">directory</span><span class="o">=</span><span class="s2">&quot;model&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
 
-<span class="c1"># Assess accuracy</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Accuracy:&quot;</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="s2">&quot;test.csv&quot;</span><span class="p">))</span>
+    <span class="c1"># Train the model</span>
+    <span class="k">await</span> <span class="n">train</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="s2">&quot;train.csv&quot;</span><span class="p">)</span>
 
-<span class="c1"># Make predictions</span>
-<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">features</span><span class="p">,</span> <span class="n">prediction</span> <span class="ow">in</span> <span class="n">predict</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="s2">&quot;predict.csv&quot;</span><span class="p">):</span>
-    <span class="n">features</span><span class="p">[</span><span class="s2">&quot;Salary&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">prediction</span><span class="p">[</span><span class="s2">&quot;Salary&quot;</span><span class="p">][</span><span class="s2">&quot;value&quot;</span><span class="p">]</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">features</span><span class="p">)</span>
+    <span class="c1"># Assess accuracy</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Accuracy:&quot;</span><span class="p">,</span> <span class="k">await</span> <span class="n">accuracy</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="s2">&quot;test.csv&quot;</span><span class="p">))</span>
+
+    <span class="c1"># Make predictions</span>
+    <span class="k">async</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">features</span><span class="p">,</span> <span class="n">prediction</span> <span class="ow">in</span> <span class="n">predict</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="s2">&quot;predict.csv&quot;</span><span class="p">):</span>
+        <span class="n">features</span><span class="p">[</span><span class="s2">&quot;Salary&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">prediction</span><span class="p">[</span><span class="s2">&quot;Salary&quot;</span><span class="p">][</span><span class="s2">&quot;value&quot;</span><span class="p">]</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">features</span><span class="p">)</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>We run it as we would any other Python file</p>
@@ -580,7 +597,7 @@ you get up and running.</p>
 </div>
 <p>We can then ask the HTTP service to make predictions, or do training or accuracy
 assessment.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> curl http://localhost:8080/model/mymodel/predict/0 -v <span class="se">\</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> curl -f http://localhost:8080/model/mymodel/predict/0 <span class="se">\</span>
     --header <span class="s2">&quot;Content-Type: application/json&quot;</span> <span class="se">\</span>
     --data <span class="s1">&#39;{&quot;0&quot;: {&quot;features&quot;: {&quot;Years&quot;: 8}}}&#39;</span>
 <span class="go">{</span>

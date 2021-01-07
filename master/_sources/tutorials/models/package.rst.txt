@@ -166,12 +166,14 @@ value is within 10% of what it should be.
 Run the tests
 ~~~~~~~~~~~~~
 
-We can run the tests using the ``unittest`` module
+We can run the tests using the ``unittest`` module. The create command gave us
+both unit tests and integration tests. We want to only run the unit tests right
+now (``tests.test_model``).
 
 .. code-block:: console
     :test:
 
-    $ python3 -m unittest discover -v
+    $ python -m unittest -v tests.test_model
     test_00_train (tests.test_model.TestMySLRModel) ... ok
     test_01_accuracy (tests.test_model.TestMySLRModel) ... ok
     test_02_predict (tests.test_model.TestMySLRModel) ... ok
@@ -187,7 +189,7 @@ If you want to see the output of the call to ``self.logger.debug``, just set the
 .. code-block:: console
     :test:
 
-    $ LOGGING=debug python3 -m unittest discover -v
+    $ LOGGING=debug python -m unittest -v tests.test_model
 
 Entrypoint Registration
 -----------------------

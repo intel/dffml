@@ -251,10 +251,17 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">repo_root_dir</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">repo_root_dir</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">inspect</span><span class="o">.</span><span class="n">getsourcefile</span><span class="p">(</span><span class="n">obj</span><span class="p">))</span><span class="o">.</span><span class="n">parent</span>
-        <span class="k">while</span> <span class="ow">not</span> <span class="p">(</span><span class="n">repo_root_dir</span> <span class="o">/</span> <span class="s2">&quot;.git&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">is_dir</span><span class="p">():</span>
+        <span class="k">while</span> <span class="n">repo_root_dir</span> <span class="o">!=</span> <span class="n">repo_root_dir</span><span class="o">.</span><span class="n">parent</span> <span class="ow">and</span> <span class="p">(</span>
+            <span class="ow">not</span> <span class="p">(</span><span class="n">repo_root_dir</span> <span class="o">/</span> <span class="s2">&quot;.git&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">is_dir</span><span class="p">()</span>
+            <span class="ow">or</span> <span class="ow">not</span> <span class="p">(</span><span class="n">repo_root_dir</span> <span class="o">/</span> <span class="s2">&quot;setup.py&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">is_file</span><span class="p">()</span>
+        <span class="p">):</span>
             <span class="n">repo_root_dir</span> <span class="o">=</span> <span class="n">repo_root_dir</span><span class="o">.</span><span class="n">parent</span>
     <span class="k">if</span> <span class="n">docs_root_dir</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">docs_root_dir</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">inspect</span><span class="o">.</span><span class="n">getsourcefile</span><span class="p">(</span><span class="n">obj</span><span class="p">))</span><span class="o">.</span><span class="n">parent</span>
+    <span class="c1"># Failsafe for if we traversed up all the way to the root of the filesystem</span>
+    <span class="c1"># for the repo root dir.</span>
+    <span class="k">if</span> <span class="n">repo_root_dir</span> <span class="o">==</span> <span class="n">repo_root_dir</span><span class="o">.</span><span class="n">parent</span><span class="p">:</span>
+        <span class="n">repo_root_dir</span> <span class="o">=</span> <span class="n">docs_root_dir</span>
 
     <span class="k">with</span> <span class="n">contextlib</span><span class="o">.</span><span class="n">ExitStack</span><span class="p">()</span> <span class="k">as</span> <span class="n">stack</span><span class="p">:</span>
         <span class="k">await</span> <span class="n">run_nodes</span><span class="p">(</span>

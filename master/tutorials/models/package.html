@@ -44,7 +44,7 @@
     <link rel="author" title="About these documents" href="../../about.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Sources" href="../sources/index.html" />
+    <link rel="next" title="Documenting a Model" href="docs.html" />
     <link rel="prev" title="Writing a Model" href="slr.html" /> 
 </head>
 
@@ -116,6 +116,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#uploading-to-pypi">Uploading to PyPi</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="docs.html">Documenting a Model</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../sources/index.html">Sources</a></li>
@@ -404,8 +405,10 @@ value is within 10% of what it should be.</p>
 </div>
 <div class="section" id="run-the-tests">
 <h3>Run the tests<a class="headerlink" href="#run-the-tests" title="Permalink to this headline">¶</a></h3>
-<p>We can run the tests using the <code class="docutils literal notranslate"><span class="pre">unittest</span></code> module</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python3 -m unittest discover -v
+<p>We can run the tests using the <code class="docutils literal notranslate"><span class="pre">unittest</span></code> module. The create command gave us
+both unit tests and integration tests. We want to only run the unit tests right
+now (<code class="docutils literal notranslate"><span class="pre">tests.test_model</span></code>).</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python -m unittest -v tests.test_model
 <span class="go">test_00_train (tests.test_model.TestMySLRModel) ... ok</span>
 <span class="go">test_01_accuracy (tests.test_model.TestMySLRModel) ... ok</span>
 <span class="go">test_02_predict (tests.test_model.TestMySLRModel) ... ok</span>
@@ -418,7 +421,7 @@ value is within 10% of what it should be.</p>
 </div>
 <p>If you want to see the output of the call to <code class="docutils literal notranslate"><span class="pre">self.logger.debug</span></code>, just set the
 <code class="docutils literal notranslate"><span class="pre">LOGGING</span></code> environment variable to <code class="docutils literal notranslate"><span class="pre">debug</span></code>.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> <span class="nv">LOGGING</span><span class="o">=</span>debug python3 -m unittest discover -v
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> <span class="nv">LOGGING</span><span class="o">=</span>debug python -m unittest -v tests.test_model
 </pre></div>
 </div>
 </div>
@@ -493,7 +496,7 @@ within the DFFML source tree, and submit a pull request.</p>
           </div>
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="../sources/index.html" class="btn btn-neutral float-right" title="Sources" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="docs.html" class="btn btn-neutral float-right" title="Documenting a Model" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
         <a href="slr.html" class="btn btn-neutral float-left" title="Writing a Model" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
