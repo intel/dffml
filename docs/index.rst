@@ -78,6 +78,7 @@ branch can be found `here <master/index.html>`_.
     :caption: Community
 
     GitHub <https://github.com/intel/dffml>
+    Master Branch Docs <https://intel.github.io/dffml/master/>
     publications
     contact
     contributing/index
