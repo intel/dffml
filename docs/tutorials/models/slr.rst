@@ -298,7 +298,7 @@ assessment.
 
 .. code-block:: console
     :test:
-    :replace: cmds[0][1] = cmds[0][1].replace("8080", str(ctx["HTTP_SERVER"]["8080"]))
+    :replace: cmds[0][2] = cmds[0][2].replace("8080", str(ctx["HTTP_SERVER"]["8080"]))
 
     $ curl -f http://localhost:8080/model/mymodel/predict/0 \
         --header "Content-Type: application/json" \
