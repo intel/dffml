@@ -36,7 +36,7 @@ We'll also need a few things from DFFML.
 
 .. literalinclude:: /../dffml/skel/model/REPLACE_IMPORT_PACKAGE_NAME/myslr.py
     :test:
-    :lines: 5-15
+    :lines: 5-16
 
 Math
 ----
@@ -49,7 +49,7 @@ you can copy these.
 
 .. literalinclude:: /../dffml/skel/model/REPLACE_IMPORT_PACKAGE_NAME/myslr.py
     :test:
-    :lines: 18-53
+    :lines: 19-54
 
 Config
 ------
@@ -64,19 +64,20 @@ the ``Config`` class for the model. The naming convention is ``TheName`` +
 
 Our model has three configurable properties.
 
-- ``feature``. The feature within each
-  :py:class:`Record <dffml.record.Record>` that our model should use as the X
-  value for the regression line
+- ``features``. A list of :py:class:`Feature <dffml.feature.Feature>` objects
+  who's names will be present within each :py:class:`Record
+  <dffml.record.Record>`. Our model only supports a single feature. It willl use
+  the first feature in the features list as the X value for the regression line.
 
 - ``predict``. The name of the feature we want to predict. Within each
   :py:class:`Record <dffml.record.Record>` this will be the data that our model
-  should use as the Y value for the regression line
+  should use as the Y value for the regression line.
 
 - ``directory``. The location on disk where we'll save and load our model from
 
 .. literalinclude:: /../dffml/skel/model/REPLACE_IMPORT_PACKAGE_NAME/myslr.py
     :test:
-    :lines: 56-60
+    :lines: 57-63
 
 Class
 -----
@@ -87,20 +88,28 @@ We're making a ``Model`` plugin. So the name is ``MySLRModel``.
 The plugin system needs us to do two things to ensure we can access our new
 model from the DFFML command line and other interfaces.
 
-- We must use the ``entrypoint`` decorator passing it the name we want to
-  reference the model by. For anything that allows for specifying multiple
-  models, you can configure all models of the same type by using the string
-  provided here.
+We must use the ``entrypoint`` decorator passing it the name we want to
+reference the model by. For anything that allows for specifying multiple
+models, you can configure all models of the same type by using the string
+provided here.
 
 .. literalinclude:: /../dffml/skel/model/REPLACE_IMPORT_PACKAGE_NAME/myslr.py
     :test:
-    :lines: 63-64
+    :lines: 66-67
 
-- We must set the ``CONFIG`` attribute to the respective ``Config`` class.
+We must set the ``CONFIG`` attribute to the respective ``Config`` class.
 
 .. literalinclude:: /../dffml/skel/model/REPLACE_IMPORT_PACKAGE_NAME/myslr.py
     :test:
-    :lines: 176-177
+    :lines: 179-180
+
+We can override the ``__init__()`` method to do validation on the ``features``
+config property. Simple linear regression only supports one input feature, so we
+will raise a ``ValueError`` if the user supplys more than one feature.
+
+.. literalinclude:: /../dffml/skel/model/REPLACE_IMPORT_PACKAGE_NAME/myslr.py
+    :test:
+    :lines: 182-186
 
 Train
 -----
@@ -116,10 +125,18 @@ is saved and loaded from a JSON file on disk.
 
 .. literalinclude:: /../dffml/skel/model/REPLACE_IMPORT_PACKAGE_NAME/myslr.py
     :test:
-    :lines: 179-193
+    :lines: 188-202
 
 Accuracy
 --------
+
+.. note::
+
+   The way that model accuracy is evaluated will be changing in a coming
+   release. Once that happens you will no longer have to include an accuracy
+   method.
+
+   Reference: https://github.com/intel/dffml/issues/732
 
 We give testing data ``sources`` to the accuracy method to determine the
 accuracy of a model. For ``MySLRModel``, we'll load the saved ``m`` and ``b``
@@ -137,7 +154,7 @@ closer to making the correct prediction for each record.
 
 .. literalinclude:: /../dffml/skel/model/REPLACE_IMPORT_PACKAGE_NAME/myslr.py
     :test:
-    :lines: 195-221
+    :lines: 204-230
 
 Predict
 -------
@@ -152,7 +169,7 @@ confidence in our prediction.
 
 .. literalinclude:: /../dffml/skel/model/REPLACE_IMPORT_PACKAGE_NAME/myslr.py
     :test:
-    :lines: 223-240
+    :lines: 232-251
 
 Python Usage
 ------------
@@ -223,7 +240,7 @@ We do the same steps we did with Python, only using the command line interface.
     $ dffml train \
         -log debug \
         -model myslr:MySLRModel \
-        -model-feature Years:int:1 \
+        -model-features Years:int:1 \
         -model-predict Salary:float:1 \
         -model-directory modeldir \
         -sources f=csv \
@@ -238,7 +255,7 @@ Now let's make predictions
 
     $ dffml predict all \
         -model myslr:MySLRModel \
-        -model-feature Years:int:1 \
+        -model-features Years:int:1 \
         -model-predict Salary:float:1 \
         -model-directory modeldir \
         -sources f=csv \
@@ -289,7 +306,7 @@ via the HTTP :ref:`plugin_service_http_api_model` API.
 
     $ dffml service http server -insecure -cors '*' -addr 0.0.0.0 -port 8080 \
         -models mymodel=myslr:MySLRModel \
-        -model-feature Years:int:1 \
+        -model-features Years:int:1 \
         -model-predict Salary:float:1 \
         -model-directory modeldir
 
@@ -298,7 +315,7 @@ assessment.
 
 .. code-block:: console
     :test:
-    :replace: cmds[0][1] = cmds[0][1].replace("8080", str(ctx["HTTP_SERVER"]["8080"]))
+    :replace: cmds[0][2] = cmds[0][2].replace("8080", str(ctx["HTTP_SERVER"]["8080"]))
 
     $ curl -f http://localhost:8080/model/mymodel/predict/0 \
         --header "Content-Type: application/json" \

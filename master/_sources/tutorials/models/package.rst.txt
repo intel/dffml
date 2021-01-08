@@ -81,7 +81,7 @@ than :py:class:`unittest.TestCase`.
 
     import tempfile
 
-    from dffml import train, accuracy, predict, Feature, AsyncTestCase
+    from dffml import train, accuracy, predict, Feature, Features, AsyncTestCase
 
     from dffml_model_myslr.myslr import MySLRModel
 
@@ -216,6 +216,7 @@ And remember that any time we modify the **setup.py**, we have to re-install.
 
 .. code-block:: console
     :test:
+    :replace: cmds[-1].append("dffml")
 
     $ python -m pip install --force-reinstall -e .
 
@@ -245,7 +246,7 @@ reference it by it's short name.
     $ dffml train \
         -log debug \
         -model myslr \
-        -model-feature Years:int:1 \
+        -model-features Years:int:1 \
         -model-predict Salary:float:1 \
         -model-directory modeldir \
         -sources f=csv \

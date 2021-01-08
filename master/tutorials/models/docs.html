@@ -260,11 +260,11 @@ will be treated as a “raw literal”. For more information on raw literals see
 In our case it essentially means that when we have a backslash it will be
 treated as a backslash and not an escape character.</p>
 <p><strong>dffml_model_myslr/myslr.py</strong></p>
-<div class="highlight-default notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>64
-65
-66</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">MySLRModel</span><span class="p">(</span><span class="n">SimpleModel</span><span class="p">):</span>
+<div class="highlight-default notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>66
+67
+68</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="nd">@entrypoint</span><span class="p">(</span><span class="s2">&quot;myslr&quot;</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">MySLRModel</span><span class="p">(</span><span class="n">SimpleModel</span><span class="p">):</span>
     <span class="sa">r</span><span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">    Example Logistic Regression training one variable to predict another.</span>
 </pre></div>
 </td></tr></table></div>
 </div>
@@ -313,10 +313,7 @@ good way to do that.</p>
 We always try to make it clear to the user what file they should be writing it
 by putting the filename in bold above the file contents.</p>
 <p><strong>dffml_model_myslr/myslr.py</strong></p>
-<div class="highlight-rst notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>68
-69
-70
-71
+<div class="highlight-rst notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>71
 72
 73
 74
@@ -339,7 +336,10 @@ by putting the filename in bold above the file contents.</p>
 91
 92
 93
-94</pre></div></td><td class="code"><div class="highlight"><pre><span></span>    The dataset used for training
+94
+95
+96
+97</pre></div></td><td class="code"><div class="highlight"><pre><span></span>    The dataset used for training
 
     <span class="gs">**train.csv**</span>
 
@@ -380,10 +380,7 @@ in the console should be highlighted. There is no proper way to highlight a
 <code class="docutils literal notranslate"><span class="pre">.csv</span></code> file, which is why we didn’t talk about highlighting in the
 <a class="reference internal" href="#model-tutorial-docs-example-datasets"><span class="std std-ref">Example Datasets</span></a> section.</p>
 <p><strong>dffml_model_myslr/myslr.py</strong></p>
-<div class="highlight-rst notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 96
- 97
- 98
- 99
+<div class="highlight-rst notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 99
 100
 101
 102
@@ -443,14 +440,17 @@ in the console should be highlighted. There is no proper way to highlight a
 156
 157
 158
-159</pre></div></td><td class="code"><div class="highlight"><pre><span></span>    Train the model
+159
+160
+161
+162</pre></div></td><td class="code"><div class="highlight"><pre><span></span>    Train the model
 
 <span class="p">    ..</span> <span class="ow">code-block</span><span class="p">::</span> console
         <span class="nc">:test:</span>
 
         $ dffml train \
             -model myslr \
-            -model-feature x:float:1 \
+            -model-features x:float:1 \
             -model-predict y:int:1 \
             -model-directory tempdir \
             -sources f=csv \
@@ -463,7 +463,7 @@ in the console should be highlighted. There is no proper way to highlight a
 
         $ dffml accuracy \
             -model myslr \
-            -model-feature x:float:1 \
+            -model-features x:float:1 \
             -model-predict y:int:1 \
             -model-directory tempdir \
             -sources f=csv \
@@ -486,7 +486,7 @@ in the console should be highlighted. There is no proper way to highlight a
 
         $ dffml predict all \
             -model myslr \
-            -model-feature x:float:1 \
+            -model-features x:float:1 \
             -model-predict y:int:1 \
             -model-directory tempdir \
             -sources f=csv \
@@ -518,13 +518,13 @@ separate file and use <code class="docutils literal notranslate"><span class="pr
 because the auto formatter, <a class="reference external" href="https://github.com/psf/black">black</a>, can only
 format Python files. It can’t format examples within rST within a docstring.</p>
 <p><strong>dffml_model_myslr/myslr.py</strong></p>
-<div class="highlight-rst notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>161
-162
-163
-164
+<div class="highlight-rst notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>164
 165
 166
-167</pre></div></td><td class="code"><div class="highlight"><pre><span></span>    Example usage of Logistic Regression using Python
+167
+168
+169
+170</pre></div></td><td class="code"><div class="highlight"><pre><span></span>    Example usage of Logistic Regression using Python
 
     <span class="gs">**example_myslr.py**</span>
 
@@ -538,13 +538,13 @@ to the test environment’s directory. The last thing we need to do is run the
 Python example and show what it’s output would be. Then end the docstring with
 another <code class="docutils literal notranslate"><span class="pre">&quot;&quot;&quot;`</span></code>.</p>
 <p><strong>dffml_model_myslr/myslr.py</strong></p>
-<div class="highlight-rst notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>169
-170
-171
-172
+<div class="highlight-rst notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>172
 173
 174
-175</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="p">    ..</span> <span class="ow">code-block</span><span class="p">::</span> console
+175
+176
+177
+178</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="p">    ..</span> <span class="ow">code-block</span><span class="p">::</span> console
         <span class="nc">:test:</span>
 
         $ python example_myslr.py

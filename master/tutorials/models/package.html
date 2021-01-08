@@ -279,7 +279,7 @@ than <a class="reference external" href="https://docs.python.org/3/library/unitt
 <p><strong>tests/test_model.py</strong></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">tempfile</span>
 
-<span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">train</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">,</span> <span class="n">predict</span><span class="p">,</span> <span class="n">Feature</span><span class="p">,</span> <span class="n">AsyncTestCase</span>
+<span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">train</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">,</span> <span class="n">predict</span><span class="p">,</span> <span class="n">Feature</span><span class="p">,</span> <span class="n">Features</span><span class="p">,</span> <span class="n">AsyncTestCase</span>
 
 <span class="kn">from</span> <span class="nn">dffml_model_myslr.myslr</span> <span class="kn">import</span> <span class="n">MySLRModel</span>
 </pre></div>
@@ -333,7 +333,7 @@ they’re done.</p>
         <span class="bp">cls</span><span class="o">.</span><span class="n">model_dir</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">TemporaryDirectory</span><span class="p">()</span>
         <span class="c1"># Create an instance of the model</span>
         <span class="bp">cls</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">MySLRModel</span><span class="p">(</span>
-            <span class="n">feature</span><span class="o">=</span><span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;X&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+            <span class="n">features</span><span class="o">=</span><span class="n">Features</span><span class="p">(</span><span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;X&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span>
             <span class="n">predict</span><span class="o">=</span><span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;Y&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
             <span class="n">directory</span><span class="o">=</span><span class="bp">cls</span><span class="o">.</span><span class="n">model_dir</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
         <span class="p">)</span>
@@ -466,7 +466,7 @@ reference it by it’s short name.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml train <span class="se">\</span>
     -log debug <span class="se">\</span>
     -model myslr <span class="se">\</span>
-    -model-feature Years:int:1 <span class="se">\</span>
+    -model-features Years:int:1 <span class="se">\</span>
     -model-predict Salary:float:1 <span class="se">\</span>
     -model-directory modeldir <span class="se">\</span>
     -sources <span class="nv">f</span><span class="o">=</span>csv <span class="se">\</span>
