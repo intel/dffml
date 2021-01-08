@@ -233,6 +233,9 @@ class ServerConfig(TLSCMDConfig, MultiCommCMDConfig):
         "Domains to allow CORS for (see keys in defaults dict for aiohttp_cors.setup)",
         default_factory=lambda: [],
     )
+    allow_caching: bool = field(
+        "Allow caching of HTTP responses", action="store_true", default=False,
+    )
     models: Model = field(
         "Models configured on start",
         default_factory=lambda: AsyncContextManagerList(),

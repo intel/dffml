@@ -44,6 +44,12 @@ API_JS_BYTES = pathlib.Path(
 SECRETS_TOKEN_BITS = 384
 SECRETS_TOKEN_BYTES = int(SECRETS_TOKEN_BITS / 8)
 
+# Headers required to set no-cache for confidential web pages
+DISALLOW_CACHING = {
+    "Pragma": "no-cache",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Expires": "-1",
+}
 
 OK = {"error": None}
 SOURCE_NOT_LOADED = {"error": "Source not loaded"}
@@ -448,22 +454,31 @@ class Routes(BaseMultiCommContext):
                 new_handler = await self.get_registered_handler(request)
                 if new_handler is not None:
                     handler = new_handler
-            return await handler(request)
+            response = await handler(request)
         except web.HTTPException as error:
             response = {"error": error.reason}
             if error.text is not None:
                 response["error"] = error.text
-            return web.json_response(response, status=error.status)
+            response = web.json_response(response, status=error.status)
         except Exception as error:  #  pragma: no cov
             self.logger.error(
                 "ERROR handling %s: %s",
                 request,
                 traceback.format_exc().strip(),
             )
-            return web.json_response(
+            response = web.json_response(
                 {"error": "Internal Server Error"},
                 status=HTTPStatus.INTERNAL_SERVER_ERROR,
             )
+        # Disable request caching unless allowed explicitly
+        if not self.allow_caching:
+            self.set_no_cache(response)
+        return response
+
+    def set_no_cache(self, response):
+        # Set headers required to set no-cache for confidential web pages
+        for header, value in DISALLOW_CACHING.items():
+            response.headers[header] = value
 
     async def service_upload(self, request):
         if self.upload_dir is None:

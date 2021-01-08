@@ -22,6 +22,7 @@ from dffml.base import BaseConfig
 from dffml.source.memory import MemorySource, MemorySourceConfig
 
 from dffml_service_http.cli import Server
+from dffml_service_http.routes import DISALLOW_CACHING
 
 
 @config
@@ -123,9 +124,19 @@ class TestRoutesRunning:
     def url(self):
         return f"http://{self.cli.addr}:{self.cli.port}"
 
+    def check_allow_caching(self, r):
+        for header, should_be in DISALLOW_CACHING.items():
+            if not header in r.headers:
+                raise Exception(f"No cache header {header} not in {r.headers}")
+            if r.headers[header] != should_be:
+                raise Exception(
+                    f"No cache header {header} should have been {should_be!r} but was {r.headers[header]!r}"
+                )
+
     @contextlib.asynccontextmanager
     async def get(self, path):
         async with self.session.get(self.url + path) as r:
+            self.check_allow_caching(r)
             if r.status != HTTPStatus.OK:
                 raise ServerException((await r.json())["error"])
             yield r
@@ -133,6 +144,7 @@ class TestRoutesRunning:
     @contextlib.asynccontextmanager
     async def post(self, path, *args, **kwargs):
         async with self.session.post(self.url + path, *args, **kwargs) as r:
+            self.check_allow_caching(r)
             if r.status != HTTPStatus.OK:
                 raise ServerException((await r.json())["error"])
             yield r
