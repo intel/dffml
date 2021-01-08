@@ -526,6 +526,7 @@ class Release(CMD):
                     # Upload if not present
                     for cmd in [
                         [sys.executable, "setup.py", "sdist"],
+                        [sys.executable, "setup.py", "bdist_wheel"],
                         [sys.executable, "-m", "twine", "upload", "dist/*"],
                     ]:
                         print(f"$ {' '.join(cmd)}")
