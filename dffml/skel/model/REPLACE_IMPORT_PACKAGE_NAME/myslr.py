@@ -10,6 +10,7 @@ from dffml import (
     ModelNotTrained,
     Accuracy,
     Feature,
+    Features,
     SourcesContext,
     Record,
 )
@@ -55,7 +56,9 @@ def best_fit_line(x, y):
 
 @config
 class MySLRModelConfig:
-    feature: Feature = field("Feature to train on")
+    features: Features = field(
+        "Features to train on (myslr only supports one)"
+    )
     predict: Feature = field("Label or the value to be predicted")
     directory: pathlib.Path = field("Directory where state should be saved")
 
@@ -100,7 +103,7 @@ class MySLRModel(SimpleModel):
 
         $ dffml train \
             -model myslr \
-            -model-feature x:float:1 \
+            -model-features x:float:1 \
             -model-predict y:int:1 \
             -model-directory tempdir \
             -sources f=csv \
@@ -113,7 +116,7 @@ class MySLRModel(SimpleModel):
 
         $ dffml accuracy \
             -model myslr \
-            -model-feature x:float:1 \
+            -model-features x:float:1 \
             -model-predict y:int:1 \
             -model-directory tempdir \
             -sources f=csv \
@@ -136,7 +139,7 @@ class MySLRModel(SimpleModel):
 
         $ dffml predict all \
             -model myslr \
-            -model-feature x:float:1 \
+            -model-features x:float:1 \
             -model-predict y:int:1 \
             -model-directory tempdir \
             -sources f=csv \
@@ -176,6 +179,12 @@ class MySLRModel(SimpleModel):
     # The configuration class needs to be set as the CONFIG property
     CONFIG: Type = MySLRModelConfig
 
+    def __init__(self, config):
+        super().__init__(config)
+        # Simple linear regression only supports a single input feature
+        if len(self.config.features) != 1:
+            raise ValueError("Model only support a single feature")
+
     async def train(self, sources: SourcesContext) -> None:
         # X and Y data
         x = []
@@ -183,9 +192,9 @@ class MySLRModel(SimpleModel):
         # Go through all records that have the feature we're training on and the
         # feature we want to predict.
         async for record in sources.with_features(
-            [self.config.feature.name, self.config.predict.name]
+            [self.config.features[0].name, self.config.predict.name]
         ):
-            x.append(record.feature(self.config.feature.name))
+            x.append(record.feature(self.config.features[0].name))
             y.append(record.feature(self.config.predict.name))
         # Use self.logger to report how many records are being used for training
         self.logger.debug("Number of training records: %d", len(x))
@@ -207,9 +216,9 @@ class MySLRModel(SimpleModel):
         # Go through all records that have the feature we're testing on and the
         # feature we want to predict.
         async for record in sources.with_features(
-            [self.config.feature.name, self.config.predict.name]
+            [self.config.features[0].name, self.config.predict.name]
         ):
-            x.append(record.feature(self.config.feature.name))
+            x.append(record.feature(self.config.features[0].name))
             y.append(record.feature(self.config.predict.name))
         # Use self.logger to report how many records are being used for testing
         self.logger.debug("Number of test records: %d", len(x))
@@ -229,9 +238,11 @@ class MySLRModel(SimpleModel):
         # Expand the regression_line into named variables
         m, b, accuracy = regression_line
         # Iterate through each record that needs a prediction
-        async for record in sources.with_features([self.config.feature.name]):
+        async for record in sources.with_features(
+            [self.config.features[0].name]
+        ):
             # Grab the x data from the record
-            x = record.feature(self.config.feature.name)
+            x = record.feature(self.config.features[0].name)
             # Calculate y
             y = m * x + b
             # Set the calculated value with the estimated accuracy

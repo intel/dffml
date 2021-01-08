@@ -1,10 +1,10 @@
-from dffml import Feature
+from dffml import Feature, Features
 from dffml.noasync import train, accuracy, predict
 
 from REPLACE_IMPORT_PACKAGE_NAME.myslr import MySLRModel
 
 model = MySLRModel(
-    feature=Feature("x", float, 1),
+    features=Features(Feature("x", float, 1)),
     predict=Feature("y", int, 1),
     directory="tempdir",
 )
