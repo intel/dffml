@@ -160,7 +160,7 @@ Install the packages in development mode.
 
 .. code-block:: console
 
-    $ pip install -U setuptools
+    $ pip install -U pip setuptools wheel
     $ pip install -e .[dev]
     $ dffml service dev install
 
@@ -223,7 +223,7 @@ all the packages in development mode.
     $ mkdir -p .venv
     $ export HOME="${PWD}/.venv"
     $ export PATH="${HOME}/.local/bin:${PATH}"
-    $ pip install --user -U pip setuptools
+    $ pip install --user -U pip setuptools wheel
     $ pip install --prefix=~/.local -e .[dev]
     $ dffml service dev install -user
 
