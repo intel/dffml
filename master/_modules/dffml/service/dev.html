@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>dffml.service.dev &mdash; DFFML 876df620 documentation</title>
+  <title>dffml.service.dev &mdash; DFFML 9b6e82ac documentation</title>
   
 
   
@@ -69,7 +69,7 @@
             
             
               <div class="version">
-                876df620
+                9b6e82ac
               </div>
             
           
@@ -724,6 +724,7 @@
                     <span class="c1"># Upload if not present</span>
                     <span class="k">for</span> <span class="n">cmd</span> <span class="ow">in</span> <span class="p">[</span>
                         <span class="p">[</span><span class="n">sys</span><span class="o">.</span><span class="n">executable</span><span class="p">,</span> <span class="s2">&quot;setup.py&quot;</span><span class="p">,</span> <span class="s2">&quot;sdist&quot;</span><span class="p">],</span>
+                        <span class="p">[</span><span class="n">sys</span><span class="o">.</span><span class="n">executable</span><span class="p">,</span> <span class="s2">&quot;setup.py&quot;</span><span class="p">,</span> <span class="s2">&quot;bdist_wheel&quot;</span><span class="p">],</span>
                         <span class="p">[</span><span class="n">sys</span><span class="o">.</span><span class="n">executable</span><span class="p">,</span> <span class="s2">&quot;-m&quot;</span><span class="p">,</span> <span class="s2">&quot;twine&quot;</span><span class="p">,</span> <span class="s2">&quot;upload&quot;</span><span class="p">,</span> <span class="s2">&quot;dist/*&quot;</span><span class="p">],</span>
                     <span class="p">]:</span>
                         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;$ </span><span class="si">{</span><span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
