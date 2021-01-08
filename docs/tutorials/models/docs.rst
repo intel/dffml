@@ -51,9 +51,9 @@ treated as a backslash and not an escape character.
 **dffml_model_myslr/myslr.py**
 
 .. literalinclude:: /../dffml/skel/model/REPLACE_IMPORT_PACKAGE_NAME/myslr.py
-    :lines: 64-66
+    :lines: 66-68
     :linenos:
-    :lineno-start: 64
+    :lineno-start: 66
 
 Quick rST background
 --------------------
@@ -113,9 +113,9 @@ by putting the filename in bold above the file contents.
 
 .. literalinclude:: /../dffml/skel/model/REPLACE_IMPORT_PACKAGE_NAME/myslr.py
     :language: rst
-    :lines: 68-94
+    :lines: 71-97
     :linenos:
-    :lineno-start: 68
+    :lineno-start: 71
 
 Example CLI Commands
 --------------------
@@ -134,9 +134,9 @@ in the console should be highlighted. There is no proper way to highlight a
 
 .. literalinclude:: /../dffml/skel/model/REPLACE_IMPORT_PACKAGE_NAME/myslr.py
     :language: rst
-    :lines: 96-159
+    :lines: 99-162
     :linenos:
-    :lineno-start: 96
+    :lineno-start: 99
 
 Example Python Usage
 --------------------
@@ -151,9 +151,9 @@ format Python files. It can't format examples within rST within a docstring.
 
 .. literalinclude:: /../dffml/skel/model/REPLACE_IMPORT_PACKAGE_NAME/myslr.py
     :language: rst
-    :lines: 161-167
+    :lines: 164-170
     :linenos:
-    :lineno-start: 161
+    :lineno-start: 164
 
 By specifying the ``:filepath:`` we copied the contents of the Python example
 to the test environment's directory. The last thing we need to do is run the
@@ -164,9 +164,9 @@ another ``"""```.
 
 .. literalinclude:: /../dffml/skel/model/REPLACE_IMPORT_PACKAGE_NAME/myslr.py
     :language: rst
-    :lines: 169-175
+    :lines: 172-178
     :linenos:
-    :lineno-start: 169
+    :lineno-start: 172
 
 .. _model_tutorial_docs_testing_examples:
 
