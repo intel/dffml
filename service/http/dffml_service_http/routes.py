@@ -769,15 +769,6 @@ class Routes(BaseMultiCommContext):
         return web.json_response(OK)
 
     @mctx_route
-    async def model_accuracy(self, request, mctx):
-        # Get the list of source context labels to pass to mctx.train
-        sctx_label_list = await request.json()
-        # Get all the source contexts
-        sources = await self.get_source_contexts(request, sctx_label_list)
-        # Train the model on the sources
-        return web.json_response({"accuracy": await mctx.accuracy(sources)})
-
-    @mctx_route
     async def model_predict(self, request, mctx):
         # TODO Provide an iterkey method for model prediction
         chunk_size = int(request.match_info["chunk_size"])
@@ -933,7 +924,6 @@ class Routes(BaseMultiCommContext):
                 # TODO route to delete iterkey before iteration has completed
                 # Model APIs
                 ("POST", "/model/{label}/train", self.model_train),
-                ("POST", "/model/{label}/accuracy", self.model_accuracy),
                 # TODO Provide an iterkey method for model prediction
                 (
                     "POST",
