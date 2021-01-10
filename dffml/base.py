@@ -212,7 +212,8 @@ def convert_value(arg, value):
 
 def is_config_dict(value):
     return bool(
-        "plugin" in value
+        isinstance(value, dict)
+        and "plugin" in value
         and "config" in value
         and isinstance(value["config"], dict)
     )
