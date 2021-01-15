@@ -10,6 +10,7 @@ import aiohttp
 
 from dffml.model.slr import SLRModel
 from dffml.source.json import JSONSource
+from dffml.accuracy import MeanSquaredErrorAccuracy
 from dffml import Record, Features, Feature, save, train, accuracy
 from dffml.util.asynctestcase import AsyncTestCase
 
@@ -227,7 +228,9 @@ class TestServer(AsyncTestCase):
             )
 
             await accuracy(
-                model, *[{"f1": x, "ans": m * x + b} for x in range(10, 20)]
+                model,
+                MeanSquaredErrorAccuracy(),
+                *[{"f1": x, "ans": m * x + b} for x in range(10, 20)],
             )
 
             async with ServerRunner.patch(HTTPService.server) as tserver:
