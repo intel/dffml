@@ -452,11 +452,11 @@ class TestModel(TestRoutesRunning, AsyncTestCase):
         with self.assertRaisesRegex(
             ServerException, list(MODEL_NOT_LOADED.values())[0]
         ):
-            async with self.post(f"/model/non-existant/accuracy", json=[]):
+            async with self.post(f"/model/non-existant/train", json=[]):
                 pass  # pramga: no cov
 
     async def test_no_sources(self):
-        for method in ["train", "accuracy"]:
+        for method in ["train"]:
             with self.subTest(method=method):
                 with self.assertRaisesRegex(
                     ServerException, list(MODEL_NO_SOURCES.values())[0]
@@ -484,15 +484,6 @@ class TestModel(TestRoutesRunning, AsyncTestCase):
             self.assertEqual(await r.json(), OK)
         for i in range(0, self.num_records):
             self.assertIn(str(i), self.mctx.trained_on)
-
-    async def test_accuracy(self):
-        async with self.post(
-            f"/model/{self.mlabel}/accuracy", json=[self.slabel]
-        ) as r:
-            self.assertEqual(
-                await r.json(),
-                {"accuracy": float(sum(range(0, self.num_records)))},
-            )
 
     async def test_predict(self):
         records: Dict[str, Record] = {
