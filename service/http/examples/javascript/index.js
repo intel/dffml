@@ -120,8 +120,18 @@ var runit = async function() {
   await mctx.train([training_sctx]);
   console.log("Trained model context", mctx);
 
-  var accuracy = await mctx.accuracy([test_sctx]);
-  console.log("Model context accuracy", accuracy);
+  // Create a scorer
+  var scorer = api.scorer();
+  console.log("Created scorer", scorer);
+
+  await scorer.configure("mse", "mymse", {});
+  console.log("Configured scorer", scorer);
+
+  var actx = await scorer.context("mymse_context");
+  console.log("Created scorer context", actx);
+
+  var accuracy = await actx.score([test_sctx]);
+  console.log("Scorer accuracy", accuracy);
 
   var prediction = await mctx.predict({
     "mish_the_smish": {
