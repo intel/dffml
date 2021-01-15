@@ -40,12 +40,6 @@ class FakeModelContext(ModelContext):
         async for record in sources.records():
             self.trained_on[record.key] = record
 
-    async def accuracy(self, sources: Sources) -> Accuracy:
-        accuracy: int = 0
-        async for record in sources.records():
-            accuracy += int(record.key)
-        return Accuracy(accuracy)
-
     async def predict(self, sources: SourcesContext) -> AsyncIterator[Record]:
         async for record in sources.with_features(["by_ten"]):
             record.predicted(
