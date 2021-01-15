@@ -31,6 +31,7 @@ from dffml.df.memory import (
 from dffml.model import Model
 from dffml.base import MissingConfig
 from dffml.util.data import traverse_get
+from dffml.accuracy import AccuracyScorer
 from dffml.source.source import BaseSource, SourcesContext
 from dffml.util.entrypoint import EntrypointNotFound, entrypoint
 
@@ -54,6 +55,7 @@ DISALLOW_CACHING = {
 OK = {"error": None}
 SOURCE_NOT_LOADED = {"error": "Source not loaded"}
 MODEL_NOT_LOADED = {"error": "Model not loaded"}
+SCORER_NOT_LOADED = {"error": "Scorer not loaded"}
 MODEL_NO_SOURCES = {"error": "No source context labels given"}
 MULTICOMM_NOT_LOADED = {"error": "MutliComm not loaded"}
 
@@ -122,24 +124,50 @@ def sctx_route(handler):
     return get_sctx
 
 
-def mctx_route(handler):
+def actx_route(handler):
     """
     Ensure that the labeled model context requested is loaded. Return the mctx
     if it is loaded and an error otherwise.
     """
 
     @wraps(handler)
-    async def get_mctx(self, request):
-        mctx = request.app["model_contexts"].get(
+    async def get_actx(self, request, *handler_args):
+        actx = request.app["scorer_contexts"].get(
             request.match_info["label"], None
         )
-        if mctx is None:
+        if actx is None:
             return web.json_response(
-                MODEL_NOT_LOADED, status=HTTPStatus.NOT_FOUND
+                SCORER_NOT_LOADED, status=HTTPStatus.NOT_FOUND
             )
-        return await handler(self, request, mctx)
+        return await handler(self, request, *handler_args, actx)
 
-    return get_mctx
+    return get_actx
+
+
+def mctx_route(*args, label="label"):
+    """
+    Ensure that the labeled model context requested is loaded. Return the mctx
+    if it is loaded and an error otherwise.
+    """
+
+    def wrapper(handler):
+        @wraps(handler)
+        async def get_mctx(self, request, *handler_args):
+            mctx = request.app["model_contexts"].get(
+                request.match_info[label], None
+            )
+            if mctx is None:
+                return web.json_response(
+                    MODEL_NOT_LOADED, status=HTTPStatus.NOT_FOUND
+                )
+            return await handler(self, request, *handler_args, mctx)
+
+        return get_mctx
+
+    if args:
+        return wrapper(args[0])
+
+    return wrapper
 
 
 class HTTPChannelConfig(NamedTuple):
@@ -659,6 +687,58 @@ class Routes(BaseMultiCommContext):
 
         return web.json_response(OK)
 
+    async def configure_scorer(self, request):
+        scorer_name = request.match_info["scorer"]
+        label = request.match_info["label"]
+
+        config = await request.json()
+
+        try:
+            scorer = AccuracyScorer.load_labeled(f"{label}={scorer_name}")
+        except EntrypointNotFound as error:
+            self.logger.error(
+                f"/configure/scorer/ failed to load scorer: {error}"
+            )
+            return web.json_response(
+                {"error": f"scorer {scorer_name} not found"},
+                status=HTTPStatus.NOT_FOUND,
+            )
+
+        try:
+            scorer = scorer.withconfig(config)
+        except MissingConfig as error:
+            self.logger.error(
+                f"failed to configure scorer {scorer_name}: {error}"
+            )
+            return web.json_response(
+                {"error": str(error)}, status=HTTPStatus.BAD_REQUEST
+            )
+
+        # DFFML objects all follow a double context entry pattern
+        exit_stack = request.app["exit_stack"]
+        scorer = await exit_stack.enter_async_context(scorer)
+        request.app["scorers"][label] = scorer
+
+        return web.json_response(OK)
+
+    async def context_scorer(self, request):
+        label = request.match_info["label"]
+        ctx_label = request.match_info["ctx_label"]
+
+        if not label in request.app["scorers"]:
+            return web.json_response(
+                {"error": f"{label} scorer not found"},
+                status=HTTPStatus.NOT_FOUND,
+            )
+
+        # Enter the scorer context and pass the features
+        exit_stack = request.app["exit_stack"]
+        scorer = request.app["scorers"][label]
+        actx = await exit_stack.enter_async_context(scorer())
+        request.app["scorer_contexts"][ctx_label] = actx
+
+        return web.json_response(OK)
+
     def register_config(self) -> Type[HTTPChannelConfig]:
         return HTTPChannelConfig
 
@@ -795,15 +875,6 @@ class Routes(BaseMultiCommContext):
         return web.json_response(OK)
 
     @mctx_route
-    async def model_accuracy(self, request, mctx):
-        # Get the list of source context labels to pass to mctx.train
-        sctx_label_list = await request.json()
-        # Get all the source contexts
-        sources = await self.get_source_contexts(request, sctx_label_list)
-        # Train the model on the sources
-        return web.json_response({"accuracy": await mctx.accuracy(sources)})
-
-    @mctx_route
     async def model_predict(self, request, mctx):
         # TODO Provide an iterkey method for model prediction
         chunk_size = int(request.match_info["chunk_size"])
@@ -834,6 +905,13 @@ class Routes(BaseMultiCommContext):
                         },
                     }
                 )
+
+    @mctx_route(label="mlabel")
+    @actx_route
+    async def scorer_accuracy(self, request, mctx, actx):
+        sctx_label_list = await request.json()
+        sources = await self.get_source_contexts(request, sctx_label_list)
+        return web.json_response({"accuracy": await actx.score(mctx, sources)})
 
     async def api_js(self, request):
         return web.Response(
@@ -905,6 +983,22 @@ class Routes(BaseMultiCommContext):
             model_ctx.parent.ENTRY_POINT_LABEL: model_ctx for model_ctx in mctx
         }
 
+        # Instantiate scorers if they aren't instantiated yet
+        for i, scorer in enumerate(self.scorers):
+            if inspect.isclass(scorer):
+                self.scorers[i] = scorer.withconfig(self.extra_config)
+
+        await self.app["exit_stack"].enter_async_context(self.scorers)
+        self.app["scorers"] = {
+            scorer.ENTRY_POINT_LABEL: scorer for scorer in self.scorers
+        }
+
+        actx = await self.app["exit_stack"].enter_async_context(self.scorers())
+        self.app["scorer_contexts"] = {
+            scorer_ctx.parent.ENTRY_POINT_LABEL: scorer_ctx
+            for scorer_ctx in actx
+        }
+
         self.app.update(kwargs)
         # Allow no routes other than pre-registered if in atomic mode
         self.routes = (
@@ -937,6 +1031,16 @@ class Routes(BaseMultiCommContext):
                     "/context/model/{label}/{ctx_label}",
                     self.context_model,
                 ),
+                (
+                    "POST",
+                    "/configure/scorer/{scorer}/{label}",
+                    self.configure_scorer,
+                ),
+                (
+                    "GET",
+                    "/context/scorer/{label}/{ctx_label}",
+                    self.context_scorer,
+                ),
                 # MutliComm APIs (Data Flow)
                 (
                     "POST",
@@ -956,10 +1060,14 @@ class Routes(BaseMultiCommContext):
                     "/source/{label}/records/{iterkey}/{chunk_size}",
                     self.source_records_iter,
                 ),
+                (
+                    "POST",
+                    "/scorer/{label}/{mlabel}/score",
+                    self.scorer_accuracy,
+                ),
                 # TODO route to delete iterkey before iteration has completed
                 # Model APIs
                 ("POST", "/model/{label}/train", self.model_train),
-                ("POST", "/model/{label}/accuracy", self.model_accuracy),
                 # TODO Provide an iterkey method for model prediction
                 (
                     "POST",
