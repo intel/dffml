@@ -31,6 +31,7 @@ from dffml.df.memory import (
 from dffml.model import Model
 from dffml.base import MissingConfig
 from dffml.util.data import traverse_get
+from dffml.accuracy import AccuracyScorer
 from dffml.source.source import BaseSource, SourcesContext
 from dffml.util.entrypoint import EntrypointNotFound, entrypoint
 
@@ -54,6 +55,7 @@ DISALLOW_CACHING = {
 OK = {"error": None}
 SOURCE_NOT_LOADED = {"error": "Source not loaded"}
 MODEL_NOT_LOADED = {"error": "Model not loaded"}
+SCORER_NOT_LOADED = {"error": "Scorer not loaded"}
 MODEL_NO_SOURCES = {"error": "No source context labels given"}
 MULTICOMM_NOT_LOADED = {"error": "MutliComm not loaded"}
 
@@ -659,6 +661,58 @@ class Routes(BaseMultiCommContext):
 
         return web.json_response(OK)
 
+    async def configure_scorer(self, request):
+        scorer_name = request.match_info["scorer"]
+        label = request.match_info["label"]
+
+        config = await request.json()
+
+        try:
+            scorer = AccuracyScorer.load_labeled(f"{label}={scorer_name}")
+        except EntrypointNotFound as error:
+            self.logger.error(
+                f"/configure/scorer/ failed to load scorer: {error}"
+            )
+            return web.json_response(
+                {"error": f"scorer {scorer_name} not found"},
+                status=HTTPStatus.NOT_FOUND,
+            )
+
+        try:
+            scorer = scorer.withconfig(config)
+        except MissingConfig as error:
+            self.logger.error(
+                f"failed to configure scorer {scorer_name}: {error}"
+            )
+            return web.json_response(
+                {"error": str(error)}, status=HTTPStatus.BAD_REQUEST
+            )
+
+        # DFFML objects all follow a double context entry pattern
+        exit_stack = request.app["exit_stack"]
+        scorer = await exit_stack.enter_async_context(scorer)
+        request.app["scorers"][label] = scorer
+
+        return web.json_response(OK)
+
+    async def context_scorer(self, request):
+        label = request.match_info["label"]
+        ctx_label = request.match_info["ctx_label"]
+
+        if not label in request.app["scorers"]:
+            return web.json_response(
+                {"error": f"{label} scorer not found"},
+                status=HTTPStatus.NOT_FOUND,
+            )
+
+        # Enter the scorer context and pass the features
+        exit_stack = request.app["exit_stack"]
+        scorer = request.app["scorers"][label]
+        actx = await exit_stack.enter_async_context(scorer())
+        request.app["scorer_contexts"][ctx_label] = actx
+
+        return web.json_response(OK)
+
     def register_config(self) -> Type[HTTPChannelConfig]:
         return HTTPChannelConfig
 
@@ -826,6 +880,12 @@ class Routes(BaseMultiCommContext):
                     }
                 )
 
+    @mctx_route
+    async def scorer_accuracy(self, request, mctx):
+        sctx_label_list = await request.json()
+        sources = await self.get_source_contexts(request, sctx_label_list)
+        return web.json_response({"accuracy": await self.score(mctx, sources)})
+
     async def api_js(self, request):
         return web.Response(
             body=API_JS_BYTES,
@@ -890,11 +950,13 @@ class Routes(BaseMultiCommContext):
         self.app["models"] = {
             model.ENTRY_POINT_LABEL: model for model in self.models
         }
+        self.app["scorers"] = {}
 
         mctx = await self.app["exit_stack"].enter_async_context(self.models())
         self.app["model_contexts"] = {
             model_ctx.parent.ENTRY_POINT_LABEL: model_ctx for model_ctx in mctx
         }
+        self.app["scorer_contexts"] = {}
 
         self.app.update(kwargs)
         # Allow no routes other than pre-registered if in atomic mode
@@ -928,6 +990,16 @@ class Routes(BaseMultiCommContext):
                     "/context/model/{label}/{ctx_label}",
                     self.context_model,
                 ),
+                (
+                    "POST",
+                    "/configure/scorer/{scorer}/{label}",
+                    self.configure_scorer,
+                ),
+                (
+                    "GET",
+                    "/context/scorer/{label}/{ctx_label}",
+                    self.context_scorer,
+                ),
                 # MutliComm APIs (Data Flow)
                 (
                     "POST",
@@ -947,6 +1019,7 @@ class Routes(BaseMultiCommContext):
                     "/source/{label}/records/{iterkey}/{chunk_size}",
                     self.source_records_iter,
                 ),
+                ("POST", "/scorer/{label}/score", self.scorer_accuracy),
                 # TODO route to delete iterkey before iteration has completed
                 # Model APIs
                 ("POST", "/model/{label}/train", self.model_train),
