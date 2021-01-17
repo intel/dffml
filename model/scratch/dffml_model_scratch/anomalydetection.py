@@ -181,7 +181,7 @@ class AnomalyModel(SimpleModel):
             -sources f=csv \
             -source-filename trainex.csv \
             -model anomalydetection \
-            -model-feature A:float:2 \
+            -model-features A:float:2 \
             -model-predict Y:int:1  \
             -model-directory tempdir
 
@@ -194,7 +194,7 @@ class AnomalyModel(SimpleModel):
             -sources f=csv \
             -source-filename testex.csv \
             -model anomalydetection \
-            -model-feature A:float:2 \
+            -model-features A:float:2 \
             -model-predict Y:int:1 \
             -model-directory tempdir
 
@@ -208,7 +208,7 @@ class AnomalyModel(SimpleModel):
             -sources f=csv \
             -source-filename testex.csv \
             -model anomalydetection \
-            -model-feature A:float:2 \
+            -model-features A:float:2 \
             -model-predict Y:int:1 \
             -model-directory tempdir
 
