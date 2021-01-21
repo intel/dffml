@@ -10,6 +10,7 @@ import asyncio
 import pathlib
 import getpass
 import tempfile
+import platform
 import importlib
 import subprocess
 import contextlib
@@ -392,6 +393,9 @@ class Install(CMD):
             "pip",
             "install",
         ]
+        # If on Windows, PyTorch wants us to use a find links URL for pip
+        if platform.system() == "Windows":
+            cmd += ["-f", "https://download.pytorch.org/whl/torch_stable.html"]
         # Install to prefix, since --user sometimes fails
         if self.user:
             local_path = Path("~", ".local").expanduser().absolute()
