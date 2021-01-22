@@ -39,12 +39,6 @@ INSTALL_REQUIRES = [] + (
     else []
 )
 
-REQUIREMENTS_TXT_PATH = Path(self_path, "requirements.txt")
-if REQUIREMENTS_TXT_PATH.is_file():
-    INSTALL_REQUIRES += list(
-        map(lambda i: i.strip(), REQUIREMENTS_TXT_PATH.read_text().split("\n"))
-    )
-
 setup(
     name="dffml-model-transformers",
     version=version,
