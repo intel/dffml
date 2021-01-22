@@ -40,12 +40,6 @@ INSTALL_REQUIRES = [] + (
     else []
 )
 
-REQUIREMENTS_TXT_PATH = Path(self_path, "requirements.txt")
-if REQUIREMENTS_TXT_PATH.is_file():
-    INSTALL_REQUIRES += list(
-        map(lambda i: i.strip(), REQUIREMENTS_TXT_PATH.read_text().split("\n"))
-    )
-
 REQUIREMENTS_DEV_TXT_PATH = Path(self_path, "requirements-dev.txt")
 if REQUIREMENTS_DEV_TXT_PATH.is_file():
     TESTS_REQUIRE = list(
