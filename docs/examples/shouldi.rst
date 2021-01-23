@@ -171,10 +171,19 @@ Installing Static Analysis Tools
 The tools we'll be using are ``bandit`` and ``safety``. We'll also need to make
 http requests so let's install ``aiohttp`` too.
 
-**requirements.txt**
+Add the dependencies to the list of packages seen in ``install_requires``,
+``dffml`` will be there, add these right below that.
 
-.. literalinclude:: /../examples/shouldi/requirements.txt
+**setup.cfg**
+
+.. code-block:: ini
     :test:
+    :filepath: setup.cfg
+
+        aiohttp>=3.5.4
+        bandit>=1.6.2
+        safety>=1.8.5
+        PyYAML>=5.1.2
 
 .. note::
 
@@ -467,21 +476,28 @@ the ``shouldi.cli`` module.
 We're going to remove the ``dffml.operation`` entry's for now. We'll address
 those shortly.
 
-**setup.py**
+**entry_points.txt**
 
-.. literalinclude:: /../examples/shouldi/setup_console_scripts.py
+.. code-block:: ini
     :test:
-    :diff: /../dffml/skel/operations/setup.py
-    :diff-files: setup.py
-    :filepath: setup.py
+    :overwrite:
+    :filepath: entry_points.txt
 
-When we change the ``entry_points`` we need to run the ``egg_info`` setuptools
-hook. This makes Python pick up changes to the entry points.
+    [console_scripts]
+    shouldi = shouldi.cli:ShouldI.main
+
+When we change ``console_scripts`` section of the ``entry_points.txt`` file we
+need to run the ``install_scripts`` setuptools command to have those changes
+take effect. The command will create a wrapper script around the functions on
+the right hand side of each ``=`` in the lines under ``[console_scripts]``. The
+name of the wrapper script will be whatever is to the left of the ``=``. These
+wrapper scripts are placed in a directory which should be put in your ``PATH``
+environment variable, if it's not already there.
 
 .. code-block:: console
     :test:
 
-    $ python setup.py egg_info
+    $ python setup.py install_scripts
 
 Now we should be able to run our new tool via the CLI! (Provided your ``$PATH``
 is set up correctly).
@@ -576,14 +592,22 @@ Registering Operations
 
 In order to make our operations visible to other plugins and packages using
 DFFML, we need to register them with Python's ``entry_points`` system.
+Add the following in the ``entry_points.txt`` file you edited earlier. Last time
+we edited the file we removed the ``[dffml.operations]`` section. This time
+we're adding it back in with the operations we've just written.
 
-**setup.py**
+**entry_points.txt**
 
-.. literalinclude:: /../examples/shouldi/setup.py
+.. code-block:: ini
     :test:
-    :diff: /../examples/shouldi/setup_console_scripts.py
-    :diff-files: setup.py
-    :filepath: setup.py
+    :filepath: entry_points.txt
+
+    [dffml.operation]
+    run_bandit = shouldi.python.bandit:run_bandit
+    safety_check = shouldi.python.safety:safety_check
+    pypi_package_json = shouldi.python.pypi:pypi_package_json
+    pypi_package_contents = shouldi.python.pypi:pypi_package_contents
+    cleanup_pypi_package = shouldi.python.pypi:cleanup_pypi_package
 
 Run the setuptools ``egg_info`` hook to make ``entry_points`` changes take
 effect.
