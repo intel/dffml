@@ -23,6 +23,7 @@ from dffml.util.cli.arg import parse_unknown
 from dffml.util.entrypoint import entrypoint
 from dffml.util.asynctestcase import AsyncTestCase
 from dffml.feature.feature import Feature, Features
+from dffml.accuracy.mse import MeanSquaredErrorAccuracyConfig
 
 from dffml_service_http.routes import (
     OK,
@@ -255,6 +256,32 @@ class TestRoutesConfigure(TestRoutesRunning, AsyncTestCase):
                         f"/configure/{check}/feed face/tag", json={}
                     ):
                         pass  # pramga: no cov
+
+    async def test_scorer(self):
+        config = parse_unknown()
+        async with self.post("/configure/scorer/mse/mymse", json=config) as r:
+            self.assertEqual(await r.json(), OK)
+            self.assertIn("mymse", self.cli.app["scorers"])
+            self.assertEqual(
+                self.cli.app["scorers"]["mymse"].config,
+                MeanSquaredErrorAccuracyConfig(),
+            )
+            with self.subTest(context="msectx"):
+                # Create the context
+                async with self.get("/context/scorer/mymse/msectx") as r:
+                    self.assertEqual(await r.json(), OK)
+                    self.assertIn("msectx", self.cli.app["scorer_contexts"])
+
+    async def test_scorer_config_error(self):
+        config = parse_unknown()
+        with self.assertRaisesRegex(ServerException, "scorer mymse not found"):
+            async with self.post("/configure/scorer/mymse/mymse", json=config):
+                pass  # pramga: no cov
+
+    async def test_scorer_context_scorer_not_found(self):
+        with self.assertRaisesRegex(ServerException, f"mse scorer not found"):
+            async with self.get("/context/scorer/mse/msectx") as r:
+                pass  # pramga: no cov
 
 
 class TestRoutesMultiComm(TestRoutesRunning, AsyncTestCase):
