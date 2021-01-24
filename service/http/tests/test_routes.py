@@ -23,6 +23,7 @@ from dffml.util.cli.arg import parse_unknown
 from dffml.util.entrypoint import entrypoint
 from dffml.util.asynctestcase import AsyncTestCase
 from dffml.feature.feature import Feature, Features
+from dffml.accuracy.mse import MeanSquaredErrorAccuracyConfig
 
 from dffml_service_http.routes import (
     OK,
@@ -38,6 +39,7 @@ from dffml_service_http.util.testing import (
     TestRoutesRunning,
     FakeModel,
     FakeModelConfig,
+    FakeScorer,
 )
 
 from .dataflow import (
@@ -278,6 +280,32 @@ class TestRoutesConfigure(TestRoutesRunning, AsyncTestCase):
                     ):
                         pass  # pramga: no cov
 
+    async def test_scorer(self):
+        config = parse_unknown()
+        async with self.post("/configure/scorer/mse/mymse", json=config) as r:
+            self.assertEqual(await r.json(), OK)
+            self.assertIn("mymse", self.cli.app["scorers"])
+            self.assertEqual(
+                self.cli.app["scorers"]["mymse"].config,
+                MeanSquaredErrorAccuracyConfig(),
+            )
+            with self.subTest(context="msectx"):
+                # Create the context
+                async with self.get("/context/scorer/mymse/msectx") as r:
+                    self.assertEqual(await r.json(), OK)
+                    self.assertIn("msectx", self.cli.app["scorer_contexts"])
+
+    async def test_scorer_config_error(self):
+        config = parse_unknown()
+        with self.assertRaisesRegex(ServerException, "scorer mymse not found"):
+            async with self.post("/configure/scorer/mymse/mymse", json=config):
+                pass  # pramga: no cov
+
+    async def test_scorer_context_scorer_not_found(self):
+        with self.assertRaisesRegex(ServerException, f"mse scorer not found"):
+            async with self.get("/context/scorer/mse/msectx") as r:
+                pass  # pramga: no cov
+
 
 class TestRoutesMultiComm(TestRoutesRunning, AsyncTestCase):
     async def test_no_post(self):
@@ -474,11 +502,11 @@ class TestModel(TestRoutesRunning, AsyncTestCase):
         with self.assertRaisesRegex(
             ServerException, list(MODEL_NOT_LOADED.values())[0]
         ):
-            async with self.post(f"/model/non-existant/accuracy", json=[]):
+            async with self.post(f"/model/non-existant/train", json=[]):
                 pass  # pramga: no cov
 
     async def test_no_sources(self):
-        for method in ["train", "accuracy"]:
+        for method in ["train"]:
             with self.subTest(method=method):
                 with self.assertRaisesRegex(
                     ServerException, list(MODEL_NO_SOURCES.values())[0]
@@ -506,15 +534,6 @@ class TestModel(TestRoutesRunning, AsyncTestCase):
             self.assertEqual(await r.json(), OK)
         for i in range(0, self.num_records):
             self.assertIn(str(i), self.mctx.trained_on)
-
-    async def test_accuracy(self):
-        async with self.post(
-            f"/model/{self.mlabel}/accuracy", json=[self.slabel]
-        ) as r:
-            self.assertEqual(
-                await r.json(),
-                {"accuracy": float(sum(range(0, self.num_records)))},
-            )
 
     async def test_predict(self):
         records: Dict[str, Record] = {
@@ -549,3 +568,30 @@ class TestModel(TestRoutesRunning, AsyncTestCase):
                 f"/model/{self.mlabel}/predict/7", json=records
             ) as r:
                 pass  # pramga: no cov
+
+
+class TestRoutesScorer(TestRoutesRunning, AsyncTestCase):
+    async def setUp(self):
+        await super().setUp()
+        self.mlabel: str = "mymodel"
+        self.slabel: str = "mydataset"
+        self.alabel: str = "fakescorerctx"
+        self.num_records: int = 100
+        self.add_memory_source = await self.exit_stack.enter_async_context(
+            self._add_memory_source()
+        )
+        self.add_fake_model = await self.exit_stack.enter_async_context(
+            self._add_fake_model()
+        )
+        self.add_fake_scorer = await self.exit_stack.enter_async_context(
+            self._add_fake_scorer()
+        )
+
+    async def test_scorer_score(self):
+        async with self.post(
+            f"/scorer/{self.alabel}/{self.mlabel}/score", json=[self.slabel]
+        ) as r:
+            self.assertEqual(
+                await r.json(),
+                {"accuracy": float(sum(range(0, self.num_records)))},
+            )
