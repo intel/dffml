@@ -116,6 +116,8 @@ setup(
             f"scikitsc = {IMPORT_NAME}.scikit_models:SpectralClusteringModel",
             f"scikitac = {IMPORT_NAME}.scikit_models:AgglomerativeClusteringModel",
             f"scikitoptics = {IMPORT_NAME}.scikit_models:OPTICSModel",
+            f"scikitpca = {IMPORT_NAME}.scikit_models:PCAModel",
+            f"scikitnmf = {IMPORT_NAME}.scikit_models:NMFModel",   
         ]
     },
 )

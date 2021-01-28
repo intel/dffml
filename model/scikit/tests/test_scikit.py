@@ -257,6 +257,8 @@ REGRESSORS = [
     "OrthogonalMatchingPursuit",
     "Lars",
     "Ridge",
+    "PCA",
+    "NMF"
 ]
 
 CLUSTERERS = [
