@@ -258,7 +258,7 @@ REGRESSORS = [
     "Lars",
     "Ridge",
     "PCA",
-    "NMF"
+    "NFM"
 ]
 
 CLUSTERERS = [
@@ -273,7 +273,7 @@ CLUSTERERS = [
 ]
 
 supervised_estimators = ["classifier", "regressor"]
-unsupervised_estimators = ["clusterer"]
+unsupervised_estimators = ["clusterer", "decomposer"]
 valid_estimators = supervised_estimators + unsupervised_estimators
 for clf in CLASSIFIERS:
     test_cls = type(
@@ -302,7 +302,7 @@ for reg in REGRESSORS:
         },
     )
     setattr(sys.modules[__name__], test_cls.__qualname__, test_cls)
-
+    
 for clstr in CLUSTERERS:
     for true_clstr_present in [True, False]:
         labelInfo = f"withLabel" if true_clstr_present else f"withoutLabel"
