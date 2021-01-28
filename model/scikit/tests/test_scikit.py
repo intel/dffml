@@ -273,7 +273,7 @@ CLUSTERERS = [
 ]
 
 supervised_estimators = ["classifier", "regressor"]
-unsupervised_estimators = ["clusterer", "decomposer"]
+unsupervised_estimators = ["clusterer"]
 valid_estimators = supervised_estimators + unsupervised_estimators
 for clf in CLASSIFIERS:
     test_cls = type(
