@@ -119,6 +119,30 @@ class LogisticRegression(SimpleModel):
         )
         return prediction
     
+    def logistic_unit(X, w):
+        h = 1 / (1 + np.exp(-np.dot(X, w)))
+        return h
+    
+    def Bernoulli (h_i, y_i):
+        
+        if y_i == 0:
+            return (1 - y_i) * np.log(1 - h_i)
+        
+        elif y_i == 1:
+            return y_i * np.log(h_i)
+        
+        else:
+            return y_i * np.log(h_i) + (1 - y_i) * np.log(1 - h_i)
+        
+    def loss (w, X, y):
+        h = logistic_unit(X, w)
+        J = 0
+        
+        for i in range (len(h)):
+            J -= Bernoulli(h[i], y[i])
+        
+        return J
+    
     def lr_update (lr, i):
         lr = lr / (i + 1)
         return lr
