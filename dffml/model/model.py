@@ -23,7 +23,7 @@ from ..util.entrypoint import base_entry_point
 from ..util.os import MODE_BITS_SECURE
 from ..source.source import Sources, SourcesContext
 
-
+# If model is not trained, take an exception
 class ModelNotTrained(Exception):
     pass
 
