@@ -20,7 +20,8 @@ from dffml import (
 class LogisticRegressionConfig:
     predict: Feature = field("Label or the value to be predicted")
     features: Features = field("Features to train on")
-    directory: pathlib.Path = field("Directory where state should be saved")
+    directory: pathlib.Path = field("Directory where state should be saved",)
+
 
 @entrypoint("scratchlgrsag")
 class LogisticRegression(SimpleModel):
@@ -78,10 +79,8 @@ class LogisticRegression(SimpleModel):
     """
     # The configuration class needs to be set as the CONFIG property
     CONFIG = LogisticRegressionConfig
-    
     # Logistic Regression only supports training on a single feature
     NUM_SUPPORTED_FEATURES = 1
-    
     # We only support single dimensional values, non-matrix / array
     SUPPORTED_LENGTHS = [1]
 
@@ -110,16 +109,40 @@ class LogisticRegression(SimpleModel):
         The Logistic regression with SAG optimizer: returns w * x + b > 0.5
         """
         prediction = self.separating_line[0] * x + self.separating_line[1]
+        
         if prediction > 0.5:
             prediction = 1
         else:
             prediction = 0
-        self.logger.debug(
-            "Predicted Value of {} {}:".format(
-                self.config.predict.name, prediction
-            )
+        
+        self.logger.debug("Predicted Value of {} {}:".format(self.config.predict.name, prediction)
         )
         return prediction
+    
+    def lr_update (lr, i):
+        lr = lr / (i + 1)
+        return lr
+    
+    def gd (fun, x0, lr):
+        grad_fun = grad(fun)
+        x = x0 - lr * grad_fun(x0)
+        x0 = x
+        return x
+    
+    iterations = 5000
+    m = 10
+    lr = 0.000001
+    
+    train_loss_var = np.zeros(iterations // m)
+    val_loss_var = np.zeros(iterations // m)
+    
+    w1 = np.zeros(3)
+    w2 = np.zeros(3)
+    
+    def J(w):
+        return loss (w, X, y)
+    
+    def gradient_descent(fun, x0, lr)
 
     def best_separating_line(self):
         """
