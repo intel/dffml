@@ -16,13 +16,11 @@ from dffml import (
     SourcesContext,
 )
 
-
 @config
 class LogisticRegressionConfig:
     predict: Feature = field("Label or the value to be predicted")
     features: Features = field("Features to train on")
-    directory: pathlib.Path = field("Directory where state should be saved",)
-
+    directory: pathlib.Path = field("Directory where state should be saved")
 
 @entrypoint("scratchlgrsag")
 class LogisticRegression(SimpleModel):
@@ -80,8 +78,10 @@ class LogisticRegression(SimpleModel):
     """
     # The configuration class needs to be set as the CONFIG property
     CONFIG = LogisticRegressionConfig
+    
     # Logistic Regression only supports training on a single feature
     NUM_SUPPORTED_FEATURES = 1
+    
     # We only support single dimensional values, non-matrix / array
     SUPPORTED_LENGTHS = [1]
 
