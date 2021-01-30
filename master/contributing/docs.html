@@ -7,16 +7,13 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Documentation &mdash; DFFML 28cca076 documentation</title>
+  <title>Documentation &mdash; DFFML 653f28ad documentation</title>
   
 
   
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/sphinx_tabs/semantic-ui-2.4.1/segment.min.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/sphinx_tabs/semantic-ui-2.4.1/menu.min.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/sphinx_tabs/semantic-ui-2.4.1/tab.min.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/sphinx_tabs/tabs.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/tabs.css" type="text/css" />
 
   
   
@@ -69,7 +66,7 @@
             
             
               <div class="version">
-                28cca076
+                653f28ad
               </div>
             
           
@@ -225,11 +222,11 @@
 <p>You’ll want to have all of the official plugins installed when generating the
 documentation. See <a class="reference internal" href="dev_env.html#dev-env-install-official-plugins"><span class="std std-ref">Installing Plugins In Development Mode</span></a>.</p>
 <p>To build, run the docs script.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> ./scripts/docs.sh
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>./scripts/docs.sh
 </pre></div>
 </div>
 <p>Python’s built in HTTP server is useful for viewing the documentation.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python3 -m http.server --directory pages/ <span class="m">7000</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python3 -m http.server --directory pages/ <span class="m">7000</span>
 </pre></div>
 </div>
 <div class="section" id="examples">
@@ -266,12 +263,12 @@ tests.</p>
 <div class="section" id="doctests">
 <h2>Doctests<a class="headerlink" href="#doctests" title="Permalink to this headline">¶</a></h2>
 <p>To run all the examples</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python3 setup.py <span class="nb">test</span> -s tests.test_docstrings
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python3 setup.py <span class="nb">test</span> -s tests.test_docstrings
 </pre></div>
 </div>
 <p>To run a specific example, determine python path to class or function, remove
 <code class="docutils literal notranslate"><span class="pre">dffml.</span></code> and change rest of <code class="docutils literal notranslate"><span class="pre">.</span></code> to <code class="docutils literal notranslate"><span class="pre">_</span></code>.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python3 setup.py <span class="nb">test</span> -s tests.test_docstrings.util_asynctestcase_AsyncTestCase
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python3 setup.py <span class="nb">test</span> -s tests.test_docstrings.util_asynctestcase_AsyncTestCase
 </pre></div>
 </div>
 </div>

@@ -7,16 +7,13 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>shouldi &mdash; DFFML 28cca076 documentation</title>
+  <title>shouldi &mdash; DFFML 653f28ad documentation</title>
   
 
   
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="_static/sphinx_tabs/semantic-ui-2.4.1/segment.min.css" type="text/css" />
-  <link rel="stylesheet" href="_static/sphinx_tabs/semantic-ui-2.4.1/menu.min.css" type="text/css" />
-  <link rel="stylesheet" href="_static/sphinx_tabs/semantic-ui-2.4.1/tab.min.css" type="text/css" />
-  <link rel="stylesheet" href="_static/sphinx_tabs/tabs.css" type="text/css" />
+  <link rel="stylesheet" href="_static/tabs.css" type="text/css" />
 
   
   
@@ -45,7 +42,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Software Portal" href="swportal.html" />
-    <link rel="prev" title="Service Dev" href="api/service/dev.html" /> 
+    <link rel="prev" title="Df Exceptions" href="api/df/exceptions.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -69,7 +66,7 @@
             
             
               <div class="version">
-                28cca076
+                653f28ad
               </div>
             
           
@@ -227,7 +224,7 @@ any issues in any of the python packages you were thinking of installing.</p>
 </div>
 <div class="section" id="installation">
 <h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python3 -m pip install -U shouldi
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python3 -m pip install -U shouldi
 </pre></div>
 </div>
 </div>
@@ -256,7 +253,7 @@ static analysis tools for that language</p></li>
 <h3>Install Command<a class="headerlink" href="#install-command" title="Permalink to this headline">¶</a></h3>
 <p>Run bandit and safety. Tell the person who ran the command not to install the
 Python package if there were any issues found by either tool.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> shouldi install insecure-package bandit
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>shouldi install insecure-package bandit
 <span class="go">bandit is okay to install</span>
 <span class="go">Do not install insecure-package! {&#39;safety_check_number_of_issues&#39;: 1}</span>
 </pre></div>
@@ -296,7 +293,7 @@ run the appropriate static analysis tools for that language.</p>
 </ul>
 </li>
 </ul>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> shouldi use https://github.com/trekhleb/javascript-algorithms
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>shouldi use https://github.com/trekhleb/javascript-algorithms
 <span class="go">{&#39;static_analysis&#39;: SAResultsSpec(critical=1, high=2941, medium=16, low=41049, report={&#39;npm_audit_output&#39;: {&#39;info&#39;: 0, &#39;low&#39;: 41049, &#39;moderate&#39;: 16, &#39;high&#39;: 2941, &#39;critical&#39;: 1}})}</span>
 </pre></div>
 </div>
@@ -318,7 +315,7 @@ files.</p>
 </div>
 <p>Here’s an example of running the project command on the <code class="docutils literal notranslate"><span class="pre">shouldi</span></code> codebase with
 the above <code class="docutils literal notranslate"><span class="pre">deps.yaml</span></code> adding in dependencies that couldn’t be auto discovered.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> shouldi project create -add deps.yaml -- .
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>shouldi project create -add deps.yaml -- .
 <span class="go">{</span>
 <span class="go">    &quot;dependencies&quot;: [</span>
 <span class="go">        {</span>
@@ -413,7 +410,7 @@ on PyPi, to avoid a supply chain attack.</p>
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
         <a href="swportal.html" class="btn btn-neutral float-right" title="Software Portal" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-        <a href="api/service/dev.html" class="btn btn-neutral float-left" title="Service Dev" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="api/df/exceptions.html" class="btn btn-neutral float-left" title="Df Exceptions" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
   <hr/>

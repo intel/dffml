@@ -7,16 +7,13 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Neural Networks &mdash; DFFML 28cca076 documentation</title>
+  <title>Neural Networks &mdash; DFFML 653f28ad documentation</title>
   
 
   
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/sphinx_tabs/semantic-ui-2.4.1/segment.min.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/sphinx_tabs/semantic-ui-2.4.1/menu.min.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/sphinx_tabs/semantic-ui-2.4.1/tab.min.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/sphinx_tabs/tabs.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/tabs.css" type="text/css" />
 
   
   
@@ -69,7 +66,7 @@
             
             
               <div class="version">
-                28cca076
+                653f28ad
               </div>
             
           
@@ -223,7 +220,7 @@ which contains images of hands in Rock/Paper/Scissors poses, each image is a 300
 which is a part of <code class="docutils literal notranslate"><span class="pre">dffml-model-pytorch</span></code>, a DFFML plugin which allows you to use PyTorch
 via DFFML. We can install it with <code class="docutils literal notranslate"><span class="pre">pip</span></code>. We will also be using image loading from
 <code class="docutils literal notranslate"><span class="pre">dffml-config-image</span></code> and YAML file loading from <code class="docutils literal notranslate"><span class="pre">dffml-config-yaml</span></code> for creating our neural network.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> pip install -U dffml-model-pytorch dffml-config-image dffml-config-yaml
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>pip install -U dffml-model-pytorch dffml-config-image dffml-config-yaml
 </pre></div>
 </div>
 <p>Download the dataset and verify with with <code class="docutils literal notranslate"><span class="pre">sha384sum</span></code>.</p>
@@ -241,9 +238,9 @@ via DFFML. We can install it with <code class="docutils literal notranslate"><sp
 </pre></div>
 </div>
 <p>Extract the datasets.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> unzip rps.zip
-<span class="gp">$</span> unzip rps-test-set.zip
-<span class="gp">$</span> unzip rps-validation.zip -d rps-predict
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>unzip rps.zip
+<span class="gp">$ </span>unzip rps-test-set.zip
+<span class="gp">$ </span>unzip rps-validation.zip -d rps-predict
 </pre></div>
 </div>
 <p>The dataset for training the model will be in the <cite>rps</cite> directory.
@@ -341,7 +338,7 @@ More info about PyTorch’s Sequential Layers and other layers used can be found
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">example_model:</span>
 <span class="go">    block1:</span>
 <span class="go">        ...</span>
-<span class="gp">    #</span> One of the many Sequential layers in example_model
+<span class="gp">    # </span>One of the many Sequential layers <span class="k">in</span> example_model
 <span class="go">    block2:</span>
 <span class="go">        conv2:</span>
 <span class="go">            name: Conv2d</span>

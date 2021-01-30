@@ -7,16 +7,13 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Command Line &mdash; DFFML 28cca076 documentation</title>
+  <title>Command Line &mdash; DFFML 653f28ad documentation</title>
   
 
   
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="_static/sphinx_tabs/semantic-ui-2.4.1/segment.min.css" type="text/css" />
-  <link rel="stylesheet" href="_static/sphinx_tabs/semantic-ui-2.4.1/menu.min.css" type="text/css" />
-  <link rel="stylesheet" href="_static/sphinx_tabs/semantic-ui-2.4.1/tab.min.css" type="text/css" />
-  <link rel="stylesheet" href="_static/sphinx_tabs/tabs.css" type="text/css" />
+  <link rel="stylesheet" href="_static/tabs.css" type="text/css" />
 
   
   
@@ -69,7 +66,7 @@
             
             
               <div class="version">
-                28cca076
+                653f28ad
               </div>
             
           
@@ -246,7 +243,7 @@ logs.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Some of these examples assume you have <code class="docutils literal notranslate"><span class="pre">dffml-config-yaml</span></code> installed.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python -m pip install dffml-config-yaml
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python -m pip install dffml-config-yaml
 </pre></div>
 </div>
 </div>
@@ -357,7 +354,7 @@ DataFlow and have the input of the <code class="docutils literal notranslate"><s
 ouput of the <code class="docutils literal notranslate"><span class="pre">dffml.mapping.create</span></code> operation. If you want to see the
 difference create a diagram of the DataFlow with and without using the <code class="docutils literal notranslate"><span class="pre">-flow</span></code>
 flag during generation.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml dataflow create <span class="se">\</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml dataflow create <span class="se">\</span>
     -configloader yaml <span class="se">\</span>
     -flow <span class="s1">&#39;[{&quot;dffml.mapping.create&quot;: &quot;mapping&quot;}]&#39;</span><span class="o">=</span>print_output.inputs.data <span class="se">\</span>
     -- <span class="se">\</span>
@@ -417,7 +414,7 @@ back to the terminal when the DataFlow completes.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">-no-strict</span></code> flag tell DFFML not to exit if one key fails, continue
 running the dataflow until everything is complete, useful for error prone
 scraping tasks.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml dataflow run contexts <span class="se">\</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml dataflow run contexts <span class="se">\</span>
     -no-echo <span class="se">\</span>
     -dataflow hello.yaml <span class="se">\</span>
     -context-def value <span class="se">\</span>
@@ -431,7 +428,7 @@ scraping tasks.</p>
 </pre></div>
 </div>
 <p>We can also run the dataflow using a source</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml dataflow run records all <span class="se">\</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml dataflow run records all <span class="se">\</span>
     -no-echo <span class="se">\</span>
     -record-def value <span class="se">\</span>
     -inputs <span class="nv">hello</span><span class="o">=</span>key <span class="se">\</span>
@@ -451,18 +448,18 @@ linked.</p>
 We’ll have the name of this instance of <code class="docutils literal notranslate"><span class="pre">print_output</span></code> be <code class="docutils literal notranslate"><span class="pre">second_print</span></code>. We
 modify the input flow of the <code class="docutils literal notranslate"><span class="pre">second_print</span></code> operation to have it’s data also
 come from the output of the <code class="docutils literal notranslate"><span class="pre">dffml.mapping.create</span></code> operation.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml dataflow create <span class="se">\</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml dataflow create <span class="se">\</span>
     -flow <span class="s1">&#39;[{&quot;dffml.mapping.create&quot;: &quot;mapping&quot;}]&#39;</span><span class="o">=</span>second_print.inputs.data <span class="se">\</span>
     -- <span class="nv">second_print</span><span class="o">=</span>print_output <span class="se">\</span>
     <span class="p">|</span> tee second_print.json
 </pre></div>
 </div>
 <p>We can then merge the two dataflows into a new dataflow, <code class="docutils literal notranslate"><span class="pre">print_twice.json</span></code>.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml dataflow merge hello.yaml second_print.json <span class="p">|</span> tee print_twice.json
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml dataflow merge hello.yaml second_print.json <span class="p">|</span> tee print_twice.json
 </pre></div>
 </div>
 <p>If we run the dataflow we’ll see each context printed twice now.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml dataflow run contexts <span class="se">\</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml dataflow run contexts <span class="se">\</span>
     -no-echo <span class="se">\</span>
     -dataflow print_twice.json <span class="se">\</span>
     -context-def value <span class="se">\</span>
@@ -478,7 +475,7 @@ come from the output of the <code class="docutils literal notranslate"><span cla
 <div class="section" id="diagram">
 <h3>Diagram<a class="headerlink" href="#diagram" title="Permalink to this headline">¶</a></h3>
 <p>Output a mermaidjs graph description of a DataFlow.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml dataflow diagram -simple hello.yaml
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml dataflow diagram -simple hello.yaml
 </pre></div>
 </div>
 <p>You can now copy the graph description and paste it in the
@@ -509,7 +506,7 @@ another flag such as <code class="docutils literal notranslate"><span class="pre
 <p>The edit record command drops you into the Python debugger to edit a
 <a class="reference internal" href="api/record.html#dffml.record.Record" title="dffml.record.Record"><code class="xref py py-class docutils literal notranslate"><span class="pre">Record</span></code></a> in any source manually when a dataflow
 config file is not provided.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml edit record -sources <span class="nv">f</span><span class="o">=</span>csv -source-filename images.csv -source-readwrite -keys three
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml edit record -sources <span class="nv">f</span><span class="o">=</span>csv -source-filename images.csv -source-readwrite -keys three
 <span class="gp">&gt;</span> /home/user/Documents/python/dffml/dffml/cli/cli.py<span class="o">(</span><span class="m">45</span><span class="o">)</span>run<span class="o">()</span>
 <span class="go">-&gt; await sctx.update(record)</span>
 <span class="gp gp-VirtualEnv">(Pdb)</span> <span class="go">record.data.features[&quot;image&quot;] += &quot;FEEDFACE&quot;</span>
@@ -517,7 +514,7 @@ config file is not provided.</p>
 </pre></div>
 </div>
 <p>List the records in the file to verify the edit was successful.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml list records -sources <span class="nv">f</span><span class="o">=</span>csv -source-filename images.csv -source-readwrite
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml list records -sources <span class="nv">f</span><span class="o">=</span>csv -source-filename images.csv -source-readwrite
 <span class="go">[</span>
 <span class="go">    {</span>
 <span class="go">        &quot;extra&quot;: {},</span>
@@ -566,7 +563,7 @@ factor which is 10 in this case. The example dataflow file looks like this:</p>
 </pre></div>
 </div>
 <p>Create the dataflow</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml dataflow create <span class="se">\</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml dataflow create <span class="se">\</span>
     -configloader yaml <span class="se">\</span>
     -flow <span class="s1">&#39;[{&quot;seed&quot;: [&quot;Years&quot;, &quot;Expertise&quot;, &quot;Trust&quot;, &quot;Salary&quot;]}]&#39;</span><span class="o">=</span>multiply.inputs.multiplicand <span class="se">\</span>
     -inputs <span class="se">\</span>
@@ -636,14 +633,14 @@ factor which is 10 in this case. The example dataflow file looks like this:</p>
 </pre></div>
 </div>
 <p>Edit records in bulk with the <code class="docutils literal notranslate"><span class="pre">edit</span> <span class="pre">all</span></code> command.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml edit all <span class="se">\</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml edit all <span class="se">\</span>
     -sources <span class="nv">f</span><span class="o">=</span>csv -source-filename data.csv -source-readwrite <span class="se">\</span>
     -features Years:int:1 Expertise:int:1 Trust:float:1 Salary:int:1 <span class="se">\</span>
     -dataflow edit_records.yaml
 </pre></div>
 </div>
 <p>List them to view the edits</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml list records -sources <span class="nv">f</span><span class="o">=</span>csv -source-filename data.csv
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml list records -sources <span class="nv">f</span><span class="o">=</span>csv -source-filename data.csv
 <span class="go">[</span>
 <span class="go">    {</span>
 <span class="go">        &quot;extra&quot;: {},</span>
@@ -695,7 +692,7 @@ factor which is 10 in this case. The example dataflow file looks like this:</p>
 <div class="section" id="convert">
 <span id="cli-config-convert"></span><h3>Convert<a class="headerlink" href="#convert" title="Permalink to this headline">¶</a></h3>
 <p>Convert one config file format into another.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml config convert -config-out json hello.yaml
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml config convert -config-out json hello.yaml
 </pre></div>
 </div>
 </div>
@@ -718,16 +715,16 @@ also do over an HTTP interface. See the
 <span id="id1"></span><h4>Create<a class="headerlink" href="#cli-service-dev-create" title="Permalink to this headline">¶</a></h4>
 <p>You can create a new python package and start implementing a new plugin for
 DFFML right away with the <code class="docutils literal notranslate"><span class="pre">create</span></code> command of <code class="docutils literal notranslate"><span class="pre">dev</span></code>.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml service dev create model dffml-model-mycoolmodel
-<span class="gp">$</span> <span class="nb">cd</span> dffml-model-mycoolmodel
-<span class="gp">$</span> python setup.py <span class="nb">test</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml service dev create model dffml-model-mycoolmodel
+<span class="gp">$ </span><span class="nb">cd</span> dffml-model-mycoolmodel
+<span class="gp">$ </span>python setup.py <span class="nb">test</span>
 </pre></div>
 </div>
 <p>When you’re done you can upload it to PyPi and it’ll be <code class="docutils literal notranslate"><span class="pre">pip</span></code> installable so
 that other DFFML users can use it in their code or via the CLI. If you don’t
 want to mess with uploading to <code class="docutils literal notranslate"><span class="pre">PyPi</span></code>, you can install it from your git repo
 (wherever it may be that you upload it to).</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python -m pip install -U https://github.com/<span class="nv">$USER</span>/dffml-model-mycoolmodel/archive/main.zip
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python -m pip install -U https://github.com/<span class="nv">$USER</span>/dffml-model-mycoolmodel/archive/main.zip
 </pre></div>
 </div>
 <p>Make sure to look in <code class="docutils literal notranslate"><span class="pre">setup.py</span></code> and edit the <code class="docutils literal notranslate"><span class="pre">entry_points</span></code> to match
@@ -742,14 +739,14 @@ nothing else required.</p>
 of an object, covert the object to it’s <code class="docutils literal notranslate"><span class="pre">dict</span></code> representation, and export it
 using the given config format.</p>
 <p>All DFFML objects are exportable. Here’s and example of exporting a DataFlow.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml service dev <span class="nb">export</span> -configloader json shouldi.cli:DATAFLOW
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml service dev <span class="nb">export</span> -configloader json shouldi.cli:DATAFLOW
 </pre></div>
 </div>
 <p>This is an example of exporting a model. Be sure the files you’re exporting from
 have a <code class="docutils literal notranslate"><span class="pre">if</span> <span class="pre">__name__</span> <span class="pre">==</span> <span class="pre">&quot;__main__&quot;:</span></code> block, or else loading the file will
 result in running the code in it instead of just exporting a global variable,
 which is what you want.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml service dev <span class="nb">export</span> -configloader yaml quickstart:model
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml service dev <span class="nb">export</span> -configloader yaml quickstart:model
 </pre></div>
 </div>
 </div>
@@ -779,7 +776,7 @@ directory) of the package name you don’t want to used the released version of
 from the <code class="docutils literal notranslate"><span class="pre">site-packages</span></code> directory. Then Python will start using the
 development version (provided you have installed that source with the <code class="docutils literal notranslate"><span class="pre">-e</span></code>
 flag to <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span></code>).</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml service dev entrypoints list dffml.operation
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml service dev entrypoints list dffml.operation
 <span class="go">is_binary_pie = dffml_operations_binsec.operations:is_binary_pie.op -&gt; dffml-operations-binsec 0.0.1 (/home/user/.pyenv/versions/3.7.2/lib/python3.7/site-packages)</span>
 <span class="go">pypi_package_json = shouldi.pypi:pypi_package_json -&gt; shouldi 0.0.1 (/home/user/Documents/python/dffml/examples/shouldi)</span>
 <span class="go">clone_git_repo = dffml_feature_git.feature.operations:clone_git_repo -&gt; dffml-feature-git 0.2.0 (/home/user/Documents/python/dffml/feature/git)</span>
@@ -794,7 +791,7 @@ flag to <code class="docutils literal notranslate"><span class="pre">pip</span> 
 <h5>kwarg<a class="headerlink" href="#kwarg" title="Permalink to this headline">¶</a></h5>
 <p><code class="docutils literal notranslate"><span class="pre">import</span></code> a <code class="docutils literal notranslate"><span class="pre">setup.py</span></code> file return the value of the specified keyword
 argument.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml service dev setuppy kwarg name setup.py
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml service dev setuppy kwarg name setup.py
 <span class="go">dffml-model-mycoolmodel</span>
 </pre></div>
 </div>

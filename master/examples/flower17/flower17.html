@@ -7,16 +7,13 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Flower17 Species Classification &mdash; DFFML 28cca076 documentation</title>
+  <title>Flower17 Species Classification &mdash; DFFML 653f28ad documentation</title>
   
 
   
   <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/sphinx_tabs/semantic-ui-2.4.1/segment.min.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/sphinx_tabs/semantic-ui-2.4.1/menu.min.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/sphinx_tabs/semantic-ui-2.4.1/tab.min.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/sphinx_tabs/tabs.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/tabs.css" type="text/css" />
 
   
   
@@ -69,7 +66,7 @@
             
             
               <div class="version">
-                28cca076
+                653f28ad
               </div>
             
           
@@ -229,7 +226,7 @@ This dataset contains 17 classes of flower species, each having 80 images.</p>
 </pre></div>
 </div>
 <p>Extract the dataset.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> tar -xzf 17flowers.tgz
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>tar -xzf 17flowers.tgz
 </pre></div>
 </div>
 <p>All the images are now in a folder called <cite>jpg</cite>.
@@ -290,7 +287,7 @@ each directory containing sub-directories corresponding to the 17 flower classes
 </div>
 <p>We execute the split.py file. The train directory will contain 70 images for each class while
 the test directory will contain 10 images for each class.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python split.py
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python split.py
 </pre></div>
 </div>
 <p>Now that we have our flower dataset ready, we can perform classification of the flower species.

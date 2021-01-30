@@ -232,7 +232,7 @@ away.</p>
 <p>Before you install DFFML in development mode be sure to uninstall it! Python
 will use the version installed from PyPi rather than you’re development version
 unless you uninstall it first!</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python3.7 -m pip uninstall dffml
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python3.7 -m pip uninstall dffml
 </pre></div>
 </div>
 <p>Once you’re sure DFFML is not installed on your system, install it in
@@ -247,13 +247,13 @@ flag, which has the same effect but should always work.</p>
 </div>
 <p><code class="docutils literal notranslate"><span class="pre">[dev]</span></code> tells <code class="docutils literal notranslate"><span class="pre">pip</span></code> to install the dependencies you’ll need to do
 development work on DFFML (such as documentation generation utilities).</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> git clone https://github.com/intel/dffml
-<span class="gp">$</span> <span class="nb">cd</span> dffml
-<span class="gp">$</span> python3.7 -m pip install --prefix<span class="o">=</span>~/.local -e .<span class="o">[</span>dev<span class="o">]</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>git clone https://github.com/intel/dffml
+<span class="gp">$ </span><span class="nb">cd</span> dffml
+<span class="gp">$ </span>python3.7 -m pip install --prefix<span class="o">=</span>~/.local -e .<span class="o">[</span>dev<span class="o">]</span>
 </pre></div>
 </div>
 <p>Verify you can use <code class="docutils literal notranslate"><span class="pre">dffml</span></code> from the command line.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml version
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml version
 <span class="go">dffml version 0.3.1 (devmode: /wherever/you/cloned/dffml)</span>
 </pre></div>
 </div>
@@ -261,14 +261,14 @@ development work on DFFML (such as documentation generation utilities).</p>
 line, then you’ll need to add that directory to your <code class="docutils literal notranslate"><span class="pre">PATH</span></code> environment
 variable. This might need to be in <code class="docutils literal notranslate"><span class="pre">~/.bashrc</span></code>, <code class="docutils literal notranslate"><span class="pre">~/.bash_profile</span></code>, or
 <code class="docutils literal notranslate"><span class="pre">~/.profile</span></code>, depending on your flavor of UNIX or Linux Distro.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> <span class="nb">echo</span> <span class="s1">&#39;export PATH=&quot;${HOME}/.local/bin:${PATH}&quot;&#39;</span> &gt;&gt; ~/.bashrc
-<span class="gp">$</span> <span class="nb">source</span> ~/.bashrc
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">echo</span> <span class="s1">&#39;export PATH=&quot;${HOME}/.local/bin:${PATH}&quot;&#39;</span> &gt;&gt; ~/.bashrc
+<span class="gp">$ </span><span class="nb">source</span> ~/.bashrc
 </pre></div>
 </div>
 <p>If you are working on any of the plugins to DFFML maintained within it’s
 repository make sure to install those in development mode as well.</p>
 <p>For example, to install the TensorFlow models</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python3.7 -m pip install --prefix<span class="o">=</span>~/.local -e model/tensorflow
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python3.7 -m pip install --prefix<span class="o">=</span>~/.local -e model/tensorflow
 </pre></div>
 </div>
 <div class="section" id="installing-plugins-in-development-mode">
@@ -280,7 +280,7 @@ install command.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">-user</span></code> flag tells pip to install to your home directory
 (in <code class="docutils literal notranslate"><span class="pre">~/.local</span></code>). Therefore, do NOT run install <code class="docutils literal notranslate"><span class="pre">-user</span></code> with <code class="docutils literal notranslate"><span class="pre">sudo</span></code>.</p>
 </div>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml service dev install -user
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml service dev install -user
 </pre></div>
 </div>
 </div>
@@ -292,21 +292,21 @@ want to use the packages you’ve installed in them.</p>
 <p>Python 3 should have <code class="docutils literal notranslate"><span class="pre">virtualenv</span></code> built in as <code class="docutils literal notranslate"><span class="pre">venv</span></code> if not you can just
 install <code class="docutils literal notranslate"><span class="pre">virtualenv</span></code> and use that.</p>
 <p>Create the virtual environment.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python3.7 -m venv .venv
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python3.7 -m venv .venv
 </pre></div>
 </div>
 <p>Activate it (on Linux / OSX / UNIX variants)</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> . .venv/bin/activate
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>. .venv/bin/activate
 </pre></div>
 </div>
 <p>Activate it (on Widows)</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> .<span class="se">\.</span>venv<span class="se">\S</span>cripts<span class="se">\a</span>ctivate
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>.<span class="se">\.</span>venv<span class="se">\S</span>cripts<span class="se">\a</span>ctivate
 </pre></div>
 </div>
 <p>Install the packages in development mode.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> pip install -U setuptools
-<span class="gp">$</span> pip install -e .<span class="o">[</span>dev<span class="o">]</span>
-<span class="gp">$</span> dffml service dev install
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>pip install -U setuptools
+<span class="gp">$ </span>pip install -e .<span class="o">[</span>dev<span class="o">]</span>
+<span class="gp">$ </span>dffml service dev install
 </pre></div>
 </div>
 </div>
@@ -362,20 +362,20 @@ started.</p></li>
 </ul>
 </li>
 </ul>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> sudo docker run --rm -ti -u <span class="k">$(</span>id -u<span class="k">)</span>:<span class="k">$(</span>id -g<span class="k">)</span> <span class="se">\</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo docker run --rm -ti -u <span class="k">$(</span>id -u<span class="k">)</span>:<span class="k">$(</span>id -g<span class="k">)</span> <span class="se">\</span>
   -v <span class="nv">$PWD</span>:/usr/src/dffml -w /usr/src/dffml --entrypoint /bin/bash python:3.7
 <span class="go">I have no name!@33ba998c91b3:/usr/src/dffml$ `# You are now in the container, your prompt will look something like this`</span>
 </pre></div>
 </div>
 <p>You can then setup a fake home directory for yourself in <code class="docutils literal notranslate"><span class="pre">.venv</span></code> and install
 all the packages in development mode.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> rm -rf .venv/
-<span class="gp">$</span> mkdir -p .venv
-<span class="gp">$</span> <span class="nb">export</span> <span class="nv">HOME</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">PWD</span><span class="si">}</span><span class="s2">/.venv&quot;</span>
-<span class="gp">$</span> <span class="nb">export</span> <span class="nv">PATH</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">HOME</span><span class="si">}</span><span class="s2">/.local/bin:</span><span class="si">${</span><span class="nv">PATH</span><span class="si">}</span><span class="s2">&quot;</span>
-<span class="gp">$</span> pip install --user -U pip setuptools
-<span class="gp">$</span> pip install --prefix<span class="o">=</span>~/.local -e .<span class="o">[</span>dev<span class="o">]</span>
-<span class="gp">$</span> dffml service dev install -user
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>rm -rf .venv/
+<span class="gp">$ </span>mkdir -p .venv
+<span class="gp">$ </span><span class="nb">export</span> <span class="nv">HOME</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">PWD</span><span class="si">}</span><span class="s2">/.venv&quot;</span>
+<span class="gp">$ </span><span class="nb">export</span> <span class="nv">PATH</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">HOME</span><span class="si">}</span><span class="s2">/.local/bin:</span><span class="si">${</span><span class="nv">PATH</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="gp">$ </span>pip install --user -U pip setuptools
+<span class="gp">$ </span>pip install --prefix<span class="o">=</span>~/.local -e .<span class="o">[</span>dev<span class="o">]</span>
+<span class="gp">$ </span>dffml service dev install -user
 </pre></div>
 </div>
 <p>If things ever get messed up again, just wipe out <code class="docutils literal notranslate"><span class="pre">.venv</span></code> and re-install the

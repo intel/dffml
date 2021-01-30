@@ -7,16 +7,13 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Use a Model &mdash; DFFML 28cca076 documentation</title>
+  <title>Use a Model &mdash; DFFML 653f28ad documentation</title>
   
 
   
   <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/sphinx_tabs/semantic-ui-2.4.1/segment.min.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/sphinx_tabs/semantic-ui-2.4.1/menu.min.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/sphinx_tabs/semantic-ui-2.4.1/tab.min.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/sphinx_tabs/tabs.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/tabs.css" type="text/css" />
 
   
   
@@ -69,7 +66,7 @@
             
             
               <div class="version">
-                28cca076
+                653f28ad
               </div>
             
           
@@ -226,7 +223,7 @@
 DFFML.</p>
 <p>We’re going to create a TensorFlow classification model, we’ll need to install
 the <code class="docutils literal notranslate"><span class="pre">dffml-model-tensorflow</span></code> plugin.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python -m pip install dffml-model-tensorflow
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python -m pip install dffml-model-tensorflow
 </pre></div>
 </div>
 <div class="section" id="iris-dataset">
@@ -234,7 +231,7 @@ the <code class="docutils literal notranslate"><span class="pre">dffml-model-ten
 <p>We’re going to train the model on the iris dataset. Let’s download the training
 and test files now.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">sha384sum</span></code> commands are do ensure we downloaded the correct data.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> wget http://download.tensorflow.org/data/iris_training.csv
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>wget http://download.tensorflow.org/data/iris_training.csv
 <span class="go">--2020-10-16 15:19:54--  http://download.tensorflow.org/data/iris_training.csv</span>
 <span class="go">200 OK</span>
 <span class="go">Length: 2194 (2.1K) [text/csv]</span>
@@ -243,7 +240,7 @@ and test files now.</p>
 <span class="go">iris_training.csv                                 100%[==========================================================================================================&gt;]   2.14K  --.-KB/s    in 0s</span>
 
 <span class="go">2020-10-16 15:19:54 (111 MB/s) - ‘iris_training.csv’ saved [2194/2194]</span>
-<span class="gp">$</span> wget http://download.tensorflow.org/data/iris_test.csv
+<span class="gp">$ </span>wget http://download.tensorflow.org/data/iris_test.csv
 <span class="go">--2020-10-16 15:19:54--  http://download.tensorflow.org/data/iris_test.csv</span>
 <span class="go">200 OK</span>
 <span class="go">Length: 573 [text/csv]</span>
@@ -252,11 +249,11 @@ and test files now.</p>
 <span class="go">iris_test.csv                                     100%[==========================================================================================================&gt;]    573   --.-KB/s    in 0s</span>
 
 <span class="go">2020-10-16 15:19:54 (71.4 MB/s) - ‘iris_test.csv’ saved [573/573]</span>
-<span class="gp">$</span> <span class="nb">echo</span> <span class="s1">&#39;376c8ea3b7f85caff195b4abe62f34e8f4e7aece8bd087bbd746518a9d1fd60ae3b4274479f88ab0aa5c839460d535ef iris_training.csv&#39;</span> <span class="p">|</span> sha384sum -c -
+<span class="gp">$ </span><span class="nb">echo</span> <span class="s1">&#39;376c8ea3b7f85caff195b4abe62f34e8f4e7aece8bd087bbd746518a9d1fd60ae3b4274479f88ab0aa5c839460d535ef iris_training.csv&#39;</span> <span class="p">|</span> sha384sum -c -
 <span class="go">iris_training.csv: OK</span>
-<span class="gp">$</span> <span class="nb">echo</span> <span class="s1">&#39;8c2cda42ce5ce6f977d17d668b1c98a45bfe320175f33e97293c62ab543b3439eab934d8e11b1208de1e4a9eb1957714 iris_test.csv&#39;</span> <span class="p">|</span> sha384sum -c -
+<span class="gp">$ </span><span class="nb">echo</span> <span class="s1">&#39;8c2cda42ce5ce6f977d17d668b1c98a45bfe320175f33e97293c62ab543b3439eab934d8e11b1208de1e4a9eb1957714 iris_test.csv&#39;</span> <span class="p">|</span> sha384sum -c -
 <span class="go">iris_test.csv: OK</span>
-<span class="gp">$</span> sed -i <span class="s1">&#39;s/.*setosa,versicolor,virginica/SepalLength,SepalWidth,PetalLength,PetalWidth,classification/g&#39;</span> iris_training.csv iris_test.csv
+<span class="gp">$ </span>sed -i <span class="s1">&#39;s/.*setosa,versicolor,virginica/SepalLength,SepalWidth,PetalLength,PetalWidth,classification/g&#39;</span> iris_training.csv iris_test.csv
 </pre></div>
 </div>
 </div>
@@ -316,7 +313,7 @@ neither dataset.</p>
 </pre></div>
 </div>
 <p>Run it to train the model</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python3 run.py
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python3 run.py
 <span class="go">Accuracy: 0.9666666388511658</span>
 <span class="go">{&#39;PetalLength&#39;: 4.2, &#39;PetalWidth&#39;: 1.5, &#39;SepalLength&#39;: 5.9, &#39;SepalWidth&#39;: 3.0, &#39;classification&#39;: 1}</span>
 <span class="go">{&#39;PetalLength&#39;: 5.4, &#39;PetalWidth&#39;: 2.1, &#39;SepalLength&#39;: 6.9, &#39;SepalWidth&#39;: 3.1, &#39;classification&#39;: 2}</span>

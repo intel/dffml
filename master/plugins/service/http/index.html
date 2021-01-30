@@ -7,16 +7,13 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>HTTP API &mdash; DFFML 28cca076 documentation</title>
+  <title>HTTP API &mdash; DFFML 653f28ad documentation</title>
   
 
   
   <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../../../_static/sphinx_tabs/semantic-ui-2.4.1/segment.min.css" type="text/css" />
-  <link rel="stylesheet" href="../../../_static/sphinx_tabs/semantic-ui-2.4.1/menu.min.css" type="text/css" />
-  <link rel="stylesheet" href="../../../_static/sphinx_tabs/semantic-ui-2.4.1/tab.min.css" type="text/css" />
-  <link rel="stylesheet" href="../../../_static/sphinx_tabs/tabs.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/tabs.css" type="text/css" />
 
   
   
@@ -69,7 +66,7 @@
             
             
               <div class="version">
-                28cca076
+                653f28ad
               </div>
             
           
@@ -213,13 +210,13 @@
 <p>It exposes a REST-like API which mimics that of <code class="docutils literal notranslate"><span class="pre">dffml</span></code>’s command line
 interface (CLI) and usage as Python module.</p>
 <p>You can install the HTTP API service via <code class="docutils literal notranslate"><span class="pre">pip</span></code></p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python3 -m pip install dffml-service-http
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python3 -m pip install dffml-service-http
 </pre></div>
 </div>
 <p>If you want to install the latest development version, clone dffml and install
 from you can use <code class="docutils literal notranslate"><span class="pre">git+</span></code></p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> git clone https://github.com/intel/dffml
-<span class="gp">$</span> python3 -m pip install -e dffml/service/http
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>git clone https://github.com/intel/dffml
+<span class="gp">$ </span>python3 -m pip install -e dffml/service/http
 </pre></div>
 </div>
 <p>If you want to run this securely you can see <a class="reference internal" href="security.html"><span class="doc">Security</span></a>.</p>
@@ -237,7 +234,7 @@ development is probably hosted on another port, you’ll need the <code class="d
 <p>By no means should you use the following command in a production
 environment! You should instead see the <a class="reference internal" href="security.html"><span class="doc">Security</span></a> docs!</p>
 </div>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml service http server -insecure -cors <span class="s1">&#39;*&#39;</span> -addr <span class="m">0</span>.0.0.0 -port <span class="m">8080</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml service http server -insecure -cors <span class="s1">&#39;*&#39;</span> -addr <span class="m">0</span>.0.0.0 -port <span class="m">8080</span>
 </pre></div>
 </div>
 <div class="toctree-wrapper compound">

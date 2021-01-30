@@ -273,9 +273,9 @@ plugins.</p>
 </div>
 <p>For <em>Official</em> plugins, the name given to create should be in the form of
 <code class="docutils literal notranslate"><span class="pre">dffml-{PLUGIN_TYPE}-{NAME}</span></code>.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> <span class="nb">cd</span> model/
-<span class="gp">$</span> dffml service dev create model dffml-model-someframework
-<span class="gp">$</span> mv dffml-model-someframework someframework
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">cd</span> model/
+<span class="gp">$ </span>dffml service dev create model dffml-model-someframework
+<span class="gp">$ </span>mv dffml-model-someframework someframework
 </pre></div>
 </div>
 <p>Now that we’ve created the plugin, we need to add it to a few lists</p>
@@ -364,7 +364,7 @@ that plugin are.</p>
 <p>Here, <code class="docutils literal notranslate"><span class="pre">plugin</span></code> is the <code class="docutils literal notranslate"><span class="pre">...Arg</span></code> class which signifies the plugin to load.
 <code class="docutils literal notranslate"><span class="pre">config</span></code> is the <code class="docutils literal notranslate"><span class="pre">...Config</span></code> class as a dict for that plugin.</p>
 <p>The command line equivalent for the model is…</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml ... <span class="se">\</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml ... <span class="se">\</span>
     -model tfdnnc <span class="se">\</span>
     -model-epochs <span class="m">400</span> <span class="se">\</span>
     -model-steps <span class="m">4000</span> <span class="se">\</span>
@@ -441,13 +441,13 @@ that might be helpful when working on each of them.</p>
 <h3><a class="toc-backref" href="#id9">Working on <code class="docutils literal notranslate"><span class="pre">skel/</span></code></a><a class="headerlink" href="#working-on-skel" title="Permalink to this headline">¶</a></h3>
 <p>The packages in <code class="docutils literal notranslate"><span class="pre">skel/</span></code> are used to create new DFFML packages.</p>
 <p>For example, to create a new package containing operations we run the following.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml service dev create operations dffml-operations-feedface
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml service dev create operations dffml-operations-feedface
 </pre></div>
 </div>
 <p>If you want to work on any of the packages in <code class="docutils literal notranslate"><span class="pre">skel/</span></code>, you’ll need to run the
 <code class="docutils literal notranslate"><span class="pre">skel</span> <span class="pre">link</span></code> command first fromt he <code class="docutils literal notranslate"><span class="pre">dev</span></code> service. This will symlink required
 files in from <code class="docutils literal notranslate"><span class="pre">common/</span></code> so that testing will work.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml service dev skel link
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml service dev skel link
 </pre></div>
 </div>
 </div>

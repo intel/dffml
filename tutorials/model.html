@@ -237,8 +237,8 @@ to create it for you.</p>
 <p>The helper creates a model which does Simple Linear Regression (SLR). Which
 means it finds the best fit line for a dataset.</p>
 <p>You may know the best fit line as <code class="docutils literal notranslate"><span class="pre">y</span> <span class="pre">=</span> <span class="pre">m</span> <span class="pre">*</span> <span class="pre">x</span> <span class="pre">+</span> <span class="pre">b</span></code>.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml service dev create model dffml-model-myslr
-<span class="gp">$</span> <span class="nb">cd</span> dffml-model-myslr
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml service dev create model dffml-model-myslr
+<span class="gp">$ </span><span class="nb">cd</span> dffml-model-myslr
 </pre></div>
 </div>
 </div>
@@ -257,7 +257,7 @@ you’ll also want to re-install the package.</p>
 <p><code class="docutils literal notranslate"><span class="pre">pip</span></code>’s <code class="docutils literal notranslate"><span class="pre">-e</span></code> flag tells it we’re installing our package in development mode,
 which means anytime Python import’s our package, it’s going to use the version
 that we’re working on here.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> pip install -e .
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>pip install -e .
 </pre></div>
 </div>
 </div>
@@ -364,7 +364,7 @@ the location of our model.</p></li>
 </div>
 <p>Remember, anytime you change anything in <code class="docutils literal notranslate"><span class="pre">&quot;entry_points&quot;</span></code> you’ll also want to
 re-install the package.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> pip install -e .
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>pip install -e .
 </pre></div>
 </div>
 </div>
@@ -581,7 +581,7 @@ value is within 10% of what it should be.</p>
 <div class="section" id="run-the-tests">
 <h3>Run the tests<a class="headerlink" href="#run-the-tests" title="Permalink to this headline">¶</a></h3>
 <p>You can now start tweaking your new DFFML model to do something awesome!</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python setup.py <span class="nb">test</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python setup.py <span class="nb">test</span>
 <span class="go">running test</span>
 <span class="go">WARNING: Testing via this command is deprecated and will be removed in a future version. Users looking for a generic test entry point independent of test runner are encouraged to use tox.</span>
 <span class="go">running egg_info</span>
@@ -605,7 +605,7 @@ value is within 10% of what it should be.</p>
 </div>
 <p>If you want to see the output of the call to <code class="docutils literal notranslate"><span class="pre">self.logger.debug</span></code>, just set the
 <code class="docutils literal notranslate"><span class="pre">LOGGING</span></code> environment variable to <code class="docutils literal notranslate"><span class="pre">debug</span></code>.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> <span class="nv">LOGGING</span><span class="o">=</span>debug python setup.py <span class="nb">test</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nv">LOGGING</span><span class="o">=</span>debug python setup.py <span class="nb">test</span>
 </pre></div>
 </div>
 </div>
@@ -615,7 +615,7 @@ value is within 10% of what it should be.</p>
 <p>Use your new model from the command line just as you would any other model.</p>
 <p>Your model will also be automatically accessible via the HTTP API and web UI
 (coming soon).</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> cat &gt; dataset.csv &lt;&lt; EOF
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>cat &gt; dataset.csv &lt;&lt; EOF
 <span class="go">Years,Salary</span>
 <span class="go">1,40</span>
 <span class="go">2,50</span>
@@ -623,14 +623,14 @@ value is within 10% of what it should be.</p>
 <span class="go">4,70</span>
 <span class="go">5,80</span>
 <span class="go">EOF</span>
-<span class="gp">$</span> dffml train <span class="se">\</span>
+<span class="gp">$ </span>dffml train <span class="se">\</span>
     -model myslr <span class="se">\</span>
     -model-features Years:int:1 <span class="se">\</span>
     -model-predict Salary:float:1 <span class="se">\</span>
     -sources <span class="nv">f</span><span class="o">=</span>csv <span class="se">\</span>
     -source-filename dataset.csv <span class="se">\</span>
     -log debug
-<span class="gp">$</span> dffml accuracy <span class="se">\</span>
+<span class="gp">$ </span>dffml accuracy <span class="se">\</span>
     -model myslr <span class="se">\</span>
     -model-features Years:int:1 <span class="se">\</span>
     -model-predict Salary:float:1 <span class="se">\</span>
@@ -638,7 +638,7 @@ value is within 10% of what it should be.</p>
     -source-filename dataset.csv <span class="se">\</span>
     -log debug
 <span class="go">1.0</span>
-<span class="gp">$</span> <span class="nb">echo</span> -e <span class="s1">&#39;Years,Salary\n6,0\n&#39;</span> <span class="p">|</span> <span class="se">\</span>
+<span class="gp">$ </span><span class="nb">echo</span> -e <span class="s1">&#39;Years,Salary\n6,0\n&#39;</span> <span class="p">|</span> <span class="se">\</span>
   dffml predict all <span class="se">\</span>
     -model myslr <span class="se">\</span>
     -model-features Years:int:1 <span class="se">\</span>

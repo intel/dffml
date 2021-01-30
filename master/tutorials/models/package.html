@@ -7,16 +7,13 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Packaging a Model &mdash; DFFML 28cca076 documentation</title>
+  <title>Packaging a Model &mdash; DFFML 653f28ad documentation</title>
   
 
   
   <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/sphinx_tabs/semantic-ui-2.4.1/segment.min.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/sphinx_tabs/semantic-ui-2.4.1/menu.min.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/sphinx_tabs/semantic-ui-2.4.1/tab.min.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/sphinx_tabs/tabs.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/tabs.css" type="text/css" />
 
   
   
@@ -69,7 +66,7 @@
             
             
               <div class="version">
-                28cca076
+                653f28ad
               </div>
             
           
@@ -239,11 +236,11 @@ means it finds the best fit line for a dataset. If you’ve done the
 <strong>myslr.py</strong> will be present in <strong>dffml_model_myslr/myslr.py</strong> (not your
 modifications though if you made any).</p>
 <p>You may know the best fit line as <code class="docutils literal notranslate"><span class="pre">y</span> <span class="pre">=</span> <span class="pre">m</span> <span class="pre">*</span> <span class="pre">x</span> <span class="pre">+</span> <span class="pre">b</span></code></p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml service dev create model dffml-model-myslr
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml service dev create model dffml-model-myslr
 </pre></div>
 </div>
 <p>Then enter the directory of the package we just created</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> <span class="nb">cd</span> dffml-model-myslr
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">cd</span> dffml-model-myslr
 </pre></div>
 </div>
 </div>
@@ -264,7 +261,7 @@ which means anytime Python import’s our package, it’s going to use the versi
 that we’re working on here. If you don’t pass <code class="docutils literal notranslate"><span class="pre">-e</span></code> then anytime you make
 changes in this directory, they won’t take effect until you reinstall the
 package.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python -m pip install -e .
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python -m pip install -e .
 </pre></div>
 </div>
 </div>
@@ -409,7 +406,7 @@ value is within 10% of what it should be.</p>
 <p>We can run the tests using the <code class="docutils literal notranslate"><span class="pre">unittest</span></code> module. The create command gave us
 both unit tests and integration tests. We want to only run the unit tests right
 now (<code class="docutils literal notranslate"><span class="pre">tests.test_model</span></code>).</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python -m unittest -v tests.test_model
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python -m unittest -v tests.test_model
 <span class="go">test_00_train (tests.test_model.TestMySLRModel) ... ok</span>
 <span class="go">test_01_accuracy (tests.test_model.TestMySLRModel) ... ok</span>
 <span class="go">test_02_predict (tests.test_model.TestMySLRModel) ... ok</span>
@@ -422,7 +419,7 @@ now (<code class="docutils literal notranslate"><span class="pre">tests.test_mod
 </div>
 <p>If you want to see the output of the call to <code class="docutils literal notranslate"><span class="pre">self.logger.debug</span></code>, just set the
 <code class="docutils literal notranslate"><span class="pre">LOGGING</span></code> environment variable to <code class="docutils literal notranslate"><span class="pre">debug</span></code>.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> <span class="nv">LOGGING</span><span class="o">=</span>debug python -m unittest -v tests.test_model
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nv">LOGGING</span><span class="o">=</span>debug python -m unittest -v tests.test_model
 </pre></div>
 </div>
 </div>
@@ -446,7 +443,7 @@ path on the right side.</p>
 </pre></div>
 </div>
 <p>And remember that any time we modify the <strong>setup.py</strong>, we have to re-install.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python -m pip install --force-reinstall -e .
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python -m pip install --force-reinstall -e .
 </pre></div>
 </div>
 </div>
@@ -464,7 +461,7 @@ path on the right side.</p>
 </div>
 <p>Since we’ve registered our model as a <code class="docutils literal notranslate"><span class="pre">dffml.model</span></code> plugin, we can now
 reference it by it’s short name.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml train <span class="se">\</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml train <span class="se">\</span>
     -log debug <span class="se">\</span>
     -model myslr <span class="se">\</span>
     -model-features Years:int:1 <span class="se">\</span>
@@ -485,7 +482,7 @@ reference it by it’s short name.</p>
 Place the top level directory, <strong>dffml-model-myslr</strong>, into <strong>model/slr</strong>
 within the DFFML source tree, and submit a pull request.</p>
 </div>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python3 setup.py sdist <span class="o">&amp;&amp;</span> python3 -m twine upload dist/*
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python3 setup.py sdist <span class="o">&amp;&amp;</span> python3 -m twine upload dist/*
 </pre></div>
 </div>
 </div>

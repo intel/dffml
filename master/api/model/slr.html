@@ -7,16 +7,13 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Model Slr &mdash; DFFML 28cca076 documentation</title>
+  <title>Model Slr &mdash; DFFML 653f28ad documentation</title>
   
 
   
   <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/sphinx_tabs/semantic-ui-2.4.1/segment.min.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/sphinx_tabs/semantic-ui-2.4.1/menu.min.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/sphinx_tabs/semantic-ui-2.4.1/tab.min.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/sphinx_tabs/tabs.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/tabs.css" type="text/css" />
 
   
   
@@ -69,7 +66,7 @@
             
             
               <div class="version">
-                28cca076
+                653f28ad
               </div>
             
           
@@ -112,15 +109,22 @@
 <li class="toctree-l1"><a class="reference internal" href="../../cli.html">Command Line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../plugins/service/http/index.html">HTTP API</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">API Reference</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="../version.html">Version</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../log.html">Log</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../high_level.html">High Level</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../noasync.html">High Level (noasync)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../base.html">Base</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../plugins.html">Plugins</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../record.html">Record</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../log.html">Log</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../version.html">Version</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../base.html">Base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../noasync.html">High Level (noasync)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../high_level.html">High Level</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plugins.html">Plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../feature/index.html">Feature</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cli/index.html">Cli</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../operation/index.html">Operation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../util/index.html">Utilities</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../secret/index.html">Secrets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../db/index.html">Databases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../service/index.html">Service</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../source/index.html">Sources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../port/index.html">Port</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configloader/index.html">Configloader</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="index.html">Models</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="log.html">Model Log</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Model Slr</a></li>
@@ -128,15 +132,8 @@
 <li class="toctree-l3"><a class="reference internal" href="model.html">Model Model</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../operation/index.html">Operation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../port/index.html">Port</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../configloader/index.html">Configloader</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../source/index.html">Sources</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../db/index.html">Databases</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../cli/index.html">Cli</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../secret/index.html">Secrets</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../df/index.html">Data Flow</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../feature/index.html">Feature</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../service/index.html">Service</a></li>
 </ul>
 </li>
 </ul>
@@ -247,7 +244,7 @@
 </pre></div>
 </div>
 <p>Train the model</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml train <span class="se">\</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml train <span class="se">\</span>
     -model slr <span class="se">\</span>
     -model-features f1:float:1 <span class="se">\</span>
     -model-predict ans:int:1 <span class="se">\</span>
@@ -257,7 +254,7 @@
 </pre></div>
 </div>
 <p>Assess the accuracy</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml accuracy <span class="se">\</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml accuracy <span class="se">\</span>
     -model slr <span class="se">\</span>
     -model-features f1:float:1 <span class="se">\</span>
     -model-predict ans:int:1 <span class="se">\</span>
@@ -273,7 +270,7 @@
 <span class="mf">0.8</span>
 </pre></div>
 </div>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml predict all <span class="se">\</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml predict all <span class="se">\</span>
     -model slr <span class="se">\</span>
     -model-features f1:float:1 <span class="se">\</span>
     -model-predict ans:int:1 <span class="se">\</span>
@@ -321,7 +318,7 @@
     <span class="nb">print</span><span class="p">(</span><span class="n">features</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python slr.py
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python slr.py
 <span class="go">Accuracy: 0.9355670103092784</span>
 <span class="go">{&#39;f1&#39;: 0.8, &#39;ans&#39;: 1}</span>
 </pre></div>

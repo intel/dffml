@@ -279,7 +279,7 @@ plugin docs for <a class="reference internal" href="plugins/dffml_model.html"><s
 <h3><a class="toc-backref" href="#id6">Create</a><a class="headerlink" href="#create" title="Permalink to this headline">¶</a></h3>
 <p>Ouput the dataflow description to standard output using the specified config
 format.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml dataflow create -config yaml get_single clone_git_repo &gt; df.yaml
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml dataflow create -config yaml get_single clone_git_repo &gt; df.yaml
 </pre></div>
 </div>
 </div>
@@ -287,7 +287,7 @@ format.</p>
 <h3><a class="toc-backref" href="#id7">Merge</a><a class="headerlink" href="#merge" title="Permalink to this headline">¶</a></h3>
 <p>Combine two dataflows into one. Dataflows must either be all linked or all not
 linked.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml dataflow merge base.yaml overrides.yaml
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml dataflow merge base.yaml overrides.yaml
 </pre></div>
 </div>
 </div>
@@ -298,7 +298,7 @@ format.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">-no-strict</span></code> flag tell DFFML not to exit if one key fails, continue
 running the dataflow until everything is complete, useful for error prone
 scraping tasks.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml dataflow run records <span class="nb">set</span> <span class="se">\</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml dataflow run records <span class="nb">set</span> <span class="se">\</span>
     -keys https://github.com/intel/dffml <span class="se">\</span>
     -record-def URL <span class="se">\</span>
     -dataflow df.yaml <span class="se">\</span>
@@ -311,7 +311,7 @@ scraping tasks.</p>
 <div class="section" id="diagram">
 <h3><a class="toc-backref" href="#id9">Diagram</a><a class="headerlink" href="#diagram" title="Permalink to this headline">¶</a></h3>
 <p>Output a mermaidjs graph description of a DataFlow.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml dataflow diagram -simple shouldi.json
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml dataflow diagram -simple shouldi.json
 </pre></div>
 </div>
 <p>You can now copy the graph description and paste it in the
@@ -324,7 +324,7 @@ use the CLI tool) to generate an SVG or other format of the graph.</p>
 <div class="section" id="convert">
 <span id="cli-config-convert"></span><h3><a class="toc-backref" href="#id11">Convert</a><a class="headerlink" href="#convert" title="Permalink to this headline">¶</a></h3>
 <p>Convert one config file format into another.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml config convert -config-out yaml config_in.json
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml config convert -config-out yaml config_in.json
 </pre></div>
 </div>
 </div>
@@ -349,7 +349,7 @@ also do over an HTTP interface. See the
 <a class="reference external" href="https://packaging.python.org/specifications/entry-points/">entrypoint</a>
 of an object, covert the object to it’s <code class="docutils literal notranslate"><span class="pre">dict</span></code> representation, and export it
 using the given config format.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml service dev <span class="nb">export</span> -config json shouldi.cli:DATAFLOW
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml service dev <span class="nb">export</span> -config json shouldi.cli:DATAFLOW
 </pre></div>
 </div>
 </div>
@@ -357,16 +357,16 @@ using the given config format.</p>
 <span id="id1"></span><h4><a class="toc-backref" href="#id16">Create</a><a class="headerlink" href="#cli-service-dev-create" title="Permalink to this headline">¶</a></h4>
 <p>You can create a new python package and start implementing a new plugin for
 DFFML right away with the <code class="docutils literal notranslate"><span class="pre">create</span></code> command of <code class="docutils literal notranslate"><span class="pre">dev</span></code>.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml service dev create model cool-ml-model
-<span class="gp">$</span> <span class="nb">cd</span> cool-ml-model
-<span class="gp">$</span> python setup.py <span class="nb">test</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml service dev create model cool-ml-model
+<span class="gp">$ </span><span class="nb">cd</span> cool-ml-model
+<span class="gp">$ </span>python setup.py <span class="nb">test</span>
 </pre></div>
 </div>
 <p>When you’re done you can upload it to PyPi and it’ll be <code class="docutils literal notranslate"><span class="pre">pip</span></code> installable so
 that other DFFML users can use it in their code or via the CLI. If you don’t
 want to mess with uploading to <code class="docutils literal notranslate"><span class="pre">PyPi</span></code>, you can install it from your git repo
 (wherever it may be that you upload it to).</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python -m pip install -U git+https://github.com/user/cool-ml-model
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python -m pip install -U git+https://github.com/user/cool-ml-model
 </pre></div>
 </div>
 <p>Make sure to look in <code class="docutils literal notranslate"><span class="pre">setup.py</span></code> and edit the <code class="docutils literal notranslate"><span class="pre">entry_points</span></code> to match
@@ -400,7 +400,7 @@ directory) of the package name you don’t want to used the released version of
 from the <code class="docutils literal notranslate"><span class="pre">site-packages</span></code> directory. Then Python will start using the
 development version (provided you have installed that source with the <code class="docutils literal notranslate"><span class="pre">-e</span></code>
 flag to <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span></code>).</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml service dev entrypoints list dffml.operation
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml service dev entrypoints list dffml.operation
 <span class="go">is_binary_pie = dffml_operations_binsec.operations:is_binary_pie.op -&gt; dffml-operations-binsec 0.0.1 (/home/user/.pyenv/versions/3.7.2/lib/python3.7/site-packages)</span>
 <span class="go">pypi_package_json = shouldi.pypi:pypi_package_json -&gt; shouldi 0.0.1 (/home/user/Documents/python/dffml/examples/shouldi)</span>
 <span class="go">clone_git_repo = dffml_feature_git.feature.operations:clone_git_repo -&gt; dffml-feature-git 0.2.0 (/home/user/Documents/python/dffml/feature/git)</span>
@@ -415,7 +415,7 @@ flag to <code class="docutils literal notranslate"><span class="pre">pip</span> 
 <h5><a class="toc-backref" href="#id20">kwarg</a><a class="headerlink" href="#kwarg" title="Permalink to this headline">¶</a></h5>
 <p><code class="docutils literal notranslate"><span class="pre">import</span></code> a <code class="docutils literal notranslate"><span class="pre">setup.py</span></code> file return the value of the specified keyword
 argument.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml service dev setuppy kwarg name model/tensorflow/setup.py
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml service dev setuppy kwarg name model/tensorflow/setup.py
 <span class="go">dffml-model-tensorflow</span>
 </pre></div>
 </div>

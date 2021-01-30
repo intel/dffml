@@ -7,16 +7,13 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Gitter ML Inference Chatbot &mdash; DFFML 28cca076 documentation</title>
+  <title>Gitter ML Inference Chatbot &mdash; DFFML 653f28ad documentation</title>
   
 
   
   <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/sphinx_tabs/semantic-ui-2.4.1/segment.min.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/sphinx_tabs/semantic-ui-2.4.1/menu.min.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/sphinx_tabs/semantic-ui-2.4.1/tab.min.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/sphinx_tabs/tabs.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/tabs.css" type="text/css" />
 
   
   
@@ -69,7 +66,7 @@
             
             
               <div class="version">
-                28cca076
+                653f28ad
               </div>
             
           
@@ -240,7 +237,7 @@ directory of the DFFML source code.</p>
 </div>
 <p>You’ll need to install <a class="reference external" href="https://github.com/aio-libs/aiohttp">aiohttp</a>
 and <code class="docutils literal notranslate"><span class="pre">dffml-model-scikit</span></code> (The model used for prediction).</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> pip install aiohttp dffml-model-scikit
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>pip install aiohttp dffml-model-scikit
 </pre></div>
 </div>
 <p>We’ll write the operations for this dataflow in <strong>operations.py</strong></p>
@@ -588,11 +585,11 @@ return value to <code class="docutils literal notranslate"><span class="pre">sct
 </pre></div>
 </div>
 <p>set the room name, config file name and run the dataflow</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python run.py
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python run.py
 </pre></div>
 </div>
 <p>Or using the command line to, create the dataflow</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml dataflow create <span class="se">\</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml dataflow create <span class="se">\</span>
     operations:get_room_id <span class="se">\</span>
     operations:stream_chat <span class="se">\</span>
     operations:send_message <span class="se">\</span>
@@ -610,7 +607,7 @@ return value to <code class="docutils literal notranslate"><span class="pre">sct
 </pre></div>
 </div>
 <p>And run it by providing the <code class="docutils literal notranslate"><span class="pre">room_name</span></code> as the input</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml dataflow run single <span class="se">\</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml dataflow run single <span class="se">\</span>
     -dataflow ./chatbot_df.json <span class="se">\</span>
     -inputs test_community1/community<span class="o">=</span>room_name
 </pre></div>

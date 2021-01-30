@@ -7,16 +7,13 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Deploying with the HTTP Service &mdash; DFFML 28cca076 documentation</title>
+  <title>Deploying with the HTTP Service &mdash; DFFML 653f28ad documentation</title>
   
 
   
   <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/sphinx_tabs/semantic-ui-2.4.1/segment.min.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/sphinx_tabs/semantic-ui-2.4.1/menu.min.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/sphinx_tabs/semantic-ui-2.4.1/tab.min.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/sphinx_tabs/tabs.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/tabs.css" type="text/css" />
 
   
   
@@ -69,7 +66,7 @@
             
             
               <div class="version">
-                28cca076
+                653f28ad
               </div>
             
           
@@ -234,7 +231,7 @@ we’ll setup another HTTP service which waits on GitHub webhooks to rebuilt and
 directory of the DFFML source code.</p>
 </div>
 <p>We’ll be using additional plugins from dffml, <code class="docutils literal notranslate"><span class="pre">dffml-config-yaml</span></code> and <code class="docutils literal notranslate"><span class="pre">dffml-http-service</span></code>.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> pip install dffml-config-yaml dffml-http-service
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>pip install dffml-config-yaml dffml-http-service
 </pre></div>
 </div>
 <div class="section" id="writing-the-function">
@@ -279,7 +276,7 @@ bytes.</p>
 <div class="section" id="dataflow-and-config-files">
 <h2>Dataflow and Config files<a class="headerlink" href="#dataflow-and-config-files" title="Permalink to this headline">¶</a></h2>
 <p>DFFML can create a dataflow out of our python function.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml dataflow create -config yaml operations:convert_to_gif get_single <span class="se">\</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml dataflow create -config yaml operations:convert_to_gif get_single <span class="se">\</span>
     -inputs <span class="nv">480</span><span class="o">=</span>operations.convert_to_gif.inputs.resolution <span class="se">\</span>
     <span class="s2">&quot;[&#39;operations.convert_to_gif.outputs.result&#39;]=get_single_spec&quot;</span> <span class="se">\</span>
      &gt; deploy/df/ffmpeg.yaml
@@ -289,7 +286,7 @@ bytes.</p>
 of the dataflow to result of <cite>convert_to_gif</cite>.</p>
 <p>Create the config file for the HTTP service
 in <code class="docutils literal notranslate"><span class="pre">deploy/mc/http/ffmpeg.yaml</span></code></p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> cat &gt; ./deploy/mc/http/ffmpeg.yaml &lt;&lt;EOF
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>cat &gt; ./deploy/mc/http/ffmpeg.yaml &lt;&lt;EOF
 <span class="go">path: /ffmpeg</span>
 <span class="go">input_mode: bytes:operations.convert_to_gif.inputs.input_file</span>
 <span class="go">output_mode: bytes:image/gif:post_input.&quot;operations.convert_to_gif.outputs.result&quot;.output_file</span>
@@ -330,7 +327,7 @@ where <code class="docutils literal notranslate"><span class="pre">results</span
 <div class="section" id="serving-the-dataflow">
 <span id="usage-ffmpeg-deploy-serve"></span><h2>Serving the DataFlow<a class="headerlink" href="#serving-the-dataflow" title="Permalink to this headline">¶</a></h2>
 <p>Serving the dataflow on port 8080</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml service http server -insecure -mc-config deploy -port <span class="m">8080</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml service http server -insecure -mc-config deploy -port <span class="m">8080</span>
 </pre></div>
 </div>
 <div class="admonition warning">
@@ -340,7 +337,7 @@ tutorial. See documentation on HTTP API
 <a class="reference internal" href="../../plugins/service/http/security.html"><span class="doc">Security</span></a> for more information.</p>
 </div>
 <p>Now from another terminal, we can send post requests to the dataflow running at this port.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> curl -v --request POST --data-binary @input.mp4 http://localhost:8080/ffmpeg -o output.gif
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>curl -v --request POST --data-binary @input.mp4 http://localhost:8080/ffmpeg -o output.gif
 </pre></div>
 </div>
 <p>You should replace <code class="docutils literal notranslate"><span class="pre">input.mp4</span></code> with path to your video file and <code class="docutils literal notranslate"><span class="pre">output.gif</span></code> to where you want the converted gif
@@ -396,12 +393,12 @@ the container after receving webhooks, so make sure you change it to your usecas
 are gathered from the github html url, received in the webhook.</p>
 </div>
 <p>We can run the container and sent a post request to verify that the container is working.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> docker build -t <span class="nv">$USER</span>/ffmpeg .
-<span class="gp">$</span> docker run --rm -ti -p <span class="m">8080</span>:8080 <span class="nv">$USER</span>/ffmpeg -mc-config deploy -insecure -log debug
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>docker build -t <span class="nv">$USER</span>/ffmpeg .
+<span class="gp">$ </span>docker run --rm -ti -p <span class="m">8080</span>:8080 <span class="nv">$USER</span>/ffmpeg -mc-config deploy -insecure -log debug
 </pre></div>
 </div>
 <p>Now in another terminal</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> curl -v --request POST --data-binary @input.mp4 http://localhost:8080/ffmpeg -o output.gif
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>curl -v --request POST --data-binary @input.mp4 http://localhost:8080/ffmpeg -o output.gif
 </pre></div>
 </div>
 <p>Now in <a class="reference internal" href="webhook.html#usage-webhook"><span class="std std-ref">Redeploying on receving GitHub webhook</span></a> we’ll setup this container to be automatically redeployed

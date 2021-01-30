@@ -7,16 +7,13 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Prediction Using IO Operations &mdash; DFFML 28cca076 documentation</title>
+  <title>Prediction Using IO Operations &mdash; DFFML 653f28ad documentation</title>
   
 
   
   <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/sphinx_tabs/semantic-ui-2.4.1/segment.min.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/sphinx_tabs/semantic-ui-2.4.1/menu.min.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/sphinx_tabs/semantic-ui-2.4.1/tab.min.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/sphinx_tabs/tabs.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/tabs.css" type="text/css" />
 
   
   
@@ -69,7 +66,7 @@
             
             
               <div class="version">
-                28cca076
+                653f28ad
               </div>
             
           
@@ -303,7 +300,7 @@ on user input.</p>
 </div>
 <p>On running the above code <cite>AcceptUserInput</cite> operation
 waits for input from stdio.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python main.py
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python main.py
 <span class="go">Enter the value: 21</span>
 </pre></div>
 </div>
@@ -320,7 +317,7 @@ The prediction is printed on stdout using <cite>print_output</cite> operation.</
 </div>
 <p>The dataflow that we have created is</p>
 <img alt="../../_images/dataflow_diagram2.svg" src="../../_images/dataflow_diagram2.svg" /><p>To re-generate the DataFlow diagram run.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml service dev <span class="nb">export</span> examples.io.io_usage:dataflow <span class="p">|</span> <span class="se">\</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml service dev <span class="nb">export</span> examples.io.io_usage:dataflow <span class="p">|</span> <span class="se">\</span>
     dffml dataflow diagram -stages processing -configloader json /dev/stdin
 </pre></div>
 </div>

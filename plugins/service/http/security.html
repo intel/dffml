@@ -212,13 +212,13 @@ the CORS flag, if you are putting this on a different domain.</p>
 <code class="docutils literal notranslate"><span class="pre">https://dffml.example-api.com</span></code> and you’re web UI on
 <code class="docutils literal notranslate"><span class="pre">https://dffml.example.com</span></code>, you’ll need to add the URL of the web UI to the
 CORS list.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml service http server -cors <span class="s1">&#39;https://dffml.example-api.com&#39;</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml service http server -cors <span class="s1">&#39;https://dffml.example-api.com&#39;</span>
 </pre></div>
 </div>
 <p>You may just want to throw all of this CORS buisness out the window when
 developing (we don’t blame you). In which case you could enable connections from
 all origins via <code class="docutils literal notranslate"><span class="pre">*</span></code>.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml service http server -cors <span class="s1">&#39;*&#39;</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml service http server -cors <span class="s1">&#39;*&#39;</span>
 </pre></div>
 </div>
 </div>
@@ -265,7 +265,7 @@ got.</p>
 <p>First, generate the server key and cert. The cert generated is only valid for
 <code class="docutils literal notranslate"><span class="pre">127.0.0.1</span></code>. This will produce the server’s private key file, <code class="docutils literal notranslate"><span class="pre">server.key</span></code>,
 and the server’s certificate, <code class="docutils literal notranslate"><span class="pre">server.pem</span></code>.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml service http createtls server
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml service http createtls server
 <span class="go">Generating a RSA private key</span>
 <span class="go">......................................++++</span>
 <span class="go">.................................++++</span>
@@ -278,7 +278,7 @@ make it acceptable to the server. This will produce the client’s private key
 file, <code class="docutils literal notranslate"><span class="pre">client.key</span></code>, the client’s certificate, <code class="docutils literal notranslate"><span class="pre">client.pem</span></code>, and the client’s
 certificate signing request <code class="docutils literal notranslate"><span class="pre">client.csr</span></code> (which is unnecessary after the
 command is run because it’s already been used to create <code class="docutils literal notranslate"><span class="pre">client.pem</span></code>).</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml service http createtls client
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml service http createtls client
 <span class="go">Generating a RSA private key</span>
 <span class="go">.................................................++++</span>
 <span class="go">........++++</span>
@@ -290,8 +290,8 @@ command is run because it’s already been used to create <code class="docutils 
 </pre></div>
 </div>
 <p>Now you can run the server without the <code class="docutils literal notranslate"><span class="pre">-insecure</span></code> flag.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml service http server -port <span class="m">5000</span>
-<span class="gp">$</span> curl -w <span class="s1">&#39;\n&#39;</span> <span class="se">\</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml service http server -port <span class="m">5000</span>
+<span class="gp">$ </span>curl -w <span class="s1">&#39;\n&#39;</span> <span class="se">\</span>
     --cacert server.pem <span class="se">\</span>
     --cert client.pem <span class="se">\</span>
     --key client.key <span class="se">\</span>

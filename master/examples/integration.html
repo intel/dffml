@@ -7,16 +7,13 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Automating Classification &mdash; DFFML 28cca076 documentation</title>
+  <title>Automating Classification &mdash; DFFML 653f28ad documentation</title>
   
 
   
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/sphinx_tabs/semantic-ui-2.4.1/segment.min.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/sphinx_tabs/semantic-ui-2.4.1/menu.min.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/sphinx_tabs/semantic-ui-2.4.1/tab.min.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/sphinx_tabs/tabs.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/tabs.css" type="text/css" />
 
   
   
@@ -36,8 +33,7 @@
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
-        <script src="../_static/sphinx_tabs/semantic-ui-2.4.1/tab.min.js"></script>
-        <script src="../_static/sphinx_tabs/tabs.js"></script>
+        <script src="../_static/tabs.js"></script>
         <script src="../_static/copybutton.js"></script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
@@ -71,7 +67,7 @@
             
             
               <div class="version">
-                28cca076
+                653f28ad
               </div>
             
           
@@ -379,7 +375,7 @@ should create these files and populate them with the code your about to see.</p>
 </div>
 <p>Now create the <strong>cgi-bin</strong> directory which is where our server side Python
 script will run.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> mkdir cgi-bin
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>mkdir cgi-bin
 </pre></div>
 </div>
 <p>Then create the backend API script. This script connects to the database and
@@ -432,7 +428,7 @@ provides two actions.</p>
 </div>
 <p>We have to make the cgi-bin directory and API file executable so that the CGI
 server can run it.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> chmod <span class="m">755</span> cgi-bin cgi-bin/api.py
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>chmod <span class="m">755</span> cgi-bin cgi-bin/api.py
 </pre></div>
 </div>
 </div>
@@ -444,18 +440,18 @@ of the following commands.</p>
 <p>Create a virtual environment where we’ll install all our Python packages to.
 Make sure to update <code class="docutils literal notranslate"><span class="pre">pip</span></code> in case it’s old, and install <code class="docutils literal notranslate"><span class="pre">setuptools</span></code> and
 <code class="docutils literal notranslate"><span class="pre">wheel</span></code> so that we can install the MySQL package.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python -m venv .venv
-<span class="gp">$</span> . .venv/bin/activate
-<span class="gp">$</span> python -m pip install -U pip setuptools wheel
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python -m venv .venv
+<span class="gp">$ </span>. .venv/bin/activate
+<span class="gp">$ </span>python -m pip install -U pip setuptools wheel
 </pre></div>
 </div>
 <p>Download the Python client libraries for MySQL.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python -m pip install -U <span class="se">\</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python -m pip install -U <span class="se">\</span>
     https://dev.mysql.com/get/Downloads/Connector-Python/mysql-connector-python-8.0.21.tar.gz
 </pre></div>
 </div>
 <p>Start MariaDB (functionally very similar to MySQL which its a fork of).</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> docker run --rm -d --name maintained_db <span class="se">\</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>docker run --rm -d --name maintained_db <span class="se">\</span>
     -e <span class="nv">MYSQL_RANDOM_ROOT_PASSWORD</span><span class="o">=</span>yes <span class="se">\</span>
     -e <span class="nv">MYSQL_USER</span><span class="o">=</span>user <span class="se">\</span>
     -e <span class="nv">MYSQL_PASSWORD</span><span class="o">=</span>pass <span class="se">\</span>
@@ -466,7 +462,7 @@ Make sure to update <code class="docutils literal notranslate"><span class="pre"
 </div>
 <p>Wait for the database to start. Run the following command until you see <code class="docutils literal notranslate"><span class="pre">ready</span>
 <span class="pre">for</span> <span class="pre">connections</span></code> twice in the output.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> docker logs maintained_db <span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span> <span class="p">|</span> grep <span class="s1">&#39;ready for&#39;</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>docker logs maintained_db <span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span> <span class="p">|</span> grep <span class="s1">&#39;ready for&#39;</span>
 <span class="go">2020-01-13 21:31:09 0 [Note] mysqld: ready for connections.</span>
 <span class="go">2020-01-13 21:32:16 0 [Note] mysqld: ready for connections.</span>
 </pre></div>
@@ -478,7 +474,7 @@ repos for real.</p>
 <p>The randomly assigned maintenance status and URL for the repo will be stored in
 the database. We need to install the <code class="docutils literal notranslate"><span class="pre">dffml-source-mysql</span></code> plugin to use
 MariaDB/MySQL with DFFML.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python -m pip install -U dffml-source-mysql
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python -m pip install -U dffml-source-mysql
 </pre></div>
 </div>
 <p>To get our dummy data, we’ll be using the GitHub v4 API to search for “todo”.
@@ -490,7 +486,7 @@ You can create one by following their documentation.</p>
 </ul>
 <p>When it presents you with a bunch of checkboxes for difference “scopes” you
 don’t have to check any of them.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> <span class="nb">export</span> <span class="nv">GITHUB_TOKEN</span><span class="o">=</span>&lt;paste your personal access token here&gt;
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">export</span> <span class="nv">GITHUB_TOKEN</span><span class="o">=</span>&lt;paste your personal access token here&gt;
 </pre></div>
 </div>
 <p>You’ve just pasted your token into your terminal so it will likely show up in
@@ -584,13 +580,13 @@ database.</p>
 ready to start the CGI server. You’ll want to do this in another terminal.
 The last argument is the port to serve on, change that number if you already
 have something running on that port.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> . .venv/bin/activate
-<span class="gp">$</span> python3 -m http.server --cgi <span class="m">8000</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>. .venv/bin/activate
+<span class="gp">$ </span>python3 -m http.server --cgi <span class="m">8000</span>
 </pre></div>
 </div>
 <p>You can see all the records and their statuses that we imported into the
 database by calling the API.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> curl -v <span class="s1">&#39;http://127.0.0.1:8000/cgi-bin/api.py?action=dump&#39;</span> <span class="p">|</span> <span class="se">\</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>curl -v <span class="s1">&#39;http://127.0.0.1:8000/cgi-bin/api.py?action=dump&#39;</span> <span class="p">|</span> <span class="se">\</span>
     python3 -m json.tool
 </pre></div>
 </div>
@@ -617,37 +613,21 @@ understanding of Operations and DataFlows, see the
 a separate Python package from DFFML which we can install via <code class="docutils literal notranslate"><span class="pre">pip</span></code>. We’ll
 also use the <code class="docutils literal notranslate"><span class="pre">yaml</span></code> configloader, since that creates more user friendly
 configs than <code class="docutils literal notranslate"><span class="pre">json</span></code>.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python -m pip install -U dffml-feature-git dffml-config-yaml
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python -m pip install -U dffml-feature-git dffml-config-yaml
 </pre></div>
 </div>
 <p>The git operations / features rely on <code class="docutils literal notranslate"><span class="pre">tokei</span></code>. We need to download and install
 it first.</p>
 <div class="sphinx-tabs docutils container">
-<div class="ui top attached tabular menu sphinx-menu docutils container">
-<div class="active item sphinx-data-tab-TGludXg= docutils container">
-<div class="docutils container">
-<p>Linux</p>
-</div>
-</div>
-<div class="item sphinx-data-tab-TWFjT1M= docutils container">
-<div class="docutils container">
-<p>MacOS</p>
-</div>
-</div>
-</div>
-<div class="ui bottom attached sphinx-tab tab segment sphinx-data-tab-TGludXg= active docutils container">
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> curl -sSL <span class="s1">&#39;https://github.com/XAMPPRocky/tokei/releases/download/v10.1.1/tokei-v10.1.1-x86_64-unknown-linux-gnu.tar.gz&#39;</span> <span class="se">\</span>
+<div aria-label="Tabbed content" role="tablist"><button aria-controls="panel-0-TGludXg=" aria-selected="true" class="sphinx-tabs-tab group-tab" id="tab-0-TGludXg=" name="TGludXg=" role="tab" tabindex="0">Linux</button><button aria-controls="panel-0-TWFjT1M=" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-0-TWFjT1M=" name="TWFjT1M=" role="tab" tabindex="-1">MacOS</button></div><div aria-labelledby="tab-0-TGludXg=" class="sphinx-tabs-panel group-tab" id="panel-0-TGludXg=" name="TGludXg=" role="tabpanel" tabindex="0"><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>curl -sSL <span class="s1">&#39;https://github.com/XAMPPRocky/tokei/releases/download/v10.1.1/tokei-v10.1.1-x86_64-unknown-linux-gnu.tar.gz&#39;</span> <span class="se">\</span>
     <span class="p">|</span> tar -xvz -C .venv/bin/
 </pre></div>
 </div>
-</div>
-<div class="ui bottom attached sphinx-tab tab segment sphinx-data-tab-TWFjT1M= docutils container">
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> curl -sSL <span class="s1">&#39;https://github.com/XAMPPRocky/tokei/releases/download/v10.1.1/tokei-v10.1.1-x86_64-apple-darwin.tar.gz&#39;</span> <span class="se">\</span>
+</div><div aria-labelledby="tab-0-TWFjT1M=" class="sphinx-tabs-panel group-tab" hidden="true" id="panel-0-TWFjT1M=" name="TWFjT1M=" role="tabpanel" tabindex="0"><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>curl -sSL <span class="s1">&#39;https://github.com/XAMPPRocky/tokei/releases/download/v10.1.1/tokei-v10.1.1-x86_64-apple-darwin.tar.gz&#39;</span> <span class="se">\</span>
     <span class="p">|</span> tar -xvz -C .venv/bin/
 </pre></div>
 </div>
-</div>
-</div>
+</div></div>
 <p>Operations are just Python functions, or classes. They define a routine which
 will be run concurrently with other operations. Here’s an example of the
 <code class="docutils literal notranslate"><span class="pre">git_commits</span></code> operation, which will find the number of commits within a date
@@ -787,7 +767,7 @@ the quarter they were generated for.</p></li>
 <h2>Training our Model<a class="headerlink" href="#training-our-model" title="Permalink to this headline">¶</a></h2>
 <p>The model we’ll be using is a part of <code class="docutils literal notranslate"><span class="pre">dffml-model-tensorflow</span></code>, which is
 another separate Python package from DFFML which we can install via <code class="docutils literal notranslate"><span class="pre">pip</span></code>.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python -m pip install -U dffml-model-tensorflow
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python -m pip install -U dffml-model-tensorflow
 </pre></div>
 </div>
 <p>The model is a generic wrapper around Tensorflow’s DNN estimator. We can use it
@@ -841,7 +821,7 @@ use the record’s key as the repo URL (since that’s what the key is).</p>
 take 2 minutes, it may take more. All the git repos in the database will be
 downloaded, this will also take up space in <code class="docutils literal notranslate"><span class="pre">/tmp</span></code>, they will be cleaned up
 automatically.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> bash train.sh
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>bash train.sh
 </pre></div>
 </div>
 </div>
@@ -892,7 +872,7 @@ have the model make a prediction</p>
 </div>
 <p>Run <strong>predict.sh</strong> to make a prediction using the model. We’re asking the model
 to make a prediction on the DFFML repo.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> bash predict.sh https://github.com/intel/dffml
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>bash predict.sh https://github.com/intel/dffml
 <span class="go">[</span>
 <span class="go">    {</span>
 <span class="go">        &quot;extra&quot;: {},</span>
@@ -987,7 +967,7 @@ database.</p>
 </pre></div>
 </div>
 <p>Test the new prediction capabilities from the command line with <code class="docutils literal notranslate"><span class="pre">curl</span></code></p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> curl -v <span class="s1">&#39;http://127.0.0.1:8000/cgi-bin/api.py?action=predict&amp;URL=https://github.com/intel/dffml&#39;</span> <span class="p">|</span> <span class="se">\</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>curl -v <span class="s1">&#39;http://127.0.0.1:8000/cgi-bin/api.py?action=predict&amp;URL=https://github.com/intel/dffml&#39;</span> <span class="p">|</span> <span class="se">\</span>
     python -m json.tool
 </pre></div>
 </div>

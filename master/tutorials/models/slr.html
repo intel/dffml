@@ -7,16 +7,13 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Writing a Model &mdash; DFFML 28cca076 documentation</title>
+  <title>Writing a Model &mdash; DFFML 653f28ad documentation</title>
   
 
   
   <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/sphinx_tabs/semantic-ui-2.4.1/segment.min.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/sphinx_tabs/semantic-ui-2.4.1/menu.min.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/sphinx_tabs/semantic-ui-2.4.1/tab.min.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/sphinx_tabs/tabs.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/tabs.css" type="text/css" />
 
   
   
@@ -69,7 +66,7 @@
             
             
               <div class="version">
-                28cca076
+                653f28ad
               </div>
             
           
@@ -540,7 +537,7 @@ confidence in our prediction.</p>
 </pre></div>
 </div>
 <p>We run it as we would any other Python file</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python3 run.py
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python3 run.py
 <span class="go">Accuracy: 1.0</span>
 <span class="go">{&#39;Years&#39;: 8, &#39;Salary&#39;: 110.0}</span>
 </pre></div>
@@ -552,7 +549,7 @@ confidence in our prediction.</p>
 style path. This is in the format of <code class="docutils literal notranslate"><span class="pre">file:ClassWithinFile</span></code>, so for this it’ll
 be <code class="docutils literal notranslate"><span class="pre">myslr:MySLRModel</span></code>.</p>
 <p>We do the same steps we did with Python, only using the command line interface.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml train <span class="se">\</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml train <span class="se">\</span>
     -log debug <span class="se">\</span>
     -model myslr:MySLRModel <span class="se">\</span>
     -model-features Years:int:1 <span class="se">\</span>
@@ -564,7 +561,7 @@ be <code class="docutils literal notranslate"><span class="pre">myslr:MySLRModel
 </div>
 <p>There’s no output from the training command if everything went well</p>
 <p>Now let’s make predictions</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml predict all <span class="se">\</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml predict all <span class="se">\</span>
     -model myslr:MySLRModel <span class="se">\</span>
     -model-features Years:int:1 <span class="se">\</span>
     -model-predict Salary:float:1 <span class="se">\</span>
@@ -596,7 +593,7 @@ be <code class="docutils literal notranslate"><span class="pre">myslr:MySLRModel
 <p>First we need to install the HTTP service, which is the HTTP server which will
 serve our model. See the <a class="reference internal" href="../../plugins/service/http/index.html"><span class="doc">HTTP API</span></a> docs for more
 information on the HTTP service.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python -m pip install -U dffml-service-http
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python -m pip install -U dffml-service-http
 </pre></div>
 </div>
 <p>We start the HTTP service and tell it that we want to make our model accessable
@@ -607,7 +604,7 @@ via the HTTP <a class="reference internal" href="../../plugins/service/http/api.
 This example of running the HTTP API is insecure and is only used to help
 you get up and running.</p>
 </div>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml service http server -insecure -cors <span class="s1">&#39;*&#39;</span> -addr <span class="m">0</span>.0.0.0 -port <span class="m">8080</span> <span class="se">\</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml service http server -insecure -cors <span class="s1">&#39;*&#39;</span> -addr <span class="m">0</span>.0.0.0 -port <span class="m">8080</span> <span class="se">\</span>
     -models <span class="nv">mymodel</span><span class="o">=</span>myslr:MySLRModel <span class="se">\</span>
     -model-features Years:int:1 <span class="se">\</span>
     -model-predict Salary:float:1 <span class="se">\</span>
@@ -616,7 +613,7 @@ you get up and running.</p>
 </div>
 <p>We can then ask the HTTP service to make predictions, or do training or accuracy
 assessment.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> curl -f http://localhost:8080/model/mymodel/predict/0 <span class="se">\</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>curl -f http://localhost:8080/model/mymodel/predict/0 <span class="se">\</span>
     --header <span class="s2">&quot;Content-Type: application/json&quot;</span> <span class="se">\</span>
     --data <span class="s1">&#39;{&quot;0&quot;: {&quot;features&quot;: {&quot;Years&quot;: 8}}}&#39;</span>
 <span class="go">{</span>

@@ -7,16 +7,13 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>COVID Forecasting &mdash; DFFML 28cca076 documentation</title>
+  <title>COVID Forecasting &mdash; DFFML 653f28ad documentation</title>
   
 
   
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/sphinx_tabs/semantic-ui-2.4.1/segment.min.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/sphinx_tabs/semantic-ui-2.4.1/menu.min.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/sphinx_tabs/semantic-ui-2.4.1/tab.min.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/sphinx_tabs/tabs.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/tabs.css" type="text/css" />
 
   
   
@@ -69,7 +66,7 @@
             
             
               <div class="version">
-                28cca076
+                653f28ad
               </div>
             
           
@@ -255,8 +252,8 @@ we’re going to wrap it using a model class (for more explanation first read th
 <p>We need to install dependencies we’ll be importing.</p>
 <p>See the <a class="reference external" href="https://facebook.github.io/prophet/docs/installation.html#python">https://facebook.github.io/prophet/docs/installation.html#python</a> for
 more details</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python -m pip install joblib pandas pystan
-<span class="gp">$</span> python -m pip install fbprophet
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python -m pip install joblib pandas pystan
+<span class="gp">$ </span>python -m pip install fbprophet
 </pre></div>
 </div>
 </div>
@@ -481,7 +478,7 @@ there is anything that is unclear or you think could be changed / improved.</p>
 </div>
 <p>Run the file to see the predictions for the test data along with today plus the
 next four days.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python or_covid_data_by_county.py
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python or_covid_data_by_county.py
 <span class="go">INFO:fbprophet:Disabling yearly seasonality. Run prophet with yearly_seasonality=True to override this.</span>
 <span class="go">INFO:fbprophet:Disabling daily seasonality. Run prophet with daily_seasonality=True to override this.</span>
 <span class="go">Initial log joint probability = -4.48963</span>

@@ -7,16 +7,13 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Example SQLite source &mdash; DFFML 28cca076 documentation</title>
+  <title>Example SQLite source &mdash; DFFML 653f28ad documentation</title>
   
 
   
   <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/sphinx_tabs/semantic-ui-2.4.1/segment.min.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/sphinx_tabs/semantic-ui-2.4.1/menu.min.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/sphinx_tabs/semantic-ui-2.4.1/tab.min.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/sphinx_tabs/tabs.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/tabs.css" type="text/css" />
 
   
   
@@ -69,7 +66,7 @@
             
             
               <div class="version">
-                28cca076
+                653f28ad
               </div>
             
           
@@ -233,8 +230,8 @@ database.</p>
 <h2>Create the Package<a class="headerlink" href="#create-the-package" title="Permalink to this headline">¶</a></h2>
 <p>To create a new source we first create a new python package. DFFML has a script
 to create it for you.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml service dev create <span class="nb">source</span> dffml-source-sqlite
-<span class="gp">$</span> <span class="nb">cd</span> dffml-source-sqlite
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml service dev create <span class="nb">source</span> dffml-source-sqlite
+<span class="gp">$ </span><span class="nb">cd</span> dffml-source-sqlite
 </pre></div>
 </div>
 <p>This creates a Python package for you with a source that stores <code class="docutils literal notranslate"><span class="pre">Record</span></code> objects
@@ -472,7 +469,7 @@ to be installed, since we will be importing it.</p>
 <div class="section" id="install-your-package">
 <h2>Install your package<a class="headerlink" href="#install-your-package" title="Permalink to this headline">¶</a></h2>
 <p>The following command installs your new source.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python -m pip install -e .
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python -m pip install -e .
 </pre></div>
 </div>
 </div>
@@ -505,7 +502,7 @@ to be installed, since we will be importing it.</p>
 </div>
 <div class="section" id="run-the-tests">
 <h2>Run the tests<a class="headerlink" href="#run-the-tests" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python setup.py <span class="nb">test</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python setup.py <span class="nb">test</span>
 </pre></div>
 </div>
 </div>

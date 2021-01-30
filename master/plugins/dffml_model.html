@@ -7,16 +7,13 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Models &mdash; DFFML 28cca076 documentation</title>
+  <title>Models &mdash; DFFML 653f28ad documentation</title>
   
 
   
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/sphinx_tabs/semantic-ui-2.4.1/segment.min.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/sphinx_tabs/semantic-ui-2.4.1/menu.min.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/sphinx_tabs/semantic-ui-2.4.1/tab.min.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/sphinx_tabs/tabs.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/tabs.css" type="text/css" />
 
   
   
@@ -69,7 +66,7 @@
             
             
               <div class="version">
-                28cca076
+                653f28ad
               </div>
             
           
@@ -304,7 +301,7 @@ abstract the usage of machine learning models.</p>
 </pre></div>
 </div>
 <p>Train the model</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml train <span class="se">\</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml train <span class="se">\</span>
     -model slr <span class="se">\</span>
     -model-features f1:float:1 <span class="se">\</span>
     -model-predict ans:int:1 <span class="se">\</span>
@@ -314,7 +311,7 @@ abstract the usage of machine learning models.</p>
 </pre></div>
 </div>
 <p>Assess the accuracy</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml accuracy <span class="se">\</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml accuracy <span class="se">\</span>
     -model slr <span class="se">\</span>
     -model-features f1:float:1 <span class="se">\</span>
     -model-predict ans:int:1 <span class="se">\</span>
@@ -330,7 +327,7 @@ abstract the usage of machine learning models.</p>
 <span class="mf">0.8</span>
 </pre></div>
 </div>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml predict all <span class="se">\</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml predict all <span class="se">\</span>
     -model slr <span class="se">\</span>
     -model-features f1:float:1 <span class="se">\</span>
     -model-predict ans:int:1 <span class="se">\</span>
@@ -378,7 +375,7 @@ abstract the usage of machine learning models.</p>
     <span class="nb">print</span><span class="p">(</span><span class="n">features</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python slr.py
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python slr.py
 <span class="go">Accuracy: 0.9355670103092784</span>
 <span class="go">{&#39;f1&#39;: 0.8, &#39;ans&#39;: 1}</span>
 </pre></div>
@@ -816,7 +813,7 @@ $ sed -i &#39;s/.*setosa,versicolor,virginica/SepalLength,SepalWidth,PetalLength
 </pre></div>
 </div>
 <p>Run the train command</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml train <span class="se">\</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml train <span class="se">\</span>
     -sources <span class="nv">train</span><span class="o">=</span>csv <span class="se">\</span>
     -source-filename iris_training.csv <span class="se">\</span>
     -model xgbclassifier <span class="se">\</span>
@@ -839,7 +836,7 @@ $ sed -i &#39;s/.*setosa,versicolor,virginica/SepalLength,SepalWidth,PetalLength
 </pre></div>
 </div>
 <p>Assess the accuracy</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml accuracy <span class="se">\</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml accuracy <span class="se">\</span>
     -sources <span class="nv">train</span><span class="o">=</span>csv <span class="se">\</span>
     -source-filename iris_test.csv <span class="se">\</span>
     -model xgbclassifier <span class="se">\</span>
@@ -853,7 +850,7 @@ $ sed -i &#39;s/.*setosa,versicolor,virginica/SepalLength,SepalWidth,PetalLength
 </pre></div>
 </div>
 <p>Make predictions</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml predict all <span class="se">\</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml predict all <span class="se">\</span>
     -sources <span class="nv">train</span><span class="o">=</span>csv <span class="se">\</span>
     -source-filename iris_test.csv <span class="se">\</span>
     -model xgbclassifier <span class="se">\</span>
@@ -1032,7 +1029,7 @@ $ sed -i &#39;s/.*setosa,versicolor,virginica/SepalLength,SepalWidth,PetalLength
 </pre></div>
 </div>
 <p>Run the train command</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml train <span class="se">\</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml train <span class="se">\</span>
     -sources <span class="nv">train</span><span class="o">=</span>csv <span class="se">\</span>
     -source-filename iris_training.csv <span class="se">\</span>
     -model xgbregressor <span class="se">\</span>
@@ -1054,7 +1051,7 @@ $ sed -i &#39;s/.*setosa,versicolor,virginica/SepalLength,SepalWidth,PetalLength
 </pre></div>
 </div>
 <p>Assess the accuracy</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml accuracy <span class="se">\</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml accuracy <span class="se">\</span>
     -sources <span class="nv">train</span><span class="o">=</span>csv <span class="se">\</span>
     -source-filename iris_test.csv <span class="se">\</span>
     -model xgbregressor <span class="se">\</span>
@@ -1072,7 +1069,7 @@ $ sed -i &#39;s/.*setosa,versicolor,virginica/SepalLength,SepalWidth,PetalLength
 </pre></div>
 </div>
 <p>Make predictions</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml predict all <span class="se">\</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml predict all <span class="se">\</span>
     -sources <span class="nv">train</span><span class="o">=</span>csv <span class="se">\</span>
     -source-filename iris_test.csv <span class="se">\</span>
     -model xgbregressor <span class="se">\</span>
@@ -2916,7 +2913,7 @@ EOF
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>You must download <code class="docutils literal notranslate"><span class="pre">en_core_web_sm</span></code> before using this model</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python -m spacy download en_core_web_sm
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python -m spacy download en_core_web_sm
 </pre></div>
 </div>
 </div>
@@ -2966,7 +2963,7 @@ EOF
 </pre></div>
 </div>
 <p>Train the model</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml train <span class="se">\</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml train <span class="se">\</span>
     -model spacyner <span class="se">\</span>
     -sources <span class="nv">s</span><span class="o">=</span>op <span class="se">\</span>
     -source-opimp dffml_model_spacy.ner.utils:parser <span class="se">\</span>
@@ -2978,7 +2975,7 @@ EOF
 </pre></div>
 </div>
 <p>Assess the accuracy</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml accuracy <span class="se">\</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml accuracy <span class="se">\</span>
     -model spacyner <span class="se">\</span>
     -sources <span class="nv">s</span><span class="o">=</span>op <span class="se">\</span>
     -source-opimp dffml_model_spacy.ner.utils:parser <span class="se">\</span>
@@ -2991,7 +2988,7 @@ EOF
 </pre></div>
 </div>
 <p>Make a prediction</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml predict all <span class="se">\</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml predict all <span class="se">\</span>
     -model spacyner <span class="se">\</span>
     -sources <span class="nv">s</span><span class="o">=</span>op <span class="se">\</span>
     -source-opimp dffml_model_spacy.ner.utils:parser <span class="se">\</span>
@@ -3226,7 +3223,7 @@ Models are saved under the directory in subdirectories named after the hash of
 their feature names.</p>
 <p><strong>General Usage:</strong></p>
 <p>Training:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml train <span class="se">\</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml train <span class="se">\</span>
     -model SCIKIT_MODEL_ENTRYPOINT <span class="se">\</span>
     -model-features FEATURE_DEFINITION <span class="se">\</span>
     -model-predict TO_PREDICT <span class="se">\</span>
@@ -3238,7 +3235,7 @@ their feature names.</p>
 </pre></div>
 </div>
 <p>Testing and Accuracy:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml accuracy <span class="se">\</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml accuracy <span class="se">\</span>
     -model SCIKIT_MODEL_ENTRYPOINT <span class="se">\</span>
     -model-features FEATURE_DEFINITION <span class="se">\</span>
     -model-predict TO_PREDICT <span class="se">\</span>
@@ -3249,7 +3246,7 @@ their feature names.</p>
 </pre></div>
 </div>
 <p>Predicting with trained model:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml predict all <span class="se">\</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml predict all <span class="se">\</span>
     -model SCIKIT_MODEL_ENTRYPOINT <span class="se">\</span>
     -model-features FEATURE_DEFINITION <span class="se">\</span>
     -model-predict TO_PREDICT <span class="se">\</span>
@@ -3579,7 +3576,7 @@ their feature names.</p>
 </pre></div>
 </div>
 <p>Example below uses KMeans Clustering Model on a small randomly generated dataset.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp"> $</span> cat &gt; train.csv &lt;&lt; EOF
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp"> $ </span>cat &gt; train.csv &lt;&lt; EOF
 <span class="go">Col1,          Col2,        Col3,         Col4</span>
 <span class="go">5.05776417,   8.55128116,   6.15193196,  -8.67349666</span>
 <span class="go">3.48864265,  -7.25952218,  -4.89216256,   4.69308946</span>
@@ -3590,13 +3587,13 @@ their feature names.</p>
 <span class="go">2.22409135,  -7.73598586,  -4.02660224,   2.82101794</span>
 <span class="go">2.8137247 ,   8.36064298,   7.66196849,   3.12704676</span>
 <span class="go">EOF</span>
-<span class="gp"> $</span> cat &gt; test.csv &lt;&lt; EOF
+<span class="gp"> $ </span>cat &gt; test.csv &lt;&lt; EOF
 <span class="go">Col1,             Col2,          Col3,         Col4,    cluster</span>
 <span class="go">-10.16770144,   2.73057215,  -1.49351481,   2.43005691,    6</span>
 <span class="go">3.59705381,  -4.76520663,  -3.34916068,   5.72391486,     1</span>
 <span class="go">4.01612313,  -4.641852  ,  -4.77333308,   5.87551683,     0</span>
 <span class="go">EOF</span>
-<span class="gp"> $</span> dffml train <span class="se">\</span>
+<span class="gp"> $ </span>dffml train <span class="se">\</span>
      -model scikitkmeans <span class="se">\</span>
      -model-features Col1:float:1 Col2:float:1 Col3:float:1 Col4:float:1 <span class="se">\</span>
      -model-directory tempdir <span class="se">\</span>
@@ -3604,7 +3601,7 @@ their feature names.</p>
      -source-filename train.csv <span class="se">\</span>
      -source-readonly <span class="se">\</span>
      -log debug
-<span class="gp"> $</span> dffml accuracy <span class="se">\</span>
+<span class="gp"> $ </span>dffml accuracy <span class="se">\</span>
      -model scikitkmeans <span class="se">\</span>
      -model-features Col1:float:1 Col2:float:1 Col3:float:1 Col4:float:1<span class="se">\</span>
      -model-tcluster cluster:int:1 <span class="se">\</span>
@@ -3614,7 +3611,7 @@ their feature names.</p>
      -source-readonly <span class="se">\</span>
      -log debug
 <span class="go"> 0.6365141682948129</span>
-<span class="gp"> $</span> <span class="nb">echo</span> -e <span class="s1">&#39;Col1,Col2,Col3,Col4\n6.09809669,8.36434181,6.70940915,-7.91491768\n&#39;</span> <span class="p">|</span> <span class="se">\</span>
+<span class="gp"> $ </span><span class="nb">echo</span> -e <span class="s1">&#39;Col1,Col2,Col3,Col4\n6.09809669,8.36434181,6.70940915,-7.91491768\n&#39;</span> <span class="p">|</span> <span class="se">\</span>
    dffml predict all <span class="se">\</span>
      -model scikitkmeans <span class="se">\</span>
      -model-features Col1:float:1 Col2:float:1 Col3:float:1 Col4:float:1 <span class="se">\</span>
@@ -3711,7 +3708,7 @@ Ensure that <cite>predict</cite> and <cite>accuracy</cite> for these algorithms 
 Models are saved under the directory in <cite>model.pt</cite>.</p>
 <p><strong>General Usage:</strong></p>
 <p>Training:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml train <span class="se">\</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml train <span class="se">\</span>
     -model PYTORCH_MODEL_ENTRYPOINT <span class="se">\</span>
     -model-features FEATURE_DEFINITION <span class="se">\</span>
     -model-predict TO_PREDICT <span class="se">\</span>
@@ -3723,7 +3720,7 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 </pre></div>
 </div>
 <p>Testing and Accuracy:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml accuracy <span class="se">\</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml accuracy <span class="se">\</span>
     -model PYTORCH_MODEL_ENTRYPOINT <span class="se">\</span>
     -model-features FEATURE_DEFINITION <span class="se">\</span>
     -model-predict TO_PREDICT <span class="se">\</span>
@@ -3735,7 +3732,7 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 </pre></div>
 </div>
 <p>Predicting with trained model:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml predict all <span class="se">\</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml predict all <span class="se">\</span>
     -model PYTORCH_MODEL_ENTRYPOINT <span class="se">\</span>
     -model-features FEATURE_DEFINITION <span class="se">\</span>
     -model-predict TO_PREDICT <span class="se">\</span>
@@ -7610,7 +7607,7 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 </pre></div>
 </div>
 <p>Train the model</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml train <span class="se">\</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml train <span class="se">\</span>
     -model daal4pylr <span class="se">\</span>
     -model-features f1:float:1 <span class="se">\</span>
     -model-predict ans:int:1 <span class="se">\</span>
@@ -7620,7 +7617,7 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 </pre></div>
 </div>
 <p>Assess the accuracy</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml accuracy <span class="se">\</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml accuracy <span class="se">\</span>
     -model daal4pylr <span class="se">\</span>
     -model-features f1:float:1 <span class="se">\</span>
     -model-predict ans:int:1 <span class="se">\</span>
@@ -7631,7 +7628,7 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 </pre></div>
 </div>
 <p>Make a prediction</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> <span class="nb">echo</span> -e <span class="s1">&#39;f1,ans\n0.8,1\n&#39;</span> <span class="p">|</span> <span class="se">\</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">echo</span> -e <span class="s1">&#39;f1,ans\n0.8,1\n&#39;</span> <span class="p">|</span> <span class="se">\</span>
   dffml predict all <span class="se">\</span>
     -model daal4pylr <span class="se">\</span>
     -model-features f1:float:1 <span class="se">\</span>
@@ -7683,7 +7680,7 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 </pre></div>
 </div>
 <p>Run the file</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python run.py
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python run.py
 </pre></div>
 </div>
 <p><strong>Args</strong></p>
@@ -7713,12 +7710,12 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 </div>
 <p><strong>Ubuntu Installation</strong></p>
 <p>To provide a C++11 building environment and the lateste SWIG version on Ubuntu, run:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> sudo apt-get install build-essential swig
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo apt-get install build-essential swig
 </pre></div>
 </div>
 <p>Install other PyPi dependencies with</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python3 -m pip install cython liac-arff psutil
-<span class="gp">$</span> curl https://raw.githubusercontent.com/automl/auto-sklearn/master/requirements.txt <span class="p">|</span> xargs -n <span class="m">1</span> -L <span class="m">1</span> python3 -m pip install
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python3 -m pip install cython liac-arff psutil
+<span class="gp">$ </span>curl https://raw.githubusercontent.com/automl/auto-sklearn/master/requirements.txt <span class="p">|</span> xargs -n <span class="m">1</span> -L <span class="m">1</span> python3 -m pip install
 </pre></div>
 </div>
 <p>For more information about installation visit <a class="reference external" href="https://automl.github.io/auto-sklearn/master/installation.html#installation">https://automl.github.io/auto-sklearn/master/installation.html#installation</a></p>
@@ -7942,7 +7939,7 @@ to train the a scikit model for you.</p>
 </pre></div>
 </div>
 <p>Train the model</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml train <span class="se">\</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml train <span class="se">\</span>
     -model autoregressor <span class="se">\</span>
     -model-predict TARGET:float:1 <span class="se">\</span>
     -model-clstype int <span class="se">\</span>
@@ -7960,7 +7957,7 @@ to train the a scikit model for you.</p>
 </pre></div>
 </div>
 <p>Assess the accuracy</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml accuracy <span class="se">\</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml accuracy <span class="se">\</span>
     -model autoregressor <span class="se">\</span>
     -model-predict TARGET:float:1 <span class="se">\</span>
     -model-directory tempdir <span class="se">\</span>
@@ -7980,7 +7977,7 @@ to train the a scikit model for you.</p>
 </pre></div>
 </div>
 <p>Make a prediction</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml predict all <span class="se">\</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml predict all <span class="se">\</span>
     -model autoregressor <span class="se">\</span>
     -model-directory tempdir <span class="se">\</span>
     -model-predict TARGET:float:1 <span class="se">\</span>
@@ -8045,7 +8042,7 @@ of the model.</p>
 </pre></div>
 </div>
 <p>Run the file</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python run.py
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python run.py
 <span class="go">Accuracy: 0.9961211434899032</span>
 <span class="go">{&#39;Feature1&#39;: 0.57, &#39;Feature2&#39;: 0.84, &#39;TARGET&#39;: 3.6180416345596313}</span>
 </pre></div>

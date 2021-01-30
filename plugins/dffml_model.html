@@ -732,19 +732,19 @@ predict).</p>
 <span id="plugin-model-dffml-model-tensorflow-hub-text-classifier"></span><h3>text_classifier<a class="headerlink" href="#text-classifier" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>Implemented using Tensorflow hub pretrained models.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> cat &gt; train.csv &lt;&lt; EOF
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>cat &gt; train.csv &lt;&lt; EOF
 <span class="go">sentence,sentiment</span>
 <span class="go">Life is good,1</span>
 <span class="go">This book is amazing,1</span>
 <span class="go">It&#39;s a terrible movie,0</span>
 <span class="go">Global warming is bad,0</span>
 <span class="go">EOF</span>
-<span class="gp">$</span> cat &gt; test.csv &lt;&lt; EOF
+<span class="gp">$ </span>cat &gt; test.csv &lt;&lt; EOF
 <span class="go">sentence,sentiment</span>
 <span class="go">I am not feeling good,0</span>
 <span class="go">Our trip was full of adventures,1</span>
 <span class="go">EOF</span>
-<span class="gp">$</span> dffml train <span class="se">\</span>
+<span class="gp">$ </span>dffml train <span class="se">\</span>
     -model text_classifier <span class="se">\</span>
     -model-epochs <span class="m">30</span> <span class="se">\</span>
     -model-predict sentiment:int:1 <span class="se">\</span>
@@ -758,7 +758,7 @@ predict).</p>
     -model-add_layers <span class="se">\</span>
     -model-layers <span class="s2">&quot;Dense(units=512, activation=&#39;relu&#39;)&quot;</span> <span class="s2">&quot;Dense(units=2, activation=&#39;softmax&#39;)&quot;</span> <span class="se">\</span>
     -log debug
-<span class="gp">$</span> dffml accuracy <span class="se">\</span>
+<span class="gp">$ </span>dffml accuracy <span class="se">\</span>
     -model text_classifier <span class="se">\</span>
     -model-predict sentiment:int:1 <span class="se">\</span>
     -model-classifications <span class="m">0</span> <span class="m">1</span> <span class="se">\</span>
@@ -770,7 +770,7 @@ predict).</p>
       sentence:str:1 <span class="se">\</span>
     -log critical
 <span class="go">    1.0</span>
-<span class="gp">$</span> dffml predict all <span class="se">\</span>
+<span class="gp">$ </span>dffml predict all <span class="se">\</span>
     -model text_classifier <span class="se">\</span>
     -model-predict sentiment:int:1 <span class="se">\</span>
     -model-classifications <span class="m">0</span> <span class="m">1</span> <span class="se">\</span>
@@ -1408,7 +1408,7 @@ Models are saved under the directory in subdirectories named after the hash of
 their feature names.</p>
 <p><strong>General Usage:</strong></p>
 <p>Training:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml train <span class="se">\</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml train <span class="se">\</span>
     -model SCIKIT_MODEL_ENTRYPOINT <span class="se">\</span>
     -model-features FEATURE_DEFINITION <span class="se">\</span>
     -model-predict TO_PREDICT <span class="se">\</span>
@@ -1419,7 +1419,7 @@ their feature names.</p>
 </pre></div>
 </div>
 <p>Testing and Accuracy:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml accuracy <span class="se">\</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml accuracy <span class="se">\</span>
     -model SCIKIT_MODEL_ENTRYPOINT <span class="se">\</span>
     -model-features FEATURE_DEFINITION <span class="se">\</span>
     -model-predict TO_PREDICT <span class="se">\</span>
@@ -1429,7 +1429,7 @@ their feature names.</p>
 </pre></div>
 </div>
 <p>Predicting with trained model:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml predict all <span class="se">\</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml predict all <span class="se">\</span>
     -model SCIKIT_MODEL_ENTRYPOINT <span class="se">\</span>
     -model-features FEATURE_DEFINITION <span class="se">\</span>
     -model-predict TO_PREDICT <span class="se">\</span>
@@ -1750,7 +1750,7 @@ their feature names.</p>
 </pre></div>
 </div>
 <p>Example below uses KMeans Clustering Model on a small randomly generated dataset.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp"> $</span> cat &gt; train.csv &lt;&lt; EOF
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp"> $ </span>cat &gt; train.csv &lt;&lt; EOF
 <span class="go">Col1,          Col2,        Col3,         Col4</span>
 <span class="go">5.05776417,   8.55128116,   6.15193196,  -8.67349666</span>
 <span class="go">3.48864265,  -7.25952218,  -4.89216256,   4.69308946</span>
@@ -1761,20 +1761,20 @@ their feature names.</p>
 <span class="go">2.22409135,  -7.73598586,  -4.02660224,   2.82101794</span>
 <span class="go">2.8137247 ,   8.36064298,   7.66196849,   3.12704676</span>
 <span class="go">EOF</span>
-<span class="gp"> $</span> cat &gt; test.csv &lt;&lt; EOF
+<span class="gp"> $ </span>cat &gt; test.csv &lt;&lt; EOF
 <span class="go">Col1,             Col2,          Col3,         Col4,    cluster</span>
 <span class="go">-10.16770144,   2.73057215,  -1.49351481,   2.43005691,    6</span>
 <span class="go">3.59705381,  -4.76520663,  -3.34916068,   5.72391486,     1</span>
 <span class="go">4.01612313,  -4.641852  ,  -4.77333308,   5.87551683,     0</span>
 <span class="go">EOF</span>
-<span class="gp"> $</span> dffml train <span class="se">\</span>
+<span class="gp"> $ </span>dffml train <span class="se">\</span>
      -model scikitkmeans <span class="se">\</span>
      -model-features Col1:float:1 Col2:float:1 Col3:float:1 Col4:float:1 <span class="se">\</span>
      -sources <span class="nv">f</span><span class="o">=</span>csv <span class="se">\</span>
      -source-filename train.csv <span class="se">\</span>
      -source-readonly <span class="se">\</span>
      -log debug
-<span class="gp"> $</span> dffml accuracy <span class="se">\</span>
+<span class="gp"> $ </span>dffml accuracy <span class="se">\</span>
      -model scikitkmeans <span class="se">\</span>
      -model-features Col1:float:1 Col2:float:1 Col3:float:1 Col4:float:1<span class="se">\</span>
      -model-tcluster cluster:int:1 <span class="se">\</span>
@@ -1783,7 +1783,7 @@ their feature names.</p>
      -source-readonly <span class="se">\</span>
      -log debug
 <span class="go"> 0.6365141682948129</span>
-<span class="gp"> $</span> <span class="nb">echo</span> -e <span class="s1">&#39;Col1,Col2,Col3,Col4\n6.09809669,8.36434181,6.70940915,-7.91491768\n&#39;</span> <span class="p">|</span> <span class="se">\</span>
+<span class="gp"> $ </span><span class="nb">echo</span> -e <span class="s1">&#39;Col1,Col2,Col3,Col4\n6.09809669,8.36434181,6.70940915,-7.91491768\n&#39;</span> <span class="p">|</span> <span class="se">\</span>
    dffml predict all <span class="se">\</span>
      -model scikitkmeans <span class="se">\</span>
      -model-features Col1:float:1 Col2:float:1 Col3:float:1 Col4:float:1 <span class="se">\</span>

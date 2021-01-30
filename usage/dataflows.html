@@ -205,7 +205,7 @@
 <h1>DataFlow HTTP Deployment<a class="headerlink" href="#dataflow-http-deployment" title="Permalink to this headline">¶</a></h1>
 <p>In the <a class="reference internal" href="../tutorials/operations.html"><span class="doc">New Operations Tutorial</span></a> we created a command line meta static
 analysis tool, <code class="docutils literal notranslate"><span class="pre">shouldi</span></code>.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> shouldi install dffml insecure-package
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>shouldi install dffml insecure-package
 <span class="go">dffml is okay to install</span>
 <span class="go">Do not install insecure-package!</span>
 <span class="go">    safety_check_number_of_issues: 1</span>
@@ -216,7 +216,7 @@ analysis tool, <code class="docutils literal notranslate"><span class="pre">shou
 operations tutorial, we registered our operations with Python’s <code class="docutils literal notranslate"><span class="pre">entrypoint</span></code>
 system. This allows other Python packages and DFFML plugins to access them
 without the need to hardcode in <code class="docutils literal notranslate"><span class="pre">import</span></code> statements.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> curl -s <span class="se">\</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>curl -s <span class="se">\</span>
   --header <span class="s2">&quot;Content-Type: application/json&quot;</span> <span class="se">\</span>
   --request POST <span class="se">\</span>
   --data <span class="s1">&#39;{&quot;insecure-package&quot;: [{&quot;value&quot;:&quot;insecure-package&quot;,&quot;definition&quot;:&quot;package&quot;}]}&#39;</span> <span class="se">\</span>
@@ -247,14 +247,14 @@ without the need to hardcode in <code class="docutils literal notranslate"><span
 representations of DataFlows are not fun to hand edit. YAML looks a lot cleaner.</p>
 <p>We’re going to install the <code class="docutils literal notranslate"><span class="pre">dffml-config-yaml</span></code> package so that we don’t have
 to look at JSON.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python3.7 -m pip install dffml-config-yaml
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python3.7 -m pip install dffml-config-yaml
 </pre></div>
 </div>
 <p>We’ll be working from the top level directory of the <code class="docutils literal notranslate"><span class="pre">shouldi</span></code> package we
 created in the <a class="reference internal" href="../tutorials/operations.html"><span class="doc">New Operations Tutorial</span></a>.</p>
 <p>The source for that package is also available under the <code class="docutils literal notranslate"><span class="pre">examples/shouldi</span></code>
 directory of the DFFML source code.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> <span class="nb">cd</span> examples/shouldi
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">cd</span> examples/shouldi
 </pre></div>
 </div>
 <p>Config files are named after the dataflow they are associated with. In the
@@ -262,7 +262,7 @@ directory of the DFFML source code.</p>
 <a class="reference internal" href="../tutorials/operations.html"><span class="doc">New Operations Tutorial</span></a>, we serialized the <code class="docutils literal notranslate"><span class="pre">shouldi</span></code> dataflow to the
 <code class="docutils literal notranslate"><span class="pre">shouldi/deploy/df</span></code> directory.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">df</span></code> directory is contains the main dataflows to be deployed.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> tree shouldi/deploy/
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>tree shouldi/deploy/
 <span class="go">shouldi/deploy/</span>
 <span class="go">└── df</span>
 <span class="go">    └── shouldi.json</span>
@@ -284,7 +284,7 @@ when a particular word immediately follows the bots name.</p>
 <p>The HTTP server was the first <code class="docutils literal notranslate"><span class="pre">MultiComm</span></code> written for DFFML. It’s channels of
 communication are URL paths (Example: <code class="docutils literal notranslate"><span class="pre">/some/url/path</span></code>).</p>
 <p>Let’s install the HTTP API service.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python3.7 -m pip install dffml-service-http
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python3.7 -m pip install dffml-service-http
 </pre></div>
 </div>
 </div>
@@ -296,7 +296,7 @@ communication channel, which is the association of a URL path to the dataflow.</
 config files go under the <code class="docutils literal notranslate"><span class="pre">mc</span></code> directory of the directory being
 used to deploy. Then config file itself then goes under the name of the
 <code class="docutils literal notranslate"><span class="pre">MultiComm</span></code> its associated with, <code class="docutils literal notranslate"><span class="pre">http</span></code> in this instance.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> mkdir -p shouldi/deploy/mc/http
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>mkdir -p shouldi/deploy/mc/http
 </pre></div>
 </div>
 <p>The file is populated with the URL path that should trigger the dataflow, how to
@@ -320,12 +320,12 @@ tutorial. See documentation on HTTP API
 </div>
 <p>We now start the http server and tell it that the <code class="docutils literal notranslate"><span class="pre">MultiComm</span></code> configuration
 directory can be found in <code class="docutils literal notranslate"><span class="pre">shouldi/deploy</span></code>.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml service http server -insecure -mc-config shouldi/deploy
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml service http server -insecure -mc-config shouldi/deploy
 </pre></div>
 </div>
 <p>In another terminal, you can send a <code class="docutils literal notranslate"><span class="pre">POST</span></code> request containing the <code class="docutils literal notranslate"><span class="pre">Input</span></code>
 items that you want evaluated.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> curl -s <span class="se">\</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>curl -s <span class="se">\</span>
   --header <span class="s2">&quot;Content-Type: application/json&quot;</span> <span class="se">\</span>
   --request POST <span class="se">\</span>
   --data <span class="s1">&#39;{&quot;insecure-package&quot;: [{&quot;value&quot;:&quot;insecure-package&quot;,&quot;definition&quot;:&quot;package&quot;}]}&#39;</span> <span class="se">\</span>
@@ -355,7 +355,7 @@ items that you want evaluated.</p>
 Git and source code analysis related operations (a list of all available
 operations can be found on the <a class="reference internal" href="../plugins/dffml_operation.html"><span class="doc">Operations</span></a> plugins page).</p>
 <p>We’ll be using those operations, so we need to install them</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python3.7 -m pip install dffml-feature-git
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python3.7 -m pip install dffml-feature-git
 </pre></div>
 </div>
 <p>The <code class="docutils literal notranslate"><span class="pre">lines_of_code_to_comments</span></code> operation will give use the ratio of the
@@ -363,14 +363,14 @@ number of lines of comments to the number of lines of code.</p>
 <p>You need to install <a class="reference external" href="https://github.com/XAMPPRocky/tokei">tokei</a> before you
 can use <code class="docutils literal notranslate"><span class="pre">lines_of_code_to_comments</span></code>.</p>
 <p>On Linux</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> curl -sSL <span class="s1">&#39;https://github.com/XAMPPRocky/tokei/releases/download/v10.1.1/tokei-v10.1.1-x86_64-apple-darwin.tar.gz&#39;</span> <span class="se">\</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>curl -sSL <span class="s1">&#39;https://github.com/XAMPPRocky/tokei/releases/download/v10.1.1/tokei-v10.1.1-x86_64-apple-darwin.tar.gz&#39;</span> <span class="se">\</span>
   <span class="p">|</span> tar -xvz <span class="o">&amp;&amp;</span> <span class="se">\</span>
   <span class="nb">echo</span> <span class="s1">&#39;22699e16e71f07ff805805d26ee86ecb9b1052d7879350f7eb9ed87beb0e6b84fbb512963d01b75cec8e80532e4ea29a tokei&#39;</span> <span class="p">|</span> sha384sum -c - <span class="o">&amp;&amp;</span> <span class="se">\</span>
   sudo mv tokei /usr/local/bin/
 </pre></div>
 </div>
 <p>On OSX</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> curl -sSL <span class="s1">&#39;https://github.com/XAMPPRocky/tokei/releases/download/v10.1.1/tokei-v10.1.1-x86_64-apple-darwin.tar.gz&#39;</span> <span class="se">\</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>curl -sSL <span class="s1">&#39;https://github.com/XAMPPRocky/tokei/releases/download/v10.1.1/tokei-v10.1.1-x86_64-apple-darwin.tar.gz&#39;</span> <span class="se">\</span>
   <span class="p">|</span> tar -xvz <span class="o">&amp;&amp;</span> <span class="se">\</span>
   <span class="nb">echo</span> <span class="s1">&#39;8c8a1d8d8dd4d8bef93dabf5d2f6e27023777f8553393e269765d7ece85e68837cba4374a2615d83f071dfae22ba40e2 tokei&#39;</span> <span class="p">|</span> sha384sum -c - <span class="o">&amp;&amp;</span> <span class="se">\</span>
   sudo mv tokei /usr/local/bin/
@@ -399,14 +399,14 @@ operations within the <code class="docutils literal notranslate"><span class="pr
 <p>Let’s create the <code class="docutils literal notranslate"><span class="pre">override</span></code> directory which will contain the operations we
 want to add to the <code class="docutils literal notranslate"><span class="pre">shouldi</span></code> dataflow, and how we want to connect those
 operations with the existing ones.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> mkdir -p shouldi/deploy/override
-<span class="gp">$</span> dffml dataflow create -config yaml <span class="se">\</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>mkdir -p shouldi/deploy/override
+<span class="gp">$ </span>dffml dataflow create -config yaml <span class="se">\</span>
   dffml.mapping.create lines_of_code_by_language lines_of_code_to_comments <span class="se">\</span>
   &gt; shouldi/deploy/override/shouldi.yaml
 </pre></div>
 </div>
 <p>The final directory structure should look like this</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> tree shouldi/deploy
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>tree shouldi/deploy
 <span class="go">shouldi/deploy</span>
 <span class="go">├── df</span>
 <span class="go">│   └── shouldi.json</span>
@@ -518,7 +518,7 @@ operations with the existing ones.</p>
 </div>
 <p>We’ve modified the flow to create the following dataflow</p>
 <img alt="Diagram showing DataFlow with use of comment to code ratio" src="../_images/shouldi-dataflow-extended.svg" /><p>The diagram above can be re-generated with the following commands</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml dataflow merge <span class="se">\</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml dataflow merge <span class="se">\</span>
     shouldi/deploy/df/shouldi.json <span class="se">\</span>
     shouldi/deploy/override/shouldi.yaml <span class="p">|</span> <span class="se">\</span>
   dffml dataflow diagram <span class="se">\</span>
@@ -533,11 +533,11 @@ results in the graph.</p>
 <h2>Redeploying<a class="headerlink" href="#redeploying" title="Permalink to this headline">¶</a></h2>
 <p>We can now stop the server we had running, and start it again with the new
 configs.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml service http server -insecure -mc-config shouldi/deploy
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml service http server -insecure -mc-config shouldi/deploy
 </pre></div>
 </div>
 <p>Here’s an example of evaluating two packages using the new DataFlow.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> curl -s <span class="se">\</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>curl -s <span class="se">\</span>
   --header <span class="s2">&quot;Content-Type: application/json&quot;</span> <span class="se">\</span>
   --request POST <span class="se">\</span>
   --data <span class="s1">&#39;{&quot;insecure-package&quot;: [{&quot;value&quot;:&quot;insecure-package&quot;,&quot;definition&quot;:&quot;package&quot;}], &quot;dffml&quot;: [{&quot;value&quot;:&quot;dffml&quot;,&quot;definition&quot;:&quot;package&quot;}]}&#39;</span> <span class="se">\</span>

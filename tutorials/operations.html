@@ -219,7 +219,7 @@ enters the network, that operation is then run.</p>
 tools. With the goal being to create a command line utility called <code class="docutils literal notranslate"><span class="pre">shouldi</span></code>
 which will provide us with the information we need to make the decision, should
 I install Python package X? When it’s done it’ll look like this</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> shouldi install dffml insecure-package
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>shouldi install dffml insecure-package
 <span class="go">dffml is okay to install</span>
 <span class="go">Do not install insecure-package!</span>
 <span class="go">    safety_check_number_of_issues: 1</span>
@@ -228,7 +228,7 @@ I install Python package X? When it’s done it’ll look like this</p>
 </div>
 <p>In the second half of this tutorial, we’ll deploy the tool as an HTTP API
 endpoint rather than a command line application.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> curl -s <span class="se">\</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>curl -s <span class="se">\</span>
   --header <span class="s2">&quot;Content-Type: application/json&quot;</span> <span class="se">\</span>
   --request POST <span class="se">\</span>
   --data <span class="s1">&#39;{&quot;insecure-package&quot;: [{&quot;value&quot;:&quot;insecure-package&quot;,&quot;definition&quot;:&quot;package&quot;}]}&#39;</span> <span class="se">\</span>
@@ -261,7 +261,7 @@ output of static analysis tools. The two tools we’ll use are <code class="docu
 <p><code class="docutils literal notranslate"><span class="pre">safety</span></code> is a tool that checks for known vulnerabilities in packages published
 on PyPi. This is how running safety on the command line works, we supply the
 package name and version.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> <span class="nb">echo</span> insecure-package<span class="o">==</span><span class="m">0</span>.1.0 <span class="p">|</span> safety check --stdin
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">echo</span> insecure-package<span class="o">==</span><span class="m">0</span>.1.0 <span class="p">|</span> safety check --stdin
 <span class="go">╒══════════════════════════════════════════════════════════════════════════════╕</span>
 <span class="go">│                                                                              │</span>
 <span class="go">│                               /$$$$$$            /$$                         │</span>
@@ -289,7 +289,7 @@ package name and version.</p>
 <p><code class="docutils literal notranslate"><span class="pre">bandit</span></code> is a tool that does static analysis on the source code of Python
 projects to check for things like SQL injections. This is how running <code class="docutils literal notranslate"><span class="pre">bandit</span></code>
 on the command line works, we supply the path to the source directory to scan.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> bandit -r distributed-android-testing/
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>bandit -r distributed-android-testing/
 <span class="go">[main]  INFO    profile include tests: None</span>
 <span class="go">[main]  INFO    profile exclude tests: None</span>
 <span class="go">[main]  INFO    cli include tests: None</span>
@@ -335,8 +335,8 @@ prototype in C.</p>
 <div class="section" id="creating-our-package">
 <h2>Creating our Package<a class="headerlink" href="#creating-our-package" title="Permalink to this headline">¶</a></h2>
 <p>Create a new package using the create script.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml service dev create operations shouldi
-<span class="gp">$</span> <span class="nb">cd</span> shouldi
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml service dev create operations shouldi
+<span class="gp">$ </span><span class="nb">cd</span> shouldi
 </pre></div>
 </div>
 <div class="admonition note">
@@ -346,7 +346,7 @@ prototype in C.</p>
 directory of the DFFML source code.</p>
 </div>
 <p>Remove the example files as we won’t be needing them</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> rm shouldi/operations.py shouldi/definitions.py tests/test_operations.py
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>rm shouldi/operations.py shouldi/definitions.py tests/test_operations.py
 </pre></div>
 </div>
 </div>
@@ -371,14 +371,14 @@ dependences. For packages, we can declare our dependencies right in our
 the latest version and use that version.</p>
 </div>
 <p>Now install the newly created package in development mode.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python3.7 -m pip install -e .
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python3.7 -m pip install -e .
 </pre></div>
 </div>
 </div>
 <div class="section" id="safety-operation">
 <h2>Safety Operation<a class="headerlink" href="#safety-operation" title="Permalink to this headline">¶</a></h2>
 <p>To get parsable output, we’ll run <code class="docutils literal notranslate"><span class="pre">safety</span></code> with the <code class="docutils literal notranslate"><span class="pre">--json</span></code> flag.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> <span class="nb">echo</span> insecure-package<span class="o">==</span><span class="m">0</span>.1.0 <span class="p">|</span> safety check --stdin --json
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">echo</span> insecure-package<span class="o">==</span><span class="m">0</span>.1.0 <span class="p">|</span> safety check --stdin --json
 <span class="go">[</span>
 <span class="go">    [</span>
 <span class="go">        &quot;insecure-package&quot;,</span>
@@ -449,14 +449,14 @@ the latest version and use that version.</p>
 </pre></div>
 </div>
 <p>Run the tests</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python3.7 setup.py <span class="nb">test</span> -s tests.test_safety
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python3.7 setup.py <span class="nb">test</span> -s tests.test_safety
 </pre></div>
 </div>
 </div>
 <div class="section" id="bandit-operation">
 <h2>Bandit Operation<a class="headerlink" href="#bandit-operation" title="Permalink to this headline">¶</a></h2>
 <p>To get parsable output, we’ll run with the <code class="docutils literal notranslate"><span class="pre">-f</span> <span class="pre">json</span></code> flag.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> bandit -r -f json distributed-android-testing/
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>bandit -r -f json distributed-android-testing/
 <span class="go">{</span>
 <span class="go">  &quot;metrics&quot;: {</span>
 <span class="go">    &quot;_totals&quot;: {</span>
@@ -576,7 +576,7 @@ the latest version and use that version.</p>
 </pre></div>
 </div>
 <p>Run the tests</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python3.7 setup.py <span class="nb">test</span> -s tests.test_bandit
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python3.7 setup.py <span class="nb">test</span> -s tests.test_bandit
 </pre></div>
 </div>
 </div>
@@ -802,7 +802,7 @@ with it.</p>
 </pre></div>
 </div>
 <p>Run the tests</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python3.7 setup.py <span class="nb">test</span> -s tests.test_pypi
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python3.7 setup.py <span class="nb">test</span> -s tests.test_pypi
 </pre></div>
 </div>
 </div>
@@ -939,7 +939,7 @@ command line.</p>
 </pre></div>
 </div>
 <p>Run the all the tests this time</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python3.7 setup.py <span class="nb">test</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python3.7 setup.py <span class="nb">test</span>
 </pre></div>
 </div>
 <p>We want this to be usable as a command line utility, Python’s
@@ -954,12 +954,12 @@ the <code class="docutils literal notranslate"><span class="pre">shouldi.cli</sp
 </pre></div>
 </div>
 <p>Re-install the package via pip</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python3.7 -m pip install -e .
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python3.7 -m pip install -e .
 </pre></div>
 </div>
 <p>Now we should be able to run our new tool via the CLI! (Provided your <code class="docutils literal notranslate"><span class="pre">$PATH</span></code>
 is set up correctly).</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> shouldi install dffml insecure-package
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>shouldi install dffml insecure-package
 <span class="go">dffml is okay to install</span>
 <span class="go">Do not install insecure-package!</span>
 <span class="go">    safety_check_number_of_issues: 1</span>
@@ -978,15 +978,15 @@ You can also convert between config file formats with the
 <a class="reference internal" href="../cli.html#cli-config-convert"><span class="std std-ref">Convert</span></a> command.</p>
 </div>
 <p>We first export the DataFlow to a config file on disk.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> mkdir -p shouldi/deploy/df
-<span class="gp">$</span> dffml service dev <span class="nb">export</span> -config json shouldi.cli:DATAFLOW <span class="se">\</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>mkdir -p shouldi/deploy/df
+<span class="gp">$ </span>dffml service dev <span class="nb">export</span> -config json shouldi.cli:DATAFLOW <span class="se">\</span>
   &gt; shouldi/deploy/df/shouldi.json
 </pre></div>
 </div>
 <p>We then create the mermaidjs digarm from the DataFlow. The <code class="docutils literal notranslate"><span class="pre">-simple</span></code> flag says
 to only show connections between operations, don’t show which inputs and outputs
 are connected.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml dataflow diagram -simple shouldi/deploy/df/shouldi.json
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml dataflow diagram -simple shouldi/deploy/df/shouldi.json
 <span class="go">graph TD</span>
 <span class="go">subgraph a759a07029077edc5c37fea0326fa281[Processing Stage]</span>
 <span class="go">style a759a07029077edc5c37fea0326fa281 fill:#afd388b5,stroke:#a4ca7a</span>
@@ -1050,7 +1050,7 @@ DFFML, we need to register them with Python’s <code class="docutils literal no
 </pre></div>
 </div>
 <p>Re-install the package via pip to make registrations take effect.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python3.7 -m pip install -e .
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python3.7 -m pip install -e .
 </pre></div>
 </div>
 <p>After you’ve registered the operations, services such as the
@@ -1059,7 +1059,7 @@ DFFML, we need to register them with Python’s <code class="docutils literal no
 service’s <code class="docutils literal notranslate"><span class="pre">entrypoints</span> <span class="pre">list</span></code> command. You should see the <code class="docutils literal notranslate"><span class="pre">get_single</span></code>
 operation we used to get our output as comming from <code class="docutils literal notranslate"><span class="pre">dffml</span></code>. You’ll also see
 your own operations as coming from <code class="docutils literal notranslate"><span class="pre">shouldi</span></code>.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml service dev entrypoints list dffml.operation
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml service dev entrypoints list dffml.operation
 <span class="go">associate = dffml.operation.output:Associate -&gt; dffml 0.2.1 (/usr/local/lib/python3.7/dist-packages)</span>
 <span class="go">dffml.mapping.create = dffml.operation.mapping:create_mapping -&gt; dffml 0.2.1 (/usr/local/lib/python3.7/dist-packages)</span>
 <span class="go">dffml.mapping.extract = dffml.operation.mapping:mapping_extract_value -&gt; dffml 0.2.1 (/usr/local/lib/python3.7/dist-packages)</span>
@@ -1076,7 +1076,7 @@ your own operations as coming from <code class="docutils literal notranslate"><s
 </div>
 <p>The <a class="reference internal" href="../usage/dataflows.html"><span class="doc">DataFlow HTTP Deployment</span></a> usage example will show you how to expose your new
 meta static analysis tool over an HTTP interface.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> curl -s <span class="se">\</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>curl -s <span class="se">\</span>
   --header <span class="s2">&quot;Content-Type: application/json&quot;</span> <span class="se">\</span>
   --request POST <span class="se">\</span>
   --data <span class="s1">&#39;{&quot;insecure-package&quot;: [{&quot;value&quot;:&quot;insecure-package&quot;,&quot;definition&quot;:&quot;package&quot;}]}&#39;</span> <span class="se">\</span>

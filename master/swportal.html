@@ -7,16 +7,13 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Software Portal &mdash; DFFML 28cca076 documentation</title>
+  <title>Software Portal &mdash; DFFML 653f28ad documentation</title>
   
 
   
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="_static/sphinx_tabs/semantic-ui-2.4.1/segment.min.css" type="text/css" />
-  <link rel="stylesheet" href="_static/sphinx_tabs/semantic-ui-2.4.1/menu.min.css" type="text/css" />
-  <link rel="stylesheet" href="_static/sphinx_tabs/semantic-ui-2.4.1/tab.min.css" type="text/css" />
-  <link rel="stylesheet" href="_static/sphinx_tabs/tabs.css" type="text/css" />
+  <link rel="stylesheet" href="_static/tabs.css" type="text/css" />
 
   
   
@@ -69,7 +66,7 @@
             
             
               <div class="version">
-                28cca076
+                653f28ad
               </div>
             
           
@@ -219,9 +216,9 @@ directory of the DFFML source code.</p>
 <div class="section" id="setup">
 <h2>Setup<a class="headerlink" href="#setup" title="Permalink to this headline">¶</a></h2>
 <p>Install dependencies</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python -m pip install -U pip setuptools wheel
-<span class="gp">$</span> python -m pip install -U dffml dffml-service-http dffml-config-yaml
-<span class="gp">$</span> python -m pip install -r requirements.txt
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python -m pip install -U pip setuptools wheel
+<span class="gp">$ </span>python -m pip install -U dffml dffml-service-http dffml-config-yaml
+<span class="gp">$ </span>python -m pip install -r requirements.txt
 </pre></div>
 </div>
 </div>
@@ -234,7 +231,7 @@ directory of the DFFML source code.</p>
 tutorial. See documentation on HTTP API
 <a class="reference internal" href="plugins/service/http/security.html"><span class="doc">Security</span></a> for more information.</p>
 </div>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml service http server <span class="se">\</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml service http server <span class="se">\</span>
     -port <span class="m">8080</span> <span class="se">\</span>
     -mc-atomic <span class="se">\</span>
     -mc-config projects <span class="se">\</span>
@@ -245,11 +242,11 @@ tutorial. See documentation on HTTP API
 </pre></div>
 </div>
 <p>Query all projects</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> curl -sf http://localhost:8080/projects
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>curl -sf http://localhost:8080/projects
 </pre></div>
 </div>
 <p>Get a specific project. This triggers a project’s DataFlow to run.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> curl -sf http://localhost:8080/projects/72b4720a-a547-4ef7-9729-dbbe3265ddaa
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>curl -sf http://localhost:8080/projects/72b4720a-a547-4ef7-9729-dbbe3265ddaa
 </pre></div>
 </div>
 </div>
@@ -278,7 +275,7 @@ gernating data dynamiclly is required, code can be added to <cite>operations/</c
 <div class="section" id="notes">
 <h2>Notes<a class="headerlink" href="#notes" title="Permalink to this headline">¶</a></h2>
 <p>Run a single project’s DataFlow from the command line</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml dataflow run single <span class="se">\</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml dataflow run single <span class="se">\</span>
     -dataflow projects/df/b7cf5596-d427-4ae3-9e95-44be879eae73.yaml <span class="se">\</span>
     -log debug
 </pre></div>

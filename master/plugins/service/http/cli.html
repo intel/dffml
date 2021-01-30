@@ -7,16 +7,13 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Command Line &mdash; DFFML 28cca076 documentation</title>
+  <title>Command Line &mdash; DFFML 653f28ad documentation</title>
   
 
   
   <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../../../_static/sphinx_tabs/semantic-ui-2.4.1/segment.min.css" type="text/css" />
-  <link rel="stylesheet" href="../../../_static/sphinx_tabs/semantic-ui-2.4.1/menu.min.css" type="text/css" />
-  <link rel="stylesheet" href="../../../_static/sphinx_tabs/semantic-ui-2.4.1/tab.min.css" type="text/css" />
-  <link rel="stylesheet" href="../../../_static/sphinx_tabs/tabs.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/tabs.css" type="text/css" />
 
   
   
@@ -69,7 +66,7 @@
             
             
               <div class="version">
-                28cca076
+                653f28ad
               </div>
             
           
@@ -238,7 +235,7 @@ domain is hosting the JavaScript files attempting to access the server (<code cl
 want when you’re trying it out for the first time.</p>
 <p>You can add these flags to any of the following commands to make the server
 insecure, but easy for you to access for development purposes.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml service http server -insecure -cors <span class="s1">&#39;*&#39;</span> -addr <span class="m">0</span>.0.0.0 -port <span class="m">8080</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml service http server -insecure -cors <span class="s1">&#39;*&#39;</span> -addr <span class="m">0</span>.0.0.0 -port <span class="m">8080</span>
 </pre></div>
 </div>
 </div>
@@ -246,7 +243,7 @@ insecure, but easy for you to access for development purposes.</p>
 <h2>Models<a class="headerlink" href="#models" title="Permalink to this headline">¶</a></h2>
 <p>To have the server start with models already configured and ready to be used for
 training, accuracy assessment, or prediction, use the <code class="docutils literal notranslate"><span class="pre">-models</span></code> flag.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml service http server <span class="se">\</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml service http server <span class="se">\</span>
     -models <span class="nv">mymodel</span><span class="o">=</span>slr <span class="se">\</span>
     -model-mymodel-features X:float:1 <span class="se">\</span>
     -model-mymodel-predict Y:float:1
@@ -257,7 +254,7 @@ training, accuracy assessment, or prediction, use the <code class="docutils lite
 <h2>Sources<a class="headerlink" href="#sources" title="Permalink to this headline">¶</a></h2>
 <p>To have the server start with sources already configured and ready to be used
 for record retrieval or updating, use the <code class="docutils literal notranslate"><span class="pre">-sources</span></code> flag.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml service http server <span class="se">\</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml service http server <span class="se">\</span>
     -sources <span class="nv">mysource</span><span class="o">=</span>csv <span class="se">\</span>
     -source-mysource-filename training.csv
 </pre></div>
@@ -269,7 +266,7 @@ for record retrieval or updating, use the <code class="docutils literal notransl
 HTTP server, you can do so via the <code class="docutils literal notranslate"><span class="pre">-static</span></code> flag. Content will be served from
 the root <code class="docutils literal notranslate"><span class="pre">/</span></code>. Dynamically registered paths for DataFlows take priority static
 paths, and static paths take priority over Model and Source related paths.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml service http server -static .
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml service http server -static .
 </pre></div>
 </div>
 </div>

@@ -7,16 +7,13 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Redeploying on receving GitHub webhook &mdash; DFFML 28cca076 documentation</title>
+  <title>Redeploying on receving GitHub webhook &mdash; DFFML 653f28ad documentation</title>
   
 
   
   <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/sphinx_tabs/semantic-ui-2.4.1/segment.min.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/sphinx_tabs/semantic-ui-2.4.1/menu.min.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/sphinx_tabs/semantic-ui-2.4.1/tab.min.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/sphinx_tabs/tabs.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/tabs.css" type="text/css" />
 
   
   
@@ -69,7 +66,7 @@
             
             
               <div class="version">
-                28cca076
+                653f28ad
               </div>
             
           
@@ -227,12 +224,12 @@ we push to the default branch, the new version is pulled and its docker containe
 <div class="section" id="webhook-dataflow">
 <h2>Webhook Dataflow<a class="headerlink" href="#webhook-dataflow" title="Permalink to this headline">¶</a></h2>
 <p>We’ll be using operations from <code class="docutils literal notranslate"><span class="pre">dffml-operations-deploy</span></code>, <code class="docutils literal notranslate"><span class="pre">dffml-feature-git</span></code>, <code class="docutils literal notranslate"><span class="pre">dffml-config-yaml</span></code>.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> pip install dffml-operations-deploy dffml-feature-git dffml-config-yaml
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>pip install dffml-operations-deploy dffml-feature-git dffml-config-yaml
 </pre></div>
 </div>
 <p>Setup a http server in <code class="docutils literal notranslate"><span class="pre">ffmpeg/deploy/webhook</span></code>, to receive webhook and redploy ffmpeg</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> mkdir -p deploy/webhook/df deploy/webhook/mc/http
-<span class="gp">$</span> dffml dataflow create <span class="se">\</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>mkdir -p deploy/webhook/df deploy/webhook/mc/http
+<span class="gp">$ </span>dffml dataflow create <span class="se">\</span>
     -configloader yaml <span class="se">\</span>
     -inputs <span class="se">\</span>
       <span class="nv">true</span><span class="o">=</span>valid_git_repository_URL <span class="se">\</span>
@@ -265,7 +262,7 @@ setup in GitHub.</p>
 </div>
 <p>Config</p>
 <p><strong>deploy/webhook/mc/http/webhook.yaml</strong></p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> cat &gt; ./deploy/webhook/mc/http/webhook.yaml &lt;&lt;EOF
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>cat &gt; ./deploy/webhook/mc/http/webhook.yaml &lt;&lt;EOF
 <span class="go">path: /webhook/github</span>
 <span class="go">output_mode: json</span>
 <span class="go">input_mode: bytes:payload</span>
@@ -284,7 +281,7 @@ from post request will be passed as bytes to the dataflow with
 completes running to send a response back, so we also add an
 <code class="docutils literal notranslate"><span class="pre">immediate_response</span></code> to the server configuration.</p>
 <p>Deploy it in port 8081 as 8080 is being used by ffmpeg http service</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml service http server -insecure -mc-config deploy/webhook -port <span class="m">8081</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml service http server -insecure -mc-config deploy/webhook -port <span class="m">8081</span>
 </pre></div>
 </div>
 <div class="admonition note">
@@ -292,12 +289,12 @@ completes running to send a response back, so we also add an
 <p>If you’re not setting this up on a server directly accessible on the internet,
 here are two methods of exposing the webhook,</p>
 <p>Using <a class="reference external" href="https://localhost.run">localhost.run</a></p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> ssh -R <span class="m">80</span>:localhost:8081 <span class="nv">$RANDOM</span>@ssh.localhost.run
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>ssh -R <span class="m">80</span>:localhost:8081 <span class="nv">$RANDOM</span>@ssh.localhost.run
 </pre></div>
 </div>
 <img alt="../../_images/localhost_run.png" src="../../_images/localhost_run.png" />
 <p>Using ngrok</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> ~/ngrok http <span class="m">8081</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>~/ngrok http <span class="m">8081</span>
 </pre></div>
 </div>
 <img alt="../../_images/ngrok_out.png" src="../../_images/ngrok_out.png" />

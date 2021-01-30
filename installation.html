@@ -196,18 +196,18 @@ manager doesn’t provide Python 3.7,
 <a class="reference external" href="https://github.com/pyenv/pyenv#simple-python-version-management-pyenv">pyenv</a>
 is another good way to install it. You could also use the docker container.</p>
 <p>DFFML is available via pip.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python3.7 -m pip install -U dffml<span class="o">[</span>all<span class="o">]</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python3.7 -m pip install -U dffml<span class="o">[</span>all<span class="o">]</span>
 </pre></div>
 </div>
 <p>The <code class="docutils literal notranslate"><span class="pre">[all]</span></code> suffix tells <code class="docutils literal notranslate"><span class="pre">pip</span></code> to install all of the core plugins. This
 includes the <code class="docutils literal notranslate"><span class="pre">sklearn</span></code> and <code class="docutils literal notranslate"><span class="pre">tensorflow</span></code> models, <code class="docutils literal notranslate"><span class="pre">MySQL</span></code> source, etc.</p>
 <p>If you want to stay on the bleeding edge of bug fixes, etc. Install via git.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python3.7 -m pip install -U git+https://github.com/intel/dffml
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python3.7 -m pip install -U git+https://github.com/intel/dffml
 </pre></div>
 </div>
 <p>If you want to install all of the machine learning model plugins that are
 maintained as a part of the core repository, you can append <code class="docutils literal notranslate"><span class="pre">[models]</span></code>.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python3.7 -m pip install -U dffml<span class="o">[</span>models<span class="o">]</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python3.7 -m pip install -U dffml<span class="o">[</span>models<span class="o">]</span>
 </pre></div>
 </div>
 <p>There’s an online IDE based on Theia (similar to VS Code) called GitPod that
@@ -220,18 +220,18 @@ run the above commands to get the lastest released version.</p>
 <p>For Ubuntu 18.XX python3 means Python 3.6 so far as <code class="docutils literal notranslate"><span class="pre">apt</span></code> is concerend.
 However, <code class="docutils literal notranslate"><span class="pre">python3-pip</span></code> works for all 3.X versions. So you’ll need to install
 the following packages to get <code class="docutils literal notranslate"><span class="pre">python3.7</span></code> with <code class="docutils literal notranslate"><span class="pre">pip</span></code>.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> sudo apt-get update <span class="o">&amp;&amp;</span> sudo apt-get install -y python3.7 python3-pip
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo apt-get update <span class="o">&amp;&amp;</span> sudo apt-get install -y python3.7 python3-pip
 </pre></div>
 </div>
 </div>
 <div class="section" id="docker">
 <h2>Docker<a class="headerlink" href="#docker" title="Permalink to this headline">¶</a></h2>
 <p>This is a good option if you don’t want to deal with installing Python 3.7.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> docker pull intelotc/dffml
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>docker pull intelotc/dffml
 </pre></div>
 </div>
 <p>You can also build the container image yourself if you’d like.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> docker build -t intelotc/dffml .
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>docker build -t intelotc/dffml .
 </pre></div>
 </div>
 <p>You can then make a bash function to run the dffml docker container.</p>
@@ -249,7 +249,7 @@ the following packages to get <code class="docutils literal notranslate"><span c
 into <code class="docutils literal notranslate"><span class="pre">/workdir</span></code> as well as your <code class="docutils literal notranslate"><span class="pre">$HOME/.local</span></code> to the same in the container.</p>
 <p>With the alias, you can run <code class="docutils literal notranslate"><span class="pre">dffml</span></code> commands as if you’d installed via
 <code class="docutils literal notranslate"><span class="pre">pip</span></code>.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml list
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml list
 </pre></div>
 </div>
 <p>Keep in mind that if you’re working on files they can only be ones in your
@@ -260,7 +260,7 @@ instead of <code class="docutils literal notranslate"><span class="pre">localhos
 <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span></code> anything, you can, and it will persist between invocations due
 to that being on the host.</p>
 <p>If you wan to run <code class="docutils literal notranslate"><span class="pre">pip</span></code> you can put it after <code class="docutils literal notranslate"><span class="pre">dffml</span></code>.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml pip install example
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml pip install example
 </pre></div>
 </div>
 </div>

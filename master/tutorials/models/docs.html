@@ -7,16 +7,13 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Documenting a Model &mdash; DFFML 28cca076 documentation</title>
+  <title>Documenting a Model &mdash; DFFML 653f28ad documentation</title>
   
 
   
   <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/sphinx_tabs/semantic-ui-2.4.1/segment.min.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/sphinx_tabs/semantic-ui-2.4.1/menu.min.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/sphinx_tabs/semantic-ui-2.4.1/tab.min.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/sphinx_tabs/tabs.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/tabs.css" type="text/css" />
 
   
   
@@ -69,7 +66,7 @@
             
             
               <div class="version">
-                28cca076
+                653f28ad
               </div>
             
           
@@ -234,9 +231,9 @@ the class’s docstring.</p>
 <p>This tutorial is meant to go after the <a class="reference internal" href="package.html#model-tutorial-package"><span class="std std-ref">Packaging a Model</span></a> tutorial.</p>
 <p>It’s okay if you skipped to here though you can get up to speed by running the
 following commands.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml service dev create model dffml-model-myslr
-<span class="gp">$</span> <span class="nb">cd</span> dffml-model-myslr
-<span class="gp">$</span> python -m pip install --force-reinstall -e .
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml service dev create model dffml-model-myslr
+<span class="gp">$ </span><span class="nb">cd</span> dffml-model-myslr
+<span class="gp">$ </span>python -m pip install --force-reinstall -e .
 </pre></div>
 </div>
 <div class="section" id="python-docstrings">
@@ -244,7 +241,7 @@ following commands.</p>
 <p>A docstring in Python is a comment immediately following a class or function
 definition. Python will print out an object’s docstring if the object is passed
 to the <a class="reference external" href="https://docs.python.org/3/library/functions.html#help" title="(in Python v3.9)"><code class="xref py py-func docutils literal notranslate"><span class="pre">help()</span></code></a> function.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python -c <span class="s1">&#39;from dffml_model_myslr.myslr import MySLRModel; help(MySLRModel)&#39;</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python -c <span class="s1">&#39;from dffml_model_myslr.myslr import MySLRModel; help(MySLRModel)&#39;</span>
 <span class="go">Help on class MySLRModel in module dffml_model_myslr.myslr:</span>
 
 <span class="go">class MySLRModel(dffml.model.model.SimpleModel)</span>
@@ -579,7 +576,7 @@ to test the model’s docstring.</p>
 <p>We can run the test using the <code class="docutils literal notranslate"><span class="pre">unittest</span></code> module. The create command gave us
 both unit tests and integration tests. We want to only run the integration test
 right now (<code class="docutils literal notranslate"><span class="pre">tests.test_integration</span></code>).</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python -m unittest -v tests.test_integration
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python -m unittest -v tests.test_integration
 </pre></div>
 </div>
 <div class="admonition note">

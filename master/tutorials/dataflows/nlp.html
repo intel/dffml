@@ -7,16 +7,13 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Using NLP Operations &mdash; DFFML 28cca076 documentation</title>
+  <title>Using NLP Operations &mdash; DFFML 653f28ad documentation</title>
   
 
   
   <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/sphinx_tabs/semantic-ui-2.4.1/segment.min.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/sphinx_tabs/semantic-ui-2.4.1/menu.min.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/sphinx_tabs/semantic-ui-2.4.1/tab.min.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/sphinx_tabs/tabs.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/tabs.css" type="text/css" />
 
   
   
@@ -69,7 +66,7 @@
             
             
               <div class="version">
-                28cca076
+                653f28ad
               </div>
             
           
@@ -231,7 +228,7 @@ we will be using the tensorflow DNNClassifier model
 <p>We will use two operations <a class="reference internal" href="../../plugins/dffml_operation.html#plugin-operation-dffml-operations-nlp-remove-stopwords"><span class="std std-ref">remove_stopwords</span></a> and <a class="reference internal" href="../../plugins/dffml_operation.html#plugin-operation-dffml-operations-nlp-get-embedding"><span class="std std-ref">get_embedding</span></a>.
 Internally, both of these operations use <a class="reference external" href="https://spacy.io/usage/spacy-101">spacy</a> functions.</p>
 <p>To install DNNClassifier model and the above mentioned operations run:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python -m pip install -U dffml-model-tensorflow dffml-operations-nlp
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python -m pip install -U dffml-model-tensorflow dffml-operations-nlp
 </pre></div>
 </div>
 <p>Operation <cite>remove_stopwords</cite> cleans the text by removing most commanly used words which give the text little or no information eg. but, or, yet, it, is, am, etc.
@@ -239,7 +236,7 @@ These words are called <cite>StopWords</cite>.
 Operation <cite>get_embedding</cite> maps the tokens in the text to their corresponding word-vectors. Here we will use embeddings from <cite>en_core_web_sm</cite> spacy model.
 You can use other models like <cite>en_core_web_md</cite>, <cite>en_core_web_lg</cite> for better results but these are bigger in size and may take a while to download.</p>
 <p>Let’s first download the <cite>en_core_web_sm</cite> model.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python -m spacy download en_core_web_sm
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python -m spacy download en_core_web_sm
 </pre></div>
 </div>
 <p>Create training data:</p>
@@ -252,7 +249,7 @@ You can use other models like <cite>en_core_web_md</cite>, <cite>en_core_web_lg<
 </pre></div>
 </div>
 <p>Now we will create a dataflow to describe how the text feature (<cite>sentence</cite>) will be processed.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml dataflow create get_single remove_stopwords get_embedding <span class="se">\</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml dataflow create get_single remove_stopwords get_embedding <span class="se">\</span>
     -inputs <span class="se">\</span>
       <span class="s1">&#39;[&quot;embedding&quot;]&#39;</span><span class="o">=</span>get_single_spec <span class="se">\</span>
       <span class="s2">&quot;en_core_web_sm&quot;</span><span class="o">=</span>spacy_model_name_def <span class="se">\</span>
@@ -270,14 +267,14 @@ You can use other models like <cite>en_core_web_md</cite>, <cite>en_core_web_lg<
 <p>Operation <cite>get_embedding</cite> takes <cite>pad_token</cite> as input (here <cite>&lt;PAD&gt;</cite>) to append to sentences of length smaller
 than <cite>max_len</cite> (here 10). A sentence which has length greater than <cite>max_len</cite> is truncated to have length equal to <cite>max_len</cite>.</p>
 <p>To visualize the dataflow run:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml dataflow diagram -stage processing -- nlp_ops_dataflow.json
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml dataflow diagram -stage processing -- nlp_ops_dataflow.json
 </pre></div>
 </div>
 <p>Copy and pasting the output of the above code into the
 <a class="reference external" href="https://mermaidjs.github.io/mermaid-live-editor">mermaidjs live editor</a>
 results in the graph.</p>
 <img alt="../../_images/dataflow_diagram3.svg" src="../../_images/dataflow_diagram3.svg" /><p>We can now use this dataflow to preprocess the data and make it ready to be fed into model:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml train <span class="se">\</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml train <span class="se">\</span>
     -model tfdnnc <span class="se">\</span>
     -model-batchsize <span class="m">100</span> <span class="se">\</span>
     -model-hidden <span class="m">5</span> <span class="m">2</span> <span class="se">\</span>
@@ -298,7 +295,7 @@ results in the graph.</p>
 Here we have taken <cite>max_len</cite> as 10 and the embedding size of <cite>en_core_web_sm</cite> is 96. So the resulting size of one input feature
 is (1,10,96).</p>
 <p>Assess accuracy:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml accuracy <span class="se">\</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml accuracy <span class="se">\</span>
     -model tfdnnc <span class="se">\</span>
     -model-batchsize <span class="m">100</span> <span class="se">\</span>
     -model-hidden <span class="m">5</span> <span class="m">2</span> <span class="se">\</span>
@@ -323,7 +320,7 @@ is (1,10,96).</p>
 </pre></div>
 </div>
 <p>Make prediction on test data:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml predict all <span class="se">\</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml predict all <span class="se">\</span>
     -model tfdnnc <span class="se">\</span>
     -model-batchsize <span class="m">100</span> <span class="se">\</span>
     -model-hidden <span class="m">5</span> <span class="m">2</span> <span class="se">\</span>
@@ -361,7 +358,7 @@ is (1,10,96).</p>
 <p>Now we will see how to use traditional ML algorithm like Naive Bayes Classifier available in <code class="docutils literal notranslate"><span class="pre">dffml-model-scikit</span></code> (<a class="reference internal" href="../../plugins/dffml_model.html#plugin-model-dffml-model-scikit"><span class="std std-ref">dffml_model_scikit</span></a>) for
 classification.</p>
 <p>Install the Naive Bayes Classifier by installing <code class="docutils literal notranslate"><span class="pre">dffml-model-scikit</span></code></p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python -m pip install -U dffml-model-scikit
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python -m pip install -U dffml-model-scikit
 </pre></div>
 </div>
 <p>Create training data:</p>
@@ -383,7 +380,7 @@ sentence at a time.
 The matrix returned by <cite>tfidf_vectorizer</cite> will be passed to <code class="docutils literal notranslate"><span class="pre">extract_array_from_matrix</span></code> (<a class="reference internal" href="../../plugins/dffml_operation.html#plugin-operation-dffml-operations-nlp-extract-array-from-matrix"><span class="std std-ref">extract_array_from_matrix</span></a>)
 which will return the array corresponding to each sentence.</p>
 <p>So, Let’s modify the dataflow to use our new operations.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml dataflow create <span class="se">\</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml dataflow create <span class="se">\</span>
     -inputs <span class="se">\</span>
       <span class="s1">&#39;[&quot;extract_array_from_matrix.outputs.result&quot;]&#39;</span><span class="o">=</span>get_single_spec <span class="se">\</span>
       <span class="nv">4</span><span class="o">=</span>source_length <span class="se">\</span>
@@ -405,11 +402,11 @@ which will return the array corresponding to each sentence.</p>
 </pre></div>
 </div>
 <p>To visualize the dataflow run:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml dataflow diagram -stage processing -- nlp_ops_dataflow.json
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml dataflow diagram -stage processing -- nlp_ops_dataflow.json
 </pre></div>
 </div>
 <p>We can now use this dataflow to preprocess the data and make it ready to be fed into model:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml train <span class="se">\</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml train <span class="se">\</span>
     -model scikitgnb <span class="se">\</span>
     -model-features extract_array_from_matrix.outputs.result:float:1 <span class="se">\</span>
     -model-predict sentiment:int:1 <span class="se">\</span>
@@ -423,7 +420,7 @@ which will return the array corresponding to each sentence.</p>
 </pre></div>
 </div>
 <p>Assess accuracy:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml accuracy <span class="se">\</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml accuracy <span class="se">\</span>
     -model scikitgnb <span class="se">\</span>
     -model-features extract_array_from_matrix.outputs.result:float:1 <span class="se">\</span>
     -model-predict sentiment:int:1 <span class="se">\</span>
@@ -452,7 +449,7 @@ which will return the array corresponding to each sentence.</p>
 <p>Processing of sentences occurs concurrently, resulting in seemingly
 randomized output order.</p>
 </div>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml predict all <span class="se">\</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml predict all <span class="se">\</span>
     -model scikitgnb <span class="se">\</span>
     -model-features extract_array_from_matrix.outputs.result:float:1 <span class="se">\</span>
     -model-predict sentiment:int:1 <span class="se">\</span>
