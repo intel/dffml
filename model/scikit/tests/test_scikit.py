@@ -243,6 +243,8 @@ CLASSIFIERS = [
     "BaggingClassifier",
     "LinearDiscriminantAnalysis",
     "MultinomialNB",
+    "PCA",
+    "NFM"
 ]
 
 REGRESSORS = [
@@ -257,8 +259,6 @@ REGRESSORS = [
     "OrthogonalMatchingPursuit",
     "Lars",
     "Ridge",
-    "PCA",
-    "NFM"
 ]
 
 CLUSTERERS = [
