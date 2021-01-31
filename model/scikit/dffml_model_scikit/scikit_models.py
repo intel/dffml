@@ -49,7 +49,6 @@ from sklearn.cluster import (
     SpectralClustering,
     AgglomerativeClustering,
     OPTICS,
-    AffinityPropagation
 )
 
 
@@ -108,7 +107,6 @@ for entry_point_name, name, cls in [
     ("scikitsc", "SpectralClustering", SpectralClustering),
     ("scikitac", "AgglomerativeClustering", AgglomerativeClustering),
     ("scikitoptics", "OPTICS", OPTICS),
-    ("scikitap", "AffinityPropagation", AffinityPropagation)
 ]:
     estimator_type = cls._estimator_type
     config_fields = dict()
