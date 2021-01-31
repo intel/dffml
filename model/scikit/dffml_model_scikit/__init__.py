@@ -123,7 +123,9 @@ Predicting with trained model:
 |                +-------------------------------+----------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 |                | OPTICS                        | scikitoptics   | `scikitoptics <https://scikit-learn.org/stable/modules/generated/sklearn.cluster.OPTICS.html#sklearn.cluster.OPTICS/>`_                                                                       |
 |                +-------------------------------+----------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-|                | NMF                           | scikitnmf      | `scikitoptics <https://scikit-learn.org/stable/modules/generated/sklearn.decomposition.NMF.html#sklearn.decomposer.NMF/>`_                                                                     |
+|                | PCA                           | scikitpca      | `scikitpca <https://scikit-learn.org/stable/modules/generated/sklearn.decomposition.PCA.html#sklearn.decomposer.PCA/>`_                                                                     |
+                 +-------------------------------+----------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|                | NMF                           | scikitnmf      | `scikitnmf <https://scikit-learn.org/stable/modules/generated/sklearn.decomposition.NMF.html#sklearn.decomposer.NMF/>`_                                                                     |
                  +-------------------------------+----------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 
 **Usage Example:**
