@@ -27,6 +27,7 @@ from .exceptions import (
     ContextNotPresent,
     DefinitionNotInContext,
     ValidatorMissing,
+    MultipleAncestorsFoundError,
 )
 from .types import (
     Input,
@@ -573,7 +574,18 @@ class MemoryInputNetworkContext(BaseInputNetworkContext):
                     for input_source in input_sources:
                         # Create a list of places this input originates from
                         origins = []
-                        if isinstance(input_source, dict):
+                        # Handle the case where we look at the first instance in
+                        # the list for the immediate alternate definition then
+                        # trace back through input origins to make sure they all
+                        # match
+                        if isinstance(input_source, list):
+                            # TODO Refactor this since we have duplicate code
+                            if isinstance(input_source[0], dict):
+                                for origin in input_source[0].items():
+                                    origins.append(origin)
+                            else:
+                                origins.append(input_source[0])
+                        elif isinstance(input_source, dict):
                             for origin in input_source.items():
                                 origins.append(origin)
                         else:
@@ -621,6 +633,74 @@ class MemoryInputNetworkContext(BaseInputNetworkContext):
                                     .name
                                 ):
                                     continue
+                                # When the input_source is a list of alternate
+                                # definitions we need to check each parent to
+                                # verity that it's origin matches with the list
+                                # given by input_source
+                                if isinstance(input_source, list):
+                                    all_parent_origins_match = True
+                                    # Make a list of all the origins
+                                    ancestor_origins = []
+                                    for ancestor_origin in input_source:
+                                        if isinstance(ancestor_origin, dict):
+                                            for (
+                                                ancestor_origin
+                                            ) in ancestor_origin.items():
+                                                ancestor_origins.append(
+                                                    ancestor_origin
+                                                )
+                                        else:
+                                            ancestor_origins.append(
+                                                ancestor_origin
+                                            )
+                                    i = 1
+                                    current_parent = item
+                                    while i < len(ancestor_origins):
+                                        ancestor_origin = ancestor_origins[i]
+                                        # Go through all the parents. Create a
+                                        # list of possible parents based on if
+                                        # their origin matches the alternate
+                                        # definition
+                                        possible_parents = [
+                                            parent
+                                            for parent in current_parent.parents
+                                            # If the input source is a dict then
+                                            # we need to convert it to a tuple
+                                            # for comparison to the origin
+                                            if parent.origin == ancestor_origin
+                                        ]
+                                        if not possible_parents:
+                                            all_parent_origins_match = False
+                                            break
+                                        elif len(possible_parents) > 1:
+                                            # TODO Go through each option and
+                                            # check if either is a viable
+                                            # option. Our current implementation
+                                            # only allows for valeting one path,
+                                            # due to a single current_parent
+                                            # If there is more than one option
+                                            # raise an error since we don't know
+                                            # who to choose
+                                            raise MultipleAncestorsFoundError(
+                                                (
+                                                    operation.instance_name,
+                                                    input_name,
+                                                    ancestor_origin,
+                                                    [
+                                                        parent.__dict__
+                                                        for parent in possible_parents
+                                                    ],
+                                                )
+                                            )
+                                        # Move on to the next origin to validate
+                                        i += 1
+                                        # The current_parent becomes the only
+                                        # possible parent
+                                        current_parent = possible_parents[0]
+                                    # If we didn't find any ancestor paths that
+                                    # matched then we don't use this Input
+                                    if not all_parent_origins_match:
+                                        continue
                                 gather[input_name].append(
                                     Parameter(
                                         key=input_name,

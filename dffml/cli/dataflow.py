@@ -600,6 +600,17 @@ class Diagram(CMD):
                             else:
                                 print(f"{seed_input_node} --> {node}")
                     else:
+                        # In order to support selection an input based using an
+                        # alternate definition along with restriction to inputs
+                        # who's origins match the alternate definitions in the
+                        # list. We select the first output source since that
+                        # will be the immediate alternate definition
+                        if (
+                            isinstance(source, list)
+                            and source
+                            and isinstance(source[0], dict)
+                        ):
+                            source = source[0]
                         if not self.simple:
                             source_output_node = hashlib.md5(
                                 (
