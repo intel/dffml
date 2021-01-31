@@ -257,6 +257,7 @@ REGRESSORS = [
     "OrthogonalMatchingPursuit",
     "Lars",
     "Ridge",
+    "LogisticRegression"
 ]
 
 CLUSTERERS = [

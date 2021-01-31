@@ -82,7 +82,6 @@ for entry_point_name, name, cls in [
         QuadraticDiscriminantAnalysis,
     ),
     ("scikitlr", "LinearRegression", LinearRegression),
-    ("scikitlor", "LogisticRegression", LogisticRegression,),
     ("scikitgbc", "GradientBoostingClassifier", GradientBoostingClassifier,),
     ("scikitetc", "ExtraTreesClassifier", ExtraTreesClassifier,),
     ("scikitbgc", "BaggingClassifier", BaggingClassifier),
@@ -107,6 +106,7 @@ for entry_point_name, name, cls in [
     ("scikitsc", "SpectralClustering", SpectralClustering),
     ("scikitac", "AgglomerativeClustering", AgglomerativeClustering),
     ("scikitoptics", "OPTICS", OPTICS),
+    ("scikitlor", "LogisticRegression", LogisticRegression,),
 ]:
     estimator_type = cls._estimator_type
     config_fields = dict()
