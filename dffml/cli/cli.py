@@ -6,9 +6,12 @@ Command line interface evaluates packages given their source URLs
 import pathlib
 import pdb
 import sys
+import traceback
 import contextlib
+import subprocess
 import pkg_resources
 import importlib.util
+from typing import Union
 
 from ..version import VERSION
 from ..record import Record
@@ -36,16 +39,79 @@ from .config import Config
 from .ml import Train, Accuracy, Predict
 from .list import List
 
+version = VERSION
+
+
+@config
+class VersionConfig:
+    no_errors: bool = field(
+        "Set to ignore errors when loading modules", default=False
+    )
+
 
 class Version(CMD):
     """
     Print version and installed dffml packages
     """
 
+    CONFIG = VersionConfig
+
+    @staticmethod
+    async def git_hash(path: Union[pathlib.Path, str]):
+        """
+        If the path is a git repo we'll return.
+
+        Examples
+        --------
+
+        >>> import pathlib
+        >>> import asyncio
+        >>> import subprocess
+        >>>
+        >>> import dffml.cli.cli
+        >>>
+        >>> subprocess.check_call(["git", "init"])
+        0
+        >>> subprocess.check_call(["git", "config", "user.name", "First Last"])
+        0
+        >>> subprocess.check_call(["git", "config", "user.email", "first.last@example.com"])
+        0
+        >>> pathlib.Path("README.md").write_text("Contents")
+        8
+        >>> subprocess.check_call(["git", "add", "README.md"])
+        0
+        >>> subprocess.check_call(["git", "commit", "-m", "First commit"])
+        0
+        >>> dirty, short_hash = asyncio.run(dffml.cli.cli.Version.git_hash("."))
+        >>> dirty
+        False
+        >>> int(short_hash, 16) > 0
+        True
+        """
+        path = pathlib.Path(path).resolve()
+        dirty = None
+        short_hash = None
+        with contextlib.suppress(subprocess.CalledProcessError):
+            dirty = bool(
+                subprocess.call(
+                    ["git", "diff-index", "--quiet", "HEAD", "--"],
+                    cwd=str(path),
+                )
+            )
+            short_hash = (
+                subprocess.check_output(
+                    ["git", "show", "-s", "--pretty=%h %D", "HEAD"],
+                    cwd=str(path),
+                )
+                .decode()
+                .split()
+            )[0]
+        return dirty, short_hash
+
     async def run(self):
         self.logger.debug("Reporting version")
-        print(f"dffml {VERSION} {sys.modules['dffml'].__path__[0]}")
-        for package_name in PACKAGE_NAMES_BY_PLUGIN["all"]:
+        # Versions of plugins
+        for package_name in ["dffml"] + PACKAGE_NAMES_BY_PLUGIN["all"]:
             version = "not installed"
             path = ""
             import_package_name = package_name.replace("-", "_")
@@ -62,7 +128,17 @@ class Version(CMD):
                     with contextlib.redirect_stderr(
                         None
                     ), contextlib.redirect_stdout(None):
-                        spec.loader.exec_module(module)
+                        try:
+                            spec.loader.exec_module(module)
+                        except Exception as error:
+                            if self.no_errors:
+                                self.logger.error(
+                                    f"Failed to import {module_name}: {traceback.format_exc().rstrip()}"
+                                )
+                                version = "ERROR"
+                                continue
+                            else:
+                                raise
                     sys.modules[module_name] = module
                 if module_name in sys.modules:
                     module = sys.modules[module_name]
@@ -70,7 +146,16 @@ class Version(CMD):
                         version = module.VERSION
                     else:
                         path = module.__path__[0]
-            print(" ".join([package_name, version, path]))
+                        # Report if code comes from git repo
+                        dirty, short_hash = await self.git_hash(path)
+            package_details = [package_name, version]
+            if path:
+                package_details.append(path)
+                if dirty is not None and short_hash is not None:
+                    package_details.append(short_hash)
+                    if dirty:
+                        package_details.append("(dirty git repo)")
+            print(" ".join(package_details))
 
 
 @config
