@@ -243,7 +243,7 @@ CLASSIFIERS = [
     "BaggingClassifier",
     "LinearDiscriminantAnalysis",
     "MultinomialNB",
-    "PCA",
+    #"PCA",
     "NFM"
 ]
 

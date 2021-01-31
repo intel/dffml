@@ -52,7 +52,7 @@ from sklearn.cluster import (
 )
 
 from sklearn.decomposition import (
-    PCA,
+    #PCA,
     NMF,
 )
 
@@ -107,7 +107,7 @@ for entry_point_name, name, cls in [
     ("scikitsc", "SpectralClustering", SpectralClustering),
     ("scikitac", "AgglomerativeClustering", AgglomerativeClustering),
     ("scikitoptics", "OPTICS", OPTICS),
-    ("scikitpca", "PCA", PCA),
+    #("scikitpca", "PCA", PCA),
     ("scikitnmf", "NMF", NMF)
 ]:
     estimator_type = cls._estimator_type
