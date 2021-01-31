@@ -550,7 +550,9 @@ class Diagram(CMD):
                         seed_input_node = hashlib.md5(
                             (source + "." + input_definition.name).encode()
                         ).hexdigest()
-                        print(f"{seed_input_node}({input_definition.name})")
+                        print(
+                            f"{seed_input_node}({source}<br>{input_definition.name})"
+                        )
                         if len(self.stages) == 1:
                             print(
                                 f"style {seed_input_node} fill:#f6dbf9,stroke:#a178ca"
@@ -579,7 +581,7 @@ class Diagram(CMD):
                                 origin_definition_name.encode()
                             ).hexdigest()
                             print(
-                                f"{seed_input_node}({origin_definition_name})"
+                                f"{seed_input_node}({source}<br>{origin_definition_name})"
                             )
                             if len(self.stages) == 1:
                                 print(
