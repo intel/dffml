@@ -609,6 +609,7 @@ class DataFlow:
             set(
                 itertools.chain(
                     self.definitions.values(),
+                    [item.definition for item in self.seed],
                     *[
                         itertools.chain(
                             operation.inputs.values(),
