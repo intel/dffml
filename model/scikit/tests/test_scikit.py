@@ -302,7 +302,6 @@ for reg in REGRESSORS:
         },
     )
     setattr(sys.modules[__name__], test_cls.__qualname__, test_cls)
-    
 for clstr in CLUSTERERS:
     for true_clstr_present in [True, False]:
         labelInfo = f"withLabel" if true_clstr_present else f"withoutLabel"
