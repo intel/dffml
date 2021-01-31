@@ -268,6 +268,7 @@ CLUSTERERS = [
     "SpectralClustering",
     "AgglomerativeClustering",
     "OPTICS",
+    "AffinityPropagation"
 ]
 
 supervised_estimators = ["classifier", "regressor"]
