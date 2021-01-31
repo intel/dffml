@@ -51,10 +51,6 @@ from sklearn.cluster import (
     OPTICS,
 )
 
-from sklearn.decomposition import (
-    PCA,
-    NMF
-)
 
 from dffml.base import field
 from dffml.util.config.numpy import make_config_numpy
@@ -78,9 +74,13 @@ for entry_point_name, name, cls in [
     ("scikitdtc", "DecisionTreeClassifier", DecisionTreeClassifier,),
     ("scikitrfc", "RandomForestClassifier", RandomForestClassifier,),
     ("scikitrfr", "RandomForestRegressor", RandomForestRegressor,),
-    ("scikitmlp", "MLPClassifier", MLPClassifier,),
-    ("scikitgnb", "GaussianNB", GaussianNB,),
-    ("scikitqda", "QuadraticDiscriminantAnalysis", QuadraticDiscriminantAnalysis,),
+    ("scikitmlp", "MLPClassifier", MLPClassifier),
+    ("scikitgnb", "GaussianNB", GaussianNB),
+    (
+        "scikitqda",
+        "QuadraticDiscriminantAnalysis",
+        QuadraticDiscriminantAnalysis,
+    ),
     ("scikitlr", "LinearRegression", LinearRegression),
     ("scikitlor", "LogisticRegression", LogisticRegression,),
     ("scikitgbc", "GradientBoostingClassifier", GradientBoostingClassifier,),
@@ -107,8 +107,6 @@ for entry_point_name, name, cls in [
     ("scikitsc", "SpectralClustering", SpectralClustering),
     ("scikitac", "AgglomerativeClustering", AgglomerativeClustering),
     ("scikitoptics", "OPTICS", OPTICS),
-    ("scikitpca", "PCA", PCA),
-    ("scikitnmf", "NMF", NMF)
 ]:
     estimator_type = cls._estimator_type
     config_fields = dict()

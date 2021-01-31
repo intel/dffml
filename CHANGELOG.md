@@ -6,10 +6,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
-- scikit models
-  - Classifiers
-    - PCA
-    - NMF
 - Ablity to specify maximum number of contexts running at a time
 - CLI and Python example usage of Custom Neural Network
 - PyTorch loss function entrypoint style loading
@@ -119,6 +115,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   packaging the model.
 - IntegrationCLITestCase creates a new directory and chdir into it for each test
 - Automated testing of Automating Classification tutorial
+- `dffml version` command now prints git repo hash and if the repo is dirty
 ### Fixed
 - `export_value` now converts numpy array to JSON serializable datatype
 - CSV source overwriting configloaded data to every row
