@@ -96,12 +96,15 @@ class Version(CMD):
                 subprocess.call(
                     ["git", "diff-index", "--quiet", "HEAD", "--"],
                     cwd=str(path),
+                    stdout=subprocess.DEVNULL,
+                    stderr=subprocess.DEVNULL,
                 )
             )
             short_hash = (
                 subprocess.check_output(
                     ["git", "show", "-s", "--pretty=%h %D", "HEAD"],
                     cwd=str(path),
+                    stderr=subprocess.DEVNULL,
                 )
                 .decode()
                 .split()
