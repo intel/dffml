@@ -19,6 +19,7 @@ from dffml import (
     entrypoint,
 )
 from dffml.base import BaseConfig
+from dffml.accuracy import AccuracyContext, AccuracyScorer
 from dffml.source.memory import MemorySource, MemorySourceConfig
 
 from dffml_service_http.cli import Server
@@ -53,6 +54,25 @@ class FakeModel(Model):
 
     CONTEXT = FakeModelContext
     CONFIG = FakeModelConfig
+
+
+@config
+class FakeScorerConfig:
+    pass
+
+
+class FakeScorerContext(AccuracyContext):
+    async def score(self, mctx: ModelContext, sources: SourcesContext):
+        accuracy: int = 0
+        async for record in sources.records():
+            accuracy += int(record.key)
+        return accuracy
+
+
+@entrypoint("fakescore")
+class FakeScorer(AccuracyScorer):
+    CONFIG = FakeScorerConfig
+    CONTEXT = FakeScorerContext
 
 
 class ServerRunner:
@@ -150,4 +170,12 @@ class TestRoutesRunning:
             self.model = self.cli.app["models"][self.mlabel] = model
             async with model() as mctx:
                 self.mctx = self.cli.app["model_contexts"][self.mlabel] = mctx
+                yield
+
+    @contextlib.asynccontextmanager
+    async def _add_fake_scorer(self):
+        async with FakeScorer(FakeScorerConfig()) as scorer:
+            self.scorer = self.cli.app["scorers"][self.alabel] = scorer
+            async with scorer() as actx:
+                self.actx = self.cli.app["scorer_contexts"][self.alabel] = actx
                 yield
