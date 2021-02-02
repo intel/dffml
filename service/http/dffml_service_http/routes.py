@@ -117,24 +117,50 @@ def sctx_route(handler):
     return get_sctx
 
 
-def mctx_route(handler):
+def actx_route(handler):
     """
     Ensure that the labeled model context requested is loaded. Return the mctx
     if it is loaded and an error otherwise.
     """
 
     @wraps(handler)
-    async def get_mctx(self, request):
-        mctx = request.app["model_contexts"].get(
+    async def get_actx(self, request, *handler_args):
+        actx = request.app["scorer_contexts"].get(
             request.match_info["label"], None
         )
-        if mctx is None:
+        if actx is None:
             return web.json_response(
-                MODEL_NOT_LOADED, status=HTTPStatus.NOT_FOUND
+                SCORER_NOT_LOADED, status=HTTPStatus.NOT_FOUND
             )
-        return await handler(self, request, mctx)
+        return await handler(self, request, *handler_args, actx)
 
-    return get_mctx
+    return get_actx
+
+
+def mctx_route(*args, label="label"):
+    """
+    Ensure that the labeled model context requested is loaded. Return the mctx
+    if it is loaded and an error otherwise.
+    """
+
+    def wrapper(handler):
+        @wraps(handler)
+        async def get_mctx(self, request, *handler_args):
+            mctx = request.app["model_contexts"].get(
+                request.match_info[label], None
+            )
+            if mctx is None:
+                return web.json_response(
+                    MODEL_NOT_LOADED, status=HTTPStatus.NOT_FOUND
+                )
+            return await handler(self, request, *handler_args, mctx)
+
+        return get_mctx
+
+    if args:
+        return wrapper(args[0])
+
+    return wrapper
 
 
 class HTTPChannelConfig(NamedTuple):
@@ -854,11 +880,12 @@ class Routes(BaseMultiCommContext):
                     }
                 )
 
-    @mctx_route
-    async def scorer_accuracy(self, request, mctx):
+    @mctx_route(label="mlabel")
+    @actx_route
+    async def scorer_accuracy(self, request, mctx, actx):
         sctx_label_list = await request.json()
         sources = await self.get_source_contexts(request, sctx_label_list)
-        return web.json_response({"accuracy": await self.score(mctx, sources)})
+        return web.json_response({"accuracy": await actx.score(mctx, sources)})
 
     async def api_js(self, request):
         return web.Response(
@@ -993,7 +1020,11 @@ class Routes(BaseMultiCommContext):
                     "/source/{label}/records/{iterkey}/{chunk_size}",
                     self.source_records_iter,
                 ),
-                ("POST", "/scorer/{label}/score", self.scorer_accuracy),
+                (
+                    "POST",
+                    "/scorer/{label}/{mlabel}/score",
+                    self.scorer_accuracy,
+                ),
                 # TODO route to delete iterkey before iteration has completed
                 # Model APIs
                 ("POST", "/model/{label}/train", self.model_train),
