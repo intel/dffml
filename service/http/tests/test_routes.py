@@ -38,6 +38,7 @@ from dffml_service_http.util.testing import (
     TestRoutesRunning,
     FakeModel,
     FakeModelConfig,
+    FakeScorer,
 )
 
 from .dataflow import (
@@ -545,3 +546,30 @@ class TestModel(TestRoutesRunning, AsyncTestCase):
                 f"/model/{self.mlabel}/predict/7", json=records
             ) as r:
                 pass  # pramga: no cov
+
+
+class TestRoutesScorer(TestRoutesRunning, AsyncTestCase):
+    async def setUp(self):
+        await super().setUp()
+        self.mlabel: str = "mymodel"
+        self.slabel: str = "mydataset"
+        self.alabel: str = "fakescorerctx"
+        self.num_records: int = 100
+        self.add_memory_source = await self.exit_stack.enter_async_context(
+            self._add_memory_source()
+        )
+        self.add_fake_model = await self.exit_stack.enter_async_context(
+            self._add_fake_model()
+        )
+        self.add_fake_scorer = await self.exit_stack.enter_async_context(
+            self._add_fake_scorer()
+        )
+
+    async def test_scorer_score(self):
+        async with self.post(
+            f"/scorer/{self.alabel}/{self.mlabel}/score", json=[self.slabel]
+        ) as r:
+            self.assertEqual(
+                await r.json(),
+                {"accuracy": float(sum(range(0, self.num_records)))},
+            )
