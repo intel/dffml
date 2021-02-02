@@ -1723,12 +1723,10 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
         # Run output operations and create a dict mapping the operation name to
         # the output of that operation
         try:
-            output = {
-                operation.instance_name: results
-                async for operation, results in self.run_stage(
-                    ctx, Stage.OUTPUT
-                )
-            }
+            output = {}
+            async for operation, results in self.run_stage(ctx, Stage.OUTPUT):
+                output.setdefault(operation.instance_name, {})
+                output[operation.instance_name].update(results)
         except:
             if strict:
                 raise
