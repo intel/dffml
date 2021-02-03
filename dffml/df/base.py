@@ -480,7 +480,7 @@ def op(*args, imp_enter=None, ctx_enter=None, config_cls=None, **kwargs):
                                     }
 
                             result = convert_asyncgen(result)
-                        else:
+                        elif result is not None:
                             result = {
                                 list(self.parent.op.outputs.keys())[0]: result
                             }
