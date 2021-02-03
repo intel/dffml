@@ -11,7 +11,8 @@ spec.loader.exec_module(common)
 
 common.KWARGS["entry_points"] = {
     "dffml.model": [
-        f"xgbregressor = {common.IMPORT_NAME}.xgbregressor:XGBRegressorModel"
+        f"xgbregressor = {common.IMPORT_NAME}.xgbregressor:XGBRegressorModel",
+        f"xgbclassifier = {common.IMPORT_NAME}.xgbclassifier:XGBClassifierModel",
     ]
 }
 

@@ -14,6 +14,7 @@ import os
 import sys
 import pathlib
 import datetime
+import subprocess
 
 sys.path.insert(0, os.path.abspath(os.path.dirname(__file__)))
 sys.path.append(
@@ -30,6 +31,17 @@ author = "John Andersen"
 
 # The short X.Y version
 version = VERSION
+
+if pathlib.Path(__file__).parent.parent.joinpath(".git").is_dir():
+    git_show_output = (
+        subprocess.check_output(
+            ["git", "show", "-s", "--pretty=%h %D", "HEAD"]
+        )
+        .decode()
+        .split()
+    )
+    if "tag:" not in git_show_output:
+        version = git_show_output[0]
 
 # The full version, including alpha/beta/rc tags
 release = version

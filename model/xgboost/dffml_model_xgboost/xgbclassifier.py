@@ -1,14 +1,13 @@
-# Co-authored-by: Oliver O'Brien <oliverobrien111@gmail.com>
+# Co-authored-by: Nitesh Yadav <niteshyadav585@gmail.com>
 # Co-authored-by: John Andersen <johnandersenpdx@gmail.com>
-# Co-authored-by: Soren Andersen <sorenpdx@gmail.com>
 import pathlib
 from typing import AsyncIterator
 
 import joblib
 import numpy as np
 import pandas as pd
-import xgboost as xgb
-from sklearn.metrics import r2_score
+from xgboost import XGBClassifier
+from sklearn.metrics import accuracy_score
 
 from dffml.record import Record
 from dffml.base import config, field
@@ -20,16 +19,17 @@ from dffml.model.model import SimpleModel, ModelNotTrained
 
 
 @config
-class XGBRegressorModelConfig:
+class XGBClassifierModelConfig:
     directory: pathlib.Path = field("Directory where model should be saved")
     features: Features = field("Features on which we train the model")
     predict: Feature = field("Value to be predicted")
-    learning_rate: float = field("Learning rate to train with", default=0.05)
+    learning_rate: float = field("Learning rate to train with", default=0.3)
     n_estimators: int = field(
         "Number of gradient boosted trees. Equivalent to the number of boosting rounds",
-        default=1000,
+        default=100,
     )
     max_depth: int = field("Maximium tree depth for base learners", default=6)
+    objective: str = field("Objective in training", default="multi:softmax")
     subsample: float = field(
         "Subsample ratio of the training instance", default=1
     )
@@ -48,7 +48,7 @@ class XGBRegressorModelConfig:
         default="gbtree",
     )
     min_child_weight: float = field(
-        "Minimum sum of instance weight(hessian) needed in a child", default=0
+        "Minimum sum of instance weight(hessian) needed in a child", default=1
     )
     reg_lambda: float = field(
         "L2 regularization term on weights. Increasing this value will make model more conservative",
@@ -60,10 +60,10 @@ class XGBRegressorModelConfig:
     )
 
 
-@entrypoint("xgbregressor")
-class XGBRegressorModel(SimpleModel):
+@entrypoint("xgbclassifier")
+class XGBClassifierModel(SimpleModel):
     r"""
-    Model using xgboost to perform regression prediction via gradient boosted trees
+    Model using xgboost to perform classification prediction via gradient boosted trees.
     XGBoost is a leading software library for working with standard tabular data (the type of data you store in Pandas DataFrames,
     as opposed to more exotic types of data like images and videos). With careful parameter tuning, you can train highly accurate models.
 
@@ -73,7 +73,8 @@ class XGBRegressorModel(SimpleModel):
     Command line usage
 
     First download the training and test files, change the headers to DFFML
-    format.
+    format. The first row is an encoding of the classifications, we want CSV
+    headers for the column names.
 
     .. code-block::
         :test:
@@ -91,7 +92,7 @@ class XGBRegressorModel(SimpleModel):
         $ dffml train \
             -sources train=csv \
             -source-filename iris_training.csv \
-            -model xgbregressor \
+            -model xgbclassifier \
             -model-features \
               SepalLength:float:1 \
               SepalWidth:float:1 \
@@ -100,6 +101,7 @@ class XGBRegressorModel(SimpleModel):
             -model-predict classification \
             -model-directory model \
             -model-max_depth 3 \
+            -model-learning_rate 0.01 \
             -model-learning_rate 0.01 \
             -model-n_estimators 200 \
             -model-reg_lambda 1 \
@@ -117,7 +119,7 @@ class XGBRegressorModel(SimpleModel):
         $ dffml accuracy \
             -sources train=csv \
             -source-filename iris_test.csv \
-            -model xgbregressor \
+            -model xgbclassifier \
             -model-features \
               SepalLength:float:1 \
               SepalWidth:float:1 \
@@ -125,12 +127,6 @@ class XGBRegressorModel(SimpleModel):
               PetalWidth:float:1 \
             -model-predict classification \
             -model-directory model 
-        
-    Output
-
-    .. code-block::
-
-        accuracy: 0.8841466984766406
 
 
     Make predictions
@@ -141,7 +137,7 @@ class XGBRegressorModel(SimpleModel):
         $ dffml predict all \
             -sources train=csv \
             -source-filename iris_test.csv \
-            -model xgbregressor \
+            -model xgbclassifier \
             -model-features \
               SepalLength:float:1 \
               SepalWidth:float:1 \
@@ -149,26 +145,22 @@ class XGBRegressorModel(SimpleModel):
               PetalWidth:float:1 \
             -model-predict classification \
             -model-directory model 
+            
 
     Python usage
 
-    **run.py**
-
-    .. literalinclude:: /../model/xgboost/examples/diabetesregression.py
-        :test:
-        :filepath: run.py
+    .. literalinclude:: /../model/xgboost/examples/iris_classification.py
 
     Output
 
     .. code-block::
-        :test:
 
-        $ python run.py
-        Test accuracy: 0.6669655406927468
-        Training accuracy: 0.819782501866115
+        Test accuracy: 0.933333333333333
+        Training accuracy: 0.9703703703703703
+
     """
 
-    CONFIG = XGBRegressorModelConfig
+    CONFIG = XGBClassifierModelConfig
 
     def __init__(self, config) -> None:
         super().__init__(config)
@@ -201,10 +193,11 @@ class XGBRegressorModel(SimpleModel):
         x_data = pd.DataFrame(xdata)
         y_data = pd.DataFrame(ydata)
 
-        self.saved = xgb.XGBRegressor(
+        self.saved = XGBClassifier(
             n_estimators=self.config.n_estimators,
             learning_rate=self.config.learning_rate,
             max_depth=self.config.max_depth,
+            objective=self.config.objective,
             subsample=self.config.subsample,
             gamma=self.config.gamma,
             n_jobs=self.config.n_jobs,
@@ -215,7 +208,7 @@ class XGBRegressorModel(SimpleModel):
             reg_alpha=self.config.reg_alpha,
         )
 
-        self.saved.fit(x_data, y_data)
+        self.saved.fit(x_data, y_data, eval_metric="merror")
 
         # Save the trained model
         joblib.dump(self.saved, str(self.saved_filepath))
@@ -225,7 +218,7 @@ class XGBRegressorModel(SimpleModel):
         Evaluates the accuracy of the model by gathering predictions of the test data
         and comparing them to the provided results.
 
-        Accuracy is given as an R^2 regression score
+        Accuracy is given as an accuracy score
         """
         if not self.saved:
             raise ModelNotTrained("Train the model before assessing accuracy")
@@ -250,7 +243,7 @@ class XGBRegressorModel(SimpleModel):
             for input_datum in input_data
         ]
 
-        return r2_score(actuals, predictions)
+        return accuracy_score(actuals, predictions)
 
     async def predict(self, sources: Sources) -> AsyncIterator[Record]:
         """

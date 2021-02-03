@@ -1,6 +1,7 @@
 import os
 import sys
 import random
+import pathlib
 import tempfile
 import subprocess
 
@@ -10,7 +11,7 @@ from dffml.record import Record
 from dffml.base import config, field
 from dffml.source.source import Sources
 from dffml.model.accuracy import Accuracy
-from dffml import train, accuracy, predict
+from dffml import train, accuracy, predict, run_consoletest
 from dffml.util.entrypoint import entrypoint
 from dffml.util.asynctestcase import IntegrationCLITestCase
 from dffml.feature.feature import Feature, Features
@@ -101,12 +102,10 @@ class TestXGBRegressor(IntegrationCLITestCase):
         # Test fails if more than N data points were out of acceptable error
         self.assertLess(unacceptable_error, 10)
 
-    async def test_03_example(self):
-        # Path to target file
-        filepath = os.path.join(
-            os.path.dirname(__file__),
-            "..",
-            "examples",
-            "diabetesregression.py",
+
+class TestXGBClassifierDocstring(IntegrationCLITestCase):
+    async def test_docstring(self):
+        await run_consoletest(
+            XGBRegressorModel,
+            docs_root_dir=pathlib.Path(__file__).parents[3] / "docs",
         )
-        subprocess.check_call([sys.executable, filepath])

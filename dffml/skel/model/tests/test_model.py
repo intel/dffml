@@ -1,6 +1,6 @@
 import tempfile
 
-from dffml import train, accuracy, predict, Feature, AsyncTestCase
+from dffml import train, accuracy, predict, Feature, Features, AsyncTestCase
 
 from REPLACE_IMPORT_PACKAGE_NAME.myslr import MySLRModel
 
@@ -41,7 +41,7 @@ class TestMySLRModel(AsyncTestCase):
         cls.model_dir = tempfile.TemporaryDirectory()
         # Create an instance of the model
         cls.model = MySLRModel(
-            feature=Feature("X", float, 1),
+            features=Features(Feature("X", float, 1)),
             predict=Feature("Y", float, 1),
             directory=cls.model_dir.name,
         )

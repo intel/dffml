@@ -59,7 +59,7 @@ package.
 
 .. code-block:: console
 
-    $ python -m pip install --use-feature=2020-resolver -e .
+    $ python -m pip install -e .
 
 Testing
 -------
@@ -81,7 +81,7 @@ than :py:class:`unittest.TestCase`.
 
     import tempfile
 
-    from dffml import train, accuracy, predict, Feature, AsyncTestCase
+    from dffml import train, accuracy, predict, Feature, Features, AsyncTestCase
 
     from dffml_model_myslr.myslr import MySLRModel
 
@@ -166,12 +166,14 @@ value is within 10% of what it should be.
 Run the tests
 ~~~~~~~~~~~~~
 
-We can run the tests using the ``unittest`` module
+We can run the tests using the ``unittest`` module. The create command gave us
+both unit tests and integration tests. We want to only run the unit tests right
+now (``tests.test_model``).
 
 .. code-block:: console
     :test:
 
-    $ python3 -m unittest discover -v
+    $ python -m unittest -v tests.test_model
     test_00_train (tests.test_model.TestMySLRModel) ... ok
     test_01_accuracy (tests.test_model.TestMySLRModel) ... ok
     test_02_predict (tests.test_model.TestMySLRModel) ... ok
@@ -187,7 +189,7 @@ If you want to see the output of the call to ``self.logger.debug``, just set the
 .. code-block:: console
     :test:
 
-    $ LOGGING=debug python3 -m unittest discover -v
+    $ LOGGING=debug python -m unittest -v tests.test_model
 
 Entrypoint Registration
 -----------------------
@@ -214,8 +216,9 @@ And remember that any time we modify the **setup.py**, we have to re-install.
 
 .. code-block:: console
     :test:
+    :replace: cmds[-1].append("dffml")
 
-    $ python -m pip install --use-feature=2020-resolver -e .
+    $ python -m pip install --force-reinstall -e .
 
 Command Line Usage
 ------------------
@@ -243,7 +246,7 @@ reference it by it's short name.
     $ dffml train \
         -log debug \
         -model myslr \
-        -model-feature Years:int:1 \
+        -model-features Years:int:1 \
         -model-predict Salary:float:1 \
         -model-directory modeldir \
         -sources f=csv \

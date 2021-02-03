@@ -257,6 +257,7 @@ class TestRelease(AsyncTestCase):
                 f"""
                 $ git archive --format=tar HEAD
                 $ {sys.executable} setup.py sdist
+                $ {sys.executable} setup.py bdist_wheel
                 $ {sys.executable} -m twine upload dist/*
                 """
             ),
