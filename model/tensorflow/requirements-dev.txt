@@ -1,3 +1,0 @@
-# See https://github.com/intel/dffml/issues/737
-scipy==1.4.1
-scikit-learn>=0.21.2
