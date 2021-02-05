@@ -296,6 +296,67 @@ class TestServer(AsyncTestCase):
                 ) as r:
                     self.assertEqual(await r.json(), myrecord.export())
 
+    async def test_scorer(self):
+        with tempfile.TemporaryDirectory() as tempdir:
+            model = SLRModel(
+                features=Features(Feature("f1", float, 1)),
+                predict=Feature("ans", int, 1),
+                directory=tempdir,
+            )
+            # y = m * x + b for equation SLR is solving for
+            m = 5
+            b = 3
+
+            # Train the model
+            await train(
+                model, *[{"f1": x, "ans": m * x + b} for x in range(0, 10)]
+            )
+
+            source = JSONSource(
+                filename=pathlib.Path(tempdir, "source.json"),
+                allowempty=True,
+                readwrite=True,
+            )
+
+            # Record the source will have in it
+            await save(
+                source,
+                *[
+                    Record(
+                        str(i),
+                        data={"features": {"f1": x, "ans": (m * x) + b}},
+                    )
+                    for i, x in enumerate(range(10, 20))
+                ],
+            )
+
+            async with ServerRunner.patch(HTTPService.server) as tserver:
+                cli = await tserver.start(
+                    HTTPService.server.cli(
+                        "-insecure",
+                        "-port",
+                        "0",
+                        "-models",
+                        "mymodel=slr",
+                        "-model-mymodel-directory",
+                        tempdir,
+                        "-model-mymodel-features",
+                        "f1:float:1",
+                        "-model-mymodel-predict",
+                        "ans:int:1",
+                        "-sources",
+                        "mysource=json",
+                        "-source-mysource-filename",
+                        str(source.config.filename),
+                        "-scorers",
+                        "myscorer=mse",
+                    )
+                )
+                async with self.post(
+                    cli, "/scorer/myscorer/mymodel/score", json=["mysource"]
+                ) as r:
+                    self.assertEqual(await r.json(), {"accuracy": 0.0})
+
     async def test_redirect_format_error(self):
         with self.assertRaises(RedirectFormatError):
             async with ServerRunner.patch(HTTPService.server) as tserver:
