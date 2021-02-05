@@ -9,6 +9,7 @@ from typing import List
 from aiohttp import web
 
 from dffml.util.cli.cmd import CMD
+from dffml.accuracy import AccuracyScorer
 from dffml import Model, Sources, BaseSource
 from dffml.util.cli.parser import list_action
 from dffml.util.entrypoint import entrypoint
@@ -243,6 +244,12 @@ class ServerConfig(TLSCMDConfig, MultiCommCMDConfig):
         "Sources configured on start",
         default_factory=lambda: Sources(),
         action=list_action(Sources),
+        labeled=True,
+    )
+    scorers: AccuracyScorer = field(
+        "Scorers configured on start",
+        default_factory=lambda: AsyncContextManagerList(),
+        action=list_action(AsyncContextManagerList),
         labeled=True,
     )
     redirect: List[str] = field(
