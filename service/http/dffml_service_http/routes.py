@@ -951,13 +951,27 @@ class Routes(BaseMultiCommContext):
         self.app["models"] = {
             model.ENTRY_POINT_LABEL: model for model in self.models
         }
-        self.app["scorers"] = {}
 
         mctx = await self.app["exit_stack"].enter_async_context(self.models())
         self.app["model_contexts"] = {
             model_ctx.parent.ENTRY_POINT_LABEL: model_ctx for model_ctx in mctx
         }
-        self.app["scorer_contexts"] = {}
+
+        # Instantiate scorers if they aren't instantiated yet
+        for i, scorer in enumerate(self.scorers):
+            if inspect.isclass(scorer):
+                self.scorers[i] = scorer.withconfig(self.extra_config)
+
+        await self.app["exit_stack"].enter_async_context(self.scorers)
+        self.app["scorers"] = {
+            scorer.ENTRY_POINT_LABEL: scorer for scorer in self.scorers
+        }
+
+        actx = await self.app["exit_stack"].enter_async_context(self.scorers())
+        self.app["scorer_contexts"] = {
+            scorer_ctx.parent.ENTRY_POINT_LABEL: scorer_ctx
+            for scorer_ctx in actx
+        }
 
         self.app.update(kwargs)
         # Allow no routes other than pre-registered if in atomic mode
