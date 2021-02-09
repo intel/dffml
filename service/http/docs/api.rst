@@ -479,7 +479,7 @@ Accuracy
 Send a ``POST`` request with the JSON body being a list of source context labels
 to use as test data.
 
-- ``/model/{ctx_label}/accuracy``
+- ``/scorer/{ctx_label}/{mctx_label}/score``
 
 .. code-block:: json
 
