@@ -76,7 +76,6 @@ Verify you can use ``dffml`` from the command line.
     dffml-model-scikit 0.0.9 /home/user/Documents/python/dffml/model/scikit/dffml_model_scikit 3c887378
     dffml-model-tensorflow 0.2.7 /home/user/Documents/python/dffml/model/tensorflow/dffml_model_tensorflow 3c887378
     dffml-model-tensorflow-hub 0.0.5 /home/user/Documents/python/dffml/model/tensorflow_hub/dffml_model_tensorflow_hub 3c887378
-    dffml-model-transformers 0.0.3 /home/user/Documents/python/dffml/model/transformers/dffml_model_transformers 3c887378
     dffml-model-vowpalWabbit 0.0.1 /home/user/Documents/python/dffml/model/vowpalWabbit/dffml_model_vowpalWabbit 3c887378
     dffml-model-xgboost 0.0.1 /home/user/Documents/python/dffml/model/xgboost/dffml_model_xgboost 3c887378
     dffml-model-pytorch ERROR
