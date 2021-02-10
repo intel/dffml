@@ -22,9 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Tutorial for using NLP operations with models
 - Operations plugin for NLP wrapping spacy and scikit functions
 - Support for default value in a Definition
-- Transformers Question Answering model
 - Source for reading images in directories
-- Transformers classification model
 - Operations plugin for image preprocessing
 - `-pretty` flag to `list records` and `predict` commands
 - daal4py based linear regression model
@@ -89,7 +87,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Renamed `-seed` to `-inputs` in `dataflow create` command
 - Renamed configloader/png to configloader/image and added support for loading JPEG and TIFF file formats
 - Update record `__str__` method to output in tabular format
-- Update NER Model to use transformers 2.11.0
 - Update MNIST use case to normalize image arrays.
 - `arg_` notation replaced with `CONFIG = ExampleConfig` style syntax
   for parsing all command line arguments.
@@ -162,7 +159,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.3.6] - 2020-04-04
 ### Added
 - Operations for taking input from the user `AcceptUserInput` and for printing the output `print_output`
-- Hugging Face Transformers tensorflow based NER models.
 - PNG ConfigLoader for reading images as arrays to predict using MNIST trained models
 - Docstrings and doctestable examples to `record.py`.
 - Inputs can be validated using operations

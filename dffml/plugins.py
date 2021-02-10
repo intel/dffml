@@ -32,7 +32,6 @@ CORE_PLUGINS = [
     ("model", "scikit"),
     ("model", "tensorflow"),
     ("model", "tensorflow_hub"),
-    ("model", "transformers"),
     ("model", "vowpalWabbit"),
     ("model", "xgboost"),
     ("model", "pytorch"),

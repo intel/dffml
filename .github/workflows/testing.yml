@@ -75,7 +75,6 @@ jobs:
         - model/daal4py
         - model/tensorflow
         - model/tensorflow_hub
-        - model/transformers
         - model/scratch
         - model/scikit
         - model/vowpalWabbit
@@ -142,7 +141,6 @@ jobs:
         model/daal4py=${{ secrets.PYPI_MODEL_DAAL4PY }}
         model/tensorflow=${{ secrets.PYPI_MODEL_TENSORFLOW }}
         model/tensorflow_hub=${{ secrets.PYPI_MODEL_TENSORFLOW_HUB }}
-        model/transformers=${{ secrets.PYPI_MODEL_TRANSFORMERS }}
         model/scratch=${{ secrets.PYPI_MODEL_SCRATCH }}
         model/scikit=${{ secrets.PYPI_MODEL_SCIKIT }}
         model/spacy=${{ secrets.PYPI_MODEL_SPACY }}
