@@ -19,54 +19,6 @@ with open(
 with open(os.path.join(self_path, "README.md"), "r", encoding="utf-8") as f:
     readme = f.read()
 
-INSTALL_REQUIRES = (
-    []
-    + (
-        ["dffml>=0.3.7"]
-        if not any(
-            list(
-                map(
-                    os.path.isfile,
-                    list(
-                        map(
-                            lambda syspath: os.path.join(
-                                syspath, "dffml.egg-link"
-                            ),
-                            sys.path,
-                        )
-                    ),
-                )
-            )
-        )
-        else []
-    )
-    + (
-        ["dffml-model-tensorflow>=0.2.7"]
-        if not any(
-            list(
-                map(
-                    os.path.isfile,
-                    list(
-                        map(
-                            lambda syspath: os.path.join(
-                                syspath, "dffml-model-tensorflow.egg-link"
-                            ),
-                            sys.path,
-                        )
-                    ),
-                )
-            )
-        )
-        else []
-    )
-)
-
-REQUIREMENTS_TXT_PATH = Path(self_path, "requirements.txt")
-if REQUIREMENTS_TXT_PATH.is_file():
-    INSTALL_REQUIRES += list(
-        map(lambda i: i.strip(), REQUIREMENTS_TXT_PATH.read_text().split("\n"))
-    )
-
 setup(
     name="dffml-model-tensorflow-hub",
     version=version,
@@ -90,8 +42,6 @@ setup(
         "Programming Language :: Python :: Implementation :: CPython",
         "Programming Language :: Python :: Implementation :: PyPy",
     ],
-    install_requires=INSTALL_REQUIRES,
-    packages=find_packages(),
     entry_points={
         "dffml.model": [
             "text_classifier = dffml_model_tensorflow_hub.text_classifier:TextClassificationModel"

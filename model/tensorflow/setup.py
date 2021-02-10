@@ -19,42 +19,6 @@ with open(
 with open(os.path.join(self_path, "README.md"), "r", encoding="utf-8") as f:
     readme = f.read()
 
-# See https://github.com/intel/dffml/issues/816
-INSTALL_REQUIRES = [] + (
-    ["dffml>=0.3.7"]
-    if not any(
-        list(
-            map(
-                os.path.isfile,
-                list(
-                    map(
-                        lambda syspath: os.path.join(
-                            syspath, "dffml.egg-link"
-                        ),
-                        sys.path,
-                    )
-                ),
-            )
-        )
-    )
-    else []
-)
-
-REQUIREMENTS_TXT_PATH = Path(self_path, "requirements.txt")
-if REQUIREMENTS_TXT_PATH.is_file():
-    INSTALL_REQUIRES += list(
-        map(lambda i: i.strip(), REQUIREMENTS_TXT_PATH.read_text().split("\n"))
-    )
-
-REQUIREMENTS_DEV_TXT_PATH = Path(self_path, "requirements-dev.txt")
-if REQUIREMENTS_DEV_TXT_PATH.is_file():
-    TESTS_REQUIRE = list(
-        map(
-            lambda i: i.strip(),
-            REQUIREMENTS_DEV_TXT_PATH.read_text().split("\n"),
-        )
-    )
-
 setup(
     name="dffml-model-tensorflow",
     version=version,
@@ -78,9 +42,6 @@ setup(
         "Programming Language :: Python :: Implementation :: CPython",
         "Programming Language :: Python :: Implementation :: PyPy",
     ],
-    install_requires=INSTALL_REQUIRES,
-    tests_require=TESTS_REQUIRE,
-    packages=find_packages(),
     entry_points={
         "dffml.model": [
             "tfdnnc = dffml_model_tensorflow.dnnc:DNNClassifierModel",
