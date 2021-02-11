@@ -1,0 +1,2 @@
+[dffml.source]
+misc = REPLACE_IMPORT_PACKAGE_NAME.misc:MiscSource
