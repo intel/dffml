@@ -12,15 +12,18 @@ the class's docstring.
 This tutorial is meant to go after the :ref:`model_tutorial_package` tutorial.
 
 It's okay if you skipped to here though you can get up to speed by running the
-following commands.
+following commands. These commands create the model package containing starter
+code, change directory into the pacakge, install the package, and run the
+setuptools ``egg_info`` hook to register the model with the ``entry_points``
+system.
 
 .. code-block:: console
     :test:
-    :replace: cmds[-1].append("dffml")
 
     $ dffml service dev create model dffml-model-myslr
     $ cd dffml-model-myslr
-    $ python -m pip install --force-reinstall -e .
+    $ python -m pip install -e .
+    $ python setup.py egg_info
 
 Python docstrings
 -----------------
