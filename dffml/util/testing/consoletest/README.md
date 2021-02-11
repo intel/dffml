@@ -117,6 +117,15 @@ Contents of `code-block` directives can also be written to files
     print()
 
     query = dict(urllib.parse.parse_qsl(os.getenv("QUERY_STRING", default="")))
+```
+
+When a `code-block` results in a write to a file, if the `:overwrite:` option
+is left off, contents will be appended to the file, rather than overwriting.
+
+```rst
+.. code-block:: python
+    :test:
+    :filepath: cgi-bin/api.py
 
     print(json.dumps(query))
 
@@ -262,6 +271,13 @@ directives.
 
   - Write the contents of the `code-block` to this file path relative to the
     currnet working directory (`ctx["cwd"]`)
+
+- `overwrite`: Boolean
+
+  - If the filepath for the `code-block` exists and overwrite evaluates to
+    `True`, replace the contents of the file with the contents of the file with
+    the contents of this `code-block`. If `overwrite` evaluates to `False`,
+    append the contents of the `code-block` to the file.
 
 - `replace`: Python code
 
