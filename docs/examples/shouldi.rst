@@ -475,14 +475,13 @@ those shortly.
     :diff-files: setup.py
     :filepath: setup.py
 
-When we change the ``entry_points`` we need to re-install the package via pip to
-make entrypoint registrations take effect.
+When we change the ``entry_points`` we need to run the ``egg_info`` setuptools
+hook. This makes Python pick up changes to the entry points.
 
 .. code-block:: console
     :test:
-    :replace: cmds[0].append("dffml")
 
-    $ python -m pip install --force-reinstall -e .
+    $ python setup.py egg_info
 
 Now we should be able to run our new tool via the CLI! (Provided your ``$PATH``
 is set up correctly).
@@ -586,12 +585,13 @@ DFFML, we need to register them with Python's ``entry_points`` system.
     :diff-files: setup.py
     :filepath: setup.py
 
-Re-install the package via pip to make registrations take effect.
+Run the setuptools ``egg_info`` hook to make ``entry_points`` changes take
+effect.
 
 .. code-block:: console
     :test:
 
-    $ python -m pip install --force-reinstall -e .
+    $ python setup.py egg_info
 
 After you've registered the operations, services such as the
 :doc:`/plugins/service/http/index` will have access to your operations.

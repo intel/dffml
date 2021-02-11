@@ -212,13 +212,14 @@ path on the right side.
 .. literalinclude:: /../dffml/skel/model/setup.py
     :lines: 12-14
 
-And remember that any time we modify the **setup.py**, we have to re-install.
+And remember that any time we modify the **setup.py**, we have to run the
+setuptools ``egg_info`` hook to register the model with the ``entry_points``
+system.
 
 .. code-block:: console
     :test:
-    :replace: cmds[-1].append("dffml")
 
-    $ python -m pip install --force-reinstall -e .
+    $ python setup.py egg_info
 
 Command Line Usage
 ------------------
