@@ -95,6 +95,7 @@ def code_block_to_dict(
         node["consoletestnodetype"] = "consoletest-file"
         node["content"] = content
         node["filepath"] = options["filepath"].split("/")
+        node["overwrite"] = bool("overwrite" in options)
     elif "test" in options:
         node.setdefault("language", "console")
         node["consoletestnodetype"] = "consoletest"
@@ -136,6 +137,7 @@ CODE_BLOCK_OPTION_SPEC = {
     "daemon": "unchanged_required",
     "test": "flag",
     "stdin": "unchanged_required",
+    "overwrite": "flag",
 }
 
 

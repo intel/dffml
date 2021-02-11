@@ -1,4 +1,5 @@
 import os
+import io
 import pathlib
 import tempfile
 import contextlib
@@ -60,12 +61,20 @@ async def run_nodes(
             elif node["consoletestnodetype"] == "consoletest-file":
                 print()
                 filepath = pathlib.Path(ctx["cwd"], *node["filepath"])
-                print("Writing", ctx, filepath)
 
                 if not filepath.parent.is_dir():
                     filepath.parent.mkdir(parents=True)
 
-                filepath.write_text("\n".join(node["content"]) + "\n")
+                if node["overwrite"] and filepath.is_file():
+                    print("Overwriting", ctx, filepath)
+                    mode = "wt"
+                else:
+                    print("Writing", ctx, filepath)
+                    mode = "at"
+
+                with open(filepath, mode) as outfile:
+                    outfile.seek(0, io.SEEK_END)
+                    outfile.write("\n".join(node["content"]) + "\n")
 
                 print(filepath.read_text(), end="")
                 print()
