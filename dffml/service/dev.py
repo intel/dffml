@@ -450,9 +450,44 @@ class SetupPyKWArg(CMD):
         print(self.get_kwargs(self.setupfilepath)[self.kwarg])
 
 
+class VersionNotFoundError(Exception):
+    """
+    Raised when a version.py file is parsed and no VERSION variable is found.
+    """
+
+
+@configdataclass
+class SetupPyVersionConfig:
+    versionfilepath: str = field("Path to version.py")
+
+
+class SetupPyVersion(CMD):
+    """
+    Read a version.py file that would be referenced by a setup.py or setup.cfg.
+    The version.py file contains the version of the package in the VERSION
+    variable.
+    """
+
+    CONFIG = SetupPyVersionConfig
+
+    def parse_version(self, filename: str):
+        with open(filename, "r") as f:
+            for line in f:
+                self.logger.debug("Checking for VERSION in line %r", line)
+                if line.startswith("VERSION"):
+                    return ast.literal_eval(
+                        line.strip().split("=")[-1].strip()
+                    )
+        raise VersionNotFoundError(self.versionfilepath)
+
+    async def run(self):
+        print(self.parse_version(self.versionfilepath))
+
+
 class SetupPy(CMD):
 
     kwarg = SetupPyKWArg
+    version = SetupPyVersion
 
 
 class RepoDirtyError(Exception):

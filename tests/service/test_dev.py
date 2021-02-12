@@ -25,12 +25,13 @@ from dffml.service.dev import (
     MissingDependenciesError,
     Install,
     PinDeps,
+    VersionNotFoundError,
 )
 from dffml.util.os import chdir
 from dffml.util.skel import Skel
 from dffml.util.net import cached_download
 from dffml.util.packaging import is_develop
-from dffml.util.asynctestcase import AsyncTestCase
+from dffml.util.asynctestcase import AsyncTestCase, IntegrationCLITestCase
 
 from ..util.test_skel import COMMON_FILES
 
@@ -264,6 +265,26 @@ class TestRelease(AsyncTestCase):
                         """
                     ),
                 )
+
+
+class TestSetupPyVersion(IntegrationCLITestCase):
+    async def test_success(self):
+        stdout = io.StringIO()
+        with contextlib.redirect_stdout(stdout):
+            await Develop.cli(
+                "setuppy",
+                "version",
+                self.mktempfile(text='VERSION = "0.0.42"'),
+            )
+        self.assertEqual("0.0.42", stdout.getvalue().strip())
+
+    async def test_filenot_found(self):
+        with self.assertRaises(VersionNotFoundError):
+            await Develop.cli(
+                "setuppy",
+                "version",
+                self.mktempfile(text='FEEDFACE = "0.0.42"'),
+            ),
 
 
 class TestBumpPackages(AsyncTestCase):
