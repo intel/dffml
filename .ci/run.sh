@@ -173,7 +173,7 @@ function run_docs() {
   # Remove dataclasses. See https://github.com/intel/dffml/issues/882
   "${PYTHON}" "${TEMPFIX}/pytorch/pytorch/46930.py" ~/.local
 
-  last_release=$("${PYTHON}" -m dffml service dev setuppy kwarg version setup.py)
+  last_release=$("${PYTHON}" -m dffml service dev setuppy version dffml/version.py)
 
   # Fail if there are any changes to the Git repo
   changes=$(git status --porcelain | wc -l)
