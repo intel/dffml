@@ -636,7 +636,6 @@ _____
 argument.
 
 .. code-block:: console
-    :test:
 
     $ dffml service dev setuppy kwarg name setup.py
     dffml-model-mycoolmodel
