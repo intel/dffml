@@ -629,6 +629,19 @@ setuppy
 
 Utilities for working with ``setup.py`` files.
 
+version
+_______
+
+
+Read a ``version.py`` file and extract the version number from the ``VERSION``
+variable within it. This does not execute code, it only parses it.
+
+.. code-block:: console
+    :test:
+
+    $ dffml service dev setuppy version dffml_model_mycoolmodel/version.py
+    0.0.1
+
 kwarg
 _____
 
