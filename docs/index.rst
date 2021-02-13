@@ -63,6 +63,7 @@ branch can be found `here <master/index.html>`_.
     cli
     plugins/service/http/index
     api/index
+    troubleshooting
 
 .. toctree::
     :glob:
