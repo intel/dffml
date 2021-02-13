@@ -1,4 +1,5 @@
 import io
+import json
 import pathlib
 import subprocess
 from unittest.mock import patch
@@ -21,16 +22,28 @@ class TestCLIUse(AsyncTestCase):
     async def test_use_python(self):
         dffml_source_root = list(pathlib.Path(__file__).parents)[3]
         with patch("sys.stdout", new_callable=io.StringIO) as stdout:
-            await ShouldI.cli("use", str(dffml_source_root))
+            await ShouldI._main("use", str(dffml_source_root))
             output = stdout.getvalue()
-        self.assertIn("high=0", output)
+        results = json.loads(output)
+        # The use of input() triggers B322, which is a false positive since we
+        # don't support Python 2
+        self.assertLess(
+            list(results.values())[0]["static_analysis"][0]["high"], 2
+        )
+        if list(results.values())[0]["static_analysis"][0]["high"] > 0:
+            self.assertEqual(
+                list(results.values())[0]["static_analysis"][0]["report"][
+                    "run_bandit.outputs.result"
+                ]["CONFIDENCE.HIGH_AND_SEVERITY.HIGH.issues"][0]["test_id"],
+                "B322",
+            )
 
     @cached_node
     @cached_target_javascript_algorithms
     async def test_use_javascript(self, node, javascript_algo):
         with prepend_to_path(node / "node-v14.2.0-linux-x64" / "bin",):
             with patch("sys.stdout", new_callable=io.StringIO) as stdout:
-                await ShouldI.cli(
+                await ShouldI._main(
                     "use",
                     str(
                         javascript_algo
@@ -38,7 +51,10 @@ class TestCLIUse(AsyncTestCase):
                     ),
                 )
                 output = stdout.getvalue()
-        self.assertIn("high=2941", output)
+        results = json.loads(output)
+        self.assertGreater(
+            list(results.values())[0]["static_analysis"][0]["high"], 2940
+        )
 
     @cached_node
     @cached_rust
@@ -71,7 +87,7 @@ class TestCLIUse(AsyncTestCase):
                 await run_cargo_build(cargo_audit / "cargo-audit-0.11.2")
 
             with patch("sys.stdout", new_callable=io.StringIO) as stdout:
-                await ShouldI.cli(
+                await ShouldI._main(
                     "use",
                     str(
                         crates
@@ -79,7 +95,26 @@ class TestCLIUse(AsyncTestCase):
                     ),
                 )
             output = stdout.getvalue()
-            # cargo audit
-            self.assertIn("low=9,", output)
-            # npm audit
-            self.assertIn("high=8,", output)
+            print(output)
+            results = json.loads(output)
+
+            from pprint import pprint
+
+            pprint(results)
+
+            contexts = 0
+            reports = 0
+            for context in results.values():
+                contexts += 1
+                for report in context["static_analysis"]:
+                    reports += 1
+                    if "npm_audit_output" in report["report"]:
+                        self.assertGreater(
+                            report["report"]["npm_audit_output"]["high"], 7
+                        )
+                    elif "qualitative" in report["report"]:
+                        self.assertGreater(
+                            report["report"]["qualitative"]["low"], 9
+                        )
+            self.assertEqual(contexts, 1, "One project context expected")
+            self.assertEqual(reports, 2, "Two reports expected")
