@@ -40,6 +40,7 @@ from ..plugins import (
     CORE_PLUGINS,
     CORE_PLUGIN_DEPS,
     PACKAGE_NAMES_TO_DIRECTORY,
+    PACKAGE_DIRECTORY_TO_NAME,
 )
 
 config = configparser.ConfigParser()
@@ -51,6 +52,8 @@ with contextlib.suppress(KeyError):
 
 NAME = config.get("user", "name", fallback="Unknown")
 EMAIL = config.get("user", "email", fallback="unknown@example.com")
+
+REPO_ROOT = pathlib.Path(__file__).parents[2]
 
 
 def create_from_skel(plugin_type):
@@ -471,6 +474,7 @@ class SetupPyVersion(CMD):
     CONFIG = SetupPyVersionConfig
 
     def parse_version(self, filename: str):
+        self.logger.debug("Checking for VERSION in file %r", filename)
         with open(filename, "r") as f:
             for line in f:
                 self.logger.debug("Checking for VERSION in line %r", line)
@@ -482,6 +486,10 @@ class SetupPyVersion(CMD):
 
     async def run(self):
         print(self.parse_version(self.versionfilepath))
+
+
+# Instance of parse_version method as function for logging
+parse_version = SetupPyVersion().parse_version
 
 
 class SetupPy(CMD):
@@ -509,6 +517,8 @@ class Release(CMD):
     CONFIG = ReleaseConfig
 
     async def run(self):
+        # Ensure we have a pathlib.Path object
+        self.package = Path(self.package).resolve()
         # Ensure target plugin directory has no unstaged changes
         cmd = ["git", "status", "--porcelain", str(self.package)]
         self.logger.debug("Running: %s", " ".join(cmd))
@@ -524,12 +534,14 @@ class Release(CMD):
             raise RepoDirtyError("Uncommited changes")
         # cd to directory
         with chdir(str(self.package)):
+            # Get name
+            name = {(): "dffml", **PACKAGE_DIRECTORY_TO_NAME,}[
+                self.package.relative_to(REPO_ROOT).parts
+            ]
             # Load version
-            setup_kwargs = SetupPyKWArg.get_kwargs(
-                os.path.join(os.getcwd(), "setup.py")
+            version = parse_version(
+                str(self.package / name.replace("-", "_") / "version.py")
             )
-            name = setup_kwargs["name"]
-            version = setup_kwargs["version"]
             # Check if version is on PyPi
             url = f"https://pypi.org/pypi/{name}/json"
             # TODO(p5) Blocking request in coroutine
