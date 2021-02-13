@@ -153,3 +153,8 @@ def package_names_to_directory(validation=None):
 
 
 PACKAGE_NAMES_TO_DIRECTORY = package_names_to_directory()
+PACKAGE_DIRECTORY_TO_NAME = dict(
+    zip(
+        PACKAGE_NAMES_TO_DIRECTORY.values(), PACKAGE_NAMES_TO_DIRECTORY.keys(),
+    )
+)
