@@ -39,12 +39,6 @@ jobs:
         key: ${{ runner.os }}-pip-${{ hashFiles('**/setup.py') }}
         restore-keys: |
           ${{ runner.os }}-pip-
-    - name: Setup conda
-      uses: s-weigand/setup-conda@v1
-      with:
-        update-conda: true
-        python-version: ${{ matrix.python-version }}
-        conda-channels: anaconda, conda-forge
     - name: Install dependencies
       run: |
         set -x
@@ -130,12 +124,6 @@ jobs:
         key: ${{ hashFiles('examples/shouldi/tests/binaries.py') }}
         restore-keys: |
           ${{ runner.os }}-shouldi-test-binaries-
-    - name: Setup conda
-      uses: s-weigand/setup-conda@v1
-      with:
-        update-conda: true
-        python-version: ${{ matrix.python-version }}
-        conda-channels: anaconda, conda-forge
     - name: Install dependencies
       run: |
         set -x
@@ -143,8 +131,6 @@ jobs:
     - name: Test
       run: |
         set -x
-        export CONDA_PREFIX="${CONDA}"
-        export CONDA_SHLVL="${SHLVL}"
         export GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}
         export PYTHON=python${{ matrix.python-version }}
         export PLUGIN=${{ matrix.plugin }}
@@ -217,12 +203,6 @@ jobs:
         git remote set-url origin https://github.com/intel/dffml
         git fetch --prune --unshallow
         git fetch --depth=1 origin +refs/tags/*:refs/tags/*
-    - name: Setup conda
-      uses: s-weigand/setup-conda@v1
-      with:
-        update-conda: true
-        python-version: ${{ matrix.python-version }}
-        conda-channels: anaconda, conda-forge
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v2
       with:
@@ -245,8 +225,6 @@ jobs:
     - name: Test
       run: |
         set -x
-        export CONDA_PREFIX="${CONDA}"
-        export CONDA_SHLVL="${SHLVL}"
         export GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}
         export PYTHON=python${{ matrix.python-version }}
         export PLUGIN=${{ matrix.plugin }}
