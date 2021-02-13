@@ -80,11 +80,6 @@ CORE_PLUGIN_DEPS = {
     else {},
 }
 
-CORE_PLUGIN_DEPS[("model", "daal4py")] = {
-    # Must be installed already via conda, do not provide a pypi package yet
-    "daal4py": lambda: python_package_installed("daal4py")
-}
-
 # All packages under configloader/ are really named dffml-config-{name}
 ALTERNATIVES = {"configloader": "config"}
 
