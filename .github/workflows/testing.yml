@@ -185,6 +185,7 @@ jobs:
         - docs/examples/or_covid_data_by_county.rst
         - docs/examples/shouldi.rst
         - docs/installation.rst
+        - docs/troubleshooting.rst
         - docs/tutorials/dataflows/io.rst
         - docs/tutorials/dataflows/nlp.rst
         - docs/tutorials/models/iris.rst
