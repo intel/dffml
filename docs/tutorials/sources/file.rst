@@ -184,16 +184,19 @@ This will look into the file test_source.py and run all the tests.
 Add the entrypoint
 ------------------
 
-**setup.py**
+To register your source under dffml entrypoint you need to make sure you have a
+``shorthand`` equals ``python.path.to:Class`` line in the ``entry_points.txt``
+file.
 
-To register your source under dffml entrypoint you need to add the following
-to the setup.py file
+**entry_points.txt**
 
-.. literalinclude:: /../examples/tutorials/sources/file/dffml-source-ini/setup.py
+.. code-block:: ini
     :test:
-    :diff: /../dffml/skel/source/setup.py
-    :diff-files: setup.py
-    :filepath: setup.py
+    :overwrite:
+    :filepath: entry_points.txt
+
+    [dffml.source]
+    myini = dffml_source_ini.misc:INISource
 
 This will add the newly created source to the dffml entrypoints and hence can
 also be used in CLI.
