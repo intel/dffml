@@ -17,7 +17,12 @@ class NPMAuditError(Exception):
     """
 
 
-@op(inputs={"pkg": package_src_dir}, outputs={"report": npm_audit_output})
+# The audit endpoint frequently throws errors. Retry up to 10 times.
+@op(
+    inputs={"pkg": package_src_dir},
+    outputs={"report": npm_audit_output},
+    retry=10,
+)
 async def run_npm_audit(pkg: str) -> Dict[str, Any]:
     """
     CLI usage: dffml service dev run -log debug shouldi.npm_audit:run_npm_audit -pkg .
