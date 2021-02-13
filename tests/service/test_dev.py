@@ -240,28 +240,30 @@ class TestRelease(AsyncTestCase):
         )
 
     async def test_okay(self):
-        stdout = io.StringIO()
         global VERSION
         VERSION = "0.0.0"
-        with unittest.mock.patch(
-            "asyncio.create_subprocess_exec", new=mkexec()
-        ), unittest.mock.patch(
-            "urllib.request.urlopen", new=fake_urlopen
-        ), contextlib.redirect_stdout(
-            stdout
-        ):
-            await Develop.cli("release", ".")
-        self.assertEqual(
-            stdout.getvalue().strip(),
-            inspect.cleandoc(
-                f"""
-                $ git archive --format=tar HEAD
-                $ {sys.executable} setup.py sdist
-                $ {sys.executable} setup.py bdist_wheel
-                $ {sys.executable} -m twine upload dist/*
-                """
-            ),
-        )
+        for plugin in [".", "model/scikit"]:
+            stdout = io.StringIO()
+            with self.subTest(plugin=plugin):
+                with unittest.mock.patch(
+                    "asyncio.create_subprocess_exec", new=mkexec()
+                ), unittest.mock.patch(
+                    "urllib.request.urlopen", new=fake_urlopen
+                ), contextlib.redirect_stdout(
+                    stdout
+                ):
+                    await Develop.cli("release", plugin)
+                self.assertEqual(
+                    stdout.getvalue().strip(),
+                    inspect.cleandoc(
+                        f"""
+                        $ git archive --format=tar HEAD
+                        $ {sys.executable} setup.py sdist
+                        $ {sys.executable} setup.py bdist_wheel
+                        $ {sys.executable} -m twine upload dist/*
+                        """
+                    ),
+                )
 
 
 class TestBumpPackages(AsyncTestCase):
