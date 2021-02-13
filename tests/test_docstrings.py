@@ -10,6 +10,7 @@ import asyncio
 import logging
 import unittest
 import tempfile
+import platform
 import importlib
 import contextlib
 from typing import Optional, Callable
@@ -270,3 +271,8 @@ for name, (import_name, module, obj) in to_test.items():
     # Create the name of the class using the path to it and the object name
     # Add the class to this file's globals
     setattr(sys.modules[__name__], testcase.__qualname__, testcase)
+
+cli_cli_Version_Version_git_hash.test_docstring = unittest.skipIf(
+    platform.system() == "Windows",
+    "Test cleanup doesn't seem to work on Windows",
+)(cli_cli_Version_Version_git_hash.test_docstring)
