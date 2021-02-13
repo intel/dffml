@@ -75,7 +75,30 @@ jobs:
       fail-fast: false
       max-parallel: 100
       matrix:
-        plugin: [., examples/shouldi, model/daal4py, model/tensorflow, model/tensorflow_hub, model/transformers, model/scratch, model/scikit, model/vowpalWabbit, model/autosklearn, model/spacy, model/pytorch, model/xgboost, operations/binsec, operations/deploy, operations/image, operations/nlp, source/mysql, feature/git, feature/auth, service/http, configloader/yaml, configloader/image]
+        plugin:
+        - .
+        - examples/shouldi
+        - model/daal4py
+        - model/tensorflow
+        - model/tensorflow_hub
+        - model/transformers
+        - model/scratch
+        - model/scikit
+        - model/vowpalWabbit
+        - model/autosklearn
+        - model/spacy
+        - model/pytorch
+        - model/xgboost
+        - operations/binsec
+        - operations/deploy
+        - operations/image
+        - operations/nlp
+        - source/mysql
+        - feature/git
+        - feature/auth
+        - service/http
+        - configloader/yaml
+        - configloader/image
         python-version: [3.7, 3.8]
 
     steps:
