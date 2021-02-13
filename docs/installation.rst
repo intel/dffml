@@ -53,6 +53,22 @@ package.
 
             (.venv) C:\Users\username> python -m pip install -U dffml
 
+.. warning::
+
+    Make sure that if pip is complaining that directories are not in your
+    ``PATH``, that you add those directories to your ``PATH`` environment
+    variable!.
+
+You should now be able to run the ``dffml version`` command. If you have issues
+adding directories to your ``PATH``, you can always run ``dffml`` command line
+commands using Pythons module run syntax (``python -m``).
+
+.. code-block:: console
+    :test:
+
+    $ python -m dffml version
+    $ dffml version
+
 If you want to install all of the machine learning model plugins that are
 maintained as a part of the core repository, you can append ``[models]``.
 
