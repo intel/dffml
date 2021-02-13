@@ -60,24 +60,34 @@ so.
 Register your source
 --------------------
 
-Modify the **setup.py** file and change the ``dffml.source`` ``entrypoint``'s
-to point to your new source class (not the one ending in ``Context``).
+Modify the **entry_points.txt** file and change the ``dffml.source``
+entry point to point to your new source class (not the one ending in
+``Context``).
 
-.. literalinclude:: /../examples/source/setup.py
+**entry_points.txt**
+
+.. code-block:: ini
     :test:
-    :diff: /../dffml/skel/source/setup.py
-    :diff-files: setup.py
+    :overwrite:
+    :filepath: entry_points.txt
+
+    [dffml.source]
+    customsqlite = dffml_source_sqlite.custom_sqlite:CustomSQLiteSource
 
 This allows you to use your source with the CLI and HTTP API (after you install
 it).
 
-We also need to make a requirements.txt which tells pip that ``aiosqlite`` needs
-to be installed, since we will be importing it.
+We also need to add to the ``install_requires`` list in ``setup.cfg``. This list
+tells pip that ``aiosqlite`` needs to be installed. We need to install it since
+we will be importing it. Add the following line to the list after ``dffml``.
 
-**requirements.txt**
+**setup.cfg**
 
-.. literalinclude:: /../examples/source/requirements.txt
+.. code-block::
     :test:
+    :filepath: setup.cfg
+
+        aiosqlite>=0.15.0
 
 Install your package
 --------------------
