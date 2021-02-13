@@ -12,10 +12,6 @@ ENV DEBIAN_FRONTEND noninteractive
 ARG PYTHON_SHORT_VERSION=py37
 ENV PYTHON_SHORT_VERSION ${PYTHON_SHORT_VERSION}
 
-# The location we should install conda to
-ARG CONDA_INSTALL_LOCATION=/opt/conda
-ENV CONDA_INSTALL_LOCATION ${CONDA_INSTALL_LOCATION}
-
 # Set current working directory
 WORKDIR /usr/src/dffml
 
@@ -33,14 +29,6 @@ RUN apt-get update && \
 # Dependencies that are applicable to the main package and plugins, or just must
 # be installed first.
 
-# Copy over conda install script
-COPY .ci/conda.sh .ci/conda.sh
-# Install conda because some plugins have dependencies which are only available
-# on conda (those listed first). Also because we need to install those packages
-# for the integration tests for the main package (.) and when generating the
-# docs. Has to be installed first because other packages will be installed into
-# the environment that we set up using it (essentially a virtualenv)
-RUN .ci/conda.sh ${CONDA_INSTALL_LOCATION}
 # Install and upgrade
 # pip and setuptools, which are used to install other packages
 # twine, which is used to upload released packages to PyPi
@@ -51,7 +39,7 @@ RUN python -m pip install --upgrade pip setuptools twine
 
 # ====================== BEGIN NON PYTHON DEPENDENCIES =========================
 #
-# Dependencies for specific plugins that cannot be installed with pip or conda
+# Dependencies for specific plugins that cannot be installed with pip
 
 # feature/git
 # operations/deploy
@@ -80,28 +68,10 @@ RUN curl -o /tmp/tokei.tar.gz -L 'https://github.com/XAMPPRocky/tokei/releases/d
 # for the plugin, main package, or docs, and install if any of those conditions
 # are true.
 
-# model/vowpalWabbit
-# .
-# docs
-RUN . "${CONDA_INSTALL_LOCATION}/miniconda${PYTHON_SHORT_VERSION}/bin/activate" base && \
-  conda install -y -c conda-forge vowpalwabbit
-
-# model/daal4py
-# .
-# docs
-RUN . "${CONDA_INSTALL_LOCATION}/miniconda${PYTHON_SHORT_VERSION}/bin/activate" base && \
-  if [ "x${PYTHON_SHORT_VERSION}" != "xpy38" ]; then conda install -y -c conda-forge daal4py==2020.3 daal==2020.3; fi
-
-# operations/nlp
-RUN . "${CONDA_INSTALL_LOCATION}/miniconda${PYTHON_SHORT_VERSION}/bin/activate" base && \
-  conda install -y -c conda-forge spacy && \
-  python -m spacy download en_core_web_sm
-
 # model/autosklearn
 # .
 # docs
-RUN . "${CONDA_INSTALL_LOCATION}/miniconda${PYTHON_SHORT_VERSION}/bin/activate" base && \
-  apt-get update && \
+RUN apt-get update && \
   apt-get install -y \
     build-essential \
     swig && \
