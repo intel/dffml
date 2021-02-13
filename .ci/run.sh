@@ -103,6 +103,10 @@ function run_plugin() {
   # Report installed versions of packages
   "${PYTHON}" -m pip freeze
 
+  if [ "x${GITHUB_REPOSITORY}" == "xintel/dffml" ] && [ "x${TWINE_PASSWORD}" == "x" ]; then
+    echo "No TWINE_PASSWORD set for ${PLUGIN}. Auto release will fail." >&2
+    exit 1
+  fi
   if [ "x${GITHUB_ACTIONS}" == "xtrue" ] && [ "x${GITHUB_REF}" == "xrefs/heads/master" ]; then
     git status
     dffml service dev release "${PLUGIN}"
