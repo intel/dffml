@@ -196,6 +196,7 @@ Create training data:
 
 .. code-block::
     :test:
+    :overwrite:
     :filepath: train_data.csv
 
     sentence,sentiment
@@ -291,6 +292,7 @@ Create test data:
 
 .. code-block::
     :test:
+    :overwrite:
     :filepath: test_data.csv
 
     sentence
