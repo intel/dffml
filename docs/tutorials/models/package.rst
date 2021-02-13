@@ -38,18 +38,19 @@ Install the Package
 -------------------
 
 If you're planing on importing any third party packages, anything on
-`PyPi <https://pypi.org>`_, you'll want to add it to the ``setup.py`` file
-first.
+`PyPi <https://pypi.org>`_, you'll want to add it to the ``setup.cfg`` file
+first, under the ``install_requires`` section.
 
-**setup.py**
+**setup.cfg**
 
 .. code-block:: python
+    :test:
+    :filepath: setup.cfg
 
-    common.KWARGS["install_requires"] += ["scikit-learn>=0.21.2"]
+        scikit-learn>=0.21.2
 
 Any time you modify the dependencies of a package you should re-install it so
-they get installed as well. Anytime you change anything in ``"entry_points"``
-you'll also want to re-install the package.
+they get installed as well.
 
 ``pip``'s ``-e`` flag tells it we're installing our package in development mode,
 which means anytime Python import's our package, it's going to use the version
@@ -58,6 +59,7 @@ changes in this directory, they won't take effect until you reinstall the
 package.
 
 .. code-block:: console
+    :test:
 
     $ python -m pip install -e .
 
@@ -202,15 +204,20 @@ That requires that the ``file`` be in a directory in current working directory,
 or in a directory in the ``PYTHONPATH`` environment variable.
 
 We can instead reference it by a shorter name, but we have to declare that name
-within the ``dffml.model`` entrypoint in **setup.py**. This tells the Python
-packaging system that our package offers a plugin of the type ``dffml.model``,
-and we give the short name on the left side of the equals, and the entrypoint
-path on the right side.
+within the ``dffml.model`` entrypoint in **entry_points.txt**. This tells the
+Python packaging system that our package offers a plugin of the type
+``dffml.model``, and we give the short name on the left side of the equals, and
+the entrypoint path on the right side.
 
-**setup.py**
+**entry_points.txt**
 
-.. literalinclude:: /../dffml/skel/model/setup.py
-    :lines: 12-14
+.. code-block:: ini
+    :test:
+    :overwrite:
+    :filepath: entry_points.txt
+
+    [dffml.model]
+    myslr = dffml_model_myslr.myslr:MySLRModel
 
 And remember that any time we modify the **setup.py**, we have to run the
 setuptools ``egg_info`` hook to register the model with the ``entry_points``
