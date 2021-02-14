@@ -266,7 +266,9 @@ jobs:
         # Remove dataclasses. See https://github.com/intel/dffml/issues/882
         python scripts/tempfix/pytorch/pytorch/46930.py
     - name: Test
-      run: python setup.py test
+      run: |
+        python setup.py test
+        python -m pip freeze
 
   macos:
     runs-on: macos-latest
@@ -303,4 +305,6 @@ jobs:
         # Remove dataclasses. See https://github.com/intel/dffml/issues/882
         python scripts/tempfix/pytorch/pytorch/46930.py
     - name: Test
-      run: python setup.py test
+      run: |
+        python setup.py test
+        python -m pip freeze
