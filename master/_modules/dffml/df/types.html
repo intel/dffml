@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>dffml.df.types &mdash; DFFML 653f28ad documentation</title>
+  <title>dffml.df.types &mdash; DFFML 2a2c6e84 documentation</title>
   
 
   
@@ -65,7 +65,7 @@
             
             
               <div class="version">
-                653f28ad
+                2a2c6e84
               </div>
             
           
@@ -108,6 +108,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../cli.html">Command Line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../plugins/service/http/index.html">HTTP API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../troubleshooting.html">Troubleshooting</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Subprojects</span></p>
 <ul>
@@ -371,6 +372,7 @@
     <span class="n">expand</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">instance_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">validator</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">retry</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
 
     <span class="k">def</span> <span class="nf">export</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">exported</span> <span class="o">=</span> <span class="p">{</span>
@@ -380,6 +382,7 @@
             <span class="s2">&quot;conditions&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">conditions</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span>
             <span class="s2">&quot;stage&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">stage</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
             <span class="s2">&quot;expand&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">expand</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span>
+            <span class="s2">&quot;retry&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">retry</span><span class="p">,</span>
         <span class="p">}</span>
         <span class="k">for</span> <span class="n">to_string</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;inputs&quot;</span><span class="p">,</span> <span class="s2">&quot;outputs&quot;</span><span class="p">]:</span>
             <span class="n">exported</span><span class="p">[</span><span class="n">to_string</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
@@ -575,7 +578,11 @@
         <span class="k">return</span> <span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">export</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">definition</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">definition</span><span class="o">.</span><span class="n">export</span><span class="p">())</span>
+        <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span>
+            <span class="n">value</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+            <span class="n">definition</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">definition</span><span class="o">.</span><span class="n">export</span><span class="p">(),</span>
+            <span class="n">origin</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">origin</span><span class="p">,</span>
+        <span class="p">)</span>
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">_fromdict</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
@@ -799,6 +806,7 @@
             <span class="nb">set</span><span class="p">(</span>
                 <span class="n">itertools</span><span class="o">.</span><span class="n">chain</span><span class="p">(</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">definitions</span><span class="o">.</span><span class="n">values</span><span class="p">(),</span>
+                    <span class="p">[</span><span class="n">item</span><span class="o">.</span><span class="n">definition</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">seed</span><span class="p">],</span>
                     <span class="o">*</span><span class="p">[</span>
                         <span class="n">itertools</span><span class="o">.</span><span class="n">chain</span><span class="p">(</span>
                             <span class="n">operation</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">values</span><span class="p">(),</span>
@@ -849,6 +857,17 @@
                             <span class="n">operation</span>
                         <span class="p">)</span>
                     <span class="k">else</span><span class="p">:</span>
+                        <span class="c1"># In order to support selection an input based using an</span>
+                        <span class="c1"># alternate definition along with restriction to inputs</span>
+                        <span class="c1"># who&#39;s origins match the alternate definitions in the</span>
+                        <span class="c1"># list. We select the first output source since that</span>
+                        <span class="c1"># will be the immediate alternate definition</span>
+                        <span class="k">if</span> <span class="p">(</span>
+                            <span class="nb">isinstance</span><span class="p">(</span><span class="n">output_source</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span>
+                            <span class="ow">and</span> <span class="n">output_source</span>
+                            <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">output_source</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">dict</span><span class="p">)</span>
+                        <span class="p">):</span>
+                            <span class="n">output_source</span> <span class="o">=</span> <span class="n">output_source</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
                         <span class="k">for</span> <span class="n">origin</span> <span class="ow">in</span> <span class="n">output_source</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
                             <span class="c1"># If we have an output_source item with an origin</span>
                             <span class="c1"># that has a list as it&#39;s value we know that the key</span>

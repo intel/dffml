@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>consoletest Sphinx extension &mdash; DFFML 653f28ad documentation</title>
+  <title>consoletest Sphinx extension &mdash; DFFML 2a2c6e84 documentation</title>
   
 
   
@@ -66,7 +66,7 @@
             
             
               <div class="version">
-                653f28ad
+                2a2c6e84
               </div>
             
           
@@ -109,6 +109,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../cli.html">Command Line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../plugins/service/http/index.html">HTTP API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../troubleshooting.html">Troubleshooting</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Subprojects</span></p>
 <ul>
@@ -323,6 +324,13 @@ the <code class="docutils literal notranslate"><span class="pre">ctx</span></cod
     print()
 
     query = dict(urllib.parse.parse_qsl(os.getenv(&quot;QUERY_STRING&quot;, default=&quot;&quot;)))
+</pre></div>
+</div>
+<p>When a <code class="docutils literal notranslate"><span class="pre">code-block</span></code> results in a write to a file, if the <code class="docutils literal notranslate"><span class="pre">:overwrite:</span></code> option
+is left off, contents will be appended to the file, rather than overwriting.</p>
+<div class="highlight-rst notranslate"><div class="highlight"><pre><span></span><span class="p">..</span> <span class="ow">code-block</span><span class="p">::</span> python
+    <span class="nc">:test:</span>
+    <span class="nc">:filepath:</span> cgi-bin/api.py
 
     print(json.dumps(query))
 
@@ -455,6 +463,14 @@ directives.</p>
 <ul>
 <li><p>Write the contents of the <code class="docutils literal notranslate"><span class="pre">code-block</span></code> to this file path relative to the
 currnet working directory (<code class="docutils literal notranslate"><span class="pre">ctx[&quot;cwd&quot;]</span></code>)</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">overwrite</span></code>: Boolean</p>
+<ul>
+<li><p>If the filepath for the <code class="docutils literal notranslate"><span class="pre">code-block</span></code> exists and overwrite evaluates to
+<code class="docutils literal notranslate"><span class="pre">True</span></code>, replace the contents of the file with the contents of the file with
+the contents of this <code class="docutils literal notranslate"><span class="pre">code-block</span></code>. If <code class="docutils literal notranslate"><span class="pre">overwrite</span></code> evaluates to <code class="docutils literal notranslate"><span class="pre">False</span></code>,
+append the contents of the <code class="docutils literal notranslate"><span class="pre">code-block</span></code> to the file.</p></li>
 </ul>
 </li>
 <li><p><code class="docutils literal notranslate"><span class="pre">replace</span></code>: Python code</p>

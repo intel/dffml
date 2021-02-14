@@ -33,6 +33,19 @@ Let's first download the `en_core_web_sm` model.
 
     $ python -m spacy download en_core_web_sm
 
+.. warning::
+
+    Spacy and aiohttp don't play nice together. If you have aiohttp installed
+    you're going to get weird messages about the version of the ``chardet``
+    package (``pkg_resources.ContextualVersionConflict``). To avoid this, run
+    the download command and include aiohttp in the list of packages to
+    download, since ``spacy`` is passing through to ``pip`` here.
+
+    .. code-block:: console
+        :test:
+
+        $ python -m spacy download en_core_web_sm aiohttp
+
 Create training data:
 
 **train_data.csv**
@@ -196,6 +209,7 @@ Create training data:
 
 .. code-block::
     :test:
+    :overwrite:
     :filepath: train_data.csv
 
     sentence,sentiment
@@ -291,6 +305,7 @@ Create test data:
 
 .. code-block::
     :test:
+    :overwrite:
     :filepath: test_data.csv
 
     sentence
@@ -299,7 +314,11 @@ Create test data:
     My cat plays all day
     Dogs are evil
 
-Make prediction on test data:
+
+We're going to make predictions on test data, but first we'll use the ``merge``
+command to pre-process the data. The ``merge`` command takes data from one
+source and puts it in another. We can take records from the preprocessing source
+and put them in the JSON source as an intermediary format.
 
 .. note::
 
@@ -309,16 +328,29 @@ Make prediction on test data:
 .. code-block:: console
     :test:
 
+    $ dffml merge text=df temp=json \
+        -source-text-dataflow nlp_ops_dataflow.json \
+        -source-text-features sentence:str:1 \
+        -source-text-source csv \
+        -source-text-source-filename test_data.csv \
+        -source-temp-filename test_data_preprocessed.json \
+        -source-temp-allowempty \
+        -source-temp-readwrite \
+        -log debug
+    $ cat test_data_preprocessed.json | python -m json.tool
+
+Now we can make prediction on test data:
+
+.. code-block:: console
+    :test:
+
     $ dffml predict all \
         -model scikitgnb \
         -model-features extract_array_from_matrix.outputs.result:float:1 \
         -model-predict sentiment:int:1 \
         -model-directory tempdir \
-        -sources text=df \
-        -source-text-dataflow nlp_ops_dataflow.json \
-        -source-text-features sentence:str:1 \
-        -source-text-source csv \
-        -source-text-source-filename test_data.csv \
+        -sources temp=json \
+        -source-temp-filename test_data_preprocessed.json \
         -pretty
 
             Key:	1

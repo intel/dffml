@@ -20,14 +20,14 @@ CLI and other services.
 
     source
     idx3
-    file
-    dir
-    log
-    idx1
-    op
-    csv
-    ini
-    memory
-    json
-    db
     df
+    ini
+    csv
+    file
+    json
+    dir
+    op
+    db
+    idx1
+    memory
+    log

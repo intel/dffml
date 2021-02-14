@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>dffml.df.base &mdash; DFFML 653f28ad documentation</title>
+  <title>dffml.df.base &mdash; DFFML 2a2c6e84 documentation</title>
   
 
   
@@ -65,7 +65,7 @@
             
             
               <div class="version">
-                653f28ad
+                2a2c6e84
               </div>
             
           
@@ -108,6 +108,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../cli.html">Command Line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../plugins/service/http/index.html">HTTP API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../troubleshooting.html">Troubleshooting</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Subprojects</span></p>
 <ul>
@@ -674,7 +675,7 @@
                                     <span class="p">}</span>
 
                             <span class="n">result</span> <span class="o">=</span> <span class="n">convert_asyncgen</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
-                        <span class="k">else</span><span class="p">:</span>
+                        <span class="k">elif</span> <span class="n">result</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                             <span class="n">result</span> <span class="o">=</span> <span class="p">{</span>
                                 <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">outputs</span><span class="o">.</span><span class="n">keys</span><span class="p">())[</span><span class="mi">0</span><span class="p">]:</span> <span class="n">result</span>
                             <span class="p">}</span>

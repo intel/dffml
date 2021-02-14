@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Example SQLite source &mdash; DFFML 653f28ad documentation</title>
+  <title>Example SQLite source &mdash; DFFML 2a2c6e84 documentation</title>
   
 
   
@@ -66,7 +66,7 @@
             
             
               <div class="version">
-                653f28ad
+                2a2c6e84
               </div>
             
           
@@ -128,6 +128,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../cli.html">Command Line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../plugins/service/http/index.html">HTTP API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../troubleshooting.html">Troubleshooting</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Subprojects</span></p>
 <ul>
@@ -440,29 +441,21 @@ so.</p>
 </div>
 <div class="section" id="register-your-source">
 <h2>Register your source<a class="headerlink" href="#register-your-source" title="Permalink to this headline">¶</a></h2>
-<p>Modify the <strong>setup.py</strong> file and change the <code class="docutils literal notranslate"><span class="pre">dffml.source</span></code> <code class="docutils literal notranslate"><span class="pre">entrypoint</span></code>’s
-to point to your new source class (not the one ending in <code class="docutils literal notranslate"><span class="pre">Context</span></code>).</p>
-<div class="highlight-udiff notranslate"><div class="highlight"><pre><span></span><span class="gd">--- ./setup.py</span>
-<span class="gi">+++ ./setup.py</span>
-<span class="gu">@@ -10,7 +10,9 @@</span>
- spec.loader.exec_module(common)
- 
- common.KWARGS[&quot;entry_points&quot;] = {
-<span class="gd">-    &quot;dffml.source&quot;: [f&quot;misc = {common.IMPORT_NAME}.misc:MiscSource&quot;]</span>
-<span class="gi">+    &quot;dffml.source&quot;: [</span>
-<span class="gi">+        f&quot;customsqlite = {common.IMPORT_NAME}.custom_sqlite:CustomSQLiteSource&quot;</span>
-<span class="gi">+    ]</span>
- }
- 
- setup(**common.KWARGS)
+<p>Modify the <strong>entry_points.txt</strong> file and change the <code class="docutils literal notranslate"><span class="pre">dffml.source</span></code>
+entry point to point to your new source class (not the one ending in
+<code class="docutils literal notranslate"><span class="pre">Context</span></code>).</p>
+<p><strong>entry_points.txt</strong></p>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[dffml.source]</span>
+<span class="na">customsqlite</span> <span class="o">=</span> <span class="s">dffml_source_sqlite.custom_sqlite:CustomSQLiteSource</span>
 </pre></div>
 </div>
 <p>This allows you to use your source with the CLI and HTTP API (after you install
 it).</p>
-<p>We also need to make a requirements.txt which tells pip that <code class="docutils literal notranslate"><span class="pre">aiosqlite</span></code> needs
-to be installed, since we will be importing it.</p>
-<p><strong>requirements.txt</strong></p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">aiosqlite</span><span class="o">&gt;=</span><span class="mf">0.15</span><span class="o">.</span><span class="mi">0</span>
+<p>We also need to add to the <code class="docutils literal notranslate"><span class="pre">install_requires</span></code> list in <code class="docutils literal notranslate"><span class="pre">setup.cfg</span></code>. This list
+tells pip that <code class="docutils literal notranslate"><span class="pre">aiosqlite</span></code> needs to be installed. We need to install it since
+we will be importing it. Add the following line to the list after <code class="docutils literal notranslate"><span class="pre">dffml</span></code>.</p>
+<p><strong>setup.cfg</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">aiosqlite</span><span class="o">&gt;=</span><span class="mf">0.15</span><span class="o">.</span><span class="mi">0</span>
 </pre></div>
 </div>
 </div>

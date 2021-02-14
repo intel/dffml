@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>dffml.util.testing.consoletest.util &mdash; DFFML 653f28ad documentation</title>
+  <title>dffml.util.testing.consoletest.util &mdash; DFFML 2a2c6e84 documentation</title>
   
 
   
@@ -65,7 +65,7 @@
             
             
               <div class="version">
-                653f28ad
+                2a2c6e84
               </div>
             
           
@@ -108,6 +108,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../../cli.html">Command Line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../plugins/service/http/index.html">HTTP API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../api/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../troubleshooting.html">Troubleshooting</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Subprojects</span></p>
 <ul>
@@ -289,6 +290,7 @@
         <span class="n">node</span><span class="p">[</span><span class="s2">&quot;consoletestnodetype&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;consoletest-file&quot;</span>
         <span class="n">node</span><span class="p">[</span><span class="s2">&quot;content&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">content</span>
         <span class="n">node</span><span class="p">[</span><span class="s2">&quot;filepath&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">options</span><span class="p">[</span><span class="s2">&quot;filepath&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
+        <span class="n">node</span><span class="p">[</span><span class="s2">&quot;overwrite&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="s2">&quot;overwrite&quot;</span> <span class="ow">in</span> <span class="n">options</span><span class="p">)</span>
     <span class="k">elif</span> <span class="s2">&quot;test&quot;</span> <span class="ow">in</span> <span class="n">options</span><span class="p">:</span>
         <span class="n">node</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;language&quot;</span><span class="p">,</span> <span class="s2">&quot;console&quot;</span><span class="p">)</span>
         <span class="n">node</span><span class="p">[</span><span class="s2">&quot;consoletestnodetype&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;consoletest&quot;</span>
@@ -330,6 +332,7 @@
     <span class="s2">&quot;daemon&quot;</span><span class="p">:</span> <span class="s2">&quot;unchanged_required&quot;</span><span class="p">,</span>
     <span class="s2">&quot;test&quot;</span><span class="p">:</span> <span class="s2">&quot;flag&quot;</span><span class="p">,</span>
     <span class="s2">&quot;stdin&quot;</span><span class="p">:</span> <span class="s2">&quot;unchanged_required&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;overwrite&quot;</span><span class="p">:</span> <span class="s2">&quot;flag&quot;</span><span class="p">,</span>
 <span class="p">}</span>
 
 

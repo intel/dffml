@@ -5,8 +5,9 @@ Cli
     :maxdepth: 2
     :caption: Contents:
 
-    ml
     list
-    config
+    ml
     dataflow
+    config
     cli
+    log

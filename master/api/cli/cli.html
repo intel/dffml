@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Cli Cli &mdash; DFFML 653f28ad documentation</title>
+  <title>Cli Cli &mdash; DFFML 2a2c6e84 documentation</title>
   
 
   
@@ -41,8 +41,8 @@
     <link rel="author" title="About these documents" href="../../about.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Operation" href="../operation/index.html" />
-    <link rel="prev" title="Cli Dataflow" href="dataflow.html" /> 
+    <link rel="next" title="Cli Log" href="log.html" />
+    <link rel="prev" title="Cli Config" href="config.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -66,7 +66,7 @@
             
             
               <div class="version">
-                653f28ad
+                2a2c6e84
               </div>
             
           
@@ -109,34 +109,36 @@
 <li class="toctree-l1"><a class="reference internal" href="../../cli.html">Command Line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../plugins/service/http/index.html">HTTP API</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">API Reference</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="../record.html">Record</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../log.html">Log</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../version.html">Version</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../base.html">Base</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../noasync.html">High Level (noasync)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../record.html">Record</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../high_level.html">High Level</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../plugins.html">Plugins</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../feature/index.html">Feature</a></li>
-<li class="toctree-l2 current"><a class="reference internal" href="index.html">Cli</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="ml.html">Cli Ml</a></li>
-<li class="toctree-l3"><a class="reference internal" href="list.html">Cli List</a></li>
-<li class="toctree-l3"><a class="reference internal" href="config.html">Cli Config</a></li>
-<li class="toctree-l3"><a class="reference internal" href="dataflow.html">Cli Dataflow</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">Cli Cli</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="../operation/index.html">Operation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../util/index.html">Utilities</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../db/index.html">Databases</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../service/index.html">Service</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../source/index.html">Sources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../base.html">Base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../log.html">Log</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../port/index.html">Port</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../source/index.html">Sources</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../configloader/index.html">Configloader</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../db/index.html">Databases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../operation/index.html">Operation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../model/index.html">Models</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../secret/index.html">Secrets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../util/index.html">Utilities</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../df/index.html">Data Flow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../secret/index.html">Secrets</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Cli</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="list.html">Cli List</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ml.html">Cli Ml</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dataflow.html">Cli Dataflow</a></li>
+<li class="toctree-l3"><a class="reference internal" href="config.html">Cli Config</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Cli Cli</a></li>
+<li class="toctree-l3"><a class="reference internal" href="log.html">Cli Log</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="../feature/index.html">Feature</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../service/index.html">Service</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../troubleshooting.html">Troubleshooting</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Subprojects</span></p>
 <ul>
@@ -375,6 +377,56 @@
 <dt id="dffml.cli.cli.Version">
 <em class="property">class </em><code class="sig-prename descclassname">dffml.cli.cli.</code><code class="sig-name descname">Version</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">extra_config</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/cli/cli.html#Version"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.cli.cli.Version" title="Permalink to this definition">¶</a></dt>
 <dd><p>Print version and installed dffml packages</p>
+<dl class="py attribute">
+<dt id="dffml.cli.cli.Version.CONFIG">
+<code class="sig-name descname">CONFIG</code><a class="headerlink" href="#dffml.cli.cli.Version.CONFIG" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#dffml.cli.cli.VersionConfig" title="dffml.cli.cli.VersionConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">dffml.cli.cli.VersionConfig</span></code></a></p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="dffml.cli.cli.Version.git_hash">
+<em class="property">async static </em><code class="sig-name descname">git_hash</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path</span><span class="p">:</span> <span class="n">Union<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.9)">pathlib.Path</a><span class="p">, </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a><span class="p">]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/cli/cli.html#Version.git_hash"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.cli.cli.Version.git_hash" title="Permalink to this definition">¶</a></dt>
+<dd><p>If the path is a git repo we’ll return.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pathlib</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">subprocess</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">dffml.cli.cli</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">subprocess</span><span class="o">.</span><span class="n">check_call</span><span class="p">([</span><span class="s2">&quot;git&quot;</span><span class="p">,</span> <span class="s2">&quot;init&quot;</span><span class="p">])</span>
+<span class="go">0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">subprocess</span><span class="o">.</span><span class="n">check_call</span><span class="p">([</span><span class="s2">&quot;git&quot;</span><span class="p">,</span> <span class="s2">&quot;config&quot;</span><span class="p">,</span> <span class="s2">&quot;user.name&quot;</span><span class="p">,</span> <span class="s2">&quot;First Last&quot;</span><span class="p">])</span>
+<span class="go">0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">subprocess</span><span class="o">.</span><span class="n">check_call</span><span class="p">([</span><span class="s2">&quot;git&quot;</span><span class="p">,</span> <span class="s2">&quot;config&quot;</span><span class="p">,</span> <span class="s2">&quot;user.email&quot;</span><span class="p">,</span> <span class="s2">&quot;first.last@example.com&quot;</span><span class="p">])</span>
+<span class="go">0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;README.md&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">write_text</span><span class="p">(</span><span class="s2">&quot;Contents&quot;</span><span class="p">)</span>
+<span class="go">8</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">subprocess</span><span class="o">.</span><span class="n">check_call</span><span class="p">([</span><span class="s2">&quot;git&quot;</span><span class="p">,</span> <span class="s2">&quot;add&quot;</span><span class="p">,</span> <span class="s2">&quot;README.md&quot;</span><span class="p">])</span>
+<span class="go">0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">subprocess</span><span class="o">.</span><span class="n">check_call</span><span class="p">([</span><span class="s2">&quot;git&quot;</span><span class="p">,</span> <span class="s2">&quot;commit&quot;</span><span class="p">,</span> <span class="s2">&quot;-m&quot;</span><span class="p">,</span> <span class="s2">&quot;First commit&quot;</span><span class="p">])</span>
+<span class="go">0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dirty</span><span class="p">,</span> <span class="n">short_hash</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">dffml</span><span class="o">.</span><span class="n">cli</span><span class="o">.</span><span class="n">cli</span><span class="o">.</span><span class="n">Version</span><span class="o">.</span><span class="n">git_hash</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dirty</span>
+<span class="go">False</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">int</span><span class="p">(</span><span class="n">short_hash</span><span class="p">,</span> <span class="mi">16</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="dffml.cli.cli.VersionConfig">
+<em class="property">class </em><code class="sig-prename descclassname">dffml.cli.cli.</code><code class="sig-name descname">VersionConfig</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">no_errors</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)">bool</a></span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/cli/cli.html#VersionConfig"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.cli.cli.VersionConfig" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="dffml.cli.cli.failed_to_load_service">
+<code class="sig-prename descclassname">dffml.cli.cli.</code><code class="sig-name descname">failed_to_load_service</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">loading_what</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></span> <span class="o">=</span> <span class="default_value">'services'</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/cli/cli.html#failed_to_load_service"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.cli.cli.failed_to_load_service" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sometimes weird dependency issues show up and prevent us from loading
+anything. We log the traceback in that case.</p>
 </dd></dl>
 
 <dl class="py function">
@@ -392,8 +444,8 @@ all of the loaded CLI versions of services as subcommands.</p>
           </div>
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="../operation/index.html" class="btn btn-neutral float-right" title="Operation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-        <a href="dataflow.html" class="btn btn-neutral float-left" title="Cli Dataflow" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="log.html" class="btn btn-neutral float-right" title="Cli Log" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="config.html" class="btn btn-neutral float-left" title="Cli Config" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
   <hr/>

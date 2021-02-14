@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>dffml.cli.cli &mdash; DFFML 653f28ad documentation</title>
+  <title>dffml.cli.cli &mdash; DFFML 2a2c6e84 documentation</title>
   
 
   
@@ -65,7 +65,7 @@
             
             
               <div class="version">
-                653f28ad
+                2a2c6e84
               </div>
             
           
@@ -108,6 +108,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../cli.html">Command Line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../plugins/service/http/index.html">HTTP API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../troubleshooting.html">Troubleshooting</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Subprojects</span></p>
 <ul>
@@ -200,15 +201,19 @@
 <span class="kn">import</span> <span class="nn">pathlib</span>
 <span class="kn">import</span> <span class="nn">pdb</span>
 <span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">traceback</span>
 <span class="kn">import</span> <span class="nn">contextlib</span>
+<span class="kn">import</span> <span class="nn">subprocess</span>
 <span class="kn">import</span> <span class="nn">pkg_resources</span>
 <span class="kn">import</span> <span class="nn">importlib.util</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span>
 
+<span class="kn">from</span> <span class="nn">.log</span> <span class="kn">import</span> <span class="n">LOGGER</span>
 <span class="kn">from</span> <span class="nn">..version</span> <span class="kn">import</span> <span class="n">VERSION</span>
 <span class="kn">from</span> <span class="nn">..record</span> <span class="kn">import</span> <span class="n">Record</span>
 <span class="kn">from</span> <span class="nn">..feature.feature</span> <span class="kn">import</span> <span class="n">Features</span>
 <span class="kn">from</span> <span class="nn">..df.types</span> <span class="kn">import</span> <span class="n">DataFlow</span>
-<span class="kn">from</span> <span class="nn">..plugins</span> <span class="kn">import</span> <span class="n">PACKAGE_NAMES_BY_PLUGIN</span>
+<span class="kn">from</span> <span class="nn">..plugins</span> <span class="kn">import</span> <span class="n">PACKAGE_NAMES_BY_PLUGIN</span><span class="p">,</span> <span class="n">PACKAGE_NAMES_TO_DIRECTORY</span>
 <span class="kn">from</span> <span class="nn">..source.df</span> <span class="kn">import</span> <span class="n">DataFlowSource</span><span class="p">,</span> <span class="n">DataFlowSourceConfig</span>
 <span class="kn">from</span> <span class="nn">..source.source</span> <span class="kn">import</span> <span class="n">Sources</span><span class="p">,</span> <span class="n">BaseSource</span><span class="p">,</span> <span class="n">SubsetSources</span>
 <span class="kn">from</span> <span class="nn">..configloader.configloader</span> <span class="kn">import</span> <span class="n">BaseConfigLoader</span>
@@ -230,16 +235,82 @@
 <span class="kn">from</span> <span class="nn">.ml</span> <span class="kn">import</span> <span class="n">Train</span><span class="p">,</span> <span class="n">Accuracy</span><span class="p">,</span> <span class="n">Predict</span>
 <span class="kn">from</span> <span class="nn">.list</span> <span class="kn">import</span> <span class="n">List</span>
 
+<span class="n">version</span> <span class="o">=</span> <span class="n">VERSION</span>
+
+
+<div class="viewcode-block" id="VersionConfig"><a class="viewcode-back" href="../../../api/cli/cli.html#dffml.cli.cli.VersionConfig">[docs]</a><span class="nd">@config</span>
+<span class="k">class</span> <span class="nc">VersionConfig</span><span class="p">:</span>
+    <span class="n">no_errors</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
+        <span class="s2">&quot;Set to ignore errors when loading modules&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">False</span>
+    <span class="p">)</span></div>
+
 
 <div class="viewcode-block" id="Version"><a class="viewcode-back" href="../../../api/cli/cli.html#dffml.cli.cli.Version">[docs]</a><span class="k">class</span> <span class="nc">Version</span><span class="p">(</span><span class="n">CMD</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Print version and installed dffml packages</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
+    <span class="n">CONFIG</span> <span class="o">=</span> <span class="n">VersionConfig</span>
+
+<div class="viewcode-block" id="Version.git_hash"><a class="viewcode-back" href="../../../api/cli/cli.html#dffml.cli.cli.Version.git_hash">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">git_hash</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">,</span> <span class="nb">str</span><span class="p">]):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        If the path is a git repo we&#39;ll return.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+
+<span class="sd">        &gt;&gt;&gt; import pathlib</span>
+<span class="sd">        &gt;&gt;&gt; import asyncio</span>
+<span class="sd">        &gt;&gt;&gt; import subprocess</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; import dffml.cli.cli</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; subprocess.check_call([&quot;git&quot;, &quot;init&quot;])</span>
+<span class="sd">        0</span>
+<span class="sd">        &gt;&gt;&gt; subprocess.check_call([&quot;git&quot;, &quot;config&quot;, &quot;user.name&quot;, &quot;First Last&quot;])</span>
+<span class="sd">        0</span>
+<span class="sd">        &gt;&gt;&gt; subprocess.check_call([&quot;git&quot;, &quot;config&quot;, &quot;user.email&quot;, &quot;first.last@example.com&quot;])</span>
+<span class="sd">        0</span>
+<span class="sd">        &gt;&gt;&gt; pathlib.Path(&quot;README.md&quot;).write_text(&quot;Contents&quot;)</span>
+<span class="sd">        8</span>
+<span class="sd">        &gt;&gt;&gt; subprocess.check_call([&quot;git&quot;, &quot;add&quot;, &quot;README.md&quot;])</span>
+<span class="sd">        0</span>
+<span class="sd">        &gt;&gt;&gt; subprocess.check_call([&quot;git&quot;, &quot;commit&quot;, &quot;-m&quot;, &quot;First commit&quot;])</span>
+<span class="sd">        0</span>
+<span class="sd">        &gt;&gt;&gt; dirty, short_hash = asyncio.run(dffml.cli.cli.Version.git_hash(&quot;.&quot;))</span>
+<span class="sd">        &gt;&gt;&gt; dirty</span>
+<span class="sd">        False</span>
+<span class="sd">        &gt;&gt;&gt; int(short_hash, 16) &gt; 0</span>
+<span class="sd">        True</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
+        <span class="n">dirty</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">short_hash</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">with</span> <span class="n">contextlib</span><span class="o">.</span><span class="n">suppress</span><span class="p">(</span><span class="n">subprocess</span><span class="o">.</span><span class="n">CalledProcessError</span><span class="p">):</span>
+            <span class="n">dirty</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span>
+                <span class="n">subprocess</span><span class="o">.</span><span class="n">call</span><span class="p">(</span>
+                    <span class="p">[</span><span class="s2">&quot;git&quot;</span><span class="p">,</span> <span class="s2">&quot;diff-index&quot;</span><span class="p">,</span> <span class="s2">&quot;--quiet&quot;</span><span class="p">,</span> <span class="s2">&quot;HEAD&quot;</span><span class="p">,</span> <span class="s2">&quot;--&quot;</span><span class="p">],</span>
+                    <span class="n">cwd</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">path</span><span class="p">),</span>
+                    <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">DEVNULL</span><span class="p">,</span>
+                    <span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">DEVNULL</span><span class="p">,</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+            <span class="n">short_hash</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">subprocess</span><span class="o">.</span><span class="n">check_output</span><span class="p">(</span>
+                    <span class="p">[</span><span class="s2">&quot;git&quot;</span><span class="p">,</span> <span class="s2">&quot;show&quot;</span><span class="p">,</span> <span class="s2">&quot;-s&quot;</span><span class="p">,</span> <span class="s2">&quot;--pretty=%h %D&quot;</span><span class="p">,</span> <span class="s2">&quot;HEAD&quot;</span><span class="p">],</span>
+                    <span class="n">cwd</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">path</span><span class="p">),</span>
+                    <span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">DEVNULL</span><span class="p">,</span>
+                <span class="p">)</span>
+                <span class="o">.</span><span class="n">decode</span><span class="p">()</span>
+                <span class="o">.</span><span class="n">split</span><span class="p">()</span>
+            <span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">dirty</span><span class="p">,</span> <span class="n">short_hash</span></div>
+
     <span class="k">async</span> <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Reporting version&quot;</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;dffml </span><span class="si">{</span><span class="n">VERSION</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="s1">&#39;dffml&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">__path__</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">package_name</span> <span class="ow">in</span> <span class="n">PACKAGE_NAMES_BY_PLUGIN</span><span class="p">[</span><span class="s2">&quot;all&quot;</span><span class="p">]:</span>
+        <span class="c1"># Versions of plugins</span>
+        <span class="k">for</span> <span class="n">package_name</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;dffml&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">PACKAGE_NAMES_BY_PLUGIN</span><span class="p">[</span><span class="s2">&quot;all&quot;</span><span class="p">]:</span>
             <span class="n">version</span> <span class="o">=</span> <span class="s2">&quot;not installed&quot;</span>
             <span class="n">path</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
             <span class="n">import_package_name</span> <span class="o">=</span> <span class="n">package_name</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="s2">&quot;_&quot;</span><span class="p">)</span>
@@ -248,15 +319,22 @@
                 <span class="n">import_package_name</span><span class="p">,</span>
                 <span class="n">import_package_name_version</span><span class="p">,</span>
             <span class="p">]:</span>
-                <span class="n">spec</span> <span class="o">=</span> <span class="kc">None</span>
-                <span class="k">with</span> <span class="n">contextlib</span><span class="o">.</span><span class="n">suppress</span><span class="p">(</span><span class="ne">ModuleNotFoundError</span><span class="p">):</span>
-                    <span class="n">spec</span> <span class="o">=</span> <span class="n">importlib</span><span class="o">.</span><span class="n">util</span><span class="o">.</span><span class="n">find_spec</span><span class="p">(</span><span class="n">module_name</span><span class="p">)</span>
-                <span class="k">if</span> <span class="n">spec</span> <span class="ow">and</span> <span class="n">module_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">:</span>
-                    <span class="n">module</span> <span class="o">=</span> <span class="n">importlib</span><span class="o">.</span><span class="n">util</span><span class="o">.</span><span class="n">module_from_spec</span><span class="p">(</span><span class="n">spec</span><span class="p">)</span>
-                    <span class="k">with</span> <span class="n">contextlib</span><span class="o">.</span><span class="n">redirect_stderr</span><span class="p">(</span>
-                        <span class="kc">None</span>
-                    <span class="p">),</span> <span class="n">contextlib</span><span class="o">.</span><span class="n">redirect_stdout</span><span class="p">(</span><span class="kc">None</span><span class="p">):</span>
-                        <span class="n">spec</span><span class="o">.</span><span class="n">loader</span><span class="o">.</span><span class="n">exec_module</span><span class="p">(</span><span class="n">module</span><span class="p">)</span>
+                <span class="k">with</span> <span class="n">contextlib</span><span class="o">.</span><span class="n">redirect_stderr</span><span class="p">(</span>
+                    <span class="kc">None</span>
+                <span class="p">),</span> <span class="n">contextlib</span><span class="o">.</span><span class="n">redirect_stdout</span><span class="p">(</span><span class="kc">None</span><span class="p">):</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="n">module</span> <span class="o">=</span> <span class="n">importlib</span><span class="o">.</span><span class="n">import_module</span><span class="p">(</span><span class="n">module_name</span><span class="p">)</span>
+                    <span class="k">except</span> <span class="ne">ModuleNotFoundError</span><span class="p">:</span>
+                        <span class="k">continue</span>
+                    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">no_errors</span><span class="p">:</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
+                                <span class="sa">f</span><span class="s2">&quot;Failed to import </span><span class="si">{</span><span class="n">module_name</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">traceback</span><span class="o">.</span><span class="n">format_exc</span><span class="p">()</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+                            <span class="p">)</span>
+                            <span class="n">version</span> <span class="o">=</span> <span class="s2">&quot;ERROR&quot;</span>
+                            <span class="k">continue</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="k">raise</span>
                     <span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">module_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">module</span>
                 <span class="k">if</span> <span class="n">module_name</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">:</span>
                     <span class="n">module</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">module_name</span><span class="p">]</span>
@@ -264,7 +342,25 @@
                         <span class="n">version</span> <span class="o">=</span> <span class="n">module</span><span class="o">.</span><span class="n">VERSION</span>
                     <span class="k">else</span><span class="p">:</span>
                         <span class="n">path</span> <span class="o">=</span> <span class="n">module</span><span class="o">.</span><span class="n">__path__</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">package_name</span><span class="p">,</span> <span class="n">version</span><span class="p">,</span> <span class="n">path</span><span class="p">]))</span></div>
+                        <span class="c1"># Report if code comes from git repo</span>
+                        <span class="n">dirty</span><span class="p">,</span> <span class="n">short_hash</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">git_hash</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+            <span class="n">package_details</span> <span class="o">=</span> <span class="p">[</span><span class="n">package_name</span><span class="p">,</span> <span class="n">version</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">path</span><span class="p">:</span>
+                <span class="n">package_details</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">dirty</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">short_hash</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">package_details</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">short_hash</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">dirty</span><span class="p">:</span>
+                        <span class="n">package_details</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;(dirty git repo)&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">package_details</span><span class="p">))</span></div>
+
+
+<span class="k">class</span> <span class="nc">Packages</span><span class="p">(</span><span class="n">CMD</span><span class="p">):</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span>
+            <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+                <span class="nb">sorted</span><span class="p">([</span><span class="s2">&quot;dffml&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="n">PACKAGE_NAMES_TO_DIRECTORY</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
 
 
 <div class="viewcode-block" id="EditCMDConfig"><a class="viewcode-back" href="../../../api/cli/cli.html#dffml.cli.cli.EditCMDConfig">[docs]</a><span class="nd">@config</span>
@@ -410,6 +506,19 @@
                 <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">port</span><span class="o">.</span><span class="n">export_to_file</span><span class="p">(</span><span class="n">sctx</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span></div>
 
 
+<span class="n">SERVICES_LOGGER</span> <span class="o">=</span> <span class="n">LOGGER</span><span class="o">.</span><span class="n">getChild</span><span class="p">(</span><span class="s2">&quot;services&quot;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="failed_to_load_service"><a class="viewcode-back" href="../../../api/cli/cli.html#dffml.cli.cli.failed_to_load_service">[docs]</a><span class="k">def</span> <span class="nf">failed_to_load_service</span><span class="p">(</span><span class="n">loading_what</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;services&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Sometimes weird dependency issues show up and prevent us from loading</span>
+<span class="sd">    anything. We log the traceback in that case.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">SERVICES_LOGGER</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
+        <span class="s2">&quot;Error while loading </span><span class="si">%s</span><span class="s2">: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">loading_what</span><span class="p">,</span> <span class="n">traceback</span><span class="o">.</span><span class="n">format_exc</span><span class="p">()</span>
+    <span class="p">)</span></div>
+
+
 <div class="viewcode-block" id="services"><a class="viewcode-back" href="../../../api/cli/cli.html#dffml.cli.cli.services">[docs]</a><span class="k">def</span> <span class="nf">services</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Loads dffml.services.cli entrypoint and creates a CMD class incorporating</span>
@@ -423,10 +532,17 @@
 
         <span class="k">pass</span>
 
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">pkg_resources</span><span class="o">.</span><span class="n">iter_entry_points</span><span class="p">(</span><span class="s2">&quot;dffml.service.cli&quot;</span><span class="p">):</span>
-        <span class="n">loaded</span> <span class="o">=</span> <span class="n">i</span><span class="o">.</span><span class="n">load</span><span class="p">()</span>
-        <span class="k">if</span> <span class="nb">issubclass</span><span class="p">(</span><span class="n">loaded</span><span class="p">,</span> <span class="n">CMD</span><span class="p">):</span>
-            <span class="nb">setattr</span><span class="p">(</span><span class="n">Service</span><span class="p">,</span> <span class="n">i</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">loaded</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">pkg_resources</span><span class="o">.</span><span class="n">iter_entry_points</span><span class="p">(</span><span class="s2">&quot;dffml.service.cli&quot;</span><span class="p">):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">loaded</span> <span class="o">=</span> <span class="n">i</span><span class="o">.</span><span class="n">load</span><span class="p">()</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="n">failed_to_load_service</span><span class="p">(</span><span class="nb">repr</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+                <span class="k">continue</span>
+            <span class="k">if</span> <span class="nb">issubclass</span><span class="p">(</span><span class="n">loaded</span><span class="p">,</span> <span class="n">CMD</span><span class="p">):</span>
+                <span class="nb">setattr</span><span class="p">(</span><span class="n">Service</span><span class="p">,</span> <span class="n">i</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">loaded</span><span class="p">)</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="n">failed_to_load_service</span><span class="p">()</span>
     <span class="k">return</span> <span class="n">Service</span></div>
 
 
@@ -436,6 +552,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">version</span> <span class="o">=</span> <span class="n">Version</span>
+    <span class="n">packages</span> <span class="o">=</span> <span class="n">Packages</span>
     <span class="n">_list</span> <span class="o">=</span> <span class="n">List</span>
     <span class="n">edit</span> <span class="o">=</span> <span class="n">Edit</span>
     <span class="n">merge</span> <span class="o">=</span> <span class="n">Merge</span>

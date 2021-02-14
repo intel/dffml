@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Getting Set Up To Work On DFFML &mdash; DFFML 653f28ad documentation</title>
+  <title>Getting Set Up To Work On DFFML &mdash; DFFML 2a2c6e84 documentation</title>
   
 
   
@@ -66,7 +66,7 @@
             
             
               <div class="version">
-                653f28ad
+                2a2c6e84
               </div>
             
           
@@ -109,6 +109,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../cli.html">Command Line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../plugins/service/http/index.html">HTTP API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../troubleshooting.html">Troubleshooting</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Subprojects</span></p>
 <ul>
@@ -279,8 +280,28 @@ their latest versions (<code class="docutils literal notranslate"><span class="p
 </pre></div>
 </div>
 <p>Verify you can use <code class="docutils literal notranslate"><span class="pre">dffml</span></code> from the command line.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml version
-<span class="go">dffml version 0.3.1 (devmode: /wherever/you/cloned/dffml)</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml version -no-errors
+<span class="go">dffml 0.3.7 /home/user/Documents/python/dffml/dffml 3c887378</span>
+<span class="go">dffml-config-yaml 0.0.10 /home/user/Documents/python/dffml/configloader/yaml/dffml_config_yaml 3c887378</span>
+<span class="go">dffml-config-image 0.0.3 /home/user/Documents/python/dffml/configloader/image/dffml_config_image 3c887378</span>
+<span class="go">dffml-model-scratch 0.0.8 /home/user/Documents/python/dffml/model/scratch/dffml_model_scratch 3c887378</span>
+<span class="go">dffml-model-scikit 0.0.9 /home/user/Documents/python/dffml/model/scikit/dffml_model_scikit 3c887378</span>
+<span class="go">dffml-model-tensorflow 0.2.7 /home/user/Documents/python/dffml/model/tensorflow/dffml_model_tensorflow 3c887378</span>
+<span class="go">dffml-model-tensorflow-hub 0.0.5 /home/user/Documents/python/dffml/model/tensorflow_hub/dffml_model_tensorflow_hub 3c887378</span>
+<span class="go">dffml-model-vowpalWabbit 0.0.1 /home/user/Documents/python/dffml/model/vowpalWabbit/dffml_model_vowpalWabbit 3c887378</span>
+<span class="go">dffml-model-xgboost 0.0.1 /home/user/Documents/python/dffml/model/xgboost/dffml_model_xgboost 3c887378</span>
+<span class="go">dffml-model-pytorch ERROR</span>
+<span class="go">dffml-model-spacy 0.0.1 /home/user/Documents/python/dffml/model/spacy/dffml_model_spacy 3c887378</span>
+<span class="go">dffml-model-daal4py not installed</span>
+<span class="go">dffml-model-autosklearn 0.0.1 /home/user/Documents/python/dffml/model/autosklearn/dffml_model_autosklearn 3c887378</span>
+<span class="go">dffml-feature-git 0.2.7 /home/user/Documents/python/dffml/feature/git/dffml_feature_git 3c887378</span>
+<span class="go">dffml-feature-auth 0.0.8 /home/user/Documents/python/dffml/feature/auth/dffml_feature_auth 3c887378</span>
+<span class="go">dffml-operations-binsec 0.0.1 /home/user/Documents/python/dffml/operations/binsec/dffml_operations_binsec 3c887378</span>
+<span class="go">dffml-operations-deploy 0.0.1 /home/user/Documents/python/dffml/operations/deploy/dffml_operations_deploy 3c887378</span>
+<span class="go">dffml-operations-image 0.0.1 /home/user/Documents/python/dffml/operations/image/dffml_operations_image 3c887378</span>
+<span class="go">dffml-operations-nlp 0.0.1 /home/user/Documents/python/dffml/operations/nlp/dffml_operations_nlp 3c887378</span>
+<span class="go">dffml-service-http 0.0.10 /home/user/Documents/python/dffml/service/http/dffml_service_http 3c887378</span>
+<span class="go">dffml-source-mysql 0.0.9 /home/user/Documents/python/dffml/source/mysql/dffml_source_mysql 3c887378</span>
 </pre></div>
 </div>
 <p>If you see <code class="docutils literal notranslate"><span class="pre">dffml</span></code> in <code class="docutils literal notranslate"><span class="pre">~/.local/bin</span></code> but you can’t run it on the command
@@ -330,7 +351,7 @@ install <code class="docutils literal notranslate"><span class="pre">virtualenv<
 </pre></div>
 </div>
 <p>Install the packages in development mode.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>pip install -U setuptools
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>pip install -U pip setuptools wheel
 <span class="gp">$ </span>pip install -e .<span class="o">[</span>dev<span class="o">]</span>
 <span class="gp">$ </span>dffml service dev install
 </pre></div>
@@ -399,7 +420,7 @@ all the packages in development mode.</p>
 <span class="gp">$ </span>mkdir -p .venv
 <span class="gp">$ </span><span class="nb">export</span> <span class="nv">HOME</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">PWD</span><span class="si">}</span><span class="s2">/.venv&quot;</span>
 <span class="gp">$ </span><span class="nb">export</span> <span class="nv">PATH</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">HOME</span><span class="si">}</span><span class="s2">/.local/bin:</span><span class="si">${</span><span class="nv">PATH</span><span class="si">}</span><span class="s2">&quot;</span>
-<span class="gp">$ </span>pip install --user -U pip setuptools
+<span class="gp">$ </span>pip install --user -U pip setuptools wheel
 <span class="gp">$ </span>pip install --prefix<span class="o">=</span>~/.local -e .<span class="o">[</span>dev<span class="o">]</span>
 <span class="gp">$ </span>dffml service dev install -user
 </pre></div>

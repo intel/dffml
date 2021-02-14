@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Documenting a Model &mdash; DFFML 653f28ad documentation</title>
+  <title>Documenting a Model &mdash; DFFML 2a2c6e84 documentation</title>
   
 
   
@@ -66,7 +66,7 @@
             
             
               <div class="version">
-                653f28ad
+                2a2c6e84
               </div>
             
           
@@ -130,6 +130,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../cli.html">Command Line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../plugins/service/http/index.html">HTTP API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../troubleshooting.html">Troubleshooting</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Subprojects</span></p>
 <ul>
@@ -230,10 +231,14 @@ one Python example. We can put the examples in restructured text format within
 the class’s docstring.</p>
 <p>This tutorial is meant to go after the <a class="reference internal" href="package.html#model-tutorial-package"><span class="std std-ref">Packaging a Model</span></a> tutorial.</p>
 <p>It’s okay if you skipped to here though you can get up to speed by running the
-following commands.</p>
+following commands. These commands create the model package containing starter
+code, change directory into the pacakge, install the package, and run the
+setuptools <code class="docutils literal notranslate"><span class="pre">egg_info</span></code> hook to register the model with the <code class="docutils literal notranslate"><span class="pre">entry_points</span></code>
+system.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml service dev create model dffml-model-myslr
 <span class="gp">$ </span><span class="nb">cd</span> dffml-model-myslr
-<span class="gp">$ </span>python -m pip install --force-reinstall -e .
+<span class="gp">$ </span>python -m pip install -e .
+<span class="gp">$ </span>python setup.py egg_info
 </pre></div>
 </div>
 <div class="section" id="python-docstrings">

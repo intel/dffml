@@ -858,904 +858,6 @@ Output
   - default: False
   - Do not convert record features to vowpal wabbit input format
 
-.. _plugin_model_dffml_model_transformers:
-
-dffml_model_transformers
-++++++++++++++++++++++++
-
-.. code-block:: console
-
-    pip install dffml-model-transformers
-
-
-.. _plugin_model_dffml_model_transformers_hfclassifier:
-
-hfclassifier
-~~~~~~~~~~~~
-
-*Official*
-
-Implemented using `HuggingFace Transformers <https://huggingface.co/transformers/index.html>`_ Tensorflow based Models.
-Description about pretrianed models can be found `here <https://huggingface.co/transformers/pretrained_models.html>`_
-
-First we create the training and testing datasets
-
-.. literalinclude:: /../model/transformers/examples/classification/train_data.sh
-
-.. literalinclude:: /../model/transformers/examples/classification/test_data.sh
-
-Train the model
-
-.. literalinclude:: /../model/transformers/examples/classification/train.sh
-
-Assess the accuracy
-
-.. literalinclude:: /../model/transformers/examples/classification/accuracy.sh
-
-Output
-
-.. code-block::
-
-    0.6666666666666666
-
-
-Make a prediction
-
-.. literalinclude:: /../model/transformers/examples/classification/predict.sh
-
-Output
-
-.. code-block:: json
-
-    [
-        {
-            "extra": {},
-            "features": {
-                "sentence": "Cats are stupid",
-                "sentiment": 0
-            },
-            "key": "0",
-            "last_updated": "2020-06-12T08:31:45Z",
-            "prediction": {
-                "sentiment": {
-                    "confidence": 0.153812974691391,
-                    "value": 1
-                }
-            }
-        },
-        {
-            "extra": {},
-            "features": {
-                "sentence": "My office work is awesome",
-                "sentiment": 1
-            },
-            "key": "1",
-            "last_updated": "2020-06-12T08:31:45Z",
-            "prediction": {
-                "sentiment": {
-                    "confidence": 0.13032104074954987,
-                    "value": 1
-                }
-            }
-        }
-    ]
-
-The model can be trained on large datasets to get the expected
-output. The example shown above is to demonstrate the commandline usage
-of the model.
-
-**Args**
-
-- features: List of features
-
-  - Feature to train on
-
-- predict: Feature
-
-  - Feature holding target values
-
-- label_list: List of strings
-
-  - List of target labels
-
-- cache_dir: String
-
-  - Directory to store the pre-trained models downloaded from s3
-
-- model_name_or_path: String
-
-  - Path to pretrained model or model identifier from huggingface.co/models
-
-- directory: String
-
-  - The output directory where the model predictions and checkpoints will be written.
-
-- logging_dir: String
-
-  - Tensorboard log dir.
-
-- from_pt: String
-
-  - default: False
-  - Whether to load model from pytorch checkpoint or .bin file
-
-- clstype: Type
-
-  - default: <class 'str'>
-  - Data type of classifications values
-
-- max_seq_length: Integer
-
-  - default: 128
-  - The maximum total input sequence length after tokenization. Sequences longer than this will be truncated, sequences shorter will be padded.
-
-- overwrite_cache: String
-
-  - default: False
-  - Overwrite the cached training and evaluation sets
-
-- config_name: String
-
-  - default: None
-  - Pretrained config name or path if not the same as model_name
-
-- tokenizer_name: String
-
-  - default: None
-  - Pretrained tokenizer name or path if not the same as model_name
-
-- use_fast: String
-
-  - default: False
-  - Set this flag to use fast tokenization.
-
-- doc_stride: Integer
-
-  - default: 128
-  - When splitting up a long document into chunks, how much stride to take between chunks.
-
-- optimizer_name: String
-
-  - default: adam
-  - Name of a Tensorflow optimizer among "adadelta, adagrad, adam, adamax, ftrl, nadam, rmsprop, sgd, adamw"
-
-- loss_name: String
-
-  - default: SparseCategoricalCrossentropy
-  - Name of a Tensorflow loss. For the list see: https://www.tensorflow.org/api_docs/python/tf/keras/losses
-
-- gpus: String
-
-  - default: 0
-  - List of gpu devices. If only one, switch to single gpu strategy, if None takes all availabel gpus
-
-- no_cuda: String
-
-  - default: False
-  - Do not use CUDA even when it is available
-
-- end_lr: float
-
-  - default: 0
-  - End learning rate for optimizer
-
-- debug: String
-
-  - default: False
-  - Activate the trace to record computation graphs and profiling information
-
-- overwrite_directory: String
-
-  - default: False
-  - Overwrite the content of the output directory.Use this to continue training if directory points to a checkpoint directory.
-
-- evaluate_during_training: String
-
-  - default: False
-  - Run evaluation during training at each logging step.
-
-- per_device_train_batch_size: Integer
-
-  - default: 8
-  - Batch size per GPU/TPU core/CPU for training.
-
-- per_device_eval_batch_size: Integer
-
-  - default: 8
-  - Batch size per GPU/TPU core/CPU for evaluation.
-
-- gradient_accumulation_steps: Integer
-
-  - default: 1
-  - Number of updates steps to accumulate before performing a backward/update pass.
-
-- learning_rate: float
-
-  - default: 5e-05
-  - The initial learning rate for Adam.
-
-- weight_decay: float
-
-  - default: 0.0
-  - Weight decay if we apply some.
-
-- adam_epsilon: float
-
-  - default: 1e-08
-  - Epsilon for Adam optimizer.
-
-- max_grad_norm: float
-
-  - default: 1.0
-  - Max gradient norm.
-
-- num_train_epochs: float
-
-  - default: 1
-  - Total number of training epochs to perform.
-
-- max_steps: Integer
-
-  - default: -1
-  - If > 0: set total number of training steps to perform. Override num_train_epochs.
-
-- warmup_steps: Integer
-
-  - default: 0
-  - Linear warmup over warmup_steps.
-
-- logging_first_step: String
-
-  - default: False
-  - Log and eval the first global_step
-
-- logging_steps: Integer
-
-  - default: 500
-  - Log every X updates steps.
-
-- save_steps: Integer
-
-  - default: 500
-  - Save checkpoint every X updates steps.
-
-- save_total_limit: Integer
-
-  - default: None
-  - Limit the total amount of checkpoints.Deletes the older checkpoints in the directory. Default is unlimited checkpoints
-
-- seed: Integer
-
-  - default: 42
-  - random seed for initialization
-
-- fp16: String
-
-  - default: False
-  - Whether to use 16-bit (mixed) precision (through NVIDIA apex) instead of 32-bit
-
-- fp16_opt_level: String
-
-  - default: O1
-  - For fp16: Apex AMP optimization level selected in ['O0', 'O1', 'O2', and 'O3'].See details at https://nvidia.github.io/apex/amp.html
-
-- local_rank: Integer
-
-  - default: -1
-  - For distributed training: local_rank
-
-- dataloader_drop_last: String
-
-  - default: False
-  - Drop the last incomplete batch if the length of the dataset is not divisible by the batch size
-
-- past_index: Integer
-
-  - default: -1
-  - Some models can make use of the past hidden states for their predictions. If this argument is set to a positive int, the `Trainer` will use the corresponding output (usually index 2) as the past state and feed it to the model at the next training step under the keyword argument `mems`
-
-.. _plugin_model_dffml_model_transformers_ner_tagger:
-
-ner_tagger
-~~~~~~~~~~
-
-*Official*
-
-Implemented using `HuggingFace Transformers <https://huggingface.co/transformers/index.html>`_ Tensorflow based Models.
-Description about pretrianed models can be found `here <https://huggingface.co/transformers/pretrained_models.html>`_
-
-First we create the training and testing datasets
-
-.. literalinclude:: /../model/transformers/examples/ner/train_data.sh
-
-.. literalinclude:: /../model/transformers/examples/ner/test_data.sh
-
-Train the model
-
-.. literalinclude:: /../model/transformers/examples/ner/train.sh
-
-Assess the accuracy
-
-.. literalinclude:: /../model/transformers/examples/ner/accuracy.sh
-
-Output
-
-.. code-block::
-
-    0.888888888888889
-
-Make a prediction
-
-.. literalinclude:: /../model/transformers/examples/ner/predict.sh
-
-Output
-
-.. code-block:: json
-
-    [
-        {
-            "extra": {},
-            "features": {
-                "SentenceId": 1,
-                "Words": "DFFML models can do NER"
-            },
-            "key": "0",
-            "last_updated": "2020-06-11T17:40:54Z",
-            "prediction": {
-                "Tag": {
-                    "confidence": null,
-                    "value": [
-                        {
-                            "DFFML": "B-MISC"
-                        },
-                        {
-                            "models": "I-MISC"
-                        },
-                        {
-                            "can": "O"
-                        },
-                        {
-                            "do": "B-MISC"
-                        },
-                        {
-                            "NER": "B-MISC"
-                        }
-                    ]
-                }
-            }
-        },
-        {
-            "extra": {},
-            "features": {
-                "SentenceId": 2,
-                "Words": "DFFML models can do regression"
-            },
-            "key": "1",
-            "last_updated": "2020-06-11T17:40:57Z",
-            "prediction": {
-                "Tag": {
-                    "confidence": null,
-                    "value": [
-                        {
-                            "DFFML": "B-MISC"
-                        },
-                        {
-                            "models": "I-MISC"
-                        },
-                        {
-                            "can": "O"
-                        },
-                        {
-                            "do": "B-MISC"
-                        },
-                        {
-                            "regression": "I-MISC"
-                        }
-                    ]
-                }
-            }
-        }
-    ]
-
-The model can be trained on large datasets to get the expected
-output. The example shown above is to demonstrate the commandline usage
-of the model.
-
-Example usage of NER model using python API
-
-.. literalinclude:: /../model/transformers/examples/ner/ner_model.py
-
-**Args**
-
-- sid: Feature
-
-  - Unique Id to identify words of each sentence (Sentence ID)
-
-- words: Feature
-
-  - Tokens to train NER model
-
-- predict: Feature
-
-  - NER Tags (B-MISC, I-PER, O etc.) for tokens
-
-- model_name_or_path: String
-
-  - Path to pre-trained model or shortcut name listed on https://huggingface.co/models
-
-- directory: String
-
-  - The output directory where the model checkpoints will be written
-
-- cache_dir: String
-
-  - Directory to store the pre-trained models downloaded from s3
-
-- from_pt: String
-
-  - default: False
-  - Whether to load model from pytorch checkpoint or .bin file
-
-- config_name: String
-
-  - default: None
-  - Pretrained config name or path if not the same as model_name
-
-- tokenizer_name: String
-
-  - default: None
-  - Pretrained tokenizer name or path if not the same as model_name
-
-- overwrite_directory: String
-
-  - default: False
-  - Overwrite the content of the output directory.Use this to continue training if directory points to a checkpoint directory.
-
-- max_seq_length: Integer
-
-  - default: 128
-  - The maximum total input sentence length after tokenization.Sequences longer than this will be truncated, sequences shorter will be padded
-
-- max_steps: Integer
-
-  - default: 0
-  - If greater than zero then sets total number of training steps to perform. Overrides `epochs`
-
-- fp16: String
-
-  - default: False
-  - Whether to use 16-bit (mixed) precision instead of 32-bit
-
-- use_fast: String
-
-  - default: False
-  - Set this flag to use fast tokenization.
-
-- ner_tags: List of strings
-
-  - default: ['O', 'B-MISC', 'I-MISC', 'B-PER', 'I-PER', 'B-ORG', 'I-ORG', 'B-LOC', 'I-LOC']
-  - List of all distinct NER Tags
-
-- do_lower_case: String
-
-  - default: False
-  - Set this flag if using uncased model.
-
-- gradient_accumulation_steps: Integer
-
-  - default: 1
-  - Number of updates steps to accumulate before performing a backward pass.
-
-- learning_rate: float
-
-  - default: 5e-05
-  - The initial learning rate for Adam
-
-- weight_decay: float
-
-  - default: 0.0
-  - Weight decay
-
-- adam_epsilon: float
-
-  - default: 1e-08
-  - Epsilon for Adam optimizer
-
-- max_grad_norm: float
-
-  - default: 1.0
-  - Max gradient norm.
-
-- epochs: Integer
-
-  - default: 1
-  - Total number of training epochs to perform.
-
-- warmup_steps: Integer
-
-  - default: 0
-  - Linear warmup over warmup_steps.
-
-- save_steps: Integer
-
-  - default: 10
-  - Save checkpoint every X update steps.
-
-- seed: Integer
-
-  - default: 2020
-  - Random seed for initialization
-
-- gpus: String
-
-  - default: 0
-  - List of gpu devices. If only one, switch to single gpu strategy, if None takes all availabel gpus
-
-- tpu: String
-
-  - default: None
-  - The Cloud TPU to use for training. This should be either the name used when creating the Cloud TPU, or a grpc://ip.address.of.tpu:8470 url
-
-- num_tpu_cores: Integer
-
-  - default: 8
-  - Total number of TPU cores to use.
-
-- per_device_train_batch_size: Integer
-
-  - default: 8
-  - Batch size per GPU/CPU/TPU for training
-
-- per_device_eval_batch_size: Integer
-
-  - default: 8
-  - Batch size per GPU/CPU/TPU for assessing accuracy
-
-- no_cuda: String
-
-  - default: False
-  - Avoid using CUDA when available
-
-- optimizer_name: String
-
-  - default: adam
-  - Name of a Tensorflow optimizer among "adadelta, adagrad, adam, adamax, ftrl, nadam, rmsprop, sgd, adamw"
-
-- loss_name: String
-
-  - default: SparseCategoricalCrossentropy
-  - Name of a Tensorflow loss. For the list see: https://www.tensorflow.org/api_docs/python/tf/keras/losses
-
-- overwrite_cache: String
-
-  - default: False
-  - Overwrite the cached training and evaluation sets
-
-- logging_dir: String
-
-  - default: ~/.cache/dffml/transformers/log
-  - Tensorboard log dir.
-
-- logging_first_step: String
-
-  - default: False
-  - Log and eval the first global_step
-
-- logging_steps: Integer
-
-  - default: 500
-  - Log every X updates steps.
-
-- save_total_limit: Integer
-
-  - default: None
-  - Limit the total amount of checkpoints.Deletes the older checkpoints in the directory. Default is unlimited checkpoints
-
-- fp16_opt_level: String
-
-  - default: O1
-  - For fp16: Apex AMP optimization level selected in ['O0', 'O1', 'O2', and 'O3'].See details at https://nvidia.github.io/apex/amp.html
-
-- local_rank: Integer
-
-  - default: -1
-  - For distributed training: local_rank
-
-- end_lr: float
-
-  - default: 0
-  - End learning rate for optimizer
-
-- debug: String
-
-  - default: False
-  - Activate the trace to record computation graphs and profiling information
-
-- num_train_epochs: float
-
-  - default: 1
-  - Total number of training epochs to perform.
-
-- evaluate_during_training: String
-
-  - default: False
-  - Run evaluation during training at each logging step.
-
-- dataloader_drop_last: String
-
-  - default: False
-  - Drop the last incomplete batch if the length of the dataset is not divisible by the batch size
-
-- past_index: Integer
-
-  - default: -1
-  - Some models can make use of the past hidden states for their predictions. If this argument is set to a positive int, the `Trainer` will use the corresponding output (usually index 2) as the past state and feed it to the model at the next training step under the keyword argument `mems`
-
-.. _plugin_model_dffml_model_transformers_qa_model:
-
-qa_model
-~~~~~~~~
-
-*Official*
-
-Implemented using `HuggingFace Transformers <https://huggingface.co/transformers/index.html>`_ Pytorch based Models.
-Description about pretrianed models can be found `here <https://huggingface.co/transformers/pretrained_models.html>`_
-
-First we create the training and testing datasets by taking few data points from `SQuAD1.1 dataset <https://rajpurkar.github.io/SQuAD-explorer/>`_ `LICENSE <https://creativecommons.org/licenses/by-sa/4.0/legalcode>`_
-
-.. literalinclude:: /../model/transformers/examples/qa/train_data.sh
-
-.. literalinclude:: /../model/transformers/examples/qa/test_data.sh
-
-Train the model
-
-.. literalinclude:: /../model/transformers/examples/qa/train.sh
-
-Assess the accuracy
-
-.. literalinclude:: /../model/transformers/examples/qa/accuracy.sh
-
-Output
-
-.. code-block::
-
-    0.0
-
-Make a prediction
-
-.. literalinclude:: /../model/transformers/examples/qa/predict.sh
-
-Output
-
-.. code-block:: json
-
-    [
-        {
-            "extra": {},
-            "features": {
-                "answer_text": null,
-                "answers": [
-                    {
-                        "answer_start": 0,
-                        "text": " "
-                    }
-                ],
-                "context": "Architecturally, the school has a Catholic character. Atop the Main Building's gold dome is a golden statue of the Virgin Mary. Immediately in front of the Main Building and facing it, is a copper statue of Christ with arms upraised with the legend \"Venite Ad Me Omnes\". Next to the Main Building is the Basilica of the Sacred Heart. Immediately behind the basilica is the Grotto, a Marian place of prayer and reflection. It is a replica of the grotto at Lourdes, France where the Virgin Mary reputedly appeared to Saint Bernadette Soubirous in 1858. At the end of the main drive (and in a direct line that connects through 3 statues and the Gold Dome), is a simple, modern stone statue of Mary.",
-                "is_impossible": false,
-                "question": "What sits on top of the Main Building at Notre Dame?",
-                "start_pos_char": null,
-                "title": "University_of_Notre_Dame"
-            },
-            "key": "5733be284776f4190066117e",
-            "last_updated": "2020-06-23T17:54:03Z",
-            "prediction": {
-                "Answer": {
-                    "confidence": null,
-                    "value": {
-                        "5733be284776f4190066117e": "a copper statue of Christ"
-                    }
-                }
-            }
-        }
-    ]
-
-The model can be trained on large datasets to get the expected
-output. The example shown above is to demonstrate the commandline usage
-of the model.
-
-In the above train, accuracy and predict commands, :ref:`plugin_source_dffml_op` source is used to
-read and parse data from json file before feeding it to the model. The function used by opsource to parse json data
-is:
-
-.. literalinclude:: /../model/transformers/dffml_model_transformers/qa/utils.py
-
-The location of the function is passed using: 
-
-.. code-block:: console
-
-        -source-opimp dffml_model_transformers.qa.utils:parser
-
-And the arguments to `parser` are passed by:
-
-.. code-block:: console
-
-        -source-args train.json True
-
-where `train.json` is the name of file containing training data and the bool `True`
-is value of the flag `is_training`.
-
-**Args**
-
-- model_type: String
-
-  - Model type in the list: distilbert, albert, bart, longformer, xlm-roberta, roberta, bert, xlnet, flaubert, mobilebert, xlm, electra, reformer
-
-- model_name_or_path: String
-
-  - Path to pretrained model or model identifier from huggingface.co/models
-
-- directory: String
-
-  - The output directory where the model checkpoints and predictions will be written.
-
-- cache_dir: String
-
-  - Where do you want to store the pre-trained models downloaded from s3
-
-- log_dir: String
-
-  - Directory used by SummaryWriter for logging
-
-- tokenizer_name: String
-
-  - default: None
-  - Pretrained tokenizer name or path if not the same as model_name
-
-- from_tf: String
-
-  - default: False
-  - Whether to load model from tensorflow checkpoint or .h5 file
-
-- config_name: String
-
-  - default: None
-  - Pretrained config name or path if not the same as model_name
-
-- null_score_diff_threshold: String
-
-  - default: 0.0
-  - If null_score - best_non_null is greater than the threshold predict null.
-
-- max_seq_length: Integer
-
-  - default: 384
-  - The maximum total input sequence length after WordPiece tokenization. Sequences longer than this will be truncated, and sequences shorter than this will be padded.
-
-- doc_stride: Integer
-
-  - default: 128
-  - When splitting up a long document into chunks, how much stride to take between chunks.
-
-- max_query_length: Integer
-
-  - default: 64
-  - The maximum number of tokens for the question. Questions longer than this will be truncated to this length
-
-- do_lower_case: String
-
-  - default: False
-  - Set this flag while using uncased model
-
-- per_gpu_train_batch_size: Integer
-
-  - default: 8
-  - Batch size per GPU/CPU for training
-
-- per_gpu_eval_batch_size: Integer
-
-  - default: 8
-  - Batch size per GPU/CPU for evaluation
-
-- learning_rate: float
-
-  - default: 5e-05
-  - The initial learning rate for Adam
-
-- gradient_accumulation_steps: Integer
-
-  - default: 1
-  - Number of updates steps to accumulate before performing a backward/update pass
-
-- weight_decay: float
-
-  - default: 0.0
-  - Weight decay if we apply some.
-
-- adam_epsilon: float
-
-  - default: 1e-08
-  - Epsilon for Adam optimizer
-
-- max_grad_norm: float
-
-  - default: 1.0
-  - Max gradient norm.
-
-- num_train_epochs: float
-
-  - default: 1.0
-  - Total number of training epoches to perform
-
-- max_steps: Integer
-
-  - default: -1
-  - If > 0: set total number of training steps to perform. Override num_train_epochs.
-
-- warmup_steps: Integer
-
-  - default: 0
-  - Linear warmup over warmup_steps.
-
-- n_best_size: Integer
-
-  - default: 20
-  - The total number of n-best predictions to generate
-
-- max_answer_length: Integer
-
-  - default: 30
-  - The maximum length of an answer that can be generated. This is needed because the start and end predictions are not conditioned on one another.
-
-- lang_id: Integer
-
-  - default: 0
-  - language id of input for language-specific xlm models (see tokenization_xlm.PRETRAINED_INIT_CONFIGURATION)
-
-- logging_steps: Integer
-
-  - default: 500
-  - Log every X updates steps.
-
-- save_steps: Integer
-
-  - default: 500
-  - Save checkpoint every X update steps
-
-- no_cuda: String
-
-  - default: False
-  - Whether not to use CUDA when available
-
-- overwrite_directory: String
-
-  - default: False
-  - Overwrite the content of the output directory
-
-- seed: Integer
-
-  - default: 2020
-  - random seed for initialization
-
-- local_rank: Integer
-
-  - default: -1
-  - local_rank for distributed training on gpus
-
-- fp16: Integer
-
-  - default: False
-  - Whether to use 16-bit (mixed) precision (through NVIDIA apex) insted of 32-bit
-
-- fp16_opt_level: String
-
-  - default: O1
-  - For fp16: Apex AMP optimization level selected in ['O0', 'O1', 'O2', and 'O3']. See details at https://nvidia.github.io/apex/amp.html
-
-- threads: Integer
-
-  - default: 1
-  - Multiple threads for converting example to features
-
 .. _plugin_model_dffml_model_tensorflow_hub:
 
 dffml_model_tensorflow_hub
@@ -2125,6 +1227,149 @@ dffml_model_scratch
 
     pip install dffml-model-scratch
 
+
+.. _plugin_model_dffml_model_scratch_anomalydetection:
+
+anomalydetection
+~~~~~~~~~~~~~~~~
+
+*Official*
+
+Model for Anomaly Detection using multivariate Gaussian distribution to predict probabilities of all records in the dataset
+and identify outliers. F1 score is used as the evaluation metric for this model. This model works well as it recognises dependencies
+across various features, and works particularly well if the features have a Gaussian Distribution.
+
+Examples
+--------
+
+Command line usage
+
+Create training and test datasets
+
+**trainex.csv**
+
+.. code-block::
+    :test:
+    :filepath: trainex.csv
+
+    A,Y
+    0.65,0
+    0.24,0
+    0.93,0
+    0.87,0
+    0.23,0
+    7,1
+    0.86,0
+    0.45,0
+    0.55,0
+    0.29,0
+    5,1
+    0.51,0
+    0.88,0
+    0.24,0
+    0.51,0
+    0.17,0
+    9,1
+    0.37,0
+    0.23,0
+    0.44,0
+    0.62,0
+    3,1
+    0.87,0
+
+**testex.csv**
+
+.. code-block::
+    :test:
+    :filepath: testex.csv
+
+    A,Y
+    0.45,0
+    0.23,0
+    0.67,0
+    8,1
+    0.19,0
+    0.34,0
+    0.49,0
+    0.31,0
+    0.47,0
+    4,1
+
+Train the model
+
+.. code-block:: console
+    :test:
+
+
+    $ dffml train \
+        -sources f=csv \
+        -source-filename trainex.csv \
+        -model anomalydetection \
+        -model-features A:float:2 \
+        -model-predict Y:int:1  \
+        -model-directory tempdir
+
+Assess the accuracy
+
+.. code-block:: console
+    :test:
+
+    $ dffml accuracy \
+        -sources f=csv \
+        -source-filename testex.csv \
+        -model anomalydetection \
+        -model-features A:float:2 \
+        -model-predict Y:int:1 \
+        -model-directory tempdir
+
+
+Make predictions
+
+.. code-block:: console
+    :test:
+
+    $ dffml predict all \
+        -sources f=csv \
+        -source-filename testex.csv \
+        -model anomalydetection \
+        -model-features A:float:2 \
+        -model-predict Y:int:1 \
+        -model-directory tempdir
+
+
+Python usage
+
+.. literalinclude:: /../model/scratch/examples/anomalydetection_ex/detectoutliers.py
+    :test:
+
+
+Output
+
+.. code-block:: console
+    :test:
+
+    $ python detectoutliers.py
+    Test set F1 score : 0.8
+    Training set F1 score : 0.888888888888889
+
+**Args**
+
+- features: List of features
+
+  - Features to train on
+
+- predict: Feature
+
+  - Label or the value to be predicted
+
+- directory: Path
+
+  - Directory where state should be saved
+
+- k: float
+
+  - default: 0.8
+  - Validation set size
 
 .. _plugin_model_dffml_model_scratch_scratchlgrsag:
 
@@ -5936,8 +5181,13 @@ dffml_model_autosklearn
 
 .. warning:
 
-    Follow these instructions before running the above install
-    command to ensure that ``auto-sklearn`` installs correctly
+    auto-sklearn introduces a GPLv3 transitive dependency, ``lazy_import``!
+    See
+    https://softwareengineering.stackexchange.com/questions/323500/open-source-transitive-dependency-licenses
+    for more information
+
+Follow these instructions before running the above install
+command to ensure that ``auto-sklearn`` installs correctly
 
 **Ubuntu Installation**
 

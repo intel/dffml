@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Installation &mdash; DFFML 653f28ad documentation</title>
+  <title>Installation &mdash; DFFML 2a2c6e84 documentation</title>
   
 
   
@@ -67,7 +67,7 @@
             
             
               <div class="version">
-                653f28ad
+                2a2c6e84
               </div>
             
           
@@ -96,6 +96,8 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="about.html">About</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#installing-all-plugins">Installing All Plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#master-branch">Master Branch</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#ubuntu">Ubuntu</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#docker">Docker</a></li>
 </ul>
@@ -114,6 +116,7 @@
 <li class="toctree-l1"><a class="reference internal" href="cli.html">Command Line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="plugins/service/http/index.html">HTTP API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Subprojects</span></p>
 <ul>
@@ -236,10 +239,33 @@ package.</p>
 </pre></div>
 </div>
 </div></div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Make sure that if pip is complaining that directories are not in your
+<code class="docutils literal notranslate"><span class="pre">PATH</span></code>, that you add those directories to your <code class="docutils literal notranslate"><span class="pre">PATH</span></code> environment
+variable!.</p>
+</div>
+<p>You should now be able to run the <code class="docutils literal notranslate"><span class="pre">dffml</span> <span class="pre">version</span></code> command. If you have issues
+adding directories to your <code class="docutils literal notranslate"><span class="pre">PATH</span></code>, you can always run <code class="docutils literal notranslate"><span class="pre">dffml</span></code> command line
+commands using Pythons module run syntax (<code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">-m</span></code>).</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python -m dffml version
+<span class="gp">$ </span>dffml version
+</pre></div>
+</div>
+<p>You can now see the <a class="reference internal" href="quickstart/model.html"><span class="doc">Quickstart</span></a> to get started using DFFML!</p>
+<div class="section" id="installing-all-plugins">
+<h2>Installing All Plugins<a class="headerlink" href="#installing-all-plugins" title="Permalink to this headline">¶</a></h2>
 <p>If you want to install all of the machine learning model plugins that are
 maintained as a part of the core repository, you can append <code class="docutils literal notranslate"><span class="pre">[models]</span></code>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Due to an upstream issue (tracked as
+<a class="reference external" href="https://github.com/intel/dffml/issues/992">https://github.com/intel/dffml/issues/992</a>) installing all models
+together requires the addtion of a patched <code class="docutils literal notranslate"><span class="pre">ConfigSpace</span></code> package to the
+following install commands.</p>
+</div>
 <div class="sphinx-tabs docutils container">
-<div aria-label="Tabbed content" role="tablist"><button aria-controls="panel-2-TGludXggYW5kIE1hY09T" aria-selected="true" class="sphinx-tabs-tab group-tab" id="tab-2-TGludXggYW5kIE1hY09T" name="TGludXggYW5kIE1hY09T" role="tab" tabindex="0">Linux and MacOS</button><button aria-controls="panel-2-V2luZG93cw==" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-2-V2luZG93cw==" name="V2luZG93cw==" role="tab" tabindex="-1">Windows</button></div><div aria-labelledby="tab-2-TGludXggYW5kIE1hY09T" class="sphinx-tabs-panel group-tab" id="panel-2-TGludXggYW5kIE1hY09T" name="TGludXggYW5kIE1hY09T" role="tabpanel" tabindex="0"><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python -m pip install -U dffml<span class="o">[</span>models<span class="o">]</span>
+<div aria-label="Tabbed content" role="tablist"><button aria-controls="panel-2-TGludXggYW5kIE1hY09T" aria-selected="true" class="sphinx-tabs-tab group-tab" id="tab-2-TGludXggYW5kIE1hY09T" name="TGludXggYW5kIE1hY09T" role="tab" tabindex="0">Linux and MacOS</button><button aria-controls="panel-2-V2luZG93cw==" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-2-V2luZG93cw==" name="V2luZG93cw==" role="tab" tabindex="-1">Windows</button></div><div aria-labelledby="tab-2-TGludXggYW5kIE1hY09T" class="sphinx-tabs-panel group-tab" id="panel-2-TGludXggYW5kIE1hY09T" name="TGludXggYW5kIE1hY09T" role="tabpanel" tabindex="0"><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python -m pip install -U dffml<span class="o">[</span>models<span class="o">]</span> <span class="s2">&quot;https://github.com/automl/ConfigSpace/archive/86863bc2f640892675c04de0b8006a623dc14c45.zip#egg=ConfigSpace&quot;</span>
 </pre></div>
 </div>
 </div><div aria-labelledby="tab-2-V2luZG93cw==" class="sphinx-tabs-panel group-tab" hidden="true" id="panel-2-V2luZG93cw==" name="V2luZG93cw==" role="tabpanel" tabindex="0"><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp gp-VirtualEnv">(.venv)</span> <span class="go">C:\Users\username&gt; python -m pip install -U dffml[models]</span>
@@ -250,13 +276,16 @@ maintained as a part of the core repository, you can append <code class="docutil
 data sources and DataFlow operations that are maintained as a part of the core
 repository, you can append <code class="docutils literal notranslate"><span class="pre">[all]</span></code>.</p>
 <div class="sphinx-tabs docutils container">
-<div aria-label="Tabbed content" role="tablist"><button aria-controls="panel-3-TGludXggYW5kIE1hY09T" aria-selected="true" class="sphinx-tabs-tab group-tab" id="tab-3-TGludXggYW5kIE1hY09T" name="TGludXggYW5kIE1hY09T" role="tab" tabindex="0">Linux and MacOS</button><button aria-controls="panel-3-V2luZG93cw==" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-3-V2luZG93cw==" name="V2luZG93cw==" role="tab" tabindex="-1">Windows</button></div><div aria-labelledby="tab-3-TGludXggYW5kIE1hY09T" class="sphinx-tabs-panel group-tab" id="panel-3-TGludXggYW5kIE1hY09T" name="TGludXggYW5kIE1hY09T" role="tabpanel" tabindex="0"><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python -m pip install -U dffml<span class="o">[</span>all<span class="o">]</span>
+<div aria-label="Tabbed content" role="tablist"><button aria-controls="panel-3-TGludXggYW5kIE1hY09T" aria-selected="true" class="sphinx-tabs-tab group-tab" id="tab-3-TGludXggYW5kIE1hY09T" name="TGludXggYW5kIE1hY09T" role="tab" tabindex="0">Linux and MacOS</button><button aria-controls="panel-3-V2luZG93cw==" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-3-V2luZG93cw==" name="V2luZG93cw==" role="tab" tabindex="-1">Windows</button></div><div aria-labelledby="tab-3-TGludXggYW5kIE1hY09T" class="sphinx-tabs-panel group-tab" id="panel-3-TGludXggYW5kIE1hY09T" name="TGludXggYW5kIE1hY09T" role="tabpanel" tabindex="0"><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python -m pip install -U dffml<span class="o">[</span>all<span class="o">]</span> <span class="s2">&quot;https://github.com/automl/ConfigSpace/archive/86863bc2f640892675c04de0b8006a623dc14c45.zip#egg=ConfigSpace&quot;</span>
 </pre></div>
 </div>
 </div><div aria-labelledby="tab-3-V2luZG93cw==" class="sphinx-tabs-panel group-tab" hidden="true" id="panel-3-V2luZG93cw==" name="V2luZG93cw==" role="tabpanel" tabindex="0"><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp gp-VirtualEnv">(.venv)</span> <span class="go">C:\Users\username&gt; python -m pip install -U dffml[all]</span>
 </pre></div>
 </div>
 </div></div>
+</div>
+<div class="section" id="master-branch">
+<h2>Master Branch<a class="headerlink" href="#master-branch" title="Permalink to this headline">¶</a></h2>
 <p>If you want to stay on the bleeding edge of bug fixes, etc. You can install from
 the master branch.</p>
 <div class="sphinx-tabs docutils container">
@@ -285,6 +314,7 @@ gives you a setup development environment to get started working with/on DFFML
 right away. However, it comes with the master branch installed, you’ll need to
 run the above commands to get the lastest released version.</p>
 <a class="reference external image-reference" href="https://gitpod.io/#https://github.com/intel/dffml"><img alt="https://gitpod.io/button/open-in-gitpod.svg" src="https://gitpod.io/button/open-in-gitpod.svg" /></a>
+</div>
 <div class="section" id="ubuntu">
 <h2>Ubuntu<a class="headerlink" href="#ubuntu" title="Permalink to this headline">¶</a></h2>
 <p>For Ubuntu 20.XX python3 means Python 3.8 so far as <code class="docutils literal notranslate"><span class="pre">apt</span></code> is concerend.</p>

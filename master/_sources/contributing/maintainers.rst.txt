@@ -63,6 +63,6 @@ Doing a Release
 
     $ dffml service dev bump packages 0.0.1 -log debug
     $ dffml service dev bump main
-    $ sed -i "s/Unreleased]/$(dffml service dev setuppy kwarg version setup.py)] - $(date +%F)/" CHANGELOG.md
-    $ git c "release: Version $(dffml service dev setuppy kwarg version setup.py)"
-    $ git tag $(dffml service dev setuppy kwarg version setup.py)
+    $ sed -i "s/Unreleased]/$(dffml service dev setuppy version dffml/version.py)] - $(date +%F)/" CHANGELOG.md
+    $ git c "release: Version $(dffml service dev setuppy version dffml/version.py)"
+    $ git tag $(dffml service dev setuppy version dffml/version.py)

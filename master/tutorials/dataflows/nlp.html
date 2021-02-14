@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Using NLP Operations &mdash; DFFML 653f28ad documentation</title>
+  <title>Using NLP Operations &mdash; DFFML 2a2c6e84 documentation</title>
   
 
   
@@ -66,7 +66,7 @@
             
             
               <div class="version">
-                653f28ad
+                2a2c6e84
               </div>
             
           
@@ -125,6 +125,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../cli.html">Command Line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../plugins/service/http/index.html">HTTP API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../troubleshooting.html">Troubleshooting</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Subprojects</span></p>
 <ul>
@@ -238,6 +239,17 @@ You can use other models like <cite>en_core_web_md</cite>, <cite>en_core_web_lg<
 <p>Let’s first download the <cite>en_core_web_sm</cite> model.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python -m spacy download en_core_web_sm
 </pre></div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Spacy and aiohttp don’t play nice together. If you have aiohttp installed
+you’re going to get weird messages about the version of the <code class="docutils literal notranslate"><span class="pre">chardet</span></code>
+package (<code class="docutils literal notranslate"><span class="pre">pkg_resources.ContextualVersionConflict</span></code>). To avoid this, run
+the download command and include aiohttp in the list of packages to
+download, since <code class="docutils literal notranslate"><span class="pre">spacy</span></code> is passing through to <code class="docutils literal notranslate"><span class="pre">pip</span></code> here.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python -m spacy download en_core_web_sm aiohttp
+</pre></div>
+</div>
 </div>
 <p>Create training data:</p>
 <p><strong>train_data.csv</strong></p>
@@ -443,22 +455,35 @@ which will return the array corresponding to each sentence.</p>
 <span class="n">Dogs</span> <span class="n">are</span> <span class="n">evil</span>
 </pre></div>
 </div>
-<p>Make prediction on test data:</p>
+<p>We’re going to make predictions on test data, but first we’ll use the <code class="docutils literal notranslate"><span class="pre">merge</span></code>
+command to pre-process the data. The <code class="docutils literal notranslate"><span class="pre">merge</span></code> command takes data from one
+source and puts it in another. We can take records from the preprocessing source
+and put them in the JSON source as an intermediary format.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Processing of sentences occurs concurrently, resulting in seemingly
 randomized output order.</p>
 </div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml merge <span class="nv">text</span><span class="o">=</span>df <span class="nv">temp</span><span class="o">=</span>json <span class="se">\</span>
+    -source-text-dataflow nlp_ops_dataflow.json <span class="se">\</span>
+    -source-text-features sentence:str:1 <span class="se">\</span>
+    -source-text-source csv <span class="se">\</span>
+    -source-text-source-filename test_data.csv <span class="se">\</span>
+    -source-temp-filename test_data_preprocessed.json <span class="se">\</span>
+    -source-temp-allowempty <span class="se">\</span>
+    -source-temp-readwrite <span class="se">\</span>
+    -log debug
+<span class="gp">$ </span>cat test_data_preprocessed.json <span class="p">|</span> python -m json.tool
+</pre></div>
+</div>
+<p>Now we can make prediction on test data:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml predict all <span class="se">\</span>
     -model scikitgnb <span class="se">\</span>
     -model-features extract_array_from_matrix.outputs.result:float:1 <span class="se">\</span>
     -model-predict sentiment:int:1 <span class="se">\</span>
     -model-directory tempdir <span class="se">\</span>
-    -sources <span class="nv">text</span><span class="o">=</span>df <span class="se">\</span>
-    -source-text-dataflow nlp_ops_dataflow.json <span class="se">\</span>
-    -source-text-features sentence:str:1 <span class="se">\</span>
-    -source-text-source csv <span class="se">\</span>
-    -source-text-source-filename test_data.csv <span class="se">\</span>
+    -sources <span class="nv">temp</span><span class="o">=</span>json <span class="se">\</span>
+    -source-temp-filename test_data_preprocessed.json <span class="se">\</span>
     -pretty
 
 <span class="go">        Key:        1</span>

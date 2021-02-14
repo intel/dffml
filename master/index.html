@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Welcome to DFFML! &mdash; DFFML 653f28ad documentation</title>
+  <title>Welcome to DFFML! &mdash; DFFML 2a2c6e84 documentation</title>
   
 
   
@@ -65,7 +65,7 @@
             
             
               <div class="version">
-                653f28ad
+                2a2c6e84
               </div>
             
           
@@ -108,6 +108,7 @@
 <li class="toctree-l1"><a class="reference internal" href="cli.html">Command Line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="plugins/service/http/index.html">HTTP API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Subprojects</span></p>
 <ul>
@@ -273,6 +274,8 @@ branch can be found <a class="reference external" href="master/index.html">here<
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#installing-all-plugins">Installing All Plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#master-branch">Master Branch</a></li>
 <li class="toctree-l2"><a class="reference internal" href="installation.html#ubuntu">Ubuntu</a></li>
 <li class="toctree-l2"><a class="reference internal" href="installation.html#docker">Docker</a></li>
 </ul>
@@ -327,6 +330,8 @@ branch can be found <a class="reference external" href="master/index.html">here<
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="cli.html">Command Line</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cli.html#version">Version</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.html#packages">Packages</a></li>
 <li class="toctree-l2"><a class="reference internal" href="cli.html#model">Model</a></li>
 <li class="toctree-l2"><a class="reference internal" href="cli.html#dataflow">DataFlow</a></li>
 <li class="toctree-l2"><a class="reference internal" href="cli.html#edit">Edit</a></li>
@@ -344,25 +349,30 @@ branch can be found <a class="reference external" href="master/index.html">here<
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="api/index.html">API Reference</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="api/record.html">Record</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api/log.html">Log</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/version.html">Version</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api/base.html">Base</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/noasync.html">High Level (noasync)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/record.html">Record</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/high_level.html">High Level</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/plugins.html">Plugins</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api/feature/index.html">Feature</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api/cli/index.html">Cli</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api/operation/index.html">Operation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api/util/index.html">Utilities</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api/db/index.html">Databases</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api/service/index.html">Service</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api/source/index.html">Sources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/base.html">Base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/log.html">Log</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/port/index.html">Port</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/source/index.html">Sources</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/configloader/index.html">Configloader</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/db/index.html">Databases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/operation/index.html">Operation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/model/index.html">Models</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api/secret/index.html">Secrets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/util/index.html">Utilities</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/df/index.html">Data Flow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/secret/index.html">Secrets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/cli/index.html">Cli</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/feature/index.html">Feature</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/service/index.html">Service</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#create-a-new-virtual-environment">Create a new Virtual Environment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#entrypointnotfound">EntrypointNotFound</a></li>
 </ul>
 </li>
 </ul>

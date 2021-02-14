@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Models &mdash; DFFML 653f28ad documentation</title>
+  <title>Models &mdash; DFFML 2a2c6e84 documentation</title>
   
 
   
@@ -66,7 +66,7 @@
             
             
               <div class="version">
-                653f28ad
+                2a2c6e84
               </div>
             
           
@@ -126,12 +126,6 @@
 <li class="toctree-l4"><a class="reference internal" href="#vwmodel">vwmodel</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#dffml-model-transformers">dffml_model_transformers</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#hfclassifier">hfclassifier</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#ner-tagger">ner_tagger</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#qa-model">qa_model</a></li>
-</ul>
-</li>
 <li class="toctree-l3"><a class="reference internal" href="#dffml-model-tensorflow-hub">dffml_model_tensorflow_hub</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#text-classifier">text_classifier</a></li>
 </ul>
@@ -141,6 +135,7 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#dffml-model-scratch">dffml_model_scratch</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#anomalydetection">anomalydetection</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#scratchlgrsag">scratchlgrsag</a></li>
 </ul>
 </li>
@@ -196,6 +191,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../cli.html">Command Line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="service/http/index.html">HTTP API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../troubleshooting.html">Troubleshooting</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Subprojects</span></p>
 <ul>
@@ -1382,1293 +1378,6 @@ Training accuracy: 0.819782501866115
 </ul>
 </div>
 </div>
-<div class="section" id="dffml-model-transformers">
-<span id="plugin-model-dffml-model-transformers"></span><h2>dffml_model_transformers<a class="headerlink" href="#dffml-model-transformers" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install dffml-model-transformers</span>
-</pre></div>
-</div>
-<div class="section" id="hfclassifier">
-<span id="plugin-model-dffml-model-transformers-hfclassifier"></span><h3>hfclassifier<a class="headerlink" href="#hfclassifier" title="Permalink to this headline">¶</a></h3>
-<p><em>Official</em></p>
-<p>Implemented using <a class="reference external" href="https://huggingface.co/transformers/index.html">HuggingFace Transformers</a> Tensorflow based Models.
-Description about pretrianed models can be found <a class="reference external" href="https://huggingface.co/transformers/pretrained_models.html">here</a></p>
-<p>First we create the training and testing datasets</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cat</span> <span class="o">&gt;</span> <span class="n">train</span><span class="o">.</span><span class="n">csv</span> <span class="o">&lt;&lt;</span> <span class="n">EOF</span>
-<span class="n">sentence</span><span class="p">,</span><span class="n">sentiment</span>
-<span class="n">I</span> <span class="n">am</span> <span class="n">happy</span><span class="p">,</span><span class="mi">1</span>
-<span class="n">You</span> <span class="n">look</span> <span class="n">sad</span><span class="p">,</span><span class="mi">0</span>
-<span class="n">My</span> <span class="n">dog</span> <span class="ow">is</span> <span class="n">stupid</span><span class="p">,</span><span class="mi">0</span>
-<span class="n">Global</span> <span class="n">warming</span> <span class="ow">is</span> <span class="n">bad</span><span class="p">,</span><span class="mi">0</span>
-<span class="n">Global</span> <span class="n">warming</span> <span class="ow">is</span> <span class="n">now</span> <span class="n">under</span> <span class="n">control</span><span class="p">,</span><span class="mi">1</span>
-<span class="n">Reading</span> <span class="n">books</span> <span class="ow">is</span> <span class="n">a</span> <span class="n">good</span> <span class="n">habit</span><span class="p">,</span><span class="mi">1</span>
-<span class="n">EOF</span>
-</pre></div>
-</div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cat</span> <span class="o">&gt;</span> <span class="n">test</span><span class="o">.</span><span class="n">csv</span> <span class="o">&lt;&lt;</span> <span class="n">EOF</span>
-<span class="n">sentence</span><span class="p">,</span><span class="n">sentiment</span>
-<span class="n">Cats</span> <span class="n">are</span> <span class="n">stupid</span><span class="p">,</span><span class="mi">0</span>
-<span class="n">My</span> <span class="n">office</span> <span class="n">work</span> <span class="ow">is</span> <span class="n">awesome</span><span class="p">,</span><span class="mi">1</span>
-<span class="n">EOF</span>
-</pre></div>
-</div>
-<p>Train the model</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dffml</span> <span class="n">train</span> \
-  <span class="o">-</span><span class="n">model</span> <span class="n">hfclassifier</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">predict</span> <span class="n">sentiment</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">1</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">label_list</span> <span class="mi">0</span> <span class="mi">1</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">clstype</span> <span class="nb">int</span> \
-  <span class="o">-</span><span class="n">sources</span> <span class="n">f</span><span class="o">=</span><span class="n">csv</span> \
-  <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">filename</span> <span class="n">train</span><span class="o">.</span><span class="n">csv</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">epochs</span> <span class="mi">2</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">model_name_or_path</span> <span class="n">bert</span><span class="o">-</span><span class="n">base</span><span class="o">-</span><span class="n">cased</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">directory</span> <span class="n">hfclassification</span><span class="o">/</span><span class="n">checkpoints</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">cache_dir</span> <span class="n">hfclassification</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">logging_dir</span> <span class="n">hfclassification</span><span class="o">/</span><span class="n">logging</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">no_cuda</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">save_steps</span> <span class="mi">1</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">features</span> \
-    <span class="n">sentence</span><span class="p">:</span><span class="nb">str</span><span class="p">:</span><span class="mi">1</span> \
-  <span class="o">-</span><span class="n">log</span> <span class="n">debug</span>
-</pre></div>
-</div>
-<p>Assess the accuracy</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dffml</span> <span class="n">accuracy</span> \
-  <span class="o">-</span><span class="n">model</span> <span class="n">hfclassifier</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">predict</span> <span class="n">sentiment</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">1</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">label_list</span> <span class="mi">0</span> <span class="mi">1</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">clstype</span> <span class="nb">int</span> \
-  <span class="o">-</span><span class="n">sources</span> <span class="n">f</span><span class="o">=</span><span class="n">csv</span> \
-  <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">filename</span> <span class="n">train</span><span class="o">.</span><span class="n">csv</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">epochs</span> <span class="mi">2</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">model_name_or_path</span> <span class="n">bert</span><span class="o">-</span><span class="n">base</span><span class="o">-</span><span class="n">cased</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">directory</span> <span class="n">hfclassification</span><span class="o">/</span><span class="n">checkpoints</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">cache_dir</span> <span class="n">hfclassification</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">logging_dir</span> <span class="n">hfclassification</span><span class="o">/</span><span class="n">logging</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">no_cuda</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">save_steps</span> <span class="mi">1</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">features</span> \
-    <span class="n">sentence</span><span class="p">:</span><span class="nb">str</span><span class="p">:</span><span class="mi">1</span> \
-  <span class="o">-</span><span class="n">log</span> <span class="n">debug</span>
-</pre></div>
-</div>
-<p>Output</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mf">0.6666666666666666</span>
-</pre></div>
-</div>
-<p>Make a prediction</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dffml</span> <span class="n">predict</span> <span class="nb">all</span> \
-  <span class="o">-</span><span class="n">model</span> <span class="n">hfclassifier</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">predict</span> <span class="n">sentiment</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">1</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">label_list</span> <span class="mi">0</span> <span class="mi">1</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">clstype</span> <span class="nb">int</span> \
-  <span class="o">-</span><span class="n">sources</span> <span class="n">f</span><span class="o">=</span><span class="n">csv</span> \
-  <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">filename</span> <span class="n">test</span><span class="o">.</span><span class="n">csv</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">epochs</span> <span class="mi">2</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">model_name_or_path</span> <span class="n">bert</span><span class="o">-</span><span class="n">base</span><span class="o">-</span><span class="n">cased</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">directory</span> <span class="n">hfclassification</span><span class="o">/</span><span class="n">checkpoints</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">cache_dir</span> <span class="n">hfclassification</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">logging_dir</span> <span class="n">hfclassification</span><span class="o">/</span><span class="n">logging</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">no_cuda</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">save_steps</span> <span class="mi">1</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">features</span> \
-    <span class="n">sentence</span><span class="p">:</span><span class="nb">str</span><span class="p">:</span><span class="mi">1</span> \
-  <span class="o">-</span><span class="n">log</span> <span class="n">debug</span>
-</pre></div>
-</div>
-<p>Output</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">[</span>
-    <span class="p">{</span>
-        <span class="nt">&quot;extra&quot;</span><span class="p">:</span> <span class="p">{},</span>
-        <span class="nt">&quot;features&quot;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="nt">&quot;sentence&quot;</span><span class="p">:</span> <span class="s2">&quot;Cats are stupid&quot;</span><span class="p">,</span>
-            <span class="nt">&quot;sentiment&quot;</span><span class="p">:</span> <span class="mi">0</span>
-        <span class="p">},</span>
-        <span class="nt">&quot;key&quot;</span><span class="p">:</span> <span class="s2">&quot;0&quot;</span><span class="p">,</span>
-        <span class="nt">&quot;last_updated&quot;</span><span class="p">:</span> <span class="s2">&quot;2020-06-12T08:31:45Z&quot;</span><span class="p">,</span>
-        <span class="nt">&quot;prediction&quot;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="nt">&quot;sentiment&quot;</span><span class="p">:</span> <span class="p">{</span>
-                <span class="nt">&quot;confidence&quot;</span><span class="p">:</span> <span class="mf">0.153812974691391</span><span class="p">,</span>
-                <span class="nt">&quot;value&quot;</span><span class="p">:</span> <span class="mi">1</span>
-            <span class="p">}</span>
-        <span class="p">}</span>
-    <span class="p">},</span>
-    <span class="p">{</span>
-        <span class="nt">&quot;extra&quot;</span><span class="p">:</span> <span class="p">{},</span>
-        <span class="nt">&quot;features&quot;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="nt">&quot;sentence&quot;</span><span class="p">:</span> <span class="s2">&quot;My office work is awesome&quot;</span><span class="p">,</span>
-            <span class="nt">&quot;sentiment&quot;</span><span class="p">:</span> <span class="mi">1</span>
-        <span class="p">},</span>
-        <span class="nt">&quot;key&quot;</span><span class="p">:</span> <span class="s2">&quot;1&quot;</span><span class="p">,</span>
-        <span class="nt">&quot;last_updated&quot;</span><span class="p">:</span> <span class="s2">&quot;2020-06-12T08:31:45Z&quot;</span><span class="p">,</span>
-        <span class="nt">&quot;prediction&quot;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="nt">&quot;sentiment&quot;</span><span class="p">:</span> <span class="p">{</span>
-                <span class="nt">&quot;confidence&quot;</span><span class="p">:</span> <span class="mf">0.13032104074954987</span><span class="p">,</span>
-                <span class="nt">&quot;value&quot;</span><span class="p">:</span> <span class="mi">1</span>
-            <span class="p">}</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
-<span class="p">]</span>
-</pre></div>
-</div>
-<p>The model can be trained on large datasets to get the expected
-output. The example shown above is to demonstrate the commandline usage
-of the model.</p>
-<p><strong>Args</strong></p>
-<ul class="simple">
-<li><p>features: List of features</p>
-<ul>
-<li><p>Feature to train on</p></li>
-</ul>
-</li>
-<li><p>predict: Feature</p>
-<ul>
-<li><p>Feature holding target values</p></li>
-</ul>
-</li>
-<li><p>label_list: List of strings</p>
-<ul>
-<li><p>List of target labels</p></li>
-</ul>
-</li>
-<li><p>cache_dir: String</p>
-<ul>
-<li><p>Directory to store the pre-trained models downloaded from s3</p></li>
-</ul>
-</li>
-<li><p>model_name_or_path: String</p>
-<ul>
-<li><p>Path to pretrained model or model identifier from huggingface.co/models</p></li>
-</ul>
-</li>
-<li><p>directory: String</p>
-<ul>
-<li><p>The output directory where the model predictions and checkpoints will be written.</p></li>
-</ul>
-</li>
-<li><p>logging_dir: String</p>
-<ul>
-<li><p>Tensorboard log dir.</p></li>
-</ul>
-</li>
-<li><p>from_pt: String</p>
-<ul>
-<li><p>default: False</p></li>
-<li><p>Whether to load model from pytorch checkpoint or .bin file</p></li>
-</ul>
-</li>
-<li><p>clstype: Type</p>
-<ul>
-<li><p>default: &lt;class ‘str’&gt;</p></li>
-<li><p>Data type of classifications values</p></li>
-</ul>
-</li>
-<li><p>max_seq_length: Integer</p>
-<ul>
-<li><p>default: 128</p></li>
-<li><p>The maximum total input sequence length after tokenization. Sequences longer than this will be truncated, sequences shorter will be padded.</p></li>
-</ul>
-</li>
-<li><p>overwrite_cache: String</p>
-<ul>
-<li><p>default: False</p></li>
-<li><p>Overwrite the cached training and evaluation sets</p></li>
-</ul>
-</li>
-<li><p>config_name: String</p>
-<ul>
-<li><p>default: None</p></li>
-<li><p>Pretrained config name or path if not the same as model_name</p></li>
-</ul>
-</li>
-<li><p>tokenizer_name: String</p>
-<ul>
-<li><p>default: None</p></li>
-<li><p>Pretrained tokenizer name or path if not the same as model_name</p></li>
-</ul>
-</li>
-<li><p>use_fast: String</p>
-<ul>
-<li><p>default: False</p></li>
-<li><p>Set this flag to use fast tokenization.</p></li>
-</ul>
-</li>
-<li><p>doc_stride: Integer</p>
-<ul>
-<li><p>default: 128</p></li>
-<li><p>When splitting up a long document into chunks, how much stride to take between chunks.</p></li>
-</ul>
-</li>
-<li><p>optimizer_name: String</p>
-<ul>
-<li><p>default: adam</p></li>
-<li><p>Name of a Tensorflow optimizer among “adadelta, adagrad, adam, adamax, ftrl, nadam, rmsprop, sgd, adamw”</p></li>
-</ul>
-</li>
-<li><p>loss_name: String</p>
-<ul>
-<li><p>default: SparseCategoricalCrossentropy</p></li>
-<li><p>Name of a Tensorflow loss. For the list see: <a class="reference external" href="https://www.tensorflow.org/api_docs/python/tf/keras/losses">https://www.tensorflow.org/api_docs/python/tf/keras/losses</a></p></li>
-</ul>
-</li>
-<li><p>gpus: String</p>
-<ul>
-<li><p>default: 0</p></li>
-<li><p>List of gpu devices. If only one, switch to single gpu strategy, if None takes all availabel gpus</p></li>
-</ul>
-</li>
-<li><p>no_cuda: String</p>
-<ul>
-<li><p>default: False</p></li>
-<li><p>Do not use CUDA even when it is available</p></li>
-</ul>
-</li>
-<li><p>end_lr: float</p>
-<ul>
-<li><p>default: 0</p></li>
-<li><p>End learning rate for optimizer</p></li>
-</ul>
-</li>
-<li><p>debug: String</p>
-<ul>
-<li><p>default: False</p></li>
-<li><p>Activate the trace to record computation graphs and profiling information</p></li>
-</ul>
-</li>
-<li><p>overwrite_directory: String</p>
-<ul>
-<li><p>default: False</p></li>
-<li><p>Overwrite the content of the output directory.Use this to continue training if directory points to a checkpoint directory.</p></li>
-</ul>
-</li>
-<li><p>evaluate_during_training: String</p>
-<ul>
-<li><p>default: False</p></li>
-<li><p>Run evaluation during training at each logging step.</p></li>
-</ul>
-</li>
-<li><p>per_device_train_batch_size: Integer</p>
-<ul>
-<li><p>default: 8</p></li>
-<li><p>Batch size per GPU/TPU core/CPU for training.</p></li>
-</ul>
-</li>
-<li><p>per_device_eval_batch_size: Integer</p>
-<ul>
-<li><p>default: 8</p></li>
-<li><p>Batch size per GPU/TPU core/CPU for evaluation.</p></li>
-</ul>
-</li>
-<li><p>gradient_accumulation_steps: Integer</p>
-<ul>
-<li><p>default: 1</p></li>
-<li><p>Number of updates steps to accumulate before performing a backward/update pass.</p></li>
-</ul>
-</li>
-<li><p>learning_rate: float</p>
-<ul>
-<li><p>default: 5e-05</p></li>
-<li><p>The initial learning rate for Adam.</p></li>
-</ul>
-</li>
-<li><p>weight_decay: float</p>
-<ul>
-<li><p>default: 0.0</p></li>
-<li><p>Weight decay if we apply some.</p></li>
-</ul>
-</li>
-<li><p>adam_epsilon: float</p>
-<ul>
-<li><p>default: 1e-08</p></li>
-<li><p>Epsilon for Adam optimizer.</p></li>
-</ul>
-</li>
-<li><p>max_grad_norm: float</p>
-<ul>
-<li><p>default: 1.0</p></li>
-<li><p>Max gradient norm.</p></li>
-</ul>
-</li>
-<li><p>num_train_epochs: float</p>
-<ul>
-<li><p>default: 1</p></li>
-<li><p>Total number of training epochs to perform.</p></li>
-</ul>
-</li>
-<li><p>max_steps: Integer</p>
-<ul>
-<li><p>default: -1</p></li>
-<li><p>If &gt; 0: set total number of training steps to perform. Override num_train_epochs.</p></li>
-</ul>
-</li>
-<li><p>warmup_steps: Integer</p>
-<ul>
-<li><p>default: 0</p></li>
-<li><p>Linear warmup over warmup_steps.</p></li>
-</ul>
-</li>
-<li><p>logging_first_step: String</p>
-<ul>
-<li><p>default: False</p></li>
-<li><p>Log and eval the first global_step</p></li>
-</ul>
-</li>
-<li><p>logging_steps: Integer</p>
-<ul>
-<li><p>default: 500</p></li>
-<li><p>Log every X updates steps.</p></li>
-</ul>
-</li>
-<li><p>save_steps: Integer</p>
-<ul>
-<li><p>default: 500</p></li>
-<li><p>Save checkpoint every X updates steps.</p></li>
-</ul>
-</li>
-<li><p>save_total_limit: Integer</p>
-<ul>
-<li><p>default: None</p></li>
-<li><p>Limit the total amount of checkpoints.Deletes the older checkpoints in the directory. Default is unlimited checkpoints</p></li>
-</ul>
-</li>
-<li><p>seed: Integer</p>
-<ul>
-<li><p>default: 42</p></li>
-<li><p>random seed for initialization</p></li>
-</ul>
-</li>
-<li><p>fp16: String</p>
-<ul>
-<li><p>default: False</p></li>
-<li><p>Whether to use 16-bit (mixed) precision (through NVIDIA apex) instead of 32-bit</p></li>
-</ul>
-</li>
-<li><p>fp16_opt_level: String</p>
-<ul>
-<li><p>default: O1</p></li>
-<li><p>For fp16: Apex AMP optimization level selected in [‘O0’, ‘O1’, ‘O2’, and ‘O3’].See details at <a class="reference external" href="https://nvidia.github.io/apex/amp.html">https://nvidia.github.io/apex/amp.html</a></p></li>
-</ul>
-</li>
-<li><p>local_rank: Integer</p>
-<ul>
-<li><p>default: -1</p></li>
-<li><p>For distributed training: local_rank</p></li>
-</ul>
-</li>
-<li><p>dataloader_drop_last: String</p>
-<ul>
-<li><p>default: False</p></li>
-<li><p>Drop the last incomplete batch if the length of the dataset is not divisible by the batch size</p></li>
-</ul>
-</li>
-<li><p>past_index: Integer</p>
-<ul>
-<li><p>default: -1</p></li>
-<li><p>Some models can make use of the past hidden states for their predictions. If this argument is set to a positive int, the <cite>Trainer</cite> will use the corresponding output (usually index 2) as the past state and feed it to the model at the next training step under the keyword argument <cite>mems</cite></p></li>
-</ul>
-</li>
-</ul>
-</div>
-<div class="section" id="ner-tagger">
-<span id="plugin-model-dffml-model-transformers-ner-tagger"></span><h3>ner_tagger<a class="headerlink" href="#ner-tagger" title="Permalink to this headline">¶</a></h3>
-<p><em>Official</em></p>
-<p>Implemented using <a class="reference external" href="https://huggingface.co/transformers/index.html">HuggingFace Transformers</a> Tensorflow based Models.
-Description about pretrianed models can be found <a class="reference external" href="https://huggingface.co/transformers/pretrained_models.html">here</a></p>
-<p>First we create the training and testing datasets</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cat</span> <span class="o">&gt;</span> <span class="n">train</span><span class="o">.</span><span class="n">csv</span> <span class="o">&lt;&lt;</span> <span class="n">EOF</span>
-<span class="n">SentenceId</span><span class="p">,</span><span class="n">Words</span><span class="p">,</span><span class="n">Tag</span>
-<span class="mi">1</span><span class="p">,</span><span class="n">DFFML</span><span class="p">,</span><span class="n">B</span><span class="o">-</span><span class="n">MISC</span>
-<span class="mi">1</span><span class="p">,</span><span class="n">Models</span><span class="p">,</span><span class="n">I</span><span class="o">-</span><span class="n">MISC</span>
-<span class="mi">1</span><span class="p">,</span><span class="n">are</span><span class="p">,</span><span class="n">O</span>
-<span class="mi">1</span><span class="p">,</span><span class="n">cool</span><span class="p">,</span><span class="n">B</span><span class="o">-</span><span class="n">MISC</span>
-<span class="mi">2</span><span class="p">,</span><span class="n">DFFML</span><span class="p">,</span><span class="n">B</span><span class="o">-</span><span class="n">MISC</span>
-<span class="mi">2</span><span class="p">,</span><span class="n">Models</span><span class="p">,</span><span class="n">I</span><span class="o">-</span><span class="n">MISC</span>
-<span class="mi">2</span><span class="p">,</span><span class="n">can</span><span class="p">,</span><span class="n">O</span>
-<span class="mi">2</span><span class="p">,</span><span class="n">do</span><span class="p">,</span><span class="n">O</span>
-<span class="mi">2</span><span class="p">,</span><span class="n">classification</span><span class="p">,</span><span class="n">B</span><span class="o">-</span><span class="n">MISC</span>
-<span class="n">EOF</span>
-</pre></div>
-</div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cat</span> <span class="o">&gt;</span> <span class="n">test</span><span class="o">.</span><span class="n">csv</span> <span class="o">&lt;&lt;</span> <span class="n">EOF</span>
-<span class="n">SentenceId</span><span class="p">,</span><span class="n">Words</span>
-<span class="mi">1</span><span class="p">,</span><span class="n">DFFML</span> <span class="n">models</span> <span class="n">can</span> <span class="n">do</span> <span class="n">NER</span>
-<span class="mi">2</span><span class="p">,</span><span class="n">DFFML</span> <span class="n">models</span> <span class="n">can</span> <span class="n">do</span> <span class="n">regression</span>
-<span class="n">EOF</span>
-</pre></div>
-</div>
-<p>Train the model</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dffml</span> <span class="n">train</span> \
-  <span class="o">-</span><span class="n">model</span> <span class="n">ner_tagger</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">epochs</span> <span class="mi">2</span> \
-  <span class="o">-</span><span class="n">sources</span> <span class="n">s</span><span class="o">=</span><span class="n">csv</span> \
-  <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">filename</span> <span class="n">train</span><span class="o">.</span><span class="n">csv</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">sid</span> <span class="n">SentenceId</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">1</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">words</span> <span class="n">Words</span><span class="p">:</span><span class="nb">str</span><span class="p">:</span><span class="mi">1</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">predict</span> <span class="n">Tag</span><span class="p">:</span><span class="nb">str</span><span class="p">:</span><span class="mi">1</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">directory</span> <span class="n">temp_directory</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">cache_dir</span> <span class="n">temp_cache_dir</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">model_name_or_path</span> <span class="n">bert</span><span class="o">-</span><span class="n">base</span><span class="o">-</span><span class="n">cased</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">no_cuda</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">save_steps</span> <span class="mi">1</span> \
-  <span class="o">-</span><span class="n">log</span> <span class="n">debug</span>
-</pre></div>
-</div>
-<p>Assess the accuracy</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dffml</span> <span class="n">accuracy</span> \
-  <span class="o">-</span><span class="n">model</span> <span class="n">ner_tagger</span> \
-  <span class="o">-</span><span class="n">sources</span> <span class="n">s</span><span class="o">=</span><span class="n">csv</span> \
-  <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">filename</span> <span class="n">train</span><span class="o">.</span><span class="n">csv</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">sid</span> <span class="n">SentenceId</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">1</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">words</span> <span class="n">Words</span><span class="p">:</span><span class="nb">str</span><span class="p">:</span><span class="mi">1</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">predict</span> <span class="n">Tag</span><span class="p">:</span><span class="nb">str</span><span class="p">:</span><span class="mi">1</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">directory</span> <span class="n">temp_directory</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">cache_dir</span> <span class="n">temp_cache_dir</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">model_name_or_path</span> <span class="n">bert</span><span class="o">-</span><span class="n">base</span><span class="o">-</span><span class="n">cased</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">no_cuda</span> \
-  <span class="o">-</span><span class="n">log</span> <span class="n">debug</span>
-</pre></div>
-</div>
-<p>Output</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mf">0.888888888888889</span>
-</pre></div>
-</div>
-<p>Make a prediction</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dffml</span> <span class="n">predict</span> <span class="nb">all</span> \
-  <span class="o">-</span><span class="n">model</span> <span class="n">ner_tagger</span> \
-  <span class="o">-</span><span class="n">sources</span> <span class="n">s</span><span class="o">=</span><span class="n">csv</span> \
-  <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">filename</span> <span class="n">test</span><span class="o">.</span><span class="n">csv</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">sid</span> <span class="n">SentenceId</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">1</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">words</span> <span class="n">Words</span><span class="p">:</span><span class="nb">str</span><span class="p">:</span><span class="mi">1</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">predict</span> <span class="n">Tag</span><span class="p">:</span><span class="nb">str</span><span class="p">:</span><span class="mi">1</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">directory</span> <span class="n">temp_directory</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">cache_dir</span> <span class="n">temp_cache_dir</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">model_name_or_path</span> <span class="n">bert</span><span class="o">-</span><span class="n">base</span><span class="o">-</span><span class="n">cased</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">no_cuda</span> \
-  <span class="o">-</span><span class="n">log</span> <span class="n">debug</span>
-</pre></div>
-</div>
-<p>Output</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">[</span>
-    <span class="p">{</span>
-        <span class="nt">&quot;extra&quot;</span><span class="p">:</span> <span class="p">{},</span>
-        <span class="nt">&quot;features&quot;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="nt">&quot;SentenceId&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
-            <span class="nt">&quot;Words&quot;</span><span class="p">:</span> <span class="s2">&quot;DFFML models can do NER&quot;</span>
-        <span class="p">},</span>
-        <span class="nt">&quot;key&quot;</span><span class="p">:</span> <span class="s2">&quot;0&quot;</span><span class="p">,</span>
-        <span class="nt">&quot;last_updated&quot;</span><span class="p">:</span> <span class="s2">&quot;2020-06-11T17:40:54Z&quot;</span><span class="p">,</span>
-        <span class="nt">&quot;prediction&quot;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="nt">&quot;Tag&quot;</span><span class="p">:</span> <span class="p">{</span>
-                <span class="nt">&quot;confidence&quot;</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
-                <span class="nt">&quot;value&quot;</span><span class="p">:</span> <span class="p">[</span>
-                    <span class="p">{</span>
-                        <span class="nt">&quot;DFFML&quot;</span><span class="p">:</span> <span class="s2">&quot;B-MISC&quot;</span>
-                    <span class="p">},</span>
-                    <span class="p">{</span>
-                        <span class="nt">&quot;models&quot;</span><span class="p">:</span> <span class="s2">&quot;I-MISC&quot;</span>
-                    <span class="p">},</span>
-                    <span class="p">{</span>
-                        <span class="nt">&quot;can&quot;</span><span class="p">:</span> <span class="s2">&quot;O&quot;</span>
-                    <span class="p">},</span>
-                    <span class="p">{</span>
-                        <span class="nt">&quot;do&quot;</span><span class="p">:</span> <span class="s2">&quot;B-MISC&quot;</span>
-                    <span class="p">},</span>
-                    <span class="p">{</span>
-                        <span class="nt">&quot;NER&quot;</span><span class="p">:</span> <span class="s2">&quot;B-MISC&quot;</span>
-                    <span class="p">}</span>
-                <span class="p">]</span>
-            <span class="p">}</span>
-        <span class="p">}</span>
-    <span class="p">},</span>
-    <span class="p">{</span>
-        <span class="nt">&quot;extra&quot;</span><span class="p">:</span> <span class="p">{},</span>
-        <span class="nt">&quot;features&quot;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="nt">&quot;SentenceId&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
-            <span class="nt">&quot;Words&quot;</span><span class="p">:</span> <span class="s2">&quot;DFFML models can do regression&quot;</span>
-        <span class="p">},</span>
-        <span class="nt">&quot;key&quot;</span><span class="p">:</span> <span class="s2">&quot;1&quot;</span><span class="p">,</span>
-        <span class="nt">&quot;last_updated&quot;</span><span class="p">:</span> <span class="s2">&quot;2020-06-11T17:40:57Z&quot;</span><span class="p">,</span>
-        <span class="nt">&quot;prediction&quot;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="nt">&quot;Tag&quot;</span><span class="p">:</span> <span class="p">{</span>
-                <span class="nt">&quot;confidence&quot;</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
-                <span class="nt">&quot;value&quot;</span><span class="p">:</span> <span class="p">[</span>
-                    <span class="p">{</span>
-                        <span class="nt">&quot;DFFML&quot;</span><span class="p">:</span> <span class="s2">&quot;B-MISC&quot;</span>
-                    <span class="p">},</span>
-                    <span class="p">{</span>
-                        <span class="nt">&quot;models&quot;</span><span class="p">:</span> <span class="s2">&quot;I-MISC&quot;</span>
-                    <span class="p">},</span>
-                    <span class="p">{</span>
-                        <span class="nt">&quot;can&quot;</span><span class="p">:</span> <span class="s2">&quot;O&quot;</span>
-                    <span class="p">},</span>
-                    <span class="p">{</span>
-                        <span class="nt">&quot;do&quot;</span><span class="p">:</span> <span class="s2">&quot;B-MISC&quot;</span>
-                    <span class="p">},</span>
-                    <span class="p">{</span>
-                        <span class="nt">&quot;regression&quot;</span><span class="p">:</span> <span class="s2">&quot;I-MISC&quot;</span>
-                    <span class="p">}</span>
-                <span class="p">]</span>
-            <span class="p">}</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
-<span class="p">]</span>
-</pre></div>
-</div>
-<p>The model can be trained on large datasets to get the expected
-output. The example shown above is to demonstrate the commandline usage
-of the model.</p>
-<p>Example usage of NER model using python API</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">CSVSource</span><span class="p">,</span> <span class="n">Feature</span>
-<span class="kn">from</span> <span class="nn">dffml.noasync</span> <span class="kn">import</span> <span class="n">train</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">,</span> <span class="n">predict</span>
-<span class="kn">from</span> <span class="nn">dffml_model_transformers.ner.ner_model</span> <span class="kn">import</span> <span class="n">NERModel</span>
-
-<span class="n">model</span> <span class="o">=</span> <span class="n">NERModel</span><span class="p">(</span>
-    <span class="n">sid</span><span class="o">=</span><span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;SentenceId&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
-    <span class="n">words</span><span class="o">=</span><span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;Words&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
-    <span class="n">predict</span><span class="o">=</span><span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;Tag&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
-    <span class="n">model_name_or_path</span><span class="o">=</span><span class="s2">&quot;distilbert-base-cased&quot;</span><span class="p">,</span>
-    <span class="n">epochs</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-    <span class="n">no_cuda</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-    <span class="n">directory</span><span class="o">=</span><span class="s2">&quot;temp_directory&quot;</span><span class="p">,</span>
-    <span class="n">cache_dir</span><span class="o">=</span><span class="s2">&quot;temp_cache_dir&quot;</span><span class="p">,</span>
-<span class="p">)</span>
-
-<span class="c1"># Train the model</span>
-<span class="n">train</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="s2">&quot;train.csv&quot;</span><span class="p">)</span>
-
-<span class="c1"># Assess accuracy (alternate way of specifying data source)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Accuracy:&quot;</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">CSVSource</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;train.csv&quot;</span><span class="p">)))</span>
-
-<span class="c1"># Make prediction</span>
-<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">features</span><span class="p">,</span> <span class="n">prediction</span> <span class="ow">in</span> <span class="n">predict</span><span class="p">(</span>
-    <span class="n">model</span><span class="p">,</span>
-    <span class="p">{</span><span class="s2">&quot;SentenceID&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;Words&quot;</span><span class="p">:</span> <span class="s2">&quot;DFFML models can do NER&quot;</span><span class="p">},</span>
-    <span class="p">{</span><span class="s2">&quot;SentenceID&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;Words&quot;</span><span class="p">:</span> <span class="s2">&quot;DFFML models can do regression&quot;</span><span class="p">},</span>
-<span class="p">):</span>
-    <span class="n">features</span><span class="p">[</span><span class="s2">&quot;Tag&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">prediction</span><span class="p">[</span><span class="s2">&quot;Tag&quot;</span><span class="p">][</span><span class="s2">&quot;value&quot;</span><span class="p">]</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">features</span><span class="p">)</span>
-</pre></div>
-</div>
-<p><strong>Args</strong></p>
-<ul class="simple">
-<li><p>sid: Feature</p>
-<ul>
-<li><p>Unique Id to identify words of each sentence (Sentence ID)</p></li>
-</ul>
-</li>
-<li><p>words: Feature</p>
-<ul>
-<li><p>Tokens to train NER model</p></li>
-</ul>
-</li>
-<li><p>predict: Feature</p>
-<ul>
-<li><p>NER Tags (B-MISC, I-PER, O etc.) for tokens</p></li>
-</ul>
-</li>
-<li><p>model_name_or_path: String</p>
-<ul>
-<li><p>Path to pre-trained model or shortcut name listed on <a class="reference external" href="https://huggingface.co/models">https://huggingface.co/models</a></p></li>
-</ul>
-</li>
-<li><p>directory: String</p>
-<ul>
-<li><p>The output directory where the model checkpoints will be written</p></li>
-</ul>
-</li>
-<li><p>cache_dir: String</p>
-<ul>
-<li><p>Directory to store the pre-trained models downloaded from s3</p></li>
-</ul>
-</li>
-<li><p>from_pt: String</p>
-<ul>
-<li><p>default: False</p></li>
-<li><p>Whether to load model from pytorch checkpoint or .bin file</p></li>
-</ul>
-</li>
-<li><p>config_name: String</p>
-<ul>
-<li><p>default: None</p></li>
-<li><p>Pretrained config name or path if not the same as model_name</p></li>
-</ul>
-</li>
-<li><p>tokenizer_name: String</p>
-<ul>
-<li><p>default: None</p></li>
-<li><p>Pretrained tokenizer name or path if not the same as model_name</p></li>
-</ul>
-</li>
-<li><p>overwrite_directory: String</p>
-<ul>
-<li><p>default: False</p></li>
-<li><p>Overwrite the content of the output directory.Use this to continue training if directory points to a checkpoint directory.</p></li>
-</ul>
-</li>
-<li><p>max_seq_length: Integer</p>
-<ul>
-<li><p>default: 128</p></li>
-<li><p>The maximum total input sentence length after tokenization.Sequences longer than this will be truncated, sequences shorter will be padded</p></li>
-</ul>
-</li>
-<li><p>max_steps: Integer</p>
-<ul>
-<li><p>default: 0</p></li>
-<li><p>If greater than zero then sets total number of training steps to perform. Overrides <cite>epochs</cite></p></li>
-</ul>
-</li>
-<li><p>fp16: String</p>
-<ul>
-<li><p>default: False</p></li>
-<li><p>Whether to use 16-bit (mixed) precision instead of 32-bit</p></li>
-</ul>
-</li>
-<li><p>use_fast: String</p>
-<ul>
-<li><p>default: False</p></li>
-<li><p>Set this flag to use fast tokenization.</p></li>
-</ul>
-</li>
-<li><p>ner_tags: List of strings</p>
-<ul>
-<li><p>default: [‘O’, ‘B-MISC’, ‘I-MISC’, ‘B-PER’, ‘I-PER’, ‘B-ORG’, ‘I-ORG’, ‘B-LOC’, ‘I-LOC’]</p></li>
-<li><p>List of all distinct NER Tags</p></li>
-</ul>
-</li>
-<li><p>do_lower_case: String</p>
-<ul>
-<li><p>default: False</p></li>
-<li><p>Set this flag if using uncased model.</p></li>
-</ul>
-</li>
-<li><p>gradient_accumulation_steps: Integer</p>
-<ul>
-<li><p>default: 1</p></li>
-<li><p>Number of updates steps to accumulate before performing a backward pass.</p></li>
-</ul>
-</li>
-<li><p>learning_rate: float</p>
-<ul>
-<li><p>default: 5e-05</p></li>
-<li><p>The initial learning rate for Adam</p></li>
-</ul>
-</li>
-<li><p>weight_decay: float</p>
-<ul>
-<li><p>default: 0.0</p></li>
-<li><p>Weight decay</p></li>
-</ul>
-</li>
-<li><p>adam_epsilon: float</p>
-<ul>
-<li><p>default: 1e-08</p></li>
-<li><p>Epsilon for Adam optimizer</p></li>
-</ul>
-</li>
-<li><p>max_grad_norm: float</p>
-<ul>
-<li><p>default: 1.0</p></li>
-<li><p>Max gradient norm.</p></li>
-</ul>
-</li>
-<li><p>epochs: Integer</p>
-<ul>
-<li><p>default: 1</p></li>
-<li><p>Total number of training epochs to perform.</p></li>
-</ul>
-</li>
-<li><p>warmup_steps: Integer</p>
-<ul>
-<li><p>default: 0</p></li>
-<li><p>Linear warmup over warmup_steps.</p></li>
-</ul>
-</li>
-<li><p>save_steps: Integer</p>
-<ul>
-<li><p>default: 10</p></li>
-<li><p>Save checkpoint every X update steps.</p></li>
-</ul>
-</li>
-<li><p>seed: Integer</p>
-<ul>
-<li><p>default: 2020</p></li>
-<li><p>Random seed for initialization</p></li>
-</ul>
-</li>
-<li><p>gpus: String</p>
-<ul>
-<li><p>default: 0</p></li>
-<li><p>List of gpu devices. If only one, switch to single gpu strategy, if None takes all availabel gpus</p></li>
-</ul>
-</li>
-<li><p>tpu: String</p>
-<ul>
-<li><p>default: None</p></li>
-<li><p>The Cloud TPU to use for training. This should be either the name used when creating the Cloud TPU, or a grpc://ip.address.of.tpu:8470 url</p></li>
-</ul>
-</li>
-<li><p>num_tpu_cores: Integer</p>
-<ul>
-<li><p>default: 8</p></li>
-<li><p>Total number of TPU cores to use.</p></li>
-</ul>
-</li>
-<li><p>per_device_train_batch_size: Integer</p>
-<ul>
-<li><p>default: 8</p></li>
-<li><p>Batch size per GPU/CPU/TPU for training</p></li>
-</ul>
-</li>
-<li><p>per_device_eval_batch_size: Integer</p>
-<ul>
-<li><p>default: 8</p></li>
-<li><p>Batch size per GPU/CPU/TPU for assessing accuracy</p></li>
-</ul>
-</li>
-<li><p>no_cuda: String</p>
-<ul>
-<li><p>default: False</p></li>
-<li><p>Avoid using CUDA when available</p></li>
-</ul>
-</li>
-<li><p>optimizer_name: String</p>
-<ul>
-<li><p>default: adam</p></li>
-<li><p>Name of a Tensorflow optimizer among “adadelta, adagrad, adam, adamax, ftrl, nadam, rmsprop, sgd, adamw”</p></li>
-</ul>
-</li>
-<li><p>loss_name: String</p>
-<ul>
-<li><p>default: SparseCategoricalCrossentropy</p></li>
-<li><p>Name of a Tensorflow loss. For the list see: <a class="reference external" href="https://www.tensorflow.org/api_docs/python/tf/keras/losses">https://www.tensorflow.org/api_docs/python/tf/keras/losses</a></p></li>
-</ul>
-</li>
-<li><p>overwrite_cache: String</p>
-<ul>
-<li><p>default: False</p></li>
-<li><p>Overwrite the cached training and evaluation sets</p></li>
-</ul>
-</li>
-<li><p>logging_dir: String</p>
-<ul>
-<li><p>default: ~/.cache/dffml/transformers/log</p></li>
-<li><p>Tensorboard log dir.</p></li>
-</ul>
-</li>
-<li><p>logging_first_step: String</p>
-<ul>
-<li><p>default: False</p></li>
-<li><p>Log and eval the first global_step</p></li>
-</ul>
-</li>
-<li><p>logging_steps: Integer</p>
-<ul>
-<li><p>default: 500</p></li>
-<li><p>Log every X updates steps.</p></li>
-</ul>
-</li>
-<li><p>save_total_limit: Integer</p>
-<ul>
-<li><p>default: None</p></li>
-<li><p>Limit the total amount of checkpoints.Deletes the older checkpoints in the directory. Default is unlimited checkpoints</p></li>
-</ul>
-</li>
-<li><p>fp16_opt_level: String</p>
-<ul>
-<li><p>default: O1</p></li>
-<li><p>For fp16: Apex AMP optimization level selected in [‘O0’, ‘O1’, ‘O2’, and ‘O3’].See details at <a class="reference external" href="https://nvidia.github.io/apex/amp.html">https://nvidia.github.io/apex/amp.html</a></p></li>
-</ul>
-</li>
-<li><p>local_rank: Integer</p>
-<ul>
-<li><p>default: -1</p></li>
-<li><p>For distributed training: local_rank</p></li>
-</ul>
-</li>
-<li><p>end_lr: float</p>
-<ul>
-<li><p>default: 0</p></li>
-<li><p>End learning rate for optimizer</p></li>
-</ul>
-</li>
-<li><p>debug: String</p>
-<ul>
-<li><p>default: False</p></li>
-<li><p>Activate the trace to record computation graphs and profiling information</p></li>
-</ul>
-</li>
-<li><p>num_train_epochs: float</p>
-<ul>
-<li><p>default: 1</p></li>
-<li><p>Total number of training epochs to perform.</p></li>
-</ul>
-</li>
-<li><p>evaluate_during_training: String</p>
-<ul>
-<li><p>default: False</p></li>
-<li><p>Run evaluation during training at each logging step.</p></li>
-</ul>
-</li>
-<li><p>dataloader_drop_last: String</p>
-<ul>
-<li><p>default: False</p></li>
-<li><p>Drop the last incomplete batch if the length of the dataset is not divisible by the batch size</p></li>
-</ul>
-</li>
-<li><p>past_index: Integer</p>
-<ul>
-<li><p>default: -1</p></li>
-<li><p>Some models can make use of the past hidden states for their predictions. If this argument is set to a positive int, the <cite>Trainer</cite> will use the corresponding output (usually index 2) as the past state and feed it to the model at the next training step under the keyword argument <cite>mems</cite></p></li>
-</ul>
-</li>
-</ul>
-</div>
-<div class="section" id="qa-model">
-<span id="plugin-model-dffml-model-transformers-qa-model"></span><h3>qa_model<a class="headerlink" href="#qa-model" title="Permalink to this headline">¶</a></h3>
-<p><em>Official</em></p>
-<p>Implemented using <a class="reference external" href="https://huggingface.co/transformers/index.html">HuggingFace Transformers</a> Pytorch based Models.
-Description about pretrianed models can be found <a class="reference external" href="https://huggingface.co/transformers/pretrained_models.html">here</a></p>
-<p>First we create the training and testing datasets by taking few data points from <a class="reference external" href="https://rajpurkar.github.io/SQuAD-explorer/">SQuAD1.1 dataset</a> <a class="reference external" href="https://creativecommons.org/licenses/by-sa/4.0/legalcode">LICENSE</a></p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cat</span> <span class="o">&gt;&gt;</span> <span class="n">train</span><span class="o">.</span><span class="n">json</span> <span class="o">&lt;&lt;</span> <span class="n">EOF</span>
-<span class="p">{</span>
-    <span class="s2">&quot;data&quot;</span><span class="p">:[</span>
-       <span class="p">{</span>
-          <span class="s2">&quot;title&quot;</span><span class="p">:</span><span class="s2">&quot;University_of_Notre_Dame&quot;</span><span class="p">,</span>
-          <span class="s2">&quot;paragraphs&quot;</span><span class="p">:[</span>
-             <span class="p">{</span>
-                <span class="s2">&quot;context&quot;</span><span class="p">:</span><span class="s2">&quot;Architecturally, the school has a Catholic character. Atop the Main Building&#39;s gold dome is a golden statue of the Virgin Mary. Immediately in front of the Main Building and facing it, is a copper statue of Christ with arms upraised with the legend </span><span class="se">\&quot;</span><span class="s2">Venite Ad Me Omnes</span><span class="se">\&quot;</span><span class="s2">. Next to the Main Building is the Basilica of the Sacred Heart. Immediately behind the basilica is the Grotto, a Marian place of prayer and reflection. It is a replica of the grotto at Lourdes, France where the Virgin Mary reputedly appeared to Saint Bernadette Soubirous in 1858. At the end of the main drive (and in a direct line that connects through 3 statues and the Gold Dome), is a simple, modern stone statue of Mary.&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;qas&quot;</span><span class="p">:[</span>
-                   <span class="p">{</span>
-                      <span class="s2">&quot;answers&quot;</span><span class="p">:[</span>
-                         <span class="p">{</span>
-                            <span class="s2">&quot;answer_start&quot;</span><span class="p">:</span><span class="mi">515</span><span class="p">,</span>
-                            <span class="s2">&quot;text&quot;</span><span class="p">:</span><span class="s2">&quot;Saint Bernadette Soubirous&quot;</span>
-                         <span class="p">}</span>
-                      <span class="p">],</span>
-                      <span class="s2">&quot;question&quot;</span><span class="p">:</span><span class="s2">&quot;To whom did the Virgin Mary allegedly appear in 1858 in Lourdes France?&quot;</span><span class="p">,</span>
-                      <span class="s2">&quot;id&quot;</span><span class="p">:</span><span class="s2">&quot;5733be284776f41900661182&quot;</span>
-                   <span class="p">},</span>
-                   <span class="p">{</span>
-                      <span class="s2">&quot;answers&quot;</span><span class="p">:[</span>
-                         <span class="p">{</span>
-                            <span class="s2">&quot;answer_start&quot;</span><span class="p">:</span><span class="mi">188</span><span class="p">,</span>
-                            <span class="s2">&quot;text&quot;</span><span class="p">:</span><span class="s2">&quot;a copper statue of Christ&quot;</span>
-                         <span class="p">}</span>
-                      <span class="p">],</span>
-                      <span class="s2">&quot;question&quot;</span><span class="p">:</span><span class="s2">&quot;What is in front of the Notre Dame Main Building?&quot;</span><span class="p">,</span>
-                      <span class="s2">&quot;id&quot;</span><span class="p">:</span><span class="s2">&quot;5733be284776f4190066117f&quot;</span>
-                   <span class="p">},</span>
-                   <span class="p">{</span>
-                      <span class="s2">&quot;answers&quot;</span><span class="p">:[</span>
-                         <span class="p">{</span>
-                            <span class="s2">&quot;answer_start&quot;</span><span class="p">:</span><span class="mi">279</span><span class="p">,</span>
-                            <span class="s2">&quot;text&quot;</span><span class="p">:</span><span class="s2">&quot;the Main Building&quot;</span>
-                         <span class="p">}</span>
-                      <span class="p">],</span>
-                      <span class="s2">&quot;question&quot;</span><span class="p">:</span><span class="s2">&quot;The Basilica of the Sacred heart at Notre Dame is beside to which structure?&quot;</span><span class="p">,</span>
-                      <span class="s2">&quot;id&quot;</span><span class="p">:</span><span class="s2">&quot;5733be284776f41900661180&quot;</span>
-                   <span class="p">},</span>
-                   <span class="p">{</span>
-                      <span class="s2">&quot;answers&quot;</span><span class="p">:[</span>
-                         <span class="p">{</span>
-                            <span class="s2">&quot;answer_start&quot;</span><span class="p">:</span><span class="mi">381</span><span class="p">,</span>
-                            <span class="s2">&quot;text&quot;</span><span class="p">:</span><span class="s2">&quot;a Marian place of prayer and reflection&quot;</span>
-                         <span class="p">}</span>
-                      <span class="p">],</span>
-                      <span class="s2">&quot;question&quot;</span><span class="p">:</span><span class="s2">&quot;What is the Grotto at Notre Dame?&quot;</span><span class="p">,</span>
-                      <span class="s2">&quot;id&quot;</span><span class="p">:</span><span class="s2">&quot;5733be284776f41900661181&quot;</span>
-                   <span class="p">},</span>
-                   <span class="p">{</span>
-                      <span class="s2">&quot;answers&quot;</span><span class="p">:[</span>
-                         <span class="p">{</span>
-                            <span class="s2">&quot;answer_start&quot;</span><span class="p">:</span><span class="mi">92</span><span class="p">,</span>
-                            <span class="s2">&quot;text&quot;</span><span class="p">:</span><span class="s2">&quot;a golden statue of the Virgin Mary&quot;</span>
-                         <span class="p">}</span>
-                      <span class="p">],</span>
-                      <span class="s2">&quot;question&quot;</span><span class="p">:</span><span class="s2">&quot;What sits on top of the Main Building at Notre Dame?&quot;</span><span class="p">,</span>
-                      <span class="s2">&quot;id&quot;</span><span class="p">:</span><span class="s2">&quot;5733be284776f4190066117e&quot;</span>
-                   <span class="p">}</span>
-                <span class="p">]</span>
-             <span class="p">}</span>
-          <span class="p">]</span>
-       <span class="p">}</span>
-    <span class="p">]</span>
- <span class="p">}</span>
-<span class="n">EOF</span>
-</pre></div>
-</div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cat</span> <span class="o">&gt;&gt;</span> <span class="n">test</span><span class="o">.</span><span class="n">json</span> <span class="o">&lt;&lt;</span> <span class="n">EOF</span>
-<span class="p">{</span>
-    <span class="s2">&quot;data&quot;</span><span class="p">:[</span>
-       <span class="p">{</span>
-          <span class="s2">&quot;title&quot;</span><span class="p">:</span><span class="s2">&quot;University_of_Notre_Dame&quot;</span><span class="p">,</span>
-          <span class="s2">&quot;paragraphs&quot;</span><span class="p">:[</span>
-             <span class="p">{</span>
-                <span class="s2">&quot;context&quot;</span><span class="p">:</span><span class="s2">&quot;Architecturally, the school has a Catholic character. Atop the Main Building&#39;s gold dome is a golden statue of the Virgin Mary. Immediately in front of the Main Building and facing it, is a copper statue of Christ with arms upraised with the legend </span><span class="se">\&quot;</span><span class="s2">Venite Ad Me Omnes</span><span class="se">\&quot;</span><span class="s2">. Next to the Main Building is the Basilica of the Sacred Heart. Immediately behind the basilica is the Grotto, a Marian place of prayer and reflection. It is a replica of the grotto at Lourdes, France where the Virgin Mary reputedly appeared to Saint Bernadette Soubirous in 1858. At the end of the main drive (and in a direct line that connects through 3 statues and the Gold Dome), is a simple, modern stone statue of Mary.&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;qas&quot;</span><span class="p">:[</span>
-              
-                   <span class="p">{</span>
-                      <span class="s2">&quot;question&quot;</span><span class="p">:</span><span class="s2">&quot;What sits on top of the Main Building at Notre Dame?&quot;</span><span class="p">,</span>
-                      <span class="s2">&quot;id&quot;</span><span class="p">:</span><span class="s2">&quot;5733be284776f4190066117e&quot;</span>
-                   <span class="p">}</span>
-                <span class="p">]</span>
-             <span class="p">}</span>
-          <span class="p">]</span>
-       <span class="p">}</span>
-    <span class="p">]</span>
- <span class="p">}</span>
-<span class="n">EOF</span>
-</pre></div>
-</div>
-<p>Train the model</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dffml</span> <span class="n">train</span> \
-  <span class="o">-</span><span class="n">model</span> <span class="n">qa_model</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">model_type</span> <span class="n">bert</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">save_steps</span> <span class="mi">3</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">model_name_or_path</span> <span class="n">bert</span><span class="o">-</span><span class="n">base</span><span class="o">-</span><span class="n">cased</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">directory</span> <span class="n">qamodel</span><span class="o">/</span><span class="n">checkpoints</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">cache_dir</span> <span class="n">qamodel</span><span class="o">/</span><span class="n">cache</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">log_dir</span> <span class="n">qamodel</span><span class="o">/</span><span class="n">log</span> \
-  <span class="o">-</span><span class="n">sources</span> <span class="n">s</span><span class="o">=</span><span class="n">op</span> \
-  <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">opimp</span> <span class="n">dffml_model_transformers</span><span class="o">.</span><span class="n">qa</span><span class="o">.</span><span class="n">utils</span><span class="p">:</span><span class="n">parser</span> \
-  <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">args</span> <span class="n">train</span><span class="o">.</span><span class="n">json</span> <span class="kc">True</span> \
-  <span class="o">-</span><span class="n">log</span> <span class="n">debug</span>
-</pre></div>
-</div>
-<p>Assess the accuracy</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dffml</span> <span class="n">accuracy</span> \
-  <span class="o">-</span><span class="n">model</span> <span class="n">qa_model</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">model_type</span> <span class="n">bert</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">save_steps</span> <span class="mi">3</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">model_name_or_path</span> <span class="n">bert</span><span class="o">-</span><span class="n">base</span><span class="o">-</span><span class="n">cased</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">directory</span> <span class="n">qamodel</span><span class="o">/</span><span class="n">checkpoints</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">cache_dir</span> <span class="n">qamodel</span><span class="o">/</span><span class="n">cache</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">log_dir</span> <span class="n">qamodel</span><span class="o">/</span><span class="n">log</span> \
-  <span class="o">-</span><span class="n">sources</span> <span class="n">s</span><span class="o">=</span><span class="n">op</span> \
-  <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">opimp</span> <span class="n">dffml_model_transformers</span><span class="o">.</span><span class="n">qa</span><span class="o">.</span><span class="n">utils</span><span class="p">:</span><span class="n">parser</span> \
-  <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">args</span> <span class="n">train</span><span class="o">.</span><span class="n">json</span> <span class="kc">False</span> \
-  <span class="o">-</span><span class="n">log</span> <span class="n">debug</span>
-</pre></div>
-</div>
-<p>Output</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mf">0.0</span>
-</pre></div>
-</div>
-<p>Make a prediction</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dffml</span> <span class="n">predict</span> <span class="nb">all</span> \
-  <span class="o">-</span><span class="n">model</span> <span class="n">qa_model</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">model_type</span> <span class="n">bert</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">save_steps</span> <span class="mi">3</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">model_name_or_path</span> <span class="n">bert</span><span class="o">-</span><span class="n">base</span><span class="o">-</span><span class="n">cased</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">directory</span> <span class="n">qamodel</span><span class="o">/</span><span class="n">checkpoints</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">cache_dir</span> <span class="n">qamodel</span><span class="o">/</span><span class="n">cache</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">log_dir</span> <span class="n">qamodel</span><span class="o">/</span><span class="n">log</span> \
-  <span class="o">-</span><span class="n">sources</span> <span class="n">s</span><span class="o">=</span><span class="n">op</span> \
-  <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">opimp</span> <span class="n">dffml_model_transformers</span><span class="o">.</span><span class="n">qa</span><span class="o">.</span><span class="n">utils</span><span class="p">:</span><span class="n">parser</span> \
-  <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">args</span> <span class="n">test</span><span class="o">.</span><span class="n">json</span> <span class="kc">False</span> \
-  <span class="o">-</span><span class="n">log</span> <span class="n">debug</span>
-</pre></div>
-</div>
-<p>Output</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">[</span>
-    <span class="p">{</span>
-        <span class="nt">&quot;extra&quot;</span><span class="p">:</span> <span class="p">{},</span>
-        <span class="nt">&quot;features&quot;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="nt">&quot;answer_text&quot;</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
-            <span class="nt">&quot;answers&quot;</span><span class="p">:</span> <span class="p">[</span>
-                <span class="p">{</span>
-                    <span class="nt">&quot;answer_start&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-                    <span class="nt">&quot;text&quot;</span><span class="p">:</span> <span class="s2">&quot; &quot;</span>
-                <span class="p">}</span>
-            <span class="p">],</span>
-            <span class="nt">&quot;context&quot;</span><span class="p">:</span> <span class="s2">&quot;Architecturally, the school has a Catholic character. Atop the Main Building&#39;s gold dome is a golden statue of the Virgin Mary. Immediately in front of the Main Building and facing it, is a copper statue of Christ with arms upraised with the legend \&quot;Venite Ad Me Omnes\&quot;. Next to the Main Building is the Basilica of the Sacred Heart. Immediately behind the basilica is the Grotto, a Marian place of prayer and reflection. It is a replica of the grotto at Lourdes, France where the Virgin Mary reputedly appeared to Saint Bernadette Soubirous in 1858. At the end of the main drive (and in a direct line that connects through 3 statues and the Gold Dome), is a simple, modern stone statue of Mary.&quot;</span><span class="p">,</span>
-            <span class="nt">&quot;is_impossible&quot;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
-            <span class="nt">&quot;question&quot;</span><span class="p">:</span> <span class="s2">&quot;What sits on top of the Main Building at Notre Dame?&quot;</span><span class="p">,</span>
-            <span class="nt">&quot;start_pos_char&quot;</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
-            <span class="nt">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;University_of_Notre_Dame&quot;</span>
-        <span class="p">},</span>
-        <span class="nt">&quot;key&quot;</span><span class="p">:</span> <span class="s2">&quot;5733be284776f4190066117e&quot;</span><span class="p">,</span>
-        <span class="nt">&quot;last_updated&quot;</span><span class="p">:</span> <span class="s2">&quot;2020-06-23T17:54:03Z&quot;</span><span class="p">,</span>
-        <span class="nt">&quot;prediction&quot;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="nt">&quot;Answer&quot;</span><span class="p">:</span> <span class="p">{</span>
-                <span class="nt">&quot;confidence&quot;</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
-                <span class="nt">&quot;value&quot;</span><span class="p">:</span> <span class="p">{</span>
-                    <span class="nt">&quot;5733be284776f4190066117e&quot;</span><span class="p">:</span> <span class="s2">&quot;a copper statue of Christ&quot;</span>
-                <span class="p">}</span>
-            <span class="p">}</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
-<span class="p">]</span>
-</pre></div>
-</div>
-<p>The model can be trained on large datasets to get the expected
-output. The example shown above is to demonstrate the commandline usage
-of the model.</p>
-<p>In the above train, accuracy and predict commands, <a class="reference internal" href="dffml_source.html#plugin-source-dffml-op"><span class="std std-ref">op</span></a> source is used to
-read and parse data from json file before feeding it to the model. The function used by opsource to parse json data
-is:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">ast</span>
-<span class="kn">import</span> <span class="nn">json</span>
-
-
-<span class="k">def</span> <span class="nf">parser</span><span class="p">(</span><span class="n">json_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">is_training</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">json_file</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-        <span class="n">parsed_data</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)[</span><span class="s2">&quot;data&quot;</span><span class="p">]</span>
-        <span class="n">answers</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
-            <span class="n">title</span> <span class="o">=</span> <span class="n">entry</span><span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">]</span>
-            <span class="k">for</span> <span class="n">para</span> <span class="ow">in</span> <span class="n">entry</span><span class="p">[</span><span class="s2">&quot;paragraphs&quot;</span><span class="p">]:</span>
-                <span class="n">context</span> <span class="o">=</span> <span class="n">para</span><span class="p">[</span><span class="s2">&quot;context&quot;</span><span class="p">]</span>
-                <span class="k">for</span> <span class="n">qa</span> <span class="ow">in</span> <span class="n">para</span><span class="p">[</span><span class="s2">&quot;qas&quot;</span><span class="p">]:</span>
-                    <span class="nb">id</span> <span class="o">=</span> <span class="n">qa</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span>
-                    <span class="n">question</span> <span class="o">=</span> <span class="n">qa</span><span class="p">[</span><span class="s2">&quot;question&quot;</span><span class="p">]</span>
-                    <span class="n">start_pos_char</span> <span class="o">=</span> <span class="kc">None</span>
-                    <span class="n">answer_text</span> <span class="o">=</span> <span class="kc">None</span>
-                    <span class="n">answers</span> <span class="o">=</span> <span class="p">[]</span>
-                    <span class="n">is_impossible</span> <span class="o">=</span> <span class="p">(</span>
-                        <span class="n">qa</span><span class="p">[</span><span class="s2">&quot;is_impossible&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;is_impossible&quot;</span> <span class="ow">in</span> <span class="n">qa</span> <span class="k">else</span> <span class="kc">False</span>
-                    <span class="p">)</span>
-                    <span class="k">if</span> <span class="ow">not</span> <span class="n">is_impossible</span><span class="p">:</span>
-                        <span class="k">if</span> <span class="n">ast</span><span class="o">.</span><span class="n">literal_eval</span><span class="p">(</span><span class="n">is_training</span><span class="p">):</span>
-                            <span class="n">answer</span> <span class="o">=</span> <span class="n">qa</span><span class="p">[</span><span class="s2">&quot;answers&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
-                            <span class="n">answer_text</span> <span class="o">=</span> <span class="n">answer</span><span class="p">[</span><span class="s2">&quot;text&quot;</span><span class="p">]</span>
-                            <span class="n">start_pos_char</span> <span class="o">=</span> <span class="n">answer</span><span class="p">[</span><span class="s2">&quot;answer_start&quot;</span><span class="p">]</span>
-                        <span class="k">else</span><span class="p">:</span>
-                            <span class="n">answers</span> <span class="o">=</span> <span class="p">[{</span><span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot;answer_start&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">}]</span>
-                    <span class="n">parsed_data</span><span class="p">[</span><span class="nb">id</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
-                        <span class="s2">&quot;features&quot;</span><span class="p">:</span> <span class="p">{</span>
-                            <span class="s2">&quot;question&quot;</span><span class="p">:</span> <span class="n">question</span><span class="p">,</span>
-                            <span class="s2">&quot;context&quot;</span><span class="p">:</span> <span class="n">context</span><span class="p">,</span>
-                            <span class="s2">&quot;answer_text&quot;</span><span class="p">:</span> <span class="n">answer_text</span><span class="p">,</span>
-                            <span class="s2">&quot;start_pos_char&quot;</span><span class="p">:</span> <span class="n">start_pos_char</span><span class="p">,</span>
-                            <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="n">title</span><span class="p">,</span>
-                            <span class="s2">&quot;is_impossible&quot;</span><span class="p">:</span> <span class="n">is_impossible</span><span class="p">,</span>
-                            <span class="s2">&quot;answers&quot;</span><span class="p">:</span> <span class="n">answers</span><span class="p">,</span>
-                        <span class="p">}</span>
-                    <span class="p">}</span>
-        <span class="k">return</span> <span class="n">parsed_data</span>
-</pre></div>
-</div>
-<p>The location of the function is passed using:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">-source-opimp dffml_model_transformers.qa.utils:parser</span>
-</pre></div>
-</div>
-<p>And the arguments to <cite>parser</cite> are passed by:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">-source-args train.json True</span>
-</pre></div>
-</div>
-<p>where <cite>train.json</cite> is the name of file containing training data and the bool <cite>True</cite>
-is value of the flag <cite>is_training</cite>.</p>
-<p><strong>Args</strong></p>
-<ul class="simple">
-<li><p>model_type: String</p>
-<ul>
-<li><p>Model type in the list: distilbert, albert, bart, longformer, xlm-roberta, roberta, bert, xlnet, flaubert, mobilebert, xlm, electra, reformer</p></li>
-</ul>
-</li>
-<li><p>model_name_or_path: String</p>
-<ul>
-<li><p>Path to pretrained model or model identifier from huggingface.co/models</p></li>
-</ul>
-</li>
-<li><p>directory: String</p>
-<ul>
-<li><p>The output directory where the model checkpoints and predictions will be written.</p></li>
-</ul>
-</li>
-<li><p>cache_dir: String</p>
-<ul>
-<li><p>Where do you want to store the pre-trained models downloaded from s3</p></li>
-</ul>
-</li>
-<li><p>log_dir: String</p>
-<ul>
-<li><p>Directory used by SummaryWriter for logging</p></li>
-</ul>
-</li>
-<li><p>tokenizer_name: String</p>
-<ul>
-<li><p>default: None</p></li>
-<li><p>Pretrained tokenizer name or path if not the same as model_name</p></li>
-</ul>
-</li>
-<li><p>from_tf: String</p>
-<ul>
-<li><p>default: False</p></li>
-<li><p>Whether to load model from tensorflow checkpoint or .h5 file</p></li>
-</ul>
-</li>
-<li><p>config_name: String</p>
-<ul>
-<li><p>default: None</p></li>
-<li><p>Pretrained config name or path if not the same as model_name</p></li>
-</ul>
-</li>
-<li><p>null_score_diff_threshold: String</p>
-<ul>
-<li><p>default: 0.0</p></li>
-<li><p>If null_score - best_non_null is greater than the threshold predict null.</p></li>
-</ul>
-</li>
-<li><p>max_seq_length: Integer</p>
-<ul>
-<li><p>default: 384</p></li>
-<li><p>The maximum total input sequence length after WordPiece tokenization. Sequences longer than this will be truncated, and sequences shorter than this will be padded.</p></li>
-</ul>
-</li>
-<li><p>doc_stride: Integer</p>
-<ul>
-<li><p>default: 128</p></li>
-<li><p>When splitting up a long document into chunks, how much stride to take between chunks.</p></li>
-</ul>
-</li>
-<li><p>max_query_length: Integer</p>
-<ul>
-<li><p>default: 64</p></li>
-<li><p>The maximum number of tokens for the question. Questions longer than this will be truncated to this length</p></li>
-</ul>
-</li>
-<li><p>do_lower_case: String</p>
-<ul>
-<li><p>default: False</p></li>
-<li><p>Set this flag while using uncased model</p></li>
-</ul>
-</li>
-<li><p>per_gpu_train_batch_size: Integer</p>
-<ul>
-<li><p>default: 8</p></li>
-<li><p>Batch size per GPU/CPU for training</p></li>
-</ul>
-</li>
-<li><p>per_gpu_eval_batch_size: Integer</p>
-<ul>
-<li><p>default: 8</p></li>
-<li><p>Batch size per GPU/CPU for evaluation</p></li>
-</ul>
-</li>
-<li><p>learning_rate: float</p>
-<ul>
-<li><p>default: 5e-05</p></li>
-<li><p>The initial learning rate for Adam</p></li>
-</ul>
-</li>
-<li><p>gradient_accumulation_steps: Integer</p>
-<ul>
-<li><p>default: 1</p></li>
-<li><p>Number of updates steps to accumulate before performing a backward/update pass</p></li>
-</ul>
-</li>
-<li><p>weight_decay: float</p>
-<ul>
-<li><p>default: 0.0</p></li>
-<li><p>Weight decay if we apply some.</p></li>
-</ul>
-</li>
-<li><p>adam_epsilon: float</p>
-<ul>
-<li><p>default: 1e-08</p></li>
-<li><p>Epsilon for Adam optimizer</p></li>
-</ul>
-</li>
-<li><p>max_grad_norm: float</p>
-<ul>
-<li><p>default: 1.0</p></li>
-<li><p>Max gradient norm.</p></li>
-</ul>
-</li>
-<li><p>num_train_epochs: float</p>
-<ul>
-<li><p>default: 1.0</p></li>
-<li><p>Total number of training epoches to perform</p></li>
-</ul>
-</li>
-<li><p>max_steps: Integer</p>
-<ul>
-<li><p>default: -1</p></li>
-<li><p>If &gt; 0: set total number of training steps to perform. Override num_train_epochs.</p></li>
-</ul>
-</li>
-<li><p>warmup_steps: Integer</p>
-<ul>
-<li><p>default: 0</p></li>
-<li><p>Linear warmup over warmup_steps.</p></li>
-</ul>
-</li>
-<li><p>n_best_size: Integer</p>
-<ul>
-<li><p>default: 20</p></li>
-<li><p>The total number of n-best predictions to generate</p></li>
-</ul>
-</li>
-<li><p>max_answer_length: Integer</p>
-<ul>
-<li><p>default: 30</p></li>
-<li><p>The maximum length of an answer that can be generated. This is needed because the start and end predictions are not conditioned on one another.</p></li>
-</ul>
-</li>
-<li><p>lang_id: Integer</p>
-<ul>
-<li><p>default: 0</p></li>
-<li><p>language id of input for language-specific xlm models (see tokenization_xlm.PRETRAINED_INIT_CONFIGURATION)</p></li>
-</ul>
-</li>
-<li><p>logging_steps: Integer</p>
-<ul>
-<li><p>default: 500</p></li>
-<li><p>Log every X updates steps.</p></li>
-</ul>
-</li>
-<li><p>save_steps: Integer</p>
-<ul>
-<li><p>default: 500</p></li>
-<li><p>Save checkpoint every X update steps</p></li>
-</ul>
-</li>
-<li><p>no_cuda: String</p>
-<ul>
-<li><p>default: False</p></li>
-<li><p>Whether not to use CUDA when available</p></li>
-</ul>
-</li>
-<li><p>overwrite_directory: String</p>
-<ul>
-<li><p>default: False</p></li>
-<li><p>Overwrite the content of the output directory</p></li>
-</ul>
-</li>
-<li><p>seed: Integer</p>
-<ul>
-<li><p>default: 2020</p></li>
-<li><p>random seed for initialization</p></li>
-</ul>
-</li>
-<li><p>local_rank: Integer</p>
-<ul>
-<li><p>default: -1</p></li>
-<li><p>local_rank for distributed training on gpus</p></li>
-</ul>
-</li>
-<li><p>fp16: Integer</p>
-<ul>
-<li><p>default: False</p></li>
-<li><p>Whether to use 16-bit (mixed) precision (through NVIDIA apex) insted of 32-bit</p></li>
-</ul>
-</li>
-<li><p>fp16_opt_level: String</p>
-<ul>
-<li><p>default: O1</p></li>
-<li><p>For fp16: Apex AMP optimization level selected in [‘O0’, ‘O1’, ‘O2’, and ‘O3’]. See details at <a class="reference external" href="https://nvidia.github.io/apex/amp.html">https://nvidia.github.io/apex/amp.html</a></p></li>
-</ul>
-</li>
-<li><p>threads: Integer</p>
-<ul>
-<li><p>default: 1</p></li>
-<li><p>Multiple threads for converting example to features</p></li>
-</ul>
-</li>
-</ul>
-</div>
-</div>
 <div class="section" id="dffml-model-tensorflow-hub">
 <span id="plugin-model-dffml-model-tensorflow-hub"></span><h2>dffml_model_tensorflow_hub<a class="headerlink" href="#dffml-model-tensorflow-hub" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install dffml-model-tensorflow-hub</span>
@@ -3096,6 +1805,144 @@ is value of the flag <cite>is_predicting</cite>.</p>
 <span id="plugin-model-dffml-model-scratch"></span><h2>dffml_model_scratch<a class="headerlink" href="#dffml-model-scratch" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install dffml-model-scratch</span>
 </pre></div>
+</div>
+<div class="section" id="anomalydetection">
+<span id="plugin-model-dffml-model-scratch-anomalydetection"></span><h3>anomalydetection<a class="headerlink" href="#anomalydetection" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<p>Model for Anomaly Detection using multivariate Gaussian distribution to predict probabilities of all records in the dataset
+and identify outliers. F1 score is used as the evaluation metric for this model. This model works well as it recognises dependencies
+across various features, and works particularly well if the features have a Gaussian Distribution.</p>
+<div class="section" id="id2">
+<h4>Examples<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h4>
+<p>Command line usage</p>
+<p>Create training and test datasets</p>
+<p><strong>trainex.csv</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">A</span><span class="p">,</span><span class="n">Y</span>
+<span class="mf">0.65</span><span class="p">,</span><span class="mi">0</span>
+<span class="mf">0.24</span><span class="p">,</span><span class="mi">0</span>
+<span class="mf">0.93</span><span class="p">,</span><span class="mi">0</span>
+<span class="mf">0.87</span><span class="p">,</span><span class="mi">0</span>
+<span class="mf">0.23</span><span class="p">,</span><span class="mi">0</span>
+<span class="mi">7</span><span class="p">,</span><span class="mi">1</span>
+<span class="mf">0.86</span><span class="p">,</span><span class="mi">0</span>
+<span class="mf">0.45</span><span class="p">,</span><span class="mi">0</span>
+<span class="mf">0.55</span><span class="p">,</span><span class="mi">0</span>
+<span class="mf">0.29</span><span class="p">,</span><span class="mi">0</span>
+<span class="mi">5</span><span class="p">,</span><span class="mi">1</span>
+<span class="mf">0.51</span><span class="p">,</span><span class="mi">0</span>
+<span class="mf">0.88</span><span class="p">,</span><span class="mi">0</span>
+<span class="mf">0.24</span><span class="p">,</span><span class="mi">0</span>
+<span class="mf">0.51</span><span class="p">,</span><span class="mi">0</span>
+<span class="mf">0.17</span><span class="p">,</span><span class="mi">0</span>
+<span class="mi">9</span><span class="p">,</span><span class="mi">1</span>
+<span class="mf">0.37</span><span class="p">,</span><span class="mi">0</span>
+<span class="mf">0.23</span><span class="p">,</span><span class="mi">0</span>
+<span class="mf">0.44</span><span class="p">,</span><span class="mi">0</span>
+<span class="mf">0.62</span><span class="p">,</span><span class="mi">0</span>
+<span class="mi">3</span><span class="p">,</span><span class="mi">1</span>
+<span class="mf">0.87</span><span class="p">,</span><span class="mi">0</span>
+</pre></div>
+</div>
+<p><strong>testex.csv</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">A</span><span class="p">,</span><span class="n">Y</span>
+<span class="mf">0.45</span><span class="p">,</span><span class="mi">0</span>
+<span class="mf">0.23</span><span class="p">,</span><span class="mi">0</span>
+<span class="mf">0.67</span><span class="p">,</span><span class="mi">0</span>
+<span class="mi">8</span><span class="p">,</span><span class="mi">1</span>
+<span class="mf">0.19</span><span class="p">,</span><span class="mi">0</span>
+<span class="mf">0.34</span><span class="p">,</span><span class="mi">0</span>
+<span class="mf">0.49</span><span class="p">,</span><span class="mi">0</span>
+<span class="mf">0.31</span><span class="p">,</span><span class="mi">0</span>
+<span class="mf">0.47</span><span class="p">,</span><span class="mi">0</span>
+<span class="mi">4</span><span class="p">,</span><span class="mi">1</span>
+</pre></div>
+</div>
+<p>Train the model</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml train <span class="se">\</span>
+    -sources <span class="nv">f</span><span class="o">=</span>csv <span class="se">\</span>
+    -source-filename trainex.csv <span class="se">\</span>
+    -model anomalydetection <span class="se">\</span>
+    -model-features A:float:2 <span class="se">\</span>
+    -model-predict Y:int:1  <span class="se">\</span>
+    -model-directory tempdir
+</pre></div>
+</div>
+<p>Assess the accuracy</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml accuracy <span class="se">\</span>
+    -sources <span class="nv">f</span><span class="o">=</span>csv <span class="se">\</span>
+    -source-filename testex.csv <span class="se">\</span>
+    -model anomalydetection <span class="se">\</span>
+    -model-features A:float:2 <span class="se">\</span>
+    -model-predict Y:int:1 <span class="se">\</span>
+    -model-directory tempdir
+</pre></div>
+</div>
+<p>Make predictions</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml predict all <span class="se">\</span>
+    -sources <span class="nv">f</span><span class="o">=</span>csv <span class="se">\</span>
+    -source-filename testex.csv <span class="se">\</span>
+    -model anomalydetection <span class="se">\</span>
+    -model-features A:float:2 <span class="se">\</span>
+    -model-predict Y:int:1 <span class="se">\</span>
+    -model-directory tempdir
+</pre></div>
+</div>
+<p>Python usage</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">Feature</span><span class="p">,</span> <span class="n">Features</span>
+<span class="kn">from</span> <span class="nn">dffml.noasync</span> <span class="kn">import</span> <span class="n">accuracy</span><span class="p">,</span> <span class="n">predict</span><span class="p">,</span> <span class="n">train</span>
+
+<span class="kn">from</span> <span class="nn">dffml_model_scratch.anomalydetection</span> <span class="kn">import</span> <span class="n">AnomalyModel</span>
+
+<span class="c1"># Configure the model</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">AnomalyModel</span><span class="p">(</span>
+    <span class="n">features</span><span class="o">=</span><span class="n">Features</span><span class="p">(</span><span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">2</span><span class="p">),),</span>
+    <span class="n">predict</span><span class="o">=</span><span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;Y&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+    <span class="n">directory</span><span class="o">=</span><span class="s2">&quot;model&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+
+
+<span class="c1"># Train the model</span>
+<span class="n">train</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="s2">&quot;trainex.csv&quot;</span><span class="p">)</span>
+
+<span class="c1"># Assess accuracy for test set</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Test set F1 score :&quot;</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="s2">&quot;testex.csv&quot;</span><span class="p">))</span>
+
+<span class="c1"># Assess accuracy for training set</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Training set F1 score :&quot;</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="s2">&quot;trainex.csv&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>Output</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python detectoutliers.py
+<span class="go">Test set F1 score : 0.8</span>
+<span class="go">Training set F1 score : 0.888888888888889</span>
+</pre></div>
+</div>
+<p><strong>Args</strong></p>
+<ul class="simple">
+<li><p>features: List of features</p>
+<ul>
+<li><p>Features to train on</p></li>
+</ul>
+</li>
+<li><p>predict: Feature</p>
+<ul>
+<li><p>Label or the value to be predicted</p></li>
+</ul>
+</li>
+<li><p>directory: Path</p>
+<ul>
+<li><p>Directory where state should be saved</p></li>
+</ul>
+</li>
+<li><p>k: float</p>
+<ul>
+<li><p>default: 0.8</p></li>
+<li><p>Validation set size</p></li>
+</ul>
+</li>
+</ul>
+</div>
 </div>
 <div class="section" id="scratchlgrsag">
 <span id="plugin-model-dffml-model-scratch-scratchlgrsag"></span><h3>scratchlgrsag<a class="headerlink" href="#scratchlgrsag" title="Permalink to this headline">¶</a></h3>
@@ -7708,6 +6555,8 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install dffml-model-autosklearn</span>
 </pre></div>
 </div>
+<p>Follow these instructions before running the above install
+command to ensure that <code class="docutils literal notranslate"><span class="pre">auto-sklearn</span></code> installs correctly</p>
 <p><strong>Ubuntu Installation</strong></p>
 <p>To provide a C++11 building environment and the lateste SWIG version on Ubuntu, run:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo apt-get install build-essential swig

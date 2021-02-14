@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>dffml.df.memory &mdash; DFFML 653f28ad documentation</title>
+  <title>dffml.df.memory &mdash; DFFML 2a2c6e84 documentation</title>
   
 
   
@@ -65,7 +65,7 @@
             
             
               <div class="version">
-                653f28ad
+                2a2c6e84
               </div>
             
           
@@ -108,6 +108,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../cli.html">Command Line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../plugins/service/http/index.html">HTTP API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../troubleshooting.html">Troubleshooting</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Subprojects</span></p>
 <ul>
@@ -221,6 +222,7 @@
     <span class="n">ContextNotPresent</span><span class="p">,</span>
     <span class="n">DefinitionNotInContext</span><span class="p">,</span>
     <span class="n">ValidatorMissing</span><span class="p">,</span>
+    <span class="n">MultipleAncestorsFoundError</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="kn">from</span> <span class="nn">.types</span> <span class="kn">import</span> <span class="p">(</span>
     <span class="n">Input</span><span class="p">,</span>
@@ -767,7 +769,18 @@
                     <span class="k">for</span> <span class="n">input_source</span> <span class="ow">in</span> <span class="n">input_sources</span><span class="p">:</span>
                         <span class="c1"># Create a list of places this input originates from</span>
                         <span class="n">origins</span> <span class="o">=</span> <span class="p">[]</span>
-                        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">input_source</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+                        <span class="c1"># Handle the case where we look at the first instance in</span>
+                        <span class="c1"># the list for the immediate alternate definition then</span>
+                        <span class="c1"># trace back through input origins to make sure they all</span>
+                        <span class="c1"># match</span>
+                        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">input_source</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+                            <span class="c1"># TODO Refactor this since we have duplicate code</span>
+                            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">input_source</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">dict</span><span class="p">):</span>
+                                <span class="k">for</span> <span class="n">origin</span> <span class="ow">in</span> <span class="n">input_source</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                                    <span class="n">origins</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">origin</span><span class="p">)</span>
+                            <span class="k">else</span><span class="p">:</span>
+                                <span class="n">origins</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">input_source</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">input_source</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
                             <span class="k">for</span> <span class="n">origin</span> <span class="ow">in</span> <span class="n">input_source</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
                                 <span class="n">origins</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">origin</span><span class="p">)</span>
                         <span class="k">else</span><span class="p">:</span>
@@ -815,6 +828,74 @@
                                     <span class="o">.</span><span class="n">name</span>
                                 <span class="p">):</span>
                                     <span class="k">continue</span>
+                                <span class="c1"># When the input_source is a list of alternate</span>
+                                <span class="c1"># definitions we need to check each parent to</span>
+                                <span class="c1"># verity that it&#39;s origin matches with the list</span>
+                                <span class="c1"># given by input_source</span>
+                                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">input_source</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+                                    <span class="n">all_parent_origins_match</span> <span class="o">=</span> <span class="kc">True</span>
+                                    <span class="c1"># Make a list of all the origins</span>
+                                    <span class="n">ancestor_origins</span> <span class="o">=</span> <span class="p">[]</span>
+                                    <span class="k">for</span> <span class="n">ancestor_origin</span> <span class="ow">in</span> <span class="n">input_source</span><span class="p">:</span>
+                                        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ancestor_origin</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+                                            <span class="k">for</span> <span class="p">(</span>
+                                                <span class="n">ancestor_origin</span>
+                                            <span class="p">)</span> <span class="ow">in</span> <span class="n">ancestor_origin</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                                                <span class="n">ancestor_origins</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                                                    <span class="n">ancestor_origin</span>
+                                                <span class="p">)</span>
+                                        <span class="k">else</span><span class="p">:</span>
+                                            <span class="n">ancestor_origins</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                                                <span class="n">ancestor_origin</span>
+                                            <span class="p">)</span>
+                                    <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span>
+                                    <span class="n">current_parent</span> <span class="o">=</span> <span class="n">item</span>
+                                    <span class="k">while</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">ancestor_origins</span><span class="p">):</span>
+                                        <span class="n">ancestor_origin</span> <span class="o">=</span> <span class="n">ancestor_origins</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                                        <span class="c1"># Go through all the parents. Create a</span>
+                                        <span class="c1"># list of possible parents based on if</span>
+                                        <span class="c1"># their origin matches the alternate</span>
+                                        <span class="c1"># definition</span>
+                                        <span class="n">possible_parents</span> <span class="o">=</span> <span class="p">[</span>
+                                            <span class="n">parent</span>
+                                            <span class="k">for</span> <span class="n">parent</span> <span class="ow">in</span> <span class="n">current_parent</span><span class="o">.</span><span class="n">parents</span>
+                                            <span class="c1"># If the input source is a dict then</span>
+                                            <span class="c1"># we need to convert it to a tuple</span>
+                                            <span class="c1"># for comparison to the origin</span>
+                                            <span class="k">if</span> <span class="n">parent</span><span class="o">.</span><span class="n">origin</span> <span class="o">==</span> <span class="n">ancestor_origin</span>
+                                        <span class="p">]</span>
+                                        <span class="k">if</span> <span class="ow">not</span> <span class="n">possible_parents</span><span class="p">:</span>
+                                            <span class="n">all_parent_origins_match</span> <span class="o">=</span> <span class="kc">False</span>
+                                            <span class="k">break</span>
+                                        <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">possible_parents</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                                            <span class="c1"># TODO Go through each option and</span>
+                                            <span class="c1"># check if either is a viable</span>
+                                            <span class="c1"># option. Our current implementation</span>
+                                            <span class="c1"># only allows for valeting one path,</span>
+                                            <span class="c1"># due to a single current_parent</span>
+                                            <span class="c1"># If there is more than one option</span>
+                                            <span class="c1"># raise an error since we don&#39;t know</span>
+                                            <span class="c1"># who to choose</span>
+                                            <span class="k">raise</span> <span class="n">MultipleAncestorsFoundError</span><span class="p">(</span>
+                                                <span class="p">(</span>
+                                                    <span class="n">operation</span><span class="o">.</span><span class="n">instance_name</span><span class="p">,</span>
+                                                    <span class="n">input_name</span><span class="p">,</span>
+                                                    <span class="n">ancestor_origin</span><span class="p">,</span>
+                                                    <span class="p">[</span>
+                                                        <span class="n">parent</span><span class="o">.</span><span class="vm">__dict__</span>
+                                                        <span class="k">for</span> <span class="n">parent</span> <span class="ow">in</span> <span class="n">possible_parents</span>
+                                                    <span class="p">],</span>
+                                                <span class="p">)</span>
+                                            <span class="p">)</span>
+                                        <span class="c1"># Move on to the next origin to validate</span>
+                                        <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+                                        <span class="c1"># The current_parent becomes the only</span>
+                                        <span class="c1"># possible parent</span>
+                                        <span class="n">current_parent</span> <span class="o">=</span> <span class="n">possible_parents</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                                    <span class="c1"># If we didn&#39;t find any ancestor paths that</span>
+                                    <span class="c1"># matched then we don&#39;t use this Input</span>
+                                    <span class="k">if</span> <span class="ow">not</span> <span class="n">all_parent_origins_match</span><span class="p">:</span>
+                                        <span class="k">continue</span>
                                 <span class="n">gather</span><span class="p">[</span><span class="n">input_name</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
                                     <span class="n">Parameter</span><span class="p">(</span>
                                         <span class="n">key</span><span class="o">=</span><span class="n">input_name</span><span class="p">,</span>
@@ -1212,7 +1293,7 @@
                     <span class="n">operation</span><span class="o">.</span><span class="n">instance_name</span>
                 <span class="p">)</span></div>
 
-<div class="viewcode-block" id="MemoryOperationImplementationNetworkContext.run"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.cli.dataflow.MemoryOperationImplementationNetworkContext.run">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">run</span><span class="p">(</span>
+<div class="viewcode-block" id="MemoryOperationImplementationNetworkContext.run_no_retry"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.cli.dataflow.MemoryOperationImplementationNetworkContext.run_no_retry">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">run_no_retry</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">ctx</span><span class="p">:</span> <span class="n">BaseInputSetContext</span><span class="p">,</span>
         <span class="n">octx</span><span class="p">:</span> <span class="n">BaseOrchestratorContext</span><span class="p">,</span>
@@ -1220,7 +1301,7 @@
         <span class="n">inputs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Run an operation in our network.</span>
+<span class="sd">        Run an operation in our network without retry if it fails</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Check that our network contains the operation</span>
         <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">ensure_contains</span><span class="p">(</span><span class="n">operation</span><span class="p">)</span>
@@ -1263,6 +1344,33 @@
             <span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;---&quot;</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">outputs</span></div>
+
+<div class="viewcode-block" id="MemoryOperationImplementationNetworkContext.run"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.cli.dataflow.MemoryOperationImplementationNetworkContext.run">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">run</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">ctx</span><span class="p">:</span> <span class="n">BaseInputSetContext</span><span class="p">,</span>
+        <span class="n">octx</span><span class="p">:</span> <span class="n">BaseOrchestratorContext</span><span class="p">,</span>
+        <span class="n">operation</span><span class="p">:</span> <span class="n">Operation</span><span class="p">,</span>
+        <span class="n">inputs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Run an operation in our network.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">operation</span><span class="o">.</span><span class="n">retry</span><span class="p">:</span>
+            <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">run_no_retry</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="n">octx</span><span class="p">,</span> <span class="n">operation</span><span class="p">,</span> <span class="n">inputs</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">retry</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">operation</span><span class="o">.</span><span class="n">retry</span><span class="p">):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">run_no_retry</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="n">octx</span><span class="p">,</span> <span class="n">operation</span><span class="p">,</span> <span class="n">inputs</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                <span class="c1"># Raise if no more tries left</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">retry</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="n">operation</span><span class="o">.</span><span class="n">retry</span><span class="p">:</span>
+                    <span class="k">raise</span>
+                <span class="c1"># Otherwise if there was an exception log it</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
+                    <span class="s2">&quot;</span><span class="si">%r</span><span class="s2">: try </span><span class="si">%d</span><span class="s2">: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span>
+                    <span class="n">operation</span><span class="o">.</span><span class="n">instance_name</span><span class="p">,</span>
+                    <span class="n">retry</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
+                    <span class="n">traceback</span><span class="o">.</span><span class="n">format_exc</span><span class="p">()</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(),</span>
+                <span class="p">)</span></div>
 
 <div class="viewcode-block" id="MemoryOperationImplementationNetworkContext.operation_completed"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.cli.dataflow.MemoryOperationImplementationNetworkContext.operation_completed">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">operation_completed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">completed_event</span><span class="o">.</span><span class="n">wait</span><span class="p">()</span>
@@ -1917,12 +2025,10 @@
         <span class="c1"># Run output operations and create a dict mapping the operation name to</span>
         <span class="c1"># the output of that operation</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">output</span> <span class="o">=</span> <span class="p">{</span>
-                <span class="n">operation</span><span class="o">.</span><span class="n">instance_name</span><span class="p">:</span> <span class="n">results</span>
-                <span class="k">async</span> <span class="k">for</span> <span class="n">operation</span><span class="p">,</span> <span class="n">results</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">run_stage</span><span class="p">(</span>
-                    <span class="n">ctx</span><span class="p">,</span> <span class="n">Stage</span><span class="o">.</span><span class="n">OUTPUT</span>
-                <span class="p">)</span>
-            <span class="p">}</span>
+            <span class="n">output</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">async</span> <span class="k">for</span> <span class="n">operation</span><span class="p">,</span> <span class="n">results</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">run_stage</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="n">Stage</span><span class="o">.</span><span class="n">OUTPUT</span><span class="p">):</span>
+                <span class="n">output</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">operation</span><span class="o">.</span><span class="n">instance_name</span><span class="p">,</span> <span class="p">{})</span>
+                <span class="n">output</span><span class="p">[</span><span class="n">operation</span><span class="o">.</span><span class="n">instance_name</span><span class="p">]</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
         <span class="k">except</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">strict</span><span class="p">:</span>
                 <span class="k">raise</span>

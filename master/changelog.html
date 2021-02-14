@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Changelog &mdash; DFFML 653f28ad documentation</title>
+  <title>Changelog &mdash; DFFML 2a2c6e84 documentation</title>
   
 
   
@@ -65,7 +65,7 @@
             
             
               <div class="version">
-                653f28ad
+                2a2c6e84
               </div>
             
           
@@ -108,6 +108,7 @@
 <li class="toctree-l1"><a class="reference internal" href="cli.html">Command Line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="plugins/service/http/index.html">HTTP API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Subprojects</span></p>
 <ul>
@@ -292,6 +293,7 @@ and this project adheres to <a class="reference external" href="https://semver.o
 <div class="section" id="added">
 <h3>Added<a class="headerlink" href="#added" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
+<li><p>New model for Anomaly Detection</p></li>
 <li><p>Ablity to specify maximum number of contexts running at a time</p></li>
 <li><p>CLI and Python example usage of Custom Neural Network</p></li>
 <li><p>PyTorch loss function entrypoint style loading</p></li>
@@ -307,9 +309,7 @@ and this project adheres to <a class="reference external" href="https://semver.o
 <li><p>Tutorial for using NLP operations with models</p></li>
 <li><p>Operations plugin for NLP wrapping spacy and scikit functions</p></li>
 <li><p>Support for default value in a Definition</p></li>
-<li><p>Transformers Question Answering model</p></li>
 <li><p>Source for reading images in directories</p></li>
-<li><p>Transformers classification model</p></li>
 <li><p>Operations plugin for image preprocessing</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">-pretty</span></code> flag to <code class="docutils literal notranslate"><span class="pre">list</span> <span class="pre">records</span></code> and <code class="docutils literal notranslate"><span class="pre">predict</span></code> commands</p></li>
 <li><p>daal4py based linear regression model</p></li>
@@ -368,6 +368,8 @@ HTTP 307 response</p></li>
 <li><p>Option to run dataflow without sources from cli.</p></li>
 <li><p>Sphinx extension for automated testing of tutorials (consoletest)</p></li>
 <li><p>Example of software portal using DataFlows and HTTP service</p></li>
+<li><p>Retry parameter to <code class="docutils literal notranslate"><span class="pre">Operation</span></code>. Allows for setting number of times operation
+should be retried before it’s exception should be raised.</p></li>
 </ul>
 </div>
 <div class="section" id="changed">
@@ -376,7 +378,6 @@ HTTP 307 response</p></li>
 <li><p>Renamed <code class="docutils literal notranslate"><span class="pre">-seed</span></code> to <code class="docutils literal notranslate"><span class="pre">-inputs</span></code> in <code class="docutils literal notranslate"><span class="pre">dataflow</span> <span class="pre">create</span></code> command</p></li>
 <li><p>Renamed configloader/png to configloader/image and added support for loading JPEG and TIFF file formats</p></li>
 <li><p>Update record <code class="docutils literal notranslate"><span class="pre">__str__</span></code> method to output in tabular format</p></li>
-<li><p>Update NER Model to use transformers 2.11.0</p></li>
 <li><p>Update MNIST use case to normalize image arrays.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">arg_</span></code> notation replaced with <code class="docutils literal notranslate"><span class="pre">CONFIG</span> <span class="pre">=</span> <span class="pre">ExampleConfig</span></code> style syntax
 for parsing all command line arguments.</p></li>
@@ -405,6 +406,7 @@ features were found</p></li>
 packaging the model.</p></li>
 <li><p>IntegrationCLITestCase creates a new directory and chdir into it for each test</p></li>
 <li><p>Automated testing of Automating Classification tutorial</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dffml</span> <span class="pre">version</span></code> command now prints git repo hash and if the repo is dirty</p></li>
 </ul>
 </div>
 <div class="section" id="fixed">
@@ -478,7 +480,6 @@ specifying extra inputs.</p></li>
 <h3>Added<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>Operations for taking input from the user <code class="docutils literal notranslate"><span class="pre">AcceptUserInput</span></code> and for printing the output <code class="docutils literal notranslate"><span class="pre">print_output</span></code></p></li>
-<li><p>Hugging Face Transformers tensorflow based NER models.</p></li>
 <li><p>PNG ConfigLoader for reading images as arrays to predict using MNIST trained models</p></li>
 <li><p>Docstrings and doctestable examples to <code class="docutils literal notranslate"><span class="pre">record.py</span></code>.</p></li>
 <li><p>Inputs can be validated using operations</p>

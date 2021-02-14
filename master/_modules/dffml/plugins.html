@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>dffml.plugins &mdash; DFFML 653f28ad documentation</title>
+  <title>dffml.plugins &mdash; DFFML 2a2c6e84 documentation</title>
   
 
   
@@ -65,7 +65,7 @@
             
             
               <div class="version">
-                653f28ad
+                2a2c6e84
               </div>
             
           
@@ -108,6 +108,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../cli.html">Command Line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../plugins/service/http/index.html">HTTP API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../troubleshooting.html">Troubleshooting</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Subprojects</span></p>
 <ul>
@@ -226,7 +227,6 @@
     <span class="p">(</span><span class="s2">&quot;model&quot;</span><span class="p">,</span> <span class="s2">&quot;scikit&quot;</span><span class="p">),</span>
     <span class="p">(</span><span class="s2">&quot;model&quot;</span><span class="p">,</span> <span class="s2">&quot;tensorflow&quot;</span><span class="p">),</span>
     <span class="p">(</span><span class="s2">&quot;model&quot;</span><span class="p">,</span> <span class="s2">&quot;tensorflow_hub&quot;</span><span class="p">),</span>
-    <span class="p">(</span><span class="s2">&quot;model&quot;</span><span class="p">,</span> <span class="s2">&quot;transformers&quot;</span><span class="p">),</span>
     <span class="p">(</span><span class="s2">&quot;model&quot;</span><span class="p">,</span> <span class="s2">&quot;vowpalWabbit&quot;</span><span class="p">),</span>
     <span class="p">(</span><span class="s2">&quot;model&quot;</span><span class="p">,</span> <span class="s2">&quot;xgboost&quot;</span><span class="p">),</span>
     <span class="p">(</span><span class="s2">&quot;model&quot;</span><span class="p">,</span> <span class="s2">&quot;pytorch&quot;</span><span class="p">),</span>
@@ -272,11 +272,6 @@
     <span class="k">if</span> <span class="n">platform</span><span class="o">.</span><span class="n">system</span><span class="p">()</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">&quot;Windows&quot;</span><span class="p">,</span> <span class="s2">&quot;Darwin&quot;</span><span class="p">}</span>
     <span class="ow">and</span> <span class="ow">not</span> <span class="n">python_package_installed</span><span class="p">(</span><span class="s2">&quot;autosklearn&quot;</span><span class="p">)</span>
     <span class="k">else</span> <span class="p">{},</span>
-<span class="p">}</span>
-
-<span class="n">CORE_PLUGIN_DEPS</span><span class="p">[(</span><span class="s2">&quot;model&quot;</span><span class="p">,</span> <span class="s2">&quot;daal4py&quot;</span><span class="p">)]</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="c1"># Must be installed already via conda, do not provide a pypi package yet</span>
-    <span class="s2">&quot;daal4py&quot;</span><span class="p">:</span> <span class="k">lambda</span><span class="p">:</span> <span class="n">python_package_installed</span><span class="p">(</span><span class="s2">&quot;daal4py&quot;</span><span class="p">)</span>
 <span class="p">}</span>
 
 <span class="c1"># All packages under configloader/ are really named dffml-config-{name}</span>
@@ -347,6 +342,11 @@
 
 
 <span class="n">PACKAGE_NAMES_TO_DIRECTORY</span> <span class="o">=</span> <span class="n">package_names_to_directory</span><span class="p">()</span>
+<span class="n">PACKAGE_DIRECTORY_TO_NAME</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+    <span class="nb">zip</span><span class="p">(</span>
+        <span class="n">PACKAGE_NAMES_TO_DIRECTORY</span><span class="o">.</span><span class="n">values</span><span class="p">(),</span> <span class="n">PACKAGE_NAMES_TO_DIRECTORY</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span>
+    <span class="p">)</span>
+<span class="p">)</span>
 </pre></div>
 
            </div>

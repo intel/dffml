@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Command Line &mdash; DFFML 653f28ad documentation</title>
+  <title>Command Line &mdash; DFFML 2a2c6e84 documentation</title>
   
 
   
@@ -66,7 +66,7 @@
             
             
               <div class="version">
-                653f28ad
+                2a2c6e84
               </div>
             
           
@@ -107,6 +107,8 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="plugins/index.html">Plugins</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Command Line</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#version">Version</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#packages">Packages</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#model">Model</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#train">Train</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#accuracy">Accuracy</a></li>
@@ -145,6 +147,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="plugins/service/http/index.html">HTTP API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Subprojects</span></p>
 <ul>
@@ -244,6 +247,20 @@ logs.</p>
 <p class="admonition-title">Note</p>
 <p>Some of these examples assume you have <code class="docutils literal notranslate"><span class="pre">dffml-config-yaml</span></code> installed.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python -m pip install dffml-config-yaml
+</pre></div>
+</div>
+</div>
+<div class="section" id="version">
+<h2>Version<a class="headerlink" href="#version" title="Permalink to this headline">¶</a></h2>
+<p>List the version of the main package, all the plugins, and their install status.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml version
+</pre></div>
+</div>
+</div>
+<div class="section" id="packages">
+<h2>Packages<a class="headerlink" href="#packages" title="Permalink to this headline">¶</a></h2>
+<p>List the names of all the packages maintained as a part of the core dffml repo.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml packages
 </pre></div>
 </div>
 </div>
@@ -787,6 +804,15 @@ flag to <code class="docutils literal notranslate"><span class="pre">pip</span> 
 <div class="section" id="setuppy">
 <h4>setuppy<a class="headerlink" href="#setuppy" title="Permalink to this headline">¶</a></h4>
 <p>Utilities for working with <code class="docutils literal notranslate"><span class="pre">setup.py</span></code> files.</p>
+<div class="section" id="id3">
+<h5>version<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h5>
+<p>Read a <code class="docutils literal notranslate"><span class="pre">version.py</span></code> file and extract the version number from the <code class="docutils literal notranslate"><span class="pre">VERSION</span></code>
+variable within it. This does not execute code, it only parses it.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml service dev setuppy version dffml_model_mycoolmodel/version.py
+<span class="go">0.0.1</span>
+</pre></div>
+</div>
+</div>
 <div class="section" id="kwarg">
 <h5>kwarg<a class="headerlink" href="#kwarg" title="Permalink to this headline">¶</a></h5>
 <p><code class="docutils literal notranslate"><span class="pre">import</span></code> a <code class="docutils literal notranslate"><span class="pre">setup.py</span></code> file return the value of the specified keyword
@@ -807,8 +833,8 @@ argument.</p>
 </pre></div>
 </div>
 </div>
-<div class="section" id="packages">
-<h5>packages<a class="headerlink" href="#packages" title="Permalink to this headline">¶</a></h5>
+<div class="section" id="id4">
+<h5>packages<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h5>
 <p>Update the version number of a package or all packages. Increments the version
 of each packages by the version string given.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">dffml service dev bump packages -log debug -skip dffml -- 0.0.1</span>

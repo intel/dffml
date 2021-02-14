@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>dffml.service.dev &mdash; DFFML 653f28ad documentation</title>
+  <title>dffml.service.dev &mdash; DFFML 2a2c6e84 documentation</title>
   
 
   
@@ -65,7 +65,7 @@
             
             
               <div class="version">
-                653f28ad
+                2a2c6e84
               </div>
             
           
@@ -108,6 +108,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../cli.html">Command Line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../plugins/service/http/index.html">HTTP API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../troubleshooting.html">Troubleshooting</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Subprojects</span></p>
 <ul>
@@ -204,6 +205,7 @@
 <span class="kn">import</span> <span class="nn">pathlib</span>
 <span class="kn">import</span> <span class="nn">getpass</span>
 <span class="kn">import</span> <span class="nn">tempfile</span>
+<span class="kn">import</span> <span class="nn">platform</span>
 <span class="kn">import</span> <span class="nn">importlib</span>
 <span class="kn">import</span> <span class="nn">subprocess</span>
 <span class="kn">import</span> <span class="nn">contextlib</span>
@@ -234,6 +236,7 @@
     <span class="n">CORE_PLUGINS</span><span class="p">,</span>
     <span class="n">CORE_PLUGIN_DEPS</span><span class="p">,</span>
     <span class="n">PACKAGE_NAMES_TO_DIRECTORY</span><span class="p">,</span>
+    <span class="n">PACKAGE_DIRECTORY_TO_NAME</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="n">config</span> <span class="o">=</span> <span class="n">configparser</span><span class="o">.</span><span class="n">ConfigParser</span><span class="p">()</span>
@@ -245,6 +248,8 @@
 
 <span class="n">NAME</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="n">fallback</span><span class="o">=</span><span class="s2">&quot;Unknown&quot;</span><span class="p">)</span>
 <span class="n">EMAIL</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;email&quot;</span><span class="p">,</span> <span class="n">fallback</span><span class="o">=</span><span class="s2">&quot;unknown@example.com&quot;</span><span class="p">)</span>
+
+<span class="n">REPO_ROOT</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parents</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
 
 
 <div class="viewcode-block" id="create_from_skel"><a class="viewcode-back" href="../../../api/service/dev.html#dffml.service.dev.create_from_skel">[docs]</a><span class="k">def</span> <span class="nf">create_from_skel</span><span class="p">(</span><span class="n">plugin_type</span><span class="p">):</span>
@@ -583,6 +588,9 @@
             <span class="s2">&quot;pip&quot;</span><span class="p">,</span>
             <span class="s2">&quot;install&quot;</span><span class="p">,</span>
         <span class="p">]</span>
+        <span class="c1"># If on Windows, PyTorch wants us to use a find links URL for pip</span>
+        <span class="k">if</span> <span class="n">platform</span><span class="o">.</span><span class="n">system</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;Windows&quot;</span><span class="p">:</span>
+            <span class="n">cmd</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;-f&quot;</span><span class="p">,</span> <span class="s2">&quot;https://download.pytorch.org/whl/torch_stable.html&quot;</span><span class="p">]</span>
         <span class="c1"># Install to prefix, since --user sometimes fails</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="p">:</span>
             <span class="n">local_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;~&quot;</span><span class="p">,</span> <span class="s2">&quot;.local&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">expanduser</span><span class="p">()</span><span class="o">.</span><span class="n">absolute</span><span class="p">()</span>
@@ -593,6 +601,12 @@
             <span class="n">package_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="o">*</span><span class="n">main_package</span><span class="o">.</span><span class="n">parts</span><span class="p">,</span> <span class="o">*</span><span class="n">package</span><span class="p">)</span>
             <span class="c1"># Install package in development mode</span>
             <span class="n">cmd</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;-e&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">package_path</span><span class="o">.</span><span class="n">absolute</span><span class="p">())]</span>
+            <span class="c1"># Temporary fix for ConfigSpace numpy incompatibility issue</span>
+            <span class="c1"># References: https://github.com/intel/dffml/issues/992</span>
+            <span class="k">if</span> <span class="n">package</span> <span class="o">==</span> <span class="p">(</span><span class="s2">&quot;model&quot;</span><span class="p">,</span> <span class="s2">&quot;autosklearn&quot;</span><span class="p">):</span>
+                <span class="n">cmd</span> <span class="o">+=</span> <span class="p">[</span>
+                    <span class="s2">&quot;https://github.com/automl/ConfigSpace/archive/86863bc2f640892675c04de0b8006a623dc14c45.zip#egg=ConfigSpace&quot;</span>
+                <span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Running: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cmd</span><span class="p">))</span>
         <span class="c1"># Packages fail to install if we run pip processes in parallel</span>
         <span class="n">proc</span> <span class="o">=</span> <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">create_subprocess_exec</span><span class="p">(</span><span class="o">*</span><span class="n">cmd</span><span class="p">)</span>
@@ -644,9 +658,49 @@
         <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_kwargs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">setupfilepath</span><span class="p">)[</span><span class="bp">self</span><span class="o">.</span><span class="n">kwarg</span><span class="p">])</span></div>
 
 
+<div class="viewcode-block" id="VersionNotFoundError"><a class="viewcode-back" href="../../../api/service/dev.html#dffml.service.dev.VersionNotFoundError">[docs]</a><span class="k">class</span> <span class="nc">VersionNotFoundError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Raised when a version.py file is parsed and no VERSION variable is found.</span>
+<span class="sd">    &quot;&quot;&quot;</span></div>
+
+
+<div class="viewcode-block" id="SetupPyVersionConfig"><a class="viewcode-back" href="../../../api/service/dev.html#dffml.service.dev.SetupPyVersionConfig">[docs]</a><span class="nd">@configdataclass</span>
+<span class="k">class</span> <span class="nc">SetupPyVersionConfig</span><span class="p">:</span>
+    <span class="n">versionfilepath</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="s2">&quot;Path to version.py&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="SetupPyVersion"><a class="viewcode-back" href="../../../api/service/dev.html#dffml.service.dev.SetupPyVersion">[docs]</a><span class="k">class</span> <span class="nc">SetupPyVersion</span><span class="p">(</span><span class="n">CMD</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Read a version.py file that would be referenced by a setup.py or setup.cfg.</span>
+<span class="sd">    The version.py file contains the version of the package in the VERSION</span>
+<span class="sd">    variable.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">CONFIG</span> <span class="o">=</span> <span class="n">SetupPyVersionConfig</span>
+
+    <span class="k">def</span> <span class="nf">parse_version</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Checking for VERSION in file </span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">f</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Checking for VERSION in line </span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">line</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;VERSION&quot;</span><span class="p">):</span>
+                    <span class="k">return</span> <span class="n">ast</span><span class="o">.</span><span class="n">literal_eval</span><span class="p">(</span>
+                        <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;=&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+                    <span class="p">)</span>
+        <span class="k">raise</span> <span class="n">VersionNotFoundError</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">versionfilepath</span><span class="p">)</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_version</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">versionfilepath</span><span class="p">))</span></div>
+
+
+<span class="c1"># Instance of parse_version method as function for logging</span>
+<span class="n">parse_version</span> <span class="o">=</span> <span class="n">SetupPyVersion</span><span class="p">()</span><span class="o">.</span><span class="n">parse_version</span>
+
+
 <span class="k">class</span> <span class="nc">SetupPy</span><span class="p">(</span><span class="n">CMD</span><span class="p">):</span>
 
     <span class="n">kwarg</span> <span class="o">=</span> <span class="n">SetupPyKWArg</span>
+    <span class="n">version</span> <span class="o">=</span> <span class="n">SetupPyVersion</span>
 
 
 <div class="viewcode-block" id="RepoDirtyError"><a class="viewcode-back" href="../../../api/service/dev.html#dffml.service.dev.RepoDirtyError">[docs]</a><span class="k">class</span> <span class="nc">RepoDirtyError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
@@ -668,6 +722,8 @@
     <span class="n">CONFIG</span> <span class="o">=</span> <span class="n">ReleaseConfig</span>
 
     <span class="k">async</span> <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Ensure we have a pathlib.Path object</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">package</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">package</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
         <span class="c1"># Ensure target plugin directory has no unstaged changes</span>
         <span class="n">cmd</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;git&quot;</span><span class="p">,</span> <span class="s2">&quot;status&quot;</span><span class="p">,</span> <span class="s2">&quot;--porcelain&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">package</span><span class="p">)]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Running: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cmd</span><span class="p">))</span>
@@ -683,12 +739,14 @@
             <span class="k">raise</span> <span class="n">RepoDirtyError</span><span class="p">(</span><span class="s2">&quot;Uncommited changes&quot;</span><span class="p">)</span>
         <span class="c1"># cd to directory</span>
         <span class="k">with</span> <span class="n">chdir</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">package</span><span class="p">)):</span>
+            <span class="c1"># Get name</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="p">{():</span> <span class="s2">&quot;dffml&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">PACKAGE_DIRECTORY_TO_NAME</span><span class="p">,}[</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">package</span><span class="o">.</span><span class="n">relative_to</span><span class="p">(</span><span class="n">REPO_ROOT</span><span class="p">)</span><span class="o">.</span><span class="n">parts</span>
+            <span class="p">]</span>
             <span class="c1"># Load version</span>
-            <span class="n">setup_kwargs</span> <span class="o">=</span> <span class="n">SetupPyKWArg</span><span class="o">.</span><span class="n">get_kwargs</span><span class="p">(</span>
-                <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">(),</span> <span class="s2">&quot;setup.py&quot;</span><span class="p">)</span>
+            <span class="n">version</span> <span class="o">=</span> <span class="n">parse_version</span><span class="p">(</span>
+                <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">package</span> <span class="o">/</span> <span class="n">name</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="s2">&quot;_&quot;</span><span class="p">)</span> <span class="o">/</span> <span class="s2">&quot;version.py&quot;</span><span class="p">)</span>
             <span class="p">)</span>
-            <span class="n">name</span> <span class="o">=</span> <span class="n">setup_kwargs</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span>
-            <span class="n">version</span> <span class="o">=</span> <span class="n">setup_kwargs</span><span class="p">[</span><span class="s2">&quot;version&quot;</span><span class="p">]</span>
             <span class="c1"># Check if version is on PyPi</span>
             <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;https://pypi.org/pypi/</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">/json&quot;</span>
             <span class="c1"># TODO(p5) Blocking request in coroutine</span>
