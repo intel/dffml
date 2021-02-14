@@ -406,6 +406,12 @@ class Install(CMD):
             package_path = Path(*main_package.parts, *package)
             # Install package in development mode
             cmd += ["-e", str(package_path.absolute())]
+            # Temporary fix for ConfigSpace numpy incompatibility issue
+            # References: https://github.com/intel/dffml/issues/992
+            if package == ("model", "autosklearn"):
+                cmd += [
+                    "https://github.com/automl/ConfigSpace/archive/86863bc2f640892675c04de0b8006a623dc14c45.zip#egg=ConfigSpace"
+                ]
         self.logger.debug("Running: %s", " ".join(cmd))
         # Packages fail to install if we run pip processes in parallel
         proc = await asyncio.create_subprocess_exec(*cmd)
