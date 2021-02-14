@@ -128,12 +128,11 @@ class ActivateVirtualEnvCommand(ConsoletestCommand):
             os.environ["VIRTUAL_ENV"] = env_path
             os.environ["VIRTUAL_ENV_DIR"] = env_path
 
-        # Find full path
-        for pathdir in os.environ.get("PATH", "").split(":"):
-            check_path = pathlib.Path(pathdir, "python")
-            if check_path.is_file():
-                python_path = str(check_path.resolve())
-                break
+        for env_var in ["VIRTUAL_ENV", "CONDA_PREFIX"]:
+            if env_var in os.environ:
+                python_path = os.path.abspath(
+                    os.path.join(os.environ[env_var], "bin", "python")
+                )
         # Prepend a dffml command to the path to ensure the correct
         # version of dffml always runs
         # Write out the file
