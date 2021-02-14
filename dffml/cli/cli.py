@@ -123,25 +123,22 @@ class Version(CMD):
                 import_package_name,
                 import_package_name_version,
             ]:
-                spec = None
-                with contextlib.suppress(ModuleNotFoundError):
-                    spec = importlib.util.find_spec(module_name)
-                if spec and module_name not in sys.modules:
-                    module = importlib.util.module_from_spec(spec)
-                    with contextlib.redirect_stderr(
-                        None
-                    ), contextlib.redirect_stdout(None):
-                        try:
-                            spec.loader.exec_module(module)
-                        except Exception as error:
-                            if self.no_errors:
-                                self.logger.error(
-                                    f"Failed to import {module_name}: {traceback.format_exc().rstrip()}"
-                                )
-                                version = "ERROR"
-                                continue
-                            else:
-                                raise
+                with contextlib.redirect_stderr(
+                    None
+                ), contextlib.redirect_stdout(None):
+                    try:
+                        module = importlib.import_module(module_name)
+                    except ModuleNotFoundError:
+                        continue
+                    except Exception as error:
+                        if self.no_errors:
+                            self.logger.error(
+                                f"Failed to import {module_name}: {traceback.format_exc().rstrip()}"
+                            )
+                            version = "ERROR"
+                            continue
+                        else:
+                            raise
                     sys.modules[module_name] = module
                 if module_name in sys.modules:
                     module = sys.modules[module_name]
