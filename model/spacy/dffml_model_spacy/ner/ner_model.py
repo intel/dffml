@@ -6,7 +6,7 @@ from typing import AsyncIterator, Tuple, Any
 
 import spacy
 from spacy.scorer import Scorer
-from spacy.gold import GoldParse
+from spacy.training import Example
 from spacy.util import minibatch, compounding
 
 
@@ -99,10 +99,12 @@ class SpacyNERModelContext(ModelContext):
                     train_examples, size=compounding(4.0, 32.0, 1.001)
                 )
                 for batch in batches:
-                    texts, annotations = zip(*batch)
+                    examples = []
+                    for doc, gold_dict in batch:
+                        doc = self.nlp.make_doc(doc)
+                        examples.append(Example.from_dict(doc, gold_dict))
                     self.nlp.update(
-                        texts,  # batch of texts
-                        annotations,  # batch of annotations
+                        examples,
                         drop=self.parent.config.dropout,
                         losses=losses,
                     )
@@ -126,12 +128,16 @@ class SpacyNERModelContext(ModelContext):
         self.nlp = spacy.load(self.parent.config.directory)
 
         scorer = Scorer()
+        examples = []
         for input_, annot in test_examples:
-            doc_gold_text = self.nlp.make_doc(input_)
-            gold = GoldParse(doc_gold_text, entities=annot["entities"])
             pred_value = self.nlp(input_)
-            scorer.score(pred_value, gold)
-        return Accuracy(scorer.scores["tags_acc"])
+            example = Example.from_dict(
+                pred_value, {"entities": annot["entities"]}
+            )
+            example.reference = self.nlp.make_doc(input_)
+            examples.append(example)
+        scores = scorer.score(examples)
+        return Accuracy(scores["token_acc"])
 
     async def predict(
         self, sources: SourcesContext
