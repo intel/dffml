@@ -13,6 +13,7 @@ import pkg_resources
 import importlib.util
 from typing import Union
 
+from .log import LOGGER
 from ..version import VERSION
 from ..record import Record
 from ..feature.feature import Features
@@ -301,6 +302,19 @@ class Export(ImportExportCMD):
                 return await self.port.export_to_file(sctx, self.filename)
 
 
+SERVICES_LOGGER = LOGGER.getChild("services")
+
+
+def failed_to_load_service(loading_what: str = "services"):
+    """
+    Sometimes weird dependency issues show up and prevent us from loading
+    anything. We log the traceback in that case.
+    """
+    SERVICES_LOGGER.error(
+        "Error while loading %s: %s", loading_what, traceback.format_exc()
+    )
+
+
 def services():
     """
     Loads dffml.services.cli entrypoint and creates a CMD class incorporating
@@ -314,10 +328,17 @@ def services():
 
         pass
 
-    for i in pkg_resources.iter_entry_points("dffml.service.cli"):
-        loaded = i.load()
-        if issubclass(loaded, CMD):
-            setattr(Service, i.name, loaded)
+    try:
+        for i in pkg_resources.iter_entry_points("dffml.service.cli"):
+            try:
+                loaded = i.load()
+            except:
+                failed_to_load_service(repr(i))
+                continue
+            if issubclass(loaded, CMD):
+                setattr(Service, i.name, loaded)
+    except:
+        failed_to_load_service()
     return Service
 
 
