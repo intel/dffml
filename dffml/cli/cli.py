@@ -18,7 +18,7 @@ from ..version import VERSION
 from ..record import Record
 from ..feature.feature import Features
 from ..df.types import DataFlow
-from ..plugins import PACKAGE_NAMES_BY_PLUGIN
+from ..plugins import PACKAGE_NAMES_BY_PLUGIN, PACKAGE_NAMES_TO_DIRECTORY
 from ..source.df import DataFlowSource, DataFlowSourceConfig
 from ..source.source import Sources, BaseSource, SubsetSources
 from ..configloader.configloader import BaseConfigLoader
@@ -157,6 +157,15 @@ class Version(CMD):
                     if dirty:
                         package_details.append("(dirty git repo)")
             print(" ".join(package_details))
+
+
+class Packages(CMD):
+    async def run(self):
+        print(
+            "\n".join(
+                sorted(["dffml"] + list(PACKAGE_NAMES_TO_DIRECTORY.keys()))
+            )
+        )
 
 
 @config
@@ -348,6 +357,7 @@ class CLI(CMD):
     """
 
     version = Version
+    packages = Packages
     _list = List
     edit = Edit
     merge = Merge
