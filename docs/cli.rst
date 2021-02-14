@@ -19,6 +19,26 @@ logs.
 
         $ python -m pip install dffml-config-yaml
 
+Version
+-------
+
+List the version of the main package, all the plugins, and their install status.
+
+.. code-block:: console
+    :test:
+
+    $ dffml version
+
+Packages
+--------
+
+List the names of all the packages maintained as a part of the core dffml repo.
+
+.. code-block:: console
+    :test:
+
+    $ dffml packages
+
 Model
 -----
 
