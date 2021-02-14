@@ -11,7 +11,9 @@ import pathlib
 import getpass
 import tempfile
 import platform
+import textwrap
 import importlib
+import itertools
 import subprocess
 import contextlib
 import dataclasses
@@ -720,7 +722,7 @@ class BumpPackages(CMD):
 
 @configdataclass
 class PinDepsConfig:
-    logs: pathlib.Path = field("Path to log file for main plugin")
+    logs: pathlib.Path = field("Path to CI log zip file")
     update: bool = field(
         "Update all requirements.txt files with pinned dependneices",
         default=False,
@@ -730,9 +732,10 @@ class PinDepsConfig:
 @dataclasses.dataclass
 class PinDepsPlugin:
     path: str
-    requirements_txt_path: pathlib.Path
-    requirements_txt_contents: str
-    requirements_txt_pinned: str
+    setup_cfg_path: pathlib.Path
+    setup_cfg_pre_deps: str
+    setup_cfg_post_deps: str
+    setup_cfg_pinned: str
 
 
 class PinDeps(CMD):
@@ -775,8 +778,8 @@ class PinDeps(CMD):
     @classmethod
     def remove_ansi_escape(cls, contents):
         """
-        Found on Stack Overflow from Martijn Pieters, only modified input variable
-        name.
+        Found on Stack Overflow from Martijn Pieters, only modified input
+        variable name.
         - https://stackoverflow.com/a/14693789
         - https://creativecommons.org/licenses/by-sa/4.0/
         """
@@ -830,55 +833,180 @@ class PinDeps(CMD):
                 # with contextlib.suppress(Exception):
                 ci_installed[package_name] = line[1]
 
+        # Add all the core plugins to the list of installed packages
+        for (
+            plugin_name,
+            plugin_directory,
+        ) in PACKAGE_NAMES_TO_DIRECTORY.items():
+            ci_installed[plugin_name] = parse_version(
+                str(
+                    REPO_ROOT.joinpath(
+                        *plugin_directory,
+                        plugin_name.replace("-", "_"),
+                        "version.py",
+                    )
+                )
+            )
+            print(
+                parse_version(
+                    str(
+                        pathlib.Path(
+                            *plugin_directory,
+                            plugin_name.replace("-", "_"),
+                            "version.py",
+                        )
+                    )
+                )
+            )
+
         return ci_installed
 
-    async def pin_deps(self, contents: bytes):
-        if not b"PLUGIN=" in contents:
-            return
+    FIND_CI_INSTALLED_LINUX_PLUGIN_VERSION_REGEX = re.compile(
+        r"\(([a-z./]+), ([0-9.]+)\)"
+    )
+    FIND_CI_INSTALLED_NON_LINUX_VERSION_REGEX = re.compile(r"\(([0-9.]+)\)")
 
+    @classmethod
+    def find_ci_installed(cls, logs_dir: pathlib.Path):
+        ci_installed = {}
+
+        for log_file_path in logs_dir.rglob("*.txt"):
+            if "windows" in log_file_path.stem:
+                platform_system = "Windows"
+            elif "macos" in log_file_path.stem:
+                platform_system = "Darwin"
+            else:
+                platform_system = "Linux"
+
+                match = cls.FIND_CI_INSTALLED_LINUX_PLUGIN_VERSION_REGEX.search(
+                    log_file_path.stem
+                )
+                if not match:
+                    continue
+
+                plugin, python_version = match.groups()
+                # Only look for the pip freeze on the main plugin
+                if plugin != ".":
+                    continue
+
+            contents = log_file_path.read_bytes()
+            if not b"pip freeze" in contents:
+                continue
+
+            if platform_system in ("Windows", "Darwin"):
+                python_version = cls.FIND_CI_INSTALLED_NON_LINUX_VERSION_REGEX.search(
+                    log_file_path.stem
+                ).groups()[
+                    0
+                ]
+
+            ci_installed[
+                (platform_system, python_version)
+            ] = cls.parse_github_actions_log_file(contents)
+
+        return ci_installed
+
+    async def pin_deps(self, logs_dir: pathlib.Path):
         root = pathlib.Path(__file__).parents[2]
 
-        ci_installed = self.parse_github_actions_log_file(contents)
+        ci_installed = self.find_ci_installed(logs_dir)
 
-        for requirements_txt_path in root.rglob("requirements.txt"):
-            self.logger.debug(requirements_txt_path)
-            requirements_txt_contents = requirements_txt_path.read_text()
-            modify_contents = requirements_txt_contents.split("\n")
-            # Add all packages in requirements files to set of required
-            # packages
-            for i, line in enumerate(modify_contents):
+        # for setup_cfg_path in root.rglob("setup.cfg"):
+        for package_directory in PACKAGE_DIRECTORY_TO_NAME.keys():
+            setup_cfg_path = root.joinpath(*package_directory, "setup.cfg")
+            setup_cfg_contents = setup_cfg_path.read_text()
+            # Pull the dependencies out of the install_requires list
+            setup_cfg_lines = setup_cfg_contents.split("\n")
+            setup_cfg_lines = [line.rstrip() for line in setup_cfg_lines]
+            dependencies = setup_cfg_lines[
+                setup_cfg_lines.index("install_requires =") + 1 :
+            ]
+            # Find the last depedency in the list by looking for when the
+            # indentation level goes back to normal, meaning no indent.
+            for i, line in enumerate(dependencies):
+                current_indent = len(line) - len(line.lstrip())
+                if current_indent == 0:
+                    break
+            # The contents of the file up until the point where the
+            # install_requires list starts
+            setup_cfg_pre_deps = setup_cfg_lines[
+                : setup_cfg_lines.index("install_requires =") + 1
+            ]
+            # The contents of the file immediatly after the install_requires
+            # list. We are going to replace what's between these two.
+            setup_cfg_post_deps = setup_cfg_lines[
+                setup_cfg_lines.index("install_requires =") + 1 + i :
+            ]
+            # The dependency list ends when the indent level changes
+            dependencies = dependencies[:i]
+            dependencies = [line.strip() for line in dependencies]
+            # Remove comments
+            # TODO Remove?: dependencies = [line for line in dependencies if not line.startswith("#")]
+            # Add all packages in setup.cfg files to set of required packages
+            for i, line in enumerate(dependencies):
                 # Skip comments
-                if line.strip().startswith("#") or not line:
+                if line.startswith("#") or not line:
                     continue
                 package_name = self.requirement_package_name(line)
                 if not package_name:
                     continue
                 # Ensure package was installed in CI
-                if not package_name in ci_installed:
-                    raise ValueError(
-                        f"Plugin {requirements_txt_path.parent}: {package_name!r} not in {ci_installed}"
-                    )
+                for supported_os, supported_python in [
+                    ("Linux", "3.7"),
+                    ("Linux", "3.8"),
+                ]:
+                    if (supported_os, supported_python) not in ci_installed:
+                        raise ValueError(
+                            f"Supported OS/Python version {supported_os} {supported_python}: not in {ci_installed.keys()}"
+                        )
+                    if (
+                        package_name
+                        not in ci_installed[(supported_os, supported_python)]
+                    ):
+                        raise ValueError(
+                            f"Plugin {setup_cfg_path.parent}: {package_name!r} not in {ci_installed[(supported_os, supported_python)]}"
+                        )
                 # Modify the line to be a pinned package
-                modify_contents[i] = (
-                    package_name + "==" + ci_installed[package_name]
-                )
+                line_contents = []
+                for (
+                    (platform_system, python_version),
+                    packages_installed,
+                ) in ci_installed.items():
+                    if package_name not in packages_installed:
+                        continue
+                    package_version_installed = packages_installed[
+                        package_name
+                    ]
+                    line_contents.append(
+                        f'{package_name}=={package_version_installed}; platform_system == "{platform_system}" and python_version == "{python_version}"',
+                    )
+                dependencies[i] = "\t".join(line_contents)
 
-                self.logger.debug(f"{line:<40} | {modify_contents[i]}")
+                self.logger.debug(f"{line:<40} | {dependencies[i]}")
 
             yield PinDepsPlugin(
-                path=str(requirements_txt_path.relative_to(root)),
-                requirements_txt_path=requirements_txt_path,
-                requirements_txt_contents=requirements_txt_contents,
-                requirements_txt_pinned="\n".join(modify_contents),
+                path=str(setup_cfg_path.relative_to(root)),
+                setup_cfg_path=setup_cfg_path,
+                setup_cfg_pre_deps=setup_cfg_pre_deps,
+                setup_cfg_post_deps=setup_cfg_post_deps,
+                setup_cfg_pinned=[
+                    (" " * 4) + line.replace("\t", "\n" + (" " * 4))
+                    for line in dependencies
+                ],
             )
 
     async def run(self):
-        async for plugin in self.pin_deps(
-            pathlib.Path(self.logs).read_bytes()
-        ):
+        async for plugin in self.pin_deps(pathlib.Path(self.logs)):
+            yield plugin
             if self.update:
-                plugin.requirements_txt_path.write_text(
-                    plugin.requirements_txt_pinned
+                plugin.setup_cfg_path.write_text(
+                    "\n".join(
+                        itertools.chain(
+                            plugin.setup_cfg_pre_deps,
+                            plugin.setup_cfg_pinned,
+                            plugin.setup_cfg_post_deps,
+                        )
+                    )
                 )
 
 
