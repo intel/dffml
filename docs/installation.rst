@@ -69,6 +69,11 @@ commands using Pythons module run syntax (``python -m``).
     $ python -m dffml version
     $ dffml version
 
+You can now see the :doc:`/quickstart/model` to get started using DFFML!
+
+Installing All Plugins
+----------------------
+
 If you want to install all of the machine learning model plugins that are
 maintained as a part of the core repository, you can append ``[models]``.
 
@@ -110,6 +115,9 @@ repository, you can append ``[all]``.
         .. code-block:: console
 
             (.venv) C:\Users\username> python -m pip install -U dffml[all]
+
+Master Branch
+-------------
 
 If you want to stay on the bleeding edge of bug fixes, etc. You can install from
 the master branch.
