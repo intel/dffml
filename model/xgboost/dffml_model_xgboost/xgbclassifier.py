@@ -126,7 +126,8 @@ class XGBClassifierModel(SimpleModel):
               PetalLength:float:1 \
               PetalWidth:float:1 \
             -model-predict classification \
-            -model-directory model 
+            -model-directory model \
+            -scorer clf
 
 
     Make predictions
@@ -212,38 +213,6 @@ class XGBClassifierModel(SimpleModel):
 
         # Save the trained model
         joblib.dump(self.saved, str(self.saved_filepath))
-
-    async def accuracy(self, sources: Sources) -> Accuracy:
-        """
-        Evaluates the accuracy of the model by gathering predictions of the test data
-        and comparing them to the provided results.
-
-        Accuracy is given as an accuracy score
-        """
-        if not self.saved:
-            raise ModelNotTrained("Train the model before assessing accuracy")
-
-        # Get data
-        input_data = await self.get_input_data(sources)
-
-        # Make predictions
-        xdata = []
-        for record in input_data:
-            record_data = []
-            for feature in record.features(self.features).values():
-                record_data.extend(
-                    [feature] if np.isscalar(feature) else feature
-                )
-            xdata.append(record_data)
-
-        predictions = self.saved.predict(pd.DataFrame(xdata))
-
-        actuals = [
-            input_datum.feature(self.config.predict.name)
-            for input_datum in input_data
-        ]
-
-        return accuracy_score(actuals, predictions)
 
     async def predict(self, sources: Sources) -> AsyncIterator[Record]:
         """
