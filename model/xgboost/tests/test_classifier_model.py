@@ -17,6 +17,7 @@ from dffml.util.asynctestcase import AsyncTestCase
 from dffml.feature.feature import Feature, Features
 from dffml.model.model import SimpleModel, ModelNotTrained
 from dffml.source.memory import MemorySource, MemorySourceConfig
+from dffml.accuracy import ClassificationAccuracy
 
 from dffml_model_xgboost.xgbclassifier import (
     XGBClassifierModel,
@@ -63,6 +64,7 @@ class TestXGBClassifier(AsyncTestCase):
         cls.testsource = Sources(
             MemorySource(MemorySourceConfig(records=cls.records[1800:]))
         )
+        cls.scorer = ClassificationAccuracy()
 
     @classmethod
     def tearDownClass(cls):
@@ -75,15 +77,17 @@ class TestXGBClassifier(AsyncTestCase):
 
     async def test_01_accuracy(self):
         # Use the test data to assess the model's accuracy
-        res = await accuracy(self.model, self.testsource)
+        res = await accuracy(self.model, self.scorer, self.testsource)
         # Ensure the accuracy is above 80%
         self.assertTrue(0.8 <= res)
 
     async def test_02_predict(self):
         # reduce overfitting
-        res_train = await accuracy(self.model, self.trainingsource)
+        res_train = await accuracy(
+            self.model, self.scorer, self.trainingsource
+        )
 
-        res_test = await accuracy(self.model, self.testsource)
+        res_test = await accuracy(self.model, self.scorer, self.testsource)
         # Test fails if the difference between training and testing is more that 5%
         self.assertLess(res_train - res_test, 0.05)
 
