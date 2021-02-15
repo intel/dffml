@@ -18,26 +18,6 @@ with open(
 with open(os.path.join(self_path, "README.md"), "r", encoding="utf-8") as f:
     readme = f.read()
 
-INSTALL_REQUIRES = [] + (
-    ["dffml>=0.3.7"]
-    if not any(
-        list(
-            map(
-                os.path.isfile,
-                list(
-                    map(
-                        lambda syspath: os.path.join(
-                            syspath, "dffml.egg-link"
-                        ),
-                        sys.path,
-                    )
-                ),
-            )
-        )
-    )
-    else []
-)
-
 setup(
     name="dffml_feature_auth",
     version=version,
@@ -60,7 +40,6 @@ setup(
         "Programming Language :: Python :: Implementation :: CPython",
         "Programming Language :: Python :: Implementation :: PyPy",
     ],
-    install_requires=INSTALL_REQUIRES,
     tests_require=[],
     packages=find_packages(),
     entry_points={
