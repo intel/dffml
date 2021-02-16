@@ -12,3 +12,4 @@ or operations.
     sources/index
     dataflows/index
     neuralnetwork
+    doublecontextentry
