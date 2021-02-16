@@ -53,7 +53,7 @@ Add configuration
 
 **dffml_source_ini/misc.py**
 
-.. literalinclude:: ../../../dffml/source/ini.py
+.. literalinclude:: /../dffml/source/ini.py
     :test:
     :filepath: dffml_source_ini/misc.py
     :lines: 11-15
@@ -67,7 +67,7 @@ Create Source
 
 **dffml_source_ini/misc.py**
 
-.. literalinclude:: ../../../dffml/source/ini.py
+.. literalinclude:: /../dffml/source/ini.py
     :test:
     :filepath: dffml_source_ini/misc.py
     :lines: 18-24
@@ -92,7 +92,7 @@ Add load method
 
 **dffml_source_ini/misc.py**
 
-.. literalinclude:: ../../../dffml/source/ini.py
+.. literalinclude:: /../dffml/source/ini.py
     :test:
     :filepath: dffml_source_ini/misc.py
     :lines: 26-47
@@ -116,7 +116,7 @@ Add dump method
 
 **dffml_source_ini/misc.py**
 
-.. literalinclude:: ../../../dffml/source/ini.py
+.. literalinclude:: /../dffml/source/ini.py
     :test:
     :filepath: dffml_source_ini/misc.py
     :lines: 49-66
@@ -153,7 +153,7 @@ test methods as coroutines in default event loop.
 
 **tests/test_source.py**
 
-.. literalinclude:: ../../../tests/source/test_ini.py
+.. literalinclude:: /../tests/source/test_ini.py
     :test:
     :filepath: tests/test_source.py
     :lines: 10-30
