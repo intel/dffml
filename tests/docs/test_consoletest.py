@@ -12,6 +12,7 @@ import importlib.util
 from dffml.util.asynctestcase import AsyncTestCase
 
 from dffml.util.testing.consoletest.commands import *
+from dffml.util.testing.consoletest.cli import main as consoletest_doc
 
 
 ROOT_PATH = pathlib.Path(__file__).parent.parent.parent
@@ -77,7 +78,6 @@ def mktestcase(filepath: pathlib.Path, relative: pathlib.Path, builder: bool):
                 str(ROOT_PATH),
                 "--docs",
                 str(DOCS_PATH),
-                *args,
             ]
         )
 
@@ -155,6 +155,10 @@ def mktestcase(filepath: pathlib.Path, relative: pathlib.Path, builder: bool):
 
 
 SKIP_DOCS = ["swportal", "plugins/dffml_model"]
+# Quick examples with no install commands, no venv needed
+NO_SETUP = [
+    "tutorials/doublecontextentry",
+]
 
 
 for filepath in DOCS_PATH.rglob("*.rst"):
@@ -164,8 +168,8 @@ for filepath in DOCS_PATH.rglob("*.rst"):
     if str(relative) in SKIP_DOCS:
         continue
     # Create the testcase
-    testcase = mktestcase(filepath, relative, True)
-    if True:
+    testcase = mktestcase(filepath, relative, str(relative) not in NO_SETUP)
+    if str(relative) not in NO_SETUP:
         # Don't check for a long test entry in the workflow if doc in NO_SETUP
         TestDocs.TESTABLE_DOCS.append(str(relative))
         # Skip if not in NO_SETUP and RUN_CONSOLETESTS not set
