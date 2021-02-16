@@ -252,7 +252,14 @@ def create_definition(name, param_annotation, default=NO_DEFAULT):
     )
 
 
-def op(*args, imp_enter=None, ctx_enter=None, config_cls=None, valid_return_none=True, **kwargs):
+def op(
+    *args,
+    imp_enter=None,
+    ctx_enter=None,
+    config_cls=None,
+    valid_return_none=True,
+    **kwargs,
+):
     """
     The ``op`` decorator creates a subclass of
     :py:class:`dffml.df.OperationImplementation` and assigns that
