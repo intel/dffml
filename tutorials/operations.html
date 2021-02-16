@@ -229,10 +229,10 @@ I install Python package X? When it’s done it’ll look like this</p>
 <p>In the second half of this tutorial, we’ll deploy the tool as an HTTP API
 endpoint rather than a command line application.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>curl -s <span class="se">\</span>
-  --header <span class="s2">&quot;Content-Type: application/json&quot;</span> <span class="se">\</span>
-  --request POST <span class="se">\</span>
-  --data <span class="s1">&#39;{&quot;insecure-package&quot;: [{&quot;value&quot;:&quot;insecure-package&quot;,&quot;definition&quot;:&quot;package&quot;}]}&#39;</span> <span class="se">\</span>
-  http://localhost:8080/shouldi <span class="p">|</span> python -m json.tool
+<span class="go">  --header &quot;Content-Type: application/json&quot; \</span>
+<span class="go">  --request POST \</span>
+<span class="go">  --data &#39;{&quot;insecure-package&quot;: [{&quot;value&quot;:&quot;insecure-package&quot;,&quot;definition&quot;:&quot;package&quot;}]}&#39; \</span>
+<span class="go">  http://localhost:8080/shouldi | python -m json.tool</span>
 <span class="go">{</span>
 <span class="go">    &quot;insecure-package&quot;: {</span>
 <span class="go">        &quot;safety_check_number_of_issues&quot;: 1,</span>
@@ -299,7 +299,7 @@ on the command line works, we supply the path to the source directory to scan.</
 <span class="go">Run started:2019-10-04 19:41:06.701058</span>
 
 <span class="go">Test results:</span>
-<span class="gp">&gt;</span>&gt; Issue: <span class="o">[</span>B108:hardcoded_tmp_directory<span class="o">]</span> Probable insecure usage of temp file/directory.
+<span class="go">&gt;&gt; Issue: [B108:hardcoded_tmp_directory] Probable insecure usage of temp file/directory.</span>
 <span class="go">   Severity: Medium   Confidence: Medium</span>
 <span class="go">   Location: distributed-android-testing/docker/docker.py:20</span>
 <span class="go">   More Info: https://bandit.readthedocs.io/en/latest/plugins/b108_hardcoded_tmp_directory.html</span>
@@ -312,7 +312,7 @@ on the command line works, we supply the path to the source directory to scan.</
 <span class="go">25          ssh.run_all(command, **kwargs)</span>
 
 <span class="go">--------------------------------------------------</span>
-<span class="gp">&gt;</span>&gt; Issue: <span class="o">[</span>B104:hardcoded_bind_all_interfaces<span class="o">]</span> Possible binding to all interfaces.
+<span class="go">&gt;&gt; Issue: [B104:hardcoded_bind_all_interfaces] Possible binding to all interfaces.</span>
 <span class="go">   Severity: Medium   Confidence: Medium</span>
 <span class="go">   Location: distributed-android-testing/docker/gitlab_webhooks/app.py:23</span>
 <span class="go">   More Info: https://bandit.readthedocs.io/en/latest/plugins/b104_hardcoded_bind_all_interfaces.html</span>
@@ -980,7 +980,7 @@ You can also convert between config file formats with the
 <p>We first export the DataFlow to a config file on disk.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>mkdir -p shouldi/deploy/df
 <span class="gp">$ </span>dffml service dev <span class="nb">export</span> -config json shouldi.cli:DATAFLOW <span class="se">\</span>
-  &gt; shouldi/deploy/df/shouldi.json
+<span class="go">  &gt; shouldi/deploy/df/shouldi.json</span>
 </pre></div>
 </div>
 <p>We then create the mermaidjs digarm from the DataFlow. The <code class="docutils literal notranslate"><span class="pre">-simple</span></code> flag says
@@ -1077,10 +1077,10 @@ your own operations as coming from <code class="docutils literal notranslate"><s
 <p>The <a class="reference internal" href="../usage/dataflows.html"><span class="doc">DataFlow HTTP Deployment</span></a> usage example will show you how to expose your new
 meta static analysis tool over an HTTP interface.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>curl -s <span class="se">\</span>
-  --header <span class="s2">&quot;Content-Type: application/json&quot;</span> <span class="se">\</span>
-  --request POST <span class="se">\</span>
-  --data <span class="s1">&#39;{&quot;insecure-package&quot;: [{&quot;value&quot;:&quot;insecure-package&quot;,&quot;definition&quot;:&quot;package&quot;}]}&#39;</span> <span class="se">\</span>
-  http://localhost:8080/shouldi <span class="p">|</span> python -m json.tool
+<span class="go">  --header &quot;Content-Type: application/json&quot; \</span>
+<span class="go">  --request POST \</span>
+<span class="go">  --data &#39;{&quot;insecure-package&quot;: [{&quot;value&quot;:&quot;insecure-package&quot;,&quot;definition&quot;:&quot;package&quot;}]}&#39; \</span>
+<span class="go">  http://localhost:8080/shouldi | python -m json.tool</span>
 <span class="go">{</span>
 <span class="go">    &quot;insecure-package&quot;: {</span>
 <span class="go">        &quot;safety_check_number_of_issues&quot;: 1,</span>

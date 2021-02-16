@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Model Slr &mdash; DFFML 2a2c6e84 documentation</title>
+  <title>Model Slr &mdash; DFFML 9e06a442 documentation</title>
   
 
   
@@ -66,7 +66,7 @@
             
             
               <div class="version">
-                2a2c6e84
+                9e06a442
               </div>
             
           
@@ -232,7 +232,7 @@
 <span id="model-slr"></span><h1>Model Slr<a class="headerlink" href="#module-dffml.model.slr" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
 <dt id="dffml.model.slr.SLRModel">
-<em class="property">class </em><code class="sig-prename descclassname">dffml.model.slr.</code><code class="sig-name descname">SLRModel</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">config</span><span class="p">:</span> <span class="n">BaseConfig</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/model/slr.html#SLRModel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.model.slr.SLRModel" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">dffml.model.slr.</span></code><code class="sig-name descname"><span class="pre">SLRModel</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">BaseConfig</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/model/slr.html#SLRModel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.model.slr.SLRModel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Logistic Regression training one variable to predict another.</p>
 <p>The dataset used for training</p>
 <p><strong>dataset.csv</strong></p>
@@ -246,22 +246,22 @@
 </div>
 <p>Train the model</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml train <span class="se">\</span>
-    -model slr <span class="se">\</span>
-    -model-features f1:float:1 <span class="se">\</span>
-    -model-predict ans:int:1 <span class="se">\</span>
-    -model-directory tempdir <span class="se">\</span>
-    -sources <span class="nv">f</span><span class="o">=</span>csv <span class="se">\</span>
-    -source-filename dataset.csv
+<span class="go">    -model slr \</span>
+<span class="go">    -model-features f1:float:1 \</span>
+<span class="go">    -model-predict ans:int:1 \</span>
+<span class="go">    -model-directory tempdir \</span>
+<span class="go">    -sources f=csv \</span>
+<span class="go">    -source-filename dataset.csv</span>
 </pre></div>
 </div>
 <p>Assess the accuracy</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml accuracy <span class="se">\</span>
-    -model slr <span class="se">\</span>
-    -model-features f1:float:1 <span class="se">\</span>
-    -model-predict ans:int:1 <span class="se">\</span>
-    -model-directory tempdir <span class="se">\</span>
-    -sources <span class="nv">f</span><span class="o">=</span>csv <span class="se">\</span>
-    -source-filename dataset.csv
+<span class="go">    -model slr \</span>
+<span class="go">    -model-features f1:float:1 \</span>
+<span class="go">    -model-predict ans:int:1 \</span>
+<span class="go">    -model-directory tempdir \</span>
+<span class="go">    -sources f=csv \</span>
+<span class="go">    -source-filename dataset.csv</span>
 <span class="go">1.0</span>
 </pre></div>
 </div>
@@ -272,12 +272,12 @@
 </pre></div>
 </div>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml predict all <span class="se">\</span>
-    -model slr <span class="se">\</span>
-    -model-features f1:float:1 <span class="se">\</span>
-    -model-predict ans:int:1 <span class="se">\</span>
-    -model-directory tempdir <span class="se">\</span>
-    -sources <span class="nv">f</span><span class="o">=</span>csv <span class="se">\</span>
-    -source-filename predict.csv
+<span class="go">    -model slr \</span>
+<span class="go">    -model-features f1:float:1 \</span>
+<span class="go">    -model-predict ans:int:1 \</span>
+<span class="go">    -model-directory tempdir \</span>
+<span class="go">    -sources f=csv \</span>
+<span class="go">    -source-filename predict.csv</span>
 <span class="go">[</span>
 <span class="go">    {</span>
 <span class="go">        &quot;extra&quot;: {},</span>
@@ -326,7 +326,7 @@
 </div>
 <dl class="py attribute">
 <dt id="dffml.model.slr.SLRModel.CONFIG">
-<code class="sig-name descname">CONFIG</code><a class="headerlink" href="#dffml.model.slr.SLRModel.CONFIG" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">CONFIG</span></code><a class="headerlink" href="#dffml.model.slr.SLRModel.CONFIG" title="Permalink to this definition">¶</a></dt>
 <dd><p>alias of <a class="reference internal" href="#dffml.model.slr.SLRModelConfig" title="dffml.model.slr.SLRModelConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">dffml.model.slr.SLRModelConfig</span></code></a></p>
 </dd></dl>
 
@@ -334,7 +334,7 @@
 
 <dl class="py class">
 <dt id="dffml.model.slr.SLRModelConfig">
-<em class="property">class </em><code class="sig-prename descclassname">dffml.model.slr.</code><code class="sig-name descname">SLRModelConfig</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">predict</span><span class="p">:</span> <span class="n"><a class="reference internal" href="../feature/feature.html#dffml.feature.feature.Feature" title="dffml.feature.feature.Feature">dffml.feature.feature.Feature</a></span></em>, <em class="sig-param"><span class="n">features</span><span class="p">:</span> <span class="n"><a class="reference internal" href="../feature/feature.html#dffml.feature.feature.Features" title="dffml.feature.feature.Features">dffml.feature.feature.Features</a></span></em>, <em class="sig-param"><span class="n">directory</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.9)">pathlib.Path</a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/model/slr.html#SLRModelConfig"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.model.slr.SLRModelConfig" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">dffml.model.slr.</span></code><code class="sig-name descname"><span class="pre">SLRModelConfig</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">predict</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="../feature/feature.html#dffml.feature.feature.Feature" title="dffml.feature.feature.Feature"><span class="pre">dffml.feature.feature.Feature</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">features</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="../feature/feature.html#dffml.feature.feature.Features" title="dffml.feature.feature.Features"><span class="pre">dffml.feature.feature.Features</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">directory</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><span class="pre">pathlib.Path</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/model/slr.html#SLRModelConfig"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.model.slr.SLRModelConfig" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </div>

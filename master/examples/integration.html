@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Automating Classification &mdash; DFFML 2a2c6e84 documentation</title>
+  <title>Automating Classification &mdash; DFFML 9e06a442 documentation</title>
   
 
   
@@ -67,7 +67,7 @@
             
             
               <div class="version">
-                2a2c6e84
+                9e06a442
               </div>
             
           
@@ -448,17 +448,17 @@ Make sure to update <code class="docutils literal notranslate"><span class="pre"
 </div>
 <p>Download the Python client libraries for MySQL.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python -m pip install -U <span class="se">\</span>
-    https://dev.mysql.com/get/Downloads/Connector-Python/mysql-connector-python-8.0.21.tar.gz
+<span class="go">    https://dev.mysql.com/get/Downloads/Connector-Python/mysql-connector-python-8.0.21.tar.gz</span>
 </pre></div>
 </div>
 <p>Start MariaDB (functionally very similar to MySQL which its a fork of).</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>docker run --rm -d --name maintained_db <span class="se">\</span>
-    -e <span class="nv">MYSQL_RANDOM_ROOT_PASSWORD</span><span class="o">=</span>yes <span class="se">\</span>
-    -e <span class="nv">MYSQL_USER</span><span class="o">=</span>user <span class="se">\</span>
-    -e <span class="nv">MYSQL_PASSWORD</span><span class="o">=</span>pass <span class="se">\</span>
-    -e <span class="nv">MYSQL_DATABASE</span><span class="o">=</span>db <span class="se">\</span>
-    -p <span class="m">3306</span>:3306 <span class="se">\</span>
-    mariadb:10
+<span class="go">    -e MYSQL_RANDOM_ROOT_PASSWORD=yes \</span>
+<span class="go">    -e MYSQL_USER=user \</span>
+<span class="go">    -e MYSQL_PASSWORD=pass \</span>
+<span class="go">    -e MYSQL_DATABASE=db \</span>
+<span class="go">    -p 3306:3306 \</span>
+<span class="go">    mariadb:10</span>
 </pre></div>
 </div>
 <p>Wait for the database to start. Run the following command until you see <code class="docutils literal notranslate"><span class="pre">ready</span>
@@ -588,7 +588,7 @@ have something running on that port.</p>
 <p>You can see all the records and their statuses that we imported into the
 database by calling the API.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>curl -v <span class="s1">&#39;http://127.0.0.1:8000/cgi-bin/api.py?action=dump&#39;</span> <span class="p">|</span> <span class="se">\</span>
-    python3 -m json.tool
+<span class="go">    python3 -m json.tool</span>
 </pre></div>
 </div>
 </div>
@@ -621,11 +621,11 @@ configs than <code class="docutils literal notranslate"><span class="pre">json</
 it first.</p>
 <div class="sphinx-tabs docutils container">
 <div aria-label="Tabbed content" role="tablist"><button aria-controls="panel-0-TGludXg=" aria-selected="true" class="sphinx-tabs-tab group-tab" id="tab-0-TGludXg=" name="TGludXg=" role="tab" tabindex="0">Linux</button><button aria-controls="panel-0-TWFjT1M=" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-0-TWFjT1M=" name="TWFjT1M=" role="tab" tabindex="-1">MacOS</button></div><div aria-labelledby="tab-0-TGludXg=" class="sphinx-tabs-panel group-tab" id="panel-0-TGludXg=" name="TGludXg=" role="tabpanel" tabindex="0"><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>curl -sSL <span class="s1">&#39;https://github.com/XAMPPRocky/tokei/releases/download/v10.1.1/tokei-v10.1.1-x86_64-unknown-linux-gnu.tar.gz&#39;</span> <span class="se">\</span>
-    <span class="p">|</span> tar -xvz -C .venv/bin/
+<span class="go">    | tar -xvz -C .venv/bin/</span>
 </pre></div>
 </div>
 </div><div aria-labelledby="tab-0-TWFjT1M=" class="sphinx-tabs-panel group-tab" hidden="true" id="panel-0-TWFjT1M=" name="TWFjT1M=" role="tabpanel" tabindex="0"><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>curl -sSL <span class="s1">&#39;https://github.com/XAMPPRocky/tokei/releases/download/v10.1.1/tokei-v10.1.1-x86_64-apple-darwin.tar.gz&#39;</span> <span class="se">\</span>
-    <span class="p">|</span> tar -xvz -C .venv/bin/
+<span class="go">    | tar -xvz -C .venv/bin/</span>
 </pre></div>
 </div>
 </div></div>
@@ -634,34 +634,34 @@ will be run concurrently with other operations. Here’s an example of the
 <code class="docutils literal notranslate"><span class="pre">git_commits</span></code> operation, which will find the number of commits within a date
 range. This function / operation was installed when you installed the
 <code class="docutils literal notranslate"><span class="pre">dffml-feature-git</span></code> package via <code class="docutils literal notranslate"><span class="pre">pip</span></code>.</p>
-<div class="highlight-default notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
- 2
- 3
- 4
- 5
- 6
- 7
- 8
- 9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21
-22
-23
-24
-25
-26
-27
-28</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="nd">@op</span><span class="p">(</span>
+<div class="highlight-default notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="nd">@op</span><span class="p">(</span>
     <span class="n">inputs</span><span class="o">=</span><span class="p">{</span>
         <span class="s2">&quot;repo&quot;</span><span class="p">:</span> <span class="n">git_repository</span><span class="p">,</span>
         <span class="s2">&quot;branch&quot;</span><span class="p">:</span> <span class="n">git_branch</span><span class="p">,</span>
@@ -969,7 +969,7 @@ database.</p>
 </div>
 <p>Test the new prediction capabilities from the command line with <code class="docutils literal notranslate"><span class="pre">curl</span></code></p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>curl -v <span class="s1">&#39;http://127.0.0.1:8000/cgi-bin/api.py?action=predict&amp;URL=https://github.com/intel/dffml&#39;</span> <span class="p">|</span> <span class="se">\</span>
-    python -m json.tool
+<span class="go">    python -m json.tool</span>
 </pre></div>
 </div>
 <p>Hook up the predict button to call our new API by adding an event listener when

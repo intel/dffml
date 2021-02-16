@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Gitter ML Inference Chatbot &mdash; DFFML 2a2c6e84 documentation</title>
+  <title>Gitter ML Inference Chatbot &mdash; DFFML 9e06a442 documentation</title>
   
 
   
@@ -66,7 +66,7 @@
             
             
               <div class="version">
-                2a2c6e84
+                9e06a442
               </div>
             
           
@@ -591,26 +591,26 @@ return value to <code class="docutils literal notranslate"><span class="pre">sct
 </div>
 <p>Or using the command line to, create the dataflow</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml dataflow create <span class="se">\</span>
-    operations:get_room_id <span class="se">\</span>
-    operations:stream_chat <span class="se">\</span>
-    operations:send_message <span class="se">\</span>
-    operations:interpret_message <span class="se">\</span>
-    -config <span class="se">\</span>
-        <span class="nv">ini</span><span class="o">=</span>operations:get_room_id.secret.plugin <span class="se">\</span>
-        configs.ini<span class="o">=</span>operations:get_room_id.secret.config.filename <span class="se">\</span>
-        <span class="nv">ini</span><span class="o">=</span>operations:stream_chat.secret.plugin <span class="se">\</span>
-        configs.ini<span class="o">=</span>operations:stream_chat.secret.config.filename <span class="se">\</span>
-        <span class="nv">ini</span><span class="o">=</span>operations:send_message.secret.plugin <span class="se">\</span>
-        configs.ini<span class="o">=</span>operations:send_message.secret.config.filename <span class="se">\</span>
-        <span class="nv">ini</span><span class="o">=</span>operations:interpret_message.secret.plugin <span class="se">\</span>
-        configs.ini<span class="o">=</span>operations:interpret_message.secret.config.filename <span class="se">\</span>
-    &gt; chatbot_df.json
+<span class="go">    operations:get_room_id \</span>
+<span class="go">    operations:stream_chat \</span>
+<span class="go">    operations:send_message \</span>
+<span class="go">    operations:interpret_message \</span>
+<span class="go">    -config \</span>
+<span class="go">        ini=operations:get_room_id.secret.plugin \</span>
+<span class="go">        configs.ini=operations:get_room_id.secret.config.filename \</span>
+<span class="go">        ini=operations:stream_chat.secret.plugin \</span>
+<span class="go">        configs.ini=operations:stream_chat.secret.config.filename \</span>
+<span class="go">        ini=operations:send_message.secret.plugin \</span>
+<span class="go">        configs.ini=operations:send_message.secret.config.filename \</span>
+<span class="go">        ini=operations:interpret_message.secret.plugin \</span>
+<span class="go">        configs.ini=operations:interpret_message.secret.config.filename \</span>
+<span class="go">    &gt; chatbot_df.json</span>
 </pre></div>
 </div>
 <p>And run it by providing the <code class="docutils literal notranslate"><span class="pre">room_name</span></code> as the input</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml dataflow run single <span class="se">\</span>
-    -dataflow ./chatbot_df.json <span class="se">\</span>
-    -inputs test_community1/community<span class="o">=</span>room_name
+<span class="go">    -dataflow ./chatbot_df.json \</span>
+<span class="go">    -inputs test_community1/community=room_name</span>
 </pre></div>
 </div>
 </div>

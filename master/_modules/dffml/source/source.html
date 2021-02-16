@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>dffml.source.source &mdash; DFFML 2a2c6e84 documentation</title>
+  <title>dffml.source.source &mdash; DFFML 9e06a442 documentation</title>
   
 
   
@@ -65,7 +65,7 @@
             
             
               <div class="version">
-                2a2c6e84
+                9e06a442
               </div>
             
           
@@ -217,14 +217,14 @@
 <span class="kn">from</span> <span class="nn">.log</span> <span class="kn">import</span> <span class="n">LOGGER</span>
 
 
-<div class="viewcode-block" id="NoRecordsWithMatchingFeatures"><a class="viewcode-back" href="../../../api/source/source.html#dffml.cli.list.NoRecordsWithMatchingFeatures">[docs]</a><span class="k">class</span> <span class="nc">NoRecordsWithMatchingFeatures</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+<div class="viewcode-block" id="NoRecordsWithMatchingFeatures"><a class="viewcode-back" href="../../../api/source/source.html#dffml.source.source.NoRecordsWithMatchingFeatures">[docs]</a><span class="k">class</span> <span class="nc">NoRecordsWithMatchingFeatures</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Raised when :py:func:`SourcesContext.with_features` was called but no</span>
 <span class="sd">    records were yielded.</span>
 <span class="sd">    &quot;&quot;&quot;</span></div>
 
 
-<div class="viewcode-block" id="NoRecordsWithMatchingFeaturesHelper"><a class="viewcode-back" href="../../../api/source/source.html#dffml.cli.list.NoRecordsWithMatchingFeaturesHelper">[docs]</a><span class="k">class</span> <span class="nc">NoRecordsWithMatchingFeaturesHelper</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+<div class="viewcode-block" id="NoRecordsWithMatchingFeaturesHelper"><a class="viewcode-back" href="../../../api/source/source.html#dffml.source.source.NoRecordsWithMatchingFeaturesHelper">[docs]</a><span class="k">class</span> <span class="nc">NoRecordsWithMatchingFeaturesHelper</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Helper to print a diff of the features requested and the features available</span>
 <span class="sd">    in unittest diff format</span>
@@ -236,11 +236,11 @@
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">methodName</span><span class="o">=</span><span class="s2">&quot;defaultTestResult&quot;</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="BaseSourceContext"><a class="viewcode-back" href="../../../tutorials/sources/complex.html#dffml.cli.list.BaseSourceContext">[docs]</a><span class="k">class</span> <span class="nc">BaseSourceContext</span><span class="p">(</span><span class="n">BaseDataFlowFacilitatorObjectContext</span><span class="p">):</span>
+<div class="viewcode-block" id="BaseSourceContext"><a class="viewcode-back" href="../../../tutorials/sources/complex.html#dffml.source.source.BaseSourceContext">[docs]</a><span class="k">class</span> <span class="nc">BaseSourceContext</span><span class="p">(</span><span class="n">BaseDataFlowFacilitatorObjectContext</span><span class="p">):</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">:</span> <span class="s2">&quot;BaseSource&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">parent</span> <span class="o">=</span> <span class="n">parent</span>
 
-<div class="viewcode-block" id="BaseSourceContext.update"><a class="viewcode-back" href="../../../tutorials/sources/complex.html#dffml.cli.list.BaseSourceContext.update">[docs]</a>    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
+<div class="viewcode-block" id="BaseSourceContext.update"><a class="viewcode-back" href="../../../tutorials/sources/complex.html#dffml.source.source.BaseSourceContext.update">[docs]</a>    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
     <span class="k">async</span> <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">record</span><span class="p">:</span> <span class="n">Record</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Updates a record for a source</span>
@@ -266,7 +266,7 @@
 <span class="sd">        {&#39;key&#39;: &#39;one&#39;, &#39;features&#39;: {&#39;feed&#39;: &#39;face&#39;}, &#39;extra&#39;: {}}</span>
 <span class="sd">        &quot;&quot;&quot;</span></div>
 
-<div class="viewcode-block" id="BaseSourceContext.records"><a class="viewcode-back" href="../../../tutorials/sources/complex.html#dffml.cli.list.BaseSourceContext.records">[docs]</a>    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
+<div class="viewcode-block" id="BaseSourceContext.records"><a class="viewcode-back" href="../../../tutorials/sources/complex.html#dffml.source.source.BaseSourceContext.records">[docs]</a>    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
     <span class="k">async</span> <span class="k">def</span> <span class="nf">records</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AsyncIterator</span><span class="p">[</span><span class="n">Record</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns a list of records retrieved from self.src</span>
@@ -289,7 +289,7 @@
         <span class="c1"># mypy ignores AsyncIterator[Record], therefore this is needed</span>
         <span class="k">yield</span> <span class="n">Record</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>  <span class="c1"># pragma: no cover</span></div>
 
-<div class="viewcode-block" id="BaseSourceContext.record"><a class="viewcode-back" href="../../../tutorials/sources/complex.html#dffml.cli.list.BaseSourceContext.record">[docs]</a>    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
+<div class="viewcode-block" id="BaseSourceContext.record"><a class="viewcode-back" href="../../../tutorials/sources/complex.html#dffml.source.source.BaseSourceContext.record">[docs]</a>    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
     <span class="k">async</span> <span class="k">def</span> <span class="nf">record</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Get a record from the source or add it if it doesn&#39;t exist.</span>
@@ -317,7 +317,7 @@
 <span class="sd">        &quot;&quot;&quot;</span></div></div>
 
 
-<div class="viewcode-block" id="BaseSource"><a class="viewcode-back" href="../../../api/source/source.html#dffml.cli.list.BaseSource">[docs]</a><span class="nd">@base_entry_point</span><span class="p">(</span><span class="s2">&quot;dffml.source&quot;</span><span class="p">,</span> <span class="s2">&quot;source&quot;</span><span class="p">)</span>
+<div class="viewcode-block" id="BaseSource"><a class="viewcode-back" href="../../../api/source/source.html#dffml.source.source.BaseSource">[docs]</a><span class="nd">@base_entry_point</span><span class="p">(</span><span class="s2">&quot;dffml.source&quot;</span><span class="p">,</span> <span class="s2">&quot;source&quot;</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">BaseSource</span><span class="p">(</span><span class="n">BaseDataFlowFacilitatorObject</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Abstract base class for all sources. New sources must be derived from this</span>
@@ -328,8 +328,8 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">CONTEXT</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="SourcesContext"><a class="viewcode-back" href="../../../api/source/source.html#dffml.cli.list.SourcesContext">[docs]</a><span class="k">class</span> <span class="nc">SourcesContext</span><span class="p">(</span><span class="n">AsyncContextManagerListContext</span><span class="p">):</span>
-<div class="viewcode-block" id="SourcesContext.update"><a class="viewcode-back" href="../../../api/source/source.html#dffml.cli.list.SourcesContext.update">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">record</span><span class="p">:</span> <span class="n">Record</span><span class="p">):</span>
+<div class="viewcode-block" id="SourcesContext"><a class="viewcode-back" href="../../../api/source/source.html#dffml.source.source.SourcesContext">[docs]</a><span class="k">class</span> <span class="nc">SourcesContext</span><span class="p">(</span><span class="n">AsyncContextManagerListContext</span><span class="p">):</span>
+<div class="viewcode-block" id="SourcesContext.update"><a class="viewcode-back" href="../../../api/source/source.html#dffml.source.source.SourcesContext.update">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">record</span><span class="p">:</span> <span class="n">Record</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Updates a record for a source</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -337,7 +337,7 @@
         <span class="k">for</span> <span class="n">source</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
             <span class="k">await</span> <span class="n">source</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">record</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="SourcesContext.records"><a class="viewcode-back" href="../../../api/source/source.html#dffml.cli.list.SourcesContext.records">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">records</span><span class="p">(</span>
+<div class="viewcode-block" id="SourcesContext.records"><a class="viewcode-back" href="../../../api/source/source.html#dffml.source.source.SourcesContext.records">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">records</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">validation</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="n">Record</span><span class="p">],</span> <span class="nb">bool</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AsyncIterator</span><span class="p">[</span><span class="n">Record</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -353,7 +353,7 @@
                     <span class="k">yield</span> <span class="n">record</span>
             <span class="k">break</span></div>
 
-<div class="viewcode-block" id="SourcesContext.record"><a class="viewcode-back" href="../../../api/source/source.html#dffml.cli.list.SourcesContext.record">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">record</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<div class="viewcode-block" id="SourcesContext.record"><a class="viewcode-back" href="../../../api/source/source.html#dffml.source.source.SourcesContext.record">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">record</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Retrieve and or register record will all sources</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -362,7 +362,7 @@
             <span class="n">record</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="k">await</span> <span class="n">source</span><span class="o">.</span><span class="n">record</span><span class="p">(</span><span class="n">key</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">record</span></div>
 
-<div class="viewcode-block" id="SourcesContext.with_features"><a class="viewcode-back" href="../../../api/source/source.html#dffml.cli.list.SourcesContext.with_features">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">with_features</span><span class="p">(</span>
+<div class="viewcode-block" id="SourcesContext.with_features"><a class="viewcode-back" href="../../../api/source/source.html#dffml.source.source.SourcesContext.with_features">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">with_features</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">features</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AsyncIterator</span><span class="p">[</span><span class="n">Record</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -401,14 +401,14 @@
             <span class="p">)</span></div></div>
 
 
-<div class="viewcode-block" id="Sources"><a class="viewcode-back" href="../../../api/source/source.html#dffml.cli.list.Sources">[docs]</a><span class="k">class</span> <span class="nc">Sources</span><span class="p">(</span><span class="n">AsyncContextManagerList</span><span class="p">):</span>
+<div class="viewcode-block" id="Sources"><a class="viewcode-back" href="../../../api/source/source.html#dffml.source.source.Sources">[docs]</a><span class="k">class</span> <span class="nc">Sources</span><span class="p">(</span><span class="n">AsyncContextManagerList</span><span class="p">):</span>
 
     <span class="n">CONTEXT</span> <span class="o">=</span> <span class="n">SourcesContext</span>
     <span class="n">SINGLETON</span> <span class="o">=</span> <span class="n">BaseSource</span></div>
 
 
-<div class="viewcode-block" id="ValidationSourcesContext"><a class="viewcode-back" href="../../../api/source/source.html#dffml.cli.list.ValidationSourcesContext">[docs]</a><span class="k">class</span> <span class="nc">ValidationSourcesContext</span><span class="p">(</span><span class="n">SourcesContext</span><span class="p">):</span>
-<div class="viewcode-block" id="ValidationSourcesContext.records"><a class="viewcode-back" href="../../../api/source/source.html#dffml.cli.list.ValidationSourcesContext.records">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">records</span><span class="p">(</span>
+<div class="viewcode-block" id="ValidationSourcesContext"><a class="viewcode-back" href="../../../api/source/source.html#dffml.source.source.ValidationSourcesContext">[docs]</a><span class="k">class</span> <span class="nc">ValidationSourcesContext</span><span class="p">(</span><span class="n">SourcesContext</span><span class="p">):</span>
+<div class="viewcode-block" id="ValidationSourcesContext.records"><a class="viewcode-back" href="../../../api/source/source.html#dffml.source.source.ValidationSourcesContext.records">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">records</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">validation</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="n">Record</span><span class="p">],</span> <span class="nb">bool</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AsyncIterator</span><span class="p">[</span><span class="n">Record</span><span class="p">]:</span>
         <span class="k">async</span> <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">records</span><span class="p">():</span>
@@ -418,7 +418,7 @@
                 <span class="k">yield</span> <span class="n">record</span></div></div>
 
 
-<div class="viewcode-block" id="ValidationSources"><a class="viewcode-back" href="../../../api/source/source.html#dffml.cli.list.ValidationSources">[docs]</a><span class="k">class</span> <span class="nc">ValidationSources</span><span class="p">(</span><span class="n">Sources</span><span class="p">):</span>
+<div class="viewcode-block" id="ValidationSources"><a class="viewcode-back" href="../../../api/source/source.html#dffml.source.source.ValidationSources">[docs]</a><span class="k">class</span> <span class="nc">ValidationSources</span><span class="p">(</span><span class="n">Sources</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Restricts access to a subset of records during iteration based on a validation</span>
 <span class="sd">    function.</span>
@@ -433,8 +433,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">validation</span> <span class="o">=</span> <span class="n">validation</span></div>
 
 
-<div class="viewcode-block" id="SubsetSourcesContext"><a class="viewcode-back" href="../../../api/source/source.html#dffml.cli.list.SubsetSourcesContext">[docs]</a><span class="k">class</span> <span class="nc">SubsetSourcesContext</span><span class="p">(</span><span class="n">SourcesContext</span><span class="p">):</span>
-<div class="viewcode-block" id="SubsetSourcesContext.records"><a class="viewcode-back" href="../../../api/source/source.html#dffml.cli.list.SubsetSourcesContext.records">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">records</span><span class="p">(</span>
+<div class="viewcode-block" id="SubsetSourcesContext"><a class="viewcode-back" href="../../../api/source/source.html#dffml.source.source.SubsetSourcesContext">[docs]</a><span class="k">class</span> <span class="nc">SubsetSourcesContext</span><span class="p">(</span><span class="n">SourcesContext</span><span class="p">):</span>
+<div class="viewcode-block" id="SubsetSourcesContext.records"><a class="viewcode-back" href="../../../api/source/source.html#dffml.source.source.SubsetSourcesContext.records">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">records</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">validation</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="n">Record</span><span class="p">],</span> <span class="nb">bool</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AsyncIterator</span><span class="p">[</span><span class="n">Record</span><span class="p">]:</span>
         <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">keys</span><span class="p">:</span>
@@ -443,7 +443,7 @@
                 <span class="k">yield</span> <span class="n">record</span></div></div>
 
 
-<div class="viewcode-block" id="SubsetSources"><a class="viewcode-back" href="../../../api/source/source.html#dffml.cli.list.SubsetSources">[docs]</a><span class="k">class</span> <span class="nc">SubsetSources</span><span class="p">(</span><span class="n">Sources</span><span class="p">):</span>
+<div class="viewcode-block" id="SubsetSources"><a class="viewcode-back" href="../../../api/source/source.html#dffml.source.source.SubsetSources">[docs]</a><span class="k">class</span> <span class="nc">SubsetSources</span><span class="p">(</span><span class="n">Sources</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Restricts access to a subset of records during iteration based on their keys.</span>
 <span class="sd">    &quot;&quot;&quot;</span>

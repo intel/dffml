@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Security &mdash; DFFML 2a2c6e84 documentation</title>
+  <title>Security &mdash; DFFML 9e06a442 documentation</title>
   
 
   
@@ -66,7 +66,7 @@
             
             
               <div class="version">
-                2a2c6e84
+                9e06a442
               </div>
             
           
@@ -305,10 +305,10 @@ command is run because it’s already been used to create <code class="docutils 
 <p>Now you can run the server without the <code class="docutils literal notranslate"><span class="pre">-insecure</span></code> flag.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml service http server -port <span class="m">5000</span>
 <span class="gp">$ </span>curl -w <span class="s1">&#39;\n&#39;</span> <span class="se">\</span>
-    --cacert server.pem <span class="se">\</span>
-    --cert client.pem <span class="se">\</span>
-    --key client.key <span class="se">\</span>
-    https://127.0.0.1:5000/list/sources
+<span class="go">    --cacert server.pem \</span>
+<span class="go">    --cert client.pem \</span>
+<span class="go">    --key client.key \</span>
+<span class="go">    https://127.0.0.1:5000/list/sources</span>
 <span class="go">... JSON output ...</span>
 </pre></div>
 </div>

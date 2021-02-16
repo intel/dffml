@@ -745,42 +745,42 @@ predict).</p>
 <span class="go">Our trip was full of adventures,1</span>
 <span class="go">EOF</span>
 <span class="gp">$ </span>dffml train <span class="se">\</span>
-    -model text_classifier <span class="se">\</span>
-    -model-epochs <span class="m">30</span> <span class="se">\</span>
-    -model-predict sentiment:int:1 <span class="se">\</span>
-    -model-classifications <span class="m">0</span> <span class="m">1</span>  <span class="se">\</span>
-    -model-clstype int <span class="se">\</span>
-    -sources <span class="nv">f</span><span class="o">=</span>csv <span class="se">\</span>
-    -source-filename train.csv <span class="se">\</span>
-    -model-features <span class="se">\</span>
-      sentence:str:1 <span class="se">\</span>
-    -model-model_path <span class="s2">&quot;https://tfhub.dev/google/tf2-preview/gnews-swivel-20dim-with-oov/1&quot;</span> <span class="se">\</span>
-    -model-add_layers <span class="se">\</span>
-    -model-layers <span class="s2">&quot;Dense(units=512, activation=&#39;relu&#39;)&quot;</span> <span class="s2">&quot;Dense(units=2, activation=&#39;softmax&#39;)&quot;</span> <span class="se">\</span>
-    -log debug
+<span class="go">    -model text_classifier \</span>
+<span class="go">    -model-epochs 30 \</span>
+<span class="go">    -model-predict sentiment:int:1 \</span>
+<span class="go">    -model-classifications 0 1  \</span>
+<span class="go">    -model-clstype int \</span>
+<span class="go">    -sources f=csv \</span>
+<span class="go">    -source-filename train.csv \</span>
+<span class="go">    -model-features \</span>
+<span class="go">      sentence:str:1 \</span>
+<span class="go">    -model-model_path &quot;https://tfhub.dev/google/tf2-preview/gnews-swivel-20dim-with-oov/1&quot; \</span>
+<span class="go">    -model-add_layers \</span>
+<span class="go">    -model-layers &quot;Dense(units=512, activation=&#39;relu&#39;)&quot; &quot;Dense(units=2, activation=&#39;softmax&#39;)&quot; \</span>
+<span class="go">    -log debug</span>
 <span class="gp">$ </span>dffml accuracy <span class="se">\</span>
-    -model text_classifier <span class="se">\</span>
-    -model-predict sentiment:int:1 <span class="se">\</span>
-    -model-classifications <span class="m">0</span> <span class="m">1</span> <span class="se">\</span>
-    -model-model_path <span class="s2">&quot;https://tfhub.dev/google/tf2-preview/gnews-swivel-20dim-with-oov/1&quot;</span> <span class="se">\</span>
-    -model-clstype int <span class="se">\</span>
-    -sources <span class="nv">f</span><span class="o">=</span>csv <span class="se">\</span>
-    -source-filename test.csv <span class="se">\</span>
-    -model-features <span class="se">\</span>
-      sentence:str:1 <span class="se">\</span>
-    -log critical
+<span class="go">    -model text_classifier \</span>
+<span class="go">    -model-predict sentiment:int:1 \</span>
+<span class="go">    -model-classifications 0 1 \</span>
+<span class="go">    -model-model_path &quot;https://tfhub.dev/google/tf2-preview/gnews-swivel-20dim-with-oov/1&quot; \</span>
+<span class="go">    -model-clstype int \</span>
+<span class="go">    -sources f=csv \</span>
+<span class="go">    -source-filename test.csv \</span>
+<span class="go">    -model-features \</span>
+<span class="go">      sentence:str:1 \</span>
+<span class="go">    -log critical</span>
 <span class="go">    1.0</span>
 <span class="gp">$ </span>dffml predict all <span class="se">\</span>
-    -model text_classifier <span class="se">\</span>
-    -model-predict sentiment:int:1 <span class="se">\</span>
-    -model-classifications <span class="m">0</span> <span class="m">1</span> <span class="se">\</span>
-    -model-model_path <span class="s2">&quot;https://tfhub.dev/google/tf2-preview/gnews-swivel-20dim-with-oov/1&quot;</span> <span class="se">\</span>
-    -model-clstype int <span class="se">\</span>
-    -sources <span class="nv">f</span><span class="o">=</span>csv <span class="se">\</span>
-    -source-filename test.csv <span class="se">\</span>
-    -model-features <span class="se">\</span>
-      sentence:str:1 <span class="se">\</span>
-    -log debug
+<span class="go">    -model text_classifier \</span>
+<span class="go">    -model-predict sentiment:int:1 \</span>
+<span class="go">    -model-classifications 0 1 \</span>
+<span class="go">    -model-model_path &quot;https://tfhub.dev/google/tf2-preview/gnews-swivel-20dim-with-oov/1&quot; \</span>
+<span class="go">    -model-clstype int \</span>
+<span class="go">    -sources f=csv \</span>
+<span class="go">    -source-filename test.csv \</span>
+<span class="go">    -model-features \</span>
+<span class="go">      sentence:str:1 \</span>
+<span class="go">    -log debug</span>
 <span class="go">[</span>
 <span class="go">    {</span>
 <span class="go">        &quot;extra&quot;: {},</span>
@@ -1409,33 +1409,33 @@ their feature names.</p>
 <p><strong>General Usage:</strong></p>
 <p>Training:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml train <span class="se">\</span>
-    -model SCIKIT_MODEL_ENTRYPOINT <span class="se">\</span>
-    -model-features FEATURE_DEFINITION <span class="se">\</span>
-    -model-predict TO_PREDICT <span class="se">\</span>
-    -model-SCIKIT_PARAMETER_NAME SCIKIT_PARAMETER_VALUE <span class="se">\</span>
-    -sources <span class="nv">f</span><span class="o">=</span>TRAINING_DATA_SOURCE_TYPE <span class="se">\</span>
-    -source-filename TRAINING_DATA_FILE_NAME <span class="se">\</span>
-    -log debug
+<span class="go">    -model SCIKIT_MODEL_ENTRYPOINT \</span>
+<span class="go">    -model-features FEATURE_DEFINITION \</span>
+<span class="go">    -model-predict TO_PREDICT \</span>
+<span class="go">    -model-SCIKIT_PARAMETER_NAME SCIKIT_PARAMETER_VALUE \</span>
+<span class="go">    -sources f=TRAINING_DATA_SOURCE_TYPE \</span>
+<span class="go">    -source-filename TRAINING_DATA_FILE_NAME \</span>
+<span class="go">    -log debug</span>
 </pre></div>
 </div>
 <p>Testing and Accuracy:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml accuracy <span class="se">\</span>
-    -model SCIKIT_MODEL_ENTRYPOINT <span class="se">\</span>
-    -model-features FEATURE_DEFINITION <span class="se">\</span>
-    -model-predict TO_PREDICT <span class="se">\</span>
-    -sources <span class="nv">f</span><span class="o">=</span>TESTING_DATA_SOURCE_TYPE <span class="se">\</span>
-    -source-filename TESTING_DATA_FILE_NAME <span class="se">\</span>
-    -log debug
+<span class="go">    -model SCIKIT_MODEL_ENTRYPOINT \</span>
+<span class="go">    -model-features FEATURE_DEFINITION \</span>
+<span class="go">    -model-predict TO_PREDICT \</span>
+<span class="go">    -sources f=TESTING_DATA_SOURCE_TYPE \</span>
+<span class="go">    -source-filename TESTING_DATA_FILE_NAME \</span>
+<span class="go">    -log debug</span>
 </pre></div>
 </div>
 <p>Predicting with trained model:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml predict all <span class="se">\</span>
-    -model SCIKIT_MODEL_ENTRYPOINT <span class="se">\</span>
-    -model-features FEATURE_DEFINITION <span class="se">\</span>
-    -model-predict TO_PREDICT <span class="se">\</span>
-    -sources <span class="nv">f</span><span class="o">=</span>PREDICT_DATA_SOURCE_TYPE <span class="se">\</span>
-    -source-filename PREDICT_DATA_FILE_NAME <span class="se">\</span>
-    -log debug
+<span class="go">    -model SCIKIT_MODEL_ENTRYPOINT \</span>
+<span class="go">    -model-features FEATURE_DEFINITION \</span>
+<span class="go">    -model-predict TO_PREDICT \</span>
+<span class="go">    -sources f=PREDICT_DATA_SOURCE_TYPE \</span>
+<span class="go">    -source-filename PREDICT_DATA_FILE_NAME \</span>
+<span class="go">    -log debug</span>
 </pre></div>
 </div>
 <p><strong>Models Available:</strong></p>
@@ -1768,29 +1768,29 @@ their feature names.</p>
 <span class="go">4.01612313,  -4.641852  ,  -4.77333308,   5.87551683,     0</span>
 <span class="go">EOF</span>
 <span class="gp"> $ </span>dffml train <span class="se">\</span>
-     -model scikitkmeans <span class="se">\</span>
-     -model-features Col1:float:1 Col2:float:1 Col3:float:1 Col4:float:1 <span class="se">\</span>
-     -sources <span class="nv">f</span><span class="o">=</span>csv <span class="se">\</span>
-     -source-filename train.csv <span class="se">\</span>
-     -source-readonly <span class="se">\</span>
-     -log debug
+<span class="go">     -model scikitkmeans \</span>
+<span class="go">     -model-features Col1:float:1 Col2:float:1 Col3:float:1 Col4:float:1 \</span>
+<span class="go">     -sources f=csv \</span>
+<span class="go">     -source-filename train.csv \</span>
+<span class="go">     -source-readonly \</span>
+<span class="go">     -log debug</span>
 <span class="gp"> $ </span>dffml accuracy <span class="se">\</span>
-     -model scikitkmeans <span class="se">\</span>
-     -model-features Col1:float:1 Col2:float:1 Col3:float:1 Col4:float:1<span class="se">\</span>
-     -model-tcluster cluster:int:1 <span class="se">\</span>
-     -sources <span class="nv">f</span><span class="o">=</span>csv <span class="se">\</span>
-     -source-filename test.csv <span class="se">\</span>
-     -source-readonly <span class="se">\</span>
-     -log debug
+<span class="go">     -model scikitkmeans \</span>
+<span class="go">     -model-features Col1:float:1 Col2:float:1 Col3:float:1 Col4:float:1\</span>
+<span class="go">     -model-tcluster cluster:int:1 \</span>
+<span class="go">     -sources f=csv \</span>
+<span class="go">     -source-filename test.csv \</span>
+<span class="go">     -source-readonly \</span>
+<span class="go">     -log debug</span>
 <span class="go"> 0.6365141682948129</span>
 <span class="gp"> $ </span><span class="nb">echo</span> -e <span class="s1">&#39;Col1,Col2,Col3,Col4\n6.09809669,8.36434181,6.70940915,-7.91491768\n&#39;</span> <span class="p">|</span> <span class="se">\</span>
-   dffml predict all <span class="se">\</span>
-     -model scikitkmeans <span class="se">\</span>
-     -model-features Col1:float:1 Col2:float:1 Col3:float:1 Col4:float:1 <span class="se">\</span>
-     -sources <span class="nv">f</span><span class="o">=</span>csv <span class="se">\</span>
-     -source-filename /dev/stdin <span class="se">\</span>
-     -source-readonly <span class="se">\</span>
-     -log debug
+<span class="go">   dffml predict all \</span>
+<span class="go">     -model scikitkmeans \</span>
+<span class="go">     -model-features Col1:float:1 Col2:float:1 Col3:float:1 Col4:float:1 \</span>
+<span class="go">     -sources f=csv \</span>
+<span class="go">     -source-filename /dev/stdin \</span>
+<span class="go">     -source-readonly \</span>
+<span class="go">     -log debug</span>
 <span class="go"> [</span>
 <span class="go">     {</span>
 <span class="go">         &quot;extra&quot;: {},</span>

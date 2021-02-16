@@ -624,28 +624,28 @@ value is within 10% of what it should be.</p>
 <span class="go">5,80</span>
 <span class="go">EOF</span>
 <span class="gp">$ </span>dffml train <span class="se">\</span>
-    -model myslr <span class="se">\</span>
-    -model-features Years:int:1 <span class="se">\</span>
-    -model-predict Salary:float:1 <span class="se">\</span>
-    -sources <span class="nv">f</span><span class="o">=</span>csv <span class="se">\</span>
-    -source-filename dataset.csv <span class="se">\</span>
-    -log debug
+<span class="go">    -model myslr \</span>
+<span class="go">    -model-features Years:int:1 \</span>
+<span class="go">    -model-predict Salary:float:1 \</span>
+<span class="go">    -sources f=csv \</span>
+<span class="go">    -source-filename dataset.csv \</span>
+<span class="go">    -log debug</span>
 <span class="gp">$ </span>dffml accuracy <span class="se">\</span>
-    -model myslr <span class="se">\</span>
-    -model-features Years:int:1 <span class="se">\</span>
-    -model-predict Salary:float:1 <span class="se">\</span>
-    -sources <span class="nv">f</span><span class="o">=</span>csv <span class="se">\</span>
-    -source-filename dataset.csv <span class="se">\</span>
-    -log debug
+<span class="go">    -model myslr \</span>
+<span class="go">    -model-features Years:int:1 \</span>
+<span class="go">    -model-predict Salary:float:1 \</span>
+<span class="go">    -sources f=csv \</span>
+<span class="go">    -source-filename dataset.csv \</span>
+<span class="go">    -log debug</span>
 <span class="go">1.0</span>
 <span class="gp">$ </span><span class="nb">echo</span> -e <span class="s1">&#39;Years,Salary\n6,0\n&#39;</span> <span class="p">|</span> <span class="se">\</span>
-  dffml predict all <span class="se">\</span>
-    -model myslr <span class="se">\</span>
-    -model-features Years:int:1 <span class="se">\</span>
-    -model-predict Salary:float:1 <span class="se">\</span>
-    -sources <span class="nv">f</span><span class="o">=</span>csv <span class="se">\</span>
-    -source-filename /dev/stdin <span class="se">\</span>
-    -log debug
+<span class="go">  dffml predict all \</span>
+<span class="go">    -model myslr \</span>
+<span class="go">    -model-features Years:int:1 \</span>
+<span class="go">    -model-predict Salary:float:1 \</span>
+<span class="go">    -sources f=csv \</span>
+<span class="go">    -source-filename /dev/stdin \</span>
+<span class="go">    -log debug</span>
 <span class="go">[</span>
 <span class="go">    {</span>
 <span class="go">        &quot;extra&quot;: {},</span>

@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Software Portal &mdash; DFFML 2a2c6e84 documentation</title>
+  <title>Software Portal &mdash; DFFML 9e06a442 documentation</title>
   
 
   
@@ -66,7 +66,7 @@
             
             
               <div class="version">
-                2a2c6e84
+                9e06a442
               </div>
             
           
@@ -233,13 +233,13 @@ tutorial. See documentation on HTTP API
 <a class="reference internal" href="plugins/service/http/security.html"><span class="doc">Security</span></a> for more information.</p>
 </div>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml service http server <span class="se">\</span>
-    -port <span class="m">8080</span> <span class="se">\</span>
-    -mc-atomic <span class="se">\</span>
-    -mc-config projects <span class="se">\</span>
-    -static html-client <span class="se">\</span>
-    -redirect GET / /index.html <span class="se">\</span>
-    -log debug <span class="se">\</span>
-    -insecure
+<span class="go">    -port 8080 \</span>
+<span class="go">    -mc-atomic \</span>
+<span class="go">    -mc-config projects \</span>
+<span class="go">    -static html-client \</span>
+<span class="go">    -redirect GET / /index.html \</span>
+<span class="go">    -log debug \</span>
+<span class="go">    -insecure</span>
 </pre></div>
 </div>
 <p>Query all projects</p>
@@ -277,8 +277,8 @@ gernating data dynamiclly is required, code can be added to <cite>operations/</c
 <h2>Notes<a class="headerlink" href="#notes" title="Permalink to this headline">¶</a></h2>
 <p>Run a single project’s DataFlow from the command line</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml dataflow run single <span class="se">\</span>
-    -dataflow projects/df/b7cf5596-d427-4ae3-9e95-44be879eae73.yaml <span class="se">\</span>
-    -log debug
+<span class="go">    -dataflow projects/df/b7cf5596-d427-4ae3-9e95-44be879eae73.yaml \</span>
+<span class="go">    -log debug</span>
 </pre></div>
 </div>
 </div>

@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>dffml.df.memory &mdash; DFFML 2a2c6e84 documentation</title>
+  <title>dffml.df.memory &mdash; DFFML 9e06a442 documentation</title>
   
 
   
@@ -65,7 +65,7 @@
             
             
               <div class="version">
-                2a2c6e84
+                9e06a442
               </div>
             
           
@@ -275,26 +275,26 @@
 <span class="kn">from</span> <span class="nn">.log</span> <span class="kn">import</span> <span class="n">LOGGER</span>
 
 
-<div class="viewcode-block" id="MemoryDataFlowObjectContextConfig"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.cli.dataflow.MemoryDataFlowObjectContextConfig">[docs]</a><span class="nd">@config</span>
+<div class="viewcode-block" id="MemoryDataFlowObjectContextConfig"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryDataFlowObjectContextConfig">[docs]</a><span class="nd">@config</span>
 <span class="k">class</span> <span class="nc">MemoryDataFlowObjectContextConfig</span><span class="p">:</span>
     <span class="c1"># Unique ID of the context, in other implementations this might be a JWT or</span>
     <span class="c1"># something</span>
     <span class="n">uid</span><span class="p">:</span> <span class="nb">str</span></div>
 
 
-<div class="viewcode-block" id="BaseMemoryDataFlowObject"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.cli.dataflow.BaseMemoryDataFlowObject">[docs]</a><span class="k">class</span> <span class="nc">BaseMemoryDataFlowObject</span><span class="p">(</span><span class="n">BaseDataFlowObject</span><span class="p">):</span>
+<div class="viewcode-block" id="BaseMemoryDataFlowObject"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.BaseMemoryDataFlowObject">[docs]</a><span class="k">class</span> <span class="nc">BaseMemoryDataFlowObject</span><span class="p">(</span><span class="n">BaseDataFlowObject</span><span class="p">):</span>
     <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BaseDataFlowObjectContext</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">CONTEXT</span><span class="p">(</span>
             <span class="n">MemoryDataFlowObjectContextConfig</span><span class="p">(</span><span class="n">uid</span><span class="o">=</span><span class="n">secrets</span><span class="o">.</span><span class="n">token_hex</span><span class="p">()),</span> <span class="bp">self</span>
         <span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="MemoryKeyValueStoreConfig"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.cli.dataflow.MemoryKeyValueStoreConfig">[docs]</a><span class="nd">@config</span>
+<div class="viewcode-block" id="MemoryKeyValueStoreConfig"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryKeyValueStoreConfig">[docs]</a><span class="nd">@config</span>
 <span class="k">class</span> <span class="nc">MemoryKeyValueStoreConfig</span><span class="p">:</span>
     <span class="k">pass</span></div>
 
 
-<div class="viewcode-block" id="MemoryKeyValueStoreContext"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.cli.dataflow.MemoryKeyValueStoreContext">[docs]</a><span class="k">class</span> <span class="nc">MemoryKeyValueStoreContext</span><span class="p">(</span><span class="n">BaseKeyValueStoreContext</span><span class="p">):</span>
+<div class="viewcode-block" id="MemoryKeyValueStoreContext"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryKeyValueStoreContext">[docs]</a><span class="k">class</span> <span class="nc">MemoryKeyValueStoreContext</span><span class="p">(</span><span class="n">BaseKeyValueStoreContext</span><span class="p">):</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">BaseConfig</span><span class="p">,</span> <span class="n">parent</span><span class="p">:</span> <span class="s2">&quot;MemoryKeyValueStore&quot;</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -302,11 +302,11 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">memory</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">lock</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">Lock</span><span class="p">()</span>
 
-<div class="viewcode-block" id="MemoryKeyValueStoreContext.get"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.cli.dataflow.MemoryKeyValueStoreContext.get">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">bytes</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
+<div class="viewcode-block" id="MemoryKeyValueStoreContext.get"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryKeyValueStoreContext.get">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">bytes</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
         <span class="k">async</span> <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">lock</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">memory</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="MemoryKeyValueStoreContext.set"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.cli.dataflow.MemoryKeyValueStoreContext.set">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">bytes</span><span class="p">):</span>
+<div class="viewcode-block" id="MemoryKeyValueStoreContext.set"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryKeyValueStoreContext.set">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">bytes</span><span class="p">):</span>
         <span class="k">async</span> <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">lock</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">memory</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span></div>
 
@@ -325,7 +325,7 @@
         <span class="k">return</span> <span class="kc">False</span></div>
 
 
-<div class="viewcode-block" id="MemoryKeyValueStore"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.cli.dataflow.MemoryKeyValueStore">[docs]</a><span class="nd">@entrypoint</span><span class="p">(</span><span class="s2">&quot;memory&quot;</span><span class="p">)</span>
+<div class="viewcode-block" id="MemoryKeyValueStore"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryKeyValueStore">[docs]</a><span class="nd">@entrypoint</span><span class="p">(</span><span class="s2">&quot;memory&quot;</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">MemoryKeyValueStore</span><span class="p">(</span><span class="n">BaseKeyValueStore</span><span class="p">,</span> <span class="n">BaseMemoryDataFlowObject</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Key Value store backed by dict</span>
@@ -335,18 +335,18 @@
     <span class="n">CONFIG</span> <span class="o">=</span> <span class="n">MemoryKeyValueStoreConfig</span></div>
 
 
-<div class="viewcode-block" id="MemoryInputSetConfig"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.cli.dataflow.MemoryInputSetConfig">[docs]</a><span class="nd">@config</span>
+<div class="viewcode-block" id="MemoryInputSetConfig"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryInputSetConfig">[docs]</a><span class="nd">@config</span>
 <span class="k">class</span> <span class="nc">MemoryInputSetConfig</span><span class="p">:</span>
     <span class="n">ctx</span><span class="p">:</span> <span class="n">BaseInputSetContext</span>
     <span class="n">inputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Input</span><span class="p">]</span></div>
 
 
-<div class="viewcode-block" id="MemoryInputSet"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.cli.dataflow.MemoryInputSet">[docs]</a><span class="k">class</span> <span class="nc">MemoryInputSet</span><span class="p">(</span><span class="n">BaseInputSet</span><span class="p">):</span>
+<div class="viewcode-block" id="MemoryInputSet"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryInputSet">[docs]</a><span class="k">class</span> <span class="nc">MemoryInputSet</span><span class="p">(</span><span class="n">BaseInputSet</span><span class="p">):</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">MemoryInputSetConfig</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__inputs</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">inputs</span>
 
-<div class="viewcode-block" id="MemoryInputSet.add"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.cli.dataflow.MemoryInputSet.add">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">:</span> <span class="n">Input</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="MemoryInputSet.add"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryInputSet.add">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">:</span> <span class="n">Input</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__inputs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">)</span></div>
 
     <span class="k">async</span> <span class="k">def</span> <span class="nf">definitions</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Set</span><span class="p">[</span><span class="n">Definition</span><span class="p">]:</span>
@@ -356,13 +356,13 @@
         <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__inputs</span><span class="p">:</span>
             <span class="k">yield</span> <span class="n">item</span>
 
-<div class="viewcode-block" id="MemoryInputSet.remove_input"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.cli.dataflow.MemoryInputSet.remove_input">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">remove_input</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">:</span> <span class="n">Input</span><span class="p">):</span>
+<div class="viewcode-block" id="MemoryInputSet.remove_input"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryInputSet.remove_input">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">remove_input</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">:</span> <span class="n">Input</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__inputs</span><span class="p">[:]:</span>
             <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">uid</span> <span class="o">==</span> <span class="n">item</span><span class="o">.</span><span class="n">uid</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">__inputs</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
                 <span class="k">break</span></div>
 
-<div class="viewcode-block" id="MemoryInputSet.remove_unvalidated_inputs"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.cli.dataflow.MemoryInputSet.remove_unvalidated_inputs">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">remove_unvalidated_inputs</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;MemoryInputSet&quot;</span><span class="p">:</span>
+<div class="viewcode-block" id="MemoryInputSet.remove_unvalidated_inputs"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryInputSet.remove_unvalidated_inputs">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">remove_unvalidated_inputs</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;MemoryInputSet&quot;</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Removes `unvalidated` inputs from internal list and returns the same.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -377,13 +377,13 @@
         <span class="k">return</span> <span class="n">unvalidated_input_set</span></div></div>
 
 
-<div class="viewcode-block" id="MemoryParameterSetConfig"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.cli.dataflow.MemoryParameterSetConfig">[docs]</a><span class="nd">@config</span>
+<div class="viewcode-block" id="MemoryParameterSetConfig"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryParameterSetConfig">[docs]</a><span class="nd">@config</span>
 <span class="k">class</span> <span class="nc">MemoryParameterSetConfig</span><span class="p">:</span>
     <span class="n">ctx</span><span class="p">:</span> <span class="n">BaseInputSetContext</span>
     <span class="n">parameters</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Parameter</span><span class="p">]</span></div>
 
 
-<div class="viewcode-block" id="MemoryParameterSet"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.cli.dataflow.MemoryParameterSet">[docs]</a><span class="k">class</span> <span class="nc">MemoryParameterSet</span><span class="p">(</span><span class="n">BaseParameterSet</span><span class="p">):</span>
+<div class="viewcode-block" id="MemoryParameterSet"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryParameterSet">[docs]</a><span class="k">class</span> <span class="nc">MemoryParameterSet</span><span class="p">(</span><span class="n">BaseParameterSet</span><span class="p">):</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">MemoryParameterSetConfig</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__parameters</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">parameters</span>
@@ -440,7 +440,7 @@
         <span class="k">pass</span>
 
 
-<div class="viewcode-block" id="NotificationSet"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.cli.dataflow.NotificationSet">[docs]</a><span class="k">class</span> <span class="nc">NotificationSet</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="NotificationSet"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.NotificationSet">[docs]</a><span class="k">class</span> <span class="nc">NotificationSet</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Set which can notifies user when it was added to (FIFO)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -456,19 +456,19 @@
         <span class="k">return</span> <span class="n">NotificationSetContext</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="MemoryInputNetworkConfig"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.cli.dataflow.MemoryInputNetworkConfig">[docs]</a><span class="nd">@config</span>
+<div class="viewcode-block" id="MemoryInputNetworkConfig"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryInputNetworkConfig">[docs]</a><span class="nd">@config</span>
 <span class="k">class</span> <span class="nc">MemoryInputNetworkConfig</span><span class="p">:</span>
     <span class="k">pass</span></div>
 
 
-<div class="viewcode-block" id="MemoryInputNetworkContextEntry"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.cli.dataflow.MemoryInputNetworkContextEntry">[docs]</a><span class="k">class</span> <span class="nc">MemoryInputNetworkContextEntry</span><span class="p">(</span><span class="n">NamedTuple</span><span class="p">):</span>
+<div class="viewcode-block" id="MemoryInputNetworkContextEntry"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryInputNetworkContextEntry">[docs]</a><span class="k">class</span> <span class="nc">MemoryInputNetworkContextEntry</span><span class="p">(</span><span class="n">NamedTuple</span><span class="p">):</span>
     <span class="n">ctx</span><span class="p">:</span> <span class="n">BaseInputSetContext</span>
     <span class="n">definitions</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Definition</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Input</span><span class="p">]]</span>
     <span class="n">by_origin</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]],</span> <span class="n">List</span><span class="p">[</span><span class="n">Input</span><span class="p">]]</span></div>
 
 
-<div class="viewcode-block" id="MemoryDefinitionSetContext"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.cli.dataflow.MemoryDefinitionSetContext">[docs]</a><span class="k">class</span> <span class="nc">MemoryDefinitionSetContext</span><span class="p">(</span><span class="n">BaseDefinitionSetContext</span><span class="p">):</span>
-<div class="viewcode-block" id="MemoryDefinitionSetContext.inputs"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.cli.dataflow.MemoryDefinitionSetContext.inputs">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">inputs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">definition</span><span class="p">:</span> <span class="n">Definition</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AsyncIterator</span><span class="p">[</span><span class="n">Input</span><span class="p">]:</span>
+<div class="viewcode-block" id="MemoryDefinitionSetContext"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryDefinitionSetContext">[docs]</a><span class="k">class</span> <span class="nc">MemoryDefinitionSetContext</span><span class="p">(</span><span class="n">BaseDefinitionSetContext</span><span class="p">):</span>
+<div class="viewcode-block" id="MemoryDefinitionSetContext.inputs"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryDefinitionSetContext.inputs">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">inputs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">definition</span><span class="p">:</span> <span class="n">Definition</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AsyncIterator</span><span class="p">[</span><span class="n">Input</span><span class="p">]:</span>
         <span class="c1"># Grab the input set context handle</span>
         <span class="n">handle</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">handle</span><span class="p">()</span>
         <span class="n">handle_string</span> <span class="o">=</span> <span class="n">handle</span><span class="o">.</span><span class="n">as_string</span><span class="p">()</span>
@@ -480,7 +480,7 @@
                 <span class="k">yield</span> <span class="n">item</span></div></div>
 
 
-<div class="viewcode-block" id="MemoryInputNetworkContext"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.cli.dataflow.MemoryInputNetworkContext">[docs]</a><span class="k">class</span> <span class="nc">MemoryInputNetworkContext</span><span class="p">(</span><span class="n">BaseInputNetworkContext</span><span class="p">):</span>
+<div class="viewcode-block" id="MemoryInputNetworkContext"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryInputNetworkContext">[docs]</a><span class="k">class</span> <span class="nc">MemoryInputNetworkContext</span><span class="p">(</span><span class="n">BaseInputNetworkContext</span><span class="p">):</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">BaseConfig</span><span class="p">,</span> <span class="n">parent</span><span class="p">:</span> <span class="s2">&quot;MemoryInputNetwork&quot;</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -492,7 +492,7 @@
         <span class="c1"># TODO Create ctxhd_locks dict to manage a per context lock</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ctxhd_lock</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">Lock</span><span class="p">()</span>
 
-<div class="viewcode-block" id="MemoryInputNetworkContext.receive_from_parent_flow"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.cli.dataflow.MemoryInputNetworkContext.receive_from_parent_flow">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">receive_from_parent_flow</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Input</span><span class="p">]):</span>
+<div class="viewcode-block" id="MemoryInputNetworkContext.receive_from_parent_flow"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryInputNetworkContext.receive_from_parent_flow">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">receive_from_parent_flow</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Input</span><span class="p">]):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Takes input from parent dataflow and adds it to every active context</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -505,7 +505,7 @@
         <span class="k">for</span> <span class="n">ctx</span> <span class="ow">in</span> <span class="n">ctx_keys</span><span class="p">:</span>
             <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">sadd</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="o">*</span><span class="n">inputs</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="MemoryInputNetworkContext.add"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.cli.dataflow.MemoryInputNetworkContext.add">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_set</span><span class="p">:</span> <span class="n">BaseInputSet</span><span class="p">):</span>
+<div class="viewcode-block" id="MemoryInputNetworkContext.add"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryInputNetworkContext.add">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_set</span><span class="p">:</span> <span class="n">BaseInputSet</span><span class="p">):</span>
         <span class="c1"># Grab the input set context handle</span>
         <span class="n">handle</span> <span class="o">=</span> <span class="k">await</span> <span class="n">input_set</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">handle</span><span class="p">()</span>
         <span class="n">handle_string</span> <span class="o">=</span> <span class="n">handle</span><span class="o">.</span><span class="n">as_string</span><span class="p">()</span>
@@ -549,7 +549,7 @@
                 <span class="c1"># Add input to by origin set</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">ctxhd</span><span class="p">[</span><span class="n">handle_string</span><span class="p">]</span><span class="o">.</span><span class="n">by_origin</span><span class="p">[</span><span class="n">item</span><span class="o">.</span><span class="n">origin</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="MemoryInputNetworkContext.uadd"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.cli.dataflow.MemoryInputNetworkContext.uadd">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">uadd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Input</span><span class="p">):</span>
+<div class="viewcode-block" id="MemoryInputNetworkContext.uadd"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryInputNetworkContext.uadd">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">uadd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Input</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Shorthand for creating a MemoryInputSet with a StringInputSetContext</span>
 <span class="sd">        containing a random value for the string.</span>
@@ -557,7 +557,7 @@
         <span class="c1"># TODO(security) Allow for tuning nbytes</span>
         <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">sadd</span><span class="p">(</span><span class="n">secrets</span><span class="o">.</span><span class="n">token_hex</span><span class="p">(),</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="MemoryInputNetworkContext.sadd"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.cli.dataflow.MemoryInputNetworkContext.sadd">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">sadd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context_handle_string</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Input</span><span class="p">):</span>
+<div class="viewcode-block" id="MemoryInputNetworkContext.sadd"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryInputNetworkContext.sadd">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">sadd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context_handle_string</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Input</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Shorthand for creating a MemoryInputSet with a StringInputSetContext.</span>
 
@@ -577,7 +577,7 @@
         <span class="p">)</span>
         <span class="k">return</span> <span class="n">ctx</span></div>
 
-<div class="viewcode-block" id="MemoryInputNetworkContext.cadd"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.cli.dataflow.MemoryInputNetworkContext.cadd">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">cadd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Input</span><span class="p">):</span>
+<div class="viewcode-block" id="MemoryInputNetworkContext.cadd"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryInputNetworkContext.cadd">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">cadd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Input</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Shorthand for creating a MemoryInputSet with an existing context.</span>
 
@@ -596,11 +596,11 @@
         <span class="p">)</span>
         <span class="k">return</span> <span class="n">ctx</span></div>
 
-<div class="viewcode-block" id="MemoryInputNetworkContext.ctx"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.cli.dataflow.MemoryInputNetworkContext.ctx">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">ctx</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="n">BaseInputSetContext</span><span class="p">]:</span>
+<div class="viewcode-block" id="MemoryInputNetworkContext.ctx"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryInputNetworkContext.ctx">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">ctx</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="n">BaseInputSetContext</span><span class="p">]:</span>
         <span class="k">async</span> <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx_notification_set</span><span class="p">()</span> <span class="k">as</span> <span class="n">ctx</span><span class="p">:</span>
             <span class="k">return</span> <span class="k">await</span> <span class="n">ctx</span><span class="o">.</span><span class="n">added</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="MemoryInputNetworkContext.added"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.cli.dataflow.MemoryInputNetworkContext.added">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">added</span><span class="p">(</span>
+<div class="viewcode-block" id="MemoryInputNetworkContext.added"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryInputNetworkContext.added">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">added</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">watch_ctx</span><span class="p">:</span> <span class="n">BaseInputSetContext</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="n">BaseInputSet</span><span class="p">]:</span>
         <span class="c1"># Grab the input set context handle</span>
@@ -618,7 +618,7 @@
                     <span class="n">ctx</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">notification_items</span> <span class="o">=</span> <span class="p">[]</span>
                     <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="n">notification_items</span></div>
 
-<div class="viewcode-block" id="MemoryInputNetworkContext.definition"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.cli.dataflow.MemoryInputNetworkContext.definition">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">definition</span><span class="p">(</span>
+<div class="viewcode-block" id="MemoryInputNetworkContext.definition"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryInputNetworkContext.definition">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">definition</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="n">BaseInputSetContext</span><span class="p">,</span> <span class="n">definition</span><span class="p">:</span> <span class="nb">str</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Definition</span><span class="p">:</span>
         <span class="k">async</span> <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctxhd_lock</span><span class="p">:</span>
@@ -642,7 +642,7 @@
             <span class="c1"># If found then return the definition</span>
             <span class="k">return</span> <span class="n">found</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div>
 
-<div class="viewcode-block" id="MemoryInputNetworkContext.definitions"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.cli.dataflow.MemoryInputNetworkContext.definitions">[docs]</a>    <span class="k">def</span> <span class="nf">definitions</span><span class="p">(</span>
+<div class="viewcode-block" id="MemoryInputNetworkContext.definitions"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryInputNetworkContext.definitions">[docs]</a>    <span class="k">def</span> <span class="nf">definitions</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="n">BaseInputSetContext</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BaseDefinitionSetContext</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">MemoryDefinitionSetContext</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">)</span></div>
@@ -731,7 +731,7 @@
                 <span class="k">return</span> <span class="kc">True</span>
         <span class="k">return</span> <span class="kc">False</span>
 
-<div class="viewcode-block" id="MemoryInputNetworkContext.gather_inputs"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.cli.dataflow.MemoryInputNetworkContext.gather_inputs">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">gather_inputs</span><span class="p">(</span>
+<div class="viewcode-block" id="MemoryInputNetworkContext.gather_inputs"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryInputNetworkContext.gather_inputs">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">gather_inputs</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">rctx</span><span class="p">:</span> <span class="s2">&quot;BaseRedundancyCheckerContext&quot;</span><span class="p">,</span>
         <span class="n">operation</span><span class="p">:</span> <span class="n">Operation</span><span class="p">,</span>
@@ -955,7 +955,7 @@
                 <span class="k">yield</span> <span class="n">parameter_set</span></div></div>
 
 
-<div class="viewcode-block" id="MemoryInputNetwork"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.cli.dataflow.MemoryInputNetwork">[docs]</a><span class="nd">@entrypoint</span><span class="p">(</span><span class="s2">&quot;memory&quot;</span><span class="p">)</span>
+<div class="viewcode-block" id="MemoryInputNetwork"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryInputNetwork">[docs]</a><span class="nd">@entrypoint</span><span class="p">(</span><span class="s2">&quot;memory&quot;</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">MemoryInputNetwork</span><span class="p">(</span><span class="n">BaseInputNetwork</span><span class="p">,</span> <span class="n">BaseMemoryDataFlowObject</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Inputs backed by a set</span>
@@ -965,7 +965,7 @@
     <span class="n">CONFIG</span> <span class="o">=</span> <span class="n">MemoryInputNetworkConfig</span></div>
 
 
-<div class="viewcode-block" id="MemoryOperationNetworkConfig"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.cli.dataflow.MemoryOperationNetworkConfig">[docs]</a><span class="nd">@config</span>
+<div class="viewcode-block" id="MemoryOperationNetworkConfig"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryOperationNetworkConfig">[docs]</a><span class="nd">@config</span>
 <span class="k">class</span> <span class="nc">MemoryOperationNetworkConfig</span><span class="p">:</span>
     <span class="c1"># Starting set of operations</span>
     <span class="n">operations</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Operation</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
@@ -973,7 +973,7 @@
     <span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="MemoryOperationNetworkContext"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.cli.dataflow.MemoryOperationNetworkContext">[docs]</a><span class="k">class</span> <span class="nc">MemoryOperationNetworkContext</span><span class="p">(</span><span class="n">BaseOperationNetworkContext</span><span class="p">):</span>
+<div class="viewcode-block" id="MemoryOperationNetworkContext"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryOperationNetworkContext">[docs]</a><span class="k">class</span> <span class="nc">MemoryOperationNetworkContext</span><span class="p">(</span><span class="n">BaseOperationNetworkContext</span><span class="p">):</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">BaseConfig</span><span class="p">,</span> <span class="n">parent</span><span class="p">:</span> <span class="s2">&quot;MemoryOperationNetwork&quot;</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -981,12 +981,12 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">memory</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">lock</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">Lock</span><span class="p">()</span>
 
-<div class="viewcode-block" id="MemoryOperationNetworkContext.add"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.cli.dataflow.MemoryOperationNetworkContext.add">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">operations</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Operation</span><span class="p">]):</span>
+<div class="viewcode-block" id="MemoryOperationNetworkContext.add"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryOperationNetworkContext.add">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">operations</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Operation</span><span class="p">]):</span>
         <span class="k">async</span> <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">lock</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">operation</span> <span class="ow">in</span> <span class="n">operations</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">memory</span><span class="p">[</span><span class="n">operation</span><span class="o">.</span><span class="n">instance_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">operation</span></div>
 
-<div class="viewcode-block" id="MemoryOperationNetworkContext.operations"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.cli.dataflow.MemoryOperationNetworkContext.operations">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">operations</span><span class="p">(</span>
+<div class="viewcode-block" id="MemoryOperationNetworkContext.operations"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryOperationNetworkContext.operations">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">operations</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">dataflow</span><span class="p">:</span> <span class="n">DataFlow</span><span class="p">,</span>
         <span class="o">*</span><span class="p">,</span>
@@ -1012,7 +1012,7 @@
             <span class="k">yield</span> <span class="n">operation</span></div></div>
 
 
-<div class="viewcode-block" id="MemoryOperationNetwork"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.cli.dataflow.MemoryOperationNetwork">[docs]</a><span class="nd">@entrypoint</span><span class="p">(</span><span class="s2">&quot;memory&quot;</span><span class="p">)</span>
+<div class="viewcode-block" id="MemoryOperationNetwork"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryOperationNetwork">[docs]</a><span class="nd">@entrypoint</span><span class="p">(</span><span class="s2">&quot;memory&quot;</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">MemoryOperationNetwork</span><span class="p">(</span><span class="n">BaseOperationNetwork</span><span class="p">,</span> <span class="n">BaseMemoryDataFlowObject</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Operations backed by a set</span>
@@ -1022,14 +1022,14 @@
     <span class="n">CONFIG</span> <span class="o">=</span> <span class="n">MemoryOperationNetworkConfig</span></div>
 
 
-<div class="viewcode-block" id="MemoryRedundancyCheckerConfig"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.cli.dataflow.MemoryRedundancyCheckerConfig">[docs]</a><span class="nd">@config</span>
+<div class="viewcode-block" id="MemoryRedundancyCheckerConfig"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryRedundancyCheckerConfig">[docs]</a><span class="nd">@config</span>
 <span class="k">class</span> <span class="nc">MemoryRedundancyCheckerConfig</span><span class="p">:</span>
     <span class="n">kvstore</span><span class="p">:</span> <span class="n">BaseKeyValueStore</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
         <span class="s2">&quot;Key value store to use&quot;</span><span class="p">,</span> <span class="n">default_factory</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="n">MemoryKeyValueStore</span><span class="p">()</span>
     <span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="MemoryRedundancyCheckerContext"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.cli.dataflow.MemoryRedundancyCheckerContext">[docs]</a><span class="k">class</span> <span class="nc">MemoryRedundancyCheckerContext</span><span class="p">(</span><span class="n">BaseRedundancyCheckerContext</span><span class="p">):</span>
+<div class="viewcode-block" id="MemoryRedundancyCheckerContext"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryRedundancyCheckerContext">[docs]</a><span class="k">class</span> <span class="nc">MemoryRedundancyCheckerContext</span><span class="p">(</span><span class="n">BaseRedundancyCheckerContext</span><span class="p">):</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">BaseConfig</span><span class="p">,</span> <span class="n">parent</span><span class="p">:</span> <span class="s2">&quot;MemoryRedundancyChecker&quot;</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -1056,7 +1056,7 @@
         <span class="n">uid_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">instance_name</span><span class="p">,</span> <span class="n">handle</span><span class="p">]</span> <span class="o">+</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">uids</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha384</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">uid_list</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
 
-<div class="viewcode-block" id="MemoryRedundancyCheckerContext.unique"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.cli.dataflow.MemoryRedundancyCheckerContext.unique">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">unique</span><span class="p">(</span>
+<div class="viewcode-block" id="MemoryRedundancyCheckerContext.unique"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryRedundancyCheckerContext.unique">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">unique</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">operation</span><span class="p">:</span> <span class="n">Operation</span><span class="p">,</span> <span class="n">parameter_set</span><span class="p">:</span> <span class="n">BaseParameterSet</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -1106,7 +1106,7 @@
                 <span class="k">yield</span> <span class="n">parameter_set</span><span class="p">,</span> <span class="n">taken</span></div>
 
 
-<div class="viewcode-block" id="MemoryRedundancyChecker"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.cli.dataflow.MemoryRedundancyChecker">[docs]</a><span class="nd">@entrypoint</span><span class="p">(</span><span class="s2">&quot;memory&quot;</span><span class="p">)</span>
+<div class="viewcode-block" id="MemoryRedundancyChecker"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryRedundancyChecker">[docs]</a><span class="nd">@entrypoint</span><span class="p">(</span><span class="s2">&quot;memory&quot;</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">MemoryRedundancyChecker</span><span class="p">(</span><span class="n">BaseRedundancyChecker</span><span class="p">,</span> <span class="n">BaseMemoryDataFlowObject</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Redundancy Checker backed by Memory Key Value Store</span>
@@ -1140,12 +1140,12 @@
         <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">__stack</span><span class="o">.</span><span class="fm">__aexit__</span><span class="p">(</span><span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_value</span><span class="p">,</span> <span class="n">traceback</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="MemoryLockNetworkConfig"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.cli.dataflow.MemoryLockNetworkConfig">[docs]</a><span class="nd">@config</span>
+<div class="viewcode-block" id="MemoryLockNetworkConfig"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryLockNetworkConfig">[docs]</a><span class="nd">@config</span>
 <span class="k">class</span> <span class="nc">MemoryLockNetworkConfig</span><span class="p">:</span>
     <span class="k">pass</span></div>
 
 
-<div class="viewcode-block" id="MemoryLockNetworkContext"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.cli.dataflow.MemoryLockNetworkContext">[docs]</a><span class="k">class</span> <span class="nc">MemoryLockNetworkContext</span><span class="p">(</span><span class="n">BaseLockNetworkContext</span><span class="p">):</span>
+<div class="viewcode-block" id="MemoryLockNetworkContext"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryLockNetworkContext">[docs]</a><span class="k">class</span> <span class="nc">MemoryLockNetworkContext</span><span class="p">(</span><span class="n">BaseLockNetworkContext</span><span class="p">):</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">BaseConfig</span><span class="p">,</span> <span class="n">parent</span><span class="p">:</span> <span class="s2">&quot;MemoryLockNetwork&quot;</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -1153,7 +1153,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">lock</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">Lock</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">locks</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">Lock</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
 
-<div class="viewcode-block" id="MemoryLockNetworkContext.acquire"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.cli.dataflow.MemoryLockNetworkContext.acquire">[docs]</a>    <span class="nd">@asynccontextmanager</span>
+<div class="viewcode-block" id="MemoryLockNetworkContext.acquire"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryLockNetworkContext.acquire">[docs]</a>    <span class="nd">@asynccontextmanager</span>
     <span class="k">async</span> <span class="k">def</span> <span class="nf">acquire</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parameter_set</span><span class="p">:</span> <span class="n">BaseParameterSet</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Acquire the lock for each input in the input set which must be locked</span>
@@ -1186,14 +1186,14 @@
             <span class="k">yield</span></div></div>
 
 
-<div class="viewcode-block" id="MemoryLockNetwork"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.cli.dataflow.MemoryLockNetwork">[docs]</a><span class="nd">@entrypoint</span><span class="p">(</span><span class="s2">&quot;memory&quot;</span><span class="p">)</span>
+<div class="viewcode-block" id="MemoryLockNetwork"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryLockNetwork">[docs]</a><span class="nd">@entrypoint</span><span class="p">(</span><span class="s2">&quot;memory&quot;</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">MemoryLockNetwork</span><span class="p">(</span><span class="n">BaseLockNetwork</span><span class="p">,</span> <span class="n">BaseMemoryDataFlowObject</span><span class="p">):</span>
 
     <span class="n">CONTEXT</span> <span class="o">=</span> <span class="n">MemoryLockNetworkContext</span>
     <span class="n">CONFIG</span> <span class="o">=</span> <span class="n">MemoryLockNetworkConfig</span></div>
 
 
-<div class="viewcode-block" id="MemoryOperationImplementationNetworkConfig"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.cli.dataflow.MemoryOperationImplementationNetworkConfig">[docs]</a><span class="nd">@config</span>
+<div class="viewcode-block" id="MemoryOperationImplementationNetworkConfig"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryOperationImplementationNetworkConfig">[docs]</a><span class="nd">@config</span>
 <span class="k">class</span> <span class="nc">MemoryOperationImplementationNetworkConfig</span><span class="p">:</span>
     <span class="n">operations</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">OperationImplementation</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
         <span class="s2">&quot;Operation implementations to load on initialization&quot;</span><span class="p">,</span>
@@ -1201,7 +1201,7 @@
     <span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="MemoryOperationImplementationNetworkContext"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.cli.dataflow.MemoryOperationImplementationNetworkContext">[docs]</a><span class="k">class</span> <span class="nc">MemoryOperationImplementationNetworkContext</span><span class="p">(</span>
+<div class="viewcode-block" id="MemoryOperationImplementationNetworkContext"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryOperationImplementationNetworkContext">[docs]</a><span class="k">class</span> <span class="nc">MemoryOperationImplementationNetworkContext</span><span class="p">(</span>
     <span class="n">BaseOperationImplementationNetworkContext</span>
 <span class="p">):</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
@@ -1230,13 +1230,13 @@
             <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stack</span><span class="o">.</span><span class="fm">__aexit__</span><span class="p">(</span><span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_value</span><span class="p">,</span> <span class="n">traceback</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_stack</span> <span class="o">=</span> <span class="kc">None</span>
 
-<div class="viewcode-block" id="MemoryOperationImplementationNetworkContext.contains"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.cli.dataflow.MemoryOperationImplementationNetworkContext.contains">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">contains</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">operation</span><span class="p">:</span> <span class="n">Operation</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<div class="viewcode-block" id="MemoryOperationImplementationNetworkContext.contains"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryOperationImplementationNetworkContext.contains">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">contains</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">operation</span><span class="p">:</span> <span class="n">Operation</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Checks if operation in is operations we have loaded in memory</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">operation</span><span class="o">.</span><span class="n">instance_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">operations</span></div>
 
-<div class="viewcode-block" id="MemoryOperationImplementationNetworkContext.instantiable"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.cli.dataflow.MemoryOperationImplementationNetworkContext.instantiable">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">instantiable</span><span class="p">(</span>
+<div class="viewcode-block" id="MemoryOperationImplementationNetworkContext.instantiable"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryOperationImplementationNetworkContext.instantiable">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">instantiable</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">operation</span><span class="p">:</span> <span class="n">Operation</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">opimp</span><span class="p">:</span> <span class="n">OperationImplementation</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -1257,7 +1257,7 @@
             <span class="k">return</span> <span class="kc">False</span>
         <span class="k">return</span> <span class="kc">True</span></div>
 
-<div class="viewcode-block" id="MemoryOperationImplementationNetworkContext.instantiate"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.cli.dataflow.MemoryOperationImplementationNetworkContext.instantiate">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">instantiate</span><span class="p">(</span>
+<div class="viewcode-block" id="MemoryOperationImplementationNetworkContext.instantiate"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryOperationImplementationNetworkContext.instantiate">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">instantiate</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">operation</span><span class="p">:</span> <span class="n">Operation</span><span class="p">,</span>
         <span class="n">config</span><span class="p">:</span> <span class="n">BaseConfig</span><span class="p">,</span>
@@ -1280,7 +1280,7 @@
             <span class="n">operation</span><span class="o">.</span><span class="n">instance_name</span>
         <span class="p">]</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stack</span><span class="o">.</span><span class="n">enter_async_context</span><span class="p">(</span><span class="n">opimp</span><span class="p">(</span><span class="n">config</span><span class="p">))</span></div>
 
-<div class="viewcode-block" id="MemoryOperationImplementationNetworkContext.ensure_contains"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.cli.dataflow.MemoryOperationImplementationNetworkContext.ensure_contains">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">ensure_contains</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">operation</span><span class="p">:</span> <span class="n">Operation</span><span class="p">):</span>
+<div class="viewcode-block" id="MemoryOperationImplementationNetworkContext.ensure_contains"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryOperationImplementationNetworkContext.ensure_contains">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">ensure_contains</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">operation</span><span class="p">:</span> <span class="n">Operation</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Raise errors if we don&#39;t have and can&#39;t instantiate an operation.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1293,7 +1293,7 @@
                     <span class="n">operation</span><span class="o">.</span><span class="n">instance_name</span>
                 <span class="p">)</span></div>
 
-<div class="viewcode-block" id="MemoryOperationImplementationNetworkContext.run_no_retry"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.cli.dataflow.MemoryOperationImplementationNetworkContext.run_no_retry">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">run_no_retry</span><span class="p">(</span>
+<div class="viewcode-block" id="MemoryOperationImplementationNetworkContext.run_no_retry"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryOperationImplementationNetworkContext.run_no_retry">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">run_no_retry</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">ctx</span><span class="p">:</span> <span class="n">BaseInputSetContext</span><span class="p">,</span>
         <span class="n">octx</span><span class="p">:</span> <span class="n">BaseOrchestratorContext</span><span class="p">,</span>
@@ -1345,7 +1345,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;---&quot;</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">outputs</span></div>
 
-<div class="viewcode-block" id="MemoryOperationImplementationNetworkContext.run"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.cli.dataflow.MemoryOperationImplementationNetworkContext.run">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">run</span><span class="p">(</span>
+<div class="viewcode-block" id="MemoryOperationImplementationNetworkContext.run"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryOperationImplementationNetworkContext.run">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">run</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">ctx</span><span class="p">:</span> <span class="n">BaseInputSetContext</span><span class="p">,</span>
         <span class="n">octx</span><span class="p">:</span> <span class="n">BaseOrchestratorContext</span><span class="p">,</span>
@@ -1372,11 +1372,11 @@
                     <span class="n">traceback</span><span class="o">.</span><span class="n">format_exc</span><span class="p">()</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(),</span>
                 <span class="p">)</span></div>
 
-<div class="viewcode-block" id="MemoryOperationImplementationNetworkContext.operation_completed"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.cli.dataflow.MemoryOperationImplementationNetworkContext.operation_completed">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">operation_completed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="MemoryOperationImplementationNetworkContext.operation_completed"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryOperationImplementationNetworkContext.operation_completed">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">operation_completed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">completed_event</span><span class="o">.</span><span class="n">wait</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">completed_event</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="MemoryOperationImplementationNetworkContext.run_dispatch"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.cli.dataflow.MemoryOperationImplementationNetworkContext.run_dispatch">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">run_dispatch</span><span class="p">(</span>
+<div class="viewcode-block" id="MemoryOperationImplementationNetworkContext.run_dispatch"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryOperationImplementationNetworkContext.run_dispatch">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">run_dispatch</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">octx</span><span class="p">:</span> <span class="n">BaseOrchestratorContext</span><span class="p">,</span>
         <span class="n">operation</span><span class="p">:</span> <span class="n">Operation</span><span class="p">,</span>
@@ -1444,7 +1444,7 @@
                 <span class="p">)</span>
             <span class="p">)</span></div>
 
-<div class="viewcode-block" id="MemoryOperationImplementationNetworkContext.dispatch"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.cli.dataflow.MemoryOperationImplementationNetworkContext.dispatch">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">dispatch</span><span class="p">(</span>
+<div class="viewcode-block" id="MemoryOperationImplementationNetworkContext.dispatch"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryOperationImplementationNetworkContext.dispatch">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">dispatch</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">octx</span><span class="p">:</span> <span class="n">BaseOrchestratorContext</span><span class="p">,</span>
         <span class="n">operation</span><span class="p">:</span> <span class="n">Operation</span><span class="p">,</span>
@@ -1461,7 +1461,7 @@
         <span class="k">return</span> <span class="n">task</span></div></div>
 
 
-<div class="viewcode-block" id="MemoryOperationImplementationNetwork"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.cli.dataflow.MemoryOperationImplementationNetwork">[docs]</a><span class="nd">@entrypoint</span><span class="p">(</span><span class="s2">&quot;memory&quot;</span><span class="p">)</span>
+<div class="viewcode-block" id="MemoryOperationImplementationNetwork"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryOperationImplementationNetwork">[docs]</a><span class="nd">@entrypoint</span><span class="p">(</span><span class="s2">&quot;memory&quot;</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">MemoryOperationImplementationNetwork</span><span class="p">(</span>
     <span class="n">BaseOperationImplementationNetwork</span><span class="p">,</span> <span class="n">BaseMemoryDataFlowObject</span>
 <span class="p">):</span>
@@ -1473,7 +1473,7 @@
 <span class="n">MEMORYORCHESTRATORCONFIG_MAX_CTXS</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span>
 
 
-<div class="viewcode-block" id="MemoryOrchestratorConfig"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.cli.dataflow.MemoryOrchestratorConfig">[docs]</a><span class="nd">@config</span>
+<div class="viewcode-block" id="MemoryOrchestratorConfig"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryOrchestratorConfig">[docs]</a><span class="nd">@config</span>
 <span class="k">class</span> <span class="nc">MemoryOrchestratorConfig</span><span class="p">:</span>
     <span class="n">input_network</span><span class="p">:</span> <span class="n">BaseInputNetwork</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
         <span class="s2">&quot;Input network to use&quot;</span><span class="p">,</span> <span class="n">default_factory</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="n">MemoryInputNetwork</span><span class="p">()</span>
@@ -1497,7 +1497,7 @@
     <span class="n">max_ctxs</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">MEMORYORCHESTRATORCONFIG_MAX_CTXS</span></div>
 
 
-<div class="viewcode-block" id="MemoryOrchestratorContextConfig"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.cli.dataflow.MemoryOrchestratorContextConfig">[docs]</a><span class="nd">@config</span>
+<div class="viewcode-block" id="MemoryOrchestratorContextConfig"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryOrchestratorContextConfig">[docs]</a><span class="nd">@config</span>
 <span class="k">class</span> <span class="nc">MemoryOrchestratorContextConfig</span><span class="p">:</span>
     <span class="n">uid</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">dataflow</span><span class="p">:</span> <span class="n">DataFlow</span>
@@ -1512,7 +1512,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">reuse</span> <span class="o">=</span> <span class="p">{}</span></div>
 
 
-<div class="viewcode-block" id="MemoryOrchestratorContext"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.cli.dataflow.MemoryOrchestratorContext">[docs]</a><span class="k">class</span> <span class="nc">MemoryOrchestratorContext</span><span class="p">(</span><span class="n">BaseOrchestratorContext</span><span class="p">):</span>
+<div class="viewcode-block" id="MemoryOrchestratorContext"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryOrchestratorContext">[docs]</a><span class="k">class</span> <span class="nc">MemoryOrchestratorContext</span><span class="p">(</span><span class="n">BaseOrchestratorContext</span><span class="p">):</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">config</span><span class="p">:</span> <span class="n">MemoryOrchestratorContextConfig</span><span class="p">,</span>
@@ -1562,7 +1562,7 @@
     <span class="k">async</span> <span class="k">def</span> <span class="fm">__aexit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_value</span><span class="p">,</span> <span class="n">traceback</span><span class="p">):</span>
         <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stack</span><span class="o">.</span><span class="n">aclose</span><span class="p">()</span>
 
-<div class="viewcode-block" id="MemoryOrchestratorContext.initialize_dataflow"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.cli.dataflow.MemoryOrchestratorContext.initialize_dataflow">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">initialize_dataflow</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataflow</span><span class="p">:</span> <span class="n">DataFlow</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="MemoryOrchestratorContext.initialize_dataflow"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryOrchestratorContext.initialize_dataflow">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">initialize_dataflow</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataflow</span><span class="p">:</span> <span class="n">DataFlow</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Initialize a DataFlow by preforming the following steps.</span>
 
@@ -1685,7 +1685,7 @@
     <span class="c1"># asyncgenerator of InputSets. Add a parameter which tells us if we should</span>
     <span class="c1"># exit when all operations are complete or continue to wait for more inputs</span>
     <span class="c1"># from the asyncgenerator. Make that parameter an asyncio.Event</span>
-<div class="viewcode-block" id="MemoryOrchestratorContext.run"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.cli.dataflow.MemoryOrchestratorContext.run">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">run</span><span class="p">(</span>
+<div class="viewcode-block" id="MemoryOrchestratorContext.run"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryOrchestratorContext.run">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">run</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="o">*</span><span class="n">input_sets</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Input</span><span class="p">],</span> <span class="n">BaseInputSet</span><span class="p">],</span>
         <span class="n">strict</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
@@ -1823,7 +1823,7 @@
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">task</span><span class="o">.</span><span class="n">exception</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="MemoryOrchestratorContext.operations_parameter_set_pairs"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.cli.dataflow.MemoryOrchestratorContext.operations_parameter_set_pairs">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">operations_parameter_set_pairs</span><span class="p">(</span>
+<div class="viewcode-block" id="MemoryOrchestratorContext.operations_parameter_set_pairs"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryOrchestratorContext.operations_parameter_set_pairs">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">operations_parameter_set_pairs</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">ctx</span><span class="p">:</span> <span class="n">BaseInputSetContext</span><span class="p">,</span>
         <span class="n">dataflow</span><span class="p">:</span> <span class="n">DataFlow</span><span class="p">,</span>
@@ -1877,7 +1877,7 @@
                 <span class="k">if</span> <span class="n">taken</span><span class="p">:</span>
                     <span class="k">yield</span> <span class="n">validator</span><span class="p">,</span> <span class="n">parameter_set</span>
 
-<div class="viewcode-block" id="MemoryOrchestratorContext.dispatch_auto_starts"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.cli.dataflow.MemoryOrchestratorContext.dispatch_auto_starts">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">dispatch_auto_starts</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">):</span>
+<div class="viewcode-block" id="MemoryOrchestratorContext.dispatch_auto_starts"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryOrchestratorContext.dispatch_auto_starts">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">dispatch_auto_starts</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Schedule the running of all operations without inputs</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -2053,7 +2053,7 @@
             <span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="MemoryOrchestrator"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.cli.dataflow.MemoryOrchestrator">[docs]</a><span class="nd">@entrypoint</span><span class="p">(</span><span class="s2">&quot;memory&quot;</span><span class="p">)</span>
+<div class="viewcode-block" id="MemoryOrchestrator"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryOrchestrator">[docs]</a><span class="nd">@entrypoint</span><span class="p">(</span><span class="s2">&quot;memory&quot;</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">MemoryOrchestrator</span><span class="p">(</span><span class="n">BaseOrchestrator</span><span class="p">,</span> <span class="n">BaseMemoryDataFlowObject</span><span class="p">):</span>
 
     <span class="n">CONTEXT</span> <span class="o">=</span> <span class="n">MemoryOrchestratorContext</span>

@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Util Data &mdash; DFFML 2a2c6e84 documentation</title>
+  <title>Util Data &mdash; DFFML 9e06a442 documentation</title>
   
 
   
@@ -66,7 +66,7 @@
             
             
               <div class="version">
-                2a2c6e84
+                9e06a442
               </div>
             
           
@@ -245,7 +245,7 @@
 <p>python -m doctest -v dffml/util/data.py</p>
 <dl class="py function">
 <dt id="dffml.util.data.explore_directories">
-<code class="sig-prename descclassname">dffml.util.data.</code><code class="sig-name descname">explore_directories</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path_dict</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)">dict</a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/util/data.html#explore_directories"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.util.data.explore_directories" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">dffml.util.data.</span></code><code class="sig-name descname"><span class="pre">explore_directories</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path_dict</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><span class="pre">dict</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/util/data.html#explore_directories"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.util.data.explore_directories" title="Permalink to this definition">¶</a></dt>
 <dd><p>Recursively explores any path binded to a key in <cite>path_dict</cite></p>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pathlib</span>
@@ -298,7 +298,7 @@
 
 <dl class="py function">
 <dt id="dffml.util.data.export">
-<code class="sig-prename descclassname">dffml.util.data.</code><code class="sig-name descname">export</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">obj</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/util/data.html#export"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.util.data.export" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">dffml.util.data.</span></code><code class="sig-name descname"><span class="pre">export</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/util/data.html#export"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.util.data.export" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convert a value from a Python object into something that is just primitives,
 so things that could be printed withough formatting issues or sent to
 <a class="reference external" href="https://docs.python.org/3/library/json.html#json.dumps" title="(in Python v3.9)"><code class="xref py py-func docutils literal notranslate"><span class="pre">json.dumps()</span></code></a>.</p>
@@ -326,26 +326,26 @@ and anything that implements an <code class="docutils literal notranslate"><span
 
 <dl class="py function">
 <dt id="dffml.util.data.export_dict">
-<code class="sig-prename descclassname">dffml.util.data.</code><code class="sig-name descname">export_dict</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/util/data.html#export_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.util.data.export_dict" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">dffml.util.data.</span></code><code class="sig-name descname"><span class="pre">export_dict</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/util/data.html#export_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.util.data.export_dict" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the dict given as kwargs but first recurse into each element and call
 its export or _asdict function if it is not a serializable type.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt id="dffml.util.data.ignore_args">
-<code class="sig-prename descclassname">dffml.util.data.</code><code class="sig-name descname">ignore_args</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">func</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/util/data.html#ignore_args"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.util.data.ignore_args" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">dffml.util.data.</span></code><code class="sig-name descname"><span class="pre">ignore_args</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/util/data.html#ignore_args"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.util.data.ignore_args" title="Permalink to this definition">¶</a></dt>
 <dd><p>Decorator to call the decorated function without any arguments passed to it.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt id="dffml.util.data.nested_apply">
-<em class="property">async </em><code class="sig-prename descclassname">dffml.util.data.</code><code class="sig-name descname">nested_apply</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">target</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)">dict</a></span></em>, <em class="sig-param"><span class="n">func</span><span class="p">:</span> <span class="n">Callable</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/util/data.html#nested_apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.util.data.nested_apply" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">async</span> </em><code class="sig-prename descclassname"><span class="pre">dffml.util.data.</span></code><code class="sig-name descname"><span class="pre">nested_apply</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><span class="pre">dict</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">func</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Callable</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/util/data.html#nested_apply"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.util.data.nested_apply" title="Permalink to this definition">¶</a></dt>
 <dd><p>Applies <cite>func</cite> recursively to all non dict types in <cite>target</cite></p>
 </dd></dl>
 
 <dl class="py function">
 <dt id="dffml.util.data.parser_helper">
-<code class="sig-prename descclassname">dffml.util.data.</code><code class="sig-name descname">parser_helper</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">value</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/util/data.html#parser_helper"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.util.data.parser_helper" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">dffml.util.data.</span></code><code class="sig-name descname"><span class="pre">parser_helper</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/util/data.html#parser_helper"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.util.data.parser_helper" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calls checks if value is string and if it is it converts it to a bool if
 the string is a string representation of common boolean value (on, off,
 true, false, yes, no). Otherwise it tries to call
@@ -374,7 +374,7 @@ returned.</p>
 
 <dl class="py function">
 <dt id="dffml.util.data.traverse_config_get">
-<code class="sig-prename descclassname">dffml.util.data.</code><code class="sig-name descname">traverse_config_get</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">target</span></em>, <em class="sig-param"><span class="o">*</span><span class="n">args</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/util/data.html#traverse_config_get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.util.data.traverse_config_get" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">dffml.util.data.</span></code><code class="sig-name descname"><span class="pre">traverse_config_get</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/util/data.html#traverse_config_get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.util.data.traverse_config_get" title="Permalink to this definition">¶</a></dt>
 <dd><p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">traverse_config_get</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -396,7 +396,7 @@ returned.</p>
 
 <dl class="py function">
 <dt id="dffml.util.data.traverse_config_set">
-<code class="sig-prename descclassname">dffml.util.data.</code><code class="sig-name descname">traverse_config_set</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">target</span></em>, <em class="sig-param"><span class="o">*</span><span class="n">args</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/util/data.html#traverse_config_set"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.util.data.traverse_config_set" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">dffml.util.data.</span></code><code class="sig-name descname"><span class="pre">traverse_config_set</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/util/data.html#traverse_config_set"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.util.data.traverse_config_set" title="Permalink to this definition">¶</a></dt>
 <dd><p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">traverse_config_set</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -418,7 +418,7 @@ returned.</p>
 
 <dl class="py function">
 <dt id="dffml.util.data.traverse_get">
-<code class="sig-prename descclassname">dffml.util.data.</code><code class="sig-name descname">traverse_get</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">target</span></em>, <em class="sig-param"><span class="o">*</span><span class="n">args</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/util/data.html#traverse_get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.util.data.traverse_get" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">dffml.util.data.</span></code><code class="sig-name descname"><span class="pre">traverse_get</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/util/data.html#traverse_get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.util.data.traverse_get" title="Permalink to this definition">¶</a></dt>
 <dd><p>Travel down through a dict</p>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">traverse_get</span>
@@ -435,7 +435,7 @@ returned.</p>
 
 <dl class="py function">
 <dt id="dffml.util.data.traverse_set">
-<code class="sig-prename descclassname">dffml.util.data.</code><code class="sig-name descname">traverse_set</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">target</span></em>, <em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="n">value</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/util/data.html#traverse_set"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.util.data.traverse_set" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">dffml.util.data.</span></code><code class="sig-name descname"><span class="pre">traverse_set</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/util/data.html#traverse_set"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.util.data.traverse_set" title="Permalink to this definition">¶</a></dt>
 <dd><p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">traverse_set</span>
 <span class="go">&gt;&gt;&gt;</span>

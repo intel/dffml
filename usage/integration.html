@@ -238,17 +238,17 @@ package manager should have it if not.</p>
 </div>
 <p>Download the Python 2 client libraries for MySQL.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python2 -m pip install -U --user <span class="se">\</span>
-    https://dev.mysql.com/get/Downloads/Connector-Python/mysql-connector-python-8.0.16.tar.gz
+<span class="go">    https://dev.mysql.com/get/Downloads/Connector-Python/mysql-connector-python-8.0.16.tar.gz</span>
 </pre></div>
 </div>
 <p>Start MariaDB (functionally very similar to MySQL which its a fork of).</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>docker run --rm -d --name maintained_db <span class="se">\</span>
-    -e <span class="nv">MYSQL_RANDOM_ROOT_PASSWORD</span><span class="o">=</span>yes <span class="se">\</span>
-    -e <span class="nv">MYSQL_USER</span><span class="o">=</span>user <span class="se">\</span>
-    -e <span class="nv">MYSQL_PASSWORD</span><span class="o">=</span>pass <span class="se">\</span>
-    -e <span class="nv">MYSQL_DATABASE</span><span class="o">=</span>db <span class="se">\</span>
-    -p <span class="m">3306</span>:3306 <span class="se">\</span>
-    mariadb:10
+<span class="go">    -e MYSQL_RANDOM_ROOT_PASSWORD=yes \</span>
+<span class="go">    -e MYSQL_USER=user \</span>
+<span class="go">    -e MYSQL_PASSWORD=pass \</span>
+<span class="go">    -e MYSQL_DATABASE=db \</span>
+<span class="go">    -p 3306:3306 \</span>
+<span class="go">    mariadb:10</span>
 </pre></div>
 </div>
 <p>Wait for the database to start. Run the following command until you see <code class="docutils literal notranslate"><span class="pre">ready</span>
@@ -265,10 +265,10 @@ meaningless.</p>
 use the web app to create a meaningful dataset by manually going through and
 setting the status of repos.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>docker run -i --rm --net<span class="o">=</span>host mariadb:10 mysql <span class="se">\</span>
-    -h127.0.0.1 <span class="se">\</span>
-    -uuser <span class="se">\</span>
-    -ppass <span class="se">\</span>
-    --database db &lt; db.sql
+<span class="go">    -h127.0.0.1 \</span>
+<span class="go">    -uuser \</span>
+<span class="go">    -ppass \</span>
+<span class="go">    --database db &lt; db.sql</span>
 </pre></div>
 </div>
 <p>Fire up the CGI server. Yes, this is Python 3 now, but we’re assuming there
@@ -288,7 +288,7 @@ something that could be feed to a model. Right now all we have is URLs to git
 repos.</p>
 <p>Lets pull down that list of repos.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>curl <span class="s1">&#39;http://127.0.0.1:8000/cgi-bin/api.py?action=dump&#39;</span> <span class="se">\</span>
-    <span class="p">|</span> jq -r <span class="s1">&#39;keys[]&#39;</span> <span class="p">|</span> tee /tmp/urls
+<span class="go">    | jq -r &#39;keys[]&#39; | tee /tmp/urls</span>
 <span class="go">https://github.com/2bt/vmTetris.git</span>
 <span class="go">https://github.com/AntoineMaillard06/Tetris.git</span>
 <span class="go">https://github.com/Apolotary/My-tetris-on-python.git</span>
@@ -318,16 +318,16 @@ since that creates more user friendly configs than <code class="docutils literal
 it first.</p>
 <p>On Linux</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>curl -sSL <span class="s1">&#39;https://github.com/XAMPPRocky/tokei/releases/download/v10.1.1/tokei-v10.1.1-x86_64-apple-darwin.tar.gz&#39;</span> <span class="se">\</span>
-  <span class="p">|</span> tar -xvz <span class="o">&amp;&amp;</span> <span class="se">\</span>
-  <span class="nb">echo</span> <span class="s1">&#39;22699e16e71f07ff805805d26ee86ecb9b1052d7879350f7eb9ed87beb0e6b84fbb512963d01b75cec8e80532e4ea29a tokei&#39;</span> <span class="p">|</span> sha384sum -c - <span class="o">&amp;&amp;</span> <span class="se">\</span>
-  sudo mv tokei /usr/local/bin/
+<span class="go">  | tar -xvz &amp;&amp; \</span>
+<span class="go">  echo &#39;22699e16e71f07ff805805d26ee86ecb9b1052d7879350f7eb9ed87beb0e6b84fbb512963d01b75cec8e80532e4ea29a tokei&#39; | sha384sum -c - &amp;&amp; \</span>
+<span class="go">  sudo mv tokei /usr/local/bin/</span>
 </pre></div>
 </div>
 <p>On OSX</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>curl -sSL <span class="s1">&#39;https://github.com/XAMPPRocky/tokei/releases/download/v10.1.1/tokei-v10.1.1-x86_64-apple-darwin.tar.gz&#39;</span> <span class="se">\</span>
-  <span class="p">|</span> tar -xvz <span class="o">&amp;&amp;</span> <span class="se">\</span>
-  <span class="nb">echo</span> <span class="s1">&#39;8c8a1d8d8dd4d8bef93dabf5d2f6e27023777f8553393e269765d7ece85e68837cba4374a2615d83f071dfae22ba40e2 tokei&#39;</span> <span class="p">|</span> sha384sum -c - <span class="o">&amp;&amp;</span> <span class="se">\</span>
-  sudo mv tokei /usr/local/bin/
+<span class="go">  | tar -xvz &amp;&amp; \</span>
+<span class="go">  echo &#39;8c8a1d8d8dd4d8bef93dabf5d2f6e27023777f8553393e269765d7ece85e68837cba4374a2615d83f071dfae22ba40e2 tokei&#39; | sha384sum -c - &amp;&amp; \</span>
+<span class="go">  sudo mv tokei /usr/local/bin/</span>
 </pre></div>
 </div>
 <p>Operations are just Python functions, or classes. They define a routine which
@@ -335,38 +335,38 @@ will be run concurrently with other operations. Here’s an example of the
 <code class="docutils literal notranslate"><span class="pre">git_commits</span></code> operation, which will find the number of commits within a date
 range.</p>
 <p><strong>feature/git/dffml_feature_git/feature/operations.py</strong></p>
-<div class="highlight-default notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>363
-364
-365
-366
-367
-368
-369
-370
-371
-372
-373
-374
-375
-376
-377
-378
-379
-380
-381
-382
-383
-384
-385
-386
-387
-388
-389
-390
-391
-392
-393
-394</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="nd">@op</span><span class="p">(</span>
+<div class="highlight-default notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">363</span>
+<span class="normal">364</span>
+<span class="normal">365</span>
+<span class="normal">366</span>
+<span class="normal">367</span>
+<span class="normal">368</span>
+<span class="normal">369</span>
+<span class="normal">370</span>
+<span class="normal">371</span>
+<span class="normal">372</span>
+<span class="normal">373</span>
+<span class="normal">374</span>
+<span class="normal">375</span>
+<span class="normal">376</span>
+<span class="normal">377</span>
+<span class="normal">378</span>
+<span class="normal">379</span>
+<span class="normal">380</span>
+<span class="normal">381</span>
+<span class="normal">382</span>
+<span class="normal">383</span>
+<span class="normal">384</span>
+<span class="normal">385</span>
+<span class="normal">386</span>
+<span class="normal">387</span>
+<span class="normal">388</span>
+<span class="normal">389</span>
+<span class="normal">390</span>
+<span class="normal">391</span>
+<span class="normal">392</span>
+<span class="normal">393</span>
+<span class="normal">394</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="nd">@op</span><span class="p">(</span>
     <span class="n">inputs</span><span class="o">=</span><span class="p">{</span>
         <span class="s2">&quot;repo&quot;</span><span class="p">:</span> <span class="n">git_repository</span><span class="p">,</span>
         <span class="s2">&quot;branch&quot;</span><span class="p">:</span> <span class="n">git_branch</span><span class="p">,</span>
@@ -431,7 +431,7 @@ file <code class="docutils literal notranslate"><span class="pre">/tmp/operation
 </div>
 <p>We then create a <code class="docutils literal notranslate"><span class="pre">DataFlow</span></code> description of how they all link together.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml dataflow create -config yaml <span class="k">$(</span>cat /tmp/operations<span class="k">)</span> <span class="se">\</span>
-    &gt; cgi-bin/dataflow.yaml
+<span class="go">    &gt; cgi-bin/dataflow.yaml</span>
 </pre></div>
 </div>
 <p>The inputs and outputs of operations within a running DataFlow are organized by
@@ -454,43 +454,43 @@ the quarter they were generated for.</p></li>
 </li>
 </ul>
 <p><strong>cgi-bin/dataflow.yaml</strong></p>
-<div class="highlight-default notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>266
-267
-268
-269
-270
-271
-272
-273
-274
-275
-276
-277
-278
-279
-280
-281
-282
-283
-284
-285
-286
-287
-288
-289
-290
-291
-292
-293
-294
-295
-296
-297
-298
-299
-300
-301
-302</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="n">seed</span><span class="p">:</span>
+<div class="highlight-default notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">266</span>
+<span class="normal">267</span>
+<span class="normal">268</span>
+<span class="normal">269</span>
+<span class="normal">270</span>
+<span class="normal">271</span>
+<span class="normal">272</span>
+<span class="normal">273</span>
+<span class="normal">274</span>
+<span class="normal">275</span>
+<span class="normal">276</span>
+<span class="normal">277</span>
+<span class="normal">278</span>
+<span class="normal">279</span>
+<span class="normal">280</span>
+<span class="normal">281</span>
+<span class="normal">282</span>
+<span class="normal">283</span>
+<span class="normal">284</span>
+<span class="normal">285</span>
+<span class="normal">286</span>
+<span class="normal">287</span>
+<span class="normal">288</span>
+<span class="normal">289</span>
+<span class="normal">290</span>
+<span class="normal">291</span>
+<span class="normal">292</span>
+<span class="normal">293</span>
+<span class="normal">294</span>
+<span class="normal">295</span>
+<span class="normal">296</span>
+<span class="normal">297</span>
+<span class="normal">298</span>
+<span class="normal">299</span>
+<span class="normal">300</span>
+<span class="normal">301</span>
+<span class="normal">302</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="n">seed</span><span class="p">:</span>
 <span class="o">-</span> <span class="n">definition</span><span class="p">:</span> <span class="n">group_by_spec</span>
   <span class="n">value</span><span class="p">:</span>
     <span class="n">authors</span><span class="p">:</span>
@@ -537,12 +537,12 @@ automatically.</p>
 <code class="docutils literal notranslate"><span class="pre">/tmp/urls</span></code>. The data generated on those repos is then being saved to
 <code class="docutils literal notranslate"><span class="pre">/tmp/data.json</span></code> (tagged as the <code class="docutils literal notranslate"><span class="pre">gathered</span></code> data source).</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml dataflow run records <span class="nb">set</span> <span class="se">\</span>
-    -keys <span class="k">$(</span>cat /tmp/urls<span class="k">)</span> <span class="se">\</span>
-    -record-def URL <span class="se">\</span>
-    -dataflow cgi-bin/dataflow.yaml <span class="se">\</span>
-    -sources <span class="nv">gathered</span><span class="o">=</span>json <span class="se">\</span>
-    -source-filename /tmp/data.json <span class="se">\</span>
-    -no-strict
+<span class="go">    -keys $(cat /tmp/urls) \</span>
+<span class="go">    -record-def URL \</span>
+<span class="go">    -dataflow cgi-bin/dataflow.yaml \</span>
+<span class="go">    -sources gathered=json \</span>
+<span class="go">    -source-filename /tmp/data.json \</span>
+<span class="go">    -no-strict</span>
 <span class="go">[</span>
 <span class="go">    ... results ...</span>
 <span class="go">    {</span>
@@ -738,16 +738,16 @@ CREATE TABLE IF NOT EXISTS `ml_data` (
 </div>
 <p>You can pipe that query in with bash like we did the first time.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>docker run -i --rm --net<span class="o">=</span>host mariadb:10 mysql <span class="se">\</span>
-    -h127.0.0.1 <span class="se">\</span>
-    -uuser <span class="se">\</span>
-    -ppass <span class="se">\</span>
-    --database db &lt; db_ml.sql
+<span class="go">    -h127.0.0.1 \</span>
+<span class="go">    -uuser \</span>
+<span class="go">    -ppass \</span>
+<span class="go">    --database db &lt; db_ml.sql</span>
 </pre></div>
 </div>
 <p>Now we’ll take the data we stored in the json file and merge it back into the
 database.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml merge <span class="nv">db</span><span class="o">=</span>demoapp <span class="nv">gathered</span><span class="o">=</span>json <span class="se">\</span>
-    -source-gathered-filename /tmp/data.json -log debug
+<span class="go">    -source-gathered-filename /tmp/data.json -log debug</span>
 </pre></div>
 </div>
 <p>List all the repos in the database to confirm all data and classifications show
@@ -767,32 +767,32 @@ which we can install via <code class="docutils literal notranslate"><span class=
 <p>The model is a generic wrapper around Tensorflow’s DNN estimator. We can use it
 to train on our dataset.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml train all <span class="se">\</span>
-    -model tfdnnc <span class="se">\</span>
-    -model-epochs <span class="m">400</span> <span class="se">\</span>
-    -model-steps <span class="m">4000</span> <span class="se">\</span>
-    -model-predict maintained:str:1 <span class="se">\</span>
-    -model-classifications <span class="m">0</span> <span class="m">1</span> <span class="se">\</span>
-    -sources <span class="nv">db</span><span class="o">=</span>demoapp <span class="se">\</span>
-    -model-features <span class="se">\</span>
-      authors:int:10 <span class="se">\</span>
-      commits:int:10 <span class="se">\</span>
-      work:int:10 <span class="se">\</span>
-    -log debug <span class="se">\</span>
-    -update
+<span class="go">    -model tfdnnc \</span>
+<span class="go">    -model-epochs 400 \</span>
+<span class="go">    -model-steps 4000 \</span>
+<span class="go">    -model-predict maintained:str:1 \</span>
+<span class="go">    -model-classifications 0 1 \</span>
+<span class="go">    -sources db=demoapp \</span>
+<span class="go">    -model-features \</span>
+<span class="go">      authors:int:10 \</span>
+<span class="go">      commits:int:10 \</span>
+<span class="go">      work:int:10 \</span>
+<span class="go">    -log debug \</span>
+<span class="go">    -update</span>
 </pre></div>
 </div>
 <p>Now let’s assess the accuracy, remember, this is bogus data so this number is
 meaningless unless you threw out the dataset and put in real classifications.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml accuracy <span class="se">\</span>
-    -model tfdnnc <span class="se">\</span>
-    -model-predict maintained:str:1 <span class="se">\</span>
-    -model-classifications <span class="m">0</span> <span class="m">1</span> <span class="se">\</span>
-    -sources <span class="nv">db</span><span class="o">=</span>demoapp <span class="se">\</span>
-    -model-features <span class="se">\</span>
-      authors:int:10 <span class="se">\</span>
-      commits:int:10 <span class="se">\</span>
-      work:int:10 <span class="se">\</span>
-    -log critical
+<span class="go">    -model tfdnnc \</span>
+<span class="go">    -model-predict maintained:str:1 \</span>
+<span class="go">    -model-classifications 0 1 \</span>
+<span class="go">    -sources db=demoapp \</span>
+<span class="go">    -model-features \</span>
+<span class="go">      authors:int:10 \</span>
+<span class="go">      commits:int:10 \</span>
+<span class="go">      work:int:10 \</span>
+<span class="go">    -log critical</span>
 <span class="go">0.4722222089767456</span>
 </pre></div>
 </div>
@@ -802,25 +802,25 @@ meaningless unless you threw out the dataset and put in real classifications.</p
 <h2>Making a Prediction<a class="headerlink" href="#making-a-prediction" title="Permalink to this headline">¶</a></h2>
 <p>Run the operations on the new repo: <code class="docutils literal notranslate"><span class="pre">https://github.com/intel/dffml.git</span></code></p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml dataflow run records <span class="nb">set</span> <span class="se">\</span>
-    -keys https://github.com/intel/dffml.git <span class="se">\</span>
-    -record-def URL <span class="se">\</span>
-    -dataflow cgi-bin/dataflow.yaml <span class="se">\</span>
-    -sources <span class="nv">db</span><span class="o">=</span>demoapp
+<span class="go">    -keys https://github.com/intel/dffml.git \</span>
+<span class="go">    -record-def URL \</span>
+<span class="go">    -dataflow cgi-bin/dataflow.yaml \</span>
+<span class="go">    -sources db=demoapp</span>
 </pre></div>
 </div>
 <p>Now that we have the data for the new repo, ask the model for a prediction.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml predict record <span class="se">\</span>
-    -keys https://github.com/intel/dffml.git <span class="se">\</span>
-    -model tfdnnc <span class="se">\</span>
-    -model-predict maintained:str:1 <span class="se">\</span>
-    -model-classifications <span class="m">0</span> <span class="m">1</span> <span class="se">\</span>
-    -sources <span class="nv">db</span><span class="o">=</span>demoapp <span class="se">\</span>
-    -model-features <span class="se">\</span>
-      authors:int:10 <span class="se">\</span>
-      commits:int:10 <span class="se">\</span>
-      work:int:10 <span class="se">\</span>
-    -log critical <span class="se">\</span>
-    -update
+<span class="go">    -keys https://github.com/intel/dffml.git \</span>
+<span class="go">    -model tfdnnc \</span>
+<span class="go">    -model-predict maintained:str:1 \</span>
+<span class="go">    -model-classifications 0 1 \</span>
+<span class="go">    -sources db=demoapp \</span>
+<span class="go">    -model-features \</span>
+<span class="go">      authors:int:10 \</span>
+<span class="go">      commits:int:10 \</span>
+<span class="go">      work:int:10 \</span>
+<span class="go">    -log critical \</span>
+<span class="go">    -update</span>
 <span class="go">[</span>
 <span class="go">    {</span>
 <span class="go">        &quot;extra&quot;: {},</span>
@@ -894,33 +894,33 @@ run the same commands we just ran on the command line, and parse the output,
 which is in JSON format, and set the resulting prediction classification in the
 database.</p>
 <p><strong>cgi-bin/api.py</strong></p>
-<div class="highlight-default notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>40
-41
-42
-43
-44
-45
-46
-47
-48
-49
-50
-51
-52
-53
-54
-55
-56
-57
-58
-59
-60
-61
-62
-63
-64
-65
-66</pre></div></td><td class="code"><div class="highlight"><pre><span></span>    <span class="n">today</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1"> %H:%M&#39;</span><span class="p">)</span>
+<div class="highlight-default notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span>
+<span class="normal">45</span>
+<span class="normal">46</span>
+<span class="normal">47</span>
+<span class="normal">48</span>
+<span class="normal">49</span>
+<span class="normal">50</span>
+<span class="normal">51</span>
+<span class="normal">52</span>
+<span class="normal">53</span>
+<span class="normal">54</span>
+<span class="normal">55</span>
+<span class="normal">56</span>
+<span class="normal">57</span>
+<span class="normal">58</span>
+<span class="normal">59</span>
+<span class="normal">60</span>
+<span class="normal">61</span>
+<span class="normal">62</span>
+<span class="normal">63</span>
+<span class="normal">64</span>
+<span class="normal">65</span>
+<span class="normal">66</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span>    <span class="n">today</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1"> %H:%M&#39;</span><span class="p">)</span>
     <span class="n">subprocess</span><span class="o">.</span><span class="n">check_call</span><span class="p">([</span>
         <span class="s2">&quot;dffml&quot;</span><span class="p">,</span> <span class="s2">&quot;dataflow&quot;</span><span class="p">,</span> <span class="s2">&quot;run&quot;</span><span class="p">,</span> <span class="s2">&quot;records&quot;</span><span class="p">,</span> <span class="s2">&quot;set&quot;</span><span class="p">,</span>
         <span class="s2">&quot;-keys&quot;</span><span class="p">,</span> <span class="n">query</span><span class="p">[</span><span class="s1">&#39;URL&#39;</span><span class="p">],</span>

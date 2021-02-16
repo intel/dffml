@@ -217,10 +217,10 @@ operations tutorial, we registered our operations with Python’s <code class="d
 system. This allows other Python packages and DFFML plugins to access them
 without the need to hardcode in <code class="docutils literal notranslate"><span class="pre">import</span></code> statements.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>curl -s <span class="se">\</span>
-  --header <span class="s2">&quot;Content-Type: application/json&quot;</span> <span class="se">\</span>
-  --request POST <span class="se">\</span>
-  --data <span class="s1">&#39;{&quot;insecure-package&quot;: [{&quot;value&quot;:&quot;insecure-package&quot;,&quot;definition&quot;:&quot;package&quot;}]}&#39;</span> <span class="se">\</span>
-  http://localhost:8080/shouldi <span class="p">|</span> python3.7 -m json.tool
+<span class="go">  --header &quot;Content-Type: application/json&quot; \</span>
+<span class="go">  --request POST \</span>
+<span class="go">  --data &#39;{&quot;insecure-package&quot;: [{&quot;value&quot;:&quot;insecure-package&quot;,&quot;definition&quot;:&quot;package&quot;}]}&#39; \</span>
+<span class="go">  http://localhost:8080/shouldi | python3.7 -m json.tool</span>
 <span class="go">{</span>
 <span class="go">    &quot;insecure-package&quot;: {</span>
 <span class="go">        &quot;safety_check_number_of_issues&quot;: 1,</span>
@@ -326,10 +326,10 @@ directory can be found in <code class="docutils literal notranslate"><span class
 <p>In another terminal, you can send a <code class="docutils literal notranslate"><span class="pre">POST</span></code> request containing the <code class="docutils literal notranslate"><span class="pre">Input</span></code>
 items that you want evaluated.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>curl -s <span class="se">\</span>
-  --header <span class="s2">&quot;Content-Type: application/json&quot;</span> <span class="se">\</span>
-  --request POST <span class="se">\</span>
-  --data <span class="s1">&#39;{&quot;insecure-package&quot;: [{&quot;value&quot;:&quot;insecure-package&quot;,&quot;definition&quot;:&quot;package&quot;}]}&#39;</span> <span class="se">\</span>
-  http://localhost:8080/shouldi <span class="p">|</span> python3.7 -m json.tool
+<span class="go">  --header &quot;Content-Type: application/json&quot; \</span>
+<span class="go">  --request POST \</span>
+<span class="go">  --data &#39;{&quot;insecure-package&quot;: [{&quot;value&quot;:&quot;insecure-package&quot;,&quot;definition&quot;:&quot;package&quot;}]}&#39; \</span>
+<span class="go">  http://localhost:8080/shouldi | python3.7 -m json.tool</span>
 <span class="go">{</span>
 <span class="go">    &quot;bandit_output&quot;: {</span>
 <span class="go">        &quot;CONFIDENCE.HIGH&quot;: 0,</span>
@@ -364,16 +364,16 @@ number of lines of comments to the number of lines of code.</p>
 can use <code class="docutils literal notranslate"><span class="pre">lines_of_code_to_comments</span></code>.</p>
 <p>On Linux</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>curl -sSL <span class="s1">&#39;https://github.com/XAMPPRocky/tokei/releases/download/v10.1.1/tokei-v10.1.1-x86_64-apple-darwin.tar.gz&#39;</span> <span class="se">\</span>
-  <span class="p">|</span> tar -xvz <span class="o">&amp;&amp;</span> <span class="se">\</span>
-  <span class="nb">echo</span> <span class="s1">&#39;22699e16e71f07ff805805d26ee86ecb9b1052d7879350f7eb9ed87beb0e6b84fbb512963d01b75cec8e80532e4ea29a tokei&#39;</span> <span class="p">|</span> sha384sum -c - <span class="o">&amp;&amp;</span> <span class="se">\</span>
-  sudo mv tokei /usr/local/bin/
+<span class="go">  | tar -xvz &amp;&amp; \</span>
+<span class="go">  echo &#39;22699e16e71f07ff805805d26ee86ecb9b1052d7879350f7eb9ed87beb0e6b84fbb512963d01b75cec8e80532e4ea29a tokei&#39; | sha384sum -c - &amp;&amp; \</span>
+<span class="go">  sudo mv tokei /usr/local/bin/</span>
 </pre></div>
 </div>
 <p>On OSX</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>curl -sSL <span class="s1">&#39;https://github.com/XAMPPRocky/tokei/releases/download/v10.1.1/tokei-v10.1.1-x86_64-apple-darwin.tar.gz&#39;</span> <span class="se">\</span>
-  <span class="p">|</span> tar -xvz <span class="o">&amp;&amp;</span> <span class="se">\</span>
-  <span class="nb">echo</span> <span class="s1">&#39;8c8a1d8d8dd4d8bef93dabf5d2f6e27023777f8553393e269765d7ece85e68837cba4374a2615d83f071dfae22ba40e2 tokei&#39;</span> <span class="p">|</span> sha384sum -c - <span class="o">&amp;&amp;</span> <span class="se">\</span>
-  sudo mv tokei /usr/local/bin/
+<span class="go">  | tar -xvz &amp;&amp; \</span>
+<span class="go">  echo &#39;8c8a1d8d8dd4d8bef93dabf5d2f6e27023777f8553393e269765d7ece85e68837cba4374a2615d83f071dfae22ba40e2 tokei&#39; | sha384sum -c - &amp;&amp; \</span>
+<span class="go">  sudo mv tokei /usr/local/bin/</span>
 </pre></div>
 </div>
 <p>The <code class="docutils literal notranslate"><span class="pre">lines_of_code_to_comments</span></code> operation needs the output given by
@@ -401,8 +401,8 @@ want to add to the <code class="docutils literal notranslate"><span class="pre">
 operations with the existing ones.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>mkdir -p shouldi/deploy/override
 <span class="gp">$ </span>dffml dataflow create -config yaml <span class="se">\</span>
-  dffml.mapping.create lines_of_code_by_language lines_of_code_to_comments <span class="se">\</span>
-  &gt; shouldi/deploy/override/shouldi.yaml
+<span class="go">  dffml.mapping.create lines_of_code_by_language lines_of_code_to_comments \</span>
+<span class="go">  &gt; shouldi/deploy/override/shouldi.yaml</span>
 </pre></div>
 </div>
 <p>The final directory structure should look like this</p>
@@ -519,10 +519,10 @@ operations with the existing ones.</p>
 <p>We’ve modified the flow to create the following dataflow</p>
 <img alt="Diagram showing DataFlow with use of comment to code ratio" src="../_images/shouldi-dataflow-extended.svg" /><p>The diagram above can be re-generated with the following commands</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml dataflow merge <span class="se">\</span>
-    shouldi/deploy/df/shouldi.json <span class="se">\</span>
-    shouldi/deploy/override/shouldi.yaml <span class="p">|</span> <span class="se">\</span>
-  dffml dataflow diagram <span class="se">\</span>
-    -stages processing -simple -config yaml /dev/stdin
+<span class="go">    shouldi/deploy/df/shouldi.json \</span>
+<span class="go">    shouldi/deploy/override/shouldi.yaml | \</span>
+<span class="go">  dffml dataflow diagram \</span>
+<span class="go">    -stages processing -simple -config yaml /dev/stdin</span>
 </pre></div>
 </div>
 <p>Copy and pasting the graph into the
@@ -538,10 +538,10 @@ configs.</p>
 </div>
 <p>Here’s an example of evaluating two packages using the new DataFlow.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>curl -s <span class="se">\</span>
-  --header <span class="s2">&quot;Content-Type: application/json&quot;</span> <span class="se">\</span>
-  --request POST <span class="se">\</span>
-  --data <span class="s1">&#39;{&quot;insecure-package&quot;: [{&quot;value&quot;:&quot;insecure-package&quot;,&quot;definition&quot;:&quot;package&quot;}], &quot;dffml&quot;: [{&quot;value&quot;:&quot;dffml&quot;,&quot;definition&quot;:&quot;package&quot;}]}&#39;</span> <span class="se">\</span>
-  http://localhost:8080/shouldi <span class="p">|</span> python3.7 -m json.tool
+<span class="go">  --header &quot;Content-Type: application/json&quot; \</span>
+<span class="go">  --request POST \</span>
+<span class="go">  --data &#39;{&quot;insecure-package&quot;: [{&quot;value&quot;:&quot;insecure-package&quot;,&quot;definition&quot;:&quot;package&quot;}], &quot;dffml&quot;: [{&quot;value&quot;:&quot;dffml&quot;,&quot;definition&quot;:&quot;package&quot;}]}&#39; \</span>
+<span class="go">  http://localhost:8080/shouldi | python3.7 -m json.tool</span>
 <span class="go">{</span>
 <span class="go">    &quot;dffml&quot;: {</span>
 <span class="go">        &quot;bandit_output&quot;: {</span>

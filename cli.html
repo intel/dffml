@@ -299,12 +299,12 @@ format.</p>
 running the dataflow until everything is complete, useful for error prone
 scraping tasks.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml dataflow run records <span class="nb">set</span> <span class="se">\</span>
-    -keys https://github.com/intel/dffml <span class="se">\</span>
-    -record-def URL <span class="se">\</span>
-    -dataflow df.yaml <span class="se">\</span>
-    -sources <span class="nv">gathered</span><span class="o">=</span>json <span class="se">\</span>
-    -source-filename /tmp/data.json <span class="se">\</span>
-    -no-strict
+<span class="go">    -keys https://github.com/intel/dffml \</span>
+<span class="go">    -record-def URL \</span>
+<span class="go">    -dataflow df.yaml \</span>
+<span class="go">    -sources gathered=json \</span>
+<span class="go">    -source-filename /tmp/data.json \</span>
+<span class="go">    -no-strict</span>
 </pre></div>
 </div>
 </div>

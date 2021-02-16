@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Deploying with the HTTP Service &mdash; DFFML 2a2c6e84 documentation</title>
+  <title>Deploying with the HTTP Service &mdash; DFFML 9e06a442 documentation</title>
   
 
   
@@ -66,7 +66,7 @@
             
             
               <div class="version">
-                2a2c6e84
+                9e06a442
               </div>
             
           
@@ -278,9 +278,9 @@ bytes.</p>
 <h2>Dataflow and Config files<a class="headerlink" href="#dataflow-and-config-files" title="Permalink to this headline">¶</a></h2>
 <p>DFFML can create a dataflow out of our python function.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml dataflow create -config yaml operations:convert_to_gif get_single <span class="se">\</span>
-    -inputs <span class="nv">480</span><span class="o">=</span>operations.convert_to_gif.inputs.resolution <span class="se">\</span>
-    <span class="s2">&quot;[&#39;operations.convert_to_gif.outputs.result&#39;]=get_single_spec&quot;</span> <span class="se">\</span>
-     &gt; deploy/df/ffmpeg.yaml
+<span class="go">    -inputs 480=operations.convert_to_gif.inputs.resolution \</span>
+<span class="go">    &quot;[&#39;operations.convert_to_gif.outputs.result&#39;]=get_single_spec&quot; \</span>
+<span class="go">     &gt; deploy/df/ffmpeg.yaml</span>
 </pre></div>
 </div>
 <p>Here through the inputs argument, we set the default resolution to 480 and output

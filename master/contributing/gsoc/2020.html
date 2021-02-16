@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>GSoC 2020 &mdash; DFFML 2a2c6e84 documentation</title>
+  <title>GSoC 2020 &mdash; DFFML 9e06a442 documentation</title>
   
 
   
@@ -66,7 +66,7 @@
             
             
               <div class="version">
-                2a2c6e84
+                9e06a442
               </div>
             
           
@@ -137,11 +137,7 @@
 <li class="toctree-l3"><a class="reference internal" href="rubric.html">Proposal Grading Rubric</a></li>
 <li class="toctree-l3"><a class="reference internal" href="2021.html">GSoC 2021</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">GSoC 2020</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#about-the-dffml">About the DFFML</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#project-ideas">Project Ideas</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#getting-started">Getting Started</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#writing-your-gsoc-application">Writing your GSoC application</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#contacting-the-dffml-team">Contacting the DFFML team</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#student-contributions">Student Contributions</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#thanks">Thanks</a></li>
 </ul>
 </li>
@@ -231,72 +227,50 @@
             
   <div class="section" id="gsoc-2020">
 <h1>GSoC 2020<a class="headerlink" href="#gsoc-2020" title="Permalink to this headline">¶</a></h1>
-<p>DFFML is participating in Google Summer of Code under the Python Software
-Foundation umbrella. You can read all about what GSoC is at
-http://python-gsoc.org/ and
-https://summerofcode.withgoogle.com/how-it-works/#timeline</p>
-<p><strong>Please make sure you are ready for a 30+ hour a week time commitment. The
-scope of your proposal should reflect this. See
-https://developers.google.com/open-source/gsoc/faq#how_much_time_does_gsoc_participation_take
-for more details.</strong></p>
-<div class="section" id="about-the-dffml">
-<h2>About the DFFML<a class="headerlink" href="#about-the-dffml" title="Permalink to this headline">¶</a></h2>
-<p>DFFML is a plugin based library / framework for machine learning. It allows users to wrap high or low level implementations of models that use various machine learning libraries, so as to interact will lots of different model implementations in the same way.</p>
-<p>DFFML is also a tool for dataset generation. DFFML ues directed graphs to generate datasets.</p>
-<p>Read more on the about page: https://intel.github.io/dffml/about.html</p>
-</div>
-<div class="section" id="project-ideas">
-<h2>Project Ideas<a class="headerlink" href="#project-ideas" title="Permalink to this headline">¶</a></h2>
-<p>We currently have three project ideas:</p>
+<p>DFFML participated in Google Summer of Code under the Python Software Foundation
+umbrella. You can read all about what this means at https://python-gsoc.org/</p>
+<div class="section" id="student-contributions">
+<h2>Student Contributions<a class="headerlink" href="#student-contributions" title="Permalink to this headline">¶</a></h2>
+<p>Huge thanks to our students of the 2020 GSoC program who made a huge impact on
+DFFML’s abilities, collection of models, and tutorials. As well as various bug
+fixes.</p>
+<div class="section" id="himanshu-0dust">
+<h3>Himanshu <a class="reference external" href="https://github.com/0dust">&#64;0dust</a><a class="headerlink" href="#himanshu-0dust" title="Permalink to this headline">¶</a></h3>
+<p>Project: NLP (Natural Language Processing) Models and Operations</p>
 <ul class="simple">
-<li><p><a class="reference external" href="https://github.com/intel/dffml/issues/365">shouldi Meta Static Analysis Tool</a></p></li>
-<li><p><a class="reference external" href="https://github.com/intel/dffml/issues/366">Doctest-able Examples</a></p></li>
-<li><p><a class="reference external" href="https://github.com/intel/dffml/issues/29">Add more models to DFFML</a></p></li>
-<li><p><a class="reference external" href="https://github.com/intel/dffml/issues/335">Output Formats</a></p></li>
+<li><p><a class="reference external" href="https://intel.github.io/dffml/plugins/dffml_model.html#hfclassifier">Classification model based on Transformers architecture</a></p></li>
+<li><p><a class="reference external" href="https://intel.github.io/dffml/plugins/dffml_model.html#qa-model">Question Answering model based on Transformers architecture</a></p></li>
+<li><p><a class="reference external" href="https://intel.github.io/dffml/plugins/dffml_model.html#spacyner">Spacy model for Named Entity Recognition</a></p></li>
+<li><p><a class="reference external" href="https://intel.github.io/dffml/tutorials/dataflows/nlp.html#preprocessing-data-and-training-dnnclassifier-model">Operations to wrap Spacy functions for text preprocessing</a></p></li>
+<li><p><a class="reference external" href="https://intel.github.io/dffml/tutorials/dataflows/nlp.html#preprocessing-data-and-training-naive-bayes-classifier-model">Operations to wrap Scikit-learn functions for text preprocessing</a></p></li>
 </ul>
-<p>If you’ve got a idea you’d like to propose, please make a new issue with the <code class="docutils literal notranslate"><span class="pre">gsoc:</span> <span class="pre">project:</span></code> prefix to discuss it! We’re open to all sorts of ideas. Students are also welcome to add “stretch goal” ideas to their application, which don’t have to be related to their main proposal (but still have to result in contributions to DFFML). Stretch goals are for if you finish your proposed project before the end of the summer, and have more that you want to do.</p>
 </div>
-<div class="section" id="getting-started">
-<h2>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="saksham-sakshamarora1">
+<h3>Saksham <a class="reference external" href="https://github.com/sakshamarora1">&#64;sakshamarora1</a><a class="headerlink" href="#saksham-sakshamarora1" title="Permalink to this headline">¶</a></h3>
+<p>Project: Integrating Image Processing into DFFML</p>
 <ul class="simple">
-<li><p>Read the <a class="reference external" href="https://intel.github.io/dffml/master/contributing/">contributing page</a></p></li>
-<li><p>Go through the tutorials on the documentation site, make sure you’re familiar with the command line interface.</p></li>
-<li><p><a class="reference external" href="https://github.com/intel/dffml/tree/master/tests">Run the tests</a>. DFFML has unit tests which are at about 90% coverage (amount of lines of code tested). Make sure you know how to run them, and if you’ve never done Python unittests before you might want to <a class="reference external" href="https://docs.python.org/3/library/unittest.html">read up on python’s unittest library</a>. Figure out how to run a single test! Running one test instead of all of them will speed up your workflow when you are writing your tests! (hint, it’s in the contributing docs!)</p></li>
-<li><p>Make your first contribution!</p>
-<ul>
-<li><p>Doesn’t have to be related to your project. Just make sure we know that you understand how to interact with the community, codebase, and GitHub. If you’re not familiar that’s okay! We’ll show you the ropes, but you have to jump in the pool if you want to learn how to swim.</p></li>
-<li><p>You could start with some small and extra small issues (time wise).</p></li>
-<li><p>You could help us increase the test coverage in any of the packages (check out the python package <code class="docutils literal notranslate"><span class="pre">coverage</span></code> to learn how to do this).</p></li>
-<li><p>You could write a <a class="reference external" href="https://github.com/intel/dffml/issues/29">new model</a>! Models are wrappers around any machine learning implementation or library, see the <a class="reference external" href="https://intel.github.io/dffml/master/tutorials/model.html">new model tutorial</a> for more info. Make sure to include tests!</p></li>
-<li><p>You could write a new operation to do something! Anything! Operations to grab weather and stock data have been suggested by people as good ideas.</p></li>
-</ul>
-</li>
+<li><p><a class="reference external" href="https://intel.github.io/dffml/examples/flower17/flower17_scikit.html">Wrapping important image pre-processing functions as DFFML operations</a></p></li>
+<li><p><a class="reference external" href="https://intel.github.io/dffml/examples/flower17/flower17_pytorch.html">PyTorch based pre-trained Convolutional Networks for image classification</a></p></li>
+<li><p><a class="reference external" href="https://intel.github.io/dffml/tutorials/neuralnetwork.html">Custom Neural Networks for image pre-processing and classification tasks</a></p></li>
 </ul>
 </div>
-<div class="section" id="writing-your-gsoc-application">
-<h2>Writing your GSoC application<a class="headerlink" href="#writing-your-gsoc-application" title="Permalink to this headline">¶</a></h2>
-<p>Instructions on <a class="reference external" href="http://python-gsoc.org/#apply">How to apply</a> can be found on the Python GSoC website.
-Please don’t forget to use our name (<strong>dffml</strong>) in your application title!</p>
-<p>In your proposal, we’re looking to see:</p>
+<div class="section" id="aghin-aghinsa">
+<h3>Aghin <a class="reference external" href="https://github.com/aghinsa">&#64;aghinsa</a><a class="headerlink" href="#aghin-aghinsa" title="Permalink to this headline">¶</a></h3>
+<p>Project: Improving DataFlows and Distributed Orchestrator</p>
 <ul class="simple">
-<li><p>What work you want to get done.</p></li>
-<li><p>How long you think it will take you.</p></li>
-<li><p>Why you think it will take you that long.</p>
-<ul>
-<li><p>When estimating how long it will take you it helps to think about any contributions to DFFML you’ve done up until now and compare what you’re proposing to what you’ve done.</p></li>
-<li><p>Remember, Google expects students to work 30+ hours a week on their GSoC projects.</p></li>
+<li><p><a class="reference external" href="https://intel.github.io/dffml/tutorials/dataflows/locking.html">DataFlow Locking Tutorial</a></p></li>
+<li><p><a class="reference external" href="https://intel.github.io/dffml/examples/webhook/index.html">DataFlow Continuous Deployment Tutorial</a></p></li>
+<li><p><a class="reference external" href="https://github.com/intel/dffml/pull/772">Distributed Orchestrator based on NATs</a></p></li>
 </ul>
-</li>
-</ul>
-<p>Here’s a <a class="reference external" href="https://github.com/python-gsoc/python-gsoc.github.io/blob/master/2019/application2019.md">template</a></p>
 </div>
-<div class="section" id="contacting-the-dffml-team">
-<h2>Contacting the DFFML team<a class="headerlink" href="#contacting-the-dffml-team" title="Permalink to this headline">¶</a></h2>
-<p>Most of our communication takes place on the <a class="reference external" href="https://gitter.im/dffml/community">Gitter channel</a> you can also check out the Community page in the docs for more ways to get in touch.</p>
 </div>
 <div class="section" id="thanks">
 <h2>Thanks<a class="headerlink" href="#thanks" title="Permalink to this headline">¶</a></h2>
-<p>Big thanks to <a class="reference external" href="https://github.com/terriko">Terri</a> her work organizing GSoC and letting us copy her format she used for <a class="reference external" href="https://github.com/intel/cve-bin-tool">CVE Binary Tool</a>, another awesome project with a security focus that was a part of GSoC 2019 as well. Check them out too!</p>
+<p>Big thanks to <a class="reference external" href="https://github.com/terriko">Terri</a> her work organizing GSoC and
+letting us copy her format she used for
+<a class="reference external" href="https://github.com/intel/cve-bin-tool">CVE Binary Tool</a>, another awesome
+project with a security focus that was a part of GSoC 2020 as well. Check them
+out too!</p>
 </div>
 </div>
 

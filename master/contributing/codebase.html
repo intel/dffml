@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Codebase Layout And Notes &mdash; DFFML 2a2c6e84 documentation</title>
+  <title>Codebase Layout And Notes &mdash; DFFML 9e06a442 documentation</title>
   
 
   
@@ -66,7 +66,7 @@
             
             
               <div class="version">
-                2a2c6e84
+                9e06a442
               </div>
             
           
@@ -377,15 +377,15 @@ that plugin are.</p>
 <code class="docutils literal notranslate"><span class="pre">config</span></code> is the <code class="docutils literal notranslate"><span class="pre">...Config</span></code> class as a dict for that plugin.</p>
 <p>The command line equivalent for the model is…</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml ... <span class="se">\</span>
-    -model tfdnnc <span class="se">\</span>
-    -model-epochs <span class="m">400</span> <span class="se">\</span>
-    -model-steps <span class="m">4000</span> <span class="se">\</span>
-    -model-classifications <span class="m">0</span> <span class="m">1</span> <span class="se">\</span>
-    -model-predict maintained:str:1 <span class="se">\</span>
-    -model-features <span class="se">\</span>
-      authors:int:10 <span class="se">\</span>
-      commits:int:10 <span class="se">\</span>
-      work:int:10 <span class="se">\</span>
+<span class="go">    -model tfdnnc \</span>
+<span class="go">    -model-epochs 400 \</span>
+<span class="go">    -model-steps 4000 \</span>
+<span class="go">    -model-classifications 0 1 \</span>
+<span class="go">    -model-predict maintained:str:1 \</span>
+<span class="go">    -model-features \</span>
+<span class="go">      authors:int:10 \</span>
+<span class="go">      commits:int:10 \</span>
+<span class="go">      work:int:10 \</span>
 </pre></div>
 </div>
 </div>

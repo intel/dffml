@@ -1,65 +1,44 @@
 # GSoC 2020
 
-DFFML is participating in Google Summer of Code under the Python Software
-Foundation umbrella. You can read all about what GSoC is at
-http://python-gsoc.org/ and
-https://summerofcode.withgoogle.com/how-it-works/#timeline
+DFFML participated in Google Summer of Code under the Python Software Foundation
+umbrella. You can read all about what this means at https://python-gsoc.org/
 
-**Please make sure you are ready for a 30+ hour a week time commitment. The
-scope of your proposal should reflect this. See
-https://developers.google.com/open-source/gsoc/faq#how_much_time_does_gsoc_participation_take
-for more details.**
+## Student Contributions
 
-## About the DFFML
+Huge thanks to our students of the 2020 GSoC program who made a huge impact on
+DFFML's abilities, collection of models, and tutorials. As well as various bug
+fixes.
 
-DFFML is a plugin based library / framework for machine learning. It allows users to wrap high or low level implementations of models that use various machine learning libraries, so as to interact will lots of different model implementations in the same way.
+### Himanshu [@0dust](https://github.com/0dust)
 
-DFFML is also a tool for dataset generation. DFFML ues directed graphs to generate datasets.
+Project: NLP (Natural Language Processing) Models and Operations
 
-Read more on the about page: https://intel.github.io/dffml/about.html
+- [Classification model based on Transformers architecture](https://intel.github.io/dffml/plugins/dffml_model.html#hfclassifier)
+- [Question Answering model based on Transformers architecture](https://intel.github.io/dffml/plugins/dffml_model.html#qa-model)
+- [Spacy model for Named Entity Recognition](https://intel.github.io/dffml/plugins/dffml_model.html#spacyner)
+- [Operations to wrap Spacy functions for text preprocessing](https://intel.github.io/dffml/tutorials/dataflows/nlp.html#preprocessing-data-and-training-dnnclassifier-model)
+- [Operations to wrap Scikit-learn functions for text preprocessing](https://intel.github.io/dffml/tutorials/dataflows/nlp.html#preprocessing-data-and-training-naive-bayes-classifier-model)
 
-## Project Ideas
+### Saksham [@sakshamarora1](https://github.com/sakshamarora1)
 
-We currently have three project ideas:
+Project: Integrating Image Processing into DFFML
 
-- [shouldi Meta Static Analysis Tool](https://github.com/intel/dffml/issues/365)
-- [Doctest-able Examples](https://github.com/intel/dffml/issues/366)
-- [Add more models to DFFML](https://github.com/intel/dffml/issues/29)
-- [Output Formats](https://github.com/intel/dffml/issues/335)
+- [Wrapping important image pre-processing functions as DFFML operations](https://intel.github.io/dffml/examples/flower17/flower17_scikit.html)
+- [PyTorch based pre-trained Convolutional Networks for image classification](https://intel.github.io/dffml/examples/flower17/flower17_pytorch.html)
+- [Custom Neural Networks for image pre-processing and classification tasks](https://intel.github.io/dffml/tutorials/neuralnetwork.html)
 
-If you've got a idea you'd like to propose, please make a new issue with the `gsoc: project:` prefix to discuss it! We're open to all sorts of ideas. Students are also welcome to add "stretch goal" ideas to their application, which don't have to be related to their main proposal (but still have to result in contributions to DFFML). Stretch goals are for if you finish your proposed project before the end of the summer, and have more that you want to do.
+### Aghin [@aghinsa](https://github.com/aghinsa)
 
-## Getting Started
+Project: Improving DataFlows and Distributed Orchestrator
 
-- Read the [contributing page](https://intel.github.io/dffml/master/contributing/)
-- Go through the tutorials on the documentation site, make sure you're familiar with the command line interface.
-- [Run the tests](https://github.com/intel/dffml/tree/master/tests). DFFML has unit tests which are at about 90% coverage (amount of lines of code tested). Make sure you know how to run them, and if you've never done Python unittests before you might want to [read up on python's unittest library](https://docs.python.org/3/library/unittest.html). Figure out how to run a single test! Running one test instead of all of them will speed up your workflow when you are writing your tests! (hint, it's in the contributing docs!)
-- Make your first contribution!
-  - Doesn't have to be related to your project. Just make sure we know that you understand how to interact with the community, codebase, and GitHub. If you're not familiar that's okay! We'll show you the ropes, but you have to jump in the pool if you want to learn how to swim.
-  - You could start with some small and extra small issues (time wise).
-  - You could help us increase the test coverage in any of the packages (check out the python package `coverage` to learn how to do this).
-  - You could write a [new model](https://github.com/intel/dffml/issues/29)! Models are wrappers around any machine learning implementation or library, see the [new model tutorial](https://intel.github.io/dffml/master/tutorials/model.html) for more info. Make sure to include tests!
-  - You could write a new operation to do something! Anything! Operations to grab weather and stock data have been suggested by people as good ideas.
-
-## Writing your GSoC application
-
-Instructions on [How to apply](http://python-gsoc.org/#apply) can be found on the Python GSoC website.
-Please don't forget to use our name (**dffml**) in your application title!
-
-In your proposal, we're looking to see:
-
-- What work you want to get done.
-- How long you think it will take you.
-- Why you think it will take you that long.
-  - When estimating how long it will take you it helps to think about any contributions to DFFML you've done up until now and compare what you're proposing to what you've done.
-  - Remember, Google expects students to work 30+ hours a week on their GSoC projects.
-
-Here's a [template](https://github.com/python-gsoc/python-gsoc.github.io/blob/master/2019/application2019.md)
-
-## Contacting the DFFML team
-
-Most of our communication takes place on the [Gitter channel](https://gitter.im/dffml/community) you can also check out the Community page in the docs for more ways to get in touch.
+- [DataFlow Locking Tutorial](https://intel.github.io/dffml/tutorials/dataflows/locking.html)
+- [DataFlow Continuous Deployment Tutorial](https://intel.github.io/dffml/examples/webhook/index.html)
+- [Distributed Orchestrator based on NATs](https://github.com/intel/dffml/pull/772)
 
 ## Thanks
 
-Big thanks to [Terri](https://github.com/terriko) her work organizing GSoC and letting us copy her format she used for [CVE Binary Tool](https://github.com/intel/cve-bin-tool), another awesome project with a security focus that was a part of GSoC 2019 as well. Check them out too!
+Big thanks to [Terri](https://github.com/terriko) her work organizing GSoC and
+letting us copy her format she used for
+[CVE Binary Tool](https://github.com/intel/cve-bin-tool), another awesome
+project with a security focus that was a part of GSoC 2020 as well. Check them
+out too!

@@ -204,12 +204,12 @@
 feature project’s feature URL.</p>
 <dl class="py class">
 <dt id="dffml.feature.feature.Data">
-<em class="property">class </em><code class="sig-prename descclassname">dffml.feature.feature.</code><code class="sig-name descname">Data</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">key</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dffml/feature/feature.html#Data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.feature.feature.Data" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">dffml.feature.feature.</span></code><code class="sig-name descname"><span class="pre">Data</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dffml/feature/feature.html#Data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.feature.feature.Data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Passed to each feature during evaluation. Shared between all features a record
 is being evaluated with</p>
 <dl class="py method">
 <dt id="dffml.feature.feature.Data.mklock">
-<em class="property">async </em><code class="sig-name descname">mklock</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></span></em><span class="sig-paren">)</span> &#x2192; asyncio.locks.Lock<a class="reference internal" href="../_modules/dffml/feature/feature.html#Data.mklock"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.feature.feature.Data.mklock" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">async</span> </em><code class="sig-name descname"><span class="pre">mklock</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">asyncio.locks.Lock</span><a class="reference internal" href="../_modules/dffml/feature/feature.html#Data.mklock"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.feature.feature.Data.mklock" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a lock stored in data under the key <cite>name</cite>. Create the lock if it
 does not exist.</p>
 </dd></dl>
@@ -218,7 +218,7 @@ does not exist.</p>
 
 <dl class="py class">
 <dt id="dffml.feature.feature.Feature">
-<em class="property">class </em><code class="sig-prename descclassname">dffml.feature.feature.</code><code class="sig-name descname">Feature</code><a class="reference internal" href="../_modules/dffml/feature/feature.html#Feature"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.feature.feature.Feature" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">dffml.feature.feature.</span></code><code class="sig-name descname"><span class="pre">Feature</span></code><a class="reference internal" href="../_modules/dffml/feature/feature.html#Feature"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.feature.feature.Feature" title="Permalink to this definition">¶</a></dt>
 <dd><p>Abstract base class for all features. New features must be derived from this
 class and implement the fetch, parse, and calc methods. These methods are
 always expected to be called in order. Anything you add to your feature
@@ -253,7 +253,7 @@ subclass</p>
 </div>
 <dl class="py method">
 <dt id="dffml.feature.feature.Feature.dtype">
-<code class="sig-name descname">dtype</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; Type<a class="reference internal" href="../_modules/dffml/feature/feature.html#Feature.dtype"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.feature.feature.Feature.dtype" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">dtype</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <span class="pre">Type</span><a class="reference internal" href="../_modules/dffml/feature/feature.html#Feature.dtype"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.feature.feature.Feature.dtype" title="Permalink to this definition">¶</a></dt>
 <dd><p>Models need to know a Feature’s datatype.</p>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">feature</span> <span class="o">=</span> <span class="n">Feature</span><span class="p">()</span>
@@ -265,7 +265,7 @@ subclass</p>
 
 <dl class="py method">
 <dt id="dffml.feature.feature.Feature.length">
-<code class="sig-name descname">length</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a><a class="reference internal" href="../_modules/dffml/feature/feature.html#Feature.length"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.feature.feature.Feature.length" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">length</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a><a class="reference internal" href="../_modules/dffml/feature/feature.html#Feature.length"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.feature.feature.Feature.length" title="Permalink to this definition">¶</a></dt>
 <dd><p>Models need to know a Feature’s length, 1 means single value, more than
 that is the length of the array calc returns.</p>
 <p class="rubric">Examples</p>
@@ -278,7 +278,7 @@ that is the length of the array calc returns.</p>
 
 <dl class="py method">
 <dt id="dffml.feature.feature.Feature.load">
-<em class="property">classmethod </em><code class="sig-name descname">load</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">loading</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dffml/feature/feature.html#Feature.load"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.feature.feature.Feature.load" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">load</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">loading</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dffml/feature/feature.html#Feature.load"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.feature.feature.Feature.load" title="Permalink to this definition">¶</a></dt>
 <dd><p>Loads all installed loading and returns them as a list. Sources to be
 loaded should be registered to ENTRYPOINT via setuptools.</p>
 </dd></dl>
@@ -287,10 +287,10 @@ loaded should be registered to ENTRYPOINT via setuptools.</p>
 
 <dl class="py class">
 <dt id="dffml.feature.feature.Features">
-<em class="property">class </em><code class="sig-prename descclassname">dffml.feature.feature.</code><code class="sig-name descname">Features</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#dffml.feature.feature.Feature" title="dffml.feature.feature.Feature">dffml.feature.feature.Feature</a></span></em>, <em class="sig-param"><span class="n">timeout</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dffml/feature/feature.html#Features"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.feature.feature.Features" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">dffml.feature.feature.</span></code><code class="sig-name descname"><span class="pre">Features</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#dffml.feature.feature.Feature" title="dffml.feature.feature.Feature"><span class="pre">dffml.feature.feature.Feature</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dffml/feature/feature.html#Features"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.feature.feature.Features" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="py attribute">
 <dt id="dffml.feature.feature.Features.SINGLETON">
-<code class="sig-name descname">SINGLETON</code><a class="headerlink" href="#dffml.feature.feature.Features.SINGLETON" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">SINGLETON</span></code><a class="headerlink" href="#dffml.feature.feature.Features.SINGLETON" title="Permalink to this definition">¶</a></dt>
 <dd><p>alias of <a class="reference internal" href="#dffml.feature.feature.Feature" title="dffml.feature.feature.Feature"><code class="xref py py-class docutils literal notranslate"><span class="pre">dffml.feature.feature.Feature</span></code></a></p>
 </dd></dl>
 
@@ -298,19 +298,19 @@ loaded should be registered to ENTRYPOINT via setuptools.</p>
 
 <dl class="py class">
 <dt id="dffml.feature.feature.Frequency">
-<em class="property">class </em><code class="sig-prename descclassname">dffml.feature.feature.</code><code class="sig-name descname">Frequency</code><a class="reference internal" href="../_modules/dffml/feature/feature.html#Frequency"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.feature.feature.Frequency" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">dffml.feature.feature.</span></code><code class="sig-name descname"><span class="pre">Frequency</span></code><a class="reference internal" href="../_modules/dffml/feature/feature.html#Frequency"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.feature.feature.Frequency" title="Permalink to this definition">¶</a></dt>
 <dd><p>Frequency in months</p>
 </dd></dl>
 
 <dl class="py class">
 <dt id="dffml.feature.feature.Quarterly">
-<em class="property">class </em><code class="sig-prename descclassname">dffml.feature.feature.</code><code class="sig-name descname">Quarterly</code><a class="reference internal" href="../_modules/dffml/feature/feature.html#Quarterly"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.feature.feature.Quarterly" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">dffml.feature.feature.</span></code><code class="sig-name descname"><span class="pre">Quarterly</span></code><a class="reference internal" href="../_modules/dffml/feature/feature.html#Quarterly"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.feature.feature.Quarterly" title="Permalink to this definition">¶</a></dt>
 <dd><p>Evaluate on a quarterly basis (every 3 months).</p>
 </dd></dl>
 
 <dl class="py class">
 <dt id="dffml.feature.feature.Yearly">
-<em class="property">class </em><code class="sig-prename descclassname">dffml.feature.feature.</code><code class="sig-name descname">Yearly</code><a class="reference internal" href="../_modules/dffml/feature/feature.html#Yearly"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.feature.feature.Yearly" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">dffml.feature.feature.</span></code><code class="sig-name descname"><span class="pre">Yearly</span></code><a class="reference internal" href="../_modules/dffml/feature/feature.html#Yearly"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.feature.feature.Yearly" title="Permalink to this definition">¶</a></dt>
 <dd><p>Evaluate on a yearly basis.</p>
 </dd></dl>
 
