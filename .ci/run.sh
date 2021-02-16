@@ -32,6 +32,29 @@ function run_plugin_examples() {
   cd "${SRC_ROOT}/${PLUGIN}"
 }
 
+test_no_skips() {
+  # Log skipped tests to file
+  check_skips="$(mktemp)"
+  TEMP_DIRS+=("${check_skips}")
+
+  # Run with coverage
+  RUN_CONSOLETESTS=1 "${PYTHON}" -u -m coverage run setup.py test 2>&1 | tee "${check_skips}"
+  "${PYTHON}" -m coverage report -m
+
+  # Fail if any tests were skipped or errored
+  skipped=$(tail -n 1 "${check_skips}" | grep -E '(skipped=[0-9]+)' | wc -l)
+  if [ "$skipped" -ne 0 ]; then
+    echo "Tests were skipped" >&2
+    exit 1
+  fi
+
+  errors=$(grep -E '(errors=[0-9]+)' "${check_skips}" | wc -l)
+  if [ "$errors" -ne 0 ]; then
+    echo "Tests errored" >&2
+    exit 1
+  fi
+}
+
 function run_plugin() {
   export PLUGIN="${1}"
 
@@ -40,14 +63,16 @@ function run_plugin() {
   # Install plugin
   "${PYTHON}" -m pip install -U -e .
 
-  # Run the tests but not the long documentation consoletests
-  "${PYTHON}" -u setup.py test
-
   if [ "x${PLUGIN}" != "x." ]; then
+    # Test ensuring no tests were skipped
+    test_no_skips
     # Run examples if they exist and we aren't at the root
     run_plugin_examples
   else
     # If we are at the root. Install plugsin and run various integration tests
+
+    # Run the tests but not the long documentation consoletests
+    "${PYTHON}" -u setup.py test
 
     # Try running create command
     plugin_creation_dir="$(mktemp -d)"
@@ -76,26 +101,8 @@ function run_plugin() {
     # Run the examples
     run_plugin_examples
 
-    # Log skipped tests to file
-    check_skips="$(mktemp)"
-    TEMP_DIRS+=("${check_skips}")
-
-    # Run with coverage
-    RUN_CONSOLETESTS=1 "${PYTHON}" -u -m coverage run setup.py test 2>&1 | tee "${check_skips}"
-    "${PYTHON}" -m coverage report -m
-
-    # Fail if any tests were skipped or errored
-    skipped=$(tail -n 1 "${check_skips}" | grep -E '(skipped=.*)' | wc -l)
-    if [ "$skipped" -ne 0 ]; then
-      echo "Tests were skipped" >&2
-      exit 1
-    fi
-
-    errors=$(grep -E '(errors=.*)' "${check_skips}" | wc -l)
-    if [ "$errors" -ne 0 ]; then
-      echo "Tests errored" >&2
-      exit 1
-    fi
+    # Test ensuring no tests were skipped
+    test_no_skips
   fi
 
   cd "${SRC_ROOT}"
