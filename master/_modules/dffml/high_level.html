@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>dffml.high_level &mdash; DFFML bd3693ac documentation</title>
+  <title>dffml.high_level &mdash; DFFML 1c35e52a documentation</title>
   
 
   
@@ -65,7 +65,7 @@
             
             
               <div class="version">
-                bd3693ac
+                1c35e52a
               </div>
             
           
@@ -199,49 +199,65 @@
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">asyncio</span>
 <span class="kn">import</span> <span class="nn">pathlib</span>
+<span class="kn">import</span> <span class="nn">contextlib</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">AsyncIterator</span>
 
 <span class="kn">from</span> <span class="nn">.record</span> <span class="kn">import</span> <span class="n">Record</span>
+<span class="kn">from</span> <span class="nn">.model.model</span> <span class="kn">import</span> <span class="n">Model</span>
 <span class="kn">from</span> <span class="nn">.df.types</span> <span class="kn">import</span> <span class="n">DataFlow</span><span class="p">,</span> <span class="n">Input</span>
 <span class="kn">from</span> <span class="nn">.df.memory</span> <span class="kn">import</span> <span class="n">MemoryOrchestrator</span>
-<span class="kn">from</span> <span class="nn">.source.source</span> <span class="kn">import</span> <span class="n">Sources</span><span class="p">,</span> <span class="n">BaseSource</span>
+<span class="kn">from</span> <span class="nn">.source.source</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">Sources</span><span class="p">,</span>
+    <span class="n">SourcesContext</span><span class="p">,</span>
+    <span class="n">BaseSource</span><span class="p">,</span>
+    <span class="n">BaseSourceContext</span><span class="p">,</span>
+    <span class="n">BaseSource</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="kn">from</span> <span class="nn">.source.memory</span> <span class="kn">import</span> <span class="n">MemorySource</span><span class="p">,</span> <span class="n">MemorySourceConfig</span>
 <span class="kn">from</span> <span class="nn">.df.base</span> <span class="kn">import</span> <span class="n">BaseInputSetContext</span><span class="p">,</span> <span class="n">BaseOrchestrator</span><span class="p">,</span> <span class="n">BaseInputSet</span>
 
 
-<span class="k">def</span> <span class="nf">_records_to_sources</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">):</span>
+<span class="nd">@contextlib</span><span class="o">.</span><span class="n">asynccontextmanager</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">_records_to_sources</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Create a memory source out of any records passed as a variable length list.</span>
 <span class="sd">    Add all sources found in the variable length list to a list of sources, and</span>
 <span class="sd">    the created source containing records, and return that list of sources.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># If the first arg is an instance of sources, append the rest to that.</span>
-    <span class="k">if</span> <span class="n">args</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">Sources</span><span class="p">):</span>
-        <span class="n">sources</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">sources</span> <span class="o">=</span> <span class="n">Sources</span><span class="p">(</span>
-            <span class="o">*</span><span class="p">[</span><span class="n">arg</span> <span class="k">for</span> <span class="n">arg</span> <span class="ow">in</span> <span class="n">args</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="n">BaseSource</span><span class="p">)]</span>
-        <span class="p">)</span>
+    <span class="n">sources</span> <span class="o">=</span> <span class="n">Sources</span><span class="p">()</span>
+    <span class="n">sctxs</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="c1"># Records to add to memory source</span>
     <span class="n">records</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="c1"># Make args mutable</span>
-    <span class="n">args</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
     <span class="c1"># Convert dicts to records</span>
     <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">arg</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
             <span class="n">arg</span> <span class="o">=</span> <span class="n">Record</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;features&quot;</span><span class="p">:</span> <span class="n">arg</span><span class="p">})</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="n">Record</span><span class="p">):</span>
             <span class="n">records</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span>
             <span class="nb">isinstance</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="s2">&quot;.&quot;</span> <span class="ow">in</span> <span class="n">arg</span>
         <span class="p">):</span>
             <span class="n">filepath</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span>
             <span class="n">source</span> <span class="o">=</span> <span class="n">BaseSource</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">filepath</span><span class="o">.</span><span class="n">suffixes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">))</span>
             <span class="n">sources</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">source</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="n">arg</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="p">(</span><span class="n">Sources</span><span class="p">,</span> <span class="n">BaseSource</span><span class="p">)):</span>
+            <span class="n">sources</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="p">(</span><span class="n">SourcesContext</span><span class="p">,</span> <span class="n">BaseSourceContext</span><span class="p">)):</span>
+            <span class="n">sctxs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Don&#39;t know what to do with non-source type: </span><span class="si">{</span><span class="n">arg</span><span class="si">!r}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
     <span class="c1"># Create memory source if there are any records</span>
     <span class="k">if</span> <span class="n">records</span><span class="p">:</span>
         <span class="n">sources</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">MemorySource</span><span class="p">(</span><span class="n">MemorySourceConfig</span><span class="p">(</span><span class="n">records</span><span class="o">=</span><span class="n">records</span><span class="p">)))</span>
-    <span class="k">return</span> <span class="n">sources</span>
+    <span class="c1"># Open the sources</span>
+    <span class="k">async</span> <span class="k">with</span> <span class="n">sources</span> <span class="k">as</span> <span class="n">sources</span><span class="p">:</span>
+        <span class="k">async</span> <span class="k">with</span> <span class="n">sources</span><span class="p">()</span> <span class="k">as</span> <span class="n">sctx</span><span class="p">:</span>
+            <span class="c1"># Add any already open source contexts</span>
+            <span class="k">for</span> <span class="n">already_open_sctx</span> <span class="ow">in</span> <span class="n">sctxs</span><span class="p">:</span>
+                <span class="n">sctx</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">already_open_sctx</span><span class="p">)</span>
+            <span class="k">yield</span> <span class="n">sctx</span>
 
 
 <div class="viewcode-block" id="run"><a class="viewcode-back" href="../../api/high_level.html#dffml.high_level.run">[docs]</a><span class="k">async</span> <span class="k">def</span> <span class="nf">run</span><span class="p">(</span>
@@ -463,10 +479,9 @@
 <span class="sd">    key,tag,Expertise,Trust,Years,prediction_Salary,confidence_Salary</span>
 <span class="sd">    myrecord,untagged,1,0.1,0,10,1.0</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">async</span> <span class="k">with</span> <span class="n">source</span><span class="p">:</span>
-        <span class="k">async</span> <span class="k">with</span> <span class="n">source</span><span class="p">()</span> <span class="k">as</span> <span class="n">sctx</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
-                <span class="k">await</span> <span class="n">sctx</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">record</span><span class="p">)</span></div>
+    <span class="k">async</span> <span class="k">with</span> <span class="n">_records_to_sources</span><span class="p">(</span><span class="n">source</span><span class="p">)</span> <span class="k">as</span> <span class="n">sctx</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+            <span class="k">await</span> <span class="n">sctx</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">record</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="load"><a class="viewcode-back" href="../../api/high_level.html#dffml.high_level.load">[docs]</a><span class="k">async</span> <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="n">source</span><span class="p">:</span> <span class="n">BaseSource</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AsyncIterator</span><span class="p">[</span><span class="n">Record</span><span class="p">]:</span>
@@ -522,17 +537,15 @@
 <span class="sd">    {&#39;key&#39;: &#39;1&#39;, &#39;features&#39;: {&#39;A&#39;: 0, &#39;B&#39;: 1}, &#39;extra&#39;: {}}</span>
 <span class="sd">    {&#39;key&#39;: &#39;2&#39;, &#39;features&#39;: {&#39;A&#39;: 3, &#39;B&#39;: 4}, &#39;extra&#39;: {}}</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">source</span> <span class="o">=</span> <span class="n">_records_to_sources</span><span class="p">(</span><span class="n">source</span><span class="p">)</span>
-    <span class="k">async</span> <span class="k">with</span> <span class="n">source</span><span class="p">:</span>
-        <span class="k">async</span> <span class="k">with</span> <span class="n">source</span><span class="p">()</span> <span class="k">as</span> <span class="n">sctx</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">args</span><span class="p">:</span>
-                <span class="c1"># If specific records are to be loaded</span>
-                <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
-                    <span class="k">yield</span> <span class="k">await</span> <span class="n">sctx</span><span class="o">.</span><span class="n">record</span><span class="p">(</span><span class="n">record</span><span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="c1"># All the records are loaded</span>
-                <span class="k">async</span> <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">sctx</span><span class="o">.</span><span class="n">records</span><span class="p">():</span>
-                    <span class="k">yield</span> <span class="n">record</span></div>
+    <span class="k">async</span> <span class="k">with</span> <span class="n">_records_to_sources</span><span class="p">(</span><span class="n">source</span><span class="p">)</span> <span class="k">as</span> <span class="n">sctx</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">args</span><span class="p">:</span>
+            <span class="c1"># If specific records are to be loaded</span>
+            <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+                <span class="k">yield</span> <span class="k">await</span> <span class="n">sctx</span><span class="o">.</span><span class="n">record</span><span class="p">(</span><span class="n">record</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># All the records are loaded</span>
+            <span class="k">async</span> <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">sctx</span><span class="o">.</span><span class="n">records</span><span class="p">():</span>
+                <span class="k">yield</span> <span class="n">record</span></div>
 
 
 <div class="viewcode-block" id="train"><a class="viewcode-back" href="../../api/high_level.html#dffml.high_level.train">[docs]</a><span class="k">async</span> <span class="k">def</span> <span class="nf">train</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">BaseSource</span><span class="p">,</span> <span class="n">Record</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]):</span>
@@ -577,10 +590,15 @@
 <span class="sd">    &gt;&gt;&gt;</span>
 <span class="sd">    &gt;&gt;&gt; asyncio.run(main())</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">sources</span> <span class="o">=</span> <span class="n">_records_to_sources</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
-    <span class="k">async</span> <span class="k">with</span> <span class="n">sources</span> <span class="k">as</span> <span class="n">sources</span><span class="p">,</span> <span class="n">model</span> <span class="k">as</span> <span class="n">model</span><span class="p">:</span>
-        <span class="k">async</span> <span class="k">with</span> <span class="n">sources</span><span class="p">()</span> <span class="k">as</span> <span class="n">sctx</span><span class="p">,</span> <span class="n">model</span><span class="p">()</span> <span class="k">as</span> <span class="n">mctx</span><span class="p">:</span>
-            <span class="k">return</span> <span class="k">await</span> <span class="n">mctx</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="n">sctx</span><span class="p">)</span></div>
+    <span class="k">async</span> <span class="k">with</span> <span class="n">contextlib</span><span class="o">.</span><span class="n">AsyncExitStack</span><span class="p">()</span> <span class="k">as</span> <span class="n">astack</span><span class="p">:</span>
+        <span class="c1"># Open sources</span>
+        <span class="n">sctx</span> <span class="o">=</span> <span class="k">await</span> <span class="n">astack</span><span class="o">.</span><span class="n">enter_async_context</span><span class="p">(</span><span class="n">_records_to_sources</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">))</span>
+        <span class="c1"># Allow for keep models open</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">Model</span><span class="p">):</span>
+            <span class="n">model</span> <span class="o">=</span> <span class="k">await</span> <span class="n">astack</span><span class="o">.</span><span class="n">enter_async_context</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+            <span class="n">mctx</span> <span class="o">=</span> <span class="k">await</span> <span class="n">astack</span><span class="o">.</span><span class="n">enter_async_context</span><span class="p">(</span><span class="n">model</span><span class="p">())</span>
+        <span class="c1"># Run training</span>
+        <span class="k">return</span> <span class="k">await</span> <span class="n">mctx</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="n">sctx</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="accuracy"><a class="viewcode-back" href="../../api/high_level.html#dffml.high_level.accuracy">[docs]</a><span class="k">async</span> <span class="k">def</span> <span class="nf">accuracy</span><span class="p">(</span>
@@ -636,10 +654,15 @@
 <span class="sd">    &gt;&gt;&gt; asyncio.run(main())</span>
 <span class="sd">    Accuracy: 1.0</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">sources</span> <span class="o">=</span> <span class="n">_records_to_sources</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
-    <span class="k">async</span> <span class="k">with</span> <span class="n">sources</span> <span class="k">as</span> <span class="n">sources</span><span class="p">,</span> <span class="n">model</span> <span class="k">as</span> <span class="n">model</span><span class="p">:</span>
-        <span class="k">async</span> <span class="k">with</span> <span class="n">sources</span><span class="p">()</span> <span class="k">as</span> <span class="n">sctx</span><span class="p">,</span> <span class="n">model</span><span class="p">()</span> <span class="k">as</span> <span class="n">mctx</span><span class="p">:</span>
-            <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="k">await</span> <span class="n">mctx</span><span class="o">.</span><span class="n">accuracy</span><span class="p">(</span><span class="n">sctx</span><span class="p">))</span></div>
+    <span class="k">async</span> <span class="k">with</span> <span class="n">contextlib</span><span class="o">.</span><span class="n">AsyncExitStack</span><span class="p">()</span> <span class="k">as</span> <span class="n">astack</span><span class="p">:</span>
+        <span class="c1"># Open sources</span>
+        <span class="n">sctx</span> <span class="o">=</span> <span class="k">await</span> <span class="n">astack</span><span class="o">.</span><span class="n">enter_async_context</span><span class="p">(</span><span class="n">_records_to_sources</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">))</span>
+        <span class="c1"># Allow for keep models open</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">Model</span><span class="p">):</span>
+            <span class="n">model</span> <span class="o">=</span> <span class="k">await</span> <span class="n">astack</span><span class="o">.</span><span class="n">enter_async_context</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+            <span class="n">mctx</span> <span class="o">=</span> <span class="k">await</span> <span class="n">astack</span><span class="o">.</span><span class="n">enter_async_context</span><span class="p">(</span><span class="n">model</span><span class="p">())</span>
+        <span class="c1"># Run accuracy method</span>
+        <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="k">await</span> <span class="n">mctx</span><span class="o">.</span><span class="n">accuracy</span><span class="p">(</span><span class="n">sctx</span><span class="p">))</span></div>
 
 
 <div class="viewcode-block" id="predict"><a class="viewcode-back" href="../../api/high_level.html#dffml.high_level.predict">[docs]</a><span class="k">async</span> <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span>
@@ -701,17 +724,22 @@
 <span class="sd">    {&#39;Years&#39;: 6, &#39;Salary&#39;: 70}</span>
 <span class="sd">    {&#39;Years&#39;: 7, &#39;Salary&#39;: 80}</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">sources</span> <span class="o">=</span> <span class="n">_records_to_sources</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
-    <span class="k">async</span> <span class="k">with</span> <span class="n">sources</span> <span class="k">as</span> <span class="n">sources</span><span class="p">,</span> <span class="n">model</span> <span class="k">as</span> <span class="n">model</span><span class="p">:</span>
-        <span class="k">async</span> <span class="k">with</span> <span class="n">sources</span><span class="p">()</span> <span class="k">as</span> <span class="n">sctx</span><span class="p">,</span> <span class="n">model</span><span class="p">()</span> <span class="k">as</span> <span class="n">mctx</span><span class="p">:</span>
-            <span class="k">async</span> <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">mctx</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">sctx</span><span class="p">):</span>
-                <span class="k">yield</span> <span class="n">record</span> <span class="k">if</span> <span class="n">keep_record</span> <span class="k">else</span> <span class="p">(</span>
-                    <span class="n">record</span><span class="o">.</span><span class="n">key</span><span class="p">,</span>
-                    <span class="n">record</span><span class="o">.</span><span class="n">features</span><span class="p">(),</span>
-                    <span class="n">record</span><span class="o">.</span><span class="n">predictions</span><span class="p">(),</span>
-                <span class="p">)</span>
-                <span class="k">if</span> <span class="n">update</span><span class="p">:</span>
-                    <span class="k">await</span> <span class="n">sctx</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">record</span><span class="p">)</span></div>
+    <span class="k">async</span> <span class="k">with</span> <span class="n">contextlib</span><span class="o">.</span><span class="n">AsyncExitStack</span><span class="p">()</span> <span class="k">as</span> <span class="n">astack</span><span class="p">:</span>
+        <span class="c1"># Open sources</span>
+        <span class="n">sctx</span> <span class="o">=</span> <span class="k">await</span> <span class="n">astack</span><span class="o">.</span><span class="n">enter_async_context</span><span class="p">(</span><span class="n">_records_to_sources</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">))</span>
+        <span class="c1"># Allow for keep models open</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">Model</span><span class="p">):</span>
+            <span class="n">model</span> <span class="o">=</span> <span class="k">await</span> <span class="n">astack</span><span class="o">.</span><span class="n">enter_async_context</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+            <span class="n">mctx</span> <span class="o">=</span> <span class="k">await</span> <span class="n">astack</span><span class="o">.</span><span class="n">enter_async_context</span><span class="p">(</span><span class="n">model</span><span class="p">())</span>
+        <span class="c1"># Run predictions</span>
+        <span class="k">async</span> <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">mctx</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">sctx</span><span class="p">):</span>
+            <span class="k">yield</span> <span class="n">record</span> <span class="k">if</span> <span class="n">keep_record</span> <span class="k">else</span> <span class="p">(</span>
+                <span class="n">record</span><span class="o">.</span><span class="n">key</span><span class="p">,</span>
+                <span class="n">record</span><span class="o">.</span><span class="n">features</span><span class="p">(),</span>
+                <span class="n">record</span><span class="o">.</span><span class="n">predictions</span><span class="p">(),</span>
+            <span class="p">)</span>
+            <span class="k">if</span> <span class="n">update</span><span class="p">:</span>
+                <span class="k">await</span> <span class="n">sctx</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">record</span><span class="p">)</span></div>
 </pre></div>
 
            </div>

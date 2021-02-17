@@ -183,6 +183,7 @@ Let's first create our training, test, and prediction data CSV files.
 **train.csv**
 
 .. code-block::
+    :test:
     :filepath: train.csv
 
     Years,Salary
@@ -195,6 +196,7 @@ Let's first create our training, test, and prediction data CSV files.
 **test.csv**
 
 .. code-block::
+    :test:
     :filepath: test.csv
 
     Years,Salary
@@ -204,6 +206,7 @@ Let's first create our training, test, and prediction data CSV files.
 **predict.csv**
 
 .. code-block::
+    :test:
     :filepath: predict.csv
 
     Years

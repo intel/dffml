@@ -236,6 +236,7 @@ Let's add some training data to a CSV file.
 **train.csv**
 
 .. code-block::
+    :test:
     :filepath: train.csv
 
     Years,Salary
