@@ -111,7 +111,7 @@ function run_plugin() {
   "${PYTHON}" -m pip freeze
 
   if [[ "x${GITHUB_ACTIONS}" == "xtrue" ]] && \
-     [[ "x${GITHUB_REF}" =~ xrefs/head/[a-zA-Z0-9]*\.[a-zA-Z0-9]*\.[a-zA-Z0-9]* ]]; then
+     [[ "x${GITHUB_REF}" =~ xrefs/heads/[a-zA-Z0-9]*\.[a-zA-Z0-9]*\.[a-zA-Z0-9]* ]]; then
     git status
     dffml service dev release "${PLUGIN}"
   fi
