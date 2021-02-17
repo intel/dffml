@@ -1,8 +1,11 @@
 dffml predict all \
   -model resnet18 \
+  -model-add_layers \
+  -model-layers @layers.yaml \
   -model-clstype str \
   -model-classifications ants bees \
   -model-directory resnet18_model \
+  -model-imageSize 224 \
   -model-enableGPU \
   -model-features image:int:$((500*500)) \
   -model-predict label:str:1 \
