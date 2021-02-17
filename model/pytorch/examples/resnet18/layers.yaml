@@ -1,0 +1,16 @@
+linear1:
+  layer_type: Linear
+  in_features: 512
+  out_features: 256
+relu:
+  layer_type: ReLU
+dropout:
+  layer_type: Dropout
+  p: 0.2
+linear2:
+  layer_type: Linear
+  in_features: 256
+  out_features: 2
+logsoftmax:
+  layer_type: LogSoftmax
+  dim: 1

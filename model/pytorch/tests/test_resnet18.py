@@ -1,5 +1,6 @@
 import os
 import subprocess
+import shutil
 
 from dffml.cli.cli import CLI
 from dffml.util.os import chdir
@@ -21,7 +22,6 @@ class TestResNet18Model(IntegrationCLITestCase):
         "491db45cfcab02d99843fbdcf0574ecf99aa4f056d52c660a39248b5524f9e6e8f896d9faabd27ffcfc2eaca0cec6f39",
     )
     async def test_shell(self, tempdir):
-        return
         self.required_plugins("dffml-model-pytorch", "dffml-config-image")
 
         def clean_args(fd, directory):
@@ -30,6 +30,8 @@ class TestResNet18Model(IntegrationCLITestCase):
             for idx, word in enumerate(cmnd):
                 cmnd[idx] = word.strip()
             cmnd[cmnd.index("-model-directory") + 1] = directory
+            if "-model-epochs" in cmnd:
+                cmnd[cmnd.index("-model-epochs") + 1] = "1"
             return cmnd
 
         with chdir(tempdir):
@@ -40,6 +42,10 @@ class TestResNet18Model(IntegrationCLITestCase):
             )
             subprocess.check_output(
                 ["bash", sh_filepath("resnet18", "unknown_data.sh")]
+            )
+            shutil.copy(
+                sh_filepath("resnet18", "layers.yaml"),
+                os.path.join(os.getcwd(), "layers.yaml"),
             )
 
             with open(sh_filepath("resnet18", "train.sh"), "r") as f:

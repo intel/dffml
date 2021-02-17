@@ -73,6 +73,8 @@ class PyTorchModelContext(ModelContext):
         if self.parent.config.classifications:
             self.cids = self._mkcids(self.parent.config.classifications)
             self.classifications = self._classifications(self.cids)
+        else:
+            self.classifications = None
         self.features = self._applicable_features()
         self.model_path = self._model_path()
         self._model = None

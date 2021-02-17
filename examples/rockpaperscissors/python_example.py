@@ -1,6 +1,5 @@
 import torch.nn as nn
 import asyncio
-import logging
 
 from dffml import train, accuracy, predict, DirectorySource, Features, Feature
 from dffml_model_pytorch import PyTorchNeuralNetwork, CrossEntropyLossFunction
@@ -85,12 +84,8 @@ predict_source = DirectorySource(foldername="rps-predict", feature="image",)
 
 
 async def main():
-    logging.basicConfig(level=logging.DEBUG)
-
     # Train the model
     await train(model, train_source)
-
-    logging.getLogger().setLevel(logging.CRITICAL)
 
     # Assess the accuracy
     acc = await accuracy(model, test_source)
