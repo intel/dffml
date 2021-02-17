@@ -1922,6 +1922,12 @@ Unzip the file
 
     unzip hymenoptera_data.zip
 
+We first create a YAML file to define the last layer(s) to replace from the network architecture
+
+**layers.yaml**
+
+.. literalinclude:: /../model/pytorch/examples/resnet18/layers.yaml
+
 Train the model
 
 .. literalinclude:: /../model/pytorch/examples/resnet18/train.sh
@@ -2044,12 +2050,12 @@ No description
 - add_layers: String
 
   - default: False
-  - Add layers on top of pretrained model
+  - Replace the last layer of the pretrained model
 
 - layers: dict
 
   - default: None
-  - Extra layers to be added on top of pretrained model
+  - Extra layers to replace the last layer of the pretrained model
 
 .. _plugin_model_dffml_model_pytorch_densenet121:
 
@@ -2147,12 +2153,12 @@ No description
 - add_layers: String
 
   - default: False
-  - Add layers on top of pretrained model
+  - Replace the last layer of the pretrained model
 
 - layers: dict
 
   - default: None
-  - Extra layers to be added on top of pretrained model
+  - Extra layers to replace the last layer of the pretrained model
 
 .. _plugin_model_dffml_model_pytorch_densenet161:
 
@@ -2250,12 +2256,12 @@ No description
 - add_layers: String
 
   - default: False
-  - Add layers on top of pretrained model
+  - Replace the last layer of the pretrained model
 
 - layers: dict
 
   - default: None
-  - Extra layers to be added on top of pretrained model
+  - Extra layers to replace the last layer of the pretrained model
 
 .. _plugin_model_dffml_model_pytorch_densenet169:
 
@@ -2353,12 +2359,12 @@ No description
 - add_layers: String
 
   - default: False
-  - Add layers on top of pretrained model
+  - Replace the last layer of the pretrained model
 
 - layers: dict
 
   - default: None
-  - Extra layers to be added on top of pretrained model
+  - Extra layers to replace the last layer of the pretrained model
 
 .. _plugin_model_dffml_model_pytorch_densenet201:
 
@@ -2456,12 +2462,12 @@ No description
 - add_layers: String
 
   - default: False
-  - Add layers on top of pretrained model
+  - Replace the last layer of the pretrained model
 
 - layers: dict
 
   - default: None
-  - Extra layers to be added on top of pretrained model
+  - Extra layers to replace the last layer of the pretrained model
 
 .. _plugin_model_dffml_model_pytorch_googlenet:
 
@@ -2559,12 +2565,12 @@ No description
 - add_layers: String
 
   - default: False
-  - Add layers on top of pretrained model
+  - Replace the last layer of the pretrained model
 
 - layers: dict
 
   - default: None
-  - Extra layers to be added on top of pretrained model
+  - Extra layers to replace the last layer of the pretrained model
 
 .. _plugin_model_dffml_model_pytorch_inception_v3:
 
@@ -2662,12 +2668,12 @@ No description
 - add_layers: String
 
   - default: False
-  - Add layers on top of pretrained model
+  - Replace the last layer of the pretrained model
 
 - layers: dict
 
   - default: None
-  - Extra layers to be added on top of pretrained model
+  - Extra layers to replace the last layer of the pretrained model
 
 .. _plugin_model_dffml_model_pytorch_mnasnet0_5:
 
@@ -2765,12 +2771,12 @@ No description
 - add_layers: String
 
   - default: False
-  - Add layers on top of pretrained model
+  - Replace the last layer of the pretrained model
 
 - layers: dict
 
   - default: None
-  - Extra layers to be added on top of pretrained model
+  - Extra layers to replace the last layer of the pretrained model
 
 .. _plugin_model_dffml_model_pytorch_mnasnet1_0:
 
@@ -2868,12 +2874,12 @@ No description
 - add_layers: String
 
   - default: False
-  - Add layers on top of pretrained model
+  - Replace the last layer of the pretrained model
 
 - layers: dict
 
   - default: None
-  - Extra layers to be added on top of pretrained model
+  - Extra layers to replace the last layer of the pretrained model
 
 .. _plugin_model_dffml_model_pytorch_mobilenet_v2:
 
@@ -2971,12 +2977,12 @@ No description
 - add_layers: String
 
   - default: False
-  - Add layers on top of pretrained model
+  - Replace the last layer of the pretrained model
 
 - layers: dict
 
   - default: None
-  - Extra layers to be added on top of pretrained model
+  - Extra layers to replace the last layer of the pretrained model
 
 .. _plugin_model_dffml_model_pytorch_pytorchnet:
 
@@ -3162,12 +3168,12 @@ No description
 - add_layers: String
 
   - default: False
-  - Add layers on top of pretrained model
+  - Replace the last layer of the pretrained model
 
 - layers: dict
 
   - default: None
-  - Extra layers to be added on top of pretrained model
+  - Extra layers to replace the last layer of the pretrained model
 
 .. _plugin_model_dffml_model_pytorch_resnet152:
 
@@ -3265,12 +3271,12 @@ No description
 - add_layers: String
 
   - default: False
-  - Add layers on top of pretrained model
+  - Replace the last layer of the pretrained model
 
 - layers: dict
 
   - default: None
-  - Extra layers to be added on top of pretrained model
+  - Extra layers to replace the last layer of the pretrained model
 
 .. _plugin_model_dffml_model_pytorch_resnet18:
 
@@ -3368,12 +3374,12 @@ No description
 - add_layers: String
 
   - default: False
-  - Add layers on top of pretrained model
+  - Replace the last layer of the pretrained model
 
 - layers: dict
 
   - default: None
-  - Extra layers to be added on top of pretrained model
+  - Extra layers to replace the last layer of the pretrained model
 
 .. _plugin_model_dffml_model_pytorch_resnet34:
 
@@ -3471,12 +3477,12 @@ No description
 - add_layers: String
 
   - default: False
-  - Add layers on top of pretrained model
+  - Replace the last layer of the pretrained model
 
 - layers: dict
 
   - default: None
-  - Extra layers to be added on top of pretrained model
+  - Extra layers to replace the last layer of the pretrained model
 
 .. _plugin_model_dffml_model_pytorch_resnet50:
 
@@ -3574,12 +3580,12 @@ No description
 - add_layers: String
 
   - default: False
-  - Add layers on top of pretrained model
+  - Replace the last layer of the pretrained model
 
 - layers: dict
 
   - default: None
-  - Extra layers to be added on top of pretrained model
+  - Extra layers to replace the last layer of the pretrained model
 
 .. _plugin_model_dffml_model_pytorch_resnext101_32x8d:
 
@@ -3677,12 +3683,12 @@ No description
 - add_layers: String
 
   - default: False
-  - Add layers on top of pretrained model
+  - Replace the last layer of the pretrained model
 
 - layers: dict
 
   - default: None
-  - Extra layers to be added on top of pretrained model
+  - Extra layers to replace the last layer of the pretrained model
 
 .. _plugin_model_dffml_model_pytorch_resnext50_32x4d:
 
@@ -3780,12 +3786,12 @@ No description
 - add_layers: String
 
   - default: False
-  - Add layers on top of pretrained model
+  - Replace the last layer of the pretrained model
 
 - layers: dict
 
   - default: None
-  - Extra layers to be added on top of pretrained model
+  - Extra layers to replace the last layer of the pretrained model
 
 .. _plugin_model_dffml_model_pytorch_shufflenet_v2_x0_5:
 
@@ -3883,12 +3889,12 @@ No description
 - add_layers: String
 
   - default: False
-  - Add layers on top of pretrained model
+  - Replace the last layer of the pretrained model
 
 - layers: dict
 
   - default: None
-  - Extra layers to be added on top of pretrained model
+  - Extra layers to replace the last layer of the pretrained model
 
 .. _plugin_model_dffml_model_pytorch_shufflenet_v2_x1_0:
 
@@ -3986,12 +3992,12 @@ No description
 - add_layers: String
 
   - default: False
-  - Add layers on top of pretrained model
+  - Replace the last layer of the pretrained model
 
 - layers: dict
 
   - default: None
-  - Extra layers to be added on top of pretrained model
+  - Extra layers to replace the last layer of the pretrained model
 
 .. _plugin_model_dffml_model_pytorch_vgg11:
 
@@ -4089,12 +4095,12 @@ No description
 - add_layers: String
 
   - default: False
-  - Add layers on top of pretrained model
+  - Replace the last layer of the pretrained model
 
 - layers: dict
 
   - default: None
-  - Extra layers to be added on top of pretrained model
+  - Extra layers to replace the last layer of the pretrained model
 
 .. _plugin_model_dffml_model_pytorch_vgg11_bn:
 
@@ -4192,12 +4198,12 @@ No description
 - add_layers: String
 
   - default: False
-  - Add layers on top of pretrained model
+  - Replace the last layer of the pretrained model
 
 - layers: dict
 
   - default: None
-  - Extra layers to be added on top of pretrained model
+  - Extra layers to replace the last layer of the pretrained model
 
 .. _plugin_model_dffml_model_pytorch_vgg13:
 
@@ -4295,12 +4301,12 @@ No description
 - add_layers: String
 
   - default: False
-  - Add layers on top of pretrained model
+  - Replace the last layer of the pretrained model
 
 - layers: dict
 
   - default: None
-  - Extra layers to be added on top of pretrained model
+  - Extra layers to replace the last layer of the pretrained model
 
 .. _plugin_model_dffml_model_pytorch_vgg13_bn:
 
@@ -4398,12 +4404,12 @@ No description
 - add_layers: String
 
   - default: False
-  - Add layers on top of pretrained model
+  - Replace the last layer of the pretrained model
 
 - layers: dict
 
   - default: None
-  - Extra layers to be added on top of pretrained model
+  - Extra layers to replace the last layer of the pretrained model
 
 .. _plugin_model_dffml_model_pytorch_vgg16:
 
@@ -4501,12 +4507,12 @@ No description
 - add_layers: String
 
   - default: False
-  - Add layers on top of pretrained model
+  - Replace the last layer of the pretrained model
 
 - layers: dict
 
   - default: None
-  - Extra layers to be added on top of pretrained model
+  - Extra layers to replace the last layer of the pretrained model
 
 .. _plugin_model_dffml_model_pytorch_vgg16_bn:
 
@@ -4604,12 +4610,12 @@ No description
 - add_layers: String
 
   - default: False
-  - Add layers on top of pretrained model
+  - Replace the last layer of the pretrained model
 
 - layers: dict
 
   - default: None
-  - Extra layers to be added on top of pretrained model
+  - Extra layers to replace the last layer of the pretrained model
 
 .. _plugin_model_dffml_model_pytorch_vgg19:
 
@@ -4707,12 +4713,12 @@ No description
 - add_layers: String
 
   - default: False
-  - Add layers on top of pretrained model
+  - Replace the last layer of the pretrained model
 
 - layers: dict
 
   - default: None
-  - Extra layers to be added on top of pretrained model
+  - Extra layers to replace the last layer of the pretrained model
 
 .. _plugin_model_dffml_model_pytorch_vgg19_bn:
 
@@ -4810,12 +4816,12 @@ No description
 - add_layers: String
 
   - default: False
-  - Add layers on top of pretrained model
+  - Replace the last layer of the pretrained model
 
 - layers: dict
 
   - default: None
-  - Extra layers to be added on top of pretrained model
+  - Extra layers to replace the last layer of the pretrained model
 
 .. _plugin_model_dffml_model_pytorch_wide_resnet101_2:
 
@@ -4913,12 +4919,12 @@ No description
 - add_layers: String
 
   - default: False
-  - Add layers on top of pretrained model
+  - Replace the last layer of the pretrained model
 
 - layers: dict
 
   - default: None
-  - Extra layers to be added on top of pretrained model
+  - Extra layers to replace the last layer of the pretrained model
 
 .. _plugin_model_dffml_model_pytorch_wide_resnet50_2:
 
@@ -5016,12 +5022,12 @@ No description
 - add_layers: String
 
   - default: False
-  - Add layers on top of pretrained model
+  - Replace the last layer of the pretrained model
 
 - layers: dict
 
   - default: None
-  - Extra layers to be added on top of pretrained model
+  - Extra layers to replace the last layer of the pretrained model
 
 .. _plugin_model_dffml_model_daal4py:
 

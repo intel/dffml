@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Neural Networks &mdash; DFFML 7ab789e9 documentation</title>
+  <title>Neural Networks &mdash; DFFML 60f08a79 documentation</title>
   
 
   
@@ -66,7 +66,7 @@
             
             
               <div class="version">
-                7ab789e9
+                60f08a79
               </div>
             
           
@@ -528,7 +528,6 @@ the top level layers (Sequential or Single) sequentially in the order they were 
 <h2>Python API<a class="headerlink" href="#python-api" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">torch.nn</span> <span class="k">as</span> <span class="nn">nn</span>
 <span class="kn">import</span> <span class="nn">asyncio</span>
-<span class="kn">import</span> <span class="nn">logging</span>
 
 <span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">train</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">,</span> <span class="n">predict</span><span class="p">,</span> <span class="n">DirectorySource</span><span class="p">,</span> <span class="n">Features</span><span class="p">,</span> <span class="n">Feature</span>
 <span class="kn">from</span> <span class="nn">dffml_model_pytorch</span> <span class="kn">import</span> <span class="n">PyTorchNeuralNetwork</span><span class="p">,</span> <span class="n">CrossEntropyLossFunction</span>
@@ -613,12 +612,8 @@ the top level layers (Sequential or Single) sequentially in the order they were 
 
 
 <span class="k">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
-    <span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">)</span>
-
     <span class="c1"># Train the model</span>
     <span class="k">await</span> <span class="n">train</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">train_source</span><span class="p">)</span>
-
-    <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">()</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">CRITICAL</span><span class="p">)</span>
 
     <span class="c1"># Assess the accuracy</span>
     <span class="n">acc</span> <span class="o">=</span> <span class="k">await</span> <span class="n">accuracy</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">test_source</span><span class="p">)</span>

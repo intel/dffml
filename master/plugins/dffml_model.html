@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Models &mdash; DFFML 7ab789e9 documentation</title>
+  <title>Models &mdash; DFFML 60f08a79 documentation</title>
   
 
   
@@ -66,7 +66,7 @@
             
             
               <div class="version">
-                7ab789e9
+                60f08a79
               </div>
             
           
@@ -2740,12 +2740,35 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">unzip</span> <span class="n">hymenoptera_data</span><span class="o">.</span><span class="n">zip</span>
 </pre></div>
 </div>
+<p>We first create a YAML file to define the last layer(s) to replace from the network architecture</p>
+<p><strong>layers.yaml</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">linear1</span><span class="p">:</span>
+  <span class="n">layer_type</span><span class="p">:</span> <span class="n">Linear</span>
+  <span class="n">in_features</span><span class="p">:</span> <span class="mi">512</span>
+  <span class="n">out_features</span><span class="p">:</span> <span class="mi">256</span>
+<span class="n">relu</span><span class="p">:</span>
+  <span class="n">layer_type</span><span class="p">:</span> <span class="n">ReLU</span>
+<span class="n">dropout</span><span class="p">:</span>
+  <span class="n">layer_type</span><span class="p">:</span> <span class="n">Dropout</span>
+  <span class="n">p</span><span class="p">:</span> <span class="mf">0.2</span>
+<span class="n">linear2</span><span class="p">:</span>
+  <span class="n">layer_type</span><span class="p">:</span> <span class="n">Linear</span>
+  <span class="n">in_features</span><span class="p">:</span> <span class="mi">256</span>
+  <span class="n">out_features</span><span class="p">:</span> <span class="mi">2</span>
+<span class="n">logsoftmax</span><span class="p">:</span>
+  <span class="n">layer_type</span><span class="p">:</span> <span class="n">LogSoftmax</span>
+  <span class="n">dim</span><span class="p">:</span> <span class="mi">1</span>
+</pre></div>
+</div>
 <p>Train the model</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>dffml train \
   -model resnet18 \
+  -model-add_layers \
+  -model-layers @layers.yaml \
   -model-clstype str \
   -model-classifications ants bees \
   -model-directory resnet18_model \
+  -model-imageSize 224 \
   -model-epochs 5 \
   -model-batch_size 32 \
   -model-enableGPU \
@@ -2761,9 +2784,12 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <p>Assess accuracy</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>dffml accuracy \
   -model resnet18 \
+  -model-add_layers \
+  -model-layers @layers.yaml \
   -model-clstype str \
   -model-classifications ants bees \
   -model-directory resnet18_model \
+  -model-imageSize 224 \
   -model-batch_size 32 \
   -model-enableGPU \
   -model-features image:int:$((500*500)) \
@@ -2792,9 +2818,12 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <p>Make the predictions</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>dffml predict all \
   -model resnet18 \
+  -model-add_layers \
+  -model-layers @layers.yaml \
   -model-clstype str \
   -model-classifications ants bees \
   -model-directory resnet18_model \
+  -model-imageSize 224 \
   -model-enableGPU \
   -model-features image:int:$((500*500)) \
   -model-predict label:str:1 \
@@ -2968,13 +2997,13 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>add_layers: String</p>
 <ul>
 <li><p>default: False</p></li>
-<li><p>Add layers on top of pretrained model</p></li>
+<li><p>Replace the last layer of the pretrained model</p></li>
 </ul>
 </li>
 <li><p>layers: dict</p>
 <ul>
 <li><p>default: None</p></li>
-<li><p>Extra layers to be added on top of pretrained model</p></li>
+<li><p>Extra layers to replace the last layer of the pretrained model</p></li>
 </ul>
 </li>
 </ul>
@@ -3087,13 +3116,13 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>add_layers: String</p>
 <ul>
 <li><p>default: False</p></li>
-<li><p>Add layers on top of pretrained model</p></li>
+<li><p>Replace the last layer of the pretrained model</p></li>
 </ul>
 </li>
 <li><p>layers: dict</p>
 <ul>
 <li><p>default: None</p></li>
-<li><p>Extra layers to be added on top of pretrained model</p></li>
+<li><p>Extra layers to replace the last layer of the pretrained model</p></li>
 </ul>
 </li>
 </ul>
@@ -3206,13 +3235,13 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>add_layers: String</p>
 <ul>
 <li><p>default: False</p></li>
-<li><p>Add layers on top of pretrained model</p></li>
+<li><p>Replace the last layer of the pretrained model</p></li>
 </ul>
 </li>
 <li><p>layers: dict</p>
 <ul>
 <li><p>default: None</p></li>
-<li><p>Extra layers to be added on top of pretrained model</p></li>
+<li><p>Extra layers to replace the last layer of the pretrained model</p></li>
 </ul>
 </li>
 </ul>
@@ -3325,13 +3354,13 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>add_layers: String</p>
 <ul>
 <li><p>default: False</p></li>
-<li><p>Add layers on top of pretrained model</p></li>
+<li><p>Replace the last layer of the pretrained model</p></li>
 </ul>
 </li>
 <li><p>layers: dict</p>
 <ul>
 <li><p>default: None</p></li>
-<li><p>Extra layers to be added on top of pretrained model</p></li>
+<li><p>Extra layers to replace the last layer of the pretrained model</p></li>
 </ul>
 </li>
 </ul>
@@ -3444,13 +3473,13 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>add_layers: String</p>
 <ul>
 <li><p>default: False</p></li>
-<li><p>Add layers on top of pretrained model</p></li>
+<li><p>Replace the last layer of the pretrained model</p></li>
 </ul>
 </li>
 <li><p>layers: dict</p>
 <ul>
 <li><p>default: None</p></li>
-<li><p>Extra layers to be added on top of pretrained model</p></li>
+<li><p>Extra layers to replace the last layer of the pretrained model</p></li>
 </ul>
 </li>
 </ul>
@@ -3563,13 +3592,13 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>add_layers: String</p>
 <ul>
 <li><p>default: False</p></li>
-<li><p>Add layers on top of pretrained model</p></li>
+<li><p>Replace the last layer of the pretrained model</p></li>
 </ul>
 </li>
 <li><p>layers: dict</p>
 <ul>
 <li><p>default: None</p></li>
-<li><p>Extra layers to be added on top of pretrained model</p></li>
+<li><p>Extra layers to replace the last layer of the pretrained model</p></li>
 </ul>
 </li>
 </ul>
@@ -3682,13 +3711,13 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>add_layers: String</p>
 <ul>
 <li><p>default: False</p></li>
-<li><p>Add layers on top of pretrained model</p></li>
+<li><p>Replace the last layer of the pretrained model</p></li>
 </ul>
 </li>
 <li><p>layers: dict</p>
 <ul>
 <li><p>default: None</p></li>
-<li><p>Extra layers to be added on top of pretrained model</p></li>
+<li><p>Extra layers to replace the last layer of the pretrained model</p></li>
 </ul>
 </li>
 </ul>
@@ -3801,13 +3830,13 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>add_layers: String</p>
 <ul>
 <li><p>default: False</p></li>
-<li><p>Add layers on top of pretrained model</p></li>
+<li><p>Replace the last layer of the pretrained model</p></li>
 </ul>
 </li>
 <li><p>layers: dict</p>
 <ul>
 <li><p>default: None</p></li>
-<li><p>Extra layers to be added on top of pretrained model</p></li>
+<li><p>Extra layers to replace the last layer of the pretrained model</p></li>
 </ul>
 </li>
 </ul>
@@ -3920,13 +3949,13 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>add_layers: String</p>
 <ul>
 <li><p>default: False</p></li>
-<li><p>Add layers on top of pretrained model</p></li>
+<li><p>Replace the last layer of the pretrained model</p></li>
 </ul>
 </li>
 <li><p>layers: dict</p>
 <ul>
 <li><p>default: None</p></li>
-<li><p>Extra layers to be added on top of pretrained model</p></li>
+<li><p>Extra layers to replace the last layer of the pretrained model</p></li>
 </ul>
 </li>
 </ul>
@@ -4039,13 +4068,13 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>add_layers: String</p>
 <ul>
 <li><p>default: False</p></li>
-<li><p>Add layers on top of pretrained model</p></li>
+<li><p>Replace the last layer of the pretrained model</p></li>
 </ul>
 </li>
 <li><p>layers: dict</p>
 <ul>
 <li><p>default: None</p></li>
-<li><p>Extra layers to be added on top of pretrained model</p></li>
+<li><p>Extra layers to replace the last layer of the pretrained model</p></li>
 </ul>
 </li>
 </ul>
@@ -4259,13 +4288,13 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>add_layers: String</p>
 <ul>
 <li><p>default: False</p></li>
-<li><p>Add layers on top of pretrained model</p></li>
+<li><p>Replace the last layer of the pretrained model</p></li>
 </ul>
 </li>
 <li><p>layers: dict</p>
 <ul>
 <li><p>default: None</p></li>
-<li><p>Extra layers to be added on top of pretrained model</p></li>
+<li><p>Extra layers to replace the last layer of the pretrained model</p></li>
 </ul>
 </li>
 </ul>
@@ -4378,13 +4407,13 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>add_layers: String</p>
 <ul>
 <li><p>default: False</p></li>
-<li><p>Add layers on top of pretrained model</p></li>
+<li><p>Replace the last layer of the pretrained model</p></li>
 </ul>
 </li>
 <li><p>layers: dict</p>
 <ul>
 <li><p>default: None</p></li>
-<li><p>Extra layers to be added on top of pretrained model</p></li>
+<li><p>Extra layers to replace the last layer of the pretrained model</p></li>
 </ul>
 </li>
 </ul>
@@ -4497,13 +4526,13 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>add_layers: String</p>
 <ul>
 <li><p>default: False</p></li>
-<li><p>Add layers on top of pretrained model</p></li>
+<li><p>Replace the last layer of the pretrained model</p></li>
 </ul>
 </li>
 <li><p>layers: dict</p>
 <ul>
 <li><p>default: None</p></li>
-<li><p>Extra layers to be added on top of pretrained model</p></li>
+<li><p>Extra layers to replace the last layer of the pretrained model</p></li>
 </ul>
 </li>
 </ul>
@@ -4616,13 +4645,13 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>add_layers: String</p>
 <ul>
 <li><p>default: False</p></li>
-<li><p>Add layers on top of pretrained model</p></li>
+<li><p>Replace the last layer of the pretrained model</p></li>
 </ul>
 </li>
 <li><p>layers: dict</p>
 <ul>
 <li><p>default: None</p></li>
-<li><p>Extra layers to be added on top of pretrained model</p></li>
+<li><p>Extra layers to replace the last layer of the pretrained model</p></li>
 </ul>
 </li>
 </ul>
@@ -4735,13 +4764,13 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>add_layers: String</p>
 <ul>
 <li><p>default: False</p></li>
-<li><p>Add layers on top of pretrained model</p></li>
+<li><p>Replace the last layer of the pretrained model</p></li>
 </ul>
 </li>
 <li><p>layers: dict</p>
 <ul>
 <li><p>default: None</p></li>
-<li><p>Extra layers to be added on top of pretrained model</p></li>
+<li><p>Extra layers to replace the last layer of the pretrained model</p></li>
 </ul>
 </li>
 </ul>
@@ -4854,13 +4883,13 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>add_layers: String</p>
 <ul>
 <li><p>default: False</p></li>
-<li><p>Add layers on top of pretrained model</p></li>
+<li><p>Replace the last layer of the pretrained model</p></li>
 </ul>
 </li>
 <li><p>layers: dict</p>
 <ul>
 <li><p>default: None</p></li>
-<li><p>Extra layers to be added on top of pretrained model</p></li>
+<li><p>Extra layers to replace the last layer of the pretrained model</p></li>
 </ul>
 </li>
 </ul>
@@ -4973,13 +5002,13 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>add_layers: String</p>
 <ul>
 <li><p>default: False</p></li>
-<li><p>Add layers on top of pretrained model</p></li>
+<li><p>Replace the last layer of the pretrained model</p></li>
 </ul>
 </li>
 <li><p>layers: dict</p>
 <ul>
 <li><p>default: None</p></li>
-<li><p>Extra layers to be added on top of pretrained model</p></li>
+<li><p>Extra layers to replace the last layer of the pretrained model</p></li>
 </ul>
 </li>
 </ul>
@@ -5092,13 +5121,13 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>add_layers: String</p>
 <ul>
 <li><p>default: False</p></li>
-<li><p>Add layers on top of pretrained model</p></li>
+<li><p>Replace the last layer of the pretrained model</p></li>
 </ul>
 </li>
 <li><p>layers: dict</p>
 <ul>
 <li><p>default: None</p></li>
-<li><p>Extra layers to be added on top of pretrained model</p></li>
+<li><p>Extra layers to replace the last layer of the pretrained model</p></li>
 </ul>
 </li>
 </ul>
@@ -5211,13 +5240,13 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>add_layers: String</p>
 <ul>
 <li><p>default: False</p></li>
-<li><p>Add layers on top of pretrained model</p></li>
+<li><p>Replace the last layer of the pretrained model</p></li>
 </ul>
 </li>
 <li><p>layers: dict</p>
 <ul>
 <li><p>default: None</p></li>
-<li><p>Extra layers to be added on top of pretrained model</p></li>
+<li><p>Extra layers to replace the last layer of the pretrained model</p></li>
 </ul>
 </li>
 </ul>
@@ -5330,13 +5359,13 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>add_layers: String</p>
 <ul>
 <li><p>default: False</p></li>
-<li><p>Add layers on top of pretrained model</p></li>
+<li><p>Replace the last layer of the pretrained model</p></li>
 </ul>
 </li>
 <li><p>layers: dict</p>
 <ul>
 <li><p>default: None</p></li>
-<li><p>Extra layers to be added on top of pretrained model</p></li>
+<li><p>Extra layers to replace the last layer of the pretrained model</p></li>
 </ul>
 </li>
 </ul>
@@ -5449,13 +5478,13 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>add_layers: String</p>
 <ul>
 <li><p>default: False</p></li>
-<li><p>Add layers on top of pretrained model</p></li>
+<li><p>Replace the last layer of the pretrained model</p></li>
 </ul>
 </li>
 <li><p>layers: dict</p>
 <ul>
 <li><p>default: None</p></li>
-<li><p>Extra layers to be added on top of pretrained model</p></li>
+<li><p>Extra layers to replace the last layer of the pretrained model</p></li>
 </ul>
 </li>
 </ul>
@@ -5568,13 +5597,13 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>add_layers: String</p>
 <ul>
 <li><p>default: False</p></li>
-<li><p>Add layers on top of pretrained model</p></li>
+<li><p>Replace the last layer of the pretrained model</p></li>
 </ul>
 </li>
 <li><p>layers: dict</p>
 <ul>
 <li><p>default: None</p></li>
-<li><p>Extra layers to be added on top of pretrained model</p></li>
+<li><p>Extra layers to replace the last layer of the pretrained model</p></li>
 </ul>
 </li>
 </ul>
@@ -5687,13 +5716,13 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>add_layers: String</p>
 <ul>
 <li><p>default: False</p></li>
-<li><p>Add layers on top of pretrained model</p></li>
+<li><p>Replace the last layer of the pretrained model</p></li>
 </ul>
 </li>
 <li><p>layers: dict</p>
 <ul>
 <li><p>default: None</p></li>
-<li><p>Extra layers to be added on top of pretrained model</p></li>
+<li><p>Extra layers to replace the last layer of the pretrained model</p></li>
 </ul>
 </li>
 </ul>
@@ -5806,13 +5835,13 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>add_layers: String</p>
 <ul>
 <li><p>default: False</p></li>
-<li><p>Add layers on top of pretrained model</p></li>
+<li><p>Replace the last layer of the pretrained model</p></li>
 </ul>
 </li>
 <li><p>layers: dict</p>
 <ul>
 <li><p>default: None</p></li>
-<li><p>Extra layers to be added on top of pretrained model</p></li>
+<li><p>Extra layers to replace the last layer of the pretrained model</p></li>
 </ul>
 </li>
 </ul>
@@ -5925,13 +5954,13 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>add_layers: String</p>
 <ul>
 <li><p>default: False</p></li>
-<li><p>Add layers on top of pretrained model</p></li>
+<li><p>Replace the last layer of the pretrained model</p></li>
 </ul>
 </li>
 <li><p>layers: dict</p>
 <ul>
 <li><p>default: None</p></li>
-<li><p>Extra layers to be added on top of pretrained model</p></li>
+<li><p>Extra layers to replace the last layer of the pretrained model</p></li>
 </ul>
 </li>
 </ul>
@@ -6044,13 +6073,13 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>add_layers: String</p>
 <ul>
 <li><p>default: False</p></li>
-<li><p>Add layers on top of pretrained model</p></li>
+<li><p>Replace the last layer of the pretrained model</p></li>
 </ul>
 </li>
 <li><p>layers: dict</p>
 <ul>
 <li><p>default: None</p></li>
-<li><p>Extra layers to be added on top of pretrained model</p></li>
+<li><p>Extra layers to replace the last layer of the pretrained model</p></li>
 </ul>
 </li>
 </ul>
@@ -6163,13 +6192,13 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>add_layers: String</p>
 <ul>
 <li><p>default: False</p></li>
-<li><p>Add layers on top of pretrained model</p></li>
+<li><p>Replace the last layer of the pretrained model</p></li>
 </ul>
 </li>
 <li><p>layers: dict</p>
 <ul>
 <li><p>default: None</p></li>
-<li><p>Extra layers to be added on top of pretrained model</p></li>
+<li><p>Extra layers to replace the last layer of the pretrained model</p></li>
 </ul>
 </li>
 </ul>
@@ -6282,13 +6311,13 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>add_layers: String</p>
 <ul>
 <li><p>default: False</p></li>
-<li><p>Add layers on top of pretrained model</p></li>
+<li><p>Replace the last layer of the pretrained model</p></li>
 </ul>
 </li>
 <li><p>layers: dict</p>
 <ul>
 <li><p>default: None</p></li>
-<li><p>Extra layers to be added on top of pretrained model</p></li>
+<li><p>Extra layers to replace the last layer of the pretrained model</p></li>
 </ul>
 </li>
 </ul>
@@ -6401,13 +6430,13 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>add_layers: String</p>
 <ul>
 <li><p>default: False</p></li>
-<li><p>Add layers on top of pretrained model</p></li>
+<li><p>Replace the last layer of the pretrained model</p></li>
 </ul>
 </li>
 <li><p>layers: dict</p>
 <ul>
 <li><p>default: None</p></li>
-<li><p>Extra layers to be added on top of pretrained model</p></li>
+<li><p>Extra layers to replace the last layer of the pretrained model</p></li>
 </ul>
 </li>
 </ul>
