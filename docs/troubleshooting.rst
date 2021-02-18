@@ -4,6 +4,8 @@ Troubleshooting
 This document contains solutions to common issues or things you can try to fix
 your problems.
 
+.. _troubleshooting_create_a_new_virtual_environment:
+
 Create a new Virtual Environment
 --------------------------------
 
