@@ -30,6 +30,9 @@ Add a line for the plugin along with it's sceret.
 Doing a Release
 ---------------
 
+- Create a major.minor bugfix branch if it does not exist. Switch to it if it
+  does
+
 - Increment the version number of each package
 
 - Increment the version number of the main package in the dependency list of
@@ -43,27 +46,30 @@ Doing a Release
 
 - Commit the new version
 
-- Push the new version to master
-
-- Create a major.minor bugfix branch if it does not exist. Switch to it if it
-  does
-
 - Pin all the dependencies
 
 - Tag a release
 
 - Push the new branch (if created) and the tag
 
+- Switch to the master branch
+
+- Cherry pick the release commit from the new branch, but not the pinning commit
+
+- Push the master branch
+
 .. code-block:: console
 
+    $ git checkout -b N.N.x || git checkout N.N.x
     $ dffml service dev bump packages 0.0.1
     $ dffml service dev bump inter
     $ sed -i "s/Unreleased]/$(dffml service dev setuppy version dffml/version.py)] - $(date +%F)/" CHANGELOG.md
-    $ git status
     $ git commit -sam "release: Version $(dffml service dev setuppy version dffml/version.py)"
-    $ git push
-    $ git checkout -b N.N.x || git checkout N.N.x
     $ dffml service dev ci pindeps path/to/extracted/logs_NNNNN
+    $ git commit -sam "release: $(dffml service dev setuppy version dffml/version.py): Pin dependency versions"
     $ git tag $(dffml service dev setuppy version dffml/version.py)
     $ git push -u origin N.N.x
     $ git push --tags
+    $ git checkout master
+    $ git cherry-pick X.Y.Z~1
+    $ git push
