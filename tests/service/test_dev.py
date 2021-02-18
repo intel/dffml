@@ -26,6 +26,7 @@ from dffml.service.dev import (
     Install,
     PinDeps,
     VersionNotFoundError,
+    RCMissingHyphen,
 )
 from dffml.util.os import chdir
 from dffml.util.skel import Skel
@@ -290,6 +291,34 @@ class TestSetupPyVersion(IntegrationCLITestCase):
 class TestBumpPackages(AsyncTestCase):
     async def test_bump_version(self):
         self.assertEqual(BumpPackages.bump_version("1.2.3", "5.6.7"), "6.8.10")
+
+    async def test_bump_version_original_with_rc(self):
+        self.assertEqual(
+            BumpPackages.bump_version("1.2.3-rc0", "5.6.7"), "6.8.10"
+        )
+
+    async def test_bump_version_increment_with_rc(self):
+        self.assertEqual(
+            BumpPackages.bump_version("1.2.3", "5.6.7-rc0"), "6.8.10-rc0"
+        )
+
+    async def test_bump_version_both_with_rc(self):
+        self.assertEqual(
+            BumpPackages.bump_version("1.2.3-rc1", "5.6.7-rc2"), "6.8.10-rc3"
+        )
+
+    async def test_bump_version_zero(self):
+        self.assertEqual(
+            BumpPackages.bump_version("1.2.3-rc1", "5.6.Z"), "6.8.0"
+        )
+
+    async def test_bump_version_original_violates_semantic(self):
+        with self.assertRaisesRegex(RCMissingHyphen, "original.*1\.2\.3rc1"):
+            BumpPackages.bump_version("1.2.3rc1", "0.0.0")
+
+    async def test_bump_version_increment_violates_semantic(self):
+        with self.assertRaisesRegex(RCMissingHyphen, "increment.*5\.6\.7rc2"):
+            BumpPackages.bump_version("1.2.3-rc1", "5.6.7rc2")
 
 
 class TestExport(AsyncTestCase):
