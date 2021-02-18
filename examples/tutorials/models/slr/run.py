@@ -1,6 +1,6 @@
 import asyncio
 
-from dffml import Feature, train, accuracy, predict
+from dffml import Features, Feature, train, accuracy, predict
 
 from myslr import MySLRModel
 
@@ -8,7 +8,7 @@ from myslr import MySLRModel
 async def main():
     # Configure the model
     model = MySLRModel(
-        feature=Feature("Years", int, 1),
+        features=Features(Feature("Years", int, 1)),
         predict=Feature("Salary", int, 1),
         directory="model",
     )
@@ -26,4 +26,4 @@ async def main():
 
 
 if __name__ == "__main__":
-    main()
+    asyncio.run(main())
