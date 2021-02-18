@@ -616,6 +616,10 @@ class BumpMain(CMD):
             raise RuntimeError
 
 
+class RCMissingHyphen(Exception):
+    pass
+
+
 @configdataclass
 class BumpPackagesConfig:
     version: str = field("Version to increment by",)
@@ -641,23 +645,48 @@ class BumpPackages(CMD):
 
     @staticmethod
     def bump_version(original, increment):
-        # Split on .
-        # map: int: Convert to an int
-        # zip: Create three instances of (original[i], increment[i])
-        # map: sum: Add each pair together
-        # map: str: Convert back to strings
-        return ".".join(
-            map(
-                str,
-                map(
-                    sum,
-                    zip(
-                        map(int, original.split(".")),
-                        map(int, increment.split(".")),
-                    ),
-                ),
+        # Ensure that we conform to semantic versioning spec. PEP-440 will
+        # normalize it to not have a hyphen.
+        if "rc" in original and not "-rc" in original:
+            raise RCMissingHyphen(
+                f"Semantic versioning requires a hyphen, original is in violation {original}"
             )
-        )
+        if "rc" in increment and not "-rc" in increment:
+            raise RCMissingHyphen(
+                f"Semantic versioning requires a hyphen, increment is in violation {increment}"
+            )
+        # Support for release candidates X.Y.Z-rcN
+        # Parse out the release candidate if it exists
+        original_rc = 0
+        if "-rc" in original:
+            original, original_rc = original.split("-rc")
+            original_rc = int(original_rc)
+        increment_rc = None
+        if "-rc" in increment:
+            increment, increment_rc = increment.split("-rc")
+            increment_rc = int(increment_rc)
+        # Split on .
+        # zip: Create three instances of (original[i], increment[i])
+        new_version_no_rc_numbers = []
+        for n_original, n_increment in zip(
+            original.split("."), increment.split(".")
+        ):
+            if n_increment == "Z":
+                # If 'Z' was given as the increment, zero spot instead of sum
+                new_version_no_rc_numbers.append(0)
+            else:
+                # Add each pair together
+                new_version_no_rc_numbers.append(
+                    int(n_original) + int(n_increment)
+                )
+        # map: str: Convert back to strings
+        # Join numbers with .
+        new_version_no_rc = ".".join(map(str, new_version_no_rc_numbers))
+        # Do not add rc if it wasn't incremented
+        if increment_rc is None:
+            return new_version_no_rc
+        # Otherwise, add rc
+        return new_version_no_rc + f"-rc{original_rc + increment_rc}"
 
     async def run(self):
         main_package = is_develop("dffml")
@@ -665,33 +694,18 @@ class BumpPackages(CMD):
             raise NotImplementedError(
                 "Need to reinstall the main package in development mode."
             )
-        main_package = pathlib.Path(main_package)
-        skel = main_package / "dffml" / "skel"
-        version_files = map(
-            lambda path: pathlib.Path(*path.split("/")).resolve(),
-            filter(
-                bool,
-                subprocess.check_output(["git", "ls-files", "*/version.py"])
-                .decode()
-                .split("\n"),
-            ),
-        )
-        # Update all the version files
-        for version_file in version_files:
-            # Ignore skel
-            if skel in version_file.parents:
-                self.logger.debug(
-                    "Skipping skel version file %s", version_file
-                )
-                continue
+        # Go through each plugin
+        for directory, name in {
+            ".": "dffml",
+            **PACKAGE_DIRECTORY_TO_NAME,
+        }.items():
+            # Update all the version files
+            version_file = REPO_ROOT.joinpath(
+                *directory, name.replace("-", "_"), "version.py"
+            )
             # If we're only supposed to increment versions of some packages,
             # check we're in the right package, skip if not.
-            setup_filepath = version_file.parent.parent / "setup.py"
-            with chdir(setup_filepath.parent):
-                try:
-                    name = SetupPyKWArg.get_kwargs(setup_filepath)["name"]
-                except Exception as error:
-                    raise Exception(setup_filepath) from error
+            with chdir(version_file.parents[1]):
                 if self.only and name not in self.only:
                     self.logger.debug(
                         "Version file not in only %s", version_file
