@@ -13,6 +13,7 @@ wheelhouse/
 *.png
 *.eggs
 *.swp
+*.zip
 .mypy_cache/
 *.egg-info/
 htmlcov/
