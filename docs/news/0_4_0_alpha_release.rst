@@ -54,6 +54,14 @@ for the full details. We'll cover some highlights here.
     added. We now have over 115 models! Check out the model plugins page to see
     them all.
 
+- :doc:`Documentation Testing with Sphinx consoletest extention </contributing/consoletest>`
+
+  - We developed a Sphinx extention which has allowed us to test the
+    ``code-block:: console`` directives and others in our documentation. This
+    serves as integration testing / documentation validation. The
+    :doc:`/tutorials/models/docs` tutorial was written to explain how this can
+    be used to write documentation for your models in the models' docstrings.
+
 Road to Beta
 ------------
 
@@ -165,7 +173,7 @@ Thanks
 ------
 
 Since 0.3.7 we've seen 35203/10423 insertions(+)/deletions(-) lines changed,
-added or removed, across 757 files.
+added, or removed, across 757 files.
 
 You all have done amazing stuff!! Great job and keep up the good work!
 
