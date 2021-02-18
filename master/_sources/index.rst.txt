@@ -83,6 +83,7 @@ branch can be found `here <master/index.html>`_.
     publications
     contact
     contributing/index
+    news/index
     changelog
 
 Indices and tables

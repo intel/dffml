@@ -1,0 +1,463 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>0.4.0 Alpha Release &mdash; DFFML 94a5b63c documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/tabs.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/copybutton.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Changelog" href="../changelog.html" />
+    <link rel="prev" title="News" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> DFFML
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                94a5b63c
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Introduction</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../concepts/index.html">Concepts</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Usage</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart/model.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Examples</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../plugins/index.html">Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cli.html">Command Line</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../plugins/service/http/index.html">HTTP API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../troubleshooting.html">Troubleshooting</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Subprojects</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../shouldi.html">shouldi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../swportal.html">Software Portal</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Community</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference external" href="https://github.com/intel/dffml">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://intel.github.io/dffml/master/">Master Branch Docs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../publications.html">Publications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contact.html">Contact Us</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributing</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">News</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">0.4.0 Alpha Release</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#highlights">Highlights</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#road-to-beta">Road to Beta</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#collaborations">Collaborations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#thanks">Thanks</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">DFFML</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">News</a> &raquo;</li>
+        
+      <li>0.4.0 Alpha Release</li>
+    
+    
+
+
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            
+              <a href="https://github.com/intel/dffml/blob/master/docs/news/0_4_0_alpha_release.rst" class="fa fa-github"> Edit on GitHub</a>
+            
+          
+        
+      </li>
+    
+
+
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="alpha-release">
+<h1>0.4.0 Alpha Release<a class="headerlink" href="#alpha-release" title="Permalink to this headline">¶</a></h1>
+<p>Friends, Romans, countrymen, lend me <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">-U</span> <span class="pre">dffml</span></code> commands.</p>
+<p>It’s been a long 10 months since our last release. A lot has changed in the
+world of DFFML. Looking back it’s clear how much progress we’ve made. The work
+that was done to get us to 0.4.0 has really polished the project. There are no
+doubt still kinks to work out, but we’ve come a long way.</p>
+<p>If you’re new to DFFML. See the <a class="reference internal" href="../installation.html"><span class="doc">Installation</span></a> and
+<a class="reference internal" href="../quickstart/model.html"><span class="doc">Quickstart</span></a> documents to get started, then come back here to try
+out the new features.</p>
+<div class="section" id="highlights">
+<h2>Highlights<a class="headerlink" href="#highlights" title="Permalink to this headline">¶</a></h2>
+<p>We have a ton of cool new features in this release. You can see the CHANGELOG
+for the full details. We’ll cover some highlights here.</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../tutorials/neuralnetwork.html"><span class="doc">Custom Neural Networks</span></a></p>
+<ul>
+<li><p>Saksham, one of our GSoC 2020 students, implemented PyTorch based models.
+The generic model allows users to use JSON or YAML files to define the
+layers they want in a neural network.</p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="../examples/flower17/flower17.html"><span class="doc">Image classification</span></a></p>
+<ul>
+<li><p>Saksham also exposed some PyTorch pre-trained models which are very useful
+for working with images. The full list can be found under
+<a class="reference internal" href="../plugins/dffml_model.html#plugin-model-dffml-model-pytorch"><span class="std std-ref">dffml-model-pytorch</span></a> on the model
+plugins page.</p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="../tutorials/dataflows/nlp.html"><span class="doc">Natural Language Processing (NLP) Models and Operations</span></a></p>
+<ul>
+<li><p>Himanshu, one of our GSoC 2020 students, implemented Natural Language
+Processing (NLP) models and operations. The Spacy based models can be found
+under <a class="reference internal" href="../plugins/dffml_model.html#plugin-model-dffml-model-spacy"><span class="std std-ref">dffml-model-spacy</span></a> on the model
+plugins page. The operations can be found under
+<a class="reference internal" href="../plugins/dffml_operation.html#plugin-operation-dffml-operations-nlp"><span class="std std-ref">dffml-operations-nlp</span></a> on the
+operations plugins page. We had a slight hangup with the release of the
+Transformers based models, we hope to send all those out you all as soon as
+possible.</p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="../examples/webhook/index.html"><span class="doc">Continuous Deployment Examples</span></a></p>
+<ul>
+<li><p>Aghin, one of our GSoC 2020 students, wrote operations and tutorials which
+allow users to receive web hooks from GitHub and re-deploy their
+containerized models and operations whenever their code is updated.</p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="../plugins/dffml_model.html"><span class="doc">New Models</span></a></p>
+<ul>
+<li><p>In addition to the above mentioned models, we have many more that were
+added. We now have over 115 models! Check out the model plugins page to see
+them all.</p></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="road-to-beta">
+<h2>Road to Beta<a class="headerlink" href="#road-to-beta" title="Permalink to this headline">¶</a></h2>
+<p>Things are looking up with regards to the path to our beta release.</p>
+<p>We’re going to start deciding what APIs are stable come the 0.5.0 beta release.</p>
+<p>Up until then, including now, things have been subject to change at any time as
+we have learned more about our problem space and how best to architecturally
+approach it.</p>
+<p>We have several major things on deck that we want to get before we declare beta.</p>
+<ul class="simple">
+<li><p>AutoML</p>
+<ul>
+<li><p>We now have a lot of models to choose from and are at the stage where we
+need models to help us choose our models! We’re going to have AutoML in the
+Beta release. This will pick the best model with the best hyper paramters
+for the job.</p></li>
+</ul>
+</li>
+<li><p>Accuracy Scorers</p>
+<ul>
+<li><p>Sudhanshu has been working on this since June 2020. He’s done a major
+refactor of the codebase to take the accuracy methods out of all the models
+and move them into <code class="docutils literal notranslate"><span class="pre">.score()</span></code> methods in a new <code class="docutils literal notranslate"><span class="pre">AccuracyScorer</span></code> method.
+This will allow users to more easily compare accuracy of models against each
+other.</p></li>
+</ul>
+</li>
+<li><p>Machine Learning support for videos</p>
+<ul>
+<li><p>We still need to decide how we’re going to support videos. DFFML’s
+asynchronous approach will hopefully make it convenient to use with live
+video streams.</p></li>
+</ul>
+</li>
+<li><p>Model directories auto stored into archives or remotely</p>
+<ul>
+<li><p>We’re going to implement automatic packing and unpacking of directories
+which models get saved and loaded from into/out of archives, such as Zip,
+Tar, etc. We’ll also implement plugins to be able to push and pull them from
+remote storage. This will make models convenient to train in one location
+and deploy another.</p></li>
+</ul>
+</li>
+<li><p>Remote execution</p>
+<ul>
+<li><p>The <a class="reference internal" href="../plugins/service/http/index.html"><span class="doc">HTTP service</span></a> already allows users
+to access all the DFFML command line and Python APIs over HTTP. We are going
+to integrate the <a class="reference internal" href="../api/high_level.html"><span class="doc">High Level</span></a> API with the HTTP service. A remote
+execution plugin type will allow users to install only the base package,
+and whatever remote execution plugin they want on a machine. Users will then
+be able to run the HTTP service on a machine with all needed ML packages
+installed, and their Python API calls will run on the HTTP service. In cases
+where you have multiple architectures, one of which doesn’t have ML
+packages compiled for it, this will be helpful (Edge).</p></li>
+</ul>
+</li>
+<li><p>Config files in place of command line parameters</p>
+<ul>
+<li><p>To stop users from having to copy paste so many command line parameters
+across command invocations, we’ll be implementating support for config
+files. YAML, JSON, etc. will all be able to be used to store what could also
+be command line arguments.</p></li>
+</ul>
+</li>
+<li><p>Command line to config file to Python API to HTTP API auto translation</p>
+<ul>
+<li><p>Since DFFML offers consistent APIs across it’s various interfaces, we will
+be able to implement an auto translator to convert one API to another. This
+means that if you have a DFFML command line invocation that you want to make
+into a Python API call, the translator will take your CLI command and output
+the DFFML Python API calls in Python.</p></li>
+</ul>
+</li>
+<li><p>DataFlows with operation implementations in multiple languages</p>
+<ul>
+<li><p>Our first target is to integrate wasmer to help us run web assembly
+binaries. We’ll later expand this out to having multiple Operation
+Implementation networks that will allow users to create DataFlows that run
+code written in multiple languages. For example, Python, Rust, and Golang.
+This will allow users to leverage their favorite libraries to get the job
+done without worrying about them being in different languages.</p></li>
+</ul>
+</li>
+<li><p>Premade data cleanup DataFlows</p>
+<ul>
+<li><p>We’ll have a set of out of the box data cleanup DataFlows that users can use
+before passing data to models. These will do common data cleanup tasks such
+as removing horrendous outliers.</p></li>
+</ul>
+</li>
+<li><p>Continuous deployment tutorials</p>
+<ul>
+<li><p>We will expand the tutorials released with 0.4.0 to include deployment
+behind reverse proxies for multiple projects, including how to setup
+encryption and authentication in a painless and maintainable way.</p></li>
+</ul>
+</li>
+<li><p>Pandas DataFrame source</p>
+<ul>
+<li><p>This is a small convenience that will probably improve usability. This
+change will allow us to pass DataFrame objects to the train/accuracy/predict
+functions.</p></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="collaborations">
+<h2>Collaborations<a class="headerlink" href="#collaborations" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>We’re exploring participation with the OpenSSF Identifying Security Threats
+working group. Their effort is similar to <a class="reference internal" href="../shouldi.html"><span class="doc">shouldi</span></a> and we might be able
+to contribute some of what we’ve done there.</p></li>
+<li><p>We’re exploring another use of DFFML internally at Intel. This time leveraging
+DataFlows more so than Machine Learning.</p></li>
+</ul>
+</div>
+<div class="section" id="thanks">
+<h2>Thanks<a class="headerlink" href="#thanks" title="Permalink to this headline">¶</a></h2>
+<p>Since 0.3.7 we’ve seen 35203/10423 insertions(+)/deletions(-) lines changed,
+added or removed, across 757 files.</p>
+<p>You all have done amazing stuff!! Great job and keep up the good work!</p>
+<ul class="simple">
+<li><p>Aadarsh Singh</p></li>
+<li><p>Aghin Shah Alin</p></li>
+<li><p>Aitik Gupta</p></li>
+<li><p>Geetansh Saxena</p></li>
+<li><p>Hashim</p></li>
+<li><p>Himanshu Tripathi</p></li>
+<li><p>Ichisada Shioko</p></li>
+<li><p>Jan Keromnes</p></li>
+<li><p>Justin Moore</p></li>
+<li><p>Naeem Khoshnevis</p></li>
+<li><p>Nitesh Yadav</p></li>
+<li><p>Oliver O’Brien</p></li>
+<li><p>Saksham Arora</p></li>
+<li><p>Shaurya Puri</p></li>
+<li><p>Shivam Singh</p></li>
+<li><p>Sudeep Sidhu</p></li>
+<li><p>Sudhanshu kumar</p></li>
+<li><p>Sudharsana K J L</p></li>
+<li><p>Yash Lamba</p></li>
+<li><p>Yash Varshney</p></li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="../changelog.html" class="btn btn-neutral float-right" title="Changelog" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="index.html" class="btn btn-neutral float-left" title="News" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2017 - 2021, Intel.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
