@@ -41,6 +41,13 @@ test_no_skips() {
   RUN_CONSOLETESTS=1 "${PYTHON}" -u -m coverage run setup.py test 2>&1 | tee "${check_skips}"
   "${PYTHON}" -m coverage report -m
 
+  # Fail if any coroutines were not awaited
+  unawaited=$(grep -nE 'coroutine .* was never awaited' "${check_skips}" | wc -l)
+  if [ "$unawaited" -ne 0 ]; then
+    echo "Found un-awaited coroutines" >&2
+    exit 1
+  fi
+
   # Fail if any tests were skipped or errored
   skipped=$(tail -n 1 "${check_skips}" | grep -E '(skipped=[0-9]+)' | wc -l)
   if [ "$skipped" -ne 0 ]; then
@@ -124,10 +131,21 @@ function run_consoletest() {
 
   cd "${SRC_ROOT}"
 
+  # Log tests to file
+  test_log="$(mktemp)"
+  TEMP_DIRS+=("${test_log}")
+
   # Install base package with testing and development utilities
   "${PYTHON}" -m pip install -U -e ".[dev]"
 
-  RUN_CONSOLETESTS=1 "${PYTHON}" -u setup.py test -s "tests.docs.test_consoletest.TestDocs.test_${PLUGIN}"
+  RUN_CONSOLETESTS=1 "${PYTHON}" -u setup.py test -s "tests.docs.test_consoletest.TestDocs.test_${PLUGIN}" 2>&1 | tee "${test_log}"
+
+  # Fail if any coroutines were not awaited
+  unawaited=$(grep -nE 'coroutine .* was never awaited' "${test_log}" | wc -l)
+  if [ "$unawaited" -ne 0 ]; then
+    echo "Found un-awaited coroutines" >&2
+    exit 1
+  fi
 
   cd "${SRC_ROOT}"
 
