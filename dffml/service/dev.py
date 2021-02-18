@@ -595,25 +595,47 @@ class Release(CMD):
                             raise RuntimeError
 
 
-class BumpMain(CMD):
+class BumpInter(CMD):
     """
-    Bump the version number of the main package within the dependency list of
-    each plugin.
+    Bump the version number of other plugins within the dependency list of
+    each plugin. This is for interdependent plugins.
     """
 
     async def run(self):
-        main_package = is_develop("dffml")
-        if not main_package:
-            raise NotImplementedError(
-                "Need to reinstall the main package in development mode."
+        # Map package names to their versions
+        package_name_to_version = {
+            name: (
+                re.compile(
+                    name + r">=[0-9]+\.[0-9]+\..*$", flags=re.MULTILINE
+                ),
+                parse_version(
+                    REPO_ROOT.joinpath(
+                        *directory, name.replace("-", "_"), "version.py"
+                    )
+                ),
             )
-        # TODO Implement this in Python
-        proc = await asyncio.create_subprocess_exec(
-            "bash", str(pathlib.Path(main_package, "scripts", "bump_deps.sh"))
-        )
-        await proc.wait()
-        if proc.returncode != 0:
-            raise RuntimeError
+            for directory, name in {
+                ".": "dffml",
+                **PACKAGE_DIRECTORY_TO_NAME,
+            }.items()
+        }
+        # Go through each plugin
+        for directory, name in PACKAGE_DIRECTORY_TO_NAME.items():
+            # Update all the setup.cfg files
+            setup_cfg_path = REPO_ROOT.joinpath(*directory, "setup.cfg")
+            setup_cfg_contents = setup_cfg_path.read_text()
+            # Go through each plugin, check if it exists within the setup.cfg
+            for name, (regex, version) in package_name_to_version.items():
+                update_to = f"{name}>={version}"
+                setup_cfg_contents, number_of_subs_made = regex.subn(
+                    update_to, setup_cfg_contents
+                )
+                if number_of_subs_made:
+                    self.logger.debug(
+                        f"Updated {setup_cfg_path} to use {update_to}"
+                    )
+            # If it does, overwrite the old version with the new version
+            setup_cfg_path.write_text(setup_cfg_contents)
 
 
 class RCMissingHyphen(Exception):
@@ -1037,7 +1059,7 @@ class Bump(CMD):
     Bump the the main package in the versions plugins, or any or all libraries.
     """
 
-    main = BumpMain
+    inter = BumpInter
     packages = BumpPackages
 
 

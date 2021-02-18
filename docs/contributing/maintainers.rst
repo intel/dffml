@@ -35,22 +35,8 @@ Doing a Release
 - Increment the version number of the main package in the dependency list of
   each package
 
-.. warning::
-
-    Some plugins depend on each other. For example
-    ``model/tensorflow_hub`` depends on ``model/tensorflow``. Its important to
-    update the version of ``dffml-model-tensorflow`` in
-    ``model/tensorflow_hub``.
-
-    To get a list of all the plugins that depend on each other. Run the
-    following set of grep commands.
-
-    .. code-block:: console
-
-        $ git grep dffml- | grep setup | grep '=.*\..*\.'
-        examples/shouldi/setup_common.py:        ["dffml-feature-git>=0.2.7"]
-        model/tensorflow_hub/setup.py:        ["dffml-model-tensorflow>=0.2.7"]
-        operations/deploy/setup_common.py:        ["dffml-feature-git>=0.2.7"]
+- Increment the version number of the plugin packages in the dependency list of
+  each package
 
 - Modify ``CHANGELOG.md`` to replace the ``Unreleased`` section header with the
   new version and the date
@@ -61,8 +47,9 @@ Doing a Release
 
 .. code-block:: console
 
-    $ dffml service dev bump packages 0.0.1 -log debug
+    $ dffml service dev bump packages 0.0.1
     $ dffml service dev bump main
+    $ dffml service dev bump inter
     $ dffml service dev ci pindeps
     $ sed -i "s/Unreleased]/$(dffml service dev setuppy version dffml/version.py)] - $(date +%F)/" CHANGELOG.md
     $ git c "release: Version $(dffml service dev setuppy version dffml/version.py)"
