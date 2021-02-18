@@ -1,0 +1,5 @@
+Cli Ml
+======
+
+.. automodule:: dffml.cli.ml
+   :members:

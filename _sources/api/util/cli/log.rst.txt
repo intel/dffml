@@ -1,0 +1,5 @@
+Util Cli Log
+============
+
+.. automodule:: dffml.util.cli.log
+   :members:

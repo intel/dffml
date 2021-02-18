@@ -1,0 +1,5 @@
+Util Os
+=======
+
+.. automodule:: dffml.util.os
+   :members:

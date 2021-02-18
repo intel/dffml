@@ -1,0 +1,786 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Neural Networks &mdash; DFFML 0.4.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/tabs.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/copybutton.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Double Context Entry" href="doublecontextentry.html" />
+    <link rel="prev" title="Using NLP Operations" href="dataflows/nlp.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> DFFML
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.4.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Introduction</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../concepts/index.html">Concepts</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Usage</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../quickstart/model.html">Quickstart</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Tutorials</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="models/index.html">Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sources/index.html">Sources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dataflows/index.html">DataFlows</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Neural Networks</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#rock-paper-scissors-hand-pose-classification">Rock Paper Scissors Hand Pose Classification</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#command-line">Command Line</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#python-api">Python API</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="doublecontextentry.html">Double Context Entry</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Examples</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../plugins/index.html">Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cli.html">Command Line</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../plugins/service/http/index.html">HTTP API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../troubleshooting.html">Troubleshooting</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Subprojects</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../shouldi.html">shouldi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../swportal.html">Software Portal</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Community</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/intel/dffml">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://intel.github.io/dffml/master/">Master Branch Docs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../publications.html">Publications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contact.html">Contact Us</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../news/index.html">News</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">DFFML</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Tutorials</a> &raquo;</li>
+        
+      <li>Neural Networks</li>
+    
+    
+
+
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            
+              <a href="https://github.com/intel/dffml/blob/master/docs/tutorials/neuralnetwork.rst" class="fa fa-github"> Edit on GitHub</a>
+            
+          
+        
+      </li>
+    
+
+
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="neural-networks">
+<h1>Neural Networks<a class="headerlink" href="#neural-networks" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="rock-paper-scissors-hand-pose-classification">
+<h2>Rock Paper Scissors Hand Pose Classification<a class="headerlink" href="#rock-paper-scissors-hand-pose-classification" title="Permalink to this headline">¶</a></h2>
+<p>This tutorial will show you how to train and test a PyTorch based custom neural network model made using DFFML.
+The dataset we will be using is the <a class="reference external" href="http://www.laurencemoroney.com/rock-paper-scissors-dataset/">rock-paper-scissors-dataset</a>
+which contains images of hands in Rock/Paper/Scissors poses, each image is a 300x300 RGB image.</p>
+<p>The model we’ll be using is <a class="reference internal" href="../plugins/dffml_model.html#plugin-model-dffml-model-pytorch-pytorchnet"><span class="std std-ref">PyTorchNeuralNetwork</span></a>
+which is a part of <code class="docutils literal notranslate"><span class="pre">dffml-model-pytorch</span></code>, a DFFML plugin which allows you to use PyTorch
+via DFFML. We can install it with <code class="docutils literal notranslate"><span class="pre">pip</span></code>. We will also be using image loading from
+<code class="docutils literal notranslate"><span class="pre">dffml-config-image</span></code> and YAML file loading from <code class="docutils literal notranslate"><span class="pre">dffml-config-yaml</span></code> for creating our neural network.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>pip install -U dffml-model-pytorch dffml-config-image dffml-config-yaml
+</pre></div>
+</div>
+<p>Download the dataset and verify with with <code class="docutils literal notranslate"><span class="pre">sha384sum</span></code>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="o">-</span><span class="n">LO</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">storage</span><span class="o">.</span><span class="n">googleapis</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">laurencemoroney</span><span class="o">-</span><span class="n">blog</span><span class="o">.</span><span class="n">appspot</span><span class="o">.</span><span class="n">com</span><span class="o">/</span>\<span class="p">{</span><span class="n">rps</span><span class="p">,</span><span class="n">rps</span><span class="o">-</span><span class="n">test</span><span class="o">-</span><span class="nb">set</span><span class="p">,</span><span class="n">rps</span><span class="o">-</span><span class="n">validation</span>\<span class="p">}</span><span class="o">.</span><span class="n">zip</span>
+<span class="n">sha384sum</span> <span class="o">-</span><span class="n">c</span> <span class="o">-</span> <span class="o">&lt;&lt;</span> <span class="n">EOF</span>
+<span class="n">c6a9119b0c6a0907b782bd99e04ce09a0924c0895df6a26bc6fb06baca4526f55e51f7156cceb4791cc65632d66085e8</span>  <span class="n">rps</span><span class="o">.</span><span class="n">zip</span>
+<span class="n">fc45a0ebe58b9aafc3cd5a60020fa042d3a19c26b0f820aee630b9602c8f53dd52fd40f35d44432dd031dea8f30a5f66</span>  <span class="n">rps</span><span class="o">-</span><span class="n">test</span><span class="o">-</span><span class="nb">set</span><span class="o">.</span><span class="n">zip</span>
+<span class="mi">375457</span><span class="n">bb95771ffeace2beedab877292d232f31e76502618d25e0d92a3e029d386429f52c771b05ae1c7229d2f5ecc29</span>  <span class="n">rps</span><span class="o">-</span><span class="n">validation</span><span class="o">.</span><span class="n">zip</span>
+<span class="n">EOF</span>
+</pre></div>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">rps.zip: OK</span>
+<span class="go">rps-test-set.zip: OK</span>
+<span class="go">rps-validation.zip: OK</span>
+</pre></div>
+</div>
+<p>Extract the datasets.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>unzip rps.zip
+<span class="gp">$ </span>unzip rps-test-set.zip
+<span class="gp">$ </span>unzip rps-validation.zip -d rps-predict
+</pre></div>
+</div>
+<p>The dataset for training the model will be in the <cite>rps</cite> directory.
+The dataset for testing the model will be in the <cite>rps-test-set</cite> directory.
+The images we will be using for prediction on the neural network will be in the <cite>rps-predict</cite> directory.</p>
+<p>Now that we have our dataset ready, we can perform classification of the hand poses to predict whether
+it is rock, paper or scissors!</p>
+<p>We first create the neural network.</p>
+<dl class="simple">
+<dt>The neural network can be created in 2 ways using DFFML:</dt><dd><ol class="arabic simple">
+<li><p>By creating a dictionary of layers in YAML or JSON format passing the file via CLI (eg. &#64;model.yaml).</p></li>
+<li><p>By using the torch module to create the model and passing an instance of the network to the model config.</p></li>
+</ol>
+</dd>
+</dl>
+</div>
+<div class="section" id="command-line">
+<h2>Command Line<a class="headerlink" href="#command-line" title="Permalink to this headline">¶</a></h2>
+<p>We first create a YAML file to define the neural network with all the information about the layers along with
+the forward method which is passed as list of layers under the model name key:</p>
+<p><strong>model.yaml</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">model</span><span class="p">:</span>
+  <span class="n">conv1</span><span class="p">:</span>
+    <span class="n">layer_type</span><span class="p">:</span> <span class="n">Conv2d</span>
+    <span class="n">in_channels</span><span class="p">:</span> <span class="mi">3</span>
+    <span class="n">out_channels</span><span class="p">:</span> <span class="mi">32</span>
+    <span class="n">kernel_size</span><span class="p">:</span> <span class="mi">5</span>
+    <span class="n">padding</span><span class="p">:</span> <span class="mi">2</span>
+  <span class="n">conv2</span><span class="p">:</span>
+    <span class="n">layer_type</span><span class="p">:</span> <span class="n">Conv2d</span>
+    <span class="n">in_channels</span><span class="p">:</span> <span class="mi">32</span>
+    <span class="n">out_channels</span><span class="p">:</span> <span class="mi">32</span>
+    <span class="n">kernel_size</span><span class="p">:</span> <span class="mi">3</span>
+    <span class="n">padding</span><span class="p">:</span> <span class="mi">1</span>
+  <span class="n">conv3</span><span class="p">:</span>
+    <span class="n">layer_type</span><span class="p">:</span> <span class="n">Conv2d</span>
+    <span class="n">in_channels</span><span class="p">:</span> <span class="mi">32</span>
+    <span class="n">out_channels</span><span class="p">:</span> <span class="mi">16</span>
+    <span class="n">kernel_size</span><span class="p">:</span> <span class="mi">3</span>
+    <span class="n">padding</span><span class="p">:</span> <span class="mi">1</span>
+  <span class="n">relu</span><span class="p">:</span>
+    <span class="n">layer_type</span><span class="p">:</span> <span class="n">ReLU</span>
+  <span class="n">pooling</span><span class="p">:</span>
+    <span class="n">layer_type</span><span class="p">:</span> <span class="n">MaxPool2d</span>
+    <span class="n">kernel_size</span><span class="p">:</span> <span class="mi">2</span>
+  <span class="n">linear</span><span class="p">:</span>
+    <span class="n">layer_type</span><span class="p">:</span> <span class="n">Linear</span>
+    <span class="n">in_features</span><span class="p">:</span> <span class="mi">1296</span>
+    <span class="n">out_features</span><span class="p">:</span> <span class="mi">3</span>
+<span class="n">forward</span><span class="p">:</span>
+  <span class="n">model</span><span class="p">:</span>
+    <span class="c1"># block 1</span>
+    <span class="c1"># Image dimensions at the beginning: torch.Size([batch_size, 32, 150, 150])</span>
+    <span class="o">-</span> <span class="n">conv1</span>
+    <span class="o">-</span> <span class="n">relu</span>
+    <span class="o">-</span> <span class="n">pooling</span>
+    <span class="c1"># block 2</span>
+    <span class="c1"># Image dimensions after block 1: torch.Size([batch_size, 32, 75, 75])</span>
+    <span class="o">-</span> <span class="n">conv2</span>
+    <span class="o">-</span> <span class="n">relu</span>
+    <span class="o">-</span> <span class="n">pooling</span>
+    <span class="c1"># block 3</span>
+    <span class="c1"># Image dimensions after block 2: torch.Size([batch_size, 32, 37, 37])</span>
+    <span class="o">-</span> <span class="n">conv2</span>
+    <span class="o">-</span> <span class="n">relu</span>
+    <span class="o">-</span> <span class="n">pooling</span>
+    <span class="c1"># block 4</span>
+    <span class="c1"># Image dimensions after block 3: torch.Size([batch_size, 32, 18, 18])</span>
+    <span class="o">-</span> <span class="n">conv3</span>
+    <span class="o">-</span> <span class="n">relu</span>
+    <span class="o">-</span> <span class="n">pooling</span>
+    <span class="c1"># fully connected layer</span>
+    <span class="c1"># Image dimensions after block 4: torch.Size([batch_size, 16, 9, 9])</span>
+    <span class="c1"># As the `Linear` layer only accepts 1D Tensors (2D if we take into account the batch_size),</span>
+    <span class="c1"># We need to change the shape of the incoming Tensor i.e. flatten it in this case, so we use</span>
+    <span class="c1"># torch&#39;s `view` property which will change the incoming Tensor size to torch.Size([batch_size, 16*9*9]),</span>
+    <span class="c1"># hence the &#39;-1&#39; for the value of batch_size to be inferred from the remaining dimensions which is the </span>
+    <span class="c1"># batch_size specified already in this case. It is good practice not to hard code the batch_size in the network</span>
+    <span class="c1"># as we might want to change it in the future. This is what the Linear layer is fed as &quot;in_features: 1296&quot;.</span>
+    <span class="o">-</span> <span class="n">view</span><span class="p">:</span>
+      <span class="o">-</span> <span class="o">-</span><span class="mi">1</span>
+      <span class="o">-</span> <span class="mi">1296</span>
+    <span class="o">-</span> <span class="n">linear</span>
+</pre></div>
+</div>
+<p>To learn more about Tensor Views, visit <a class="reference external" href="https://pytorch.org/docs/stable/tensor_view.html">Tensor Views PyTorch Docs</a></p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p>Sequential layers can also be created by indenting the layers under a key!
+The layers definied inside the Sequential layer can be used again while defining the forward method in the
+following syntax: <cite>- block1.conv1</cite>
+More info about PyTorch’s Sequential Layers and other layers used can be found at the
+<a class="reference external" href="https://pytorch.org/docs/stable/nn.html">Official PyTorch Documentation - torch.nn module</a></p>
+<p>An example of creating <cite>Sequential Layers</cite> would be:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">example_model:</span>
+<span class="go">    block1:</span>
+<span class="go">        ...</span>
+<span class="gp">    # </span>One of the many Sequential layers <span class="k">in</span> example_model
+<span class="go">    block2:</span>
+<span class="go">        conv2:</span>
+<span class="go">            name: Conv2d</span>
+<span class="go">            in_channels: 32</span>
+<span class="go">            out_channels: 16</span>
+<span class="go">            kernel_size: 3</span>
+<span class="go">            padding: 1</span>
+<span class="go">        relu:</span>
+<span class="go">            name: ReLU</span>
+<span class="go">        maxpooling:</span>
+<span class="go">            name: MaxPool2d</span>
+<span class="go">            kernel_size: 2</span>
+<span class="go">    block3:</span>
+<span class="go">        ...</span>
+<span class="go">    linear:</span>
+<span class="go">        ...</span>
+<span class="go">forward:</span>
+<span class="go">    model:</span>
+<span class="go">        - block1</span>
+<span class="go">        - block2</span>
+<span class="go">        - block3</span>
+<span class="go">        - block1.conv1 # Re-using a single layer inside another `Sequential Layer`</span>
+<span class="go">        - block2.maxpooling</span>
+<span class="go">        - view:</span>
+<span class="go">            - -1</span>
+<span class="go">            - 1296</span>
+<span class="go">        - linear</span>
+</pre></div>
+</div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If the forward method is not specified in the YAML file, it is automatically created by appending
+the top level layers (Sequential or Single) sequentially in the order they were defined in the file.</p>
+</div>
+<p>Train the model.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>dffml train \
+  -model pytorchnet \
+  -model-features image:int:$((300*300*3)) \
+  -model-clstype str \
+  -model-classifications rock paper scissors \
+  -model-predict label:int:1 \
+  -model-network @model.yaml \
+  -model-directory rps_model \
+  -model-loss crossentropyloss \
+  -model-optimizer Adam \
+  -model-validation_split 0.2 \
+  -model-epochs 10 \
+  -model-batch_size 32 \
+  -model-imageSize 150 \
+  -model-enableGPU \
+  -model-patience 2 \
+  -sources f=dir \
+    -source-foldername rps \
+    -source-feature image \
+    -source-labels rock paper scissors \
+  -log debug
+</pre></div>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">INFO:dffml.PyTorchNeuralNetworkContext:Training complete in 1m 42s</span>
+<span class="go">INFO:dffml.PyTorchNeuralNetworkContext:Best Validation Accuracy: 1.000000</span>
+</pre></div>
+</div>
+<p>Assess the model’s accuracy.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>dffml accuracy \
+  -model pytorchnet \
+  -model-features image:int:$((300*300*3)) \
+  -model-clstype str \
+  -model-classifications rock paper scissors \
+  -model-predict label:int:1 \
+  -model-network @model.yaml \
+  -model-directory rps_model \
+  -model-imageSize 150 \
+  -model-enableGPU \
+  -sources f=dir \
+    -source-foldername rps-test-set \
+    -source-feature image \
+    -source-labels rock paper scissors
+</pre></div>
+</div>
+<p>The output is:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">0.8763440860215054</span>
+</pre></div>
+</div>
+<p>Predict with the trained model.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>dffml predict all \
+  -model pytorchnet \
+  -model-features image:int:$((300*300*3)) \
+  -model-clstype str \
+  -model-classifications rock paper scissors \
+  -model-predict label:int:1 \
+  -model-network @model.yaml \
+  -model-directory rps_model \
+  -model-imageSize 150 \
+  -model-enableGPU \
+  -sources f=dir \
+    -source-foldername rps-predict \
+    -source-feature image \
+  -pretty
+</pre></div>
+</div>
+<p>Some of the Predictions:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>
+	<span class="n">Key</span><span class="p">:</span>	<span class="n">scissors7</span><span class="o">.</span><span class="n">png</span>
+                                                               <span class="n">Record</span> <span class="n">Features</span>
+<span class="o">+----------------------------------------------------------------------------------------------------------------------------------------------+</span>
+<span class="o">|</span>               <span class="n">image</span>               <span class="o">|</span>                     <span class="p">[[</span><span class="mi">253</span><span class="p">,</span> <span class="mi">253</span><span class="p">,</span> <span class="mi">253</span><span class="p">],</span> <span class="p">[</span><span class="mi">254</span><span class="p">,</span> <span class="mi">254</span><span class="p">,</span> <span class="mi">254</span><span class="p">],</span> <span class="p">[</span><span class="mi">254</span><span class="p">,</span> <span class="mi">254</span><span class="p">,</span>  <span class="o">...</span> <span class="p">(</span><span class="n">length</span><span class="p">:</span><span class="mi">300</span><span class="p">)</span>                      <span class="o">|</span>
+<span class="o">+----------------------------------------------------------------------------------------------------------------------------------------------+</span>
+
+                                                                  <span class="n">Prediction</span>
+<span class="o">+----------------------------------------------------------------------------------------------------------------------------------------------+</span>
+<span class="o">|</span>                                                                    <span class="n">label</span>                                                                     <span class="o">|</span>
+<span class="o">+----------------------------------------------------------------------------------------------------------------------------------------------+</span>
+<span class="o">|</span>          <span class="n">Value</span><span class="p">:</span>  <span class="n">scissors</span>         <span class="o">|</span>                                     <span class="n">Confidence</span><span class="p">:</span>   <span class="mf">0.9904084205627441</span>                                     <span class="o">|</span>
+<span class="o">+----------------------------------------------------------------------------------------------------------------------------------------------+</span>
+
+	<span class="n">Key</span><span class="p">:</span>	<span class="n">rock8</span><span class="o">.</span><span class="n">png</span>
+                                                               <span class="n">Record</span> <span class="n">Features</span>
+<span class="o">+----------------------------------------------------------------------------------------------------------------------------------------------+</span>
+<span class="o">|</span>               <span class="n">image</span>               <span class="o">|</span>                     <span class="p">[[</span><span class="mi">254</span><span class="p">,</span> <span class="mi">254</span><span class="p">,</span> <span class="mi">254</span><span class="p">],</span> <span class="p">[</span><span class="mi">253</span><span class="p">,</span> <span class="mi">253</span><span class="p">,</span> <span class="mi">253</span><span class="p">],</span> <span class="p">[</span><span class="mi">253</span><span class="p">,</span> <span class="mi">253</span><span class="p">,</span>  <span class="o">...</span> <span class="p">(</span><span class="n">length</span><span class="p">:</span><span class="mi">300</span><span class="p">)</span>                      <span class="o">|</span>
+<span class="o">+----------------------------------------------------------------------------------------------------------------------------------------------+</span>
+
+                                                                  <span class="n">Prediction</span>
+<span class="o">+----------------------------------------------------------------------------------------------------------------------------------------------+</span>
+<span class="o">|</span>                                                                    <span class="n">label</span>                                                                     <span class="o">|</span>
+<span class="o">+----------------------------------------------------------------------------------------------------------------------------------------------+</span>
+<span class="o">|</span>            <span class="n">Value</span><span class="p">:</span>  <span class="n">rock</span>           <span class="o">|</span>                                            <span class="n">Confidence</span><span class="p">:</span>   <span class="mf">1.0</span>                                             <span class="o">|</span>
+<span class="o">+----------------------------------------------------------------------------------------------------------------------------------------------+</span>
+
+	<span class="n">Key</span><span class="p">:</span>	<span class="n">paper4</span><span class="o">.</span><span class="n">png</span>
+                                                               <span class="n">Record</span> <span class="n">Features</span>
+<span class="o">+----------------------------------------------------------------------------------------------------------------------------------------------+</span>
+<span class="o">|</span>               <span class="n">image</span>               <span class="o">|</span>                     <span class="p">[[</span><span class="mi">254</span><span class="p">,</span> <span class="mi">254</span><span class="p">,</span> <span class="mi">254</span><span class="p">],</span> <span class="p">[</span><span class="mi">254</span><span class="p">,</span> <span class="mi">254</span><span class="p">,</span> <span class="mi">254</span><span class="p">],</span> <span class="p">[</span><span class="mi">253</span><span class="p">,</span> <span class="mi">253</span><span class="p">,</span>  <span class="o">...</span> <span class="p">(</span><span class="n">length</span><span class="p">:</span><span class="mi">300</span><span class="p">)</span>                      <span class="o">|</span>
+<span class="o">+----------------------------------------------------------------------------------------------------------------------------------------------+</span>
+
+                                                                  <span class="n">Prediction</span>
+<span class="o">+----------------------------------------------------------------------------------------------------------------------------------------------+</span>
+<span class="o">|</span>                                                                    <span class="n">label</span>                                                                     <span class="o">|</span>
+<span class="o">+----------------------------------------------------------------------------------------------------------------------------------------------+</span>
+<span class="o">|</span>           <span class="n">Value</span><span class="p">:</span>  <span class="n">paper</span>           <span class="o">|</span>                                     <span class="n">Confidence</span><span class="p">:</span>   <span class="mf">0.9904376864433289</span>                                     <span class="o">|</span>
+<span class="o">+----------------------------------------------------------------------------------------------------------------------------------------------+</span>
+
+	<span class="n">Key</span><span class="p">:</span>	<span class="n">paper</span><span class="o">-</span><span class="n">hires1</span><span class="o">.</span><span class="n">png</span>
+                                                               <span class="n">Record</span> <span class="n">Features</span>
+<span class="o">+----------------------------------------------------------------------------------------------------------------------------------------------+</span>
+<span class="o">|</span>               <span class="n">image</span>               <span class="o">|</span>                     <span class="p">[[</span><span class="mi">253</span><span class="p">,</span> <span class="mi">253</span><span class="p">,</span> <span class="mi">253</span><span class="p">],</span> <span class="p">[</span><span class="mi">253</span><span class="p">,</span> <span class="mi">253</span><span class="p">,</span> <span class="mi">253</span><span class="p">],</span> <span class="p">[</span><span class="mi">252</span><span class="p">,</span> <span class="mi">252</span><span class="p">,</span>  <span class="o">...</span> <span class="p">(</span><span class="n">length</span><span class="p">:</span><span class="mi">900</span><span class="p">)</span>                      <span class="o">|</span>
+<span class="o">+----------------------------------------------------------------------------------------------------------------------------------------------+</span>
+
+                                                                  <span class="n">Prediction</span>
+<span class="o">+----------------------------------------------------------------------------------------------------------------------------------------------+</span>
+<span class="o">|</span>                                                                    <span class="n">label</span>                                                                     <span class="o">|</span>
+<span class="o">+----------------------------------------------------------------------------------------------------------------------------------------------+</span>
+<span class="o">|</span>           <span class="n">Value</span><span class="p">:</span>  <span class="n">paper</span>           <span class="o">|</span>                                     <span class="n">Confidence</span><span class="p">:</span>   <span class="mf">0.8567885756492615</span>                                     <span class="o">|</span>
+<span class="o">+----------------------------------------------------------------------------------------------------------------------------------------------+</span>
+
+	<span class="n">Key</span><span class="p">:</span>	<span class="n">scissors</span><span class="o">-</span><span class="n">hires2</span><span class="o">.</span><span class="n">png</span>
+                                                               <span class="n">Record</span> <span class="n">Features</span>
+<span class="o">+----------------------------------------------------------------------------------------------------------------------------------------------+</span>
+<span class="o">|</span>               <span class="n">image</span>               <span class="o">|</span>                     <span class="p">[[</span><span class="mi">253</span><span class="p">,</span> <span class="mi">253</span><span class="p">,</span> <span class="mi">253</span><span class="p">],</span> <span class="p">[</span><span class="mi">253</span><span class="p">,</span> <span class="mi">253</span><span class="p">,</span> <span class="mi">253</span><span class="p">],</span> <span class="p">[</span><span class="mi">253</span><span class="p">,</span> <span class="mi">253</span><span class="p">,</span>  <span class="o">...</span> <span class="p">(</span><span class="n">length</span><span class="p">:</span><span class="mi">900</span><span class="p">)</span>                      <span class="o">|</span>
+<span class="o">+----------------------------------------------------------------------------------------------------------------------------------------------+</span>
+
+                                                                  <span class="n">Prediction</span>
+<span class="o">+----------------------------------------------------------------------------------------------------------------------------------------------+</span>
+<span class="o">|</span>                                                                    <span class="n">label</span>                                                                     <span class="o">|</span>
+<span class="o">+----------------------------------------------------------------------------------------------------------------------------------------------+</span>
+<span class="o">|</span>          <span class="n">Value</span><span class="p">:</span>  <span class="n">scissors</span>         <span class="o">|</span>                                     <span class="n">Confidence</span><span class="p">:</span>   <span class="mf">0.9906457662582397</span>                                     <span class="o">|</span>
+<span class="o">+----------------------------------------------------------------------------------------------------------------------------------------------+</span>
+
+	<span class="n">Key</span><span class="p">:</span>	<span class="n">rock</span><span class="o">-</span><span class="n">hires1</span><span class="o">.</span><span class="n">png</span>
+                                                               <span class="n">Record</span> <span class="n">Features</span>
+<span class="o">+----------------------------------------------------------------------------------------------------------------------------------------------+</span>
+<span class="o">|</span>               <span class="n">image</span>               <span class="o">|</span>                     <span class="p">[[</span><span class="mi">254</span><span class="p">,</span> <span class="mi">254</span><span class="p">,</span> <span class="mi">254</span><span class="p">],</span> <span class="p">[</span><span class="mi">253</span><span class="p">,</span> <span class="mi">253</span><span class="p">,</span> <span class="mi">253</span><span class="p">],</span> <span class="p">[</span><span class="mi">251</span><span class="p">,</span> <span class="mi">251</span><span class="p">,</span>  <span class="o">...</span> <span class="p">(</span><span class="n">length</span><span class="p">:</span><span class="mi">900</span><span class="p">)</span>                      <span class="o">|</span>
+<span class="o">+----------------------------------------------------------------------------------------------------------------------------------------------+</span>
+
+                                                                  <span class="n">Prediction</span>
+<span class="o">+----------------------------------------------------------------------------------------------------------------------------------------------+</span>
+<span class="o">|</span>                                                                    <span class="n">label</span>                                                                     <span class="o">|</span>
+<span class="o">+----------------------------------------------------------------------------------------------------------------------------------------------+</span>
+<span class="o">|</span>            <span class="n">Value</span><span class="p">:</span>  <span class="n">rock</span>           <span class="o">|</span>                                            <span class="n">Confidence</span><span class="p">:</span>   <span class="mf">1.0</span>                                             <span class="o">|</span>
+<span class="o">+----------------------------------------------------------------------------------------------------------------------------------------------+</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="python-api">
+<h2>Python API<a class="headerlink" href="#python-api" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">torch.nn</span> <span class="k">as</span> <span class="nn">nn</span>
+<span class="kn">import</span> <span class="nn">asyncio</span>
+
+<span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">train</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">,</span> <span class="n">predict</span><span class="p">,</span> <span class="n">DirectorySource</span><span class="p">,</span> <span class="n">Features</span><span class="p">,</span> <span class="n">Feature</span>
+<span class="kn">from</span> <span class="nn">dffml_model_pytorch</span> <span class="kn">import</span> <span class="n">PyTorchNeuralNetwork</span><span class="p">,</span> <span class="n">CrossEntropyLossFunction</span>
+
+
+<span class="c1"># Define the Neural Network</span>
+<span class="k">class</span> <span class="nc">ConvNet</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Convolutional Neural Network to classify hand gestures in an image as rock, paper or scissors</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">ConvNet</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">conv1</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span>
+            <span class="n">in_channels</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">out_channels</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">2</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">conv2</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span>
+            <span class="n">in_channels</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span> <span class="n">out_channels</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">1</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">conv3</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span>
+            <span class="n">in_channels</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span> <span class="n">out_channels</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">1</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">relu</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pooling</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">MaxPool2d</span><span class="p">(</span><span class="n">kernel_size</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">linear</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">in_features</span><span class="o">=</span><span class="mi">16</span> <span class="o">*</span> <span class="mi">9</span> <span class="o">*</span> <span class="mi">9</span><span class="p">,</span> <span class="n">out_features</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="c1"># block 1</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pooling</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">conv1</span><span class="p">(</span><span class="n">x</span><span class="p">)))</span>
+
+        <span class="c1"># block 2</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pooling</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">conv2</span><span class="p">(</span><span class="n">x</span><span class="p">)))</span>
+
+        <span class="c1"># block 3</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pooling</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">conv2</span><span class="p">(</span><span class="n">x</span><span class="p">)))</span>
+
+        <span class="c1"># block 4</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pooling</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">conv3</span><span class="p">(</span><span class="n">x</span><span class="p">)))</span>
+
+        <span class="c1"># fully connected layer</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">linear</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">16</span> <span class="o">*</span> <span class="mi">9</span> <span class="o">*</span> <span class="mi">9</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">x</span>
+
+
+<span class="n">RockPaperScissorsModel</span> <span class="o">=</span> <span class="n">ConvNet</span><span class="p">()</span>
+<span class="n">Loss</span> <span class="o">=</span> <span class="n">CrossEntropyLossFunction</span><span class="p">()</span>
+
+<span class="c1"># Define the dffml model config</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">PyTorchNeuralNetwork</span><span class="p">(</span>
+    <span class="n">classifications</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;rock&quot;</span><span class="p">,</span> <span class="s2">&quot;paper&quot;</span><span class="p">,</span> <span class="s2">&quot;scissors&quot;</span><span class="p">],</span>
+    <span class="n">features</span><span class="o">=</span><span class="n">Features</span><span class="p">(</span><span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;image&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">300</span> <span class="o">*</span> <span class="mi">300</span><span class="p">)),</span>
+    <span class="n">predict</span><span class="o">=</span><span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;label&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+    <span class="n">directory</span><span class="o">=</span><span class="s2">&quot;rps_model&quot;</span><span class="p">,</span>
+    <span class="n">network</span><span class="o">=</span><span class="n">RockPaperScissorsModel</span><span class="p">,</span>
+    <span class="n">epochs</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+    <span class="n">batch_size</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span>
+    <span class="n">imageSize</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span>
+    <span class="n">validation_split</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span>
+    <span class="n">loss</span><span class="o">=</span><span class="n">Loss</span><span class="p">,</span>
+    <span class="n">optimizer</span><span class="o">=</span><span class="s2">&quot;Adam&quot;</span><span class="p">,</span>
+    <span class="n">enableGPU</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">patience</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># Define source for training image dataset</span>
+<span class="n">train_source</span> <span class="o">=</span> <span class="n">DirectorySource</span><span class="p">(</span>
+    <span class="n">foldername</span><span class="o">=</span><span class="s2">&quot;rps&quot;</span><span class="p">,</span> <span class="n">feature</span><span class="o">=</span><span class="s2">&quot;image&quot;</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;rock&quot;</span><span class="p">,</span> <span class="s2">&quot;paper&quot;</span><span class="p">,</span> <span class="s2">&quot;scissors&quot;</span><span class="p">],</span>
+<span class="p">)</span>
+
+<span class="c1"># Define source for testing image dataset</span>
+<span class="n">test_source</span> <span class="o">=</span> <span class="n">DirectorySource</span><span class="p">(</span>
+    <span class="n">foldername</span><span class="o">=</span><span class="s2">&quot;rps-test-set&quot;</span><span class="p">,</span>
+    <span class="n">feature</span><span class="o">=</span><span class="s2">&quot;image&quot;</span><span class="p">,</span>
+    <span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;rock&quot;</span><span class="p">,</span> <span class="s2">&quot;paper&quot;</span><span class="p">,</span> <span class="s2">&quot;scissors&quot;</span><span class="p">],</span>
+<span class="p">)</span>
+
+<span class="c1"># Define source for prediction image dataset</span>
+<span class="n">predict_source</span> <span class="o">=</span> <span class="n">DirectorySource</span><span class="p">(</span><span class="n">foldername</span><span class="o">=</span><span class="s2">&quot;rps-predict&quot;</span><span class="p">,</span> <span class="n">feature</span><span class="o">=</span><span class="s2">&quot;image&quot;</span><span class="p">,)</span>
+
+
+<span class="k">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="c1"># Train the model</span>
+    <span class="k">await</span> <span class="n">train</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">train_source</span><span class="p">)</span>
+
+    <span class="c1"># Assess the accuracy</span>
+    <span class="n">acc</span> <span class="o">=</span> <span class="k">await</span> <span class="n">accuracy</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">test_source</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Testing Accuracy: &quot;</span><span class="p">,</span> <span class="n">acc</span><span class="p">)</span>
+
+    <span class="c1"># Make Predictions</span>
+    <span class="nb">print</span><span class="p">(</span>
+        <span class="s2">&quot;</span><span class="se">\n</span><span class="si">{:&gt;40}</span><span class="s2"> </span><span class="se">\t</span><span class="s2"> </span><span class="si">{:&gt;10}</span><span class="s2"> </span><span class="se">\t</span><span class="s2"> </span><span class="si">{:&gt;10}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="s2">&quot;Image filename&quot;</span><span class="p">,</span> <span class="s2">&quot;Prediction&quot;</span><span class="p">,</span> <span class="s2">&quot;Confidence&quot;</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
+    <span class="k">async</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">features</span><span class="p">,</span> <span class="n">prediction</span> <span class="ow">in</span> <span class="n">predict</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">predict_source</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span>
+            <span class="s2">&quot;</span><span class="si">{:&gt;40}</span><span class="s2"> </span><span class="se">\t</span><span class="s2"> </span><span class="si">{:&gt;10}</span><span class="s2"> </span><span class="se">\t</span><span class="s2"> </span><span class="si">{:&gt;10}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="s2">&quot;rps-predict/&quot;</span> <span class="o">+</span> <span class="n">key</span><span class="p">,</span>
+                <span class="n">prediction</span><span class="p">[</span><span class="s2">&quot;label&quot;</span><span class="p">][</span><span class="s2">&quot;value&quot;</span><span class="p">],</span>
+                <span class="n">prediction</span><span class="p">[</span><span class="s2">&quot;label&quot;</span><span class="p">][</span><span class="s2">&quot;confidence&quot;</span><span class="p">],</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+</pre></div>
+</div>
+<p>The output will be as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">DEBUG</span><span class="p">:</span><span class="n">dffml</span><span class="o">.</span><span class="n">util</span><span class="o">.</span><span class="n">AsyncContextManagerList</span><span class="o">.</span><span class="n">Sources</span><span class="p">:</span><span class="n">Entering</span><span class="p">:</span> <span class="n">DirectorySource</span><span class="p">(</span><span class="n">DirectorySourceConfig</span><span class="p">(</span><span class="n">foldername</span><span class="o">=</span><span class="n">PosixPath</span><span class="p">(</span><span class="s1">&#39;rps&#39;</span><span class="p">),</span> <span class="n">feature</span><span class="o">=</span><span class="s1">&#39;image&#39;</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;rock&#39;</span><span class="p">,</span> <span class="s1">&#39;paper&#39;</span><span class="p">,</span> <span class="s1">&#39;scissors&#39;</span><span class="p">],</span> <span class="n">save</span><span class="o">=</span><span class="kc">None</span><span class="p">))</span>
+<span class="n">DEBUG</span><span class="p">:</span><span class="n">dffml</span><span class="o">.</span><span class="n">PNGConfigLoader</span><span class="p">:</span><span class="n">BaseConfig</span><span class="p">()</span>
+<span class="n">DEBUG</span><span class="p">:</span><span class="n">dffml</span><span class="o">.</span><span class="n">DirectorySource</span><span class="p">:</span><span class="n">DirectorySource</span><span class="p">(</span><span class="n">DirectorySourceConfig</span><span class="p">(</span><span class="n">foldername</span><span class="o">=</span><span class="n">PosixPath</span><span class="p">(</span><span class="s1">&#39;rps&#39;</span><span class="p">),</span> <span class="n">feature</span><span class="o">=</span><span class="s1">&#39;image&#39;</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;rock&#39;</span><span class="p">,</span> <span class="s1">&#39;paper&#39;</span><span class="p">,</span> <span class="s1">&#39;scissors&#39;</span><span class="p">],</span> <span class="n">save</span><span class="o">=</span><span class="kc">None</span><span class="p">))</span> <span class="n">loaded</span> <span class="mi">2520</span> <span class="n">records</span>
+<span class="n">DEBUG</span><span class="p">:</span><span class="n">dffml</span><span class="o">.</span><span class="n">util</span><span class="o">.</span><span class="n">AsyncContextManagerListContext</span><span class="o">.</span><span class="n">SourcesContext</span><span class="p">:</span><span class="n">Entering</span> <span class="n">context</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">dffml</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">memory</span><span class="o">.</span><span class="n">MemorySourceContext</span> <span class="nb">object</span> <span class="n">at</span> <span class="mh">0x7f0fe9170c50</span><span class="o">&gt;</span>
+<span class="n">DEBUG</span><span class="p">:</span><span class="n">dffml</span><span class="o">.</span><span class="n">PyTorchNeuralNetworkContext</span><span class="p">:</span><span class="n">cids</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="s1">&#39;paper&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span> <span class="s1">&#39;rock&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span> <span class="s1">&#39;scissors&#39;</span><span class="p">}</span>
+<span class="n">DEBUG</span><span class="p">:</span><span class="n">dffml</span><span class="o">.</span><span class="n">PyTorchNeuralNetworkContext</span><span class="p">:</span><span class="n">classifications</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span> <span class="p">{</span><span class="s1">&#39;paper&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;rock&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;scissors&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">}</span>
+<span class="n">DEBUG</span><span class="p">:</span><span class="n">dffml</span><span class="o">.</span><span class="n">PyTorchNeuralNetworkContext</span><span class="p">:</span><span class="n">Loading</span> <span class="n">model</span> <span class="k">with</span> <span class="n">classifications</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span> <span class="p">{</span><span class="s1">&#39;paper&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;rock&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;scissors&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">}</span>
+<span class="n">DEBUG</span><span class="p">:</span><span class="n">dffml</span><span class="o">.</span><span class="n">PyTorchNeuralNetworkContext</span><span class="p">:</span><span class="n">Model</span> <span class="n">Summary</span>
+<span class="n">ConvNet</span><span class="p">(</span>
+  <span class="p">(</span><span class="n">conv1</span><span class="p">):</span> <span class="n">Conv2d</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="n">stride</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">padding</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+  <span class="p">(</span><span class="n">conv2</span><span class="p">):</span> <span class="n">Conv2d</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">stride</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">padding</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+  <span class="p">(</span><span class="n">conv3</span><span class="p">):</span> <span class="n">Conv2d</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">stride</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">padding</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+  <span class="p">(</span><span class="n">relu</span><span class="p">):</span> <span class="n">ReLU</span><span class="p">()</span>
+  <span class="p">(</span><span class="n">pooling</span><span class="p">):</span> <span class="n">MaxPool2d</span><span class="p">(</span><span class="n">kernel_size</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">dilation</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">ceil_mode</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+  <span class="p">(</span><span class="n">linear</span><span class="p">):</span> <span class="n">Linear</span><span class="p">(</span><span class="n">in_features</span><span class="o">=</span><span class="mi">1296</span><span class="p">,</span> <span class="n">out_features</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">bias</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="n">DEBUG</span><span class="p">:</span><span class="n">dffml</span><span class="o">.</span><span class="n">PyTorchNeuralNetworkContext</span><span class="p">:</span><span class="n">Training</span> <span class="n">on</span> <span class="n">features</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;image&#39;</span><span class="p">]</span>
+<span class="n">INFO</span><span class="p">:</span><span class="n">dffml</span><span class="o">.</span><span class="n">PyTorchNeuralNetworkContext</span><span class="p">:</span><span class="o">------</span> <span class="n">Record</span> <span class="n">Data</span> <span class="o">------</span>
+<span class="n">INFO</span><span class="p">:</span><span class="n">dffml</span><span class="o">.</span><span class="n">PyTorchNeuralNetworkContext</span><span class="p">:</span><span class="n">x_cols</span><span class="p">:</span>    <span class="mi">2520</span>
+<span class="n">INFO</span><span class="p">:</span><span class="n">dffml</span><span class="o">.</span><span class="n">PyTorchNeuralNetworkContext</span><span class="p">:</span><span class="n">y_cols</span><span class="p">:</span>    <span class="mi">2520</span>
+<span class="n">INFO</span><span class="p">:</span><span class="n">dffml</span><span class="o">.</span><span class="n">PyTorchNeuralNetworkContext</span><span class="p">:</span><span class="o">-----------------------</span>
+<span class="n">INFO</span><span class="p">:</span><span class="n">dffml</span><span class="o">.</span><span class="n">PyTorchNeuralNetworkContext</span><span class="p">:</span><span class="n">Data</span> <span class="n">split</span> <span class="n">into</span> <span class="n">Training</span> <span class="n">samples</span><span class="p">:</span> <span class="mi">2016</span> <span class="ow">and</span> <span class="n">Validation</span> <span class="n">samples</span><span class="p">:</span> <span class="mi">504</span>
+<span class="n">DEBUG</span><span class="p">:</span><span class="n">dffml</span><span class="o">.</span><span class="n">PyTorchNeuralNetworkContext</span><span class="p">:</span><span class="n">Epoch</span> <span class="mi">1</span><span class="o">/</span><span class="mi">10</span>
+<span class="n">DEBUG</span><span class="p">:</span><span class="n">dffml</span><span class="o">.</span><span class="n">PyTorchNeuralNetworkContext</span><span class="p">:</span><span class="o">----------</span>
+<span class="n">DEBUG</span><span class="p">:</span><span class="n">dffml</span><span class="o">.</span><span class="n">PyTorchNeuralNetworkContext</span><span class="p">:</span><span class="n">Training</span> <span class="n">Loss</span><span class="p">:</span> <span class="mf">1.0265</span> <span class="n">Acc</span><span class="p">:</span> <span class="mf">0.4484</span>
+<span class="n">DEBUG</span><span class="p">:</span><span class="n">dffml</span><span class="o">.</span><span class="n">PyTorchNeuralNetworkContext</span><span class="p">:</span><span class="n">Validation</span> <span class="n">Loss</span><span class="p">:</span> <span class="mf">0.6922</span> <span class="n">Acc</span><span class="p">:</span> <span class="mf">0.7778</span>
+<span class="n">DEBUG</span><span class="p">:</span><span class="n">dffml</span><span class="o">.</span><span class="n">PyTorchNeuralNetworkContext</span><span class="p">:</span>
+<span class="n">DEBUG</span><span class="p">:</span><span class="n">dffml</span><span class="o">.</span><span class="n">PyTorchNeuralNetworkContext</span><span class="p">:</span><span class="n">Epoch</span> <span class="mi">2</span><span class="o">/</span><span class="mi">10</span>
+<span class="n">DEBUG</span><span class="p">:</span><span class="n">dffml</span><span class="o">.</span><span class="n">PyTorchNeuralNetworkContext</span><span class="p">:</span><span class="o">----------</span>
+<span class="n">DEBUG</span><span class="p">:</span><span class="n">dffml</span><span class="o">.</span><span class="n">PyTorchNeuralNetworkContext</span><span class="p">:</span><span class="n">Training</span> <span class="n">Loss</span><span class="p">:</span> <span class="mf">0.3382</span> <span class="n">Acc</span><span class="p">:</span> <span class="mf">0.8988</span>
+<span class="n">DEBUG</span><span class="p">:</span><span class="n">dffml</span><span class="o">.</span><span class="n">PyTorchNeuralNetworkContext</span><span class="p">:</span><span class="n">Validation</span> <span class="n">Loss</span><span class="p">:</span> <span class="mf">0.1446</span> <span class="n">Acc</span><span class="p">:</span> <span class="mf">0.9722</span>
+<span class="n">DEBUG</span><span class="p">:</span><span class="n">dffml</span><span class="o">.</span><span class="n">PyTorchNeuralNetworkContext</span><span class="p">:</span>
+<span class="n">DEBUG</span><span class="p">:</span><span class="n">dffml</span><span class="o">.</span><span class="n">PyTorchNeuralNetworkContext</span><span class="p">:</span><span class="n">Epoch</span> <span class="mi">3</span><span class="o">/</span><span class="mi">10</span>
+<span class="n">DEBUG</span><span class="p">:</span><span class="n">dffml</span><span class="o">.</span><span class="n">PyTorchNeuralNetworkContext</span><span class="p">:</span><span class="o">----------</span>
+<span class="n">DEBUG</span><span class="p">:</span><span class="n">dffml</span><span class="o">.</span><span class="n">PyTorchNeuralNetworkContext</span><span class="p">:</span><span class="n">Training</span> <span class="n">Loss</span><span class="p">:</span> <span class="mf">0.0663</span> <span class="n">Acc</span><span class="p">:</span> <span class="mf">0.9851</span>
+<span class="n">DEBUG</span><span class="p">:</span><span class="n">dffml</span><span class="o">.</span><span class="n">PyTorchNeuralNetworkContext</span><span class="p">:</span><span class="n">Validation</span> <span class="n">Loss</span><span class="p">:</span> <span class="mf">0.0531</span> <span class="n">Acc</span><span class="p">:</span> <span class="mf">0.9901</span>
+<span class="n">DEBUG</span><span class="p">:</span><span class="n">dffml</span><span class="o">.</span><span class="n">PyTorchNeuralNetworkContext</span><span class="p">:</span>
+<span class="n">DEBUG</span><span class="p">:</span><span class="n">dffml</span><span class="o">.</span><span class="n">PyTorchNeuralNetworkContext</span><span class="p">:</span><span class="n">Epoch</span> <span class="mi">4</span><span class="o">/</span><span class="mi">10</span>
+<span class="n">DEBUG</span><span class="p">:</span><span class="n">dffml</span><span class="o">.</span><span class="n">PyTorchNeuralNetworkContext</span><span class="p">:</span><span class="o">----------</span>
+<span class="n">DEBUG</span><span class="p">:</span><span class="n">dffml</span><span class="o">.</span><span class="n">PyTorchNeuralNetworkContext</span><span class="p">:</span><span class="n">Training</span> <span class="n">Loss</span><span class="p">:</span> <span class="mf">0.0332</span> <span class="n">Acc</span><span class="p">:</span> <span class="mf">0.9940</span>
+<span class="n">DEBUG</span><span class="p">:</span><span class="n">dffml</span><span class="o">.</span><span class="n">PyTorchNeuralNetworkContext</span><span class="p">:</span><span class="n">Validation</span> <span class="n">Loss</span><span class="p">:</span> <span class="mf">0.0261</span> <span class="n">Acc</span><span class="p">:</span> <span class="mf">0.9940</span>
+<span class="n">DEBUG</span><span class="p">:</span><span class="n">dffml</span><span class="o">.</span><span class="n">PyTorchNeuralNetworkContext</span><span class="p">:</span>
+<span class="n">DEBUG</span><span class="p">:</span><span class="n">dffml</span><span class="o">.</span><span class="n">PyTorchNeuralNetworkContext</span><span class="p">:</span><span class="n">Epoch</span> <span class="mi">5</span><span class="o">/</span><span class="mi">10</span>
+<span class="n">DEBUG</span><span class="p">:</span><span class="n">dffml</span><span class="o">.</span><span class="n">PyTorchNeuralNetworkContext</span><span class="p">:</span><span class="o">----------</span>
+<span class="n">DEBUG</span><span class="p">:</span><span class="n">dffml</span><span class="o">.</span><span class="n">PyTorchNeuralNetworkContext</span><span class="p">:</span><span class="n">Training</span> <span class="n">Loss</span><span class="p">:</span> <span class="mf">0.0139</span> <span class="n">Acc</span><span class="p">:</span> <span class="mf">0.9955</span>
+<span class="n">DEBUG</span><span class="p">:</span><span class="n">dffml</span><span class="o">.</span><span class="n">PyTorchNeuralNetworkContext</span><span class="p">:</span><span class="n">Validation</span> <span class="n">Loss</span><span class="p">:</span> <span class="mf">0.0060</span> <span class="n">Acc</span><span class="p">:</span> <span class="mf">1.0000</span>
+<span class="n">DEBUG</span><span class="p">:</span><span class="n">dffml</span><span class="o">.</span><span class="n">PyTorchNeuralNetworkContext</span><span class="p">:</span>
+<span class="n">INFO</span><span class="p">:</span><span class="n">dffml</span><span class="o">.</span><span class="n">PyTorchNeuralNetworkContext</span><span class="p">:</span><span class="n">Early</span> <span class="n">stopping</span><span class="p">:</span> <span class="n">Validation</span> <span class="n">Loss</span> <span class="n">didn</span><span class="s1">&#39;t improve for 2 consecutive epochs OR maximum accuracy attained.</span>
+<span class="n">INFO</span><span class="p">:</span><span class="n">dffml</span><span class="o">.</span><span class="n">PyTorchNeuralNetworkContext</span><span class="p">:</span><span class="n">Training</span> <span class="n">complete</span> <span class="ow">in</span> <span class="mi">1</span><span class="n">m</span> <span class="mi">24</span><span class="n">s</span>
+<span class="n">INFO</span><span class="p">:</span><span class="n">dffml</span><span class="o">.</span><span class="n">PyTorchNeuralNetworkContext</span><span class="p">:</span><span class="n">Best</span> <span class="n">Validation</span> <span class="n">Accuracy</span><span class="p">:</span> <span class="mf">1.000000</span>
+
+<span class="n">Testing</span> <span class="n">Accuracy</span><span class="p">:</span>  <span class="mf">0.9220430107526881</span>
+
+                          <span class="n">Image</span> <span class="n">filename</span> 	 <span class="n">Prediction</span> 	 <span class="n">Confidence</span>
+
+               <span class="n">rps</span><span class="o">-</span><span class="n">predict</span><span class="o">/</span><span class="n">scissors7</span><span class="o">.</span><span class="n">png</span> 	   <span class="n">scissors</span> 	 <span class="mf">0.9990881681442261</span>
+                   <span class="n">rps</span><span class="o">-</span><span class="n">predict</span><span class="o">/</span><span class="n">rock8</span><span class="o">.</span><span class="n">png</span> 	       <span class="n">rock</span> 	        <span class="mf">1.0</span>
+                  <span class="n">rps</span><span class="o">-</span><span class="n">predict</span><span class="o">/</span><span class="n">paper4</span><span class="o">.</span><span class="n">png</span> 	      <span class="n">paper</span> 	 <span class="mf">0.7040390372276306</span>
+                  <span class="n">rps</span><span class="o">-</span><span class="n">predict</span><span class="o">/</span><span class="n">paper9</span><span class="o">.</span><span class="n">png</span> 	      <span class="n">paper</span> 	 <span class="mf">0.5414079427719116</span>
+                  <span class="n">rps</span><span class="o">-</span><span class="n">predict</span><span class="o">/</span><span class="n">paper7</span><span class="o">.</span><span class="n">png</span> 	      <span class="n">paper</span> 	 <span class="mf">0.9999395608901978</span>
+            <span class="n">rps</span><span class="o">-</span><span class="n">predict</span><span class="o">/</span><span class="n">paper</span><span class="o">-</span><span class="n">hires1</span><span class="o">.</span><span class="n">png</span> 	      <span class="n">paper</span> 	 <span class="mf">0.6969484090805054</span>
+         <span class="n">rps</span><span class="o">-</span><span class="n">predict</span><span class="o">/</span><span class="n">scissors</span><span class="o">-</span><span class="n">hires2</span><span class="o">.</span><span class="n">png</span> 	   <span class="n">scissors</span> 	 <span class="mf">0.9760923385620117</span>
+               <span class="n">rps</span><span class="o">-</span><span class="n">predict</span><span class="o">/</span><span class="n">scissors4</span><span class="o">.</span><span class="n">png</span> 	   <span class="n">scissors</span> 	 <span class="mf">0.9901471734046936</span>
+               <span class="n">rps</span><span class="o">-</span><span class="n">predict</span><span class="o">/</span><span class="n">scissors8</span><span class="o">.</span><span class="n">png</span> 	   <span class="n">scissors</span> 	 <span class="mf">0.9570472240447998</span>
+             <span class="n">rps</span><span class="o">-</span><span class="n">predict</span><span class="o">/</span><span class="n">rock</span><span class="o">-</span><span class="n">hires1</span><span class="o">.</span><span class="n">png</span> 	       <span class="n">rock</span> 	        <span class="mf">1.0</span>
+            <span class="n">rps</span><span class="o">-</span><span class="n">predict</span><span class="o">/</span><span class="n">paper</span><span class="o">-</span><span class="n">hires2</span><span class="o">.</span><span class="n">png</span> 	      <span class="n">paper</span> 	 <span class="mf">0.9593355059623718</span>
+                  <span class="n">rps</span><span class="o">-</span><span class="n">predict</span><span class="o">/</span><span class="n">paper8</span><span class="o">.</span><span class="n">png</span> 	      <span class="n">paper</span> 	 <span class="mf">0.9998843669891357</span>
+               <span class="n">rps</span><span class="o">-</span><span class="n">predict</span><span class="o">/</span><span class="n">scissors2</span><span class="o">.</span><span class="n">png</span> 	   <span class="n">scissors</span> 	 <span class="mf">0.9512919783592224</span>
+                   <span class="n">rps</span><span class="o">-</span><span class="n">predict</span><span class="o">/</span><span class="n">rock4</span><span class="o">.</span><span class="n">png</span> 	       <span class="n">rock</span> 	 <span class="mf">0.9999837875366211</span>
+                  <span class="n">rps</span><span class="o">-</span><span class="n">predict</span><span class="o">/</span><span class="n">paper1</span><span class="o">.</span><span class="n">png</span> 	      <span class="n">paper</span> 	 <span class="mf">0.9846717715263367</span>
+               <span class="n">rps</span><span class="o">-</span><span class="n">predict</span><span class="o">/</span><span class="n">scissors5</span><span class="o">.</span><span class="n">png</span> 	   <span class="n">scissors</span> 	 <span class="mf">0.9992364645004272</span>
+         <span class="n">rps</span><span class="o">-</span><span class="n">predict</span><span class="o">/</span><span class="n">scissors</span><span class="o">-</span><span class="n">hires1</span><span class="o">.</span><span class="n">png</span> 	   <span class="n">scissors</span> 	 <span class="mf">0.9997430443763733</span>
+                  <span class="n">rps</span><span class="o">-</span><span class="n">predict</span><span class="o">/</span><span class="n">paper2</span><span class="o">.</span><span class="n">png</span> 	      <span class="n">paper</span> 	 <span class="mf">0.9999908208847046</span>
+                   <span class="n">rps</span><span class="o">-</span><span class="n">predict</span><span class="o">/</span><span class="n">rock1</span><span class="o">.</span><span class="n">png</span> 	       <span class="n">rock</span> 	 <span class="mf">0.9999294281005859</span>
+               <span class="n">rps</span><span class="o">-</span><span class="n">predict</span><span class="o">/</span><span class="n">scissors3</span><span class="o">.</span><span class="n">png</span> 	      <span class="n">paper</span> 	 <span class="mf">0.6644117832183838</span>
+               <span class="n">rps</span><span class="o">-</span><span class="n">predict</span><span class="o">/</span><span class="n">scissors1</span><span class="o">.</span><span class="n">png</span> 	   <span class="n">scissors</span> 	 <span class="mf">0.9635807275772095</span>
+               <span class="n">rps</span><span class="o">-</span><span class="n">predict</span><span class="o">/</span><span class="n">scissors6</span><span class="o">.</span><span class="n">png</span> 	   <span class="n">scissors</span> 	 <span class="mf">0.9999761581420898</span>
+                   <span class="n">rps</span><span class="o">-</span><span class="n">predict</span><span class="o">/</span><span class="n">rock9</span><span class="o">.</span><span class="n">png</span> 	       <span class="n">rock</span> 	 <span class="mf">0.9018403887748718</span>
+               <span class="n">rps</span><span class="o">-</span><span class="n">predict</span><span class="o">/</span><span class="n">scissors9</span><span class="o">.</span><span class="n">png</span> 	   <span class="n">scissors</span> 	 <span class="mf">0.9989670515060425</span>
+                  <span class="n">rps</span><span class="o">-</span><span class="n">predict</span><span class="o">/</span><span class="n">paper6</span><span class="o">.</span><span class="n">png</span> 	      <span class="n">paper</span> 	 <span class="mf">0.9996334314346313</span>
+                  <span class="n">rps</span><span class="o">-</span><span class="n">predict</span><span class="o">/</span><span class="n">paper3</span><span class="o">.</span><span class="n">png</span> 	      <span class="n">paper</span> 	 <span class="mf">0.8676062226295471</span>
+                  <span class="n">rps</span><span class="o">-</span><span class="n">predict</span><span class="o">/</span><span class="n">paper5</span><span class="o">.</span><span class="n">png</span> 	      <span class="n">paper</span> 	 <span class="mf">0.9100719094276428</span>
+                   <span class="n">rps</span><span class="o">-</span><span class="n">predict</span><span class="o">/</span><span class="n">rock7</span><span class="o">.</span><span class="n">png</span> 	       <span class="n">rock</span> 	 <span class="mf">0.9990749359130859</span>
+                   <span class="n">rps</span><span class="o">-</span><span class="n">predict</span><span class="o">/</span><span class="n">rock5</span><span class="o">.</span><span class="n">png</span> 	       <span class="n">rock</span> 	 <span class="mf">0.8894972205162048</span>
+                   <span class="n">rps</span><span class="o">-</span><span class="n">predict</span><span class="o">/</span><span class="n">rock3</span><span class="o">.</span><span class="n">png</span> 	       <span class="n">rock</span> 	 <span class="mf">0.9995730519294739</span>
+                   <span class="n">rps</span><span class="o">-</span><span class="n">predict</span><span class="o">/</span><span class="n">rock2</span><span class="o">.</span><span class="n">png</span> 	       <span class="n">rock</span> 	 <span class="mf">0.991766631603241</span>
+             <span class="n">rps</span><span class="o">-</span><span class="n">predict</span><span class="o">/</span><span class="n">rock</span><span class="o">-</span><span class="n">hires2</span><span class="o">.</span><span class="n">png</span> 	       <span class="n">rock</span> 	 <span class="mf">0.9999849796295166</span>
+                   <span class="n">rps</span><span class="o">-</span><span class="n">predict</span><span class="o">/</span><span class="n">rock6</span><span class="o">.</span><span class="n">png</span> 	       <span class="n">rock</span> 	 <span class="mf">0.8994896411895752</span>
+</pre></div>
+</div>
+<p>The model predicts the hand poses correctly with great confidence!</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="doublecontextentry.html" class="btn btn-neutral float-right" title="Double Context Entry" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="dataflows/nlp.html" class="btn btn-neutral float-left" title="Using NLP Operations" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2017 - 2021, Intel.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

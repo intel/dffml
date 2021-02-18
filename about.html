@@ -7,12 +7,13 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>About &mdash; DFFML 0.3.7 documentation</title>
+  <title>About &mdash; DFFML 0.4.0 documentation</title>
   
 
   
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/tabs.css" type="text/css" />
 
   
   
@@ -65,7 +66,7 @@
             
             
               <div class="version">
-                0.3.7
+                0.4.0
               </div>
             
           
@@ -100,18 +101,19 @@
 <li class="toctree-l2"><a class="reference internal" href="#data-flows-directed-graph-execution">Data Flows - Directed Graph Execution</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#consistent-api">Consistent API</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#plugins">Plugins</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#team">Team</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#users">Users</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#philosophy">Philosophy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#team">Team</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="concepts/index.html">Concepts</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Examples</span></p>
+<p class="caption"><span class="caption-text">Usage</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="quickstart/model.html">Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorials/index.html">Tutorials</a></li>
-<li class="toctree-l1"><a class="reference internal" href="usage/index.html">Use Cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/index.html">Examples</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Reference</span></p>
 <ul>
@@ -119,13 +121,21 @@
 <li class="toctree-l1"><a class="reference internal" href="cli.html">Command Line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="plugins/service/http/index.html">HTTP API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Subprojects</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="shouldi.html">shouldi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="swportal.html">Software Portal</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Community</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/intel/dffml">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://intel.github.io/dffml/master/">Master Branch Docs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="publications.html">Publications</a></li>
 <li class="toctree-l1"><a class="reference internal" href="contact.html">Contact Us</a></li>
 <li class="toctree-l1"><a class="reference internal" href="contributing/index.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="news/index.html">News</a></li>
 <li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
 </ul>
 
@@ -178,6 +188,8 @@
       <li>About</li>
     
     
+
+
       <li class="wy-breadcrumbs-aside">
         
           
@@ -188,6 +200,8 @@
         
       </li>
     
+
+
   </ul>
 
   
@@ -219,7 +233,9 @@ include some sources, models, and operations as a part of the main package,
 <h2>Mission Statement<a class="headerlink" href="#mission-statement" title="Permalink to this headline">¶</a></h2>
 <p>DFFML aims to be the easiest and most convenient way to use Machine Learning.</p>
 <ul class="simple">
-<li><p>It’s an AutoML Python library, command line application, and HTTP service.</p></li>
+<li><p>Its a machine learning distribution. Providing you access to a set of popular
+machine learning libraries guaranteed to work together.</p></li>
+<li><p>Its a AI/ML Python library, command line application, and HTTP service.</p></li>
 <li><p>You give it your data and tell it what kind of model you want to train. It
 creates a model for you.</p></li>
 <li><p>If you want finer grained control over the model, you can easily do so by
@@ -300,17 +316,6 @@ everything else maintained as a part of the core repository and with other
 developers models and operations. <a class="reference internal" href="tutorials/index.html"><span class="doc">Tutorials</span></a> show how to create your
 own plugins.</p>
 </div>
-<div class="section" id="team">
-<h2>Team<a class="headerlink" href="#team" title="Permalink to this headline">¶</a></h2>
-<p>We have an awesome team working on the project. We hold weekly meetings
-and have a mailing list and chat! If you want to get involved, ask questions, or
-get help getting started, see <a class="reference internal" href="contact.html"><span class="doc">Contact Us</span></a>.</p>
-<p>We participated in Google Summer of Code 2019 under the Python Software
-Foundation. A big thanks to our students, Yash and Sudharsana!</p>
-<ul class="simple">
-<li><p><a class="reference external" href="https://github.com/intel/dffml/wiki/GSoC-2019#student-contributions">GSoC 2019 Student Contributions</a></p></li>
-</ul>
-</div>
 <div class="section" id="users">
 <h2>Users<a class="headerlink" href="#users" title="Permalink to this headline">¶</a></h2>
 <p>The following is a list of organizations and projects using DFFML. Please let us
@@ -322,6 +327,87 @@ using DFFML, see the <a class="reference internal" href="contact.html"><span cla
 <li><p>Security analysis of Open Source Software dependencies.</p></li>
 </ul>
 </li>
+</ul>
+</div>
+<div class="section" id="philosophy">
+<h2>Philosophy<a class="headerlink" href="#philosophy" title="Permalink to this headline">¶</a></h2>
+<p>DFFML is an event driven directed graph execution architecture tightly coupled
+with the typical machine learning workflow. The core concept is that all
+software can be looked at as a set of operations that occur in response to
+asynchronous events. Directed graphs are used to specify which operations should
+be run in response to which events. Every event has data associated with it,
+therefore we refer to the directed graph as a DataFlow.</p>
+<p>The project as it exists now is a Python library which provides data set
+generation via DataFlows, dataset storage, as well as model training, testing,
+and inference. Users can leverage DataFlows to do feature engineering, to create
+new datasets and modify or add to existing datasets. They then train models,
+assess their accuracy and use them to make predictions via various deployment
+methods.</p>
+<p>DFFML has a plugin based architecture. Every model, data source, operation, etc.
+is a plugin. We maintain a set of official plugins which wrap various machine
+learning frameworks such as Daal4Py, TensorFlow, Scikit Learn, etc. By wrapping
+frameworks in a standard API we simplify usage and make it easy for developers
+to switch from one underlying framework to another.</p>
+<p>Conceptually, DFFML is not just the Python implementation it is today. It’s a
+programming language agnostic architecture centered around the concept of
+DataFlows and the decoupling of definition from implementation. One goal of the
+project closely associated with this is to have an orchestrator capable of
+deploying and knitting together new or existing services without the need for
+those services to know anything about each other. This could be thought of as a
+level of abstraction beyond serverless architecture, which is where we’re hoping
+to take the project.</p>
+</div>
+<div class="section" id="team">
+<h2>Team<a class="headerlink" href="#team" title="Permalink to this headline">¶</a></h2>
+<p>We have an awesome team working on the project. We hold weekly meetings
+and have a mailing list and chat! If you want to get involved, ask questions, or
+get help getting started, see <a class="reference internal" href="contact.html"><span class="doc">Contact Us</span></a>.</p>
+<p>We participated in Google Summer of Code 2019 under the Python Software
+Foundation. A big thanks to our students, Yash and Sudharsana!</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="contributing/gsoc/2019.html"><span class="doc">GSoC 2019 Student Contributions</span></a></p></li>
+</ul>
+<p>We are currently participating in Google Summer of Code 2020 under the Python
+Software Foundation. Big thanks to Aghin, Himanshu, and Saksham!</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="contributing/gsoc/2020.html"><span class="doc">GSoC 2020 Student Contributions</span></a></p></li>
+</ul>
+<p>Thank you to everyone who’s contributed to DFFML!!!</p>
+<ul class="simple">
+<li><p>Abdallah Bashir</p></li>
+<li><p>Aghin Shah Alin</p></li>
+<li><p>Arvindh Kumar Chandran</p></li>
+<li><p>Aryan Gupta</p></li>
+<li><p>Byambaa</p></li>
+<li><p>Constanza Heath</p></li>
+<li><p>Dentigg</p></li>
+<li><p>Dmitry Poliuha</p></li>
+<li><p>Govindarajan Panneerselvam</p></li>
+<li><p>Hashim</p></li>
+<li><p>Himanshu Tripathi</p></li>
+<li><p>iamandeepsandhu</p></li>
+<li><p>Jan Keromnes</p></li>
+<li><p>John Andersen</p></li>
+<li><p>Joseph Kato</p></li>
+<li><p>Justin Moore</p></li>
+<li><p>Naeem Khoshnevis</p></li>
+<li><p>NeerajBhadani</p></li>
+<li><p>NMNDV</p></li>
+<li><p>Pankaj Patil</p></li>
+<li><p>pradeepbhadani</p></li>
+<li><p>purnimapatel</p></li>
+<li><p>raghav-ys</p></li>
+<li><p>Saksham Arora</p></li>
+<li><p>Sanket Saurav</p></li>
+<li><p>shivam singh</p></li>
+<li><p>Sudhanshu kumar</p></li>
+<li><p>Sudharsana K J L</p></li>
+<li><p>Taksh Kamlesh</p></li>
+<li><p>Theo</p></li>
+<li><p>us</p></li>
+<li><p>Vaibhav Mehra</p></li>
+<li><p>Yash Lamba</p></li>
+<li><p>Yash Varshney</p></li>
 </ul>
 </div>
 </div>
@@ -340,7 +426,7 @@ using DFFML, see the <a class="reference internal" href="contact.html"><span cla
 
   <div role="contentinfo">
     <p>
-        &#169; Copyright 2019, Intel.
+        &#169; Copyright 2017 - 2021, Intel.
 
     </p>
   </div>

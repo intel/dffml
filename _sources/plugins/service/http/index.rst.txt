@@ -10,7 +10,7 @@ You can install the HTTP API service via ``pip``
 
 .. code-block:: console
 
-    $ python3.7 -m pip install dffml-service-http
+    $ python3 -m pip install dffml-service-http
 
 If you want to install the latest development version, clone dffml and install
 from you can use ``git+``
@@ -18,7 +18,7 @@ from you can use ``git+``
 .. code-block:: console
 
     $ git clone https://github.com/intel/dffml
-    $ python3.7 -m pip install -e dffml/service/http
+    $ python3 -m pip install -e dffml/service/http
 
 If you want to run this securely you can see :doc:`security`.
 
@@ -47,6 +47,7 @@ development is probably hosted on another port, you'll need the ``cors`` flag.
     :caption: Contents:
 
     cli
+    dataflow
     api
     security
     javascript

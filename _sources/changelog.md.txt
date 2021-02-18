@@ -4,6 +4,132 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.0] - 2021-02-18
+### Added
+- New model for Anomaly Detection
+- Ablity to specify maximum number of contexts running at a time
+- CLI and Python example usage of Custom Neural Network
+- PyTorch loss function entrypoint style loading
+- Custom Neural Network, last layer support for pre-trained models
+- Example usage of sklearn operations
+- Example Flower17 species image classification
+- Configloading ablity from CLI using "@" before filename
+- Docstrings and doctestable example for DataFlowSource
+- XGBoost Regression Model
+- Pre-Trained PyTorch torchvision Models
+- Spacy model for NER
+- Ability to rename outputs using GetSingle
+- Tutorial for using NLP operations with models
+- Operations plugin for NLP wrapping spacy and scikit functions
+- Support for default value in a Definition
+- Source for reading images in directories
+- Operations plugin for image preprocessing
+- `-pretty` flag to `list records` and `predict` commands
+- daal4py based linear regression model
+- DataFlowSource can take a config file as dataflow via the CLI.
+- Support for link on conditions in dataflow diagrams
+- `edit all` command to edit records in bulk
+- Support for Tensorflow 2.2
+- Vowpal Wabbit Models
+- Python 3.8 support
+- binsec branch to `operations/binsec`
+- Doctestable example for `model_predict` operation.
+- Doctestable examples to `operation/mapping.py`
+- shouldi got an operation to run Dependency-check on java code.
+- `load` and `run` functions in high level API
+- Doctestable examples to `db` operations.
+- Source for parsing `.ini` file formats
+- Tests for noasync high level API.
+- Tests for load and save functions in high level API.
+- `Operation` inputs and ouputs default to empty `dict` if not given.
+- Ability to export any object with `dffml service dev export`
+- Complete example for dataflow run cli command
+- Tests for default configs instantiation.
+- Example ffmpeg operation.
+- Operations to deploy docker container on receving github webhook.
+- New use case `Redeploying dataflow on webhook` in docs.
+- Documentation for creating Source for new File types taking `.ini` as an example.
+- New input modes, output modes for HTTP API dataflow registration.
+- Usage example for tfhub text classifier.
+- `AssociateDefinition` output operation to map definition names to values
+  produced as a result of passing Inputs with those definitions to operations.
+- DataFlows now have a syntax for providing a set of definitions that will
+  override the operations default definition for a given input.
+- Source which modifies record features as they are read from another source.
+  Useful for modifying datasets as they are used with ML commands or editing
+  in bulk.
+- Auto create Definition for the `op` when they might have a spec, subspec.
+- `shouldi use` command which detects the language of the codebase given via
+  path to directory or Git repo URL and runs the appropriate static analyzers.
+- Support for entrypoint style loading of operations and seed inputs in `dataflow create`.
+- Definition for output of the function that `op` wraps.
+- Expose high level load, run and save functions to noasync.
+- Operation to verify secret for GitHub webhook.
+- Option to modify flow and add config in `dataflow create`.
+- Ability to use a function as a data source via the `op` source
+- Make every model's directory property required
+- New model AutoClassifierModel based on `AutoSklearn`.
+- New model AutoSklearnRegressorModel based on `AutoSklearn`.
+- Example showing usage of locks in dataflow.
+- `-skip` flag to `service dev install` command to let users not install certain
+  core plugins
+- HTTP service got a `-redirect` flag which allows for URL redirection via a
+  HTTP 307 response
+- Support for immediate response in HTTP service
+- Daal4py example usage.
+- Gitter chatbot tutorial.
+- Option to run dataflow without sources from cli.
+- Sphinx extension for automated testing of tutorials (consoletest)
+- Example of software portal using DataFlows and HTTP service
+- Retry parameter to `Operation`. Allows for setting number of times operation
+  should be retried before it's exception should be raised.
+### Changed
+- Renamed `-seed` to `-inputs` in `dataflow create` command
+- Renamed configloader/png to configloader/image and added support for loading JPEG and TIFF file formats
+- Update record `__str__` method to output in tabular format
+- Update MNIST use case to normalize image arrays.
+- `arg_` notation replaced with `CONFIG = ExampleConfig` style syntax
+  for parsing all command line arguments.
+- Moved usage/io.rst to docs/tutorials/dataflows/io.rst
+- `edit` command substituted with `edit record`
+- `Edit on Github` button now hidden for plugins.
+- Doctests now run via unittests
+- Every class and function can now be imported from the top level module
+- `op` attempts to create `Definition`s for each argument if an `inputs` are not
+  given.
+- Classes now use `CONFIG` if it has a default for every field and `config` is `None`
+- Models now dynamically import third party modules.
+- Memory dataflow classes now use auto args and config infrastructure
+- `dffml list records` command prints Records as JSON using `.export()`
+- Feature class in `dffml/feature/feature.py` initialize a feature object
+- All DefFeatures() functions are substituted with Features()
+- All feature.type() and feature.lenght() are substituted with
+  feature.type and feature.length
+- FileSource takes pathlib.Path as filename
+- Tensorflow tests re-run themselves up to 6 times to stop them from failing the
+  CI due to their randomly initialized weights making them fail ~2% of the time
+- Any plugin can now be loaded via it's entrypoint style path
+- `with_features` now raises a helpful error message if no records with matching
+  features were found
+- Split out model tutorial into writing the model, and another tutorial for
+  packaging the model.
+- IntegrationCLITestCase creates a new directory and chdir into it for each test
+- Automated testing of Automating Classification tutorial
+- `dffml version` command now prints git repo hash and if the repo is dirty
+### Fixed
+- `export_value` now converts numpy array to JSON serializable datatype
+- CSV source overwriting configloaded data to every row
+- Race condition in `MemoryRedundancyChecker` when more than 4 possible
+  parameter sets for an operation.
+- Typing of config vlaues for numpy parsed docstrings where type should be tuple
+  or list
+- Model predict methods now use `SourcesContext.with_features`
+### Removed
+- Monitor class and associated tests (unused)
+- DefinedFeature class in `dffml/feature/feature.py`
+- DefFeature function in `dffml/feature/feature.py`
+- load_def function in Feature class in `dffml/feature/feature.py`
+
 ## [0.3.7] - 2020-04-14
 ### Added
 - IO operations demo and `literal_eval` operation.
@@ -33,7 +159,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.3.6] - 2020-04-04
 ### Added
 - Operations for taking input from the user `AcceptUserInput` and for printing the output `print_output`
-- Hugging Face Transformers tensorflow based NER models.
 - PNG ConfigLoader for reading images as arrays to predict using MNIST trained models
 - Docstrings and doctestable examples to `record.py`.
 - Inputs can be validated using operations

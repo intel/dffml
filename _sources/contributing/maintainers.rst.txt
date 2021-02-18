@@ -12,10 +12,10 @@ When a new plugin is added we need to go manually upload it for the first time.
 .. code-block:: console
 
     $ cd model/new_model
-    $ python3.7 setup.py test
+    $ python3 setup.py test
     $ rm -rf dist
     $ git clean -xdf
-    $ python3.7 setup.py sdist
+    $ python3 setup.py sdist
     $ twine upload dist/*
 
 Once it's be uploaded, we go to PyPi and create an API key which will be used to
@@ -30,28 +30,46 @@ Add a line for the plugin along with it's sceret.
 Doing a Release
 ---------------
 
+- Create a major.minor bugfix branch if it does not exist. Switch to it if it
+  does
+
 - Increment the version number of each package
 
 - Increment the version number of the main package in the dependency list of
   each package
 
-.. warning::
-
-    ``model/tensorflow_hub`` depends on ``model/tensorflow``. Its important to
-    update the version of ``dffml-model-tensorflow`` in
-    ``model/tensorflow_hub``.
+- Increment the version number of the plugin packages in the dependency list of
+  each package
 
 - Modify ``CHANGELOG.md`` to replace the ``Unreleased`` section header with the
   new version and the date
 
 - Commit the new version
 
+- Pin all the dependencies
+
 - Tag a release
+
+- Push the new branch (if created) and the tag
+
+- Switch to the master branch
+
+- Cherry pick the release commit from the new branch, but not the pinning commit
+
+- Push the master branch
 
 .. code-block:: console
 
-    $ dffml service dev bump packages 0.0.1 -log debug
-    $ dffml service dev bump main
-    $ sed -i "s/Unreleased]/$(dffml service dev setuppy kwarg version setup.py)] - $(date +%F)/" CHANGELOG.md
-    $ git c "release: Version $(dffml service dev setuppy kwarg version setup.py)"
-    $ git tag $(dffml service dev setuppy kwarg version setup.py)
+    $ git checkout -b N.N.x || git checkout N.N.x
+    $ dffml service dev bump packages 0.0.1
+    $ dffml service dev bump inter
+    $ sed -i "s/Unreleased]/$(dffml service dev setuppy version dffml/version.py)] - $(date +%F)/" CHANGELOG.md
+    $ git commit -sam "release: Version $(dffml service dev setuppy version dffml/version.py)"
+    $ dffml service dev ci pindeps path/to/extracted/logs_NNNNN
+    $ git commit -sam "release: $(dffml service dev setuppy version dffml/version.py): Pin dependency versions"
+    $ git tag $(dffml service dev setuppy version dffml/version.py)
+    $ git push -u origin N.N.x
+    $ git push --tags
+    $ git checkout master
+    $ git cherry-pick X.Y.Z~1
+    $ git push

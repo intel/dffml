@@ -7,12 +7,13 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Documentation &mdash; DFFML 0.3.7 documentation</title>
+  <title>Documentation &mdash; DFFML 0.4.0 documentation</title>
   
 
   
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/tabs.css" type="text/css" />
 
   
   
@@ -40,7 +41,7 @@
     <link rel="author" title="About these documents" href="../about.html" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Debugging" href="debugging.html" />
+    <link rel="next" title="consoletest Sphinx extension" href="consoletest.html" />
     <link rel="prev" title="Testing" href="testing.html" /> 
 </head>
 
@@ -65,7 +66,7 @@
             
             
               <div class="version">
-                0.3.7
+                0.4.0
               </div>
             
           
@@ -96,11 +97,11 @@
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../concepts/index.html">Concepts</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Examples</span></p>
+<p class="caption"><span class="caption-text">Usage</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../quickstart/model.html">Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../usage/index.html">Use Cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Examples</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Reference</span></p>
 <ul>
@@ -108,10 +109,17 @@
 <li class="toctree-l1"><a class="reference internal" href="../cli.html">Command Line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../plugins/service/http/index.html">HTTP API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../troubleshooting.html">Troubleshooting</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Subprojects</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../shouldi.html">shouldi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../swportal.html">Software Portal</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Community</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference external" href="https://github.com/intel/dffml">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://intel.github.io/dffml/master/">Master Branch Docs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../publications.html">Publications</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../contact.html">Contact Us</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Contributing</a><ul class="current">
@@ -127,11 +135,14 @@
 <li class="toctree-l3"><a class="reference internal" href="#doctests">Doctests</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="consoletest.html">consoletest Sphinx extension</a></li>
 <li class="toctree-l2"><a class="reference internal" href="debugging.html">Debugging</a></li>
 <li class="toctree-l2"><a class="reference internal" href="editors/index.html">Setting Up Your Editor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gsoc/index.html">Google Summer of Code</a></li>
 <li class="toctree-l2"><a class="reference internal" href="maintainers.html">Maintainer Docs</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../news/index.html">News</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
 </ul>
 
@@ -186,6 +197,8 @@
       <li>Documentation</li>
     
     
+
+
       <li class="wy-breadcrumbs-aside">
         
           
@@ -196,6 +209,8 @@
         
       </li>
     
+
+
   </ul>
 
   
@@ -213,7 +228,7 @@ documentation. See <a class="reference internal" href="dev_env.html#dev-env-inst
 </pre></div>
 </div>
 <p>Python’s built in HTTP server is useful for viewing the documentation.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python3.7 -m http.server --directory pages/ <span class="m">7000</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python3 -m http.server --directory pages/ <span class="m">7000</span>
 </pre></div>
 </div>
 <div class="section" id="examples">
@@ -240,74 +255,22 @@ code in a separate file and format it there before copying it into the example.<
 </div>
 <div class="section" id="setup-for-example-code">
 <h2>Setup for Example Code<a class="headerlink" href="#setup-for-example-code" title="Permalink to this headline">¶</a></h2>
-<p>Everything the example code needs must be setup by the
-<code class="docutils literal notranslate"><span class="pre">docs/doctest_header.py</span></code> file. It contains the <code class="docutils literal notranslate"><span class="pre">import</span></code> statements and
-creates a temporary directory for the tests to run in.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>The <code class="docutils literal notranslate"><span class="pre">..</span> <span class="pre">testsetup::</span></code> directive seemed to be crashing Sphinx, so be aware if
-you attempt to use it.</p>
-</div>
+<p>Everything the example code needs must be setup within the
+<code class="docutils literal notranslate"><span class="pre">tests/test_doctests.py</span></code> file. It imports all of the files within <code class="docutils literal notranslate"><span class="pre">dffml/</span></code>
+and creates a <code class="docutils literal notranslate"><span class="pre">unittest.TestCase</span></code> for each class or function with examples.
+It also creates a temporary directory for the tests to run in.</p>
+<p>See that file for more details on doing extra setup and tear down for specific
+tests.</p>
 </div>
 <div class="section" id="doctests">
 <h2>Doctests<a class="headerlink" href="#doctests" title="Permalink to this headline">¶</a></h2>
-<p>All the examples are tested by the Sphinx doctest extension. To test all of the
-examples, run the doctest script.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>./scripts/doctest.sh
-<span class="go">Running Sphinx v2.4.3</span>
-<span class="go">making output directory... done</span>
-<span class="go">loading intersphinx inventory from https://docs.python.org/3/objects.inv...</span>
-<span class="go">building [mo]: targets for 0 po files that are out of date</span>
-<span class="go">building [doctest]: targets for 58 source files that are out of date</span>
-<span class="go">updating environment: [new config] 58 added, 0 changed, 0 removed</span>
-<span class="go">reading sources... [100%] usage/mnist</span>
-
-<span class="go">looking for now-outdated files... none found</span>
-<span class="go">pickling environment... done</span>
-<span class="go">checking consistency... done</span>
-<span class="go">running tests...</span>
-
-<span class="go">Document: api/high_level</span>
-<span class="go">------------------------</span>
-<span class="go">1 items passed all tests:</span>
-<span class="go">   3 tests in default</span>
-<span class="go">3 tests in 1 items.</span>
-<span class="go">3 passed and 0 failed.</span>
-<span class="go">Test passed.</span>
-
-<span class="go">Document: api/base</span>
-<span class="go">------------------</span>
-<span class="go">1 items passed all tests:</span>
-<span class="go">   4 tests in default</span>
-<span class="go">4 tests in 1 items.</span>
-<span class="go">4 passed and 0 failed.</span>
-<span class="go">Test passed.</span>
-
-<span class="go">Document: api/df/memory</span>
-<span class="go">-----------------------</span>
-<span class="go">1 items passed all tests:</span>
-<span class="go">   4 tests in default</span>
-<span class="go">4 tests in 1 items.</span>
-<span class="go">4 passed and 0 failed.</span>
-<span class="go">Test passed.</span>
-
-<span class="go">Document: api/util/net</span>
-<span class="go">----------------------</span>
-<span class="go">1 items passed all tests:</span>
-<span class="go">   4 tests in default</span>
-<span class="go">4 tests in 1 items.</span>
-<span class="go">4 passed and 0 failed.</span>
-<span class="go">Test passed.</span>
-
-<span class="go">Doctest summary</span>
-<span class="go">===============</span>
-<span class="go">   15 tests</span>
-<span class="go">    0 failures in tests</span>
-<span class="go">    0 failures in setup code</span>
-<span class="go">    0 failures in cleanup code</span>
-<span class="go">build succeeded, 4 warnings.</span>
-
-<span class="go">Testing of doctests in the sources finished, look at the results in ../../home/user/Documents/python/dffml/doctest/output.txt.</span>
+<p>To run all the examples</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python3 setup.py <span class="nb">test</span> -s tests.test_docstrings
+</pre></div>
+</div>
+<p>To run a specific example, determine python path to class or function, remove
+<code class="docutils literal notranslate"><span class="pre">dffml.</span></code> and change rest of <code class="docutils literal notranslate"><span class="pre">.</span></code> to <code class="docutils literal notranslate"><span class="pre">_</span></code>.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python3 setup.py <span class="nb">test</span> -s tests.test_docstrings.util_asynctestcase_AsyncTestCase
 </pre></div>
 </div>
 </div>
@@ -319,7 +282,7 @@ examples, run the doctest script.</p>
           </div>
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="debugging.html" class="btn btn-neutral float-right" title="Debugging" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="consoletest.html" class="btn btn-neutral float-right" title="consoletest Sphinx extension" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
         <a href="testing.html" class="btn btn-neutral float-left" title="Testing" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
@@ -327,7 +290,7 @@ examples, run the doctest script.</p>
 
   <div role="contentinfo">
     <p>
-        &#169; Copyright 2019, Intel.
+        &#169; Copyright 2017 - 2021, Intel.
 
     </p>
   </div>

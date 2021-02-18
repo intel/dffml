@@ -1,0 +1,14 @@
+Util Testing Consoletest
+========================
+.. toctree::
+    :glob:
+    :maxdepth: 2
+    :caption: Contents:
+
+    commands
+    runner
+    parser
+    directives
+    util
+    builder
+    cli

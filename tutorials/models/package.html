@@ -1,0 +1,542 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Packaging a Model &mdash; DFFML 0.4.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/tabs.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/copybutton.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="author" title="About these documents" href="../../about.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Documenting a Model" href="docs.html" />
+    <link rel="prev" title="Writing a Model" href="slr.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> DFFML
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.4.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Introduction</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../concepts/index.html">Concepts</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Usage</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../quickstart/model.html">Quickstart</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Tutorials</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Models</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="iris.html">Use a Model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="slr.html">Writing a Model</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Packaging a Model</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#create-the-package">Create the Package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#install-the-package">Install the Package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#testing">Testing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#entrypoint-registration">Entrypoint Registration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#command-line-usage">Command Line Usage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#uploading-to-pypi">Uploading to PyPi</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="docs.html">Documenting a Model</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../sources/index.html">Sources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dataflows/index.html">DataFlows</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../neuralnetwork.html">Neural Networks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../doublecontextentry.html">Double Context Entry</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples/index.html">Examples</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../plugins/index.html">Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cli.html">Command Line</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../plugins/service/http/index.html">HTTP API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../troubleshooting.html">Troubleshooting</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Subprojects</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../shouldi.html">shouldi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../swportal.html">Software Portal</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Community</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/intel/dffml">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://intel.github.io/dffml/master/">Master Branch Docs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../publications.html">Publications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contact.html">Contact Us</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing/index.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../news/index.html">News</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../changelog.html">Changelog</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">DFFML</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Tutorials</a> &raquo;</li>
+        
+          <li><a href="index.html">Models</a> &raquo;</li>
+        
+      <li>Packaging a Model</li>
+    
+    
+
+
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            
+              <a href="https://github.com/intel/dffml/blob/master/docs/tutorials/models/package.rst" class="fa fa-github"> Edit on GitHub</a>
+            
+          
+        
+      </li>
+    
+
+
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="packaging-a-model">
+<span id="model-tutorial-package"></span><h1>Packaging a Model<a class="headerlink" href="#packaging-a-model" title="Permalink to this headline">¶</a></h1>
+<p>In the pervious tutorial we created a DFFML style model, which we could use from
+the command line, HTTP service, etc. We’re now going to take that model and
+package it so that it can be published to PyPi for others to download via
+<code class="docutils literal notranslate"><span class="pre">pip</span></code> and use as they do the rest of the <a class="reference internal" href="../../plugins/dffml_model.html#plugin-models"><span class="std std-ref">Models</span></a> plugins.</p>
+<div class="section" id="create-the-package">
+<h2>Create the Package<a class="headerlink" href="#create-the-package" title="Permalink to this headline">¶</a></h2>
+<p>To create a new model we first create a new Python package. DFFML has a helper
+to create it for you.</p>
+<p>The helper creates a model which does Simple Linear Regression (SLR). Which
+means it finds the best fit line for a dataset. If you’ve done the
+<a class="reference internal" href="slr.html#model-tutorial-slr"><span class="std std-ref">Writing a Model</span></a> tutorial then the same code from that tutorial in
+<strong>myslr.py</strong> will be present in <strong>dffml_model_myslr/myslr.py</strong> (not your
+modifications though if you made any).</p>
+<p>You may know the best fit line as <code class="docutils literal notranslate"><span class="pre">y</span> <span class="pre">=</span> <span class="pre">m</span> <span class="pre">*</span> <span class="pre">x</span> <span class="pre">+</span> <span class="pre">b</span></code></p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml service dev create model dffml-model-myslr
+</pre></div>
+</div>
+<p>Then enter the directory of the package we just created</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">cd</span> dffml-model-myslr
+</pre></div>
+</div>
+</div>
+<div class="section" id="install-the-package">
+<h2>Install the Package<a class="headerlink" href="#install-the-package" title="Permalink to this headline">¶</a></h2>
+<p>If you’re planing on importing any third party packages, anything on
+<a class="reference external" href="https://pypi.org">PyPi</a>, you’ll want to add it to the <code class="docutils literal notranslate"><span class="pre">setup.cfg</span></code> file
+first, under the <code class="docutils literal notranslate"><span class="pre">install_requires</span></code> section.</p>
+<p><strong>setup.cfg</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>    <span class="n">scikit</span><span class="o">-</span><span class="n">learn</span><span class="o">&gt;=</span><span class="mf">0.21</span><span class="o">.</span><span class="mi">2</span>
+</pre></div>
+</div>
+<p>Any time you modify the dependencies of a package you should re-install it so
+they get installed as well.</p>
+<p><code class="docutils literal notranslate"><span class="pre">pip</span></code>’s <code class="docutils literal notranslate"><span class="pre">-e</span></code> flag tells it we’re installing our package in development mode,
+which means anytime Python import’s our package, it’s going to use the version
+that we’re working on here. If you don’t pass <code class="docutils literal notranslate"><span class="pre">-e</span></code> then anytime you make
+changes in this directory, they won’t take effect until you reinstall the
+package.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python -m pip install -e .
+</pre></div>
+</div>
+</div>
+<div class="section" id="testing">
+<h2>Testing<a class="headerlink" href="#testing" title="Permalink to this headline">¶</a></h2>
+<p>Packages should have tests to make sure that when you change things they don’t
+break before you release your package to users.</p>
+<div class="section" id="imports">
+<h3>Imports<a class="headerlink" href="#imports" title="Permalink to this headline">¶</a></h3>
+<p>Let’s import everything we’ll need. Since DFFML heavily leverages <code class="docutils literal notranslate"><span class="pre">async</span></code>
+code, we’ll have our test cases derive from <code class="xref py py-class docutils literal notranslate"><span class="pre">AsyncTestCase</span></code>, rather
+than <a class="reference external" href="https://docs.python.org/3/library/unittest.html#unittest.TestCase" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">unittest.TestCase</span></code></a>.</p>
+<p><strong>tests/test_model.py</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">tempfile</span>
+
+<span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">train</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">,</span> <span class="n">predict</span><span class="p">,</span> <span class="n">Feature</span><span class="p">,</span> <span class="n">Features</span><span class="p">,</span> <span class="n">AsyncTestCase</span>
+
+<span class="kn">from</span> <span class="nn">dffml_model_myslr.myslr</span> <span class="kn">import</span> <span class="n">MySLRModel</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="test-data">
+<h3>Test data<a class="headerlink" href="#test-data" title="Permalink to this headline">¶</a></h3>
+<p>We usually try to randomly generate training and test data, but for this example
+we’re just going to hard code in some data.</p>
+<p><strong>tests/test_model.py</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">TRAIN_DATA</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">[</span><span class="mf">12.4</span><span class="p">,</span> <span class="mf">11.2</span><span class="p">],</span>
+    <span class="p">[</span><span class="mf">14.3</span><span class="p">,</span> <span class="mf">12.5</span><span class="p">],</span>
+    <span class="p">[</span><span class="mf">14.5</span><span class="p">,</span> <span class="mf">12.7</span><span class="p">],</span>
+    <span class="p">[</span><span class="mf">14.9</span><span class="p">,</span> <span class="mf">13.1</span><span class="p">],</span>
+    <span class="p">[</span><span class="mf">16.1</span><span class="p">,</span> <span class="mf">14.1</span><span class="p">],</span>
+    <span class="p">[</span><span class="mf">16.9</span><span class="p">,</span> <span class="mf">14.8</span><span class="p">],</span>
+    <span class="p">[</span><span class="mf">16.5</span><span class="p">,</span> <span class="mf">14.4</span><span class="p">],</span>
+    <span class="p">[</span><span class="mf">15.4</span><span class="p">,</span> <span class="mf">13.4</span><span class="p">],</span>
+    <span class="p">[</span><span class="mf">17.0</span><span class="p">,</span> <span class="mf">14.9</span><span class="p">],</span>
+    <span class="p">[</span><span class="mf">17.9</span><span class="p">,</span> <span class="mf">15.6</span><span class="p">],</span>
+    <span class="p">[</span><span class="mf">18.8</span><span class="p">,</span> <span class="mf">16.4</span><span class="p">],</span>
+    <span class="p">[</span><span class="mf">20.3</span><span class="p">,</span> <span class="mf">17.7</span><span class="p">],</span>
+    <span class="p">[</span><span class="mf">22.4</span><span class="p">,</span> <span class="mf">19.6</span><span class="p">],</span>
+    <span class="p">[</span><span class="mf">19.4</span><span class="p">,</span> <span class="mf">16.9</span><span class="p">],</span>
+    <span class="p">[</span><span class="mf">15.5</span><span class="p">,</span> <span class="mf">14.0</span><span class="p">],</span>
+    <span class="p">[</span><span class="mf">16.7</span><span class="p">,</span> <span class="mf">14.6</span><span class="p">],</span>
+<span class="p">]</span>
+
+<span class="n">TEST_DATA</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">[</span><span class="mf">17.3</span><span class="p">,</span> <span class="mf">15.1</span><span class="p">],</span>
+    <span class="p">[</span><span class="mf">18.4</span><span class="p">,</span> <span class="mf">16.1</span><span class="p">],</span>
+    <span class="p">[</span><span class="mf">19.2</span><span class="p">,</span> <span class="mf">16.8</span><span class="p">],</span>
+    <span class="p">[</span><span class="mf">17.4</span><span class="p">,</span> <span class="mf">15.2</span><span class="p">],</span>
+    <span class="p">[</span><span class="mf">19.5</span><span class="p">,</span> <span class="mf">17.0</span><span class="p">],</span>
+    <span class="p">[</span><span class="mf">19.7</span><span class="p">,</span> <span class="mf">17.2</span><span class="p">],</span>
+    <span class="p">[</span><span class="mf">21.2</span><span class="p">,</span> <span class="mf">18.6</span><span class="p">],</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="testcase-class">
+<h3>TestCase Class<a class="headerlink" href="#testcase-class" title="Permalink to this headline">¶</a></h3>
+<p>We create a temporary directory for our tests to use, and clean it up when
+they’re done.</p>
+<p><strong>tests/test_model.py</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">TestMySLRModel</span><span class="p">(</span><span class="n">AsyncTestCase</span><span class="p">):</span>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">setUpClass</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="c1"># Create a temporary directory to store the trained model</span>
+        <span class="bp">cls</span><span class="o">.</span><span class="n">model_dir</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">TemporaryDirectory</span><span class="p">()</span>
+        <span class="c1"># Create an instance of the model</span>
+        <span class="bp">cls</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">MySLRModel</span><span class="p">(</span>
+            <span class="n">features</span><span class="o">=</span><span class="n">Features</span><span class="p">(</span><span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;X&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span>
+            <span class="n">predict</span><span class="o">=</span><span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;Y&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+            <span class="n">directory</span><span class="o">=</span><span class="bp">cls</span><span class="o">.</span><span class="n">model_dir</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">tearDownClass</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="c1"># Remove the temporary directory where the model was stored to cleanup</span>
+        <span class="bp">cls</span><span class="o">.</span><span class="n">model_dir</span><span class="o">.</span><span class="n">cleanup</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="testing-train">
+<h3>Testing Train<a class="headerlink" href="#testing-train" title="Permalink to this headline">¶</a></h3>
+<p>Similarly to the quickstart, all we need to to is pass the model and training
+data to the <code class="xref py py-func docutils literal notranslate"><span class="pre">train</span></code> function.</p>
+<p>The tests are prefixed with numbers to indicate what order they
+should be run in, ensuring that accuracy and predict tests always have a trained
+model to work with.</p>
+<p>We’re using the <code class="docutils literal notranslate"><span class="pre">*</span></code> operator here to expand the list of X, Y pair <code class="docutils literal notranslate"><span class="pre">dict</span></code>’s.
+See the offical Python documeantion about
+<a class="reference external" href="https://docs.python.org/3/tutorial/controlflow.html#unpacking-argument-lists">Unpacking Argument Lists</a>
+for more information on how the <code class="docutils literal notranslate"><span class="pre">*</span></code>-operator works.</p>
+<p><strong>tests/test_model.py</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="k">async</span> <span class="k">def</span> <span class="nf">test_00_train</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Train the model on the training data</span>
+        <span class="k">await</span> <span class="n">train</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <span class="o">*</span><span class="p">[{</span><span class="s2">&quot;X&quot;</span><span class="p">:</span> <span class="n">x</span><span class="p">,</span> <span class="s2">&quot;Y&quot;</span><span class="p">:</span> <span class="n">y</span><span class="p">}</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">TRAIN_DATA</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="testing-accuracy">
+<h3>Testing Accuracy<a class="headerlink" href="#testing-accuracy" title="Permalink to this headline">¶</a></h3>
+<p>Once again, all we need to to is pass the model and test data to the
+<code class="xref py py-func docutils literal notranslate"><span class="pre">accuracy</span></code> function. Then we check if it’s in an
+acceptable range. This test is helpful to make sure you never make any horribly
+wrong changes to your model, since it will check that the accuracy is within an
+acceptable range.</p>
+<p><strong>tests/test_model.py</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="k">async</span> <span class="k">def</span> <span class="nf">test_01_accuracy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Use the test data to assess the model&#39;s accuracy</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="k">await</span> <span class="n">accuracy</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <span class="o">*</span><span class="p">[{</span><span class="s2">&quot;X&quot;</span><span class="p">:</span> <span class="n">x</span><span class="p">,</span> <span class="s2">&quot;Y&quot;</span><span class="p">:</span> <span class="n">y</span><span class="p">}</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">TEST_DATA</span><span class="p">]</span>
+        <span class="p">)</span>
+        <span class="c1"># Ensure the accuracy is above 80%</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="mf">0.8</span> <span class="o">&lt;=</span> <span class="n">res</span> <span class="o">&lt;</span> <span class="mf">1.0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="testing-prediction">
+<h3>Testing Prediction<a class="headerlink" href="#testing-prediction" title="Permalink to this headline">¶</a></h3>
+<p>Finally, we use the test data and model with the
+<code class="xref py py-func docutils literal notranslate"><span class="pre">predict</span></code> function. Then we check if each predicted Y
+value is within 10% of what it should be.</p>
+<p><strong>tests/test_model.py</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="k">async</span> <span class="k">def</span> <span class="nf">test_02_predict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Get the prediction for each piece of test data</span>
+        <span class="k">async</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">features</span><span class="p">,</span> <span class="n">prediction</span> <span class="ow">in</span> <span class="n">predict</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <span class="o">*</span><span class="p">[{</span><span class="s2">&quot;X&quot;</span><span class="p">:</span> <span class="n">x</span><span class="p">,</span> <span class="s2">&quot;Y&quot;</span><span class="p">:</span> <span class="n">y</span><span class="p">}</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">TEST_DATA</span><span class="p">]</span>
+        <span class="p">):</span>
+            <span class="c1"># Grab the correct value</span>
+            <span class="n">correct</span> <span class="o">=</span> <span class="n">features</span><span class="p">[</span><span class="s2">&quot;Y&quot;</span><span class="p">]</span>
+            <span class="c1"># Grab the predicted value</span>
+            <span class="n">prediction</span> <span class="o">=</span> <span class="n">prediction</span><span class="p">[</span><span class="s2">&quot;Y&quot;</span><span class="p">][</span><span class="s2">&quot;value&quot;</span><span class="p">]</span>
+            <span class="c1"># Check that the prediction is within 10% error of the actual value</span>
+            <span class="n">acceptable</span> <span class="o">=</span> <span class="mf">0.1</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">assertLess</span><span class="p">(</span><span class="n">prediction</span><span class="p">,</span> <span class="n">correct</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">+</span> <span class="n">acceptable</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">assertGreater</span><span class="p">(</span><span class="n">prediction</span><span class="p">,</span> <span class="n">correct</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">acceptable</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="run-the-tests">
+<h3>Run the tests<a class="headerlink" href="#run-the-tests" title="Permalink to this headline">¶</a></h3>
+<p>We can run the tests using the <code class="docutils literal notranslate"><span class="pre">unittest</span></code> module. The create command gave us
+both unit tests and integration tests. We want to only run the unit tests right
+now (<code class="docutils literal notranslate"><span class="pre">tests.test_model</span></code>).</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python -m unittest -v tests.test_model
+<span class="go">test_00_train (tests.test_model.TestMySLRModel) ... ok</span>
+<span class="go">test_01_accuracy (tests.test_model.TestMySLRModel) ... ok</span>
+<span class="go">test_02_predict (tests.test_model.TestMySLRModel) ... ok</span>
+
+<span class="go">----------------------------------------------------------------------</span>
+<span class="go">Ran 3 tests in 0.003s</span>
+
+<span class="go">OK</span>
+</pre></div>
+</div>
+<p>If you want to see the output of the call to <code class="docutils literal notranslate"><span class="pre">self.logger.debug</span></code>, just set the
+<code class="docutils literal notranslate"><span class="pre">LOGGING</span></code> environment variable to <code class="docutils literal notranslate"><span class="pre">debug</span></code>.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nv">LOGGING</span><span class="o">=</span>debug python -m unittest -v tests.test_model
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="entrypoint-registration">
+<h2>Entrypoint Registration<a class="headerlink" href="#entrypoint-registration" title="Permalink to this headline">¶</a></h2>
+<p>In the <a class="reference internal" href="slr.html#model-tutorial-slr"><span class="std std-ref">Writing a Model</span></a> tutorial we refrenced the new model on the
+command line via it’s entrypoint style path. This is in the format of
+<code class="docutils literal notranslate"><span class="pre">file:ClassWithinFile</span></code>, so for that tutorial it was <code class="docutils literal notranslate"><span class="pre">myslr:MySLRModel</span></code>.</p>
+<p>That requires that the <code class="docutils literal notranslate"><span class="pre">file</span></code> be in a directory in current working directory,
+or in a directory in the <code class="docutils literal notranslate"><span class="pre">PYTHONPATH</span></code> environment variable.</p>
+<p>We can instead reference it by a shorter name, but we have to declare that name
+within the <code class="docutils literal notranslate"><span class="pre">dffml.model</span></code> entrypoint in <strong>entry_points.txt</strong>. This tells the
+Python packaging system that our package offers a plugin of the type
+<code class="docutils literal notranslate"><span class="pre">dffml.model</span></code>, and we give the short name on the left side of the equals, and
+the entrypoint path on the right side.</p>
+<p><strong>entry_points.txt</strong></p>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[dffml.model]</span>
+<span class="na">myslr</span> <span class="o">=</span> <span class="s">dffml_model_myslr.myslr:MySLRModel</span>
+</pre></div>
+</div>
+<p>And remember that any time we modify the <strong>setup.py</strong>, we have to run the
+setuptools <code class="docutils literal notranslate"><span class="pre">egg_info</span></code> hook to register the model with the <code class="docutils literal notranslate"><span class="pre">entry_points</span></code>
+system.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python setup.py egg_info
+</pre></div>
+</div>
+</div>
+<div class="section" id="command-line-usage">
+<h2>Command Line Usage<a class="headerlink" href="#command-line-usage" title="Permalink to this headline">¶</a></h2>
+<p>Let’s add some training data to a CSV file.</p>
+<p><strong>train.csv</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Years</span><span class="p">,</span><span class="n">Salary</span>
+<span class="mi">1</span><span class="p">,</span><span class="mi">40</span>
+<span class="mi">2</span><span class="p">,</span><span class="mi">50</span>
+<span class="mi">3</span><span class="p">,</span><span class="mi">60</span>
+<span class="mi">4</span><span class="p">,</span><span class="mi">70</span>
+<span class="mi">5</span><span class="p">,</span><span class="mi">80</span>
+</pre></div>
+</div>
+<p>Since we’ve registered our model as a <code class="docutils literal notranslate"><span class="pre">dffml.model</span></code> plugin, we can now
+reference it by it’s short name.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml train <span class="se">\</span>
+<span class="go">    -log debug \</span>
+<span class="go">    -model myslr \</span>
+<span class="go">    -model-features Years:int:1 \</span>
+<span class="go">    -model-predict Salary:float:1 \</span>
+<span class="go">    -model-directory modeldir \</span>
+<span class="go">    -sources f=csv \</span>
+<span class="go">    -source-filename train.csv</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="uploading-to-pypi">
+<h2>Uploading to PyPi<a class="headerlink" href="#uploading-to-pypi" title="Permalink to this headline">¶</a></h2>
+<p>You can now upload your package to PyPi, so that other’s can install it using
+<code class="docutils literal notranslate"><span class="pre">pip</span></code>, by running the following commands.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Don’t do this if you intened to contribute your model to the DFFML repo!
+Place the top level directory, <strong>dffml-model-myslr</strong>, into <strong>model/slr</strong>
+within the DFFML source tree, and submit a pull request.</p>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python3 setup.py sdist <span class="o">&amp;&amp;</span> python3 -m twine upload dist/*
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="docs.html" class="btn btn-neutral float-right" title="Documenting a Model" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="slr.html" class="btn btn-neutral float-left" title="Writing a Model" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2017 - 2021, Intel.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

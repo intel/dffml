@@ -1,0 +1,689 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Operation Db &mdash; DFFML 0.4.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/tabs.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/copybutton.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="author" title="About these documents" href="../../about.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Operation Mapping" href="mapping.html" />
+    <link rel="prev" title="Operation Math" href="math.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> DFFML
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.4.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Introduction</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../concepts/index.html">Concepts</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Usage</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../quickstart/model.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples/index.html">Examples</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../plugins/index.html">Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cli.html">Command Line</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../plugins/service/http/index.html">HTTP API</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../version.html">Version</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../noasync.html">High Level (noasync)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../record.html">Record</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../high_level.html">High Level</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plugins.html">Plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../base.html">Base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../log.html">Log</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../port/index.html">Port</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../source/index.html">Sources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configloader/index.html">Configloader</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../db/index.html">Databases</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Operation</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="io.html">Operation Io</a></li>
+<li class="toctree-l3"><a class="reference internal" href="preprocess.html">Operation Preprocess</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dataflow.html">Operation Dataflow</a></li>
+<li class="toctree-l3"><a class="reference internal" href="model.html">Operation Model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="math.html">Operation Math</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Operation Db</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mapping.html">Operation Mapping</a></li>
+<li class="toctree-l3"><a class="reference internal" href="output.html">Operation Output</a></li>
+<li class="toctree-l3"><a class="reference internal" href="log.html">Operation Log</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../model/index.html">Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../util/index.html">Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../df/index.html">Data Flow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../secret/index.html">Secrets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cli/index.html">Cli</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../feature/index.html">Feature</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../service/index.html">Service</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../troubleshooting.html">Troubleshooting</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Subprojects</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../shouldi.html">shouldi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../swportal.html">Software Portal</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Community</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/intel/dffml">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://intel.github.io/dffml/master/">Master Branch Docs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../publications.html">Publications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contact.html">Contact Us</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing/index.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../news/index.html">News</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../changelog.html">Changelog</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">DFFML</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">API Reference</a> &raquo;</li>
+        
+          <li><a href="index.html">Operation</a> &raquo;</li>
+        
+      <li>Operation Db</li>
+    
+    
+
+
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            
+              <a href="https://github.com/intel/dffml/blob/master/docs/api/operation/db.rst" class="fa fa-github"> Edit on GitHub</a>
+            
+          
+        
+      </li>
+    
+
+
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-dffml.operation.db">
+<span id="operation-db"></span><h1>Operation Db<a class="headerlink" href="#module-dffml.operation.db" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="dffml.operation.db.DatabaseQueryConfig">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">dffml.operation.db.</span></code><code class="sig-name descname"><span class="pre">DatabaseQueryConfig</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">database</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="../db/base.html#dffml.db.base.BaseDatabase" title="dffml.db.base.BaseDatabase"><span class="pre">dffml.db.base.BaseDatabase</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/operation/db.html#DatabaseQueryConfig"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.operation.db.DatabaseQueryConfig" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="dffml.operation.db.db_query_create_table">
+<em class="property"><span class="pre">async</span> </em><code class="sig-prename descclassname"><span class="pre">dffml.operation.db.</span></code><code class="sig-name descname"><span class="pre">db_query_create_table</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">table_name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">cols</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">[]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/operation/db.html#db_query_create_table"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.operation.db.db_query_create_table" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a create table query in the database.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>table_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – The name of the table to be created.</p></li>
+<li><p><strong>cols</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><em>list</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>]</em>) – Columns of the table.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sdb</span> <span class="o">=</span> <span class="n">SqliteDatabase</span><span class="p">(</span><span class="n">SqliteDatabaseConfig</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;examples.db&quot;</span><span class="p">))</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dataflow</span> <span class="o">=</span> <span class="n">DataFlow</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">operations</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;db_query_create&quot;</span><span class="p">:</span> <span class="n">db_query_create_table</span><span class="o">.</span><span class="n">op</span><span class="p">,},</span>
+<span class="gp">... </span>    <span class="n">configs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;db_query_create&quot;</span><span class="p">:</span> <span class="n">DatabaseQueryConfig</span><span class="p">(</span><span class="n">database</span><span class="o">=</span><span class="n">sdb</span><span class="p">),},</span>
+<span class="gp">... </span>    <span class="n">seed</span><span class="o">=</span><span class="p">[],</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">inputs</span> <span class="o">=</span> <span class="p">[</span>
+<span class="gp">... </span>    <span class="n">Input</span><span class="p">(</span>
+<span class="gp">... </span>        <span class="n">value</span><span class="o">=</span><span class="s2">&quot;myTable1&quot;</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="n">definition</span><span class="o">=</span><span class="n">db_query_create_table</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;table_name&quot;</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="p">),</span>
+<span class="gp">... </span>    <span class="n">Input</span><span class="p">(</span>
+<span class="gp">... </span>        <span class="n">value</span><span class="o">=</span><span class="p">{</span>
+<span class="gp">... </span>            <span class="s2">&quot;key&quot;</span><span class="p">:</span> <span class="s2">&quot;real&quot;</span><span class="p">,</span>
+<span class="gp">... </span>            <span class="s2">&quot;firstName&quot;</span><span class="p">:</span> <span class="s2">&quot;text&quot;</span><span class="p">,</span>
+<span class="gp">... </span>            <span class="s2">&quot;lastName&quot;</span><span class="p">:</span> <span class="s2">&quot;text&quot;</span><span class="p">,</span>
+<span class="gp">... </span>            <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="s2">&quot;real&quot;</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="p">},</span>
+<span class="gp">... </span>        <span class="n">definition</span><span class="o">=</span><span class="n">db_query_create_table</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;cols&quot;</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="p">),</span>
+<span class="gp">... </span><span class="p">]</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="k">async</span> <span class="k">for</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">MemoryOrchestrator</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">dataflow</span><span class="p">,</span> <span class="n">inputs</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="k">pass</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt id="dffml.operation.db.db_query_insert">
+<em class="property"><span class="pre">async</span> </em><code class="sig-prename descclassname"><span class="pre">dffml.operation.db.</span></code><code class="sig-name descname"><span class="pre">db_query_insert</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">table_name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/operation/db.html#db_query_insert"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.operation.db.db_query_insert" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates an insert query in the database.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>table_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – The name of the table to insert data in to.</p></li>
+<li><p><strong>data</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><em>dict</em></a>) – Data to be inserted into the table.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sdb</span> <span class="o">=</span> <span class="n">SqliteDatabase</span><span class="p">(</span><span class="n">SqliteDatabaseConfig</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;examples.db&quot;</span><span class="p">))</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dataflow</span> <span class="o">=</span> <span class="n">DataFlow</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">operations</span><span class="o">=</span><span class="p">{</span>
+<span class="gp">... </span>        <span class="s2">&quot;db_query_insert&quot;</span><span class="p">:</span> <span class="n">db_query_insert</span><span class="o">.</span><span class="n">op</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="s2">&quot;db_query_lookup&quot;</span><span class="p">:</span> <span class="n">db_query_lookup</span><span class="o">.</span><span class="n">op</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="s2">&quot;get_single&quot;</span><span class="p">:</span> <span class="n">GetSingle</span><span class="o">.</span><span class="n">imp</span><span class="o">.</span><span class="n">op</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="p">},</span>
+<span class="gp">... </span>    <span class="n">configs</span><span class="o">=</span><span class="p">{</span>
+<span class="gp">... </span>        <span class="s2">&quot;db_query_lookup&quot;</span><span class="p">:</span> <span class="n">DatabaseQueryConfig</span><span class="p">(</span><span class="n">database</span><span class="o">=</span><span class="n">sdb</span><span class="p">),</span>
+<span class="gp">... </span>        <span class="s2">&quot;db_query_insert&quot;</span><span class="p">:</span> <span class="n">DatabaseQueryConfig</span><span class="p">(</span><span class="n">database</span><span class="o">=</span><span class="n">sdb</span><span class="p">),</span>
+<span class="gp">... </span>    <span class="p">},</span>
+<span class="gp">... </span>    <span class="n">seed</span><span class="o">=</span><span class="p">[],</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">inputs</span> <span class="o">=</span> <span class="p">{</span>
+<span class="gp">... </span>    <span class="s2">&quot;insert&quot;</span><span class="p">:</span> <span class="p">[</span>
+<span class="gp">... </span>        <span class="n">Input</span><span class="p">(</span>
+<span class="gp">... </span>            <span class="n">value</span><span class="o">=</span><span class="s2">&quot;myTable&quot;</span><span class="p">,</span> <span class="n">definition</span><span class="o">=</span><span class="n">db_query_insert</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;table_name&quot;</span><span class="p">],</span>
+<span class="gp">... </span>        <span class="p">),</span>
+<span class="gp">... </span>        <span class="n">Input</span><span class="p">(</span>
+<span class="gp">... </span>           <span class="n">value</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;key&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span> <span class="s2">&quot;firstName&quot;</span><span class="p">:</span> <span class="s2">&quot;John&quot;</span><span class="p">,</span> <span class="s2">&quot;lastName&quot;</span><span class="p">:</span> <span class="s2">&quot;Doe&quot;</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">16</span><span class="p">},</span>
+<span class="gp">... </span>            <span class="n">definition</span><span class="o">=</span><span class="n">db_query_insert</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">],</span>
+<span class="gp">... </span>        <span class="p">),</span>
+<span class="gp">... </span>    <span class="p">],</span>
+<span class="gp">... </span>    <span class="s2">&quot;lookup&quot;</span><span class="p">:</span> <span class="p">[</span>
+<span class="gp">... </span>        <span class="n">Input</span><span class="p">(</span>
+<span class="gp">... </span>            <span class="n">value</span><span class="o">=</span><span class="s2">&quot;myTable&quot;</span><span class="p">,</span> <span class="n">definition</span><span class="o">=</span><span class="n">db_query_lookup</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;table_name&quot;</span><span class="p">],</span>
+<span class="gp">... </span>        <span class="p">),</span>
+<span class="gp">... </span>        <span class="n">Input</span><span class="p">(</span>
+<span class="gp">... </span>            <span class="n">value</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;firstName&quot;</span><span class="p">,</span> <span class="s2">&quot;lastName&quot;</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">],</span>
+<span class="gp">... </span>            <span class="n">definition</span><span class="o">=</span><span class="n">db_query_lookup</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;cols&quot;</span><span class="p">],</span>
+<span class="gp">... </span>        <span class="p">),</span>
+<span class="gp">... </span>        <span class="n">Input</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="p">[],</span> <span class="n">definition</span><span class="o">=</span><span class="n">db_query_lookup</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;conditions&quot;</span><span class="p">],),</span>
+<span class="gp">... </span>        <span class="n">Input</span><span class="p">(</span>
+<span class="gp">... </span>            <span class="n">value</span><span class="o">=</span><span class="p">[</span><span class="n">db_query_lookup</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s2">&quot;lookups&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">],</span>
+<span class="gp">... </span>            <span class="n">definition</span><span class="o">=</span><span class="n">GetSingle</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;spec&quot;</span><span class="p">],</span>
+<span class="gp">... </span>        <span class="p">),</span>
+<span class="gp">... </span>    <span class="p">]</span>
+<span class="gp">... </span><span class="p">}</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="k">async</span> <span class="k">for</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">MemoryOrchestrator</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">dataflow</span><span class="p">,</span> <span class="n">inputs</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="k">if</span> <span class="n">result</span><span class="p">:</span>
+<span class="gp">... </span>            <span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+<span class="go">{&#39;query_lookups&#39;: [{&#39;firstName&#39;: &#39;John&#39;, &#39;lastName&#39;: &#39;Doe&#39;, &#39;age&#39;: 16}]}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt id="dffml.operation.db.db_query_insert_or_update">
+<em class="property"><span class="pre">async</span> </em><code class="sig-prename descclassname"><span class="pre">dffml.operation.db.</span></code><code class="sig-name descname"><span class="pre">db_query_insert_or_update</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">table_name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/operation/db.html#db_query_insert_or_update"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.operation.db.db_query_insert_or_update" title="Permalink to this definition">¶</a></dt>
+<dd><p>Automatically uses the better suited operation, insert query or update query.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>table_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – The name of the table to insert data in to.</p></li>
+<li><p><strong>data</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><em>dict</em></a>) – Data to be inserted or updated into the table.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sdb</span> <span class="o">=</span> <span class="n">SqliteDatabase</span><span class="p">(</span><span class="n">SqliteDatabaseConfig</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;examples.db&quot;</span><span class="p">))</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">person</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;key&quot;</span><span class="p">:</span> <span class="mi">11</span><span class="p">,</span> <span class="s2">&quot;firstName&quot;</span><span class="p">:</span> <span class="s2">&quot;John&quot;</span><span class="p">,</span> <span class="s2">&quot;lastName&quot;</span><span class="p">:</span> <span class="s2">&quot;Wick&quot;</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">38</span><span class="p">}</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dataflow</span> <span class="o">=</span> <span class="n">DataFlow</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">operations</span><span class="o">=</span><span class="p">{</span>
+<span class="gp">... </span>        <span class="s2">&quot;db_query_insert_or_update&quot;</span><span class="p">:</span> <span class="n">db_query_insert_or_update</span><span class="o">.</span><span class="n">op</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="s2">&quot;db_query_lookup&quot;</span><span class="p">:</span> <span class="n">db_query_lookup</span><span class="o">.</span><span class="n">op</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="s2">&quot;get_single&quot;</span><span class="p">:</span> <span class="n">GetSingle</span><span class="o">.</span><span class="n">imp</span><span class="o">.</span><span class="n">op</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="p">},</span>
+<span class="gp">... </span>    <span class="n">configs</span><span class="o">=</span><span class="p">{</span>
+<span class="gp">... </span>        <span class="s2">&quot;db_query_insert_or_update&quot;</span><span class="p">:</span> <span class="n">DatabaseQueryConfig</span><span class="p">(</span><span class="n">database</span><span class="o">=</span><span class="n">sdb</span><span class="p">),</span>
+<span class="gp">... </span>        <span class="s2">&quot;db_query_lookup&quot;</span><span class="p">:</span> <span class="n">DatabaseQueryConfig</span><span class="p">(</span><span class="n">database</span><span class="o">=</span><span class="n">sdb</span><span class="p">),</span>
+<span class="gp">... </span>    <span class="p">},</span>
+<span class="gp">... </span>    <span class="n">seed</span><span class="o">=</span><span class="p">[],</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">inputs</span> <span class="o">=</span> <span class="p">{</span>
+<span class="gp">... </span>    <span class="s2">&quot;insert_or_update&quot;</span><span class="p">:</span> <span class="p">[</span>
+<span class="gp">... </span>        <span class="n">Input</span><span class="p">(</span>
+<span class="gp">... </span>            <span class="n">value</span><span class="o">=</span><span class="s2">&quot;myTable&quot;</span><span class="p">,</span> <span class="n">definition</span><span class="o">=</span><span class="n">db_query_update</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;table_name&quot;</span><span class="p">],</span>
+<span class="gp">... </span>        <span class="p">),</span>
+<span class="gp">... </span>        <span class="n">Input</span><span class="p">(</span>
+<span class="gp">... </span>            <span class="n">value</span><span class="o">=</span><span class="n">person</span><span class="p">,</span>
+<span class="gp">... </span>            <span class="n">definition</span><span class="o">=</span><span class="n">db_query_update</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">],</span>
+<span class="gp">... </span>        <span class="p">),</span>
+<span class="gp">... </span>    <span class="p">],</span>
+<span class="gp">... </span>    <span class="s2">&quot;lookup&quot;</span><span class="p">:</span> <span class="p">[</span>
+<span class="gp">... </span>        <span class="n">Input</span><span class="p">(</span>
+<span class="gp">... </span>            <span class="n">value</span><span class="o">=</span><span class="s2">&quot;myTable&quot;</span><span class="p">,</span>
+<span class="gp">... </span>            <span class="n">definition</span><span class="o">=</span><span class="n">db_query_lookup</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;table_name&quot;</span><span class="p">],</span>
+<span class="gp">... </span>        <span class="p">),</span>
+<span class="gp">... </span>        <span class="n">Input</span><span class="p">(</span>
+<span class="gp">... </span>            <span class="n">value</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;firstName&quot;</span><span class="p">,</span> <span class="s2">&quot;lastName&quot;</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">],</span>
+<span class="gp">... </span>            <span class="n">definition</span><span class="o">=</span><span class="n">db_query_lookup</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;cols&quot;</span><span class="p">],</span>
+<span class="gp">... </span>        <span class="p">),</span>
+<span class="gp">... </span>        <span class="n">Input</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="p">[],</span> <span class="n">definition</span><span class="o">=</span><span class="n">db_query_lookup</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;conditions&quot;</span><span class="p">],),</span>
+<span class="gp">... </span>        <span class="n">Input</span><span class="p">(</span>
+<span class="gp">... </span>            <span class="n">value</span><span class="o">=</span><span class="p">[</span><span class="n">db_query_lookup</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s2">&quot;lookups&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">],</span>
+<span class="gp">... </span>            <span class="n">definition</span><span class="o">=</span><span class="n">GetSingle</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;spec&quot;</span><span class="p">],</span>
+<span class="gp">... </span>        <span class="p">),</span>
+<span class="gp">... </span>    <span class="p">],</span>
+<span class="gp">... </span><span class="p">}</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="k">async</span> <span class="k">for</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">MemoryOrchestrator</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">dataflow</span><span class="p">,</span> <span class="n">inputs</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="k">if</span> <span class="n">result</span><span class="p">:</span>
+<span class="gp">... </span>            <span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+<span class="go">{&#39;query_lookups&#39;: [{&#39;firstName&#39;: &#39;John&#39;, &#39;lastName&#39;: &#39;Wick&#39;, &#39;age&#39;: 38}]}</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">person</span><span class="p">[</span><span class="s2">&quot;age&quot;</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+<span class="go">{&#39;query_lookups&#39;: [{&#39;firstName&#39;: &#39;John&#39;, &#39;lastName&#39;: &#39;Wick&#39;, &#39;age&#39;: 39}]}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt id="dffml.operation.db.db_query_lookup">
+<em class="property"><span class="pre">async</span> </em><code class="sig-prename descclassname"><span class="pre">dffml.operation.db.</span></code><code class="sig-name descname"><span class="pre">db_query_lookup</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">table_name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">cols</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conditions</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../db/base.html#dffml.db.base.Condition" title="dffml.db.base.Condition"><span class="pre">dffml.db.base.Condition</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">[]</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><a class="reference internal" href="../../_modules/dffml/operation/db.html#db_query_lookup"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.operation.db.db_query_lookup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a lookup query in the database.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>table_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – The name of the table.</p></li>
+<li><p><strong>cols</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><em>list</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>]</em>) – Columns of the table.</p></li>
+<li><p><strong>conditions</strong> (<em>Conditions</em>) – Query conditions.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sdb</span> <span class="o">=</span> <span class="n">SqliteDatabase</span><span class="p">(</span><span class="n">SqliteDatabaseConfig</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;examples.db&quot;</span><span class="p">))</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dataflow</span> <span class="o">=</span> <span class="n">DataFlow</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">operations</span><span class="o">=</span><span class="p">{</span>
+<span class="gp">... </span>        <span class="s2">&quot;db_query_lookup&quot;</span><span class="p">:</span> <span class="n">db_query_lookup</span><span class="o">.</span><span class="n">op</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="s2">&quot;get_single&quot;</span><span class="p">:</span> <span class="n">GetSingle</span><span class="o">.</span><span class="n">imp</span><span class="o">.</span><span class="n">op</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="p">},</span>
+<span class="gp">... </span>    <span class="n">configs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;db_query_lookup&quot;</span><span class="p">:</span> <span class="n">DatabaseQueryConfig</span><span class="p">(</span><span class="n">database</span><span class="o">=</span><span class="n">sdb</span><span class="p">),},</span>
+<span class="gp">... </span>    <span class="n">seed</span><span class="o">=</span><span class="p">[],</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">inputs</span> <span class="o">=</span> <span class="p">{</span>
+<span class="gp">... </span>    <span class="s2">&quot;lookup&quot;</span><span class="p">:</span> <span class="p">[</span>
+<span class="gp">... </span>        <span class="n">Input</span><span class="p">(</span>
+<span class="gp">... </span>            <span class="n">value</span><span class="o">=</span><span class="s2">&quot;myTable&quot;</span><span class="p">,</span>
+<span class="gp">... </span>            <span class="n">definition</span><span class="o">=</span><span class="n">db_query_lookup</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;table_name&quot;</span><span class="p">],</span>
+<span class="gp">... </span>        <span class="p">),</span>
+<span class="gp">... </span>        <span class="n">Input</span><span class="p">(</span>
+<span class="gp">... </span>            <span class="n">value</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;firstName&quot;</span><span class="p">,</span> <span class="s2">&quot;lastName&quot;</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">],</span>
+<span class="gp">... </span>            <span class="n">definition</span><span class="o">=</span><span class="n">db_query_lookup</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;cols&quot;</span><span class="p">],</span>
+<span class="gp">... </span>        <span class="p">),</span>
+<span class="gp">... </span>        <span class="n">Input</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="p">[],</span> <span class="n">definition</span><span class="o">=</span><span class="n">db_query_lookup</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;conditions&quot;</span><span class="p">],),</span>
+<span class="gp">... </span>        <span class="n">Input</span><span class="p">(</span>
+<span class="gp">... </span>            <span class="n">value</span><span class="o">=</span><span class="p">[</span><span class="n">db_query_lookup</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s2">&quot;lookups&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">],</span>
+<span class="gp">... </span>            <span class="n">definition</span><span class="o">=</span><span class="n">GetSingle</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;spec&quot;</span><span class="p">],</span>
+<span class="gp">... </span>        <span class="p">),</span>
+<span class="gp">... </span>    <span class="p">],</span>
+<span class="gp">... </span><span class="p">}</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="k">async</span> <span class="k">for</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">MemoryOrchestrator</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">dataflow</span><span class="p">,</span> <span class="n">inputs</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="k">if</span> <span class="n">result</span><span class="p">:</span>
+<span class="gp">... </span>            <span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+<span class="go">{&#39;query_lookups&#39;: [{&#39;firstName&#39;: &#39;John&#39;, &#39;lastName&#39;: &#39;Doe&#39;, &#39;age&#39;: 16}, {&#39;firstName&#39;: &#39;John&#39;, &#39;lastName&#39;: &#39;Wick&#39;, &#39;age&#39;: 39}]}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt id="dffml.operation.db.db_query_remove">
+<em class="property"><span class="pre">async</span> </em><code class="sig-prename descclassname"><span class="pre">dffml.operation.db.</span></code><code class="sig-name descname"><span class="pre">db_query_remove</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">table_name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">conditions</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../db/base.html#dffml.db.base.Condition" title="dffml.db.base.Condition"><span class="pre">dffml.db.base.Condition</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">[]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/operation/db.html#db_query_remove"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.operation.db.db_query_remove" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a remove table query in the database.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>table_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – The name of the table to insert data in to.</p></li>
+<li><p><strong>conditions</strong> (<em>Conditions</em>) – Query conditions.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sdb</span> <span class="o">=</span> <span class="n">SqliteDatabase</span><span class="p">(</span><span class="n">SqliteDatabaseConfig</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;examples.db&quot;</span><span class="p">))</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dataflow</span> <span class="o">=</span> <span class="n">DataFlow</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">operations</span><span class="o">=</span><span class="p">{</span>
+<span class="gp">... </span>        <span class="s2">&quot;db_query_lookup&quot;</span><span class="p">:</span> <span class="n">db_query_lookup</span><span class="o">.</span><span class="n">op</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="s2">&quot;db_query_remove&quot;</span><span class="p">:</span> <span class="n">db_query_remove</span><span class="o">.</span><span class="n">op</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="s2">&quot;get_single&quot;</span><span class="p">:</span> <span class="n">GetSingle</span><span class="o">.</span><span class="n">imp</span><span class="o">.</span><span class="n">op</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="p">},</span>
+<span class="gp">... </span>    <span class="n">configs</span><span class="o">=</span><span class="p">{</span>
+<span class="gp">... </span>        <span class="s2">&quot;db_query_remove&quot;</span><span class="p">:</span> <span class="n">DatabaseQueryConfig</span><span class="p">(</span><span class="n">database</span><span class="o">=</span><span class="n">sdb</span><span class="p">),</span>
+<span class="gp">... </span>        <span class="s2">&quot;db_query_lookup&quot;</span><span class="p">:</span> <span class="n">DatabaseQueryConfig</span><span class="p">(</span><span class="n">database</span><span class="o">=</span><span class="n">sdb</span><span class="p">),</span>
+<span class="gp">... </span>    <span class="p">},</span>
+<span class="gp">... </span>    <span class="n">seed</span><span class="o">=</span><span class="p">[],</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">inputs</span> <span class="o">=</span> <span class="p">{</span>
+<span class="gp">... </span>    <span class="s2">&quot;remove&quot;</span><span class="p">:</span> <span class="p">[</span>
+<span class="gp">... </span>        <span class="n">Input</span><span class="p">(</span>
+<span class="gp">... </span>            <span class="n">value</span><span class="o">=</span><span class="s2">&quot;myTable&quot;</span><span class="p">,</span>
+<span class="gp">... </span>            <span class="n">definition</span><span class="o">=</span><span class="n">db_query_remove</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;table_name&quot;</span><span class="p">],</span>
+<span class="gp">... </span>        <span class="p">),</span>
+<span class="gp">... </span>        <span class="n">Input</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="p">[],</span>
+<span class="gp">... </span>        <span class="n">definition</span><span class="o">=</span><span class="n">db_query_remove</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;conditions&quot;</span><span class="p">],),</span>
+<span class="gp">... </span>    <span class="p">],</span>
+<span class="gp">... </span>    <span class="s2">&quot;lookup&quot;</span><span class="p">:</span> <span class="p">[</span>
+<span class="gp">... </span>        <span class="n">Input</span><span class="p">(</span>
+<span class="gp">... </span>            <span class="n">value</span><span class="o">=</span><span class="s2">&quot;myTable&quot;</span><span class="p">,</span>
+<span class="gp">... </span>            <span class="n">definition</span><span class="o">=</span><span class="n">db_query_lookup</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;table_name&quot;</span><span class="p">],</span>
+<span class="gp">... </span>        <span class="p">),</span>
+<span class="gp">... </span>        <span class="n">Input</span><span class="p">(</span>
+<span class="gp">... </span>            <span class="n">value</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;firstName&quot;</span><span class="p">,</span> <span class="s2">&quot;lastName&quot;</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">],</span>
+<span class="gp">... </span>            <span class="n">definition</span><span class="o">=</span><span class="n">db_query_lookup</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;cols&quot;</span><span class="p">],</span>
+<span class="gp">... </span>        <span class="p">),</span>
+<span class="gp">... </span>        <span class="n">Input</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="p">[],</span> <span class="n">definition</span><span class="o">=</span><span class="n">db_query_lookup</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;conditions&quot;</span><span class="p">],),</span>
+<span class="gp">... </span>        <span class="n">Input</span><span class="p">(</span>
+<span class="gp">... </span>            <span class="n">value</span><span class="o">=</span><span class="p">[</span><span class="n">db_query_lookup</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s2">&quot;lookups&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">],</span>
+<span class="gp">... </span>            <span class="n">definition</span><span class="o">=</span><span class="n">GetSingle</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;spec&quot;</span><span class="p">],</span>
+<span class="gp">... </span>        <span class="p">),</span>
+<span class="gp">... </span>    <span class="p">],</span>
+<span class="gp">... </span><span class="p">}</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="k">async</span> <span class="k">for</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">MemoryOrchestrator</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">dataflow</span><span class="p">,</span> <span class="n">inputs</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="k">if</span> <span class="n">result</span><span class="p">:</span>
+<span class="gp">... </span>            <span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+<span class="go">{&#39;query_lookups&#39;: []}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt id="dffml.operation.db.db_query_update">
+<em class="property"><span class="pre">async</span> </em><code class="sig-prename descclassname"><span class="pre">dffml.operation.db.</span></code><code class="sig-name descname"><span class="pre">db_query_update</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">table_name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conditions</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../db/base.html#dffml.db.base.Condition" title="dffml.db.base.Condition"><span class="pre">dffml.db.base.Condition</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">[]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/operation/db.html#db_query_update"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.operation.db.db_query_update" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates an Update table query in the database.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>table_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – The name of the table to insert data in to.</p></li>
+<li><p><strong>data</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><em>dict</em></a>) – Data to be updated into the table.</p></li>
+<li><p><strong>conditions</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><em>list</em></a>) – List of query conditions.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sdb</span> <span class="o">=</span> <span class="n">SqliteDatabase</span><span class="p">(</span><span class="n">SqliteDatabaseConfig</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;examples.db&quot;</span><span class="p">))</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dataflow</span> <span class="o">=</span> <span class="n">DataFlow</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">operations</span><span class="o">=</span><span class="p">{</span>
+<span class="gp">... </span>        <span class="s2">&quot;db_query_update&quot;</span><span class="p">:</span> <span class="n">db_query_update</span><span class="o">.</span><span class="n">op</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="s2">&quot;db_query_lookup&quot;</span><span class="p">:</span> <span class="n">db_query_lookup</span><span class="o">.</span><span class="n">op</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="s2">&quot;get_single&quot;</span><span class="p">:</span> <span class="n">GetSingle</span><span class="o">.</span><span class="n">imp</span><span class="o">.</span><span class="n">op</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="p">},</span>
+<span class="gp">... </span>    <span class="n">configs</span><span class="o">=</span><span class="p">{</span>
+<span class="gp">... </span>        <span class="s2">&quot;db_query_update&quot;</span><span class="p">:</span> <span class="n">DatabaseQueryConfig</span><span class="p">(</span><span class="n">database</span><span class="o">=</span><span class="n">sdb</span><span class="p">),</span>
+<span class="gp">... </span>        <span class="s2">&quot;db_query_lookup&quot;</span><span class="p">:</span> <span class="n">DatabaseQueryConfig</span><span class="p">(</span><span class="n">database</span><span class="o">=</span><span class="n">sdb</span><span class="p">),</span>
+<span class="gp">... </span>    <span class="p">},</span>
+<span class="gp">... </span>    <span class="n">seed</span><span class="o">=</span><span class="p">[],</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">inputs</span> <span class="o">=</span> <span class="p">{</span>
+<span class="gp">... </span>    <span class="s2">&quot;update&quot;</span><span class="p">:</span> <span class="p">[</span>
+<span class="gp">... </span>        <span class="n">Input</span><span class="p">(</span>
+<span class="gp">... </span>            <span class="n">value</span><span class="o">=</span><span class="s2">&quot;myTable&quot;</span><span class="p">,</span>
+<span class="gp">... </span>            <span class="n">definition</span><span class="o">=</span><span class="n">db_query_update</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;table_name&quot;</span><span class="p">],</span>
+<span class="gp">... </span>        <span class="p">),</span>
+<span class="gp">... </span>        <span class="n">Input</span><span class="p">(</span>
+<span class="gp">... </span>            <span class="n">value</span><span class="o">=</span><span class="p">{</span>
+<span class="gp">... </span>                <span class="s2">&quot;key&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+<span class="gp">... </span>                <span class="s2">&quot;firstName&quot;</span><span class="p">:</span> <span class="s2">&quot;John&quot;</span><span class="p">,</span>
+<span class="gp">... </span>                <span class="s2">&quot;lastName&quot;</span><span class="p">:</span> <span class="s2">&quot;Doe&quot;</span><span class="p">,</span>
+<span class="gp">... </span>                <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">17</span><span class="p">,</span>
+<span class="gp">... </span>            <span class="p">},</span>
+<span class="gp">... </span>            <span class="n">definition</span><span class="o">=</span><span class="n">db_query_update</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">],</span>
+<span class="gp">... </span>        <span class="p">),</span>
+<span class="gp">... </span>        <span class="n">Input</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="p">[],</span> <span class="n">definition</span><span class="o">=</span><span class="n">db_query_update</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;conditions&quot;</span><span class="p">],),</span>
+<span class="gp">... </span>    <span class="p">],</span>
+<span class="gp">... </span>    <span class="s2">&quot;lookup&quot;</span><span class="p">:</span> <span class="p">[</span>
+<span class="gp">... </span>        <span class="n">Input</span><span class="p">(</span>
+<span class="gp">... </span>            <span class="n">value</span><span class="o">=</span><span class="s2">&quot;myTable&quot;</span><span class="p">,</span>
+<span class="gp">... </span>            <span class="n">definition</span><span class="o">=</span><span class="n">db_query_lookup</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;table_name&quot;</span><span class="p">],</span>
+<span class="gp">... </span>        <span class="p">),</span>
+<span class="gp">... </span>        <span class="n">Input</span><span class="p">(</span>
+<span class="gp">... </span>            <span class="n">value</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;firstName&quot;</span><span class="p">,</span> <span class="s2">&quot;lastName&quot;</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">],</span>
+<span class="gp">... </span>            <span class="n">definition</span><span class="o">=</span><span class="n">db_query_lookup</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;cols&quot;</span><span class="p">],</span>
+<span class="gp">... </span>        <span class="p">),</span>
+<span class="gp">... </span>        <span class="n">Input</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="p">[],</span> <span class="n">definition</span><span class="o">=</span><span class="n">db_query_lookup</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;conditions&quot;</span><span class="p">],),</span>
+<span class="gp">... </span>        <span class="n">Input</span><span class="p">(</span>
+<span class="gp">... </span>            <span class="n">value</span><span class="o">=</span><span class="p">[</span><span class="n">db_query_lookup</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s2">&quot;lookups&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">],</span>
+<span class="gp">... </span>            <span class="n">definition</span><span class="o">=</span><span class="n">GetSingle</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;spec&quot;</span><span class="p">],</span>
+<span class="gp">... </span>        <span class="p">),</span>
+<span class="gp">... </span>    <span class="p">],</span>
+<span class="gp">... </span><span class="p">}</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="k">async</span> <span class="k">for</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">MemoryOrchestrator</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">dataflow</span><span class="p">,</span> <span class="n">inputs</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="k">if</span> <span class="n">result</span><span class="p">:</span>
+<span class="gp">... </span>            <span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+<span class="go">{&#39;query_lookups&#39;: [{&#39;firstName&#39;: &#39;John&#39;, &#39;lastName&#39;: &#39;Doe&#39;, &#39;age&#39;: 17}]}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="mapping.html" class="btn btn-neutral float-right" title="Operation Mapping" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="math.html" class="btn btn-neutral float-left" title="Operation Math" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2017 - 2021, Intel.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

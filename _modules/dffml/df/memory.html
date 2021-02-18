@@ -7,12 +7,13 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>dffml.df.memory &mdash; DFFML 0.3.7 documentation</title>
+  <title>dffml.df.memory &mdash; DFFML 0.4.0 documentation</title>
   
 
   
   <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/tabs.css" type="text/css" />
 
   
   
@@ -32,6 +33,7 @@
         <script src="../../../_static/jquery.js"></script>
         <script src="../../../_static/underscore.js"></script>
         <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/tabs.js"></script>
         <script src="../../../_static/copybutton.js"></script>
     
     <script type="text/javascript" src="../../../_static/js/theme.js"></script>
@@ -63,7 +65,7 @@
             
             
               <div class="version">
-                0.3.7
+                0.4.0
               </div>
             
           
@@ -94,11 +96,11 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../concepts/index.html">Concepts</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Examples</span></p>
+<p class="caption"><span class="caption-text">Usage</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../quickstart/model.html">Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">Tutorials</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../usage/index.html">Use Cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/index.html">Examples</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Reference</span></p>
 <ul>
@@ -106,13 +108,21 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../cli.html">Command Line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../plugins/service/http/index.html">HTTP API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../troubleshooting.html">Troubleshooting</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Subprojects</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../shouldi.html">shouldi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../swportal.html">Software Portal</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Community</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/intel/dffml">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://intel.github.io/dffml/master/">Master Branch Docs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../publications.html">Publications</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../contact.html">Contact Us</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../contributing/index.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../news/index.html">News</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../changelog.html">Changelog</a></li>
 </ul>
 
@@ -167,10 +177,14 @@
       <li>dffml.df.memory</li>
     
     
+
+
       <li class="wy-breadcrumbs-aside">
         
       </li>
     
+
+
   </ul>
 
   
@@ -181,6 +195,7 @@
             
   <h1>Source code for dffml.df.memory</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">io</span>
+<span class="kn">import</span> <span class="nn">abc</span>
 <span class="kn">import</span> <span class="nn">copy</span>
 <span class="kn">import</span> <span class="nn">asyncio</span>
 <span class="kn">import</span> <span class="nn">secrets</span>
@@ -201,14 +216,24 @@
     <span class="n">Union</span><span class="p">,</span>
     <span class="n">Optional</span><span class="p">,</span>
     <span class="n">Set</span><span class="p">,</span>
+    <span class="n">Callable</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="kn">from</span> <span class="nn">.exceptions</span> <span class="kn">import</span> <span class="p">(</span>
     <span class="n">ContextNotPresent</span><span class="p">,</span>
     <span class="n">DefinitionNotInContext</span><span class="p">,</span>
     <span class="n">ValidatorMissing</span><span class="p">,</span>
+    <span class="n">MultipleAncestorsFoundError</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="kn">from</span> <span class="nn">.types</span> <span class="kn">import</span> <span class="n">Input</span><span class="p">,</span> <span class="n">Parameter</span><span class="p">,</span> <span class="n">Definition</span><span class="p">,</span> <span class="n">Operation</span><span class="p">,</span> <span class="n">Stage</span><span class="p">,</span> <span class="n">DataFlow</span>
+<span class="kn">from</span> <span class="nn">.types</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">Input</span><span class="p">,</span>
+    <span class="n">Parameter</span><span class="p">,</span>
+    <span class="n">Definition</span><span class="p">,</span>
+    <span class="n">Operation</span><span class="p">,</span>
+    <span class="n">Stage</span><span class="p">,</span>
+    <span class="n">DataFlow</span><span class="p">,</span>
+    <span class="n">NO_DEFAULT</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="kn">from</span> <span class="nn">.base</span> <span class="kn">import</span> <span class="p">(</span>
     <span class="n">OperationException</span><span class="p">,</span>
     <span class="n">OperationImplementation</span><span class="p">,</span>
@@ -242,6 +267,7 @@
     <span class="n">BaseOrchestrator</span><span class="p">,</span>
 <span class="p">)</span>
 
+<span class="kn">from</span> <span class="nn">..base</span> <span class="kn">import</span> <span class="n">config</span><span class="p">,</span> <span class="n">field</span>
 <span class="kn">from</span> <span class="nn">..util.entrypoint</span> <span class="kn">import</span> <span class="n">entrypoint</span>
 <span class="kn">from</span> <span class="nn">..util.cli.arg</span> <span class="kn">import</span> <span class="n">Arg</span>
 <span class="kn">from</span> <span class="nn">..util.data</span> <span class="kn">import</span> <span class="n">ignore_args</span>
@@ -250,7 +276,8 @@
 <span class="kn">from</span> <span class="nn">.log</span> <span class="kn">import</span> <span class="n">LOGGER</span>
 
 
-<div class="viewcode-block" id="MemoryDataFlowObjectContextConfig"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryDataFlowObjectContextConfig">[docs]</a><span class="k">class</span> <span class="nc">MemoryDataFlowObjectContextConfig</span><span class="p">(</span><span class="n">NamedTuple</span><span class="p">):</span>
+<div class="viewcode-block" id="MemoryDataFlowObjectContextConfig"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryDataFlowObjectContextConfig">[docs]</a><span class="nd">@config</span>
+<span class="k">class</span> <span class="nc">MemoryDataFlowObjectContextConfig</span><span class="p">:</span>
     <span class="c1"># Unique ID of the context, in other implementations this might be a JWT or</span>
     <span class="c1"># something</span>
     <span class="n">uid</span><span class="p">:</span> <span class="nb">str</span></div>
@@ -261,6 +288,11 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">CONTEXT</span><span class="p">(</span>
             <span class="n">MemoryDataFlowObjectContextConfig</span><span class="p">(</span><span class="n">uid</span><span class="o">=</span><span class="n">secrets</span><span class="o">.</span><span class="n">token_hex</span><span class="p">()),</span> <span class="bp">self</span>
         <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="MemoryKeyValueStoreConfig"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryKeyValueStoreConfig">[docs]</a><span class="nd">@config</span>
+<span class="k">class</span> <span class="nc">MemoryKeyValueStoreConfig</span><span class="p">:</span>
+    <span class="k">pass</span></div>
 
 
 <div class="viewcode-block" id="MemoryKeyValueStoreContext"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryKeyValueStoreContext">[docs]</a><span class="k">class</span> <span class="nc">MemoryKeyValueStoreContext</span><span class="p">(</span><span class="n">BaseKeyValueStoreContext</span><span class="p">):</span>
@@ -277,7 +309,21 @@
 
 <div class="viewcode-block" id="MemoryKeyValueStoreContext.set"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryKeyValueStoreContext.set">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">bytes</span><span class="p">):</span>
         <span class="k">async</span> <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">lock</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">memory</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span></div></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">memory</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span></div>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">conditional_set</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">value</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">checker</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="nb">bytes</span><span class="p">],</span> <span class="nb">bool</span><span class="p">]]</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">value</span><span class="p">:</span> <span class="n">value</span>
+        <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">async</span> <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">lock</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">checker</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">memory</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">)):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">memory</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+                <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
 
 
 <div class="viewcode-block" id="MemoryKeyValueStore"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryKeyValueStore">[docs]</a><span class="nd">@entrypoint</span><span class="p">(</span><span class="s2">&quot;memory&quot;</span><span class="p">)</span>
@@ -286,10 +332,12 @@
 <span class="sd">    Key Value store backed by dict</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">CONTEXT</span> <span class="o">=</span> <span class="n">MemoryKeyValueStoreContext</span></div>
+    <span class="n">CONTEXT</span> <span class="o">=</span> <span class="n">MemoryKeyValueStoreContext</span>
+    <span class="n">CONFIG</span> <span class="o">=</span> <span class="n">MemoryKeyValueStoreConfig</span></div>
 
 
-<div class="viewcode-block" id="MemoryInputSetConfig"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryInputSetConfig">[docs]</a><span class="k">class</span> <span class="nc">MemoryInputSetConfig</span><span class="p">(</span><span class="n">NamedTuple</span><span class="p">):</span>
+<div class="viewcode-block" id="MemoryInputSetConfig"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryInputSetConfig">[docs]</a><span class="nd">@config</span>
+<span class="k">class</span> <span class="nc">MemoryInputSetConfig</span><span class="p">:</span>
     <span class="n">ctx</span><span class="p">:</span> <span class="n">BaseInputSetContext</span>
     <span class="n">inputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Input</span><span class="p">]</span></div>
 
@@ -330,7 +378,8 @@
         <span class="k">return</span> <span class="n">unvalidated_input_set</span></div></div>
 
 
-<div class="viewcode-block" id="MemoryParameterSetConfig"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryParameterSetConfig">[docs]</a><span class="k">class</span> <span class="nc">MemoryParameterSetConfig</span><span class="p">(</span><span class="n">NamedTuple</span><span class="p">):</span>
+<div class="viewcode-block" id="MemoryParameterSetConfig"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryParameterSetConfig">[docs]</a><span class="nd">@config</span>
+<span class="k">class</span> <span class="nc">MemoryParameterSetConfig</span><span class="p">:</span>
     <span class="n">ctx</span><span class="p">:</span> <span class="n">BaseInputSetContext</span>
     <span class="n">parameters</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Parameter</span><span class="p">]</span></div>
 
@@ -406,6 +455,11 @@
 
     <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NotificationSetContext</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">NotificationSetContext</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="MemoryInputNetworkConfig"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryInputNetworkConfig">[docs]</a><span class="nd">@config</span>
+<span class="k">class</span> <span class="nc">MemoryInputNetworkConfig</span><span class="p">:</span>
+    <span class="k">pass</span></div>
 
 
 <div class="viewcode-block" id="MemoryInputNetworkContextEntry"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryInputNetworkContextEntry">[docs]</a><span class="k">class</span> <span class="nc">MemoryInputNetworkContextEntry</span><span class="p">(</span><span class="n">NamedTuple</span><span class="p">):</span>
@@ -508,10 +562,14 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Shorthand for creating a MemoryInputSet with a StringInputSetContext.</span>
 
+<span class="sd">        &gt;&gt;&gt; import asyncio</span>
+<span class="sd">        &gt;&gt;&gt; from dffml import *</span>
+<span class="sd">        &gt;&gt;&gt;</span>
 <span class="sd">        &gt;&gt;&gt; async def main():</span>
-<span class="sd">        ...     async with MemoryOrchestrator.withconfig({}) as orchestrator:</span>
+<span class="sd">        ...     async with MemoryOrchestrator() as orchestrator:</span>
 <span class="sd">        ...         async with orchestrator(DataFlow.auto()) as octx:</span>
 <span class="sd">        ...             await octx.ictx.sadd(&quot;Hi&quot;)</span>
+<span class="sd">        &gt;&gt;&gt;</span>
 <span class="sd">        &gt;&gt;&gt; asyncio.run(main())</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">ctx</span> <span class="o">=</span> <span class="n">StringInputSetContext</span><span class="p">(</span><span class="n">context_handle_string</span><span class="p">)</span>
@@ -524,10 +582,14 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Shorthand for creating a MemoryInputSet with an existing context.</span>
 
+<span class="sd">        &gt;&gt;&gt; import asyncio</span>
+<span class="sd">        &gt;&gt;&gt; from dffml import *</span>
+<span class="sd">        &gt;&gt;&gt;</span>
 <span class="sd">        &gt;&gt;&gt; async def main():</span>
-<span class="sd">        ...     async with MemoryOrchestrator.withconfig({}) as orchestrator:</span>
+<span class="sd">        ...     async with MemoryOrchestrator() as orchestrator:</span>
 <span class="sd">        ...         async with orchestrator(DataFlow.auto()) as octx:</span>
 <span class="sd">        ...             await octx.ictx.sadd(StringInputSetContext(&quot;Hi&quot;))</span>
+<span class="sd">        &gt;&gt;&gt;</span>
 <span class="sd">        &gt;&gt;&gt; asyncio.run(main())</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
@@ -586,6 +648,90 @@
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BaseDefinitionSetContext</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">MemoryDefinitionSetContext</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">)</span></div>
 
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">check_conditions</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">operation</span><span class="p">:</span> <span class="n">Operation</span><span class="p">,</span>
+        <span class="n">dataflow</span><span class="p">:</span> <span class="n">DataFlow</span><span class="p">,</span>
+        <span class="n">ctx</span><span class="p">:</span> <span class="n">BaseInputSetContext</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">async</span> <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctxhd_lock</span><span class="p">:</span>
+            <span class="c1"># Grab the input set context handle</span>
+            <span class="n">handle_string</span> <span class="o">=</span> <span class="p">(</span><span class="k">await</span> <span class="n">ctx</span><span class="o">.</span><span class="n">handle</span><span class="p">())</span><span class="o">.</span><span class="n">as_string</span><span class="p">()</span>
+            <span class="c1"># Ensure that the handle_string is present in ctxhd</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">handle_string</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctxhd</span><span class="p">:</span>
+                <span class="k">return</span>
+            <span class="c1"># Limit search to given context via context handle</span>
+            <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_check_conditions</span><span class="p">(</span>
+                <span class="n">operation</span><span class="p">,</span> <span class="n">dataflow</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctxhd</span><span class="p">[</span><span class="n">handle_string</span><span class="p">]</span><span class="o">.</span><span class="n">by_origin</span>
+            <span class="p">)</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">_check_conditions</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">operation</span><span class="p">:</span> <span class="n">Operation</span><span class="p">,</span>
+        <span class="n">dataflow</span><span class="p">:</span> <span class="n">DataFlow</span><span class="p">,</span>
+        <span class="n">by_origin</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]],</span> <span class="n">List</span><span class="p">[</span><span class="n">Input</span><span class="p">]],</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="c1"># Grab the input flow to check for definition overrides</span>
+        <span class="n">input_flow</span> <span class="o">=</span> <span class="n">dataflow</span><span class="o">.</span><span class="n">flow</span><span class="p">[</span><span class="n">operation</span><span class="o">.</span><span class="n">instance_name</span><span class="p">]</span>
+        <span class="c1"># Return that all conditions are satisfied if there are none to satisfy</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">input_flow</span><span class="o">.</span><span class="n">conditions</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="c1"># Check that all conditions are present and logicly True</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">condition_source</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">input_flow</span><span class="o">.</span><span class="n">conditions</span><span class="p">):</span>
+            <span class="c1"># We must check if we found an Input where the definition</span>
+            <span class="c1"># matches the definition of the condition in addition to</span>
+            <span class="c1"># checking that the Input&#39;s value is True. If we were not</span>
+            <span class="c1"># to check that we found a definition we would be effectively</span>
+            <span class="c1"># saying that the lack of presence equates with the</span>
+            <span class="c1"># condition being True.</span>
+            <span class="n">condition_found_and_true</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="c1"># Create a list of places this input originates from</span>
+            <span class="n">origins</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">condition_source</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">origin</span> <span class="ow">in</span> <span class="n">condition_source</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                    <span class="n">origins</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">origin</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">origins</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">condition_source</span><span class="p">)</span>
+            <span class="c1"># Ensure all conditions from all origins are True</span>
+            <span class="k">for</span> <span class="n">origin</span> <span class="ow">in</span> <span class="n">origins</span><span class="p">:</span>
+                <span class="c1"># See comment in input_flow.inputs section</span>
+                <span class="p">(</span>
+                    <span class="n">alternate_definitions</span><span class="p">,</span>
+                    <span class="n">origin</span><span class="p">,</span>
+                <span class="p">)</span> <span class="o">=</span> <span class="n">input_flow</span><span class="o">.</span><span class="n">get_alternate_definitions</span><span class="p">(</span><span class="n">origin</span><span class="p">)</span>
+                <span class="c1"># Bail if the condition doesn&#39;t exist</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">origin</span> <span class="ow">in</span> <span class="n">by_origin</span><span class="p">:</span>
+                    <span class="k">return</span>
+                <span class="c1"># Bail if the condition is not True</span>
+                <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">by_origin</span><span class="p">[</span><span class="n">origin</span><span class="p">]:</span>
+                    <span class="c1"># TODO(p2) Alright, this shits fucked, way not clean</span>
+                    <span class="c1"># / clear. We&#39;re just trying to skip any conditions</span>
+                    <span class="c1"># (and inputs for input_flow.inputs.items()) where</span>
+                    <span class="c1"># the definition doesn&#39;t match, but it&#39;s within the</span>
+                    <span class="c1"># correct origin.</span>
+                    <span class="k">if</span> <span class="n">alternate_definitions</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">item</span><span class="o">.</span><span class="n">definition</span><span class="o">.</span><span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">alternate_definitions</span><span class="p">:</span>
+                            <span class="k">continue</span>
+                    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">condition_source</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+                        <span class="k">if</span> <span class="p">(</span>
+                            <span class="n">item</span><span class="o">.</span><span class="n">definition</span><span class="o">.</span><span class="n">name</span>
+                            <span class="o">!=</span> <span class="n">operation</span><span class="o">.</span><span class="n">conditions</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">name</span>
+                        <span class="p">):</span>
+                            <span class="k">continue</span>
+                    <span class="k">elif</span> <span class="p">(</span>
+                        <span class="n">item</span><span class="o">.</span><span class="n">definition</span><span class="o">.</span><span class="n">name</span>
+                        <span class="o">!=</span> <span class="n">dataflow</span><span class="o">.</span><span class="n">operations</span><span class="p">[</span><span class="n">origin</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+                        <span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="n">origin</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
+                        <span class="o">.</span><span class="n">name</span>
+                    <span class="p">):</span>
+                        <span class="k">continue</span>
+                    <span class="n">condition_found_and_true</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+            <span class="c1"># Ensure we were able to find a condition within the input</span>
+            <span class="c1"># network, and that when we found it it&#39;s value was True.</span>
+            <span class="k">if</span> <span class="n">condition_found_and_true</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
 <div class="viewcode-block" id="MemoryInputNetworkContext.gather_inputs"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryInputNetworkContext.gather_inputs">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">gather_inputs</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">rctx</span><span class="p">:</span> <span class="s2">&quot;BaseRedundancyCheckerContext&quot;</span><span class="p">,</span>
@@ -609,46 +755,14 @@
                 <span class="c1"># Limit search to given context via context handle</span>
                 <span class="n">contexts</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">ctxhd</span><span class="p">[</span><span class="n">handle_string</span><span class="p">]]</span>
             <span class="k">for</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">by_origin</span> <span class="ow">in</span> <span class="n">contexts</span><span class="p">:</span>
+                <span class="c1"># Ensure we were able to find a condition within the input</span>
+                <span class="c1"># network, and that when we found it it&#39;s value was True.</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_check_conditions</span><span class="p">(</span>
+                    <span class="n">operation</span><span class="p">,</span> <span class="n">dataflow</span><span class="p">,</span> <span class="n">by_origin</span>
+                <span class="p">):</span>
+                    <span class="k">return</span>
                 <span class="c1"># Grab the input flow to check for definition overrides</span>
                 <span class="n">input_flow</span> <span class="o">=</span> <span class="n">dataflow</span><span class="o">.</span><span class="n">flow</span><span class="p">[</span><span class="n">operation</span><span class="o">.</span><span class="n">instance_name</span><span class="p">]</span>
-                <span class="c1"># TODO(p1) This only checks that Inputs that are present are</span>
-                <span class="c1"># true. If there are none present, the operation will run</span>
-                <span class="c1"># Check that all conditions are present and logicly True</span>
-                <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">condition_source</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">input_flow</span><span class="o">.</span><span class="n">conditions</span><span class="p">):</span>
-                    <span class="c1"># Create a list of places this input originates from</span>
-                    <span class="n">origins</span> <span class="o">=</span> <span class="p">[]</span>
-                    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">condition_source</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
-                        <span class="k">for</span> <span class="n">origin</span> <span class="ow">in</span> <span class="n">condition_source</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-                            <span class="n">origins</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">origin</span><span class="p">)</span>
-                    <span class="k">else</span><span class="p">:</span>
-                        <span class="n">origins</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">condition_source</span><span class="p">)</span>
-                    <span class="c1"># Ensure all conditions from all origins are True</span>
-                    <span class="k">for</span> <span class="n">origin</span> <span class="ow">in</span> <span class="n">origins</span><span class="p">:</span>
-                        <span class="c1"># Bail if the condition doesn&#39;t exist</span>
-                        <span class="k">if</span> <span class="ow">not</span> <span class="n">origin</span> <span class="ow">in</span> <span class="n">by_origin</span><span class="p">:</span>
-                            <span class="k">return</span>
-                        <span class="c1"># Bail if the condition is not True</span>
-                        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">by_origin</span><span class="p">[</span><span class="n">origin</span><span class="p">]:</span>
-                            <span class="c1"># TODO(p2) Alright, this shits fucked, way not clean</span>
-                            <span class="c1"># / clear. We&#39;re just trying to skip any conditions</span>
-                            <span class="c1"># (and inputs for input_flow.inputs.items()) where</span>
-                            <span class="c1"># the definition doesn&#39;t match, but it&#39;s within the</span>
-                            <span class="c1"># correct origin.</span>
-                            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">condition_source</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-                                <span class="k">if</span> <span class="p">(</span>
-                                    <span class="n">item</span><span class="o">.</span><span class="n">definition</span><span class="o">.</span><span class="n">name</span>
-                                    <span class="o">!=</span> <span class="n">operation</span><span class="o">.</span><span class="n">conditions</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">name</span>
-                                <span class="p">):</span>
-                                    <span class="k">continue</span>
-                            <span class="k">elif</span> <span class="p">(</span>
-                                <span class="n">item</span><span class="o">.</span><span class="n">definition</span><span class="o">.</span><span class="n">name</span>
-                                <span class="o">!=</span> <span class="n">dataflow</span><span class="o">.</span><span class="n">operations</span><span class="p">[</span><span class="n">origin</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
-                                <span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="n">origin</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
-                                <span class="o">.</span><span class="n">name</span>
-                            <span class="p">):</span>
-                                <span class="k">continue</span>
-                            <span class="k">if</span> <span class="ow">not</span> <span class="nb">bool</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">value</span><span class="p">):</span>
-                                <span class="k">return</span>
                 <span class="c1"># Gather all inputs with matching definitions and contexts</span>
                 <span class="k">for</span> <span class="n">input_name</span><span class="p">,</span> <span class="n">input_sources</span> <span class="ow">in</span> <span class="n">input_flow</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
                     <span class="c1"># Create parameters for all the inputs</span>
@@ -656,12 +770,34 @@
                     <span class="k">for</span> <span class="n">input_source</span> <span class="ow">in</span> <span class="n">input_sources</span><span class="p">:</span>
                         <span class="c1"># Create a list of places this input originates from</span>
                         <span class="n">origins</span> <span class="o">=</span> <span class="p">[]</span>
-                        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">input_source</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+                        <span class="c1"># Handle the case where we look at the first instance in</span>
+                        <span class="c1"># the list for the immediate alternate definition then</span>
+                        <span class="c1"># trace back through input origins to make sure they all</span>
+                        <span class="c1"># match</span>
+                        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">input_source</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+                            <span class="c1"># TODO Refactor this since we have duplicate code</span>
+                            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">input_source</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">dict</span><span class="p">):</span>
+                                <span class="k">for</span> <span class="n">origin</span> <span class="ow">in</span> <span class="n">input_source</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                                    <span class="n">origins</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">origin</span><span class="p">)</span>
+                            <span class="k">else</span><span class="p">:</span>
+                                <span class="n">origins</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">input_source</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">input_source</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
                             <span class="k">for</span> <span class="n">origin</span> <span class="ow">in</span> <span class="n">input_source</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
                                 <span class="n">origins</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">origin</span><span class="p">)</span>
                         <span class="k">else</span><span class="p">:</span>
                             <span class="n">origins</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">input_source</span><span class="p">)</span>
                         <span class="k">for</span> <span class="n">origin</span> <span class="ow">in</span> <span class="n">origins</span><span class="p">:</span>
+                            <span class="c1"># Check if the origin is a tuple where the first</span>
+                            <span class="c1"># value is the origin (such as &quot;seed&quot;) and the</span>
+                            <span class="c1"># second value is an array of allowed alternate</span>
+                            <span class="c1"># Definition&#39;s (their names) within that origin.</span>
+                            <span class="c1"># These definitions will be used instead of the</span>
+                            <span class="c1"># default one the input specified for the</span>
+                            <span class="c1"># operation).</span>
+                            <span class="p">(</span>
+                                <span class="n">alternate_definitions</span><span class="p">,</span>
+                                <span class="n">origin</span><span class="p">,</span>
+                            <span class="p">)</span> <span class="o">=</span> <span class="n">input_flow</span><span class="o">.</span><span class="n">get_alternate_definitions</span><span class="p">(</span><span class="n">origin</span><span class="p">)</span>
                             <span class="c1"># Don&#39;t try to grab inputs from an origin that</span>
                             <span class="c1"># doesn&#39;t have any to give us</span>
                             <span class="k">if</span> <span class="ow">not</span> <span class="n">origin</span> <span class="ow">in</span> <span class="n">by_origin</span><span class="p">:</span>
@@ -674,7 +810,13 @@
                                 <span class="c1"># types which will not equal each other. We</span>
                                 <span class="c1"># maybe want to consider switching to comparing</span>
                                 <span class="c1"># exported Defintions</span>
-                                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">input_source</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+                                <span class="k">if</span> <span class="n">alternate_definitions</span><span class="p">:</span>
+                                    <span class="k">if</span> <span class="p">(</span>
+                                        <span class="n">item</span><span class="o">.</span><span class="n">definition</span><span class="o">.</span><span class="n">name</span>
+                                        <span class="ow">not</span> <span class="ow">in</span> <span class="n">alternate_definitions</span>
+                                    <span class="p">):</span>
+                                        <span class="k">continue</span>
+                                <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">origin</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
                                     <span class="k">if</span> <span class="p">(</span>
                                         <span class="n">item</span><span class="o">.</span><span class="n">definition</span><span class="o">.</span><span class="n">name</span>
                                         <span class="o">!=</span> <span class="n">operation</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="n">input_name</span><span class="p">]</span><span class="o">.</span><span class="n">name</span>
@@ -687,6 +829,74 @@
                                     <span class="o">.</span><span class="n">name</span>
                                 <span class="p">):</span>
                                     <span class="k">continue</span>
+                                <span class="c1"># When the input_source is a list of alternate</span>
+                                <span class="c1"># definitions we need to check each parent to</span>
+                                <span class="c1"># verity that it&#39;s origin matches with the list</span>
+                                <span class="c1"># given by input_source</span>
+                                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">input_source</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+                                    <span class="n">all_parent_origins_match</span> <span class="o">=</span> <span class="kc">True</span>
+                                    <span class="c1"># Make a list of all the origins</span>
+                                    <span class="n">ancestor_origins</span> <span class="o">=</span> <span class="p">[]</span>
+                                    <span class="k">for</span> <span class="n">ancestor_origin</span> <span class="ow">in</span> <span class="n">input_source</span><span class="p">:</span>
+                                        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ancestor_origin</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+                                            <span class="k">for</span> <span class="p">(</span>
+                                                <span class="n">ancestor_origin</span>
+                                            <span class="p">)</span> <span class="ow">in</span> <span class="n">ancestor_origin</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                                                <span class="n">ancestor_origins</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                                                    <span class="n">ancestor_origin</span>
+                                                <span class="p">)</span>
+                                        <span class="k">else</span><span class="p">:</span>
+                                            <span class="n">ancestor_origins</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                                                <span class="n">ancestor_origin</span>
+                                            <span class="p">)</span>
+                                    <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span>
+                                    <span class="n">current_parent</span> <span class="o">=</span> <span class="n">item</span>
+                                    <span class="k">while</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">ancestor_origins</span><span class="p">):</span>
+                                        <span class="n">ancestor_origin</span> <span class="o">=</span> <span class="n">ancestor_origins</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                                        <span class="c1"># Go through all the parents. Create a</span>
+                                        <span class="c1"># list of possible parents based on if</span>
+                                        <span class="c1"># their origin matches the alternate</span>
+                                        <span class="c1"># definition</span>
+                                        <span class="n">possible_parents</span> <span class="o">=</span> <span class="p">[</span>
+                                            <span class="n">parent</span>
+                                            <span class="k">for</span> <span class="n">parent</span> <span class="ow">in</span> <span class="n">current_parent</span><span class="o">.</span><span class="n">parents</span>
+                                            <span class="c1"># If the input source is a dict then</span>
+                                            <span class="c1"># we need to convert it to a tuple</span>
+                                            <span class="c1"># for comparison to the origin</span>
+                                            <span class="k">if</span> <span class="n">parent</span><span class="o">.</span><span class="n">origin</span> <span class="o">==</span> <span class="n">ancestor_origin</span>
+                                        <span class="p">]</span>
+                                        <span class="k">if</span> <span class="ow">not</span> <span class="n">possible_parents</span><span class="p">:</span>
+                                            <span class="n">all_parent_origins_match</span> <span class="o">=</span> <span class="kc">False</span>
+                                            <span class="k">break</span>
+                                        <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">possible_parents</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                                            <span class="c1"># TODO Go through each option and</span>
+                                            <span class="c1"># check if either is a viable</span>
+                                            <span class="c1"># option. Our current implementation</span>
+                                            <span class="c1"># only allows for valeting one path,</span>
+                                            <span class="c1"># due to a single current_parent</span>
+                                            <span class="c1"># If there is more than one option</span>
+                                            <span class="c1"># raise an error since we don&#39;t know</span>
+                                            <span class="c1"># who to choose</span>
+                                            <span class="k">raise</span> <span class="n">MultipleAncestorsFoundError</span><span class="p">(</span>
+                                                <span class="p">(</span>
+                                                    <span class="n">operation</span><span class="o">.</span><span class="n">instance_name</span><span class="p">,</span>
+                                                    <span class="n">input_name</span><span class="p">,</span>
+                                                    <span class="n">ancestor_origin</span><span class="p">,</span>
+                                                    <span class="p">[</span>
+                                                        <span class="n">parent</span><span class="o">.</span><span class="vm">__dict__</span>
+                                                        <span class="k">for</span> <span class="n">parent</span> <span class="ow">in</span> <span class="n">possible_parents</span>
+                                                    <span class="p">],</span>
+                                                <span class="p">)</span>
+                                            <span class="p">)</span>
+                                        <span class="c1"># Move on to the next origin to validate</span>
+                                        <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+                                        <span class="c1"># The current_parent becomes the only</span>
+                                        <span class="c1"># possible parent</span>
+                                        <span class="n">current_parent</span> <span class="o">=</span> <span class="n">possible_parents</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                                    <span class="c1"># If we didn&#39;t find any ancestor paths that</span>
+                                    <span class="c1"># matched then we don&#39;t use this Input</span>
+                                    <span class="k">if</span> <span class="ow">not</span> <span class="n">all_parent_origins_match</span><span class="p">:</span>
+                                        <span class="k">continue</span>
                                 <span class="n">gather</span><span class="p">[</span><span class="n">input_name</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
                                     <span class="n">Parameter</span><span class="p">(</span>
                                         <span class="n">key</span><span class="o">=</span><span class="n">input_name</span><span class="p">,</span>
@@ -697,9 +907,36 @@
                                         <span class="p">],</span>
                                     <span class="p">)</span>
                                 <span class="p">)</span>
-                    <span class="c1"># Return if there is no data for an input</span>
+                    <span class="c1"># There is no data in the network for an input</span>
                     <span class="k">if</span> <span class="ow">not</span> <span class="n">gather</span><span class="p">[</span><span class="n">input_name</span><span class="p">]:</span>
-                        <span class="k">return</span>
+                        <span class="c1"># Check if there is a default value for the parameter,</span>
+                        <span class="c1"># if so use it. That default will either come from the</span>
+                        <span class="c1"># definition attached to input_name, or it will come</span>
+                        <span class="c1"># from one of the alternate definition given within the</span>
+                        <span class="c1"># input flow for the input_name.</span>
+                        <span class="n">check_for_default_value</span> <span class="o">=</span> <span class="p">[</span>
+                            <span class="n">operation</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="n">input_name</span><span class="p">]</span>
+                        <span class="p">]</span> <span class="o">+</span> <span class="n">alternate_definitions</span>
+                        <span class="k">for</span> <span class="n">definition</span> <span class="ow">in</span> <span class="n">check_for_default_value</span><span class="p">:</span>
+                            <span class="c1"># Check if the definition has a default value that is not _NO_DEFAULT</span>
+                            <span class="k">if</span> <span class="s2">&quot;dffml.df.types._NO_DEFAULT&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="nb">repr</span><span class="p">(</span>
+                                <span class="n">definition</span><span class="o">.</span><span class="n">default</span>
+                            <span class="p">):</span>
+                                <span class="n">gather</span><span class="p">[</span><span class="n">input_name</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                                    <span class="n">Parameter</span><span class="p">(</span>
+                                        <span class="n">key</span><span class="o">=</span><span class="n">input_name</span><span class="p">,</span>
+                                        <span class="n">value</span><span class="o">=</span><span class="n">definition</span><span class="o">.</span><span class="n">default</span><span class="p">,</span>
+                                        <span class="n">origin</span><span class="o">=</span><span class="n">item</span><span class="p">,</span>
+                                        <span class="n">definition</span><span class="o">=</span><span class="n">operation</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span>
+                                            <span class="n">input_name</span>
+                                        <span class="p">],</span>
+                                    <span class="p">)</span>
+                                <span class="p">)</span>
+                                <span class="k">break</span>
+                        <span class="c1"># If there is no default value, we don&#39;t have a complete</span>
+                        <span class="c1"># paremeter set, so we bail out</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="k">return</span>
         <span class="c1"># Generate all possible permutations of applicable inputs</span>
         <span class="c1"># Create the parameter set for each</span>
         <span class="n">products</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span>
@@ -711,9 +948,11 @@
             <span class="p">)</span>
         <span class="p">)</span>
         <span class="c1"># Check if each permutation has been executed before</span>
-        <span class="k">async</span> <span class="k">for</span> <span class="n">parameter_set</span><span class="p">,</span> <span class="n">exists</span> <span class="ow">in</span> <span class="n">rctx</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">operation</span><span class="p">,</span> <span class="o">*</span><span class="n">products</span><span class="p">):</span>
-            <span class="c1"># If not then yield the permutation</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">exists</span><span class="p">:</span>
+        <span class="k">async</span> <span class="k">for</span> <span class="n">parameter_set</span><span class="p">,</span> <span class="n">taken</span> <span class="ow">in</span> <span class="n">rctx</span><span class="o">.</span><span class="n">take_if_non_existant</span><span class="p">(</span>
+            <span class="n">operation</span><span class="p">,</span> <span class="o">*</span><span class="n">products</span>
+        <span class="p">):</span>
+            <span class="c1"># If taken then yield the permutation</span>
+            <span class="k">if</span> <span class="n">taken</span><span class="p">:</span>
                 <span class="k">yield</span> <span class="n">parameter_set</span></div></div>
 
 
@@ -723,12 +962,16 @@
 <span class="sd">    Inputs backed by a set</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">CONTEXT</span> <span class="o">=</span> <span class="n">MemoryInputNetworkContext</span></div>
+    <span class="n">CONTEXT</span> <span class="o">=</span> <span class="n">MemoryInputNetworkContext</span>
+    <span class="n">CONFIG</span> <span class="o">=</span> <span class="n">MemoryInputNetworkConfig</span></div>
 
 
-<div class="viewcode-block" id="MemoryOperationNetworkConfig"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryOperationNetworkConfig">[docs]</a><span class="k">class</span> <span class="nc">MemoryOperationNetworkConfig</span><span class="p">(</span><span class="n">NamedTuple</span><span class="p">):</span>
+<div class="viewcode-block" id="MemoryOperationNetworkConfig"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryOperationNetworkConfig">[docs]</a><span class="nd">@config</span>
+<span class="k">class</span> <span class="nc">MemoryOperationNetworkConfig</span><span class="p">:</span>
     <span class="c1"># Starting set of operations</span>
-    <span class="n">operations</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Operation</span><span class="p">]</span></div>
+    <span class="n">operations</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Operation</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
+        <span class="s2">&quot;Starting set of operations&quot;</span><span class="p">,</span> <span class="n">default_factory</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="p">[]</span>
+    <span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="MemoryOperationNetworkContext"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryOperationNetworkContext">[docs]</a><span class="k">class</span> <span class="nc">MemoryOperationNetworkContext</span><span class="p">(</span><span class="n">BaseOperationNetworkContext</span><span class="p">):</span>
@@ -777,19 +1020,14 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">CONTEXT</span> <span class="o">=</span> <span class="n">MemoryOperationNetworkContext</span>
+    <span class="n">CONFIG</span> <span class="o">=</span> <span class="n">MemoryOperationNetworkConfig</span></div>
 
-<div class="viewcode-block" id="MemoryOperationNetwork.args"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryOperationNetwork.args">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">args</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="o">*</span><span class="n">above</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Arg</span><span class="p">]:</span>
-        <span class="bp">cls</span><span class="o">.</span><span class="n">config_set</span><span class="p">(</span>
-            <span class="n">args</span><span class="p">,</span> <span class="n">above</span><span class="p">,</span> <span class="s2">&quot;ops&quot;</span><span class="p">,</span> <span class="n">Arg</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="n">Operation</span><span class="o">.</span><span class="n">load</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s2">&quot;+&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="p">[])</span>
-        <span class="p">)</span>
-        <span class="k">return</span> <span class="n">args</span></div>
 
-<div class="viewcode-block" id="MemoryOperationNetwork.config"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryOperationNetwork.config">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">config</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="o">*</span><span class="n">above</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MemoryOperationNetworkConfig</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">MemoryOperationNetworkConfig</span><span class="p">(</span>
-            <span class="n">operations</span><span class="o">=</span><span class="bp">cls</span><span class="o">.</span><span class="n">config_get</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">above</span><span class="p">,</span> <span class="s2">&quot;ops&quot;</span><span class="p">)</span>
-        <span class="p">)</span></div></div>
+<div class="viewcode-block" id="MemoryRedundancyCheckerConfig"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryRedundancyCheckerConfig">[docs]</a><span class="nd">@config</span>
+<span class="k">class</span> <span class="nc">MemoryRedundancyCheckerConfig</span><span class="p">:</span>
+    <span class="n">kvstore</span><span class="p">:</span> <span class="n">BaseKeyValueStore</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
+        <span class="s2">&quot;Key value store to use&quot;</span><span class="p">,</span> <span class="n">default_factory</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="n">MemoryKeyValueStore</span><span class="p">()</span>
+    <span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="MemoryRedundancyCheckerContext"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryRedundancyCheckerContext">[docs]</a><span class="k">class</span> <span class="nc">MemoryRedundancyCheckerContext</span><span class="p">(</span><span class="n">BaseRedundancyCheckerContext</span><span class="p">):</span>
@@ -803,7 +1041,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">__stack</span> <span class="o">=</span> <span class="n">AsyncExitStack</span><span class="p">()</span>
         <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">__stack</span><span class="o">.</span><span class="fm">__aenter__</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">kvctx</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">__stack</span><span class="o">.</span><span class="n">enter_async_context</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">key_value_store</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">kvstore</span><span class="p">()</span>
         <span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span>
 
@@ -826,31 +1064,31 @@
 <span class="sd">        SHA384 hash of the parameter set context handle as a string, the</span>
 <span class="sd">        operation.instance_name, and the sorted list of input uuids.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">uid_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_unique</span><span class="p">(</span>
             <span class="n">operation</span><span class="o">.</span><span class="n">instance_name</span><span class="p">,</span>
             <span class="p">(</span><span class="k">await</span> <span class="n">parameter_set</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">handle</span><span class="p">())</span><span class="o">.</span><span class="n">as_string</span><span class="p">(),</span>
-        <span class="p">]</span> <span class="o">+</span> <span class="nb">sorted</span><span class="p">(</span>
-            <span class="p">[</span><span class="n">item</span><span class="o">.</span><span class="n">origin</span><span class="o">.</span><span class="n">uid</span> <span class="k">async</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">parameter_set</span><span class="o">.</span><span class="n">parameters</span><span class="p">()]</span>
+            <span class="o">*</span><span class="p">[</span><span class="n">item</span><span class="o">.</span><span class="n">origin</span><span class="o">.</span><span class="n">uid</span> <span class="k">async</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">parameter_set</span><span class="o">.</span><span class="n">parameters</span><span class="p">()],</span>
+        <span class="p">)</span></div>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">_take</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coro</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">kvctx</span><span class="o">.</span><span class="n">conditional_set</span><span class="p">(</span>
+            <span class="k">await</span> <span class="n">coro</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\x01</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">checker</span><span class="o">=</span><span class="k">lambda</span> <span class="n">value</span><span class="p">:</span> <span class="n">value</span> <span class="o">!=</span> <span class="s2">&quot;</span><span class="se">\x01</span><span class="s2">&quot;</span>
         <span class="p">)</span>
-        <span class="k">return</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha384</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">uid_list</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span></div>
 
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">_exists</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coro</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-        <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">kvctx</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="k">await</span> <span class="n">coro</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;</span><span class="se">\x01</span><span class="s2">&quot;</span><span class="p">)</span>
-
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">exists</span><span class="p">(</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">take_if_non_existant</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">operation</span><span class="p">:</span> <span class="n">Operation</span><span class="p">,</span> <span class="o">*</span><span class="n">parameter_sets</span><span class="p">:</span> <span class="n">BaseParameterSet</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="c1"># TODO(p4) Run tests to choose an optimal threaded vs non-threaded value</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">parameter_sets</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">4</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">parameter_set</span> <span class="ow">in</span> <span class="n">parameter_sets</span><span class="p">:</span>
-                <span class="k">yield</span> <span class="n">parameter_set</span><span class="p">,</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_exists</span><span class="p">(</span>
+                <span class="k">yield</span> <span class="n">parameter_set</span><span class="p">,</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_take</span><span class="p">(</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">operation</span><span class="p">,</span> <span class="n">parameter_set</span><span class="p">)</span>
                 <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">async</span> <span class="k">for</span> <span class="n">parameter_set</span><span class="p">,</span> <span class="n">exists</span> <span class="ow">in</span> <span class="n">concurrently</span><span class="p">(</span>
+            <span class="k">async</span> <span class="k">for</span> <span class="n">parameter_set</span><span class="p">,</span> <span class="n">taken</span> <span class="ow">in</span> <span class="n">concurrently</span><span class="p">(</span>
                 <span class="p">{</span>
                     <span class="n">asyncio</span><span class="o">.</span><span class="n">create_task</span><span class="p">(</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">_exists</span><span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_take</span><span class="p">(</span>
                             <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">loop</span><span class="o">.</span><span class="n">run_in_executor</span><span class="p">(</span>
                                 <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">pool</span><span class="p">,</span>
                                 <span class="bp">self</span><span class="o">.</span><span class="n">_unique</span><span class="p">,</span>
@@ -866,15 +1104,7 @@
                     <span class="k">for</span> <span class="n">parameter_set</span> <span class="ow">in</span> <span class="n">parameter_sets</span>
                 <span class="p">}</span>
             <span class="p">):</span>
-                <span class="k">yield</span> <span class="n">parameter_set</span><span class="p">,</span> <span class="n">exists</span>
-
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">operation</span><span class="p">:</span> <span class="n">Operation</span><span class="p">,</span> <span class="n">parameter_set</span><span class="p">:</span> <span class="n">BaseParameterSet</span><span class="p">):</span>
-        <span class="c1"># self.logger.debug(&#39;adding parameter_set: %s&#39;, list(map(</span>
-        <span class="c1">#     lambda p: p.value,</span>
-        <span class="c1">#     [p async for p in parameter_set.parameters()])))</span>
-        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">kvctx</span><span class="o">.</span><span class="n">set</span><span class="p">(</span>
-            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">operation</span><span class="p">,</span> <span class="n">parameter_set</span><span class="p">),</span> <span class="s2">&quot;</span><span class="se">\x01</span><span class="s2">&quot;</span>
-        <span class="p">)</span></div>
+                <span class="k">yield</span> <span class="n">parameter_set</span><span class="p">,</span> <span class="n">taken</span></div>
 
 
 <div class="viewcode-block" id="MemoryRedundancyChecker"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryRedundancyChecker">[docs]</a><span class="nd">@entrypoint</span><span class="p">(</span><span class="s2">&quot;memory&quot;</span><span class="p">)</span>
@@ -884,6 +1114,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">CONTEXT</span> <span class="o">=</span> <span class="n">MemoryRedundancyCheckerContext</span>
+    <span class="n">CONFIG</span> <span class="o">=</span> <span class="n">MemoryRedundancyCheckerConfig</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
@@ -896,8 +1127,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">__exit_stack</span> <span class="o">=</span> <span class="n">ExitStack</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__exit_stack</span><span class="o">.</span><span class="fm">__enter__</span><span class="p">()</span>
         <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">__stack</span><span class="o">.</span><span class="fm">__aenter__</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">key_value_store</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">__stack</span><span class="o">.</span><span class="n">enter_async_context</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">key_value_store</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">kvstore</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">__stack</span><span class="o">.</span><span class="n">enter_async_context</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">kvstore</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">loop</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">get_event_loop</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">pool</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__exit_stack</span><span class="o">.</span><span class="n">enter_context</span><span class="p">(</span>
@@ -907,28 +1138,12 @@
 
     <span class="k">async</span> <span class="k">def</span> <span class="fm">__aexit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_value</span><span class="p">,</span> <span class="n">traceback</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__exit_stack</span><span class="o">.</span><span class="fm">__exit__</span><span class="p">(</span><span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_value</span><span class="p">,</span> <span class="n">traceback</span><span class="p">)</span>
-        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">__stack</span><span class="o">.</span><span class="fm">__aexit__</span><span class="p">(</span><span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_value</span><span class="p">,</span> <span class="n">traceback</span><span class="p">)</span>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">__stack</span><span class="o">.</span><span class="fm">__aexit__</span><span class="p">(</span><span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_value</span><span class="p">,</span> <span class="n">traceback</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="MemoryRedundancyChecker.args"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryRedundancyChecker.args">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">args</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="o">*</span><span class="n">above</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Arg</span><span class="p">]:</span>
-        <span class="c1"># Enable the user to specify a key value store</span>
-        <span class="bp">cls</span><span class="o">.</span><span class="n">config_set</span><span class="p">(</span>
-            <span class="n">args</span><span class="p">,</span>
-            <span class="n">above</span><span class="p">,</span>
-            <span class="s2">&quot;kvstore&quot;</span><span class="p">,</span>
-            <span class="n">Arg</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="n">BaseKeyValueStore</span><span class="o">.</span><span class="n">load</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">MemoryKeyValueStore</span><span class="p">),</span>
-        <span class="p">)</span>
-        <span class="c1"># Load all the key value stores and add the arguments they might require</span>
-        <span class="k">for</span> <span class="n">loaded</span> <span class="ow">in</span> <span class="n">BaseKeyValueStore</span><span class="o">.</span><span class="n">load</span><span class="p">():</span>
-            <span class="n">loaded</span><span class="o">.</span><span class="n">args</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="o">*</span><span class="bp">cls</span><span class="o">.</span><span class="n">add_orig_label</span><span class="p">(</span><span class="o">*</span><span class="n">above</span><span class="p">))</span>
-        <span class="k">return</span> <span class="n">args</span></div>
 
-<div class="viewcode-block" id="MemoryRedundancyChecker.config"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryRedundancyChecker.config">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">config</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="o">*</span><span class="n">above</span><span class="p">):</span>
-        <span class="n">kvstore</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">config_get</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">above</span><span class="p">,</span> <span class="s2">&quot;kvstore&quot;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">BaseRedundancyCheckerConfig</span><span class="p">(</span>
-            <span class="n">key_value_store</span><span class="o">=</span><span class="n">kvstore</span><span class="o">.</span><span class="n">withconfig</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="o">*</span><span class="bp">cls</span><span class="o">.</span><span class="n">add_label</span><span class="p">(</span><span class="o">*</span><span class="n">above</span><span class="p">))</span>
-        <span class="p">)</span></div></div>
+<div class="viewcode-block" id="MemoryLockNetworkConfig"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryLockNetworkConfig">[docs]</a><span class="nd">@config</span>
+<span class="k">class</span> <span class="nc">MemoryLockNetworkConfig</span><span class="p">:</span>
+    <span class="k">pass</span></div>
 
 
 <div class="viewcode-block" id="MemoryLockNetworkContext"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryLockNetworkContext">[docs]</a><span class="k">class</span> <span class="nc">MemoryLockNetworkContext</span><span class="p">(</span><span class="n">BaseLockNetworkContext</span><span class="p">):</span>
@@ -975,11 +1190,16 @@
 <div class="viewcode-block" id="MemoryLockNetwork"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryLockNetwork">[docs]</a><span class="nd">@entrypoint</span><span class="p">(</span><span class="s2">&quot;memory&quot;</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">MemoryLockNetwork</span><span class="p">(</span><span class="n">BaseLockNetwork</span><span class="p">,</span> <span class="n">BaseMemoryDataFlowObject</span><span class="p">):</span>
 
-    <span class="n">CONTEXT</span> <span class="o">=</span> <span class="n">MemoryLockNetworkContext</span></div>
+    <span class="n">CONTEXT</span> <span class="o">=</span> <span class="n">MemoryLockNetworkContext</span>
+    <span class="n">CONFIG</span> <span class="o">=</span> <span class="n">MemoryLockNetworkConfig</span></div>
 
 
-<div class="viewcode-block" id="MemoryOperationImplementationNetworkConfig"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryOperationImplementationNetworkConfig">[docs]</a><span class="k">class</span> <span class="nc">MemoryOperationImplementationNetworkConfig</span><span class="p">(</span><span class="n">NamedTuple</span><span class="p">):</span>
-    <span class="n">operations</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">OperationImplementation</span><span class="p">]</span></div>
+<div class="viewcode-block" id="MemoryOperationImplementationNetworkConfig"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryOperationImplementationNetworkConfig">[docs]</a><span class="nd">@config</span>
+<span class="k">class</span> <span class="nc">MemoryOperationImplementationNetworkConfig</span><span class="p">:</span>
+    <span class="n">operations</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">OperationImplementation</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
+        <span class="s2">&quot;Operation implementations to load on initialization&quot;</span><span class="p">,</span>
+        <span class="n">default_factory</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="p">{},</span>
+    <span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="MemoryOperationImplementationNetworkContext"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryOperationImplementationNetworkContext">[docs]</a><span class="k">class</span> <span class="nc">MemoryOperationImplementationNetworkContext</span><span class="p">(</span>
@@ -1074,7 +1294,7 @@
                     <span class="n">operation</span><span class="o">.</span><span class="n">instance_name</span>
                 <span class="p">)</span></div>
 
-<div class="viewcode-block" id="MemoryOperationImplementationNetworkContext.run"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryOperationImplementationNetworkContext.run">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">run</span><span class="p">(</span>
+<div class="viewcode-block" id="MemoryOperationImplementationNetworkContext.run_no_retry"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryOperationImplementationNetworkContext.run_no_retry">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">run_no_retry</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">ctx</span><span class="p">:</span> <span class="n">BaseInputSetContext</span><span class="p">,</span>
         <span class="n">octx</span><span class="p">:</span> <span class="n">BaseOrchestratorContext</span><span class="p">,</span>
@@ -1082,7 +1302,7 @@
         <span class="n">inputs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Run an operation in our network.</span>
+<span class="sd">        Run an operation in our network without retry if it fails</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Check that our network contains the operation</span>
         <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">ensure_contains</span><span class="p">(</span><span class="n">operation</span><span class="p">)</span>
@@ -1125,6 +1345,33 @@
             <span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;---&quot;</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">outputs</span></div>
+
+<div class="viewcode-block" id="MemoryOperationImplementationNetworkContext.run"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryOperationImplementationNetworkContext.run">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">run</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">ctx</span><span class="p">:</span> <span class="n">BaseInputSetContext</span><span class="p">,</span>
+        <span class="n">octx</span><span class="p">:</span> <span class="n">BaseOrchestratorContext</span><span class="p">,</span>
+        <span class="n">operation</span><span class="p">:</span> <span class="n">Operation</span><span class="p">,</span>
+        <span class="n">inputs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Run an operation in our network.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">operation</span><span class="o">.</span><span class="n">retry</span><span class="p">:</span>
+            <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">run_no_retry</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="n">octx</span><span class="p">,</span> <span class="n">operation</span><span class="p">,</span> <span class="n">inputs</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">retry</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">operation</span><span class="o">.</span><span class="n">retry</span><span class="p">):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">run_no_retry</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="n">octx</span><span class="p">,</span> <span class="n">operation</span><span class="p">,</span> <span class="n">inputs</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                <span class="c1"># Raise if no more tries left</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">retry</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="n">operation</span><span class="o">.</span><span class="n">retry</span><span class="p">:</span>
+                    <span class="k">raise</span>
+                <span class="c1"># Otherwise if there was an exception log it</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
+                    <span class="s2">&quot;</span><span class="si">%r</span><span class="s2">: try </span><span class="si">%d</span><span class="s2">: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span>
+                    <span class="n">operation</span><span class="o">.</span><span class="n">instance_name</span><span class="p">,</span>
+                    <span class="n">retry</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
+                    <span class="n">traceback</span><span class="o">.</span><span class="n">format_exc</span><span class="p">()</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(),</span>
+                <span class="p">)</span></div>
 
 <div class="viewcode-block" id="MemoryOperationImplementationNetworkContext.operation_completed"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryOperationImplementationNetworkContext.operation_completed">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">operation_completed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">completed_event</span><span class="o">.</span><span class="n">wait</span><span class="p">()</span>
@@ -1212,24 +1459,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">run_dispatch</span><span class="p">(</span><span class="n">octx</span><span class="p">,</span> <span class="n">operation</span><span class="p">,</span> <span class="n">parameter_set</span><span class="p">)</span>
         <span class="p">)</span>
         <span class="n">task</span><span class="o">.</span><span class="n">add_done_callback</span><span class="p">(</span><span class="n">ignore_args</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">completed_event</span><span class="o">.</span><span class="n">set</span><span class="p">))</span>
-        <span class="k">return</span> <span class="n">task</span></div>
-
-<div class="viewcode-block" id="MemoryOperationImplementationNetworkContext.dispatch_auto_starts"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryOperationImplementationNetworkContext.dispatch_auto_starts">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">dispatch_auto_starts</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">octx</span><span class="p">:</span> <span class="n">BaseOrchestratorContext</span><span class="p">,</span> <span class="n">ctx</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Schedule the running of all operations without inputs</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">empty_parameter_set</span> <span class="o">=</span> <span class="n">MemoryParameterSet</span><span class="p">(</span>
-            <span class="n">MemoryParameterSetConfig</span><span class="p">(</span><span class="n">ctx</span><span class="o">=</span><span class="n">ctx</span><span class="p">,</span> <span class="n">parameters</span><span class="o">=</span><span class="p">[])</span>
-        <span class="p">)</span>
-
-        <span class="k">for</span> <span class="n">operation</span> <span class="ow">in</span> <span class="n">octx</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">dataflow</span><span class="o">.</span><span class="n">operations</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
-            <span class="k">if</span> <span class="n">operation</span><span class="o">.</span><span class="n">inputs</span><span class="p">:</span>
-                <span class="k">continue</span>
-            <span class="n">task</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">create_task</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">run_dispatch</span><span class="p">(</span><span class="n">octx</span><span class="p">,</span> <span class="n">operation</span><span class="p">,</span> <span class="n">empty_parameter_set</span><span class="p">)</span>
-            <span class="p">)</span>
-            <span class="n">task</span><span class="o">.</span><span class="n">add_done_callback</span><span class="p">(</span><span class="n">ignore_args</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">completed_event</span><span class="o">.</span><span class="n">set</span><span class="p">))</span>
-            <span class="k">yield</span> <span class="n">task</span></div></div>
+        <span class="k">return</span> <span class="n">task</span></div></div>
 
 
 <div class="viewcode-block" id="MemoryOperationImplementationNetwork"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryOperationImplementationNetwork">[docs]</a><span class="nd">@entrypoint</span><span class="p">(</span><span class="s2">&quot;memory&quot;</span><span class="p">)</span>
@@ -1238,54 +1468,49 @@
 <span class="p">):</span>
 
     <span class="n">CONTEXT</span> <span class="o">=</span> <span class="n">MemoryOperationImplementationNetworkContext</span>
-
-<div class="viewcode-block" id="MemoryOperationImplementationNetwork.args"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryOperationImplementationNetwork.args">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">args</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="o">*</span><span class="n">above</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Arg</span><span class="p">]:</span>
-        <span class="c1"># Enable the user to specify operation implementations to be loaded via</span>
-        <span class="c1"># the entrypoint system (by ParseOperationImplementationAction)</span>
-        <span class="c1"># TODO opimps should be operations</span>
-        <span class="bp">cls</span><span class="o">.</span><span class="n">config_set</span><span class="p">(</span>
-            <span class="n">args</span><span class="p">,</span>
-            <span class="n">above</span><span class="p">,</span>
-            <span class="s2">&quot;opimps&quot;</span><span class="p">,</span>
-            <span class="n">Arg</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="n">OperationImplementation</span><span class="o">.</span><span class="n">load</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s2">&quot;+&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="p">[]),</span>
-        <span class="p">)</span>
-        <span class="c1"># Add orig label to above since we are done loading</span>
-        <span class="n">above</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">add_orig_label</span><span class="p">(</span><span class="o">*</span><span class="n">above</span><span class="p">)</span>
-        <span class="c1"># Load all the opimps and add the arguments they might require</span>
-        <span class="c1"># TODO(p4) Should we do this? If someone messes up their entrypoints in</span>
-        <span class="c1"># one package it will mess up loading anytime this is called.</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        for loaded in OperationImplementation.load():</span>
-<span class="sd">            loaded.args(args, *above)</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">args</span></div>
-
-<div class="viewcode-block" id="MemoryOperationImplementationNetwork.config"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryOperationImplementationNetwork.config">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">config</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="o">*</span><span class="n">above</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BaseConfig</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">MemoryOperationImplementationNetworkConfig</span><span class="p">(</span>
-            <span class="n">operations</span><span class="o">=</span><span class="p">{</span>
-                <span class="n">imp</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="n">imp</span>
-                <span class="k">for</span> <span class="n">imp</span> <span class="ow">in</span> <span class="p">[</span>
-                    <span class="n">Imp</span><span class="o">.</span><span class="n">withconfig</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="s2">&quot;opimp&quot;</span><span class="p">)</span>
-                    <span class="k">for</span> <span class="n">Imp</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">config_get</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">above</span><span class="p">,</span> <span class="s2">&quot;opimps&quot;</span><span class="p">)</span>
-                <span class="p">]</span>
-            <span class="p">}</span>
-        <span class="p">)</span></div></div>
+    <span class="n">CONFIG</span> <span class="o">=</span> <span class="n">MemoryOperationImplementationNetworkConfig</span></div>
 
 
-<div class="viewcode-block" id="MemoryOrchestratorConfig"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryOrchestratorConfig">[docs]</a><span class="k">class</span> <span class="nc">MemoryOrchestratorConfig</span><span class="p">(</span><span class="n">BaseOrchestratorConfig</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Same as base orchestrator config</span>
-<span class="sd">    &quot;&quot;&quot;</span></div>
+<span class="n">MEMORYORCHESTRATORCONFIG_MAX_CTXS</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span>
 
 
-<div class="viewcode-block" id="MemoryOrchestratorContextConfig"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryOrchestratorContextConfig">[docs]</a><span class="k">class</span> <span class="nc">MemoryOrchestratorContextConfig</span><span class="p">(</span><span class="n">NamedTuple</span><span class="p">):</span>
+<div class="viewcode-block" id="MemoryOrchestratorConfig"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryOrchestratorConfig">[docs]</a><span class="nd">@config</span>
+<span class="k">class</span> <span class="nc">MemoryOrchestratorConfig</span><span class="p">:</span>
+    <span class="n">input_network</span><span class="p">:</span> <span class="n">BaseInputNetwork</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
+        <span class="s2">&quot;Input network to use&quot;</span><span class="p">,</span> <span class="n">default_factory</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="n">MemoryInputNetwork</span><span class="p">()</span>
+    <span class="p">)</span>
+    <span class="n">operation_network</span><span class="p">:</span> <span class="n">BaseOperationNetwork</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
+        <span class="s2">&quot;Operation network to use&quot;</span><span class="p">,</span>
+        <span class="n">default_factory</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="n">MemoryOperationNetwork</span><span class="p">(),</span>
+    <span class="p">)</span>
+    <span class="n">lock_network</span><span class="p">:</span> <span class="n">BaseLockNetwork</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
+        <span class="s2">&quot;Lock network to use&quot;</span><span class="p">,</span> <span class="n">default_factory</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="n">MemoryLockNetwork</span><span class="p">()</span>
+    <span class="p">)</span>
+    <span class="n">opimp_network</span><span class="p">:</span> <span class="n">BaseOperationImplementationNetwork</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
+        <span class="s2">&quot;Operation implementation network to use&quot;</span><span class="p">,</span>
+        <span class="n">default_factory</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="n">MemoryOperationImplementationNetwork</span><span class="p">(),</span>
+    <span class="p">)</span>
+    <span class="n">rchecker</span><span class="p">:</span> <span class="n">BaseRedundancyChecker</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
+        <span class="s2">&quot;Redundancy checker to use&quot;</span><span class="p">,</span>
+        <span class="n">default_factory</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="n">MemoryRedundancyChecker</span><span class="p">(),</span>
+    <span class="p">)</span>
+    <span class="c1"># Maximum number of contexts to run concurrently</span>
+    <span class="n">max_ctxs</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">MEMORYORCHESTRATORCONFIG_MAX_CTXS</span></div>
+
+
+<div class="viewcode-block" id="MemoryOrchestratorContextConfig"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryOrchestratorContextConfig">[docs]</a><span class="nd">@config</span>
+<span class="k">class</span> <span class="nc">MemoryOrchestratorContextConfig</span><span class="p">:</span>
     <span class="n">uid</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">dataflow</span><span class="p">:</span> <span class="n">DataFlow</span>
     <span class="c1"># Context objects to reuse. If not present in this dict a new context object</span>
     <span class="c1"># will be created.</span>
-    <span class="n">reuse</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">BaseDataFlowObjectContext</span><span class="p">]</span></div>
+    <span class="n">reuse</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">BaseDataFlowObjectContext</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="c1"># Maximum number of contexts to run concurrently</span>
+    <span class="n">max_ctxs</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">MEMORYORCHESTRATORCONFIG_MAX_CTXS</span>
+
+    <span class="k">def</span> <span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">reuse</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">reuse</span> <span class="o">=</span> <span class="p">{}</span></div>
 
 
 <div class="viewcode-block" id="MemoryOrchestratorContext"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryOrchestratorContext">[docs]</a><span class="k">class</span> <span class="nc">MemoryOrchestratorContext</span><span class="p">(</span><span class="n">BaseOrchestratorContext</span><span class="p">):</span>
@@ -1397,6 +1622,10 @@
         <span class="n">ctx</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">BaseInputSetContext</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">input_set</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Input</span><span class="p">],</span> <span class="n">BaseInputSet</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BaseInputSetContext</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">ctx</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="n">BaseInputSetContext</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;ctx </span><span class="si">{</span><span class="n">ctx</span><span class="si">}</span><span class="s2"> is of type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">ctx</span><span class="p">)</span><span class="si">}</span><span class="s2">, should be BaseInputSetContext&quot;</span>
+            <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Seeding dataflow with input_set: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">input_set</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">input_set</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="c1"># Create a list if extra inputs were not given</span>
@@ -1487,7 +1716,9 @@
                 <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">forward_inputs_to_subflow</span><span class="p">(</span><span class="n">input_set</span><span class="p">)</span>
                 <span class="n">ctxs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
                     <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">seed_inputs</span><span class="p">(</span>
-                        <span class="n">ctx</span><span class="o">=</span><span class="n">StringInputSetContext</span><span class="p">(</span><span class="n">ctx_string</span><span class="p">),</span>
+                        <span class="n">ctx</span><span class="o">=</span><span class="n">StringInputSetContext</span><span class="p">(</span><span class="n">ctx_string</span><span class="p">)</span>
+                        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ctx_string</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
+                        <span class="k">else</span> <span class="n">ctx_string</span><span class="p">,</span>
                         <span class="n">input_set</span><span class="o">=</span><span class="n">input_set</span><span class="p">,</span>
                     <span class="p">)</span>
                 <span class="p">)</span>
@@ -1508,8 +1739,22 @@
         <span class="c1"># TODO Make some way to cap the number of context&#39;s who have operations</span>
         <span class="c1"># executing. Or maybe just the number of operations. Or both.</span>
         <span class="n">tasks</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="c1"># Track the number of contexts running</span>
+        <span class="n">num_ctxs</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="c1"># If the max_ctxs is more than the total number of contexts, then set max_ctxs to None</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">max_ctxs</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">max_ctxs</span> <span class="o">&gt;</span> <span class="nb">len</span><span class="p">(</span>
+            <span class="n">ctxs</span>
+        <span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">max_ctxs</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="c1"># Create tasks to wait on the results of each of the contexts submitted</span>
-        <span class="k">for</span> <span class="n">ctx</span> <span class="ow">in</span> <span class="n">ctxs</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">ctxs_index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">ctxs</span><span class="p">)):</span>
+            <span class="k">if</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">max_ctxs</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="ow">and</span> <span class="n">num_ctxs</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">max_ctxs</span>
+            <span class="p">):</span>
+                <span class="k">break</span>
+            <span class="c1"># Grab the context by its index</span>
+            <span class="n">ctx</span> <span class="o">=</span> <span class="n">ctxs</span><span class="p">[</span><span class="n">ctxs_index</span><span class="p">]</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
                 <span class="s2">&quot;kickstarting context: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="p">(</span><span class="k">await</span> <span class="n">ctx</span><span class="o">.</span><span class="n">handle</span><span class="p">())</span><span class="o">.</span><span class="n">as_string</span><span class="p">()</span>
             <span class="p">)</span>
@@ -1518,6 +1763,8 @@
                     <span class="bp">self</span><span class="o">.</span><span class="n">run_operations_for_ctx</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="n">strict</span><span class="p">)</span>
                 <span class="p">)</span>
             <span class="p">)</span>
+            <span class="c1"># Ensure we don&#39;t run more contexts conncurrently than requested</span>
+            <span class="n">num_ctxs</span> <span class="o">+=</span> <span class="mi">1</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="c1"># Return when outstanding operations reaches zero</span>
             <span class="k">while</span> <span class="n">tasks</span><span class="p">:</span>
@@ -1529,6 +1776,7 @@
                 <span class="k">for</span> <span class="n">task</span> <span class="ow">in</span> <span class="n">done</span><span class="p">:</span>
                     <span class="c1"># Remove the task from the set of tasks we are waiting for</span>
                     <span class="n">tasks</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">task</span><span class="p">)</span>
+                    <span class="n">num_ctxs</span> <span class="o">-=</span> <span class="mi">1</span>
                     <span class="c1"># Get the tasks exception if any</span>
                     <span class="n">exception</span> <span class="o">=</span> <span class="n">task</span><span class="o">.</span><span class="n">exception</span><span class="p">()</span>
                     <span class="k">if</span> <span class="n">strict</span> <span class="ow">and</span> <span class="n">exception</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -1545,6 +1793,28 @@
                         <span class="c1"># output operations</span>
                         <span class="n">ctx</span><span class="p">,</span> <span class="n">results</span> <span class="o">=</span> <span class="n">task</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
                         <span class="k">yield</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">results</span>
+                    <span class="c1"># Create more tasks to wait on the results of each of the</span>
+                    <span class="c1"># contexts submitted if we are caping the number of them</span>
+                    <span class="k">while</span> <span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">max_ctxs</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                        <span class="ow">and</span> <span class="n">num_ctxs</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">max_ctxs</span>
+                        <span class="ow">and</span> <span class="n">ctxs_index</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">ctxs</span><span class="p">)</span>
+                    <span class="p">):</span>
+                        <span class="c1"># Grab the context by it&#39;s index</span>
+                        <span class="n">ctx</span> <span class="o">=</span> <span class="n">ctxs</span><span class="p">[</span><span class="n">ctxs_index</span><span class="p">]</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
+                            <span class="s2">&quot;kickstarting context: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span>
+                            <span class="p">(</span><span class="k">await</span> <span class="n">ctx</span><span class="o">.</span><span class="n">handle</span><span class="p">())</span><span class="o">.</span><span class="n">as_string</span><span class="p">(),</span>
+                        <span class="p">)</span>
+                        <span class="n">tasks</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+                            <span class="n">asyncio</span><span class="o">.</span><span class="n">create_task</span><span class="p">(</span>
+                                <span class="bp">self</span><span class="o">.</span><span class="n">run_operations_for_ctx</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="n">strict</span><span class="p">)</span>
+                            <span class="p">)</span>
+                        <span class="p">)</span>
+                        <span class="c1"># Keep track of which index we&#39;re at</span>
+                        <span class="n">ctxs_index</span> <span class="o">+=</span> <span class="mi">1</span>
+                        <span class="c1"># Ensure we don&#39;t run more contexts conncurrently than requested</span>
+                        <span class="n">num_ctxs</span> <span class="o">+=</span> <span class="mi">1</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;ctx.outstanding: </span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">tasks</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
         <span class="k">finally</span><span class="p">:</span>
             <span class="c1"># Cancel tasks which we don&#39;t need anymore now that we know we are done</span>
@@ -1602,11 +1872,28 @@
             <span class="n">parameter_set</span> <span class="o">=</span> <span class="n">MemoryParameterSet</span><span class="p">(</span>
                 <span class="n">MemoryParameterSetConfig</span><span class="p">(</span><span class="n">ctx</span><span class="o">=</span><span class="n">ctx</span><span class="p">,</span> <span class="n">parameters</span><span class="o">=</span><span class="p">[</span><span class="n">parameter</span><span class="p">])</span>
             <span class="p">)</span>
-            <span class="k">async</span> <span class="k">for</span> <span class="n">parameter_set</span><span class="p">,</span> <span class="n">exists</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">rctx</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span>
+            <span class="k">async</span> <span class="k">for</span> <span class="n">parameter_set</span><span class="p">,</span> <span class="n">taken</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">rctx</span><span class="o">.</span><span class="n">take_if_non_existant</span><span class="p">(</span>
                 <span class="n">validator</span><span class="p">,</span> <span class="n">parameter_set</span>
             <span class="p">):</span>
-                <span class="k">if</span> <span class="ow">not</span> <span class="n">exists</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">taken</span><span class="p">:</span>
                     <span class="k">yield</span> <span class="n">validator</span><span class="p">,</span> <span class="n">parameter_set</span>
+
+<div class="viewcode-block" id="MemoryOrchestratorContext.dispatch_auto_starts"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryOrchestratorContext.dispatch_auto_starts">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">dispatch_auto_starts</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Schedule the running of all operations without inputs</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">operation</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">dataflow</span><span class="o">.</span><span class="n">operations</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">operation</span><span class="o">.</span><span class="n">inputs</span> <span class="ow">or</span> <span class="ow">not</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">ictx</span><span class="o">.</span><span class="n">check_conditions</span><span class="p">(</span>
+                <span class="n">operation</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">dataflow</span><span class="p">,</span> <span class="n">ctx</span>
+            <span class="p">):</span>
+                <span class="k">continue</span>
+            <span class="n">parameter_set</span> <span class="o">=</span> <span class="n">MemoryParameterSet</span><span class="p">(</span>
+                <span class="n">MemoryParameterSetConfig</span><span class="p">(</span><span class="n">ctx</span><span class="o">=</span><span class="n">ctx</span><span class="p">,</span> <span class="n">parameters</span><span class="o">=</span><span class="p">[])</span>
+            <span class="p">)</span>
+            <span class="n">task</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">nctx</span><span class="o">.</span><span class="n">dispatch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">operation</span><span class="p">,</span> <span class="n">parameter_set</span><span class="p">)</span>
+            <span class="n">task</span><span class="o">.</span><span class="n">operation</span> <span class="o">=</span> <span class="n">operation</span>
+            <span class="n">task</span><span class="o">.</span><span class="n">parameter_set</span> <span class="o">=</span> <span class="n">parameter_set</span>
+            <span class="k">yield</span> <span class="n">task</span></div>
 
     <span class="k">async</span> <span class="k">def</span> <span class="nf">run_operations_for_ctx</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="n">BaseContextHandle</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">strict</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
@@ -1618,7 +1905,7 @@
         <span class="c1"># String representing the context we are executing operations for</span>
         <span class="n">ctx_str</span> <span class="o">=</span> <span class="p">(</span><span class="k">await</span> <span class="n">ctx</span><span class="o">.</span><span class="n">handle</span><span class="p">())</span><span class="o">.</span><span class="n">as_string</span><span class="p">()</span>
         <span class="c1"># schedule running of operations with no inputs</span>
-        <span class="k">async</span> <span class="k">for</span> <span class="n">task</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">nctx</span><span class="o">.</span><span class="n">dispatch_auto_starts</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">):</span>
+        <span class="k">async</span> <span class="k">for</span> <span class="n">task</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">dispatch_auto_starts</span><span class="p">(</span><span class="n">ctx</span><span class="p">):</span>
             <span class="n">tasks</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">task</span><span class="p">)</span>
         <span class="c1"># Create initial events to wait on</span>
         <span class="c1"># TODO(dfass) Make ictx.added(ctx) specific to dataflow</span>
@@ -1676,7 +1963,6 @@
                                 <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">dataflow</span><span class="p">,</span>
                                 <span class="n">unvalidated_input_set</span><span class="p">,</span>
                             <span class="p">):</span>
-                                <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">rctx</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">operation</span><span class="p">,</span> <span class="n">parameter_set</span><span class="p">)</span>
                                 <span class="n">dispatch_operation</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">nctx</span><span class="o">.</span><span class="n">dispatch</span><span class="p">(</span>
                                     <span class="bp">self</span><span class="p">,</span> <span class="n">operation</span><span class="p">,</span> <span class="n">parameter_set</span>
                                 <span class="p">)</span>
@@ -1704,9 +1990,6 @@
                                 <span class="c1"># Validation operations shouldn&#39;t be run here</span>
                                 <span class="k">if</span> <span class="n">operation</span><span class="o">.</span><span class="n">validator</span><span class="p">:</span>
                                     <span class="k">continue</span>
-                                <span class="c1"># Add inputs and operation to redundancy checker before</span>
-                                <span class="c1"># dispatch</span>
-                                <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">rctx</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">operation</span><span class="p">,</span> <span class="n">parameter_set</span><span class="p">)</span>
                                 <span class="c1"># Dispatch the operation and input set for running</span>
                                 <span class="n">dispatch_operation</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">nctx</span><span class="o">.</span><span class="n">dispatch</span><span class="p">(</span>
                                     <span class="bp">self</span><span class="p">,</span> <span class="n">operation</span><span class="p">,</span> <span class="n">parameter_set</span>
@@ -1743,12 +2026,10 @@
         <span class="c1"># Run output operations and create a dict mapping the operation name to</span>
         <span class="c1"># the output of that operation</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">output</span> <span class="o">=</span> <span class="p">{</span>
-                <span class="n">operation</span><span class="o">.</span><span class="n">instance_name</span><span class="p">:</span> <span class="n">results</span>
-                <span class="k">async</span> <span class="k">for</span> <span class="n">operation</span><span class="p">,</span> <span class="n">results</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">run_stage</span><span class="p">(</span>
-                    <span class="n">ctx</span><span class="p">,</span> <span class="n">Stage</span><span class="o">.</span><span class="n">OUTPUT</span>
-                <span class="p">)</span>
-            <span class="p">}</span>
+            <span class="n">output</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">async</span> <span class="k">for</span> <span class="n">operation</span><span class="p">,</span> <span class="n">results</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">run_stage</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="n">Stage</span><span class="o">.</span><span class="n">OUTPUT</span><span class="p">):</span>
+                <span class="n">output</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">operation</span><span class="o">.</span><span class="n">instance_name</span><span class="p">,</span> <span class="p">{})</span>
+                <span class="n">output</span><span class="p">[</span><span class="n">operation</span><span class="o">.</span><span class="n">instance_name</span><span class="p">]</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
         <span class="k">except</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">strict</span><span class="p">:</span>
                 <span class="k">raise</span>
@@ -1767,8 +2048,6 @@
         <span class="k">async</span> <span class="k">for</span> <span class="n">operation</span><span class="p">,</span> <span class="n">parameter_set</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">operations_parameter_set_pairs</span><span class="p">(</span>
             <span class="n">ctx</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">dataflow</span><span class="p">,</span> <span class="n">stage</span><span class="o">=</span><span class="n">stage</span>
         <span class="p">):</span>
-            <span class="c1"># Add inputs and operation to redundancy checker before dispatch</span>
-            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">rctx</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">operation</span><span class="p">,</span> <span class="n">parameter_set</span><span class="p">)</span>
             <span class="c1"># Run the operation, input set pair</span>
             <span class="k">yield</span> <span class="n">operation</span><span class="p">,</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">nctx</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
                 <span class="n">ctx</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">operation</span><span class="p">,</span> <span class="k">await</span> <span class="n">parameter_set</span><span class="o">.</span><span class="n">_asdict</span><span class="p">()</span>
@@ -1779,6 +2058,7 @@
 <span class="k">class</span> <span class="nc">MemoryOrchestrator</span><span class="p">(</span><span class="n">BaseOrchestrator</span><span class="p">,</span> <span class="n">BaseMemoryDataFlowObject</span><span class="p">):</span>
 
     <span class="n">CONTEXT</span> <span class="o">=</span> <span class="n">MemoryOrchestratorContext</span>
+    <span class="n">CONFIG</span> <span class="o">=</span> <span class="n">MemoryOrchestratorConfig</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="s2">&quot;BaseConfig&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
@@ -1802,124 +2082,17 @@
         <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stack</span><span class="o">.</span><span class="n">aclose</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">dataflow</span><span class="p">:</span> <span class="n">DataFlow</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">dataflow</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">DataFlow</span><span class="p">,</span> <span class="n">MemoryOrchestratorContextConfig</span><span class="p">],</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BaseDataFlowObjectContext</span><span class="p">:</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">CONTEXT</span><span class="p">(</span>
-            <span class="n">MemoryOrchestratorContextConfig</span><span class="p">(</span>
-                <span class="n">uid</span><span class="o">=</span><span class="n">secrets</span><span class="o">.</span><span class="n">token_hex</span><span class="p">(),</span> <span class="n">dataflow</span><span class="o">=</span><span class="n">dataflow</span><span class="p">,</span> <span class="n">reuse</span><span class="o">=</span><span class="n">kwargs</span>
-            <span class="p">),</span>
-            <span class="bp">self</span><span class="p">,</span>
-        <span class="p">)</span>
-
-<div class="viewcode-block" id="MemoryOrchestrator.args"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryOrchestrator.args">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">args</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="o">*</span><span class="n">above</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Arg</span><span class="p">]:</span>
-        <span class="c1"># Extending above is done right before loading args of subclasses</span>
-        <span class="bp">cls</span><span class="o">.</span><span class="n">config_set</span><span class="p">(</span>
-            <span class="n">args</span><span class="p">,</span>
-            <span class="n">above</span><span class="p">,</span>
-            <span class="s2">&quot;input&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;network&quot;</span><span class="p">,</span>
-            <span class="n">Arg</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="n">BaseInputNetwork</span><span class="o">.</span><span class="n">load</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">MemoryInputNetwork</span><span class="p">),</span>
-        <span class="p">)</span>
-        <span class="bp">cls</span><span class="o">.</span><span class="n">config_set</span><span class="p">(</span>
-            <span class="n">args</span><span class="p">,</span>
-            <span class="n">above</span><span class="p">,</span>
-            <span class="s2">&quot;operation&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;network&quot;</span><span class="p">,</span>
-            <span class="n">Arg</span><span class="p">(</span>
-                <span class="nb">type</span><span class="o">=</span><span class="n">BaseOperationNetwork</span><span class="o">.</span><span class="n">load</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">MemoryOperationNetwork</span>
-            <span class="p">),</span>
-        <span class="p">)</span>
-        <span class="bp">cls</span><span class="o">.</span><span class="n">config_set</span><span class="p">(</span>
-            <span class="n">args</span><span class="p">,</span>
-            <span class="n">above</span><span class="p">,</span>
-            <span class="s2">&quot;opimp&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;network&quot;</span><span class="p">,</span>
-            <span class="n">Arg</span><span class="p">(</span>
-                <span class="nb">type</span><span class="o">=</span><span class="n">BaseOperationImplementationNetwork</span><span class="o">.</span><span class="n">load</span><span class="p">,</span>
-                <span class="n">default</span><span class="o">=</span><span class="n">MemoryOperationImplementationNetwork</span><span class="p">,</span>
-            <span class="p">),</span>
-        <span class="p">)</span>
-        <span class="bp">cls</span><span class="o">.</span><span class="n">config_set</span><span class="p">(</span>
-            <span class="n">args</span><span class="p">,</span>
-            <span class="n">above</span><span class="p">,</span>
-            <span class="s2">&quot;lock&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;network&quot;</span><span class="p">,</span>
-            <span class="n">Arg</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="n">BaseLockNetwork</span><span class="o">.</span><span class="n">load</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">MemoryLockNetwork</span><span class="p">),</span>
-        <span class="p">)</span>
-        <span class="bp">cls</span><span class="o">.</span><span class="n">config_set</span><span class="p">(</span>
-            <span class="n">args</span><span class="p">,</span>
-            <span class="n">above</span><span class="p">,</span>
-            <span class="s2">&quot;rchecker&quot;</span><span class="p">,</span>
-            <span class="n">Arg</span><span class="p">(</span>
-                <span class="nb">type</span><span class="o">=</span><span class="n">BaseRedundancyChecker</span><span class="o">.</span><span class="n">load</span><span class="p">,</span>
-                <span class="n">default</span><span class="o">=</span><span class="n">MemoryRedundancyChecker</span><span class="p">,</span>
-            <span class="p">),</span>
-        <span class="p">)</span>
-        <span class="n">above</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">add_orig_label</span><span class="p">(</span><span class="o">*</span><span class="n">above</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">sub</span> <span class="ow">in</span> <span class="p">[</span>
-            <span class="n">BaseInputNetwork</span><span class="p">,</span>
-            <span class="n">BaseOperationNetwork</span><span class="p">,</span>
-            <span class="n">BaseOperationImplementationNetwork</span><span class="p">,</span>
-            <span class="n">BaseLockNetwork</span><span class="p">,</span>
-            <span class="n">BaseRedundancyChecker</span><span class="p">,</span>
-        <span class="p">]:</span>
-            <span class="k">for</span> <span class="n">loaded</span> <span class="ow">in</span> <span class="n">sub</span><span class="o">.</span><span class="n">load</span><span class="p">():</span>
-                <span class="n">loaded</span><span class="o">.</span><span class="n">args</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="o">*</span><span class="n">above</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">args</span></div>
-
-<div class="viewcode-block" id="MemoryOrchestrator.config"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryOrchestrator.config">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">config</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="o">*</span><span class="n">above</span><span class="p">):</span>
-        <span class="n">input_network</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">config_get</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">above</span><span class="p">,</span> <span class="s2">&quot;input&quot;</span><span class="p">,</span> <span class="s2">&quot;network&quot;</span><span class="p">)</span>
-        <span class="n">operation_network</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">config_get</span><span class="p">(</span>
-            <span class="n">config</span><span class="p">,</span> <span class="n">above</span><span class="p">,</span> <span class="s2">&quot;operation&quot;</span><span class="p">,</span> <span class="s2">&quot;network&quot;</span>
-        <span class="p">)</span>
-        <span class="n">opimp_network</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">config_get</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">above</span><span class="p">,</span> <span class="s2">&quot;opimp&quot;</span><span class="p">,</span> <span class="s2">&quot;network&quot;</span><span class="p">)</span>
-        <span class="n">lock_network</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">config_get</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">above</span><span class="p">,</span> <span class="s2">&quot;lock&quot;</span><span class="p">,</span> <span class="s2">&quot;network&quot;</span><span class="p">)</span>
-        <span class="n">rchecker</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">config_get</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">above</span><span class="p">,</span> <span class="s2">&quot;rchecker&quot;</span><span class="p">)</span>
-        <span class="n">above</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">add_label</span><span class="p">(</span><span class="o">*</span><span class="n">above</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">MemoryOrchestratorConfig</span><span class="p">(</span>
-            <span class="n">input_network</span><span class="o">=</span><span class="n">input_network</span><span class="o">.</span><span class="n">withconfig</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="o">*</span><span class="n">above</span><span class="p">),</span>
-            <span class="n">operation_network</span><span class="o">=</span><span class="n">operation_network</span><span class="o">.</span><span class="n">withconfig</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="o">*</span><span class="n">above</span><span class="p">),</span>
-            <span class="n">lock_network</span><span class="o">=</span><span class="n">lock_network</span><span class="o">.</span><span class="n">withconfig</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="o">*</span><span class="n">above</span><span class="p">),</span>
-            <span class="n">opimp_network</span><span class="o">=</span><span class="n">opimp_network</span><span class="o">.</span><span class="n">withconfig</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="o">*</span><span class="n">above</span><span class="p">),</span>
-            <span class="n">rchecker</span><span class="o">=</span><span class="n">rchecker</span><span class="o">.</span><span class="n">withconfig</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="o">*</span><span class="n">above</span><span class="p">),</span>
-        <span class="p">)</span></div>
-
-<div class="viewcode-block" id="MemoryOrchestrator.basic_config"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryOrchestrator.basic_config">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">basic_config</span><span class="p">(</span>
-        <span class="bp">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">OperationImplementation</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Creates a Memory Orchestrator which will be backed by other objects</span>
-<span class="sd">        within dffml.df.memory.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">config</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="k">return</span> <span class="n">MemoryOrchestrator</span><span class="p">(</span>
-            <span class="n">MemoryOrchestratorConfig</span><span class="p">(</span>
-                <span class="n">input_network</span><span class="o">=</span><span class="n">MemoryInputNetwork</span><span class="p">(</span><span class="n">BaseConfig</span><span class="p">()),</span>
-                <span class="n">operation_network</span><span class="o">=</span><span class="n">MemoryOperationNetwork</span><span class="p">(</span>
-                    <span class="n">MemoryOperationNetworkConfig</span><span class="p">(</span>
-                        <span class="n">operations</span><span class="o">=</span><span class="p">[</span><span class="n">Imp</span><span class="o">.</span><span class="n">op</span> <span class="k">for</span> <span class="n">Imp</span> <span class="ow">in</span> <span class="n">args</span><span class="p">]</span>
-                    <span class="p">)</span>
-                <span class="p">),</span>
-                <span class="n">lock_network</span><span class="o">=</span><span class="n">MemoryLockNetwork</span><span class="p">(</span><span class="n">BaseConfig</span><span class="p">()),</span>
-                <span class="n">rchecker</span><span class="o">=</span><span class="n">MemoryRedundancyChecker</span><span class="p">(</span>
-                    <span class="n">BaseRedundancyCheckerConfig</span><span class="p">(</span>
-                        <span class="n">key_value_store</span><span class="o">=</span><span class="n">MemoryKeyValueStore</span><span class="p">(</span><span class="n">BaseConfig</span><span class="p">())</span>
-                    <span class="p">)</span>
-                <span class="p">),</span>
-                <span class="n">opimp_network</span><span class="o">=</span><span class="n">MemoryOperationImplementationNetwork</span><span class="p">(</span>
-                    <span class="n">MemoryOperationImplementationNetworkConfig</span><span class="p">(</span>
-                        <span class="n">operations</span><span class="o">=</span><span class="p">{</span>
-                            <span class="n">imp</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="n">imp</span>
-                            <span class="k">for</span> <span class="n">imp</span> <span class="ow">in</span> <span class="p">[</span><span class="n">Imp</span><span class="o">.</span><span class="n">withconfig</span><span class="p">(</span><span class="n">config</span><span class="p">)</span> <span class="k">for</span> <span class="n">Imp</span> <span class="ow">in</span> <span class="n">args</span><span class="p">]</span>
-                        <span class="p">}</span>
-                    <span class="p">)</span>
-                <span class="p">),</span>
+        <span class="n">config</span> <span class="o">=</span> <span class="n">dataflow</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dataflow</span><span class="p">,</span> <span class="n">DataFlow</span><span class="p">):</span>
+            <span class="n">kwargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;max_ctxs&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">max_ctxs</span><span class="p">)</span>
+            <span class="n">config</span> <span class="o">=</span> <span class="n">MemoryOrchestratorContextConfig</span><span class="p">(</span>
+                <span class="n">uid</span><span class="o">=</span><span class="n">secrets</span><span class="o">.</span><span class="n">token_hex</span><span class="p">(),</span> <span class="n">dataflow</span><span class="o">=</span><span class="n">dataflow</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
             <span class="p">)</span>
-        <span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">CONTEXT</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span></div>
 </pre></div>
 
            </div>
@@ -1931,7 +2104,7 @@
 
   <div role="contentinfo">
     <p>
-        &#169; Copyright 2019, Intel.
+        &#169; Copyright 2017 - 2021, Intel.
 
     </p>
   </div>

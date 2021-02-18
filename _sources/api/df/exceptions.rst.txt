@@ -1,0 +1,5 @@
+Df Exceptions
+=============
+
+.. automodule:: dffml.df.exceptions
+   :members:

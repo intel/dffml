@@ -1,0 +1,44 @@
+# GSoC 2020
+
+DFFML participated in Google Summer of Code under the Python Software Foundation
+umbrella. You can read all about what this means at https://python-gsoc.org/
+
+## Student Contributions
+
+Huge thanks to our students of the 2020 GSoC program who made a huge impact on
+DFFML's abilities, collection of models, and tutorials. As well as various bug
+fixes.
+
+### Himanshu [@0dust](https://github.com/0dust)
+
+Project: NLP (Natural Language Processing) Models and Operations
+
+- [Classification model based on Transformers architecture](https://intel.github.io/dffml/plugins/dffml_model.html#hfclassifier)
+- [Question Answering model based on Transformers architecture](https://intel.github.io/dffml/plugins/dffml_model.html#qa-model)
+- [Spacy model for Named Entity Recognition](https://intel.github.io/dffml/plugins/dffml_model.html#spacyner)
+- [Operations to wrap Spacy functions for text preprocessing](https://intel.github.io/dffml/tutorials/dataflows/nlp.html#preprocessing-data-and-training-dnnclassifier-model)
+- [Operations to wrap Scikit-learn functions for text preprocessing](https://intel.github.io/dffml/tutorials/dataflows/nlp.html#preprocessing-data-and-training-naive-bayes-classifier-model)
+
+### Saksham [@sakshamarora1](https://github.com/sakshamarora1)
+
+Project: Integrating Image Processing into DFFML
+
+- [Wrapping important image pre-processing functions as DFFML operations](https://intel.github.io/dffml/examples/flower17/flower17_scikit.html)
+- [PyTorch based pre-trained Convolutional Networks for image classification](https://intel.github.io/dffml/examples/flower17/flower17_pytorch.html)
+- [Custom Neural Networks for image pre-processing and classification tasks](https://intel.github.io/dffml/tutorials/neuralnetwork.html)
+
+### Aghin [@aghinsa](https://github.com/aghinsa)
+
+Project: Improving DataFlows and Distributed Orchestrator
+
+- [DataFlow Locking Tutorial](https://intel.github.io/dffml/tutorials/dataflows/locking.html)
+- [DataFlow Continuous Deployment Tutorial](https://intel.github.io/dffml/examples/webhook/index.html)
+- [Distributed Orchestrator based on NATs](https://github.com/intel/dffml/pull/772)
+
+## Thanks
+
+Big thanks to [Terri](https://github.com/terriko) her work organizing GSoC and
+letting us copy her format she used for
+[CVE Binary Tool](https://github.com/intel/cve-bin-tool), another awesome
+project with a security focus that was a part of GSoC 2020 as well. Check them
+out too!

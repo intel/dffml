@@ -1,0 +1,1080 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Automating Classification &mdash; DFFML 0.4.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/tabs.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/tabs.js"></script>
+        <script src="../_static/copybutton.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Meta Static Analysis" href="shouldi.html" />
+    <link rel="prev" title="Examples" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> DFFML
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.4.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Introduction</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../concepts/index.html">Concepts</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Usage</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../quickstart/model.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Examples</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Automating Classification</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#cgi-application">CGI Application</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#setup">Setup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gathering-data">Gathering Data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#training-our-model">Training our Model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#making-a-prediction">Making a Prediction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#modifying-the-legacy-app">Modifying the Legacy App</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="shouldi.html">Meta Static Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dataflows.html">DataFlow HTTP Deployment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mnist.html">MNIST Handwriten Digits</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flower17/flower17.html">Flower17 Species Classification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="or_covid_data_by_county.html">COVID Forecasting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="webhook/index.html">Continuous Deployment of DataFlows</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../plugins/index.html">Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cli.html">Command Line</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../plugins/service/http/index.html">HTTP API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../troubleshooting.html">Troubleshooting</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Subprojects</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../shouldi.html">shouldi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../swportal.html">Software Portal</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Community</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/intel/dffml">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://intel.github.io/dffml/master/">Master Branch Docs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../publications.html">Publications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contact.html">Contact Us</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../news/index.html">News</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">DFFML</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Examples</a> &raquo;</li>
+        
+      <li>Automating Classification</li>
+    
+    
+
+
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            
+              <a href="https://github.com/intel/dffml/blob/master/docs/examples/integration.rst" class="fa fa-github"> Edit on GitHub</a>
+            
+          
+        
+      </li>
+    
+
+
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="automating-classification">
+<h1>Automating Classification<a class="headerlink" href="#automating-classification" title="Permalink to this headline">¶</a></h1>
+<p>This example will show you how to automate a manual classification process,
+determining if a Git repo is maintained or abandoned. We’ll be integrating
+Machine Learning into an existing application.</p>
+<p>For this example assume you are a very curious open source software person.
+You love looking at git repos in your free time. Every time you come
+across a Git repo, you dig around, look at the number of committers, number of
+commits, etc. and come up with maintenance status for the repo (maintained, or
+unmaintained).</p>
+<p>To help you track your assigned statues you built a Python 3 CGI web app.</p>
+<img alt="Screenshot of the very basic web app with a table showing repo URLs and their mantainance status" src="../_images/website-before.png" />
+<p>When you assign a maintenance status to a repo you are <em>classifying</em> it.
+Instead of manually classifying each repo, we’re going to put some machine
+learning behind this little web app. The steps we’re going to follow here are
+generic, they do not apply specifically to this Python CGI setup, this is just
+an example that was chosen because hopefully it’ll be an easy setup.</p>
+<div class="section" id="cgi-application">
+<h2>CGI Application<a class="headerlink" href="#cgi-application" title="Permalink to this headline">¶</a></h2>
+<p>The CGI application we’ll be integrating with is comprised of five files. You
+should create these files and populate them with the code your about to see.</p>
+<ul class="simple">
+<li><p>The webpage <strong>index.html</strong></p></li>
+<li><p>The webpage’s JavaScript <strong>main.js</strong></p></li>
+<li><p>The webpage’s CSS <strong>theme.css</strong></p></li>
+<li><p>The backend api <strong>cgi-bin/api.py</strong></p></li>
+</ul>
+<p>First create the webpage</p>
+<p><strong>index.html</strong></p>
+<div class="highlight-html notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="p">&lt;</span><span class="nt">html</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">title</span><span class="p">&gt;</span>Git Repo Maintenance Tracker<span class="p">&lt;/</span><span class="nt">title</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">script</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;text/javascript&quot;</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;main.js&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">link</span> <span class="na">rel</span><span class="o">=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;text/css&quot;</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;theme.css&quot;</span><span class="p">&gt;</span>
+  <span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">h1</span><span class="p">&gt;</span>Git Repo Maintenance Tracker<span class="p">&lt;/</span><span class="nt">h1</span><span class="p">&gt;</span>
+
+    <span class="p">&lt;</span><span class="nt">hr</span> <span class="p">/&gt;</span>
+
+    <span class="p">&lt;</span><span class="nt">div</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span>Submit or change the maintenance status of a repo.<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">input</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;URL&quot;</span> <span class="na">placeholder</span><span class="o">=</span><span class="s">&quot;git://server.git/repo&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">input</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">button</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;maintained&quot;</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;good&quot;</span><span class="p">&gt;</span>Maintained<span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">button</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;unmaintained&quot;</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;dangerous&quot;</span><span class="p">&gt;</span>Unmaintained<span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
+    <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+
+    <span class="p">&lt;</span><span class="nt">br</span> <span class="p">/&gt;</span>
+
+    <span class="p">&lt;</span><span class="nt">div</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">table</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;table&quot;</span> <span class="na">style</span><span class="o">=</span><span class="s">&quot;width:100%&quot;</span><span class="p">&gt;</span>
+      <span class="p">&lt;/</span><span class="nt">table</span><span class="p">&gt;</span>
+    <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+
+  <span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
+</pre></div>
+</div>
+<p>Then the JavaScript, which will interact with the CGI API.</p>
+<p><strong>main.js</strong></p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kd">function</span> <span class="nx">populate_table</span> <span class="p">(</span><span class="nx">tableDOM</span><span class="p">,</span> <span class="nx">URLs</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">row</span><span class="p">;</span>
+  <span class="kd">var</span> <span class="nx">col</span><span class="p">;</span>
+  <span class="c1">// Clear the table</span>
+  <span class="nx">tableDOM</span><span class="p">.</span><span class="nx">innerHTML</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
+  <span class="c1">// Headers</span>
+  <span class="nx">row</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s1">&#39;tr&#39;</span><span class="p">);</span>
+  <span class="nx">tableDOM</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">row</span><span class="p">)</span>
+  <span class="c1">// URL</span>
+  <span class="nx">col</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s1">&#39;td&#39;</span><span class="p">);</span>
+  <span class="nx">col</span><span class="p">.</span><span class="nx">innerText</span> <span class="o">=</span> <span class="s1">&#39;URL&#39;</span><span class="p">;</span>
+  <span class="nx">row</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">col</span><span class="p">)</span>
+  <span class="c1">// Status</span>
+  <span class="nx">col</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s1">&#39;td&#39;</span><span class="p">);</span>
+  <span class="nx">col</span><span class="p">.</span><span class="nx">innerText</span> <span class="o">=</span> <span class="s1">&#39;Maintained?&#39;</span><span class="p">;</span>
+  <span class="nx">row</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">col</span><span class="p">)</span>
+  <span class="c1">// Create body</span>
+  <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">URL</span> <span class="k">in</span> <span class="nx">URLs</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// Convert from int to string</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">URLs</span><span class="p">[</span><span class="nx">URL</span><span class="p">])</span> <span class="p">{</span>
+      <span class="nx">URLs</span><span class="p">[</span><span class="nx">URL</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;Yes&#39;</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+      <span class="nx">URLs</span><span class="p">[</span><span class="nx">URL</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;No&#39;</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="nx">row</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s1">&#39;tr&#39;</span><span class="p">);</span>
+    <span class="nx">table</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">row</span><span class="p">);</span>
+    <span class="c1">// URL</span>
+    <span class="nx">col</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s1">&#39;td&#39;</span><span class="p">);</span>
+    <span class="nx">col</span><span class="p">.</span><span class="nx">innerText</span> <span class="o">=</span> <span class="nx">URL</span><span class="p">;</span>
+    <span class="nx">row</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">col</span><span class="p">)</span>
+    <span class="c1">// Status</span>
+    <span class="nx">col</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s1">&#39;td&#39;</span><span class="p">);</span>
+    <span class="nx">col</span><span class="p">.</span><span class="nx">innerText</span> <span class="o">=</span> <span class="nx">URLs</span><span class="p">[</span><span class="nx">URL</span><span class="p">];</span>
+    <span class="nx">row</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">col</span><span class="p">)</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">refreshTable</span> <span class="p">(</span><span class="nx">tableDOM</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nx">fetch</span><span class="p">(</span><span class="s1">&#39;cgi-bin/api.py?action=dump&#39;</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">response</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="nx">response</span><span class="p">.</span><span class="nx">json</span><span class="p">()</span>
+    <span class="p">})</span>
+    <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">URLs</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">populate_table</span><span class="p">(</span><span class="nx">tableDOM</span><span class="p">,</span> <span class="nx">URLs</span><span class="p">);</span>
+    <span class="p">});</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">setMaintenance</span> <span class="p">(</span><span class="nx">URL</span><span class="p">,</span> <span class="nx">maintained</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nx">fetch</span><span class="p">(</span><span class="s1">&#39;cgi-bin/api.py?action=set&#39;</span> <span class="o">+</span>
+      <span class="s1">&#39;&amp;maintained=&#39;</span> <span class="o">+</span> <span class="nb">Number</span><span class="p">(</span><span class="nx">maintained</span><span class="p">)</span> <span class="o">+</span>
+      <span class="s1">&#39;&amp;URL=&#39;</span> <span class="o">+</span> <span class="nx">URL</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">response</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="nx">response</span><span class="p">.</span><span class="nx">json</span><span class="p">()</span>
+    <span class="p">});</span>
+<span class="p">}</span>
+
+<span class="nb">window</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s1">&#39;DOMContentLoaded&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">tableDOM</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;table&#39;</span><span class="p">);</span>
+  <span class="kd">var</span> <span class="nx">URLDOM</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;URL&#39;</span><span class="p">);</span>
+  <span class="kd">var</span> <span class="nx">maintainedDOM</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;maintained&#39;</span><span class="p">);</span>
+  <span class="kd">var</span> <span class="nx">unmaintainedDOM</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;unmaintained&#39;</span><span class="p">);</span>
+
+  <span class="nx">maintainedDOM</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">setMaintenance</span><span class="p">(</span><span class="nx">URLDOM</span><span class="p">.</span><span class="nx">value</span><span class="p">,</span> <span class="kc">true</span><span class="p">)</span>
+      <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+        <span class="nx">refreshTable</span><span class="p">(</span><span class="nx">tableDOM</span><span class="p">);</span>
+      <span class="p">});</span>
+  <span class="p">});</span>
+
+  <span class="nx">unmaintainedDOM</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">setMaintenance</span><span class="p">(</span><span class="nx">URLDOM</span><span class="p">.</span><span class="nx">value</span><span class="p">,</span> <span class="kc">false</span><span class="p">)</span>
+      <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+        <span class="nx">refreshTable</span><span class="p">(</span><span class="nx">tableDOM</span><span class="p">);</span>
+      <span class="p">});</span>
+  <span class="p">});</span>
+
+  <span class="nx">refreshTable</span><span class="p">(</span><span class="nx">tableDOM</span><span class="p">);</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<p>The style sheet which gives the page colors and styling</p>
+<p><strong>theme.css</strong></p>
+<div class="highlight-css notranslate"><div class="highlight"><pre><span></span><span class="p">.</span><span class="nc">good</span> <span class="p">{</span>
+  <span class="k">background-color</span><span class="p">:</span> <span class="kc">lightgreen</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="p">.</span><span class="nc">dangerous</span> <span class="p">{</span>
+  <span class="k">background-color</span><span class="p">:</span> <span class="kc">red</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nt">table</span><span class="o">,</span> <span class="nt">th</span><span class="o">,</span> <span class="nt">td</span> <span class="p">{</span>
+  <span class="k">border</span><span class="p">:</span> <span class="mi">1</span><span class="kt">px</span> <span class="kc">solid</span> <span class="kc">black</span><span class="p">;</span>
+  <span class="k">border-collapse</span><span class="p">:</span> <span class="kc">collapse</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Now create the <strong>cgi-bin</strong> directory which is where our server side Python
+script will run.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>mkdir cgi-bin
+</pre></div>
+</div>
+<p>Then create the backend API script. This script connects to the database and
+provides two actions.</p>
+<ul class="simple">
+<li><p>Classify a repo by setting its status to maintained or unmaintained</p></li>
+<li><p>Dump all repos along with their maintenance status which we’ve classified</p></li>
+</ul>
+<p><strong>cgi-bin/api.py</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env python3</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">urllib.parse</span>
+<span class="kn">import</span> <span class="nn">mysql.connector</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
+
+<span class="n">query</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">urllib</span><span class="o">.</span><span class="n">parse</span><span class="o">.</span><span class="n">parse_qsl</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;QUERY_STRING&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)))</span>
+
+<span class="n">action</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;action&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">action</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">({</span><span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="s2">&quot;Missing &#39;action&#39; query parameter&quot;</span><span class="p">}))</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">cnx</span> <span class="o">=</span> <span class="n">mysql</span><span class="o">.</span><span class="n">connector</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
+    <span class="n">user</span><span class="o">=</span><span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="n">passwd</span><span class="o">=</span><span class="s2">&quot;pass&quot;</span><span class="p">,</span> <span class="n">database</span><span class="o">=</span><span class="s2">&quot;db&quot;</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">3306</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">cursor</span> <span class="o">=</span> <span class="n">cnx</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+
+<span class="k">if</span> <span class="n">action</span> <span class="o">==</span> <span class="s2">&quot;dump&quot;</span><span class="p">:</span>
+    <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SELECT `key`, `maintained` FROM `status`&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="n">cursor</span><span class="p">)))</span>
+<span class="k">elif</span> <span class="n">action</span> <span class="o">==</span> <span class="s2">&quot;set&quot;</span><span class="p">:</span>
+    <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
+        <span class="s2">&quot;REPLACE INTO status (`key`, `maintained`) VALUES(</span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">)&quot;</span><span class="p">,</span>
+        <span class="p">(</span><span class="n">query</span><span class="p">[</span><span class="s2">&quot;URL&quot;</span><span class="p">],</span> <span class="n">query</span><span class="p">[</span><span class="s2">&quot;maintained&quot;</span><span class="p">],),</span>
+    <span class="p">)</span>
+    <span class="n">cnx</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">({</span><span class="s2">&quot;success&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">}))</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">({</span><span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="s2">&quot;Unknown action&quot;</span><span class="p">}))</span>
+
+<span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+<span class="n">cursor</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="n">cnx</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>We have to make the cgi-bin directory and API file executable so that the CGI
+server can run it.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>chmod <span class="m">755</span> cgi-bin cgi-bin/api.py
+</pre></div>
+</div>
+</div>
+<div class="section" id="setup">
+<h2>Setup<a class="headerlink" href="#setup" title="Permalink to this headline">¶</a></h2>
+<p>We’ll be using Python, and docker or podman. If you don’t have docker installed,
+but you do have podman installed, you can replace “docker” with “podman” in all
+of the following commands.</p>
+<p>Create a virtual environment where we’ll install all our Python packages to.
+Make sure to update <code class="docutils literal notranslate"><span class="pre">pip</span></code> in case it’s old, and install <code class="docutils literal notranslate"><span class="pre">setuptools</span></code> and
+<code class="docutils literal notranslate"><span class="pre">wheel</span></code> so that we can install the MySQL package.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python -m venv .venv
+<span class="gp">$ </span>. .venv/bin/activate
+<span class="gp">$ </span>python -m pip install -U pip setuptools wheel
+</pre></div>
+</div>
+<p>Download the Python client libraries for MySQL.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python -m pip install -U <span class="se">\</span>
+<span class="go">    https://dev.mysql.com/get/Downloads/Connector-Python/mysql-connector-python-8.0.21.tar.gz</span>
+</pre></div>
+</div>
+<p>Start MariaDB (functionally very similar to MySQL which its a fork of).</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>docker run --rm -d --name maintained_db <span class="se">\</span>
+<span class="go">    -e MYSQL_RANDOM_ROOT_PASSWORD=yes \</span>
+<span class="go">    -e MYSQL_USER=user \</span>
+<span class="go">    -e MYSQL_PASSWORD=pass \</span>
+<span class="go">    -e MYSQL_DATABASE=db \</span>
+<span class="go">    -p 3306:3306 \</span>
+<span class="go">    mariadb:10</span>
+</pre></div>
+</div>
+<p>Wait for the database to start. Run the following command until you see <code class="docutils literal notranslate"><span class="pre">ready</span>
+<span class="pre">for</span> <span class="pre">connections</span></code> twice in the output.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>docker logs maintained_db <span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span> <span class="p">|</span> grep <span class="s1">&#39;ready for&#39;</span>
+<span class="go">2020-01-13 21:31:09 0 [Note] mysqld: ready for connections.</span>
+<span class="go">2020-01-13 21:32:16 0 [Note] mysqld: ready for connections.</span>
+</pre></div>
+</div>
+<p>Instead of having you go classify a bunch of repos manually, we’re going to
+assign a bunch of repos a random maintenance status. This will of course produce
+a meaningless model. If you want a model that’s accurate you should go classify
+repos for real.</p>
+<p>The randomly assigned maintenance status and URL for the repo will be stored in
+the database. We need to install the <code class="docutils literal notranslate"><span class="pre">dffml-source-mysql</span></code> plugin to use
+MariaDB/MySQL with DFFML.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python -m pip install -U dffml-source-mysql
+</pre></div>
+</div>
+<p>To get our dummy data, we’ll be using the GitHub v4 API to search for “todo”.
+The search should return repos implementing a TODO app.</p>
+<p>You’ll need a Personal Access Token to be able to make calls to GitHub’s API.
+You can create one by following their documentation.</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://docs.github.com/en/github/authenticating-to-github/creating-a-personal-access-token">https://docs.github.com/en/github/authenticating-to-github/creating-a-personal-access-token</a></p></li>
+</ul>
+<p>When it presents you with a bunch of checkboxes for difference “scopes” you
+don’t have to check any of them.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">export</span> <span class="nv">GITHUB_TOKEN</span><span class="o">=</span>&lt;paste your personal access token here&gt;
+</pre></div>
+</div>
+<p>You’ve just pasted your token into your terminal so it will likely show up in
+your shell’s history. You might want to either remove it from your history, or
+just delete the token on GitHub’s settings page after you’re done with this
+tutorial.</p>
+<p>Now we’ll write a function to pull the first 10 repo URLs that result from our
+“TODO” search. The type annotations are important here, make sure you copy them
+exactly. 0 means unmaintained, 1 means maintained.</p>
+<p><strong>github_search.py</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">import</span> <span class="nn">urllib.request</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Any</span>
+
+<span class="n">GITHUB_API_URL</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;https://api.github.com/graphql&quot;</span>
+<span class="n">GITHUB_SEARCH</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;query&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">query {</span>
+<span class="s2">    search(query: &quot;</span><span class="si">%s</span><span class="s2">&quot;, type: REPOSITORY, first: 10) {</span>
+<span class="s2">        nodes {</span>
+<span class="s2">            ... on Repository {</span>
+<span class="s2">                url</span>
+<span class="s2">            }</span>
+<span class="s2">        }</span>
+<span class="s2">    }</span>
+<span class="s2">}</span>
+<span class="s2">&quot;&quot;&quot;</span>
+    <span class="p">}</span>
+<span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">get_repos</span><span class="p">(</span><span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">github_token</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+    <span class="c1"># Repos organized by their URL with their value being their feature data</span>
+    <span class="n">repos</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="c1"># Make the request to the GitHub API</span>
+    <span class="k">with</span> <span class="n">urllib</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span>
+        <span class="n">urllib</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">Request</span><span class="p">(</span>
+            <span class="n">GITHUB_API_URL</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;Authorization&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;Bearer </span><span class="si">{</span><span class="n">github_token</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">}</span>
+        <span class="p">),</span>
+        <span class="n">data</span><span class="o">=</span><span class="p">(</span><span class="n">GITHUB_SEARCH</span> <span class="o">%</span> <span class="p">(</span><span class="n">query</span><span class="p">,))</span><span class="o">.</span><span class="n">encode</span><span class="p">(),</span>
+    <span class="p">)</span> <span class="k">as</span> <span class="n">response</span><span class="p">:</span>
+        <span class="c1"># Loop through the 100 repos that were returned</span>
+        <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">response</span><span class="p">)[</span><span class="s2">&quot;data&quot;</span><span class="p">][</span><span class="s2">&quot;search&quot;</span><span class="p">][</span><span class="s2">&quot;nodes&quot;</span><span class="p">]:</span>
+            <span class="c1"># Randomly assign a maintenance status for demo purposes</span>
+            <span class="n">repos</span><span class="p">[</span><span class="n">node</span><span class="p">[</span><span class="s2">&quot;url&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s2">&quot;features&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;maintained&quot;</span><span class="p">:</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])}</span>
+            <span class="p">}</span>
+    <span class="k">return</span> <span class="n">repos</span>
+</pre></div>
+</div>
+<p>We’ll use this function as a Source. In DFFML a source is somewhere a dataset is
+stored. In this case the source is dynamic, it’s pulling from an API and
+randomly assigning a classification. You could even modify it to ask the user
+for their manual classification instead of randomly assigning one.</p>
+<p>We use the merge command to take data from one source and merge it with data in
+another source. In our case we’ll be taking records from the <code class="docutils literal notranslate"><span class="pre">get_repos</span></code>
+function within <strong>github_search.py</strong> and moving them into our database.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">op</span></code> source allows us to use any <code class="docutils literal notranslate"><span class="pre">OperatationImplementation</span></code> (a Python
+function) as a source of records.</p>
+<p>We’ll be using the <code class="docutils literal notranslate"><span class="pre">dffml</span> <span class="pre">merge</span></code> command to take the search results from the
+GitHub API and putting them with their randomly assigned status into our
+database.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ dffml merge github=op db=mysql \
+    -source-github-opimp github_search:get_repos \
+    -source-github-args todo $GITHUB_TOKEN \
+    -source-db-insecure \
+    -source-db-user user \
+    -source-db-password pass \
+    -source-db-db db \
+    -source-db-key key \
+    -source-db-init \
+      &#39;CREATE TABLE IF NOT EXISTS `status` (
+         `key` varchar(767) NOT NULL,
+         `maintained` TINYINT,
+         PRIMARY KEY (`key`)
+       ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;&#39; \
+    -source-db-records \
+      &#39;SELECT `key`, `maintained` FROM `status`&#39; \
+    -source-db-record \
+      &#39;SELECT `key`, `maintained` FROM `status` WHERE `key`=%s&#39; \
+    -source-db-update \
+      &#39;INSERT INTO `status` (`key`, `maintained`) VALUES(%s, %s) ON DUPLICATE KEY UPDATE `maintained`=%s&#39; \
+    -source-db-features &#39;{&quot;maintained&quot;: &quot;maintained&quot;}&#39; \
+    -source-db-predictions &#39;{}&#39;
+</pre></div>
+</div>
+<p>Now that we have a database running and have our data in the database, we’re
+ready to start the CGI server. You’ll want to do this in another terminal.
+The last argument is the port to serve on, change that number if you already
+have something running on that port.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>. .venv/bin/activate
+<span class="gp">$ </span>python3 -m http.server --cgi <span class="m">8000</span>
+</pre></div>
+</div>
+<p>You can see all the records and their statuses that we imported into the
+database by calling the API.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>curl -v <span class="s1">&#39;http://127.0.0.1:8000/cgi-bin/api.py?action=dump&#39;</span> <span class="p">|</span> <span class="se">\</span>
+<span class="go">    python3 -m json.tool</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="gathering-data">
+<h2>Gathering Data<a class="headerlink" href="#gathering-data" title="Permalink to this headline">¶</a></h2>
+<p>We now have our dataset of git repos and their maintenance statuses in our web
+app. If you go to <a class="reference external" href="http://127.0.0.1:8000/">http://127.0.0.1:8000/</a> you should see it.</p>
+<p>Before we can train a model on this dataset, we need to transform it into
+something that could be feed to a model. Right now all we have is URLs to git
+repos.</p>
+<p>We’re going to run these repos through DFFML’s data flow orchestrator. We’ll
+tell the orchestrator to run certain <code class="docutils literal notranslate"><span class="pre">Operations</span></code> on each one of the URLs.
+Those <code class="docutils literal notranslate"><span class="pre">Operations</span></code> will scrape data that is representative of the repo’s
+maintenance, we can then feed that data into a machine learning model.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This example is centered around machine learning. We’ll be using DataFlows
+to collect a dataset for training, testing, and prediction. For a deeper
+understanding of Operations and DataFlows, see the
+<a class="reference internal" href="shouldi.html"><span class="doc">Meta Static Analysis</span></a>.</p>
+</div>
+<p>The operations we’re going to use are a part of <code class="docutils literal notranslate"><span class="pre">dffml-feature-git</span></code>, which is
+a separate Python package from DFFML which we can install via <code class="docutils literal notranslate"><span class="pre">pip</span></code>. We’ll
+also use the <code class="docutils literal notranslate"><span class="pre">yaml</span></code> configloader, since that creates more user friendly
+configs than <code class="docutils literal notranslate"><span class="pre">json</span></code>.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python -m pip install -U dffml-feature-git dffml-config-yaml
+</pre></div>
+</div>
+<p>The git operations / features rely on <code class="docutils literal notranslate"><span class="pre">tokei</span></code>. We need to download and install
+it first.</p>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" role="tablist"><button aria-controls="panel-0-TGludXg=" aria-selected="true" class="sphinx-tabs-tab group-tab" id="tab-0-TGludXg=" name="TGludXg=" role="tab" tabindex="0">Linux</button><button aria-controls="panel-0-TWFjT1M=" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-0-TWFjT1M=" name="TWFjT1M=" role="tab" tabindex="-1">MacOS</button></div><div aria-labelledby="tab-0-TGludXg=" class="sphinx-tabs-panel group-tab" id="panel-0-TGludXg=" name="TGludXg=" role="tabpanel" tabindex="0"><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>curl -sSL <span class="s1">&#39;https://github.com/XAMPPRocky/tokei/releases/download/v10.1.1/tokei-v10.1.1-x86_64-unknown-linux-gnu.tar.gz&#39;</span> <span class="se">\</span>
+<span class="go">    | tar -xvz -C .venv/bin/</span>
+</pre></div>
+</div>
+</div><div aria-labelledby="tab-0-TWFjT1M=" class="sphinx-tabs-panel group-tab" hidden="true" id="panel-0-TWFjT1M=" name="TWFjT1M=" role="tabpanel" tabindex="0"><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>curl -sSL <span class="s1">&#39;https://github.com/XAMPPRocky/tokei/releases/download/v10.1.1/tokei-v10.1.1-x86_64-apple-darwin.tar.gz&#39;</span> <span class="se">\</span>
+<span class="go">    | tar -xvz -C .venv/bin/</span>
+</pre></div>
+</div>
+</div></div>
+<p>Operations are just Python functions, or classes. They define a routine which
+will be run concurrently with other operations. Here’s an example of the
+<code class="docutils literal notranslate"><span class="pre">git_commits</span></code> operation, which will find the number of commits within a date
+range. This function / operation was installed when you installed the
+<code class="docutils literal notranslate"><span class="pre">dffml-feature-git</span></code> package via <code class="docutils literal notranslate"><span class="pre">pip</span></code>.</p>
+<div class="highlight-default notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="nd">@op</span><span class="p">(</span>
+    <span class="n">inputs</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;repo&quot;</span><span class="p">:</span> <span class="n">git_repository</span><span class="p">,</span>
+        <span class="s2">&quot;branch&quot;</span><span class="p">:</span> <span class="n">git_branch</span><span class="p">,</span>
+        <span class="s2">&quot;start_end&quot;</span><span class="p">:</span> <span class="n">date_pair</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="n">outputs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;commits&quot;</span><span class="p">:</span> <span class="n">commit_count</span><span class="p">},</span>
+<span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">git_commits</span><span class="p">(</span><span class="n">repo</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="n">branch</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">start_end</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]):</span>
+    <span class="n">start</span><span class="p">,</span> <span class="n">end</span> <span class="o">=</span> <span class="n">start_end</span>
+    <span class="n">commit_count</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">proc</span> <span class="o">=</span> <span class="k">await</span> <span class="n">create</span><span class="p">(</span>
+        <span class="s2">&quot;git&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;log&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;--oneline&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;--before&quot;</span><span class="p">,</span>
+        <span class="n">start</span><span class="p">,</span>
+        <span class="s2">&quot;--after&quot;</span><span class="p">,</span>
+        <span class="n">end</span><span class="p">,</span>
+        <span class="n">branch</span><span class="p">,</span>
+        <span class="n">cwd</span><span class="o">=</span><span class="n">repo</span><span class="o">.</span><span class="n">directory</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="k">while</span> <span class="ow">not</span> <span class="n">proc</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">at_eof</span><span class="p">():</span>
+        <span class="n">line</span> <span class="o">=</span> <span class="k">await</span> <span class="n">proc</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">line</span> <span class="o">!=</span> <span class="sa">b</span><span class="s2">&quot;&quot;</span><span class="p">:</span>
+            <span class="n">commit_count</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">await</span> <span class="n">stop</span><span class="p">(</span><span class="n">proc</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;commits&quot;</span><span class="p">:</span> <span class="n">commit_count</span><span class="p">}</span>
+</pre></div>
+</td></tr></table></div>
+<p>We’re going to use the operations provided in <code class="docutils literal notranslate"><span class="pre">dffml-feature-git</span></code> to gather
+our dataset. The following command creates a <code class="docutils literal notranslate"><span class="pre">DataFlow</span></code> description of how
+all the operations within <code class="docutils literal notranslate"><span class="pre">dffml-feature-git</span></code> link together. The <code class="docutils literal notranslate"><span class="pre">DataFlow</span></code>
+is stored in the YAML file <strong>dataflow.yaml</strong>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ dffml dataflow create \
+    -configloader yaml \
+    -inputs \
+      10=quarters \
+      true=no_git_branch_given \
+      &#39;{&quot;authors&quot;: {&quot;group&quot;: &quot;author_count&quot;, &quot;by&quot;: &quot;quarter&quot;},
+        &quot;commits&quot;: {&quot;group&quot;: &quot;commit_count&quot;, &quot;by&quot;: &quot;quarter&quot;},
+        &quot;work&quot;: {&quot;group&quot;: &quot;work_spread&quot;, &quot;by&quot;: &quot;quarter&quot;}}&#39;=group_by_spec \
+    -- \
+      group_by \
+      make_quarters \
+      quarters_back_to_date \
+      check_if_valid_git_repository_URL \
+      clone_git_repo \
+      git_repo_default_branch \
+      git_repo_commit_from_date \
+      git_repo_author_lines_for_dates \
+      work \
+      git_commits \
+      count_authors \
+      cleanup_git_repo \
+    | tee dataflow.yaml \
+    | tail -n 15
+seed:
+- definition: quarters
+  value: 10
+- definition: group_by_spec
+  value:
+    authors:
+      by: quarter
+      group: author_count
+    commits:
+      by: quarter
+      group: commit_count
+    work:
+      by: quarter
+      group: work_spread
+</pre></div>
+</div>
+<p>Since operations are run concurrently with each other, DFFML manages locking of
+input data, such as git repositories. This is done via <code class="docutils literal notranslate"><span class="pre">Definitions</span></code> which are
+the variables used as values in the <code class="docutils literal notranslate"><span class="pre">input</span></code> and <code class="docutils literal notranslate"><span class="pre">output</span></code> dictionaries. We
+link together all of the operations in a <code class="docutils literal notranslate"><span class="pre">DataFlow</span></code>. The pink boxes in the
+diagram below are the inputs to the network. The purple are the different
+operations. Arrows show how data moves between operations.</p>
+<img alt="Diagram showing Dataflow" src="../_images/integration_dataflow.svg" /><p>We can also visualize how the individual inputs and outputs are linked together.
+Inputs and outputs of the same <code class="docutils literal notranslate"><span class="pre">Definition</span></code> can be linked together
+automatically.</p>
+<img alt="Diagram showing detailed version of Dataflow" src="../_images/integration_dataflow_complex.svg" /><p>The inputs and outputs of operations within a running DataFlow are organized by
+contexts. The context for our dataset generation will be the source URL to the
+Git repo.</p>
+<ul class="simple">
+<li><p>We will be providing the source URL to the git repo on a per-repo basis.</p></li>
+<li><p>We provide the start date of the zeroith quarter, and 10 instances of quarter,
+since for each operation, every possible permutation of inputs will be run,
+<code class="docutils literal notranslate"><span class="pre">quarters_back_to_date</span></code> is going to take the start date, and the quarter,
+and produce a date range for that quarter. We use <code class="docutils literal notranslate"><span class="pre">make_quarters</span></code> and pass
+<code class="docutils literal notranslate"><span class="pre">10=quarters</span></code> to make ten instances of <code class="docutils literal notranslate"><span class="pre">quarter</span></code>.</p></li>
+<li><p>We’ll also need to provide an input to the output operation <code class="docutils literal notranslate"><span class="pre">group_by_spec</span></code>.
+Output operations decide what data generated should be used as feature data,
+and present it in a usable format.</p>
+<ul>
+<li><p>Here we’re telling the <code class="docutils literal notranslate"><span class="pre">group_by</span></code> operation to create feature data where
+the <code class="docutils literal notranslate"><span class="pre">author_count</span></code>, <code class="docutils literal notranslate"><span class="pre">work_spread</span></code> and <code class="docutils literal notranslate"><span class="pre">commit_count</span></code> are grouped by
+the quarter they were generated for.</p></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="training-our-model">
+<h2>Training our Model<a class="headerlink" href="#training-our-model" title="Permalink to this headline">¶</a></h2>
+<p>The model we’ll be using is a part of <code class="docutils literal notranslate"><span class="pre">dffml-model-tensorflow</span></code>, which is
+another separate Python package from DFFML which we can install via <code class="docutils literal notranslate"><span class="pre">pip</span></code>.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python -m pip install -U dffml-model-tensorflow
+</pre></div>
+</div>
+<p>The model is a generic wrapper around Tensorflow’s DNN estimator. We can use it
+to train on our dataset.</p>
+<p>We’re going to put the training command in it’s own file, since it’s very long</p>
+<p>We use the <a class="reference internal" href="../api/source/df.html#dffml.source.df.DataFlowSource" title="dffml.source.df.DataFlowSource"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataFlowSource</span></code></a> to run
+the DataFlow we created using the above <code class="docutils literal notranslate"><span class="pre">dffml</span> <span class="pre">dataflow</span> <span class="pre">create</span></code> command on
+each repo. When we run the DataFlow we pass it the current date and tell it to
+use the record’s key as the repo URL (since that’s what the key is).</p>
+<p><strong>train.sh</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env bash</span>
+<span class="c1"># echo command back and exit on error</span>
+<span class="nb">set</span> <span class="o">-</span><span class="n">xe</span>
+
+<span class="n">dffml</span> <span class="n">train</span> <span class="nb">all</span> \
+  <span class="o">-</span><span class="n">model</span> <span class="n">tfdnnc</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">epochs</span> <span class="mi">400</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">steps</span> <span class="mi">4000</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">predict</span> <span class="n">maintained</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">1</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">classifications</span> <span class="mi">0</span> <span class="mi">1</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">directory</span> <span class="n">modeldir</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">features</span> \
+    <span class="n">authors</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">10</span> \
+    <span class="n">commits</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">10</span> \
+    <span class="n">work</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">10</span> \
+  <span class="o">-</span><span class="n">sources</span> <span class="n">preprocess</span><span class="o">=</span><span class="n">df</span> \
+  <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">preprocess</span><span class="o">-</span><span class="n">dataflow</span> <span class="n">dataflow</span><span class="o">.</span><span class="n">yaml</span> \
+  <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">preprocess</span><span class="o">-</span><span class="n">no_strict</span> \
+  <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">preprocess</span><span class="o">-</span><span class="n">record_def</span> <span class="n">URL</span> \
+  <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">preprocess</span><span class="o">-</span><span class="n">inputs</span> <span class="s2">&quot;$(date +&#39;%Y-%m-</span><span class="si">%d</span><span class="s2"> %H:%M&#39;)=quarter_start_date&quot;</span> \
+  <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">preprocess</span><span class="o">-</span><span class="n">features</span> <span class="n">maintained</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">1</span> \
+  <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">preprocess</span><span class="o">-</span><span class="n">source</span> <span class="n">mysql</span> \
+  <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">preprocess</span><span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">insecure</span> \
+  <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">preprocess</span><span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">user</span> <span class="n">user</span> \
+  <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">preprocess</span><span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">password</span> <span class="k">pass</span> \
+  <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">preprocess</span><span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">db</span> <span class="n">db</span> \
+  <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">preprocess</span><span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">key</span> <span class="n">key</span> \
+  <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">preprocess</span><span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">records</span> \
+    <span class="s1">&#39;SELECT `key`, `maintained` FROM `status`&#39;</span> \
+  <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">preprocess</span><span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">record</span> \
+    <span class="s1">&#39;SELECT `key`, `maintained` FROM `status` WHERE `key`=</span><span class="si">%s</span><span class="s1">&#39;</span> \
+  <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">preprocess</span><span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">update</span> \
+    <span class="s1">&#39;INSERT INTO `status` (`key`, `maintained`) VALUES(</span><span class="si">%s</span><span class="s1">, </span><span class="si">%s</span><span class="s1">) ON DUPLICATE KEY UPDATE `maintained`=</span><span class="si">%s</span><span class="s1">&#39;</span> \
+  <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">preprocess</span><span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">features</span> <span class="s1">&#39;{&quot;maintained&quot;: &quot;maintained&quot;}&#39;</span> \
+  <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">preprocess</span><span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">predictions</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">&#39;</span> \
+  <span class="o">-</span><span class="n">log</span> <span class="n">debug</span>
+</pre></div>
+</div>
+<p>Run <strong>train.sh</strong> to train the model</p>
+<p>The speed of the following command depends on your internet connection, it may
+take 2 minutes, it may take more. All the git repos in the database will be
+downloaded, this will also take up space in <code class="docutils literal notranslate"><span class="pre">/tmp</span></code>, they will be cleaned up
+automatically.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>bash train.sh
+</pre></div>
+</div>
+</div>
+<div class="section" id="making-a-prediction">
+<h2>Making a Prediction<a class="headerlink" href="#making-a-prediction" title="Permalink to this headline">¶</a></h2>
+<p>Run the operations on the new repo: <code class="docutils literal notranslate"><span class="pre">https://github.com/intel/dffml</span></code> and
+have the model make a prediction</p>
+<p>We’re going to put the prediction command in it’s own file, since it’s very long</p>
+<p><strong>predict.sh</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env bash</span>
+<span class="c1"># echo command back and exit on error</span>
+<span class="nb">set</span> <span class="o">-</span><span class="n">xe</span>
+
+<span class="c1"># Usage: ./predict.sh https://github.com/org/repo</span>
+<span class="n">URL</span><span class="o">=</span><span class="s2">&quot;$</span><span class="si">{1}</span><span class="s2">&quot;</span>
+
+<span class="n">dffml</span> <span class="n">predict</span> <span class="n">record</span> \
+  <span class="o">-</span><span class="n">update</span> \
+  <span class="o">-</span><span class="n">log</span> <span class="n">debug</span> \
+  <span class="o">-</span><span class="n">keys</span> <span class="s2">&quot;$</span><span class="si">{URL}</span><span class="s2">&quot;</span> \
+  <span class="o">-</span><span class="n">model</span> <span class="n">tfdnnc</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">predict</span> <span class="n">maintained</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">1</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">classifications</span> <span class="mi">0</span> <span class="mi">1</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">directory</span> <span class="n">modeldir</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">features</span> \
+    <span class="n">authors</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">10</span> \
+    <span class="n">commits</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">10</span> \
+    <span class="n">work</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">10</span> \
+  <span class="o">-</span><span class="n">sources</span> <span class="n">preprocess</span><span class="o">=</span><span class="n">df</span> \
+  <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">preprocess</span><span class="o">-</span><span class="n">dataflow</span> <span class="n">dataflow</span><span class="o">.</span><span class="n">yaml</span> \
+  <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">preprocess</span><span class="o">-</span><span class="n">record_def</span> <span class="n">URL</span> \
+  <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">preprocess</span><span class="o">-</span><span class="n">inputs</span> <span class="s2">&quot;$(date +&#39;%Y-%m-</span><span class="si">%d</span><span class="s2"> %H:%M&#39;)=quarter_start_date&quot;</span> \
+  <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">preprocess</span><span class="o">-</span><span class="n">source</span> <span class="n">mysql</span> \
+  <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">preprocess</span><span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">insecure</span> \
+  <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">preprocess</span><span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">user</span> <span class="n">user</span> \
+  <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">preprocess</span><span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">password</span> <span class="k">pass</span> \
+  <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">preprocess</span><span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">db</span> <span class="n">db</span> \
+  <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">preprocess</span><span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">key</span> <span class="n">key</span> \
+  <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">preprocess</span><span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">records</span> \
+    <span class="s1">&#39;SELECT `key`, `maintained` FROM `status`&#39;</span> \
+  <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">preprocess</span><span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">record</span> \
+    <span class="s1">&#39;SELECT `key`, `maintained` FROM `status` WHERE `key`=</span><span class="si">%s</span><span class="s1">&#39;</span> \
+  <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">preprocess</span><span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">update</span> \
+    <span class="s1">&#39;INSERT INTO `status` (`key`, `maintained`) VALUES(</span><span class="si">%s</span><span class="s1">, </span><span class="si">%s</span><span class="s1">) ON DUPLICATE KEY UPDATE `maintained`=</span><span class="si">%s</span><span class="s1">&#39;</span> \
+  <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">preprocess</span><span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">features</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">&#39;</span> \
+  <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">preprocess</span><span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">predictions</span> <span class="s1">&#39;{&quot;maintained&quot;: (&quot;maintained&quot;, None)}&#39;</span>
+</pre></div>
+</div>
+<p>Run <strong>predict.sh</strong> to make a prediction using the model. We’re asking the model
+to make a prediction on the DFFML repo.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>bash predict.sh https://github.com/intel/dffml
+<span class="go">[</span>
+<span class="go">    {</span>
+<span class="go">        &quot;extra&quot;: {},</span>
+<span class="go">        &quot;features&quot;: {</span>
+<span class="go">            &quot;authors&quot;: [</span>
+<span class="go">                9,</span>
+<span class="go">                16,</span>
+<span class="go">                20,</span>
+<span class="go">                14,</span>
+<span class="go">                10,</span>
+<span class="go">                4,</span>
+<span class="go">                5,</span>
+<span class="go">                0,</span>
+<span class="go">                0,</span>
+<span class="go">                0</span>
+<span class="go">            ],</span>
+<span class="go">            &quot;commits&quot;: [</span>
+<span class="go">                110,</span>
+<span class="go">                273,</span>
+<span class="go">                252,</span>
+<span class="go">                105,</span>
+<span class="go">                65,</span>
+<span class="go">                64,</span>
+<span class="go">                51,</span>
+<span class="go">                0,</span>
+<span class="go">                0,</span>
+<span class="go">                0</span>
+<span class="go">            ],</span>
+<span class="go">            &quot;work&quot;: [</span>
+<span class="go">                75,</span>
+<span class="go">                82,</span>
+<span class="go">                73,</span>
+<span class="go">                34,</span>
+<span class="go">                56,</span>
+<span class="go">                3,</span>
+<span class="go">                5,</span>
+<span class="go">                0,</span>
+<span class="go">                0,</span>
+<span class="go">                0</span>
+<span class="go">            ]</span>
+<span class="go">        },</span>
+<span class="go">        &quot;key&quot;: &quot;https://github.com/intel/dffml&quot;,</span>
+<span class="go">        &quot;last_updated&quot;: &quot;2020-10-12T21:15:13Z&quot;,</span>
+<span class="go">        &quot;prediction&quot;: {</span>
+<span class="go">            &quot;maintained&quot;: {</span>
+<span class="go">                &quot;confidence&quot;: 0.9999271631240845,</span>
+<span class="go">                &quot;value&quot;: &quot;1&quot;</span>
+<span class="go">            }</span>
+<span class="go">        }</span>
+<span class="go">    }</span>
+<span class="go">]</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="modifying-the-legacy-app">
+<h2>Modifying the Legacy App<a class="headerlink" href="#modifying-the-legacy-app" title="Permalink to this headline">¶</a></h2>
+<p>Now let’s add a ‘Predict’ button to the app. The button will trigger the
+operations to be run on the new URL, and then the prediction. The demo app will
+then take the predicted classification and record that as the classification in
+the database.</p>
+<p>The predict button will trigger an HTTP call to the CGI API. The CGI script will
+run the same commands we just ran on the command line, and parse the output,
+which is in JSON format, and set the resulting prediction classification in the
+database.</p>
+<p>We modify the backend CGI Python API to have it call our <strong>predict.sh</strong> script.</p>
+<p><strong>cgi-bin/api.py</strong></p>
+<div class="highlight-udiff notranslate"><div class="highlight"><pre><span></span><span class="gd">--- /home/runner/work/dffml/dffml/examples/maintained/cgi-bin/api.py</span>
+<span class="gi">+++ /home/runner/work/dffml/dffml/examples/maintained/cgi-bin/api-ml.py</span>
+<span class="gu">@@ -2,6 +2,7 @@</span>
+ import os
+ import sys
+ import json
+<span class="gi">+import subprocess</span>
+ import urllib.parse
+ import mysql.connector
+ 
+<span class="gu">@@ -31,6 +32,14 @@</span>
+     )
+     cnx.commit()
+     print(json.dumps({&quot;success&quot;: True}))
+<span class="gi">+elif action == &quot;predict&quot;:</span>
+<span class="gi">+    # Set current working directory (cwd) to the parent directory of cgi-bin</span>
+<span class="gi">+    print(</span>
+<span class="gi">+        subprocess.check_output(</span>
+<span class="gi">+            [&quot;bash&quot;, &quot;predict.sh&quot;, query[&quot;URL&quot;]],</span>
+<span class="gi">+            cwd=os.path.join(os.path.dirname(__file__), &quot;..&quot;),</span>
+<span class="gi">+        ).decode()</span>
+<span class="gi">+    )</span>
+ else:
+     print(json.dumps({&quot;error&quot;: &quot;Unknown action&quot;}))
+ 
+</pre></div>
+</div>
+<p>Test the new prediction capabilities from the command line with <code class="docutils literal notranslate"><span class="pre">curl</span></code></p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>curl -v <span class="s1">&#39;http://127.0.0.1:8000/cgi-bin/api.py?action=predict&amp;URL=https://github.com/intel/dffml&#39;</span> <span class="p">|</span> <span class="se">\</span>
+<span class="go">    python -m json.tool</span>
+</pre></div>
+</div>
+<p>Hook up the predict button to call our new API by adding an event listener when
+the Predict button is clicked.</p>
+<p><strong>ml.js</strong></p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kd">function</span> <span class="nx">predict</span> <span class="p">(</span><span class="nx">URL</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nx">fetch</span><span class="p">(</span><span class="s1">&#39;cgi-bin/api.py?action=predict&amp;URL=&#39;</span> <span class="o">+</span> <span class="nx">URL</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">response</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="nx">response</span><span class="p">.</span><span class="nx">json</span><span class="p">()</span>
+    <span class="p">});</span>
+<span class="p">}</span>
+
+<span class="nb">window</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s1">&#39;DOMContentLoaded&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">tableDOM</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;table&#39;</span><span class="p">);</span>
+  <span class="kd">var</span> <span class="nx">URLDOM</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;URL&#39;</span><span class="p">);</span>
+  <span class="kd">var</span> <span class="nx">predictDOM</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;predict&#39;</span><span class="p">);</span>
+
+  <span class="nx">predictDOM</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">predict</span><span class="p">(</span><span class="nx">URLDOM</span><span class="p">.</span><span class="nx">value</span><span class="p">)</span>
+      <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+        <span class="nx">refreshTable</span><span class="p">(</span><span class="nx">tableDOM</span><span class="p">);</span>
+      <span class="p">});</span>
+  <span class="p">});</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<p>We need to import the new script into the main page and add the HTML for the
+predict button.</p>
+<p><strong>index.html</strong></p>
+<div class="highlight-udiff notranslate"><div class="highlight"><pre><span></span><span class="gd">--- /home/runner/work/dffml/dffml/examples/maintained/index.html</span>
+<span class="gi">+++ /home/runner/work/dffml/dffml/examples/maintained/ml.html</span>
+<span class="gu">@@ -3,6 +3,7 @@</span>
+   &lt;head&gt;
+     &lt;title&gt;Git Repo Maintenance Tracker&lt;/title&gt;
+     &lt;script type=&quot;text/javascript&quot; src=&quot;main.js&quot;&gt;&lt;/script&gt;
+<span class="gi">+    &lt;script type=&quot;text/javascript&quot; src=&quot;ml.js&quot;&gt;&lt;/script&gt;</span>
+     &lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;theme.css&quot;&gt;
+   &lt;/head&gt;
+   &lt;body&gt;
+<span class="gu">@@ -15,6 +16,7 @@</span>
+       &lt;input id=&quot;URL&quot; placeholder=&quot;git://server.git/repo&quot;&gt;&lt;/input&gt;
+       &lt;button id=&quot;maintained&quot; class=&quot;good&quot;&gt;Maintained&lt;/button&gt;
+       &lt;button id=&quot;unmaintained&quot; class=&quot;dangerous&quot;&gt;Unmaintained&lt;/button&gt;
+<span class="gi">+      &lt;button id=&quot;predict&quot;&gt;Predict&lt;/button&gt;</span>
+     &lt;/div&gt;
+ 
+     &lt;br /&gt;
+</pre></div>
+</div>
+<p>Visit the web app, and input a Git repo to evaluate into the input field. Then
+click predict. The demo gif has had all the entries DROPed from the database.
+But you can look through the table and you’ll find that a prediction has been
+run on the repo. Congratulations! You’ve automated a manual classification
+process, and integrated machine learning into a legacy application.</p>
+<img alt="../_images/integration_demo.gif" src="../_images/integration_demo.gif" />
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="shouldi.html" class="btn btn-neutral float-right" title="Meta Static Analysis" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="index.html" class="btn btn-neutral float-left" title="Examples" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2017 - 2021, Intel.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -7,12 +7,13 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Index &mdash; DFFML 0.3.7 documentation</title>
+  <title>Index &mdash; DFFML 0.4.0 documentation</title>
   
 
   
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/tabs.css" type="text/css" />
 
   
   
@@ -32,6 +33,7 @@
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
+        <script src="_static/tabs.js"></script>
         <script src="_static/copybutton.js"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
@@ -63,7 +65,7 @@
             
             
               <div class="version">
-                0.3.7
+                0.4.0
               </div>
             
           
@@ -94,11 +96,11 @@
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="concepts/index.html">Concepts</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Examples</span></p>
+<p class="caption"><span class="caption-text">Usage</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="quickstart/model.html">Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorials/index.html">Tutorials</a></li>
-<li class="toctree-l1"><a class="reference internal" href="usage/index.html">Use Cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/index.html">Examples</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Reference</span></p>
 <ul>
@@ -106,13 +108,21 @@
 <li class="toctree-l1"><a class="reference internal" href="cli.html">Command Line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="plugins/service/http/index.html">HTTP API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Subprojects</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="shouldi.html">shouldi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="swportal.html">Software Portal</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Community</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/intel/dffml">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://intel.github.io/dffml/master/">Master Branch Docs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="publications.html">Publications</a></li>
 <li class="toctree-l1"><a class="reference internal" href="contact.html">Contact Us</a></li>
 <li class="toctree-l1"><a class="reference internal" href="contributing/index.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="news/index.html">News</a></li>
 <li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
 </ul>
 
@@ -165,6 +175,8 @@
       <li>Index</li>
     
     
+
+
       <li class="wy-breadcrumbs-aside">
         
           
@@ -175,6 +187,8 @@
         
       </li>
     
+
+
   </ul>
 
   
@@ -203,23 +217,35 @@
  | <a href="#N"><strong>N</strong></a>
  | <a href="#O"><strong>O</strong></a>
  | <a href="#P"><strong>P</strong></a>
- | <a href="#Q"><strong>Q</strong></a>
  | <a href="#R"><strong>R</strong></a>
  | <a href="#S"><strong>S</strong></a>
  | <a href="#T"><strong>T</strong></a>
  | <a href="#U"><strong>U</strong></a>
  | <a href="#V"><strong>V</strong></a>
  | <a href="#W"><strong>W</strong></a>
- | <a href="#Y"><strong>Y</strong></a>
  
 </div>
 <h2 id="A">A</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/model/base.html#dffml.model.model.ModelContext.accuracy">accuracy() (dffml.model.model.ModelContext method)</a>
+      <li><a href="api/operation/io.html#dffml.operation.io.AcceptUserInput">AcceptUserInput (class in dffml.operation.io)</a>
+</li>
+      <li><a href="api/operation/io.html#dffml.operation.io.AcceptUserInputContext">AcceptUserInputContext (class in dffml.operation.io)</a>
+</li>
+      <li><a href="api/cli/ml.html#dffml.cli.ml.Accuracy">Accuracy (class in dffml.cli.ml)</a>
+
+      <ul>
+        <li><a href="api/model/accuracy.html#dffml.model.accuracy.Accuracy">(class in dffml.model.accuracy)</a>
+</li>
+      </ul></li>
+      <li><a href="api/cli/cli.html#dffml.cli.cli.CLI.accuracy">accuracy (dffml.cli.cli.CLI attribute)</a>
+</li>
+      <li><a href="api/model/model.html#dffml.model.model.ModelContext.accuracy">accuracy() (dffml.model.model.ModelContext method)</a>
 
       <ul>
         <li><a href="api/high_level.html#dffml.high_level.accuracy">(in module dffml.high_level)</a>
+</li>
+        <li><a href="api/noasync.html#dffml.noasync.accuracy">(in module dffml.noasync)</a>
 </li>
       </ul></li>
       <li><a href="api/df/base.html#dffml.df.base.BaseLockNetworkContext.acquire">acquire() (dffml.df.base.BaseLockNetworkContext method)</a>
@@ -228,6 +254,8 @@
         <li><a href="api/df/memory.html#dffml.df.memory.MemoryLockNetworkContext.acquire">(dffml.df.memory.MemoryLockNetworkContext method)</a>
 </li>
       </ul></li>
+      <li><a href="api/util/testing/consoletest/commands.html#dffml.util.testing.consoletest.commands.ActivateVirtualEnvCommand">ActivateVirtualEnvCommand (class in dffml.util.testing.consoletest.commands)</a>
+</li>
       <li><a href="api/df/base.html#dffml.df.base.BaseInputNetworkContext.add">add() (dffml.df.base.BaseInputNetworkContext method)</a>
 
       <ul>
@@ -242,11 +270,13 @@
         <li><a href="api/df/memory.html#dffml.df.memory.MemoryOperationNetworkContext.add">(dffml.df.memory.MemoryOperationNetworkContext method)</a>
 </li>
       </ul></li>
-      <li><a href="api/base.html#dffml.base.BaseConfigurable.add_label">add_label() (dffml.base.BaseConfigurable class method)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/base.html#dffml.base.BaseConfigurable.add_label">add_label() (dffml.base.BaseConfigurable class method)</a>
+</li>
       <li><a href="api/base.html#dffml.base.BaseConfigurable.add_orig_label">add_orig_label() (dffml.base.BaseConfigurable class method)</a>
+</li>
+      <li><a href="api/util/cli/cmd.html#dffml.util.cli.cmd.Parser.add_subs">add_subs() (dffml.util.cli.cmd.Parser method)</a>
 </li>
       <li><a href="api/df/base.html#dffml.df.base.BaseInputNetworkContext.added">added() (dffml.df.base.BaseInputNetworkContext method)</a>
 
@@ -256,23 +286,27 @@
       </ul></li>
       <li><a href="api/util/asynchelper.html#dffml.util.asynchelper.aenter_stack">aenter_stack() (in module dffml.util.asynchelper)</a>
 </li>
+      <li><a href="api/util/cli/arg.html#dffml.util.cli.arg.Arg">Arg (class in dffml.util.cli.arg)</a>
+</li>
       <li><a href="api/base.html#dffml.base.BaseConfigurable.args">args() (dffml.base.BaseConfigurable class method)</a>
 
       <ul>
         <li><a href="api/df/base.html#dffml.df.base.BaseDataFlowObject.args">(dffml.df.base.BaseDataFlowObject class method)</a>
 </li>
-        <li><a href="api/df/memory.html#dffml.df.memory.MemoryOperationImplementationNetwork.args">(dffml.df.memory.MemoryOperationImplementationNetwork class method)</a>
-</li>
-        <li><a href="api/df/memory.html#dffml.df.memory.MemoryOperationNetwork.args">(dffml.df.memory.MemoryOperationNetwork class method)</a>
-</li>
-        <li><a href="api/df/memory.html#dffml.df.memory.MemoryOrchestrator.args">(dffml.df.memory.MemoryOrchestrator class method)</a>
-</li>
-        <li><a href="api/df/memory.html#dffml.df.memory.MemoryRedundancyChecker.args">(dffml.df.memory.MemoryRedundancyChecker class method)</a>
-</li>
       </ul></li>
+      <li><a href="api/operation/output.html#dffml.operation.output.Associate">Associate (class in dffml.operation.output)</a>
+</li>
+      <li><a href="api/operation/output.html#dffml.operation.output.AssociateDefinition">AssociateDefinition (class in dffml.operation.output)</a>
+</li>
+      <li><a href="api/util/asynctestcase.html#dffml.util.asynctestcase.AsyncTestCase.async_wrapper">async_wrapper() (dffml.util.asynctestcase.AsyncTestCase method)</a>
+</li>
       <li><a href="api/util/asynchelper.html#dffml.util.asynchelper.AsyncContextManagerList">AsyncContextManagerList (class in dffml.util.asynchelper)</a>
 </li>
       <li><a href="api/util/asynchelper.html#dffml.util.asynchelper.AsyncContextManagerListContext">AsyncContextManagerListContext (class in dffml.util.asynchelper)</a>
+</li>
+      <li><a href="api/util/asynctestcase.html#dffml.util.asynctestcase.AsyncExitStackTestCase">AsyncExitStackTestCase (class in dffml.util.asynctestcase)</a>
+</li>
+      <li><a href="api/util/asynctestcase.html#dffml.util.asynctestcase.AsyncTestCase">AsyncTestCase (class in dffml.util.asynctestcase)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -280,7 +314,15 @@
 <h2 id="B">B</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/util/entrypoint.html#dffml.util.entrypoint.base_entry_point">base_entry_point() (in module dffml.util.entrypoint)</a>
+</li>
+      <li><a href="api/df/multicomm.html#dffml.df.multicomm.BaseCommChannelConfig">BaseCommChannelConfig (class in dffml.df.multicomm)</a>
+</li>
       <li><a href="api/base.html#dffml.base.BaseConfig">BaseConfig (class in dffml.base)</a>
+</li>
+      <li><a href="api/configloader/configloader.html#dffml.configloader.configloader.BaseConfigLoader">BaseConfigLoader (class in dffml.configloader.configloader)</a>
+</li>
+      <li><a href="api/configloader/configloader.html#dffml.configloader.configloader.BaseConfigLoaderContext">BaseConfigLoaderContext (class in dffml.configloader.configloader)</a>
 </li>
       <li><a href="api/base.html#dffml.base.BaseConfigurable">BaseConfigurable (class in dffml.base)</a>
 </li>
@@ -318,11 +360,15 @@
 </li>
       <li><a href="api/df/base.html#dffml.df.base.BaseLockNetwork">BaseLockNetwork (class in dffml.df.base)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/df/base.html#dffml.df.base.BaseLockNetworkContext">BaseLockNetworkContext (class in dffml.df.base)</a>
 </li>
       <li><a href="api/df/memory.html#dffml.df.memory.BaseMemoryDataFlowObject">BaseMemoryDataFlowObject (class in dffml.df.memory)</a>
+</li>
+      <li><a href="api/df/multicomm.html#dffml.df.multicomm.BaseMultiComm">BaseMultiComm (class in dffml.df.multicomm)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/df/multicomm.html#dffml.df.multicomm.BaseMultiCommContext">BaseMultiCommContext (class in dffml.df.multicomm)</a>
 </li>
       <li><a href="api/df/base.html#dffml.df.base.BaseOperationImplementationNetwork">BaseOperationImplementationNetwork (class in dffml.df.base)</a>
 </li>
@@ -348,15 +394,31 @@
 </li>
       <li><a href="api/df/base.html#dffml.df.base.BaseRedundancyCheckerContext">BaseRedundancyCheckerContext (class in dffml.df.base)</a>
 </li>
-      <li><a href="api/source/base.html#dffml.source.source.BaseSource">BaseSource (class in dffml.source.source)</a>
+      <li><a href="api/secret/base.html#dffml.secret.base.BaseSecret">BaseSecret (class in dffml.secret.base)</a>
 </li>
-      <li><a href="api/source/base.html#dffml.source.source.BaseSourceContext">BaseSourceContext (class in dffml.source.source)</a>
+      <li><a href="api/secret/base.html#dffml.secret.base.BaseSecretContext">BaseSecretContext (class in dffml.secret.base)</a>
 </li>
-      <li><a href="api/df/memory.html#dffml.df.memory.MemoryOrchestrator.basic_config">basic_config() (dffml.df.memory.MemoryOrchestrator class method)</a>
+      <li><a href="api/source/source.html#dffml.source.source.BaseSource">BaseSource (class in dffml.source.source)</a>
+</li>
+      <li><a href="api/source/source.html#dffml.source.source.BaseSourceContext">BaseSourceContext (class in dffml.source.source)</a>
 </li>
       <li><a href="api/source/file.html#dffml.source.file.BinaryFileSource">BinaryFileSource (class in dffml.source.file)</a>
 </li>
       <li><a href="api/source/file.html#dffml.source.file.BinaryFileSourceConfig">BinaryFileSourceConfig (class in dffml.source.file)</a>
+</li>
+      <li><a href="api/util/testing/consoletest/commands.html#dffml.util.testing.consoletest.commands.buf_to_fileobj">buf_to_fileobj() (in module dffml.util.testing.consoletest.commands)</a>
+</li>
+      <li><a href="api/service/dev.html#dffml.service.dev.Bump">Bump (class in dffml.service.dev)</a>
+</li>
+      <li><a href="api/service/dev.html#dffml.service.dev.Develop.bump">bump (dffml.service.dev.Develop attribute)</a>
+</li>
+      <li><a href="api/service/dev.html#dffml.service.dev.BumpInter">BumpInter (class in dffml.service.dev)</a>
+</li>
+      <li><a href="api/service/dev.html#dffml.service.dev.BumpPackages">BumpPackages (class in dffml.service.dev)</a>
+</li>
+      <li><a href="api/service/dev.html#dffml.service.dev.BumpPackagesConfig">BumpPackagesConfig (class in dffml.service.dev)</a>
+</li>
+      <li><a href="api/operation/output.html#dffml.operation.output.GroupBySpec.by">by() (dffml.operation.output.GroupBySpec property)</a>
 </li>
       <li><a href="api/df/memory.html#dffml.df.memory.MemoryInputNetworkContextEntry.by_origin">by_origin() (dffml.df.memory.MemoryInputNetworkContextEntry property)</a>
 </li>
@@ -372,7 +434,25 @@
 </li>
       <li><a href="api/df/memory.html#dffml.df.memory.MemoryInputNetworkContext.cadd">cadd() (dffml.df.memory.MemoryInputNetworkContext method)</a>
 </li>
-      <li><a href="api/model/base.html#dffml.model.model.SimpleModel.close">close() (dffml.model.model.SimpleModel method)</a>
+      <li><a href="api/util/testing/consoletest/commands.html#dffml.util.testing.consoletest.commands.CDCommand">CDCommand (class in dffml.util.testing.consoletest.commands)</a>
+</li>
+      <li><a href="api/util/os.html#dffml.util.os.chdir">chdir() (in module dffml.util.os)</a>
+
+      <ul>
+        <li><a href="api/util/testing/consoletest/util.html#dffml.util.testing.consoletest.util.chdir">(in module dffml.util.testing.consoletest.util)</a>
+</li>
+      </ul></li>
+      <li><a href="api/service/dev.html#dffml.service.dev.CI">CI (class in dffml.service.dev)</a>
+</li>
+      <li><a href="api/service/dev.html#dffml.service.dev.Develop.ci">ci (dffml.service.dev.Develop attribute)</a>
+</li>
+      <li><a href="api/cli/cli.html#dffml.cli.cli.CLI">CLI (class in dffml.cli.cli)</a>
+</li>
+      <li><a href="api/model/model.html#dffml.model.model.SimpleModel.close">close() (dffml.model.model.SimpleModel method)</a>
+</li>
+      <li><a href="api/util/cli/cmd.html#dffml.util.cli.cmd.CMDConfig">CMDConfig (class in dffml.util.cli.cmd)</a>
+</li>
+      <li><a href="api/util/cli/cmd.html#dffml.util.cli.cmd.CMDOutputOverride">CMDOutputOverride (class in dffml.util.cli.cmd)</a>
 </li>
       <li><a href="api/db/base.html#dffml.db.base.Condition.column">column() (dffml.db.base.Condition property)</a>
 </li>
@@ -380,36 +460,102 @@
 </li>
       <li><a href="api/df/types.html#dffml.df.types.Operation.conditions">conditions() (dffml.df.types.Operation property)</a>
 </li>
-      <li><a href="api/db/sqlite.html#dffml.db.sqlite.SqliteDatabase.CONFIG">CONFIG (dffml.db.sqlite.SqliteDatabase attribute)</a>
+      <li><a href="api/cli/cli.html#dffml.cli.cli.EditRecord.CONFIG">CONFIG (dffml.cli.cli.EditRecord attribute)</a>
 
       <ul>
-        <li><a href="api/model/base.html#dffml.model.model.Model.CONFIG">(dffml.model.model.Model attribute)</a>
+        <li><a href="api/cli/cli.html#dffml.cli.cli.ImportExportCMD.CONFIG">(dffml.cli.cli.ImportExportCMD attribute)</a>
 </li>
-        <li><a href="api/source/file.html#dffml.source.csv.CSVSource.CONFIG">(dffml.source.csv.CSVSource attribute)</a>
+        <li><a href="api/cli/cli.html#dffml.cli.cli.Merge.CONFIG">(dffml.cli.cli.Merge attribute)</a>
+</li>
+        <li><a href="api/cli/cli.html#dffml.cli.cli.Version.CONFIG">(dffml.cli.cli.Version attribute)</a>
+</li>
+        <li><a href="api/cli/dataflow.html#dffml.cli.dataflow.RunAllRecords.CONFIG">(dffml.cli.dataflow.RunAllRecords attribute)</a>
+</li>
+        <li><a href="api/cli/dataflow.html#dffml.cli.dataflow.RunRecordSet.CONFIG">(dffml.cli.dataflow.RunRecordSet attribute)</a>
+</li>
+        <li><a href="api/cli/list.html#dffml.cli.list.ListRecords.CONFIG">(dffml.cli.list.ListRecords attribute)</a>
+</li>
+        <li><a href="api/cli/ml.html#dffml.cli.ml.Accuracy.CONFIG">(dffml.cli.ml.Accuracy attribute)</a>
+</li>
+        <li><a href="api/cli/ml.html#dffml.cli.ml.PredictAll.CONFIG">(dffml.cli.ml.PredictAll attribute)</a>
+</li>
+        <li><a href="api/cli/ml.html#dffml.cli.ml.PredictRecord.CONFIG">(dffml.cli.ml.PredictRecord attribute)</a>
+</li>
+        <li><a href="api/cli/ml.html#dffml.cli.ml.Train.CONFIG">(dffml.cli.ml.Train attribute)</a>
+</li>
+        <li><a href="api/configloader/json.html#dffml.configloader.json.JSONConfigLoader.CONFIG">(dffml.configloader.json.JSONConfigLoader attribute)</a>
+</li>
+        <li><a href="api/db/sqlite.html#dffml.db.sqlite.SqliteDatabase.CONFIG">(dffml.db.sqlite.SqliteDatabase attribute)</a>
+</li>
+        <li><a href="api/df/memory.html#dffml.df.memory.MemoryInputNetwork.CONFIG">(dffml.df.memory.MemoryInputNetwork attribute)</a>
+</li>
+        <li><a href="api/df/memory.html#dffml.df.memory.MemoryKeyValueStore.CONFIG">(dffml.df.memory.MemoryKeyValueStore attribute)</a>
+</li>
+        <li><a href="api/df/memory.html#dffml.df.memory.MemoryLockNetwork.CONFIG">(dffml.df.memory.MemoryLockNetwork attribute)</a>
+</li>
+        <li><a href="api/df/memory.html#dffml.df.memory.MemoryOperationImplementationNetwork.CONFIG">(dffml.df.memory.MemoryOperationImplementationNetwork attribute)</a>
+</li>
+        <li><a href="api/df/memory.html#dffml.df.memory.MemoryOperationNetwork.CONFIG">(dffml.df.memory.MemoryOperationNetwork attribute)</a>
+</li>
+        <li><a href="api/df/memory.html#dffml.df.memory.MemoryOrchestrator.CONFIG">(dffml.df.memory.MemoryOrchestrator attribute)</a>
+</li>
+        <li><a href="api/df/memory.html#dffml.df.memory.MemoryRedundancyChecker.CONFIG">(dffml.df.memory.MemoryRedundancyChecker attribute)</a>
+</li>
+        <li><a href="api/model/model.html#dffml.model.model.Model.CONFIG">(dffml.model.model.Model attribute)</a>
+</li>
+        <li><a href="api/model/slr.html#dffml.model.slr.SLRModel.CONFIG">(dffml.model.slr.SLRModel attribute)</a>
+</li>
+        <li><a href="api/secret/ini.html#dffml.secret.ini.INISecret.CONFIG">(dffml.secret.ini.INISecret attribute)</a>
+</li>
+        <li><a href="api/service/dev.html#dffml.service.dev.BumpPackages.CONFIG">(dffml.service.dev.BumpPackages attribute)</a>
+</li>
+        <li><a href="api/service/dev.html#dffml.service.dev.Install.CONFIG">(dffml.service.dev.Install attribute)</a>
+</li>
+        <li><a href="api/service/dev.html#dffml.service.dev.PinDeps.CONFIG">(dffml.service.dev.PinDeps attribute)</a>
+</li>
+        <li><a href="api/service/dev.html#dffml.service.dev.Release.CONFIG">(dffml.service.dev.Release attribute)</a>
+</li>
+        <li><a href="api/service/dev.html#dffml.service.dev.Run.CONFIG">(dffml.service.dev.Run attribute)</a>
+</li>
+        <li><a href="api/service/dev.html#dffml.service.dev.SetupPyKWArg.CONFIG">(dffml.service.dev.SetupPyKWArg attribute)</a>
+</li>
+        <li><a href="api/service/dev.html#dffml.service.dev.SetupPyVersion.CONFIG">(dffml.service.dev.SetupPyVersion attribute)</a>
+</li>
+        <li><a href="api/source/csv.html#dffml.source.csv.CSVSource.CONFIG">(dffml.source.csv.CSVSource attribute)</a>
+</li>
+        <li><a href="api/source/db.html#dffml.source.db.DbSource.CONFIG">(dffml.source.db.DbSource attribute)</a>
+</li>
+        <li><a href="api/source/df.html#dffml.source.df.DataFlowSource.CONFIG">(dffml.source.df.DataFlowSource attribute)</a>
+</li>
+        <li><a href="api/source/dir.html#dffml.source.dir.DirectorySource.CONFIG">(dffml.source.dir.DirectorySource attribute)</a>
 </li>
         <li><a href="api/source/file.html#dffml.source.file.BinaryFileSource.CONFIG">(dffml.source.file.BinaryFileSource attribute)</a>
 </li>
         <li><a href="api/source/file.html#dffml.source.file.FileSource.CONFIG">(dffml.source.file.FileSource attribute)</a>
 </li>
-        <li><a href="api/source/file.html#dffml.source.json.JSONSource.CONFIG">(dffml.source.json.JSONSource attribute)</a>
+        <li><a href="api/source/idx1.html#dffml.source.idx1.IDX1Source.CONFIG">(dffml.source.idx1.IDX1Source attribute)</a>
+</li>
+        <li><a href="api/source/idx3.html#dffml.source.idx3.IDX3Source.CONFIG">(dffml.source.idx3.IDX3Source attribute)</a>
+</li>
+        <li><a href="api/source/ini.html#dffml.source.ini.INISource.CONFIG">(dffml.source.ini.INISource attribute)</a>
+</li>
+        <li><a href="api/source/json.html#dffml.source.json.JSONSource.CONFIG">(dffml.source.json.JSONSource attribute)</a>
 </li>
         <li><a href="api/source/memory.html#dffml.source.memory.MemorySource.CONFIG">(dffml.source.memory.MemorySource attribute)</a>
 </li>
+        <li><a href="api/source/op.html#dffml.source.op.OpSource.CONFIG">(dffml.source.op.OpSource attribute)</a>
+</li>
+        <li><a href="api/util/cli/cmds.html#dffml.util.cli.cmds.ModelCMD.CONFIG">(dffml.util.cli.cmds.ModelCMD attribute)</a>
+</li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/base.html#dffml.base.BaseConfigurable.config">config() (dffml.base.BaseConfigurable class method)</a>
 
       <ul>
         <li><a href="api/df/base.html#dffml.df.base.BaseDataFlowObject.config">(dffml.df.base.BaseDataFlowObject class method)</a>
 </li>
         <li><a href="api/df/base.html#dffml.df.base.OperationImplementationContext.config">(dffml.df.base.OperationImplementationContext property)</a>
-</li>
-        <li><a href="api/df/memory.html#dffml.df.memory.MemoryOperationImplementationNetwork.config">(dffml.df.memory.MemoryOperationImplementationNetwork class method)</a>
-</li>
-        <li><a href="api/df/memory.html#dffml.df.memory.MemoryOperationNetwork.config">(dffml.df.memory.MemoryOperationNetwork class method)</a>
-</li>
-        <li><a href="api/df/memory.html#dffml.df.memory.MemoryOrchestrator.config">(dffml.df.memory.MemoryOrchestrator class method)</a>
-</li>
-        <li><a href="api/df/memory.html#dffml.df.memory.MemoryRedundancyChecker.config">(dffml.df.memory.MemoryRedundancyChecker class method)</a>
 </li>
         <li><a href="api/base.html#dffml.base.config">(in module dffml.base)</a>
 </li>
@@ -418,11 +564,29 @@
 </li>
       <li><a href="api/base.html#dffml.base.BaseConfigurable.config_get">config_get() (dffml.base.BaseConfigurable class method)</a>
 </li>
+      <li><a href="api/cli/config.html#dffml.cli.config.ConvertConfig.config_out">config_out (dffml.cli.config.ConvertConfig attribute)</a>
+</li>
       <li><a href="api/base.html#dffml.base.BaseConfigurable.config_set">config_set() (dffml.base.BaseConfigurable class method)</a>
 </li>
       <li><a href="api/base.html#dffml.base.ConfigAndKWArgsMutuallyExclusive">ConfigAndKWArgsMutuallyExclusive</a>
 </li>
+      <li><a href="api/cli/dataflow.html#dffml.cli.dataflow.CreateConfig.configloader">configloader (dffml.cli.dataflow.CreateConfig attribute)</a>
+
+      <ul>
+        <li><a href="api/cli/dataflow.html#dffml.cli.dataflow.MergeConfig.configloader">(dffml.cli.dataflow.MergeConfig attribute)</a>
+</li>
+        <li><a href="api/service/dev.html#dffml.service.dev.ExportConfig.configloader">(dffml.service.dev.ExportConfig attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="api/configloader/configloader.html#dffml.configloader.configloader.ConfigLoaders">ConfigLoaders (class in dffml.configloader.configloader)</a>
+</li>
       <li><a href="api/base.html#dffml.base.ConfigurableParsingNamespace">ConfigurableParsingNamespace (class in dffml.base)</a>
+</li>
+      <li><a href="api/util/testing/consoletest/commands.html#dffml.util.testing.consoletest.commands.ConsoleCommand">ConsoleCommand (class in dffml.util.testing.consoletest.commands)</a>
+</li>
+      <li><a href="api/util/testing/consoletest/builder.html#dffml.util.testing.consoletest.builder.ConsoleTestBuilder">ConsoleTestBuilder (class in dffml.util.testing.consoletest.builder)</a>
+</li>
+      <li><a href="api/util/testing/consoletest/commands.html#dffml.util.testing.consoletest.commands.ConsoletestCommand">ConsoletestCommand (class in dffml.util.testing.consoletest.commands)</a>
 </li>
       <li><a href="api/df/base.html#dffml.df.base.BaseOperationImplementationNetworkContext.contains">contains() (dffml.df.base.BaseOperationImplementationNetworkContext method)</a>
 
@@ -430,11 +594,11 @@
         <li><a href="api/df/memory.html#dffml.df.memory.MemoryOperationImplementationNetworkContext.contains">(dffml.df.memory.MemoryOperationImplementationNetworkContext method)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/db/sqlite.html#dffml.db.sqlite.SqliteDatabase.CONTEXT">CONTEXT (dffml.db.sqlite.SqliteDatabase attribute)</a>
+      <li><a href="api/configloader/json.html#dffml.configloader.json.JSONConfigLoader.CONTEXT">CONTEXT (dffml.configloader.json.JSONConfigLoader attribute)</a>
 
       <ul>
+        <li><a href="api/db/sqlite.html#dffml.db.sqlite.SqliteDatabase.CONTEXT">(dffml.db.sqlite.SqliteDatabase attribute)</a>
+</li>
         <li><a href="api/df/memory.html#dffml.df.memory.MemoryInputNetwork.CONTEXT">(dffml.df.memory.MemoryInputNetwork attribute)</a>
 </li>
         <li><a href="api/df/memory.html#dffml.df.memory.MemoryKeyValueStore.CONTEXT">(dffml.df.memory.MemoryKeyValueStore attribute)</a>
@@ -449,20 +613,44 @@
 </li>
         <li><a href="api/df/memory.html#dffml.df.memory.MemoryRedundancyChecker.CONTEXT">(dffml.df.memory.MemoryRedundancyChecker attribute)</a>
 </li>
-        <li><a href="api/model/base.html#dffml.model.model.SimpleModel.CONTEXT">(dffml.model.model.SimpleModel attribute)</a>
+        <li><a href="api/model/model.html#dffml.model.model.SimpleModel.CONTEXT">(dffml.model.model.SimpleModel attribute)</a>
+</li>
+        <li><a href="api/operation/io.html#dffml.operation.io.AcceptUserInput.CONTEXT">(dffml.operation.io.AcceptUserInput attribute)</a>
+</li>
+        <li><a href="api/secret/ini.html#dffml.secret.ini.INISecret.CONTEXT">(dffml.secret.ini.INISecret attribute)</a>
+</li>
+        <li><a href="api/source/db.html#dffml.source.db.DbSource.CONTEXT">(dffml.source.db.DbSource attribute)</a>
+</li>
+        <li><a href="api/source/df.html#dffml.source.df.DataFlowSource.CONTEXT">(dffml.source.df.DataFlowSource attribute)</a>
 </li>
         <li><a href="api/source/memory.html#dffml.source.memory.MemorySource.CONTEXT">(dffml.source.memory.MemorySource attribute)</a>
 </li>
-        <li><a href="api/source/base.html#dffml.source.source.Sources.CONTEXT">(dffml.source.source.Sources attribute)</a>
+        <li><a href="api/source/op.html#dffml.source.op.OpSource.CONTEXT">(dffml.source.op.OpSource attribute)</a>
 </li>
-        <li><a href="api/source/base.html#dffml.source.source.ValidationSources.CONTEXT">(dffml.source.source.ValidationSources attribute)</a>
+        <li><a href="api/source/source.html#dffml.source.source.Sources.CONTEXT">(dffml.source.source.Sources attribute)</a>
+</li>
+        <li><a href="api/source/source.html#dffml.source.source.SubsetSources.CONTEXT">(dffml.source.source.SubsetSources attribute)</a>
+</li>
+        <li><a href="api/source/source.html#dffml.source.source.ValidationSources.CONTEXT">(dffml.source.source.ValidationSources attribute)</a>
 </li>
         <li><a href="api/util/asynchelper.html#dffml.util.asynchelper.AsyncContextManagerList.CONTEXT">(dffml.util.asynchelper.AsyncContextManagerList attribute)</a>
 </li>
       </ul></li>
       <li><a href="api/util/asynchelper.html#dffml.util.asynchelper.context_stacker">context_stacker() (in module dffml.util.asynchelper)</a>
 </li>
+      <li><a href="api/df/exceptions.html#dffml.df.exceptions.ContextNotPresent">ContextNotPresent</a>
+</li>
       <li><a href="api/base.html#dffml.base.convert_value">convert_value() (in module dffml.base)</a>
+</li>
+      <li><a href="api/cli/config.html#dffml.cli.config.ConvertConfig">ConvertConfig (class in dffml.cli.config)</a>
+</li>
+      <li><a href="api/service/dev.html#dffml.service.dev.Create">Create (class in dffml.service.dev)</a>
+</li>
+      <li><a href="api/service/dev.html#dffml.service.dev.Develop.create">create (dffml.service.dev.Develop attribute)</a>
+</li>
+      <li><a href="api/service/dev.html#dffml.service.dev.create_from_skel">create_from_skel() (in module dffml.service.dev)</a>
+</li>
+      <li><a href="api/operation/mapping.html#dffml.operation.mapping.create_mapping">create_mapping() (in module dffml.operation.mapping)</a>
 </li>
       <li><a href="api/db/base.html#dffml.db.base.BaseDatabaseContext.create_table">create_table() (dffml.db.base.BaseDatabaseContext method)</a>
 
@@ -472,9 +660,13 @@
       </ul></li>
       <li><a href="api/db/sql.html#dffml.db.sql.SQLDatabaseContext.create_table_query">create_table_query() (dffml.db.sql.SQLDatabaseContext method)</a>
 </li>
-      <li><a href="api/source/file.html#dffml.source.csv.CSVSource">CSVSource (class in dffml.source.csv)</a>
+      <li><a href="api/cli/dataflow.html#dffml.cli.dataflow.CreateConfig">CreateConfig (class in dffml.cli.dataflow)</a>
 </li>
-      <li><a href="api/source/file.html#dffml.source.csv.CSVSourceConfig">CSVSourceConfig (class in dffml.source.csv)</a>
+      <li><a href="api/util/testing/consoletest/commands.html#dffml.util.testing.consoletest.commands.CreateVirtualEnvCommand">CreateVirtualEnvCommand (class in dffml.util.testing.consoletest.commands)</a>
+</li>
+      <li><a href="api/source/csv.html#dffml.source.csv.CSVSource">CSVSource (class in dffml.source.csv)</a>
+</li>
+      <li><a href="api/source/csv.html#dffml.source.csv.CSVSourceConfig">CSVSourceConfig (class in dffml.source.csv)</a>
 </li>
       <li><a href="api/df/base.html#dffml.df.base.BaseInputNetworkContext.ctx">ctx() (dffml.df.base.BaseInputNetworkContext method)</a>
 
@@ -487,10 +679,6 @@
 </li>
         <li><a href="api/df/memory.html#dffml.df.memory.MemoryInputNetworkContextEntry.ctx">(dffml.df.memory.MemoryInputNetworkContextEntry property)</a>
 </li>
-        <li><a href="api/df/memory.html#dffml.df.memory.MemoryInputSetConfig.ctx">(dffml.df.memory.MemoryInputSetConfig property)</a>
-</li>
-        <li><a href="api/df/memory.html#dffml.df.memory.MemoryParameterSetConfig.ctx">(dffml.df.memory.MemoryParameterSetConfig property)</a>
-</li>
       </ul></li>
   </ul></td>
 </tr></table>
@@ -498,12 +686,42 @@
 <h2 id="D">D</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/feature.html#dffml.feature.feature.Data">Data (class in dffml.feature.feature)</a>
-</li>
       <li><a href="api/db/base.html#dffml.db.base.DatabaseContextConstraint">DatabaseContextConstraint (class in dffml.db.base)</a>
 </li>
-      <li><a href="api/df/memory.html#dffml.df.memory.MemoryOrchestratorContextConfig.dataflow">dataflow() (dffml.df.memory.MemoryOrchestratorContextConfig property)</a>
+      <li><a href="api/operation/db.html#dffml.operation.db.DatabaseQueryConfig">DatabaseQueryConfig (class in dffml.operation.db)</a>
 </li>
+      <li><a href="api/operation/output.html#dffml.operation.output.RemapConfig.dataflow">dataflow() (dffml.operation.output.RemapConfig property)</a>
+</li>
+      <li><a href="api/source/df.html#dffml.source.df.DataFlowSource">DataFlowSource (class in dffml.source.df)</a>
+</li>
+      <li><a href="api/source/df.html#dffml.source.df.DataFlowSourceConfig">DataFlowSourceConfig (class in dffml.source.df)</a>
+</li>
+      <li><a href="api/source/df.html#dffml.source.df.DataFlowSourceContext">DataFlowSourceContext (class in dffml.source.df)</a>
+</li>
+      <li><a href="api/operation/db.html#dffml.operation.db.db_query_create_table">db_query_create_table() (in module dffml.operation.db)</a>
+</li>
+      <li><a href="api/operation/db.html#dffml.operation.db.db_query_insert">db_query_insert() (in module dffml.operation.db)</a>
+</li>
+      <li><a href="api/operation/db.html#dffml.operation.db.db_query_insert_or_update">db_query_insert_or_update() (in module dffml.operation.db)</a>
+</li>
+      <li><a href="api/operation/db.html#dffml.operation.db.db_query_lookup">db_query_lookup() (in module dffml.operation.db)</a>
+</li>
+      <li><a href="api/operation/db.html#dffml.operation.db.db_query_remove">db_query_remove() (in module dffml.operation.db)</a>
+</li>
+      <li><a href="api/operation/db.html#dffml.operation.db.db_query_update">db_query_update() (in module dffml.operation.db)</a>
+</li>
+      <li><a href="api/source/db.html#dffml.source.db.DbSource">DbSource (class in dffml.source.db)</a>
+</li>
+      <li><a href="api/source/db.html#dffml.source.db.DbSourceConfig">DbSourceConfig (class in dffml.source.db)</a>
+</li>
+      <li><a href="api/source/db.html#dffml.source.db.DbSourceContext">DbSourceContext (class in dffml.source.db)</a>
+</li>
+      <li><a href="api/df/types.html#dffml.df.types.Definition.default">default() (dffml.df.types.Definition property)</a>
+
+      <ul>
+        <li><a href="api/util/cli/cmd.html#dffml.util.cli.cmd.JSONEncoder.default">(dffml.util.cli.cmd.JSONEncoder method)</a>
+</li>
+      </ul></li>
       <li><a href="api/df/types.html#dffml.df.types.Definition">Definition (class in dffml.df.types)</a>
 </li>
       <li><a href="api/df/base.html#dffml.df.base.BaseInputNetworkContext.definition">definition() (dffml.df.base.BaseInputNetworkContext method)</a>
@@ -511,10 +729,12 @@
       <ul>
         <li><a href="api/df/memory.html#dffml.df.memory.MemoryInputNetworkContext.definition">(dffml.df.memory.MemoryInputNetworkContext method)</a>
 </li>
-        <li><a href="api/df/types.html#dffml.df.types.Parameter.definition">(dffml.df.types.Parameter property)</a>
-</li>
       </ul></li>
       <li><a href="api/df/types.html#dffml.df.types.DefinitionMissing">DefinitionMissing</a>
+</li>
+      <li><a href="api/df/exceptions.html#dffml.df.exceptions.DefinitionNotFoundInDataFlow">DefinitionNotFoundInDataFlow</a>
+</li>
+      <li><a href="api/df/exceptions.html#dffml.df.exceptions.DefinitionNotInContext">DefinitionNotInContext</a>
 </li>
       <li><a href="api/df/base.html#dffml.df.base.BaseInputNetworkContext.definitions">definitions() (dffml.df.base.BaseInputNetworkContext method)</a>
 
@@ -526,11 +746,73 @@
         <li><a href="api/df/types.html#dffml.df.types.Operation.definitions">(dffml.df.types.Operation class method)</a>
 </li>
       </ul></li>
+      <li><a href="api/service/dev.html#dffml.service.dev.Install.dep_check">dep_check() (dffml.service.dev.Install static method)</a>
+</li>
+      <li><a href="api/util/skel.html#dffml.util.skel.SkelTemplateConfig.description">description() (dffml.util.skel.SkelTemplateConfig property)</a>
+</li>
+      <li><a href="api/service/dev.html#dffml.service.dev.Develop">Develop (class in dffml.service.dev)</a>
+</li>
       <li>
     dffml.base
 
       <ul>
         <li><a href="api/base.html#module-dffml.base">module</a>
+</li>
+      </ul></li>
+      <li>
+    dffml.cli.cli
+
+      <ul>
+        <li><a href="api/cli/cli.html#module-dffml.cli.cli">module</a>
+</li>
+      </ul></li>
+      <li>
+    dffml.cli.config
+
+      <ul>
+        <li><a href="api/cli/config.html#module-dffml.cli.config">module</a>
+</li>
+      </ul></li>
+      <li>
+    dffml.cli.dataflow
+
+      <ul>
+        <li><a href="api/cli/dataflow.html#module-dffml.cli.dataflow">module</a>
+</li>
+      </ul></li>
+      <li>
+    dffml.cli.list
+
+      <ul>
+        <li><a href="api/cli/list.html#module-dffml.cli.list">module</a>
+</li>
+      </ul></li>
+      <li>
+    dffml.cli.log
+
+      <ul>
+        <li><a href="api/cli/log.html#module-dffml.cli.log">module</a>
+</li>
+      </ul></li>
+      <li>
+    dffml.cli.ml
+
+      <ul>
+        <li><a href="api/cli/ml.html#module-dffml.cli.ml">module</a>
+</li>
+      </ul></li>
+      <li>
+    dffml.configloader.configloader
+
+      <ul>
+        <li><a href="api/configloader/configloader.html#module-dffml.configloader.configloader">module</a>
+</li>
+      </ul></li>
+      <li>
+    dffml.configloader.json
+
+      <ul>
+        <li><a href="api/configloader/json.html#module-dffml.configloader.json">module</a>
 </li>
       </ul></li>
       <li>
@@ -562,10 +844,31 @@
 </li>
       </ul></li>
       <li>
+    dffml.df.exceptions
+
+      <ul>
+        <li><a href="api/df/exceptions.html#module-dffml.df.exceptions">module</a>
+</li>
+      </ul></li>
+      <li>
+    dffml.df.log
+
+      <ul>
+        <li><a href="api/df/log.html#module-dffml.df.log">module</a>
+</li>
+      </ul></li>
+      <li>
     dffml.df.memory
 
       <ul>
         <li><a href="api/df/memory.html#module-dffml.df.memory">module</a>
+</li>
+      </ul></li>
+      <li>
+    dffml.df.multicomm
+
+      <ul>
+        <li><a href="api/df/multicomm.html#module-dffml.df.multicomm">module</a>
 </li>
       </ul></li>
       <li>
@@ -575,34 +878,195 @@
         <li><a href="api/df/types.html#module-dffml.df.types">module</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li>
-    dffml.feature
-
-      <ul>
-        <li><a href="api/feature.html#module-dffml.feature">module</a>
-</li>
-      </ul></li>
       <li>
     dffml.feature.feature
 
       <ul>
-        <li><a href="api/feature.html#module-dffml.feature.feature">module</a>
+        <li><a href="api/feature/feature.html#module-dffml.feature.feature">module</a>
+</li>
+      </ul></li>
+      <li>
+    dffml.feature.log
+
+      <ul>
+        <li><a href="api/feature/log.html#module-dffml.feature.log">module</a>
+</li>
+      </ul></li>
+      <li>
+    dffml.log
+
+      <ul>
+        <li><a href="api/log.html#module-dffml.log">module</a>
+</li>
+      </ul></li>
+      <li>
+    dffml.model.accuracy
+
+      <ul>
+        <li><a href="api/model/accuracy.html#module-dffml.model.accuracy">module</a>
+</li>
+      </ul></li>
+      <li>
+    dffml.model.log
+
+      <ul>
+        <li><a href="api/model/log.html#module-dffml.model.log">module</a>
 </li>
       </ul></li>
       <li>
     dffml.model.model
 
       <ul>
-        <li><a href="api/model/base.html#module-dffml.model.model">module</a>
+        <li><a href="api/model/model.html#module-dffml.model.model">module</a>
+</li>
+      </ul></li>
+      <li>
+    dffml.model.slr
+
+      <ul>
+        <li><a href="api/model/slr.html#module-dffml.model.slr">module</a>
+</li>
+      </ul></li>
+      <li>
+    dffml.operation.dataflow
+
+      <ul>
+        <li><a href="api/operation/dataflow.html#module-dffml.operation.dataflow">module</a>
+</li>
+      </ul></li>
+      <li>
+    dffml.operation.db
+
+      <ul>
+        <li><a href="api/operation/db.html#module-dffml.operation.db">module</a>
+</li>
+      </ul></li>
+      <li>
+    dffml.operation.io
+
+      <ul>
+        <li><a href="api/operation/io.html#module-dffml.operation.io">module</a>
+</li>
+      </ul></li>
+      <li>
+    dffml.operation.log
+
+      <ul>
+        <li><a href="api/operation/log.html#module-dffml.operation.log">module</a>
+</li>
+      </ul></li>
+      <li>
+    dffml.operation.mapping
+
+      <ul>
+        <li><a href="api/operation/mapping.html#module-dffml.operation.mapping">module</a>
+</li>
+      </ul></li>
+      <li>
+    dffml.operation.math
+
+      <ul>
+        <li><a href="api/operation/math.html#module-dffml.operation.math">module</a>
+</li>
+      </ul></li>
+      <li>
+    dffml.operation.model
+
+      <ul>
+        <li><a href="api/operation/model.html#module-dffml.operation.model">module</a>
+</li>
+      </ul></li>
+      <li>
+    dffml.operation.output
+
+      <ul>
+        <li><a href="api/operation/output.html#module-dffml.operation.output">module</a>
+</li>
+      </ul></li>
+      <li>
+    dffml.operation.preprocess
+
+      <ul>
+        <li><a href="api/operation/preprocess.html#module-dffml.operation.preprocess">module</a>
+</li>
+      </ul></li>
+      <li>
+    dffml.plugins
+
+      <ul>
+        <li><a href="api/plugins.html#module-dffml.plugins">module</a>
+</li>
+      </ul></li>
+      <li>
+    dffml.port.json
+
+      <ul>
+        <li><a href="api/port/json.html#module-dffml.port.json">module</a>
+</li>
+      </ul></li>
+      <li>
+    dffml.port.log
+
+      <ul>
+        <li><a href="api/port/log.html#module-dffml.port.log">module</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li>
+    dffml.port.port
+
+      <ul>
+        <li><a href="api/port/port.html#module-dffml.port.port">module</a>
+</li>
+      </ul></li>
+      <li>
+    dffml.secret.base
+
+      <ul>
+        <li><a href="api/secret/base.html#module-dffml.secret.base">module</a>
+</li>
+      </ul></li>
+      <li>
+    dffml.secret.ini
+
+      <ul>
+        <li><a href="api/secret/ini.html#module-dffml.secret.ini">module</a>
+</li>
+      </ul></li>
+      <li>
+    dffml.service.dev
+
+      <ul>
+        <li><a href="api/service/dev.html#module-dffml.service.dev">module</a>
 </li>
       </ul></li>
       <li>
     dffml.source.csv
 
       <ul>
-        <li><a href="api/source/file.html#module-dffml.source.csv">module</a>
+        <li><a href="api/source/csv.html#module-dffml.source.csv">module</a>
+</li>
+      </ul></li>
+      <li>
+    dffml.source.db
+
+      <ul>
+        <li><a href="api/source/db.html#module-dffml.source.db">module</a>
+</li>
+      </ul></li>
+      <li>
+    dffml.source.df
+
+      <ul>
+        <li><a href="api/source/df.html#module-dffml.source.df">module</a>
+</li>
+      </ul></li>
+      <li>
+    dffml.source.dir
+
+      <ul>
+        <li><a href="api/source/dir.html#module-dffml.source.dir">module</a>
 </li>
       </ul></li>
       <li>
@@ -613,10 +1077,38 @@
 </li>
       </ul></li>
       <li>
+    dffml.source.idx1
+
+      <ul>
+        <li><a href="api/source/idx1.html#module-dffml.source.idx1">module</a>
+</li>
+      </ul></li>
+      <li>
+    dffml.source.idx3
+
+      <ul>
+        <li><a href="api/source/idx3.html#module-dffml.source.idx3">module</a>
+</li>
+      </ul></li>
+      <li>
+    dffml.source.ini
+
+      <ul>
+        <li><a href="api/source/ini.html#module-dffml.source.ini">module</a>
+</li>
+      </ul></li>
+      <li>
     dffml.source.json
 
       <ul>
-        <li><a href="api/source/file.html#module-dffml.source.json">module</a>
+        <li><a href="api/source/json.html#module-dffml.source.json">module</a>
+</li>
+      </ul></li>
+      <li>
+    dffml.source.log
+
+      <ul>
+        <li><a href="api/source/log.html#module-dffml.source.log">module</a>
 </li>
       </ul></li>
       <li>
@@ -627,10 +1119,17 @@
 </li>
       </ul></li>
       <li>
+    dffml.source.op
+
+      <ul>
+        <li><a href="api/source/op.html#module-dffml.source.op">module</a>
+</li>
+      </ul></li>
+      <li>
     dffml.source.source
 
       <ul>
-        <li><a href="api/source/base.html#module-dffml.source.source">module</a>
+        <li><a href="api/source/source.html#module-dffml.source.source">module</a>
 </li>
       </ul></li>
       <li>
@@ -641,13 +1140,210 @@
 </li>
       </ul></li>
       <li>
+    dffml.util.asynctestcase
+
+      <ul>
+        <li><a href="api/util/asynctestcase.html#module-dffml.util.asynctestcase">module</a>
+</li>
+      </ul></li>
+      <li>
+    dffml.util.cli.arg
+
+      <ul>
+        <li><a href="api/util/cli/arg.html#module-dffml.util.cli.arg">module</a>
+</li>
+      </ul></li>
+      <li>
+    dffml.util.cli.cmd
+
+      <ul>
+        <li><a href="api/util/cli/cmd.html#module-dffml.util.cli.cmd">module</a>
+</li>
+      </ul></li>
+      <li>
+    dffml.util.cli.cmds
+
+      <ul>
+        <li><a href="api/util/cli/cmds.html#module-dffml.util.cli.cmds">module</a>
+</li>
+      </ul></li>
+      <li>
+    dffml.util.cli.log
+
+      <ul>
+        <li><a href="api/util/cli/log.html#module-dffml.util.cli.log">module</a>
+</li>
+      </ul></li>
+      <li>
+    dffml.util.cli.parser
+
+      <ul>
+        <li><a href="api/util/cli/parser.html#module-dffml.util.cli.parser">module</a>
+</li>
+      </ul></li>
+      <li>
+    dffml.util.config.exceptions
+
+      <ul>
+        <li><a href="api/util/config/exceptions.html#module-dffml.util.config.exceptions">module</a>
+</li>
+      </ul></li>
+      <li>
+    dffml.util.config.fields
+
+      <ul>
+        <li><a href="api/util/config/fields.html#module-dffml.util.config.fields">module</a>
+</li>
+      </ul></li>
+      <li>
+    dffml.util.config.numpy
+
+      <ul>
+        <li><a href="api/util/config/numpy.html#module-dffml.util.config.numpy">module</a>
+</li>
+      </ul></li>
+      <li>
+    dffml.util.data
+
+      <ul>
+        <li><a href="api/util/data.html#module-dffml.util.data">module</a>
+</li>
+      </ul></li>
+      <li>
+    dffml.util.display
+
+      <ul>
+        <li><a href="api/util/display.html#module-dffml.util.display">module</a>
+</li>
+      </ul></li>
+      <li>
+    dffml.util.entrypoint
+
+      <ul>
+        <li><a href="api/util/entrypoint.html#module-dffml.util.entrypoint">module</a>
+</li>
+      </ul></li>
+      <li>
+    dffml.util.log
+
+      <ul>
+        <li><a href="api/util/log.html#module-dffml.util.log">module</a>
+</li>
+      </ul></li>
+      <li>
     dffml.util.net
 
       <ul>
         <li><a href="api/util/net.html#module-dffml.util.net">module</a>
 </li>
       </ul></li>
-      <li><a href="api/model/base.html#dffml.model.model.SimpleModel.disk_path">disk_path() (dffml.model.model.SimpleModel method)</a>
+      <li>
+    dffml.util.os
+
+      <ul>
+        <li><a href="api/util/os.html#module-dffml.util.os">module</a>
+</li>
+      </ul></li>
+      <li>
+    dffml.util.packaging
+
+      <ul>
+        <li><a href="api/util/packaging.html#module-dffml.util.packaging">module</a>
+</li>
+      </ul></li>
+      <li>
+    dffml.util.skel
+
+      <ul>
+        <li><a href="api/util/skel.html#module-dffml.util.skel">module</a>
+</li>
+      </ul></li>
+      <li>
+    dffml.util.tempdir
+
+      <ul>
+        <li><a href="api/util/tempdir.html#module-dffml.util.tempdir">module</a>
+</li>
+      </ul></li>
+      <li>
+    dffml.util.testing.consoletest.builder
+
+      <ul>
+        <li><a href="api/util/testing/consoletest/builder.html#module-dffml.util.testing.consoletest.builder">module</a>
+</li>
+      </ul></li>
+      <li>
+    dffml.util.testing.consoletest.cli
+
+      <ul>
+        <li><a href="api/util/testing/consoletest/cli.html#module-dffml.util.testing.consoletest.cli">module</a>
+</li>
+      </ul></li>
+      <li>
+    dffml.util.testing.consoletest.commands
+
+      <ul>
+        <li><a href="api/util/testing/consoletest/commands.html#module-dffml.util.testing.consoletest.commands">module</a>
+</li>
+      </ul></li>
+      <li>
+    dffml.util.testing.consoletest.directives
+
+      <ul>
+        <li><a href="api/util/testing/consoletest/directives.html#module-dffml.util.testing.consoletest.directives">module</a>
+</li>
+      </ul></li>
+      <li>
+    dffml.util.testing.consoletest.parser
+
+      <ul>
+        <li><a href="api/util/testing/consoletest/parser.html#module-dffml.util.testing.consoletest.parser">module</a>
+</li>
+      </ul></li>
+      <li>
+    dffml.util.testing.consoletest.runner
+
+      <ul>
+        <li><a href="api/util/testing/consoletest/runner.html#module-dffml.util.testing.consoletest.runner">module</a>
+</li>
+      </ul></li>
+      <li>
+    dffml.util.testing.consoletest.util
+
+      <ul>
+        <li><a href="api/util/testing/consoletest/util.html#module-dffml.util.testing.consoletest.util">module</a>
+</li>
+      </ul></li>
+      <li>
+    dffml.util.testing.docs
+
+      <ul>
+        <li><a href="api/util/testing/docs.html#module-dffml.util.testing.docs">module</a>
+</li>
+      </ul></li>
+      <li>
+    dffml.util.testing.source
+
+      <ul>
+        <li><a href="api/util/testing/source.html#module-dffml.util.testing.source">module</a>
+</li>
+      </ul></li>
+      <li>
+    dffml.version
+
+      <ul>
+        <li><a href="api/version.html#module-dffml.version">module</a>
+</li>
+      </ul></li>
+      <li><a href="api/util/skel.html#dffml.util.skel.SkelTemplateConfig.dffml_version">dffml_version() (dffml.util.skel.SkelTemplateConfig property)</a>
+</li>
+      <li><a href="api/cli/dataflow.html#dffml.cli.dataflow.DiagramConfig">DiagramConfig (class in dffml.cli.dataflow)</a>
+</li>
+      <li><a href="api/source/dir.html#dffml.source.dir.DirectorySource">DirectorySource (class in dffml.source.dir)</a>
+</li>
+      <li><a href="api/source/dir.html#dffml.source.dir.DirectorySourceConfig">DirectorySourceConfig (class in dffml.source.dir)</a>
+</li>
+      <li><a href="api/model/model.html#dffml.model.model.SimpleModel.disk_path">disk_path() (dffml.model.model.SimpleModel method)</a>
 </li>
       <li><a href="api/df/base.html#dffml.df.base.BaseOperationImplementationNetworkContext.dispatch">dispatch() (dffml.df.base.BaseOperationImplementationNetworkContext method)</a>
 
@@ -655,25 +1351,79 @@
         <li><a href="api/df/memory.html#dffml.df.memory.MemoryOperationImplementationNetworkContext.dispatch">(dffml.df.memory.MemoryOperationImplementationNetworkContext method)</a>
 </li>
       </ul></li>
-      <li><a href="api/df/memory.html#dffml.df.memory.MemoryOperationImplementationNetworkContext.dispatch_auto_starts">dispatch_auto_starts() (dffml.df.memory.MemoryOperationImplementationNetworkContext method)</a>
+      <li><a href="api/df/memory.html#dffml.df.memory.MemoryOrchestratorContext.dispatch_auto_starts">dispatch_auto_starts() (dffml.df.memory.MemoryOrchestratorContext method)</a>
 </li>
-      <li><a href="api/feature.html#dffml.feature.feature.Feature.dtype">dtype() (dffml.feature.feature.Feature method)</a>
+      <li><a href="api/util/cli/cmds.html#dffml.util.cli.cmds.ListEntrypoint.display">display() (dffml.util.cli.cmds.ListEntrypoint method)</a>
 </li>
-      <li><a href="api/source/file.html#dffml.source.csv.CSVSource.dump_fd">dump_fd() (dffml.source.csv.CSVSource method)</a>
+      <li><a href="api/util/testing/consoletest/commands.html#dffml.util.testing.consoletest.commands.DockerRunCommand">DockerRunCommand (class in dffml.util.testing.consoletest.commands)</a>
 </li>
+      <li><a href="api/source/csv.html#dffml.source.csv.CSVSource.dump_fd">dump_fd() (dffml.source.csv.CSVSource method)</a>
+</li>
+      <li><a href="api/configloader/configloader.html#dffml.configloader.configloader.BaseConfigLoaderContext.dumpb">dumpb() (dffml.configloader.configloader.BaseConfigLoaderContext method)</a>
+
+      <ul>
+        <li><a href="api/configloader/json.html#dffml.configloader.json.JSONConfigLoaderContext.dumpb">(dffml.configloader.json.JSONConfigLoaderContext method)</a>
+</li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
 <h2 id="E">E</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/cli/cli.html#dffml.cli.cli.Edit">Edit (class in dffml.cli.cli)</a>
+</li>
+      <li><a href="api/cli/cli.html#dffml.cli.cli.CLI.edit">edit (dffml.cli.cli.CLI attribute)</a>
+</li>
+      <li><a href="api/cli/cli.html#dffml.cli.cli.EditAllRecords">EditAllRecords (class in dffml.cli.cli)</a>
+</li>
+      <li><a href="api/cli/cli.html#dffml.cli.cli.EditCMDConfig">EditCMDConfig (class in dffml.cli.cli)</a>
+</li>
+      <li><a href="api/cli/cli.html#dffml.cli.cli.EditRecord">EditRecord (class in dffml.cli.cli)</a>
+</li>
+      <li><a href="api/cli/cli.html#dffml.cli.cli.EditRecordConfig">EditRecordConfig (class in dffml.cli.cli)</a>
+</li>
+      <li><a href="api/util/skel.html#dffml.util.skel.SkelTemplateConfig.email">email() (dffml.util.skel.SkelTemplateConfig property)</a>
+</li>
+      <li><a href="api/source/op.html#dffml.source.op.EmptyError">EmptyError</a>
+</li>
       <li><a href="api/df/memory.html#dffml.df.memory.MemoryOperationImplementationNetworkContext.ensure_contains">ensure_contains() (dffml.df.memory.MemoryOperationImplementationNetworkContext method)</a>
 </li>
+      <li><a href="api/util/entrypoint.html#dffml.util.entrypoint.Entrypoint">Entrypoint (class in dffml.util.entrypoint)</a>
+</li>
+      <li><a href="api/cli/list.html#dffml.cli.list.ListModels.ENTRYPOINT">ENTRYPOINT (dffml.cli.list.ListModels attribute)</a>
+
+      <ul>
+        <li><a href="api/cli/list.html#dffml.cli.list.ListSources.ENTRYPOINT">(dffml.cli.list.ListSources attribute)</a>
+</li>
+      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/util/entrypoint.html#dffml.util.entrypoint.entrypoint">entrypoint() (in module dffml.util.entrypoint)</a>
+</li>
+      <li><a href="api/util/entrypoint.html#dffml.util.entrypoint.EntrypointNotFound">EntrypointNotFound</a>
+</li>
       <li><a href="api/record.html#dffml.record.Record.evaluated">evaluated() (dffml.record.Record method)</a>
 </li>
       <li><a href="api/df/types.html#dffml.df.types.Operation.expand">expand() (dffml.df.types.Operation property)</a>
+</li>
+      <li><a href="api/util/data.html#dffml.util.data.explore_directories">explore_directories() (in module dffml.util.data)</a>
+</li>
+      <li><a href="api/cli/cli.html#dffml.cli.cli.Export">Export (class in dffml.cli.cli)</a>
+</li>
+      <li><a href="api/cli/cli.html#dffml.cli.cli.CLI.export">export (dffml.cli.cli.CLI attribute)</a>
+</li>
+      <li><a href="api/util/data.html#dffml.util.data.export">export() (in module dffml.util.data)</a>
+</li>
+      <li><a href="api/util/data.html#dffml.util.data.export_dict">export_dict() (in module dffml.util.data)</a>
+</li>
+      <li><a href="api/port/json.html#dffml.port.json.JSON.export_fd">export_fd() (dffml.port.json.JSON method)</a>
+
+      <ul>
+        <li><a href="api/port/port.html#dffml.port.port.Port.export_fd">(dffml.port.port.Port method)</a>
+</li>
+      </ul></li>
+      <li><a href="api/service/dev.html#dffml.service.dev.ExportConfig">ExportConfig (class in dffml.service.dev)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -681,15 +1431,19 @@
 <h2 id="F">F</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/cli/cli.html#dffml.cli.cli.failed_to_load_service">failed_to_load_service() (in module dffml.cli.cli)</a>
+</li>
       <li><a href="api/df/types.html#dffml.df.types.FailedToLoadOperation">FailedToLoadOperation</a>
 </li>
       <li><a href="api/df/base.html#dffml.df.base.FailedToLoadOperationImplementation">FailedToLoadOperationImplementation</a>
 </li>
-      <li><a href="api/feature.html#dffml.feature.feature.Feature">Feature (class in dffml.feature.feature)</a>
+      <li><a href="api/source/source.html#dffml.source.source.NoRecordsWithMatchingFeaturesHelper.failureException">failureException (dffml.source.source.NoRecordsWithMatchingFeaturesHelper attribute)</a>
+</li>
+      <li><a href="api/feature/feature.html#dffml.feature.feature.Feature">Feature (class in dffml.feature.feature)</a>
 </li>
       <li><a href="api/record.html#dffml.record.Record.feature">feature() (dffml.record.Record method)</a>
 </li>
-      <li><a href="api/feature.html#dffml.feature.feature.Features">Features (class in dffml.feature.feature)</a>
+      <li><a href="api/feature/feature.html#dffml.feature.feature.Features">Features (class in dffml.feature.feature)</a>
 </li>
       <li><a href="api/record.html#dffml.record.Record.features">features() (dffml.record.Record method)</a>
 </li>
@@ -701,11 +1455,17 @@
 </li>
       <li><a href="api/source/file.html#dffml.source.file.FileSourceConfig">FileSourceConfig (class in dffml.source.file)</a>
 </li>
+      <li><a href="api/util/testing/source.html#dffml.util.testing.source.FileSourceTest">FileSourceTest (class in dffml.util.testing.source)</a>
+</li>
       <li><a href="api/df/types.html#dffml.df.types.Output.fill">fill() (dffml.df.types.Output property)</a>
 </li>
-      <li><a href="api/df/types.html#dffml.df.types.Forward">Forward (class in dffml.df.types)</a>
+      <li><a href="api/util/testing/consoletest/commands.html#dffml.util.testing.consoletest.commands.DockerRunCommand.find_name">find_name() (dffml.util.testing.consoletest.commands.DockerRunCommand static method)</a>
 </li>
-      <li><a href="api/feature.html#dffml.feature.feature.Frequency">Frequency (class in dffml.feature.feature)</a>
+      <li><a href="api/util/testing/consoletest/commands.html#dffml.util.testing.consoletest.commands.PipInstallCommand.fix_dffml_packages">fix_dffml_packages() (dffml.util.testing.consoletest.commands.PipInstallCommand method)</a>
+</li>
+      <li><a href="api/source/dir.html#dffml.source.dir.FolderNotFoundError">FolderNotFoundError</a>
+</li>
+      <li><a href="api/df/types.html#dffml.df.types.Forward">Forward (class in dffml.df.types)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -724,14 +1484,28 @@
       <ul>
         <li><a href="api/df/memory.html#dffml.df.memory.MemoryKeyValueStoreContext.get">(dffml.df.memory.MemoryKeyValueStoreContext method)</a>
 </li>
+        <li><a href="api/secret/base.html#dffml.secret.base.BaseSecretContext.get">(dffml.secret.base.BaseSecretContext method)</a>
+</li>
+        <li><a href="api/secret/ini.html#dffml.secret.ini.INISecretContext.get">(dffml.secret.ini.INISecretContext method)</a>
+</li>
       </ul></li>
+      <li><a href="api/df/types.html#dffml.df.types.InputFlow.get_alternate_definitions">get_alternate_definitions() (dffml.df.types.InputFlow static method)</a>
+</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/base.html#dffml.base.get_args">get_args() (in module dffml.base)</a>
-</li>
       <li><a href="api/df/types.html#dffml.df.types.Forward.get_instances_to_forward">get_instances_to_forward() (dffml.df.types.Forward method)</a>
 </li>
-      <li><a href="api/base.html#dffml.base.get_origin">get_origin() (in module dffml.base)</a>
+      <li><a href="api/operation/output.html#dffml.operation.output.GetMulti">GetMulti (class in dffml.operation.output)</a>
+</li>
+      <li><a href="api/operation/output.html#dffml.operation.output.GetSingle">GetSingle (class in dffml.operation.output)</a>
+</li>
+      <li><a href="api/cli/cli.html#dffml.cli.cli.Version.git_hash">git_hash() (dffml.cli.cli.Version static method)</a>
+</li>
+      <li><a href="api/operation/output.html#dffml.operation.output.GroupBySpec.group">group() (dffml.operation.output.GroupBySpec property)</a>
+</li>
+      <li><a href="api/operation/output.html#dffml.operation.output.GroupBy">GroupBy (class in dffml.operation.output)</a>
+</li>
+      <li><a href="api/operation/output.html#dffml.operation.output.GroupBySpec">GroupBySpec (class in dffml.operation.output)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -742,17 +1516,71 @@
       <li><a href="api/util/net.html#dffml.util.net.HashValidationError">HashValidationError</a>
 </li>
   </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/util/testing/consoletest/commands.html#dffml.util.testing.consoletest.commands.HTTPServerCMDDoesNotHavePortFlag">HTTPServerCMDDoesNotHavePortFlag</a>
+</li>
+  </ul></td>
 </tr></table>
 
 <h2 id="I">I</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/source/idx1.html#dffml.source.idx1.IDX1Source">IDX1Source (class in dffml.source.idx1)</a>
+</li>
+      <li><a href="api/source/idx1.html#dffml.source.idx1.IDX1SourceConfig">IDX1SourceConfig (class in dffml.source.idx1)</a>
+</li>
+      <li><a href="api/source/idx3.html#dffml.source.idx3.IDX3Source">IDX3Source (class in dffml.source.idx3)</a>
+</li>
+      <li><a href="api/source/idx3.html#dffml.source.idx3.IDX3SourceConfig">IDX3SourceConfig (class in dffml.source.idx3)</a>
+</li>
+      <li><a href="api/source/idx1.html#dffml.source.idx1.IDXSourceConfig">IDXSourceConfig (class in dffml.source.idx1)</a>
+</li>
+      <li><a href="api/util/data.html#dffml.util.data.ignore_args">ignore_args() (in module dffml.util.data)</a>
+</li>
+      <li><a href="api/operation/dataflow.html#dffml.operation.dataflow.run_dataflow.imp">imp (dffml.operation.dataflow.run_dataflow attribute)</a>
+
+      <ul>
+        <li><a href="api/operation/output.html#dffml.operation.output.Associate.imp">(dffml.operation.output.Associate attribute)</a>
+</li>
+        <li><a href="api/operation/output.html#dffml.operation.output.AssociateDefinition.imp">(dffml.operation.output.AssociateDefinition attribute)</a>
+</li>
+        <li><a href="api/operation/output.html#dffml.operation.output.GetMulti.imp">(dffml.operation.output.GetMulti attribute)</a>
+</li>
+        <li><a href="api/operation/output.html#dffml.operation.output.GetSingle.imp">(dffml.operation.output.GetSingle attribute)</a>
+</li>
+        <li><a href="api/operation/output.html#dffml.operation.output.GroupBy.imp">(dffml.operation.output.GroupBy attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="api/cli/cli.html#dffml.cli.cli.Import">Import (class in dffml.cli.cli)</a>
+</li>
+      <li><a href="api/port/json.html#dffml.port.json.JSON.import_fd">import_fd() (dffml.port.json.JSON method)</a>
+
+      <ul>
+        <li><a href="api/port/port.html#dffml.port.port.Port.import_fd">(dffml.port.port.Port method)</a>
+</li>
+      </ul></li>
+      <li><a href="api/cli/cli.html#dffml.cli.cli.ImportExportCMD">ImportExportCMD (class in dffml.cli.cli)</a>
+</li>
+      <li><a href="api/cli/cli.html#dffml.cli.cli.ImportExportCMDConfig">ImportExportCMDConfig (class in dffml.cli.cli)</a>
+</li>
+      <li><a href="api/secret/ini.html#dffml.secret.ini.INISecret">INISecret (class in dffml.secret.ini)</a>
+</li>
+      <li><a href="api/secret/ini.html#dffml.secret.ini.INISecretConfig">INISecretConfig (class in dffml.secret.ini)</a>
+</li>
+      <li><a href="api/secret/ini.html#dffml.secret.ini.INISecretContext">INISecretContext (class in dffml.secret.ini)</a>
+</li>
+      <li><a href="api/source/ini.html#dffml.source.ini.INISource">INISource (class in dffml.source.ini)</a>
+</li>
+      <li><a href="api/source/ini.html#dffml.source.ini.INISourceConfig">INISourceConfig (class in dffml.source.ini)</a>
+</li>
       <li><a href="api/df/memory.html#dffml.df.memory.MemoryOrchestratorContext.initialize_dataflow">initialize_dataflow() (dffml.df.memory.MemoryOrchestratorContext method)</a>
 </li>
       <li><a href="api/df/types.html#dffml.df.types.Input">Input (class in dffml.df.types)</a>
 </li>
       <li><a href="api/df/base.html#dffml.df.base.BaseOrchestratorConfig.input_network">input_network() (dffml.df.base.BaseOrchestratorConfig property)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/df/types.html#dffml.df.types.InputFlow">InputFlow (class in dffml.df.types)</a>
 </li>
       <li><a href="api/df/base.html#dffml.df.base.BaseDefinitionSetContext.inputs">inputs() (dffml.df.base.BaseDefinitionSetContext method)</a>
@@ -760,20 +1588,24 @@
       <ul>
         <li><a href="api/df/memory.html#dffml.df.memory.MemoryDefinitionSetContext.inputs">(dffml.df.memory.MemoryDefinitionSetContext method)</a>
 </li>
-        <li><a href="api/df/memory.html#dffml.df.memory.MemoryInputSetConfig.inputs">(dffml.df.memory.MemoryInputSetConfig property)</a>
-</li>
         <li><a href="api/df/types.html#dffml.df.types.Operation.inputs">(dffml.df.types.Operation property)</a>
 </li>
       </ul></li>
+      <li><a href="api/df/exceptions.html#dffml.df.exceptions.InputValidationError">InputValidationError</a>
+</li>
       <li><a href="api/db/base.html#dffml.db.base.BaseDatabaseContext.insert">insert() (dffml.db.base.BaseDatabaseContext method)</a>
 
       <ul>
         <li><a href="api/db/sqlite.html#dffml.db.sqlite.SqliteDatabaseContext.insert">(dffml.db.sqlite.SqliteDatabaseContext method)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/db/sql.html#dffml.db.sql.SQLDatabaseContext.insert_query">insert_query() (dffml.db.sql.SQLDatabaseContext method)</a>
+</li>
+      <li><a href="api/service/dev.html#dffml.service.dev.Install">Install (class in dffml.service.dev)</a>
+</li>
+      <li><a href="api/service/dev.html#dffml.service.dev.Develop.install">install (dffml.service.dev.Develop attribute)</a>
+</li>
+      <li><a href="api/service/dev.html#dffml.service.dev.InstallConfig">InstallConfig (class in dffml.service.dev)</a>
 </li>
       <li><a href="api/df/types.html#dffml.df.types.Operation.instance_name">instance_name() (dffml.df.types.Operation property)</a>
 </li>
@@ -789,7 +1621,17 @@
         <li><a href="api/df/memory.html#dffml.df.memory.MemoryOperationImplementationNetworkContext.instantiate">(dffml.df.memory.MemoryOperationImplementationNetworkContext method)</a>
 </li>
       </ul></li>
+      <li><a href="api/util/asynctestcase.html#dffml.util.asynctestcase.IntegrationCLITestCase">IntegrationCLITestCase (class in dffml.util.asynctestcase)</a>
+</li>
+      <li><a href="api/service/dev.html#dffml.service.dev.Bump.inter">inter (dffml.service.dev.Bump attribute)</a>
+</li>
+      <li><a href="api/operation/dataflow.html#dffml.operation.dataflow.InvalidCustomRunDataFlowContext">InvalidCustomRunDataFlowContext</a>
+</li>
+      <li><a href="api/operation/dataflow.html#dffml.operation.dataflow.InvalidCustomRunDataFlowOutputs">InvalidCustomRunDataFlowOutputs</a>
+</li>
       <li><a href="api/base.html#dffml.base.is_config_dict">is_config_dict() (in module dffml.base)</a>
+</li>
+      <li><a href="api/util/packaging.html#dffml.util.packaging.is_develop">is_develop() (in module dffml.util.packaging)</a>
 </li>
       <li><a href="api/df/types.html#dffml.df.types.Output.ismap">ismap() (dffml.df.types.Output property)</a>
 </li>
@@ -805,11 +1647,19 @@
 <h2 id="J">J</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/source/file.html#dffml.source.json.JSONSource">JSONSource (class in dffml.source.json)</a>
+      <li><a href="api/port/json.html#dffml.port.json.JSON">JSON (class in dffml.port.json)</a>
+</li>
+      <li><a href="api/configloader/json.html#dffml.configloader.json.JSONConfigLoader">JSONConfigLoader (class in dffml.configloader.json)</a>
+</li>
+      <li><a href="api/configloader/json.html#dffml.configloader.json.JSONConfigLoaderContext">JSONConfigLoaderContext (class in dffml.configloader.json)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/source/file.html#dffml.source.json.JSONSourceConfig">JSONSourceConfig (class in dffml.source.json)</a>
+      <li><a href="api/util/cli/cmd.html#dffml.util.cli.cmd.JSONEncoder">JSONEncoder (class in dffml.util.cli.cmd)</a>
+</li>
+      <li><a href="api/source/json.html#dffml.source.json.JSONSource">JSONSource (class in dffml.source.json)</a>
+</li>
+      <li><a href="api/source/json.html#dffml.source.json.JSONSourceConfig">JSONSourceConfig (class in dffml.source.json)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -817,11 +1667,11 @@
 <h2 id="K">K</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/df/types.html#dffml.df.types.Parameter.key">key() (dffml.df.types.Parameter property)</a>
+      <li><a href="api/df/base.html#dffml.df.base.BaseRedundancyCheckerConfig.key_value_store">key_value_store() (dffml.df.base.BaseRedundancyCheckerConfig property)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/df/base.html#dffml.df.base.BaseRedundancyCheckerConfig.key_value_store">key_value_store() (dffml.df.base.BaseRedundancyCheckerConfig property)</a>
+      <li><a href="api/util/cli/cmds.html#dffml.util.cli.cmds.KeysCMDConfig">KeysCMDConfig (class in dffml.util.cli.cmds)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -829,22 +1679,62 @@
 <h2 id="L">L</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/feature.html#dffml.feature.feature.Feature.length">length() (dffml.feature.feature.Feature method)</a>
+      <li><a href="api/service/dev.html#dffml.service.dev.Link">Link (class in dffml.service.dev)</a>
+</li>
+      <li><a href="api/service/dev.html#dffml.service.dev.Skeleton.link">link (dffml.service.dev.Skeleton attribute)</a>
+</li>
+      <li><a href="api/cli/list.html#dffml.cli.list.List">List (class in dffml.cli.list)</a>
 </li>
       <li><a href="api/base.html#dffml.base.list_action">list_action() (in module dffml.base)</a>
+
+      <ul>
+        <li><a href="api/util/cli/parser.html#dffml.util.cli.parser.list_action">(in module dffml.util.cli.parser)</a>
+</li>
+      </ul></li>
+      <li><a href="api/util/cli/cmds.html#dffml.util.cli.cmds.ListEntrypoint">ListEntrypoint (class in dffml.util.cli.cmds)</a>
+</li>
+      <li><a href="api/service/dev.html#dffml.service.dev.ListEntrypointsConfig">ListEntrypointsConfig (class in dffml.service.dev)</a>
+</li>
+      <li><a href="api/cli/list.html#dffml.cli.list.ListModels">ListModels (class in dffml.cli.list)</a>
+</li>
+      <li><a href="api/cli/list.html#dffml.cli.list.ListRecords">ListRecords (class in dffml.cli.list)</a>
+</li>
+      <li><a href="api/cli/list.html#dffml.cli.list.ListRecordsConfig">ListRecordsConfig (class in dffml.cli.list)</a>
+</li>
+      <li><a href="api/cli/list.html#dffml.cli.list.ListServices">ListServices (class in dffml.cli.list)</a>
+</li>
+      <li><a href="api/cli/list.html#dffml.cli.list.ListSources">ListSources (class in dffml.cli.list)</a>
+</li>
+      <li><a href="api/operation/preprocess.html#dffml.operation.preprocess.literal_eval">literal_eval() (in module dffml.operation.preprocess)</a>
 </li>
       <li><a href="api/df/base.html#dffml.df.base.OperationImplementation.load">load() (dffml.df.base.OperationImplementation class method)</a>
 
       <ul>
-        <li><a href="api/feature.html#dffml.feature.feature.Feature.load">(dffml.feature.feature.Feature class method)</a>
+        <li><a href="api/util/entrypoint.html#dffml.util.entrypoint.Entrypoint.load">(dffml.util.entrypoint.Entrypoint class method)</a>
+</li>
+        <li><a href="api/high_level.html#dffml.high_level.load">(in module dffml.high_level)</a>
+</li>
+        <li><a href="api/util/entrypoint.html#dffml.util.entrypoint.load">(in module dffml.util.entrypoint)</a>
 </li>
       </ul></li>
-      <li><a href="api/source/file.html#dffml.source.csv.CSVSource.load_fd">load_fd() (dffml.source.csv.CSVSource method)</a>
-</li>
-      <li><a href="api/df/types.html#dffml.df.types.Definition.lock">lock() (dffml.df.types.Definition property)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/util/entrypoint.html#dffml.util.entrypoint.Entrypoint.load_dict">load_dict() (dffml.util.entrypoint.Entrypoint class method)</a>
+</li>
+      <li><a href="api/source/csv.html#dffml.source.csv.CSVSource.load_fd">load_fd() (dffml.source.csv.CSVSource method)</a>
+</li>
+      <li><a href="api/util/entrypoint.html#dffml.util.entrypoint.Entrypoint.load_multiple">load_multiple() (dffml.util.entrypoint.Entrypoint class method)</a>
+</li>
+      <li><a href="api/configloader/configloader.html#dffml.configloader.configloader.BaseConfigLoader.load_single_file">load_single_file() (dffml.configloader.configloader.BaseConfigLoader class method)</a>
+</li>
+      <li><a href="api/configloader/configloader.html#dffml.configloader.configloader.BaseConfigLoaderContext.loadb">loadb() (dffml.configloader.configloader.BaseConfigLoaderContext method)</a>
+
+      <ul>
+        <li><a href="api/configloader/json.html#dffml.configloader.json.JSONConfigLoaderContext.loadb">(dffml.configloader.json.JSONConfigLoaderContext method)</a>
+</li>
+      </ul></li>
+      <li><a href="api/df/types.html#dffml.df.types.Definition.lock">lock() (dffml.df.types.Definition property)</a>
+</li>
       <li><a href="api/df/base.html#dffml.df.base.BaseOrchestratorConfig.lock_network">lock_network() (dffml.df.base.BaseOrchestratorConfig property)</a>
 </li>
       <li><a href="api/base.html#dffml.base.LoggingLogger.logger">logger() (dffml.base.LoggingLogger property)</a>
@@ -865,15 +1755,23 @@
 <h2 id="M">M</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/util/testing/consoletest/cli.html#dffml.util.testing.consoletest.cli.main">main() (in module dffml.util.testing.consoletest.cli)</a>
+</li>
       <li><a href="api/db/sql.html#dffml.db.sql.SQLDatabaseContext.make_condition_expression">make_condition_expression() (dffml.db.sql.SQLDatabaseContext class method)</a>
 </li>
       <li><a href="api/base.html#dffml.base.make_config">make_config() (in module dffml.base)</a>
+</li>
+      <li><a href="api/util/config/numpy.html#dffml.util.config.numpy.make_config_numpy">make_config_numpy() (in module dffml.util.config.numpy)</a>
+</li>
+      <li><a href="api/operation/mapping.html#dffml.operation.mapping.mapping_extract_value">mapping_extract_value() (in module dffml.operation.mapping)</a>
 </li>
       <li><a href="api/df/memory.html#dffml.df.memory.MemoryDataFlowObjectContextConfig">MemoryDataFlowObjectContextConfig (class in dffml.df.memory)</a>
 </li>
       <li><a href="api/df/memory.html#dffml.df.memory.MemoryDefinitionSetContext">MemoryDefinitionSetContext (class in dffml.df.memory)</a>
 </li>
       <li><a href="api/df/memory.html#dffml.df.memory.MemoryInputNetwork">MemoryInputNetwork (class in dffml.df.memory)</a>
+</li>
+      <li><a href="api/df/memory.html#dffml.df.memory.MemoryInputNetworkConfig">MemoryInputNetworkConfig (class in dffml.df.memory)</a>
 </li>
       <li><a href="api/df/memory.html#dffml.df.memory.MemoryInputNetworkContext">MemoryInputNetworkContext (class in dffml.df.memory)</a>
 </li>
@@ -885,9 +1783,13 @@
 </li>
       <li><a href="api/df/memory.html#dffml.df.memory.MemoryKeyValueStore">MemoryKeyValueStore (class in dffml.df.memory)</a>
 </li>
+      <li><a href="api/df/memory.html#dffml.df.memory.MemoryKeyValueStoreConfig">MemoryKeyValueStoreConfig (class in dffml.df.memory)</a>
+</li>
       <li><a href="api/df/memory.html#dffml.df.memory.MemoryKeyValueStoreContext">MemoryKeyValueStoreContext (class in dffml.df.memory)</a>
 </li>
       <li><a href="api/df/memory.html#dffml.df.memory.MemoryLockNetwork">MemoryLockNetwork (class in dffml.df.memory)</a>
+</li>
+      <li><a href="api/df/memory.html#dffml.df.memory.MemoryLockNetworkConfig">MemoryLockNetworkConfig (class in dffml.df.memory)</a>
 </li>
       <li><a href="api/df/memory.html#dffml.df.memory.MemoryLockNetworkContext">MemoryLockNetworkContext (class in dffml.df.memory)</a>
 </li>
@@ -917,19 +1819,33 @@
 </li>
       <li><a href="api/df/memory.html#dffml.df.memory.MemoryRedundancyChecker">MemoryRedundancyChecker (class in dffml.df.memory)</a>
 </li>
+      <li><a href="api/df/memory.html#dffml.df.memory.MemoryRedundancyCheckerConfig">MemoryRedundancyCheckerConfig (class in dffml.df.memory)</a>
+</li>
       <li><a href="api/df/memory.html#dffml.df.memory.MemoryRedundancyCheckerContext">MemoryRedundancyCheckerContext (class in dffml.df.memory)</a>
 </li>
       <li><a href="api/source/memory.html#dffml.source.memory.MemorySource">MemorySource (class in dffml.source.memory)</a>
 </li>
       <li><a href="api/source/memory.html#dffml.source.memory.MemorySourceConfig">MemorySourceConfig (class in dffml.source.memory)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/source/memory.html#dffml.source.memory.MemorySourceContext">MemorySourceContext (class in dffml.source.memory)</a>
 </li>
+      <li><a href="api/cli/cli.html#dffml.cli.cli.Merge">Merge (class in dffml.cli.cli)</a>
+</li>
+      <li><a href="api/cli/cli.html#dffml.cli.cli.CLI.merge">merge (dffml.cli.cli.CLI attribute)</a>
+</li>
+      <li><a href="api/cli/cli.html#dffml.cli.cli.MergeConfig">MergeConfig (class in dffml.cli.cli)</a>
+
+      <ul>
+        <li><a href="api/cli/dataflow.html#dffml.cli.dataflow.MergeConfig">(class in dffml.cli.dataflow)</a>
+</li>
+      </ul></li>
       <li><a href="api/base.html#dffml.base.MissingArg">MissingArg</a>
 </li>
       <li><a href="api/base.html#dffml.base.MissingConfig">MissingConfig</a>
+</li>
+      <li><a href="api/service/dev.html#dffml.service.dev.MissingDependenciesError">MissingDependenciesError</a>
+</li>
+      <li><a href="api/util/entrypoint.html#dffml.util.entrypoint.MissingLabel">MissingLabel</a>
 </li>
       <li><a href="api/base.html#dffml.base.MissingRequiredProperty">MissingRequiredProperty</a>
 </li>
@@ -937,21 +1853,53 @@
 </li>
       <li><a href="api/base.html#dffml.base.mkarg">mkarg() (in module dffml.base)</a>
 </li>
-      <li><a href="api/feature.html#dffml.feature.feature.Data.mklock">mklock() (dffml.feature.feature.Data method)</a>
+      <li><a href="api/util/tempdir.html#dffml.util.tempdir.TempDir.mktempdir">mktempdir() (dffml.util.tempdir.TempDir method)</a>
 </li>
-      <li><a href="api/model/base.html#dffml.model.model.Model">Model (class in dffml.model.model)</a>
+      <li><a href="api/util/packaging.html#dffml.util.packaging.mkvenv">mkvenv() (in module dffml.util.packaging)</a>
 </li>
-      <li><a href="api/model/base.html#dffml.model.model.ModelConfig">ModelConfig (class in dffml.model.model)</a>
+      <li><a href="api/cli/ml.html#dffml.cli.ml.MLCMD">MLCMD (class in dffml.cli.ml)</a>
 </li>
-      <li><a href="api/model/base.html#dffml.model.model.ModelContext">ModelContext (class in dffml.model.model)</a>
+      <li><a href="api/cli/ml.html#dffml.cli.ml.MLCMDConfig">MLCMDConfig (class in dffml.cli.ml)</a>
 </li>
-      <li><a href="api/model/base.html#dffml.model.model.ModelNotTrained">ModelNotTrained</a>
+      <li><a href="api/model/model.html#dffml.model.model.Model">Model (class in dffml.model.model)</a>
+</li>
+      <li><a href="api/operation/model.html#dffml.operation.model.model_predict">model_predict() (in module dffml.operation.model)</a>
+</li>
+      <li><a href="api/util/cli/cmds.html#dffml.util.cli.cmds.ModelCMD">ModelCMD (class in dffml.util.cli.cmds)</a>
+</li>
+      <li><a href="api/util/cli/cmds.html#dffml.util.cli.cmds.ModelCMDConfig">ModelCMDConfig (class in dffml.util.cli.cmds)</a>
+</li>
+      <li><a href="api/model/model.html#dffml.model.model.ModelConfig">ModelConfig (class in dffml.model.model)</a>
+</li>
+      <li><a href="api/model/model.html#dffml.model.model.ModelContext">ModelContext (class in dffml.model.model)</a>
+</li>
+      <li><a href="api/model/model.html#dffml.model.model.ModelNotTrained">ModelNotTrained</a>
+</li>
+      <li><a href="api/operation/model.html#dffml.operation.model.ModelPredictConfig">ModelPredictConfig (class in dffml.operation.model)</a>
+</li>
+      <li><a href="api/cli/list.html#dffml.cli.list.List.models">models (dffml.cli.list.List attribute)</a>
 </li>
       <li>
     module
 
       <ul>
         <li><a href="api/base.html#module-dffml.base">dffml.base</a>
+</li>
+        <li><a href="api/cli/cli.html#module-dffml.cli.cli">dffml.cli.cli</a>
+</li>
+        <li><a href="api/cli/config.html#module-dffml.cli.config">dffml.cli.config</a>
+</li>
+        <li><a href="api/cli/dataflow.html#module-dffml.cli.dataflow">dffml.cli.dataflow</a>
+</li>
+        <li><a href="api/cli/list.html#module-dffml.cli.list">dffml.cli.list</a>
+</li>
+        <li><a href="api/cli/log.html#module-dffml.cli.log">dffml.cli.log</a>
+</li>
+        <li><a href="api/cli/ml.html#module-dffml.cli.ml">dffml.cli.ml</a>
+</li>
+        <li><a href="api/configloader/configloader.html#module-dffml.configloader.configloader">dffml.configloader.configloader</a>
+</li>
+        <li><a href="api/configloader/json.html#module-dffml.configloader.json">dffml.configloader.json</a>
 </li>
         <li><a href="api/db/base.html#module-dffml.db.base">dffml.db.base</a>
 </li>
@@ -961,31 +1909,155 @@
 </li>
         <li><a href="api/df/base.html#module-dffml.df.base">dffml.df.base</a>
 </li>
+        <li><a href="api/df/exceptions.html#module-dffml.df.exceptions">dffml.df.exceptions</a>
+</li>
+        <li><a href="api/df/log.html#module-dffml.df.log">dffml.df.log</a>
+</li>
         <li><a href="api/df/memory.html#module-dffml.df.memory">dffml.df.memory</a>
+</li>
+        <li><a href="api/df/multicomm.html#module-dffml.df.multicomm">dffml.df.multicomm</a>
 </li>
         <li><a href="api/df/types.html#module-dffml.df.types">dffml.df.types</a>
 </li>
-        <li><a href="api/feature.html#module-dffml.feature">dffml.feature</a>
+        <li><a href="api/feature/feature.html#module-dffml.feature.feature">dffml.feature.feature</a>
 </li>
-        <li><a href="api/feature.html#module-dffml.feature.feature">dffml.feature.feature</a>
+        <li><a href="api/feature/log.html#module-dffml.feature.log">dffml.feature.log</a>
 </li>
-        <li><a href="api/model/base.html#module-dffml.model.model">dffml.model.model</a>
+        <li><a href="api/log.html#module-dffml.log">dffml.log</a>
 </li>
-        <li><a href="api/source/file.html#module-dffml.source.csv">dffml.source.csv</a>
+        <li><a href="api/model/accuracy.html#module-dffml.model.accuracy">dffml.model.accuracy</a>
+</li>
+        <li><a href="api/model/log.html#module-dffml.model.log">dffml.model.log</a>
+</li>
+        <li><a href="api/model/model.html#module-dffml.model.model">dffml.model.model</a>
+</li>
+        <li><a href="api/model/slr.html#module-dffml.model.slr">dffml.model.slr</a>
+</li>
+        <li><a href="api/operation/dataflow.html#module-dffml.operation.dataflow">dffml.operation.dataflow</a>
+</li>
+        <li><a href="api/operation/db.html#module-dffml.operation.db">dffml.operation.db</a>
+</li>
+        <li><a href="api/operation/io.html#module-dffml.operation.io">dffml.operation.io</a>
+</li>
+        <li><a href="api/operation/log.html#module-dffml.operation.log">dffml.operation.log</a>
+</li>
+        <li><a href="api/operation/mapping.html#module-dffml.operation.mapping">dffml.operation.mapping</a>
+</li>
+        <li><a href="api/operation/math.html#module-dffml.operation.math">dffml.operation.math</a>
+</li>
+        <li><a href="api/operation/model.html#module-dffml.operation.model">dffml.operation.model</a>
+</li>
+        <li><a href="api/operation/output.html#module-dffml.operation.output">dffml.operation.output</a>
+</li>
+        <li><a href="api/operation/preprocess.html#module-dffml.operation.preprocess">dffml.operation.preprocess</a>
+</li>
+        <li><a href="api/plugins.html#module-dffml.plugins">dffml.plugins</a>
+</li>
+        <li><a href="api/port/json.html#module-dffml.port.json">dffml.port.json</a>
+</li>
+        <li><a href="api/port/log.html#module-dffml.port.log">dffml.port.log</a>
+</li>
+        <li><a href="api/port/port.html#module-dffml.port.port">dffml.port.port</a>
+</li>
+        <li><a href="api/secret/base.html#module-dffml.secret.base">dffml.secret.base</a>
+</li>
+        <li><a href="api/secret/ini.html#module-dffml.secret.ini">dffml.secret.ini</a>
+</li>
+        <li><a href="api/service/dev.html#module-dffml.service.dev">dffml.service.dev</a>
+</li>
+        <li><a href="api/source/csv.html#module-dffml.source.csv">dffml.source.csv</a>
+</li>
+        <li><a href="api/source/db.html#module-dffml.source.db">dffml.source.db</a>
+</li>
+        <li><a href="api/source/df.html#module-dffml.source.df">dffml.source.df</a>
+</li>
+        <li><a href="api/source/dir.html#module-dffml.source.dir">dffml.source.dir</a>
 </li>
         <li><a href="api/source/file.html#module-dffml.source.file">dffml.source.file</a>
 </li>
-        <li><a href="api/source/file.html#module-dffml.source.json">dffml.source.json</a>
+        <li><a href="api/source/idx1.html#module-dffml.source.idx1">dffml.source.idx1</a>
+</li>
+        <li><a href="api/source/idx3.html#module-dffml.source.idx3">dffml.source.idx3</a>
+</li>
+        <li><a href="api/source/ini.html#module-dffml.source.ini">dffml.source.ini</a>
+</li>
+        <li><a href="api/source/json.html#module-dffml.source.json">dffml.source.json</a>
+</li>
+        <li><a href="api/source/log.html#module-dffml.source.log">dffml.source.log</a>
 </li>
         <li><a href="api/source/memory.html#module-dffml.source.memory">dffml.source.memory</a>
 </li>
-        <li><a href="api/source/base.html#module-dffml.source.source">dffml.source.source</a>
+        <li><a href="api/source/op.html#module-dffml.source.op">dffml.source.op</a>
+</li>
+        <li><a href="api/source/source.html#module-dffml.source.source">dffml.source.source</a>
 </li>
         <li><a href="api/util/asynchelper.html#module-dffml.util.asynchelper">dffml.util.asynchelper</a>
 </li>
+        <li><a href="api/util/asynctestcase.html#module-dffml.util.asynctestcase">dffml.util.asynctestcase</a>
+</li>
+        <li><a href="api/util/cli/arg.html#module-dffml.util.cli.arg">dffml.util.cli.arg</a>
+</li>
+        <li><a href="api/util/cli/cmd.html#module-dffml.util.cli.cmd">dffml.util.cli.cmd</a>
+</li>
+        <li><a href="api/util/cli/cmds.html#module-dffml.util.cli.cmds">dffml.util.cli.cmds</a>
+</li>
+        <li><a href="api/util/cli/log.html#module-dffml.util.cli.log">dffml.util.cli.log</a>
+</li>
+        <li><a href="api/util/cli/parser.html#module-dffml.util.cli.parser">dffml.util.cli.parser</a>
+</li>
+        <li><a href="api/util/config/exceptions.html#module-dffml.util.config.exceptions">dffml.util.config.exceptions</a>
+</li>
+        <li><a href="api/util/config/fields.html#module-dffml.util.config.fields">dffml.util.config.fields</a>
+</li>
+        <li><a href="api/util/config/numpy.html#module-dffml.util.config.numpy">dffml.util.config.numpy</a>
+</li>
+        <li><a href="api/util/data.html#module-dffml.util.data">dffml.util.data</a>
+</li>
+        <li><a href="api/util/display.html#module-dffml.util.display">dffml.util.display</a>
+</li>
+        <li><a href="api/util/entrypoint.html#module-dffml.util.entrypoint">dffml.util.entrypoint</a>
+</li>
+        <li><a href="api/util/log.html#module-dffml.util.log">dffml.util.log</a>
+</li>
         <li><a href="api/util/net.html#module-dffml.util.net">dffml.util.net</a>
 </li>
+        <li><a href="api/util/os.html#module-dffml.util.os">dffml.util.os</a>
+</li>
+        <li><a href="api/util/packaging.html#module-dffml.util.packaging">dffml.util.packaging</a>
+</li>
+        <li><a href="api/util/skel.html#module-dffml.util.skel">dffml.util.skel</a>
+</li>
+        <li><a href="api/util/tempdir.html#module-dffml.util.tempdir">dffml.util.tempdir</a>
+</li>
+        <li><a href="api/util/testing/consoletest/builder.html#module-dffml.util.testing.consoletest.builder">dffml.util.testing.consoletest.builder</a>
+</li>
+        <li><a href="api/util/testing/consoletest/cli.html#module-dffml.util.testing.consoletest.cli">dffml.util.testing.consoletest.cli</a>
+</li>
+        <li><a href="api/util/testing/consoletest/commands.html#module-dffml.util.testing.consoletest.commands">dffml.util.testing.consoletest.commands</a>
+</li>
+        <li><a href="api/util/testing/consoletest/directives.html#module-dffml.util.testing.consoletest.directives">dffml.util.testing.consoletest.directives</a>
+</li>
+        <li><a href="api/util/testing/consoletest/parser.html#module-dffml.util.testing.consoletest.parser">dffml.util.testing.consoletest.parser</a>
+</li>
+        <li><a href="api/util/testing/consoletest/runner.html#module-dffml.util.testing.consoletest.runner">dffml.util.testing.consoletest.runner</a>
+</li>
+        <li><a href="api/util/testing/consoletest/util.html#module-dffml.util.testing.consoletest.util">dffml.util.testing.consoletest.util</a>
+</li>
+        <li><a href="api/util/testing/docs.html#module-dffml.util.testing.docs">dffml.util.testing.docs</a>
+</li>
+        <li><a href="api/util/testing/source.html#module-dffml.util.testing.source">dffml.util.testing.source</a>
+</li>
+        <li><a href="api/version.html#module-dffml.version">dffml.version</a>
+</li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/df/multicomm.html#dffml.df.multicomm.MultiCommInAtomicMode">MultiCommInAtomicMode</a>
+</li>
+      <li><a href="api/df/exceptions.html#dffml.df.exceptions.MultipleAncestorsFoundError">MultipleAncestorsFoundError</a>
+</li>
+      <li><a href="api/operation/math.html#dffml.operation.math.multiply">multiply() (in module dffml.operation.math)</a>
+</li>
   </ul></td>
 </tr></table>
 
@@ -999,10 +2071,34 @@
 </li>
         <li><a href="api/df/types.html#dffml.df.types.Output.name">(dffml.df.types.Output property)</a>
 </li>
+        <li><a href="api/util/skel.html#dffml.util.skel.SkelTemplateConfig.name">(dffml.util.skel.SkelTemplateConfig property)</a>
+</li>
       </ul></li>
+      <li><a href="api/util/data.html#dffml.util.data.nested_apply">nested_apply() (in module dffml.util.data)</a>
+</li>
+      <li><a href="api/df/multicomm.html#dffml.df.multicomm.NoConfigsForMultiComm">NoConfigsForMultiComm</a>
+</li>
+      <li><a href="api/df/multicomm.html#dffml.df.multicomm.NoDataFlows">NoDataFlows</a>
+</li>
+      <li><a href="api/df/multicomm.html#dffml.df.multicomm.NoDataFlowsForConfig">NoDataFlowsForConfig</a>
+</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/util/testing/consoletest/parser.html#dffml.util.testing.consoletest.parser.Node">Node (class in dffml.util.testing.consoletest.parser)</a>
+</li>
+      <li><a href="api/util/testing/consoletest/util.html#dffml.util.testing.consoletest.util.nodes_to_test">nodes_to_test() (in module dffml.util.testing.consoletest.util)</a>
+</li>
+      <li><a href="api/util/asynctestcase.html#dffml.util.asynctestcase.non_existant_tempfile">non_existant_tempfile() (in module dffml.util.asynctestcase)</a>
+</li>
+      <li><a href="api/source/source.html#dffml.source.source.NoRecordsWithMatchingFeatures">NoRecordsWithMatchingFeatures</a>
+</li>
+      <li><a href="api/source/source.html#dffml.source.source.NoRecordsWithMatchingFeaturesHelper">NoRecordsWithMatchingFeaturesHelper (class in dffml.source.source)</a>
+</li>
+      <li><a href="api/source/op.html#dffml.source.op.NotEnoughArgs">NotEnoughArgs</a>
+</li>
       <li><a href="api/df/memory.html#dffml.df.memory.NotificationSet">NotificationSet (class in dffml.df.memory)</a>
+</li>
+      <li><a href="api/df/exceptions.html#dffml.df.exceptions.NotOpImp">NotOpImp</a>
 </li>
   </ul></td>
 </tr></table>
@@ -1010,13 +2106,17 @@
 <h2 id="O">O</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/source/op.html#dffml.source.op.OnlyOneOutputAllowedError">OnlyOneOutputAllowedError</a>
+</li>
       <li><a href="api/df/base.html#dffml.df.base.op">op() (in module dffml.df.base)</a>
 </li>
-      <li><a href="api/model/base.html#dffml.model.model.SimpleModel.open">open() (dffml.model.model.SimpleModel method)</a>
+      <li><a href="api/df/base.html#dffml.df.base.OpCouldNotDeterminePrimitive">OpCouldNotDeterminePrimitive</a>
 </li>
-      <li><a href="api/source/file.html#dffml.source.csv.OpenCSVFile">OpenCSVFile (class in dffml.source.csv)</a>
+      <li><a href="api/model/model.html#dffml.model.model.SimpleModel.open">open() (dffml.model.model.SimpleModel method)</a>
 </li>
-      <li><a href="api/source/file.html#dffml.source.json.OpenJSONFile">OpenJSONFile (class in dffml.source.json)</a>
+      <li><a href="api/source/csv.html#dffml.source.csv.OpenCSVFile">OpenCSVFile (class in dffml.source.csv)</a>
+</li>
+      <li><a href="api/source/json.html#dffml.source.json.OpenJSONFile">OpenJSONFile (class in dffml.source.json)</a>
 </li>
       <li><a href="api/df/types.html#dffml.df.types.Operation">Operation (class in dffml.df.types)</a>
 </li>
@@ -1029,6 +2129,8 @@
 </li>
       </ul></li>
       <li><a href="api/df/base.html#dffml.df.base.BaseOrchestratorConfig.operation_network">operation_network() (dffml.df.base.BaseOrchestratorConfig property)</a>
+</li>
+      <li><a href="api/df/exceptions.html#dffml.df.exceptions.OperationAlreadyPresent">OperationAlreadyPresent</a>
 </li>
       <li><a href="api/df/base.html#dffml.df.base.OperationException">OperationException</a>
 </li>
@@ -1045,10 +2147,6 @@
       <li><a href="api/df/base.html#dffml.df.base.BaseOperationNetworkContext.operations">operations() (dffml.df.base.BaseOperationNetworkContext method)</a>
 
       <ul>
-        <li><a href="api/df/memory.html#dffml.df.memory.MemoryOperationImplementationNetworkConfig.operations">(dffml.df.memory.MemoryOperationImplementationNetworkConfig property)</a>
-</li>
-        <li><a href="api/df/memory.html#dffml.df.memory.MemoryOperationNetworkConfig.operations">(dffml.df.memory.MemoryOperationNetworkConfig property)</a>
-</li>
         <li><a href="api/df/memory.html#dffml.df.memory.MemoryOperationNetworkContext.operations">(dffml.df.memory.MemoryOperationNetworkContext method)</a>
 </li>
       </ul></li>
@@ -1060,9 +2158,21 @@
       </ul></li>
       <li><a href="api/df/base.html#dffml.df.base.BaseOrchestratorConfig.opimp_network">opimp_network() (dffml.df.base.BaseOrchestratorConfig property)</a>
 </li>
-      <li><a href="api/df/types.html#dffml.df.types.Parameter.origin">origin() (dffml.df.types.Parameter property)</a>
+      <li><a href="api/source/op.html#dffml.source.op.OpSource">OpSource (class in dffml.source.op)</a>
+</li>
+      <li><a href="api/source/op.html#dffml.source.op.OpSourceConfig">OpSourceConfig (class in dffml.source.op)</a>
+</li>
+      <li><a href="api/cli/dataflow.html#dffml.cli.dataflow.RunCMDConfig.orchestrator">orchestrator (dffml.cli.dataflow.RunCMDConfig attribute)</a>
+
+      <ul>
+        <li><a href="api/cli/dataflow.html#dffml.cli.dataflow.RunSingleConfig.orchestrator">(dffml.cli.dataflow.RunSingleConfig attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="api/util/skel.html#dffml.util.skel.SkelTemplateConfig.org">org() (dffml.util.skel.SkelTemplateConfig property)</a>
 </li>
       <li><a href="api/df/types.html#dffml.df.types.Output">Output (class in dffml.df.types)</a>
+</li>
+      <li><a href="api/util/testing/consoletest/commands.html#dffml.util.testing.consoletest.commands.OutputComparisionError">OutputComparisionError</a>
 </li>
       <li><a href="api/df/types.html#dffml.df.types.Operation.outputs">outputs() (dffml.df.types.Operation property)</a>
 </li>
@@ -1072,39 +2182,85 @@
 <h2 id="P">P</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/util/skel.html#dffml.util.skel.SkelTemplateConfig.package">package() (dffml.util.skel.SkelTemplateConfig property)</a>
+</li>
+      <li><a href="api/service/dev.html#dffml.service.dev.Bump.packages">packages (dffml.service.dev.Bump attribute)</a>
+</li>
       <li><a href="api/df/types.html#dffml.df.types.Parameter">Parameter (class in dffml.df.types)</a>
 </li>
-      <li><a href="api/df/memory.html#dffml.df.memory.MemoryParameterSetConfig.parameters">parameters() (dffml.df.memory.MemoryParameterSetConfig property)</a>
+      <li><a href="api/util/config/exceptions.html#dffml.util.config.exceptions.ParameterNotInDocString">ParameterNotInDocString</a>
 </li>
-      <li><a href="api/model/base.html#dffml.model.model.SimpleModel.parent">parent() (dffml.model.model.SimpleModel property)</a>
+      <li><a href="api/model/model.html#dffml.model.model.SimpleModel.parent">parent() (dffml.model.model.SimpleModel property)</a>
 </li>
       <li><a href="api/base.html#dffml.base.ParseExpandAction">ParseExpandAction (class in dffml.base)</a>
 </li>
-      <li><a href="api/model/base.html#dffml.model.model.ModelContext.predict">predict() (dffml.model.model.ModelContext method)</a>
+      <li><a href="api/util/cli/parser.html#dffml.util.cli.parser.ParseInputsAction">ParseInputsAction (class in dffml.util.cli.parser)</a>
+</li>
+      <li><a href="api/util/cli/cmd.html#dffml.util.cli.cmd.ParseLoggingAction">ParseLoggingAction (class in dffml.util.cli.cmd)</a>
+</li>
+      <li><a href="api/util/testing/consoletest/parser.html#dffml.util.testing.consoletest.parser.ParseNodesFailure">ParseNodesFailure</a>
+</li>
+      <li><a href="api/util/cli/cmd.html#dffml.util.cli.cmd.Parser">Parser (class in dffml.util.cli.cmd)</a>
+</li>
+      <li><a href="api/util/data.html#dffml.util.data.parser_helper">parser_helper() (in module dffml.util.data)</a>
+</li>
+      <li><a href="api/util/testing/consoletest/parser.html#dffml.util.testing.consoletest.parser.ParseSingleNodeFailure">ParseSingleNodeFailure</a>
+</li>
+      <li><a href="api/service/dev.html#dffml.service.dev.PinDeps">PinDeps (class in dffml.service.dev)</a>
+</li>
+      <li><a href="api/service/dev.html#dffml.service.dev.CI.pindeps">pindeps (dffml.service.dev.CI attribute)</a>
+</li>
+      <li><a href="api/service/dev.html#dffml.service.dev.PinDepsConfig">PinDepsConfig (class in dffml.service.dev)</a>
+</li>
+      <li><a href="api/service/dev.html#dffml.service.dev.PinDepsPlugin">PinDepsPlugin (class in dffml.service.dev)</a>
+</li>
+      <li><a href="api/util/testing/consoletest/commands.html#dffml.util.testing.consoletest.commands.PipInstallCommand">PipInstallCommand (class in dffml.util.testing.consoletest.commands)</a>
+</li>
+      <li><a href="api/util/testing/consoletest/commands.html#dffml.util.testing.consoletest.commands.PipNotRunAsModule">PipNotRunAsModule</a>
+</li>
+      <li><a href="api/port/port.html#dffml.port.port.Port">Port (class in dffml.port.port)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/util/cli/cmds.html#dffml.util.cli.cmds.PortCMDConfig">PortCMDConfig (class in dffml.util.cli.cmds)</a>
+</li>
+      <li><a href="api/cli/ml.html#dffml.cli.ml.Predict">Predict (class in dffml.cli.ml)</a>
+</li>
+      <li><a href="api/cli/cli.html#dffml.cli.cli.CLI.predict">predict (dffml.cli.cli.CLI attribute)</a>
+</li>
+      <li><a href="api/model/model.html#dffml.model.model.ModelContext.predict">predict() (dffml.model.model.ModelContext method)</a>
 
       <ul>
         <li><a href="api/high_level.html#dffml.high_level.predict">(in module dffml.high_level)</a>
 </li>
+        <li><a href="api/noasync.html#dffml.noasync.predict">(in module dffml.noasync)</a>
+</li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/cli/ml.html#dffml.cli.ml.PredictAll">PredictAll (class in dffml.cli.ml)</a>
+</li>
+      <li><a href="api/cli/ml.html#dffml.cli.ml.PredictAllConfig">PredictAllConfig (class in dffml.cli.ml)</a>
+</li>
       <li><a href="api/record.html#dffml.record.Record.predicted">predicted() (dffml.record.Record method)</a>
 </li>
       <li><a href="api/record.html#dffml.record.Record.prediction">prediction() (dffml.record.Record method)</a>
 </li>
       <li><a href="api/record.html#dffml.record.Record.predictions">predictions() (dffml.record.Record method)</a>
 </li>
+      <li><a href="api/cli/ml.html#dffml.cli.ml.PredictRecord">PredictRecord (class in dffml.cli.ml)</a>
+</li>
+      <li><a href="api/cli/ml.html#dffml.cli.ml.PredictRecordConfig">PredictRecordConfig (class in dffml.cli.ml)</a>
+</li>
+      <li><a href="api/util/os.html#dffml.util.os.prepend_to_path">prepend_to_path() (in module dffml.util.os)</a>
+</li>
       <li><a href="api/df/types.html#dffml.df.types.Definition.primitive">primitive() (dffml.df.types.Definition property)</a>
+</li>
+      <li><a href="api/df/types.html#dffml.df.types.PrimitiveDoesNotMatchValue">PrimitiveDoesNotMatchValue</a>
+</li>
+      <li><a href="api/operation/io.html#dffml.operation.io.print_output">print_output() (in module dffml.operation.io)</a>
 </li>
       <li><a href="api/util/net.html#dffml.util.net.ProtocolNotAllowedError">ProtocolNotAllowedError</a>
 </li>
-  </ul></td>
-</tr></table>
-
-<h2 id="Q">Q</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/feature.html#dffml.feature.feature.Quarterly">Quarterly (class in dffml.feature.feature)</a>
+      <li><a href="api/plugins.html#dffml.plugins.python_package_installed">python_package_installed() (in module dffml.plugins)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -1114,36 +2270,88 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/df/base.html#dffml.df.base.BaseOrchestratorConfig.rchecker">rchecker() (dffml.df.base.BaseOrchestratorConfig property)</a>
 </li>
+      <li><a href="api/service/dev.html#dffml.service.dev.RCMissingHyphen">RCMissingHyphen</a>
+</li>
       <li><a href="api/df/memory.html#dffml.df.memory.MemoryInputNetworkContext.receive_from_parent_flow">receive_from_parent_flow() (dffml.df.memory.MemoryInputNetworkContext method)</a>
 </li>
       <li><a href="api/record.html#dffml.record.Record">Record (class in dffml.record)</a>
 </li>
-      <li><a href="api/source/memory.html#dffml.source.memory.MemorySourceContext.record">record() (dffml.source.memory.MemorySourceContext method)</a>
+      <li><a href="api/cli/cli.html#dffml.cli.cli.Edit.record">record (dffml.cli.cli.Edit attribute)</a>
 
       <ul>
-        <li><a href="api/source/base.html#dffml.source.source.BaseSourceContext.record">(dffml.source.source.BaseSourceContext method)</a>
-</li>
-        <li><a href="api/source/base.html#dffml.source.source.SourcesContext.record">(dffml.source.source.SourcesContext method)</a>
+        <li><a href="api/cli/ml.html#dffml.cli.ml.Predict.record">(dffml.cli.ml.Predict attribute)</a>
 </li>
       </ul></li>
-      <li><a href="api/source/memory.html#dffml.source.memory.MemorySourceContext.records">records() (dffml.source.memory.MemorySourceContext method)</a>
+      <li><a href="api/source/db.html#dffml.source.db.DbSourceContext.record">record() (dffml.source.db.DbSourceContext method)</a>
 
       <ul>
-        <li><a href="api/source/base.html#dffml.source.source.BaseSourceContext.records">(dffml.source.source.BaseSourceContext method)</a>
+        <li><a href="api/source/df.html#dffml.source.df.DataFlowSourceContext.record">(dffml.source.df.DataFlowSourceContext method)</a>
 </li>
-        <li><a href="api/source/base.html#dffml.source.source.SourcesContext.records">(dffml.source.source.SourcesContext method)</a>
+        <li><a href="api/source/memory.html#dffml.source.memory.MemorySourceContext.record">(dffml.source.memory.MemorySourceContext method)</a>
 </li>
-        <li><a href="api/source/base.html#dffml.source.source.ValidationSourcesContext.records">(dffml.source.source.ValidationSourcesContext method)</a>
+        <li><a href="api/source/source.html#dffml.source.source.BaseSourceContext.record">(dffml.source.source.BaseSourceContext method)</a>
+</li>
+        <li><a href="api/source/source.html#dffml.source.source.SourcesContext.record">(dffml.source.source.SourcesContext method)</a>
 </li>
       </ul></li>
+      <li><a href="api/source/df.html#dffml.source.df.RecordContextHandle">RecordContextHandle (class in dffml.source.df)</a>
+</li>
+      <li><a href="api/source/df.html#dffml.source.df.RecordInputSetContext">RecordInputSetContext (class in dffml.source.df)</a>
+</li>
+      <li><a href="api/cli/dataflow.html#dffml.cli.dataflow.Run.records">records (dffml.cli.dataflow.Run attribute)</a>
+
+      <ul>
+        <li><a href="api/cli/list.html#dffml.cli.list.List.records">(dffml.cli.list.List attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="api/cli/dataflow.html#dffml.cli.dataflow.RunAllRecords.records">records() (dffml.cli.dataflow.RunAllRecords method)</a>
+
+      <ul>
+        <li><a href="api/cli/dataflow.html#dffml.cli.dataflow.RunRecordSet.records">(dffml.cli.dataflow.RunRecordSet method)</a>
+</li>
+        <li><a href="api/source/db.html#dffml.source.db.DbSourceContext.records">(dffml.source.db.DbSourceContext method)</a>
+</li>
+        <li><a href="api/source/df.html#dffml.source.df.DataFlowSourceContext.records">(dffml.source.df.DataFlowSourceContext method)</a>
+</li>
+        <li><a href="api/source/memory.html#dffml.source.memory.MemorySourceContext.records">(dffml.source.memory.MemorySourceContext method)</a>
+</li>
+        <li><a href="api/source/source.html#dffml.source.source.BaseSourceContext.records">(dffml.source.source.BaseSourceContext method)</a>
+</li>
+        <li><a href="api/source/source.html#dffml.source.source.SourcesContext.records">(dffml.source.source.SourcesContext method)</a>
+</li>
+        <li><a href="api/source/source.html#dffml.source.source.SubsetSourcesContext.records">(dffml.source.source.SubsetSourcesContext method)</a>
+</li>
+        <li><a href="api/source/source.html#dffml.source.source.ValidationSourcesContext.records">(dffml.source.source.ValidationSourcesContext method)</a>
+</li>
+      </ul></li>
+      <li><a href="api/df/multicomm.html#dffml.df.multicomm.BaseMultiCommContext.register">register() (dffml.df.multicomm.BaseMultiCommContext method)</a>
+</li>
+      <li><a href="api/df/multicomm.html#dffml.df.multicomm.BaseMultiCommContext.register_config">register_config() (dffml.df.multicomm.BaseMultiCommContext method)</a>
+</li>
+      <li><a href="api/df/multicomm.html#dffml.df.multicomm.BaseMultiCommContext.register_directory">register_directory() (dffml.df.multicomm.BaseMultiCommContext method)</a>
+</li>
+      <li><a href="api/util/asynctestcase.html#dffml.util.asynctestcase.relative_chdir">relative_chdir() (in module dffml.util.asynctestcase)</a>
+</li>
+      <li><a href="api/util/asynctestcase.html#dffml.util.asynctestcase.relative_path">relative_path() (in module dffml.util.asynctestcase)</a>
+</li>
+      <li><a href="api/service/dev.html#dffml.service.dev.Release">Release (class in dffml.service.dev)</a>
+</li>
+      <li><a href="api/service/dev.html#dffml.service.dev.Develop.release">release (dffml.service.dev.Develop attribute)</a>
+</li>
+      <li><a href="api/service/dev.html#dffml.service.dev.ReleaseConfig">ReleaseConfig (class in dffml.service.dev)</a>
+</li>
+      <li><a href="api/operation/output.html#dffml.operation.output.RemapConfig">RemapConfig (class in dffml.operation.output)</a>
+</li>
+      <li><a href="api/operation/output.html#dffml.operation.output.RemapFailure">RemapFailure</a>
+</li>
       <li><a href="api/db/base.html#dffml.db.base.BaseDatabaseContext.remove">remove() (dffml.db.base.BaseDatabaseContext method)</a>
 
       <ul>
         <li><a href="api/db/sqlite.html#dffml.db.sqlite.SqliteDatabaseContext.remove">(dffml.db.sqlite.SqliteDatabaseContext method)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/service/dev.html#dffml.service.dev.PinDeps.remove_ansi_escape">remove_ansi_escape() (dffml.service.dev.PinDeps class method)</a>
+</li>
       <li><a href="api/df/base.html#dffml.df.base.BaseInputSet.remove_input">remove_input() (dffml.df.base.BaseInputSet method)</a>
 
       <ul>
@@ -1152,27 +2360,95 @@
       </ul></li>
       <li><a href="api/db/sql.html#dffml.db.sql.SQLDatabaseContext.remove_query">remove_query() (dffml.db.sql.SQLDatabaseContext method)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/df/base.html#dffml.df.base.BaseInputSet.remove_unvalidated_inputs">remove_unvalidated_inputs() (dffml.df.base.BaseInputSet method)</a>
 
       <ul>
         <li><a href="api/df/memory.html#dffml.df.memory.MemoryInputSet.remove_unvalidated_inputs">(dffml.df.memory.MemoryInputSet method)</a>
 </li>
       </ul></li>
-      <li><a href="api/df/memory.html#dffml.df.memory.MemoryOrchestratorContextConfig.reuse">reuse() (dffml.df.memory.MemoryOrchestratorContextConfig property)</a>
+      <li><a href="api/service/dev.html#dffml.service.dev.RepoDirtyError">RepoDirtyError</a>
 </li>
-      <li><a href="api/df/base.html#dffml.df.base.BaseOperationImplementationNetworkContext.run">run() (dffml.df.base.BaseOperationImplementationNetworkContext method)</a>
+      <li><a href="api/service/dev.html#dffml.service.dev.PinDeps.requirement_package_name">requirement_package_name() (dffml.service.dev.PinDeps class method)</a>
+</li>
+      <li><a href="api/df/types.html#dffml.df.types.Operation.retry">retry() (dffml.df.types.Operation property)</a>
+</li>
+      <li><a href="api/util/tempdir.html#dffml.util.tempdir.TempDir.rmtempdirs">rmtempdirs() (dffml.util.tempdir.TempDir method)</a>
+</li>
+      <li><a href="api/cli/dataflow.html#dffml.cli.dataflow.Run">Run (class in dffml.cli.dataflow)</a>
 
       <ul>
+        <li><a href="api/service/dev.html#dffml.service.dev.Run">(class in dffml.service.dev)</a>
+</li>
+      </ul></li>
+      <li><a href="api/service/dev.html#dffml.service.dev.Develop.run">run (dffml.service.dev.Develop attribute)</a>
+</li>
+      <li><a href="api/cli/list.html#dffml.cli.list.ListServices.run">run() (dffml.cli.list.ListServices method)</a>
+
+      <ul>
+        <li><a href="api/df/base.html#dffml.df.base.BaseOperationImplementationNetworkContext.run">(dffml.df.base.BaseOperationImplementationNetworkContext method)</a>
+</li>
         <li><a href="api/df/base.html#dffml.df.base.OperationImplementationContext.run">(dffml.df.base.OperationImplementationContext method)</a>
 </li>
         <li><a href="api/df/memory.html#dffml.df.memory.MemoryOperationImplementationNetworkContext.run">(dffml.df.memory.MemoryOperationImplementationNetworkContext method)</a>
 </li>
         <li><a href="api/df/memory.html#dffml.df.memory.MemoryOrchestratorContext.run">(dffml.df.memory.MemoryOrchestratorContext method)</a>
 </li>
+        <li><a href="api/operation/dataflow.html#dffml.operation.dataflow.run_dataflow.run">(dffml.operation.dataflow.run_dataflow method)</a>
+</li>
+        <li><a href="api/operation/io.html#dffml.operation.io.AcceptUserInputContext.run">(dffml.operation.io.AcceptUserInputContext method)</a>
+</li>
+        <li><a href="api/operation/output.html#dffml.operation.output.Associate.run">(dffml.operation.output.Associate method)</a>
+</li>
+        <li><a href="api/operation/output.html#dffml.operation.output.AssociateDefinition.run">(dffml.operation.output.AssociateDefinition method)</a>
+</li>
+        <li><a href="api/operation/output.html#dffml.operation.output.GetMulti.run">(dffml.operation.output.GetMulti method)</a>
+</li>
+        <li><a href="api/operation/output.html#dffml.operation.output.GetSingle.run">(dffml.operation.output.GetSingle method)</a>
+</li>
+        <li><a href="api/operation/output.html#dffml.operation.output.GroupBy.run">(dffml.operation.output.GroupBy method)</a>
+</li>
+        <li><a href="api/util/asynctestcase.html#dffml.util.asynctestcase.AsyncTestCase.run">(dffml.util.asynctestcase.AsyncTestCase method)</a>
+</li>
+        <li><a href="api/util/cli/cmds.html#dffml.util.cli.cmds.ListEntrypoint.run">(dffml.util.cli.cmds.ListEntrypoint method)</a>
+</li>
+        <li><a href="api/high_level.html#dffml.high_level.run">(in module dffml.high_level)</a>
+</li>
       </ul></li>
+      <li><a href="api/util/testing/docs.html#dffml.util.testing.docs.run_consoletest">run_consoletest() (in module dffml.util.testing.docs)</a>
+</li>
+      <li><a href="api/operation/dataflow.html#dffml.operation.dataflow.run_dataflow">run_dataflow (class in dffml.operation.dataflow)</a>
+</li>
+      <li><a href="api/operation/dataflow.html#dffml.operation.dataflow.run_dataflow.run_default">run_default() (dffml.operation.dataflow.run_dataflow method)</a>
+</li>
       <li><a href="api/df/memory.html#dffml.df.memory.MemoryOperationImplementationNetworkContext.run_dispatch">run_dispatch() (dffml.df.memory.MemoryOperationImplementationNetworkContext method)</a>
 </li>
+      <li><a href="api/util/testing/docs.html#dffml.util.testing.docs.run_doctest">run_doctest() (in module dffml.util.testing.docs)</a>
+</li>
+      <li><a href="api/df/memory.html#dffml.df.memory.MemoryOperationImplementationNetworkContext.run_no_retry">run_no_retry() (dffml.df.memory.MemoryOperationImplementationNetworkContext method)</a>
+</li>
       <li><a href="api/df/base.html#dffml.df.base.BaseOrchestratorContext.run_operations">run_operations() (dffml.df.base.BaseOrchestratorContext method)</a>
+</li>
+      <li><a href="api/cli/dataflow.html#dffml.cli.dataflow.RunAllRecords">RunAllRecords (class in dffml.cli.dataflow)</a>
+</li>
+      <li><a href="api/cli/dataflow.html#dffml.cli.dataflow.RunAllRecordsConfig">RunAllRecordsConfig (class in dffml.cli.dataflow)</a>
+</li>
+      <li><a href="api/cli/dataflow.html#dffml.cli.dataflow.RunCMDConfig">RunCMDConfig (class in dffml.cli.dataflow)</a>
+</li>
+      <li><a href="api/service/dev.html#dffml.service.dev.RunConfig">RunConfig (class in dffml.service.dev)</a>
+</li>
+      <li><a href="api/cli/dataflow.html#dffml.cli.dataflow.RunContextsConfig">RunContextsConfig (class in dffml.cli.dataflow)</a>
+</li>
+      <li><a href="api/operation/dataflow.html#dffml.operation.dataflow.RunDataFlowConfig">RunDataFlowConfig (class in dffml.operation.dataflow)</a>
+</li>
+      <li><a href="api/cli/dataflow.html#dffml.cli.dataflow.RunRecords">RunRecords (class in dffml.cli.dataflow)</a>
+</li>
+      <li><a href="api/cli/dataflow.html#dffml.cli.dataflow.RunRecordSet">RunRecordSet (class in dffml.cli.dataflow)</a>
+</li>
+      <li><a href="api/cli/dataflow.html#dffml.cli.dataflow.RunRecordSetConfig">RunRecordSetConfig (class in dffml.cli.dataflow)</a>
+</li>
+      <li><a href="api/cli/dataflow.html#dffml.cli.dataflow.RunSingleConfig">RunSingleConfig (class in dffml.cli.dataflow)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -1186,28 +2462,74 @@
 </li>
       <li><a href="api/df/types.html#dffml.df.types.Output.select">select() (dffml.df.types.Output property)</a>
 </li>
+      <li><a href="api/cli/cli.html#dffml.cli.cli.CLI.service">service (dffml.cli.cli.CLI attribute)</a>
+</li>
+      <li><a href="api/cli/list.html#dffml.cli.list.List.services">services (dffml.cli.list.List attribute)</a>
+</li>
+      <li><a href="api/cli/cli.html#dffml.cli.cli.services">services() (in module dffml.cli.cli)</a>
+</li>
       <li><a href="api/df/base.html#dffml.df.base.BaseKeyValueStoreContext.set">set() (dffml.df.base.BaseKeyValueStoreContext method)</a>
 
       <ul>
         <li><a href="api/df/memory.html#dffml.df.memory.MemoryKeyValueStoreContext.set">(dffml.df.memory.MemoryKeyValueStoreContext method)</a>
 </li>
-      </ul></li>
-      <li><a href="api/model/base.html#dffml.model.model.SimpleModel">SimpleModel (class in dffml.model.model)</a>
+        <li><a href="api/secret/base.html#dffml.secret.base.BaseSecretContext.set">(dffml.secret.base.BaseSecretContext method)</a>
 </li>
-      <li><a href="api/model/base.html#dffml.model.model.SimpleModelNoContext">SimpleModelNoContext (class in dffml.model.model)</a>
+        <li><a href="api/secret/ini.html#dffml.secret.ini.INISecretContext.set">(dffml.secret.ini.INISecretContext method)</a>
+</li>
+      </ul></li>
+      <li><a href="api/util/asynctestcase.html#dffml.util.asynctestcase.AsyncExitStackTestCase.setUp">setUp() (dffml.util.asynctestcase.AsyncExitStackTestCase method)</a>
+
+      <ul>
+        <li><a href="api/util/asynctestcase.html#dffml.util.asynctestcase.IntegrationCLITestCase.setUp">(dffml.util.asynctestcase.IntegrationCLITestCase method)</a>
+</li>
+      </ul></li>
+      <li><a href="api/service/dev.html#dffml.service.dev.SetupPyKWArg">SetupPyKWArg (class in dffml.service.dev)</a>
+</li>
+      <li><a href="api/service/dev.html#dffml.service.dev.SetupPyKWArgConfig">SetupPyKWArgConfig (class in dffml.service.dev)</a>
+</li>
+      <li><a href="api/service/dev.html#dffml.service.dev.SetupPyVersion">SetupPyVersion (class in dffml.service.dev)</a>
+</li>
+      <li><a href="api/service/dev.html#dffml.service.dev.SetupPyVersionConfig">SetupPyVersionConfig (class in dffml.service.dev)</a>
+</li>
+      <li><a href="api/model/model.html#dffml.model.model.SimpleModel">SimpleModel (class in dffml.model.model)</a>
+</li>
+      <li><a href="api/model/model.html#dffml.model.model.SimpleModelNoContext">SimpleModelNoContext (class in dffml.model.model)</a>
 </li>
       <li><a href="api/df/types.html#dffml.df.types.Output.single">single() (dffml.df.types.Output property)</a>
 </li>
-      <li><a href="api/feature.html#dffml.feature.feature.Features.SINGLETON">SINGLETON (dffml.feature.feature.Features attribute)</a>
+      <li><a href="api/configloader/configloader.html#dffml.configloader.configloader.ConfigLoaders.SINGLETON">SINGLETON (dffml.configloader.configloader.ConfigLoaders attribute)</a>
+
+      <ul>
+        <li><a href="api/feature/feature.html#dffml.feature.feature.Features.SINGLETON">(dffml.feature.feature.Features attribute)</a>
 </li>
-      <li><a href="api/source/base.html#dffml.source.source.Sources">Sources (class in dffml.source.source)</a>
+        <li><a href="api/source/source.html#dffml.source.source.Sources.SINGLETON">(dffml.source.source.Sources attribute)</a>
 </li>
-      <li><a href="api/source/base.html#dffml.source.source.SourcesContext">SourcesContext (class in dffml.source.source)</a>
-</li>
-      <li><a href="api/df/types.html#dffml.df.types.Definition.spec">spec() (dffml.df.types.Definition property)</a>
+      </ul></li>
+      <li><a href="api/service/dev.html#dffml.service.dev.Develop.skel">skel (dffml.service.dev.Develop attribute)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/service/dev.html#dffml.service.dev.Skeleton">Skeleton (class in dffml.service.dev)</a>
+</li>
+      <li><a href="api/util/skel.html#dffml.util.skel.SkelTemplateConfig">SkelTemplateConfig (class in dffml.util.skel)</a>
+</li>
+      <li><a href="api/model/slr.html#dffml.model.slr.SLRModel">SLRModel (class in dffml.model.slr)</a>
+</li>
+      <li><a href="api/model/slr.html#dffml.model.slr.SLRModelConfig">SLRModelConfig (class in dffml.model.slr)</a>
+</li>
+      <li><a href="api/source/source.html#dffml.source.source.Sources">Sources (class in dffml.source.source)</a>
+</li>
+      <li><a href="api/cli/list.html#dffml.cli.list.List.sources">sources (dffml.cli.list.List attribute)</a>
+</li>
+      <li><a href="api/util/cli/cmds.html#dffml.util.cli.cmds.SourcesCMDConfig">SourcesCMDConfig (class in dffml.util.cli.cmds)</a>
+</li>
+      <li><a href="api/source/source.html#dffml.source.source.SourcesContext">SourcesContext (class in dffml.source.source)</a>
+</li>
+      <li><a href="api/util/testing/source.html#dffml.util.testing.source.SourceTest">SourceTest (class in dffml.util.testing.source)</a>
+</li>
+      <li><a href="api/df/types.html#dffml.df.types.Definition.spec">spec() (dffml.df.types.Definition property)</a>
+</li>
       <li><a href="api/db/sql.html#dffml.db.sql.SQLDatabaseContext">SQLDatabaseContext (class in dffml.db.sql)</a>
 </li>
       <li><a href="api/db/sqlite.html#dffml.db.sqlite.SqliteDatabase">SqliteDatabase (class in dffml.db.sqlite)</a>
@@ -1226,7 +2548,9 @@
 </li>
       <li><a href="api/df/base.html#dffml.df.base.OperationImplementationContext.subflow">subflow() (dffml.df.base.OperationImplementationContext method)</a>
 </li>
-      <li><a href="api/source/base.html#dffml.source.source.SubsetSources">SubsetSources (class in dffml.source.source)</a>
+      <li><a href="api/source/source.html#dffml.source.source.SubsetSources">SubsetSources (class in dffml.source.source)</a>
+</li>
+      <li><a href="api/source/source.html#dffml.source.source.SubsetSourcesContext">SubsetSourcesContext (class in dffml.source.source)</a>
 </li>
       <li><a href="api/df/types.html#dffml.df.types.Definition.subspec">subspec() (dffml.df.types.Definition property)</a>
 </li>
@@ -1238,15 +2562,37 @@
 <h2 id="T">T</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/model/base.html#dffml.model.model.ModelContext.train">train() (dffml.model.model.ModelContext method)</a>
+      <li><a href="api/util/asynctestcase.html#dffml.util.asynctestcase.AsyncExitStackTestCase.tearDown">tearDown() (dffml.util.asynctestcase.AsyncExitStackTestCase method)</a>
+</li>
+      <li><a href="api/util/tempdir.html#dffml.util.tempdir.TempDir">TempDir (class in dffml.util.tempdir)</a>
+</li>
+      <li><a href="api/util/testing/consoletest/commands.html#dffml.util.testing.consoletest.commands.tmpenv">tmpenv() (in module dffml.util.testing.consoletest.commands)</a>
+</li>
+      <li><a href="api/cli/ml.html#dffml.cli.ml.Train">Train (class in dffml.cli.ml)</a>
+</li>
+      <li><a href="api/cli/cli.html#dffml.cli.cli.CLI.train">train (dffml.cli.cli.CLI attribute)</a>
+</li>
+      <li><a href="api/model/model.html#dffml.model.model.ModelContext.train">train() (dffml.model.model.ModelContext method)</a>
 
       <ul>
         <li><a href="api/high_level.html#dffml.high_level.train">(in module dffml.high_level)</a>
 </li>
+        <li><a href="api/noasync.html#dffml.noasync.train">(in module dffml.noasync)</a>
+</li>
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/util/data.html#dffml.util.data.traverse_config_get">traverse_config_get() (in module dffml.util.data)</a>
+</li>
+      <li><a href="api/util/data.html#dffml.util.data.traverse_config_set">traverse_config_set() (in module dffml.util.data)</a>
+</li>
+      <li><a href="api/util/data.html#dffml.util.data.traverse_get">traverse_get() (in module dffml.util.data)</a>
+</li>
+      <li><a href="api/util/data.html#dffml.util.data.traverse_set">traverse_set() (in module dffml.util.data)</a>
+</li>
       <li><a href="api/base.html#dffml.base.BaseConfigurable.type_for">type_for() (dffml.base.BaseConfigurable class method)</a>
+</li>
+      <li><a href="api/base.html#dffml.base.typing_type_cls">typing_type_cls() (in module dffml.base)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -1256,12 +2602,6 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/df/memory.html#dffml.df.memory.MemoryInputNetworkContext.uadd">uadd() (dffml.df.memory.MemoryInputNetworkContext method)</a>
 </li>
-      <li><a href="api/df/memory.html#dffml.df.memory.MemoryDataFlowObjectContextConfig.uid">uid() (dffml.df.memory.MemoryDataFlowObjectContextConfig property)</a>
-
-      <ul>
-        <li><a href="api/df/memory.html#dffml.df.memory.MemoryOrchestratorContextConfig.uid">(dffml.df.memory.MemoryOrchestratorContextConfig property)</a>
-</li>
-      </ul></li>
       <li><a href="api/df/memory.html#dffml.df.memory.MemoryRedundancyCheckerContext.unique">unique() (dffml.df.memory.MemoryRedundancyCheckerContext method)</a>
 </li>
       <li><a href="api/db/base.html#dffml.db.base.BaseDatabaseContext.update">update() (dffml.db.base.BaseDatabaseContext method)</a>
@@ -1269,11 +2609,15 @@
       <ul>
         <li><a href="api/db/sqlite.html#dffml.db.sqlite.SqliteDatabaseContext.update">(dffml.db.sqlite.SqliteDatabaseContext method)</a>
 </li>
+        <li><a href="api/source/db.html#dffml.source.db.DbSourceContext.update">(dffml.source.db.DbSourceContext method)</a>
+</li>
+        <li><a href="api/source/df.html#dffml.source.df.DataFlowSourceContext.update">(dffml.source.df.DataFlowSourceContext method)</a>
+</li>
         <li><a href="api/source/memory.html#dffml.source.memory.MemorySourceContext.update">(dffml.source.memory.MemorySourceContext method)</a>
 </li>
-        <li><a href="api/source/base.html#dffml.source.source.BaseSourceContext.update">(dffml.source.source.BaseSourceContext method)</a>
+        <li><a href="api/source/source.html#dffml.source.source.BaseSourceContext.update">(dffml.source.source.BaseSourceContext method)</a>
 </li>
-        <li><a href="api/source/base.html#dffml.source.source.SourcesContext.update">(dffml.source.source.SourcesContext method)</a>
+        <li><a href="api/source/source.html#dffml.source.source.SourcesContext.update">(dffml.source.source.SourcesContext method)</a>
 </li>
       </ul></li>
   </ul></td>
@@ -1288,41 +2632,39 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/df/types.html#dffml.df.types.Definition.validate">validate() (dffml.df.types.Definition property)</a>
 </li>
-      <li><a href="api/source/base.html#dffml.source.source.ValidationSources">ValidationSources (class in dffml.source.source)</a>
+      <li><a href="api/source/source.html#dffml.source.source.ValidationSources">ValidationSources (class in dffml.source.source)</a>
 </li>
-      <li><a href="api/source/base.html#dffml.source.source.ValidationSourcesContext">ValidationSourcesContext (class in dffml.source.source)</a>
+      <li><a href="api/source/source.html#dffml.source.source.ValidationSourcesContext">ValidationSourcesContext (class in dffml.source.source)</a>
+</li>
+      <li><a href="api/df/types.html#dffml.df.types.Operation.validator">validator() (dffml.df.types.Operation property)</a>
+</li>
+      <li><a href="api/df/exceptions.html#dffml.df.exceptions.ValidatorMissing">ValidatorMissing</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/df/types.html#dffml.df.types.Operation.validator">validator() (dffml.df.types.Operation property)</a>
-</li>
       <li><a href="api/db/base.html#dffml.db.base.Condition.value">value() (dffml.db.base.Condition property)</a>
-
-      <ul>
-        <li><a href="api/df/types.html#dffml.df.types.Parameter.value">(dffml.df.types.Parameter property)</a>
 </li>
-      </ul></li>
+      <li><a href="api/cli/cli.html#dffml.cli.cli.Version">Version (class in dffml.cli.cli)</a>
+</li>
+      <li><a href="api/cli/cli.html#dffml.cli.cli.CLI.version">version (dffml.cli.cli.CLI attribute)</a>
+</li>
+      <li><a href="api/cli/cli.html#dffml.cli.cli.VersionConfig">VersionConfig (class in dffml.cli.cli)</a>
+</li>
+      <li><a href="api/service/dev.html#dffml.service.dev.VersionNotFoundError">VersionNotFoundError</a>
+</li>
   </ul></td>
 </tr></table>
 
 <h2 id="W">W</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/source/base.html#dffml.source.source.SourcesContext.with_features">with_features() (dffml.source.source.SourcesContext method)</a>
+      <li><a href="api/source/source.html#dffml.source.source.SourcesContext.with_features">with_features() (dffml.source.source.SourcesContext method)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/base.html#dffml.base.BaseConfigurable.withconfig">withconfig() (dffml.base.BaseConfigurable class method)</a>
 </li>
       <li><a href="api/base.html#dffml.base.BaseConfigurableMetaClass.wrap">wrap() (dffml.base.BaseConfigurableMetaClass class method)</a>
-</li>
-  </ul></td>
-</tr></table>
-
-<h2 id="Y">Y</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/feature.html#dffml.feature.feature.Yearly">Yearly (class in dffml.feature.feature)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -1338,7 +2680,7 @@
 
   <div role="contentinfo">
     <p>
-        &#169; Copyright 2019, Intel.
+        &#169; Copyright 2017 - 2021, Intel.
 
     </p>
   </div>

@@ -1,3 +1,5 @@
+:github_url: hide
+
 Services
 ========
 
@@ -17,7 +19,7 @@ Services. It also helps developers hack on DFFML itself.
 .. _plugin_service_dffml:
 
 dffml
------
++++++
 
 .. code-block:: console
 
@@ -36,7 +38,7 @@ Development utilities for hacking on DFFML itself
 .. _plugin_service_dffml_service_http:
 
 dffml_service_http
-------------------
+++++++++++++++++++
 
 .. code-block:: console
 

@@ -1,0 +1,5 @@
+Util Tempdir
+============
+
+.. automodule:: dffml.util.tempdir
+   :members:

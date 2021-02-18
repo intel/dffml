@@ -1,3 +1,5 @@
+:github_url: hide
+
 .. _plugin_models:
 
 Models
@@ -12,7 +14,7 @@ If you want to get started creating your own model, check out the
 .. _plugin_model_dffml:
 
 dffml
------
++++++
 
 .. code-block:: console
 
@@ -30,51 +32,97 @@ Logistic Regression training one variable to predict another.
 
 The dataset used for training
 
-.. literalinclude:: /../examples/model/slr/dataset.sh
+**dataset.csv**
+
+.. code-block::
+    :test:
+    :filepath: dataset.csv
+
+    f1,ans
+    0.1,0
+    0.7,1
+    0.6,1
+    0.2,0
+    0.8,1
 
 Train the model
 
-.. literalinclude:: /../examples/model/slr/train.sh
+.. code-block:: console
+    :test:
+
+    $ dffml train \
+        -model slr \
+        -model-features f1:float:1 \
+        -model-predict ans:int:1 \
+        -model-directory tempdir \
+        -sources f=csv \
+        -source-filename dataset.csv
 
 Assess the accuracy
 
-.. literalinclude:: /../examples/model/slr/accuracy.sh
-
-Output
-
 .. code-block:: console
+    :test:
 
+    $ dffml accuracy \
+        -model slr \
+        -model-features f1:float:1 \
+        -model-predict ans:int:1 \
+        -model-directory tempdir \
+        -sources f=csv \
+        -source-filename dataset.csv
     1.0
 
 Make a prediction
 
-.. literalinclude:: /../examples/model/slr/predict.sh
+**predict.csv**
 
-Output
+.. code-block::
+    :test:
+    :filepath: predict.csv
+
+    f1
+    0.8
 
 .. code-block:: console
+    :test:
 
+    $ dffml predict all \
+        -model slr \
+        -model-features f1:float:1 \
+        -model-predict ans:int:1 \
+        -model-directory tempdir \
+        -sources f=csv \
+        -source-filename predict.csv
     [
         {
             "extra": {},
             "features": {
-                "ans": 0,
                 "f1": 0.8
             },
-            "last_updated": "2020-03-19T13:41:08Z",
+            "key": "0",
+            "last_updated": "2020-11-15T16:22:25Z",
             "prediction": {
                 "ans": {
-                    "confidence": 1.0,
+                    "confidence": 0.9355670103092784,
                     "value": 1
                 }
-            },
-            "key": "0"
+            }
         }
     ]
 
 Example usage of Logistic Regression using Python
 
-.. literalinclude:: /../examples/model/slr/slr.py
+**slr.py**
+
+.. literalinclude:: ../../examples/model/slr/slr.py
+    :test:
+
+.. code-block:: console
+    :test:
+
+    $ python slr.py
+    Accuracy: 0.9355670103092784
+    {'f1': 0.8, 'ans': 1}
 
 **Args**
 
@@ -88,13 +136,12 @@ Example usage of Logistic Regression using Python
 
 - directory: Path
 
-  - default: ~/.cache/dffml/slr
   - Directory where state should be saved
 
 .. _plugin_model_dffml_model_tensorflow:
 
 dffml_model_tensorflow
-----------------------
+++++++++++++++++++++++
 
 .. code-block:: console
 
@@ -184,6 +231,10 @@ Example usage of Tensorflow DNNClassifier model using python API
 
   - Features to train on
 
+- directory: Path
+
+  - Directory where state should be saved
+
 - steps: Integer
 
   - default: 3000
@@ -193,11 +244,6 @@ Example usage of Tensorflow DNNClassifier model using python API
 
   - default: 30
   - Number of iterations to pass over all records in a source
-
-- directory: Path
-
-  - default: ~/.cache/dffml/tensorflow
-  - Directory where state should be saved
 
 - hidden: List of integers
 
@@ -219,7 +265,7 @@ Example usage of Tensorflow DNNClassifier model using python API
   - default: 20
   - Number records to pass through in an epoch
 
-- shuffle: Boolean
+- shuffle: String
 
   - default: True
   - Randomise order of records in a batch
@@ -280,7 +326,7 @@ Output
             "last_updated": "2019-10-24T15:26:41Z",
             "prediction": {
                 "TARGET" : {
-                    "confidence": NaN,
+                    "confidence": null,
                     "value": 1.1983429193496704
                 }
             },
@@ -292,7 +338,7 @@ Example usage of Tensorflow DNNEstimator model using python API
 
 .. literalinclude:: /../model/tensorflow/examples/tfdnnr/tfdnnr.py
 
-The ``NaN`` in ``confidence`` is the expected behaviour. (See TODO in
+The ``null`` in ``confidence`` is the expected behaviour. (See TODO in
 predict).
 
 **Args**
@@ -305,6 +351,10 @@ predict).
 
   - Features to train on
 
+- directory: Path
+
+  - Directory where state should be saved
+
 - steps: Integer
 
   - default: 3000
@@ -315,20 +365,503 @@ predict).
   - default: 30
   - Number of iterations to pass over all records in a source
 
-- directory: Path
-
-  - default: ~/.cache/dffml/tensorflow
-  - Directory where state should be saved
-
 - hidden: List of integers
 
   - default: [12, 40, 15]
   - List length is the number of hidden layers in the network. Each entry in the list is the number of nodes in that hidden layer
 
+.. _plugin_model_dffml_model_xgboost:
+
+dffml_model_xgboost
++++++++++++++++++++
+
+.. code-block:: console
+
+    pip install dffml-model-xgboost
+
+
+.. _plugin_model_dffml_model_xgboost_xgbclassifier:
+
+xgbclassifier
+~~~~~~~~~~~~~
+
+*Official*
+
+Model using xgboost to perform classification prediction via gradient boosted trees.
+XGBoost is a leading software library for working with standard tabular data (the type of data you store in Pandas DataFrames,
+as opposed to more exotic types of data like images and videos). With careful parameter tuning, you can train highly accurate models.
+
+Examples
+--------
+
+Command line usage
+
+First download the training and test files, change the headers to DFFML
+format. The first row is an encoding of the classifications, we want CSV
+headers for the column names.
+
+.. code-block::
+    :test:
+
+    $ wget http://download.tensorflow.org/data/iris_training.csv
+    $ wget http://download.tensorflow.org/data/iris_test.csv
+    $ sed -i 's/.*setosa,versicolor,virginica/SepalLength,SepalWidth,PetalLength,PetalWidth,classification/g' iris_training.csv iris_test.csv
+
+
+Run the train command
+
+.. code-block:: console
+    :test:
+
+    $ dffml train \
+        -sources train=csv \
+        -source-filename iris_training.csv \
+        -model xgbclassifier \
+        -model-features \
+          SepalLength:float:1 \
+          SepalWidth:float:1 \
+          PetalLength:float:1 \
+          PetalWidth:float:1 \
+        -model-predict classification \
+        -model-directory model \
+        -model-max_depth 3 \
+        -model-learning_rate 0.01 \
+        -model-learning_rate 0.01 \
+        -model-n_estimators 200 \
+        -model-reg_lambda 1 \
+        -model-reg_alpha 0 \
+        -model-gamma 0 \
+        -model-colsample_bytree 0 \
+        -model-subsample 1  
+
+
+Assess the accuracy 
+
+.. code-block:: console
+    :test:
+
+    $ dffml accuracy \
+        -sources train=csv \
+        -source-filename iris_test.csv \
+        -model xgbclassifier \
+        -model-features \
+          SepalLength:float:1 \
+          SepalWidth:float:1 \
+          PetalLength:float:1 \
+          PetalWidth:float:1 \
+        -model-predict classification \
+        -model-directory model 
+
+
+Make predictions
+
+.. code-block:: console
+    :test:
+
+    $ dffml predict all \
+        -sources train=csv \
+        -source-filename iris_test.csv \
+        -model xgbclassifier \
+        -model-features \
+          SepalLength:float:1 \
+          SepalWidth:float:1 \
+          PetalLength:float:1 \
+          PetalWidth:float:1 \
+        -model-predict classification \
+        -model-directory model 
+        
+
+Python usage
+
+.. literalinclude:: /../model/xgboost/examples/iris_classification.py
+
+Output
+
+.. code-block::
+
+    Test accuracy: 0.933333333333333
+    Training accuracy: 0.9703703703703703
+
+**Args**
+
+- directory: Path
+
+  - Directory where model should be saved
+
+- features: List of features
+
+  - Features on which we train the model
+
+- predict: Feature
+
+  - Value to be predicted
+
+- learning_rate: float
+
+  - default: 0.3
+  - Learning rate to train with
+
+- n_estimators: Integer
+
+  - default: 100
+  - Number of gradient boosted trees. Equivalent to the number of boosting rounds
+
+- max_depth: Integer
+
+  - default: 6
+  - Maximium tree depth for base learners
+
+- objective: String
+
+  - default: multi:softmax
+  - Objective in training
+
+- subsample: float
+
+  - default: 1
+  - Subsample ratio of the training instance
+
+- gamma: float
+
+  - default: 0
+  - Minimium loss reduction required to make a furthre partition on a leaf node
+
+- n_jobs: Integer
+
+  - default: -1
+  - Number of parallel threads used to run xgboost
+
+- colsample_bytree: float
+
+  - default: 1
+  - Subsample ratio of columns when constructing each tree
+
+- booster: String
+
+  - default: gbtree
+  - Specify which booster to use: gbtree, gblinear or dart
+
+- min_child_weight: float
+
+  - default: 1
+  - Minimum sum of instance weight(hessian) needed in a child
+
+- reg_lambda: float
+
+  - default: 1
+  - L2 regularization term on weights. Increasing this value will make model more conservative
+
+- reg_alpha: float
+
+  - default: 0
+  - L1 regularization term on weights. Increasing this value will make model more conservative
+
+.. _plugin_model_dffml_model_xgboost_xgbregressor:
+
+xgbregressor
+~~~~~~~~~~~~
+
+*Official*
+
+Model using xgboost to perform regression prediction via gradient boosted trees
+XGBoost is a leading software library for working with standard tabular data (the type of data you store in Pandas DataFrames,
+as opposed to more exotic types of data like images and videos). With careful parameter tuning, you can train highly accurate models.
+
+Examples
+--------
+
+Command line usage
+
+First download the training and test files, change the headers to DFFML
+format.
+
+.. code-block::
+    :test:
+
+    $ wget http://download.tensorflow.org/data/iris_training.csv
+    $ wget http://download.tensorflow.org/data/iris_test.csv
+    $ sed -i 's/.*setosa,versicolor,virginica/SepalLength,SepalWidth,PetalLength,PetalWidth,classification/g' iris_training.csv iris_test.csv
+
+
+Run the train command
+
+.. code-block:: console
+    :test:
+
+    $ dffml train \
+        -sources train=csv \
+        -source-filename iris_training.csv \
+        -model xgbregressor \
+        -model-features \
+          SepalLength:float:1 \
+          SepalWidth:float:1 \
+          PetalLength:float:1 \
+          PetalWidth:float:1 \
+        -model-predict classification \
+        -model-directory model \
+        -model-max_depth 3 \
+        -model-learning_rate 0.01 \
+        -model-n_estimators 200 \
+        -model-reg_lambda 1 \
+        -model-reg_alpha 0 \
+        -model-gamma 0 \
+        -model-colsample_bytree 0 \
+        -model-subsample 1  
+
+
+Assess the accuracy 
+
+.. code-block:: console
+    :test:
+
+    $ dffml accuracy \
+        -sources train=csv \
+        -source-filename iris_test.csv \
+        -model xgbregressor \
+        -model-features \
+          SepalLength:float:1 \
+          SepalWidth:float:1 \
+          PetalLength:float:1 \
+          PetalWidth:float:1 \
+        -model-predict classification \
+        -model-directory model 
+    
+Output
+
+.. code-block::
+
+    accuracy: 0.8841466984766406
+
+
+Make predictions
+
+.. code-block:: console
+    :test:
+
+    $ dffml predict all \
+        -sources train=csv \
+        -source-filename iris_test.csv \
+        -model xgbregressor \
+        -model-features \
+          SepalLength:float:1 \
+          SepalWidth:float:1 \
+          PetalLength:float:1 \
+          PetalWidth:float:1 \
+        -model-predict classification \
+        -model-directory model 
+
+Python usage
+
+**run.py**
+
+.. literalinclude:: /../model/xgboost/examples/diabetesregression.py
+    :test:
+    :filepath: run.py
+
+Output
+
+.. code-block::
+    :test:
+
+    $ python run.py
+    Test accuracy: 0.6669655406927468
+    Training accuracy: 0.819782501866115
+
+**Args**
+
+- directory: Path
+
+  - Directory where model should be saved
+
+- features: List of features
+
+  - Features on which we train the model
+
+- predict: Feature
+
+  - Value to be predicted
+
+- learning_rate: float
+
+  - default: 0.05
+  - Learning rate to train with
+
+- n_estimators: Integer
+
+  - default: 1000
+  - Number of gradient boosted trees. Equivalent to the number of boosting rounds
+
+- max_depth: Integer
+
+  - default: 6
+  - Maximium tree depth for base learners
+
+- subsample: float
+
+  - default: 1
+  - Subsample ratio of the training instance
+
+- gamma: float
+
+  - default: 0
+  - Minimium loss reduction required to make a furthre partition on a leaf node
+
+- n_jobs: Integer
+
+  - default: -1
+  - Number of parallel threads used to run xgboost
+
+- colsample_bytree: float
+
+  - default: 1
+  - Subsample ratio of columns when constructing each tree
+
+- booster: String
+
+  - default: gbtree
+  - Specify which booster to use: gbtree, gblinear or dart
+
+- min_child_weight: float
+
+  - default: 0
+  - Minimum sum of instance weight(hessian) needed in a child
+
+- reg_lambda: float
+
+  - default: 1
+  - L2 regularization term on weights. Increasing this value will make model more conservative
+
+- reg_alpha: float
+
+  - default: 0
+  - L1 regularization term on weights. Increasing this value will make model more conservative
+
+.. _plugin_model_dffml_model_vowpalWabbit:
+
+dffml_model_vowpalWabbit
+++++++++++++++++++++++++
+
+.. code-block:: console
+
+    pip install dffml-model-vowpalWabbit
+
+
+.. _plugin_model_dffml_model_vowpalWabbit_vwmodel:
+
+vwmodel
+~~~~~~~
+
+*Official*
+
+Implemented using Vowpal Wabbit.
+
+First we create the training and testing datasets
+
+.. literalinclude:: /../model/vowpalWabbit/examples/train_data.sh
+
+.. literalinclude:: /../model/vowpalWabbit/examples/test_data.sh
+
+Train the model
+
+.. literalinclude:: /../model/vowpalWabbit/examples/train.sh
+
+Assess the accuracy
+
+.. literalinclude:: /../model/vowpalWabbit/examples/accuracy.sh
+
+Output
+
+.. code-block::
+
+    0.38683876649129145
+
+
+Make a prediction
+
+.. literalinclude:: /../model/vowpalWabbit/examples/predict.sh
+
+Output
+
+.. code-block:: json
+
+    [
+        {
+            "extra": {},
+            "features": {
+                "A": "| price:.46 sqft:.4 age:.10 1924"
+            },
+            "key": "0",
+            "last_updated": "2020-05-29T16:36:57Z",
+            "prediction": {
+                "B": {
+                    "confidence": 0.38683876649129145,
+                    "value": 0.0
+                }
+            }
+        }
+    ]
+
+**Args**
+
+- features: List of features
+
+- predict: Feature
+
+  - Feature to predict
+
+- directory: Path
+
+  - Directory where state should be saved
+
+- class_cost: List of features
+
+  - default: None
+  - Features with name `Cost_{class}` contaning cost of `class` for each input example, used when `csoaa` is used
+
+- task: String
+
+  - default: regression
+  - Task to perform, possible values are `classification`, `regression`
+
+- use_binary_label: String
+
+  - default: False
+  - Convert target labels to -1 and 1 for binary classification
+
+- vwcmd: List of strings
+
+  - default: []
+  - Command Line Arguements as per vowpal wabbit convention
+
+- namespace: List of strings
+
+  - default: []
+  - Namespace for input features. Should be in format {namespace}_{feature name}
+
+- importance: Feature
+
+  - default: None
+  - Feature containing `importance` of each example, used in conversion of input data to vowpal wabbit input format
+
+- base: Feature
+
+  - default: None
+  - Feature containing `base` for each example, used for residual regression
+
+- tag: Feature
+
+  - default: None
+  - Feature to be used as `tag` in conversion of data to vowpal wabbit input format
+
+- noconvert: String
+
+  - default: False
+  - Do not convert record features to vowpal wabbit input format
+
 .. _plugin_model_dffml_model_tensorflow_hub:
 
 dffml_model_tensorflow_hub
---------------------------
+++++++++++++++++++++++++++
 
 .. code-block:: console
 
@@ -344,57 +877,33 @@ text_classifier
 
 Implemented using Tensorflow hub pretrained models.
 
-.. code-block:: console
 
-    $ cat > train.csv << EOF
-    sentence,sentiment
-    Life is good,1
-    This book is amazing,1
-    It's a terrible movie,0
-    Global warming is bad,0
-    EOF
-    $ cat > test.csv << EOF
-    sentence,sentiment
-    I am not feeling good,0
-    Our trip was full of adventures,1
-    EOF
-    $ dffml train \
-        -model text_classifier \
-        -model-epochs 30 \
-        -model-predict sentiment:int:1 \
-        -model-classifications 0 1  \
-        -model-clstype int \
-        -sources f=csv \
-        -source-filename train.csv \
-        -model-features \
-          sentence:str:1 \
-        -model-model_path "https://tfhub.dev/google/tf2-preview/gnews-swivel-20dim-with-oov/1" \
-        -model-add_layers \
-        -model-layers "Dense(units=512, activation='relu')" "Dense(units=2, activation='softmax')" \
-        -log debug
-    $ dffml accuracy \
-        -model text_classifier \
-        -model-predict sentiment:int:1 \
-        -model-classifications 0 1 \
-        -model-model_path "https://tfhub.dev/google/tf2-preview/gnews-swivel-20dim-with-oov/1" \
-        -model-clstype int \
-        -sources f=csv \
-        -source-filename test.csv \
-        -model-features \
-          sentence:str:1 \
-        -log critical
-        1.0
-    $ dffml predict all \
-        -model text_classifier \
-        -model-predict sentiment:int:1 \
-        -model-classifications 0 1 \
-        -model-model_path "https://tfhub.dev/google/tf2-preview/gnews-swivel-20dim-with-oov/1" \
-        -model-clstype int \
-        -sources f=csv \
-        -source-filename test.csv \
-        -model-features \
-          sentence:str:1 \
-        -log debug
+.. literalinclude:: /../model/tensorflow_hub/examples/tfhub_text_classifier/train_data.sh
+
+.. literalinclude:: /../model/tensorflow_hub/examples/tfhub_text_classifier/test_data.sh
+
+Train the model
+
+.. literalinclude:: /../model/tensorflow_hub/examples/tfhub_text_classifier/train.sh
+
+Assess the accuracy
+
+.. literalinclude:: /../model/tensorflow_hub/examples/tfhub_text_classifier/accuracy.sh
+
+Output
+
+.. code-block::
+
+    0.5
+
+Make a prediction
+
+.. literalinclude:: /../model/tensorflow_hub/examples/tfhub_text_classifier/predict.sh
+
+Output
+
+.. code-block:: json
+
     [
         {
             "extra": {},
@@ -403,11 +912,11 @@ Implemented using Tensorflow hub pretrained models.
                 "sentiment": 0
             },
             "key": "0",
-            "last_updated": "2020-02-15T02:54:02Z",
+            "last_updated": "2020-05-14T20:14:30Z",
             "prediction": {
                 "sentiment": {
-                    "confidence": 0.7630850076675415,
-                    "value": 0
+                    "confidence": 0.9999992847442627,
+                    "value": 1
                 }
             }
         },
@@ -418,15 +927,21 @@ Implemented using Tensorflow hub pretrained models.
                 "sentiment": 1
             },
             "key": "1",
-            "last_updated": "2020-02-15T02:54:02Z",
+            "last_updated": "2020-05-14T20:14:30Z",
             "prediction": {
                 "sentiment": {
-                    "confidence": 0.6673157811164856,
+                    "confidence": 0.9999088048934937,
                     "value": 1
                 }
             }
         }
     ]
+
+
+
+Example usage of Tensorflow_hub Text Classifier model using python API
+
+.. literalinclude:: /../model/tensorflow_hub/examples/tfhub_text_classifier/textclassifier.py
 
 **Args**
 
@@ -441,6 +956,10 @@ Implemented using Tensorflow hub pretrained models.
 - features: List of features
 
   - Features to train on
+
+- directory: Path
+
+  - Directory where state should be saved
 
 - trainable: String
 
@@ -457,7 +976,7 @@ Implemented using Tensorflow hub pretrained models.
   - default: 256
   - Length of sentence, used in preprocessing of input for bert embedding
 
-- add_layers: Boolean
+- add_layers: String
 
   - default: False
   - Add layers on the top of pretrianed model/layer
@@ -497,299 +1016,360 @@ Implemented using Tensorflow hub pretrained models.
   - default: 10
   - Number of iterations to pass over all records in a source
 
-- directory: Path
+.. _plugin_model_dffml_model_spacy:
 
-  - default: ~/.cache/dffml/tensorflow_hub
-  - Directory where state should be saved
-
-.. _plugin_model_dffml_model_transformers:
-
-dffml_model_transformers
-------------------------
+dffml_model_spacy
++++++++++++++++++
 
 .. code-block:: console
 
-    pip install dffml-model-transformers
+    pip install dffml-model-spacy
 
 
-.. _plugin_model_dffml_model_transformers_ner_tagger:
+.. _plugin_model_dffml_model_spacy_spacyner:
 
-ner_tagger
-~~~~~~~~~~
+spacyner
+~~~~~~~~
 
 *Official*
 
-Implemented using ![HuggingFace Transformers](https://huggingface.co/transformers/index.html) Tensorflow based Models.
-Description about pretrianed models can be found ![here](https://huggingface.co/transformers/pretrained_models.html)
+Implemented using `Spacy statistical models <https://spacy.io/usage/training>`_ .
 
-First we create the training and testing datasets
+.. note::
 
-.. literalinclude:: /../model/transformers/examples/ner/train_data.sh
+    You must download ``en_core_web_sm`` before using this model
 
-.. literalinclude:: /../model/transformers/examples/ner/test_data.sh
+    .. code-block:: console
+        :test:
+
+        $ python -m spacy download en_core_web_sm
+
+First we create the training and testing datasets.
+
+Training data:
+
+**train.json**
+
+.. code-block:: json
+    :test:
+    :filepath: train.json
+
+    {
+        "data": [
+            {
+                "sentence": "I went to London and Berlin.",
+                "entities": [
+                    {
+                        "start":10,
+                        "end": 16,
+                        "tag": "LOC"
+                    },
+                    {
+                        "start":21,
+                        "end": 27,
+                        "tag": "LOC"
+                    }
+                ]
+            },
+            {
+                "sentence": "Who is Alex?",
+                "entities": [
+                    {
+                        "start":7,
+                        "end": 11,
+                        "tag": "PERSON"
+                    }
+                ]
+            }
+        ]
+    }
+
+Testing data:
+
+**test.json**
+
+.. code-block:: json
+    :test:
+    :filepath: test.json
+
+    {
+        "data": [
+            {
+                "sentence": "Alex went to London?"
+            }
+        ]
+    }
 
 Train the model
 
-.. literalinclude:: /../model/transformers/examples/ner/train.sh
+.. code-block:: console
+    :test:
+
+    $ dffml train \
+        -model spacyner \
+        -sources s=op \
+        -source-opimp dffml_model_spacy.ner.utils:parser \
+        -source-args train.json False \
+        -model-model_name_or_path en_core_web_sm \
+        -model-directory temp \
+        -model-n_iter 5 \
+        -log debug
 
 Assess the accuracy
 
-.. literalinclude:: /../model/transformers/examples/ner/accuracy.sh
+.. code-block:: console
+    :test:
 
-Output
-
-.. code-block::
-
-                precision    recall  f1-score   support
-
-        MISC     0.0000    0.0000    0.0000         2
-
-    micro avg     0.0000    0.0000    0.0000         2
-    macro avg     0.0000    0.0000    0.0000         2
-
-    INFO:dffml.NERModelContext:final_loss = 1.4586552
+    $ dffml accuracy \
+        -model spacyner \
+        -sources s=op \
+        -source-opimp dffml_model_spacy.ner.utils:parser \
+        -source-args train.json False \
+        -model-model_name_or_path en_core_web_sm \
+        -model-directory temp \
+        -model-n_iter 5 \
+        -log debug
     0.0
 
 Make a prediction
 
-.. literalinclude:: /../model/transformers/examples/ner/predict.sh
+.. code-block:: console
+    :test:
 
-Output
-
-.. code-block:: json
-
+    $ dffml predict all \
+        -model spacyner \
+        -sources s=op \
+        -source-opimp dffml_model_spacy.ner.utils:parser \
+        -source-args test.json True \
+        -model-model_name_or_path en_core_web_sm \
+        -model-directory temp \
+        -model-n_iter 5 \
+        -log debug
     [
         {
             "extra": {},
             "features": {
-                "SentenceId": 1,
-                "Words": "DFFML models can do NER"
+                "entities": [],
+                "sentence": "Alex went to London?"
             },
-            "key": "0",
-            "last_updated": "2020-03-21T23:14:41Z",
+            "key": 0,
+            "last_updated": "2020-07-27T16:26:18Z",
             "prediction": {
-                "Tag": {
-                    "confidence": NaN,
+                "Answer": {
+                    "confidence": null,
                     "value": [
                         [
-                            {
-                                "DFFML": "I-LOC"
-                            },
-                            {
-                                "models": "O"
-                            },
-                            {
-                                "can": "I-LOC"
-                            },
-                            {
-                                "do": "I-LOC"
-                            },
-                            {
-                                "NER": "I-LOC"
-                            }
-                        ]
-                    ]
-                }
-            }
-        },
-        {
-            "extra": {},
-            "features": {
-                "SentenceId": 2,
-                "Words": "DFFML models can do regression"
-            },
-            "key": "1",
-            "last_updated": "2020-03-21T23:14:42Z",
-            "prediction": {
-                "Tag": {
-                    "confidence": NaN,
-                    "value": [
+                            "Alex",
+                            "PERSON"
+                        ],
                         [
-                            {
-                                "DFFML": "I-LOC"
-                            },
-                            {
-                                "models": "O"
-                            },
-                            {
-                                "can": "I-LOC"
-                            },
-                            {
-                                "do": "I-LOC"
-                            },
-                            {
-                                "regression": "I-LOC"
-                            }
+                            "London",
+                            "GPE"
                         ]
                     ]
                 }
             }
         }
     ]
+
 The model can be trained on large datasets to get the expected
 output. The example shown above is to demonstrate the commandline usage
 of the model.
 
-Example usage of NER model using python API
+In the above train, accuracy and predict commands, :ref:`plugin_source_dffml_op` source is used to
+read and parse data from json file before feeding it to the model. The function used by opsource to parse json data
+is:
 
-.. literalinclude:: /../model/transformers/examples/ner/ner_model.py
+.. literalinclude:: /../model/spacy/dffml_model_spacy/ner/utils.py
+
+The location of the function is passed using:
+
+.. code-block:: console
+
+        -source-opimp dffml_model_spacy.ner.utils:parser
+
+And the arguments to `parser` are passed by:
+
+.. code-block:: console
+
+        -source-args train.json False
+
+where `train.json` is the name of file containing training data and the bool `False`
+is value of the flag `is_predicting`.
 
 **Args**
 
-- sid: Feature
+- directory: String
 
-  - Unique Id to identify words of each sentence (Sentence ID)
-
-- words: Feature
-
-  - Tokens to train NER model
-
-- predict: Feature
-
-  - NER Tags (B-MISC, I-PER, O etc.) for tokens
-
-- model_architecture_type: String
-
-  - Model architecture selected in the : bert, distilbert, roberta
+  - Output directory
 
 - model_name_or_path: String
 
-  - Path to pre-trained model or shortcut name selected in the list: bert-base-uncased, bert-large-uncased, bert-base-cased, bert-large-cased, bert-base-multilingual-uncased, bert-base-multilingual-cased, bert-base-chinese, bert-base-german-cased, bert-large-uncased-whole-word-masking, bert-large-cased-whole-word-masking, bert-large-uncased-whole-word-masking-finetuned-squad, bert-large-cased-whole-word-masking-finetuned-squad, bert-base-cased-finetuned-mrpc, bert-base-german-dbmdz-cased, bert-base-german-dbmdz-uncased, bert-base-japanese, bert-base-japanese-whole-word-masking, bert-base-japanese-char, bert-base-japanese-char-whole-word-masking, bert-base-finnish-cased-v1, bert-base-finnish-uncased-v1, bert-base-dutch-cased, roberta-base, roberta-large, roberta-large-mnli, distilroberta-base, roberta-base-openai-detector, roberta-large-openai-detector, distilbert-base-uncased, distilbert-base-uncased-distilled-squad, distilbert-base-cased, distilbert-base-cased-distilled-squad, distilbert-base-german-cased, distilbert-base-multilingual-cased, distilbert-base-uncased-finetuned-sst-2-english
-
-- output_dir: String
-
-  - default: ~/.cache/dffml/transformers/checkpoints
-  - The output directory where the model checkpoints will be written
-
-- config_name: String
-
   - default: None
-  - Pretrained config name or path if not the same as model_name
+  - Model name or path to saved model. Defaults to blank 'en' model.
 
-- tokenizer_name: String
-
-  - default: None
-  - Pretrained tokenizer name or path if not the same as model_name
-
-- cache_dir: String
-
-  - default: ~/.cache/dffml/transformers
-  - Directory to store the pre-trained models downloaded from s3
-
-- max_seq_length: Integer
-
-  - default: 128
-  - The maximum total input sentence length after tokenization.Sequences longer than this will be truncated, sequences shorter will be padded
-
-- max_steps: Integer
-
-  - default: 0
-  - If greater than zero then sets total number of training steps to perform. Overrides `epochs`
-
-- use_fp16: Boolean
-
-  - default: False
-  - Whether to use 16-bit (mixed) precision instead of 32-bit
-
-- ner_tags: List of strings
-
-  - default: ['O', 'B-MISC', 'I-MISC', 'B-PER', 'I-PER', 'B-ORG', 'I-ORG', 'B-LOC', 'I-LOC']
-  - List of all distinct NER Tags
-
-- do_lower_case: Boolean
-
-  - default: False
-  - Set this flag if using uncased model.
-
-- gradient_accumulation_steps: Integer
-
-  - default: 1
-  - Number of updates steps to accumulate before performing a backward pass.
-
-- learning_rate: float
-
-  - default: 5e-05
-  - The initial learning rate for Adam
-
-- weight_decay: float
-
-  - default: 0.0
-  - Weight decay
-
-- adam_epsilon: float
-
-  - default: 1e-08
-  - Epsilon for Adam optimizer
-
-- max_grad_norm: float
-
-  - default: 1.0
-  - Max gradient norm.
-
-- epochs: Integer
-
-  - default: 1
-  - Total number of training epochs to perform.
-
-- warmup_steps: Integer
-
-  - default: 0
-  - Linear warmup over warmup_steps.
-
-- save_steps: Integer
+- n_iter: Integer
 
   - default: 10
-  - Save checkpoint every X update steps.
+  - Number of training iterations
 
-- seed: Integer
+- dropout: float
 
-  - default: 2020
-  - Random seed for initialization
-
-- gpus: String
-
-  - default: 0
-  - List of gpu devices. If only one, switch to single gpu strategy, if None takes all availabel gpus
-
-- tpu: String
-
-  - default: None
-  - The Cloud TPU to use for training. This should be either the name used when creating the Cloud TPU, or a grpc://ip.address.of.tpu:8470 url
-
-- num_tpu_cores: Integer
-
-  - default: 8
-  - Total number of TPU cores to use.
-
-- per_device_train_batch_size: Integer
-
-  - default: 8
-  - Batch size per GPU/CPU/TPU for training
-
-- per_device_eval_batch_size: Integer
-
-  - default: 8
-  - Batch size per GPU/CPU/TPU for assessing accuracy
-
-- no_cuda: Boolean
-
-  - default: False
-  - Avoid using CUDA when available
-
-- eval_all_checkpoints: Boolean
-
-  - default: False
-  - Evaluate all checkpoints starting with the same prefix as model_name ending and ending with step number
+  - default: 0.5
+  - Dropout rate to be used during training
 
 .. _plugin_model_dffml_model_scratch:
 
 dffml_model_scratch
--------------------
++++++++++++++++++++
 
 .. code-block:: console
 
     pip install dffml-model-scratch
 
+
+.. _plugin_model_dffml_model_scratch_anomalydetection:
+
+anomalydetection
+~~~~~~~~~~~~~~~~
+
+*Official*
+
+Model for Anomaly Detection using multivariate Gaussian distribution to predict probabilities of all records in the dataset
+and identify outliers. F1 score is used as the evaluation metric for this model. This model works well as it recognises dependencies
+across various features, and works particularly well if the features have a Gaussian Distribution.
+
+Examples
+--------
+
+Command line usage
+
+Create training and test datasets
+
+**trainex.csv**
+
+.. code-block::
+    :test:
+    :filepath: trainex.csv
+
+    A,Y
+    0.65,0
+    0.24,0
+    0.93,0
+    0.87,0
+    0.23,0
+    7,1
+    0.86,0
+    0.45,0
+    0.55,0
+    0.29,0
+    5,1
+    0.51,0
+    0.88,0
+    0.24,0
+    0.51,0
+    0.17,0
+    9,1
+    0.37,0
+    0.23,0
+    0.44,0
+    0.62,0
+    3,1
+    0.87,0
+
+**testex.csv**
+
+.. code-block::
+    :test:
+    :filepath: testex.csv
+
+    A,Y
+    0.45,0
+    0.23,0
+    0.67,0
+    8,1
+    0.19,0
+    0.34,0
+    0.49,0
+    0.31,0
+    0.47,0
+    4,1
+
+Train the model
+
+.. code-block:: console
+    :test:
+
+
+    $ dffml train \
+        -sources f=csv \
+        -source-filename trainex.csv \
+        -model anomalydetection \
+        -model-features A:float:2 \
+        -model-predict Y:int:1  \
+        -model-directory tempdir
+
+Assess the accuracy
+
+.. code-block:: console
+    :test:
+
+    $ dffml accuracy \
+        -sources f=csv \
+        -source-filename testex.csv \
+        -model anomalydetection \
+        -model-features A:float:2 \
+        -model-predict Y:int:1 \
+        -model-directory tempdir
+
+
+Make predictions
+
+.. code-block:: console
+    :test:
+
+    $ dffml predict all \
+        -sources f=csv \
+        -source-filename testex.csv \
+        -model anomalydetection \
+        -model-features A:float:2 \
+        -model-predict Y:int:1 \
+        -model-directory tempdir
+
+
+Python usage
+
+.. literalinclude:: /../model/scratch/examples/anomalydetection_ex/detectoutliers.py
+    :test:
+
+
+Output
+
+.. code-block:: console
+    :test:
+
+    $ python detectoutliers.py
+    Test set F1 score : 0.8
+    Training set F1 score : 0.888888888888889
+
+**Args**
+
+- features: List of features
+
+  - Features to train on
+
+- predict: Feature
+
+  - Label or the value to be predicted
+
+- directory: Path
+
+  - Directory where state should be saved
+
+- k: float
+
+  - default: 0.8
+  - Validation set size
 
 .. _plugin_model_dffml_model_scratch_scratchlgrsag:
 
@@ -860,13 +1440,12 @@ Example usage of Logistic Regression using Python
 
 - directory: Path
 
-  - default: ~/.cache/dffml/scratch
   - Directory where state should be saved
 
 .. _plugin_model_dffml_model_scikit:
 
 dffml_model_scikit
-------------------
+++++++++++++++++++
 
 .. code-block:: console
 
@@ -887,6 +1466,7 @@ Training:
         -model SCIKIT_MODEL_ENTRYPOINT \
         -model-features FEATURE_DEFINITION \
         -model-predict TO_PREDICT \
+        -model-directory MODEL_DIRECTORY \
         -model-SCIKIT_PARAMETER_NAME SCIKIT_PARAMETER_VALUE \
         -sources f=TRAINING_DATA_SOURCE_TYPE \
         -source-filename TRAINING_DATA_FILE_NAME \
@@ -900,6 +1480,7 @@ Testing and Accuracy:
         -model SCIKIT_MODEL_ENTRYPOINT \
         -model-features FEATURE_DEFINITION \
         -model-predict TO_PREDICT \
+        -model-directory MODEL_DIRECTORY \
         -sources f=TESTING_DATA_SOURCE_TYPE \
         -source-filename TESTING_DATA_FILE_NAME \
         -log debug
@@ -912,6 +1493,7 @@ Predicting with trained model:
         -model SCIKIT_MODEL_ENTRYPOINT \
         -model-features FEATURE_DEFINITION \
         -model-predict TO_PREDICT \
+        -model-directory MODEL_DIRECTORY \
         -sources f=PREDICT_DATA_SOURCE_TYPE \
         -source-filename PREDICT_DATA_FILE_NAME \
         -log debug
@@ -925,6 +1507,8 @@ Predicting with trained model:
 | Regression     | LinearRegression              | scikitlr       | `scikitlr <https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LinearRegression.html#sklearn.linear_model.LinearRegression/>`_                                             |
 |                +-------------------------------+----------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 |                | ElasticNet                    | scikiteln      | `scikiteln <https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.ElasticNet.html#sklearn.linear_model.ElasticNet/>`_                                                        |
+|                +-------------------------------+----------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|                | RandomForestRegressor         | scikitrfr      | `scikitrfr <https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestRegressor.html>`_                                                                                  |
 |                +-------------------------------+----------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 |                | BayesianRidge                 | scikitbyr      | `scikitbyr <https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.BayesianRidge.html#sklearn.linear_model.BayesianRidge/>`_                                                  |
 |                +-------------------------------+----------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
@@ -1092,6 +1676,7 @@ Example below uses KMeans Clustering Model on a small randomly generated dataset
     $ dffml train \
         -model scikitkmeans \
         -model-features Col1:float:1 Col2:float:1 Col3:float:1 Col4:float:1 \
+        -model-directory tempdir \
         -sources f=csv \
         -source-filename train.csv \
         -source-readonly \
@@ -1100,6 +1685,7 @@ Example below uses KMeans Clustering Model on a small randomly generated dataset
         -model scikitkmeans \
         -model-features Col1:float:1 Col2:float:1 Col3:float:1 Col4:float:1\
         -model-tcluster cluster:int:1 \
+        -model-directory tempdir \
         -sources f=csv \
         -source-filename test.csv \
         -source-readonly \
@@ -1109,6 +1695,7 @@ Example below uses KMeans Clustering Model on a small randomly generated dataset
       dffml predict all \
         -model scikitkmeans \
         -model-features Col1:float:1 Col2:float:1 Col3:float:1 Col4:float:1 \
+        -model-directory tempdir \
         -sources f=csv \
         -source-filename /dev/stdin \
         -source-readonly \
@@ -1135,18 +1722,19 @@ Example usage of KMeans Clustering Model using python API:
 
 .. code-block:: python
 
-    from dffml import CSVSource, Features, DefFeature
+    from dffml import CSVSource, Features, Feature
     from dffml.noasync import train, accuracy, predict
     from dffml_model_scikit import KMeansModel
 
     model = KMeansModel(
         features=Features(
-            DefFeature("Col1", float, 1),
-            DefFeature("Col2", float, 1),
-            DefFeature("Col3", float, 1),
-            DefFeature("Col4", float, 1),
+            Feature("Col1", float, 1),
+            Feature("Col2", float, 1),
+            Feature("Col3", float, 1),
+            Feature("Col4", float, 1),
         ),
-        tcluster=DefFeature("cluster", int, 1)
+        tcluster=Feature("cluster", int, 1),
+        directory="tempdir",
     )
 
     # Train the model
@@ -1185,6 +1773,3901 @@ Ensure that `predict` and `accuracy` for these algorithms uses training data.
 
 - directory: Path
 
-  - default: ~/.cache/dffml/scikit-{entrypoint}
   - Directory where state should be saved
 
+
+
+.. _plugin_model_dffml_model_pytorch:
+
+dffml_model_pytorch
++++++++++++++++++++
+
+.. code-block:: console
+
+    pip install dffml-model-pytorch
+
+
+Machine Learning models implemented with `PyTorch <https://pytorch.org/>`_.
+Models are saved under the directory in `model.pt`.
+
+**General Usage:**
+
+Training:
+
+.. code-block:: console
+
+    $ dffml train \
+        -model PYTORCH_MODEL_ENTRYPOINT \
+        -model-features FEATURE_DEFINITION \
+        -model-predict TO_PREDICT \
+        -model-directory MODEL_DIRECTORY \
+        -model-CONFIGS CONFIG_VALUES \
+        -sources f=TRAINING_DATA_SOURCE_TYPE \
+        -source-CONFIGS TRAINING_DATA \
+        -log debug
+
+Testing and Accuracy:
+
+.. code-block:: console
+
+    $ dffml accuracy \
+        -model PYTORCH_MODEL_ENTRYPOINT \
+        -model-features FEATURE_DEFINITION \
+        -model-predict TO_PREDICT \
+        -model-directory MODEL_DIRECTORY \
+        -model-CONFIGS CONFIG_VALUES \
+        -sources f=TESTING_DATA_SOURCE_TYPE \
+        -source-CONFIGS TESTING_DATA \
+        -log debug
+
+Predicting with trained model:
+
+.. code-block:: console
+
+    $ dffml predict all \
+        -model PYTORCH_MODEL_ENTRYPOINT \
+        -model-features FEATURE_DEFINITION \
+        -model-predict TO_PREDICT \
+        -model-directory MODEL_DIRECTORY \
+        -model-CONFIGS CONFIG_VALUES \
+        -sources f=PREDICT_DATA_SOURCE_TYPE \
+        -source-CONFIGS PREDICTION_DATA \
+        -log debug
+
+
+**Pre-Trained Models Available:**
+
++----------------+---------------------------------+--------------------+--------------------------------------------------------------------------------+
+| Type           | Model                           | Entrypoint         | Architecture                                                                   |
++================+=================================+====================+================================================================================+
+| Classification | AlexNet                         | alexnet            | `AlexNet architecture <https://arxiv.org/abs/1404.5997>`_                      |
+|                +---------------------------------+--------------------+--------------------------------------------------------------------------------+
+|                | DenseNet-121                    | densenet121        | `DenseNet architecture <https://arxiv.org/pdf/1608.06993.pdf>`_                |
+|                +---------------------------------+--------------------+--------------------------------------------------------------------------------+
+|                | DenseNet-161                    | densenet161        |                                                                                |
+|                +---------------------------------+--------------------+--------------------------------------------------------------------------------+
+|                | DenseNet-169                    | densenet169        |                                                                                |
+|                +---------------------------------+--------------------+--------------------------------------------------------------------------------+
+|                | DenseNet-201                    | densenet201        |                                                                                |
+|                +---------------------------------+--------------------+--------------------------------------------------------------------------------+
+|                | MnasNet 0.5                     | mnasnet0_5         | `MnasNet architecture <https://arxiv.org/pdf/1807.11626.pdf>`_                 |
+|                +---------------------------------+--------------------+--------------------------------------------------------------------------------+
+|                | MnasNet 1.0                     | mnasnet1_0         |                                                                                |
+|                +---------------------------------+--------------------+--------------------------------------------------------------------------------+
+|                | MobileNet V2                    | mobilenet_v2       | `MobileNet V2 architecture <https://arxiv.org/abs/1801.04381>`_                |
+|                +---------------------------------+--------------------+--------------------------------------------------------------------------------+
+|                | VGG-11                          | vgg11              | `VGG-11 architecture Configuration "A" <https://arxiv.org/pdf/1409.1556.pdf>`_ |
+|                +---------------------------------+--------------------+--------------------------------------------------------------------------------+
+|                | VGG-11 with batch normalization | vgg11_bn           |                                                                                |
+|                +---------------------------------+--------------------+--------------------------------------------------------------------------------+
+|                | VGG-13                          | vgg13              | `VGG-13 architecture Configuration "B" <https://arxiv.org/pdf/1409.1556.pdf>`_ |
+|                +---------------------------------+--------------------+--------------------------------------------------------------------------------+
+|                | VGG-13 with batch normalization | vgg13_bn           |                                                                                |
+|                +---------------------------------+--------------------+--------------------------------------------------------------------------------+
+|                | VGG-16                          | vgg16              | `VGG-16 architecture Configuration "D" <https://arxiv.org/pdf/1409.1556.pdf>`_ |
+|                +---------------------------------+--------------------+--------------------------------------------------------------------------------+
+|                | VGG-16 with batch normalization | vgg16_bn           |                                                                                |
+|                +---------------------------------+--------------------+--------------------------------------------------------------------------------+
+|                | VGG-19                          | vgg19              | `VGG-19 architecture Configuration "E" <https://arxiv.org/pdf/1409.1556.pdf>`_ |
+|                +---------------------------------+--------------------+--------------------------------------------------------------------------------+
+|                | VGG-19 with batch normalization | vgg19_bn           |                                                                                |
+|                +---------------------------------+--------------------+--------------------------------------------------------------------------------+
+|                | GoogleNet                       | googlenet          | `GoogleNet architecture <http://arxiv.org/abs/1409.4842>`_                     |
+|                +---------------------------------+--------------------+--------------------------------------------------------------------------------+
+|                | Inception V3                    | inception_v3       | `Inception V3 architecture <http://arxiv.org/abs/1512.00567>`_                 |
+|                +---------------------------------+--------------------+--------------------------------------------------------------------------------+
+|                | ResNet-18                       | resnet18           | `ResNet architecture <https://arxiv.org/pdf/1512.03385.pdf>`_                  |
+|                +---------------------------------+--------------------+--------------------------------------------------------------------------------+
+|                | ResNet-34                       | resnet34           |                                                                                |
+|                +---------------------------------+--------------------+--------------------------------------------------------------------------------+
+|                | ResNet-50                       | resnet50           |                                                                                |
+|                +---------------------------------+--------------------+--------------------------------------------------------------------------------+
+|                | ResNet-101                      | resnet101          |                                                                                |
+|                +---------------------------------+--------------------+--------------------------------------------------------------------------------+
+|                | ResNet-152                      | resnet152          |                                                                                |
+|                +---------------------------------+--------------------+--------------------------------------------------------------------------------+
+|                | Wide ResNet-101-2               | wide_resnet101_2   | `Wide Resnet architecture <https://arxiv.org/pdf/1605.07146.pdf>`_             |
+|                +---------------------------------+--------------------+--------------------------------------------------------------------------------+
+|                | Wide ResNet-50-2                | wide_resnet50_2    |                                                                                |
+|                +---------------------------------+--------------------+--------------------------------------------------------------------------------+
+|                | ShuffleNet V2 0.5               | shufflenet_v2_x0_5 | `Shuffle Net V2 architecture <https://arxiv.org/abs/1807.11164>`_              |
+|                +---------------------------------+--------------------+--------------------------------------------------------------------------------+
+|                | ShuffleNet V2 1.0               | shufflenet_v2_x1_0 |                                                                                |
+|                +---------------------------------+--------------------+--------------------------------------------------------------------------------+
+|                | ResNext-101-32x8D               | resnext101_32x8d   | `ResNext architecture <https://arxiv.org/pdf/1611.05431.pdf>`_                 |
+|                +---------------------------------+--------------------+--------------------------------------------------------------------------------+
+|                | ResNext-50-32x4D                | resnext50_32x4d    |                                                                                |
++----------------+---------------------------------+--------------------+--------------------------------------------------------------------------------+
+
+
+**Usage Example:**
+
+Example below uses ResNet-18 Model using the command line.
+
+Let us take a simple example: **Classifying Ants and Bees Images**
+
+First, we download the dataset and verify with ``sha384sum``
+
+.. code-block::
+
+    curl -LO https://download.pytorch.org/tutorial/hymenoptera_data.zip
+    sha384sum -c - << EOF
+    491db45cfcab02d99843fbdcf0574ecf99aa4f056d52c660a39248b5524f9e6e8f896d9faabd27ffcfc2eaca0cec6f39  /home/tron/Desktop/Development/hymenoptera_data.zip
+    EOF
+    hymenoptera_data.zip: OK
+
+Unzip the file
+
+.. code-block::
+
+    unzip hymenoptera_data.zip
+
+We first create a YAML file to define the last layer(s) to replace from the network architecture
+
+**layers.yaml**
+
+.. literalinclude:: /../model/pytorch/examples/resnet18/layers.yaml
+
+Train the model
+
+.. literalinclude:: /../model/pytorch/examples/resnet18/train.sh
+
+Assess accuracy
+
+.. literalinclude:: /../model/pytorch/examples/resnet18/accuracy.sh
+
+Output:
+
+.. code-block::
+
+    0.9215686274509803
+
+Create a csv file with the names of the images to predict, whether they are ants or bees.
+
+.. literalinclude:: /../model/pytorch/examples/resnet18/unknown_data.sh
+
+Make the predictions
+
+.. literalinclude:: /../model/pytorch/examples/resnet18/predict.sh
+
+Output:
+
+.. literalinclude:: /../model/pytorch/examples/resnet18/output.txt
+
+.. _plugin_model_dffml_model_pytorch_alexnet:
+
+alexnet
+~~~~~~~
+
+*Official*
+
+No description
+
+**Args**
+
+- predict: Feature
+
+  - Feature name holding classification value
+
+- features: List of features
+
+  - Features to train on
+
+- directory: Path
+
+  - Directory where state should be saved
+
+- classifications: List of strings
+
+  - default: None
+  - Options for value of classification
+
+- clstype: Type
+
+  - default: <class 'str'>
+  - Data type of classifications values
+
+- imageSize: Integer
+
+  - default: None
+  - Common size for all images to resize and crop to
+
+- enableGPU: String
+
+  - default: False
+  - Utilize GPUs for processing
+
+- epochs: Integer
+
+  - default: 20
+  - Number of iterations to pass over all records in a source
+
+- batch_size: Integer
+
+  - default: 32
+  - Batch size
+
+- validation_split: float
+
+  - default: 0.0
+  - Split training data for Validation
+
+- patience: Integer
+
+  - default: 5
+  - Early stops the training if validation loss doesn't improve after a given patience
+
+- loss: PyTorchLoss
+
+  - default: <class 'dffml.base.CrossEntropyLossFunction'>
+  - Loss Functions available in PyTorch
+
+- optimizer: String
+
+  - default: SGD
+  - Optimizer Algorithms available in PyTorch
+
+- normalize_mean: List of floats
+
+  - default: None
+  - Mean values for normalizing Tensor image
+
+- normalize_std: List of floats
+
+  - default: None
+  - Standard Deviation values for normalizing Tensor image
+
+- pretrained: String
+
+  - default: True
+  - Load Pre-trained model weights
+
+- trainable: String
+
+  - default: False
+  - Tweak pretrained model by training again
+
+- add_layers: String
+
+  - default: False
+  - Replace the last layer of the pretrained model
+
+- layers: dict
+
+  - default: None
+  - Extra layers to replace the last layer of the pretrained model
+
+.. _plugin_model_dffml_model_pytorch_densenet121:
+
+densenet121
+~~~~~~~~~~~
+
+*Official*
+
+No description
+
+**Args**
+
+- predict: Feature
+
+  - Feature name holding classification value
+
+- features: List of features
+
+  - Features to train on
+
+- directory: Path
+
+  - Directory where state should be saved
+
+- classifications: List of strings
+
+  - default: None
+  - Options for value of classification
+
+- clstype: Type
+
+  - default: <class 'str'>
+  - Data type of classifications values
+
+- imageSize: Integer
+
+  - default: None
+  - Common size for all images to resize and crop to
+
+- enableGPU: String
+
+  - default: False
+  - Utilize GPUs for processing
+
+- epochs: Integer
+
+  - default: 20
+  - Number of iterations to pass over all records in a source
+
+- batch_size: Integer
+
+  - default: 32
+  - Batch size
+
+- validation_split: float
+
+  - default: 0.0
+  - Split training data for Validation
+
+- patience: Integer
+
+  - default: 5
+  - Early stops the training if validation loss doesn't improve after a given patience
+
+- loss: PyTorchLoss
+
+  - default: <class 'dffml.base.CrossEntropyLossFunction'>
+  - Loss Functions available in PyTorch
+
+- optimizer: String
+
+  - default: SGD
+  - Optimizer Algorithms available in PyTorch
+
+- normalize_mean: List of floats
+
+  - default: None
+  - Mean values for normalizing Tensor image
+
+- normalize_std: List of floats
+
+  - default: None
+  - Standard Deviation values for normalizing Tensor image
+
+- pretrained: String
+
+  - default: True
+  - Load Pre-trained model weights
+
+- trainable: String
+
+  - default: False
+  - Tweak pretrained model by training again
+
+- add_layers: String
+
+  - default: False
+  - Replace the last layer of the pretrained model
+
+- layers: dict
+
+  - default: None
+  - Extra layers to replace the last layer of the pretrained model
+
+.. _plugin_model_dffml_model_pytorch_densenet161:
+
+densenet161
+~~~~~~~~~~~
+
+*Official*
+
+No description
+
+**Args**
+
+- predict: Feature
+
+  - Feature name holding classification value
+
+- features: List of features
+
+  - Features to train on
+
+- directory: Path
+
+  - Directory where state should be saved
+
+- classifications: List of strings
+
+  - default: None
+  - Options for value of classification
+
+- clstype: Type
+
+  - default: <class 'str'>
+  - Data type of classifications values
+
+- imageSize: Integer
+
+  - default: None
+  - Common size for all images to resize and crop to
+
+- enableGPU: String
+
+  - default: False
+  - Utilize GPUs for processing
+
+- epochs: Integer
+
+  - default: 20
+  - Number of iterations to pass over all records in a source
+
+- batch_size: Integer
+
+  - default: 32
+  - Batch size
+
+- validation_split: float
+
+  - default: 0.0
+  - Split training data for Validation
+
+- patience: Integer
+
+  - default: 5
+  - Early stops the training if validation loss doesn't improve after a given patience
+
+- loss: PyTorchLoss
+
+  - default: <class 'dffml.base.CrossEntropyLossFunction'>
+  - Loss Functions available in PyTorch
+
+- optimizer: String
+
+  - default: SGD
+  - Optimizer Algorithms available in PyTorch
+
+- normalize_mean: List of floats
+
+  - default: None
+  - Mean values for normalizing Tensor image
+
+- normalize_std: List of floats
+
+  - default: None
+  - Standard Deviation values for normalizing Tensor image
+
+- pretrained: String
+
+  - default: True
+  - Load Pre-trained model weights
+
+- trainable: String
+
+  - default: False
+  - Tweak pretrained model by training again
+
+- add_layers: String
+
+  - default: False
+  - Replace the last layer of the pretrained model
+
+- layers: dict
+
+  - default: None
+  - Extra layers to replace the last layer of the pretrained model
+
+.. _plugin_model_dffml_model_pytorch_densenet169:
+
+densenet169
+~~~~~~~~~~~
+
+*Official*
+
+No description
+
+**Args**
+
+- predict: Feature
+
+  - Feature name holding classification value
+
+- features: List of features
+
+  - Features to train on
+
+- directory: Path
+
+  - Directory where state should be saved
+
+- classifications: List of strings
+
+  - default: None
+  - Options for value of classification
+
+- clstype: Type
+
+  - default: <class 'str'>
+  - Data type of classifications values
+
+- imageSize: Integer
+
+  - default: None
+  - Common size for all images to resize and crop to
+
+- enableGPU: String
+
+  - default: False
+  - Utilize GPUs for processing
+
+- epochs: Integer
+
+  - default: 20
+  - Number of iterations to pass over all records in a source
+
+- batch_size: Integer
+
+  - default: 32
+  - Batch size
+
+- validation_split: float
+
+  - default: 0.0
+  - Split training data for Validation
+
+- patience: Integer
+
+  - default: 5
+  - Early stops the training if validation loss doesn't improve after a given patience
+
+- loss: PyTorchLoss
+
+  - default: <class 'dffml.base.CrossEntropyLossFunction'>
+  - Loss Functions available in PyTorch
+
+- optimizer: String
+
+  - default: SGD
+  - Optimizer Algorithms available in PyTorch
+
+- normalize_mean: List of floats
+
+  - default: None
+  - Mean values for normalizing Tensor image
+
+- normalize_std: List of floats
+
+  - default: None
+  - Standard Deviation values for normalizing Tensor image
+
+- pretrained: String
+
+  - default: True
+  - Load Pre-trained model weights
+
+- trainable: String
+
+  - default: False
+  - Tweak pretrained model by training again
+
+- add_layers: String
+
+  - default: False
+  - Replace the last layer of the pretrained model
+
+- layers: dict
+
+  - default: None
+  - Extra layers to replace the last layer of the pretrained model
+
+.. _plugin_model_dffml_model_pytorch_densenet201:
+
+densenet201
+~~~~~~~~~~~
+
+*Official*
+
+No description
+
+**Args**
+
+- predict: Feature
+
+  - Feature name holding classification value
+
+- features: List of features
+
+  - Features to train on
+
+- directory: Path
+
+  - Directory where state should be saved
+
+- classifications: List of strings
+
+  - default: None
+  - Options for value of classification
+
+- clstype: Type
+
+  - default: <class 'str'>
+  - Data type of classifications values
+
+- imageSize: Integer
+
+  - default: None
+  - Common size for all images to resize and crop to
+
+- enableGPU: String
+
+  - default: False
+  - Utilize GPUs for processing
+
+- epochs: Integer
+
+  - default: 20
+  - Number of iterations to pass over all records in a source
+
+- batch_size: Integer
+
+  - default: 32
+  - Batch size
+
+- validation_split: float
+
+  - default: 0.0
+  - Split training data for Validation
+
+- patience: Integer
+
+  - default: 5
+  - Early stops the training if validation loss doesn't improve after a given patience
+
+- loss: PyTorchLoss
+
+  - default: <class 'dffml.base.CrossEntropyLossFunction'>
+  - Loss Functions available in PyTorch
+
+- optimizer: String
+
+  - default: SGD
+  - Optimizer Algorithms available in PyTorch
+
+- normalize_mean: List of floats
+
+  - default: None
+  - Mean values for normalizing Tensor image
+
+- normalize_std: List of floats
+
+  - default: None
+  - Standard Deviation values for normalizing Tensor image
+
+- pretrained: String
+
+  - default: True
+  - Load Pre-trained model weights
+
+- trainable: String
+
+  - default: False
+  - Tweak pretrained model by training again
+
+- add_layers: String
+
+  - default: False
+  - Replace the last layer of the pretrained model
+
+- layers: dict
+
+  - default: None
+  - Extra layers to replace the last layer of the pretrained model
+
+.. _plugin_model_dffml_model_pytorch_googlenet:
+
+googlenet
+~~~~~~~~~
+
+*Official*
+
+No description
+
+**Args**
+
+- predict: Feature
+
+  - Feature name holding classification value
+
+- features: List of features
+
+  - Features to train on
+
+- directory: Path
+
+  - Directory where state should be saved
+
+- classifications: List of strings
+
+  - default: None
+  - Options for value of classification
+
+- clstype: Type
+
+  - default: <class 'str'>
+  - Data type of classifications values
+
+- imageSize: Integer
+
+  - default: None
+  - Common size for all images to resize and crop to
+
+- enableGPU: String
+
+  - default: False
+  - Utilize GPUs for processing
+
+- epochs: Integer
+
+  - default: 20
+  - Number of iterations to pass over all records in a source
+
+- batch_size: Integer
+
+  - default: 32
+  - Batch size
+
+- validation_split: float
+
+  - default: 0.0
+  - Split training data for Validation
+
+- patience: Integer
+
+  - default: 5
+  - Early stops the training if validation loss doesn't improve after a given patience
+
+- loss: PyTorchLoss
+
+  - default: <class 'dffml.base.CrossEntropyLossFunction'>
+  - Loss Functions available in PyTorch
+
+- optimizer: String
+
+  - default: SGD
+  - Optimizer Algorithms available in PyTorch
+
+- normalize_mean: List of floats
+
+  - default: None
+  - Mean values for normalizing Tensor image
+
+- normalize_std: List of floats
+
+  - default: None
+  - Standard Deviation values for normalizing Tensor image
+
+- pretrained: String
+
+  - default: True
+  - Load Pre-trained model weights
+
+- trainable: String
+
+  - default: False
+  - Tweak pretrained model by training again
+
+- add_layers: String
+
+  - default: False
+  - Replace the last layer of the pretrained model
+
+- layers: dict
+
+  - default: None
+  - Extra layers to replace the last layer of the pretrained model
+
+.. _plugin_model_dffml_model_pytorch_inception_v3:
+
+inception_v3
+~~~~~~~~~~~~
+
+*Official*
+
+No description
+
+**Args**
+
+- predict: Feature
+
+  - Feature name holding classification value
+
+- features: List of features
+
+  - Features to train on
+
+- directory: Path
+
+  - Directory where state should be saved
+
+- classifications: List of strings
+
+  - default: None
+  - Options for value of classification
+
+- clstype: Type
+
+  - default: <class 'str'>
+  - Data type of classifications values
+
+- imageSize: Integer
+
+  - default: None
+  - Common size for all images to resize and crop to
+
+- enableGPU: String
+
+  - default: False
+  - Utilize GPUs for processing
+
+- epochs: Integer
+
+  - default: 20
+  - Number of iterations to pass over all records in a source
+
+- batch_size: Integer
+
+  - default: 32
+  - Batch size
+
+- validation_split: float
+
+  - default: 0.0
+  - Split training data for Validation
+
+- patience: Integer
+
+  - default: 5
+  - Early stops the training if validation loss doesn't improve after a given patience
+
+- loss: PyTorchLoss
+
+  - default: <class 'dffml.base.CrossEntropyLossFunction'>
+  - Loss Functions available in PyTorch
+
+- optimizer: String
+
+  - default: SGD
+  - Optimizer Algorithms available in PyTorch
+
+- normalize_mean: List of floats
+
+  - default: None
+  - Mean values for normalizing Tensor image
+
+- normalize_std: List of floats
+
+  - default: None
+  - Standard Deviation values for normalizing Tensor image
+
+- pretrained: String
+
+  - default: True
+  - Load Pre-trained model weights
+
+- trainable: String
+
+  - default: False
+  - Tweak pretrained model by training again
+
+- add_layers: String
+
+  - default: False
+  - Replace the last layer of the pretrained model
+
+- layers: dict
+
+  - default: None
+  - Extra layers to replace the last layer of the pretrained model
+
+.. _plugin_model_dffml_model_pytorch_mnasnet0_5:
+
+mnasnet0_5
+~~~~~~~~~~
+
+*Official*
+
+No description
+
+**Args**
+
+- predict: Feature
+
+  - Feature name holding classification value
+
+- features: List of features
+
+  - Features to train on
+
+- directory: Path
+
+  - Directory where state should be saved
+
+- classifications: List of strings
+
+  - default: None
+  - Options for value of classification
+
+- clstype: Type
+
+  - default: <class 'str'>
+  - Data type of classifications values
+
+- imageSize: Integer
+
+  - default: None
+  - Common size for all images to resize and crop to
+
+- enableGPU: String
+
+  - default: False
+  - Utilize GPUs for processing
+
+- epochs: Integer
+
+  - default: 20
+  - Number of iterations to pass over all records in a source
+
+- batch_size: Integer
+
+  - default: 32
+  - Batch size
+
+- validation_split: float
+
+  - default: 0.0
+  - Split training data for Validation
+
+- patience: Integer
+
+  - default: 5
+  - Early stops the training if validation loss doesn't improve after a given patience
+
+- loss: PyTorchLoss
+
+  - default: <class 'dffml.base.CrossEntropyLossFunction'>
+  - Loss Functions available in PyTorch
+
+- optimizer: String
+
+  - default: SGD
+  - Optimizer Algorithms available in PyTorch
+
+- normalize_mean: List of floats
+
+  - default: None
+  - Mean values for normalizing Tensor image
+
+- normalize_std: List of floats
+
+  - default: None
+  - Standard Deviation values for normalizing Tensor image
+
+- pretrained: String
+
+  - default: True
+  - Load Pre-trained model weights
+
+- trainable: String
+
+  - default: False
+  - Tweak pretrained model by training again
+
+- add_layers: String
+
+  - default: False
+  - Replace the last layer of the pretrained model
+
+- layers: dict
+
+  - default: None
+  - Extra layers to replace the last layer of the pretrained model
+
+.. _plugin_model_dffml_model_pytorch_mnasnet1_0:
+
+mnasnet1_0
+~~~~~~~~~~
+
+*Official*
+
+No description
+
+**Args**
+
+- predict: Feature
+
+  - Feature name holding classification value
+
+- features: List of features
+
+  - Features to train on
+
+- directory: Path
+
+  - Directory where state should be saved
+
+- classifications: List of strings
+
+  - default: None
+  - Options for value of classification
+
+- clstype: Type
+
+  - default: <class 'str'>
+  - Data type of classifications values
+
+- imageSize: Integer
+
+  - default: None
+  - Common size for all images to resize and crop to
+
+- enableGPU: String
+
+  - default: False
+  - Utilize GPUs for processing
+
+- epochs: Integer
+
+  - default: 20
+  - Number of iterations to pass over all records in a source
+
+- batch_size: Integer
+
+  - default: 32
+  - Batch size
+
+- validation_split: float
+
+  - default: 0.0
+  - Split training data for Validation
+
+- patience: Integer
+
+  - default: 5
+  - Early stops the training if validation loss doesn't improve after a given patience
+
+- loss: PyTorchLoss
+
+  - default: <class 'dffml.base.CrossEntropyLossFunction'>
+  - Loss Functions available in PyTorch
+
+- optimizer: String
+
+  - default: SGD
+  - Optimizer Algorithms available in PyTorch
+
+- normalize_mean: List of floats
+
+  - default: None
+  - Mean values for normalizing Tensor image
+
+- normalize_std: List of floats
+
+  - default: None
+  - Standard Deviation values for normalizing Tensor image
+
+- pretrained: String
+
+  - default: True
+  - Load Pre-trained model weights
+
+- trainable: String
+
+  - default: False
+  - Tweak pretrained model by training again
+
+- add_layers: String
+
+  - default: False
+  - Replace the last layer of the pretrained model
+
+- layers: dict
+
+  - default: None
+  - Extra layers to replace the last layer of the pretrained model
+
+.. _plugin_model_dffml_model_pytorch_mobilenet_v2:
+
+mobilenet_v2
+~~~~~~~~~~~~
+
+*Official*
+
+No description
+
+**Args**
+
+- predict: Feature
+
+  - Feature name holding classification value
+
+- features: List of features
+
+  - Features to train on
+
+- directory: Path
+
+  - Directory where state should be saved
+
+- classifications: List of strings
+
+  - default: None
+  - Options for value of classification
+
+- clstype: Type
+
+  - default: <class 'str'>
+  - Data type of classifications values
+
+- imageSize: Integer
+
+  - default: None
+  - Common size for all images to resize and crop to
+
+- enableGPU: String
+
+  - default: False
+  - Utilize GPUs for processing
+
+- epochs: Integer
+
+  - default: 20
+  - Number of iterations to pass over all records in a source
+
+- batch_size: Integer
+
+  - default: 32
+  - Batch size
+
+- validation_split: float
+
+  - default: 0.0
+  - Split training data for Validation
+
+- patience: Integer
+
+  - default: 5
+  - Early stops the training if validation loss doesn't improve after a given patience
+
+- loss: PyTorchLoss
+
+  - default: <class 'dffml.base.CrossEntropyLossFunction'>
+  - Loss Functions available in PyTorch
+
+- optimizer: String
+
+  - default: SGD
+  - Optimizer Algorithms available in PyTorch
+
+- normalize_mean: List of floats
+
+  - default: None
+  - Mean values for normalizing Tensor image
+
+- normalize_std: List of floats
+
+  - default: None
+  - Standard Deviation values for normalizing Tensor image
+
+- pretrained: String
+
+  - default: True
+  - Load Pre-trained model weights
+
+- trainable: String
+
+  - default: False
+  - Tweak pretrained model by training again
+
+- add_layers: String
+
+  - default: False
+  - Replace the last layer of the pretrained model
+
+- layers: dict
+
+  - default: None
+  - Extra layers to replace the last layer of the pretrained model
+
+.. _plugin_model_dffml_model_pytorch_pytorchnet:
+
+pytorchnet
+~~~~~~~~~~
+
+*Official*
+
+No description
+
+**Args**
+
+- predict: Feature
+
+  - Feature name holding classification value
+
+- features: List of features
+
+  - Features to train on
+
+- directory: Path
+
+  - Directory where state should be saved
+
+- classifications: List of strings
+
+  - default: None
+  - Options for value of classification
+
+- clstype: Type
+
+  - default: <class 'str'>
+  - Data type of classifications values
+
+- imageSize: Integer
+
+  - default: None
+  - Common size for all images to resize and crop to
+
+- enableGPU: String
+
+  - default: False
+  - Utilize GPUs for processing
+
+- epochs: Integer
+
+  - default: 20
+  - Number of iterations to pass over all records in a source
+
+- batch_size: Integer
+
+  - default: 32
+  - Batch size
+
+- validation_split: float
+
+  - default: 0.0
+  - Split training data for Validation
+
+- patience: Integer
+
+  - default: 5
+  - Early stops the training if validation loss doesn't improve after a given patience
+
+- loss: PyTorchLoss
+
+  - default: <class 'dffml.base.CrossEntropyLossFunction'>
+  - Loss Functions available in PyTorch
+
+- optimizer: String
+
+  - default: SGD
+  - Optimizer Algorithms available in PyTorch
+
+- normalize_mean: List of floats
+
+  - default: None
+  - Mean values for normalizing Tensor image
+
+- normalize_std: List of floats
+
+  - default: None
+  - Standard Deviation values for normalizing Tensor image
+
+- network: Network
+
+  - default: None
+  - Model
+
+.. _plugin_model_dffml_model_pytorch_resnet101:
+
+resnet101
+~~~~~~~~~
+
+*Official*
+
+No description
+
+**Args**
+
+- predict: Feature
+
+  - Feature name holding classification value
+
+- features: List of features
+
+  - Features to train on
+
+- directory: Path
+
+  - Directory where state should be saved
+
+- classifications: List of strings
+
+  - default: None
+  - Options for value of classification
+
+- clstype: Type
+
+  - default: <class 'str'>
+  - Data type of classifications values
+
+- imageSize: Integer
+
+  - default: None
+  - Common size for all images to resize and crop to
+
+- enableGPU: String
+
+  - default: False
+  - Utilize GPUs for processing
+
+- epochs: Integer
+
+  - default: 20
+  - Number of iterations to pass over all records in a source
+
+- batch_size: Integer
+
+  - default: 32
+  - Batch size
+
+- validation_split: float
+
+  - default: 0.0
+  - Split training data for Validation
+
+- patience: Integer
+
+  - default: 5
+  - Early stops the training if validation loss doesn't improve after a given patience
+
+- loss: PyTorchLoss
+
+  - default: <class 'dffml.base.CrossEntropyLossFunction'>
+  - Loss Functions available in PyTorch
+
+- optimizer: String
+
+  - default: SGD
+  - Optimizer Algorithms available in PyTorch
+
+- normalize_mean: List of floats
+
+  - default: None
+  - Mean values for normalizing Tensor image
+
+- normalize_std: List of floats
+
+  - default: None
+  - Standard Deviation values for normalizing Tensor image
+
+- pretrained: String
+
+  - default: True
+  - Load Pre-trained model weights
+
+- trainable: String
+
+  - default: False
+  - Tweak pretrained model by training again
+
+- add_layers: String
+
+  - default: False
+  - Replace the last layer of the pretrained model
+
+- layers: dict
+
+  - default: None
+  - Extra layers to replace the last layer of the pretrained model
+
+.. _plugin_model_dffml_model_pytorch_resnet152:
+
+resnet152
+~~~~~~~~~
+
+*Official*
+
+No description
+
+**Args**
+
+- predict: Feature
+
+  - Feature name holding classification value
+
+- features: List of features
+
+  - Features to train on
+
+- directory: Path
+
+  - Directory where state should be saved
+
+- classifications: List of strings
+
+  - default: None
+  - Options for value of classification
+
+- clstype: Type
+
+  - default: <class 'str'>
+  - Data type of classifications values
+
+- imageSize: Integer
+
+  - default: None
+  - Common size for all images to resize and crop to
+
+- enableGPU: String
+
+  - default: False
+  - Utilize GPUs for processing
+
+- epochs: Integer
+
+  - default: 20
+  - Number of iterations to pass over all records in a source
+
+- batch_size: Integer
+
+  - default: 32
+  - Batch size
+
+- validation_split: float
+
+  - default: 0.0
+  - Split training data for Validation
+
+- patience: Integer
+
+  - default: 5
+  - Early stops the training if validation loss doesn't improve after a given patience
+
+- loss: PyTorchLoss
+
+  - default: <class 'dffml.base.CrossEntropyLossFunction'>
+  - Loss Functions available in PyTorch
+
+- optimizer: String
+
+  - default: SGD
+  - Optimizer Algorithms available in PyTorch
+
+- normalize_mean: List of floats
+
+  - default: None
+  - Mean values for normalizing Tensor image
+
+- normalize_std: List of floats
+
+  - default: None
+  - Standard Deviation values for normalizing Tensor image
+
+- pretrained: String
+
+  - default: True
+  - Load Pre-trained model weights
+
+- trainable: String
+
+  - default: False
+  - Tweak pretrained model by training again
+
+- add_layers: String
+
+  - default: False
+  - Replace the last layer of the pretrained model
+
+- layers: dict
+
+  - default: None
+  - Extra layers to replace the last layer of the pretrained model
+
+.. _plugin_model_dffml_model_pytorch_resnet18:
+
+resnet18
+~~~~~~~~
+
+*Official*
+
+No description
+
+**Args**
+
+- predict: Feature
+
+  - Feature name holding classification value
+
+- features: List of features
+
+  - Features to train on
+
+- directory: Path
+
+  - Directory where state should be saved
+
+- classifications: List of strings
+
+  - default: None
+  - Options for value of classification
+
+- clstype: Type
+
+  - default: <class 'str'>
+  - Data type of classifications values
+
+- imageSize: Integer
+
+  - default: None
+  - Common size for all images to resize and crop to
+
+- enableGPU: String
+
+  - default: False
+  - Utilize GPUs for processing
+
+- epochs: Integer
+
+  - default: 20
+  - Number of iterations to pass over all records in a source
+
+- batch_size: Integer
+
+  - default: 32
+  - Batch size
+
+- validation_split: float
+
+  - default: 0.0
+  - Split training data for Validation
+
+- patience: Integer
+
+  - default: 5
+  - Early stops the training if validation loss doesn't improve after a given patience
+
+- loss: PyTorchLoss
+
+  - default: <class 'dffml.base.CrossEntropyLossFunction'>
+  - Loss Functions available in PyTorch
+
+- optimizer: String
+
+  - default: SGD
+  - Optimizer Algorithms available in PyTorch
+
+- normalize_mean: List of floats
+
+  - default: None
+  - Mean values for normalizing Tensor image
+
+- normalize_std: List of floats
+
+  - default: None
+  - Standard Deviation values for normalizing Tensor image
+
+- pretrained: String
+
+  - default: True
+  - Load Pre-trained model weights
+
+- trainable: String
+
+  - default: False
+  - Tweak pretrained model by training again
+
+- add_layers: String
+
+  - default: False
+  - Replace the last layer of the pretrained model
+
+- layers: dict
+
+  - default: None
+  - Extra layers to replace the last layer of the pretrained model
+
+.. _plugin_model_dffml_model_pytorch_resnet34:
+
+resnet34
+~~~~~~~~
+
+*Official*
+
+No description
+
+**Args**
+
+- predict: Feature
+
+  - Feature name holding classification value
+
+- features: List of features
+
+  - Features to train on
+
+- directory: Path
+
+  - Directory where state should be saved
+
+- classifications: List of strings
+
+  - default: None
+  - Options for value of classification
+
+- clstype: Type
+
+  - default: <class 'str'>
+  - Data type of classifications values
+
+- imageSize: Integer
+
+  - default: None
+  - Common size for all images to resize and crop to
+
+- enableGPU: String
+
+  - default: False
+  - Utilize GPUs for processing
+
+- epochs: Integer
+
+  - default: 20
+  - Number of iterations to pass over all records in a source
+
+- batch_size: Integer
+
+  - default: 32
+  - Batch size
+
+- validation_split: float
+
+  - default: 0.0
+  - Split training data for Validation
+
+- patience: Integer
+
+  - default: 5
+  - Early stops the training if validation loss doesn't improve after a given patience
+
+- loss: PyTorchLoss
+
+  - default: <class 'dffml.base.CrossEntropyLossFunction'>
+  - Loss Functions available in PyTorch
+
+- optimizer: String
+
+  - default: SGD
+  - Optimizer Algorithms available in PyTorch
+
+- normalize_mean: List of floats
+
+  - default: None
+  - Mean values for normalizing Tensor image
+
+- normalize_std: List of floats
+
+  - default: None
+  - Standard Deviation values for normalizing Tensor image
+
+- pretrained: String
+
+  - default: True
+  - Load Pre-trained model weights
+
+- trainable: String
+
+  - default: False
+  - Tweak pretrained model by training again
+
+- add_layers: String
+
+  - default: False
+  - Replace the last layer of the pretrained model
+
+- layers: dict
+
+  - default: None
+  - Extra layers to replace the last layer of the pretrained model
+
+.. _plugin_model_dffml_model_pytorch_resnet50:
+
+resnet50
+~~~~~~~~
+
+*Official*
+
+No description
+
+**Args**
+
+- predict: Feature
+
+  - Feature name holding classification value
+
+- features: List of features
+
+  - Features to train on
+
+- directory: Path
+
+  - Directory where state should be saved
+
+- classifications: List of strings
+
+  - default: None
+  - Options for value of classification
+
+- clstype: Type
+
+  - default: <class 'str'>
+  - Data type of classifications values
+
+- imageSize: Integer
+
+  - default: None
+  - Common size for all images to resize and crop to
+
+- enableGPU: String
+
+  - default: False
+  - Utilize GPUs for processing
+
+- epochs: Integer
+
+  - default: 20
+  - Number of iterations to pass over all records in a source
+
+- batch_size: Integer
+
+  - default: 32
+  - Batch size
+
+- validation_split: float
+
+  - default: 0.0
+  - Split training data for Validation
+
+- patience: Integer
+
+  - default: 5
+  - Early stops the training if validation loss doesn't improve after a given patience
+
+- loss: PyTorchLoss
+
+  - default: <class 'dffml.base.CrossEntropyLossFunction'>
+  - Loss Functions available in PyTorch
+
+- optimizer: String
+
+  - default: SGD
+  - Optimizer Algorithms available in PyTorch
+
+- normalize_mean: List of floats
+
+  - default: None
+  - Mean values for normalizing Tensor image
+
+- normalize_std: List of floats
+
+  - default: None
+  - Standard Deviation values for normalizing Tensor image
+
+- pretrained: String
+
+  - default: True
+  - Load Pre-trained model weights
+
+- trainable: String
+
+  - default: False
+  - Tweak pretrained model by training again
+
+- add_layers: String
+
+  - default: False
+  - Replace the last layer of the pretrained model
+
+- layers: dict
+
+  - default: None
+  - Extra layers to replace the last layer of the pretrained model
+
+.. _plugin_model_dffml_model_pytorch_resnext101_32x8d:
+
+resnext101_32x8d
+~~~~~~~~~~~~~~~~
+
+*Official*
+
+No description
+
+**Args**
+
+- predict: Feature
+
+  - Feature name holding classification value
+
+- features: List of features
+
+  - Features to train on
+
+- directory: Path
+
+  - Directory where state should be saved
+
+- classifications: List of strings
+
+  - default: None
+  - Options for value of classification
+
+- clstype: Type
+
+  - default: <class 'str'>
+  - Data type of classifications values
+
+- imageSize: Integer
+
+  - default: None
+  - Common size for all images to resize and crop to
+
+- enableGPU: String
+
+  - default: False
+  - Utilize GPUs for processing
+
+- epochs: Integer
+
+  - default: 20
+  - Number of iterations to pass over all records in a source
+
+- batch_size: Integer
+
+  - default: 32
+  - Batch size
+
+- validation_split: float
+
+  - default: 0.0
+  - Split training data for Validation
+
+- patience: Integer
+
+  - default: 5
+  - Early stops the training if validation loss doesn't improve after a given patience
+
+- loss: PyTorchLoss
+
+  - default: <class 'dffml.base.CrossEntropyLossFunction'>
+  - Loss Functions available in PyTorch
+
+- optimizer: String
+
+  - default: SGD
+  - Optimizer Algorithms available in PyTorch
+
+- normalize_mean: List of floats
+
+  - default: None
+  - Mean values for normalizing Tensor image
+
+- normalize_std: List of floats
+
+  - default: None
+  - Standard Deviation values for normalizing Tensor image
+
+- pretrained: String
+
+  - default: True
+  - Load Pre-trained model weights
+
+- trainable: String
+
+  - default: False
+  - Tweak pretrained model by training again
+
+- add_layers: String
+
+  - default: False
+  - Replace the last layer of the pretrained model
+
+- layers: dict
+
+  - default: None
+  - Extra layers to replace the last layer of the pretrained model
+
+.. _plugin_model_dffml_model_pytorch_resnext50_32x4d:
+
+resnext50_32x4d
+~~~~~~~~~~~~~~~
+
+*Official*
+
+No description
+
+**Args**
+
+- predict: Feature
+
+  - Feature name holding classification value
+
+- features: List of features
+
+  - Features to train on
+
+- directory: Path
+
+  - Directory where state should be saved
+
+- classifications: List of strings
+
+  - default: None
+  - Options for value of classification
+
+- clstype: Type
+
+  - default: <class 'str'>
+  - Data type of classifications values
+
+- imageSize: Integer
+
+  - default: None
+  - Common size for all images to resize and crop to
+
+- enableGPU: String
+
+  - default: False
+  - Utilize GPUs for processing
+
+- epochs: Integer
+
+  - default: 20
+  - Number of iterations to pass over all records in a source
+
+- batch_size: Integer
+
+  - default: 32
+  - Batch size
+
+- validation_split: float
+
+  - default: 0.0
+  - Split training data for Validation
+
+- patience: Integer
+
+  - default: 5
+  - Early stops the training if validation loss doesn't improve after a given patience
+
+- loss: PyTorchLoss
+
+  - default: <class 'dffml.base.CrossEntropyLossFunction'>
+  - Loss Functions available in PyTorch
+
+- optimizer: String
+
+  - default: SGD
+  - Optimizer Algorithms available in PyTorch
+
+- normalize_mean: List of floats
+
+  - default: None
+  - Mean values for normalizing Tensor image
+
+- normalize_std: List of floats
+
+  - default: None
+  - Standard Deviation values for normalizing Tensor image
+
+- pretrained: String
+
+  - default: True
+  - Load Pre-trained model weights
+
+- trainable: String
+
+  - default: False
+  - Tweak pretrained model by training again
+
+- add_layers: String
+
+  - default: False
+  - Replace the last layer of the pretrained model
+
+- layers: dict
+
+  - default: None
+  - Extra layers to replace the last layer of the pretrained model
+
+.. _plugin_model_dffml_model_pytorch_shufflenet_v2_x0_5:
+
+shufflenet_v2_x0_5
+~~~~~~~~~~~~~~~~~~
+
+*Official*
+
+No description
+
+**Args**
+
+- predict: Feature
+
+  - Feature name holding classification value
+
+- features: List of features
+
+  - Features to train on
+
+- directory: Path
+
+  - Directory where state should be saved
+
+- classifications: List of strings
+
+  - default: None
+  - Options for value of classification
+
+- clstype: Type
+
+  - default: <class 'str'>
+  - Data type of classifications values
+
+- imageSize: Integer
+
+  - default: None
+  - Common size for all images to resize and crop to
+
+- enableGPU: String
+
+  - default: False
+  - Utilize GPUs for processing
+
+- epochs: Integer
+
+  - default: 20
+  - Number of iterations to pass over all records in a source
+
+- batch_size: Integer
+
+  - default: 32
+  - Batch size
+
+- validation_split: float
+
+  - default: 0.0
+  - Split training data for Validation
+
+- patience: Integer
+
+  - default: 5
+  - Early stops the training if validation loss doesn't improve after a given patience
+
+- loss: PyTorchLoss
+
+  - default: <class 'dffml.base.CrossEntropyLossFunction'>
+  - Loss Functions available in PyTorch
+
+- optimizer: String
+
+  - default: SGD
+  - Optimizer Algorithms available in PyTorch
+
+- normalize_mean: List of floats
+
+  - default: None
+  - Mean values for normalizing Tensor image
+
+- normalize_std: List of floats
+
+  - default: None
+  - Standard Deviation values for normalizing Tensor image
+
+- pretrained: String
+
+  - default: True
+  - Load Pre-trained model weights
+
+- trainable: String
+
+  - default: False
+  - Tweak pretrained model by training again
+
+- add_layers: String
+
+  - default: False
+  - Replace the last layer of the pretrained model
+
+- layers: dict
+
+  - default: None
+  - Extra layers to replace the last layer of the pretrained model
+
+.. _plugin_model_dffml_model_pytorch_shufflenet_v2_x1_0:
+
+shufflenet_v2_x1_0
+~~~~~~~~~~~~~~~~~~
+
+*Official*
+
+No description
+
+**Args**
+
+- predict: Feature
+
+  - Feature name holding classification value
+
+- features: List of features
+
+  - Features to train on
+
+- directory: Path
+
+  - Directory where state should be saved
+
+- classifications: List of strings
+
+  - default: None
+  - Options for value of classification
+
+- clstype: Type
+
+  - default: <class 'str'>
+  - Data type of classifications values
+
+- imageSize: Integer
+
+  - default: None
+  - Common size for all images to resize and crop to
+
+- enableGPU: String
+
+  - default: False
+  - Utilize GPUs for processing
+
+- epochs: Integer
+
+  - default: 20
+  - Number of iterations to pass over all records in a source
+
+- batch_size: Integer
+
+  - default: 32
+  - Batch size
+
+- validation_split: float
+
+  - default: 0.0
+  - Split training data for Validation
+
+- patience: Integer
+
+  - default: 5
+  - Early stops the training if validation loss doesn't improve after a given patience
+
+- loss: PyTorchLoss
+
+  - default: <class 'dffml.base.CrossEntropyLossFunction'>
+  - Loss Functions available in PyTorch
+
+- optimizer: String
+
+  - default: SGD
+  - Optimizer Algorithms available in PyTorch
+
+- normalize_mean: List of floats
+
+  - default: None
+  - Mean values for normalizing Tensor image
+
+- normalize_std: List of floats
+
+  - default: None
+  - Standard Deviation values for normalizing Tensor image
+
+- pretrained: String
+
+  - default: True
+  - Load Pre-trained model weights
+
+- trainable: String
+
+  - default: False
+  - Tweak pretrained model by training again
+
+- add_layers: String
+
+  - default: False
+  - Replace the last layer of the pretrained model
+
+- layers: dict
+
+  - default: None
+  - Extra layers to replace the last layer of the pretrained model
+
+.. _plugin_model_dffml_model_pytorch_vgg11:
+
+vgg11
+~~~~~
+
+*Official*
+
+No description
+
+**Args**
+
+- predict: Feature
+
+  - Feature name holding classification value
+
+- features: List of features
+
+  - Features to train on
+
+- directory: Path
+
+  - Directory where state should be saved
+
+- classifications: List of strings
+
+  - default: None
+  - Options for value of classification
+
+- clstype: Type
+
+  - default: <class 'str'>
+  - Data type of classifications values
+
+- imageSize: Integer
+
+  - default: None
+  - Common size for all images to resize and crop to
+
+- enableGPU: String
+
+  - default: False
+  - Utilize GPUs for processing
+
+- epochs: Integer
+
+  - default: 20
+  - Number of iterations to pass over all records in a source
+
+- batch_size: Integer
+
+  - default: 32
+  - Batch size
+
+- validation_split: float
+
+  - default: 0.0
+  - Split training data for Validation
+
+- patience: Integer
+
+  - default: 5
+  - Early stops the training if validation loss doesn't improve after a given patience
+
+- loss: PyTorchLoss
+
+  - default: <class 'dffml.base.CrossEntropyLossFunction'>
+  - Loss Functions available in PyTorch
+
+- optimizer: String
+
+  - default: SGD
+  - Optimizer Algorithms available in PyTorch
+
+- normalize_mean: List of floats
+
+  - default: None
+  - Mean values for normalizing Tensor image
+
+- normalize_std: List of floats
+
+  - default: None
+  - Standard Deviation values for normalizing Tensor image
+
+- pretrained: String
+
+  - default: True
+  - Load Pre-trained model weights
+
+- trainable: String
+
+  - default: False
+  - Tweak pretrained model by training again
+
+- add_layers: String
+
+  - default: False
+  - Replace the last layer of the pretrained model
+
+- layers: dict
+
+  - default: None
+  - Extra layers to replace the last layer of the pretrained model
+
+.. _plugin_model_dffml_model_pytorch_vgg11_bn:
+
+vgg11_bn
+~~~~~~~~
+
+*Official*
+
+No description
+
+**Args**
+
+- predict: Feature
+
+  - Feature name holding classification value
+
+- features: List of features
+
+  - Features to train on
+
+- directory: Path
+
+  - Directory where state should be saved
+
+- classifications: List of strings
+
+  - default: None
+  - Options for value of classification
+
+- clstype: Type
+
+  - default: <class 'str'>
+  - Data type of classifications values
+
+- imageSize: Integer
+
+  - default: None
+  - Common size for all images to resize and crop to
+
+- enableGPU: String
+
+  - default: False
+  - Utilize GPUs for processing
+
+- epochs: Integer
+
+  - default: 20
+  - Number of iterations to pass over all records in a source
+
+- batch_size: Integer
+
+  - default: 32
+  - Batch size
+
+- validation_split: float
+
+  - default: 0.0
+  - Split training data for Validation
+
+- patience: Integer
+
+  - default: 5
+  - Early stops the training if validation loss doesn't improve after a given patience
+
+- loss: PyTorchLoss
+
+  - default: <class 'dffml.base.CrossEntropyLossFunction'>
+  - Loss Functions available in PyTorch
+
+- optimizer: String
+
+  - default: SGD
+  - Optimizer Algorithms available in PyTorch
+
+- normalize_mean: List of floats
+
+  - default: None
+  - Mean values for normalizing Tensor image
+
+- normalize_std: List of floats
+
+  - default: None
+  - Standard Deviation values for normalizing Tensor image
+
+- pretrained: String
+
+  - default: True
+  - Load Pre-trained model weights
+
+- trainable: String
+
+  - default: False
+  - Tweak pretrained model by training again
+
+- add_layers: String
+
+  - default: False
+  - Replace the last layer of the pretrained model
+
+- layers: dict
+
+  - default: None
+  - Extra layers to replace the last layer of the pretrained model
+
+.. _plugin_model_dffml_model_pytorch_vgg13:
+
+vgg13
+~~~~~
+
+*Official*
+
+No description
+
+**Args**
+
+- predict: Feature
+
+  - Feature name holding classification value
+
+- features: List of features
+
+  - Features to train on
+
+- directory: Path
+
+  - Directory where state should be saved
+
+- classifications: List of strings
+
+  - default: None
+  - Options for value of classification
+
+- clstype: Type
+
+  - default: <class 'str'>
+  - Data type of classifications values
+
+- imageSize: Integer
+
+  - default: None
+  - Common size for all images to resize and crop to
+
+- enableGPU: String
+
+  - default: False
+  - Utilize GPUs for processing
+
+- epochs: Integer
+
+  - default: 20
+  - Number of iterations to pass over all records in a source
+
+- batch_size: Integer
+
+  - default: 32
+  - Batch size
+
+- validation_split: float
+
+  - default: 0.0
+  - Split training data for Validation
+
+- patience: Integer
+
+  - default: 5
+  - Early stops the training if validation loss doesn't improve after a given patience
+
+- loss: PyTorchLoss
+
+  - default: <class 'dffml.base.CrossEntropyLossFunction'>
+  - Loss Functions available in PyTorch
+
+- optimizer: String
+
+  - default: SGD
+  - Optimizer Algorithms available in PyTorch
+
+- normalize_mean: List of floats
+
+  - default: None
+  - Mean values for normalizing Tensor image
+
+- normalize_std: List of floats
+
+  - default: None
+  - Standard Deviation values for normalizing Tensor image
+
+- pretrained: String
+
+  - default: True
+  - Load Pre-trained model weights
+
+- trainable: String
+
+  - default: False
+  - Tweak pretrained model by training again
+
+- add_layers: String
+
+  - default: False
+  - Replace the last layer of the pretrained model
+
+- layers: dict
+
+  - default: None
+  - Extra layers to replace the last layer of the pretrained model
+
+.. _plugin_model_dffml_model_pytorch_vgg13_bn:
+
+vgg13_bn
+~~~~~~~~
+
+*Official*
+
+No description
+
+**Args**
+
+- predict: Feature
+
+  - Feature name holding classification value
+
+- features: List of features
+
+  - Features to train on
+
+- directory: Path
+
+  - Directory where state should be saved
+
+- classifications: List of strings
+
+  - default: None
+  - Options for value of classification
+
+- clstype: Type
+
+  - default: <class 'str'>
+  - Data type of classifications values
+
+- imageSize: Integer
+
+  - default: None
+  - Common size for all images to resize and crop to
+
+- enableGPU: String
+
+  - default: False
+  - Utilize GPUs for processing
+
+- epochs: Integer
+
+  - default: 20
+  - Number of iterations to pass over all records in a source
+
+- batch_size: Integer
+
+  - default: 32
+  - Batch size
+
+- validation_split: float
+
+  - default: 0.0
+  - Split training data for Validation
+
+- patience: Integer
+
+  - default: 5
+  - Early stops the training if validation loss doesn't improve after a given patience
+
+- loss: PyTorchLoss
+
+  - default: <class 'dffml.base.CrossEntropyLossFunction'>
+  - Loss Functions available in PyTorch
+
+- optimizer: String
+
+  - default: SGD
+  - Optimizer Algorithms available in PyTorch
+
+- normalize_mean: List of floats
+
+  - default: None
+  - Mean values for normalizing Tensor image
+
+- normalize_std: List of floats
+
+  - default: None
+  - Standard Deviation values for normalizing Tensor image
+
+- pretrained: String
+
+  - default: True
+  - Load Pre-trained model weights
+
+- trainable: String
+
+  - default: False
+  - Tweak pretrained model by training again
+
+- add_layers: String
+
+  - default: False
+  - Replace the last layer of the pretrained model
+
+- layers: dict
+
+  - default: None
+  - Extra layers to replace the last layer of the pretrained model
+
+.. _plugin_model_dffml_model_pytorch_vgg16:
+
+vgg16
+~~~~~
+
+*Official*
+
+No description
+
+**Args**
+
+- predict: Feature
+
+  - Feature name holding classification value
+
+- features: List of features
+
+  - Features to train on
+
+- directory: Path
+
+  - Directory where state should be saved
+
+- classifications: List of strings
+
+  - default: None
+  - Options for value of classification
+
+- clstype: Type
+
+  - default: <class 'str'>
+  - Data type of classifications values
+
+- imageSize: Integer
+
+  - default: None
+  - Common size for all images to resize and crop to
+
+- enableGPU: String
+
+  - default: False
+  - Utilize GPUs for processing
+
+- epochs: Integer
+
+  - default: 20
+  - Number of iterations to pass over all records in a source
+
+- batch_size: Integer
+
+  - default: 32
+  - Batch size
+
+- validation_split: float
+
+  - default: 0.0
+  - Split training data for Validation
+
+- patience: Integer
+
+  - default: 5
+  - Early stops the training if validation loss doesn't improve after a given patience
+
+- loss: PyTorchLoss
+
+  - default: <class 'dffml.base.CrossEntropyLossFunction'>
+  - Loss Functions available in PyTorch
+
+- optimizer: String
+
+  - default: SGD
+  - Optimizer Algorithms available in PyTorch
+
+- normalize_mean: List of floats
+
+  - default: None
+  - Mean values for normalizing Tensor image
+
+- normalize_std: List of floats
+
+  - default: None
+  - Standard Deviation values for normalizing Tensor image
+
+- pretrained: String
+
+  - default: True
+  - Load Pre-trained model weights
+
+- trainable: String
+
+  - default: False
+  - Tweak pretrained model by training again
+
+- add_layers: String
+
+  - default: False
+  - Replace the last layer of the pretrained model
+
+- layers: dict
+
+  - default: None
+  - Extra layers to replace the last layer of the pretrained model
+
+.. _plugin_model_dffml_model_pytorch_vgg16_bn:
+
+vgg16_bn
+~~~~~~~~
+
+*Official*
+
+No description
+
+**Args**
+
+- predict: Feature
+
+  - Feature name holding classification value
+
+- features: List of features
+
+  - Features to train on
+
+- directory: Path
+
+  - Directory where state should be saved
+
+- classifications: List of strings
+
+  - default: None
+  - Options for value of classification
+
+- clstype: Type
+
+  - default: <class 'str'>
+  - Data type of classifications values
+
+- imageSize: Integer
+
+  - default: None
+  - Common size for all images to resize and crop to
+
+- enableGPU: String
+
+  - default: False
+  - Utilize GPUs for processing
+
+- epochs: Integer
+
+  - default: 20
+  - Number of iterations to pass over all records in a source
+
+- batch_size: Integer
+
+  - default: 32
+  - Batch size
+
+- validation_split: float
+
+  - default: 0.0
+  - Split training data for Validation
+
+- patience: Integer
+
+  - default: 5
+  - Early stops the training if validation loss doesn't improve after a given patience
+
+- loss: PyTorchLoss
+
+  - default: <class 'dffml.base.CrossEntropyLossFunction'>
+  - Loss Functions available in PyTorch
+
+- optimizer: String
+
+  - default: SGD
+  - Optimizer Algorithms available in PyTorch
+
+- normalize_mean: List of floats
+
+  - default: None
+  - Mean values for normalizing Tensor image
+
+- normalize_std: List of floats
+
+  - default: None
+  - Standard Deviation values for normalizing Tensor image
+
+- pretrained: String
+
+  - default: True
+  - Load Pre-trained model weights
+
+- trainable: String
+
+  - default: False
+  - Tweak pretrained model by training again
+
+- add_layers: String
+
+  - default: False
+  - Replace the last layer of the pretrained model
+
+- layers: dict
+
+  - default: None
+  - Extra layers to replace the last layer of the pretrained model
+
+.. _plugin_model_dffml_model_pytorch_vgg19:
+
+vgg19
+~~~~~
+
+*Official*
+
+No description
+
+**Args**
+
+- predict: Feature
+
+  - Feature name holding classification value
+
+- features: List of features
+
+  - Features to train on
+
+- directory: Path
+
+  - Directory where state should be saved
+
+- classifications: List of strings
+
+  - default: None
+  - Options for value of classification
+
+- clstype: Type
+
+  - default: <class 'str'>
+  - Data type of classifications values
+
+- imageSize: Integer
+
+  - default: None
+  - Common size for all images to resize and crop to
+
+- enableGPU: String
+
+  - default: False
+  - Utilize GPUs for processing
+
+- epochs: Integer
+
+  - default: 20
+  - Number of iterations to pass over all records in a source
+
+- batch_size: Integer
+
+  - default: 32
+  - Batch size
+
+- validation_split: float
+
+  - default: 0.0
+  - Split training data for Validation
+
+- patience: Integer
+
+  - default: 5
+  - Early stops the training if validation loss doesn't improve after a given patience
+
+- loss: PyTorchLoss
+
+  - default: <class 'dffml.base.CrossEntropyLossFunction'>
+  - Loss Functions available in PyTorch
+
+- optimizer: String
+
+  - default: SGD
+  - Optimizer Algorithms available in PyTorch
+
+- normalize_mean: List of floats
+
+  - default: None
+  - Mean values for normalizing Tensor image
+
+- normalize_std: List of floats
+
+  - default: None
+  - Standard Deviation values for normalizing Tensor image
+
+- pretrained: String
+
+  - default: True
+  - Load Pre-trained model weights
+
+- trainable: String
+
+  - default: False
+  - Tweak pretrained model by training again
+
+- add_layers: String
+
+  - default: False
+  - Replace the last layer of the pretrained model
+
+- layers: dict
+
+  - default: None
+  - Extra layers to replace the last layer of the pretrained model
+
+.. _plugin_model_dffml_model_pytorch_vgg19_bn:
+
+vgg19_bn
+~~~~~~~~
+
+*Official*
+
+No description
+
+**Args**
+
+- predict: Feature
+
+  - Feature name holding classification value
+
+- features: List of features
+
+  - Features to train on
+
+- directory: Path
+
+  - Directory where state should be saved
+
+- classifications: List of strings
+
+  - default: None
+  - Options for value of classification
+
+- clstype: Type
+
+  - default: <class 'str'>
+  - Data type of classifications values
+
+- imageSize: Integer
+
+  - default: None
+  - Common size for all images to resize and crop to
+
+- enableGPU: String
+
+  - default: False
+  - Utilize GPUs for processing
+
+- epochs: Integer
+
+  - default: 20
+  - Number of iterations to pass over all records in a source
+
+- batch_size: Integer
+
+  - default: 32
+  - Batch size
+
+- validation_split: float
+
+  - default: 0.0
+  - Split training data for Validation
+
+- patience: Integer
+
+  - default: 5
+  - Early stops the training if validation loss doesn't improve after a given patience
+
+- loss: PyTorchLoss
+
+  - default: <class 'dffml.base.CrossEntropyLossFunction'>
+  - Loss Functions available in PyTorch
+
+- optimizer: String
+
+  - default: SGD
+  - Optimizer Algorithms available in PyTorch
+
+- normalize_mean: List of floats
+
+  - default: None
+  - Mean values for normalizing Tensor image
+
+- normalize_std: List of floats
+
+  - default: None
+  - Standard Deviation values for normalizing Tensor image
+
+- pretrained: String
+
+  - default: True
+  - Load Pre-trained model weights
+
+- trainable: String
+
+  - default: False
+  - Tweak pretrained model by training again
+
+- add_layers: String
+
+  - default: False
+  - Replace the last layer of the pretrained model
+
+- layers: dict
+
+  - default: None
+  - Extra layers to replace the last layer of the pretrained model
+
+.. _plugin_model_dffml_model_pytorch_wide_resnet101_2:
+
+wide_resnet101_2
+~~~~~~~~~~~~~~~~
+
+*Official*
+
+No description
+
+**Args**
+
+- predict: Feature
+
+  - Feature name holding classification value
+
+- features: List of features
+
+  - Features to train on
+
+- directory: Path
+
+  - Directory where state should be saved
+
+- classifications: List of strings
+
+  - default: None
+  - Options for value of classification
+
+- clstype: Type
+
+  - default: <class 'str'>
+  - Data type of classifications values
+
+- imageSize: Integer
+
+  - default: None
+  - Common size for all images to resize and crop to
+
+- enableGPU: String
+
+  - default: False
+  - Utilize GPUs for processing
+
+- epochs: Integer
+
+  - default: 20
+  - Number of iterations to pass over all records in a source
+
+- batch_size: Integer
+
+  - default: 32
+  - Batch size
+
+- validation_split: float
+
+  - default: 0.0
+  - Split training data for Validation
+
+- patience: Integer
+
+  - default: 5
+  - Early stops the training if validation loss doesn't improve after a given patience
+
+- loss: PyTorchLoss
+
+  - default: <class 'dffml.base.CrossEntropyLossFunction'>
+  - Loss Functions available in PyTorch
+
+- optimizer: String
+
+  - default: SGD
+  - Optimizer Algorithms available in PyTorch
+
+- normalize_mean: List of floats
+
+  - default: None
+  - Mean values for normalizing Tensor image
+
+- normalize_std: List of floats
+
+  - default: None
+  - Standard Deviation values for normalizing Tensor image
+
+- pretrained: String
+
+  - default: True
+  - Load Pre-trained model weights
+
+- trainable: String
+
+  - default: False
+  - Tweak pretrained model by training again
+
+- add_layers: String
+
+  - default: False
+  - Replace the last layer of the pretrained model
+
+- layers: dict
+
+  - default: None
+  - Extra layers to replace the last layer of the pretrained model
+
+.. _plugin_model_dffml_model_pytorch_wide_resnet50_2:
+
+wide_resnet50_2
+~~~~~~~~~~~~~~~
+
+*Official*
+
+No description
+
+**Args**
+
+- predict: Feature
+
+  - Feature name holding classification value
+
+- features: List of features
+
+  - Features to train on
+
+- directory: Path
+
+  - Directory where state should be saved
+
+- classifications: List of strings
+
+  - default: None
+  - Options for value of classification
+
+- clstype: Type
+
+  - default: <class 'str'>
+  - Data type of classifications values
+
+- imageSize: Integer
+
+  - default: None
+  - Common size for all images to resize and crop to
+
+- enableGPU: String
+
+  - default: False
+  - Utilize GPUs for processing
+
+- epochs: Integer
+
+  - default: 20
+  - Number of iterations to pass over all records in a source
+
+- batch_size: Integer
+
+  - default: 32
+  - Batch size
+
+- validation_split: float
+
+  - default: 0.0
+  - Split training data for Validation
+
+- patience: Integer
+
+  - default: 5
+  - Early stops the training if validation loss doesn't improve after a given patience
+
+- loss: PyTorchLoss
+
+  - default: <class 'dffml.base.CrossEntropyLossFunction'>
+  - Loss Functions available in PyTorch
+
+- optimizer: String
+
+  - default: SGD
+  - Optimizer Algorithms available in PyTorch
+
+- normalize_mean: List of floats
+
+  - default: None
+  - Mean values for normalizing Tensor image
+
+- normalize_std: List of floats
+
+  - default: None
+  - Standard Deviation values for normalizing Tensor image
+
+- pretrained: String
+
+  - default: True
+  - Load Pre-trained model weights
+
+- trainable: String
+
+  - default: False
+  - Tweak pretrained model by training again
+
+- add_layers: String
+
+  - default: False
+  - Replace the last layer of the pretrained model
+
+- layers: dict
+
+  - default: None
+  - Extra layers to replace the last layer of the pretrained model
+
+.. _plugin_model_dffml_model_daal4py:
+
+dffml_model_daal4py
++++++++++++++++++++
+
+.. code-block:: console
+
+    pip install dffml-model-daal4py
+
+
+.. _plugin_model_dffml_model_daal4py_daal4pylr:
+
+daal4pylr
+~~~~~~~~~
+
+*Official*
+
+Implemented using daal4py.
+
+First we create the training and testing datasets
+
+**train.csv**
+
+.. code-block::
+    :test:
+    :filepath: train.csv
+
+    f1,ans
+    12.4,11.2
+    14.3,12.5
+    14.5,12.7
+    14.9,13.1
+    16.1,14.1
+    16.9,14.8
+    16.5,14.4
+    15.4,13.4
+    17.0,14.9
+    17.9,15.6
+    18.8,16.4
+    20.3,17.7
+    22.4,19.6
+    19.4,16.9
+    15.5,14.0
+    16.7,14.6
+
+**test.csv**
+
+.. code-block::
+    :test:
+    :filepath: test.csv
+
+    f1,ans
+    18.8,16.4
+    20.3,17.7
+    22.4,19.6
+    19.4,16.9
+    15.5,14.0
+    16.7,14.6
+
+Train the model
+
+.. code-block:: console
+    :test:
+
+    $ dffml train \
+        -model daal4pylr \
+        -model-features f1:float:1 \
+        -model-predict ans:int:1 \
+        -model-directory tempdir \
+        -sources f=csv \
+        -source-filename train.csv
+
+Assess the accuracy
+
+.. code-block:: console
+    :test:
+
+    $ dffml accuracy \
+        -model daal4pylr \
+        -model-features f1:float:1 \
+        -model-predict ans:int:1 \
+        -model-directory tempdir \
+        -sources f=csv \
+        -source-filename test.csv
+    0.6666666666666666
+
+Make a prediction
+
+.. code-block:: console
+    :test:
+
+    $ echo -e 'f1,ans\n0.8,1\n' | \
+      dffml predict all \
+        -model daal4pylr \
+        -model-features f1:float:1 \
+        -model-predict ans:int:1 \
+        -model-directory tempdir \
+        -sources f=csv \
+        -source-filename /dev/stdin
+    [
+        {
+            "extra": {},
+            "features": {
+                "ans": 1,
+                "f1": 0.8
+            },
+            "key": "0",
+            "last_updated": "2020-07-22T02:53:11Z",
+            "prediction": {
+                "ans": {
+                    "confidence": null,
+                    "value": 1.1907472649730522
+                }
+            }
+        }
+    ]
+
+Example usage of daal4py Linear Regression model using python API
+
+**run.py**
+
+.. literalinclude:: /../model/daal4py/examples/lr/lr.py
+    :test:
+    :filepath: run.py
+
+Run the file
+
+.. code-block:: console
+    :test:
+
+    $ python run.py
+
+**Args**
+
+- predict: Feature
+
+  - Label or the value to be predicted
+
+- features: List of features
+
+  - Features to train on. For SLR only 1 allowed
+
+- directory: Path
+
+  - Directory where state should be saved
+
+.. _plugin_model_dffml_model_autosklearn:
+
+dffml_model_autosklearn
++++++++++++++++++++++++
+
+.. code-block:: console
+
+    pip install dffml-model-autosklearn
+
+
+.. warning:
+
+    auto-sklearn introduces a GPLv3 transitive dependency, ``lazy_import``!
+    See
+    https://softwareengineering.stackexchange.com/questions/323500/open-source-transitive-dependency-licenses
+    for more information
+
+Follow these instructions before running the above install
+command to ensure that ``auto-sklearn`` installs correctly
+
+**Ubuntu Installation**
+
+To provide a C++11 building environment and the lateste SWIG version on Ubuntu, run:
+
+.. code-block:: console
+
+    $ sudo apt-get install build-essential swig
+
+Install other PyPi dependencies with
+
+.. code-block:: console
+
+    $ python3 -m pip install cython liac-arff psutil
+    $ curl https://raw.githubusercontent.com/automl/auto-sklearn/master/requirements.txt | xargs -n 1 -L 1 python3 -m pip install
+
+For more information about installation visit https://automl.github.io/auto-sklearn/master/installation.html#installation
+
+.. _plugin_model_dffml_model_autosklearn_autoclassifier:
+
+autoclassifier
+~~~~~~~~~~~~~~
+
+*Official*
+
+No description
+
+**Args**
+
+- features: List of features
+
+  - Features to train on
+
+- predict: Feature
+
+  - Label or the value to be predicted
+
+- directory: Path
+
+  - Directory where state should be saved
+
+- time_left_for_this_task: Integer
+
+  - default: 3600
+  - Time limit in seconds for the search of appropriate models. By increasing this value, *auto-sklearn* has a higher chance of finding better models.
+
+- per_run_time_limit: Integer
+
+  - default: None
+  - Time limit for a single call to the machine learning model. Model fitting will be terminated if the machine learning algorithm runs over the time limit. Set this value high enough so that typical machine learning algorithms can be fit on the training data.
+
+- initial_configurations_via_metalearning: Integer
+
+  - default: 25
+  - Initialize the hyperparameter optimization algorithm with this many configurations which worked well on previously seen datasets. Disable if the hyperparameter optimization algorithm should start from scratch.
+
+- ensemble_size: Integer
+
+  - default: 50
+  - Number of models added to the ensemble built by *Ensemble selection from libraries of models*. Models are drawn with replacement.
+
+- ensemble_nbest: Integer
+
+  - default: 50
+  - Only consider the ``ensemble_nbest`` models when building an ensemble.
+
+- max_models_on_disc: Integer
+
+  - default: 50
+  - Defines the maximum number of models that are kept in the disc. The additional number of models are permanently deleted. Due to the nature of this variable, it sets the upper limit on how many models can be used for an ensemble. It must be an integer greater or equal than 1. If set to None, all models are kept on the disc.
+
+- seed: Integer
+
+  - default: 1
+  - Used to seed SMAC. Will determine the output file names.
+
+- memory_limit: Integer
+
+  - default: 3072
+  - Memory limit in MB for the machine learning algorithm. `auto-sklearn` will stop fitting the machine learning algorithm if it tries to allocate more than `memory_limit` MB. If None is provided, no memory limit is set. In case of multi-processing, `memory_limit` will be per job. This memory limit also applies to the ensemble creation process.
+
+- include_estimators: typing.Any
+
+  - default: None
+  - If None, all possible estimators are used. Otherwise specifies set of estimators to use.
+
+- exclude_estimators: typing.Any
+
+  - default: None
+  - If None, all possible estimators are used. Otherwise specifies set of estimators not to use. Incompatible with include_estimators.
+
+- include_preprocessors: typing.Any
+
+  - default: None
+  - If None all possible preprocessors are used. Otherwise specifies set of preprocessors to use.
+
+- exclude_preprocessors: typing.Any
+
+  - default: None
+  - If None all possible preprocessors are used. Otherwise specifies set of preprocessors not to use. Incompatible with include_preprocessors.
+
+- resampling_strategy: String
+
+  - default: holdout
+  - how to to handle overfitting, might need 'resampling_strategy_arguments'  fit where possible 'folds' in scikit-learn model_selection module in scikit-learn model_selection module in scikit-learn model_selection module
+
+- resampling_strategy_arguments: dict
+
+  - default: None
+  - * ``train_size`` should be between 0.0 and 1.0 and represent the proportion of the dataset to include in the train split. * ``shuffle`` determines whether the data is shuffled prior to splitting it into train and validation.   required by chosen class as specified in scikit-learn documentation. If arguments are not provided, scikit-learn defaults are used. If no defaults are available, an exception is raised. Refer to the 'n_splits' argument as 'folds'.
+
+- tmp_folder: String
+
+  - default: None
+  - folder to store configuration output and log files, if ``None`` automatically use ``/tmp/autosklearn_tmp_$pid_$random_number``
+
+- output_folder: String
+
+  - default: None
+  - folder to store predictions for optional test set, if ``None`` no output will be generated
+
+- delete_tmp_folder_after_terminate: String
+
+  - default: True
+  - remove tmp_folder, when finished. If tmp_folder is None tmp_dir will always be deleted
+
+- delete_output_folder_after_terminate: String
+
+  - default: True
+  - remove output_folder, when finished. If output_folder is None output_dir will always be deleted
+
+- n_jobs: Integer
+
+  - default: None
+  - The number of jobs to run in parallel for ``fit()``. ``-1`` means using all processors. By default, Auto-sklearn uses a single core for fitting the machine learning model and a single core for fitting an ensemble. Ensemble building is not affected by ``n_jobs`` but can be controlled by the number of models in the ensemble. In contrast to most scikit-learn models, ``n_jobs`` given in the constructor is not applied to the ``predict()`` method. If ``dask_client`` is None, a new dask client is created.
+
+- dask_client: typing.Any
+
+  - default: None
+  - User-created dask client, can be used to start a dask cluster and then attach auto-sklearn to it.
+
+- disable_evaluator_output: String
+
+  - default: False
+  - If True, disable model and prediction output. Cannot be used together with ensemble building. ``predict()`` cannot be used when setting this True. Can also be used as a list to pass more fine-grained information on what to save. Allowed elements in the  optimization/validation set, which would later on be used to build an ensemble.
+
+- smac_scenario_args: dict
+
+  - default: None
+  - Additional arguments inserted into the scenario of SMAC. See the for a list of available arguments.
+
+- get_smac_object_callback: typing.Any
+
+  - default: None
+  - Callback function to create an object of class The function must accept the arguments ``scenario_dict``, ``instances``, ``num_params``, ``runhistory``, ``seed`` and ``ta``. This is an advanced feature. Use only if you are familiar with
+
+- logging_config: dict
+
+  - default: None
+  - dictionary object specifying the logger configuration. If None, the default logging.yaml file is used, which can be found in the directory ``util/logging.yaml`` relative to the installation.
+
+- metadata_directory: String
+
+  - default: None
+  - path to the metadata directory. If None, the default directory (autosklearn.metalearning.files) is used.
+
+- metric: typing.Any
+
+  - default: None
+  - Metrics`_. If None is provided, a default metric is selected depending on the task.
+
+- scoring_functions: typing.Any
+
+  - default: None
+  - List of scorers which will be calculated for each pipeline and results will be available via ``cv_results``
+
+- load_models: String
+
+  - default: True
+  - Whether to load the models after fitting Auto-sklearn.
+
+.. _plugin_model_dffml_model_autosklearn_autoregressor:
+
+autoregressor
+~~~~~~~~~~~~~
+
+*Official*
+
+``autoregressor`` / ``AutoSklearnRegressorModel`` will use ``auto-sklearn``
+to train the a scikit model for you.
+
+This is AutoML, it will tune hyperparameters for you.
+
+Implemented using `AutoSklearnRegressor <https://automl.github.io/auto-sklearn/master/api.html#regression>`_.
+
+First we create the training and testing datasets
+
+**train.csv**
+
+.. code-block::
+    :test:
+    :filepath: train.csv
+
+    Feature1,Feature2,TARGET
+    0.93,0.68,3.89
+    0.24,0.42,1.75
+    0.36,0.68,2.75
+    0.53,0.31,2.00
+    0.29,0.25,1.32
+    0.29,0.52,2.14
+
+**test.csv**
+
+.. code-block::
+    :test:
+    :filepath: test.csv
+
+    Feature1,Feature2,TARGET
+    0.57,0.84,3.65
+    0.95,0.19,2.46
+    0.23,0.15,0.93
+
+Train the model
+
+.. code-block:: console
+    :test:
+
+    $ dffml train \
+        -model autoregressor \
+        -model-predict TARGET:float:1 \
+        -model-clstype int \
+        -sources f=csv \
+        -source-filename train.csv \
+        -model-features \
+          Feature1:float:1 \
+          Feature2:float:1 \
+        -model-time_left_for_this_task 120 \
+        -model-per_run_time_limit 30 \
+        -model-ensemble_size 50 \
+        -model-delete_tmp_folder_after_terminate False \
+        -model-directory tempdir \
+        -log debug
+
+Assess the accuracy
+
+.. code-block:: console
+    :test:
+
+    $ dffml accuracy \
+        -model autoregressor \
+        -model-predict TARGET:float:1 \
+        -model-directory tempdir \
+        -sources f=csv \
+        -source-filename test.csv \
+        -model-features \
+          Feature1:float:1 \
+          Feature2:float:1 \
+        -log critical
+    0.9961211434899032
+
+Make a file containing the data to predict on
+
+**predict.csv**
+
+.. code-block::
+    :test:
+    :filepath: predict.csv
+
+    Feature1,Feature2
+    0.57,0.84
+
+Make a prediction
+
+.. code-block:: console
+    :test:
+
+    $ dffml predict all \
+        -model autoregressor \
+        -model-directory tempdir \
+        -model-predict TARGET:float:1 \
+        -sources iris=csv \
+        -model-features \
+          Feature1:float:1 \
+          Feature2:float:1 \
+        -source-filename predict.csv
+    [
+        {
+            "extra": {},
+            "features": {
+                "Feature1": 0.57,
+                "Feature2": 0.84
+            },
+            "key": "0",
+            "last_updated": "2020-11-23T05:52:13Z",
+            "prediction": {
+                "TARGET": {
+                    "confidence": NaN,
+                    "value": 3.566799074411392
+                }
+            }
+        }
+    ]
+
+The model can be trained on large datasets to get better accuracy
+output. The example shown above is to demonstrate the command line usage
+of the model.
+
+Example usage of using the model from Python
+
+**run.py**
+
+.. literalinclude:: /../model/autosklearn/examples/autoregressor.py
+    :test:
+    :filepath: run.py
+
+Run the file
+
+.. code-block:: console
+    :test:
+
+    $ python run.py
+    Accuracy: 0.9961211434899032
+    {'Feature1': 0.57, 'Feature2': 0.84, 'TARGET': 3.6180416345596313}
+
+**Args**
+
+- features: List of features
+
+  - Features to train on
+
+- predict: Feature
+
+  - Label or the value to be predicted
+
+- directory: Path
+
+  - Directory where state should be saved
+
+- time_left_for_this_task: Integer
+
+  - default: 3600
+  - Time limit in seconds for the search of appropriate models. By increasing this value, *auto-sklearn* has a higher chance of finding better models.
+
+- per_run_time_limit: Integer
+
+  - default: None
+  - Time limit for a single call to the machine learning model. Model fitting will be terminated if the machine learning algorithm runs over the time limit. Set this value high enough so that typical machine learning algorithms can be fit on the training data.
+
+- initial_configurations_via_metalearning: Integer
+
+  - default: 25
+  - Initialize the hyperparameter optimization algorithm with this many configurations which worked well on previously seen datasets. Disable if the hyperparameter optimization algorithm should start from scratch.
+
+- ensemble_size: Integer
+
+  - default: 50
+  - Number of models added to the ensemble built by *Ensemble selection from libraries of models*. Models are drawn with replacement.
+
+- ensemble_nbest: Integer
+
+  - default: 50
+  - Only consider the ``ensemble_nbest`` models when building an ensemble.
+
+- max_models_on_disc: Integer
+
+  - default: 50
+  - Defines the maximum number of models that are kept in the disc. The additional number of models are permanently deleted. Due to the nature of this variable, it sets the upper limit on how many models can be used for an ensemble. It must be an integer greater or equal than 1. If set to None, all models are kept on the disc.
+
+- seed: Integer
+
+  - default: 1
+  - Used to seed SMAC. Will determine the output file names.
+
+- memory_limit: Integer
+
+  - default: 3072
+  - Memory limit in MB for the machine learning algorithm. `auto-sklearn` will stop fitting the machine learning algorithm if it tries to allocate more than `memory_limit` MB. If None is provided, no memory limit is set. In case of multi-processing, `memory_limit` will be per job. This memory limit also applies to the ensemble creation process.
+
+- include_estimators: typing.Any
+
+  - default: None
+  - If None, all possible estimators are used. Otherwise specifies set of estimators to use.
+
+- exclude_estimators: typing.Any
+
+  - default: None
+  - If None, all possible estimators are used. Otherwise specifies set of estimators not to use. Incompatible with include_estimators.
+
+- include_preprocessors: typing.Any
+
+  - default: None
+  - If None all possible preprocessors are used. Otherwise specifies set of preprocessors to use.
+
+- exclude_preprocessors: typing.Any
+
+  - default: None
+  - If None all possible preprocessors are used. Otherwise specifies set of preprocessors not to use. Incompatible with include_preprocessors.
+
+- resampling_strategy: String
+
+  - default: holdout
+  - how to to handle overfitting, might need 'resampling_strategy_arguments'  fit where possible 'folds' in scikit-learn model_selection module in scikit-learn model_selection module in scikit-learn model_selection module
+
+- resampling_strategy_arguments: dict
+
+  - default: None
+  - * ``train_size`` should be between 0.0 and 1.0 and represent the proportion of the dataset to include in the train split. * ``shuffle`` determines whether the data is shuffled prior to splitting it into train and validation.   required by chosen class as specified in scikit-learn documentation. If arguments are not provided, scikit-learn defaults are used. If no defaults are available, an exception is raised. Refer to the 'n_splits' argument as 'folds'.
+
+- tmp_folder: String
+
+  - default: None
+  - folder to store configuration output and log files, if ``None`` automatically use ``/tmp/autosklearn_tmp_$pid_$random_number``
+
+- output_folder: String
+
+  - default: None
+  - folder to store predictions for optional test set, if ``None`` no output will be generated
+
+- delete_tmp_folder_after_terminate: String
+
+  - default: True
+  - remove tmp_folder, when finished. If tmp_folder is None tmp_dir will always be deleted
+
+- delete_output_folder_after_terminate: String
+
+  - default: True
+  - remove output_folder, when finished. If output_folder is None output_dir will always be deleted
+
+- n_jobs: Integer
+
+  - default: None
+  - The number of jobs to run in parallel for ``fit()``. ``-1`` means using all processors. By default, Auto-sklearn uses a single core for fitting the machine learning model and a single core for fitting an ensemble. Ensemble building is not affected by ``n_jobs`` but can be controlled by the number of models in the ensemble. In contrast to most scikit-learn models, ``n_jobs`` given in the constructor is not applied to the ``predict()`` method. If ``dask_client`` is None, a new dask client is created.
+
+- dask_client: typing.Any
+
+  - default: None
+  - User-created dask client, can be used to start a dask cluster and then attach auto-sklearn to it.
+
+- disable_evaluator_output: String
+
+  - default: False
+  - If True, disable model and prediction output. Cannot be used together with ensemble building. ``predict()`` cannot be used when setting this True. Can also be used as a list to pass more fine-grained information on what to save. Allowed elements in the  optimization/validation set, which would later on be used to build an ensemble.
+
+- smac_scenario_args: dict
+
+  - default: None
+  - Additional arguments inserted into the scenario of SMAC. See the for a list of available arguments.
+
+- get_smac_object_callback: typing.Any
+
+  - default: None
+  - Callback function to create an object of class The function must accept the arguments ``scenario_dict``, ``instances``, ``num_params``, ``runhistory``, ``seed`` and ``ta``. This is an advanced feature. Use only if you are familiar with
+
+- logging_config: dict
+
+  - default: None
+  - dictionary object specifying the logger configuration. If None, the default logging.yaml file is used, which can be found in the directory ``util/logging.yaml`` relative to the installation.
+
+- metadata_directory: String
+
+  - default: None
+  - path to the metadata directory. If None, the default directory (autosklearn.metalearning.files) is used.
+
+- metric: typing.Any
+
+  - default: None
+  - Metrics`_. If None is provided, a default metric is selected depending on the task.
+
+- scoring_functions: typing.Any
+
+  - default: None
+  - List of scorers which will be calculated for each pipeline and results will be available via ``cv_results``
+
+- load_models: String
+
+  - default: True
+  - Whether to load the models after fitting Auto-sklearn.

@@ -7,12 +7,13 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Welcome to DFFML! &mdash; DFFML 0.3.7 documentation</title>
+  <title>Welcome to DFFML! &mdash; DFFML 0.4.0 documentation</title>
   
 
   
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/tabs.css" type="text/css" />
 
   
   
@@ -64,7 +65,7 @@
             
             
               <div class="version">
-                0.3.7
+                0.4.0
               </div>
             
           
@@ -95,11 +96,11 @@
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="concepts/index.html">Concepts</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Examples</span></p>
+<p class="caption"><span class="caption-text">Usage</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="quickstart/model.html">Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorials/index.html">Tutorials</a></li>
-<li class="toctree-l1"><a class="reference internal" href="usage/index.html">Use Cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/index.html">Examples</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Reference</span></p>
 <ul>
@@ -107,13 +108,21 @@
 <li class="toctree-l1"><a class="reference internal" href="cli.html">Command Line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="plugins/service/http/index.html">HTTP API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Subprojects</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="shouldi.html">shouldi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="swportal.html">Software Portal</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Community</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/intel/dffml">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://intel.github.io/dffml/master/">Master Branch Docs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="publications.html">Publications</a></li>
 <li class="toctree-l1"><a class="reference internal" href="contact.html">Contact Us</a></li>
 <li class="toctree-l1"><a class="reference internal" href="contributing/index.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="news/index.html">News</a></li>
 <li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
 </ul>
 
@@ -166,6 +175,8 @@
       <li>Welcome to DFFML!</li>
     
     
+
+
       <li class="wy-breadcrumbs-aside">
         
           
@@ -176,6 +187,8 @@
         
       </li>
     
+
+
   </ul>
 
   
@@ -191,18 +204,21 @@
 <a class="reference external image-reference" href="https://bestpractices.coreinfrastructure.org/projects/2594"><img alt="CII" src="https://bestpractices.coreinfrastructure.org/projects/2594/badge" /></a>
 <a class="reference external image-reference" href="https://gitter.im/dffml/community"><img alt="Gitter chat" src="https://badges.gitter.im/gitterHQ/gitter.svg" /></a>
 <a class="reference external image-reference" href="https://pypi.org/project/dffml"><img alt="PyPI version" src="https://img.shields.io/pypi/v/dffml.svg" /></a>
-<p>Training and using machine learning models as simple as</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">Features</span><span class="p">,</span> <span class="n">DefFeature</span>
+<p>You can use DFFML from the <a class="reference internal" href="cli.html"><span class="doc">Command Line</span></a>, <a class="reference internal" href="api/high_level.html"><span class="doc">Python</span></a>, or the <a class="reference internal" href="plugins/service/http/index.html"><span class="doc">HTTP API</span></a>, see the
+<a class="reference internal" href="quickstart/model.html"><span class="doc">Quickstart</span></a> to get started right away.</p>
+<p>It makes training and using machine learning models as simple as</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">Features</span><span class="p">,</span> <span class="n">Feature</span>
 <span class="kn">from</span> <span class="nn">dffml.noasync</span> <span class="kn">import</span> <span class="n">train</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">,</span> <span class="n">predict</span>
 <span class="kn">from</span> <span class="nn">dffml_model_scikit</span> <span class="kn">import</span> <span class="n">LinearRegressionModel</span>
 
 <span class="n">model</span> <span class="o">=</span> <span class="n">LinearRegressionModel</span><span class="p">(</span>
     <span class="n">features</span><span class="o">=</span><span class="n">Features</span><span class="p">(</span>
-        <span class="n">DefFeature</span><span class="p">(</span><span class="s2">&quot;Years&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
-        <span class="n">DefFeature</span><span class="p">(</span><span class="s2">&quot;Expertise&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
-        <span class="n">DefFeature</span><span class="p">(</span><span class="s2">&quot;Trust&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+        <span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;Years&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+        <span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;Expertise&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+        <span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;Trust&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
     <span class="p">),</span>
-    <span class="n">predict</span><span class="o">=</span><span class="n">DefFeature</span><span class="p">(</span><span class="s2">&quot;Salary&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+    <span class="n">predict</span><span class="o">=</span><span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;Salary&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+    <span class="n">directory</span><span class="o">=</span><span class="s2">&quot;tempdir&quot;</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="c1"># Train the model</span>
@@ -240,8 +256,6 @@
 <span class="p">{</span><span class="s1">&#39;Years&#39;</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span> <span class="s1">&#39;Expertise&#39;</span><span class="p">:</span> <span class="mi">15</span><span class="p">,</span> <span class="s1">&#39;Trust&#39;</span><span class="p">:</span> <span class="mf">0.8</span><span class="p">,</span> <span class="s1">&#39;Salary&#39;</span><span class="p">:</span> <span class="mf">80.0</span><span class="p">}</span>
 </pre></div>
 </div>
-<p>You can use DFFML from the command line, Python, or the HTTP API, see the
-<a class="reference internal" href="quickstart/model.html"><span class="doc">Quickstart</span></a> to get started right away.</p>
 <p>This is the documentation for the latest release, documentation for the master
 branch can be found <a class="reference external" href="master/index.html">here</a>.</p>
 <div class="toctree-wrapper compound">
@@ -255,23 +269,28 @@ branch can be found <a class="reference external" href="master/index.html">here<
 <li class="toctree-l2"><a class="reference internal" href="about.html#data-flows-directed-graph-execution">Data Flows - Directed Graph Execution</a></li>
 <li class="toctree-l2"><a class="reference internal" href="about.html#consistent-api">Consistent API</a></li>
 <li class="toctree-l2"><a class="reference internal" href="about.html#plugins">Plugins</a></li>
-<li class="toctree-l2"><a class="reference internal" href="about.html#team">Team</a></li>
 <li class="toctree-l2"><a class="reference internal" href="about.html#users">Users</a></li>
+<li class="toctree-l2"><a class="reference internal" href="about.html#philosophy">Philosophy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="about.html#team">Team</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#installing-all-plugins">Installing All Plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#master-branch">Master Branch</a></li>
 <li class="toctree-l2"><a class="reference internal" href="installation.html#ubuntu">Ubuntu</a></li>
 <li class="toctree-l2"><a class="reference internal" href="installation.html#docker">Docker</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="concepts/index.html">Concepts</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="concepts/dataflow.html">DataFlows</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concepts/index.html#sources">Sources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concepts/index.html#models">Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concepts/index.html#dataflows">DataFlows</a></li>
 </ul>
 </li>
 </ul>
 </div>
 <div class="toctree-wrapper compound">
-<p class="caption"><span class="caption-text">Examples</span></p>
+<p class="caption"><span class="caption-text">Usage</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="quickstart/model.html">Quickstart</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="quickstart/model.html#example-dataset">Example Dataset</a></li>
@@ -283,17 +302,21 @@ branch can be found <a class="reference external" href="master/index.html">here<
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="tutorials/index.html">Tutorials</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="tutorials/intro.html">Introduction to DFFML</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorials/model.html">New Model Tutorial</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorials/operations.html">New Operations Tutorial</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorials/source.html">New Source Tutorial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/models/index.html">Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/sources/index.html">Sources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/dataflows/index.html">DataFlows</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/neuralnetwork.html">Neural Networks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/doublecontextentry.html">Double Context Entry</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="usage/index.html">Use Cases</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="usage/integration.html">Automating Classification</a></li>
-<li class="toctree-l2"><a class="reference internal" href="usage/dataflows.html">DataFlow HTTP Deployment</a></li>
-<li class="toctree-l2"><a class="reference internal" href="usage/mnist.html">MNIST Handwriten Digits</a></li>
-<li class="toctree-l2"><a class="reference internal" href="usage/io.html">Prediction Using IO Operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/index.html">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="examples/integration.html">Automating Classification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/shouldi.html">Meta Static Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/dataflows.html">DataFlow HTTP Deployment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/mnist.html">MNIST Handwriten Digits</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/flower17/flower17.html">Flower17 Species Classification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/or_covid_data_by_county.html">COVID Forecasting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/webhook/index.html">Continuous Deployment of DataFlows</a></li>
 </ul>
 </li>
 </ul>
@@ -309,14 +332,18 @@ branch can be found <a class="reference external" href="master/index.html">here<
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="cli.html">Command Line</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cli.html#version">Version</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.html#packages">Packages</a></li>
 <li class="toctree-l2"><a class="reference internal" href="cli.html#model">Model</a></li>
 <li class="toctree-l2"><a class="reference internal" href="cli.html#dataflow">DataFlow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.html#edit">Edit</a></li>
 <li class="toctree-l2"><a class="reference internal" href="cli.html#config">Config</a></li>
 <li class="toctree-l2"><a class="reference internal" href="cli.html#service">Service</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="plugins/service/http/index.html">HTTP API</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="plugins/service/http/cli.html">Command Line</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plugins/service/http/dataflow.html">DataFlow</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plugins/service/http/api.html">API</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plugins/service/http/security.html">Security</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plugins/service/http/javascript.html">JavaScript</a></li>
@@ -324,15 +351,49 @@ branch can be found <a class="reference external" href="master/index.html">here<
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="api/index.html">API Reference</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="api/high_level.html">High Level</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api/base.html">Base</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api/df/index.html">Data Flow</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api/feature.html">Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/version.html">Version</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/noasync.html">High Level (noasync)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/record.html">Record</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api/model/index.html">Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/high_level.html">High Level</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/plugins.html">Plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/base.html">Base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/log.html">Log</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/port/index.html">Port</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/source/index.html">Sources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/configloader/index.html">Configloader</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/db/index.html">Databases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/operation/index.html">Operation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/model/index.html">Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/util/index.html">Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/df/index.html">Data Flow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/secret/index.html">Secrets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/cli/index.html">Cli</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/feature/index.html">Feature</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/service/index.html">Service</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#create-a-new-virtual-environment">Create a new Virtual Environment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#entrypointnotfound">EntrypointNotFound</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<p class="caption"><span class="caption-text">Subprojects</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="shouldi.html">shouldi</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="shouldi.html#what-is-shouldi">What Is ShouldI?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="shouldi.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="shouldi.html#usage">Usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="shouldi.html#license">License</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="swportal.html">Software Portal</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="swportal.html#setup">Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="swportal.html#usage">Usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="swportal.html#structure">Structure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="swportal.html#notes">Notes</a></li>
 </ul>
 </li>
 </ul>
@@ -341,6 +402,7 @@ branch can be found <a class="reference external" href="master/index.html">here<
 <p class="caption"><span class="caption-text">Community</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/intel/dffml">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://intel.github.io/dffml/master/">Master Branch Docs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="publications.html">Publications</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="publications.html#talks">Talks</a></li>
 <li class="toctree-l2"><a class="reference internal" href="publications.html#poster-presentations">Poster Presentations</a></li>
@@ -356,25 +418,32 @@ branch can be found <a class="reference external" href="master/index.html">here<
 <li class="toctree-l2"><a class="reference internal" href="contributing/git.html">Git and GitHub</a></li>
 <li class="toctree-l2"><a class="reference internal" href="contributing/testing.html">Testing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="contributing/docs.html">Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing/consoletest.html">consoletest Sphinx extension</a></li>
 <li class="toctree-l2"><a class="reference internal" href="contributing/debugging.html">Debugging</a></li>
 <li class="toctree-l2"><a class="reference internal" href="contributing/editors/index.html">Setting Up Your Editor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing/gsoc/index.html">Google Summer of Code</a></li>
 <li class="toctree-l2"><a class="reference internal" href="contributing/maintainers.html">Maintainer Docs</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="news/index.html">News</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="news/0_4_0_alpha_release.html">0.4.0 Alpha Release</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="changelog.html#id1">[0.3.7] - 2020-04-14</a></li>
-<li class="toctree-l2"><a class="reference internal" href="changelog.html#id2">[0.3.6] - 2020-04-04</a></li>
-<li class="toctree-l2"><a class="reference internal" href="changelog.html#id6">[0.3.5] - 2020-03-10</a></li>
-<li class="toctree-l2"><a class="reference internal" href="changelog.html#id9">[0.3.4] - 2020-02-28</a></li>
-<li class="toctree-l2"><a class="reference internal" href="changelog.html#id14">[0.3.3] - 2020-02-10</a></li>
-<li class="toctree-l2"><a class="reference internal" href="changelog.html#id19">[0.3.2] - 2020-01-03</a></li>
-<li class="toctree-l2"><a class="reference internal" href="changelog.html#id23">[0.3.1] - 2019-12-12</a></li>
-<li class="toctree-l2"><a class="reference internal" href="changelog.html#id28">[0.3.0] - 2019-10-26</a></li>
-<li class="toctree-l2"><a class="reference internal" href="changelog.html#id33">[0.2.1] - 2019-06-07</a></li>
-<li class="toctree-l2"><a class="reference internal" href="changelog.html#id37">[0.2.0] - 2019-05-23</a></li>
-<li class="toctree-l2"><a class="reference internal" href="changelog.html#id41">[0.1.2] - 2019-03-29</a></li>
-<li class="toctree-l2"><a class="reference internal" href="changelog.html#id45">[0.1.1] - 2019-03-08</a></li>
-<li class="toctree-l2"><a class="reference internal" href="changelog.html#id47">[0.1.0] - 2019-03-07</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#id1">[0.4.0] - 2021-02-18</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#id2">[0.3.7] - 2020-04-14</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#id7">[0.3.6] - 2020-04-04</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#id11">[0.3.5] - 2020-03-10</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#id14">[0.3.4] - 2020-02-28</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#id19">[0.3.3] - 2020-02-10</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#id24">[0.3.2] - 2020-01-03</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#id28">[0.3.1] - 2019-12-12</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#id33">[0.3.0] - 2019-10-26</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#id38">[0.2.1] - 2019-06-07</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#id42">[0.2.0] - 2019-05-23</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#id46">[0.1.2] - 2019-03-29</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#id50">[0.1.1] - 2019-03-08</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#id52">[0.1.0] - 2019-03-07</a></li>
 </ul>
 </li>
 </ul>
@@ -401,7 +470,7 @@ branch can be found <a class="reference external" href="master/index.html">here<
 
   <div role="contentinfo">
     <p>
-        &#169; Copyright 2019, Intel.
+        &#169; Copyright 2017 - 2021, Intel.
 
     </p>
   </div>

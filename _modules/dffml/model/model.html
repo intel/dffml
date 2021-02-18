@@ -7,12 +7,13 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>dffml.model.model &mdash; DFFML 0.3.7 documentation</title>
+  <title>dffml.model.model &mdash; DFFML 0.4.0 documentation</title>
   
 
   
   <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/tabs.css" type="text/css" />
 
   
   
@@ -32,6 +33,7 @@
         <script src="../../../_static/jquery.js"></script>
         <script src="../../../_static/underscore.js"></script>
         <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/tabs.js"></script>
         <script src="../../../_static/copybutton.js"></script>
     
     <script type="text/javascript" src="../../../_static/js/theme.js"></script>
@@ -63,7 +65,7 @@
             
             
               <div class="version">
-                0.3.7
+                0.4.0
               </div>
             
           
@@ -94,11 +96,11 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../concepts/index.html">Concepts</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Examples</span></p>
+<p class="caption"><span class="caption-text">Usage</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../quickstart/model.html">Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">Tutorials</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../usage/index.html">Use Cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/index.html">Examples</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Reference</span></p>
 <ul>
@@ -106,13 +108,21 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../cli.html">Command Line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../plugins/service/http/index.html">HTTP API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../troubleshooting.html">Troubleshooting</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Subprojects</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../shouldi.html">shouldi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../swportal.html">Software Portal</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Community</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/intel/dffml">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://intel.github.io/dffml/master/">Master Branch Docs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../publications.html">Publications</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../contact.html">Contact Us</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../contributing/index.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../news/index.html">News</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../changelog.html">Changelog</a></li>
 </ul>
 
@@ -167,10 +177,14 @@
       <li>dffml.model.model</li>
     
     
+
+
       <li class="wy-breadcrumbs-aside">
         
       </li>
     
+
+
   </ul>
 
   
@@ -199,24 +213,24 @@
     <span class="n">BaseDataFlowFacilitatorObject</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="kn">from</span> <span class="nn">..record</span> <span class="kn">import</span> <span class="n">Record</span>
-<span class="kn">from</span> <span class="nn">..source.source</span> <span class="kn">import</span> <span class="n">Sources</span>
 <span class="kn">from</span> <span class="nn">..feature</span> <span class="kn">import</span> <span class="n">Features</span>
 <span class="kn">from</span> <span class="nn">.accuracy</span> <span class="kn">import</span> <span class="n">Accuracy</span>
 <span class="kn">from</span> <span class="nn">..util.entrypoint</span> <span class="kn">import</span> <span class="n">base_entry_point</span>
 <span class="kn">from</span> <span class="nn">..util.os</span> <span class="kn">import</span> <span class="n">MODE_BITS_SECURE</span>
+<span class="kn">from</span> <span class="nn">..source.source</span> <span class="kn">import</span> <span class="n">Sources</span><span class="p">,</span> <span class="n">SourcesContext</span>
 
 
-<div class="viewcode-block" id="ModelNotTrained"><a class="viewcode-back" href="../../../api/model/base.html#dffml.model.model.ModelNotTrained">[docs]</a><span class="k">class</span> <span class="nc">ModelNotTrained</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+<div class="viewcode-block" id="ModelNotTrained"><a class="viewcode-back" href="../../../api/model/model.html#dffml.model.model.ModelNotTrained">[docs]</a><span class="k">class</span> <span class="nc">ModelNotTrained</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
     <span class="k">pass</span></div>
 
 
-<div class="viewcode-block" id="ModelConfig"><a class="viewcode-back" href="../../../api/model/base.html#dffml.model.model.ModelConfig">[docs]</a><span class="nd">@config</span>
+<div class="viewcode-block" id="ModelConfig"><a class="viewcode-back" href="../../../api/model/model.html#dffml.model.model.ModelConfig">[docs]</a><span class="nd">@config</span>
 <span class="k">class</span> <span class="nc">ModelConfig</span><span class="p">:</span>
     <span class="n">directory</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">features</span><span class="p">:</span> <span class="n">Features</span></div>
 
 
-<div class="viewcode-block" id="ModelContext"><a class="viewcode-back" href="../../../api/model/base.html#dffml.model.model.ModelContext">[docs]</a><span class="k">class</span> <span class="nc">ModelContext</span><span class="p">(</span><span class="n">abc</span><span class="o">.</span><span class="n">ABC</span><span class="p">,</span> <span class="n">BaseDataFlowFacilitatorObjectContext</span><span class="p">):</span>
+<div class="viewcode-block" id="ModelContext"><a class="viewcode-back" href="../../../api/model/model.html#dffml.model.model.ModelContext">[docs]</a><span class="k">class</span> <span class="nc">ModelContext</span><span class="p">(</span><span class="n">abc</span><span class="o">.</span><span class="n">ABC</span><span class="p">,</span> <span class="n">BaseDataFlowFacilitatorObjectContext</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Abstract base class which should be derived from and implmented using</span>
 <span class="sd">    various machine learning frameworks or concepts.</span>
@@ -225,14 +239,14 @@
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">:</span> <span class="s2">&quot;Model&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">parent</span> <span class="o">=</span> <span class="n">parent</span>
 
-<div class="viewcode-block" id="ModelContext.train"><a class="viewcode-back" href="../../../api/model/base.html#dffml.model.model.ModelContext.train">[docs]</a>    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
+<div class="viewcode-block" id="ModelContext.train"><a class="viewcode-back" href="../../../api/model/model.html#dffml.model.model.ModelContext.train">[docs]</a>    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
     <span class="k">async</span> <span class="k">def</span> <span class="nf">train</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sources</span><span class="p">:</span> <span class="n">Sources</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Train using records as the data to learn from.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="ModelContext.accuracy"><a class="viewcode-back" href="../../../api/model/base.html#dffml.model.model.ModelContext.accuracy">[docs]</a>    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
+<div class="viewcode-block" id="ModelContext.accuracy"><a class="viewcode-back" href="../../../api/model/model.html#dffml.model.model.ModelContext.accuracy">[docs]</a>    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
     <span class="k">async</span> <span class="k">def</span> <span class="nf">accuracy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sources</span><span class="p">:</span> <span class="n">Sources</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Accuracy</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Evaluates the accuracy of our model after training using the input records</span>
@@ -240,10 +254,8 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="ModelContext.predict"><a class="viewcode-back" href="../../../api/model/base.html#dffml.model.model.ModelContext.predict">[docs]</a>    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">records</span><span class="p">:</span> <span class="n">AsyncIterator</span><span class="p">[</span><span class="n">Record</span><span class="p">]</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AsyncIterator</span><span class="p">[</span><span class="n">Record</span><span class="p">]:</span>
+<div class="viewcode-block" id="ModelContext.predict"><a class="viewcode-back" href="../../../api/model/model.html#dffml.model.model.ModelContext.predict">[docs]</a>    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sources</span><span class="p">:</span> <span class="n">SourcesContext</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AsyncIterator</span><span class="p">[</span><span class="n">Record</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Uses trained data to make a prediction about the quality of a record.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -251,7 +263,7 @@
         <span class="k">yield</span> <span class="p">(</span><span class="n">Record</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">),</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>  <span class="c1"># skipcq: PYL-W0101</span></div></div>
 
 
-<div class="viewcode-block" id="Model"><a class="viewcode-back" href="../../../api/model/base.html#dffml.model.model.Model">[docs]</a><span class="nd">@base_entry_point</span><span class="p">(</span><span class="s2">&quot;dffml.model&quot;</span><span class="p">,</span> <span class="s2">&quot;model&quot;</span><span class="p">)</span>
+<div class="viewcode-block" id="Model"><a class="viewcode-back" href="../../../api/model/model.html#dffml.model.model.Model">[docs]</a><span class="nd">@base_entry_point</span><span class="p">(</span><span class="s2">&quot;dffml.model&quot;</span><span class="p">,</span> <span class="s2">&quot;model&quot;</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">Model</span><span class="p">(</span><span class="n">BaseDataFlowFacilitatorObject</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Abstract base class which should be derived from and implmented using</span>
@@ -289,13 +301,13 @@
                 <span class="n">directory</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="n">MODE_BITS_SECURE</span><span class="p">,</span> <span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="SimpleModelNoContext"><a class="viewcode-back" href="../../../api/model/base.html#dffml.model.model.SimpleModelNoContext">[docs]</a><span class="k">class</span> <span class="nc">SimpleModelNoContext</span><span class="p">:</span>
+<div class="viewcode-block" id="SimpleModelNoContext"><a class="viewcode-back" href="../../../api/model/model.html#dffml.model.model.SimpleModelNoContext">[docs]</a><span class="k">class</span> <span class="nc">SimpleModelNoContext</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    No need for CONTEXT since we implement __call__</span>
 <span class="sd">    &quot;&quot;&quot;</span></div>
 
 
-<div class="viewcode-block" id="SimpleModel"><a class="viewcode-back" href="../../../api/model/base.html#dffml.model.model.SimpleModel">[docs]</a><span class="k">class</span> <span class="nc">SimpleModel</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+<div class="viewcode-block" id="SimpleModel"><a class="viewcode-back" href="../../../api/model/model.html#dffml.model.model.SimpleModel">[docs]</a><span class="k">class</span> <span class="nc">SimpleModel</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
     <span class="n">DTYPES</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span>
     <span class="n">NUM_SUPPORTED_FEATURES</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
     <span class="n">SUPPORTED_LENGTHS</span> <span class="o">=</span> <span class="kc">None</span>
@@ -304,7 +316,8 @@
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="s2">&quot;BaseConfig&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">storage</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">features</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">applicable_features</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">features</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">,</span> <span class="s2">&quot;features&quot;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">features</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">applicable_features</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">features</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_in_context</span> <span class="o">=</span> <span class="mi">0</span>
 
     <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -332,7 +345,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span>
 
-<div class="viewcode-block" id="SimpleModel.open"><a class="viewcode-back" href="../../../api/model/base.html#dffml.model.model.SimpleModel.open">[docs]</a>    <span class="k">def</span> <span class="nf">open</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="SimpleModel.open"><a class="viewcode-back" href="../../../api/model/model.html#dffml.model.model.SimpleModel.open">[docs]</a>    <span class="k">def</span> <span class="nf">open</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Load saved model from disk if it exists.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -344,7 +357,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;No saved model in </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">filepath</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="SimpleModel.close"><a class="viewcode-back" href="../../../api/model/base.html#dffml.model.model.SimpleModel.close">[docs]</a>    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="SimpleModel.close"><a class="viewcode-back" href="../../../api/model/model.html#dffml.model.model.SimpleModel.close">[docs]</a>    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Save model to disk.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -352,7 +365,7 @@
         <span class="n">filepath</span><span class="o">.</span><span class="n">write_text</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">storage</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Saved model to </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">filepath</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="SimpleModel.disk_path"><a class="viewcode-back" href="../../../api/model/base.html#dffml.model.model.SimpleModel.disk_path">[docs]</a>    <span class="k">def</span> <span class="nf">disk_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">extention</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="SimpleModel.disk_path"><a class="viewcode-back" href="../../../api/model/model.html#dffml.model.model.SimpleModel.disk_path">[docs]</a>    <span class="k">def</span> <span class="nf">disk_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">extention</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        We do this for convenience of the user so they can usually just use the</span>
 <span class="sd">        default directory and if they train models with different parameters</span>
@@ -368,11 +381,7 @@
         <span class="k">if</span> <span class="s2">&quot;features&quot;</span> <span class="ow">in</span> <span class="n">exported</span><span class="p">:</span>
             <span class="n">exported</span><span class="p">[</span><span class="s2">&quot;features&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">exported</span><span class="p">[</span><span class="s2">&quot;features&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">()))</span>
         <span class="c1"># Hash the exported config</span>
-        <span class="k">return</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">directory</span><span class="p">,</span>
-            <span class="n">hashlib</span><span class="o">.</span><span class="n">sha384</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">exported</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">())</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
-            <span class="o">+</span> <span class="p">(</span><span class="n">extention</span> <span class="k">if</span> <span class="n">extention</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
-        <span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">directory</span><span class="p">,</span> <span class="s2">&quot;Model&quot;</span><span class="p">,)</span></div>
 
     <span class="k">def</span> <span class="nf">applicable_features</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">features</span><span class="p">):</span>
         <span class="n">usable</span> <span class="o">=</span> <span class="p">[]</span>
@@ -391,7 +400,7 @@
         <span class="c1"># Check data type and length for each feature</span>
         <span class="k">for</span> <span class="n">feature</span> <span class="ow">in</span> <span class="n">features</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">check_applicable_feature</span><span class="p">(</span><span class="n">feature</span><span class="p">):</span>
-                <span class="n">usable</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">feature</span><span class="o">.</span><span class="n">NAME</span><span class="p">)</span>
+                <span class="n">usable</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">feature</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
         <span class="c1"># Return a sorted list of feature names for consistency. In case users</span>
         <span class="c1"># provide the same list of features to applicable_features in a</span>
         <span class="c1"># different order.</span>
@@ -399,9 +408,9 @@
 
     <span class="k">def</span> <span class="nf">check_applicable_feature</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">feature</span><span class="p">):</span>
         <span class="c1"># Check the data datatype is in the list of supported data types</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">check_feature_dtype</span><span class="p">(</span><span class="n">feature</span><span class="o">.</span><span class="n">dtype</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">check_feature_dtype</span><span class="p">(</span><span class="n">feature</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
         <span class="c1"># Check that length (dimensions) of feature is supported</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">check_feature_length</span><span class="p">(</span><span class="n">feature</span><span class="o">.</span><span class="n">length</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">check_feature_length</span><span class="p">(</span><span class="n">feature</span><span class="o">.</span><span class="n">length</span><span class="p">)</span>
         <span class="k">return</span> <span class="kc">True</span>
 
     <span class="k">def</span> <span class="nf">check_feature_dtype</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dtype</span><span class="p">):</span>
@@ -427,7 +436,7 @@
 
   <div role="contentinfo">
     <p>
-        &#169; Copyright 2019, Intel.
+        &#169; Copyright 2017 - 2021, Intel.
 
     </p>
   </div>

@@ -1,0 +1,468 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>FLOWER17 Species classification using Transfer Learning &mdash; DFFML 0.4.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/tabs.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/copybutton.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="author" title="About these documents" href="../../about.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="COVID Forecasting" href="../or_covid_data_by_county.html" />
+    <link rel="prev" title="FLOWER17 Species classification using OpenCV and Scikit-Learn" href="flower17_scikit.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> DFFML
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.4.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Introduction</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../concepts/index.html">Concepts</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Usage</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../quickstart/model.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Examples</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../integration.html">Automating Classification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../shouldi.html">Meta Static Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dataflows.html">DataFlow HTTP Deployment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mnist.html">MNIST Handwriten Digits</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="flower17.html">Flower17 Species Classification</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="flower17_scikit.html">Using OpenCV to extract features and then training on a Scikit-Learn model</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">The Transfer Learning approach with Convolution Neural Networks</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../or_covid_data_by_county.html">COVID Forecasting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../webhook/index.html">Continuous Deployment of DataFlows</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../plugins/index.html">Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cli.html">Command Line</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../plugins/service/http/index.html">HTTP API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../troubleshooting.html">Troubleshooting</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Subprojects</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../shouldi.html">shouldi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../swportal.html">Software Portal</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Community</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/intel/dffml">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://intel.github.io/dffml/master/">Master Branch Docs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../publications.html">Publications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contact.html">Contact Us</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing/index.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../news/index.html">News</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../changelog.html">Changelog</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">DFFML</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Examples</a> &raquo;</li>
+        
+          <li><a href="flower17.html">Flower17 Species Classification</a> &raquo;</li>
+        
+      <li>FLOWER17 Species classification using Transfer Learning</li>
+    
+    
+
+
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            
+              <a href="https://github.com/intel/dffml/blob/master/docs/examples/flower17/flower17_pytorch.rst" class="fa fa-github"> Edit on GitHub</a>
+            
+          
+        
+      </li>
+    
+
+
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="flower17-species-classification-using-transfer-learning">
+<h1>FLOWER17 Species classification using Transfer Learning<a class="headerlink" href="#flower17-species-classification-using-transfer-learning" title="Permalink to this headline">¶</a></h1>
+<p>The model we’ll be using is <a class="reference internal" href="../../plugins/dffml_model.html#plugin-model-dffml-model-pytorch-alexnet"><span class="std std-ref">AlexNet CNN Model</span></a>
+which is a part of <code class="docutils literal notranslate"><span class="pre">dffml-model-pytorch</span></code>, a DFFML plugin which allows you to use PyTorch
+via DFFML. We can install it with <code class="docutils literal notranslate"><span class="pre">pip</span></code>. We will also be using image loading from
+<code class="docutils literal notranslate"><span class="pre">dffml-config-image</span></code> and YAML file loading from <code class="docutils literal notranslate"><span class="pre">dffml-config-yaml</span></code>.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>pip install -U dffml-model-pytorch dffml-config-yaml dffml-config-image
+</pre></div>
+</div>
+<p>There are 2 ways to perform Transfer Learning:</p>
+<ol class="arabic simple">
+<li><dl class="simple">
+<dt>Fine-tuning the CNN</dt><dd><p>Initializing the network with pre-trained weights(trained on ImageNet1000 dataset)
+and training the whole network on the dataset.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Using the CNN as fixed feature-extractor</dt><dd><p>We freeze the parameters of the complete network except the final layer, so that the
+gradients for any other layer except the last layer are not computed in back-propagation.</p>
+</dd>
+</dl>
+</li>
+</ol>
+<p>In this example, we will be fine-tuning the AlexNet model. (We set <cite>trainable=True</cite>)</p>
+<p>We first create a YAML file to define the last layer(s) to replace from the network architecture:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">linear1</span><span class="p">:</span>
+  <span class="n">layer_type</span><span class="p">:</span> <span class="n">Linear</span>
+  <span class="n">in_features</span><span class="p">:</span> <span class="mi">4096</span>
+  <span class="n">out_features</span><span class="p">:</span> <span class="mi">256</span>
+<span class="n">relu</span><span class="p">:</span>
+  <span class="n">layer_type</span><span class="p">:</span> <span class="n">ReLU</span>
+<span class="n">dropout</span><span class="p">:</span>
+  <span class="n">layer_type</span><span class="p">:</span> <span class="n">Dropout</span>
+  <span class="n">p</span><span class="p">:</span> <span class="mf">0.2</span>
+<span class="n">linear2</span><span class="p">:</span>
+  <span class="n">layer_type</span><span class="p">:</span> <span class="n">Linear</span>
+  <span class="n">in_features</span><span class="p">:</span> <span class="mi">256</span>
+  <span class="n">out_features</span><span class="p">:</span> <span class="mi">17</span>
+<span class="n">logsoftmax</span><span class="p">:</span>
+  <span class="n">layer_type</span><span class="p">:</span> <span class="n">LogSoftmax</span>
+  <span class="n">dim</span><span class="p">:</span> <span class="mi">1</span>
+</pre></div>
+</div>
+<p>Train the model.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>dffml train \
+  -model alexnet \
+  -model-add_layers \
+  -model-layers @layers.yaml \
+  -model-clstype str \
+  -model-classifications \
+    crocus windflower fritillary tulip pansy dandelion tigerlily sunflower \
+    bluebell cowslip coltsfoot snowdrop daffodil lilyvalley iris buttercup daisy \
+  -model-directory alexnet_model \
+  -model-epochs 20 \
+  -model-batch_size 32 \
+  -model-imageSize 224 \
+  -model-validation_split 0.2 \
+  -model-trainable \
+  -model-enableGPU \
+  -model-normalize_mean 0.485 0.456 0.406 \
+  -model-normalize_std 0.229 0.224 0.225 \
+  -model-features image:int:$((500*500)) \
+  -model-predict label:str:1 \
+  -sources f=dir \
+    -source-foldername flower_dataset/train \
+    -source-feature image \
+    -source-labels \
+      crocus windflower fritillary tulip pansy dandelion tigerlily sunflower \
+      bluebell cowslip coltsfoot snowdrop daffodil lilyvalley iris buttercup daisy \
+  -log debug
+</pre></div>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">INFO:dffml.AlexNetModelContext:Training complete in 5m 41s</span>
+<span class="go">INFO:dffml.AlexNetModelContext:Best Validation Accuracy: 0.927602</span>
+</pre></div>
+</div>
+<p>Assess the model’s accuracy.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>dffml accuracy \
+  -model alexnet \
+  -model-add_layers \
+  -model-layers @layers.yaml \
+  -model-clstype str \
+  -model-classifications \
+    crocus windflower fritillary tulip pansy dandelion tigerlily sunflower \
+    bluebell cowslip coltsfoot snowdrop daffodil lilyvalley iris buttercup daisy \
+  -model-directory alexnet_model \
+  -model-imageSize 224 \
+  -model-trainable \
+  -model-enableGPU \
+  -model-normalize_mean 0.485 0.456 0.406 \
+  -model-normalize_std 0.229 0.224 0.225 \
+  -model-features image:int:$((500*500)) \
+  -model-predict label:str:1 \
+  -sources f=dir \
+    -source-foldername flower_dataset/test \
+    -source-feature image \
+    -source-labels \
+      crocus windflower fritillary tulip pansy dandelion tigerlily sunflower \
+      bluebell cowslip coltsfoot snowdrop daffodil lilyvalley iris buttercup daisy
+</pre></div>
+</div>
+<p>The output is:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">0.8196078431372549</span>
+</pre></div>
+</div>
+<p>Create an <code class="docutils literal notranslate"><span class="pre">unknown_images.csv</span></code> file which contains the filenames of the images to predict on.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cat</span> <span class="o">&gt;</span> <span class="n">unknown_images</span><span class="o">.</span><span class="n">csv</span> <span class="o">&lt;&lt;</span> <span class="n">EOF</span>
+<span class="n">key</span><span class="p">,</span><span class="n">image</span>
+<span class="n">daisy</span><span class="p">,</span><span class="n">daisy</span><span class="o">.</span><span class="n">jpg</span>
+<span class="n">pansy</span><span class="p">,</span><span class="n">pansy</span><span class="o">.</span><span class="n">jpg</span>
+<span class="n">tigerlily</span><span class="p">,</span><span class="n">tigerlily</span><span class="o">.</span><span class="n">jpg</span>
+<span class="n">buttercup</span><span class="p">,</span><span class="n">buttercup</span><span class="o">.</span><span class="n">jpg</span>
+<span class="n">EOF</span>
+</pre></div>
+</div>
+<p>In this example, the <code class="docutils literal notranslate"><span class="pre">unknown_images.csv</span></code> file contains the filenames of the following images</p>
+<a class="reference internal image-reference" href="../../_images/daisy.jpg"><img alt="../../_images/daisy.jpg" src="../../_images/daisy.jpg" style="width: 140px; height: 140px;" /></a>
+<a class="reference internal image-reference" href="../../_images/pansy.jpg"><img alt="../../_images/pansy.jpg" src="../../_images/pansy.jpg" style="width: 140px; height: 140px;" /></a>
+<a class="reference internal image-reference" href="../../_images/tigerlily.jpg"><img alt="../../_images/tigerlily.jpg" src="../../_images/tigerlily.jpg" style="width: 140px; height: 140px;" /></a>
+<a class="reference internal image-reference" href="../../_images/buttercup.jpg"><img alt="../../_images/buttercup.jpg" src="../../_images/buttercup.jpg" style="width: 140px; height: 140px;" /></a>
+<p>Predict with the trained model.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>dffml predict all \
+  -model alexnet \
+  -model-add_layers \
+  -model-layers @layers.yaml \
+  -model-clstype str \
+  -model-classifications \
+    crocus windflower fritillary tulip pansy dandelion tigerlily sunflower \
+    bluebell cowslip coltsfoot snowdrop daffodil lilyvalley iris buttercup daisy \
+  -model-directory alexnet_model \
+  -model-imageSize 224 \
+  -model-trainable \
+  -model-enableGPU \
+  -model-normalize_mean 0.485 0.456 0.406 \
+  -model-normalize_std 0.229 0.224 0.225 \
+  -model-features image:int:$((500*500)) \
+  -model-predict label:str:1 \
+  -sources f=csv \
+  -source-filename unknown_images.csv \
+  -source-loadfiles image \
+  -pretty
+</pre></div>
+</div>
+<p>Output</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>
+	<span class="n">Key</span><span class="p">:</span>	<span class="n">daisy</span>
+                                                               <span class="n">Record</span> <span class="n">Features</span>
+<span class="o">+----------------------------------------------------------------------------------------------------------------------------------------------+</span>
+<span class="o">|</span>               <span class="n">image</span>               <span class="o">|</span>                    <span class="mi">111</span><span class="p">,</span> <span class="mi">126</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="mi">110</span><span class="p">,</span> <span class="mi">125</span><span class="p">,</span> <span class="mi">127</span><span class="p">,</span> <span class="mi">109</span><span class="p">,</span> <span class="mi">124</span><span class="p">,</span> <span class="mi">126</span><span class="p">,</span> <span class="mi">1</span> <span class="o">...</span> <span class="p">(</span><span class="n">length</span><span class="p">:</span><span class="mi">689520</span><span class="p">)</span>                    <span class="o">|</span>
+<span class="o">+----------------------------------------------------------------------------------------------------------------------------------------------+</span>
+
+                                                                  <span class="n">Prediction</span>
+<span class="o">+----------------------------------------------------------------------------------------------------------------------------------------------+</span>
+<span class="o">|</span>                                                                    <span class="n">label</span>                                                                     <span class="o">|</span>
+<span class="o">+----------------------------------------------------------------------------------------------------------------------------------------------+</span>
+<span class="o">|</span>           <span class="n">Value</span><span class="p">:</span>  <span class="n">daisy</span>           <span class="o">|</span>                                     <span class="n">Confidence</span><span class="p">:</span>   <span class="mf">0.9999972581863403</span>                                     <span class="o">|</span>
+<span class="o">+----------------------------------------------------------------------------------------------------------------------------------------------+</span>
+
+	<span class="n">Key</span><span class="p">:</span>	<span class="n">pansy</span>
+                                                               <span class="n">Record</span> <span class="n">Features</span>
+<span class="o">+----------------------------------------------------------------------------------------------------------------------------------------------+</span>
+<span class="o">|</span>               <span class="n">image</span>               <span class="o">|</span>                    <span class="mi">153</span><span class="p">,</span> <span class="mi">92</span><span class="p">,</span> <span class="mi">136</span><span class="p">,</span> <span class="mi">120</span><span class="p">,</span> <span class="mi">59</span><span class="p">,</span> <span class="mi">103</span><span class="p">,</span> <span class="mi">112</span><span class="p">,</span> <span class="mi">51</span><span class="p">,</span> <span class="mi">95</span><span class="p">,</span> <span class="mi">107</span><span class="p">,</span>  <span class="o">...</span> <span class="p">(</span><span class="n">length</span><span class="p">:</span><span class="mi">921600</span><span class="p">)</span>                    <span class="o">|</span>
+<span class="o">+----------------------------------------------------------------------------------------------------------------------------------------------+</span>
+
+                                                                  <span class="n">Prediction</span>
+<span class="o">+----------------------------------------------------------------------------------------------------------------------------------------------+</span>
+<span class="o">|</span>                                                                    <span class="n">label</span>                                                                     <span class="o">|</span>
+<span class="o">+----------------------------------------------------------------------------------------------------------------------------------------------+</span>
+<span class="o">|</span>           <span class="n">Value</span><span class="p">:</span>  <span class="n">pansy</span>           <span class="o">|</span>                                     <span class="n">Confidence</span><span class="p">:</span>   <span class="mf">0.999854564666748</span>                                      <span class="o">|</span>
+<span class="o">+----------------------------------------------------------------------------------------------------------------------------------------------+</span>
+
+	<span class="n">Key</span><span class="p">:</span>	<span class="n">tigerlily</span>
+                                                               <span class="n">Record</span> <span class="n">Features</span>
+<span class="o">+----------------------------------------------------------------------------------------------------------------------------------------------+</span>
+<span class="o">|</span>               <span class="n">image</span>               <span class="o">|</span>                    <span class="mi">0</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="o">...</span> <span class="p">(</span><span class="n">length</span><span class="p">:</span><span class="mi">817920</span><span class="p">)</span>                    <span class="o">|</span>
+<span class="o">+----------------------------------------------------------------------------------------------------------------------------------------------+</span>
+
+                                                                  <span class="n">Prediction</span>
+<span class="o">+----------------------------------------------------------------------------------------------------------------------------------------------+</span>
+<span class="o">|</span>                                                                    <span class="n">label</span>                                                                     <span class="o">|</span>
+<span class="o">+----------------------------------------------------------------------------------------------------------------------------------------------+</span>
+<span class="o">|</span>         <span class="n">Value</span><span class="p">:</span>  <span class="n">tigerlily</span>         <span class="o">|</span>                                     <span class="n">Confidence</span><span class="p">:</span>   <span class="mf">0.9924067854881287</span>                                     <span class="o">|</span>
+<span class="o">+----------------------------------------------------------------------------------------------------------------------------------------------+</span>
+
+	<span class="n">Key</span><span class="p">:</span>	<span class="n">buttercup</span>
+                                                               <span class="n">Record</span> <span class="n">Features</span>
+<span class="o">+----------------------------------------------------------------------------------------------------------------------------------------------+</span>
+<span class="o">|</span>               <span class="n">image</span>               <span class="o">|</span>                    <span class="mi">10</span><span class="p">,</span> <span class="mi">18</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">18</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">18</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">18</span><span class="p">,</span> <span class="mi">17</span> <span class="o">...</span> <span class="p">(</span><span class="n">length</span><span class="p">:</span><span class="mi">814080</span><span class="p">)</span>                    <span class="o">|</span>
+<span class="o">+----------------------------------------------------------------------------------------------------------------------------------------------+</span>
+
+                                                                  <span class="n">Prediction</span>
+<span class="o">+----------------------------------------------------------------------------------------------------------------------------------------------+</span>
+<span class="o">|</span>                                                                    <span class="n">label</span>                                                                     <span class="o">|</span>
+<span class="o">+----------------------------------------------------------------------------------------------------------------------------------------------+</span>
+<span class="o">|</span>         <span class="n">Value</span><span class="p">:</span>  <span class="n">buttercup</span>         <span class="o">|</span>                                     <span class="n">Confidence</span><span class="p">:</span>   <span class="mf">0.9977046847343445</span>                                     <span class="o">|</span>
+<span class="o">+----------------------------------------------------------------------------------------------------------------------------------------------+</span>
+</pre></div>
+</div>
+<p>The model predicts all the flower species correctly with 99% confidence!</p>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="../or_covid_data_by_county.html" class="btn btn-neutral float-right" title="COVID Forecasting" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="flower17_scikit.html" class="btn btn-neutral float-left" title="FLOWER17 Species classification using OpenCV and Scikit-Learn" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2017 - 2021, Intel.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

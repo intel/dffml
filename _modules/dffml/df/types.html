@@ -7,12 +7,13 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>dffml.df.types &mdash; DFFML 0.3.7 documentation</title>
+  <title>dffml.df.types &mdash; DFFML 0.4.0 documentation</title>
   
 
   
   <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/tabs.css" type="text/css" />
 
   
   
@@ -32,6 +33,7 @@
         <script src="../../../_static/jquery.js"></script>
         <script src="../../../_static/underscore.js"></script>
         <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/tabs.js"></script>
         <script src="../../../_static/copybutton.js"></script>
     
     <script type="text/javascript" src="../../../_static/js/theme.js"></script>
@@ -63,7 +65,7 @@
             
             
               <div class="version">
-                0.3.7
+                0.4.0
               </div>
             
           
@@ -94,11 +96,11 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../concepts/index.html">Concepts</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Examples</span></p>
+<p class="caption"><span class="caption-text">Usage</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../quickstart/model.html">Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">Tutorials</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../usage/index.html">Use Cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/index.html">Examples</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Reference</span></p>
 <ul>
@@ -106,13 +108,21 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../cli.html">Command Line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../plugins/service/http/index.html">HTTP API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../troubleshooting.html">Troubleshooting</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Subprojects</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../shouldi.html">shouldi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../swportal.html">Software Portal</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Community</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/intel/dffml">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://intel.github.io/dffml/master/">Master Branch Docs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../publications.html">Publications</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../contact.html">Contact Us</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../contributing/index.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../news/index.html">News</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../changelog.html">Changelog</a></li>
 </ul>
 
@@ -167,10 +177,14 @@
       <li>dffml.df.types</li>
     
     
+
+
       <li class="wy-breadcrumbs-aside">
         
       </li>
     
+
+
   </ul>
 
   
@@ -200,6 +214,7 @@
 
 <span class="kn">from</span> <span class="nn">..base</span> <span class="kn">import</span> <span class="n">BaseConfig</span>
 <span class="kn">from</span> <span class="nn">..util.data</span> <span class="kn">import</span> <span class="n">export_dict</span><span class="p">,</span> <span class="n">type_lookup</span>
+<span class="kn">from</span> <span class="nn">..util.entrypoint</span> <span class="kn">import</span> <span class="n">load</span> <span class="k">as</span> <span class="n">load_entrypoint</span>
 <span class="kn">from</span> <span class="nn">..util.entrypoint</span> <span class="kn">import</span> <span class="n">Entrypoint</span><span class="p">,</span> <span class="n">base_entry_point</span>
 
 
@@ -209,13 +224,47 @@
 <span class="sd">    &quot;&quot;&quot;</span></div>
 
 
+<div class="viewcode-block" id="PrimitiveDoesNotMatchValue"><a class="viewcode-back" href="../../../api/df/types.html#dffml.df.types.PrimitiveDoesNotMatchValue">[docs]</a><span class="k">class</span> <span class="nc">PrimitiveDoesNotMatchValue</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Primitive does not match the value type</span>
+<span class="sd">    &quot;&quot;&quot;</span></div>
+
+
+<span class="k">class</span> <span class="nc">_NO_DEFAULT</span><span class="p">:</span>
+    <span class="k">pass</span>
+
+
+<span class="n">NO_DEFAULT</span> <span class="o">=</span> <span class="n">_NO_DEFAULT</span><span class="p">()</span>
+
+
 <div class="viewcode-block" id="Definition"><a class="viewcode-back" href="../../../api/df/types.html#dffml.df.types.Definition">[docs]</a><span class="k">class</span> <span class="nc">Definition</span><span class="p">(</span><span class="n">NamedTuple</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    List[type] is how to specify a list</span>
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+
+<span class="sd">    &gt;&gt;&gt; from dffml import Definition, Input</span>
+<span class="sd">    &gt;&gt;&gt; from typing import NamedTuple</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; class Person(NamedTuple):</span>
+<span class="sd">    ...   name: str</span>
+<span class="sd">    ...   age: int</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; Friend = Definition(name=&quot;Friend&quot;, primitive=&quot;map&quot;, spec=Person)</span>
+<span class="sd">    &gt;&gt;&gt; Input(value={&quot;name&quot;: &quot;Bob&quot;, &quot;age&quot;: 42}, definition=Friend)</span>
+<span class="sd">    Input(value=Person(name=&#39;Bob&#39;, age=42), definition=Friend)</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; SignUpQueue = Definition(name=&quot;SignUpQueue&quot;, primitive=&quot;array&quot;, spec=Person, subspec=True)</span>
+<span class="sd">    &gt;&gt;&gt; Input(value=[{&quot;name&quot;: &quot;Bob&quot;, &quot;age&quot;: 42}], definition=SignUpQueue)</span>
+<span class="sd">    Input(value=[Person(name=&#39;Bob&#39;, age=42)], definition=SignUpQueue)</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; AddressBook = Definition(name=&quot;AddressBook&quot;, primitive=&quot;map&quot;, spec=Person, subspec=True)</span>
+<span class="sd">    &gt;&gt;&gt; Input(value={&quot;bob&quot;: {&quot;name&quot;: &quot;Bob&quot;, &quot;age&quot;: 42}}, definition=AddressBook)</span>
+<span class="sd">    Input(value={&#39;bob&#39;: Person(name=&#39;Bob&#39;, age=42)}, definition=AddressBook)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">primitive</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">default</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="n">NO_DEFAULT</span>
     <span class="n">lock</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="c1"># spec is a NamedTuple which could be populated via a dict</span>
     <span class="n">spec</span><span class="p">:</span> <span class="n">NamedTuple</span> <span class="o">=</span> <span class="kc">None</span>
@@ -237,6 +286,8 @@
 
     <span class="k">def</span> <span class="nf">export</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">exported</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_asdict</span><span class="p">())</span>
+        <span class="k">if</span> <span class="s2">&quot;dffml.df.types._NO_DEFAULT&quot;</span> <span class="ow">in</span> <span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">default</span><span class="p">):</span>
+            <span class="k">del</span> <span class="n">exported</span><span class="p">[</span><span class="s2">&quot;default&quot;</span><span class="p">]</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">lock</span><span class="p">:</span>
             <span class="k">del</span> <span class="n">exported</span><span class="p">[</span><span class="s2">&quot;lock&quot;</span><span class="p">]</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">validate</span><span class="p">:</span>
@@ -266,9 +317,20 @@
             <span class="c1"># and seeing that we can hijack the __annotations__ property to</span>
             <span class="c1"># allow us to set default values</span>
             <span class="n">def_tuple</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;spec&quot;</span><span class="p">][</span><span class="s2">&quot;defaults&quot;</span><span class="p">]</span>
+            <span class="c1"># All dict are ordered in 3.7+</span>
             <span class="n">annotations</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="n">annotations_with_defaults</span> <span class="o">=</span> <span class="p">{}</span>
             <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">typename</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;spec&quot;</span><span class="p">][</span><span class="s2">&quot;types&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-                <span class="n">annotations</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">type_lookup</span><span class="p">(</span><span class="n">typename</span><span class="p">)</span>
+                <span class="c1"># Properties without defaults must come before those with</span>
+                <span class="c1"># defaults</span>
+                <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">def_tuple</span><span class="p">:</span>
+                    <span class="n">annotations</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">type_lookup</span><span class="p">(</span><span class="n">typename</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">annotations_with_defaults</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">type_lookup</span><span class="p">(</span><span class="n">typename</span><span class="p">)</span>
+            <span class="c1"># Ensure annotations with defaults are after those without defaults</span>
+            <span class="c1"># in dict</span>
+            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">dtype</span> <span class="ow">in</span> <span class="n">annotations_with_defaults</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">annotations</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">dtype</span>
             <span class="n">def_tuple</span><span class="p">[</span><span class="s2">&quot;__annotations__&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">annotations</span>
             <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;spec&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span>
                 <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;spec&quot;</span><span class="p">][</span><span class="s2">&quot;name&quot;</span><span class="p">],</span> <span class="p">(</span><span class="n">NamedTuple</span><span class="p">,),</span> <span class="n">def_tuple</span>
@@ -304,13 +366,14 @@
 <div class="viewcode-block" id="Operation"><a class="viewcode-back" href="../../../api/df/types.html#dffml.df.types.Operation">[docs]</a><span class="nd">@base_entry_point</span><span class="p">(</span><span class="s2">&quot;dffml.operation&quot;</span><span class="p">,</span> <span class="s2">&quot;operation&quot;</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">Operation</span><span class="p">(</span><span class="n">NamedTuple</span><span class="p">,</span> <span class="n">Entrypoint</span><span class="p">):</span>
     <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
-    <span class="n">inputs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Definition</span><span class="p">]</span>
-    <span class="n">outputs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Definition</span><span class="p">]</span>
+    <span class="n">inputs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Definition</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">outputs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Definition</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="n">stage</span><span class="p">:</span> <span class="n">Stage</span> <span class="o">=</span> <span class="n">Stage</span><span class="o">.</span><span class="n">PROCESSING</span>
     <span class="n">conditions</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Definition</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">expand</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">instance_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">validator</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">retry</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
 
     <span class="k">def</span> <span class="nf">export</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">exported</span> <span class="o">=</span> <span class="p">{</span>
@@ -320,6 +383,7 @@
             <span class="s2">&quot;conditions&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">conditions</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span>
             <span class="s2">&quot;stage&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">stage</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
             <span class="s2">&quot;expand&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">expand</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span>
+            <span class="s2">&quot;retry&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">retry</span><span class="p">,</span>
         <span class="p">}</span>
         <span class="k">for</span> <span class="n">to_string</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;inputs&quot;</span><span class="p">,</span> <span class="s2">&quot;outputs&quot;</span><span class="p">]:</span>
             <span class="n">exported</span><span class="p">[</span><span class="n">to_string</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
@@ -459,7 +523,9 @@
         <span class="o">*</span><span class="p">,</span>
         <span class="n">uid</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
     <span class="p">):</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">definition</span><span class="p">,</span> <span class="n">Definition</span><span class="p">):</span>
+        <span class="c1"># NOTE For some reason doctests end up with id(type(definition)) not</span>
+        <span class="c1"># equal to id(Definition). Therfore just compare the class name.</span>
+        <span class="k">if</span> <span class="n">definition</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__qualname__</span> <span class="o">!=</span> <span class="s2">&quot;Definition&quot;</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Input given non definition&quot;</span><span class="p">)</span>
         <span class="c1"># TODO Add optional parameter Input.target which specifies the operation</span>
         <span class="c1"># instance name this Input is intended for.</span>
@@ -468,12 +534,16 @@
             <span class="n">parents</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">if</span> <span class="n">definition</span><span class="o">.</span><span class="n">spec</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">definition</span><span class="o">.</span><span class="n">subspec</span><span class="p">:</span>
-                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">and</span> <span class="n">definition</span><span class="o">.</span><span class="n">primitive</span> <span class="o">==</span> <span class="s2">&quot;array&quot;</span><span class="p">:</span>
                     <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">subvalue</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
                         <span class="n">value</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">definition</span><span class="o">.</span><span class="n">spec</span><span class="p">(</span><span class="o">**</span><span class="n">subvalue</span><span class="p">)</span>
-                <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+                <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="ow">and</span> <span class="n">definition</span><span class="o">.</span><span class="n">primitive</span> <span class="o">==</span> <span class="s2">&quot;map&quot;</span><span class="p">:</span>
                     <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">subvalue</span> <span class="ow">in</span> <span class="n">value</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
                         <span class="n">value</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">definition</span><span class="o">.</span><span class="n">spec</span><span class="p">(</span><span class="o">**</span><span class="n">subvalue</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="n">PrimitiveDoesNotMatchValue</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="si">}</span><span class="s2"> is not the right type for primitive </span><span class="si">{</span><span class="n">definition</span><span class="o">.</span><span class="n">primitive</span><span class="si">}</span><span class="s2">&quot;</span>
+                    <span class="p">)</span>
             <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
                 <span class="n">value</span> <span class="o">=</span> <span class="n">definition</span><span class="o">.</span><span class="n">spec</span><span class="p">(</span><span class="o">**</span><span class="n">value</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">definition</span><span class="o">.</span><span class="n">validate</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -509,7 +579,11 @@
         <span class="k">return</span> <span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">export</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">definition</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">definition</span><span class="o">.</span><span class="n">export</span><span class="p">())</span>
+        <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span>
+            <span class="n">value</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+            <span class="n">definition</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">definition</span><span class="o">.</span><span class="n">export</span><span class="p">(),</span>
+            <span class="n">origin</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">origin</span><span class="p">,</span>
+        <span class="p">)</span>
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">_fromdict</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
@@ -517,11 +591,15 @@
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="Parameter"><a class="viewcode-back" href="../../../api/df/types.html#dffml.df.types.Parameter">[docs]</a><span class="k">class</span> <span class="nc">Parameter</span><span class="p">(</span><span class="n">NamedTuple</span><span class="p">):</span>
-    <span class="n">key</span><span class="p">:</span> <span class="nb">str</span>
-    <span class="n">value</span><span class="p">:</span> <span class="n">Any</span>
-    <span class="n">origin</span><span class="p">:</span> <span class="n">Input</span>
-    <span class="n">definition</span><span class="p">:</span> <span class="n">Definition</span></div>
+<div class="viewcode-block" id="Parameter"><a class="viewcode-back" href="../../../api/df/types.html#dffml.df.types.Parameter">[docs]</a><span class="k">class</span> <span class="nc">Parameter</span><span class="p">(</span><span class="n">Input</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">origin</span><span class="p">:</span> <span class="n">Input</span><span class="p">,</span> <span class="n">definition</span><span class="p">:</span> <span class="n">Definition</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">value</span><span class="o">=</span><span class="n">value</span><span class="p">,</span> <span class="n">definition</span><span class="o">=</span><span class="n">definition</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">key</span> <span class="o">=</span> <span class="n">key</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">origin</span> <span class="o">=</span> <span class="n">origin</span></div>
 
 
 <div class="viewcode-block" id="InputFlow"><a class="viewcode-back" href="../../../api/df/types.html#dffml.df.types.InputFlow">[docs]</a><span class="nd">@dataclass</span>
@@ -551,7 +629,42 @@
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">_fromdict</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+<div class="viewcode-block" id="InputFlow.get_alternate_definitions"><a class="viewcode-back" href="../../../api/df/types.html#dffml.df.types.InputFlow.get_alternate_definitions">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">get_alternate_definitions</span><span class="p">(</span>
+        <span class="n">origin</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">]],</span> <span class="nb">str</span><span class="p">]</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">]],</span> <span class="nb">str</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the alternate definitions and origin for an entry within an input</span>
+<span class="sd">        flow. If there are no alternate defintions then the first element of the</span>
+<span class="sd">        returned tuple is an empty list.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+
+<span class="sd">        &gt;&gt;&gt; from dffml import InputFlow</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; input_flow = InputFlow(</span>
+<span class="sd">        ...     inputs={</span>
+<span class="sd">        ...         &quot;features&quot;: [</span>
+<span class="sd">        ...             {&quot;seed&quot;: [&quot;Years&quot;, &quot;Expertise&quot;, &quot;Trust&quot;, &quot;Salary&quot;]}</span>
+<span class="sd">        ...         ],</span>
+<span class="sd">        ...         &quot;token&quot;: [</span>
+<span class="sd">        ...             &quot;client&quot;,</span>
+<span class="sd">        ...         ]</span>
+<span class="sd">        ...     }</span>
+<span class="sd">        ... )</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; input_flow.get_alternate_definitions(list(input_flow.inputs[&quot;features&quot;][0].items())[0])</span>
+<span class="sd">        ([&#39;Years&#39;, &#39;Expertise&#39;, &#39;Trust&#39;, &#39;Salary&#39;], &#39;seed&#39;)</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        input_flow.get_alternate_definitions(list(input_flow.inputs[&quot;other&quot;][0].items())[0])</span>
+<span class="sd">        ([], &#39;client&#39;)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">origin</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">origin</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)):</span>
+            <span class="k">return</span> <span class="n">origin</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">origin</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">return</span> <span class="p">[],</span> <span class="n">origin</span></div></div>
 
 
 <div class="viewcode-block" id="Forward"><a class="viewcode-back" href="../../../api/df/types.html#dffml.df.types.Forward">[docs]</a><span class="nd">@dataclass</span>
@@ -594,9 +707,13 @@
 
 
 <span class="k">class</span> <span class="nc">DataFlow</span><span class="p">:</span>
+
+    <span class="n">CONFIGLOADABLE</span> <span class="o">=</span> <span class="kc">True</span>
+
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">operations</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="n">Operation</span><span class="p">,</span> <span class="n">Callable</span><span class="p">]],</span>
+        <span class="o">*</span><span class="n">args</span><span class="p">,</span>
+        <span class="n">operations</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="n">Operation</span><span class="p">,</span> <span class="n">Callable</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">seed</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Input</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">configs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">BaseConfig</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">definitions</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Definition</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
@@ -607,6 +724,30 @@
         <span class="n">implementations</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="s2">&quot;OperationImplementation&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">forward</span><span class="p">:</span> <span class="n">Forward</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1"># Prevent usage of a global dict (if we set default to {} then all the</span>
+        <span class="c1"># instances will share the same instance of that dict, or list)</span>
+        <span class="k">if</span> <span class="n">operations</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">operations</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="n">forward</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">forward</span> <span class="o">=</span> <span class="n">Forward</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">seed</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">seed</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="n">configs</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">configs</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="n">by_origin</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">by_origin</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="n">implementations</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">implementations</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="n">definitions</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="n">definitions</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">validators</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># Maps `validator` ops instance_name to op</span>
+
+        <span class="k">for</span> <span class="n">operation</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">operation</span><span class="p">,</span> <span class="s2">&quot;op&quot;</span><span class="p">,</span> <span class="n">operation</span><span class="p">),</span> <span class="s2">&quot;name&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">operations</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Operation given as possitional and in dict&quot;</span><span class="p">)</span>
+            <span class="n">operations</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">operation</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">operations</span> <span class="o">=</span> <span class="n">operations</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">seed</span> <span class="o">=</span> <span class="n">seed</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">configs</span> <span class="o">=</span> <span class="n">configs</span>
@@ -615,20 +756,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">by_origin</span> <span class="o">=</span> <span class="n">by_origin</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">implementations</span> <span class="o">=</span> <span class="n">implementations</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">forward</span> <span class="o">=</span> <span class="n">forward</span>
-
-        <span class="c1"># Prevent usage of a global dict (if we set default to {} then all the</span>
-        <span class="c1"># instances will share the same instance of that dict, or list)</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">forward</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">forward</span> <span class="o">=</span> <span class="n">Forward</span><span class="p">()</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">seed</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">seed</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">configs</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">configs</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">by_origin</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">by_origin</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">implementations</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">implementations</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">validators</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># Maps `validator` ops instance_name to op</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">validators</span> <span class="o">=</span> <span class="n">validators</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">auto_flow</span><span class="o">=</span><span class="nb">bool</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">flow</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">))</span>
 
@@ -678,6 +806,8 @@
         <span class="n">definitions</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span>
             <span class="nb">set</span><span class="p">(</span>
                 <span class="n">itertools</span><span class="o">.</span><span class="n">chain</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">definitions</span><span class="o">.</span><span class="n">values</span><span class="p">(),</span>
+                    <span class="p">[</span><span class="n">item</span><span class="o">.</span><span class="n">definition</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">seed</span><span class="p">],</span>
                     <span class="o">*</span><span class="p">[</span>
                         <span class="n">itertools</span><span class="o">.</span><span class="n">chain</span><span class="p">(</span>
                             <span class="n">operation</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">values</span><span class="p">(),</span>
@@ -685,7 +815,7 @@
                             <span class="n">operation</span><span class="o">.</span><span class="n">conditions</span><span class="p">,</span>
                         <span class="p">)</span>
                         <span class="k">for</span> <span class="n">operation</span> <span class="ow">in</span> <span class="n">operations</span>
-                    <span class="p">]</span>
+                    <span class="p">],</span>
                 <span class="p">)</span>
             <span class="p">)</span>
         <span class="p">)</span>
@@ -711,6 +841,9 @@
                     <span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="k">for</span> <span class="n">origin</span> <span class="ow">in</span> <span class="n">output_source</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                        <span class="n">_</span><span class="p">,</span> <span class="n">origin</span> <span class="o">=</span> <span class="n">input_flow</span><span class="o">.</span><span class="n">get_alternate_definitions</span><span class="p">(</span>
+                            <span class="n">origin</span>
+                        <span class="p">)</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">by_origin</span><span class="p">[</span><span class="n">operation</span><span class="o">.</span><span class="n">stage</span><span class="p">]</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">origin</span><span class="p">,</span> <span class="p">[])</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">by_origin</span><span class="p">[</span><span class="n">operation</span><span class="o">.</span><span class="n">stage</span><span class="p">][</span><span class="n">origin</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
                             <span class="n">operation</span>
@@ -725,7 +858,27 @@
                             <span class="n">operation</span>
                         <span class="p">)</span>
                     <span class="k">else</span><span class="p">:</span>
+                        <span class="c1"># In order to support selection an input based using an</span>
+                        <span class="c1"># alternate definition along with restriction to inputs</span>
+                        <span class="c1"># who&#39;s origins match the alternate definitions in the</span>
+                        <span class="c1"># list. We select the first output source since that</span>
+                        <span class="c1"># will be the immediate alternate definition</span>
+                        <span class="k">if</span> <span class="p">(</span>
+                            <span class="nb">isinstance</span><span class="p">(</span><span class="n">output_source</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span>
+                            <span class="ow">and</span> <span class="n">output_source</span>
+                            <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">output_source</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">dict</span><span class="p">)</span>
+                        <span class="p">):</span>
+                            <span class="n">output_source</span> <span class="o">=</span> <span class="n">output_source</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
                         <span class="k">for</span> <span class="n">origin</span> <span class="ow">in</span> <span class="n">output_source</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                            <span class="c1"># If we have an output_source item with an origin</span>
+                            <span class="c1"># that has a list as it&#39;s value we know that the key</span>
+                            <span class="c1"># (aka origin[0] since output_source is a dict) is</span>
+                            <span class="c1"># the Input.origin (like &quot;seed&quot;). And the value</span>
+                            <span class="c1"># (origin[1]) is the list of definitions which are</span>
+                            <span class="c1"># acceptable from that origin for this input.</span>
+                            <span class="n">_</span><span class="p">,</span> <span class="n">origin</span> <span class="o">=</span> <span class="n">input_flow</span><span class="o">.</span><span class="n">get_alternate_definitions</span><span class="p">(</span>
+                                <span class="n">origin</span>
+                            <span class="p">)</span>
                             <span class="bp">self</span><span class="o">.</span><span class="n">by_origin</span><span class="p">[</span><span class="n">operation</span><span class="o">.</span><span class="n">stage</span><span class="p">]</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span>
                                 <span class="n">origin</span><span class="p">,</span> <span class="p">[]</span>
                             <span class="p">)</span>
@@ -758,7 +911,10 @@
         <span class="c1"># Import all operations</span>
         <span class="k">if</span> <span class="n">linked</span><span class="p">:</span>
             <span class="n">kwargs</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">_resolve</span><span class="p">(</span><span class="n">kwargs</span><span class="p">))</span>
-            <span class="k">del</span> <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;definitions&quot;</span><span class="p">]</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;definitions&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="n">name</span><span class="p">:</span> <span class="n">Definition</span><span class="o">.</span><span class="n">_fromdict</span><span class="p">(</span><span class="o">**</span><span class="n">definition</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">definition</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;definitions&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+            <span class="p">}</span>
         <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;operations&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
             <span class="n">instance_name</span><span class="p">:</span> <span class="n">Operation</span><span class="o">.</span><span class="n">_fromdict</span><span class="p">(</span>
                 <span class="n">instance_name</span><span class="o">=</span><span class="n">instance_name</span><span class="p">,</span> <span class="o">**</span><span class="n">operation</span>
@@ -783,12 +939,7 @@
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">auto</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">operations</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
-            <span class="n">operations</span><span class="o">=</span><span class="p">{</span>
-                <span class="nb">getattr</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">operation</span><span class="p">,</span> <span class="s2">&quot;op&quot;</span><span class="p">,</span> <span class="n">operation</span><span class="p">),</span> <span class="s2">&quot;name&quot;</span><span class="p">):</span> <span class="n">operation</span>
-                <span class="k">for</span> <span class="n">operation</span> <span class="ow">in</span> <span class="n">operations</span>
-            <span class="p">}</span>
-        <span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="o">*</span><span class="n">operations</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">auto_flow</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># Determine the dataflow if not given</span>
@@ -892,7 +1043,7 @@
                 <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">definition_name</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">operation</span><span class="p">[</span><span class="n">arg</span><span class="p">]):</span>
                     <span class="k">if</span> <span class="ow">not</span> <span class="n">definition_name</span> <span class="ow">in</span> <span class="n">definitions</span><span class="p">:</span>
                         <span class="k">raise</span> <span class="n">DefinitionMissing</span><span class="p">(</span>
-                            <span class="sa">f</span><span class="s2">&quot;While resolving </span><span class="si">{</span><span class="n">instance_name</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">arg</span><span class="si">}</span><span class="s2">, missing </span><span class="si">{</span><span class="n">definition_name</span><span class="si">}</span><span class="s2">&quot;</span>
+                            <span class="sa">f</span><span class="s2">&quot;While resolving </span><span class="si">{</span><span class="n">instance_name</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">arg</span><span class="si">}</span><span class="s2">, missing </span><span class="si">{</span><span class="n">definition_name</span><span class="si">}</span><span class="s2"> not found in </span><span class="si">{</span><span class="n">definitions</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
                         <span class="p">)</span>
                     <span class="n">operation</span><span class="p">[</span><span class="n">arg</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">definitions</span><span class="p">[</span><span class="n">definition_name</span><span class="p">]</span>
             <span class="k">for</span> <span class="n">arg</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;inputs&quot;</span><span class="p">,</span> <span class="s2">&quot;outputs&quot;</span><span class="p">]:</span>
@@ -901,7 +1052,7 @@
                 <span class="k">for</span> <span class="n">input_name</span><span class="p">,</span> <span class="n">definition_name</span> <span class="ow">in</span> <span class="n">operation</span><span class="p">[</span><span class="n">arg</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
                     <span class="k">if</span> <span class="ow">not</span> <span class="n">definition_name</span> <span class="ow">in</span> <span class="n">definitions</span><span class="p">:</span>
                         <span class="k">raise</span> <span class="n">DefinitionMissing</span><span class="p">(</span>
-                            <span class="sa">f</span><span class="s2">&quot;While resolving </span><span class="si">{</span><span class="n">instance_name</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">arg</span><span class="si">}</span><span class="s2">, missing </span><span class="si">{</span><span class="n">definition_name</span><span class="si">}</span><span class="s2">&quot;</span>
+                            <span class="sa">f</span><span class="s2">&quot;While resolving </span><span class="si">{</span><span class="n">instance_name</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">arg</span><span class="si">}</span><span class="s2">, missing </span><span class="si">{</span><span class="n">definition_name</span><span class="si">}</span><span class="s2"> not found in </span><span class="si">{</span><span class="n">definitions</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
                         <span class="p">)</span>
                     <span class="n">operation</span><span class="p">[</span><span class="n">arg</span><span class="p">][</span><span class="n">input_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">definitions</span><span class="p">[</span><span class="n">definition_name</span><span class="p">]</span>
             <span class="n">operation</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
@@ -909,7 +1060,7 @@
             <span class="c1"># Replaces strings referencing definitions with definitions</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;definition&quot;</span><span class="p">]</span> <span class="ow">in</span> <span class="n">definitions</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="n">DefinitionMissing</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;While resolving </span><span class="si">{</span><span class="n">instance_name</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">arg</span><span class="si">}</span><span class="s2">, missing </span><span class="si">{</span><span class="n">definition_name</span><span class="si">}</span><span class="s2">&quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;While resolving seed </span><span class="si">{</span><span class="n">item</span><span class="si">}</span><span class="s2">, definition </span><span class="si">{</span><span class="n">item</span><span class="p">[</span><span class="s1">&#39;definition&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> not found in </span><span class="si">{</span><span class="n">definitions</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
                 <span class="p">)</span>
             <span class="n">item</span><span class="p">[</span><span class="s2">&quot;definition&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">definitions</span><span class="p">[</span><span class="n">item</span><span class="p">[</span><span class="s2">&quot;definition&quot;</span><span class="p">]]</span>
         <span class="k">return</span> <span class="n">source</span>
@@ -947,7 +1098,7 @@
 
   <div role="contentinfo">
     <p>
-        &#169; Copyright 2019, Intel.
+        &#169; Copyright 2017 - 2021, Intel.
 
     </p>
   </div>

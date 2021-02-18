@@ -1,0 +1,12 @@
+Util Cli
+========
+.. toctree::
+    :glob:
+    :maxdepth: 2
+    :caption: Contents:
+
+    cmd
+    parser
+    cmds
+    arg
+    log

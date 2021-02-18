@@ -7,12 +7,13 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Sources &mdash; DFFML 0.3.7 documentation</title>
+  <title>Sources &mdash; DFFML 0.4.0 documentation</title>
   
 
   
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/tabs.css" type="text/css" />
 
   
   
@@ -65,7 +66,7 @@
             
             
               <div class="version">
-                0.3.7
+                0.4.0
               </div>
             
           
@@ -96,11 +97,11 @@
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../concepts/index.html">Concepts</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Examples</span></p>
+<p class="caption"><span class="caption-text">Usage</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../quickstart/model.html">Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../usage/index.html">Use Cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Examples</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Reference</span></p>
 <ul class="current">
@@ -109,10 +110,14 @@
 <li class="toctree-l3"><a class="reference internal" href="#dffml">dffml</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#csv">csv</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#db">db</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#df">df</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#dir">dir</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#plugin-source-dffml-idx1">idx1</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#plugin-source-dffml-idx3">idx3</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ini">ini</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#json">json</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#memory">memory</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#op">op</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#dffml-source-mysql">dffml_source_mysql</a><ul>
@@ -129,13 +134,21 @@
 <li class="toctree-l1"><a class="reference internal" href="../cli.html">Command Line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="service/http/index.html">HTTP API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../troubleshooting.html">Troubleshooting</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Subprojects</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../shouldi.html">shouldi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../swportal.html">Software Portal</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Community</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/intel/dffml">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://intel.github.io/dffml/master/">Master Branch Docs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../publications.html">Publications</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../contact.html">Contact Us</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../news/index.html">News</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
 </ul>
 
@@ -179,6 +192,8 @@
 
 
 
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
@@ -190,16 +205,8 @@
       <li>Sources</li>
     
     
-      <li class="wy-breadcrumbs-aside">
-        
-          
-            
-              <a href="https://github.com/intel/dffml/blob/master/docs/plugins/dffml_source.rst" class="fa fa-github"> Edit on GitHub</a>
-            
-          
-        
-      </li>
-    
+
+
   </ul>
 
   
@@ -210,10 +217,10 @@
             
   <div class="section" id="sources">
 <span id="plugin-sources"></span><h1>Sources<a class="headerlink" href="#sources" title="Permalink to this headline">¶</a></h1>
-<p>Sources are implementations of <a class="reference internal" href="../api/source/base.html#dffml.source.source.BaseSource" title="dffml.source.source.BaseSource"><code class="xref py py-class docutils literal notranslate"><span class="pre">dffml.source.source.BaseSource</span></code></a>, they
+<p>Sources are implementations of <a class="reference internal" href="../api/source/source.html#dffml.source.source.BaseSource" title="dffml.source.source.BaseSource"><code class="xref py py-class docutils literal notranslate"><span class="pre">dffml.source.source.BaseSource</span></code></a>, they
 abstract the loading and storage of data / datasets.</p>
 <p>If you want to get started creating your own source, check out the
-<a class="reference internal" href="../tutorials/source.html#source-tutorial"><span class="std std-ref">New Source Tutorial</span></a>.</p>
+<a class="reference internal" href="../tutorials/sources/complex.html#source-tutorial"><span class="std std-ref">Example SQLite source</span></a>.</p>
 <div class="section" id="dffml">
 <span id="plugin-source-dffml"></span><h2>dffml<a class="headerlink" href="#dffml" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install dffml</span>
@@ -231,12 +238,12 @@ abstract the loading and storage of data / datasets.</p>
 <li><p>default: untagged</p></li>
 </ul>
 </li>
-<li><p>readwrite: Boolean</p>
+<li><p>readwrite: String</p>
 <ul>
 <li><p>default: False</p></li>
 </ul>
 </li>
-<li><p>allowempty: Boolean</p>
+<li><p>allowempty: String</p>
 <ul>
 <li><p>default: False</p></li>
 </ul>
@@ -251,7 +258,7 @@ abstract the loading and storage of data / datasets.</p>
 <li><p>default: tag</p></li>
 </ul>
 </li>
-<li><p>loadfiles: String</p>
+<li><p>loadfiles: List of strings</p>
 <ul>
 <li><p>default: None</p></li>
 </ul>
@@ -269,6 +276,150 @@ abstract the loading and storage of data / datasets.</p>
 <li><p>model_columns: List of strings</p></li>
 </ul>
 </div>
+<div class="section" id="df">
+<span id="plugin-source-dffml-df"></span><h3>df<a class="headerlink" href="#df" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">records</span> <span class="o">=</span> <span class="p">[</span>
+<span class="gp">... </span>    <span class="n">Record</span><span class="p">(</span>
+<span class="gp">... </span>        <span class="s2">&quot;0&quot;</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="n">data</span><span class="o">=</span><span class="p">{</span>
+<span class="gp">... </span>            <span class="s2">&quot;features&quot;</span><span class="p">:</span> <span class="p">{</span>
+<span class="gp">... </span>                <span class="s2">&quot;Years&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+<span class="gp">... </span>                <span class="s2">&quot;Expertise&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+<span class="gp">... </span>                <span class="s2">&quot;Trust&quot;</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span>
+<span class="gp">... </span>                <span class="s2">&quot;Salary&quot;</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span>
+<span class="gp">... </span>            <span class="p">}</span>
+<span class="gp">... </span>        <span class="p">},</span>
+<span class="gp">... </span>    <span class="p">),</span>
+<span class="gp">... </span><span class="p">]</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">features</span> <span class="o">=</span> <span class="n">Features</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;Years&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+<span class="gp">... </span>    <span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;Expertise&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+<span class="gp">... </span>    <span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;Trust&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+<span class="gp">... </span>    <span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;Salary&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dataflow</span> <span class="o">=</span> <span class="n">DataFlow</span><span class="p">(</span><span class="n">multiply</span><span class="p">,</span> <span class="n">AssociateDefinition</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dataflow</span><span class="o">.</span><span class="n">flow</span><span class="p">[</span><span class="s2">&quot;multiply&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;multiplicand&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+<span class="gp">... </span>    <span class="p">{</span><span class="s2">&quot;seed&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;Years&quot;</span><span class="p">,</span> <span class="s2">&quot;Expertise&quot;</span><span class="p">,</span> <span class="s2">&quot;Trust&quot;</span><span class="p">,</span> <span class="s2">&quot;Salary&quot;</span><span class="p">]}</span>
+<span class="gp">... </span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dataflow</span><span class="o">.</span><span class="n">seed</span> <span class="o">=</span> <span class="p">[</span>
+<span class="gp">... </span>    <span class="n">Input</span><span class="p">(</span>
+<span class="gp">... </span>        <span class="n">value</span><span class="o">=</span><span class="p">{</span>
+<span class="gp">... </span>            <span class="n">feature</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="n">multiply</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s2">&quot;product&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">name</span>
+<span class="gp">... </span>            <span class="k">for</span> <span class="n">feature</span> <span class="ow">in</span> <span class="n">features</span>
+<span class="gp">... </span>        <span class="p">},</span>
+<span class="gp">... </span>        <span class="n">definition</span><span class="o">=</span><span class="n">AssociateDefinition</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;spec&quot;</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="p">),</span>
+<span class="gp">... </span>    <span class="n">Input</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">definition</span><span class="o">=</span><span class="n">multiply</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;multiplier&quot;</span><span class="p">],),</span>
+<span class="gp">... </span><span class="p">]</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">memory_source</span> <span class="o">=</span> <span class="n">Sources</span><span class="p">(</span><span class="n">MemorySource</span><span class="p">(</span><span class="n">MemorySourceConfig</span><span class="p">(</span><span class="n">records</span><span class="o">=</span><span class="n">records</span><span class="p">)))</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">source</span> <span class="o">=</span> <span class="n">DataFlowSource</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">DataFlowSourceConfig</span><span class="p">(</span>
+<span class="gp">... </span>        <span class="n">source</span><span class="o">=</span><span class="n">memory_source</span><span class="p">,</span> <span class="n">dataflow</span><span class="o">=</span><span class="n">dataflow</span><span class="p">,</span> <span class="n">features</span><span class="o">=</span><span class="n">features</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="p">)</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="k">async</span> <span class="k">with</span> <span class="n">source</span> <span class="k">as</span> <span class="n">src</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="k">async</span> <span class="k">with</span> <span class="n">src</span><span class="p">()</span> <span class="k">as</span> <span class="n">sctx</span><span class="p">:</span>
+<span class="gp">... </span>            <span class="k">async</span> <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">sctx</span><span class="o">.</span><span class="n">records</span><span class="p">():</span>
+<span class="gp">... </span>                <span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">features</span><span class="p">())</span>
+<span class="gp">...</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+<span class="go">{&#39;Years&#39;: 10, &#39;Expertise&#39;: 30, &#39;Trust&#39;: 2.0, &#39;Salary&#39;: 200}</span>
+</pre></div>
+</div>
+<p><strong>Args</strong></p>
+<ul class="simple">
+<li><p>source: Entrypoint</p>
+<ul>
+<li><p>Source to wrap</p></li>
+</ul>
+</li>
+<li><p>dataflow: DataFlow</p>
+<ul>
+<li><p>DataFlow to use for preprocessing</p></li>
+</ul>
+</li>
+<li><p>features: List of features</p>
+<ul>
+<li><p>default: []</p></li>
+<li><p>Features to pass as definitions to each context from each record to be preprocessed</p></li>
+</ul>
+</li>
+<li><p>inputs: List of strings</p>
+<ul>
+<li><p>default: []</p></li>
+<li><p>Other inputs to add under each ctx (record’s key will be used as the context)</p></li>
+</ul>
+</li>
+<li><p>record_def: String</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Definition to be used for record.key.If set, record.key will be added to the set of inputs under each context (which is also the record’s key)</p></li>
+</ul>
+</li>
+<li><p>length: String</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Definition name to add as source length</p></li>
+</ul>
+</li>
+<li><p>all_for_single: String</p>
+<ul>
+<li><p>default: False</p></li>
+<li><p>Run all records through dataflow before grabing results of desired record on a call to record()</p></li>
+</ul>
+</li>
+<li><p>no_strict: String</p>
+<ul>
+<li><p>default: False</p></li>
+<li><p>Do not exit on operation exceptions, just log errors</p></li>
+</ul>
+</li>
+<li><p>orchestrator: Entrypoint</p>
+<ul>
+<li><p>default: MemoryOrchestrator(MemoryOrchestratorConfig(input_network=MemoryInputNetwork(MemoryInputNetworkConfig()), operation_network=MemoryOperationNetwork(MemoryOperationNetworkConfig(operations=[])), lock_network=MemoryLockNetwork(MemoryLockNetworkConfig()), opimp_network=MemoryOperationImplementationNetwork(MemoryOperationImplementationNetworkConfig(operations={})), rchecker=MemoryRedundancyChecker(MemoryRedundancyCheckerConfig(kvstore=MemoryKeyValueStore(MemoryKeyValueStoreConfig()))), max_ctxs=None))</p></li>
+<li><p>Orchestrator</p></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="dir">
+<span id="plugin-source-dffml-dir"></span><h3>dir<a class="headerlink" href="#dir" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<p>Source to read files in a folder.</p>
+<p><strong>Args</strong></p>
+<ul class="simple">
+<li><p>foldername: String</p></li>
+<li><p>feature: String</p>
+<ul>
+<li><p>Name of the feature the data will be referenced as</p></li>
+</ul>
+</li>
+<li><p>labels: List of strings</p>
+<ul>
+<li><p>default: [‘unlabelled’]</p></li>
+<li><p>Image labels</p></li>
+</ul>
+</li>
+<li><p>save: Entrypoint</p>
+<ul>
+<li><p>default: None</p></li>
+</ul>
+</li>
+</ul>
+</div>
 <div class="section" id="plugin-source-dffml-idx1">
 <span id="idx1"></span><h3>idx1<a class="headerlink" href="#plugin-source-dffml-idx1" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
@@ -281,12 +432,12 @@ abstract the loading and storage of data / datasets.</p>
 <li><p>Name of the feature the data will be referenced as</p></li>
 </ul>
 </li>
-<li><p>readwrite: Boolean</p>
+<li><p>readwrite: String</p>
 <ul>
 <li><p>default: False</p></li>
 </ul>
 </li>
-<li><p>allowempty: Boolean</p>
+<li><p>allowempty: String</p>
 <ul>
 <li><p>default: False</p></li>
 </ul>
@@ -305,12 +456,31 @@ abstract the loading and storage of data / datasets.</p>
 <li><p>Name of the feature the data will be referenced as</p></li>
 </ul>
 </li>
-<li><p>readwrite: Boolean</p>
+<li><p>readwrite: String</p>
 <ul>
 <li><p>default: False</p></li>
 </ul>
 </li>
-<li><p>allowempty: Boolean</p>
+<li><p>allowempty: String</p>
+<ul>
+<li><p>default: False</p></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="ini">
+<span id="plugin-source-dffml-ini"></span><h3>ini<a class="headerlink" href="#ini" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<p>Source to read files in .ini format.</p>
+<p><strong>Args</strong></p>
+<ul class="simple">
+<li><p>filename: String</p></li>
+<li><p>readwrite: String</p>
+<ul>
+<li><p>default: False</p></li>
+</ul>
+</li>
+<li><p>allowempty: String</p>
 <ul>
 <li><p>default: False</p></li>
 </ul>
@@ -330,12 +500,12 @@ stored in memory.</p>
 <li><p>default: untagged</p></li>
 </ul>
 </li>
-<li><p>readwrite: Boolean</p>
+<li><p>readwrite: String</p>
 <ul>
 <li><p>default: False</p></li>
 </ul>
 </li>
-<li><p>allowempty: Boolean</p>
+<li><p>allowempty: String</p>
 <ul>
 <li><p>default: False</p></li>
 </ul>
@@ -349,6 +519,33 @@ stored in memory.</p>
 <p><strong>Args</strong></p>
 <ul class="simple">
 <li><p>records: List of records</p></li>
+<li><p>display: Integer</p>
+<ul>
+<li><p>default: 10</p></li>
+<li><p>When repr() is called, how many records to display</p></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="op">
+<span id="plugin-source-dffml-op"></span><h3>op<a class="headerlink" href="#op" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<p>No description</p>
+<p><strong>Args</strong></p>
+<ul class="simple">
+<li><p>opimp: OperationImplementation</p></li>
+<li><p>args: List of strings</p>
+<ul>
+<li><p>default: []</p></li>
+<li><p>Arguments to operation in input order</p></li>
+</ul>
+</li>
+<li><p>allowempty: String</p>
+<ul>
+<li><p>default: False</p></li>
+<li><p>Raise an error if the source is empty after running the loading operation</p></li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
@@ -360,49 +557,104 @@ stored in memory.</p>
 <div class="section" id="mysql">
 <span id="plugin-source-dffml-source-mysql-mysql"></span><h3>mysql<a class="headerlink" href="#mysql" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
-<p>No description</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">update</span></code> config property is a SQL query which MUST handle insersion
+or update. Columns to be updated should list feature columns first,
+followed by prediction columns.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">features</span></code> config property MUST have keys in same order as they
+appear within <code class="docutils literal notranslate"><span class="pre">update</span></code> query.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">prediction</span></code> config property MUST have keys in same order as they
+appear within <code class="docutils literal notranslate"><span class="pre">update</span></code> query.</p></li>
+</ul>
+</div>
+<div class="section" id="examples">
+<h4>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h4>
+<p>Read MySQL or MariaDB’s documentation to understand how to properly setup
+your server for encrypted connections.</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://dev.mysql.com/doc/refman/8.0/en/using-encrypted-connections.html">Configuring MySQL to Use Encrypted Connections</a></p></li>
+</ul>
 <p><strong>Args</strong></p>
 <ul class="simple">
+<li><p>user: String</p>
+<ul>
+<li><p>Username</p></li>
+</ul>
+</li>
+<li><p>password: String</p>
+<ul>
+<li><p>Password</p></li>
+</ul>
+</li>
+<li><p>db: String</p>
+<ul>
+<li><p>Name of database to use</p></li>
+</ul>
+</li>
+<li><p>key: String</p>
+<ul>
+<li><p>Column name of record key</p></li>
+</ul>
+</li>
+<li><p>features: typing.Dict[str, str]</p>
+<ul>
+<li><p>Mapping of feature names to column names</p></li>
+</ul>
+</li>
+<li><p>predictions: typing.Dict[str, typing.Tuple[str, str]]</p>
+<ul>
+<li><p>Mapping of prediction names to tuples of (value, confidence) column names</p></li>
+</ul>
+</li>
+<li><p>update: String</p>
+<ul>
+<li><p>Query to update a single record</p></li>
+</ul>
+</li>
+<li><p>record: String</p>
+<ul>
+<li><p>Query to get a single record</p></li>
+</ul>
+</li>
+<li><p>records: String</p>
+<ul>
+<li><p>Query to get a single record</p></li>
+</ul>
+</li>
+<li><p>init: String</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Query to run on initial connection</p></li>
+</ul>
+</li>
 <li><p>host: String</p>
 <ul>
 <li><p>default: 127.0.0.1</p></li>
+<li><p>Host/address to connect to</p></li>
 </ul>
 </li>
 <li><p>port: Integer</p>
 <ul>
 <li><p>default: 3306</p></li>
-</ul>
-</li>
-<li><p>user: String</p></li>
-<li><p>password: String</p></li>
-<li><p>db: String</p></li>
-<li><p>records-query: String</p>
-<ul>
-<li><p>SELECT <cite>key</cite> as key, data_1 as feature_1, data_2 as feature_2 FROM record_data</p></li>
-</ul>
-</li>
-<li><p>record-query: String</p>
-<ul>
-<li><p>SELECT <cite>key</cite> as key, data_1 as feature_1, data_2 as feature_2 FROM record_data WHERE <a href="#id1"><span class="problematic" id="id2">`</span></a>key`=%s</p></li>
-</ul>
-</li>
-<li><p>update-query: String</p>
-<ul>
-<li><p>INSERT INTO record_data (<cite>key</cite>, data_1, data_2) VALUES(%s, %s, %s) ON DUPLICATE KEY UPDATE data_1 = %s, data_2=%s</p></li>
-</ul>
-</li>
-<li><p>model-columns: List of strings</p>
-<ul>
-<li><p>Order of Columns in table</p></li>
+<li><p>Port to connect to</p></li>
 </ul>
 </li>
 <li><p>ca: String</p>
 <ul>
 <li><p>default: None</p></li>
-<li><p>Path to server TLS certificate</p></li>
+<li><p>Server certificate to use for TLS validation</p></li>
+</ul>
+</li>
+<li><p>insecure: String</p>
+<ul>
+<li><p>default: False</p></li>
+<li><p>Must be true to accept risks of non-TLS connection</p></li>
 </ul>
 </li>
 </ul>
+</div>
 </div>
 </div>
 </div>
@@ -421,7 +673,7 @@ stored in memory.</p>
 
   <div role="contentinfo">
     <p>
-        &#169; Copyright 2019, Intel.
+        &#169; Copyright 2017 - 2021, Intel.
 
     </p>
   </div>

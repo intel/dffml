@@ -7,12 +7,13 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>HTTP API &mdash; DFFML 0.3.7 documentation</title>
+  <title>HTTP API &mdash; DFFML 0.4.0 documentation</title>
   
 
   
   <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/tabs.css" type="text/css" />
 
   
   
@@ -65,7 +66,7 @@
             
             
               <div class="version">
-                0.3.7
+                0.4.0
               </div>
             
           
@@ -96,11 +97,11 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../concepts/index.html">Concepts</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Examples</span></p>
+<p class="caption"><span class="caption-text">Usage</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../quickstart/model.html">Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">Tutorials</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../usage/index.html">Use Cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/index.html">Examples</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Reference</span></p>
 <ul class="current">
@@ -108,6 +109,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../cli.html">Command Line</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">HTTP API</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="cli.html">Command Line</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dataflow.html">DataFlow</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api.html">API</a></li>
 <li class="toctree-l2"><a class="reference internal" href="security.html">Security</a></li>
 <li class="toctree-l2"><a class="reference internal" href="javascript.html">JavaScript</a></li>
@@ -115,13 +117,21 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../troubleshooting.html">Troubleshooting</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Subprojects</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../shouldi.html">shouldi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../swportal.html">Software Portal</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Community</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/intel/dffml">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://intel.github.io/dffml/master/">Master Branch Docs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../publications.html">Publications</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../contact.html">Contact Us</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../contributing/index.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../news/index.html">News</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../changelog.html">Changelog</a></li>
 </ul>
 
@@ -174,6 +184,8 @@
       <li>HTTP API</li>
     
     
+
+
       <li class="wy-breadcrumbs-aside">
         
           
@@ -184,6 +196,8 @@
         
       </li>
     
+
+
   </ul>
 
   
@@ -198,13 +212,13 @@
 <p>It exposes a REST-like API which mimics that of <code class="docutils literal notranslate"><span class="pre">dffml</span></code>’s command line
 interface (CLI) and usage as Python module.</p>
 <p>You can install the HTTP API service via <code class="docutils literal notranslate"><span class="pre">pip</span></code></p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python3.7 -m pip install dffml-service-http
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python3 -m pip install dffml-service-http
 </pre></div>
 </div>
 <p>If you want to install the latest development version, clone dffml and install
 from you can use <code class="docutils literal notranslate"><span class="pre">git+</span></code></p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>git clone https://github.com/intel/dffml
-<span class="gp">$ </span>python3.7 -m pip install -e dffml/service/http
+<span class="gp">$ </span>python3 -m pip install -e dffml/service/http
 </pre></div>
 </div>
 <p>If you want to run this securely you can see <a class="reference internal" href="security.html"><span class="doc">Security</span></a>.</p>
@@ -232,6 +246,13 @@ environment! You should instead see the <a class="reference internal" href="secu
 <li class="toctree-l2"><a class="reference internal" href="cli.html#quickstart">Quickstart</a></li>
 <li class="toctree-l2"><a class="reference internal" href="cli.html#models">Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="cli.html#sources">Sources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.html#static-content">Static Content</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.html#redirects">Redirects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.html#binding-to-a-random-port">Binding to a random port</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="dataflow.html">DataFlow</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="dataflow.html#httpchannelconfig">HttpChannelConfig</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="api.html">API</a><ul>
@@ -271,7 +292,7 @@ environment! You should instead see the <a class="reference internal" href="secu
 
   <div role="contentinfo">
     <p>
-        &#169; Copyright 2019, Intel.
+        &#169; Copyright 2017 - 2021, Intel.
 
     </p>
   </div>

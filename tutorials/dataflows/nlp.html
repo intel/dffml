@@ -1,0 +1,603 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Using NLP Operations &mdash; DFFML 0.4.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/tabs.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/copybutton.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="author" title="About these documents" href="../../about.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Neural Networks" href="../neuralnetwork.html" />
+    <link rel="prev" title="Gitter ML Inference Chatbot" href="chatbot.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> DFFML
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.4.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Introduction</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../concepts/index.html">Concepts</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Usage</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../quickstart/model.html">Quickstart</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Tutorials</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../models/index.html">Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../sources/index.html">Sources</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">DataFlows</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="locking.html">Using Locks In DataFlow</a></li>
+<li class="toctree-l3"><a class="reference internal" href="io.html">Prediction Using IO Operations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chatbot.html">Gitter ML Inference Chatbot</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Using NLP Operations</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#preprocessing-data-and-training-dnnclassifier-model">Preprocessing data and training DNNClassifier model</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#preprocessing-data-and-training-naive-bayes-classifier-model">Preprocessing data and training Naive Bayes Classifier model</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../neuralnetwork.html">Neural Networks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../doublecontextentry.html">Double Context Entry</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples/index.html">Examples</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../plugins/index.html">Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cli.html">Command Line</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../plugins/service/http/index.html">HTTP API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../troubleshooting.html">Troubleshooting</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Subprojects</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../shouldi.html">shouldi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../swportal.html">Software Portal</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Community</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/intel/dffml">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://intel.github.io/dffml/master/">Master Branch Docs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../publications.html">Publications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contact.html">Contact Us</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing/index.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../news/index.html">News</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../changelog.html">Changelog</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">DFFML</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Tutorials</a> &raquo;</li>
+        
+          <li><a href="index.html">DataFlows</a> &raquo;</li>
+        
+      <li>Using NLP Operations</li>
+    
+    
+
+
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            
+              <a href="https://github.com/intel/dffml/blob/master/docs/tutorials/dataflows/nlp.rst" class="fa fa-github"> Edit on GitHub</a>
+            
+          
+        
+      </li>
+    
+
+
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="using-nlp-operations">
+<h1>Using NLP Operations<a class="headerlink" href="#using-nlp-operations" title="Permalink to this headline">¶</a></h1>
+<p>These example will show you how to use DFFML operations to clean text data and train Tensorflow DNNClassifier model and Scikit Learn
+Naive Bayes Classifier model using DFFML cli.</p>
+<div class="section" id="preprocessing-data-and-training-dnnclassifier-model">
+<h2>Preprocessing data and training DNNClassifier model<a class="headerlink" href="#preprocessing-data-and-training-dnnclassifier-model" title="Permalink to this headline">¶</a></h2>
+<p>DFFML offers several <a class="reference internal" href="../../plugins/dffml_model.html#plugin-models"><span class="std std-ref">Models</span></a>. For this example
+we will be using the tensorflow DNNClassifier model
+(<a class="reference internal" href="../../plugins/dffml_model.html#plugin-model-dffml-model-tensorflow-tfdnnc"><span class="std std-ref">tfdnnc</span></a>) which is in the <code class="docutils literal notranslate"><span class="pre">dffml-model-tensorflow</span></code> package.</p>
+<p>We will use two operations <a class="reference internal" href="../../plugins/dffml_operation.html#plugin-operation-dffml-operations-nlp-remove-stopwords"><span class="std std-ref">remove_stopwords</span></a> and <a class="reference internal" href="../../plugins/dffml_operation.html#plugin-operation-dffml-operations-nlp-get-embedding"><span class="std std-ref">get_embedding</span></a>.
+Internally, both of these operations use <a class="reference external" href="https://spacy.io/usage/spacy-101">spacy</a> functions.</p>
+<p>To install DNNClassifier model and the above mentioned operations run:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python -m pip install -U dffml-model-tensorflow dffml-operations-nlp
+</pre></div>
+</div>
+<p>Operation <cite>remove_stopwords</cite> cleans the text by removing most commanly used words which give the text little or no information eg. but, or, yet, it, is, am, etc.
+These words are called <cite>StopWords</cite>.
+Operation <cite>get_embedding</cite> maps the tokens in the text to their corresponding word-vectors. Here we will use embeddings from <cite>en_core_web_sm</cite> spacy model.
+You can use other models like <cite>en_core_web_md</cite>, <cite>en_core_web_lg</cite> for better results but these are bigger in size and may take a while to download.</p>
+<p>Let’s first download the <cite>en_core_web_sm</cite> model.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python -m spacy download en_core_web_sm
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Spacy and aiohttp don’t play nice together. If you have aiohttp installed
+you’re going to get weird messages about the version of the <code class="docutils literal notranslate"><span class="pre">chardet</span></code>
+package (<code class="docutils literal notranslate"><span class="pre">pkg_resources.ContextualVersionConflict</span></code>). To avoid this, run
+the download command and include aiohttp in the list of packages to
+download, since <code class="docutils literal notranslate"><span class="pre">spacy</span></code> is passing through to <code class="docutils literal notranslate"><span class="pre">pip</span></code> here.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python -m spacy download en_core_web_sm aiohttp
+</pre></div>
+</div>
+</div>
+<p>Create training data:</p>
+<p><strong>train_data.csv</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sentence</span><span class="p">,</span><span class="n">sentiment</span>
+<span class="n">What</span> <span class="n">a</span> <span class="n">pleasant</span> <span class="n">morning</span><span class="p">,</span><span class="mi">1</span>
+<span class="n">Those</span> <span class="n">were</span> <span class="n">bad</span> <span class="n">days</span><span class="p">,</span><span class="mi">0</span>
+<span class="n">My</span> <span class="n">puppy</span> <span class="n">plays</span> <span class="nb">all</span> <span class="n">day</span><span class="p">,</span><span class="mi">1</span>
+<span class="n">Cats</span> <span class="n">are</span> <span class="n">evil</span><span class="p">,</span><span class="mi">0</span>
+</pre></div>
+</div>
+<p>Now we will create a dataflow to describe how the text feature (<cite>sentence</cite>) will be processed.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml dataflow create get_single remove_stopwords get_embedding <span class="se">\</span>
+<span class="go">    -inputs \</span>
+<span class="go">      &#39;[&quot;embedding&quot;]&#39;=get_single_spec \</span>
+<span class="go">      &quot;en_core_web_sm&quot;=spacy_model_name_def \</span>
+<span class="go">      &quot;&lt;PAD&gt;&quot;=pad_token_def 10=max_len_def \</span>
+<span class="go">    -flow \</span>
+<span class="go">      &#39;[{&quot;seed&quot;: [&quot;sentence&quot;]}]&#39;=remove_stopwords.inputs.text \</span>
+<span class="go">      &#39;[{&quot;seed&quot;: [&quot;spacy_model_name_def&quot;]}]&#39;=get_embedding.inputs.spacy_model \</span>
+<span class="go">      &#39;[{&quot;seed&quot;: [&quot;pad_token_def&quot;]}]&#39;=get_embedding.inputs.pad_token \</span>
+<span class="go">      &#39;[{&quot;seed&quot;: [&quot;max_len_def&quot;]}]&#39;=get_embedding.inputs.max_len \</span>
+<span class="go">      &#39;[{&quot;remove_stopwords&quot;: &quot;result&quot;}]&#39;=get_embedding.inputs.text \</span>
+<span class="go">      &#39;[{&quot;remove_stopwords&quot;: &quot;result&quot;}]&#39;=get_embedding.inputs.text | \</span>
+<span class="go">    tee nlp_ops_dataflow.json</span>
+</pre></div>
+</div>
+<p>Operation <cite>get_embedding</cite> takes <cite>pad_token</cite> as input (here <cite>&lt;PAD&gt;</cite>) to append to sentences of length smaller
+than <cite>max_len</cite> (here 10). A sentence which has length greater than <cite>max_len</cite> is truncated to have length equal to <cite>max_len</cite>.</p>
+<p>To visualize the dataflow run:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml dataflow diagram -stage processing -- nlp_ops_dataflow.json
+</pre></div>
+</div>
+<p>Copy and pasting the output of the above code into the
+<a class="reference external" href="https://mermaidjs.github.io/mermaid-live-editor">mermaidjs live editor</a>
+results in the graph.</p>
+<img alt="../../_images/dataflow_diagram3.svg" src="../../_images/dataflow_diagram3.svg" /><p>We can now use this dataflow to preprocess the data and make it ready to be fed into model:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml train <span class="se">\</span>
+<span class="go">    -model tfdnnc \</span>
+<span class="go">    -model-batchsize 100 \</span>
+<span class="go">    -model-hidden 5 2 \</span>
+<span class="go">    -model-clstype int \</span>
+<span class="go">    -model-predict sentiment:int:1 \</span>
+<span class="go">    -model-classifications 0 1 \</span>
+<span class="go">    -model-directory tempdir \</span>
+<span class="go">    -model-features embedding:float:[1,10,96] \</span>
+<span class="go">    -sources text=df \</span>
+<span class="go">    -source-text-dataflow nlp_ops_dataflow.json \</span>
+<span class="go">    -source-text-features sentence:str:1 \</span>
+<span class="go">    -source-text-source csv \</span>
+<span class="go">    -source-text-source-filename train_data.csv \</span>
+<span class="go">    -log debug</span>
+</pre></div>
+</div>
+<p>As shown in the above command, a single input feature to model (here embedding) is of shape <cite>(1, max_len, size_of_embedding)</cite>.
+Here we have taken <cite>max_len</cite> as 10 and the embedding size of <cite>en_core_web_sm</cite> is 96. So the resulting size of one input feature
+is (1,10,96).</p>
+<p>Assess accuracy:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml accuracy <span class="se">\</span>
+<span class="go">    -model tfdnnc \</span>
+<span class="go">    -model-batchsize 100 \</span>
+<span class="go">    -model-hidden 5 2 \</span>
+<span class="go">    -model-clstype int \</span>
+<span class="go">    -model-predict sentiment:int:1 \</span>
+<span class="go">    -model-classifications 0 1 \</span>
+<span class="go">    -model-directory tempdir \</span>
+<span class="go">    -model-features embedding:float:[1,10,96] \</span>
+<span class="go">    -sources text=df \</span>
+<span class="go">    -source-text-dataflow nlp_ops_dataflow.json \</span>
+<span class="go">    -source-text-features sentence:str:1 \</span>
+<span class="go">    -source-text-source csv \</span>
+<span class="go">    -source-text-source-filename train_data.csv \</span>
+<span class="go">    -log debug</span>
+<span class="go">0.5</span>
+</pre></div>
+</div>
+<p>Create test data:</p>
+<p><strong>test_data.csv</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sentence</span>
+<span class="n">Cats</span> <span class="n">play</span> <span class="n">a</span> <span class="n">lot</span>
+</pre></div>
+</div>
+<p>Make prediction on test data:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml predict all <span class="se">\</span>
+<span class="go">    -model tfdnnc \</span>
+<span class="go">    -model-batchsize 100 \</span>
+<span class="go">    -model-hidden 5 2 \</span>
+<span class="go">    -model-clstype int \</span>
+<span class="go">    -model-predict sentiment:int:1 \</span>
+<span class="go">    -model-classifications 0 1 \</span>
+<span class="go">    -model-directory tempdir \</span>
+<span class="go">    -model-features embedding:float:[1,10,96] \</span>
+<span class="go">    -sources text=df \</span>
+<span class="go">    -source-text-dataflow nlp_ops_dataflow.json \</span>
+<span class="go">    -source-text-features sentence:str:1 \</span>
+<span class="go">    -source-text-source csv \</span>
+<span class="go">    -source-text-source-filename test_data.csv \</span>
+<span class="go">    -pretty</span>
+
+<span class="go">        Key:    0</span>
+<span class="go">                                                   Record Features</span>
+<span class="go">+------------------------------------------------------------------------------------------------------------------------------+</span>
+<span class="go">|            sentence           |                                       Cats play a lot                                        |</span>
+<span class="go">+------------------------------------------------------------------------------------------------------------------------------+</span>
+<span class="go">|           embedding           |                  (0.32292864, 4.358501, 3.2268033, 1.87990 ... (length:10)                   |</span>
+<span class="go">+------------------------------------------------------------------------------------------------------------------------------+</span>
+
+<span class="go">                                                        Prediction</span>
+<span class="go">+------------------------------------------------------------------------------------------------------------------------------+</span>
+<span class="go">|                                                          sentiment                                                           |</span>
+<span class="go">+------------------------------------------------------------------------------------------------------------------------------+</span>
+<span class="go">|           Value:  1           |                               Confidence:   0.5122595429420471                               |</span>
+<span class="go">+------------------------------------------------------------------------------------------------------------------------------+</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="preprocessing-data-and-training-naive-bayes-classifier-model">
+<h2>Preprocessing data and training Naive Bayes Classifier model<a class="headerlink" href="#preprocessing-data-and-training-naive-bayes-classifier-model" title="Permalink to this headline">¶</a></h2>
+<p>Now we will see how to use traditional ML algorithm like Naive Bayes Classifier available in <code class="docutils literal notranslate"><span class="pre">dffml-model-scikit</span></code> (<a class="reference internal" href="../../plugins/dffml_model.html#plugin-model-dffml-model-scikit"><span class="std std-ref">dffml_model_scikit</span></a>) for
+classification.</p>
+<p>Install the Naive Bayes Classifier by installing <code class="docutils literal notranslate"><span class="pre">dffml-model-scikit</span></code></p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python -m pip install -U dffml-model-scikit
+</pre></div>
+</div>
+<p>Create training data:</p>
+<p><strong>train_data.csv</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sentence</span><span class="p">,</span><span class="n">sentiment</span>
+<span class="n">What</span> <span class="n">a</span> <span class="n">pleasant</span> <span class="n">morning</span><span class="p">,</span><span class="mi">1</span>
+<span class="n">Those</span> <span class="n">were</span> <span class="n">bad</span> <span class="n">days</span><span class="p">,</span><span class="mi">0</span>
+<span class="n">My</span> <span class="n">puppy</span> <span class="n">plays</span> <span class="nb">all</span> <span class="n">day</span><span class="p">,</span><span class="mi">1</span>
+<span class="n">Cats</span> <span class="n">are</span> <span class="n">evil</span><span class="p">,</span><span class="mi">0</span>
+</pre></div>
+</div>
+<p>But before we feed the data to model we need to convert it to vectors of numeric values.
+Here we will use <code class="docutils literal notranslate"><span class="pre">tfidf_vectorizer</span></code> operation (<a class="reference internal" href="../../plugins/dffml_operation.html#plugin-operation-dffml-operations-nlp-tfidf-vectorizer"><span class="std std-ref">tfidf_vectorizer</span></a>) which is a wrapper around
+sklearn <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.TfidfVectorizer.html">TfidfVectorizer.</a></p>
+<p>The dataflow will be similar to the one used above but with a slight modification. We will add an extra operation
+<code class="docutils literal notranslate"><span class="pre">collect_output</span></code> (<a class="reference internal" href="../../plugins/dffml_operation.html#plugin-operation-dffml-operations-nlp-collect-output"><span class="std std-ref">collect_output</span></a>) which will collect all the records before
+forwarding them to next operation. This is to ensure that <cite>tfidf_vectorizer</cite> receives a list of sentence rather than a single
+sentence at a time.
+The matrix returned by <cite>tfidf_vectorizer</cite> will be passed to <code class="docutils literal notranslate"><span class="pre">extract_array_from_matrix</span></code> (<a class="reference internal" href="../../plugins/dffml_operation.html#plugin-operation-dffml-operations-nlp-extract-array-from-matrix"><span class="std std-ref">extract_array_from_matrix</span></a>)
+which will return the array corresponding to each sentence.</p>
+<p>So, Let’s modify the dataflow to use our new operations.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml dataflow create <span class="se">\</span>
+<span class="go">    -inputs \</span>
+<span class="go">      &#39;[&quot;extract_array_from_matrix.outputs.result&quot;]&#39;=get_single_spec \</span>
+<span class="go">      4=source_length \</span>
+<span class="go">    -flow \</span>
+<span class="go">      &#39;[{&quot;seed&quot;: [&quot;sentence&quot;]}]&#39;=remove_stopwords.inputs.text \</span>
+<span class="go">      &#39;[{&quot;seed&quot;: [&quot;source_length&quot;]}]&#39;=collect_output.inputs.length \</span>
+<span class="go">      &#39;[{&quot;remove_stopwords&quot;: &quot;result&quot;}]&#39;=collect_output.inputs.sentence \</span>
+<span class="go">      &#39;[{&quot;collect_output&quot;: &quot;all&quot;}]&#39;=tfidf_vectorizer.inputs.text \</span>
+<span class="go">      &#39;[{&quot;remove_stopwords&quot;: &quot;result&quot;}]&#39;=extract_array_from_matrix.inputs.single_text_example \</span>
+<span class="go">      &#39;[{&quot;collect_output&quot;: &quot;all&quot;}]&#39;=extract_array_from_matrix.inputs.collected_text \</span>
+<span class="go">      &#39;[{&quot;tfidf_vectorizer&quot;: &quot;result&quot;}]&#39;=extract_array_from_matrix.inputs.input_matrix \</span>
+<span class="go">    -- \</span>
+<span class="go">      get_single \</span>
+<span class="go">      remove_stopwords \</span>
+<span class="go">      collect_output \</span>
+<span class="go">      extract_array_from_matrix \</span>
+<span class="go">      tfidf_vectorizer | \</span>
+<span class="go">    tee nlp_ops_dataflow.json</span>
+</pre></div>
+</div>
+<p>To visualize the dataflow run:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml dataflow diagram -stage processing -- nlp_ops_dataflow.json
+</pre></div>
+</div>
+<p>We can now use this dataflow to preprocess the data and make it ready to be fed into model:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml train <span class="se">\</span>
+<span class="go">    -model scikitgnb \</span>
+<span class="go">    -model-features extract_array_from_matrix.outputs.result:float:1 \</span>
+<span class="go">    -model-predict sentiment:int:1 \</span>
+<span class="go">    -model-directory tempdir \</span>
+<span class="go">    -sources text=df \</span>
+<span class="go">    -source-text-dataflow nlp_ops_dataflow.json \</span>
+<span class="go">    -source-text-features sentence:str:1 \</span>
+<span class="go">    -source-text-source csv \</span>
+<span class="go">    -source-text-source-filename train_data.csv \</span>
+<span class="go">    -log debug</span>
+</pre></div>
+</div>
+<p>Assess accuracy:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml accuracy <span class="se">\</span>
+<span class="go">    -model scikitgnb \</span>
+<span class="go">    -model-features extract_array_from_matrix.outputs.result:float:1 \</span>
+<span class="go">    -model-predict sentiment:int:1 \</span>
+<span class="go">    -model-directory tempdir \</span>
+<span class="go">    -sources text=df \</span>
+<span class="go">    -source-text-dataflow nlp_ops_dataflow.json \</span>
+<span class="go">    -source-text-features sentence:str:1 \</span>
+<span class="go">    -source-text-source csv \</span>
+<span class="go">    -source-text-source-filename train_data.csv \</span>
+<span class="go">    -log debug</span>
+<span class="go">1.0</span>
+</pre></div>
+</div>
+<p>Create test data:</p>
+<p><strong>test_data.csv</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sentence</span>
+<span class="n">Such</span> <span class="n">a</span> <span class="n">pleasant</span> <span class="n">morning</span>
+<span class="n">Those</span> <span class="n">were</span> <span class="n">good</span> <span class="n">days</span>
+<span class="n">My</span> <span class="n">cat</span> <span class="n">plays</span> <span class="nb">all</span> <span class="n">day</span>
+<span class="n">Dogs</span> <span class="n">are</span> <span class="n">evil</span>
+</pre></div>
+</div>
+<p>We’re going to make predictions on test data, but first we’ll use the <code class="docutils literal notranslate"><span class="pre">merge</span></code>
+command to pre-process the data. The <code class="docutils literal notranslate"><span class="pre">merge</span></code> command takes data from one
+source and puts it in another. We can take records from the preprocessing source
+and put them in the JSON source as an intermediary format.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Processing of sentences occurs concurrently, resulting in seemingly
+randomized output order.</p>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml merge <span class="nv">text</span><span class="o">=</span>df <span class="nv">temp</span><span class="o">=</span>json <span class="se">\</span>
+<span class="go">    -source-text-dataflow nlp_ops_dataflow.json \</span>
+<span class="go">    -source-text-features sentence:str:1 \</span>
+<span class="go">    -source-text-source csv \</span>
+<span class="go">    -source-text-source-filename test_data.csv \</span>
+<span class="go">    -source-temp-filename test_data_preprocessed.json \</span>
+<span class="go">    -source-temp-allowempty \</span>
+<span class="go">    -source-temp-readwrite \</span>
+<span class="go">    -log debug</span>
+<span class="gp">$ </span>cat test_data_preprocessed.json <span class="p">|</span> python -m json.tool
+</pre></div>
+</div>
+<p>Now we can make prediction on test data:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml predict all <span class="se">\</span>
+<span class="go">    -model scikitgnb \</span>
+<span class="go">    -model-features extract_array_from_matrix.outputs.result:float:1 \</span>
+<span class="go">    -model-predict sentiment:int:1 \</span>
+<span class="go">    -model-directory tempdir \</span>
+<span class="go">    -sources temp=json \</span>
+<span class="go">    -source-temp-filename test_data_preprocessed.json \</span>
+<span class="go">    -pretty</span>
+
+<span class="go">        Key:        1</span>
+<span class="go">                                        Record Features</span>
+<span class="go">+------------------------------------------------------------------------------------------------+</span>
+<span class="go">|        sentence        |                          Those were good days                         |</span>
+<span class="go">+------------------------------------------------------------------------------------------------+</span>
+<span class="go">|extract_array_from_matri|             0.0, 0.0, 0.7071067811865476, 0 ... (length:9)            |</span>
+<span class="go">+------------------------------------------------------------------------------------------------+</span>
+
+<span class="go">                                        Prediction</span>
+<span class="go">+------------------------------------------------------------------------------------------------+</span>
+<span class="go">|                                           sentiment                                            |</span>
+<span class="go">+------------------------------------------------------------------------------------------------+</span>
+<span class="go">|       Value:  1        |                           Confidence:   1.0                           |</span>
+<span class="go">+------------------------------------------------------------------------------------------------+</span>
+
+<span class="go">    Key:    2</span>
+<span class="go">                                        Record Features</span>
+<span class="go">+------------------------------------------------------------------------------------------------+</span>
+<span class="go">|        sentence        |                          My cat plays all day                         |</span>
+<span class="go">+------------------------------------------------------------------------------------------------+</span>
+<span class="go">|extract_array_from_matri|             0.5773502691896257, 0.577350269 ... (length:9)            |</span>
+<span class="go">+------------------------------------------------------------------------------------------------+</span>
+
+<span class="go">                                        Prediction</span>
+<span class="go">+------------------------------------------------------------------------------------------------+</span>
+<span class="go">|                                           sentiment                                            |</span>
+<span class="go">+------------------------------------------------------------------------------------------------+</span>
+<span class="go">|       Value:  0        |                           Confidence:   1.0                           |</span>
+<span class="go">+------------------------------------------------------------------------------------------------+</span>
+
+<span class="go">    Key:    0</span>
+<span class="go">                                        Record Features</span>
+<span class="go">+------------------------------------------------------------------------------------------------+</span>
+<span class="go">|        sentence        |                        Such a pleasant morning                        |</span>
+<span class="go">+------------------------------------------------------------------------------------------------+</span>
+<span class="go">|extract_array_from_matri|             0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0 ... (length:9)            |</span>
+<span class="go">+------------------------------------------------------------------------------------------------+</span>
+
+<span class="go">                                        Prediction</span>
+<span class="go">+------------------------------------------------------------------------------------------------+</span>
+<span class="go">|                                           sentiment                                            |</span>
+<span class="go">+------------------------------------------------------------------------------------------------+</span>
+<span class="go">|       Value:  1        |                           Confidence:   1.0                           |</span>
+<span class="go">+------------------------------------------------------------------------------------------------+</span>
+
+<span class="go">    Key:    3</span>
+<span class="go">                                        Record Features</span>
+<span class="go">+------------------------------------------------------------------------------------------------+</span>
+<span class="go">|        sentence        |                             Dogs are evil                             |</span>
+<span class="go">+------------------------------------------------------------------------------------------------+</span>
+<span class="go">|extract_array_from_matri|             0.0, 0.0, 0.0, 0.70710678118654 ... (length:9)            |</span>
+<span class="go">+------------------------------------------------------------------------------------------------+</span>
+
+<span class="go">                                        Prediction</span>
+<span class="go">+------------------------------------------------------------------------------------------------+</span>
+<span class="go">|                                           sentiment                                            |</span>
+<span class="go">+------------------------------------------------------------------------------------------------+</span>
+<span class="go">|       Value:  0        |                           Confidence:   1.0                           |</span>
+<span class="go">+------------------------------------------------------------------------------------------------+</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="../neuralnetwork.html" class="btn btn-neutral float-right" title="Neural Networks" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="chatbot.html" class="btn btn-neutral float-left" title="Gitter ML Inference Chatbot" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2017 - 2021, Intel.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

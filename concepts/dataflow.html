@@ -7,12 +7,13 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>DataFlows &mdash; DFFML 0.3.7 documentation</title>
+  <title>DataFlows &mdash; DFFML 0.4.0 documentation</title>
   
 
   
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/tabs.css" type="text/css" />
 
   
   
@@ -65,7 +66,7 @@
             
             
               <div class="version">
-                0.3.7
+                0.4.0
               </div>
             
           
@@ -95,20 +96,32 @@
 <li class="toctree-l1"><a class="reference internal" href="../about.html">About</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Concepts</a><ul class="current">
-<li class="toctree-l2 current"><a class="current reference internal" href="#">DataFlows</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#terminology">Terminology</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#what-happens-when-a-dataflow-runs">What Happens When A DataFlow Runs</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#benifits-of-dataflows">Benifits of DataFlows</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#sources">Sources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#models">Models</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html#dataflows">DataFlows</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="index.html#definition">Definition</a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#operation">Operation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#stage">Stage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#operation-implementation">Operation Implementation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#input-network">Input Network</a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#operation-network">Operation Network</a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#operation-implementation-network">Operation Implementation Network</a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#redundancy-checker">Redundancy Checker</a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#lock-network">Lock Network</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="index.html#orchestrator">Orchestrator</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">DataFlows</a></li>
 </ul>
 </li>
 </ul>
 </li>
 </ul>
-<p class="caption"><span class="caption-text">Examples</span></p>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Usage</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../quickstart/model.html">Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../usage/index.html">Use Cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Examples</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Reference</span></p>
 <ul>
@@ -116,13 +129,21 @@
 <li class="toctree-l1"><a class="reference internal" href="../cli.html">Command Line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../plugins/service/http/index.html">HTTP API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../troubleshooting.html">Troubleshooting</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Subprojects</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../shouldi.html">shouldi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../swportal.html">Software Portal</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Community</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/intel/dffml">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://intel.github.io/dffml/master/">Master Branch Docs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../publications.html">Publications</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../contact.html">Contact Us</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../news/index.html">News</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
 </ul>
 
@@ -177,6 +198,8 @@
       <li>DataFlows</li>
     
     
+
+
       <li class="wy-breadcrumbs-aside">
         
           
@@ -187,6 +210,8 @@
         
       </li>
     
+
+
   </ul>
 
   
@@ -415,7 +440,7 @@ can be validated according to any set of custom rules.</p></li>
 
   <div role="contentinfo">
     <p>
-        &#169; Copyright 2019, Intel.
+        &#169; Copyright 2017 - 2021, Intel.
 
     </p>
   </div>

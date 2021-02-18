@@ -26,7 +26,10 @@ Mission Statement
 
 DFFML aims to be the easiest and most convenient way to use Machine Learning.
 
-- It's an AutoML Python library, command line application, and HTTP service.
+- Its a machine learning distribution. Providing you access to a set of popular
+  machine learning libraries guaranteed to work together.
+
+- Its a AI/ML Python library, command line application, and HTTP service.
 
 - You give it your data and tell it what kind of model you want to train. It
   creates a model for you.
@@ -158,18 +161,6 @@ everything else maintained as a part of the core repository and with other
 developers models and operations. :doc:`tutorials/index` show how to create your
 own plugins.
 
-Team
-----
-
-We have an awesome team working on the project. We hold weekly meetings
-and have a mailing list and chat! If you want to get involved, ask questions, or
-get help getting started, see :doc:`contact`.
-
-We participated in Google Summer of Code 2019 under the Python Software
-Foundation. A big thanks to our students, Yash and Sudharsana!
-
-- `GSoC 2019 Student Contributions <https://github.com/intel/dffml/wiki/GSoC-2019#student-contributions>`_
-
 Users
 -----
 
@@ -180,3 +171,125 @@ using DFFML, see the :doc:`contact` page.
 - Intel
 
   - Security analysis of Open Source Software dependencies.
+
+Philosophy
+----------
+
+DFFML is an event driven directed graph execution architecture tightly coupled
+with the typical machine learning workflow. The core concept is that all
+software can be looked at as a set of operations that occur in response to
+asynchronous events. Directed graphs are used to specify which operations should
+be run in response to which events. Every event has data associated with it,
+therefore we refer to the directed graph as a DataFlow.
+
+The project as it exists now is a Python library which provides data set
+generation via DataFlows, dataset storage, as well as model training, testing,
+and inference. Users can leverage DataFlows to do feature engineering, to create
+new datasets and modify or add to existing datasets. They then train models,
+assess their accuracy and use them to make predictions via various deployment
+methods.
+
+DFFML has a plugin based architecture. Every model, data source, operation, etc.
+is a plugin. We maintain a set of official plugins which wrap various machine
+learning frameworks such as Daal4Py, TensorFlow, Scikit Learn, etc. By wrapping
+frameworks in a standard API we simplify usage and make it easy for developers
+to switch from one underlying framework to another.
+
+Conceptually, DFFML is not just the Python implementation it is today. It’s a
+programming language agnostic architecture centered around the concept of
+DataFlows and the decoupling of definition from implementation. One goal of the
+project closely associated with this is to have an orchestrator capable of
+deploying and knitting together new or existing services without the need for
+those services to know anything about each other. This could be thought of as a
+level of abstraction beyond serverless architecture, which is where we're hoping
+to take the project.
+
+Team
+----
+
+We have an awesome team working on the project. We hold weekly meetings
+and have a mailing list and chat! If you want to get involved, ask questions, or
+get help getting started, see :doc:`contact`.
+
+We participated in Google Summer of Code 2019 under the Python Software
+Foundation. A big thanks to our students, Yash and Sudharsana!
+
+- :doc:`GSoC 2019 Student Contributions <contributing/gsoc/2019>`
+
+We are currently participating in Google Summer of Code 2020 under the Python
+Software Foundation. Big thanks to Aghin, Himanshu, and Saksham!
+
+- :doc:`GSoC 2020 Student Contributions <contributing/gsoc/2020>`
+
+Thank you to everyone who's contributed to DFFML!!!
+
+- Abdallah Bashir
+
+- Aghin Shah Alin
+
+- Arvindh Kumar Chandran
+
+- Aryan Gupta
+
+- Byambaa
+
+- Constanza Heath
+
+- Dentigg
+
+- Dmitry Poliuha
+
+- Govindarajan Panneerselvam
+
+- Hashim
+
+- Himanshu Tripathi
+
+- iamandeepsandhu
+
+- Jan Keromnes
+
+- John Andersen
+
+- Joseph Kato
+
+- Justin Moore
+
+- Naeem Khoshnevis
+
+- NeerajBhadani
+
+- NMNDV
+
+- Pankaj Patil
+
+- pradeepbhadani
+
+- purnimapatel
+
+- raghav-ys
+
+- Saksham Arora
+
+- Sanket Saurav
+
+- shivam singh
+
+- Sudhanshu kumar
+
+- Sudharsana K J L
+
+- Taksh Kamlesh
+
+- Theo
+
+- us
+
+- Vaibhav Mehra
+
+- Yash Lamba
+
+- Yash Varshney
+
+.. Generated with `git log --format=format:'%an' | sort | uniq`
+   You'll want to filter out duplicates if you re-generate this

@@ -1,0 +1,667 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>COVID Forecasting &mdash; DFFML 0.4.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/tabs.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/copybutton.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Continuous Deployment of DataFlows" href="webhook/index.html" />
+    <link rel="prev" title="FLOWER17 Species classification using Transfer Learning" href="flower17/flower17_pytorch.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> DFFML
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.4.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Introduction</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../concepts/index.html">Concepts</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Usage</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../quickstart/model.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Examples</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="integration.html">Automating Classification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="shouldi.html">Meta Static Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dataflows.html">DataFlow HTTP Deployment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mnist.html">MNIST Handwriten Digits</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flower17/flower17.html">Flower17 Species Classification</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">COVID Forecasting</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#plan">Plan</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#setup">Setup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#code">Code</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="webhook/index.html">Continuous Deployment of DataFlows</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../plugins/index.html">Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cli.html">Command Line</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../plugins/service/http/index.html">HTTP API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../troubleshooting.html">Troubleshooting</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Subprojects</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../shouldi.html">shouldi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../swportal.html">Software Portal</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Community</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/intel/dffml">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://intel.github.io/dffml/master/">Master Branch Docs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../publications.html">Publications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contact.html">Contact Us</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../news/index.html">News</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">DFFML</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Examples</a> &raquo;</li>
+        
+      <li>COVID Forecasting</li>
+    
+    
+
+
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            
+              <a href="https://github.com/intel/dffml/blob/master/docs/examples/or_covid_data_by_county.rst" class="fa fa-github"> Edit on GitHub</a>
+            
+          
+        
+      </li>
+    
+
+
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="covid-forecasting">
+<h1>COVID Forecasting<a class="headerlink" href="#covid-forecasting" title="Permalink to this headline">¶</a></h1>
+<p>Stay home and stay safe folks. This is a sad application of machine learning.</p>
+<p>This example covers the following using the Python API.</p>
+<ul class="simple">
+<li><p>Writing a new model. We’ll be wrapping fbprophet.</p>
+<ul>
+<li><p>Overwriting a <a class="reference internal" href="../api/model/model.html#dffml.model.model.SimpleModel" title="dffml.model.model.SimpleModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">SimpleModel</span></code></a>
+<code class="docutils literal notranslate"><span class="pre">__init__()</span></code> method.</p></li>
+<li><p>Using joblib to save and load the fbprophet model class.</p></li>
+</ul>
+</li>
+<li><p>Creating Pandas DataFrames from DFFML <a class="reference internal" href="../api/record.html#dffml.record.Record" title="dffml.record.Record"><code class="xref py py-class docutils literal notranslate"><span class="pre">Record</span></code></a>
+objects.</p></li>
+<li><p>Downloading dataset files with hash verification.</p></li>
+<li><p>Loading data from files using the high level API.</p></li>
+<li><p>Using multiple models. Model predictions will be used as feature data for
+another model. This problem can be approached many ways we have implemented it
+the way it is to show how one models prediction can be used as the input to
+another model as a feature.</p></li>
+</ul>
+<div class="section" id="plan">
+<h2>Plan<a class="headerlink" href="#plan" title="Permalink to this headline">¶</a></h2>
+<p>The dataset we’ll be working with is the state of Oregon’s COVID case and death
+numbers by county.</p>
+<p>Our goal is to forecast the number of cases and deaths in each county on any
+given day.</p>
+<p>The dataset has already been divided into two files, training and test. We’ll
+download them using the
+<a class="reference internal" href="../api/util/net.html#dffml.util.net.cached_download" title="dffml.util.net.cached_download"><code class="xref py py-func docutils literal notranslate"><span class="pre">cached_download()</span></code></a>
+function.</p>
+<p>fbprophet is great at forecasting int or float values given a date. Therefore,
+we’re going to wrap it using a model class (for more explanation first read the
+<a class="reference internal" href="../tutorials/models/slr.html#model-tutorial-slr"><span class="std std-ref">Writing a Model</span></a> tutorial).</p>
+</div>
+<div class="section" id="setup">
+<h2>Setup<a class="headerlink" href="#setup" title="Permalink to this headline">¶</a></h2>
+<p>We need to install dependencies we’ll be importing.</p>
+<p>See the <a class="reference external" href="https://facebook.github.io/prophet/docs/installation.html#python">https://facebook.github.io/prophet/docs/installation.html#python</a> for
+more details</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python -m pip install joblib pandas pystan
+<span class="gp">$ </span>python -m pip install fbprophet
+</pre></div>
+</div>
+</div>
+<div class="section" id="code">
+<h2>Code<a class="headerlink" href="#code" title="Permalink to this headline">¶</a></h2>
+<p>There are lots of comments in the following code so we’re not going to explain
+everything in this documentation page. Please open an issue or ask on Gitter if
+there is anything that is unclear or you think could be changed / improved.</p>
+<p><strong>or_covid_data_by_county.py</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="kn">import</span> <span class="nn">pathlib</span>
+<span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">AsyncIterator</span><span class="p">,</span> <span class="n">Type</span>
+
+<span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="kn">import</span> <span class="nn">joblib</span>
+<span class="kn">import</span> <span class="nn">pandas</span>
+<span class="kn">from</span> <span class="nn">fbprophet</span> <span class="kn">import</span> <span class="n">Prophet</span>
+
+
+<span class="nd">@config</span>
+<span class="k">class</span> <span class="nc">FBProphetModelConfig</span><span class="p">:</span>
+    <span class="n">date</span><span class="p">:</span> <span class="n">Feature</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="s2">&quot;Name of feature containing date value&quot;</span><span class="p">)</span>
+    <span class="n">predict</span><span class="p">:</span> <span class="n">Feature</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="s2">&quot;Label or the value to be predicted&quot;</span><span class="p">)</span>
+    <span class="n">directory</span><span class="p">:</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="s2">&quot;Directory where state should be saved&quot;</span><span class="p">)</span>
+
+
+<span class="nd">@entrypoint</span><span class="p">(</span><span class="s2">&quot;fbprophet&quot;</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">FBProphetModel</span><span class="p">(</span><span class="n">SimpleModel</span><span class="p">):</span>
+    <span class="c1"># The configuration class needs to be set as the CONFIG property</span>
+    <span class="n">CONFIG</span><span class="p">:</span> <span class="n">Type</span> <span class="o">=</span> <span class="n">FBProphetModelConfig</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+        <span class="c1"># The saved model</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">saved</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">saved_filepath</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">directory</span><span class="p">,</span> <span class="s2">&quot;model.joblib&quot;</span>
+        <span class="p">)</span>
+        <span class="c1"># Load saved model if it exists</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">saved_filepath</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">saved</span> <span class="o">=</span> <span class="n">joblib</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">saved_filepath</span><span class="p">))</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">train</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sources</span><span class="p">:</span> <span class="n">SourcesContext</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1"># Create a pandas DataFrame from the records with the features we care</span>
+        <span class="c1"># about. Prophet wants each row in the DataFrame to have two features,</span>
+        <span class="c1"># ds for the date, and y for the label (the value to predict).</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">from_records</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="p">{</span>
+                    <span class="s2">&quot;ds&quot;</span><span class="p">:</span> <span class="n">record</span><span class="o">.</span><span class="n">feature</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">name</span><span class="p">),</span>
+                    <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="n">record</span><span class="o">.</span><span class="n">feature</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">predict</span><span class="o">.</span><span class="n">name</span><span class="p">),</span>
+                <span class="p">}</span>
+                <span class="k">async</span> <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">sources</span><span class="o">.</span><span class="n">with_features</span><span class="p">(</span>
+                    <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">predict</span><span class="o">.</span><span class="n">name</span><span class="p">]</span>
+                <span class="p">)</span>
+            <span class="p">]</span>
+        <span class="p">)</span>
+        <span class="c1"># Use self.logger to report how many records are being used for training</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Number of training records: </span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">))</span>
+        <span class="c1"># Create an instance of the Prophet model class</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">saved</span> <span class="o">=</span> <span class="n">Prophet</span><span class="p">()</span>
+        <span class="c1"># Train the model</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">saved</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+        <span class="c1"># Save the model</span>
+        <span class="n">joblib</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">saved</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">saved_filepath</span><span class="p">))</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">accuracy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sources</span><span class="p">:</span> <span class="n">SourcesContext</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Accuracy</span><span class="p">:</span>
+        <span class="c1"># We&#39;re not going to calculate accuracy in the example</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sources</span><span class="p">:</span> <span class="n">SourcesContext</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AsyncIterator</span><span class="p">[</span><span class="n">Record</span><span class="p">]:</span>
+        <span class="c1"># Ensure there is a saved model</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">saved</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">ModelNotTrained</span><span class="p">(</span><span class="s2">&quot;Train the model before making predictions&quot;</span><span class="p">)</span>
+        <span class="c1"># Load all the records into memory for the sake of speed</span>
+        <span class="n">records</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">record</span>
+            <span class="k">async</span> <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">sources</span><span class="o">.</span><span class="n">with_features</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">name</span><span class="p">])</span>
+        <span class="p">]</span>
+        <span class="c1"># Create a pandas DataFrame from the records that have a date feature</span>
+        <span class="n">future</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">from_records</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="p">{</span><span class="s2">&quot;ds&quot;</span><span class="p">:</span> <span class="n">record</span><span class="o">.</span><span class="n">feature</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">name</span><span class="p">)}</span>
+                <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">records</span>
+            <span class="p">]</span>
+        <span class="p">)</span>
+        <span class="c1"># Ask the model for predictions</span>
+        <span class="k">for</span> <span class="n">record</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span>
+            <span class="n">records</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">saved</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">future</span><span class="p">)</span><span class="o">.</span><span class="n">itertuples</span><span class="p">()</span>
+        <span class="p">):</span>
+            <span class="c1"># Set the predicted value</span>
+            <span class="c1"># TODO do not use nan for confidence</span>
+            <span class="n">record</span><span class="o">.</span><span class="n">predicted</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">predict</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="o">.</span><span class="n">yhat</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="s2">&quot;nan&quot;</span><span class="p">)</span>
+            <span class="p">)</span>
+            <span class="c1"># Yield the record</span>
+            <span class="k">yield</span> <span class="n">record</span>
+
+
+<span class="c1"># DFFML has a function to download files and validate their contents using</span>
+<span class="c1"># SHA 384 hashes. If you need to download files from an http:// site, you need</span>
+<span class="c1"># to add the following to the call to cached_download()</span>
+<span class="c1">#   protocol_allowlist=[&quot;https://&quot;, &quot;http://&quot;]</span>
+<span class="nd">@cached_download</span><span class="p">(</span>
+    <span class="s2">&quot;https://github.com/intel/dffml/files/5773999/COVID.Oregon.Counties.Train.Clean.to.2020-10-24.csv.gz&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;training.csv.gz&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;af9536ab41580e04dd72b1285f6b2b703977aee5b95b80422bbe7cc11262297da265e6c0e333bfc1faa7b4f263f5496e&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="nd">@cached_download</span><span class="p">(</span>
+    <span class="s2">&quot;https://github.com/intel/dffml/files/5773998/COVID.Oregon.Counties.Test.Clean.2020-10-25.to.2020-10-31.csv.gz&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;test.csv.gz&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;10ee8bcf06a511019f98c3e0e40f315585b2ed84d4a736f743567861d72438afcb7914f117e16640800959324f0f518d&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">training_file</span><span class="p">,</span> <span class="n">test_file</span><span class="p">):</span>
+    <span class="c1"># Load the training data</span>
+    <span class="n">training_data</span> <span class="o">=</span> <span class="p">[</span><span class="n">record</span> <span class="k">async</span> <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">load</span><span class="p">(</span><span class="n">training_file</span><span class="p">)]</span>
+
+    <span class="c1"># Load the test data</span>
+    <span class="n">test_data</span> <span class="o">=</span> <span class="p">[</span><span class="n">record</span> <span class="k">async</span> <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">load</span><span class="p">(</span><span class="n">test_file</span><span class="p">)]</span>
+
+    <span class="c1"># Deaths and cases should have a relatively linear relationship. The cases</span>
+    <span class="c1"># to deaths model will be trained to predict the number of deaths given the</span>
+    <span class="c1"># number of cases. Try swapping the SLRModel for another model on the</span>
+    <span class="c1"># plugins page.</span>
+    <span class="n">cases_to_deaths_model</span> <span class="o">=</span> <span class="n">SLRModel</span><span class="p">(</span>
+        <span class="n">features</span><span class="o">=</span><span class="n">Features</span><span class="p">(</span><span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;cases&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">)),</span>
+        <span class="n">predict</span><span class="o">=</span><span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;deaths&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">),</span>
+        <span class="n">directory</span><span class="o">=</span><span class="s2">&quot;cases_to_deaths.model&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Train the model to learn the relationship between cases and deaths</span>
+    <span class="k">await</span> <span class="n">train</span><span class="p">(</span><span class="n">cases_to_deaths_model</span><span class="p">,</span> <span class="o">*</span><span class="n">training_data</span><span class="p">)</span>
+
+    <span class="c1"># Find the set of counties by looking through all the training data and</span>
+    <span class="c1"># recording each county seen</span>
+    <span class="n">counties</span> <span class="o">=</span> <span class="nb">set</span><span class="p">([</span><span class="n">record</span><span class="o">.</span><span class="n">feature</span><span class="p">(</span><span class="s2">&quot;county&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">training_data</span><span class="p">])</span>
+
+    <span class="c1"># We want to forecast the number of cases by county. We&#39;ll train a</span>
+    <span class="c1"># forecasting model on past data to predict the number of cases given the</span>
+    <span class="c1"># date for the given county.</span>
+    <span class="n">date_to_cases_models</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="n">county</span><span class="p">:</span> <span class="n">FBProphetModel</span><span class="p">(</span>
+            <span class="n">date</span><span class="o">=</span><span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;date&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">),</span>
+            <span class="n">predict</span><span class="o">=</span><span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;cases&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">),</span>
+            <span class="n">directory</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;date_to_cases.</span><span class="si">{</span><span class="n">county</span><span class="si">}</span><span class="s2">.model&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">for</span> <span class="n">county</span> <span class="ow">in</span> <span class="n">counties</span>
+    <span class="p">}</span>
+
+    <span class="c1"># Group training data by county</span>
+    <span class="n">training_data_by_county</span> <span class="o">=</span> <span class="p">{</span><span class="n">county</span><span class="p">:</span> <span class="p">[]</span> <span class="k">for</span> <span class="n">county</span> <span class="ow">in</span> <span class="n">counties</span><span class="p">}</span>
+    <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">training_data</span><span class="p">:</span>
+        <span class="n">training_data_by_county</span><span class="p">[</span><span class="n">record</span><span class="o">.</span><span class="n">feature</span><span class="p">(</span><span class="s2">&quot;county&quot;</span><span class="p">)]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">record</span><span class="p">)</span>
+
+    <span class="c1"># Group test data by county</span>
+    <span class="n">test_data_by_county</span> <span class="o">=</span> <span class="p">{</span><span class="n">county</span><span class="p">:</span> <span class="p">[]</span> <span class="k">for</span> <span class="n">county</span> <span class="ow">in</span> <span class="n">counties</span><span class="p">}</span>
+    <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">test_data</span><span class="p">:</span>
+        <span class="n">test_data_by_county</span><span class="p">[</span><span class="n">record</span><span class="o">.</span><span class="n">feature</span><span class="p">(</span><span class="s2">&quot;county&quot;</span><span class="p">)]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">record</span><span class="p">)</span>
+
+    <span class="c1"># Get today&#39;s date</span>
+    <span class="n">todays_date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+
+    <span class="k">for</span> <span class="n">county</span><span class="p">,</span> <span class="n">model</span> <span class="ow">in</span> <span class="n">date_to_cases_models</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="c1"># Train a model for each county</span>
+        <span class="k">await</span> <span class="n">train</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="o">*</span><span class="n">training_data_by_county</span><span class="p">[</span><span class="n">county</span><span class="p">])</span>
+        <span class="c1"># We want predictions for the test data for this county</span>
+        <span class="n">want_predictions</span> <span class="o">=</span> <span class="n">test_data_by_county</span><span class="p">[</span><span class="n">county</span><span class="p">]</span>
+        <span class="c1"># We also want to ask for today through four days from now</span>
+        <span class="n">prediction_dates</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="p">(</span><span class="n">todays_date</span> <span class="o">+</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="n">i</span><span class="p">))</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+        <span class="p">]</span>
+        <span class="c1"># We append those records to the set of records we want predictions for</span>
+        <span class="n">want_predictions</span> <span class="o">+=</span> <span class="p">[</span>
+            <span class="n">Record</span><span class="p">(</span>
+                <span class="n">key</span><span class="o">=</span><span class="n">date</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;features&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;county&quot;</span><span class="p">:</span> <span class="n">county</span><span class="p">,</span> <span class="s2">&quot;date&quot;</span><span class="p">:</span> <span class="n">date</span><span class="p">}}</span>
+            <span class="p">)</span>
+            <span class="k">for</span> <span class="n">date</span> <span class="ow">in</span> <span class="n">prediction_dates</span>
+        <span class="p">]</span>
+        <span class="c1"># Predict the number of cases for the county</span>
+        <span class="k">async</span> <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">predict</span><span class="p">(</span>
+            <span class="n">model</span><span class="p">,</span> <span class="o">*</span><span class="n">want_predictions</span><span class="p">,</span> <span class="n">keep_record</span><span class="o">=</span><span class="kc">True</span>
+        <span class="p">):</span>
+            <span class="c1"># Get predicted value for cases</span>
+            <span class="n">predicted_cases</span> <span class="o">=</span> <span class="n">record</span><span class="o">.</span><span class="n">prediction</span><span class="p">(</span><span class="s2">&quot;cases&quot;</span><span class="p">)[</span><span class="s2">&quot;value&quot;</span><span class="p">]</span>
+            <span class="c1"># Report actual value for cases if we have it</span>
+            <span class="n">actual_cases</span> <span class="o">=</span> <span class="s2">&quot;Actual Cases Unknown&quot;</span>
+            <span class="n">features</span> <span class="o">=</span> <span class="n">record</span><span class="o">.</span><span class="n">features</span><span class="p">()</span>
+            <span class="k">if</span> <span class="s2">&quot;cases&quot;</span> <span class="ow">in</span> <span class="n">features</span><span class="p">:</span>
+                <span class="n">actual_cases</span> <span class="o">=</span> <span class="n">features</span><span class="p">[</span><span class="s2">&quot;cases&quot;</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># If we don&#39;t have an actual value for cases set the cases</span>
+                <span class="c1"># feature to the predicted value so that we can feed it into the</span>
+                <span class="c1"># next model for a number of deaths prediction</span>
+                <span class="n">record</span><span class="o">.</span><span class="n">evaluated</span><span class="p">({</span><span class="s2">&quot;cases&quot;</span><span class="p">:</span> <span class="n">predicted_cases</span><span class="p">})</span>
+            <span class="c1"># Use the cases to deaths model to predict the deaths. It&#39;s a loop</span>
+            <span class="c1"># but we&#39;re only feeding it the one record from the loop we&#39;re in.</span>
+            <span class="k">async</span> <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">predict</span><span class="p">(</span>
+                <span class="n">cases_to_deaths_model</span><span class="p">,</span> <span class="n">record</span><span class="p">,</span> <span class="n">keep_record</span><span class="o">=</span><span class="kc">True</span>
+            <span class="p">):</span>
+                <span class="c1"># Get predicted value for deaths</span>
+                <span class="n">predicted_deaths</span> <span class="o">=</span> <span class="n">record</span><span class="o">.</span><span class="n">prediction</span><span class="p">(</span><span class="s2">&quot;deaths&quot;</span><span class="p">)[</span><span class="s2">&quot;value&quot;</span><span class="p">]</span>
+                <span class="c1"># Report actual value for deaths if we have it</span>
+                <span class="n">actual_deaths</span> <span class="o">=</span> <span class="s2">&quot;Actual Deaths Unknown&quot;</span>
+                <span class="k">if</span> <span class="s2">&quot;deaths&quot;</span> <span class="ow">in</span> <span class="n">features</span><span class="p">:</span>
+                    <span class="n">actual_deaths</span> <span class="o">=</span> <span class="n">features</span><span class="p">[</span><span class="s2">&quot;deaths&quot;</span><span class="p">]</span>
+                <span class="c1"># Print out predictions</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;---------------------------------------&quot;</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;county:           : </span><span class="si">{</span><span class="n">features</span><span class="p">[</span><span class="s2">&quot;county&quot;</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;date:             : </span><span class="si">{</span><span class="n">features</span><span class="p">[</span><span class="s2">&quot;date&quot;</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;predicted_cases   : </span><span class="si">{</span><span class="n">predicted_cases</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;actual_cases      : </span><span class="si">{</span><span class="n">actual_cases</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;predicted_deaths  : </span><span class="si">{</span><span class="n">predicted_deaths</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;actual_deaths     : </span><span class="si">{</span><span class="n">actual_deaths</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+</pre></div>
+</div>
+<p>Run the file to see the predictions for the test data along with today plus the
+next four days.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python or_covid_data_by_county.py
+<span class="go">INFO:fbprophet:Disabling yearly seasonality. Run prophet with yearly_seasonality=True to override this.</span>
+<span class="go">INFO:fbprophet:Disabling daily seasonality. Run prophet with daily_seasonality=True to override this.</span>
+<span class="go">Initial log joint probability = -4.48963</span>
+<span class="go">    Iter      log prob        ||dx||      ||grad||       alpha      alpha0  # evals  Notes</span>
+<span class="go">      99       470.387     0.0198861       992.252       0.934       0.934      117</span>
+<span class="go">    Iter      log prob        ||dx||      ||grad||       alpha      alpha0  # evals  Notes</span>
+<span class="go">     195       493.794   0.000557792       208.725   1.765e-06       0.001      272  LS failed, Hessian reset</span>
+<span class="go">     199       494.869     0.0142908       273.213           1           1      276</span>
+<span class="go">    Iter      log prob        ||dx||      ||grad||       alpha      alpha0  # evals  Notes</span>
+<span class="go">     274       506.305    0.00034089       135.527   1.069e-06       0.001      410  LS failed, Hessian reset</span>
+<span class="go">     299       512.079     0.0479183       140.335           1           1      443</span>
+<span class="go">    Iter      log prob        ||dx||      ||grad||       alpha      alpha0  # evals  Notes</span>
+<span class="go">     399       523.789   0.000554393       243.109   3.188e-06       0.001      599  LS failed, Hessian reset</span>
+<span class="go">    Iter      log prob        ||dx||      ||grad||       alpha      alpha0  # evals  Notes</span>
+<span class="go">     499       530.926     0.0021352       316.262      0.4123      0.4123      721</span>
+<span class="go">    Iter      log prob        ||dx||      ||grad||       alpha      alpha0  # evals  Notes</span>
+<span class="go">     597       537.419   0.000436284       246.382   7.017e-07       0.001      876  LS failed, Hessian reset</span>
+<span class="go">     599       537.634    0.00161266       87.1624           1           1      878</span>
+<span class="go">    Iter      log prob        ||dx||      ||grad||       alpha      alpha0  # evals  Notes</span>
+<span class="go">     699       541.955   0.000221894       75.1759      0.8981      0.8981     1009</span>
+<span class="go">    Iter      log prob        ||dx||      ||grad||       alpha      alpha0  # evals  Notes</span>
+<span class="go">     799       542.227     0.0031715       187.747           1           1     1137</span>
+<span class="go">    Iter      log prob        ||dx||      ||grad||       alpha      alpha0  # evals  Notes</span>
+<span class="go">     899       542.449   0.000102382       70.2315      0.6954      0.6954     1257</span>
+<span class="go">    Iter      log prob        ||dx||      ||grad||       alpha      alpha0  # evals  Notes</span>
+<span class="go">     999       544.304    0.00911989       138.497           1           1     1379</span>
+<span class="go">    Iter      log prob        ||dx||      ||grad||       alpha      alpha0  # evals  Notes</span>
+<span class="go">    1099       546.541   2.90923e-06       78.8871      0.2538      0.2538     1509</span>
+<span class="go">    Iter      log prob        ||dx||      ||grad||       alpha      alpha0  # evals  Notes</span>
+<span class="go">    1199       546.616    0.00152174       144.315           1           1     1627</span>
+<span class="go">    Iter      log prob        ||dx||      ||grad||       alpha      alpha0  # evals  Notes</span>
+<span class="go">    1274       547.735   0.000108332       104.365   7.121e-07       0.001     1759  LS failed, Hessian reset</span>
+<span class="go">    1299       547.759   8.21456e-06       72.6784      0.6158      0.6158     1794</span>
+<span class="go">    Iter      log prob        ||dx||      ||grad||       alpha      alpha0  # evals  Notes</span>
+<span class="go">    1317       547.761   5.74449e-06       68.9362   6.756e-08       0.001     1853  LS failed, Hessian reset</span>
+<span class="go">    1399       547.886    0.00178702       80.0121           1           1     1949</span>
+<span class="go">    Iter      log prob        ||dx||      ||grad||       alpha      alpha0  # evals  Notes</span>
+<span class="go">    1403       547.901   9.98032e-05       107.405   1.012e-06       0.001     1996  LS failed, Hessian reset</span>
+<span class="go">    1471       548.011    8.6135e-09        74.944      0.3285      0.3285     2085</span>
+<span class="go">Optimization terminated normally:</span>
+<span class="go">  Convergence detected: absolute parameter change was below tolerance</span>
+<span class="go">---------------------------------------</span>
+<span class="go">county:           : Lincoln</span>
+<span class="go">date:             : 2020-10-25</span>
+<span class="go">predicted_cases   : 510.5316275788172</span>
+<span class="go">actual_cases      : 517</span>
+<span class="go">predicted_deaths  : 9</span>
+<span class="go">actual_deaths     : 13</span>
+<span class="go">---------------------------------------</span>
+<span class="go">county:           : Lincoln</span>
+<span class="go">date:             : 2020-10-26</span>
+<span class="go">predicted_cases   : 512.1564675524057</span>
+<span class="go">actual_cases      : 517</span>
+<span class="go">predicted_deaths  : 9</span>
+<span class="go">actual_deaths     : 13</span>
+<span class="go">---------------------------------------</span>
+<span class="go">county:           : Lincoln</span>
+<span class="go">date:             : 2020-10-27</span>
+<span class="go">predicted_cases   : 511.7605249084097</span>
+<span class="go">actual_cases      : 517</span>
+<span class="go">predicted_deaths  : 9</span>
+<span class="go">actual_deaths     : 13</span>
+<span class="go">---------------------------------------</span>
+<span class="go">county:           : Lincoln</span>
+<span class="go">date:             : 2020-10-28</span>
+<span class="go">predicted_cases   : 512.410408061449</span>
+<span class="go">actual_cases      : 518</span>
+<span class="go">predicted_deaths  : 9</span>
+<span class="go">actual_deaths     : 13</span>
+<span class="go">---------------------------------------</span>
+<span class="go">county:           : Lincoln</span>
+<span class="go">date:             : 2020-10-29</span>
+<span class="go">predicted_cases   : 512.9605657720964</span>
+<span class="go">actual_cases      : 518</span>
+<span class="go">predicted_deaths  : 9</span>
+<span class="go">actual_deaths     : 13</span>
+<span class="go">---------------------------------------</span>
+<span class="go">county:           : Lincoln</span>
+<span class="go">date:             : 2020-10-30</span>
+<span class="go">predicted_cases   : 514.5428400672448</span>
+<span class="go">actual_cases      : 519</span>
+<span class="go">predicted_deaths  : 9</span>
+<span class="go">actual_deaths     : 13</span>
+<span class="go">---------------------------------------</span>
+<span class="go">county:           : Lincoln</span>
+<span class="go">date:             : 2020-10-31</span>
+<span class="go">predicted_cases   : 514.999483186029</span>
+<span class="go">actual_cases      : 519</span>
+<span class="go">predicted_deaths  : 9</span>
+<span class="go">actual_deaths     : 13</span>
+<span class="go">INFO:dffml.record:Evaluated 2021-01-05 {&#39;county&#39;: &#39;Lincoln&#39;, &#39;date&#39;: &#39;2021-01-05&#39;, &#39;cases&#39;: 576.0638433267727}</span>
+<span class="go">---------------------------------------</span>
+<span class="go">county:           : Lincoln</span>
+<span class="go">date:             : 2021-01-05</span>
+<span class="go">predicted_cases   : 576.0638433267727</span>
+<span class="go">actual_cases      : Actual Cases Unknown</span>
+<span class="go">predicted_deaths  : 10</span>
+<span class="go">actual_deaths     : Actual Deaths Unknown</span>
+<span class="go">INFO:dffml.record:Evaluated 2021-01-06 {&#39;county&#39;: &#39;Lincoln&#39;, &#39;date&#39;: &#39;2021-01-06&#39;, &#39;cases&#39;: 576.7137264798116}</span>
+<span class="go">---------------------------------------</span>
+<span class="go">county:           : Lincoln</span>
+<span class="go">date:             : 2021-01-06</span>
+<span class="go">predicted_cases   : 576.7137264798116</span>
+<span class="go">actual_cases      : Actual Cases Unknown</span>
+<span class="go">predicted_deaths  : 10</span>
+<span class="go">actual_deaths     : Actual Deaths Unknown</span>
+<span class="go">INFO:dffml.record:Evaluated 2021-01-07 {&#39;county&#39;: &#39;Lincoln&#39;, &#39;date&#39;: &#39;2021-01-07&#39;, &#39;cases&#39;: 577.2638841904583}</span>
+<span class="go">---------------------------------------</span>
+<span class="go">county:           : Lincoln</span>
+<span class="go">date:             : 2021-01-07</span>
+<span class="go">predicted_cases   : 577.2638841904583</span>
+<span class="go">actual_cases      : Actual Cases Unknown</span>
+<span class="go">predicted_deaths  : 10</span>
+<span class="go">actual_deaths     : Actual Deaths Unknown</span>
+<span class="go">INFO:dffml.record:Evaluated 2021-01-08 {&#39;county&#39;: &#39;Lincoln&#39;, &#39;date&#39;: &#39;2021-01-08&#39;, &#39;cases&#39;: 578.8461584856071}</span>
+<span class="go">---------------------------------------</span>
+<span class="go">county:           : Lincoln</span>
+<span class="go">date:             : 2021-01-08</span>
+<span class="go">predicted_cases   : 578.8461584856071</span>
+<span class="go">actual_cases      : Actual Cases Unknown</span>
+<span class="go">predicted_deaths  : 10</span>
+<span class="go">actual_deaths     : Actual Deaths Unknown</span>
+<span class="go">INFO:dffml.record:Evaluated 2021-01-09 {&#39;county&#39;: &#39;Lincoln&#39;, &#39;date&#39;: &#39;2021-01-09&#39;, &#39;cases&#39;: 579.3028016043917}</span>
+<span class="go">---------------------------------------</span>
+<span class="go">county:           : Lincoln</span>
+<span class="go">date:             : 2021-01-09</span>
+<span class="go">predicted_cases   : 579.3028016043917</span>
+<span class="go">actual_cases      : Actual Cases Unknown</span>
+<span class="go">predicted_deaths  : 10</span>
+<span class="go">actual_deaths     : Actual Deaths Unknown</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="webhook/index.html" class="btn btn-neutral float-right" title="Continuous Deployment of DataFlows" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="flower17/flower17_pytorch.html" class="btn btn-neutral float-left" title="FLOWER17 Species classification using Transfer Learning" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2017 - 2021, Intel.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

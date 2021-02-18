@@ -1,0 +1,380 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Prediction Using IO Operations &mdash; DFFML 0.4.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/tabs.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/copybutton.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="author" title="About these documents" href="../../about.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Gitter ML Inference Chatbot" href="chatbot.html" />
+    <link rel="prev" title="Using Locks In DataFlow" href="locking.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> DFFML
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.4.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Introduction</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../concepts/index.html">Concepts</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Usage</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../quickstart/model.html">Quickstart</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Tutorials</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../models/index.html">Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../sources/index.html">Sources</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">DataFlows</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="locking.html">Using Locks In DataFlow</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Prediction Using IO Operations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chatbot.html">Gitter ML Inference Chatbot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nlp.html">Using NLP Operations</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../neuralnetwork.html">Neural Networks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../doublecontextentry.html">Double Context Entry</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples/index.html">Examples</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../plugins/index.html">Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cli.html">Command Line</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../plugins/service/http/index.html">HTTP API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../troubleshooting.html">Troubleshooting</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Subprojects</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../shouldi.html">shouldi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../swportal.html">Software Portal</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Community</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/intel/dffml">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://intel.github.io/dffml/master/">Master Branch Docs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../publications.html">Publications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contact.html">Contact Us</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing/index.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../news/index.html">News</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../changelog.html">Changelog</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">DFFML</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Tutorials</a> &raquo;</li>
+        
+          <li><a href="index.html">DataFlows</a> &raquo;</li>
+        
+      <li>Prediction Using IO Operations</li>
+    
+    
+
+
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            
+              <a href="https://github.com/intel/dffml/blob/master/docs/tutorials/dataflows/io.rst" class="fa fa-github"> Edit on GitHub</a>
+            
+          
+        
+      </li>
+    
+
+
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="prediction-using-io-operations">
+<h1>Prediction Using IO Operations<a class="headerlink" href="#prediction-using-io-operations" title="Permalink to this headline">¶</a></h1>
+<p>This example will show you how to train a model using DFFML python API and use the
+model for prediction by taking input from stdio.</p>
+<p>DFFML offers several <a class="reference internal" href="../../plugins/dffml_model.html#plugin-models"><span class="std std-ref">Models</span></a>. For this example
+we will be using the Simple Linear Regression model
+(<a class="reference internal" href="../../plugins/dffml_model.html#plugin-model-dffml-slr"><span class="std std-ref">slr</span></a>) which is in the <code class="docutils literal notranslate"><span class="pre">dffml</span></code> package.</p>
+<p>First we train the model and then create a DataFlow for making predictions
+on user input.</p>
+<p><strong>main.py</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="n">slr_model</span> <span class="o">=</span> <span class="n">SLRModel</span><span class="p">(</span>
+    <span class="n">features</span><span class="o">=</span><span class="n">Features</span><span class="p">(</span><span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;Years&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">1</span><span class="p">),),</span>
+    <span class="n">predict</span><span class="o">=</span><span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;Salary&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+    <span class="n">directory</span><span class="o">=</span><span class="s2">&quot;tempdir&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+
+
+<span class="c1"># This Dataflow takes input from stdio using `AcceptUserInput`</span>
+<span class="c1"># operation. The string input which corresponds to feature `Years`</span>
+<span class="c1"># is converted to `int`/`float` by</span>
+<span class="c1"># `literal_eval` operation.</span>
+<span class="c1"># `create_mapping` operation creates a mapping using the numeric output</span>
+<span class="c1"># of `literal_eval` eg. {&quot;Years&quot;:34}.</span>
+<span class="c1"># The mapping is then fed to `model_predict` operation which</span>
+<span class="c1"># uses the `slr` model trained above to make prediction. The prediction is then printed to</span>
+<span class="c1"># stdout using `print_output` operation.</span>
+<span class="n">dataflow</span> <span class="o">=</span> <span class="n">DataFlow</span><span class="p">(</span>
+    <span class="n">operations</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;get_user_input&quot;</span><span class="p">:</span> <span class="n">AcceptUserInput</span><span class="p">,</span>
+        <span class="s2">&quot;literal_eval_input&quot;</span><span class="p">:</span> <span class="n">literal_eval</span><span class="p">,</span>
+        <span class="s2">&quot;create_feature_map&quot;</span><span class="p">:</span> <span class="n">create_mapping</span><span class="p">,</span>
+        <span class="s2">&quot;predict_using_model&quot;</span><span class="p">:</span> <span class="n">model_predict</span><span class="p">,</span>
+        <span class="s2">&quot;print_predictions&quot;</span><span class="p">:</span> <span class="n">print_output</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="n">configs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;predict_using_model&quot;</span><span class="p">:</span> <span class="n">ModelPredictConfig</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">slr_model</span><span class="p">)},</span>
+<span class="p">)</span>
+<span class="n">dataflow</span><span class="o">.</span><span class="n">flow</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;literal_eval_input&quot;</span><span class="p">:</span> <span class="n">InputFlow</span><span class="p">(</span>
+            <span class="n">inputs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;str_to_eval&quot;</span><span class="p">:</span> <span class="p">[{</span><span class="s2">&quot;get_user_input&quot;</span><span class="p">:</span> <span class="s2">&quot;InputData&quot;</span><span class="p">}]}</span>
+        <span class="p">),</span>
+        <span class="s2">&quot;create_feature_map&quot;</span><span class="p">:</span> <span class="n">InputFlow</span><span class="p">(</span>
+            <span class="n">inputs</span><span class="o">=</span><span class="p">{</span>
+                <span class="s2">&quot;key&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;seed.Years&quot;</span><span class="p">],</span>
+                <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="p">[{</span><span class="s2">&quot;literal_eval_input&quot;</span><span class="p">:</span> <span class="s2">&quot;str_after_eval&quot;</span><span class="p">}],</span>
+            <span class="p">}</span>
+        <span class="p">),</span>
+        <span class="s2">&quot;predict_using_model&quot;</span><span class="p">:</span> <span class="n">InputFlow</span><span class="p">(</span>
+            <span class="n">inputs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;features&quot;</span><span class="p">:</span> <span class="p">[{</span><span class="s2">&quot;create_feature_map&quot;</span><span class="p">:</span> <span class="s2">&quot;mapping&quot;</span><span class="p">}]}</span>
+        <span class="p">),</span>
+        <span class="s2">&quot;print_predictions&quot;</span><span class="p">:</span> <span class="n">InputFlow</span><span class="p">(</span>
+            <span class="n">inputs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="p">[{</span><span class="s2">&quot;predict_using_model&quot;</span><span class="p">:</span> <span class="s2">&quot;prediction&quot;</span><span class="p">}]}</span>
+        <span class="p">),</span>
+    <span class="p">}</span>
+<span class="p">)</span>
+<span class="n">dataflow</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
+<span class="n">dataflow</span><span class="o">.</span><span class="n">seed</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+    <span class="n">Input</span><span class="p">(</span>
+        <span class="n">value</span><span class="o">=</span><span class="s2">&quot;Years&quot;</span><span class="p">,</span>
+        <span class="n">definition</span><span class="o">=</span><span class="n">create_mapping</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;key&quot;</span><span class="p">],</span>
+        <span class="n">origin</span><span class="o">=</span><span class="s2">&quot;seed.Years&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+
+
+<span class="k">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="c1"># Train the model</span>
+    <span class="k">await</span> <span class="n">train</span><span class="p">(</span>
+        <span class="n">slr_model</span><span class="p">,</span>
+        <span class="p">{</span><span class="s2">&quot;Years&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;Salary&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">},</span>
+        <span class="p">{</span><span class="s2">&quot;Years&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;Salary&quot;</span><span class="p">:</span> <span class="mi">20</span><span class="p">},</span>
+        <span class="p">{</span><span class="s2">&quot;Years&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;Salary&quot;</span><span class="p">:</span> <span class="mi">30</span><span class="p">},</span>
+        <span class="p">{</span><span class="s2">&quot;Years&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s2">&quot;Salary&quot;</span><span class="p">:</span> <span class="mi">40</span><span class="p">},</span>
+    <span class="p">)</span>
+    <span class="c1"># Run the dataflow</span>
+    <span class="k">async</span> <span class="k">for</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">results</span> <span class="ow">in</span> <span class="n">MemoryOrchestrator</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">dataflow</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;inputs&quot;</span><span class="p">:</span> <span class="p">[]}):</span>
+        <span class="k">pass</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+</pre></div>
+</div>
+<p>On running the above code <cite>AcceptUserInput</cite> operation
+waits for input from stdio.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python main.py
+<span class="go">Enter the value: 21</span>
+</pre></div>
+</div>
+<p>The feature value (which is the <cite>str</cite> “21”) is then converted to <cite>int</cite> by
+<cite>literal_eval</cite> operation. Before passing this value to <cite>model_predict</cite>
+operation we need to create a mapping (<cite>dict</cite>) because <cite>model_predict</cite> takes a mapping for
+feature name to feature value.
+The mapping (<cite>dict</cite>) is created by <cite>create_mapping</cite> operation ( <cite>{“Years”: 21}</cite> )
+which is then passed to <cite>model_predict</cite> operation for making prediction.
+The prediction is printed on stdout using <cite>print_output</cite> operation.</p>
+<p>The output is:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">{&#39;Salary&#39;: {&#39;confidence&#39;: 1.0, &#39;value&#39;: 220.0}}</span>
+</pre></div>
+</div>
+<p>The dataflow that we have created is</p>
+<img alt="../../_images/dataflow_diagram2.svg" src="../../_images/dataflow_diagram2.svg" /><p>To re-generate the DataFlow diagram run.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml service dev <span class="nb">export</span> examples.io.io_usage:dataflow <span class="p">|</span> <span class="se">\</span>
+<span class="go">    dffml dataflow diagram -stages processing -configloader json /dev/stdin</span>
+</pre></div>
+</div>
+<p>Copy and pasting the output of the above code into the
+<a class="reference external" href="https://mermaidjs.github.io/mermaid-live-editor">mermaidjs live editor</a>
+results in the graph.</p>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="chatbot.html" class="btn btn-neutral float-right" title="Gitter ML Inference Chatbot" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="locking.html" class="btn btn-neutral float-left" title="Using Locks In DataFlow" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2017 - 2021, Intel.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

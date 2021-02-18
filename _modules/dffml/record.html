@@ -7,12 +7,13 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>dffml.record &mdash; DFFML 0.3.7 documentation</title>
+  <title>dffml.record &mdash; DFFML 0.4.0 documentation</title>
   
 
   
   <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/tabs.css" type="text/css" />
 
   
   
@@ -32,6 +33,7 @@
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
         <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/tabs.js"></script>
         <script src="../../_static/copybutton.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
@@ -63,7 +65,7 @@
             
             
               <div class="version">
-                0.3.7
+                0.4.0
               </div>
             
           
@@ -94,11 +96,11 @@
 <li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../concepts/index.html">Concepts</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Examples</span></p>
+<p class="caption"><span class="caption-text">Usage</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../quickstart/model.html">Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../usage/index.html">Use Cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples/index.html">Examples</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Reference</span></p>
 <ul>
@@ -106,13 +108,21 @@
 <li class="toctree-l1"><a class="reference internal" href="../../cli.html">Command Line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../plugins/service/http/index.html">HTTP API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../troubleshooting.html">Troubleshooting</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Subprojects</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../shouldi.html">shouldi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../swportal.html">Software Portal</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Community</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/intel/dffml">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://intel.github.io/dffml/master/">Master Branch Docs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../publications.html">Publications</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../contact.html">Contact Us</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../contributing/index.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../news/index.html">News</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../changelog.html">Changelog</a></li>
 </ul>
 
@@ -167,10 +177,14 @@
       <li>dffml.record</li>
     
     
+
+
       <li class="wy-breadcrumbs-aside">
         
       </li>
     
+
+
   </ul>
 
   
@@ -185,10 +199,12 @@
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">Information on the software to evaluate is stored in a Record instance.</span>
 <span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Any</span>
 
-<span class="kn">from</span> <span class="nn">.util.data</span> <span class="kn">import</span> <span class="n">merge</span>
+<span class="kn">from</span> <span class="nn">.util.data</span> <span class="kn">import</span> <span class="n">merge</span><span class="p">,</span> <span class="n">export</span>
+<span class="kn">from</span> <span class="nn">.util.display</span> <span class="kn">import</span> <span class="n">create_row</span>
 <span class="kn">from</span> <span class="nn">.log</span> <span class="kn">import</span> <span class="n">LOGGER</span>
 
 <span class="n">LOGGER</span> <span class="o">=</span> <span class="n">LOGGER</span><span class="o">.</span><span class="n">getChild</span><span class="p">(</span><span class="s2">&quot;record&quot;</span><span class="p">)</span>
@@ -317,37 +333,41 @@
     <span class="k">def</span> <span class="nf">export</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">dict</span><span class="p">()</span>
         <span class="n">data</span><span class="p">[</span><span class="s2">&quot;extra&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">extra</span>
-        <span class="k">return</span> <span class="n">data</span>
+        <span class="k">return</span> <span class="n">export</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dict</span><span class="p">())</span>
 
     <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">header</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">key</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">width</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mi">3</span> <span class="o">*</span> <span class="n">os</span><span class="o">.</span><span class="n">get_terminal_size</span><span class="p">()</span><span class="o">.</span><span class="n">columns</span> <span class="o">/</span> <span class="mi">4</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">OSError</span><span class="p">:</span>
+            <span class="n">width</span> <span class="o">=</span> <span class="mi">70</span>
+        <span class="n">header</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n\t</span><span class="s2">Key:</span><span class="se">\t</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">key</span>
+        <span class="n">divider</span> <span class="o">=</span> <span class="s2">&quot;+&quot;</span> <span class="o">+</span> <span class="s2">&quot;-&quot;</span> <span class="o">*</span> <span class="p">(</span><span class="n">width</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;+&quot;</span>
+
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">extra</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
-            <span class="n">header</span> <span class="o">+=</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">extra</span><span class="p">)</span>
+            <span class="n">header</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\n\t</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">extra</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
             <span class="p">[</span><span class="n">header</span><span class="p">]</span>
+            <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;Record Features&quot;</span><span class="o">.</span><span class="n">center</span><span class="p">(</span><span class="n">width</span><span class="p">)</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()]</span>
+            <span class="o">+</span> <span class="p">[</span><span class="n">divider</span><span class="p">]</span>
             <span class="o">+</span> <span class="p">[</span>
-                <span class="p">(</span><span class="s2">&quot;</span><span class="si">%-30s%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">feature</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">results</span><span class="p">)))</span>
-                <span class="k">for</span> <span class="n">feature</span><span class="p">,</span> <span class="n">results</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">features</span><span class="p">()</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+                <span class="n">create_row</span><span class="p">(</span><span class="n">feature</span><span class="p">,</span> <span class="n">results</span><span class="p">,</span> <span class="n">width</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">feature</span><span class="p">,</span> <span class="n">results</span> <span class="ow">in</span> <span class="nb">map</span><span class="p">(</span>
+                    <span class="k">lambda</span> <span class="n">k</span><span class="p">:</span> <span class="p">(</span><span class="n">k</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">export</span><span class="p">(</span><span class="n">k</span><span class="p">[</span><span class="mi">1</span><span class="p">])),</span> <span class="bp">self</span><span class="o">.</span><span class="n">features</span><span class="p">()</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+                <span class="p">)</span>
             <span class="p">]</span>
-            <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;Predictions&quot;</span><span class="p">]</span>
             <span class="o">+</span> <span class="p">(</span>
-                <span class="p">[</span>
-                    <span class="p">(</span>
-                        <span class="s2">&quot;</span><span class="si">%-30s</span><span class="se">\n\t</span><span class="s2">value:</span><span class="si">%s</span><span class="s2">, confidence:</span><span class="si">%s</span><span class="s2">&quot;</span>
-                        <span class="o">%</span> <span class="p">(</span>
-                            <span class="n">pred</span><span class="p">,</span>
-                            <span class="nb">str</span><span class="p">(</span><span class="n">conf_val</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">]),</span>
-                            <span class="nb">str</span><span class="p">(</span><span class="n">conf_val</span><span class="p">[</span><span class="s2">&quot;confidence&quot;</span><span class="p">]),</span>
-                        <span class="p">)</span>
-                    <span class="p">)</span>
+                <span class="p">[</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="s2">&quot;Prediction&quot;</span><span class="o">.</span><span class="n">center</span><span class="p">(</span><span class="n">width</span><span class="p">)</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()]</span>
+                <span class="o">+</span> <span class="p">[</span><span class="n">divider</span><span class="p">]</span>
+                <span class="o">+</span> <span class="p">[</span>
+                    <span class="n">create_row</span><span class="p">(</span><span class="n">pred</span><span class="p">,</span> <span class="n">conf_val</span><span class="p">,</span> <span class="n">width</span><span class="p">)</span>
                     <span class="k">for</span> <span class="n">pred</span><span class="p">,</span> <span class="n">conf_val</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">prediction</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
                 <span class="p">]</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">prediction</span>
-                <span class="k">else</span> <span class="p">[</span><span class="s2">&quot;Undetermined&quot;</span><span class="p">]</span>
+                <span class="k">else</span> <span class="p">[</span><span class="s2">&quot;Prediction:    Undetermined&quot;</span><span class="o">.</span><span class="n">rjust</span><span class="p">(</span><span class="n">width</span><span class="p">)]</span>
             <span class="p">)</span>
         <span class="p">)</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span>
 
@@ -375,6 +395,9 @@
 
 <span class="sd">        Examples</span>
 <span class="sd">        --------</span>
+
+<span class="sd">        &gt;&gt;&gt; from dffml import *</span>
+<span class="sd">        &gt;&gt;&gt;</span>
 <span class="sd">        &gt;&gt;&gt; example = Record(&quot;example&quot;, data=dict(features=dict(dead=&quot;beef&quot;)))</span>
 <span class="sd">        &gt;&gt;&gt; print(example.features())</span>
 <span class="sd">        {&#39;dead&#39;: &#39;beef&#39;}</span>
@@ -409,6 +432,9 @@
 
 <span class="sd">        Examples</span>
 <span class="sd">        --------</span>
+
+<span class="sd">        &gt;&gt;&gt; from dffml import *</span>
+<span class="sd">        &gt;&gt;&gt;</span>
 <span class="sd">        &gt;&gt;&gt; example = Record(&quot;example&quot;, data=dict(features=dict(dead=&quot;beef&quot;)))</span>
 <span class="sd">        &gt;&gt;&gt;</span>
 <span class="sd">        &gt;&gt;&gt; print(example.features([&quot;dead&quot;]))</span>
@@ -440,6 +466,9 @@
 
 <span class="sd">        Examples</span>
 <span class="sd">        --------</span>
+
+<span class="sd">        &gt;&gt;&gt; from dffml import *</span>
+<span class="sd">        &gt;&gt;&gt;</span>
 <span class="sd">        &gt;&gt;&gt; example = Record(&quot;example&quot;, data=dict(features=dict(dead=&quot;beef&quot;)))</span>
 <span class="sd">        &gt;&gt;&gt; print(example.feature(&quot;dead&quot;))</span>
 <span class="sd">        beef</span>
@@ -461,6 +490,9 @@
 
 <span class="sd">        Examples</span>
 <span class="sd">        --------</span>
+
+<span class="sd">        &gt;&gt;&gt; from dffml import *</span>
+<span class="sd">        &gt;&gt;&gt;</span>
 <span class="sd">        &gt;&gt;&gt; example = Record(&quot;example&quot;, data=dict(features=dict(dead=&quot;beef&quot;)))</span>
 <span class="sd">        &gt;&gt;&gt; example.predicted(&quot;target_name&quot;, &quot;feed&quot;, 1.00)</span>
 <span class="sd">        &gt;&gt;&gt; print(example.prediction(&quot;target_name&quot;))</span>
@@ -487,6 +519,9 @@
 
 <span class="sd">        Examples</span>
 <span class="sd">        --------</span>
+
+<span class="sd">        &gt;&gt;&gt; from dffml import *</span>
+<span class="sd">        &gt;&gt;&gt;</span>
 <span class="sd">        &gt;&gt;&gt; example = Record(&quot;example&quot;, data=dict(features=dict(dead=&quot;beef&quot;)))</span>
 <span class="sd">        &gt;&gt;&gt; example.predicted(&quot;target_name&quot;, &quot;feed&quot;, 1.00)</span>
 <span class="sd">        &gt;&gt;&gt; print(example.prediction(&quot;target_name&quot;))</span>
@@ -510,6 +545,9 @@
 
 <span class="sd">        Examples</span>
 <span class="sd">        --------</span>
+
+<span class="sd">        &gt;&gt;&gt; from dffml import *</span>
+<span class="sd">        &gt;&gt;&gt;</span>
 <span class="sd">        &gt;&gt;&gt; example = Record(&quot;example&quot;, data=dict(features=dict(dead=&quot;beef&quot;)))</span>
 <span class="sd">        &gt;&gt;&gt; example.predicted(&quot;target_name1&quot;, &quot;feed&quot;, 1.00)</span>
 <span class="sd">        &gt;&gt;&gt; example.predicted(&quot;target_name2&quot;, &quot;deed&quot;, 0.97)</span>
@@ -536,7 +574,7 @@
 
   <div role="contentinfo">
     <p>
-        &#169; Copyright 2019, Intel.
+        &#169; Copyright 2017 - 2021, Intel.
 
     </p>
   </div>

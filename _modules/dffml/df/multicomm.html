@@ -1,0 +1,391 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>dffml.df.multicomm &mdash; DFFML 0.4.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/tabs.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/tabs.js"></script>
+        <script src="../../../_static/copybutton.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="author" title="About these documents" href="../../../about.html" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> DFFML
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.4.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Introduction</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../concepts/index.html">Concepts</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Usage</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../quickstart/model.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/index.html">Examples</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../plugins/index.html">Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../cli.html">Command Line</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../plugins/service/http/index.html">HTTP API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../troubleshooting.html">Troubleshooting</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Subprojects</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../shouldi.html">shouldi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../swportal.html">Software Portal</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Community</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/intel/dffml">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://intel.github.io/dffml/master/">Master Branch Docs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../publications.html">Publications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contact.html">Contact Us</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributing/index.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../news/index.html">News</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../changelog.html">Changelog</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">DFFML</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>dffml.df.multicomm</li>
+    
+    
+
+
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+
+
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for dffml.df.multicomm</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">abc</span>
+<span class="kn">import</span> <span class="nn">pathlib</span>
+<span class="kn">import</span> <span class="nn">contextlib</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Dict</span>
+
+<span class="kn">from</span> <span class="nn">..util.data</span> <span class="kn">import</span> <span class="n">merge</span>
+<span class="kn">from</span> <span class="nn">..util.entrypoint</span> <span class="kn">import</span> <span class="n">base_entry_point</span>
+<span class="kn">from</span> <span class="nn">..configloader.configloader</span> <span class="kn">import</span> <span class="n">BaseConfigLoader</span>
+<span class="kn">from</span> <span class="nn">.base</span> <span class="kn">import</span> <span class="n">BaseDataFlowObjectContext</span><span class="p">,</span> <span class="n">BaseDataFlowObject</span>
+<span class="kn">from</span> <span class="nn">.types</span> <span class="kn">import</span> <span class="n">DataFlow</span>
+
+<span class="c1"># Filetypes to ignore (don&#39;t try to load as a config)</span>
+<span class="n">IGNORE</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;swp&quot;</span><span class="p">]</span>
+
+
+<div class="viewcode-block" id="MultiCommInAtomicMode"><a class="viewcode-back" href="../../../api/df/multicomm.html#dffml.df.multicomm.MultiCommInAtomicMode">[docs]</a><span class="k">class</span> <span class="nc">MultiCommInAtomicMode</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Raised when registration is locked.</span>
+<span class="sd">    &quot;&quot;&quot;</span></div>
+
+
+<div class="viewcode-block" id="NoConfigsForMultiComm"><a class="viewcode-back" href="../../../api/df/multicomm.html#dffml.df.multicomm.NoConfigsForMultiComm">[docs]</a><span class="k">class</span> <span class="nc">NoConfigsForMultiComm</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Raised when no configs are found for the loaded type of multicomm</span>
+<span class="sd">    &quot;&quot;&quot;</span></div>
+
+
+<div class="viewcode-block" id="NoDataFlows"><a class="viewcode-back" href="../../../api/df/multicomm.html#dffml.df.multicomm.NoDataFlows">[docs]</a><span class="k">class</span> <span class="nc">NoDataFlows</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Raised when no dataflows are found</span>
+<span class="sd">    &quot;&quot;&quot;</span></div>
+
+
+<div class="viewcode-block" id="NoDataFlowsForConfig"><a class="viewcode-back" href="../../../api/df/multicomm.html#dffml.df.multicomm.NoDataFlowsForConfig">[docs]</a><span class="k">class</span> <span class="nc">NoDataFlowsForConfig</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Raised when no dataflows are found for a channel config</span>
+<span class="sd">    &quot;&quot;&quot;</span></div>
+
+
+<div class="viewcode-block" id="BaseCommChannelConfig"><a class="viewcode-back" href="../../../api/df/multicomm.html#dffml.df.multicomm.BaseCommChannelConfig">[docs]</a><span class="k">class</span> <span class="nc">BaseCommChannelConfig</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Config structure for a communication channel. It MUST include a ``dataflow``</span>
+<span class="sd">    parameter.</span>
+<span class="sd">    &quot;&quot;&quot;</span></div>
+
+
+<div class="viewcode-block" id="BaseMultiCommContext"><a class="viewcode-back" href="../../../api/df/multicomm.html#dffml.df.multicomm.BaseMultiCommContext">[docs]</a><span class="k">class</span> <span class="nc">BaseMultiCommContext</span><span class="p">(</span><span class="n">BaseDataFlowObjectContext</span><span class="p">,</span> <span class="n">abc</span><span class="o">.</span><span class="n">ABC</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Abstract Base Class for mutlicomm contexts</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">:</span> <span class="s2">&quot;BaseMultiComm&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parent</span> <span class="o">=</span> <span class="n">parent</span>
+
+<div class="viewcode-block" id="BaseMultiCommContext.register"><a class="viewcode-back" href="../../../api/df/multicomm.html#dffml.df.multicomm.BaseMultiCommContext.register">[docs]</a>    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">register</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">BaseCommChannelConfig</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Register a communication channel with the multicomm context.</span>
+<span class="sd">        &quot;&quot;&quot;</span></div>
+
+<div class="viewcode-block" id="BaseMultiCommContext.register_config"><a class="viewcode-back" href="../../../api/df/multicomm.html#dffml.df.multicomm.BaseMultiCommContext.register_config">[docs]</a>    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
+    <span class="k">def</span> <span class="nf">register_config</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BaseCommChannelConfig</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the config object to be passed to the resigter method</span>
+<span class="sd">        &quot;&quot;&quot;</span></div>
+
+    <span class="k">def</span> <span class="nf">_iter_configs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">directory</span><span class="p">:</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Yield pathlib.Path objects for each relevant config file. Ignore some</span>
+<span class="sd">        filetypes.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">directory</span><span class="o">.</span><span class="n">rglob</span><span class="p">(</span><span class="s2">&quot;*&quot;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">path</span><span class="o">.</span><span class="n">suffix</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="ow">in</span> <span class="n">IGNORE</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="k">yield</span> <span class="n">path</span>
+
+<div class="viewcode-block" id="BaseMultiCommContext.register_directory"><a class="viewcode-back" href="../../../api/df/multicomm.html#dffml.df.multicomm.BaseMultiCommContext.register_directory">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">register_directory</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">directory</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Register all configs found in a directory</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Get the config class for this multicomm</span>
+        <span class="n">config_cls</span><span class="p">:</span> <span class="n">BaseCommChannelConfig</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">register_config</span><span class="p">()</span>
+        <span class="c1"># For entering ConfigLoader contexts</span>
+        <span class="k">async</span> <span class="k">with</span> <span class="n">contextlib</span><span class="o">.</span><span class="n">AsyncExitStack</span><span class="p">()</span> <span class="k">as</span> <span class="n">exit_stack</span><span class="p">:</span>
+            <span class="c1"># Configs for this multicomm</span>
+            <span class="n">mc_configs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="n">Dict</span><span class="p">,</span> <span class="n">BaseCommChannelConfig</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="n">df_configs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Tuple</span><span class="p">,</span> <span class="n">DataFlow</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="c1"># Convert to pathlib object if not already</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">directory</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">):</span>
+                <span class="n">directory</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">directory</span><span class="p">)</span>
+            <span class="c1"># Load config loaders we&#39;ll need as we see their file types</span>
+            <span class="n">parsers</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">BaseConfigLoader</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="c1"># Grab all files containing BaseCommChannelConfigs. Each entry is a</span>
+            <span class="c1"># BaseCommChannelConfig. However, we don&#39;t have its dataflow</span>
+            <span class="c1"># property. Since that is stored in a separate directory</span>
+            <span class="n">mc_dir</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">directory</span><span class="p">,</span> <span class="s2">&quot;mc&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ENTRY_POINT_LABEL</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">mc_dir</span><span class="o">.</span><span class="n">is_dir</span><span class="p">():</span>
+                <span class="k">raise</span> <span class="n">NoConfigsForMultiComm</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;In </span><span class="si">{</span><span class="n">mc_dir</span><span class="si">!s}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_iter_configs</span><span class="p">(</span><span class="n">mc_dir</span><span class="p">):</span>
+                <span class="n">config_path</span><span class="p">,</span> <span class="n">config</span> <span class="o">=</span> <span class="k">await</span> <span class="n">BaseConfigLoader</span><span class="o">.</span><span class="n">load_file</span><span class="p">(</span>
+                    <span class="n">parsers</span><span class="p">,</span> <span class="n">exit_stack</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">base_dir</span><span class="o">=</span><span class="n">mc_dir</span>
+                <span class="p">)</span>
+                <span class="n">mc_configs</span><span class="p">[</span><span class="n">config_path</span><span class="p">]</span> <span class="o">=</span> <span class="n">config</span>
+            <span class="c1"># Grab all files containing DataFlows</span>
+            <span class="n">df_dir</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">directory</span><span class="p">,</span> <span class="s2">&quot;df&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">df_dir</span><span class="o">.</span><span class="n">is_dir</span><span class="p">():</span>
+                <span class="k">raise</span> <span class="n">NoDataFlows</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;In </span><span class="si">{</span><span class="n">df_dir</span><span class="si">!s}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="c1"># Load all the DataFlows</span>
+            <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_iter_configs</span><span class="p">(</span><span class="n">df_dir</span><span class="p">):</span>
+                <span class="n">config_path</span><span class="p">,</span> <span class="n">config</span> <span class="o">=</span> <span class="k">await</span> <span class="n">BaseConfigLoader</span><span class="o">.</span><span class="n">load_file</span><span class="p">(</span>
+                    <span class="n">parsers</span><span class="p">,</span> <span class="n">exit_stack</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">base_dir</span><span class="o">=</span><span class="n">df_dir</span>
+                <span class="p">)</span>
+                <span class="n">df_configs</span><span class="p">[</span><span class="n">config_path</span><span class="p">]</span> <span class="o">=</span> <span class="n">config</span>
+                <span class="c1"># Now that we have all the dataflow, add it to its respective</span>
+                <span class="c1"># multicomm config</span>
+                <span class="n">mc_configs</span><span class="p">[</span><span class="n">config_path</span><span class="p">][</span><span class="s2">&quot;dataflow&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">config</span>
+            <span class="c1"># Load all overrides</span>
+            <span class="n">override_dir</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">directory</span><span class="p">,</span> <span class="s2">&quot;override&quot;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_iter_configs</span><span class="p">(</span><span class="n">override_dir</span><span class="p">):</span>
+                <span class="n">config_path</span><span class="p">,</span> <span class="n">config</span> <span class="o">=</span> <span class="k">await</span> <span class="n">BaseConfigLoader</span><span class="o">.</span><span class="n">load_file</span><span class="p">(</span>
+                    <span class="n">parsers</span><span class="p">,</span> <span class="n">exit_stack</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">base_dir</span><span class="o">=</span><span class="n">override_dir</span>
+                <span class="p">)</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">config_path</span> <span class="ow">in</span> <span class="n">df_configs</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+                        <span class="s2">&quot;Overriding non-existent DataFlow: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">config_path</span>
+                    <span class="p">)</span>
+                    <span class="n">df_configs</span><span class="p">[</span><span class="n">config_path</span><span class="p">]</span> <span class="o">=</span> <span class="n">config</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">merge</span><span class="p">(</span><span class="n">df_configs</span><span class="p">[</span><span class="n">config_path</span><span class="p">],</span> <span class="n">config</span><span class="p">)</span>
+            <span class="c1"># Instantiate all configs and register them</span>
+            <span class="k">for</span> <span class="n">config_path</span> <span class="ow">in</span> <span class="n">mc_configs</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="c1"># Assign dataflow to its respective channel config</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">config_path</span> <span class="ow">in</span> <span class="n">df_configs</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="n">NoDataFlowsForConfig</span><span class="p">(</span><span class="n">config_path</span><span class="p">)</span>
+                <span class="n">mc_configs</span><span class="p">[</span><span class="n">config_path</span><span class="p">][</span><span class="s2">&quot;dataflow&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_configs</span><span class="p">[</span><span class="n">config_path</span><span class="p">]</span>
+                <span class="c1"># Finally, turn the dict into an object and register it</span>
+                <span class="n">mc_configs</span><span class="p">[</span><span class="n">config_path</span><span class="p">]</span> <span class="o">=</span> <span class="n">config_cls</span><span class="o">.</span><span class="n">_fromdict</span><span class="p">(</span>
+                    <span class="o">**</span><span class="n">mc_configs</span><span class="p">[</span><span class="n">config_path</span><span class="p">]</span>
+                <span class="p">)</span>
+                <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">mc_configs</span><span class="p">[</span><span class="n">config_path</span><span class="p">])</span></div></div>
+
+
+<div class="viewcode-block" id="BaseMultiComm"><a class="viewcode-back" href="../../../api/df/multicomm.html#dffml.df.multicomm.BaseMultiComm">[docs]</a><span class="nd">@base_entry_point</span><span class="p">(</span><span class="s2">&quot;dffml.mutlicomm&quot;</span><span class="p">,</span> <span class="s2">&quot;mc&quot;</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">BaseMultiComm</span><span class="p">(</span><span class="n">BaseDataFlowObject</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Abstract Base Class for mutlicomms</span>
+<span class="sd">    &quot;&quot;&quot;</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2017 - 2021, Intel.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

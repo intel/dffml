@@ -127,6 +127,8 @@ The ``"confidence"`` value is determined by the underlying model implementation.
 The scikit linear regression model just reports whatever the accuracy was on the
 test dataset as the confidence.
 
+.. _quickstart_command_line_flags_explained:
+
 Command Line Flags Explained
 ++++++++++++++++++++++++++++
 
@@ -204,6 +206,9 @@ The ouput should be as follows
     Accuracy: 1.0
     {'Years': 6, 'Expertise': 13, 'Trust': 0.7, 'Salary': 70.0}
     {'Years': 7, 'Expertise': 15, 'Trust': 0.8, 'Salary': 80.0}
+
+Check out the plugin docs for :doc:`/plugins/dffml_model` for usage of other
+models. The :doc:`API </api/high_level>` docs may also be useful.
 
 Data Sources
 ------------

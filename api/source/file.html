@@ -7,12 +7,13 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>File Based Sources &mdash; DFFML 0.3.7 documentation</title>
+  <title>File Based Sources &mdash; DFFML 0.4.0 documentation</title>
   
 
   
   <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/tabs.css" type="text/css" />
 
   
   
@@ -40,8 +41,8 @@
     <link rel="author" title="About these documents" href="../../about.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Databases" href="../db/index.html" />
-    <link rel="prev" title="Memory Source" href="memory.html" /> 
+    <link rel="next" title="Source Json" href="json.html" />
+    <link rel="prev" title="Source Csv" href="csv.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -65,7 +66,7 @@
             
             
               <div class="version">
-                0.3.7
+                0.4.0
               </div>
             
           
@@ -96,11 +97,11 @@
 <li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../concepts/index.html">Concepts</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Examples</span></p>
+<p class="caption"><span class="caption-text">Usage</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../quickstart/model.html">Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../usage/index.html">Use Cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples/index.html">Examples</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Reference</span></p>
 <ul class="current">
@@ -108,34 +109,60 @@
 <li class="toctree-l1"><a class="reference internal" href="../../cli.html">Command Line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../plugins/service/http/index.html">HTTP API</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">API Reference</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="../high_level.html">High Level</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../base.html">Base</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../df/index.html">Data Flow</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../feature.html">Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../version.html">Version</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../noasync.html">High Level (noasync)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../record.html">Record</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../model/index.html">Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../high_level.html">High Level</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plugins.html">Plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../base.html">Base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../log.html">Log</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../port/index.html">Port</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="index.html">Sources</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="base.html">Base Source</a></li>
-<li class="toctree-l3"><a class="reference internal" href="memory.html">Memory Source</a></li>
+<li class="toctree-l3"><a class="reference internal" href="source.html">Source Source</a></li>
+<li class="toctree-l3"><a class="reference internal" href="idx3.html">Source Idx3</a></li>
+<li class="toctree-l3"><a class="reference internal" href="df.html">Source Df</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ini.html">Source Ini</a></li>
+<li class="toctree-l3"><a class="reference internal" href="csv.html">Source Csv</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">File Based Sources</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#module-dffml.source.json">JSON</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#module-dffml.source.csv">CSV</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#module-dffml.source.file">Generic File Based</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="json.html">Source Json</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dir.html">Source Dir</a></li>
+<li class="toctree-l3"><a class="reference internal" href="op.html">Source Op</a></li>
+<li class="toctree-l3"><a class="reference internal" href="db.html">Source Db</a></li>
+<li class="toctree-l3"><a class="reference internal" href="idx1.html">Source Idx1</a></li>
+<li class="toctree-l3"><a class="reference internal" href="memory.html">Memory Source</a></li>
+<li class="toctree-l3"><a class="reference internal" href="log.html">Source Log</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="../configloader/index.html">Configloader</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../db/index.html">Databases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../operation/index.html">Operation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../model/index.html">Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../util/index.html">Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../df/index.html">Data Flow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../secret/index.html">Secrets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cli/index.html">Cli</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../feature/index.html">Feature</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../service/index.html">Service</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../../troubleshooting.html">Troubleshooting</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Subprojects</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../shouldi.html">shouldi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../swportal.html">Software Portal</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Community</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/intel/dffml">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://intel.github.io/dffml/master/">Master Branch Docs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../publications.html">Publications</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../contact.html">Contact Us</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../contributing/index.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../news/index.html">News</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../changelog.html">Changelog</a></li>
 </ul>
 
@@ -192,6 +219,8 @@
       <li>File Based Sources</li>
     
     
+
+
       <li class="wy-breadcrumbs-aside">
         
           
@@ -202,6 +231,8 @@
         
       </li>
     
+
+
   </ul>
 
   
@@ -212,90 +243,34 @@
             
   <div class="section" id="file-based-sources">
 <h1>File Based Sources<a class="headerlink" href="#file-based-sources" title="Permalink to this headline">¶</a></h1>
-<p><cite>FileSource</cite>: (Inherits Source class) FileSource class detects the type of source, opens it and calls abstract methods <cite>load_fd</cite> and <cite>dump_fd</cite> for parsing and dumping data in streams respectively.</p>
+<p><code class="docutils literal notranslate"><span class="pre">FileSource</span></code>: (Inherits Source class) FileSource class detects the type of
+source, opens it and calls abstract methods <code class="docutils literal notranslate"><span class="pre">load_fd</span></code> and <code class="docutils literal notranslate"><span class="pre">dump_fd</span></code> for
+parsing and dumping data in streams respectively.</p>
 <p>Supported Compressions:</p>
 <ol class="arabic simple">
-<li><p><cite>gzip</cite></p></li>
-<li><p><cite>bz2</cite></p></li>
-<li><p><cite>lzma</cite></p></li>
-<li><p><cite>xz</cite></p></li>
-<li><p><cite>zip</cite></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">gzip</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">bz2</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lzma</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">xz</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">zip</span></code></p></li>
 </ol>
-<p># Data Sources</p>
-<p>DFFML supports data sources in <cite>CSV</cite> and <cite>JSON</cite> formats with respective methods defined in the following classes:</p>
-<ol class="arabic simple">
-<li><p><cite>CSVSource</cite>: (Inherits FileSource and MemorySource) Uses a CSV file as the source of the record feature data. Abstract functions <cite>load_fd</cite> and <cite>dump_fd</cite> are defined.</p></li>
-<li><p><cite>JSONSource</cite>: (Inherits FileSource and MemorySource) Uses a JSON file as the source of the record feature data. Abstract functions <cite>load_fd</cite> and <cite>dump_fd</cite> are defined.</p></li>
+<p>DFFML supports data sources in <code class="docutils literal notranslate"><span class="pre">CSV</span></code> and <code class="docutils literal notranslate"><span class="pre">JSON</span></code> formats with respective
+methods defined in the following classes:</p>
+<ol class="arabic simple" start="2">
+<li><p><a class="reference internal" href="csv.html"><span class="doc">CSVSource</span></a>: (Inherits FileSource and MemorySource) Uses a CSV
+file as the source of the record feature data. Abstract functions <code class="docutils literal notranslate"><span class="pre">load_fd</span></code>
+and <code class="docutils literal notranslate"><span class="pre">dump_fd</span></code> are defined.</p></li>
 </ol>
-<div class="section" id="module-dffml.source.json">
-<span id="json"></span><h2>JSON<a class="headerlink" href="#module-dffml.source.json" title="Permalink to this headline">¶</a></h2>
-<dl class="py class">
-<dt id="dffml.source.json.JSONSource">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">dffml.source.json.</span></code><code class="sig-name descname"><span class="pre">JSONSource</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Type</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../base.html#dffml.base.BaseConfig" title="dffml.base.BaseConfig"><span class="pre">dffml.base.BaseConfig</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/json.html#JSONSource"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.source.json.JSONSource" title="Permalink to this definition">¶</a></dt>
-<dd><p>JSONSource reads and write from a JSON file on open / close. Otherwise
-stored in memory.</p>
-<dl class="py attribute">
-<dt id="dffml.source.json.JSONSource.CONFIG">
-<code class="sig-name descname"><span class="pre">CONFIG</span></code><a class="headerlink" href="#dffml.source.json.JSONSource.CONFIG" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <a class="reference internal" href="#dffml.source.json.JSONSourceConfig" title="dffml.source.json.JSONSourceConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">dffml.source.json.JSONSourceConfig</span></code></a></p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt id="dffml.source.json.JSONSourceConfig">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">dffml.source.json.</span></code><code class="sig-name descname"><span class="pre">JSONSourceConfig</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">tag</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'untagged'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">readwrite</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><span class="pre">bool</span></a></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allowempty</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><span class="pre">bool</span></a></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/json.html#JSONSourceConfig"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.source.json.JSONSourceConfig" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py class">
-<dt id="dffml.source.json.OpenJSONFile">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">dffml.source.json.</span></code><code class="sig-name descname"><span class="pre">OpenJSONFile</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span> </span><span class="pre">Dict</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">active</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">lock</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">asyncio.locks.Lock</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/json.html#OpenJSONFile"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.source.json.OpenJSONFile" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</div>
-<div class="section" id="module-dffml.source.csv">
-<span id="csv"></span><h2>CSV<a class="headerlink" href="#module-dffml.source.csv" title="Permalink to this headline">¶</a></h2>
-<p>Loads records from a csv file, using columns as features</p>
-<dl class="py class">
-<dt id="dffml.source.csv.CSVSource">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">dffml.source.csv.</span></code><code class="sig-name descname"><span class="pre">CSVSource</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Type</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../base.html#dffml.base.BaseConfig" title="dffml.base.BaseConfig"><span class="pre">dffml.base.BaseConfig</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/csv.html#CSVSource"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.source.csv.CSVSource" title="Permalink to this definition">¶</a></dt>
-<dd><p>Uses a CSV file as the source of record feature data</p>
-<dl class="py attribute">
-<dt id="dffml.source.csv.CSVSource.CONFIG">
-<code class="sig-name descname"><span class="pre">CONFIG</span></code><a class="headerlink" href="#dffml.source.csv.CSVSource.CONFIG" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <a class="reference internal" href="#dffml.source.csv.CSVSourceConfig" title="dffml.source.csv.CSVSourceConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">dffml.source.csv.CSVSourceConfig</span></code></a></p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="dffml.source.csv.CSVSource.dump_fd">
-<em class="property"><span class="pre">async</span> </em><code class="sig-name descname"><span class="pre">dump_fd</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fd</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/csv.html#CSVSource.dump_fd"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.source.csv.CSVSource.dump_fd" title="Permalink to this definition">¶</a></dt>
-<dd><p>Dumps data into a CSV stream</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="dffml.source.csv.CSVSource.load_fd">
-<em class="property"><span class="pre">async</span> </em><code class="sig-name descname"><span class="pre">load_fd</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fd</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/csv.html#CSVSource.load_fd"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.source.csv.CSVSource.load_fd" title="Permalink to this definition">¶</a></dt>
-<dd><p>Parses a CSV stream into Record instances</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt id="dffml.source.csv.CSVSourceConfig">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">dffml.source.csv.</span></code><code class="sig-name descname"><span class="pre">CSVSourceConfig</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">tag</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'untagged'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">readwrite</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><span class="pre">bool</span></a></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allowempty</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><span class="pre">bool</span></a></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'key'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tagcol</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'tag'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loadfiles</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/csv.html#CSVSourceConfig"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.source.csv.CSVSourceConfig" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py class">
-<dt id="dffml.source.csv.OpenCSVFile">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">dffml.source.csv.</span></code><code class="sig-name descname"><span class="pre">OpenCSVFile</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">write_out</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">active</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">lock</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">asyncio.locks.Lock</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">write_back_key</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><span class="pre">bool</span></a></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">write_back_tag</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><span class="pre">bool</span></a></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/csv.html#OpenCSVFile"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.source.csv.OpenCSVFile" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</div>
+<ol class="arabic simple" start="2">
+<li><p><a class="reference internal" href="json.html"><span class="doc">JSONSource</span></a>: (Inherits FileSource and MemorySource) Uses a JSON
+file as the source of the record feature data. Abstract functions <code class="docutils literal notranslate"><span class="pre">load_fd</span></code>
+and <code class="docutils literal notranslate"><span class="pre">dump_fd</span></code> are defined.</p></li>
+</ol>
 <div class="section" id="module-dffml.source.file">
 <span id="generic-file-based"></span><h2>Generic File Based<a class="headerlink" href="#module-dffml.source.file" title="Permalink to this headline">¶</a></h2>
 <dl class="py class">
 <dt id="dffml.source.file.BinaryFileSource">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">dffml.source.file.</span></code><code class="sig-name descname"><span class="pre">BinaryFileSource</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Type</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../base.html#dffml.base.BaseConfig" title="dffml.base.BaseConfig"><span class="pre">dffml.base.BaseConfig</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/file.html#BinaryFileSource"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.source.file.BinaryFileSource" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">dffml.source.file.</span></code><code class="sig-name descname"><span class="pre">BinaryFileSource</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/file.html#BinaryFileSource"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.source.file.BinaryFileSource" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="py attribute">
 <dt id="dffml.source.file.BinaryFileSource.CONFIG">
 <code class="sig-name descname"><span class="pre">CONFIG</span></code><a class="headerlink" href="#dffml.source.file.BinaryFileSource.CONFIG" title="Permalink to this definition">¶</a></dt>
@@ -311,7 +286,7 @@ stored in memory.</p>
 
 <dl class="py class">
 <dt id="dffml.source.file.FileSource">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">dffml.source.file.</span></code><code class="sig-name descname"><span class="pre">FileSource</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Type</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../base.html#dffml.base.BaseConfig" title="dffml.base.BaseConfig"><span class="pre">dffml.base.BaseConfig</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/file.html#FileSource"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.source.file.FileSource" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">dffml.source.file.</span></code><code class="sig-name descname"><span class="pre">FileSource</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/file.html#FileSource"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.source.file.FileSource" title="Permalink to this definition">¶</a></dt>
 <dd><p>FileSource reads and write from a file on open / close.</p>
 <dl class="py attribute">
 <dt id="dffml.source.file.FileSource.CONFIG">
@@ -335,15 +310,15 @@ stored in memory.</p>
           </div>
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="../db/index.html" class="btn btn-neutral float-right" title="Databases" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-        <a href="memory.html" class="btn btn-neutral float-left" title="Memory Source" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="json.html" class="btn btn-neutral float-right" title="Source Json" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="csv.html" class="btn btn-neutral float-left" title="Source Csv" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        &#169; Copyright 2019, Intel.
+        &#169; Copyright 2017 - 2021, Intel.
 
     </p>
   </div>

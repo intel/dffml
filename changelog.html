@@ -7,12 +7,13 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Changelog &mdash; DFFML 0.3.7 documentation</title>
+  <title>Changelog &mdash; DFFML 0.4.0 documentation</title>
   
 
   
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/tabs.css" type="text/css" />
 
   
   
@@ -40,7 +41,7 @@
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="prev" title="Maintainer Docs" href="contributing/maintainers.html" /> 
+    <link rel="prev" title="0.4.0 Alpha Release" href="news/0_4_0_alpha_release.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -64,7 +65,7 @@
             
             
               <div class="version">
-                0.3.7
+                0.4.0
               </div>
             
           
@@ -95,11 +96,11 @@
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="concepts/index.html">Concepts</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Examples</span></p>
+<p class="caption"><span class="caption-text">Usage</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="quickstart/model.html">Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorials/index.html">Tutorials</a></li>
-<li class="toctree-l1"><a class="reference internal" href="usage/index.html">Use Cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/index.html">Examples</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Reference</span></p>
 <ul>
@@ -107,90 +108,105 @@
 <li class="toctree-l1"><a class="reference internal" href="cli.html">Command Line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="plugins/service/http/index.html">HTTP API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Subprojects</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="shouldi.html">shouldi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="swportal.html">Software Portal</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Community</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference external" href="https://github.com/intel/dffml">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://intel.github.io/dffml/master/">Master Branch Docs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="publications.html">Publications</a></li>
 <li class="toctree-l1"><a class="reference internal" href="contact.html">Contact Us</a></li>
 <li class="toctree-l1"><a class="reference internal" href="contributing/index.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="news/index.html">News</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Changelog</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#id1">[0.3.7] - 2020-04-14</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id1">[0.4.0] - 2021-02-18</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#added">Added</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#changed">Changed</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#fixed">Fixed</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#removed">Removed</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#id2">[0.3.6] - 2020-04-04</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id2">[0.3.7] - 2020-04-14</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#id3">Added</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id4">Fixed</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id5">Changed</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id4">Changed</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id5">Fixed</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id6">Removed</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#id6">[0.3.5] - 2020-03-10</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#id7">Added</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id8">Changed</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id7">[0.3.6] - 2020-04-04</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id8">Added</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id9">Fixed</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id10">Changed</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#id9">[0.3.4] - 2020-02-28</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#id10">Added</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id11">Fixed</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id12">Changed</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id13">Removed</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id11">[0.3.5] - 2020-03-10</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id12">Added</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id13">Changed</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#id14">[0.3.3] - 2020-02-10</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id14">[0.3.4] - 2020-02-28</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#id15">Added</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id16">Changed</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id17">Fixed</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id16">Fixed</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id17">Changed</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#id18">Removed</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#id19">[0.3.2] - 2020-01-03</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id19">[0.3.3] - 2020-02-10</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#id20">Added</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#id21">Changed</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#id22">Fixed</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id23">Removed</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#id23">[0.3.1] - 2019-12-12</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#id24">Added</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id25">Changed</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id26">Fixed</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id27">Removed</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id24">[0.3.2] - 2020-01-03</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id25">Added</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id26">Changed</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id27">Fixed</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#id28">[0.3.0] - 2019-10-26</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id28">[0.3.1] - 2019-12-12</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#id29">Added</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#id30">Changed</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#id31">Fixed</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#id32">Removed</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#id33">[0.2.1] - 2019-06-07</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id33">[0.3.0] - 2019-10-26</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#id34">Added</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#id35">Changed</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#id36">Fixed</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id37">Removed</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#id37">[0.2.0] - 2019-05-23</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#id38">Added</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id39">Changed</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id40">Fixed</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id38">[0.2.1] - 2019-06-07</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id39">Added</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id40">Changed</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id41">Fixed</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#id41">[0.1.2] - 2019-03-29</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#id42">Added</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id43">Changed</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id44">Fixed</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id42">[0.2.0] - 2019-05-23</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id43">Added</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id44">Changed</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id45">Fixed</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#id45">[0.1.1] - 2019-03-08</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#id46">Changed</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id46">[0.1.2] - 2019-03-29</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id47">Added</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id48">Changed</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id49">Fixed</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#id47">[0.1.0] - 2019-03-07</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#id48">Added</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id50">[0.1.1] - 2019-03-08</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id51">Changed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id52">[0.1.0] - 2019-03-07</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id53">Added</a></li>
 </ul>
 </li>
 </ul>
@@ -246,6 +262,8 @@
       <li>Changelog</li>
     
     
+
+
       <li class="wy-breadcrumbs-aside">
         
           
@@ -256,6 +274,8 @@
         
       </li>
     
+
+
   </ul>
 
   
@@ -270,9 +290,152 @@
 <p>The format is based on <a class="reference external" href="https://keepachangelog.com/en/1.0.0/">Keep a Changelog</a>,
 and this project adheres to <a class="reference external" href="https://semver.org/spec/v2.0.0.html">Semantic Versioning</a>.</p>
 <div class="section" id="id1">
-<h2>[0.3.7] - 2020-04-14<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<h2>[0.4.0] - 2021-02-18<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="added">
 <h3>Added<a class="headerlink" href="#added" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>New model for Anomaly Detection</p></li>
+<li><p>Ablity to specify maximum number of contexts running at a time</p></li>
+<li><p>CLI and Python example usage of Custom Neural Network</p></li>
+<li><p>PyTorch loss function entrypoint style loading</p></li>
+<li><p>Custom Neural Network, last layer support for pre-trained models</p></li>
+<li><p>Example usage of sklearn operations</p></li>
+<li><p>Example Flower17 species image classification</p></li>
+<li><p>Configloading ablity from CLI using “&#64;” before filename</p></li>
+<li><p>Docstrings and doctestable example for DataFlowSource</p></li>
+<li><p>XGBoost Regression Model</p></li>
+<li><p>Pre-Trained PyTorch torchvision Models</p></li>
+<li><p>Spacy model for NER</p></li>
+<li><p>Ability to rename outputs using GetSingle</p></li>
+<li><p>Tutorial for using NLP operations with models</p></li>
+<li><p>Operations plugin for NLP wrapping spacy and scikit functions</p></li>
+<li><p>Support for default value in a Definition</p></li>
+<li><p>Source for reading images in directories</p></li>
+<li><p>Operations plugin for image preprocessing</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-pretty</span></code> flag to <code class="docutils literal notranslate"><span class="pre">list</span> <span class="pre">records</span></code> and <code class="docutils literal notranslate"><span class="pre">predict</span></code> commands</p></li>
+<li><p>daal4py based linear regression model</p></li>
+<li><p>DataFlowSource can take a config file as dataflow via the CLI.</p></li>
+<li><p>Support for link on conditions in dataflow diagrams</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">edit</span> <span class="pre">all</span></code> command to edit records in bulk</p></li>
+<li><p>Support for Tensorflow 2.2</p></li>
+<li><p>Vowpal Wabbit Models</p></li>
+<li><p>Python 3.8 support</p></li>
+<li><p>binsec branch to <code class="docutils literal notranslate"><span class="pre">operations/binsec</span></code></p></li>
+<li><p>Doctestable example for <code class="docutils literal notranslate"><span class="pre">model_predict</span></code> operation.</p></li>
+<li><p>Doctestable examples to <code class="docutils literal notranslate"><span class="pre">operation/mapping.py</span></code></p></li>
+<li><p>shouldi got an operation to run Dependency-check on java code.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">load</span></code> and <code class="docutils literal notranslate"><span class="pre">run</span></code> functions in high level API</p></li>
+<li><p>Doctestable examples to <code class="docutils literal notranslate"><span class="pre">db</span></code> operations.</p></li>
+<li><p>Source for parsing <code class="docutils literal notranslate"><span class="pre">.ini</span></code> file formats</p></li>
+<li><p>Tests for noasync high level API.</p></li>
+<li><p>Tests for load and save functions in high level API.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Operation</span></code> inputs and ouputs default to empty <code class="docutils literal notranslate"><span class="pre">dict</span></code> if not given.</p></li>
+<li><p>Ability to export any object with <code class="docutils literal notranslate"><span class="pre">dffml</span> <span class="pre">service</span> <span class="pre">dev</span> <span class="pre">export</span></code></p></li>
+<li><p>Complete example for dataflow run cli command</p></li>
+<li><p>Tests for default configs instantiation.</p></li>
+<li><p>Example ffmpeg operation.</p></li>
+<li><p>Operations to deploy docker container on receving github webhook.</p></li>
+<li><p>New use case <code class="docutils literal notranslate"><span class="pre">Redeploying</span> <span class="pre">dataflow</span> <span class="pre">on</span> <span class="pre">webhook</span></code> in docs.</p></li>
+<li><p>Documentation for creating Source for new File types taking <code class="docutils literal notranslate"><span class="pre">.ini</span></code> as an example.</p></li>
+<li><p>New input modes, output modes for HTTP API dataflow registration.</p></li>
+<li><p>Usage example for tfhub text classifier.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">AssociateDefinition</span></code> output operation to map definition names to values
+produced as a result of passing Inputs with those definitions to operations.</p></li>
+<li><p>DataFlows now have a syntax for providing a set of definitions that will
+override the operations default definition for a given input.</p></li>
+<li><p>Source which modifies record features as they are read from another source.
+Useful for modifying datasets as they are used with ML commands or editing
+in bulk.</p></li>
+<li><p>Auto create Definition for the <code class="docutils literal notranslate"><span class="pre">op</span></code> when they might have a spec, subspec.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">shouldi</span> <span class="pre">use</span></code> command which detects the language of the codebase given via
+path to directory or Git repo URL and runs the appropriate static analyzers.</p></li>
+<li><p>Support for entrypoint style loading of operations and seed inputs in <code class="docutils literal notranslate"><span class="pre">dataflow</span> <span class="pre">create</span></code>.</p></li>
+<li><p>Definition for output of the function that <code class="docutils literal notranslate"><span class="pre">op</span></code> wraps.</p></li>
+<li><p>Expose high level load, run and save functions to noasync.</p></li>
+<li><p>Operation to verify secret for GitHub webhook.</p></li>
+<li><p>Option to modify flow and add config in <code class="docutils literal notranslate"><span class="pre">dataflow</span> <span class="pre">create</span></code>.</p></li>
+<li><p>Ability to use a function as a data source via the <code class="docutils literal notranslate"><span class="pre">op</span></code> source</p></li>
+<li><p>Make every model’s directory property required</p></li>
+<li><p>New model AutoClassifierModel based on <code class="docutils literal notranslate"><span class="pre">AutoSklearn</span></code>.</p></li>
+<li><p>New model AutoSklearnRegressorModel based on <code class="docutils literal notranslate"><span class="pre">AutoSklearn</span></code>.</p></li>
+<li><p>Example showing usage of locks in dataflow.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-skip</span></code> flag to <code class="docutils literal notranslate"><span class="pre">service</span> <span class="pre">dev</span> <span class="pre">install</span></code> command to let users not install certain
+core plugins</p></li>
+<li><p>HTTP service got a <code class="docutils literal notranslate"><span class="pre">-redirect</span></code> flag which allows for URL redirection via a
+HTTP 307 response</p></li>
+<li><p>Support for immediate response in HTTP service</p></li>
+<li><p>Daal4py example usage.</p></li>
+<li><p>Gitter chatbot tutorial.</p></li>
+<li><p>Option to run dataflow without sources from cli.</p></li>
+<li><p>Sphinx extension for automated testing of tutorials (consoletest)</p></li>
+<li><p>Example of software portal using DataFlows and HTTP service</p></li>
+<li><p>Retry parameter to <code class="docutils literal notranslate"><span class="pre">Operation</span></code>. Allows for setting number of times operation
+should be retried before it’s exception should be raised.</p></li>
+</ul>
+</div>
+<div class="section" id="changed">
+<h3>Changed<a class="headerlink" href="#changed" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Renamed <code class="docutils literal notranslate"><span class="pre">-seed</span></code> to <code class="docutils literal notranslate"><span class="pre">-inputs</span></code> in <code class="docutils literal notranslate"><span class="pre">dataflow</span> <span class="pre">create</span></code> command</p></li>
+<li><p>Renamed configloader/png to configloader/image and added support for loading JPEG and TIFF file formats</p></li>
+<li><p>Update record <code class="docutils literal notranslate"><span class="pre">__str__</span></code> method to output in tabular format</p></li>
+<li><p>Update MNIST use case to normalize image arrays.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">arg_</span></code> notation replaced with <code class="docutils literal notranslate"><span class="pre">CONFIG</span> <span class="pre">=</span> <span class="pre">ExampleConfig</span></code> style syntax
+for parsing all command line arguments.</p></li>
+<li><p>Moved usage/io.rst to docs/tutorials/dataflows/io.rst</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">edit</span></code> command substituted with <code class="docutils literal notranslate"><span class="pre">edit</span> <span class="pre">record</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Edit</span> <span class="pre">on</span> <span class="pre">Github</span></code> button now hidden for plugins.</p></li>
+<li><p>Doctests now run via unittests</p></li>
+<li><p>Every class and function can now be imported from the top level module</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">op</span></code> attempts to create <code class="docutils literal notranslate"><span class="pre">Definition</span></code>s for each argument if an <code class="docutils literal notranslate"><span class="pre">inputs</span></code> are not
+given.</p></li>
+<li><p>Classes now use <code class="docutils literal notranslate"><span class="pre">CONFIG</span></code> if it has a default for every field and <code class="docutils literal notranslate"><span class="pre">config</span></code> is <code class="docutils literal notranslate"><span class="pre">None</span></code></p></li>
+<li><p>Models now dynamically import third party modules.</p></li>
+<li><p>Memory dataflow classes now use auto args and config infrastructure</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dffml</span> <span class="pre">list</span> <span class="pre">records</span></code> command prints Records as JSON using <code class="docutils literal notranslate"><span class="pre">.export()</span></code></p></li>
+<li><p>Feature class in <code class="docutils literal notranslate"><span class="pre">dffml/feature/feature.py</span></code> initialize a feature object</p></li>
+<li><p>All DefFeatures() functions are substituted with Features()</p></li>
+<li><p>All feature.type() and feature.lenght() are substituted with
+feature.type and feature.length</p></li>
+<li><p>FileSource takes pathlib.Path as filename</p></li>
+<li><p>Tensorflow tests re-run themselves up to 6 times to stop them from failing the
+CI due to their randomly initialized weights making them fail ~2% of the time</p></li>
+<li><p>Any plugin can now be loaded via it’s entrypoint style path</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">with_features</span></code> now raises a helpful error message if no records with matching
+features were found</p></li>
+<li><p>Split out model tutorial into writing the model, and another tutorial for
+packaging the model.</p></li>
+<li><p>IntegrationCLITestCase creates a new directory and chdir into it for each test</p></li>
+<li><p>Automated testing of Automating Classification tutorial</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dffml</span> <span class="pre">version</span></code> command now prints git repo hash and if the repo is dirty</p></li>
+</ul>
+</div>
+<div class="section" id="fixed">
+<h3>Fixed<a class="headerlink" href="#fixed" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">export_value</span></code> now converts numpy array to JSON serializable datatype</p></li>
+<li><p>CSV source overwriting configloaded data to every row</p></li>
+<li><p>Race condition in <code class="docutils literal notranslate"><span class="pre">MemoryRedundancyChecker</span></code> when more than 4 possible
+parameter sets for an operation.</p></li>
+<li><p>Typing of config vlaues for numpy parsed docstrings where type should be tuple
+or list</p></li>
+<li><p>Model predict methods now use <code class="docutils literal notranslate"><span class="pre">SourcesContext.with_features</span></code></p></li>
+</ul>
+</div>
+<div class="section" id="removed">
+<h3>Removed<a class="headerlink" href="#removed" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Monitor class and associated tests (unused)</p></li>
+<li><p>DefinedFeature class in <code class="docutils literal notranslate"><span class="pre">dffml/feature/feature.py</span></code></p></li>
+<li><p>DefFeature function in <code class="docutils literal notranslate"><span class="pre">dffml/feature/feature.py</span></code></p></li>
+<li><p>load_def function in Feature class in <code class="docutils literal notranslate"><span class="pre">dffml/feature/feature.py</span></code></p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="id2">
+<h2>[0.3.7] - 2020-04-14<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id3">
+<h3>Added<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>IO operations demo and <code class="docutils literal notranslate"><span class="pre">literal_eval</span></code> operation.</p></li>
 <li><p>Python prompts <code class="docutils literal notranslate"><span class="pre">&gt;&gt;&gt;</span></code> can now be enabled or disabled for easy copying of code into interactive sessions.</p></li>
@@ -289,36 +452,35 @@ starting server</p></li>
 <li><p>Usage of HTTP API to the quickstart to use trained model</p></li>
 </ul>
 </div>
-<div class="section" id="changed">
-<h3>Changed<a class="headerlink" href="#changed" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id4">
+<h3>Changed<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>Renamed <code class="docutils literal notranslate"><span class="pre">&quot;arg&quot;</span></code> to <code class="docutils literal notranslate"><span class="pre">&quot;plugin&quot;</span></code>.</p></li>
 <li><p>CSV source sorts feature names within headers when saving</p></li>
 <li><p>Moved HTTP service testing code to HTTP service <code class="docutils literal notranslate"><span class="pre">util.testing</span></code></p></li>
 </ul>
 </div>
-<div class="section" id="fixed">
-<h3>Fixed<a class="headerlink" href="#fixed" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id5">
+<h3>Fixed<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>Exporting plugins</p></li>
 <li><p>Issue parsing string values when using the <code class="docutils literal notranslate"><span class="pre">dataflow</span> <span class="pre">run</span></code> command and
 specifying extra inputs.</p></li>
 </ul>
 </div>
-<div class="section" id="removed">
-<h3>Removed<a class="headerlink" href="#removed" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id6">
+<h3>Removed<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>Unused imports</p></li>
 </ul>
 </div>
 </div>
-<div class="section" id="id2">
-<h2>[0.3.6] - 2020-04-04<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="id3">
-<h3>Added<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id7">
+<h2>[0.3.6] - 2020-04-04<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id8">
+<h3>Added<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>Operations for taking input from the user <code class="docutils literal notranslate"><span class="pre">AcceptUserInput</span></code> and for printing the output <code class="docutils literal notranslate"><span class="pre">print_output</span></code></p></li>
-<li><p>Hugging Face Transformers tensorflow based NER models.</p></li>
 <li><p>PNG ConfigLoader for reading images as arrays to predict using MNIST trained models</p></li>
 <li><p>Docstrings and doctestable examples to <code class="docutils literal notranslate"><span class="pre">record.py</span></code>.</p></li>
 <li><p>Inputs can be validated using operations</p>
@@ -341,8 +503,8 @@ specifying extra inputs.</p></li>
 <li><p>Instructions for setting up debugging environment in VSCode</p></li>
 </ul>
 </div>
-<div class="section" id="id4">
-<h3>Fixed<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id9">
+<h3>Fixed<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>New model tutorial mentions file paths that should be edited.</p></li>
 <li><p>DataFlow is no longer a dataclass to prevent it from being exported
@@ -355,17 +517,17 @@ incorrectly.</p></li>
 <li><p>Moved SLR into the main dffml package and removed <code class="docutils literal notranslate"><span class="pre">scratch:slr</span></code>.</p></li>
 </ul>
 </div>
-<div class="section" id="id5">
-<h3>Changed<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id10">
+<h3>Changed<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>Refactor <code class="docutils literal notranslate"><span class="pre">model/tensroflow</span></code></p></li>
 </ul>
 </div>
 </div>
-<div class="section" id="id6">
-<h2>[0.3.5] - 2020-03-10<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="id7">
-<h3>Added<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id11">
+<h2>[0.3.5] - 2020-03-10<a class="headerlink" href="#id11" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id12">
+<h3>Added<a class="headerlink" href="#id12" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>Parent flows can now forward inputs to active contexts of subflows.</p>
 <ul>
@@ -382,8 +544,8 @@ incorrectly.</p></li>
 <li><p>Style guide now contains information on class, variable, and function naming.</p></li>
 </ul>
 </div>
-<div class="section" id="id8">
-<h3>Changed<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id13">
+<h3>Changed<a class="headerlink" href="#id13" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>Restructured contributing documentation</p></li>
 <li><p>Use randomly generated data for scikit tests</p></li>
@@ -401,10 +563,10 @@ to configloader.</p></li>
 </ul>
 </div>
 </div>
-<div class="section" id="id9">
-<h2>[0.3.4] - 2020-02-28<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="id10">
-<h3>Added<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id14">
+<h2>[0.3.4] - 2020-02-28<a class="headerlink" href="#id14" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id15">
+<h3>Added<a class="headerlink" href="#id15" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>Tensorflow hub NLP models.</p></li>
 <li><p>Notes on development dependencies in <code class="docutils literal notranslate"><span class="pre">setup.py</span></code> files to codebase notes.</p></li>
@@ -425,14 +587,14 @@ contributing documentation.</p></li>
 <li><p>Note about using black via VSCode</p></li>
 </ul>
 </div>
-<div class="section" id="id11">
-<h3>Fixed<a class="headerlink" href="#id11" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id16">
+<h3>Fixed<a class="headerlink" href="#id16" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>Port assignment for the HTTP API via the <code class="docutils literal notranslate"><span class="pre">-port</span></code> flag</p></li>
 </ul>
 </div>
-<div class="section" id="id12">
-<h3>Changed<a class="headerlink" href="#id12" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id17">
+<h3>Changed<a class="headerlink" href="#id17" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">repo</span></code>/<code class="docutils literal notranslate"><span class="pre">Repo</span></code> to <code class="docutils literal notranslate"><span class="pre">record</span></code>/<code class="docutils literal notranslate"><span class="pre">Record</span></code></p></li>
 <li><p>Definitions with a <code class="docutils literal notranslate"><span class="pre">spec</span></code> can use the <code class="docutils literal notranslate"><span class="pre">subspec</span></code> parameter to declare that they
@@ -443,17 +605,17 @@ list or dict itself being of the <code class="docutils literal notranslate"><spa
 <li><p>Lint JavaScript files with js-beautify and enforce with CI</p></li>
 </ul>
 </div>
-<div class="section" id="id13">
-<h3>Removed<a class="headerlink" href="#id13" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id18">
+<h3>Removed<a class="headerlink" href="#id18" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>Unused imports</p></li>
 </ul>
 </div>
 </div>
-<div class="section" id="id14">
-<h2>[0.3.3] - 2020-02-10<a class="headerlink" href="#id14" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="id15">
-<h3>Added<a class="headerlink" href="#id15" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id19">
+<h2>[0.3.3] - 2020-02-10<a class="headerlink" href="#id19" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id20">
+<h3>Added<a class="headerlink" href="#id20" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>Moved from TensorFlow 1 to TensorFlow 2.</p></li>
 <li><p>IDX Sources to read binary data files and train models on MNIST Dataset</p></li>
@@ -499,8 +661,8 @@ parameters it was executed with will be thrown via an <code class="docutils lite
 to setuptools <code class="docutils literal notranslate"><span class="pre">setup</span></code> function within a <code class="docutils literal notranslate"><span class="pre">setup.py</span></code> file.</p></li>
 </ul>
 </div>
-<div class="section" id="id16">
-<h3>Changed<a class="headerlink" href="#id16" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id21">
+<h3>Changed<a class="headerlink" href="#id21" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>All instances of <code class="docutils literal notranslate"><span class="pre">src_url</span></code> changed to <code class="docutils literal notranslate"><span class="pre">key</span></code>.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">readonly</span></code> parameter in source config is now changed to <code class="docutils literal notranslate"><span class="pre">readwrite</span></code>.</p></li>
@@ -522,8 +684,8 @@ arguments are.</p></li>
 <li><p>The quickstart documentation was improved as well as the structure of docs.</p></li>
 </ul>
 </div>
-<div class="section" id="id17">
-<h3>Fixed<a class="headerlink" href="#id17" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id22">
+<h3>Fixed<a class="headerlink" href="#id22" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>CONTRIBUTING.md has <code class="docutils literal notranslate"><span class="pre">-e</span></code> in the wrong place in the getting setup section.</p></li>
 <li><p>Since moving to auto <code class="docutils literal notranslate"><span class="pre">args()</span></code> and <code class="docutils literal notranslate"><span class="pre">config()</span></code>, BaseConfigurable no longer
@@ -531,8 +693,8 @@ produces odd typenames in conjunction with docs.py.</p></li>
 <li><p>Autoconvert Definitions with spec into their spec</p></li>
 </ul>
 </div>
-<div class="section" id="id18">
-<h3>Removed<a class="headerlink" href="#id18" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id23">
+<h3>Removed<a class="headerlink" href="#id23" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>The model predict operation erroneously had a <code class="docutils literal notranslate"><span class="pre">msg</span></code> parameter in it’s config.</p></li>
 <li><p>Unused imports identified by deepsource.io</p></li>
@@ -540,10 +702,10 @@ produces odd typenames in conjunction with docs.py.</p></li>
 </ul>
 </div>
 </div>
-<div class="section" id="id19">
-<h2>[0.3.2] - 2020-01-03<a class="headerlink" href="#id19" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="id20">
-<h3>Added<a class="headerlink" href="#id20" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id24">
+<h2>[0.3.2] - 2020-01-03<a class="headerlink" href="#id24" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id25">
+<h3>Added<a class="headerlink" href="#id25" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>scikit models</p>
 <ul>
@@ -582,15 +744,15 @@ produces odd typenames in conjunction with docs.py.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">ConfigLoaders</span></code> class which loads config files from a file or directory to a dictionary.</p></li>
 </ul>
 </div>
-<div class="section" id="id21">
-<h3>Changed<a class="headerlink" href="#id21" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id26">
+<h3>Changed<a class="headerlink" href="#id26" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>CLI tests and integration tests derive from <code class="docutils literal notranslate"><span class="pre">AsyncExitStackTestCase</span></code></p></li>
 <li><p>SciKit models now use the auto args and config methods.</p></li>
 </ul>
 </div>
-<div class="section" id="id22">
-<h3>Fixed<a class="headerlink" href="#id22" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id27">
+<h3>Fixed<a class="headerlink" href="#id27" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>Correctly identify when functions decorated with <code class="docutils literal notranslate"><span class="pre">op</span></code> use <code class="docutils literal notranslate"><span class="pre">self</span></code> to reference
 the <code class="docutils literal notranslate"><span class="pre">OperationImplementationContext</span></code>.</p></li>
@@ -600,17 +762,17 @@ the <code class="docutils literal notranslate"><span class="pre">OperationImplem
 </ul>
 </div>
 </div>
-<div class="section" id="id23">
-<h2>[0.3.1] - 2019-12-12<a class="headerlink" href="#id23" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="id24">
-<h3>Added<a class="headerlink" href="#id24" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id28">
+<h2>[0.3.1] - 2019-12-12<a class="headerlink" href="#id28" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id29">
+<h3>Added<a class="headerlink" href="#id29" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>Integration tests using the command line interface.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">Operation</span></code> <code class="docutils literal notranslate"><span class="pre">run_dataflow</span></code> to run a dataflow and test for the same.</p></li>
 </ul>
 </div>
-<div class="section" id="id25">
-<h3>Changed<a class="headerlink" href="#id25" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id30">
+<h3>Changed<a class="headerlink" href="#id30" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>Features were moved from ModelContext to ModelConfig</p></li>
 <li><p>CI is now run via GitHub Actions</p></li>
@@ -624,8 +786,8 @@ a dataclass.</p></li>
 <li><p>Speed up named plugin load times</p></li>
 </ul>
 </div>
-<div class="section" id="id26">
-<h3>Fixed<a class="headerlink" href="#id26" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id31">
+<h3>Fixed<a class="headerlink" href="#id31" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>DataFlows with multiple possibilities for a source for an input, now correctly
 look through all possible sources instead of just the first one.</p></li>
@@ -640,18 +802,18 @@ performance issue.</p></li>
 <li><p>CSV source always loads <code class="docutils literal notranslate"><span class="pre">src_urls</span></code> as strings.</p></li>
 </ul>
 </div>
-<div class="section" id="id27">
-<h3>Removed<a class="headerlink" href="#id27" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id32">
+<h3>Removed<a class="headerlink" href="#id32" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>CLI command <code class="docutils literal notranslate"><span class="pre">operations</span></code> removed in favor of <code class="docutils literal notranslate"><span class="pre">dataflow</span> <span class="pre">run</span></code></p></li>
 <li><p>Duplicate dataflow diagram code from development service</p></li>
 </ul>
 </div>
 </div>
-<div class="section" id="id28">
-<h2>[0.3.0] - 2019-10-26<a class="headerlink" href="#id28" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="id29">
-<h3>Added<a class="headerlink" href="#id29" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id33">
+<h2>[0.3.0] - 2019-10-26<a class="headerlink" href="#id33" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id34">
+<h3>Added<a class="headerlink" href="#id34" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>Real DataFlows, see operations tutorial and usage examples</p></li>
 <li><p>Async helper concurrently nocancel optional keyword argument which, if set is
@@ -688,8 +850,8 @@ there are more than 5 issues of high severity and confidence.</p></li>
 <li><p>Tensorflow DNNEstimator based regression model.</p></li>
 </ul>
 </div>
-<div class="section" id="id30">
-<h3>Changed<a class="headerlink" href="#id30" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id35">
+<h3>Changed<a class="headerlink" href="#id35" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>feature/codesec became it’s own branch, binsec</p></li>
 <li><p>BaseOrchestratorContext <code class="docutils literal notranslate"><span class="pre">run_operations</span></code> strict is default to true. With
@@ -724,8 +886,8 @@ specific.</p></li>
 <li><p>Updated Tensorflow model README.md to include usage of regression model</p></li>
 </ul>
 </div>
-<div class="section" id="id31">
-<h3>Fixed<a class="headerlink" href="#id31" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id36">
+<h3>Fixed<a class="headerlink" href="#id36" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>Docs get version from dffml.version.VERSION.</p></li>
 <li><p>FileSource zipfiles are wrapped with TextIOWrapper because CSVSource expects
@@ -746,18 +908,18 @@ help, they also accept the <code class="docutils literal notranslate"><span clas
 <li><p>BaseSource now has <code class="docutils literal notranslate"><span class="pre">base_entry_point</span></code> decoration</p></li>
 </ul>
 </div>
-<div class="section" id="id32">
-<h3>Removed<a class="headerlink" href="#id32" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id37">
+<h3>Removed<a class="headerlink" href="#id37" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>Repo objects are no longer classification specific. Their <code class="docutils literal notranslate"><span class="pre">classify</span></code>,
 <code class="docutils literal notranslate"><span class="pre">classified</span></code>, and <code class="docutils literal notranslate"><span class="pre">classification</span></code> methods were removed.</p></li>
 </ul>
 </div>
 </div>
-<div class="section" id="id33">
-<h2>[0.2.1] - 2019-06-07<a class="headerlink" href="#id33" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="id34">
-<h3>Added<a class="headerlink" href="#id34" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id38">
+<h2>[0.2.1] - 2019-06-07<a class="headerlink" href="#id38" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id39">
+<h3>Added<a class="headerlink" href="#id39" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>Definition spec field to specify a class representative of key value pairs for
 definitions with primitives which are dictionaries</p></li>
@@ -771,8 +933,8 @@ writing a Python meta static analysis tool,
 <a class="reference external" href="https://pypi.org/project/shouldi/">shouldi</a></p></li>
 </ul>
 </div>
-<div class="section" id="id35">
-<h3>Changed<a class="headerlink" href="#id35" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id40">
+<h3>Changed<a class="headerlink" href="#id40" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>OperationImplementation <code class="docutils literal notranslate"><span class="pre">add_label</span></code> and <code class="docutils literal notranslate"><span class="pre">add_orig_label</span></code> methods now use
 op.name instead of <code class="docutils literal notranslate"><span class="pre">ENTRY_POINT_ORIG_LABEL</span></code> and <code class="docutils literal notranslate"><span class="pre">ENTRY_POINT_NAME</span></code>.</p></li>
@@ -780,8 +942,8 @@ op.name instead of <code class="docutils literal notranslate"><span class="pre">
 <li><p>Feature skeleton project is now operations skeleton project</p></li>
 </ul>
 </div>
-<div class="section" id="id36">
-<h3>Fixed<a class="headerlink" href="#id36" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id41">
+<h3>Fixed<a class="headerlink" href="#id41" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>MemoryOperationImplementationNetwork instantiates OperationImplementations
 using their <code class="docutils literal notranslate"><span class="pre">withconfig()</span></code> method.</p></li>
@@ -794,10 +956,10 @@ Memory Orchestrator because they are specific to that config.</p></li>
 </ul>
 </div>
 </div>
-<div class="section" id="id37">
-<h2>[0.2.0] - 2019-05-23<a class="headerlink" href="#id37" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="id38">
-<h3>Added<a class="headerlink" href="#id38" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id42">
+<h2>[0.2.0] - 2019-05-23<a class="headerlink" href="#id42" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id43">
+<h3>Added<a class="headerlink" href="#id43" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>Support for zip file source</p></li>
 <li><p>Async helper for running tasks concurrently</p></li>
@@ -808,16 +970,16 @@ code and binaries.</p></li>
 <li><p>auth plugin containing an scrypt operation as an example of thread pool usage.</p></li>
 </ul>
 </div>
-<div class="section" id="id39">
-<h3>Changed<a class="headerlink" href="#id39" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id44">
+<h3>Changed<a class="headerlink" href="#id44" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>Standardized the API for most classes in DFFML via inheritance from dffml.base</p></li>
 <li><p>Configuration of classes is now done via the args() and config() methods</p></li>
 <li><p>Documentation is now generated using Sphinx</p></li>
 </ul>
 </div>
-<div class="section" id="id40">
-<h3>Fixed<a class="headerlink" href="#id40" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id45">
+<h3>Fixed<a class="headerlink" href="#id45" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>Corrected maxsplit in util.cli.parser</p></li>
 <li><p>Check that dtype is a class in Tensorlfow DNN</p></li>
@@ -826,10 +988,10 @@ code and binaries.</p></li>
 </ul>
 </div>
 </div>
-<div class="section" id="id41">
-<h2>[0.1.2] - 2019-03-29<a class="headerlink" href="#id41" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="id42">
-<h3>Added<a class="headerlink" href="#id42" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id46">
+<h2>[0.1.2] - 2019-03-29<a class="headerlink" href="#id46" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id47">
+<h3>Added<a class="headerlink" href="#id47" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>Contribution guidelines</p></li>
 <li><p>Logging documentation</p></li>
@@ -849,33 +1011,33 @@ code and binaries.</p></li>
 <li><p>Data Flow Facilitator</p></li>
 </ul>
 </div>
-<div class="section" id="id43">
-<h3>Changed<a class="headerlink" href="#id43" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id48">
+<h3>Changed<a class="headerlink" href="#id48" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>Restructured documentation to docs folder and moved from rST to markdown</p></li>
 <li><p>Git feature cloc logs if no binaries are in path</p></li>
 </ul>
 </div>
-<div class="section" id="id44">
-<h3>Fixed<a class="headerlink" href="#id44" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id49">
+<h3>Fixed<a class="headerlink" href="#id49" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>Enable source.file to read from /dev/fd/XX</p></li>
 </ul>
 </div>
 </div>
-<div class="section" id="id45">
-<h2>[0.1.1] - 2019-03-08<a class="headerlink" href="#id45" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="id46">
-<h3>Changed<a class="headerlink" href="#id46" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id50">
+<h2>[0.1.1] - 2019-03-08<a class="headerlink" href="#id50" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id51">
+<h3>Changed<a class="headerlink" href="#id51" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>Corrected formatting in README for PyPi</p></li>
 </ul>
 </div>
 </div>
-<div class="section" id="id47">
-<h2>[0.1.0] - 2019-03-07<a class="headerlink" href="#id47" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="id48">
-<h3>Added<a class="headerlink" href="#id48" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id52">
+<h2>[0.1.0] - 2019-03-07<a class="headerlink" href="#id52" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id53">
+<h3>Added<a class="headerlink" href="#id53" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>Feature class to collect a feature in a dataset</p></li>
 <li><p>Git features to collect feature data from Git repos</p></li>
@@ -894,14 +1056,14 @@ code and binaries.</p></li>
           </div>
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="contributing/maintainers.html" class="btn btn-neutral float-left" title="Maintainer Docs" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="news/0_4_0_alpha_release.html" class="btn btn-neutral float-left" title="0.4.0 Alpha Release" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        &#169; Copyright 2019, Intel.
+        &#169; Copyright 2017 - 2021, Intel.
 
     </p>
   </div>

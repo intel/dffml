@@ -23,35 +23,73 @@ unless you uninstall it first!
 
 .. code-block:: console
 
-    $ python3.7 -m pip uninstall dffml
+    $ python3 -m pip uninstall dffml
 
-Once you're sure DFFML is not installed on your system, install it in
+Once you're sure DFFML is not installed on your system, you'll reinstall it in
 development mode.
-
-Installing to your home directory is the recommended installation method. To do
-this we use the ``--prefix=~/.local`` flag.
 
 .. note::
 
-    ``pip`` sometimes gets confused about the ``--user`` flag (and will blow up
-    in your face if you try to pass it). So we use the ``--prefix=~/.local``
-    flag, which has the same effect but should always work.
+   There are two versions of this documentation.
+
+   The version you want is https://intel.github.io/dffml/master/ if you are
+   working on DFFML itself.
+
+   When working from the Git version of DFFML, the documentation URL you're
+   looking at should say ``/master/`` in the URL. The URL you are currently on
+   should be https://intel.github.io/dffml/master/contributing/dev_env.html
+
+   This docs without ``/master/`` in the URL are built from the latest release.
+
+   The docs with ``/master/`` in the URL are built from the *master* branch.
+   The master branch is what you get when you clone the Git repo, which we're
+   about to do.
+
+Installing to your home directory will reduce permissions issues. To do
+this we use the ``--prefix=~/.local`` flag. ``pip`` sometimes gets confused
+about the ``--user`` flag (and will blow up in your face if you try to pass it).
+So we use the ``--prefix=~/.local`` flag, which has the same effect but should
+always work.
 
 ``[dev]`` tells ``pip`` to install the dependencies you'll need to do
 development work on DFFML (such as documentation generation utilities).
+
+Before installing DFFML, we should update Python's package installation tools to
+their latest versions (``pip setuptools wheel``).
 
 .. code-block:: console
 
     $ git clone https://github.com/intel/dffml
     $ cd dffml
-    $ python3.7 -m pip install --prefix=~/.local -e .[dev]
+    $ python3 -m pip install -U pip setuptools wheel
+    $ python3 -m pip install --prefix=~/.local -e .[dev]
 
 Verify you can use ``dffml`` from the command line.
 
 .. code-block:: console
 
-    $ dffml version
-    dffml version 0.3.1 (devmode: /wherever/you/cloned/dffml)
+    $ dffml version -no-errors
+    dffml 0.3.7 /home/user/Documents/python/dffml/dffml 3c887378
+    dffml-config-yaml 0.0.10 /home/user/Documents/python/dffml/configloader/yaml/dffml_config_yaml 3c887378
+    dffml-config-image 0.0.3 /home/user/Documents/python/dffml/configloader/image/dffml_config_image 3c887378
+    dffml-model-scratch 0.0.8 /home/user/Documents/python/dffml/model/scratch/dffml_model_scratch 3c887378
+    dffml-model-scikit 0.0.9 /home/user/Documents/python/dffml/model/scikit/dffml_model_scikit 3c887378
+    dffml-model-tensorflow 0.2.7 /home/user/Documents/python/dffml/model/tensorflow/dffml_model_tensorflow 3c887378
+    dffml-model-tensorflow-hub 0.0.5 /home/user/Documents/python/dffml/model/tensorflow_hub/dffml_model_tensorflow_hub 3c887378
+    dffml-model-vowpalWabbit 0.0.1 /home/user/Documents/python/dffml/model/vowpalWabbit/dffml_model_vowpalWabbit 3c887378
+    dffml-model-xgboost 0.0.1 /home/user/Documents/python/dffml/model/xgboost/dffml_model_xgboost 3c887378
+    dffml-model-pytorch ERROR
+    dffml-model-spacy 0.0.1 /home/user/Documents/python/dffml/model/spacy/dffml_model_spacy 3c887378
+    dffml-model-daal4py not installed
+    dffml-model-autosklearn 0.0.1 /home/user/Documents/python/dffml/model/autosklearn/dffml_model_autosklearn 3c887378
+    dffml-feature-git 0.2.7 /home/user/Documents/python/dffml/feature/git/dffml_feature_git 3c887378
+    dffml-feature-auth 0.0.8 /home/user/Documents/python/dffml/feature/auth/dffml_feature_auth 3c887378
+    dffml-operations-binsec 0.0.1 /home/user/Documents/python/dffml/operations/binsec/dffml_operations_binsec 3c887378
+    dffml-operations-deploy 0.0.1 /home/user/Documents/python/dffml/operations/deploy/dffml_operations_deploy 3c887378
+    dffml-operations-image 0.0.1 /home/user/Documents/python/dffml/operations/image/dffml_operations_image 3c887378
+    dffml-operations-nlp 0.0.1 /home/user/Documents/python/dffml/operations/nlp/dffml_operations_nlp 3c887378
+    dffml-service-http 0.0.10 /home/user/Documents/python/dffml/service/http/dffml_service_http 3c887378
+    dffml-source-mysql 0.0.9 /home/user/Documents/python/dffml/source/mysql/dffml_source_mysql 3c887378
 
 If you see ``dffml`` in ``~/.local/bin`` but you can't run it on the command
 line, then you'll need to add that directory to your ``PATH`` environment
@@ -70,7 +108,7 @@ For example, to install the TensorFlow models
 
 .. code-block:: console
 
-    $ python3.7 -m pip install --prefix=~/.local -e model/tensorflow
+    $ python3 -m pip install --prefix=~/.local -e model/tensorflow
 
 .. _dev_env_install_official_plugins:
 
@@ -103,7 +141,7 @@ Create the virtual environment.
 
 .. code-block:: console
 
-    $ python3.7 -m venv .venv
+    $ python3 -m venv .venv
 
 Activate it (on Linux / OSX / UNIX variants)
 
@@ -121,7 +159,7 @@ Install the packages in development mode.
 
 .. code-block:: console
 
-    $ pip install -U setuptools
+    $ pip install -U pip setuptools wheel
     $ pip install -e .[dev]
     $ dffml service dev install
 
@@ -184,7 +222,7 @@ all the packages in development mode.
     $ mkdir -p .venv
     $ export HOME="${PWD}/.venv"
     $ export PATH="${HOME}/.local/bin:${PATH}"
-    $ pip install --user -U pip setuptools
+    $ pip install --user -U pip setuptools wheel
     $ pip install --prefix=~/.local -e .[dev]
     $ dffml service dev install -user
 

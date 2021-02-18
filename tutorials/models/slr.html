@@ -1,0 +1,694 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Writing a Model &mdash; DFFML 0.4.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/tabs.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/copybutton.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="author" title="About these documents" href="../../about.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Packaging a Model" href="package.html" />
+    <link rel="prev" title="Use a Model" href="iris.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> DFFML
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.4.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Introduction</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../concepts/index.html">Concepts</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Usage</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../quickstart/model.html">Quickstart</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Tutorials</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Models</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="iris.html">Use a Model</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Writing a Model</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#imports">Imports</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#math">Math</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#config">Config</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#class">Class</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#train">Train</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#accuracy">Accuracy</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#predict">Predict</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#python-usage">Python Usage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#command-line-usage">Command Line Usage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#http-server-usage">HTTP Server Usage</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="package.html">Packaging a Model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="docs.html">Documenting a Model</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../sources/index.html">Sources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dataflows/index.html">DataFlows</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../neuralnetwork.html">Neural Networks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../doublecontextentry.html">Double Context Entry</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples/index.html">Examples</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../plugins/index.html">Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cli.html">Command Line</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../plugins/service/http/index.html">HTTP API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../troubleshooting.html">Troubleshooting</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Subprojects</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../shouldi.html">shouldi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../swportal.html">Software Portal</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Community</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/intel/dffml">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://intel.github.io/dffml/master/">Master Branch Docs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../publications.html">Publications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contact.html">Contact Us</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing/index.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../news/index.html">News</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../changelog.html">Changelog</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">DFFML</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Tutorials</a> &raquo;</li>
+        
+          <li><a href="index.html">Models</a> &raquo;</li>
+        
+      <li>Writing a Model</li>
+    
+    
+
+
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            
+              <a href="https://github.com/intel/dffml/blob/master/docs/tutorials/models/slr.rst" class="fa fa-github"> Edit on GitHub</a>
+            
+          
+        
+      </li>
+    
+
+
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="writing-a-model">
+<span id="model-tutorial-slr"></span><h1>Writing a Model<a class="headerlink" href="#writing-a-model" title="Permalink to this headline">¶</a></h1>
+<p>For this tutorial we’ll be implementing our own machine learning algorithm from
+scratch, which means that we’re not using a machine learning focused library to
+handle calculations for us, we’ll do it all ourselves.</p>
+<p>Our model will preform Simple Linear Regression (SLR). Which means it finds the
+best fit line for a dataset.</p>
+<p>You may know the best fit line as <code class="docutils literal notranslate"><span class="pre">y</span> <span class="pre">=</span> <span class="pre">m</span> <span class="pre">*</span> <span class="pre">x</span> <span class="pre">+</span> <span class="pre">b</span></code></p>
+<p>We’ll be working the in a new file named <strong>myslr.py</strong>, open / create it now</p>
+<div class="section" id="imports">
+<h2>Imports<a class="headerlink" href="#imports" title="Permalink to this headline">¶</a></h2>
+<p>We’re going to need a few modules from the standard library, let’s import them.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">pathlib</span></code> will be used to define the directory were saved model state should
+be stored.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">statistics</span></code> will be used to help us calculate the average (mean) of our
+data.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">typing</span></code> is for Python’s static type hinting. It lets use give hints to our
+editor or IDE so they can help us check our code before we run it.</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pathlib</span>
+<span class="kn">import</span> <span class="nn">statistics</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">AsyncIterator</span><span class="p">,</span> <span class="n">Type</span>
+</pre></div>
+</div>
+<p>We’ll also need a few things from DFFML.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">config</span><span class="p">,</span>
+    <span class="n">field</span><span class="p">,</span>
+    <span class="n">entrypoint</span><span class="p">,</span>
+    <span class="n">SimpleModel</span><span class="p">,</span>
+    <span class="n">ModelNotTrained</span><span class="p">,</span>
+    <span class="n">Accuracy</span><span class="p">,</span>
+    <span class="n">Feature</span><span class="p">,</span>
+    <span class="n">Features</span><span class="p">,</span>
+    <span class="n">SourcesContext</span><span class="p">,</span>
+    <span class="n">Record</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="math">
+<h2>Math<a class="headerlink" href="#math" title="Permalink to this headline">¶</a></h2>
+<p>The first thing you’ll want to do is add some functions which calculate the best
+fit line and accuracy. These aren’t important for understanding how DFFML works.
+So we’re going to skip over their logic in this tutorial. You can write your own
+versions to find the best fit line for lists of X, and Y data if you want, or
+you can copy these.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">matrix_subtract</span><span class="p">(</span><span class="n">one</span><span class="p">,</span> <span class="n">two</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">[</span>
+        <span class="n">one_element</span> <span class="o">-</span> <span class="n">two_element</span> <span class="k">for</span> <span class="n">one_element</span><span class="p">,</span> <span class="n">two_element</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">one</span><span class="p">,</span> <span class="n">two</span><span class="p">)</span>
+    <span class="p">]</span>
+
+
+<span class="k">def</span> <span class="nf">matrix_multiply</span><span class="p">(</span><span class="n">one</span><span class="p">,</span> <span class="n">two</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">[</span>
+        <span class="n">one_element</span> <span class="o">*</span> <span class="n">two_element</span> <span class="k">for</span> <span class="n">one_element</span><span class="p">,</span> <span class="n">two_element</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">one</span><span class="p">,</span> <span class="n">two</span><span class="p">)</span>
+    <span class="p">]</span>
+
+
+<span class="k">def</span> <span class="nf">squared_error</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
+    <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">element</span><span class="p">:</span> <span class="n">element</span> <span class="o">**</span> <span class="mi">2</span><span class="p">,</span> <span class="n">matrix_subtract</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">line</span><span class="p">)))</span>
+
+
+<span class="k">def</span> <span class="nf">coeff_of_deter</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">regression_line</span><span class="p">):</span>
+    <span class="n">y_mean_line</span> <span class="o">=</span> <span class="p">[</span><span class="n">statistics</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">y</span><span class="p">)]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+    <span class="n">squared_error_mean</span> <span class="o">=</span> <span class="n">squared_error</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">y_mean_line</span><span class="p">)</span>
+    <span class="n">squared_error_regression</span> <span class="o">=</span> <span class="n">squared_error</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">regression_line</span><span class="p">)</span>
+    <span class="c1"># Handle 1.0 accuracy case</span>
+    <span class="k">if</span> <span class="n">squared_error_mean</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mf">1.0</span>
+    <span class="k">return</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="p">(</span><span class="n">squared_error_regression</span> <span class="o">/</span> <span class="n">squared_error_mean</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">best_fit_line</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+    <span class="n">mean_x</span> <span class="o">=</span> <span class="n">statistics</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">mean_y</span> <span class="o">=</span> <span class="n">statistics</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="p">(</span><span class="n">mean_x</span> <span class="o">*</span> <span class="n">mean_y</span> <span class="o">-</span> <span class="n">statistics</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">matrix_multiply</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)))</span> <span class="o">/</span> <span class="p">(</span>
+        <span class="p">(</span><span class="n">mean_x</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="n">statistics</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">matrix_multiply</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">x</span><span class="p">))</span>
+    <span class="p">)</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="n">mean_y</span> <span class="o">-</span> <span class="p">(</span><span class="n">m</span> <span class="o">*</span> <span class="n">mean_x</span><span class="p">)</span>
+    <span class="n">regression_line</span> <span class="o">=</span> <span class="p">[</span><span class="n">m</span> <span class="o">*</span> <span class="n">x_element</span> <span class="o">+</span> <span class="n">b</span> <span class="k">for</span> <span class="n">x_element</span> <span class="ow">in</span> <span class="n">x</span><span class="p">]</span>
+    <span class="n">accuracy</span> <span class="o">=</span> <span class="n">coeff_of_deter</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">regression_line</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">m</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">accuracy</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="config">
+<h2>Config<a class="headerlink" href="#config" title="Permalink to this headline">¶</a></h2>
+<p>DFFML makes it so that we can use our models from the command line, HTTP API,
+and of course, Python. This all works because we define a config class for each
+model.</p>
+<p>Anything that a user might want to tweak about a models behavior should go in
+the <code class="docutils literal notranslate"><span class="pre">Config</span></code> class for the model. The naming convention is <code class="docutils literal notranslate"><span class="pre">TheName</span></code> +
+<code class="docutils literal notranslate"><span class="pre">Model</span></code> + <code class="docutils literal notranslate"><span class="pre">Config</span></code>.</p>
+<p>Our model has three configurable properties.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">features</span></code>. A list of <code class="xref py py-class docutils literal notranslate"><span class="pre">Feature</span></code> objects
+who’s names will be present within each <a class="reference internal" href="../../api/record.html#dffml.record.Record" title="dffml.record.Record"><code class="xref py py-class docutils literal notranslate"><span class="pre">Record</span></code></a>. Our model only supports a single feature. It willl use
+the first feature in the features list as the X value for the regression line.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">predict</span></code>. The name of the feature we want to predict. Within each
+<a class="reference internal" href="../../api/record.html#dffml.record.Record" title="dffml.record.Record"><code class="xref py py-class docutils literal notranslate"><span class="pre">Record</span></code></a> this will be the data that our model
+should use as the Y value for the regression line.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">directory</span></code>. The location on disk where we’ll save and load our model from</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@config</span>
+<span class="k">class</span> <span class="nc">MySLRModelConfig</span><span class="p">:</span>
+    <span class="n">features</span><span class="p">:</span> <span class="n">Features</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
+        <span class="s2">&quot;Features to train on (myslr only supports one)&quot;</span>
+    <span class="p">)</span>
+    <span class="n">predict</span><span class="p">:</span> <span class="n">Feature</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="s2">&quot;Label or the value to be predicted&quot;</span><span class="p">)</span>
+    <span class="n">directory</span><span class="p">:</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="s2">&quot;Directory where state should be saved&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="class">
+<h2>Class<a class="headerlink" href="#class" title="Permalink to this headline">¶</a></h2>
+<p>The naming conventions for classes in DFFML is <code class="docutils literal notranslate"><span class="pre">TheName</span></code> + <code class="docutils literal notranslate"><span class="pre">PluginType</span></code>.
+We’re making a <code class="docutils literal notranslate"><span class="pre">Model</span></code> plugin. So the name is <code class="docutils literal notranslate"><span class="pre">MySLRModel</span></code>.</p>
+<p>The plugin system needs us to do two things to ensure we can access our new
+model from the DFFML command line and other interfaces.</p>
+<p>We must use the <code class="docutils literal notranslate"><span class="pre">entrypoint</span></code> decorator passing it the name we want to
+reference the model by. For anything that allows for specifying multiple
+models, you can configure all models of the same type by using the string
+provided here.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@entrypoint</span><span class="p">(</span><span class="s2">&quot;myslr&quot;</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">MySLRModel</span><span class="p">(</span><span class="n">SimpleModel</span><span class="p">):</span>
+</pre></div>
+</div>
+<p>We must set the <code class="docutils literal notranslate"><span class="pre">CONFIG</span></code> attribute to the respective <code class="docutils literal notranslate"><span class="pre">Config</span></code> class.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="c1"># The configuration class needs to be set as the CONFIG property</span>
+    <span class="n">CONFIG</span><span class="p">:</span> <span class="n">Type</span> <span class="o">=</span> <span class="n">MySLRModelConfig</span>
+</pre></div>
+</div>
+<p>We can override the <code class="docutils literal notranslate"><span class="pre">__init__()</span></code> method to do validation on the <code class="docutils literal notranslate"><span class="pre">features</span></code>
+config property. Simple linear regression only supports one input feature, so we
+will raise a <code class="docutils literal notranslate"><span class="pre">ValueError</span></code> if the user supplys more than one feature.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+        <span class="c1"># Simple linear regression only supports a single input feature</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">features</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Model only support a single feature&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="train">
+<h2>Train<a class="headerlink" href="#train" title="Permalink to this headline">¶</a></h2>
+<p>The train method should train the model. First we ask the data <code class="docutils literal notranslate"><span class="pre">sources</span></code> for
+any <code class="docutils literal notranslate"><span class="pre">records</span></code> containing the features our model was told to use.
+<code class="docutils literal notranslate"><span class="pre">with_features</span></code> takes a list of feature names each record should contain. This
+let’s us avoid records that are not applicable to our model.</p>
+<p>Models should save their state to disk after training. Classes derived from
+<code class="docutils literal notranslate"><span class="pre">SimpleModel</span></code> can put anything they want saved into <code class="docutils literal notranslate"><span class="pre">self.storage</span></code>, which
+is saved and loaded from a JSON file on disk.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="k">async</span> <span class="k">def</span> <span class="nf">train</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sources</span><span class="p">:</span> <span class="n">SourcesContext</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1"># X and Y data</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="c1"># Go through all records that have the feature we&#39;re training on and the</span>
+        <span class="c1"># feature we want to predict.</span>
+        <span class="k">async</span> <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">sources</span><span class="o">.</span><span class="n">with_features</span><span class="p">(</span>
+            <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">features</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">predict</span><span class="o">.</span><span class="n">name</span><span class="p">]</span>
+        <span class="p">):</span>
+            <span class="n">x</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">feature</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">features</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
+            <span class="n">y</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">feature</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">predict</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
+        <span class="c1"># Use self.logger to report how many records are being used for training</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Number of training records: </span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+        <span class="c1"># Save m, b, and accuracy</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">storage</span><span class="p">[</span><span class="s2">&quot;regression_line&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">best_fit_line</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="accuracy">
+<h2>Accuracy<a class="headerlink" href="#accuracy" title="Permalink to this headline">¶</a></h2>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The way that model accuracy is evaluated will be changing in a coming
+release. Once that happens you will no longer have to include an accuracy
+method.</p>
+<p>Reference: <a class="reference external" href="https://github.com/intel/dffml/issues/732">https://github.com/intel/dffml/issues/732</a></p>
+</div>
+<p>We give testing data <code class="docutils literal notranslate"><span class="pre">sources</span></code> to the accuracy method to determine the
+accuracy of a model. For <code class="docutils literal notranslate"><span class="pre">MySLRModel</span></code>, we’ll load the saved <code class="docutils literal notranslate"><span class="pre">m</span></code> and <code class="docutils literal notranslate"><span class="pre">b</span></code>
+values computed during training, and use them to calculate the coefficient of
+determination which we’ll be treating as the accuracy for this model.</p>
+<p>We’re storing <code class="docutils literal notranslate"><span class="pre">m</span></code>, <code class="docutils literal notranslate"><span class="pre">b</span></code>, and the <code class="docutils literal notranslate"><span class="pre">accuracy</span></code> in the <code class="docutils literal notranslate"><span class="pre">regression_line</span></code> key
+of the <code class="docutils literal notranslate"><span class="pre">self.storage</span></code> dict.</p>
+<p>Models can define accuracy however they want, so long as <code class="docutils literal notranslate"><span class="pre">1.0</span></code> is the highest
+accuracy it will ever output, and that <code class="docutils literal notranslate"><span class="pre">1.0</span></code> can be interpreted by the caller
+to mean that the model predicted the correct value for every record given to the
+accuracy method. Numbers approaching <code class="docutils literal notranslate"><span class="pre">1.0</span></code> should indicate that the model was
+closer to making the correct prediction for each record.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="k">async</span> <span class="k">def</span> <span class="nf">accuracy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sources</span><span class="p">:</span> <span class="n">SourcesContext</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Accuracy</span><span class="p">:</span>
+        <span class="c1"># Load saved regression line</span>
+        <span class="n">regression_line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">storage</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;regression_line&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="c1"># Ensure the model has been trained before we try to make a prediction</span>
+        <span class="k">if</span> <span class="n">regression_line</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">ModelNotTrained</span><span class="p">(</span><span class="s2">&quot;Train model before assessing for accuracy&quot;</span><span class="p">)</span>
+        <span class="c1"># Split regression line tuple into variables, ignore accuracy from</span>
+        <span class="c1"># training data since we&#39;ll be re-calculating it for the test data</span>
+        <span class="n">m</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">_accuracy</span> <span class="o">=</span> <span class="n">regression_line</span>
+        <span class="c1"># X and Y data</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="c1"># Go through all records that have the feature we&#39;re testing on and the</span>
+        <span class="c1"># feature we want to predict.</span>
+        <span class="k">async</span> <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">sources</span><span class="o">.</span><span class="n">with_features</span><span class="p">(</span>
+            <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">features</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">predict</span><span class="o">.</span><span class="n">name</span><span class="p">]</span>
+        <span class="p">):</span>
+            <span class="n">x</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">feature</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">features</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
+            <span class="n">y</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">feature</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">predict</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
+        <span class="c1"># Use self.logger to report how many records are being used for testing</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Number of test records: </span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+        <span class="c1"># Calculate the regression line for test data and accuracy of line</span>
+        <span class="n">regression_line</span> <span class="o">=</span> <span class="p">[</span><span class="n">m</span> <span class="o">*</span> <span class="n">x_element</span> <span class="o">+</span> <span class="n">b</span> <span class="k">for</span> <span class="n">x_element</span> <span class="ow">in</span> <span class="n">x</span><span class="p">]</span>
+        <span class="n">accuracy</span> <span class="o">=</span> <span class="n">coeff_of_deter</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">regression_line</span><span class="p">)</span>
+        <span class="c1"># Update the accuracy to be the accuracy when assessed on the test data</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">storage</span><span class="p">[</span><span class="s2">&quot;regression_line&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">m</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">accuracy</span>
+        <span class="k">return</span> <span class="n">Accuracy</span><span class="p">(</span><span class="n">accuracy</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="predict">
+<h2>Predict<a class="headerlink" href="#predict" title="Permalink to this headline">¶</a></h2>
+<p>To make a prediction, we access the <code class="docutils literal notranslate"><span class="pre">regression_line</span></code> within <code class="docutils literal notranslate"><span class="pre">self.storage</span></code>,
+we use the <code class="docutils literal notranslate"><span class="pre">m</span></code> and <code class="docutils literal notranslate"><span class="pre">b</span></code> indexes to calculate <code class="docutils literal notranslate"><span class="pre">y</span> <span class="pre">=</span> <span class="pre">m</span> <span class="pre">*</span> <span class="pre">x</span> <span class="pre">+</span> <span class="pre">b</span></code>, we use the
+<code class="docutils literal notranslate"><span class="pre">accuracy</span></code> as our estimated confidence in the prediction.</p>
+<p>We call <a class="reference internal" href="../../api/record.html#dffml.record.Record.predicted" title="dffml.record.Record.predicted"><code class="xref py py-meth docutils literal notranslate"><span class="pre">record.predicted</span></code></a>
+passing it the name of the feature we predicted, the predicted value, and the
+confidence in our prediction.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="k">async</span> <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sources</span><span class="p">:</span> <span class="n">SourcesContext</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AsyncIterator</span><span class="p">[</span><span class="n">Record</span><span class="p">]:</span>
+        <span class="c1"># Load saved regression line</span>
+        <span class="n">regression_line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">storage</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;regression_line&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="c1"># Ensure the model has been trained before we try to make a prediction</span>
+        <span class="k">if</span> <span class="n">regression_line</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">ModelNotTrained</span><span class="p">(</span><span class="s2">&quot;Train model before prediction&quot;</span><span class="p">)</span>
+        <span class="c1"># Expand the regression_line into named variables</span>
+        <span class="n">m</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">accuracy</span> <span class="o">=</span> <span class="n">regression_line</span>
+        <span class="c1"># Iterate through each record that needs a prediction</span>
+        <span class="k">async</span> <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">sources</span><span class="o">.</span><span class="n">with_features</span><span class="p">(</span>
+            <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">features</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">]</span>
+        <span class="p">):</span>
+            <span class="c1"># Grab the x data from the record</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">record</span><span class="o">.</span><span class="n">feature</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">features</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+            <span class="c1"># Calculate y</span>
+            <span class="n">y</span> <span class="o">=</span> <span class="n">m</span> <span class="o">*</span> <span class="n">x</span> <span class="o">+</span> <span class="n">b</span>
+            <span class="c1"># Set the calculated value with the estimated accuracy</span>
+            <span class="n">record</span><span class="o">.</span><span class="n">predicted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">predict</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">)</span>
+            <span class="c1"># Yield the record to the caller</span>
+            <span class="k">yield</span> <span class="n">record</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="python-usage">
+<h2>Python Usage<a class="headerlink" href="#python-usage" title="Permalink to this headline">¶</a></h2>
+<p>We can use our new model from Python code as follows. This example makes use of
+<code class="docutils literal notranslate"><span class="pre">dffml.noasync</span></code> which contains versions of <code class="docutils literal notranslate"><span class="pre">train</span></code>, <code class="docutils literal notranslate"><span class="pre">accuracy</span></code>, and
+<code class="docutils literal notranslate"><span class="pre">predict</span></code> which we don’t have to be in an <code class="docutils literal notranslate"><span class="pre">async</span></code> function to call.</p>
+<p>Let’s first create our training, test, and prediction data CSV files.</p>
+<p><strong>train.csv</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Years</span><span class="p">,</span><span class="n">Salary</span>
+<span class="mi">1</span><span class="p">,</span><span class="mi">40</span>
+<span class="mi">2</span><span class="p">,</span><span class="mi">50</span>
+<span class="mi">3</span><span class="p">,</span><span class="mi">60</span>
+<span class="mi">4</span><span class="p">,</span><span class="mi">70</span>
+<span class="mi">5</span><span class="p">,</span><span class="mi">80</span>
+</pre></div>
+</div>
+<p><strong>test.csv</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Years</span><span class="p">,</span><span class="n">Salary</span>
+<span class="mi">6</span><span class="p">,</span><span class="mi">90</span>
+<span class="mi">7</span><span class="p">,</span><span class="mi">100</span>
+</pre></div>
+</div>
+<p><strong>predict.csv</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Years</span>
+<span class="mi">8</span>
+</pre></div>
+</div>
+<p>Then we can write our Python file, <strong>run.py</strong>.</p>
+<p><strong>run.py</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">asyncio</span>
+
+<span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">Features</span><span class="p">,</span> <span class="n">Feature</span><span class="p">,</span> <span class="n">train</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">,</span> <span class="n">predict</span>
+
+<span class="kn">from</span> <span class="nn">myslr</span> <span class="kn">import</span> <span class="n">MySLRModel</span>
+
+
+<span class="k">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="c1"># Configure the model</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">MySLRModel</span><span class="p">(</span>
+        <span class="n">features</span><span class="o">=</span><span class="n">Features</span><span class="p">(</span><span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;Years&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span>
+        <span class="n">predict</span><span class="o">=</span><span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;Salary&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+        <span class="n">directory</span><span class="o">=</span><span class="s2">&quot;model&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Train the model</span>
+    <span class="k">await</span> <span class="n">train</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="s2">&quot;train.csv&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Assess accuracy</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Accuracy:&quot;</span><span class="p">,</span> <span class="k">await</span> <span class="n">accuracy</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="s2">&quot;test.csv&quot;</span><span class="p">))</span>
+
+    <span class="c1"># Make predictions</span>
+    <span class="k">async</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">features</span><span class="p">,</span> <span class="n">prediction</span> <span class="ow">in</span> <span class="n">predict</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="s2">&quot;predict.csv&quot;</span><span class="p">):</span>
+        <span class="n">features</span><span class="p">[</span><span class="s2">&quot;Salary&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">prediction</span><span class="p">[</span><span class="s2">&quot;Salary&quot;</span><span class="p">][</span><span class="s2">&quot;value&quot;</span><span class="p">]</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">features</span><span class="p">)</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+</pre></div>
+</div>
+<p>We run it as we would any other Python file</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python3 run.py
+<span class="go">Accuracy: 1.0</span>
+<span class="go">{&#39;Years&#39;: 8, &#39;Salary&#39;: 110.0}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="command-line-usage">
+<h2>Command Line Usage<a class="headerlink" href="#command-line-usage" title="Permalink to this headline">¶</a></h2>
+<p>To use your new model on the command line we’ll reference it by it’s entrypoint
+style path. This is in the format of <code class="docutils literal notranslate"><span class="pre">file:ClassWithinFile</span></code>, so for this it’ll
+be <code class="docutils literal notranslate"><span class="pre">myslr:MySLRModel</span></code>.</p>
+<p>We do the same steps we did with Python, only using the command line interface.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml train <span class="se">\</span>
+<span class="go">    -log debug \</span>
+<span class="go">    -model myslr:MySLRModel \</span>
+<span class="go">    -model-features Years:int:1 \</span>
+<span class="go">    -model-predict Salary:float:1 \</span>
+<span class="go">    -model-directory modeldir \</span>
+<span class="go">    -sources f=csv \</span>
+<span class="go">    -source-filename train.csv</span>
+</pre></div>
+</div>
+<p>There’s no output from the training command if everything went well</p>
+<p>Now let’s make predictions</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml predict all <span class="se">\</span>
+<span class="go">    -model myslr:MySLRModel \</span>
+<span class="go">    -model-features Years:int:1 \</span>
+<span class="go">    -model-predict Salary:float:1 \</span>
+<span class="go">    -model-directory modeldir \</span>
+<span class="go">    -sources f=csv \</span>
+<span class="go">    -source-filename predict.csv</span>
+<span class="go">[</span>
+<span class="go">    {</span>
+<span class="go">        &quot;extra&quot;: {},</span>
+<span class="go">        &quot;features&quot;: {</span>
+<span class="go">            &quot;Years&quot;: 8</span>
+<span class="go">        },</span>
+<span class="go">        &quot;key&quot;: &quot;0&quot;,</span>
+<span class="go">        &quot;last_updated&quot;: &quot;2020-05-24T22:48:11Z&quot;,</span>
+<span class="go">        &quot;prediction&quot;: {</span>
+<span class="go">            &quot;Salary&quot;: {</span>
+<span class="go">                &quot;confidence&quot;: 1.0,</span>
+<span class="go">                &quot;value&quot;: 110.0</span>
+<span class="go">            }</span>
+<span class="go">        }</span>
+<span class="go">    }</span>
+<span class="go">]</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="http-server-usage">
+<h2>HTTP Server Usage<a class="headerlink" href="#http-server-usage" title="Permalink to this headline">¶</a></h2>
+<p>Your model will also be accessible via the HTTP API via a similar syntax.</p>
+<p>First we need to install the HTTP service, which is the HTTP server which will
+serve our model. See the <a class="reference internal" href="../../plugins/service/http/index.html"><span class="doc">HTTP API</span></a> docs for more
+information on the HTTP service.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python -m pip install -U dffml-service-http
+</pre></div>
+</div>
+<p>We start the HTTP service and tell it that we want to make our model accessable
+via the HTTP <a class="reference internal" href="../../plugins/service/http/api.html#plugin-service-http-api-model"><span class="std std-ref">Model</span></a> API.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>You should be sure to read the <a class="reference internal" href="../../plugins/service/http/security.html"><span class="doc">Security</span></a> docs!
+This example of running the HTTP API is insecure and is only used to help
+you get up and running.</p>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml service http server -insecure -cors <span class="s1">&#39;*&#39;</span> -addr <span class="m">0</span>.0.0.0 -port <span class="m">8080</span> <span class="se">\</span>
+<span class="go">    -models mymodel=myslr:MySLRModel \</span>
+<span class="go">    -model-features Years:int:1 \</span>
+<span class="go">    -model-predict Salary:float:1 \</span>
+<span class="go">    -model-directory modeldir</span>
+</pre></div>
+</div>
+<p>We can then ask the HTTP service to make predictions, or do training or accuracy
+assessment.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>curl -f http://localhost:8080/model/mymodel/predict/0 <span class="se">\</span>
+<span class="go">    --header &quot;Content-Type: application/json&quot; \</span>
+<span class="go">    --data &#39;{&quot;0&quot;: {&quot;features&quot;: {&quot;Years&quot;: 8}}}&#39;</span>
+<span class="go">{</span>
+<span class="go">    &quot;iterkey&quot;: null,</span>
+<span class="go">    &quot;records&quot;: {</span>
+<span class="go">        &quot;0&quot;: {</span>
+<span class="go">            &quot;key&quot;: &quot;0&quot;,</span>
+<span class="go">            &quot;features&quot;: {</span>
+<span class="go">                &quot;Years&quot;: 8</span>
+<span class="go">            },</span>
+<span class="go">            &quot;prediction&quot;: {</span>
+<span class="go">                &quot;Salary&quot;: {</span>
+<span class="go">                    &quot;confidence&quot;: 1.0,</span>
+<span class="go">                    &quot;value&quot;: 110.0</span>
+<span class="go">                }</span>
+<span class="go">            },</span>
+<span class="go">            &quot;last_updated&quot;: &quot;2020-04-14T20:07:11Z&quot;,</span>
+<span class="go">            &quot;extra&quot;: {}</span>
+<span class="go">        }</span>
+<span class="go">    }</span>
+<span class="go">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="package.html" class="btn btn-neutral float-right" title="Packaging a Model" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="iris.html" class="btn btn-neutral float-left" title="Use a Model" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2017 - 2021, Intel.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

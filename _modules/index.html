@@ -7,12 +7,13 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Overview: module code &mdash; DFFML 0.3.7 documentation</title>
+  <title>Overview: module code &mdash; DFFML 0.4.0 documentation</title>
   
 
   
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/tabs.css" type="text/css" />
 
   
   
@@ -32,6 +33,7 @@
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
+        <script src="../_static/tabs.js"></script>
         <script src="../_static/copybutton.js"></script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
@@ -63,7 +65,7 @@
             
             
               <div class="version">
-                0.3.7
+                0.4.0
               </div>
             
           
@@ -94,11 +96,11 @@
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../concepts/index.html">Concepts</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Examples</span></p>
+<p class="caption"><span class="caption-text">Usage</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../quickstart/model.html">Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../usage/index.html">Use Cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Examples</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Reference</span></p>
 <ul>
@@ -106,13 +108,21 @@
 <li class="toctree-l1"><a class="reference internal" href="../cli.html">Command Line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../plugins/service/http/index.html">HTTP API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../troubleshooting.html">Troubleshooting</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Subprojects</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../shouldi.html">shouldi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../swportal.html">Software Portal</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Community</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/intel/dffml">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://intel.github.io/dffml/master/">Master Branch Docs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../publications.html">Publications</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../contact.html">Contact Us</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../news/index.html">News</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
 </ul>
 
@@ -165,10 +175,14 @@
       <li>Overview: module code</li>
     
     
+
+
       <li class="wy-breadcrumbs-aside">
         
       </li>
     
+
+
   </ul>
 
   
@@ -179,23 +193,76 @@
             
   <h1>All modules for which code is available</h1>
 <ul><li><a href="dffml/base.html">dffml.base</a></li>
+<li><a href="dffml/cli/cli.html">dffml.cli.cli</a></li>
+<li><a href="dffml/cli/config.html">dffml.cli.config</a></li>
+<li><a href="dffml/cli/dataflow.html">dffml.cli.dataflow</a></li>
+<li><a href="dffml/cli/list.html">dffml.cli.list</a></li>
+<li><a href="dffml/cli/ml.html">dffml.cli.ml</a></li>
+<li><a href="dffml/configloader/configloader.html">dffml.configloader.configloader</a></li>
+<li><a href="dffml/configloader/json.html">dffml.configloader.json</a></li>
 <li><a href="dffml/db/base.html">dffml.db.base</a></li>
 <li><a href="dffml/db/sql.html">dffml.db.sql</a></li>
 <li><a href="dffml/db/sqlite.html">dffml.db.sqlite</a></li>
 <li><a href="dffml/df/base.html">dffml.df.base</a></li>
+<li><a href="dffml/df/exceptions.html">dffml.df.exceptions</a></li>
 <li><a href="dffml/df/memory.html">dffml.df.memory</a></li>
+<li><a href="dffml/df/multicomm.html">dffml.df.multicomm</a></li>
 <li><a href="dffml/df/types.html">dffml.df.types</a></li>
 <li><a href="dffml/feature/feature.html">dffml.feature.feature</a></li>
 <li><a href="dffml/high_level.html">dffml.high_level</a></li>
+<li><a href="dffml/model/accuracy.html">dffml.model.accuracy</a></li>
 <li><a href="dffml/model/model.html">dffml.model.model</a></li>
+<li><a href="dffml/model/slr.html">dffml.model.slr</a></li>
+<li><a href="dffml/noasync.html">dffml.noasync</a></li>
+<li><a href="dffml/operation/dataflow.html">dffml.operation.dataflow</a></li>
+<li><a href="dffml/operation/db.html">dffml.operation.db</a></li>
+<li><a href="dffml/operation/io.html">dffml.operation.io</a></li>
+<li><a href="dffml/operation/mapping.html">dffml.operation.mapping</a></li>
+<li><a href="dffml/operation/math.html">dffml.operation.math</a></li>
+<li><a href="dffml/operation/model.html">dffml.operation.model</a></li>
+<li><a href="dffml/operation/output.html">dffml.operation.output</a></li>
+<li><a href="dffml/operation/preprocess.html">dffml.operation.preprocess</a></li>
+<li><a href="dffml/plugins.html">dffml.plugins</a></li>
+<li><a href="dffml/port/json.html">dffml.port.json</a></li>
+<li><a href="dffml/port/port.html">dffml.port.port</a></li>
 <li><a href="dffml/record.html">dffml.record</a></li>
+<li><a href="dffml/secret/base.html">dffml.secret.base</a></li>
+<li><a href="dffml/secret/ini.html">dffml.secret.ini</a></li>
+<li><a href="dffml/service/dev.html">dffml.service.dev</a></li>
 <li><a href="dffml/source/csv.html">dffml.source.csv</a></li>
+<li><a href="dffml/source/db.html">dffml.source.db</a></li>
+<li><a href="dffml/source/df.html">dffml.source.df</a></li>
+<li><a href="dffml/source/dir.html">dffml.source.dir</a></li>
 <li><a href="dffml/source/file.html">dffml.source.file</a></li>
+<li><a href="dffml/source/idx1.html">dffml.source.idx1</a></li>
+<li><a href="dffml/source/idx3.html">dffml.source.idx3</a></li>
+<li><a href="dffml/source/ini.html">dffml.source.ini</a></li>
 <li><a href="dffml/source/json.html">dffml.source.json</a></li>
 <li><a href="dffml/source/memory.html">dffml.source.memory</a></li>
+<li><a href="dffml/source/op.html">dffml.source.op</a></li>
 <li><a href="dffml/source/source.html">dffml.source.source</a></li>
 <li><a href="dffml/util/asynchelper.html">dffml.util.asynchelper</a></li>
+<li><a href="dffml/util/asynctestcase.html">dffml.util.asynctestcase</a></li>
+<li><a href="dffml/util/cli/arg.html">dffml.util.cli.arg</a></li>
+<li><a href="dffml/util/cli/cmd.html">dffml.util.cli.cmd</a></li>
+<li><a href="dffml/util/cli/cmds.html">dffml.util.cli.cmds</a></li>
+<li><a href="dffml/util/cli/parser.html">dffml.util.cli.parser</a></li>
+<li><a href="dffml/util/config/exceptions.html">dffml.util.config.exceptions</a></li>
+<li><a href="dffml/util/config/numpy.html">dffml.util.config.numpy</a></li>
+<li><a href="dffml/util/data.html">dffml.util.data</a></li>
+<li><a href="dffml/util/entrypoint.html">dffml.util.entrypoint</a></li>
 <li><a href="dffml/util/net.html">dffml.util.net</a></li>
+<li><a href="dffml/util/os.html">dffml.util.os</a></li>
+<li><a href="dffml/util/packaging.html">dffml.util.packaging</a></li>
+<li><a href="dffml/util/skel.html">dffml.util.skel</a></li>
+<li><a href="dffml/util/tempdir.html">dffml.util.tempdir</a></li>
+<li><a href="dffml/util/testing/consoletest/builder.html">dffml.util.testing.consoletest.builder</a></li>
+<li><a href="dffml/util/testing/consoletest/cli.html">dffml.util.testing.consoletest.cli</a></li>
+<li><a href="dffml/util/testing/consoletest/commands.html">dffml.util.testing.consoletest.commands</a></li>
+<li><a href="dffml/util/testing/consoletest/parser.html">dffml.util.testing.consoletest.parser</a></li>
+<li><a href="dffml/util/testing/consoletest/util.html">dffml.util.testing.consoletest.util</a></li>
+<li><a href="dffml/util/testing/docs.html">dffml.util.testing.docs</a></li>
+<li><a href="dffml/util/testing/source.html">dffml.util.testing.source</a></li>
 </ul>
 
            </div>
@@ -207,7 +274,7 @@
 
   <div role="contentinfo">
     <p>
-        &#169; Copyright 2019, Intel.
+        &#169; Copyright 2017 - 2021, Intel.
 
     </p>
   </div>

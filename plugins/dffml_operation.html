@@ -7,12 +7,13 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Operations &mdash; DFFML 0.3.7 documentation</title>
+  <title>Operations &mdash; DFFML 0.4.0 documentation</title>
   
 
   
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/tabs.css" type="text/css" />
 
   
   
@@ -65,7 +66,7 @@
             
             
               <div class="version">
-                0.3.7
+                0.4.0
               </div>
             
           
@@ -96,11 +97,11 @@
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../concepts/index.html">Concepts</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Examples</span></p>
+<p class="caption"><span class="caption-text">Usage</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../quickstart/model.html">Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../usage/index.html">Use Cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Examples</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Reference</span></p>
 <ul class="current">
@@ -111,6 +112,13 @@
 <li class="toctree-l3"><a class="reference internal" href="#dffml">dffml</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#acceptuserinput">AcceptUserInput</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#associate">associate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#associate-definition">associate_definition</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#db-query-create-table">db_query_create_table</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#db-query-insert">db_query_insert</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#db-query-insert-or-update">db_query_insert_or_update</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#db-query-lookup">db_query_lookup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#db-query-remove">db_query_remove</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#db-query-update">db_query_update</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#dffml-dataflow-run">dffml.dataflow.run</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#dffml-mapping-create">dffml.mapping.create</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#dffml-mapping-extract">dffml.mapping.extract</a></li>
@@ -119,6 +127,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#get-single">get_single</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#group-by">group_by</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#literal-eval">literal_eval</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#multiply">multiply</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#print-output">print_output</a></li>
 </ul>
 </li>
@@ -135,8 +144,62 @@
 <li class="toctree-l4"><a class="reference internal" href="#git-repo-release">git_repo_release</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#lines-of-code-by-language">lines_of_code_by_language</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#lines-of-code-to-comments">lines_of_code_to_comments</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#make-quarters">make_quarters</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#quarters-back-to-date">quarters_back_to_date</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#work">work</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#shouldi">shouldi</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#cleanup-pypi-package">cleanup_pypi_package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pypi-package-contents">pypi_package_contents</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pypi-package-json">pypi_package_json</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#run-bandit">run_bandit</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#safety-check">safety_check</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#dffml-operations-nlp">dffml_operations_nlp</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#collect-output">collect_output</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#count-vectorizer">count_vectorizer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#extract-array-from-matrix">extract_array_from_matrix</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#get-embedding">get_embedding</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#get-noun-chunks">get_noun_chunks</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#get-sentences">get_sentences</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#get-similarity">get_similarity</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#lemmatizer">lemmatizer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pos-tagger">pos_tagger</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#remove-stopwords">remove_stopwords</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#tfidf-vectorizer">tfidf_vectorizer</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#dffml-operations-image">dffml_operations_image</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#haralick">Haralick</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#humoments">HuMoments</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#calchist">calcHist</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#convert-color">convert_color</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#flatten">flatten</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#normalize">normalize</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#resize">resize</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#dffml-operations-deploy">dffml_operations_deploy</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#check-if-default-branch">check_if_default_branch</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#check-secret-match">check_secret_match</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#docker-build-image">docker_build_image</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#get-image-tag">get_image_tag</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#get-running-containers">get_running_containers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#get-status-running-containers">get_status_running_containers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#get-url-from-payload">get_url_from_payload</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#parse-docker-commands">parse_docker_commands</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#restart-running-containers">restart_running_containers</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#dffml-operations-binsec">dffml_operations_binsec</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#cleanup-rpm">cleanup_rpm</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#files-in-rpm">files_in_rpm</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#is-binary-pie">is_binary_pie</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#url-to-urlbytes">url_to_urlbytes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#urlbytes-to-rpmfile">urlbytes_to_rpmfile</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#urlbytes-to-tarfile">urlbytes_to_tarfile</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#dffml-feature-auth">dffml_feature_auth</a><ul>
@@ -151,13 +214,21 @@
 <li class="toctree-l1"><a class="reference internal" href="../cli.html">Command Line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="service/http/index.html">HTTP API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../troubleshooting.html">Troubleshooting</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Subprojects</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../shouldi.html">shouldi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../swportal.html">Software Portal</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Community</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/intel/dffml">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://intel.github.io/dffml/master/">Master Branch Docs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../publications.html">Publications</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../contact.html">Contact Us</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../news/index.html">News</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
 </ul>
 
@@ -201,6 +272,8 @@
 
 
 
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
@@ -212,16 +285,8 @@
       <li>Operations</li>
     
     
-      <li class="wy-breadcrumbs-aside">
-        
-          
-            
-              <a href="https://github.com/intel/dffml/blob/master/docs/plugins/dffml_operation.rst" class="fa fa-github"> Edit on GitHub</a>
-            
-          
-        
-      </li>
-    
+
+
   </ul>
 
   
@@ -247,13 +312,6 @@ the roadmap.</p>
 <span id="plugin-operation-dffml-acceptuserinput"></span><h3>AcceptUserInput<a class="headerlink" href="#acceptuserinput" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>Accept input from stdin using python input()</p>
-<div class="section" id="parameters">
-<h4>Parameters<a class="headerlink" href="#parameters" title="Permalink to this headline">¶</a></h4>
-<dl class="simple">
-<dt>inputs<span class="classifier">dict</span></dt><dd><p>A dictionary with a key and empty list as value.</p>
-</dd>
-</dl>
-</div>
 <div class="section" id="returns">
 <h4>Returns<a class="headerlink" href="#returns" title="Permalink to this headline">¶</a></h4>
 <dl class="simple">
@@ -265,16 +323,19 @@ the roadmap.</p>
 <h4>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h4>
 <p>The following example shows how to use AcceptUserInput.
 (Assumes that the input from stdio is “Data flow is awesome”!)</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">dataflow</span> <span class="o">=</span> <span class="n">DataFlow</span><span class="o">.</span><span class="n">auto</span><span class="p">(</span><span class="n">AcceptUserInput</span><span class="p">,</span> <span class="n">GetSingle</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dataflow</span> <span class="o">=</span> <span class="n">DataFlow</span><span class="o">.</span><span class="n">auto</span><span class="p">(</span><span class="n">AcceptUserInput</span><span class="p">,</span> <span class="n">GetSingle</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">dataflow</span><span class="o">.</span><span class="n">seed</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">Input</span><span class="p">(</span>
 <span class="gp">... </span>        <span class="n">value</span><span class="o">=</span><span class="p">[</span><span class="n">AcceptUserInput</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s2">&quot;InputData&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">],</span>
-<span class="gp">... </span>        <span class="n">definition</span><span class="o">=</span><span class="n">GetSingle</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;spec&quot;</span><span class="p">]</span>
+<span class="gp">... </span>        <span class="n">definition</span><span class="o">=</span><span class="n">GetSingle</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;spec&quot;</span><span class="p">],</span>
 <span class="gp">... </span>    <span class="p">)</span>
 <span class="gp">... </span><span class="p">)</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
-<span class="gp">... </span>    <span class="k">async</span> <span class="k">for</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">results</span> <span class="ow">in</span> <span class="n">MemoryOrchestrator</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">dataflow</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;input&quot;</span><span class="p">:[]}):</span>
+<span class="gp">... </span>    <span class="k">async</span> <span class="k">for</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">results</span> <span class="ow">in</span> <span class="n">MemoryOrchestrator</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">dataflow</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;input&quot;</span><span class="p">:</span> <span class="p">[]}):</span>
 <span class="gp">... </span>        <span class="nb">print</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
@@ -302,12 +363,544 @@ the roadmap.</p>
 <li><p>output: associate_output(type: Dict[str, Any])</p></li>
 </ul>
 </div>
+<div class="section" id="associate-definition">
+<span id="plugin-operation-dffml-associate-definition"></span><h3>associate_definition<a class="headerlink" href="#associate-definition" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<div class="section" id="id1">
+<h4>Examples<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h4>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">feed_def</span> <span class="o">=</span> <span class="n">Definition</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;feed&quot;</span><span class="p">,</span> <span class="n">primitive</span><span class="o">=</span><span class="s2">&quot;string&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dead_def</span> <span class="o">=</span> <span class="n">Definition</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;dead&quot;</span><span class="p">,</span> <span class="n">primitive</span><span class="o">=</span><span class="s2">&quot;string&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">output</span> <span class="o">=</span> <span class="n">Definition</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;output&quot;</span><span class="p">,</span> <span class="n">primitive</span><span class="o">=</span><span class="s2">&quot;string&quot;</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">feed_input</span> <span class="o">=</span> <span class="n">Input</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="s2">&quot;my favorite value&quot;</span><span class="p">,</span> <span class="n">definition</span><span class="o">=</span><span class="n">feed_def</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">face_input</span> <span class="o">=</span> <span class="n">Input</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">value</span><span class="o">=</span><span class="s2">&quot;face&quot;</span><span class="p">,</span> <span class="n">definition</span><span class="o">=</span><span class="n">output</span><span class="p">,</span> <span class="n">parents</span><span class="o">=</span><span class="p">[</span><span class="n">feed_input</span><span class="p">]</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dead_input</span> <span class="o">=</span> <span class="n">Input</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">value</span><span class="o">=</span><span class="s2">&quot;my second favorite value&quot;</span><span class="p">,</span> <span class="n">definition</span><span class="o">=</span><span class="n">dead_def</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">beef_input</span> <span class="o">=</span> <span class="n">Input</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">value</span><span class="o">=</span><span class="s2">&quot;beef&quot;</span><span class="p">,</span> <span class="n">definition</span><span class="o">=</span><span class="n">output</span><span class="p">,</span> <span class="n">parents</span><span class="o">=</span><span class="p">[</span><span class="n">dead_input</span><span class="p">]</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;feed&quot;</span><span class="p">,</span> <span class="s2">&quot;dead&quot;</span><span class="p">]:</span>
+<span class="gp">... </span>        <span class="k">async</span> <span class="k">for</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">results</span> <span class="ow">in</span> <span class="n">MemoryOrchestrator</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+<span class="gp">... </span>            <span class="n">DataFlow</span><span class="o">.</span><span class="n">auto</span><span class="p">(</span><span class="n">AssociateDefinition</span><span class="p">),</span>
+<span class="gp">... </span>            <span class="p">[</span>
+<span class="gp">... </span>                <span class="n">feed_input</span><span class="p">,</span>
+<span class="gp">... </span>                <span class="n">face_input</span><span class="p">,</span>
+<span class="gp">... </span>                <span class="n">dead_input</span><span class="p">,</span>
+<span class="gp">... </span>                <span class="n">beef_input</span><span class="p">,</span>
+<span class="gp">... </span>                <span class="n">Input</span><span class="p">(</span>
+<span class="gp">... </span>                    <span class="n">value</span><span class="o">=</span><span class="p">{</span><span class="n">value</span><span class="p">:</span> <span class="s2">&quot;output&quot;</span><span class="p">},</span>
+<span class="gp">... </span>                    <span class="n">definition</span><span class="o">=</span><span class="n">AssociateDefinition</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;spec&quot;</span><span class="p">],</span>
+<span class="gp">... </span>                <span class="p">),</span>
+<span class="gp">... </span>            <span class="p">],</span>
+<span class="gp">... </span>        <span class="p">):</span>
+<span class="gp">... </span>            <span class="nb">print</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+<span class="go">{&#39;feed&#39;: &#39;face&#39;}</span>
+<span class="go">{&#39;dead&#39;: &#39;beef&#39;}</span>
+</pre></div>
+</div>
+<p><strong>Stage: output</strong></p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>spec: associate_spec(type: List[str])</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>output: associate_output(type: Dict[str, Any])</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="db-query-create-table">
+<span id="plugin-operation-dffml-db-query-create-table"></span><h3>db_query_create_table<a class="headerlink" href="#db-query-create-table" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<p>Generates a create table query in the database.</p>
+<div class="section" id="parameters">
+<h4>Parameters<a class="headerlink" href="#parameters" title="Permalink to this headline">¶</a></h4>
+<dl class="simple">
+<dt>table_name<span class="classifier">str</span></dt><dd><p>The name of the table to be created.</p>
+</dd>
+<dt>cols<span class="classifier">list[str]</span></dt><dd><p>Columns of the table.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="id2">
+<h4>Examples<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h4>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sdb</span> <span class="o">=</span> <span class="n">SqliteDatabase</span><span class="p">(</span><span class="n">SqliteDatabaseConfig</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;examples.db&quot;</span><span class="p">))</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dataflow</span> <span class="o">=</span> <span class="n">DataFlow</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">operations</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;db_query_create&quot;</span><span class="p">:</span> <span class="n">db_query_create_table</span><span class="o">.</span><span class="n">op</span><span class="p">,},</span>
+<span class="gp">... </span>    <span class="n">configs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;db_query_create&quot;</span><span class="p">:</span> <span class="n">DatabaseQueryConfig</span><span class="p">(</span><span class="n">database</span><span class="o">=</span><span class="n">sdb</span><span class="p">),},</span>
+<span class="gp">... </span>    <span class="n">seed</span><span class="o">=</span><span class="p">[],</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">inputs</span> <span class="o">=</span> <span class="p">[</span>
+<span class="gp">... </span>    <span class="n">Input</span><span class="p">(</span>
+<span class="gp">... </span>        <span class="n">value</span><span class="o">=</span><span class="s2">&quot;myTable1&quot;</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="n">definition</span><span class="o">=</span><span class="n">db_query_create_table</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;table_name&quot;</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="p">),</span>
+<span class="gp">... </span>    <span class="n">Input</span><span class="p">(</span>
+<span class="gp">... </span>        <span class="n">value</span><span class="o">=</span><span class="p">{</span>
+<span class="gp">... </span>            <span class="s2">&quot;key&quot;</span><span class="p">:</span> <span class="s2">&quot;real&quot;</span><span class="p">,</span>
+<span class="gp">... </span>            <span class="s2">&quot;firstName&quot;</span><span class="p">:</span> <span class="s2">&quot;text&quot;</span><span class="p">,</span>
+<span class="gp">... </span>            <span class="s2">&quot;lastName&quot;</span><span class="p">:</span> <span class="s2">&quot;text&quot;</span><span class="p">,</span>
+<span class="gp">... </span>            <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="s2">&quot;real&quot;</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="p">},</span>
+<span class="gp">... </span>        <span class="n">definition</span><span class="o">=</span><span class="n">db_query_create_table</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;cols&quot;</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="p">),</span>
+<span class="gp">... </span><span class="p">]</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="k">async</span> <span class="k">for</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">MemoryOrchestrator</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">dataflow</span><span class="p">,</span> <span class="n">inputs</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="k">pass</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+</pre></div>
+</div>
+<p><strong>Stage: processing</strong></p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>table_name: query_table(type: str)</p></li>
+<li><p>cols: query_cols(type: Dict[str, str])</p></li>
+</ul>
+<p><strong>Args</strong></p>
+<ul class="simple">
+<li><p>database: Entrypoint</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="db-query-insert">
+<span id="plugin-operation-dffml-db-query-insert"></span><h3>db_query_insert<a class="headerlink" href="#db-query-insert" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<p>Generates an insert query in the database.</p>
+<div class="section" id="id3">
+<h4>Parameters<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h4>
+<dl class="simple">
+<dt>table_name<span class="classifier">str</span></dt><dd><p>The name of the table to insert data in to.</p>
+</dd>
+<dt>data<span class="classifier">dict</span></dt><dd><p>Data to be inserted into the table.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="id4">
+<h4>Examples<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h4>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sdb</span> <span class="o">=</span> <span class="n">SqliteDatabase</span><span class="p">(</span><span class="n">SqliteDatabaseConfig</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;examples.db&quot;</span><span class="p">))</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dataflow</span> <span class="o">=</span> <span class="n">DataFlow</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">operations</span><span class="o">=</span><span class="p">{</span>
+<span class="gp">... </span>        <span class="s2">&quot;db_query_insert&quot;</span><span class="p">:</span> <span class="n">db_query_insert</span><span class="o">.</span><span class="n">op</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="s2">&quot;db_query_lookup&quot;</span><span class="p">:</span> <span class="n">db_query_lookup</span><span class="o">.</span><span class="n">op</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="s2">&quot;get_single&quot;</span><span class="p">:</span> <span class="n">GetSingle</span><span class="o">.</span><span class="n">imp</span><span class="o">.</span><span class="n">op</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="p">},</span>
+<span class="gp">... </span>    <span class="n">configs</span><span class="o">=</span><span class="p">{</span>
+<span class="gp">... </span>        <span class="s2">&quot;db_query_lookup&quot;</span><span class="p">:</span> <span class="n">DatabaseQueryConfig</span><span class="p">(</span><span class="n">database</span><span class="o">=</span><span class="n">sdb</span><span class="p">),</span>
+<span class="gp">... </span>        <span class="s2">&quot;db_query_insert&quot;</span><span class="p">:</span> <span class="n">DatabaseQueryConfig</span><span class="p">(</span><span class="n">database</span><span class="o">=</span><span class="n">sdb</span><span class="p">),</span>
+<span class="gp">... </span>    <span class="p">},</span>
+<span class="gp">... </span>    <span class="n">seed</span><span class="o">=</span><span class="p">[],</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">inputs</span> <span class="o">=</span> <span class="p">{</span>
+<span class="gp">... </span>    <span class="s2">&quot;insert&quot;</span><span class="p">:</span> <span class="p">[</span>
+<span class="gp">... </span>        <span class="n">Input</span><span class="p">(</span>
+<span class="gp">... </span>            <span class="n">value</span><span class="o">=</span><span class="s2">&quot;myTable&quot;</span><span class="p">,</span> <span class="n">definition</span><span class="o">=</span><span class="n">db_query_insert</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;table_name&quot;</span><span class="p">],</span>
+<span class="gp">... </span>        <span class="p">),</span>
+<span class="gp">... </span>        <span class="n">Input</span><span class="p">(</span>
+<span class="gp">... </span>           <span class="n">value</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;key&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span> <span class="s2">&quot;firstName&quot;</span><span class="p">:</span> <span class="s2">&quot;John&quot;</span><span class="p">,</span> <span class="s2">&quot;lastName&quot;</span><span class="p">:</span> <span class="s2">&quot;Doe&quot;</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">16</span><span class="p">},</span>
+<span class="gp">... </span>            <span class="n">definition</span><span class="o">=</span><span class="n">db_query_insert</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">],</span>
+<span class="gp">... </span>        <span class="p">),</span>
+<span class="gp">... </span>    <span class="p">],</span>
+<span class="gp">... </span>    <span class="s2">&quot;lookup&quot;</span><span class="p">:</span> <span class="p">[</span>
+<span class="gp">... </span>        <span class="n">Input</span><span class="p">(</span>
+<span class="gp">... </span>            <span class="n">value</span><span class="o">=</span><span class="s2">&quot;myTable&quot;</span><span class="p">,</span> <span class="n">definition</span><span class="o">=</span><span class="n">db_query_lookup</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;table_name&quot;</span><span class="p">],</span>
+<span class="gp">... </span>        <span class="p">),</span>
+<span class="gp">... </span>        <span class="n">Input</span><span class="p">(</span>
+<span class="gp">... </span>            <span class="n">value</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;firstName&quot;</span><span class="p">,</span> <span class="s2">&quot;lastName&quot;</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">],</span>
+<span class="gp">... </span>            <span class="n">definition</span><span class="o">=</span><span class="n">db_query_lookup</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;cols&quot;</span><span class="p">],</span>
+<span class="gp">... </span>        <span class="p">),</span>
+<span class="gp">... </span>        <span class="n">Input</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="p">[],</span> <span class="n">definition</span><span class="o">=</span><span class="n">db_query_lookup</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;conditions&quot;</span><span class="p">],),</span>
+<span class="gp">... </span>        <span class="n">Input</span><span class="p">(</span>
+<span class="gp">... </span>            <span class="n">value</span><span class="o">=</span><span class="p">[</span><span class="n">db_query_lookup</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s2">&quot;lookups&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">],</span>
+<span class="gp">... </span>            <span class="n">definition</span><span class="o">=</span><span class="n">GetSingle</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;spec&quot;</span><span class="p">],</span>
+<span class="gp">... </span>        <span class="p">),</span>
+<span class="gp">... </span>    <span class="p">]</span>
+<span class="gp">... </span><span class="p">}</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="k">async</span> <span class="k">for</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">MemoryOrchestrator</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">dataflow</span><span class="p">,</span> <span class="n">inputs</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="k">if</span> <span class="n">result</span><span class="p">:</span>
+<span class="gp">... </span>            <span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+<span class="go">{&#39;query_lookups&#39;: [{&#39;firstName&#39;: &#39;John&#39;, &#39;lastName&#39;: &#39;Doe&#39;, &#39;age&#39;: 16}]}</span>
+</pre></div>
+</div>
+<p><strong>Stage: processing</strong></p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>table_name: query_table(type: str)</p></li>
+<li><p>data: query_data(type: Dict[str, Any])</p></li>
+</ul>
+<p><strong>Args</strong></p>
+<ul class="simple">
+<li><p>database: Entrypoint</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="db-query-insert-or-update">
+<span id="plugin-operation-dffml-db-query-insert-or-update"></span><h3>db_query_insert_or_update<a class="headerlink" href="#db-query-insert-or-update" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<p>Automatically uses the better suited operation, insert query or update query.</p>
+<div class="section" id="id5">
+<h4>Parameters<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h4>
+<dl class="simple">
+<dt>table_name<span class="classifier">str</span></dt><dd><p>The name of the table to insert data in to.</p>
+</dd>
+<dt>data<span class="classifier">dict</span></dt><dd><p>Data to be inserted or updated into the table.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="id6">
+<h4>Examples<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h4>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sdb</span> <span class="o">=</span> <span class="n">SqliteDatabase</span><span class="p">(</span><span class="n">SqliteDatabaseConfig</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;examples.db&quot;</span><span class="p">))</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">person</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;key&quot;</span><span class="p">:</span> <span class="mi">11</span><span class="p">,</span> <span class="s2">&quot;firstName&quot;</span><span class="p">:</span> <span class="s2">&quot;John&quot;</span><span class="p">,</span> <span class="s2">&quot;lastName&quot;</span><span class="p">:</span> <span class="s2">&quot;Wick&quot;</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">38</span><span class="p">}</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dataflow</span> <span class="o">=</span> <span class="n">DataFlow</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">operations</span><span class="o">=</span><span class="p">{</span>
+<span class="gp">... </span>        <span class="s2">&quot;db_query_insert_or_update&quot;</span><span class="p">:</span> <span class="n">db_query_insert_or_update</span><span class="o">.</span><span class="n">op</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="s2">&quot;db_query_lookup&quot;</span><span class="p">:</span> <span class="n">db_query_lookup</span><span class="o">.</span><span class="n">op</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="s2">&quot;get_single&quot;</span><span class="p">:</span> <span class="n">GetSingle</span><span class="o">.</span><span class="n">imp</span><span class="o">.</span><span class="n">op</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="p">},</span>
+<span class="gp">... </span>    <span class="n">configs</span><span class="o">=</span><span class="p">{</span>
+<span class="gp">... </span>        <span class="s2">&quot;db_query_insert_or_update&quot;</span><span class="p">:</span> <span class="n">DatabaseQueryConfig</span><span class="p">(</span><span class="n">database</span><span class="o">=</span><span class="n">sdb</span><span class="p">),</span>
+<span class="gp">... </span>        <span class="s2">&quot;db_query_lookup&quot;</span><span class="p">:</span> <span class="n">DatabaseQueryConfig</span><span class="p">(</span><span class="n">database</span><span class="o">=</span><span class="n">sdb</span><span class="p">),</span>
+<span class="gp">... </span>    <span class="p">},</span>
+<span class="gp">... </span>    <span class="n">seed</span><span class="o">=</span><span class="p">[],</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">inputs</span> <span class="o">=</span> <span class="p">{</span>
+<span class="gp">... </span>    <span class="s2">&quot;insert_or_update&quot;</span><span class="p">:</span> <span class="p">[</span>
+<span class="gp">... </span>        <span class="n">Input</span><span class="p">(</span>
+<span class="gp">... </span>            <span class="n">value</span><span class="o">=</span><span class="s2">&quot;myTable&quot;</span><span class="p">,</span> <span class="n">definition</span><span class="o">=</span><span class="n">db_query_update</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;table_name&quot;</span><span class="p">],</span>
+<span class="gp">... </span>        <span class="p">),</span>
+<span class="gp">... </span>        <span class="n">Input</span><span class="p">(</span>
+<span class="gp">... </span>            <span class="n">value</span><span class="o">=</span><span class="n">person</span><span class="p">,</span>
+<span class="gp">... </span>            <span class="n">definition</span><span class="o">=</span><span class="n">db_query_update</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">],</span>
+<span class="gp">... </span>        <span class="p">),</span>
+<span class="gp">... </span>    <span class="p">],</span>
+<span class="gp">... </span>    <span class="s2">&quot;lookup&quot;</span><span class="p">:</span> <span class="p">[</span>
+<span class="gp">... </span>        <span class="n">Input</span><span class="p">(</span>
+<span class="gp">... </span>            <span class="n">value</span><span class="o">=</span><span class="s2">&quot;myTable&quot;</span><span class="p">,</span>
+<span class="gp">... </span>            <span class="n">definition</span><span class="o">=</span><span class="n">db_query_lookup</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;table_name&quot;</span><span class="p">],</span>
+<span class="gp">... </span>        <span class="p">),</span>
+<span class="gp">... </span>        <span class="n">Input</span><span class="p">(</span>
+<span class="gp">... </span>            <span class="n">value</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;firstName&quot;</span><span class="p">,</span> <span class="s2">&quot;lastName&quot;</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">],</span>
+<span class="gp">... </span>            <span class="n">definition</span><span class="o">=</span><span class="n">db_query_lookup</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;cols&quot;</span><span class="p">],</span>
+<span class="gp">... </span>        <span class="p">),</span>
+<span class="gp">... </span>        <span class="n">Input</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="p">[],</span> <span class="n">definition</span><span class="o">=</span><span class="n">db_query_lookup</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;conditions&quot;</span><span class="p">],),</span>
+<span class="gp">... </span>        <span class="n">Input</span><span class="p">(</span>
+<span class="gp">... </span>            <span class="n">value</span><span class="o">=</span><span class="p">[</span><span class="n">db_query_lookup</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s2">&quot;lookups&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">],</span>
+<span class="gp">... </span>            <span class="n">definition</span><span class="o">=</span><span class="n">GetSingle</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;spec&quot;</span><span class="p">],</span>
+<span class="gp">... </span>        <span class="p">),</span>
+<span class="gp">... </span>    <span class="p">],</span>
+<span class="gp">... </span><span class="p">}</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="k">async</span> <span class="k">for</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">MemoryOrchestrator</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">dataflow</span><span class="p">,</span> <span class="n">inputs</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="k">if</span> <span class="n">result</span><span class="p">:</span>
+<span class="gp">... </span>            <span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+<span class="go">{&#39;query_lookups&#39;: [{&#39;firstName&#39;: &#39;John&#39;, &#39;lastName&#39;: &#39;Wick&#39;, &#39;age&#39;: 38}]}</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">person</span><span class="p">[</span><span class="s2">&quot;age&quot;</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+<span class="go">{&#39;query_lookups&#39;: [{&#39;firstName&#39;: &#39;John&#39;, &#39;lastName&#39;: &#39;Wick&#39;, &#39;age&#39;: 39}]}</span>
+</pre></div>
+</div>
+<p><strong>Stage: processing</strong></p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>table_name: query_table(type: str)</p></li>
+<li><p>data: query_data(type: Dict[str, Any])</p></li>
+</ul>
+<p><strong>Args</strong></p>
+<ul class="simple">
+<li><p>database: Entrypoint</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="db-query-lookup">
+<span id="plugin-operation-dffml-db-query-lookup"></span><h3>db_query_lookup<a class="headerlink" href="#db-query-lookup" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<p>Generates a lookup query in the database.</p>
+<div class="section" id="id7">
+<h4>Parameters<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h4>
+<dl class="simple">
+<dt>table_name<span class="classifier">str</span></dt><dd><p>The name of the table.</p>
+</dd>
+<dt>cols<span class="classifier">list[str]</span></dt><dd><p>Columns of the table.</p>
+</dd>
+<dt>conditions<span class="classifier">Conditions</span></dt><dd><p>Query conditions.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="id8">
+<h4>Examples<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h4>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sdb</span> <span class="o">=</span> <span class="n">SqliteDatabase</span><span class="p">(</span><span class="n">SqliteDatabaseConfig</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;examples.db&quot;</span><span class="p">))</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dataflow</span> <span class="o">=</span> <span class="n">DataFlow</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">operations</span><span class="o">=</span><span class="p">{</span>
+<span class="gp">... </span>        <span class="s2">&quot;db_query_lookup&quot;</span><span class="p">:</span> <span class="n">db_query_lookup</span><span class="o">.</span><span class="n">op</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="s2">&quot;get_single&quot;</span><span class="p">:</span> <span class="n">GetSingle</span><span class="o">.</span><span class="n">imp</span><span class="o">.</span><span class="n">op</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="p">},</span>
+<span class="gp">... </span>    <span class="n">configs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;db_query_lookup&quot;</span><span class="p">:</span> <span class="n">DatabaseQueryConfig</span><span class="p">(</span><span class="n">database</span><span class="o">=</span><span class="n">sdb</span><span class="p">),},</span>
+<span class="gp">... </span>    <span class="n">seed</span><span class="o">=</span><span class="p">[],</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">inputs</span> <span class="o">=</span> <span class="p">{</span>
+<span class="gp">... </span>    <span class="s2">&quot;lookup&quot;</span><span class="p">:</span> <span class="p">[</span>
+<span class="gp">... </span>        <span class="n">Input</span><span class="p">(</span>
+<span class="gp">... </span>            <span class="n">value</span><span class="o">=</span><span class="s2">&quot;myTable&quot;</span><span class="p">,</span>
+<span class="gp">... </span>            <span class="n">definition</span><span class="o">=</span><span class="n">db_query_lookup</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;table_name&quot;</span><span class="p">],</span>
+<span class="gp">... </span>        <span class="p">),</span>
+<span class="gp">... </span>        <span class="n">Input</span><span class="p">(</span>
+<span class="gp">... </span>            <span class="n">value</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;firstName&quot;</span><span class="p">,</span> <span class="s2">&quot;lastName&quot;</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">],</span>
+<span class="gp">... </span>            <span class="n">definition</span><span class="o">=</span><span class="n">db_query_lookup</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;cols&quot;</span><span class="p">],</span>
+<span class="gp">... </span>        <span class="p">),</span>
+<span class="gp">... </span>        <span class="n">Input</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="p">[],</span> <span class="n">definition</span><span class="o">=</span><span class="n">db_query_lookup</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;conditions&quot;</span><span class="p">],),</span>
+<span class="gp">... </span>        <span class="n">Input</span><span class="p">(</span>
+<span class="gp">... </span>            <span class="n">value</span><span class="o">=</span><span class="p">[</span><span class="n">db_query_lookup</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s2">&quot;lookups&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">],</span>
+<span class="gp">... </span>            <span class="n">definition</span><span class="o">=</span><span class="n">GetSingle</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;spec&quot;</span><span class="p">],</span>
+<span class="gp">... </span>        <span class="p">),</span>
+<span class="gp">... </span>    <span class="p">],</span>
+<span class="gp">... </span><span class="p">}</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="k">async</span> <span class="k">for</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">MemoryOrchestrator</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">dataflow</span><span class="p">,</span> <span class="n">inputs</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="k">if</span> <span class="n">result</span><span class="p">:</span>
+<span class="gp">... </span>            <span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+<span class="go">{&#39;query_lookups&#39;: [{&#39;firstName&#39;: &#39;John&#39;, &#39;lastName&#39;: &#39;Doe&#39;, &#39;age&#39;: 16}, {&#39;firstName&#39;: &#39;John&#39;, &#39;lastName&#39;: &#39;Wick&#39;, &#39;age&#39;: 39}]}</span>
+</pre></div>
+</div>
+<p><strong>Stage: processing</strong></p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>table_name: query_table(type: str)</p></li>
+<li><p>cols: query_cols(type: Dict[str, str])</p></li>
+<li><p>conditions: query_conditions(type: Conditions)</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>lookups: query_lookups(type: Dict[str, Any])</p></li>
+</ul>
+<p><strong>Args</strong></p>
+<ul class="simple">
+<li><p>database: Entrypoint</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="db-query-remove">
+<span id="plugin-operation-dffml-db-query-remove"></span><h3>db_query_remove<a class="headerlink" href="#db-query-remove" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<p>Generates a remove table query in the database.</p>
+<div class="section" id="id9">
+<h4>Parameters<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h4>
+<dl class="simple">
+<dt>table_name<span class="classifier">str</span></dt><dd><p>The name of the table to insert data in to.</p>
+</dd>
+<dt>conditions<span class="classifier">Conditions</span></dt><dd><p>Query conditions.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="id10">
+<h4>Examples<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h4>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sdb</span> <span class="o">=</span> <span class="n">SqliteDatabase</span><span class="p">(</span><span class="n">SqliteDatabaseConfig</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;examples.db&quot;</span><span class="p">))</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dataflow</span> <span class="o">=</span> <span class="n">DataFlow</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">operations</span><span class="o">=</span><span class="p">{</span>
+<span class="gp">... </span>        <span class="s2">&quot;db_query_lookup&quot;</span><span class="p">:</span> <span class="n">db_query_lookup</span><span class="o">.</span><span class="n">op</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="s2">&quot;db_query_remove&quot;</span><span class="p">:</span> <span class="n">db_query_remove</span><span class="o">.</span><span class="n">op</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="s2">&quot;get_single&quot;</span><span class="p">:</span> <span class="n">GetSingle</span><span class="o">.</span><span class="n">imp</span><span class="o">.</span><span class="n">op</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="p">},</span>
+<span class="gp">... </span>    <span class="n">configs</span><span class="o">=</span><span class="p">{</span>
+<span class="gp">... </span>        <span class="s2">&quot;db_query_remove&quot;</span><span class="p">:</span> <span class="n">DatabaseQueryConfig</span><span class="p">(</span><span class="n">database</span><span class="o">=</span><span class="n">sdb</span><span class="p">),</span>
+<span class="gp">... </span>        <span class="s2">&quot;db_query_lookup&quot;</span><span class="p">:</span> <span class="n">DatabaseQueryConfig</span><span class="p">(</span><span class="n">database</span><span class="o">=</span><span class="n">sdb</span><span class="p">),</span>
+<span class="gp">... </span>    <span class="p">},</span>
+<span class="gp">... </span>    <span class="n">seed</span><span class="o">=</span><span class="p">[],</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">inputs</span> <span class="o">=</span> <span class="p">{</span>
+<span class="gp">... </span>    <span class="s2">&quot;remove&quot;</span><span class="p">:</span> <span class="p">[</span>
+<span class="gp">... </span>        <span class="n">Input</span><span class="p">(</span>
+<span class="gp">... </span>            <span class="n">value</span><span class="o">=</span><span class="s2">&quot;myTable&quot;</span><span class="p">,</span>
+<span class="gp">... </span>            <span class="n">definition</span><span class="o">=</span><span class="n">db_query_remove</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;table_name&quot;</span><span class="p">],</span>
+<span class="gp">... </span>        <span class="p">),</span>
+<span class="gp">... </span>        <span class="n">Input</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="p">[],</span>
+<span class="gp">... </span>        <span class="n">definition</span><span class="o">=</span><span class="n">db_query_remove</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;conditions&quot;</span><span class="p">],),</span>
+<span class="gp">... </span>    <span class="p">],</span>
+<span class="gp">... </span>    <span class="s2">&quot;lookup&quot;</span><span class="p">:</span> <span class="p">[</span>
+<span class="gp">... </span>        <span class="n">Input</span><span class="p">(</span>
+<span class="gp">... </span>            <span class="n">value</span><span class="o">=</span><span class="s2">&quot;myTable&quot;</span><span class="p">,</span>
+<span class="gp">... </span>            <span class="n">definition</span><span class="o">=</span><span class="n">db_query_lookup</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;table_name&quot;</span><span class="p">],</span>
+<span class="gp">... </span>        <span class="p">),</span>
+<span class="gp">... </span>        <span class="n">Input</span><span class="p">(</span>
+<span class="gp">... </span>            <span class="n">value</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;firstName&quot;</span><span class="p">,</span> <span class="s2">&quot;lastName&quot;</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">],</span>
+<span class="gp">... </span>            <span class="n">definition</span><span class="o">=</span><span class="n">db_query_lookup</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;cols&quot;</span><span class="p">],</span>
+<span class="gp">... </span>        <span class="p">),</span>
+<span class="gp">... </span>        <span class="n">Input</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="p">[],</span> <span class="n">definition</span><span class="o">=</span><span class="n">db_query_lookup</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;conditions&quot;</span><span class="p">],),</span>
+<span class="gp">... </span>        <span class="n">Input</span><span class="p">(</span>
+<span class="gp">... </span>            <span class="n">value</span><span class="o">=</span><span class="p">[</span><span class="n">db_query_lookup</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s2">&quot;lookups&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">],</span>
+<span class="gp">... </span>            <span class="n">definition</span><span class="o">=</span><span class="n">GetSingle</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;spec&quot;</span><span class="p">],</span>
+<span class="gp">... </span>        <span class="p">),</span>
+<span class="gp">... </span>    <span class="p">],</span>
+<span class="gp">... </span><span class="p">}</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="k">async</span> <span class="k">for</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">MemoryOrchestrator</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">dataflow</span><span class="p">,</span> <span class="n">inputs</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="k">if</span> <span class="n">result</span><span class="p">:</span>
+<span class="gp">... </span>            <span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+<span class="go">{&#39;query_lookups&#39;: []}</span>
+</pre></div>
+</div>
+<p><strong>Stage: processing</strong></p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>table_name: query_table(type: str)</p></li>
+<li><p>conditions: query_conditions(type: Conditions)</p></li>
+</ul>
+<p><strong>Args</strong></p>
+<ul class="simple">
+<li><p>database: Entrypoint</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="db-query-update">
+<span id="plugin-operation-dffml-db-query-update"></span><h3>db_query_update<a class="headerlink" href="#db-query-update" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<p>Generates an Update table query in the database.</p>
+<div class="section" id="id11">
+<h4>Parameters<a class="headerlink" href="#id11" title="Permalink to this headline">¶</a></h4>
+<dl class="simple">
+<dt>table_name<span class="classifier">str</span></dt><dd><p>The name of the table to insert data in to.</p>
+</dd>
+<dt>data<span class="classifier">dict</span></dt><dd><p>Data to be updated into the table.</p>
+</dd>
+<dt>conditions<span class="classifier">list</span></dt><dd><p>List of query conditions.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="id12">
+<h4>Examples<a class="headerlink" href="#id12" title="Permalink to this headline">¶</a></h4>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sdb</span> <span class="o">=</span> <span class="n">SqliteDatabase</span><span class="p">(</span><span class="n">SqliteDatabaseConfig</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;examples.db&quot;</span><span class="p">))</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dataflow</span> <span class="o">=</span> <span class="n">DataFlow</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">operations</span><span class="o">=</span><span class="p">{</span>
+<span class="gp">... </span>        <span class="s2">&quot;db_query_update&quot;</span><span class="p">:</span> <span class="n">db_query_update</span><span class="o">.</span><span class="n">op</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="s2">&quot;db_query_lookup&quot;</span><span class="p">:</span> <span class="n">db_query_lookup</span><span class="o">.</span><span class="n">op</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="s2">&quot;get_single&quot;</span><span class="p">:</span> <span class="n">GetSingle</span><span class="o">.</span><span class="n">imp</span><span class="o">.</span><span class="n">op</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="p">},</span>
+<span class="gp">... </span>    <span class="n">configs</span><span class="o">=</span><span class="p">{</span>
+<span class="gp">... </span>        <span class="s2">&quot;db_query_update&quot;</span><span class="p">:</span> <span class="n">DatabaseQueryConfig</span><span class="p">(</span><span class="n">database</span><span class="o">=</span><span class="n">sdb</span><span class="p">),</span>
+<span class="gp">... </span>        <span class="s2">&quot;db_query_lookup&quot;</span><span class="p">:</span> <span class="n">DatabaseQueryConfig</span><span class="p">(</span><span class="n">database</span><span class="o">=</span><span class="n">sdb</span><span class="p">),</span>
+<span class="gp">... </span>    <span class="p">},</span>
+<span class="gp">... </span>    <span class="n">seed</span><span class="o">=</span><span class="p">[],</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">inputs</span> <span class="o">=</span> <span class="p">{</span>
+<span class="gp">... </span>    <span class="s2">&quot;update&quot;</span><span class="p">:</span> <span class="p">[</span>
+<span class="gp">... </span>        <span class="n">Input</span><span class="p">(</span>
+<span class="gp">... </span>            <span class="n">value</span><span class="o">=</span><span class="s2">&quot;myTable&quot;</span><span class="p">,</span>
+<span class="gp">... </span>            <span class="n">definition</span><span class="o">=</span><span class="n">db_query_update</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;table_name&quot;</span><span class="p">],</span>
+<span class="gp">... </span>        <span class="p">),</span>
+<span class="gp">... </span>        <span class="n">Input</span><span class="p">(</span>
+<span class="gp">... </span>            <span class="n">value</span><span class="o">=</span><span class="p">{</span>
+<span class="gp">... </span>                <span class="s2">&quot;key&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+<span class="gp">... </span>                <span class="s2">&quot;firstName&quot;</span><span class="p">:</span> <span class="s2">&quot;John&quot;</span><span class="p">,</span>
+<span class="gp">... </span>                <span class="s2">&quot;lastName&quot;</span><span class="p">:</span> <span class="s2">&quot;Doe&quot;</span><span class="p">,</span>
+<span class="gp">... </span>                <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">17</span><span class="p">,</span>
+<span class="gp">... </span>            <span class="p">},</span>
+<span class="gp">... </span>            <span class="n">definition</span><span class="o">=</span><span class="n">db_query_update</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">],</span>
+<span class="gp">... </span>        <span class="p">),</span>
+<span class="gp">... </span>        <span class="n">Input</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="p">[],</span> <span class="n">definition</span><span class="o">=</span><span class="n">db_query_update</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;conditions&quot;</span><span class="p">],),</span>
+<span class="gp">... </span>    <span class="p">],</span>
+<span class="gp">... </span>    <span class="s2">&quot;lookup&quot;</span><span class="p">:</span> <span class="p">[</span>
+<span class="gp">... </span>        <span class="n">Input</span><span class="p">(</span>
+<span class="gp">... </span>            <span class="n">value</span><span class="o">=</span><span class="s2">&quot;myTable&quot;</span><span class="p">,</span>
+<span class="gp">... </span>            <span class="n">definition</span><span class="o">=</span><span class="n">db_query_lookup</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;table_name&quot;</span><span class="p">],</span>
+<span class="gp">... </span>        <span class="p">),</span>
+<span class="gp">... </span>        <span class="n">Input</span><span class="p">(</span>
+<span class="gp">... </span>            <span class="n">value</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;firstName&quot;</span><span class="p">,</span> <span class="s2">&quot;lastName&quot;</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">],</span>
+<span class="gp">... </span>            <span class="n">definition</span><span class="o">=</span><span class="n">db_query_lookup</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;cols&quot;</span><span class="p">],</span>
+<span class="gp">... </span>        <span class="p">),</span>
+<span class="gp">... </span>        <span class="n">Input</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="p">[],</span> <span class="n">definition</span><span class="o">=</span><span class="n">db_query_lookup</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;conditions&quot;</span><span class="p">],),</span>
+<span class="gp">... </span>        <span class="n">Input</span><span class="p">(</span>
+<span class="gp">... </span>            <span class="n">value</span><span class="o">=</span><span class="p">[</span><span class="n">db_query_lookup</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s2">&quot;lookups&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">],</span>
+<span class="gp">... </span>            <span class="n">definition</span><span class="o">=</span><span class="n">GetSingle</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;spec&quot;</span><span class="p">],</span>
+<span class="gp">... </span>        <span class="p">),</span>
+<span class="gp">... </span>    <span class="p">],</span>
+<span class="gp">... </span><span class="p">}</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="k">async</span> <span class="k">for</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">MemoryOrchestrator</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">dataflow</span><span class="p">,</span> <span class="n">inputs</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="k">if</span> <span class="n">result</span><span class="p">:</span>
+<span class="gp">... </span>            <span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+<span class="go">{&#39;query_lookups&#39;: [{&#39;firstName&#39;: &#39;John&#39;, &#39;lastName&#39;: &#39;Doe&#39;, &#39;age&#39;: 17}]}</span>
+</pre></div>
+</div>
+<p><strong>Stage: processing</strong></p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>table_name: query_table(type: str)</p></li>
+<li><p>data: query_data(type: Dict[str, Any])</p></li>
+<li><p>conditions: query_conditions(type: Conditions)</p></li>
+</ul>
+<p><strong>Args</strong></p>
+<ul class="simple">
+<li><p>database: Entrypoint</p></li>
+</ul>
+</div>
+</div>
 <div class="section" id="dffml-dataflow-run">
 <span id="plugin-operation-dffml-dffml-dataflow-run"></span><h3>dffml.dataflow.run<a class="headerlink" href="#dffml-dataflow-run" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>Starts a subflow <code class="docutils literal notranslate"><span class="pre">self.config.dataflow</span></code> and adds <code class="docutils literal notranslate"><span class="pre">inputs</span></code> in it.</p>
-<div class="section" id="id1">
-<h4>Parameters<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="id13">
+<h4>Parameters<a class="headerlink" href="#id13" title="Permalink to this headline">¶</a></h4>
 <dl class="simple">
 <dt>inputs<span class="classifier">dict</span></dt><dd><p>The inputs to add to the subflow. These should be a key value mapping of
 the context string to the inputs which should be seeded for that context
@@ -315,17 +908,20 @@ string.</p>
 </dd>
 </dl>
 </div>
-<div class="section" id="id2">
-<h4>Returns<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="id14">
+<h4>Returns<a class="headerlink" href="#id14" title="Permalink to this headline">¶</a></h4>
 <dl class="simple">
 <dt>dict</dt><dd><p>Maps context strings in inputs to output after running through dataflow.</p>
 </dd>
 </dl>
 </div>
-<div class="section" id="id3">
-<h4>Examples<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="id15">
+<h4>Examples<a class="headerlink" href="#id15" title="Permalink to this headline">¶</a></h4>
 <p>The following shows how to use run dataflow in its default behavior.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">URL</span> <span class="o">=</span> <span class="n">Definition</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;URL&quot;</span><span class="p">,</span> <span class="n">primitive</span><span class="o">=</span><span class="s2">&quot;string&quot;</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">URL</span> <span class="o">=</span> <span class="n">Definition</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;URL&quot;</span><span class="p">,</span> <span class="n">primitive</span><span class="o">=</span><span class="s2">&quot;string&quot;</span><span class="p">)</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">subflow</span> <span class="o">=</span> <span class="n">DataFlow</span><span class="o">.</span><span class="n">auto</span><span class="p">(</span><span class="n">GetSingle</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">subflow</span><span class="o">.</span><span class="n">definitions</span><span class="p">[</span><span class="n">URL</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">URL</span>
@@ -337,10 +933,10 @@ string.</p>
 <span class="gp">... </span><span class="p">)</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">dataflow</span> <span class="o">=</span> <span class="n">DataFlow</span><span class="o">.</span><span class="n">auto</span><span class="p">(</span><span class="n">run_dataflow</span><span class="p">,</span> <span class="n">GetSingle</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">dataflow</span><span class="o">.</span><span class="n">configs</span><span class="p">[</span><span class="n">run_dataflow</span><span class="o">.</span><span class="n">imp</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">RunDataFlowConfig</span><span class="p">(</span><span class="n">subflow</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dataflow</span><span class="o">.</span><span class="n">configs</span><span class="p">[</span><span class="n">run_dataflow</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">RunDataFlowConfig</span><span class="p">(</span><span class="n">subflow</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">dataflow</span><span class="o">.</span><span class="n">seed</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">Input</span><span class="p">(</span>
-<span class="gp">... </span>        <span class="n">value</span><span class="o">=</span><span class="p">[</span><span class="n">run_dataflow</span><span class="o">.</span><span class="n">imp</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s2">&quot;results&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">],</span>
+<span class="gp">... </span>        <span class="n">value</span><span class="o">=</span><span class="p">[</span><span class="n">run_dataflow</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s2">&quot;results&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">],</span>
 <span class="gp">... </span>        <span class="n">definition</span><span class="o">=</span><span class="n">GetSingle</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;spec&quot;</span><span class="p">]</span>
 <span class="gp">... </span>    <span class="p">)</span>
 <span class="gp">... </span><span class="p">)</span>
@@ -357,7 +953,7 @@ string.</p>
 <span class="gp">... </span>                        <span class="p">}</span>
 <span class="gp">... </span>                    <span class="p">]</span>
 <span class="gp">... </span>                <span class="p">},</span>
-<span class="gp">... </span>                <span class="n">definition</span><span class="o">=</span><span class="n">run_dataflow</span><span class="o">.</span><span class="n">imp</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;inputs&quot;</span><span class="p">]</span>
+<span class="gp">... </span>                <span class="n">definition</span><span class="o">=</span><span class="n">run_dataflow</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;inputs&quot;</span><span class="p">]</span>
 <span class="gp">... </span>            <span class="p">)</span>
 <span class="gp">... </span>        <span class="p">]</span>
 <span class="gp">... </span>    <span class="p">}):</span>
@@ -368,8 +964,11 @@ string.</p>
 </pre></div>
 </div>
 <p>The following shows how to use run dataflow with custom inputs and outputs.
-This allows you to run a subflow as if it were an opertion.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">URL</span> <span class="o">=</span> <span class="n">Definition</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;URL&quot;</span><span class="p">,</span> <span class="n">primitive</span><span class="o">=</span><span class="s2">&quot;string&quot;</span><span class="p">)</span>
+This allows you to run a subflow as if it were an operation.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">URL</span> <span class="o">=</span> <span class="n">Definition</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;URL&quot;</span><span class="p">,</span> <span class="n">primitive</span><span class="o">=</span><span class="s2">&quot;string&quot;</span><span class="p">)</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nd">@op</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">inputs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="n">URL</span><span class="p">},</span>
@@ -434,7 +1033,52 @@ This allows you to run a subflow as if it were an opertion.</p>
 <div class="section" id="dffml-mapping-create">
 <span id="plugin-operation-dffml-dffml-mapping-create"></span><h3>dffml.mapping.create<a class="headerlink" href="#dffml-mapping-create" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
-<p>No description</p>
+<p>Creates a mapping of a given key and value.</p>
+<div class="section" id="id16">
+<h4>Parameters<a class="headerlink" href="#id16" title="Permalink to this headline">¶</a></h4>
+<dl class="simple">
+<dt>key<span class="classifier">str</span></dt><dd><p>The key for the mapping.</p>
+</dd>
+<dt>value<span class="classifier">Any</span></dt><dd><p>The value for the mapping.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="id17">
+<h4>Returns<a class="headerlink" href="#id17" title="Permalink to this headline">¶</a></h4>
+<dl class="simple">
+<dt>dict</dt><dd><p>A dictionary containing the mapping created.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="id18">
+<h4>Examples<a class="headerlink" href="#id18" title="Permalink to this headline">¶</a></h4>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dataflow</span> <span class="o">=</span> <span class="n">DataFlow</span><span class="o">.</span><span class="n">auto</span><span class="p">(</span><span class="n">create_mapping</span><span class="p">,</span> <span class="n">GetSingle</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dataflow</span><span class="o">.</span><span class="n">seed</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">Input</span><span class="p">(</span>
+<span class="gp">... </span>        <span class="n">value</span><span class="o">=</span><span class="p">[</span><span class="n">create_mapping</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s2">&quot;mapping&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">],</span>
+<span class="gp">... </span>        <span class="n">definition</span><span class="o">=</span><span class="n">GetSingle</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;spec&quot;</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="p">)</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">inputs</span> <span class="o">=</span> <span class="p">[</span>
+<span class="gp">... </span>    <span class="n">Input</span><span class="p">(</span>
+<span class="gp">... </span>        <span class="n">value</span><span class="o">=</span><span class="s2">&quot;key1&quot;</span><span class="p">,</span> <span class="n">definition</span><span class="o">=</span><span class="n">create_mapping</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;key&quot;</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="p">),</span>
+<span class="gp">... </span>    <span class="n">Input</span><span class="p">(</span>
+<span class="gp">... </span>        <span class="n">value</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span> <span class="n">definition</span><span class="o">=</span><span class="n">create_mapping</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="p">),</span>
+<span class="gp">... </span><span class="p">]</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="k">async</span> <span class="k">for</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">MemoryOrchestrator</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">dataflow</span><span class="p">,</span> <span class="n">inputs</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+<span class="go">{&#39;mapping&#39;: {&#39;key1&#39;: 42}}</span>
+</pre></div>
+</div>
 <p><strong>Stage: processing</strong></p>
 <p><strong>Inputs</strong></p>
 <ul class="simple">
@@ -446,10 +1090,59 @@ This allows you to run a subflow as if it were an opertion.</p>
 <li><p>mapping: mapping(type: map)</p></li>
 </ul>
 </div>
+</div>
 <div class="section" id="dffml-mapping-extract">
 <span id="plugin-operation-dffml-dffml-mapping-extract"></span><h3>dffml.mapping.extract<a class="headerlink" href="#dffml-mapping-extract" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
-<p>No description</p>
+<p>Extracts value from a given mapping.</p>
+<div class="section" id="id19">
+<h4>Parameters<a class="headerlink" href="#id19" title="Permalink to this headline">¶</a></h4>
+<dl class="simple">
+<dt>mapping<span class="classifier">dict</span></dt><dd><p>The mapping to extract the value from.</p>
+</dd>
+<dt>traverse<span class="classifier">list[str]</span></dt><dd><p>A list of keys to traverse through the mapping dictionary and extract the values.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="id20">
+<h4>Returns<a class="headerlink" href="#id20" title="Permalink to this headline">¶</a></h4>
+<dl class="simple">
+<dt>dict</dt><dd><p>A dictionary containing the value of the keys.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="id21">
+<h4>Examples<a class="headerlink" href="#id21" title="Permalink to this headline">¶</a></h4>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dataflow</span> <span class="o">=</span> <span class="n">DataFlow</span><span class="o">.</span><span class="n">auto</span><span class="p">(</span><span class="n">mapping_extract_value</span><span class="p">,</span> <span class="n">GetSingle</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dataflow</span><span class="o">.</span><span class="n">seed</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">Input</span><span class="p">(</span>
+<span class="gp">... </span>        <span class="n">value</span><span class="o">=</span><span class="p">[</span><span class="n">mapping_extract_value</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">],</span>
+<span class="gp">... </span>        <span class="n">definition</span><span class="o">=</span><span class="n">GetSingle</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;spec&quot;</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="p">)</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">inputs</span> <span class="o">=</span> <span class="p">[</span>
+<span class="gp">... </span>    <span class="n">Input</span><span class="p">(</span>
+<span class="gp">... </span>        <span class="n">value</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;key1&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;key2&quot;</span><span class="p">:</span> <span class="mi">42</span><span class="p">}},</span>
+<span class="gp">... </span>        <span class="n">definition</span><span class="o">=</span><span class="n">mapping_extract_value</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;mapping&quot;</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="p">),</span>
+<span class="gp">... </span>    <span class="n">Input</span><span class="p">(</span>
+<span class="gp">... </span>        <span class="n">value</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;key1&quot;</span><span class="p">,</span> <span class="s2">&quot;key2&quot;</span><span class="p">],</span>
+<span class="gp">... </span>        <span class="n">definition</span><span class="o">=</span><span class="n">mapping_extract_value</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;traverse&quot;</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="p">),</span>
+<span class="gp">... </span><span class="p">]</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="k">async</span> <span class="k">for</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">MemoryOrchestrator</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">dataflow</span><span class="p">,</span> <span class="n">inputs</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+<span class="go">{&#39;value&#39;: 42}</span>
+</pre></div>
+</div>
 <p><strong>Stage: processing</strong></p>
 <p><strong>Inputs</strong></p>
 <ul class="simple">
@@ -461,10 +1154,70 @@ This allows you to run a subflow as if it were an opertion.</p>
 <li><p>value: value(type: generic)</p></li>
 </ul>
 </div>
+</div>
 <div class="section" id="dffml-model-predict">
 <span id="plugin-operation-dffml-dffml-model-predict"></span><h3>dffml.model.predict<a class="headerlink" href="#dffml-model-predict" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
-<p>No description</p>
+<p>Predict using dffml models.</p>
+<div class="section" id="id22">
+<h4>Parameters<a class="headerlink" href="#id22" title="Permalink to this headline">¶</a></h4>
+<dl class="simple">
+<dt>features<span class="classifier">dict</span></dt><dd><p>A dictionary contaning feature name and feature value.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="id23">
+<h4>Returns<a class="headerlink" href="#id23" title="Permalink to this headline">¶</a></h4>
+<dl class="simple">
+<dt>dict</dt><dd><p>A dictionary containing prediction.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="id24">
+<h4>Examples<a class="headerlink" href="#id24" title="Permalink to this headline">¶</a></h4>
+<p>The following example shows how to use model_predict.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">slr_model</span> <span class="o">=</span> <span class="n">SLRModel</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">features</span><span class="o">=</span><span class="n">Features</span><span class="p">(</span><span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;Years&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span>
+<span class="gp">... </span>    <span class="n">predict</span><span class="o">=</span><span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;Salary&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+<span class="gp">... </span>    <span class="n">directory</span><span class="o">=</span><span class="s2">&quot;tempdir&quot;</span><span class="p">,</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dataflow</span> <span class="o">=</span> <span class="n">DataFlow</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">operations</span><span class="o">=</span><span class="p">{</span>
+<span class="gp">... </span>        <span class="s2">&quot;prediction_using_model&quot;</span><span class="p">:</span> <span class="n">model_predict</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="s2">&quot;get_single&quot;</span><span class="p">:</span> <span class="n">GetSingle</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="p">},</span>
+<span class="gp">... </span>    <span class="n">configs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;prediction_using_model&quot;</span><span class="p">:</span> <span class="n">ModelPredictConfig</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">slr_model</span><span class="p">)},</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dataflow</span><span class="o">.</span><span class="n">seed</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">Input</span><span class="p">(</span>
+<span class="gp">... </span>        <span class="n">value</span><span class="o">=</span><span class="p">[</span><span class="n">model_predict</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s2">&quot;prediction&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">],</span>
+<span class="gp">... </span>        <span class="n">definition</span><span class="o">=</span><span class="n">GetSingle</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;spec&quot;</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="p">)</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="k">await</span> <span class="n">train</span><span class="p">(</span>
+<span class="gp">... </span>        <span class="n">slr_model</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="p">{</span><span class="s2">&quot;Years&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;Salary&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">},</span>
+<span class="gp">... </span>        <span class="p">{</span><span class="s2">&quot;Years&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;Salary&quot;</span><span class="p">:</span> <span class="mi">20</span><span class="p">},</span>
+<span class="gp">... </span>        <span class="p">{</span><span class="s2">&quot;Years&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;Salary&quot;</span><span class="p">:</span> <span class="mi">30</span><span class="p">},</span>
+<span class="gp">... </span>        <span class="p">{</span><span class="s2">&quot;Years&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s2">&quot;Salary&quot;</span><span class="p">:</span> <span class="mi">40</span><span class="p">},</span>
+<span class="gp">... </span>    <span class="p">)</span>
+<span class="gp">... </span>    <span class="n">inputs</span> <span class="o">=</span> <span class="p">[</span>
+<span class="gp">... </span>       <span class="n">Input</span><span class="p">(</span>
+<span class="gp">... </span>           <span class="n">value</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;Years&quot;</span><span class="p">:</span> <span class="mi">4</span><span class="p">},</span> <span class="n">definition</span><span class="o">=</span><span class="n">model_predict</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;features&quot;</span><span class="p">],</span>
+<span class="gp">... </span>       <span class="p">)</span>
+<span class="gp">... </span>    <span class="p">]</span>
+<span class="gp">... </span>    <span class="k">async</span> <span class="k">for</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">results</span> <span class="ow">in</span> <span class="n">MemoryOrchestrator</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">dataflow</span><span class="p">,</span> <span class="n">inputs</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="nb">print</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+<span class="go">{&#39;model_predictions&#39;: {&#39;Salary&#39;: {&#39;confidence&#39;: 1.0, &#39;value&#39;: 50}}}</span>
+</pre></div>
+</div>
 <p><strong>Stage: processing</strong></p>
 <p><strong>Inputs</strong></p>
 <ul class="simple">
@@ -479,31 +1232,35 @@ This allows you to run a subflow as if it were an opertion.</p>
 <li><p>model: Entrypoint</p></li>
 </ul>
 </div>
+</div>
 <div class="section" id="get-multi">
 <span id="plugin-operation-dffml-get-multi"></span><h3>get_multi<a class="headerlink" href="#get-multi" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>Output operation to get all Inputs matching given definitions.</p>
-<div class="section" id="id4">
-<h4>Parameters<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="id25">
+<h4>Parameters<a class="headerlink" href="#id25" title="Permalink to this headline">¶</a></h4>
 <dl class="simple">
 <dt>spec<span class="classifier">list</span></dt><dd><p>List of definition names. Any Inputs with matching definition will be
 returned.</p>
 </dd>
 </dl>
 </div>
-<div class="section" id="id5">
-<h4>Returns<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="id26">
+<h4>Returns<a class="headerlink" href="#id26" title="Permalink to this headline">¶</a></h4>
 <dl class="simple">
 <dt>dict</dt><dd><p>Maps definition names to all the Inputs of that definition</p>
 </dd>
 </dl>
 </div>
-<div class="section" id="id6">
-<h4>Examples<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="id27">
+<h4>Examples<a class="headerlink" href="#id27" title="Permalink to this headline">¶</a></h4>
 <p>The following shows how to grab all Inputs with the URL definition. If we
 had we run an operation which output a URL, that output URL would have also
 been returned to us.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">URL</span> <span class="o">=</span> <span class="n">Definition</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;URL&quot;</span><span class="p">,</span> <span class="n">primitive</span><span class="o">=</span><span class="s2">&quot;string&quot;</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">URL</span> <span class="o">=</span> <span class="n">Definition</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;URL&quot;</span><span class="p">,</span> <span class="n">primitive</span><span class="o">=</span><span class="s2">&quot;string&quot;</span><span class="p">)</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">dataflow</span> <span class="o">=</span> <span class="n">DataFlow</span><span class="o">.</span><span class="n">auto</span><span class="p">(</span><span class="n">GetMulti</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">dataflow</span><span class="o">.</span><span class="n">seed</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
@@ -533,11 +1290,11 @@ been returned to us.</p>
 <p><strong>Stage: output</strong></p>
 <p><strong>Inputs</strong></p>
 <ul class="simple">
-<li><p>spec: get_n_spec(type: array)</p></li>
+<li><p>spec: get_multi_spec(type: array)</p></li>
 </ul>
 <p><strong>Outputs</strong></p>
 <ul class="simple">
-<li><p>output: get_n_output(type: map)</p></li>
+<li><p>output: get_multi_output(type: map)</p></li>
 </ul>
 </div>
 </div>
@@ -545,32 +1302,36 @@ been returned to us.</p>
 <span id="plugin-operation-dffml-get-single"></span><h3>get_single<a class="headerlink" href="#get-single" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>Output operation to get a single Input for each definition given.</p>
-<div class="section" id="id7">
-<h4>Parameters<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="id28">
+<h4>Parameters<a class="headerlink" href="#id28" title="Permalink to this headline">¶</a></h4>
 <dl class="simple">
 <dt>spec<span class="classifier">list</span></dt><dd><p>List of definition names. An Input with matching definition will be
 returned.</p>
 </dd>
 </dl>
 </div>
-<div class="section" id="id8">
-<h4>Returns<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="id29">
+<h4>Returns<a class="headerlink" href="#id29" title="Permalink to this headline">¶</a></h4>
 <dl class="simple">
 <dt>dict</dt><dd><p>Maps definition names to an Input of that definition</p>
 </dd>
 </dl>
 </div>
-<div class="section" id="id9">
-<h4>Examples<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="id30">
+<h4>Examples<a class="headerlink" href="#id30" title="Permalink to this headline">¶</a></h4>
 <p>The following shows how to grab an Inputs with the URL definition. If we
 had we run an operation which output a URL, that output URL could have also
 been returned to us.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">URL</span> <span class="o">=</span> <span class="n">Definition</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;URL&quot;</span><span class="p">,</span> <span class="n">primitive</span><span class="o">=</span><span class="s2">&quot;string&quot;</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">URL</span> <span class="o">=</span> <span class="n">Definition</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;URL&quot;</span><span class="p">,</span> <span class="n">primitive</span><span class="o">=</span><span class="s2">&quot;string&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ORG</span> <span class="o">=</span> <span class="n">Definition</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;ORG&quot;</span><span class="p">,</span> <span class="n">primitive</span><span class="o">=</span><span class="s2">&quot;string&quot;</span><span class="p">)</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">dataflow</span> <span class="o">=</span> <span class="n">DataFlow</span><span class="o">.</span><span class="n">auto</span><span class="p">(</span><span class="n">GetSingle</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">dataflow</span><span class="o">.</span><span class="n">seed</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">Input</span><span class="p">(</span>
-<span class="gp">... </span>        <span class="n">value</span><span class="o">=</span><span class="p">[</span><span class="n">URL</span><span class="o">.</span><span class="n">name</span><span class="p">],</span>
+<span class="gp">... </span>        <span class="n">value</span><span class="o">=</span><span class="p">[{</span><span class="s2">&quot;Repo Link&quot;</span><span class="p">:</span> <span class="n">URL</span><span class="o">.</span><span class="n">name</span><span class="p">},</span> <span class="n">ORG</span><span class="o">.</span><span class="n">name</span><span class="p">],</span>
 <span class="gp">... </span>        <span class="n">definition</span><span class="o">=</span><span class="n">GetSingle</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;spec&quot;</span><span class="p">]</span>
 <span class="gp">... </span>    <span class="p">)</span>
 <span class="gp">... </span><span class="p">)</span>
@@ -580,12 +1341,16 @@ been returned to us.</p>
 <span class="gp">... </span>        <span class="n">Input</span><span class="p">(</span>
 <span class="gp">... </span>            <span class="n">value</span><span class="o">=</span><span class="s2">&quot;https://github.com/intel/dffml&quot;</span><span class="p">,</span>
 <span class="gp">... </span>            <span class="n">definition</span><span class="o">=</span><span class="n">URL</span>
+<span class="gp">... </span>        <span class="p">),</span>
+<span class="gp">... </span>        <span class="n">Input</span><span class="p">(</span>
+<span class="gp">... </span>            <span class="n">value</span><span class="o">=</span><span class="s2">&quot;Intel&quot;</span><span class="p">,</span>
+<span class="gp">... </span>            <span class="n">definition</span><span class="o">=</span><span class="n">ORG</span>
 <span class="gp">... </span>        <span class="p">)</span>
 <span class="gp">... </span>    <span class="p">]):</span>
 <span class="gp">... </span>        <span class="nb">print</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
 <span class="gp">...</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
-<span class="go">{&#39;URL&#39;: &#39;https://github.com/intel/dffml&#39;}</span>
+<span class="go">{&#39;ORG&#39;: &#39;Intel&#39;, &#39;Repo Link&#39;: &#39;https://github.com/intel/dffml&#39;}</span>
 </pre></div>
 </div>
 <p><strong>Stage: output</strong></p>
@@ -617,21 +1382,27 @@ been returned to us.</p>
 <span id="plugin-operation-dffml-literal-eval"></span><h3>literal_eval<a class="headerlink" href="#literal-eval" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>Evaluate the input using ast.literal_eval()</p>
-<div class="section" id="id10">
-<h4>Parameters<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="id31">
+<h4>Parameters<a class="headerlink" href="#id31" title="Permalink to this headline">¶</a></h4>
 <dl class="simple">
-<dt>inputs<span class="classifier">str</span></dt><dd><p>A string to be evaluated.</p>
+<dt>str_to_eval<span class="classifier">str</span></dt><dd><p>A string to be evaluated.</p>
 </dd>
 </dl>
 </div>
-<div class="section" id="id11">
-<h4>Returns<a class="headerlink" href="#id11" title="Permalink to this headline">¶</a></h4>
-<p>A python literal.</p>
+<div class="section" id="id32">
+<h4>Returns<a class="headerlink" href="#id32" title="Permalink to this headline">¶</a></h4>
+<dl class="simple">
+<dt>dict</dt><dd><p>A dict containing python literal.</p>
+</dd>
+</dl>
 </div>
-<div class="section" id="id12">
-<h4>Examples<a class="headerlink" href="#id12" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="id33">
+<h4>Examples<a class="headerlink" href="#id33" title="Permalink to this headline">¶</a></h4>
 <p>The following example shows how to use literal_eval.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">dataflow</span> <span class="o">=</span> <span class="n">DataFlow</span><span class="o">.</span><span class="n">auto</span><span class="p">(</span><span class="n">literal_eval</span><span class="p">,</span> <span class="n">GetSingle</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dataflow</span> <span class="o">=</span> <span class="n">DataFlow</span><span class="o">.</span><span class="n">auto</span><span class="p">(</span><span class="n">literal_eval</span><span class="p">,</span> <span class="n">GetSingle</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">dataflow</span><span class="o">.</span><span class="n">seed</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
 <span class="gp">... </span>   <span class="n">Input</span><span class="p">(</span>
 <span class="gp">... </span>       <span class="n">value</span><span class="o">=</span><span class="p">[</span><span class="n">literal_eval</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s2">&quot;str_after_eval&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">,],</span>
@@ -665,40 +1436,106 @@ been returned to us.</p>
 </ul>
 </div>
 </div>
-<div class="section" id="print-output">
-<span id="plugin-operation-dffml-print-output"></span><h3>print_output<a class="headerlink" href="#print-output" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="multiply">
+<span id="plugin-operation-dffml-multiply"></span><h3>multiply<a class="headerlink" href="#multiply" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
-<p>Print the output on stdout using python print()</p>
-<div class="section" id="id13">
-<h4>Parameters<a class="headerlink" href="#id13" title="Permalink to this headline">¶</a></h4>
+<p>Multiply record values</p>
+<div class="section" id="id34">
+<h4>Parameters<a class="headerlink" href="#id34" title="Permalink to this headline">¶</a></h4>
 <dl class="simple">
-<dt>inputs<span class="classifier">list</span></dt><dd><p>A list of Inputs whose value is to be printed.</p>
+<dt>multiplicand<span class="classifier">generic</span></dt><dd><p>An arithmetic type value.</p>
+</dd>
+<dt>multiplier<span class="classifier">generic</span></dt><dd><p>An arithmetic type value.</p>
 </dd>
 </dl>
 </div>
-<div class="section" id="id14">
-<h4>Examples<a class="headerlink" href="#id14" title="Permalink to this headline">¶</a></h4>
-<p>The following example shows how to use print_output.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">dataflow</span> <span class="o">=</span> <span class="n">DataFlow</span><span class="o">.</span><span class="n">auto</span><span class="p">(</span><span class="n">print_output</span><span class="p">,</span> <span class="n">GetSingle</span><span class="p">)</span>
+<div class="section" id="id35">
+<h4>Returns<a class="headerlink" href="#id35" title="Permalink to this headline">¶</a></h4>
+<dl class="simple">
+<dt>dict</dt><dd><p>A dict containing the product.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="id36">
+<h4>Examples<a class="headerlink" href="#id36" title="Permalink to this headline">¶</a></h4>
+<p>The following example shows how to use multiply.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dataflow</span> <span class="o">=</span> <span class="n">DataFlow</span><span class="o">.</span><span class="n">auto</span><span class="p">(</span><span class="n">multiply</span><span class="p">,</span> <span class="n">GetSingle</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dataflow</span><span class="o">.</span><span class="n">seed</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+<span class="gp">... </span>   <span class="n">Input</span><span class="p">(</span>
+<span class="gp">... </span>       <span class="n">value</span><span class="o">=</span><span class="p">[</span><span class="n">multiply</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s2">&quot;product&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">,],</span>
+<span class="gp">... </span>       <span class="n">definition</span><span class="o">=</span><span class="n">GetSingle</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;spec&quot;</span><span class="p">],</span>
+<span class="gp">... </span>   <span class="p">)</span>
+<span class="gp">... </span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">inputs</span> <span class="o">=</span> <span class="p">[</span>
-<span class="gp">... </span>    <span class="n">Input</span><span class="p">(</span>
-<span class="gp">... </span>        <span class="n">value</span><span class="o">=</span><span class="s2">&quot;print_output example&quot;</span><span class="p">,</span>
-<span class="gp">... </span>        <span class="n">definition</span><span class="o">=</span><span class="n">dataflow</span><span class="o">.</span><span class="n">definitions</span><span class="p">[</span><span class="s2">&quot;DataToPrint&quot;</span><span class="p">],</span>
-<span class="gp">... </span>        <span class="n">parents</span><span class="o">=</span><span class="kc">None</span><span class="p">,)]</span>
+<span class="gp">... </span>   <span class="n">Input</span><span class="p">(</span>
+<span class="gp">... </span>       <span class="n">value</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span>
+<span class="gp">... </span>       <span class="n">definition</span><span class="o">=</span><span class="n">multiply</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;multiplicand&quot;</span><span class="p">],</span>
+<span class="gp">... </span>   <span class="p">),</span>
+<span class="gp">... </span>   <span class="n">Input</span><span class="p">(</span>
+<span class="gp">... </span>       <span class="n">value</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+<span class="gp">... </span>       <span class="n">definition</span><span class="o">=</span><span class="n">multiply</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;multiplier&quot;</span><span class="p">],</span>
+<span class="gp">... </span>   <span class="p">),</span>
+<span class="gp">... </span><span class="p">]</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
 <span class="gp">... </span>    <span class="k">async</span> <span class="k">for</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">results</span> <span class="ow">in</span> <span class="n">MemoryOrchestrator</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">dataflow</span><span class="p">,</span> <span class="n">inputs</span><span class="p">):</span>
-<span class="gp">... </span>        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;String to be printed is &#39;print_output example&#39;&quot;</span><span class="p">)</span>
+<span class="gp">... </span>        <span class="nb">print</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
-<span class="go">print_output example</span>
-<span class="go">String to be printed is &#39;print_output example&#39;</span>
+<span class="go">{&#39;product&#39;: 36}</span>
 </pre></div>
 </div>
 <p><strong>Stage: processing</strong></p>
 <p><strong>Inputs</strong></p>
 <ul class="simple">
-<li><p>data: DataToPrint(type: str)</p></li>
+<li><p>multiplicand: multiplicand_def(type: generic)</p></li>
+<li><p>multiplier: multiplier_def(type: generic)</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>product: product(type: generic)</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="print-output">
+<span id="plugin-operation-dffml-print-output"></span><h3>print_output<a class="headerlink" href="#print-output" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<p>Print the output on stdout using python print()</p>
+<div class="section" id="id37">
+<h4>Parameters<a class="headerlink" href="#id37" title="Permalink to this headline">¶</a></h4>
+<dl class="simple">
+<dt>data<span class="classifier">Any</span></dt><dd><p>A python literal to be printed.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="id38">
+<h4>Examples<a class="headerlink" href="#id38" title="Permalink to this headline">¶</a></h4>
+<p>The following example shows how to use print_output.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dataflow</span> <span class="o">=</span> <span class="n">DataFlow</span><span class="o">.</span><span class="n">auto</span><span class="p">(</span><span class="n">print_output</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">inputs</span> <span class="o">=</span> <span class="p">[</span>
+<span class="gp">... </span>    <span class="n">Input</span><span class="p">(</span>
+<span class="gp">... </span>        <span class="n">value</span><span class="o">=</span><span class="s2">&quot;print_output example&quot;</span><span class="p">,</span> <span class="n">definition</span><span class="o">=</span><span class="n">print_output</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">]</span>
+<span class="gp">... </span>    <span class="p">)</span>
+<span class="gp">... </span><span class="p">]</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="k">async</span> <span class="k">for</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">results</span> <span class="ow">in</span> <span class="n">MemoryOrchestrator</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">dataflow</span><span class="p">,</span> <span class="n">inputs</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="k">pass</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+<span class="go">print_output example</span>
+</pre></div>
+</div>
+<p><strong>Stage: processing</strong></p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>data: DataToPrint(type: generic)</p></li>
 </ul>
 </div>
 </div>
@@ -731,8 +1568,8 @@ been returned to us.</p>
 <ul class="simple">
 <li><p>repo: git_repository(type: Dict[str, str])</p>
 <ul>
-<li><p>URL: str</p></li>
 <li><p>directory: str</p></li>
+<li><p>URL: str(default: None)</p></li>
 </ul>
 </li>
 </ul>
@@ -750,8 +1587,8 @@ been returned to us.</p>
 <ul class="simple">
 <li><p>repo: git_repository(type: Dict[str, str])</p>
 <ul>
-<li><p>URL: str</p></li>
 <li><p>directory: str</p></li>
+<li><p>URL: str(default: None)</p></li>
 </ul>
 </li>
 </ul>
@@ -783,8 +1620,8 @@ been returned to us.</p>
 <ul class="simple">
 <li><p>repo: git_repository(type: Dict[str, str])</p>
 <ul>
-<li><p>URL: str</p></li>
 <li><p>directory: str</p></li>
+<li><p>URL: str(default: None)</p></li>
 </ul>
 </li>
 <li><p>branch: git_branch(type: str)</p></li>
@@ -804,8 +1641,8 @@ been returned to us.</p>
 <ul class="simple">
 <li><p>repo: git_repository(type: Dict[str, str])</p>
 <ul>
-<li><p>URL: str</p></li>
 <li><p>directory: str</p></li>
+<li><p>URL: str(default: None)</p></li>
 </ul>
 </li>
 <li><p>branch: git_branch(type: str)</p></li>
@@ -825,8 +1662,8 @@ been returned to us.</p>
 <ul class="simple">
 <li><p>repo: git_repository(type: Dict[str, str])</p>
 <ul>
-<li><p>URL: str</p></li>
 <li><p>directory: str</p></li>
+<li><p>URL: str(default: None)</p></li>
 </ul>
 </li>
 <li><p>commit: git_commit(type: string)</p></li>
@@ -835,9 +1672,9 @@ been returned to us.</p>
 <ul class="simple">
 <li><p>repo: git_repository_checked_out(type: Dict[str, str])</p>
 <ul>
-<li><p>URL: str</p></li>
 <li><p>directory: str</p></li>
-<li><p>commit: str</p></li>
+<li><p>URL: str(default: None)</p></li>
+<li><p>commit: str(default: None)</p></li>
 </ul>
 </li>
 </ul>
@@ -851,8 +1688,8 @@ been returned to us.</p>
 <ul class="simple">
 <li><p>repo: git_repository(type: Dict[str, str])</p>
 <ul>
-<li><p>URL: str</p></li>
 <li><p>directory: str</p></li>
+<li><p>URL: str(default: None)</p></li>
 </ul>
 </li>
 <li><p>branch: git_branch(type: str)</p></li>
@@ -872,8 +1709,8 @@ been returned to us.</p>
 <ul class="simple">
 <li><p>repo: git_repository(type: Dict[str, str])</p>
 <ul>
-<li><p>URL: str</p></li>
 <li><p>directory: str</p></li>
+<li><p>URL: str(default: None)</p></li>
 </ul>
 </li>
 </ul>
@@ -895,8 +1732,8 @@ been returned to us.</p>
 <ul class="simple">
 <li><p>repo: git_repository(type: Dict[str, str])</p>
 <ul>
-<li><p>URL: str</p></li>
 <li><p>directory: str</p></li>
+<li><p>URL: str(default: None)</p></li>
 </ul>
 </li>
 <li><p>branch: git_branch(type: str)</p></li>
@@ -931,9 +1768,9 @@ check it’s releases page to make sure you’re installing the latest version.<
 <ul class="simple">
 <li><p>repo: git_repository_checked_out(type: Dict[str, str])</p>
 <ul>
-<li><p>URL: str</p></li>
 <li><p>directory: str</p></li>
-<li><p>commit: str</p></li>
+<li><p>URL: str(default: None)</p></li>
+<li><p>commit: str(default: None)</p></li>
 </ul>
 </li>
 </ul>
@@ -954,6 +1791,20 @@ check it’s releases page to make sure you’re installing the latest version.<
 <p><strong>Outputs</strong></p>
 <ul class="simple">
 <li><p>code_to_comment_ratio: language_to_comment_ratio(type: int)</p></li>
+</ul>
+</div>
+<div class="section" id="make-quarters">
+<span id="plugin-operation-dffml-feature-git-make-quarters"></span><h3>make_quarters<a class="headerlink" href="#make-quarters" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<p>No description</p>
+<p><strong>Stage: processing</strong></p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>number: quarters(type: int)</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>quarters: quarter(type: int)</p></li>
 </ul>
 </div>
 <div class="section" id="quarters-back-to-date">
@@ -984,6 +1835,834 @@ check it’s releases page to make sure you’re installing the latest version.<
 <p><strong>Outputs</strong></p>
 <ul class="simple">
 <li><p>work: work_spread(type: int)</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="shouldi">
+<span id="plugin-operation-shouldi"></span><h2>shouldi<a class="headerlink" href="#shouldi" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install shouldi</span>
+</pre></div>
+</div>
+<div class="section" id="cleanup-pypi-package">
+<span id="plugin-operation-shouldi-cleanup-pypi-package"></span><h3>cleanup_pypi_package<a class="headerlink" href="#cleanup-pypi-package" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<p>Remove the directory containing the source code release.</p>
+<p><strong>Stage: cleanup</strong></p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>directory: run_bandit.inputs.pkg(type: str)</p></li>
+</ul>
+</div>
+<div class="section" id="pypi-package-contents">
+<span id="plugin-operation-shouldi-pypi-package-contents"></span><h3>pypi_package_contents<a class="headerlink" href="#pypi-package-contents" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<p>Download a source code release and extract it to a temporary directory.</p>
+<p><strong>Stage: processing</strong></p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>url: pypi_package_contents.inputs.url(type: str)</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>directory: run_bandit.inputs.pkg(type: str)</p></li>
+</ul>
+</div>
+<div class="section" id="pypi-package-json">
+<span id="plugin-operation-shouldi-pypi-package-json"></span><h3>pypi_package_json<a class="headerlink" href="#pypi-package-json" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<p>Download the information on the package in JSON format.</p>
+<p><strong>Stage: processing</strong></p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>package: safety_check.inputs.package(type: str)</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>version: safety_check.inputs.version(type: str)</p></li>
+<li><p>url: pypi_package_contents.inputs.url(type: str)</p></li>
+</ul>
+</div>
+<div class="section" id="run-bandit">
+<span id="plugin-operation-shouldi-run-bandit"></span><h3>run_bandit<a class="headerlink" href="#run-bandit" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<p>CLI usage: dffml service dev run -log debug shouldi.bandit:run_bandit -pkg .</p>
+<p><strong>Stage: processing</strong></p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>pkg: run_bandit.inputs.pkg(type: str)</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>result: run_bandit.outputs.result(type: map)</p></li>
+</ul>
+</div>
+<div class="section" id="safety-check">
+<span id="plugin-operation-shouldi-safety-check"></span><h3>safety_check<a class="headerlink" href="#safety-check" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<p>No description</p>
+<p><strong>Stage: processing</strong></p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>package: safety_check.inputs.package(type: str)</p></li>
+<li><p>version: safety_check.inputs.version(type: str)</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>result: safety_check.outputs.result(type: int)</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="dffml-operations-nlp">
+<span id="plugin-operation-dffml-operations-nlp"></span><h2>dffml_operations_nlp<a class="headerlink" href="#dffml-operations-nlp" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install dffml-operations-nlp</span>
+</pre></div>
+</div>
+<div class="section" id="collect-output">
+<span id="plugin-operation-dffml-operations-nlp-collect-output"></span><h3>collect_output<a class="headerlink" href="#collect-output" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<p>No description</p>
+<p><strong>Stage: processing</strong></p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>sentence: sentence(type: string)</p></li>
+<li><p>length: source_length(type: string)</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>all: all_sentences(type: List[string])</p></li>
+</ul>
+</div>
+<div class="section" id="count-vectorizer">
+<span id="plugin-operation-dffml-operations-nlp-count-vectorizer"></span><h3>count_vectorizer<a class="headerlink" href="#count-vectorizer" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<p>Converts a collection of text documents to a matrix of token counts using sklearn CountVectorizer’s <cite>fit_transform</cite> method.
+For details on parameters check <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.CountVectorizer.html">https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.CountVectorizer.html</a>
+Parameters specific to this operation are described below.</p>
+<div class="section" id="id39">
+<h4>Parameters<a class="headerlink" href="#id39" title="Permalink to this headline">¶</a></h4>
+<dl class="simple">
+<dt>text<span class="classifier">list</span></dt><dd><p>A list of strings.</p>
+</dd>
+<dt>get_feature_names: bool</dt><dd><p>If <cite>True</cite> return feature names using get_feature_names method of CountVectorizer.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="id40">
+<h4>Returns<a class="headerlink" href="#id40" title="Permalink to this headline">¶</a></h4>
+<dl class="simple">
+<dt>result: list</dt><dd><p>A list containing token counts and feature names if <cite>get_feature_names</cite> is <cite>True</cite>.</p>
+</dd>
+</dl>
+<p><strong>Stage: processing</strong></p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>text: count_vectorizer.inputs.text(type: array)</p></li>
+<li><p>encoding: count_vectorizer.inputs.encoding(type: str)</p></li>
+<li><p>decode_error: count_vectorizer.inputs.decode_error(type: str)</p></li>
+<li><p>strip_accents: count_vectorizer.inputs.strip_accents(type: str)</p></li>
+<li><p>lowercase: count_vectorizer.inputs.lowercase(type: bool)</p></li>
+<li><p>stop_words: count_vectorizer.inputs.stop_words(type: str)</p></li>
+<li><p>token_pattern: count_vectorizer.inputs.token_pattern(type: str)</p></li>
+<li><p>ngram_range: count_vectorizer.inputs.ngram_range(type: array)</p></li>
+<li><p>analyzer: count_vectorizer.inputs.analyzer(type: str)</p></li>
+<li><p>max_df: count_vectorizer.inputs.max_df(type: float)</p></li>
+<li><p>min_df: count_vectorizer.inputs.min_df(type: float)</p></li>
+<li><p>max_features: count_vectorizer.inputs.max_features(type: int)</p></li>
+<li><p>vocabulary: count_vectorizer.inputs.vocabulary(type: map)</p></li>
+<li><p>binary: count_vectorizer.inputs.binary(type: bool)</p></li>
+<li><p>get_feature_names: count_vectorizer.inputs.get_feature_names(type: bool)</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>result: count_vectorizer.outputs.result(type: array)</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="extract-array-from-matrix">
+<span id="plugin-operation-dffml-operations-nlp-extract-array-from-matrix"></span><h3>extract_array_from_matrix<a class="headerlink" href="#extract-array-from-matrix" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<p>Returns row from <cite>input_matrix</cite> based on index of <cite>single_text_example</cite>
+in <cite>collected_text</cite>.</p>
+<div class="section" id="id41">
+<h4>Parameters<a class="headerlink" href="#id41" title="Permalink to this headline">¶</a></h4>
+<dl class="simple">
+<dt>single_text_example<span class="classifier">str</span></dt><dd><p>String to be used for indexing into <cite>collected_text</cite>.</p>
+</dd>
+<dt>collected_text: list</dt><dd><p>List of strings.</p>
+</dd>
+<dt>input_matrix: list</dt><dd><p>A 2-D matrix where each row represents vector corresponding
+to <cite>single_text_example</cite>.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="id42">
+<h4>Returns<a class="headerlink" href="#id42" title="Permalink to this headline">¶</a></h4>
+<p>result: A 1-d array.</p>
+<p><strong>Stage: processing</strong></p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>single_text_example: extract_array_from_matrix.inputs.single_text_example(type: str)</p></li>
+<li><p>collected_text: extract_array_from_matrix.inputs.collected_text(type: array)</p></li>
+<li><p>input_matrix: extract_array_from_matrix.inputs.input_matrix(type: array)</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>result: extract_array_from_matrix.outputs.result(type: array)</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="get-embedding">
+<span id="plugin-operation-dffml-operations-nlp-get-embedding"></span><h3>get_embedding<a class="headerlink" href="#get-embedding" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<p>Maps words of text data to their corresponding word vectors.</p>
+<div class="section" id="id43">
+<h4>Parameters<a class="headerlink" href="#id43" title="Permalink to this headline">¶</a></h4>
+<dl class="simple">
+<dt>text<span class="classifier">str</span></dt><dd><p>String to be converted to word vectors.</p>
+</dd>
+<dt>max_len: int</dt><dd><p>Maximum length of sentence.
+If the length of <cite>text</cite> &gt; <cite>max_len</cite>, <cite>text</cite> is truncated
+to have length = <cite>max_len</cite>.
+If the length of <cite>text</cite> &lt; <cite>max_len</cite>, <cite>text</cite> is padded with
+<cite>pad_token</cite> such that len(<cite>text</cite>) = <cite>max_len</cite>.</p>
+</dd>
+<dt>pad_token: str</dt><dd><p>Token to be used for padding <cite>text</cite> if len(<cite>text</cite>) &lt; <cite>max_len</cite></p>
+</dd>
+<dt>spacy_model: str</dt><dd><p>Spacy model to be used for assigning vectors to tokens.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="id44">
+<h4>Returns<a class="headerlink" href="#id44" title="Permalink to this headline">¶</a></h4>
+<p>result: A 2-d array of shape (max_len, embedding_size of vectors).</p>
+<p><strong>Stage: processing</strong></p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>text: text_def(type: str)</p></li>
+<li><p>spacy_model: spacy_model_name_def(type: str)</p></li>
+<li><p>max_len: max_len_def(type: int)</p></li>
+<li><p>pad_token: pad_token_def(type: str)</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>embedding: embedding(type: generic)</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="get-noun-chunks">
+<span id="plugin-operation-dffml-operations-nlp-get-noun-chunks"></span><h3>get_noun_chunks<a class="headerlink" href="#get-noun-chunks" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<p>Extracts the noun chunks from text.</p>
+<div class="section" id="id45">
+<h4>Parameters<a class="headerlink" href="#id45" title="Permalink to this headline">¶</a></h4>
+<dl class="simple">
+<dt>text<span class="classifier">str</span></dt><dd><p>String to extract noun chunks from.</p>
+</dd>
+<dt>spacy_model: str</dt><dd><p>A spacy model with the capability of parsing.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="id46">
+<h4>Returns<a class="headerlink" href="#id46" title="Permalink to this headline">¶</a></h4>
+<dl class="simple">
+<dt>result: list</dt><dd><p>A list containing noun chunks.</p>
+</dd>
+</dl>
+<p><strong>Stage: processing</strong></p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>text: get_noun_chunks.inputs.text(type: str)</p></li>
+<li><p>spacy_model: get_noun_chunks.inputs.spacy_model(type: str)</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>result: get_noun_chunks.outputs.result(type: array)</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="get-sentences">
+<span id="plugin-operation-dffml-operations-nlp-get-sentences"></span><h3>get_sentences<a class="headerlink" href="#get-sentences" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<p>Extracts the sentences from text.</p>
+<div class="section" id="id47">
+<h4>Parameters<a class="headerlink" href="#id47" title="Permalink to this headline">¶</a></h4>
+<dl class="simple">
+<dt>text<span class="classifier">str</span></dt><dd><p>String to extract sentences from.</p>
+</dd>
+<dt>spacy_model: str</dt><dd><p>A spacy model with the capability of parsing. Sentence
+boundaries are calculated from the syntactic dependency parse.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="id48">
+<h4>Returns<a class="headerlink" href="#id48" title="Permalink to this headline">¶</a></h4>
+<dl class="simple">
+<dt>result: list</dt><dd><p>A list containing sentences.</p>
+</dd>
+</dl>
+<p><strong>Stage: processing</strong></p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>text: get_sentences.inputs.text(type: str)</p></li>
+<li><p>spacy_model: get_sentences.inputs.spacy_model(type: str)</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>result: get_sentences.outputs.result(type: array)</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="get-similarity">
+<span id="plugin-operation-dffml-operations-nlp-get-similarity"></span><h3>get_similarity<a class="headerlink" href="#get-similarity" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<p>Calculates similarity between two text strings as a score between 0 and 1.</p>
+<div class="section" id="id49">
+<h4>Parameters<a class="headerlink" href="#id49" title="Permalink to this headline">¶</a></h4>
+<dl class="simple">
+<dt>text_1<span class="classifier">str</span></dt><dd><p>First string to compare.</p>
+</dd>
+<dt>text_2<span class="classifier">str</span></dt><dd><p>Second string to compare.</p>
+</dd>
+<dt>spacy_model: str</dt><dd><p>Spacy model to be used for extracting word vectors which are used for calculating similarity.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="id50">
+<h4>Returns<a class="headerlink" href="#id50" title="Permalink to this headline">¶</a></h4>
+<dl class="simple">
+<dt>result: float</dt><dd><p>A similarity score between 0 and 1.</p>
+</dd>
+</dl>
+<p><strong>Stage: processing</strong></p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>text_1: get_similarity.inputs.text_1(type: str)</p></li>
+<li><p>text_2: get_similarity.inputs.text_2(type: str)</p></li>
+<li><p>spacy_model: get_similarity.inputs.spacy_model(type: str)</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>result: get_similarity.outputs.result(type: float)</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="lemmatizer">
+<span id="plugin-operation-dffml-operations-nlp-lemmatizer"></span><h3>lemmatizer<a class="headerlink" href="#lemmatizer" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<p>Reduce words in the text to their dictionary form (lemma)</p>
+<div class="section" id="id51">
+<h4>Parameters<a class="headerlink" href="#id51" title="Permalink to this headline">¶</a></h4>
+<dl class="simple">
+<dt>text<span class="classifier">str</span></dt><dd><p>String to lemmatize.</p>
+</dd>
+<dt>spacy_model: str</dt><dd><p>Spacy model to be used for lemmatization.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="id52">
+<h4>Returns<a class="headerlink" href="#id52" title="Permalink to this headline">¶</a></h4>
+<dl class="simple">
+<dt>result: list</dt><dd><p>A list containing base form of the words.</p>
+</dd>
+</dl>
+<p><strong>Stage: processing</strong></p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>text: lemmatizer.inputs.text(type: str)</p></li>
+<li><p>spacy_model: lemmatizer.inputs.spacy_model(type: str)</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>result: lemmatizer.outputs.result(type: array)</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="pos-tagger">
+<span id="plugin-operation-dffml-operations-nlp-pos-tagger"></span><h3>pos_tagger<a class="headerlink" href="#pos-tagger" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<p>Assigns part-of-speech tags to text.</p>
+<div class="section" id="id53">
+<h4>Parameters<a class="headerlink" href="#id53" title="Permalink to this headline">¶</a></h4>
+<dl class="simple">
+<dt>text<span class="classifier">str</span></dt><dd><p>Text to be tagged.</p>
+</dd>
+<dt>spacy_model: str</dt><dd><p>A spacy model with tagger and parser.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="id54">
+<h4>Returns<a class="headerlink" href="#id54" title="Permalink to this headline">¶</a></h4>
+<dl class="simple">
+<dt>result: list</dt><dd><p>A list containing tuples of word and their respective pos tag.</p>
+</dd>
+</dl>
+<p><strong>Stage: processing</strong></p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>text: pos_tagger.inputs.text(type: str)</p></li>
+<li><p>spacy_model: pos_tagger.inputs.spacy_model(type: str)</p></li>
+<li><p>tag_type: pos_tagger.inputs.tag_type(type: str)</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>result: pos_tagger.outputs.result(type: array)</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="remove-stopwords">
+<span id="plugin-operation-dffml-operations-nlp-remove-stopwords"></span><h3>remove_stopwords<a class="headerlink" href="#remove-stopwords" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<p>Removes stopword from text data.</p>
+<div class="section" id="id55">
+<h4>Parameters<a class="headerlink" href="#id55" title="Permalink to this headline">¶</a></h4>
+<dl class="simple">
+<dt>text<span class="classifier">str</span></dt><dd><p>String to be cleaned.</p>
+</dd>
+<dt>custom_stop_words: List[str], default = None</dt><dd><p>List of words to be considered as stop words.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="id56">
+<h4>Returns<a class="headerlink" href="#id56" title="Permalink to this headline">¶</a></h4>
+<p>result: A string without stop words.</p>
+<p><strong>Stage: processing</strong></p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>text: remove_stopwords.inputs.text(type: str)</p></li>
+<li><p>custom_stop_words: remove_stopwords.inputs.custom_stop_words(type: array)</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>result: remove_stopwords.outputs.result(type: str)</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="tfidf-vectorizer">
+<span id="plugin-operation-dffml-operations-nlp-tfidf-vectorizer"></span><h3>tfidf_vectorizer<a class="headerlink" href="#tfidf-vectorizer" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<p>Convert a collection of raw documents to a matrix of TF-IDF features using sklearn TfidfVectorizer’s <cite>fit_transform</cite> method.
+For details on parameters check <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.TfidfVectorizer.html">https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.TfidfVectorizer.html</a>
+Parameters specific to this operation are described below.</p>
+<div class="section" id="id57">
+<h4>Parameters<a class="headerlink" href="#id57" title="Permalink to this headline">¶</a></h4>
+<dl class="simple">
+<dt>text<span class="classifier">list</span></dt><dd><p>A list of strings.</p>
+</dd>
+<dt>get_feature_names: bool</dt><dd><p>If <cite>True</cite> return feature names using get_feature_names method of TfidfVectorizer.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="id58">
+<h4>Returns<a class="headerlink" href="#id58" title="Permalink to this headline">¶</a></h4>
+<dl class="simple">
+<dt>result: list</dt><dd><p>A list containing token counts and feature names if <cite>get_feature_names</cite> is <cite>True</cite>.</p>
+</dd>
+</dl>
+<p><strong>Stage: processing</strong></p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>text: tfidf_vectorizer.inputs.text(type: array)</p></li>
+<li><p>encoding: tfidf_vectorizer.inputs.encoding(type: str)</p></li>
+<li><p>decode_error: tfidf_vectorizer.inputs.decode_error(type: str)</p></li>
+<li><p>strip_accents: tfidf_vectorizer.inputs.strip_accents(type: str)</p></li>
+<li><p>lowercase: tfidf_vectorizer.inputs.lowercase(type: bool)</p></li>
+<li><p>analyzer: tfidf_vectorizer.inputs.analyzer(type: str)</p></li>
+<li><p>stop_words: tfidf_vectorizer.inputs.stop_words(type: str)</p></li>
+<li><p>token_pattern: tfidf_vectorizer.inputs.token_pattern(type: str)</p></li>
+<li><p>ngram_range: tfidf_vectorizer.inputs.ngram_range(type: array)</p></li>
+<li><p>max_df: tfidf_vectorizer.inputs.max_df(type: str)</p></li>
+<li><p>min_df: tfidf_vectorizer.inputs.min_df(type: str)</p></li>
+<li><p>max_features: tfidf_vectorizer.inputs.max_features(type: str)</p></li>
+<li><p>vocabulary: tfidf_vectorizer.inputs.vocabulary(type: str)</p></li>
+<li><p>binary: tfidf_vectorizer.inputs.binary(type: bool)</p></li>
+<li><p>norm: tfidf_vectorizer.inputs.norm(type: str)</p></li>
+<li><p>use_idf: tfidf_vectorizer.inputs.use_idf(type: bool)</p></li>
+<li><p>smooth_idf: tfidf_vectorizer.inputs.smooth_idf(type: bool)</p></li>
+<li><p>sublinear_tf: tfidf_vectorizer.inputs.sublinear_tf(type: bool)</p></li>
+<li><p>get_feature_names: tfidf_vectorizer.inputs.get_feature_names(type: bool)</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>result: tfidf_vectorizer.outputs.result(type: array)</p></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="section" id="dffml-operations-image">
+<span id="plugin-operation-dffml-operations-image"></span><h2>dffml_operations_image<a class="headerlink" href="#dffml-operations-image" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install dffml-operations-image</span>
+</pre></div>
+</div>
+<div class="section" id="haralick">
+<span id="plugin-operation-dffml-operations-image-haralick"></span><h3>Haralick<a class="headerlink" href="#haralick" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<p>Computes Haralick texture features</p>
+<p><strong>Stage: processing</strong></p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>f: Haralick.inputs.f(type: array)</p></li>
+<li><p>ignore_zeros: Haralick.inputs.ignore_zeros(type: bool)</p></li>
+<li><p>preserve_haralick_bug: Haralick.inputs.preserve_haralick_bug(type: bool)</p></li>
+<li><p>compute_14th_feature: Haralick.inputs.compute_14th_feature(type: bool)</p></li>
+<li><p>return_mean: Haralick.inputs.return_mean(type: bool)</p></li>
+<li><p>return_mean_ptp: Haralick.inputs.return_mean_ptp(type: bool)</p></li>
+<li><p>use_x_minus_y_variance: Haralick.inputs.use_x_minus_y_variance(type: bool)</p></li>
+<li><p>distance: Haralick.inputs.distance(type: int)</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>result: Haralick.outputs.result(type: array)</p></li>
+</ul>
+</div>
+<div class="section" id="humoments">
+<span id="plugin-operation-dffml-operations-image-humoments"></span><h3>HuMoments<a class="headerlink" href="#humoments" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<p>Calculates seven Hu invariants</p>
+<p><strong>Stage: processing</strong></p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>m: HuMoments.inputs.m(type: array)</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>result: HuMoments.outputs.result(type: array)</p></li>
+</ul>
+</div>
+<div class="section" id="calchist">
+<span id="plugin-operation-dffml-operations-image-calchist"></span><h3>calcHist<a class="headerlink" href="#calchist" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<p>Calculates a histogram</p>
+<p><strong>Stage: processing</strong></p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>images: calcHist.inputs.images(type: array)</p></li>
+<li><p>channels: calcHist.inputs.channels(type: array)</p></li>
+<li><p>mask: calcHist.inputs.mask(type: array)</p></li>
+<li><p>histSize: calcHist.inputs.histSize(type: array)</p></li>
+<li><p>ranges: calcHist.inputs.ranges(type: array)</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>result: calcHist.outputs.result(type: array)</p></li>
+</ul>
+</div>
+<div class="section" id="convert-color">
+<span id="plugin-operation-dffml-operations-image-convert-color"></span><h3>convert_color<a class="headerlink" href="#convert-color" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<p>Converts images from one color space to another</p>
+<p><strong>Stage: processing</strong></p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>src: convert_color.inputs.src(type: array)</p></li>
+<li><p>code: convert_color.inputs.code(type: str)</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>result: convert_color.outputs.result(type: array)</p></li>
+</ul>
+</div>
+<div class="section" id="flatten">
+<span id="plugin-operation-dffml-operations-image-flatten"></span><h3>flatten<a class="headerlink" href="#flatten" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<p>No description</p>
+<p><strong>Stage: processing</strong></p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>array: flatten.inputs.array(type: array)</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>result: flatten.outputs.result(type: array)</p></li>
+</ul>
+</div>
+<div class="section" id="normalize">
+<span id="plugin-operation-dffml-operations-image-normalize"></span><h3>normalize<a class="headerlink" href="#normalize" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<p>Normalizes arrays</p>
+<p><strong>Stage: processing</strong></p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>src: normalize.inputs.src(type: array)</p></li>
+<li><p>alpha: normalize.inputs.alpha(type: int)</p></li>
+<li><p>beta: normalize.inputs.beta(type: int)</p></li>
+<li><p>norm_type: normalize.inputs.norm_type(type: int)</p></li>
+<li><p>dtype: normalize.inputs.dtype(type: int)</p></li>
+<li><p>mask: normalize.inputs.mask(type: array)</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>result: normalize.outputs.result(type: array)</p></li>
+</ul>
+</div>
+<div class="section" id="resize">
+<span id="plugin-operation-dffml-operations-image-resize"></span><h3>resize<a class="headerlink" href="#resize" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<p>Resizes image array to the specified new dimensions</p>
+<ul class="simple">
+<li><p>If the new dimensions are in 2D, the image is converted to grayscale.</p></li>
+<li><dl class="simple">
+<dt>To enlarge the image (src dimensions &lt; dsize),</dt><dd><p>it will resize the image with INTER_CUBIC interpolation.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>To shrink the image (src dimensions &gt; dsize),</dt><dd><p>it will resize the image with INTER_AREA interpolation</p>
+</dd>
+</dl>
+</li>
+</ul>
+<p><strong>Stage: processing</strong></p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>src: resize.inputs.src(type: array)</p></li>
+<li><p>dsize: resize.inputs.dsize(type: array)</p></li>
+<li><p>fx: resize.inputs.fx(type: float)</p></li>
+<li><p>fy: resize.inputs.fy(type: float)</p></li>
+<li><p>interpolation: resize.inputs.interpolation(type: int)</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>result: resize.outputs.result(type: array)</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="dffml-operations-deploy">
+<span id="plugin-operation-dffml-operations-deploy"></span><h2>dffml_operations_deploy<a class="headerlink" href="#dffml-operations-deploy" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install dffml-operations-deploy</span>
+</pre></div>
+</div>
+<div class="section" id="check-if-default-branch">
+<span id="plugin-operation-dffml-operations-deploy-check-if-default-branch"></span><h3>check_if_default_branch<a class="headerlink" href="#check-if-default-branch" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<p>No description</p>
+<p><strong>Stage: processing</strong></p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>payload: git_payload(type: Dict[str,Any])</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>is_default_branch: is_default_branch(type: bool)</p></li>
+</ul>
+</div>
+<div class="section" id="check-secret-match">
+<span id="plugin-operation-dffml-operations-deploy-check-secret-match"></span><h3>check_secret_match<a class="headerlink" href="#check-secret-match" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<p>No description</p>
+<p><strong>Stage: processing</strong></p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>headers: webhook_headers(type: Dict[str,Any])</p></li>
+<li><p>body: payload(type: bytes)</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>git_payload: git_payload(type: Dict[str,Any])</p></li>
+</ul>
+<p><strong>Args</strong></p>
+<ul class="simple">
+<li><p>secret: Entrypoint</p></li>
+</ul>
+</div>
+<div class="section" id="docker-build-image">
+<span id="plugin-operation-dffml-operations-deploy-docker-build-image"></span><h3>docker_build_image<a class="headerlink" href="#docker-build-image" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<p>No description</p>
+<p><strong>Stage: processing</strong></p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>docker_commands: docker_commands(type: Dict[str,Any])</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>build_status: is_image_built(type: bool)</p></li>
+</ul>
+<p><strong>Conditions</strong></p>
+<ul class="simple">
+<li><p>is_default_branch: bool</p></li>
+<li><p>got_running_containers: bool</p></li>
+</ul>
+</div>
+<div class="section" id="get-image-tag">
+<span id="plugin-operation-dffml-operations-deploy-get-image-tag"></span><h3>get_image_tag<a class="headerlink" href="#get-image-tag" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<p>No description</p>
+<p><strong>Stage: processing</strong></p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>payload: git_payload(type: Dict[str,Any])</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>image_tag: docker_image_tag(type: str)</p></li>
+</ul>
+</div>
+<div class="section" id="get-running-containers">
+<span id="plugin-operation-dffml-operations-deploy-get-running-containers"></span><h3>get_running_containers<a class="headerlink" href="#get-running-containers" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<p>No description</p>
+<p><strong>Stage: processing</strong></p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>tag: docker_image_tag(type: str)</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>running_containers: docker_running_containers(type: List[str])</p></li>
+</ul>
+</div>
+<div class="section" id="get-status-running-containers">
+<span id="plugin-operation-dffml-operations-deploy-get-status-running-containers"></span><h3>get_status_running_containers<a class="headerlink" href="#get-status-running-containers" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<p>No description</p>
+<p><strong>Stage: processing</strong></p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>containers: docker_running_containers(type: List[str])</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>status: got_running_containers(type: bool)</p></li>
+</ul>
+</div>
+<div class="section" id="get-url-from-payload">
+<span id="plugin-operation-dffml-operations-deploy-get-url-from-payload"></span><h3>get_url_from_payload<a class="headerlink" href="#get-url-from-payload" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<p>No description</p>
+<p><strong>Stage: processing</strong></p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>payload: git_payload(type: Dict[str,Any])</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>url: URL(type: string)</p></li>
+</ul>
+</div>
+<div class="section" id="parse-docker-commands">
+<span id="plugin-operation-dffml-operations-deploy-parse-docker-commands"></span><h3>parse_docker_commands<a class="headerlink" href="#parse-docker-commands" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<p>No description</p>
+<p><strong>Stage: processing</strong></p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>repo: git_repository(type: Dict[str, str])</p>
+<ul>
+<li><p>directory: str</p></li>
+<li><p>URL: str(default: None)</p></li>
+</ul>
+</li>
+<li><p>image_tag: docker_image_tag(type: str)</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>docker_commands: docker_commands(type: Dict[str,Any])</p></li>
+</ul>
+</div>
+<div class="section" id="restart-running-containers">
+<span id="plugin-operation-dffml-operations-deploy-restart-running-containers"></span><h3>restart_running_containers<a class="headerlink" href="#restart-running-containers" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<p>No description</p>
+<p><strong>Stage: processing</strong></p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>docker_commands: docker_commands(type: Dict[str,Any])</p></li>
+<li><p>containers: docker_running_containers(type: List[str])</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>containers: docker_restarted_containers(type: str)</p></li>
+</ul>
+<p><strong>Conditions</strong></p>
+<ul class="simple">
+<li><p>is_image_built: bool</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="dffml-operations-binsec">
+<span id="plugin-operation-dffml-operations-binsec"></span><h2>dffml_operations_binsec<a class="headerlink" href="#dffml-operations-binsec" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install dffml-operations-binsec</span>
+</pre></div>
+</div>
+<div class="section" id="cleanup-rpm">
+<span id="plugin-operation-dffml-operations-binsec-cleanup-rpm"></span><h3>cleanup_rpm<a class="headerlink" href="#cleanup-rpm" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<p>No description</p>
+<p><strong>Stage: cleanup</strong></p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>rpm: RPMObject(type: python_obj)</p></li>
+</ul>
+</div>
+<div class="section" id="files-in-rpm">
+<span id="plugin-operation-dffml-operations-binsec-files-in-rpm"></span><h3>files_in_rpm<a class="headerlink" href="#files-in-rpm" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<p>No description</p>
+<p><strong>Stage: processing</strong></p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>rpm: RPMObject(type: python_obj)</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>files: rpm_filename(type: str)</p></li>
+</ul>
+</div>
+<div class="section" id="is-binary-pie">
+<span id="plugin-operation-dffml-operations-binsec-is-binary-pie"></span><h3>is_binary_pie<a class="headerlink" href="#is-binary-pie" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<p>No description</p>
+<p><strong>Stage: processing</strong></p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>rpm: RPMObject(type: python_obj)</p></li>
+<li><p>filename: rpm_filename(type: str)</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>is_pie: binary_is_PIE(type: bool)</p></li>
+</ul>
+</div>
+<div class="section" id="url-to-urlbytes">
+<span id="plugin-operation-dffml-operations-binsec-url-to-urlbytes"></span><h3>url_to_urlbytes<a class="headerlink" href="#url-to-urlbytes" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<p>No description</p>
+<p><strong>Stage: processing</strong></p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>URL: URL(type: string)</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>download: URLBytes(type: python_obj)</p></li>
+</ul>
+</div>
+<div class="section" id="urlbytes-to-rpmfile">
+<span id="plugin-operation-dffml-operations-binsec-urlbytes-to-rpmfile"></span><h3>urlbytes_to_rpmfile<a class="headerlink" href="#urlbytes-to-rpmfile" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<p>No description</p>
+<p><strong>Stage: processing</strong></p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>download: URLBytes(type: python_obj)</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>rpm: RPMObject(type: python_obj)</p></li>
+</ul>
+</div>
+<div class="section" id="urlbytes-to-tarfile">
+<span id="plugin-operation-dffml-operations-binsec-urlbytes-to-tarfile"></span><h3>urlbytes_to_tarfile<a class="headerlink" href="#urlbytes-to-tarfile" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<p>No description</p>
+<p><strong>Stage: processing</strong></p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>download: URLBytes(type: python_obj)</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>rpm: RPMObject(type: python_obj)</p></li>
 </ul>
 </div>
 </div>
@@ -1023,7 +2702,7 @@ check it’s releases page to make sure you’re installing the latest version.<
 
   <div role="contentinfo">
     <p>
-        &#169; Copyright 2019, Intel.
+        &#169; Copyright 2017 - 2021, Intel.
 
     </p>
   </div>

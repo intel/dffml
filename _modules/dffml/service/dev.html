@@ -1,0 +1,1322 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>dffml.service.dev &mdash; DFFML 0.4.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/tabs.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/tabs.js"></script>
+        <script src="../../../_static/copybutton.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="author" title="About these documents" href="../../../about.html" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> DFFML
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.4.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Introduction</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../concepts/index.html">Concepts</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Usage</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../quickstart/model.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/index.html">Examples</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../plugins/index.html">Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../cli.html">Command Line</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../plugins/service/http/index.html">HTTP API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../troubleshooting.html">Troubleshooting</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Subprojects</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../shouldi.html">shouldi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../swportal.html">Software Portal</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Community</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/intel/dffml">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://intel.github.io/dffml/master/">Master Branch Docs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../publications.html">Publications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contact.html">Contact Us</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributing/index.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../news/index.html">News</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../changelog.html">Changelog</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">DFFML</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>dffml.service.dev</li>
+    
+    
+
+
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+
+
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for dffml.service.dev</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">ast</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">pydoc</span>
+<span class="kn">import</span> <span class="nn">shutil</span>
+<span class="kn">import</span> <span class="nn">string</span>
+<span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="kn">import</span> <span class="nn">pathlib</span>
+<span class="kn">import</span> <span class="nn">getpass</span>
+<span class="kn">import</span> <span class="nn">tempfile</span>
+<span class="kn">import</span> <span class="nn">platform</span>
+<span class="kn">import</span> <span class="nn">textwrap</span>
+<span class="kn">import</span> <span class="nn">importlib</span>
+<span class="kn">import</span> <span class="nn">itertools</span>
+<span class="kn">import</span> <span class="nn">subprocess</span>
+<span class="kn">import</span> <span class="nn">contextlib</span>
+<span class="kn">import</span> <span class="nn">dataclasses</span>
+<span class="kn">import</span> <span class="nn">configparser</span>
+<span class="kn">import</span> <span class="nn">pkg_resources</span>
+<span class="kn">import</span> <span class="nn">unittest.mock</span>
+<span class="kn">import</span> <span class="nn">urllib.request</span>
+<span class="kn">import</span> <span class="nn">importlib.util</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Optional</span>
+
+<span class="kn">from</span> <span class="nn">..base</span> <span class="kn">import</span> <span class="n">BaseConfig</span>
+<span class="kn">from</span> <span class="nn">..util.os</span> <span class="kn">import</span> <span class="n">chdir</span><span class="p">,</span> <span class="n">MODE_BITS_SECURE</span>
+<span class="kn">from</span> <span class="nn">..version</span> <span class="kn">import</span> <span class="n">VERSION</span>
+<span class="kn">from</span> <span class="nn">..util.skel</span> <span class="kn">import</span> <span class="n">Skel</span><span class="p">,</span> <span class="n">SkelTemplateConfig</span>
+<span class="kn">from</span> <span class="nn">..util.cli.cmd</span> <span class="kn">import</span> <span class="n">CMD</span>
+<span class="kn">from</span> <span class="nn">..util.entrypoint</span> <span class="kn">import</span> <span class="n">load</span>
+<span class="kn">from</span> <span class="nn">..base</span> <span class="kn">import</span> <span class="n">MissingConfig</span><span class="p">,</span> <span class="n">config</span> <span class="k">as</span> <span class="n">configdataclass</span><span class="p">,</span> <span class="n">field</span>
+<span class="kn">from</span> <span class="nn">..util.packaging</span> <span class="kn">import</span> <span class="n">is_develop</span>
+<span class="kn">from</span> <span class="nn">..util.data</span> <span class="kn">import</span> <span class="n">traverse_config_get</span><span class="p">,</span> <span class="n">export</span>
+<span class="kn">from</span> <span class="nn">..df.types</span> <span class="kn">import</span> <span class="n">Input</span><span class="p">,</span> <span class="n">DataFlow</span>
+<span class="kn">from</span> <span class="nn">..df.memory</span> <span class="kn">import</span> <span class="n">MemoryOrchestrator</span>
+<span class="kn">from</span> <span class="nn">..configloader.configloader</span> <span class="kn">import</span> <span class="n">BaseConfigLoader</span>
+<span class="kn">from</span> <span class="nn">..configloader.json</span> <span class="kn">import</span> <span class="n">JSONConfigLoader</span>
+<span class="kn">from</span> <span class="nn">..operation.output</span> <span class="kn">import</span> <span class="n">GetSingle</span>
+<span class="kn">from</span> <span class="nn">..plugins</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">CORE_PLUGINS</span><span class="p">,</span>
+    <span class="n">CORE_PLUGIN_DEPS</span><span class="p">,</span>
+    <span class="n">PACKAGE_NAMES_TO_DIRECTORY</span><span class="p">,</span>
+    <span class="n">PACKAGE_DIRECTORY_TO_NAME</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">config</span> <span class="o">=</span> <span class="n">configparser</span><span class="o">.</span><span class="n">ConfigParser</span><span class="p">()</span>
+<span class="n">config</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;~&quot;</span><span class="p">,</span> <span class="s2">&quot;.gitconfig&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">expanduser</span><span class="p">())</span>
+
+<span class="n">USER</span> <span class="o">=</span> <span class="s2">&quot;unknown&quot;</span>
+<span class="k">with</span> <span class="n">contextlib</span><span class="o">.</span><span class="n">suppress</span><span class="p">(</span><span class="ne">KeyError</span><span class="p">):</span>
+    <span class="n">USER</span> <span class="o">=</span> <span class="n">getpass</span><span class="o">.</span><span class="n">getuser</span><span class="p">()</span>
+
+<span class="n">NAME</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="n">fallback</span><span class="o">=</span><span class="s2">&quot;Unknown&quot;</span><span class="p">)</span>
+<span class="n">EMAIL</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;email&quot;</span><span class="p">,</span> <span class="n">fallback</span><span class="o">=</span><span class="s2">&quot;unknown@example.com&quot;</span><span class="p">)</span>
+
+<span class="n">REPO_ROOT</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parents</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+
+
+<div class="viewcode-block" id="create_from_skel"><a class="viewcode-back" href="../../../api/service/dev.html#dffml.service.dev.create_from_skel">[docs]</a><span class="k">def</span> <span class="nf">create_from_skel</span><span class="p">(</span><span class="n">plugin_type</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Copies samples out of skel/ and does re-naming.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="nd">@configdataclass</span>
+    <span class="k">class</span> <span class="nc">CreateCMDConfig</span><span class="p">:</span>
+        <span class="n">package</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="s2">&quot;Name of python package to create&quot;</span><span class="p">)</span>
+        <span class="n">user</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Your username (default: </span><span class="si">{</span><span class="n">USER</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">USER</span><span class="p">)</span>
+        <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Your name (default: </span><span class="si">{</span><span class="n">NAME</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">NAME</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">email</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Your email (default: </span><span class="si">{</span><span class="n">EMAIL</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">EMAIL</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">description</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Description of python package (default: DFFML </span><span class="si">{</span><span class="n">plugin_type</span><span class="si">}</span><span class="s2"> </span><span class="se">{{</span><span class="s2">package name</span><span class="se">}}</span><span class="s2">)&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">target</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Directory to put code in (default: same as package name)&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="k">class</span> <span class="nc">CreateCMD</span><span class="p">(</span><span class="n">CMD</span><span class="p">):</span>
+
+        <span class="n">skel</span> <span class="o">=</span> <span class="n">Skel</span><span class="p">()</span>
+
+        <span class="n">CONFIG</span> <span class="o">=</span> <span class="n">CreateCMDConfig</span>
+
+        <span class="k">async</span> <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="c1"># Set description if None</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">description</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;DFFML </span><span class="si">{</span><span class="n">plugin_type</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">package</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="c1"># Set target directory to package name if not given</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">target</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">target</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">package</span>
+            <span class="c1"># Extract</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">skel</span><span class="o">.</span><span class="n">from_template</span><span class="p">(</span>
+                <span class="n">plugin_type</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">target</span><span class="p">,</span>
+                <span class="n">SkelTemplateConfig</span><span class="p">(</span>
+                    <span class="n">org</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="p">,</span>
+                    <span class="n">package</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">package</span><span class="p">,</span>
+                    <span class="n">description</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">description</span><span class="p">,</span>
+                    <span class="n">name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+                    <span class="n">email</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">email</span><span class="p">,</span>
+                    <span class="n">dffml_version</span><span class="o">=</span><span class="n">VERSION</span><span class="p">,</span>
+                <span class="p">),</span>
+            <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">CreateCMD</span></div>
+
+
+<div class="viewcode-block" id="Create"><a class="viewcode-back" href="../../../api/service/dev.html#dffml.service.dev.Create">[docs]</a><span class="k">class</span> <span class="nc">Create</span><span class="p">(</span><span class="n">CMD</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Create new models, operations, etc.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">model</span> <span class="o">=</span> <span class="n">create_from_skel</span><span class="p">(</span><span class="s2">&quot;model&quot;</span><span class="p">)</span>
+    <span class="n">operations</span> <span class="o">=</span> <span class="n">create_from_skel</span><span class="p">(</span><span class="s2">&quot;operations&quot;</span><span class="p">)</span>
+    <span class="n">service</span> <span class="o">=</span> <span class="n">create_from_skel</span><span class="p">(</span><span class="s2">&quot;service&quot;</span><span class="p">)</span>
+    <span class="n">source</span> <span class="o">=</span> <span class="n">create_from_skel</span><span class="p">(</span><span class="s2">&quot;source&quot;</span><span class="p">)</span>
+    <span class="n">config</span> <span class="o">=</span> <span class="n">create_from_skel</span><span class="p">(</span><span class="s2">&quot;config&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Link"><a class="viewcode-back" href="../../../api/service/dev.html#dffml.service.dev.Link">[docs]</a><span class="k">class</span> <span class="nc">Link</span><span class="p">(</span><span class="n">CMD</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Create required symlinks from skel/common to the other template directories</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">skel</span> <span class="o">=</span> <span class="n">Skel</span><span class="p">()</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">plugin</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">skel</span><span class="o">.</span><span class="n">plugins</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">skel</span><span class="o">.</span><span class="n">create_symlinks</span><span class="p">(</span><span class="n">plugin</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Skeleton"><a class="viewcode-back" href="../../../api/service/dev.html#dffml.service.dev.Skeleton">[docs]</a><span class="k">class</span> <span class="nc">Skeleton</span><span class="p">(</span><span class="n">CMD</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Work with the skeleton directories (create service templates)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">link</span> <span class="o">=</span> <span class="n">Link</span></div>
+
+
+<div class="viewcode-block" id="RunConfig"><a class="viewcode-back" href="../../../api/service/dev.html#dffml.service.dev.RunConfig">[docs]</a><span class="nd">@configdataclass</span>
+<span class="k">class</span> <span class="nc">RunConfig</span><span class="p">:</span>
+    <span class="n">operation</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="s2">&quot;Python path to operation&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Run"><a class="viewcode-back" href="../../../api/service/dev.html#dffml.service.dev.Run">[docs]</a><span class="k">class</span> <span class="nc">Run</span><span class="p">(</span><span class="n">CMD</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Run a single operation</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">CONFIG</span> <span class="o">=</span> <span class="n">RunConfig</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Push current directory into front of path so we can run things</span>
+        <span class="c1"># relative to where we are in the shell</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">())</span>
+        <span class="c1"># Lookup</span>
+        <span class="n">modname</span><span class="p">,</span> <span class="n">qualname_separator</span><span class="p">,</span> <span class="n">qualname</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">operation</span><span class="o">.</span><span class="n">partition</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">)</span>
+        <span class="n">obj</span> <span class="o">=</span> <span class="n">importlib</span><span class="o">.</span><span class="n">import_module</span><span class="p">(</span><span class="n">modname</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">qualname_separator</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">qualname</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">):</span>
+                <span class="n">obj</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">attr</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Loaded operation: </span><span class="si">%s</span><span class="s2">(</span><span class="si">%s</span><span class="s2">)&quot;</span><span class="p">,</span> <span class="n">attr</span><span class="p">,</span> <span class="n">obj</span><span class="p">)</span>
+                <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">run_op</span><span class="p">(</span><span class="n">attr</span><span class="p">,</span> <span class="n">obj</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">config_get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">op</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">definition</span><span class="p">):</span>
+        <span class="c1"># TODO De-duplicate code from dffml/base.py</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="n">traverse_config_get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">extra_config</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">KeyError</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">MissingConfig</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> missing </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">op</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">key</span><span class="p">))</span>
+        <span class="c1"># TODO Argparse nargs and Arg and primitives need to be unified</span>
+        <span class="k">if</span> <span class="s2">&quot;Dict&quot;</span> <span class="ow">in</span> <span class="n">definition</span><span class="o">.</span><span class="n">primitive</span><span class="p">:</span>
+            <span class="c1"># TODO handle Dict / spec completely</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span>
+                <span class="s2">&quot;Dict / spec&#39;d arguments are not yet completely handled&quot;</span>
+            <span class="p">)</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">value</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">typecast</span> <span class="o">=</span> <span class="n">pydoc</span><span class="o">.</span><span class="n">locate</span><span class="p">(</span>
+                <span class="n">definition</span><span class="o">.</span><span class="n">primitive</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;List[&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;]&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+            <span class="p">)</span>
+            <span class="c1"># TODO This is a oversimplification of argparse&#39;s nargs</span>
+            <span class="k">if</span> <span class="n">definition</span><span class="o">.</span><span class="n">primitive</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;List[&quot;</span><span class="p">):</span>
+                <span class="n">value</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">typecast</span><span class="p">,</span> <span class="n">value</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">value</span> <span class="o">=</span> <span class="n">typecast</span><span class="p">(</span><span class="n">value</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                <span class="k">if</span> <span class="n">typecast</span> <span class="ow">is</span> <span class="nb">str</span> <span class="ow">and</span> <span class="n">value</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;True&quot;</span><span class="p">,</span> <span class="s2">&quot;False&quot;</span><span class="p">]:</span>
+                    <span class="k">raise</span> <span class="n">MissingConfig</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> missing </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">op</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">key</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">value</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">run_op</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">opimp</span><span class="p">):</span>
+        <span class="c1"># Create an instance of BaseConfigurable and have it parse the inputs</span>
+        <span class="c1"># from self.extra_config. Use the op.inputs to know what we should pass</span>
+        <span class="c1"># to config_get</span>
+        <span class="n">inputs</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">definition</span> <span class="ow">in</span> <span class="n">opimp</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">inputs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="n">Input</span><span class="p">(</span>
+                        <span class="n">value</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config_get</span><span class="p">(</span><span class="n">opimp</span><span class="o">.</span><span class="n">op</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">definition</span><span class="p">),</span>
+                        <span class="n">definition</span><span class="o">=</span><span class="n">definition</span><span class="p">,</span>
+                    <span class="p">)</span>
+                <span class="p">)</span>
+            <span class="k">except</span> <span class="n">MissingConfig</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+                <span class="n">error</span><span class="o">.</span><span class="n">args</span> <span class="o">=</span> <span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">opimp</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">error</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,)</span>
+                <span class="k">raise</span> <span class="n">error</span>
+
+        <span class="n">config</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">extra_config</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">extra_config</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">):</span>
+            <span class="k">if</span> <span class="s2">&quot;config&quot;</span> <span class="ow">in</span> <span class="n">extra_config</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">extra_config</span><span class="p">[</span><span class="s2">&quot;config&quot;</span><span class="p">]):</span>
+                <span class="n">extra_config</span> <span class="o">=</span> <span class="n">extra_config</span><span class="p">[</span><span class="s2">&quot;config&quot;</span><span class="p">]</span>
+
+        <span class="c1"># TODO(p0) This only goes one level deep. This won&#39;t work for</span>
+        <span class="c1"># configs that are multi-leveled</span>
+        <span class="k">if</span> <span class="n">extra_config</span><span class="p">:</span>
+            <span class="n">config</span> <span class="o">=</span> <span class="n">extra_config</span>
+
+        <span class="n">dataflow</span> <span class="o">=</span> <span class="n">DataFlow</span><span class="o">.</span><span class="n">auto</span><span class="p">(</span><span class="n">GetSingle</span><span class="p">,</span> <span class="n">opimp</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">config</span><span class="p">:</span>
+            <span class="n">dataflow</span><span class="o">.</span><span class="n">configs</span><span class="p">[</span><span class="n">opimp</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">config</span>
+
+        <span class="c1"># Run the operation in the memory orchestrator</span>
+        <span class="k">async</span> <span class="k">with</span> <span class="n">MemoryOrchestrator</span><span class="o">.</span><span class="n">withconfig</span><span class="p">({})</span> <span class="k">as</span> <span class="n">orchestrator</span><span class="p">:</span>
+            <span class="c1"># Orchestrate the running of these operations</span>
+            <span class="k">async</span> <span class="k">with</span> <span class="n">orchestrator</span><span class="p">(</span><span class="n">dataflow</span><span class="p">)</span> <span class="k">as</span> <span class="n">octx</span><span class="p">:</span>
+                <span class="k">async</span> <span class="k">for</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">results</span> <span class="ow">in</span> <span class="n">octx</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+                    <span class="p">[</span>
+                        <span class="n">Input</span><span class="p">(</span>
+                            <span class="n">value</span><span class="o">=</span><span class="p">[</span>
+                                <span class="n">definition</span><span class="o">.</span><span class="n">name</span>
+                                <span class="k">for</span> <span class="n">definition</span> <span class="ow">in</span> <span class="n">opimp</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">outputs</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
+                            <span class="p">],</span>
+                            <span class="n">definition</span><span class="o">=</span><span class="n">GetSingle</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;spec&quot;</span><span class="p">],</span>
+                        <span class="p">),</span>
+                        <span class="o">*</span><span class="n">inputs</span><span class="p">,</span>
+                    <span class="p">]</span>
+                <span class="p">):</span>
+                    <span class="k">return</span> <span class="n">results</span></div>
+
+
+<div class="viewcode-block" id="ListEntrypointsConfig"><a class="viewcode-back" href="../../../api/service/dev.html#dffml.service.dev.ListEntrypointsConfig">[docs]</a><span class="nd">@configdataclass</span>
+<span class="k">class</span> <span class="nc">ListEntrypointsConfig</span><span class="p">:</span>
+    <span class="n">entrypoint</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="s2">&quot;Entrypoint to list, example: dffml.model&quot;</span><span class="p">)</span></div>
+
+
+<span class="k">class</span> <span class="nc">ListEntrypoints</span><span class="p">(</span><span class="n">CMD</span><span class="p">):</span>
+
+    <span class="n">CONFIG</span> <span class="o">=</span> <span class="n">ListEntrypointsConfig</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">entrypoint</span> <span class="ow">in</span> <span class="n">pkg_resources</span><span class="o">.</span><span class="n">iter_entry_points</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">entrypoint</span><span class="p">):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">entrypoint</span><span class="si">}</span><span class="s2"> -&gt; </span><span class="si">{</span><span class="n">entrypoint</span><span class="o">.</span><span class="n">dist</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">Entrypoints</span><span class="p">(</span><span class="n">CMD</span><span class="p">):</span>
+
+    <span class="n">_list</span> <span class="o">=</span> <span class="n">ListEntrypoints</span>
+
+
+<div class="viewcode-block" id="ExportConfig"><a class="viewcode-back" href="../../../api/service/dev.html#dffml.service.dev.ExportConfig">[docs]</a><span class="nd">@configdataclass</span>
+<span class="k">class</span> <span class="nc">ExportConfig</span><span class="p">:</span>
+    <span class="n">export</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="s2">&quot;Python path to object to export&quot;</span><span class="p">,)</span>
+    <span class="n">configloader</span><span class="p">:</span> <span class="n">BaseConfigLoader</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
+        <span class="s2">&quot;ConfigLoader to use&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">JSONConfigLoader</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">not_linked</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
+        <span class="s2">&quot;Do not export dataflows as linked&quot;</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
+    <span class="p">)</span></div>
+
+
+<span class="k">class</span> <span class="nc">Export</span><span class="p">(</span><span class="n">CMD</span><span class="p">):</span>
+
+    <span class="n">CONFIG</span> <span class="o">=</span> <span class="n">ExportConfig</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">async</span> <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">configloader</span><span class="p">()</span> <span class="k">as</span> <span class="n">configloader</span><span class="p">:</span>
+            <span class="k">async</span> <span class="k">with</span> <span class="n">configloader</span><span class="p">()</span> <span class="k">as</span> <span class="n">loader</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">load</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">export</span><span class="p">,</span> <span class="n">relative</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()):</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Loaded </span><span class="si">%s</span><span class="s2">: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">export</span><span class="p">,</span> <span class="n">obj</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">DataFlow</span><span class="p">):</span>
+                        <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">buffer</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
+                            <span class="k">await</span> <span class="n">loader</span><span class="o">.</span><span class="n">dumpb</span><span class="p">(</span>
+                                <span class="n">obj</span><span class="o">.</span><span class="n">export</span><span class="p">(</span><span class="n">linked</span><span class="o">=</span><span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">not_linked</span><span class="p">)</span>
+                            <span class="p">)</span>
+                        <span class="p">)</span>
+                    <span class="k">elif</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s2">&quot;export&quot;</span><span class="p">):</span>
+                        <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">buffer</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
+                            <span class="k">await</span> <span class="n">loader</span><span class="o">.</span><span class="n">dumpb</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">export</span><span class="p">())</span>
+                        <span class="p">)</span>
+                    <span class="k">elif</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s2">&quot;_asdict&quot;</span><span class="p">):</span>
+                        <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">buffer</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
+                            <span class="k">await</span> <span class="n">loader</span><span class="o">.</span><span class="n">dumpb</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">_asdict</span><span class="p">())</span>
+                        <span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">buffer</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
+                            <span class="k">await</span> <span class="n">loader</span><span class="o">.</span><span class="n">dumpb</span><span class="p">(</span><span class="n">export</span><span class="p">(</span><span class="n">obj</span><span class="p">))</span>
+                        <span class="p">)</span>
+
+
+<div class="viewcode-block" id="MissingDependenciesError"><a class="viewcode-back" href="../../../api/service/dev.html#dffml.service.dev.MissingDependenciesError">[docs]</a><span class="k">class</span> <span class="nc">MissingDependenciesError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Raised when a package has non-pip installable dependencies, or pip</span>
+<span class="sd">    installable dependencies that must be installed before running the setup.py</span>
+<span class="sd">    &quot;&quot;&quot;</span></div>
+
+
+<div class="viewcode-block" id="InstallConfig"><a class="viewcode-back" href="../../../api/service/dev.html#dffml.service.dev.InstallConfig">[docs]</a><span class="nd">@configdataclass</span>
+<span class="k">class</span> <span class="nc">InstallConfig</span><span class="p">:</span>
+    <span class="n">skip</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
+        <span class="s2">&quot;List of plugin paths not to install (Example: model/scikit)&quot;</span><span class="p">,</span>
+        <span class="n">default_factory</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="p">[],</span>
+    <span class="p">)</span>
+    <span class="n">nocheck</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
+        <span class="s2">&quot;Do not preform pre-install dependency checks&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">False</span>
+    <span class="p">)</span>
+    <span class="n">user</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
+        <span class="s2">&quot;Perform user install&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span>
+    <span class="p">)</span></div>
+
+
+<span class="c1"># TODO (p3) Remove production packages. Download full source if not already</span>
+<span class="c1"># installed in development mode.</span>
+<div class="viewcode-block" id="Install"><a class="viewcode-back" href="../../../api/service/dev.html#dffml.service.dev.Install">[docs]</a><span class="k">class</span> <span class="nc">Install</span><span class="p">(</span><span class="n">CMD</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Uninstall production packages and install dffml in development mode.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">CONFIG</span> <span class="o">=</span> <span class="n">InstallConfig</span>
+
+<div class="viewcode-block" id="Install.dep_check"><a class="viewcode-back" href="../../../api/service/dev.html#dffml.service.dev.Install.dep_check">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">dep_check</span><span class="p">(</span>
+        <span class="n">plugin_deps</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Callable</span><span class="p">[[],</span> <span class="nb">bool</span><span class="p">]]],</span>
+        <span class="n">skip</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Check if all dependencies are installed prior to running setup.py</span>
+<span class="sd">        installs of plugins</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">skip</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">skip</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">missing_deps</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">package</span><span class="p">,</span> <span class="n">deps</span> <span class="ow">in</span> <span class="n">plugin_deps</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">plugin_path</span> <span class="o">=</span> <span class="s2">&quot;/&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">package</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">plugin_path</span> <span class="ow">in</span> <span class="n">skip</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="n">missing_plugin_deps</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="n">name</span><span class="p">:</span> <span class="n">check_if_dep_found</span><span class="p">()</span>
+                <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">check_if_dep_found</span> <span class="ow">in</span> <span class="n">deps</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+            <span class="p">}</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="n">missing_plugin_deps</span><span class="o">.</span><span class="n">values</span><span class="p">()):</span>
+                <span class="n">missing_deps</span><span class="p">[</span><span class="n">plugin_path</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+                    <span class="n">name</span>
+                    <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">found</span> <span class="ow">in</span> <span class="n">missing_plugin_deps</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="n">found</span>
+                <span class="p">]</span>
+        <span class="c1"># Display info on missing dependencies if there are any</span>
+        <span class="k">if</span> <span class="n">missing_deps</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;The following plugins have unmet dependencies and could not be installed</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+            <span class="k">for</span> <span class="n">plugin_path</span><span class="p">,</span> <span class="n">deps</span> <span class="ow">in</span> <span class="n">missing_deps</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">msg</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;    </span><span class="si">{</span><span class="n">plugin_path</span><span class="si">}</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+                <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">deps</span><span class="p">:</span>
+                    <span class="n">msg</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;        </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="n">msg</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="n">msg</span> <span class="o">+=</span> <span class="s2">&quot;Install missing dependencies and re-run plugin install, or skip with</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+            <span class="n">msg</span> <span class="o">+=</span> <span class="s2">&quot;    -skip &quot;</span>
+            <span class="n">msg</span> <span class="o">+=</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">missing_deps</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+            <span class="k">raise</span> <span class="n">MissingDependenciesError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span></div>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">main_package</span> <span class="o">=</span> <span class="n">is_develop</span><span class="p">(</span><span class="s2">&quot;dffml&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">main_package</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
+                <span class="s2">&quot;Currenty you need to have at least the main package already installed in development mode.&quot;</span>
+            <span class="p">)</span>
+        <span class="c1"># Check if plugins not in skip list have unmet dependencies</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">nocheck</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dep_check</span><span class="p">(</span><span class="n">CORE_PLUGIN_DEPS</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">skip</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Installing </span><span class="si">%r</span><span class="s2"> in development mode&quot;</span><span class="p">,</span> <span class="n">CORE_PLUGINS</span><span class="p">)</span>
+        <span class="n">failed</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">cmd</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">executable</span><span class="p">,</span>
+            <span class="s2">&quot;-m&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;pip&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;install&quot;</span><span class="p">,</span>
+        <span class="p">]</span>
+        <span class="c1"># If on Windows, PyTorch wants us to use a find links URL for pip</span>
+        <span class="k">if</span> <span class="n">platform</span><span class="o">.</span><span class="n">system</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;Windows&quot;</span><span class="p">:</span>
+            <span class="n">cmd</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;-f&quot;</span><span class="p">,</span> <span class="s2">&quot;https://download.pytorch.org/whl/torch_stable.html&quot;</span><span class="p">]</span>
+        <span class="c1"># Install to prefix, since --user sometimes fails</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="p">:</span>
+            <span class="n">local_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;~&quot;</span><span class="p">,</span> <span class="s2">&quot;.local&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">expanduser</span><span class="p">()</span><span class="o">.</span><span class="n">absolute</span><span class="p">()</span>
+            <span class="n">cmd</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;--prefix=</span><span class="si">{</span><span class="n">local_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">package</span> <span class="ow">in</span> <span class="n">CORE_PLUGINS</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s2">&quot;/&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">package</span><span class="p">)</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">skip</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="n">package_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="o">*</span><span class="n">main_package</span><span class="o">.</span><span class="n">parts</span><span class="p">,</span> <span class="o">*</span><span class="n">package</span><span class="p">)</span>
+            <span class="c1"># Install package in development mode</span>
+            <span class="n">cmd</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;-e&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">package_path</span><span class="o">.</span><span class="n">absolute</span><span class="p">())]</span>
+            <span class="c1"># Temporary fix for ConfigSpace numpy incompatibility issue</span>
+            <span class="c1"># References: https://github.com/intel/dffml/issues/992</span>
+            <span class="k">if</span> <span class="n">package</span> <span class="o">==</span> <span class="p">(</span><span class="s2">&quot;model&quot;</span><span class="p">,</span> <span class="s2">&quot;autosklearn&quot;</span><span class="p">):</span>
+                <span class="n">cmd</span> <span class="o">+=</span> <span class="p">[</span>
+                    <span class="s2">&quot;https://github.com/automl/ConfigSpace/archive/86863bc2f640892675c04de0b8006a623dc14c45.zip#egg=ConfigSpace&quot;</span>
+                <span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Running: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cmd</span><span class="p">))</span>
+        <span class="c1"># Packages fail to install if we run pip processes in parallel</span>
+        <span class="n">proc</span> <span class="o">=</span> <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">create_subprocess_exec</span><span class="p">(</span><span class="o">*</span><span class="n">cmd</span><span class="p">)</span>
+        <span class="k">await</span> <span class="n">proc</span><span class="o">.</span><span class="n">wait</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">proc</span><span class="o">.</span><span class="n">returncode</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">importlib</span><span class="o">.</span><span class="n">invalidate_caches</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">package_name</span><span class="p">,</span> <span class="n">package</span> <span class="ow">in</span> <span class="n">PACKAGE_NAMES_TO_DIRECTORY</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">importlib</span><span class="o">.</span><span class="n">util</span><span class="o">.</span><span class="n">find_spec</span><span class="p">(</span><span class="n">package_name</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="s2">&quot;_&quot;</span><span class="p">))</span>
+                <span class="k">except</span> <span class="ne">ModuleNotFoundError</span><span class="p">:</span>
+                    <span class="n">failed</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">package</span><span class="p">))</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;pip failed to install: </span><span class="si">{</span><span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">failed</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="SetupPyKWArgConfig"><a class="viewcode-back" href="../../../api/service/dev.html#dffml.service.dev.SetupPyKWArgConfig">[docs]</a><span class="nd">@configdataclass</span>
+<span class="k">class</span> <span class="nc">SetupPyKWArgConfig</span><span class="p">:</span>
+    <span class="n">kwarg</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="s2">&quot;Keyword argument to write to stdout&quot;</span><span class="p">)</span>
+    <span class="n">setupfilepath</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="s2">&quot;Path to setup.py&quot;</span><span class="p">,)</span></div>
+
+
+<div class="viewcode-block" id="SetupPyKWArg"><a class="viewcode-back" href="../../../api/service/dev.html#dffml.service.dev.SetupPyKWArg">[docs]</a><span class="k">class</span> <span class="nc">SetupPyKWArg</span><span class="p">(</span><span class="n">CMD</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get a keyword argument from a call to setup in a setup.py file.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">CONFIG</span> <span class="o">=</span> <span class="n">SetupPyKWArgConfig</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">get_kwargs</span><span class="p">(</span><span class="n">setupfilepath</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">setupfilepath</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">setupfilepath</span><span class="p">)</span>
+        <span class="n">setup_kwargs</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="k">def</span> <span class="nf">grab_setup_kwargs</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+            <span class="n">setup_kwargs</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="k">with</span> <span class="n">chdir</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">setupfilepath</span><span class="o">.</span><span class="n">parent</span><span class="p">)):</span>
+            <span class="n">spec</span> <span class="o">=</span> <span class="n">importlib</span><span class="o">.</span><span class="n">util</span><span class="o">.</span><span class="n">spec_from_file_location</span><span class="p">(</span>
+                <span class="s2">&quot;setup&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">setupfilepath</span><span class="o">.</span><span class="n">parts</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+            <span class="p">)</span>
+            <span class="k">with</span> <span class="n">unittest</span><span class="o">.</span><span class="n">mock</span><span class="o">.</span><span class="n">patch</span><span class="p">(</span>
+                <span class="s2">&quot;setuptools.setup&quot;</span><span class="p">,</span> <span class="n">new</span><span class="o">=</span><span class="n">grab_setup_kwargs</span>
+            <span class="p">):</span>
+                <span class="n">setup</span> <span class="o">=</span> <span class="n">importlib</span><span class="o">.</span><span class="n">util</span><span class="o">.</span><span class="n">module_from_spec</span><span class="p">(</span><span class="n">spec</span><span class="p">)</span>
+                <span class="n">spec</span><span class="o">.</span><span class="n">loader</span><span class="o">.</span><span class="n">exec_module</span><span class="p">(</span><span class="n">setup</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">setup_kwargs</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_kwargs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">setupfilepath</span><span class="p">)[</span><span class="bp">self</span><span class="o">.</span><span class="n">kwarg</span><span class="p">])</span></div>
+
+
+<div class="viewcode-block" id="VersionNotFoundError"><a class="viewcode-back" href="../../../api/service/dev.html#dffml.service.dev.VersionNotFoundError">[docs]</a><span class="k">class</span> <span class="nc">VersionNotFoundError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Raised when a version.py file is parsed and no VERSION variable is found.</span>
+<span class="sd">    &quot;&quot;&quot;</span></div>
+
+
+<div class="viewcode-block" id="SetupPyVersionConfig"><a class="viewcode-back" href="../../../api/service/dev.html#dffml.service.dev.SetupPyVersionConfig">[docs]</a><span class="nd">@configdataclass</span>
+<span class="k">class</span> <span class="nc">SetupPyVersionConfig</span><span class="p">:</span>
+    <span class="n">versionfilepath</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="s2">&quot;Path to version.py&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="SetupPyVersion"><a class="viewcode-back" href="../../../api/service/dev.html#dffml.service.dev.SetupPyVersion">[docs]</a><span class="k">class</span> <span class="nc">SetupPyVersion</span><span class="p">(</span><span class="n">CMD</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Read a version.py file that would be referenced by a setup.py or setup.cfg.</span>
+<span class="sd">    The version.py file contains the version of the package in the VERSION</span>
+<span class="sd">    variable.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">CONFIG</span> <span class="o">=</span> <span class="n">SetupPyVersionConfig</span>
+
+    <span class="k">def</span> <span class="nf">parse_version</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Checking for VERSION in file </span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">f</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Checking for VERSION in line </span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">line</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;VERSION&quot;</span><span class="p">):</span>
+                    <span class="k">return</span> <span class="n">ast</span><span class="o">.</span><span class="n">literal_eval</span><span class="p">(</span>
+                        <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;=&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+                    <span class="p">)</span>
+        <span class="k">raise</span> <span class="n">VersionNotFoundError</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">versionfilepath</span><span class="p">)</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_version</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">versionfilepath</span><span class="p">))</span></div>
+
+
+<span class="c1"># Instance of parse_version method as function for logging</span>
+<span class="n">parse_version</span> <span class="o">=</span> <span class="n">SetupPyVersion</span><span class="p">()</span><span class="o">.</span><span class="n">parse_version</span>
+
+
+<span class="k">class</span> <span class="nc">SetupPy</span><span class="p">(</span><span class="n">CMD</span><span class="p">):</span>
+
+    <span class="n">kwarg</span> <span class="o">=</span> <span class="n">SetupPyKWArg</span>
+    <span class="n">version</span> <span class="o">=</span> <span class="n">SetupPyVersion</span>
+
+
+<div class="viewcode-block" id="RepoDirtyError"><a class="viewcode-back" href="../../../api/service/dev.html#dffml.service.dev.RepoDirtyError">[docs]</a><span class="k">class</span> <span class="nc">RepoDirtyError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Raised when a release was attempted but there are uncommited changes</span>
+<span class="sd">    &quot;&quot;&quot;</span></div>
+
+
+<div class="viewcode-block" id="ReleaseConfig"><a class="viewcode-back" href="../../../api/service/dev.html#dffml.service.dev.ReleaseConfig">[docs]</a><span class="nd">@configdataclass</span>
+<span class="k">class</span> <span class="nc">ReleaseConfig</span><span class="p">:</span>
+    <span class="n">package</span><span class="p">:</span> <span class="n">Path</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="s2">&quot;Relative path to package to release&quot;</span><span class="p">,)</span></div>
+
+
+<div class="viewcode-block" id="Release"><a class="viewcode-back" href="../../../api/service/dev.html#dffml.service.dev.Release">[docs]</a><span class="k">class</span> <span class="nc">Release</span><span class="p">(</span><span class="n">CMD</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Release a package (if not already released)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">CONFIG</span> <span class="o">=</span> <span class="n">ReleaseConfig</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Ensure we have a pathlib.Path object</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">package</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">package</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
+        <span class="c1"># Ensure target plugin directory has no unstaged changes</span>
+        <span class="n">cmd</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;git&quot;</span><span class="p">,</span> <span class="s2">&quot;status&quot;</span><span class="p">,</span> <span class="s2">&quot;--porcelain&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">package</span><span class="p">)]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Running: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cmd</span><span class="p">))</span>
+        <span class="n">proc</span> <span class="o">=</span> <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">create_subprocess_exec</span><span class="p">(</span>
+            <span class="o">*</span><span class="n">cmd</span><span class="p">,</span>
+            <span class="n">stdout</span><span class="o">=</span><span class="n">asyncio</span><span class="o">.</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span>
+            <span class="n">stderr</span><span class="o">=</span><span class="n">asyncio</span><span class="o">.</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">stdout</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="k">await</span> <span class="n">proc</span><span class="o">.</span><span class="n">communicate</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">stderr</span> <span class="ow">or</span> <span class="n">proc</span><span class="o">.</span><span class="n">returncode</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="n">stderr</span><span class="o">.</span><span class="n">decode</span><span class="p">())</span>
+        <span class="k">if</span> <span class="n">stdout</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">RepoDirtyError</span><span class="p">(</span><span class="s2">&quot;Uncommited changes&quot;</span><span class="p">)</span>
+        <span class="c1"># cd to directory</span>
+        <span class="k">with</span> <span class="n">chdir</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">package</span><span class="p">)):</span>
+            <span class="c1"># Get name</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="p">{():</span> <span class="s2">&quot;dffml&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">PACKAGE_DIRECTORY_TO_NAME</span><span class="p">,}[</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">package</span><span class="o">.</span><span class="n">relative_to</span><span class="p">(</span><span class="n">REPO_ROOT</span><span class="p">)</span><span class="o">.</span><span class="n">parts</span>
+            <span class="p">]</span>
+            <span class="c1"># Load version</span>
+            <span class="n">version</span> <span class="o">=</span> <span class="n">parse_version</span><span class="p">(</span>
+                <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">package</span> <span class="o">/</span> <span class="n">name</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="s2">&quot;_&quot;</span><span class="p">)</span> <span class="o">/</span> <span class="s2">&quot;version.py&quot;</span><span class="p">)</span>
+            <span class="p">)</span>
+            <span class="c1"># Check if version is on PyPi</span>
+            <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;https://pypi.org/pypi/</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">/json&quot;</span>
+            <span class="c1"># TODO(p5) Blocking request in coroutine</span>
+            <span class="k">with</span> <span class="n">urllib</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="n">url</span><span class="p">)</span> <span class="k">as</span> <span class="n">resp</span><span class="p">:</span>
+                <span class="n">package_json</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">package_json</span><span class="p">[</span><span class="s2">&quot;info&quot;</span><span class="p">][</span><span class="s2">&quot;version&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">version</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Version </span><span class="si">{</span><span class="n">version</span><span class="si">}</span><span class="s2"> of </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> already on PyPi&quot;</span><span class="p">)</span>
+                    <span class="k">return</span>
+            <span class="c1"># Create a fresh copy of the codebase to upload</span>
+            <span class="k">with</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">TemporaryDirectory</span><span class="p">()</span> <span class="k">as</span> <span class="n">tempdir</span><span class="p">:</span>
+                <span class="c1"># The directory where the fresh copy will live</span>
+                <span class="n">clean_dir</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">tempdir</span><span class="p">,</span> <span class="s2">&quot;clean&quot;</span><span class="p">)</span>
+                <span class="n">clean_dir</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="n">MODE_BITS_SECURE</span><span class="p">)</span>
+                <span class="n">archive_file</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">tempdir</span><span class="p">,</span> <span class="s2">&quot;archive.tar&quot;</span><span class="p">)</span>
+                <span class="c1"># Create the archive</span>
+                <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">archive_file</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">archive</span><span class="p">:</span>
+                    <span class="n">cmd</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;git&quot;</span><span class="p">,</span> <span class="s2">&quot;archive&quot;</span><span class="p">,</span> <span class="s2">&quot;--format=tar&quot;</span><span class="p">,</span> <span class="s2">&quot;HEAD&quot;</span><span class="p">]</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;$ </span><span class="si">{</span><span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                    <span class="n">proc</span> <span class="o">=</span> <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">create_subprocess_exec</span><span class="p">(</span>
+                        <span class="o">*</span><span class="n">cmd</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="n">archive</span>
+                    <span class="p">)</span>
+                    <span class="k">await</span> <span class="n">proc</span><span class="o">.</span><span class="n">wait</span><span class="p">()</span>
+                    <span class="k">if</span> <span class="n">proc</span><span class="o">.</span><span class="n">returncode</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+                        <span class="k">raise</span> <span class="ne">RuntimeError</span>
+                <span class="c1"># Change directory into the clean copy</span>
+                <span class="k">with</span> <span class="n">chdir</span><span class="p">(</span><span class="n">clean_dir</span><span class="p">):</span>
+                    <span class="c1"># Extract the archive</span>
+                    <span class="n">shutil</span><span class="o">.</span><span class="n">unpack_archive</span><span class="p">(</span><span class="n">archive_file</span><span class="p">)</span>
+                    <span class="c1"># Upload if not present</span>
+                    <span class="k">for</span> <span class="n">cmd</span> <span class="ow">in</span> <span class="p">[</span>
+                        <span class="p">[</span><span class="n">sys</span><span class="o">.</span><span class="n">executable</span><span class="p">,</span> <span class="s2">&quot;setup.py&quot;</span><span class="p">,</span> <span class="s2">&quot;sdist&quot;</span><span class="p">],</span>
+                        <span class="p">[</span><span class="n">sys</span><span class="o">.</span><span class="n">executable</span><span class="p">,</span> <span class="s2">&quot;setup.py&quot;</span><span class="p">,</span> <span class="s2">&quot;bdist_wheel&quot;</span><span class="p">],</span>
+                        <span class="p">[</span><span class="n">sys</span><span class="o">.</span><span class="n">executable</span><span class="p">,</span> <span class="s2">&quot;-m&quot;</span><span class="p">,</span> <span class="s2">&quot;twine&quot;</span><span class="p">,</span> <span class="s2">&quot;upload&quot;</span><span class="p">,</span> <span class="s2">&quot;dist/*&quot;</span><span class="p">],</span>
+                    <span class="p">]:</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;$ </span><span class="si">{</span><span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                        <span class="n">proc</span> <span class="o">=</span> <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">create_subprocess_exec</span><span class="p">(</span><span class="o">*</span><span class="n">cmd</span><span class="p">)</span>
+                        <span class="k">await</span> <span class="n">proc</span><span class="o">.</span><span class="n">wait</span><span class="p">()</span>
+                        <span class="k">if</span> <span class="n">proc</span><span class="o">.</span><span class="n">returncode</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+                            <span class="k">raise</span> <span class="ne">RuntimeError</span></div>
+
+
+<div class="viewcode-block" id="BumpInter"><a class="viewcode-back" href="../../../api/service/dev.html#dffml.service.dev.BumpInter">[docs]</a><span class="k">class</span> <span class="nc">BumpInter</span><span class="p">(</span><span class="n">CMD</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Bump the version number of other plugins within the dependency list of</span>
+<span class="sd">    each plugin. This is for interdependent plugins.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Map package names to their versions</span>
+        <span class="n">package_name_to_version</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="n">name</span><span class="p">:</span> <span class="p">(</span>
+                <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span>
+                    <span class="n">name</span> <span class="o">+</span> <span class="sa">r</span><span class="s2">&quot;&gt;=[0-9]+\.[0-9]+\..*$&quot;</span><span class="p">,</span> <span class="n">flags</span><span class="o">=</span><span class="n">re</span><span class="o">.</span><span class="n">MULTILINE</span>
+                <span class="p">),</span>
+                <span class="n">parse_version</span><span class="p">(</span>
+                    <span class="n">REPO_ROOT</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span>
+                        <span class="o">*</span><span class="n">directory</span><span class="p">,</span> <span class="n">name</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="s2">&quot;_&quot;</span><span class="p">),</span> <span class="s2">&quot;version.py&quot;</span>
+                    <span class="p">)</span>
+                <span class="p">),</span>
+            <span class="p">)</span>
+            <span class="k">for</span> <span class="n">directory</span><span class="p">,</span> <span class="n">name</span> <span class="ow">in</span> <span class="p">{</span>
+                <span class="s2">&quot;.&quot;</span><span class="p">:</span> <span class="s2">&quot;dffml&quot;</span><span class="p">,</span>
+                <span class="o">**</span><span class="n">PACKAGE_DIRECTORY_TO_NAME</span><span class="p">,</span>
+            <span class="p">}</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+        <span class="p">}</span>
+        <span class="c1"># Go through each plugin</span>
+        <span class="k">for</span> <span class="n">directory</span><span class="p">,</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">PACKAGE_DIRECTORY_TO_NAME</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="c1"># Update all the setup.cfg files</span>
+            <span class="n">setup_cfg_path</span> <span class="o">=</span> <span class="n">REPO_ROOT</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="o">*</span><span class="n">directory</span><span class="p">,</span> <span class="s2">&quot;setup.cfg&quot;</span><span class="p">)</span>
+            <span class="n">setup_cfg_contents</span> <span class="o">=</span> <span class="n">setup_cfg_path</span><span class="o">.</span><span class="n">read_text</span><span class="p">()</span>
+            <span class="c1"># Go through each plugin, check if it exists within the setup.cfg</span>
+            <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="p">(</span><span class="n">regex</span><span class="p">,</span> <span class="n">version</span><span class="p">)</span> <span class="ow">in</span> <span class="n">package_name_to_version</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">update_to</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&gt;=</span><span class="si">{</span><span class="n">version</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="n">setup_cfg_contents</span><span class="p">,</span> <span class="n">number_of_subs_made</span> <span class="o">=</span> <span class="n">regex</span><span class="o">.</span><span class="n">subn</span><span class="p">(</span>
+                    <span class="n">update_to</span><span class="p">,</span> <span class="n">setup_cfg_contents</span>
+                <span class="p">)</span>
+                <span class="k">if</span> <span class="n">number_of_subs_made</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot;Updated </span><span class="si">{</span><span class="n">setup_cfg_path</span><span class="si">}</span><span class="s2"> to use </span><span class="si">{</span><span class="n">update_to</span><span class="si">}</span><span class="s2">&quot;</span>
+                    <span class="p">)</span>
+            <span class="c1"># If it does, overwrite the old version with the new version</span>
+            <span class="n">setup_cfg_path</span><span class="o">.</span><span class="n">write_text</span><span class="p">(</span><span class="n">setup_cfg_contents</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="RCMissingHyphen"><a class="viewcode-back" href="../../../api/service/dev.html#dffml.service.dev.RCMissingHyphen">[docs]</a><span class="k">class</span> <span class="nc">RCMissingHyphen</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="BumpPackagesConfig"><a class="viewcode-back" href="../../../api/service/dev.html#dffml.service.dev.BumpPackagesConfig">[docs]</a><span class="nd">@configdataclass</span>
+<span class="k">class</span> <span class="nc">BumpPackagesConfig</span><span class="p">:</span>
+    <span class="n">version</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="s2">&quot;Version to increment by&quot;</span><span class="p">,)</span>
+    <span class="n">skip</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
+        <span class="s2">&quot;Do not increment versions in these packages&quot;</span><span class="p">,</span>
+        <span class="n">default_factory</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="p">[],</span>
+        <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">only</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
+        <span class="s2">&quot;Only increment versions in these packages&quot;</span><span class="p">,</span>
+        <span class="n">default_factory</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="p">[],</span>
+        <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="BumpPackages"><a class="viewcode-back" href="../../../api/service/dev.html#dffml.service.dev.BumpPackages">[docs]</a><span class="k">class</span> <span class="nc">BumpPackages</span><span class="p">(</span><span class="n">CMD</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Bump all the versions of all the packages and increment the version number</span>
+<span class="sd">    given.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">CONFIG</span> <span class="o">=</span> <span class="n">BumpPackagesConfig</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">bump_version</span><span class="p">(</span><span class="n">original</span><span class="p">,</span> <span class="n">increment</span><span class="p">):</span>
+        <span class="c1"># Ensure that we conform to semantic versioning spec. PEP-440 will</span>
+        <span class="c1"># normalize it to not have a hyphen.</span>
+        <span class="k">if</span> <span class="s2">&quot;rc&quot;</span> <span class="ow">in</span> <span class="n">original</span> <span class="ow">and</span> <span class="ow">not</span> <span class="s2">&quot;-rc&quot;</span> <span class="ow">in</span> <span class="n">original</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">RCMissingHyphen</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Semantic versioning requires a hyphen, original is in violation </span><span class="si">{</span><span class="n">original</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="s2">&quot;rc&quot;</span> <span class="ow">in</span> <span class="n">increment</span> <span class="ow">and</span> <span class="ow">not</span> <span class="s2">&quot;-rc&quot;</span> <span class="ow">in</span> <span class="n">increment</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">RCMissingHyphen</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Semantic versioning requires a hyphen, increment is in violation </span><span class="si">{</span><span class="n">increment</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+        <span class="c1"># Support for release candidates X.Y.Z-rcN</span>
+        <span class="c1"># Parse out the release candidate if it exists</span>
+        <span class="n">original_rc</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">if</span> <span class="s2">&quot;-rc&quot;</span> <span class="ow">in</span> <span class="n">original</span><span class="p">:</span>
+            <span class="n">original</span><span class="p">,</span> <span class="n">original_rc</span> <span class="o">=</span> <span class="n">original</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;-rc&quot;</span><span class="p">)</span>
+            <span class="n">original_rc</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">original_rc</span><span class="p">)</span>
+        <span class="n">increment_rc</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="s2">&quot;-rc&quot;</span> <span class="ow">in</span> <span class="n">increment</span><span class="p">:</span>
+            <span class="n">increment</span><span class="p">,</span> <span class="n">increment_rc</span> <span class="o">=</span> <span class="n">increment</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;-rc&quot;</span><span class="p">)</span>
+            <span class="n">increment_rc</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">increment_rc</span><span class="p">)</span>
+        <span class="c1"># Split on .</span>
+        <span class="c1"># zip: Create three instances of (original[i], increment[i])</span>
+        <span class="n">new_version_no_rc_numbers</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">n_original</span><span class="p">,</span> <span class="n">n_increment</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span>
+            <span class="n">original</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">),</span> <span class="n">increment</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
+        <span class="p">):</span>
+            <span class="k">if</span> <span class="n">n_increment</span> <span class="o">==</span> <span class="s2">&quot;Z&quot;</span><span class="p">:</span>
+                <span class="c1"># If &#39;Z&#39; was given as the increment, zero spot instead of sum</span>
+                <span class="n">new_version_no_rc_numbers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># Add each pair together</span>
+                <span class="n">new_version_no_rc_numbers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="nb">int</span><span class="p">(</span><span class="n">n_original</span><span class="p">)</span> <span class="o">+</span> <span class="nb">int</span><span class="p">(</span><span class="n">n_increment</span><span class="p">)</span>
+                <span class="p">)</span>
+        <span class="c1"># map: str: Convert back to strings</span>
+        <span class="c1"># Join numbers with .</span>
+        <span class="n">new_version_no_rc</span> <span class="o">=</span> <span class="s2">&quot;.&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">new_version_no_rc_numbers</span><span class="p">))</span>
+        <span class="c1"># Do not add rc if it wasn&#39;t incremented</span>
+        <span class="k">if</span> <span class="n">increment_rc</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">new_version_no_rc</span>
+        <span class="c1"># Otherwise, add rc</span>
+        <span class="k">return</span> <span class="n">new_version_no_rc</span> <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;-rc</span><span class="si">{</span><span class="n">original_rc</span> <span class="o">+</span> <span class="n">increment_rc</span><span class="si">}</span><span class="s2">&quot;</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">main_package</span> <span class="o">=</span> <span class="n">is_develop</span><span class="p">(</span><span class="s2">&quot;dffml&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">main_package</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
+                <span class="s2">&quot;Need to reinstall the main package in development mode.&quot;</span>
+            <span class="p">)</span>
+        <span class="c1"># Go through each plugin</span>
+        <span class="k">for</span> <span class="n">directory</span><span class="p">,</span> <span class="n">name</span> <span class="ow">in</span> <span class="p">{</span>
+            <span class="s2">&quot;.&quot;</span><span class="p">:</span> <span class="s2">&quot;dffml&quot;</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">PACKAGE_DIRECTORY_TO_NAME</span><span class="p">,</span>
+        <span class="p">}</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="c1"># Update all the version files</span>
+            <span class="n">version_file</span> <span class="o">=</span> <span class="n">REPO_ROOT</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span>
+                <span class="o">*</span><span class="n">directory</span><span class="p">,</span> <span class="n">name</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="s2">&quot;_&quot;</span><span class="p">),</span> <span class="s2">&quot;version.py&quot;</span>
+            <span class="p">)</span>
+            <span class="c1"># If we&#39;re only supposed to increment versions of some packages,</span>
+            <span class="c1"># check we&#39;re in the right package, skip if not.</span>
+            <span class="k">with</span> <span class="n">chdir</span><span class="p">(</span><span class="n">version_file</span><span class="o">.</span><span class="n">parents</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">only</span> <span class="ow">and</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">only</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
+                        <span class="s2">&quot;Version file not in only </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">version_file</span>
+                    <span class="p">)</span>
+                    <span class="k">continue</span>
+                <span class="k">elif</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">skip</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Skipping version file </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">version_file</span><span class="p">)</span>
+                    <span class="k">continue</span>
+            <span class="c1"># Read the file</span>
+            <span class="n">filetext</span> <span class="o">=</span> <span class="n">version_file</span><span class="o">.</span><span class="n">read_text</span><span class="p">()</span>
+            <span class="c1"># Find the version as a string</span>
+            <span class="n">modified_lines</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">filetext</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">):</span>
+                <span class="c1"># Look for the line containing the version string</span>
+                <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;VERSION&quot;</span><span class="p">):</span>
+                    <span class="c1"># Parse the version string</span>
+                    <span class="n">version</span> <span class="o">=</span> <span class="n">ast</span><span class="o">.</span><span class="n">literal_eval</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;=&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+                    <span class="c1"># Increment the version string</span>
+                    <span class="n">version</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bump_version</span><span class="p">(</span><span class="n">version</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">version</span><span class="p">)</span>
+                    <span class="c1"># Modify the line to use the new version string</span>
+                    <span class="n">line</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;VERSION = &quot;</span><span class="si">{</span><span class="n">version</span><span class="si">}</span><span class="s1">&quot;&#39;</span>
+                <span class="c1"># Append line to list of lines to write back</span>
+                <span class="n">modified_lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+            <span class="c1"># Write back the file using the modified lines</span>
+            <span class="n">filetext</span> <span class="o">=</span> <span class="n">version_file</span><span class="o">.</span><span class="n">write_text</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">modified_lines</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Updated version file </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">version_file</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="PinDepsConfig"><a class="viewcode-back" href="../../../api/service/dev.html#dffml.service.dev.PinDepsConfig">[docs]</a><span class="nd">@configdataclass</span>
+<span class="k">class</span> <span class="nc">PinDepsConfig</span><span class="p">:</span>
+    <span class="n">logs</span><span class="p">:</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="s2">&quot;Path to CI log zip file&quot;</span><span class="p">)</span>
+    <span class="n">update</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
+        <span class="s2">&quot;Update all requirements.txt files with pinned dependneices&quot;</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="PinDepsPlugin"><a class="viewcode-back" href="../../../api/service/dev.html#dffml.service.dev.PinDepsPlugin">[docs]</a><span class="nd">@dataclasses</span><span class="o">.</span><span class="n">dataclass</span>
+<span class="k">class</span> <span class="nc">PinDepsPlugin</span><span class="p">:</span>
+    <span class="n">path</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">setup_cfg_path</span><span class="p">:</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span>
+    <span class="n">setup_cfg_pre_deps</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">setup_cfg_post_deps</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">setup_cfg_pinned</span><span class="p">:</span> <span class="nb">str</span></div>
+
+
+<div class="viewcode-block" id="PinDeps"><a class="viewcode-back" href="../../../api/service/dev.html#dffml.service.dev.PinDeps">[docs]</a><span class="k">class</span> <span class="nc">PinDeps</span><span class="p">(</span><span class="n">CMD</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Parse a GitHub Actions log archive to produce pinned dependencies for each</span>
+<span class="sd">    requirements.txt</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">CONFIG</span> <span class="o">=</span> <span class="n">PinDepsConfig</span>
+    <span class="c1"># Lowest supported version of Python by all plugins</span>
+    <span class="n">LOWEST_PYTHON_VERSION</span> <span class="o">=</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">7</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PinDeps.requirement_package_name"><a class="viewcode-back" href="../../../api/service/dev.html#dffml.service.dev.PinDeps.requirement_package_name">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">requirement_package_name</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Parse a line from requirements.txt and return the package name</span>
+
+<span class="sd">        &quot;Per PEP 508, valid project names must: Consist only of ASCII letters,</span>
+<span class="sd">        digits, underscores (_), hyphens (-), and/or periods (.), and. Start &amp; end</span>
+<span class="sd">        with an ASCII letter or digit.&quot;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">line</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;line is blank&quot;</span><span class="p">)</span>
+
+        <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="k">while</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">line</span><span class="p">)</span> <span class="ow">and</span> <span class="n">line</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="ow">in</span> <span class="p">(</span>
+            <span class="s2">&quot;_&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;-&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;.&quot;</span><span class="p">,</span>
+            <span class="o">*</span><span class="n">string</span><span class="o">.</span><span class="n">ascii_letters</span><span class="p">,</span>
+            <span class="o">*</span><span class="n">string</span><span class="o">.</span><span class="n">digits</span><span class="p">,</span>
+        <span class="p">):</span>
+            <span class="n">name</span> <span class="o">+=</span> <span class="n">line</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="c1"># Replace _ with - since that&#39;s what PyPi uses</span>
+        <span class="k">return</span> <span class="n">name</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">,</span> <span class="s2">&quot;-&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PinDeps.remove_ansi_escape"><a class="viewcode-back" href="../../../api/service/dev.html#dffml.service.dev.PinDeps.remove_ansi_escape">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">remove_ansi_escape</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">contents</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Found on Stack Overflow from Martijn Pieters, only modified input</span>
+<span class="sd">        variable name.</span>
+<span class="sd">        - https://stackoverflow.com/a/14693789</span>
+<span class="sd">        - https://creativecommons.org/licenses/by-sa/4.0/</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># 7-bit and 8-bit C1 ANSI sequences</span>
+        <span class="n">ansi_escape_8bit</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span>
+            <span class="sa">br</span><span class="s2">&quot;(?:\x1B[@-Z</span><span class="se">\\</span><span class="s2">-_]|[\x80-\x9A\x9C-\x9F]|(?:\x1B\[|\x9B)[0-?]*[ -/]*[@-~])&quot;</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">ansi_escape_8bit</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">b</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">contents</span><span class="p">)</span></div>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">parse_github_actions_log_file</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">contents</span><span class="p">):</span>
+        <span class="n">lines</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="bp">cls</span><span class="o">.</span><span class="n">remove_ansi_escape</span><span class="p">(</span><span class="n">contents</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="sa">b</span><span class="s2">&quot;</span><span class="se">\r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="sa">b</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">errors</span><span class="o">=</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Map packages to versions that were installed in CI</span>
+        <span class="n">ci_installed</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s2">&quot;Requirement already satisfied:&quot;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+                <span class="c1"># Check for packages that may have been installed previously that would show</span>
+                <span class="c1"># up as file:// URLs</span>
+                <span class="c1"># Example:</span>
+                <span class="c1">#   Requirement already satisfied: vowpalwabbit&gt;=8.8.1 in /usr/share/miniconda/lib/python3.7/site-packages (from dffml-model-vowpalWabbit==0.0.1) (8.8.1)</span>
+                <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+                <span class="c1"># Get package name</span>
+                <span class="n">package_name</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">requirement_package_name</span><span class="p">(</span>
+                    <span class="n">line</span><span class="p">[</span><span class="n">line</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;satisfied:&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+                <span class="p">)</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">package_name</span><span class="p">:</span>
+                    <span class="k">continue</span>
+                <span class="c1"># Check if we don&#39;t have a version for this package yet</span>
+                <span class="k">if</span> <span class="n">package_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">ci_installed</span><span class="p">:</span>
+                    <span class="c1"># Get package version, strip ()</span>
+                    <span class="n">ci_installed</span><span class="p">[</span><span class="n">package_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">line</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="k">elif</span> <span class="s2">&quot;==&quot;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+                <span class="c1"># Skip any lines that are not in the format of:</span>
+                <span class="c1">#   2020-11-23T05:54:36.4861610Z absl-py==0.11.0</span>
+                <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s2">&quot;Z &quot;</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="k">continue</span>
+                <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;Z &quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;==&quot;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">line</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">line</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+                    <span class="k">continue</span>
+                <span class="c1"># Get package name</span>
+                <span class="n">package_name</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">requirement_package_name</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">package_name</span><span class="p">:</span>
+                    <span class="k">continue</span>
+                <span class="c1"># with contextlib.suppress(Exception):</span>
+                <span class="n">ci_installed</span><span class="p">[</span><span class="n">package_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">line</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="c1"># Add all the core plugins to the list of installed packages</span>
+        <span class="k">for</span> <span class="p">(</span>
+            <span class="n">plugin_name</span><span class="p">,</span>
+            <span class="n">plugin_directory</span><span class="p">,</span>
+        <span class="p">)</span> <span class="ow">in</span> <span class="n">PACKAGE_NAMES_TO_DIRECTORY</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">ci_installed</span><span class="p">[</span><span class="n">plugin_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">parse_version</span><span class="p">(</span>
+                <span class="nb">str</span><span class="p">(</span>
+                    <span class="n">REPO_ROOT</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span>
+                        <span class="o">*</span><span class="n">plugin_directory</span><span class="p">,</span>
+                        <span class="n">plugin_name</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="s2">&quot;_&quot;</span><span class="p">),</span>
+                        <span class="s2">&quot;version.py&quot;</span><span class="p">,</span>
+                    <span class="p">)</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span>
+                <span class="n">parse_version</span><span class="p">(</span>
+                    <span class="nb">str</span><span class="p">(</span>
+                        <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span>
+                            <span class="o">*</span><span class="n">plugin_directory</span><span class="p">,</span>
+                            <span class="n">plugin_name</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="s2">&quot;_&quot;</span><span class="p">),</span>
+                            <span class="s2">&quot;version.py&quot;</span><span class="p">,</span>
+                        <span class="p">)</span>
+                    <span class="p">)</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">ci_installed</span>
+
+    <span class="n">FIND_CI_INSTALLED_LINUX_PLUGIN_VERSION_REGEX</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span>
+        <span class="sa">r</span><span class="s2">&quot;\(([a-z./]+), ([0-9.]+)\)&quot;</span>
+    <span class="p">)</span>
+    <span class="n">FIND_CI_INSTALLED_NON_LINUX_VERSION_REGEX</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;\(([0-9.]+)\)&quot;</span><span class="p">)</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">find_ci_installed</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">logs_dir</span><span class="p">:</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">):</span>
+        <span class="n">ci_installed</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="k">for</span> <span class="n">log_file_path</span> <span class="ow">in</span> <span class="n">logs_dir</span><span class="o">.</span><span class="n">rglob</span><span class="p">(</span><span class="s2">&quot;*.txt&quot;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="s2">&quot;windows&quot;</span> <span class="ow">in</span> <span class="n">log_file_path</span><span class="o">.</span><span class="n">stem</span><span class="p">:</span>
+                <span class="n">platform_system</span> <span class="o">=</span> <span class="s2">&quot;Windows&quot;</span>
+            <span class="k">elif</span> <span class="s2">&quot;macos&quot;</span> <span class="ow">in</span> <span class="n">log_file_path</span><span class="o">.</span><span class="n">stem</span><span class="p">:</span>
+                <span class="n">platform_system</span> <span class="o">=</span> <span class="s2">&quot;Darwin&quot;</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">platform_system</span> <span class="o">=</span> <span class="s2">&quot;Linux&quot;</span>
+
+                <span class="n">match</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">FIND_CI_INSTALLED_LINUX_PLUGIN_VERSION_REGEX</span><span class="o">.</span><span class="n">search</span><span class="p">(</span>
+                    <span class="n">log_file_path</span><span class="o">.</span><span class="n">stem</span>
+                <span class="p">)</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">match</span><span class="p">:</span>
+                    <span class="k">continue</span>
+
+                <span class="n">plugin</span><span class="p">,</span> <span class="n">python_version</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">groups</span><span class="p">()</span>
+                <span class="c1"># Only look for the pip freeze on the main plugin</span>
+                <span class="k">if</span> <span class="n">plugin</span> <span class="o">!=</span> <span class="s2">&quot;.&quot;</span><span class="p">:</span>
+                    <span class="k">continue</span>
+
+            <span class="n">contents</span> <span class="o">=</span> <span class="n">log_file_path</span><span class="o">.</span><span class="n">read_bytes</span><span class="p">()</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="sa">b</span><span class="s2">&quot;pip freeze&quot;</span> <span class="ow">in</span> <span class="n">contents</span><span class="p">:</span>
+                <span class="k">continue</span>
+
+            <span class="k">if</span> <span class="n">platform_system</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;Windows&quot;</span><span class="p">,</span> <span class="s2">&quot;Darwin&quot;</span><span class="p">):</span>
+                <span class="n">python_version</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">FIND_CI_INSTALLED_NON_LINUX_VERSION_REGEX</span><span class="o">.</span><span class="n">search</span><span class="p">(</span>
+                    <span class="n">log_file_path</span><span class="o">.</span><span class="n">stem</span>
+                <span class="p">)</span><span class="o">.</span><span class="n">groups</span><span class="p">()[</span>
+                    <span class="mi">0</span>
+                <span class="p">]</span>
+
+            <span class="n">ci_installed</span><span class="p">[</span>
+                <span class="p">(</span><span class="n">platform_system</span><span class="p">,</span> <span class="n">python_version</span><span class="p">)</span>
+            <span class="p">]</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">parse_github_actions_log_file</span><span class="p">(</span><span class="n">contents</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">ci_installed</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">pin_deps</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">logs_dir</span><span class="p">:</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">):</span>
+        <span class="n">root</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parents</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+
+        <span class="n">ci_installed</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find_ci_installed</span><span class="p">(</span><span class="n">logs_dir</span><span class="p">)</span>
+
+        <span class="c1"># for setup_cfg_path in root.rglob(&quot;setup.cfg&quot;):</span>
+        <span class="k">for</span> <span class="n">package_directory</span> <span class="ow">in</span> <span class="n">PACKAGE_DIRECTORY_TO_NAME</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="n">setup_cfg_path</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="o">*</span><span class="n">package_directory</span><span class="p">,</span> <span class="s2">&quot;setup.cfg&quot;</span><span class="p">)</span>
+            <span class="n">setup_cfg_contents</span> <span class="o">=</span> <span class="n">setup_cfg_path</span><span class="o">.</span><span class="n">read_text</span><span class="p">()</span>
+            <span class="c1"># Pull the dependencies out of the install_requires list</span>
+            <span class="n">setup_cfg_lines</span> <span class="o">=</span> <span class="n">setup_cfg_contents</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">setup_cfg_lines</span> <span class="o">=</span> <span class="p">[</span><span class="n">line</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">setup_cfg_lines</span><span class="p">]</span>
+            <span class="n">dependencies</span> <span class="o">=</span> <span class="n">setup_cfg_lines</span><span class="p">[</span>
+                <span class="n">setup_cfg_lines</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;install_requires =&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span> <span class="p">:</span>
+            <span class="p">]</span>
+            <span class="c1"># Find the last depedency in the list by looking for when the</span>
+            <span class="c1"># indentation level goes back to normal, meaning no indent.</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">dependencies</span><span class="p">):</span>
+                <span class="n">current_indent</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">line</span><span class="p">)</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">lstrip</span><span class="p">())</span>
+                <span class="k">if</span> <span class="n">current_indent</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="k">break</span>
+            <span class="c1"># The contents of the file up until the point where the</span>
+            <span class="c1"># install_requires list starts</span>
+            <span class="n">setup_cfg_pre_deps</span> <span class="o">=</span> <span class="n">setup_cfg_lines</span><span class="p">[</span>
+                <span class="p">:</span> <span class="n">setup_cfg_lines</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;install_requires =&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="p">]</span>
+            <span class="c1"># The contents of the file immediatly after the install_requires</span>
+            <span class="c1"># list. We are going to replace what&#39;s between these two.</span>
+            <span class="n">setup_cfg_post_deps</span> <span class="o">=</span> <span class="n">setup_cfg_lines</span><span class="p">[</span>
+                <span class="n">setup_cfg_lines</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;install_requires =&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">i</span> <span class="p">:</span>
+            <span class="p">]</span>
+            <span class="c1"># The dependency list ends when the indent level changes</span>
+            <span class="n">dependencies</span> <span class="o">=</span> <span class="n">dependencies</span><span class="p">[:</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">dependencies</span> <span class="o">=</span> <span class="p">[</span><span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">dependencies</span><span class="p">]</span>
+            <span class="c1"># Remove comments</span>
+            <span class="c1"># TODO Remove?: dependencies = [line for line in dependencies if not line.startswith(&quot;#&quot;)]</span>
+            <span class="c1"># Add all packages in setup.cfg files to set of required packages</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">dependencies</span><span class="p">):</span>
+                <span class="c1"># Skip comments</span>
+                <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;#&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">line</span><span class="p">:</span>
+                    <span class="k">continue</span>
+                <span class="n">package_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">requirement_package_name</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">package_name</span><span class="p">:</span>
+                    <span class="k">continue</span>
+                <span class="c1"># Ensure package was installed in CI</span>
+                <span class="k">for</span> <span class="n">supported_os</span><span class="p">,</span> <span class="n">supported_python</span> <span class="ow">in</span> <span class="p">[</span>
+                    <span class="p">(</span><span class="s2">&quot;Linux&quot;</span><span class="p">,</span> <span class="s2">&quot;3.7&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s2">&quot;Linux&quot;</span><span class="p">,</span> <span class="s2">&quot;3.8&quot;</span><span class="p">),</span>
+                <span class="p">]:</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="n">supported_os</span><span class="p">,</span> <span class="n">supported_python</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">ci_installed</span><span class="p">:</span>
+                        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                            <span class="sa">f</span><span class="s2">&quot;Supported OS/Python version </span><span class="si">{</span><span class="n">supported_os</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">supported_python</span><span class="si">}</span><span class="s2">: not in </span><span class="si">{</span><span class="n">ci_installed</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+                        <span class="p">)</span>
+                    <span class="k">if</span> <span class="p">(</span>
+                        <span class="n">package_name</span>
+                        <span class="ow">not</span> <span class="ow">in</span> <span class="n">ci_installed</span><span class="p">[(</span><span class="n">supported_os</span><span class="p">,</span> <span class="n">supported_python</span><span class="p">)]</span>
+                    <span class="p">):</span>
+                        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                            <span class="sa">f</span><span class="s2">&quot;Plugin </span><span class="si">{</span><span class="n">setup_cfg_path</span><span class="o">.</span><span class="n">parent</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">package_name</span><span class="si">!r}</span><span class="s2"> not in </span><span class="si">{</span><span class="n">ci_installed</span><span class="p">[(</span><span class="n">supported_os</span><span class="p">,</span> <span class="n">supported_python</span><span class="p">)]</span><span class="si">}</span><span class="s2">&quot;</span>
+                        <span class="p">)</span>
+                <span class="c1"># Modify the line to be a pinned package</span>
+                <span class="n">line_contents</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="k">for</span> <span class="p">(</span>
+                    <span class="p">(</span><span class="n">platform_system</span><span class="p">,</span> <span class="n">python_version</span><span class="p">),</span>
+                    <span class="n">packages_installed</span><span class="p">,</span>
+                <span class="p">)</span> <span class="ow">in</span> <span class="n">ci_installed</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                    <span class="k">if</span> <span class="n">package_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">packages_installed</span><span class="p">:</span>
+                        <span class="k">continue</span>
+                    <span class="n">package_version_installed</span> <span class="o">=</span> <span class="n">packages_installed</span><span class="p">[</span>
+                        <span class="n">package_name</span>
+                    <span class="p">]</span>
+                    <span class="n">line_contents</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">package_name</span><span class="si">}</span><span class="s1">==</span><span class="si">{</span><span class="n">package_version_installed</span><span class="si">}</span><span class="s1">; platform_system == &quot;</span><span class="si">{</span><span class="n">platform_system</span><span class="si">}</span><span class="s1">&quot; and python_version == &quot;</span><span class="si">{</span><span class="n">python_version</span><span class="si">}</span><span class="s1">&quot;&#39;</span><span class="p">,</span>
+                    <span class="p">)</span>
+                <span class="n">dependencies</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">line_contents</span><span class="p">)</span>
+
+                <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">line</span><span class="si">:</span><span class="s2">&lt;40</span><span class="si">}</span><span class="s2"> | </span><span class="si">{</span><span class="n">dependencies</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+            <span class="k">yield</span> <span class="n">PinDepsPlugin</span><span class="p">(</span>
+                <span class="n">path</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">setup_cfg_path</span><span class="o">.</span><span class="n">relative_to</span><span class="p">(</span><span class="n">root</span><span class="p">)),</span>
+                <span class="n">setup_cfg_path</span><span class="o">=</span><span class="n">setup_cfg_path</span><span class="p">,</span>
+                <span class="n">setup_cfg_pre_deps</span><span class="o">=</span><span class="n">setup_cfg_pre_deps</span><span class="p">,</span>
+                <span class="n">setup_cfg_post_deps</span><span class="o">=</span><span class="n">setup_cfg_post_deps</span><span class="p">,</span>
+                <span class="n">setup_cfg_pinned</span><span class="o">=</span><span class="p">[</span>
+                    <span class="p">(</span><span class="s2">&quot; &quot;</span> <span class="o">*</span> <span class="mi">4</span><span class="p">)</span> <span class="o">+</span> <span class="n">line</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="p">(</span><span class="s2">&quot; &quot;</span> <span class="o">*</span> <span class="mi">4</span><span class="p">))</span>
+                    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">dependencies</span>
+                <span class="p">],</span>
+            <span class="p">)</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">async</span> <span class="k">for</span> <span class="n">plugin</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">pin_deps</span><span class="p">(</span><span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">logs</span><span class="p">)):</span>
+            <span class="k">yield</span> <span class="n">plugin</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">:</span>
+                <span class="n">plugin</span><span class="o">.</span><span class="n">setup_cfg_path</span><span class="o">.</span><span class="n">write_text</span><span class="p">(</span>
+                    <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+                        <span class="n">itertools</span><span class="o">.</span><span class="n">chain</span><span class="p">(</span>
+                            <span class="n">plugin</span><span class="o">.</span><span class="n">setup_cfg_pre_deps</span><span class="p">,</span>
+                            <span class="n">plugin</span><span class="o">.</span><span class="n">setup_cfg_pinned</span><span class="p">,</span>
+                            <span class="n">plugin</span><span class="o">.</span><span class="n">setup_cfg_post_deps</span><span class="p">,</span>
+                        <span class="p">)</span>
+                    <span class="p">)</span>
+                <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="CI"><a class="viewcode-back" href="../../../api/service/dev.html#dffml.service.dev.CI">[docs]</a><span class="k">class</span> <span class="nc">CI</span><span class="p">(</span><span class="n">CMD</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    CI related commands</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">pindeps</span> <span class="o">=</span> <span class="n">PinDeps</span></div>
+
+
+<div class="viewcode-block" id="Bump"><a class="viewcode-back" href="../../../api/service/dev.html#dffml.service.dev.Bump">[docs]</a><span class="k">class</span> <span class="nc">Bump</span><span class="p">(</span><span class="n">CMD</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Bump the the main package in the versions plugins, or any or all libraries.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">inter</span> <span class="o">=</span> <span class="n">BumpInter</span>
+    <span class="n">packages</span> <span class="o">=</span> <span class="n">BumpPackages</span></div>
+
+
+<div class="viewcode-block" id="Develop"><a class="viewcode-back" href="../../../api/service/dev.html#dffml.service.dev.Develop">[docs]</a><span class="k">class</span> <span class="nc">Develop</span><span class="p">(</span><span class="n">CMD</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Development utilities for hacking on DFFML itself</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">create</span> <span class="o">=</span> <span class="n">Create</span>
+    <span class="n">skel</span> <span class="o">=</span> <span class="n">Skeleton</span>
+    <span class="n">run</span> <span class="o">=</span> <span class="n">Run</span>
+    <span class="n">export</span> <span class="o">=</span> <span class="n">Export</span>
+    <span class="n">entrypoints</span> <span class="o">=</span> <span class="n">Entrypoints</span>
+    <span class="n">install</span> <span class="o">=</span> <span class="n">Install</span>
+    <span class="n">release</span> <span class="o">=</span> <span class="n">Release</span>
+    <span class="n">setuppy</span> <span class="o">=</span> <span class="n">SetupPy</span>
+    <span class="n">bump</span> <span class="o">=</span> <span class="n">Bump</span>
+    <span class="n">ci</span> <span class="o">=</span> <span class="n">CI</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2017 - 2021, Intel.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

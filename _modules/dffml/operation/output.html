@@ -1,0 +1,679 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>dffml.operation.output &mdash; DFFML 0.4.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/tabs.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/tabs.js"></script>
+        <script src="../../../_static/copybutton.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="author" title="About these documents" href="../../../about.html" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> DFFML
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.4.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Introduction</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../concepts/index.html">Concepts</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Usage</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../quickstart/model.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/index.html">Examples</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../plugins/index.html">Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../cli.html">Command Line</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../plugins/service/http/index.html">HTTP API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../troubleshooting.html">Troubleshooting</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Subprojects</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../shouldi.html">shouldi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../swportal.html">Software Portal</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Community</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/intel/dffml">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://intel.github.io/dffml/master/">Master Branch Docs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../publications.html">Publications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contact.html">Contact Us</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributing/index.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../news/index.html">News</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../changelog.html">Changelog</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">DFFML</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>dffml.operation.output</li>
+    
+    
+
+
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+
+
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for dffml.operation.output</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">copy</span>
+<span class="kn">import</span> <span class="nn">collections</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">NamedTuple</span><span class="p">,</span> <span class="n">List</span>
+
+<span class="kn">from</span> <span class="nn">..df.types</span> <span class="kn">import</span> <span class="n">Definition</span><span class="p">,</span> <span class="n">Stage</span><span class="p">,</span> <span class="n">DataFlow</span>
+<span class="kn">from</span> <span class="nn">..df.base</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">op</span><span class="p">,</span>
+    <span class="n">OperationImplementationContext</span><span class="p">,</span>
+    <span class="n">BaseInputSetContext</span><span class="p">,</span>
+    <span class="n">BaseInputNetworkContext</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">..df.exceptions</span> <span class="kn">import</span> <span class="n">DefinitionNotInContext</span>
+<span class="kn">from</span> <span class="nn">..util.data</span> <span class="kn">import</span> <span class="n">traverse_get</span>
+
+
+<div class="viewcode-block" id="GroupBySpec"><a class="viewcode-back" href="../../../api/operation/output.html#dffml.operation.output.GroupBySpec">[docs]</a><span class="k">class</span> <span class="nc">GroupBySpec</span><span class="p">(</span><span class="n">NamedTuple</span><span class="p">):</span>
+    <span class="n">group</span><span class="p">:</span> <span class="n">Definition</span>
+    <span class="n">by</span><span class="p">:</span> <span class="n">Definition</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">resolve</span><span class="p">(</span>
+        <span class="bp">cls</span><span class="p">,</span>
+        <span class="n">ctx</span><span class="p">:</span> <span class="n">BaseInputSetContext</span><span class="p">,</span>
+        <span class="n">ictx</span><span class="p">:</span> <span class="n">BaseInputNetworkContext</span><span class="p">,</span>
+        <span class="n">exported</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span>
+    <span class="p">):</span>
+        <span class="c1"># TODO Address the need to copy operation implementation inputs dict</span>
+        <span class="c1"># In case the input is used elsewhere in the network</span>
+        <span class="n">exported</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">exported</span><span class="p">)</span>
+        <span class="c1"># Look up the definiton for the group and by fields</span>
+        <span class="k">for</span> <span class="n">convert</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;group&quot;</span><span class="p">,</span> <span class="s2">&quot;by&quot;</span><span class="p">]:</span>
+            <span class="n">exported</span><span class="p">[</span><span class="n">convert</span><span class="p">]</span> <span class="o">=</span> <span class="k">await</span> <span class="n">ictx</span><span class="o">.</span><span class="n">definition</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="n">exported</span><span class="p">[</span><span class="n">convert</span><span class="p">])</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="o">**</span><span class="n">exported</span><span class="p">)</span></div>
+
+
+<span class="n">group_by_spec</span> <span class="o">=</span> <span class="n">Definition</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;group_by_spec&quot;</span><span class="p">,</span> <span class="n">primitive</span><span class="o">=</span><span class="s2">&quot;Dict[str, Any]&quot;</span><span class="p">)</span>
+
+<span class="n">group_by_output</span> <span class="o">=</span> <span class="n">Definition</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;group_by_output&quot;</span><span class="p">,</span> <span class="n">primitive</span><span class="o">=</span><span class="s2">&quot;Dict[str, List[Any]]&quot;</span>
+<span class="p">)</span>
+
+
+<div class="viewcode-block" id="GroupBy"><a class="viewcode-back" href="../../../api/operation/output.html#dffml.operation.output.GroupBy">[docs]</a><span class="nd">@op</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;group_by&quot;</span><span class="p">,</span>
+    <span class="n">inputs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;spec&quot;</span><span class="p">:</span> <span class="n">group_by_spec</span><span class="p">},</span>
+    <span class="n">outputs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;output&quot;</span><span class="p">:</span> <span class="n">group_by_output</span><span class="p">},</span>
+    <span class="n">stage</span><span class="o">=</span><span class="n">Stage</span><span class="o">.</span><span class="n">OUTPUT</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="k">class</span> <span class="nc">GroupBy</span><span class="p">(</span><span class="n">OperationImplementationContext</span><span class="p">):</span>
+<div class="viewcode-block" id="GroupBy.run"><a class="viewcode-back" href="../../../api/operation/output.html#dffml.operation.output.GroupBy.run">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+        <span class="c1"># Convert group_by_spec into a dict with values being of the NamedTuple</span>
+        <span class="c1"># type GroupBySpec</span>
+        <span class="n">outputs</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="n">key</span><span class="p">:</span> <span class="k">await</span> <span class="n">GroupBySpec</span><span class="o">.</span><span class="n">resolve</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">octx</span><span class="o">.</span><span class="n">ictx</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;spec&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+        <span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;output spec: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">outputs</span><span class="p">)</span>
+        <span class="c1"># Acquire all definitions within the context</span>
+        <span class="k">async</span> <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">octx</span><span class="o">.</span><span class="n">ictx</span><span class="o">.</span><span class="n">definitions</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="p">)</span> <span class="k">as</span> <span class="n">od</span><span class="p">:</span>
+            <span class="c1"># Output dict</span>
+            <span class="n">want</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="c1"># Group each requested output</span>
+            <span class="k">for</span> <span class="n">output_name</span><span class="p">,</span> <span class="n">output</span> <span class="ow">in</span> <span class="n">outputs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="c1"># Create an array for this output data</span>
+                <span class="n">want</span><span class="p">[</span><span class="n">output_name</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="c1"># Create an ordered dict which will be keyed off of and ordered</span>
+                <span class="c1"># by the values of the output.group definition as seen in the</span>
+                <span class="c1"># input network context</span>
+                <span class="n">group_by</span> <span class="o">=</span> <span class="p">{}</span>
+                <span class="k">async</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">od</span><span class="o">.</span><span class="n">inputs</span><span class="p">(</span><span class="n">output</span><span class="o">.</span><span class="n">by</span><span class="p">):</span>
+                    <span class="n">group_by</span><span class="p">[</span><span class="n">item</span><span class="o">.</span><span class="n">value</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="p">{})</span>
+                <span class="n">group_by</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">group_by</span><span class="o">.</span><span class="n">items</span><span class="p">()))</span>
+                <span class="c1"># Find all inputs within the input network for the by definition</span>
+                <span class="k">async</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">od</span><span class="o">.</span><span class="n">inputs</span><span class="p">(</span><span class="n">output</span><span class="o">.</span><span class="n">group</span><span class="p">):</span>
+                    <span class="c1"># Get all the parents of the input</span>
+                    <span class="n">parents</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">get_parents</span><span class="p">())</span>
+                    <span class="k">for</span> <span class="n">group</span><span class="p">,</span> <span class="n">related</span> <span class="ow">in</span> <span class="n">group_by</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+                        <span class="c1"># Ensure that the definition we need to group by is in</span>
+                        <span class="c1"># the parents</span>
+                        <span class="k">if</span> <span class="ow">not</span> <span class="n">group</span> <span class="ow">in</span> <span class="n">parents</span><span class="p">:</span>
+                            <span class="k">continue</span>
+                        <span class="k">if</span> <span class="ow">not</span> <span class="n">output</span><span class="o">.</span><span class="n">by</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="n">related</span><span class="p">:</span>
+                            <span class="n">related</span><span class="p">[</span><span class="n">output</span><span class="o">.</span><span class="n">by</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+                        <span class="n">related</span><span class="p">[</span><span class="n">output</span><span class="o">.</span><span class="n">by</span><span class="o">.</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+
+                <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="p">(</span><span class="n">_group</span><span class="p">,</span> <span class="n">qdata</span><span class="p">)</span> <span class="ow">in</span> <span class="n">group_by</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                    <span class="k">for</span> <span class="n">def_name</span><span class="p">,</span> <span class="n">results</span> <span class="ow">in</span> <span class="n">qdata</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                        <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
+                            <span class="n">want</span><span class="p">[</span><span class="n">output_name</span><span class="p">]</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+
+                <span class="c1"># # If only one and single is set then convert list to single</span>
+                <span class="c1"># # item for output dict</span>
+                <span class="c1"># if len(want[output_name]) == 1 and output.single:</span>
+                <span class="c1">#     want[output_name] = want[output_name][0]</span>
+                <span class="c1"># # If the output needs to be a dict then make it one. This</span>
+                <span class="c1"># # will convert an array of arrays to a dict.</span>
+                <span class="c1"># elif output.ismap:</span>
+                <span class="c1">#     want[output_name] = dict(want[output_name])</span>
+
+            <span class="k">return</span> <span class="n">want</span></div></div>
+
+
+<span class="n">get_multi_spec</span> <span class="o">=</span> <span class="n">Definition</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;get_multi_spec&quot;</span><span class="p">,</span> <span class="n">primitive</span><span class="o">=</span><span class="s2">&quot;array&quot;</span><span class="p">)</span>
+
+<span class="n">get_multi_output</span> <span class="o">=</span> <span class="n">Definition</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;get_multi_output&quot;</span><span class="p">,</span> <span class="n">primitive</span><span class="o">=</span><span class="s2">&quot;map&quot;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="GetMulti"><a class="viewcode-back" href="../../../api/operation/output.html#dffml.operation.output.GetMulti">[docs]</a><span class="nd">@op</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;get_multi&quot;</span><span class="p">,</span>
+    <span class="n">inputs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;spec&quot;</span><span class="p">:</span> <span class="n">get_multi_spec</span><span class="p">},</span>
+    <span class="n">outputs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;output&quot;</span><span class="p">:</span> <span class="n">get_multi_output</span><span class="p">},</span>
+    <span class="n">stage</span><span class="o">=</span><span class="n">Stage</span><span class="o">.</span><span class="n">OUTPUT</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="k">class</span> <span class="nc">GetMulti</span><span class="p">(</span><span class="n">OperationImplementationContext</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Output operation to get all Inputs matching given definitions.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    spec : list</span>
+<span class="sd">        List of definition names. Any Inputs with matching definition will be</span>
+<span class="sd">        returned.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    dict</span>
+<span class="sd">        Maps definition names to all the Inputs of that definition</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+
+<span class="sd">    The following shows how to grab all Inputs with the URL definition. If we</span>
+<span class="sd">    had we run an operation which output a URL, that output URL would have also</span>
+<span class="sd">    been returned to us.</span>
+
+<span class="sd">    &gt;&gt;&gt; import asyncio</span>
+<span class="sd">    &gt;&gt;&gt; from dffml import *</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; URL = Definition(name=&quot;URL&quot;, primitive=&quot;string&quot;)</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; dataflow = DataFlow.auto(GetMulti)</span>
+<span class="sd">    &gt;&gt;&gt; dataflow.seed.append(</span>
+<span class="sd">    ...     Input(</span>
+<span class="sd">    ...         value=[URL.name],</span>
+<span class="sd">    ...         definition=GetMulti.op.inputs[&quot;spec&quot;]</span>
+<span class="sd">    ...     )</span>
+<span class="sd">    ... )</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; async def main():</span>
+<span class="sd">    ...     async for ctx, results in MemoryOrchestrator.run(dataflow, [</span>
+<span class="sd">    ...         Input(</span>
+<span class="sd">    ...             value=&quot;https://github.com/intel/dffml&quot;,</span>
+<span class="sd">    ...             definition=URL</span>
+<span class="sd">    ...         ),</span>
+<span class="sd">    ...         Input(</span>
+<span class="sd">    ...             value=&quot;https://github.com/intel/cve-bin-tool&quot;,</span>
+<span class="sd">    ...             definition=URL</span>
+<span class="sd">    ...         )</span>
+<span class="sd">    ...     ]):</span>
+<span class="sd">    ...         print(results)</span>
+<span class="sd">    ...</span>
+<span class="sd">    &gt;&gt;&gt; asyncio.run(main())</span>
+<span class="sd">    {&#39;URL&#39;: [&#39;https://github.com/intel/dffml&#39;, &#39;https://github.com/intel/cve-bin-tool&#39;]}</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="GetMulti.run"><a class="viewcode-back" href="../../../api/operation/output.html#dffml.operation.output.GetMulti.run">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+        <span class="c1"># TODO Address the need to copy operation implementation inputs dict</span>
+        <span class="c1"># In case the input is used elsewhere in the network</span>
+        <span class="n">exported</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;spec&quot;</span><span class="p">])</span>
+        <span class="n">name_map</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">input_value</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">exported</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">input_value</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+                <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">input_value</span><span class="o">.</span><span class="n">items</span><span class="p">())[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">name_map</span><span class="p">[</span><span class="n">value</span><span class="p">]</span> <span class="o">=</span> <span class="n">name</span>
+                <span class="n">exported</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+
+        <span class="c1"># Look up the definiton for each</span>
+        <span class="k">for</span> <span class="n">convert</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">exported</span><span class="p">)):</span>
+            <span class="n">exported</span><span class="p">[</span><span class="n">convert</span><span class="p">]</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">octx</span><span class="o">.</span><span class="n">ictx</span><span class="o">.</span><span class="n">definition</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="p">,</span> <span class="n">exported</span><span class="p">[</span><span class="n">convert</span><span class="p">]</span>
+            <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;output spec: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">exported</span><span class="p">)</span>
+        <span class="c1"># Acquire all definitions within the context</span>
+        <span class="k">async</span> <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">octx</span><span class="o">.</span><span class="n">ictx</span><span class="o">.</span><span class="n">definitions</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="p">)</span> <span class="k">as</span> <span class="n">od</span><span class="p">:</span>
+            <span class="c1"># Output dict</span>
+            <span class="n">want</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="c1"># Group each requested output</span>
+            <span class="k">for</span> <span class="n">definition</span> <span class="ow">in</span> <span class="n">exported</span><span class="p">:</span>
+                <span class="k">async</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">od</span><span class="o">.</span><span class="n">inputs</span><span class="p">(</span><span class="n">definition</span><span class="p">):</span>
+                    <span class="n">want</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">definition</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="p">[])</span>
+                    <span class="n">want</span><span class="p">[</span><span class="n">definition</span><span class="o">.</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+
+            <span class="c1"># Rename outputs if present in name_map</span>
+            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">want</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">name_map</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="kc">None</span><span class="p">):</span>
+                    <span class="n">want</span><span class="p">[</span><span class="n">name_map</span><span class="p">[</span><span class="n">key</span><span class="p">]]</span> <span class="o">=</span> <span class="n">value</span>
+                    <span class="n">want</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">want</span></div></div>
+
+
+<span class="n">get_single_spec</span> <span class="o">=</span> <span class="n">Definition</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;get_single_spec&quot;</span><span class="p">,</span> <span class="n">primitive</span><span class="o">=</span><span class="s2">&quot;array&quot;</span><span class="p">)</span>
+
+<span class="n">get_single_output</span> <span class="o">=</span> <span class="n">Definition</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;get_single_output&quot;</span><span class="p">,</span> <span class="n">primitive</span><span class="o">=</span><span class="s2">&quot;map&quot;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="GetSingle"><a class="viewcode-back" href="../../../api/operation/output.html#dffml.operation.output.GetSingle">[docs]</a><span class="nd">@op</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;get_single&quot;</span><span class="p">,</span>
+    <span class="n">inputs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;spec&quot;</span><span class="p">:</span> <span class="n">get_single_spec</span><span class="p">},</span>
+    <span class="n">outputs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;output&quot;</span><span class="p">:</span> <span class="n">get_single_output</span><span class="p">},</span>
+    <span class="n">stage</span><span class="o">=</span><span class="n">Stage</span><span class="o">.</span><span class="n">OUTPUT</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="k">class</span> <span class="nc">GetSingle</span><span class="p">(</span><span class="n">GetMulti</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Output operation to get a single Input for each definition given.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    spec : list</span>
+<span class="sd">        List of definition names. An Input with matching definition will be</span>
+<span class="sd">        returned.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    dict</span>
+<span class="sd">        Maps definition names to an Input of that definition</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+
+<span class="sd">    The following shows how to grab an Inputs with the URL definition. If we</span>
+<span class="sd">    had we run an operation which output a URL, that output URL could have also</span>
+<span class="sd">    been returned to us.</span>
+
+<span class="sd">    &gt;&gt;&gt; import asyncio</span>
+<span class="sd">    &gt;&gt;&gt; from dffml import *</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; URL = Definition(name=&quot;URL&quot;, primitive=&quot;string&quot;)</span>
+<span class="sd">    &gt;&gt;&gt; ORG = Definition(name=&quot;ORG&quot;, primitive=&quot;string&quot;)</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; dataflow = DataFlow.auto(GetSingle)</span>
+<span class="sd">    &gt;&gt;&gt; dataflow.seed.append(</span>
+<span class="sd">    ...     Input(</span>
+<span class="sd">    ...         value=[{&quot;Repo Link&quot;: URL.name}, ORG.name],</span>
+<span class="sd">    ...         definition=GetSingle.op.inputs[&quot;spec&quot;]</span>
+<span class="sd">    ...     )</span>
+<span class="sd">    ... )</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; async def main():</span>
+<span class="sd">    ...     async for ctx, results in MemoryOrchestrator.run(dataflow, [</span>
+<span class="sd">    ...         Input(</span>
+<span class="sd">    ...             value=&quot;https://github.com/intel/dffml&quot;,</span>
+<span class="sd">    ...             definition=URL</span>
+<span class="sd">    ...         ),</span>
+<span class="sd">    ...         Input(</span>
+<span class="sd">    ...             value=&quot;Intel&quot;,</span>
+<span class="sd">    ...             definition=ORG</span>
+<span class="sd">    ...         )</span>
+<span class="sd">    ...     ]):</span>
+<span class="sd">    ...         print(results)</span>
+<span class="sd">    ...</span>
+<span class="sd">    &gt;&gt;&gt; asyncio.run(main())</span>
+<span class="sd">    {&#39;ORG&#39;: &#39;Intel&#39;, &#39;Repo Link&#39;: &#39;https://github.com/intel/dffml&#39;}</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="GetSingle.run"><a class="viewcode-back" href="../../../api/operation/output.html#dffml.operation.output.GetSingle.run">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+        <span class="c1"># Output dict</span>
+        <span class="n">want</span> <span class="o">=</span> <span class="k">await</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">want</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">want</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">want</span></div></div>
+
+
+<span class="n">associate_spec</span> <span class="o">=</span> <span class="n">Definition</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;associate_spec&quot;</span><span class="p">,</span> <span class="n">primitive</span><span class="o">=</span><span class="s2">&quot;List[str]&quot;</span><span class="p">)</span>
+
+<span class="n">associate_output</span> <span class="o">=</span> <span class="n">Definition</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;associate_output&quot;</span><span class="p">,</span> <span class="n">primitive</span><span class="o">=</span><span class="s2">&quot;Dict[str, Any]&quot;</span>
+<span class="p">)</span>
+
+
+<div class="viewcode-block" id="Associate"><a class="viewcode-back" href="../../../api/operation/output.html#dffml.operation.output.Associate">[docs]</a><span class="nd">@op</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;associate&quot;</span><span class="p">,</span>
+    <span class="n">inputs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;spec&quot;</span><span class="p">:</span> <span class="n">associate_spec</span><span class="p">},</span>
+    <span class="n">outputs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;output&quot;</span><span class="p">:</span> <span class="n">associate_output</span><span class="p">},</span>
+    <span class="n">stage</span><span class="o">=</span><span class="n">Stage</span><span class="o">.</span><span class="n">OUTPUT</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="k">class</span> <span class="nc">Associate</span><span class="p">(</span><span class="n">OperationImplementationContext</span><span class="p">):</span>
+<div class="viewcode-block" id="Associate.run"><a class="viewcode-back" href="../../../api/operation/output.html#dffml.operation.output.Associate.run">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+        <span class="c1"># TODO Address the need to copy operation implementation inputs dict</span>
+        <span class="c1"># In case the input is used elsewhere in the network</span>
+        <span class="n">exported</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;spec&quot;</span><span class="p">])</span>
+        <span class="c1"># Look up the definiton for each</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">convert</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">exported</span><span class="p">)):</span>
+                <span class="n">exported</span><span class="p">[</span><span class="n">convert</span><span class="p">]</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">octx</span><span class="o">.</span><span class="n">ictx</span><span class="o">.</span><span class="n">definition</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="p">,</span> <span class="n">exported</span><span class="p">[</span><span class="n">convert</span><span class="p">]</span>
+                <span class="p">)</span>
+        <span class="k">except</span> <span class="n">DefinitionNotInContext</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">{</span><span class="n">exported</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span> <span class="p">{}}</span>
+        <span class="c1"># Make exported into key, value which it will be in output</span>
+        <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="n">exported</span>
+        <span class="c1"># Acquire all definitions within the context</span>
+        <span class="k">async</span> <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">octx</span><span class="o">.</span><span class="n">ictx</span><span class="o">.</span><span class="n">definitions</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="p">)</span> <span class="k">as</span> <span class="n">od</span><span class="p">:</span>
+            <span class="c1"># Output dict</span>
+            <span class="n">want</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">async</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">od</span><span class="o">.</span><span class="n">inputs</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+                <span class="n">parents</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">get_parents</span><span class="p">()</span>
+                <span class="k">for</span> <span class="n">parent</span> <span class="ow">in</span> <span class="n">parents</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="n">parent</span><span class="o">.</span><span class="n">definition</span><span class="p">:</span>
+                        <span class="n">want</span><span class="p">[</span><span class="n">parent</span><span class="o">.</span><span class="n">value</span><span class="p">]</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">value</span>
+                        <span class="k">break</span>
+            <span class="k">return</span> <span class="p">{</span><span class="n">value</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="n">want</span><span class="p">}</span></div></div>
+
+
+<div class="viewcode-block" id="AssociateDefinition"><a class="viewcode-back" href="../../../api/operation/output.html#dffml.operation.output.AssociateDefinition">[docs]</a><span class="nd">@op</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;associate_definition&quot;</span><span class="p">,</span>
+    <span class="n">inputs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;spec&quot;</span><span class="p">:</span> <span class="n">associate_spec</span><span class="p">},</span>
+    <span class="n">outputs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;output&quot;</span><span class="p">:</span> <span class="n">associate_output</span><span class="p">},</span>
+    <span class="n">stage</span><span class="o">=</span><span class="n">Stage</span><span class="o">.</span><span class="n">OUTPUT</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="k">class</span> <span class="nc">AssociateDefinition</span><span class="p">(</span><span class="n">OperationImplementationContext</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+
+<span class="sd">    &gt;&gt;&gt; import asyncio</span>
+<span class="sd">    &gt;&gt;&gt; from dffml import *</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; feed_def = Definition(name=&quot;feed&quot;, primitive=&quot;string&quot;)</span>
+<span class="sd">    &gt;&gt;&gt; dead_def = Definition(name=&quot;dead&quot;, primitive=&quot;string&quot;)</span>
+<span class="sd">    &gt;&gt;&gt; output = Definition(name=&quot;output&quot;, primitive=&quot;string&quot;)</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; feed_input = Input(value=&quot;my favorite value&quot;, definition=feed_def)</span>
+<span class="sd">    &gt;&gt;&gt; face_input = Input(</span>
+<span class="sd">    ...     value=&quot;face&quot;, definition=output, parents=[feed_input]</span>
+<span class="sd">    ... )</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; dead_input = Input(</span>
+<span class="sd">    ...     value=&quot;my second favorite value&quot;, definition=dead_def</span>
+<span class="sd">    ... )</span>
+<span class="sd">    &gt;&gt;&gt; beef_input = Input(</span>
+<span class="sd">    ...     value=&quot;beef&quot;, definition=output, parents=[dead_input]</span>
+<span class="sd">    ... )</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; async def main():</span>
+<span class="sd">    ...     for value in [&quot;feed&quot;, &quot;dead&quot;]:</span>
+<span class="sd">    ...         async for ctx, results in MemoryOrchestrator.run(</span>
+<span class="sd">    ...             DataFlow.auto(AssociateDefinition),</span>
+<span class="sd">    ...             [</span>
+<span class="sd">    ...                 feed_input,</span>
+<span class="sd">    ...                 face_input,</span>
+<span class="sd">    ...                 dead_input,</span>
+<span class="sd">    ...                 beef_input,</span>
+<span class="sd">    ...                 Input(</span>
+<span class="sd">    ...                     value={value: &quot;output&quot;},</span>
+<span class="sd">    ...                     definition=AssociateDefinition.op.inputs[&quot;spec&quot;],</span>
+<span class="sd">    ...                 ),</span>
+<span class="sd">    ...             ],</span>
+<span class="sd">    ...         ):</span>
+<span class="sd">    ...             print(results)</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; asyncio.run(main())</span>
+<span class="sd">    {&#39;feed&#39;: &#39;face&#39;}</span>
+<span class="sd">    {&#39;dead&#39;: &#39;beef&#39;}</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="AssociateDefinition.run"><a class="viewcode-back" href="../../../api/operation/output.html#dffml.operation.output.AssociateDefinition.run">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+        <span class="c1"># Look up the definiton for each definition name given</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">spec</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">octx</span><span class="o">.</span><span class="n">ictx</span><span class="o">.</span><span class="n">definition</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="p">,</span> <span class="n">key</span>
+                <span class="p">):</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">octx</span><span class="o">.</span><span class="n">ictx</span><span class="o">.</span><span class="n">definition</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;spec&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+            <span class="p">}</span>
+        <span class="k">except</span> <span class="n">DefinitionNotInContext</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="p">{}</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;spec&quot;</span><span class="p">]}</span>
+        <span class="c1"># Output dict</span>
+        <span class="n">want</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="c1"># Acquire all definitions within the context</span>
+        <span class="k">async</span> <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">octx</span><span class="o">.</span><span class="n">ictx</span><span class="o">.</span><span class="n">definitions</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="p">)</span> <span class="k">as</span> <span class="n">od</span><span class="p">:</span>
+            <span class="c1"># Make exported into key, value which it will be in output</span>
+            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">spec</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="k">async</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">od</span><span class="o">.</span><span class="n">inputs</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+                    <span class="n">parents</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">get_parents</span><span class="p">()</span>
+                    <span class="k">for</span> <span class="n">parent</span> <span class="ow">in</span> <span class="n">parents</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">key</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">parent</span><span class="o">.</span><span class="n">definition</span><span class="o">.</span><span class="n">name</span><span class="p">:</span>
+                            <span class="n">want</span><span class="p">[</span><span class="n">key</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">value</span>
+                            <span class="k">break</span>
+        <span class="k">return</span> <span class="n">want</span></div></div>
+
+
+<div class="viewcode-block" id="RemapConfig"><a class="viewcode-back" href="../../../api/operation/output.html#dffml.operation.output.RemapConfig">[docs]</a><span class="k">class</span> <span class="nc">RemapConfig</span><span class="p">(</span><span class="n">NamedTuple</span><span class="p">):</span>
+    <span class="n">dataflow</span><span class="p">:</span> <span class="n">DataFlow</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">_fromdict</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;dataflow&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">DataFlow</span><span class="o">.</span><span class="n">_fromdict</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;dataflow&quot;</span><span class="p">])</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="RemapFailure"><a class="viewcode-back" href="../../../api/operation/output.html#dffml.operation.output.RemapFailure">[docs]</a><span class="k">class</span> <span class="nc">RemapFailure</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Raised whem results of a dataflow could not be remapped.</span>
+<span class="sd">    &quot;&quot;&quot;</span></div>
+
+
+<span class="c1"># TODO Make it so that only one output operation gets run, the result of that</span>
+<span class="c1"># operation is the result of the dataflow</span>
+<span class="nd">@op</span><span class="p">(</span>
+    <span class="n">inputs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;spec&quot;</span><span class="p">:</span> <span class="n">Definition</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;remap_spec&quot;</span><span class="p">,</span> <span class="n">primitive</span><span class="o">=</span><span class="s2">&quot;map&quot;</span><span class="p">)},</span>
+    <span class="n">outputs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;response&quot;</span><span class="p">:</span> <span class="n">Definition</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;remap_output&quot;</span><span class="p">,</span> <span class="n">primitive</span><span class="o">=</span><span class="s2">&quot;map&quot;</span><span class="p">)},</span>
+    <span class="n">stage</span><span class="o">=</span><span class="n">Stage</span><span class="o">.</span><span class="n">OUTPUT</span><span class="p">,</span>
+    <span class="n">config_cls</span><span class="o">=</span><span class="n">RemapConfig</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">remap</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">:</span> <span class="n">OperationImplementationContext</span><span class="p">,</span> <span class="n">spec</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span>
+<span class="p">):</span>
+    <span class="c1"># Create a new orchestrator context. Specify that it should use the existing</span>
+    <span class="c1"># input set context, this way the output operations we&#39;ll be running have</span>
+    <span class="c1"># access to the data from this data flow rather than a new sub flow.</span>
+    <span class="k">async</span> <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">octx</span><span class="o">.</span><span class="n">parent</span><span class="p">(</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">dataflow</span><span class="p">,</span> <span class="n">reuse</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;ictx&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">octx</span><span class="o">.</span><span class="n">ictx</span><span class="p">}</span>
+    <span class="p">)</span> <span class="k">as</span> <span class="n">octx</span><span class="p">:</span>
+        <span class="n">_ctx</span><span class="p">,</span> <span class="n">result</span> <span class="o">=</span> <span class="p">[</span><span class="n">result</span> <span class="k">async</span> <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">octx</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">ctx</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="p">)][</span><span class="mi">0</span><span class="p">]</span>
+    <span class="c1"># Remap the output operations to their feature (copied logic</span>
+    <span class="c1"># from CLI)</span>
+    <span class="n">remap</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">feature_name</span><span class="p">,</span> <span class="n">traverse</span><span class="p">)</span> <span class="ow">in</span> <span class="n">spec</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">remap</span><span class="p">[</span><span class="n">feature_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">traverse_get</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="o">*</span><span class="n">traverse</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">KeyError</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">RemapFailure</span><span class="p">(</span>
+                <span class="s2">&quot;failed to remap </span><span class="si">%r</span><span class="s2">. Results do not contain </span><span class="si">%r</span><span class="s2">: </span><span class="si">%s</span><span class="s2">&quot;</span>
+                <span class="o">%</span> <span class="p">(</span><span class="n">feature_name</span><span class="p">,</span> <span class="s2">&quot;.&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">traverse</span><span class="p">),</span> <span class="n">result</span><span class="p">)</span>
+            <span class="p">)</span> <span class="kn">from</span> <span class="nn">error</span>
+    <span class="c1"># Results have been remapped</span>
+    <span class="k">return</span> <span class="n">remap</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2017 - 2021, Intel.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

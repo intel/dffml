@@ -1,3 +1,5 @@
+:github_url: hide
+
 .. _plugin_sources:
 
 Sources
@@ -12,7 +14,7 @@ If you want to get started creating your own source, check out the
 .. _plugin_source_dffml:
 
 dffml
------
++++++
 
 .. code-block:: console
 
@@ -36,11 +38,11 @@ Uses a CSV file as the source of record feature data
 
   - default: untagged
 
-- readwrite: Boolean
+- readwrite: String
 
   - default: False
 
-- allowempty: Boolean
+- allowempty: String
 
   - default: False
 
@@ -52,7 +54,7 @@ Uses a CSV file as the source of record feature data
 
   - default: tag
 
-- loadfiles: String
+- loadfiles: List of strings
 
   - default: None
 
@@ -73,6 +75,143 @@ No description
 
 - model_columns: List of strings
 
+.. _plugin_source_dffml_df:
+
+df
+~~
+
+*Official*
+
+>>> import asyncio
+>>> from dffml import *
+>>>
+>>> records = [
+...     Record(
+...         "0",
+...         data={
+...             "features": {
+...                 "Years": 1,
+...                 "Expertise": 3,
+...                 "Trust": 0.2,
+...                 "Salary": 20,
+...             }
+...         },
+...     ),
+... ]
+>>>
+>>> features = Features(
+...     Feature("Years", int, 1),
+...     Feature("Expertise", int, 1),
+...     Feature("Trust", float, 1),
+...     Feature("Salary", int, 1),
+... )
+>>>
+>>> dataflow = DataFlow(multiply, AssociateDefinition)
+>>> dataflow.flow["multiply"].inputs["multiplicand"] = [
+...     {"seed": ["Years", "Expertise", "Trust", "Salary"]}
+... ]
+>>> dataflow.seed = [
+...     Input(
+...         value={
+...             feature.name: multiply.op.outputs["product"].name
+...             for feature in features
+...         },
+...         definition=AssociateDefinition.op.inputs["spec"],
+...     ),
+...     Input(value=10, definition=multiply.op.inputs["multiplier"],),
+... ]
+>>>
+>>>
+>>> memory_source = Sources(MemorySource(MemorySourceConfig(records=records)))
+>>>
+>>> source = DataFlowSource(
+...     DataFlowSourceConfig(
+...         source=memory_source, dataflow=dataflow, features=features,
+...     )
+... )
+>>>
+>>>
+>>> async def main():
+...     async with source as src:
+...         async with src() as sctx:
+...             async for record in sctx.records():
+...                 print(record.features())
+...
+>>>
+>>> asyncio.run(main())
+{'Years': 10, 'Expertise': 30, 'Trust': 2.0, 'Salary': 200}
+
+**Args**
+
+- source: Entrypoint
+
+  - Source to wrap
+
+- dataflow: DataFlow
+
+  - DataFlow to use for preprocessing
+
+- features: List of features
+
+  - default: []
+  - Features to pass as definitions to each context from each record to be preprocessed
+
+- inputs: List of strings
+
+  - default: []
+  - Other inputs to add under each ctx (record's key will be used as the context)
+
+- record_def: String
+
+  - default: None
+  - Definition to be used for record.key.If set, record.key will be added to the set of inputs under each context (which is also the record's key)
+
+- length: String
+
+  - default: None
+  - Definition name to add as source length
+
+- all_for_single: String
+
+  - default: False
+  - Run all records through dataflow before grabing results of desired record on a call to record()
+
+- no_strict: String
+
+  - default: False
+  - Do not exit on operation exceptions, just log errors
+
+- orchestrator: Entrypoint
+
+  - default: MemoryOrchestrator(MemoryOrchestratorConfig(input_network=MemoryInputNetwork(MemoryInputNetworkConfig()), operation_network=MemoryOperationNetwork(MemoryOperationNetworkConfig(operations=[])), lock_network=MemoryLockNetwork(MemoryLockNetworkConfig()), opimp_network=MemoryOperationImplementationNetwork(MemoryOperationImplementationNetworkConfig(operations={})), rchecker=MemoryRedundancyChecker(MemoryRedundancyCheckerConfig(kvstore=MemoryKeyValueStore(MemoryKeyValueStoreConfig()))), max_ctxs=None))
+  - Orchestrator
+
+.. _plugin_source_dffml_dir:
+
+dir
+~~~
+
+*Official*
+
+Source to read files in a folder.
+
+**Args**
+
+- foldername: String
+
+- feature: String
+
+  - Name of the feature the data will be referenced as
+
+- labels: List of strings
+
+  - default: ['unlabelled']
+  - Image labels
+
+- save: Entrypoint
+
+  - default: None
+
 .. _plugin_source_dffml_idx1:
 
 idx1
@@ -90,11 +229,11 @@ Source to read files in IDX1 format (such as MNIST digit label dataset).
 
   - Name of the feature the data will be referenced as
 
-- readwrite: Boolean
+- readwrite: String
 
   - default: False
 
-- allowempty: Boolean
+- allowempty: String
 
   - default: False
 
@@ -115,11 +254,32 @@ Source to read files in IDX3 format (such as MNIST digit image dataset).
 
   - Name of the feature the data will be referenced as
 
-- readwrite: Boolean
+- readwrite: String
 
   - default: False
 
-- allowempty: Boolean
+- allowempty: String
+
+  - default: False
+
+.. _plugin_source_dffml_ini:
+
+ini
+~~~
+
+*Official*
+
+Source to read files in .ini format.
+
+**Args**
+
+- filename: String
+
+- readwrite: String
+
+  - default: False
+
+- allowempty: String
 
   - default: False
 
@@ -141,11 +301,11 @@ stored in memory.
 
   - default: untagged
 
-- readwrite: Boolean
+- readwrite: String
 
   - default: False
 
-- allowempty: Boolean
+- allowempty: String
 
   - default: False
 
@@ -162,10 +322,38 @@ Stores records in a dict in memory
 
 - records: List of records
 
+- display: Integer
+
+  - default: 10
+  - When repr() is called, how many records to display
+
+.. _plugin_source_dffml_op:
+
+op
+~~
+
+*Official*
+
+No description
+
+**Args**
+
+- opimp: OperationImplementation
+
+- args: List of strings
+
+  - default: []
+  - Arguments to operation in input order
+
+- allowempty: String
+
+  - default: False
+  - Raise an error if the source is empty after running the loading operation
+
 .. _plugin_source_dffml_source_mysql:
 
 dffml_source_mysql
-------------------
+++++++++++++++++++
 
 .. code-block:: console
 
@@ -179,41 +367,85 @@ mysql
 
 *Official*
 
-No description
+.. warning::
+
+    - ``update`` config property is a SQL query which MUST handle insersion
+      or update. Columns to be updated should list feature columns first,
+      followed by prediction columns.
+
+    - ``features`` config property MUST have keys in same order as they
+      appear within ``update`` query.
+
+    - ``prediction`` config property MUST have keys in same order as they
+      appear within ``update`` query.
+
+Examples
+--------
+
+Read MySQL or MariaDB's documentation to understand how to properly setup
+your server for encrypted connections.
+
+- `Configuring MySQL to Use Encrypted Connections <https://dev.mysql.com/doc/refman/8.0/en/using-encrypted-connections.html>`_
 
 **Args**
+
+- user: String
+
+  - Username
+
+- password: String
+
+  - Password
+
+- db: String
+
+  - Name of database to use
+
+- key: String
+
+  - Column name of record key
+
+- features: typing.Dict[str, str]
+
+  - Mapping of feature names to column names
+
+- predictions: typing.Dict[str, typing.Tuple[str, str]]
+
+  - Mapping of prediction names to tuples of (value, confidence) column names
+
+- update: String
+
+  - Query to update a single record
+
+- record: String
+
+  - Query to get a single record
+
+- records: String
+
+  - Query to get a single record
+
+- init: String
+
+  - default: None
+  - Query to run on initial connection
 
 - host: String
 
   - default: 127.0.0.1
+  - Host/address to connect to
 
 - port: Integer
 
   - default: 3306
-
-- user: String
-
-- password: String
-
-- db: String
-
-- records-query: String
-
-  - SELECT `key` as key, data_1 as feature_1, data_2 as feature_2 FROM record_data
-
-- record-query: String
-
-  - SELECT `key` as key, data_1 as feature_1, data_2 as feature_2 FROM record_data WHERE `key`=%s
-
-- update-query: String
-
-  - INSERT INTO record_data (`key`, data_1, data_2) VALUES(%s, %s, %s) ON DUPLICATE KEY UPDATE data_1 = %s, data_2=%s
-
-- model-columns: List of strings
-
-  - Order of Columns in table
+  - Port to connect to
 
 - ca: String
 
   - default: None
-  - Path to server TLS certificate
+  - Server certificate to use for TLS validation
+
+- insecure: String
+
+  - default: False
+  - Must be true to accept risks of non-TLS connection

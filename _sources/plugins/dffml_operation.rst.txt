@@ -1,3 +1,5 @@
+:github_url: hide
+
 Operations
 ==========
 
@@ -12,7 +14,7 @@ the roadmap.
 .. _plugin_operation_dffml:
 
 dffml
------
++++++
 
 .. code-block:: console
 
@@ -28,32 +30,30 @@ AcceptUserInput
 
 Accept input from stdin using python input()
 
-Parameters
-++++++++++
-inputs : dict
-    A dictionary with a key and empty list as value.
-
 Returns
-+++++++
+-------
 dict
     A dictionary containing user input.
 
 Examples
-++++++++
+--------
 
 The following example shows how to use AcceptUserInput.
 (Assumes that the input from stdio is "Data flow is awesome"!)
 
+>>> import asyncio
+>>> from dffml import *
+>>>
 >>> dataflow = DataFlow.auto(AcceptUserInput, GetSingle)
 >>> dataflow.seed.append(
 ...     Input(
 ...         value=[AcceptUserInput.op.outputs["InputData"].name],
-...         definition=GetSingle.op.inputs["spec"]
+...         definition=GetSingle.op.inputs["spec"],
 ...     )
 ... )
 >>>
 >>> async def main():
-...     async for ctx, results in MemoryOrchestrator.run(dataflow, {"input":[]}):
+...     async for ctx, results in MemoryOrchestrator.run(dataflow, {"input": []}):
 ...         print(results)
 >>>
 >>> asyncio.run(main())
@@ -88,6 +88,567 @@ No description
 
 - output: associate_output(type: Dict[str, Any])
 
+.. _plugin_operation_dffml_associate_definition:
+
+associate_definition
+~~~~~~~~~~~~~~~~~~~~
+
+*Official*
+
+Examples
+--------
+
+>>> import asyncio
+>>> from dffml import *
+>>>
+>>> feed_def = Definition(name="feed", primitive="string")
+>>> dead_def = Definition(name="dead", primitive="string")
+>>> output = Definition(name="output", primitive="string")
+>>>
+>>> feed_input = Input(value="my favorite value", definition=feed_def)
+>>> face_input = Input(
+...     value="face", definition=output, parents=[feed_input]
+... )
+>>>
+>>> dead_input = Input(
+...     value="my second favorite value", definition=dead_def
+... )
+>>> beef_input = Input(
+...     value="beef", definition=output, parents=[dead_input]
+... )
+>>>
+>>> async def main():
+...     for value in ["feed", "dead"]:
+...         async for ctx, results in MemoryOrchestrator.run(
+...             DataFlow.auto(AssociateDefinition),
+...             [
+...                 feed_input,
+...                 face_input,
+...                 dead_input,
+...                 beef_input,
+...                 Input(
+...                     value={value: "output"},
+...                     definition=AssociateDefinition.op.inputs["spec"],
+...                 ),
+...             ],
+...         ):
+...             print(results)
+>>>
+>>> asyncio.run(main())
+{'feed': 'face'}
+{'dead': 'beef'}
+
+**Stage: output**
+
+
+
+**Inputs**
+
+- spec: associate_spec(type: List[str])
+
+**Outputs**
+
+- output: associate_output(type: Dict[str, Any])
+
+.. _plugin_operation_dffml_db_query_create_table:
+
+db_query_create_table
+~~~~~~~~~~~~~~~~~~~~~
+
+*Official*
+
+Generates a create table query in the database.
+
+Parameters
+----------
+table_name : str
+    The name of the table to be created.
+cols : list[str]
+    Columns of the table.
+
+Examples
+--------
+
+>>> import asyncio
+>>> from dffml import *
+>>>
+>>> sdb = SqliteDatabase(SqliteDatabaseConfig(filename="examples.db"))
+>>>
+>>> dataflow = DataFlow(
+...     operations={"db_query_create": db_query_create_table.op,},
+...     configs={"db_query_create": DatabaseQueryConfig(database=sdb),},
+...     seed=[],
+... )
+>>>
+>>> inputs = [
+...     Input(
+...         value="myTable1",
+...         definition=db_query_create_table.op.inputs["table_name"],
+...     ),
+...     Input(
+...         value={
+...             "key": "real",
+...             "firstName": "text",
+...             "lastName": "text",
+...             "age": "real",
+...         },
+...         definition=db_query_create_table.op.inputs["cols"],
+...     ),
+... ]
+>>>
+>>> async def main():
+...     async for ctx, result in MemoryOrchestrator.run(dataflow, inputs):
+...         pass
+>>>
+>>> asyncio.run(main())
+
+**Stage: processing**
+
+
+
+**Inputs**
+
+- table_name: query_table(type: str)
+- cols: query_cols(type: Dict[str, str])
+
+**Args**
+
+- database: Entrypoint
+
+.. _plugin_operation_dffml_db_query_insert:
+
+db_query_insert
+~~~~~~~~~~~~~~~
+
+*Official*
+
+Generates an insert query in the database.
+
+Parameters
+----------
+table_name : str
+    The name of the table to insert data in to.
+data : dict
+    Data to be inserted into the table.
+
+Examples
+--------
+
+>>> import asyncio
+>>> from dffml import *
+>>>
+>>> sdb = SqliteDatabase(SqliteDatabaseConfig(filename="examples.db"))
+>>>
+>>> dataflow = DataFlow(
+...     operations={
+...         "db_query_insert": db_query_insert.op,
+...         "db_query_lookup": db_query_lookup.op,
+...         "get_single": GetSingle.imp.op,
+...     },
+...     configs={
+...         "db_query_lookup": DatabaseQueryConfig(database=sdb),
+...         "db_query_insert": DatabaseQueryConfig(database=sdb),
+...     },
+...     seed=[],
+... )
+>>>
+>>> inputs = {
+...     "insert": [
+...         Input(
+...             value="myTable", definition=db_query_insert.op.inputs["table_name"],
+...         ),
+...         Input(
+...            value={"key": 10, "firstName": "John", "lastName": "Doe", "age": 16},
+...             definition=db_query_insert.op.inputs["data"],
+...         ),
+...     ],
+...     "lookup": [
+...         Input(
+...             value="myTable", definition=db_query_lookup.op.inputs["table_name"],
+...         ),
+...         Input(
+...             value=["firstName", "lastName", "age"],
+...             definition=db_query_lookup.op.inputs["cols"],
+...         ),
+...         Input(value=[], definition=db_query_lookup.op.inputs["conditions"],),
+...         Input(
+...             value=[db_query_lookup.op.outputs["lookups"].name],
+...             definition=GetSingle.op.inputs["spec"],
+...         ),
+...     ]
+... }
+>>>
+>>> async def main():
+...     async for ctx, result in MemoryOrchestrator.run(dataflow, inputs):
+...         if result:
+...             print(result)
+>>>
+>>> asyncio.run(main())
+{'query_lookups': [{'firstName': 'John', 'lastName': 'Doe', 'age': 16}]}
+
+**Stage: processing**
+
+
+
+**Inputs**
+
+- table_name: query_table(type: str)
+- data: query_data(type: Dict[str, Any])
+
+**Args**
+
+- database: Entrypoint
+
+.. _plugin_operation_dffml_db_query_insert_or_update:
+
+db_query_insert_or_update
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+*Official*
+
+Automatically uses the better suited operation, insert query or update query.
+
+Parameters
+----------
+table_name : str
+    The name of the table to insert data in to.
+data : dict
+    Data to be inserted or updated into the table.
+
+Examples
+--------
+
+>>> import asyncio
+>>> from dffml import *
+>>>
+>>> sdb = SqliteDatabase(SqliteDatabaseConfig(filename="examples.db"))
+>>>
+>>> person = {"key": 11, "firstName": "John", "lastName": "Wick", "age": 38}
+>>>
+>>> dataflow = DataFlow(
+...     operations={
+...         "db_query_insert_or_update": db_query_insert_or_update.op,
+...         "db_query_lookup": db_query_lookup.op,
+...         "get_single": GetSingle.imp.op,
+...     },
+...     configs={
+...         "db_query_insert_or_update": DatabaseQueryConfig(database=sdb),
+...         "db_query_lookup": DatabaseQueryConfig(database=sdb),
+...     },
+...     seed=[],
+... )
+>>>
+>>> inputs = {
+...     "insert_or_update": [
+...         Input(
+...             value="myTable", definition=db_query_update.op.inputs["table_name"],
+...         ),
+...         Input(
+...             value=person,
+...             definition=db_query_update.op.inputs["data"],
+...         ),
+...     ],
+...     "lookup": [
+...         Input(
+...             value="myTable",
+...             definition=db_query_lookup.op.inputs["table_name"],
+...         ),
+...         Input(
+...             value=["firstName", "lastName", "age"],
+...             definition=db_query_lookup.op.inputs["cols"],
+...         ),
+...         Input(value=[], definition=db_query_lookup.op.inputs["conditions"],),
+...         Input(
+...             value=[db_query_lookup.op.outputs["lookups"].name],
+...             definition=GetSingle.op.inputs["spec"],
+...         ),
+...     ],
+... }
+>>>
+>>> async def main():
+...     async for ctx, result in MemoryOrchestrator.run(dataflow, inputs):
+...         if result:
+...             print(result)
+>>>
+>>> asyncio.run(main())
+{'query_lookups': [{'firstName': 'John', 'lastName': 'Wick', 'age': 38}]}
+>>>
+>>> person["age"] += 1
+>>>
+>>> asyncio.run(main())
+{'query_lookups': [{'firstName': 'John', 'lastName': 'Wick', 'age': 39}]}
+
+**Stage: processing**
+
+
+
+**Inputs**
+
+- table_name: query_table(type: str)
+- data: query_data(type: Dict[str, Any])
+
+**Args**
+
+- database: Entrypoint
+
+.. _plugin_operation_dffml_db_query_lookup:
+
+db_query_lookup
+~~~~~~~~~~~~~~~
+
+*Official*
+
+Generates a lookup query in the database.
+
+Parameters
+----------
+table_name : str
+    The name of the table.
+cols : list[str]
+    Columns of the table.
+conditions : Conditions
+    Query conditions.
+
+Examples
+--------
+
+>>> import asyncio
+>>> from dffml import *
+>>>
+>>> sdb = SqliteDatabase(SqliteDatabaseConfig(filename="examples.db"))
+>>>
+>>> dataflow = DataFlow(
+...     operations={
+...         "db_query_lookup": db_query_lookup.op,
+...         "get_single": GetSingle.imp.op,
+...     },
+...     configs={"db_query_lookup": DatabaseQueryConfig(database=sdb),},
+...     seed=[],
+... )
+>>>
+>>> inputs = {
+...     "lookup": [
+...         Input(
+...             value="myTable",
+...             definition=db_query_lookup.op.inputs["table_name"],
+...         ),
+...         Input(
+...             value=["firstName", "lastName", "age"],
+...             definition=db_query_lookup.op.inputs["cols"],
+...         ),
+...         Input(value=[], definition=db_query_lookup.op.inputs["conditions"],),
+...         Input(
+...             value=[db_query_lookup.op.outputs["lookups"].name],
+...             definition=GetSingle.op.inputs["spec"],
+...         ),
+...     ],
+... }
+>>>
+>>> async def main():
+...     async for ctx, result in MemoryOrchestrator.run(dataflow, inputs):
+...         if result:
+...             print(result)
+>>>
+>>> asyncio.run(main())
+{'query_lookups': [{'firstName': 'John', 'lastName': 'Doe', 'age': 16}, {'firstName': 'John', 'lastName': 'Wick', 'age': 39}]}
+
+**Stage: processing**
+
+
+
+**Inputs**
+
+- table_name: query_table(type: str)
+- cols: query_cols(type: Dict[str, str])
+- conditions: query_conditions(type: Conditions)
+
+**Outputs**
+
+- lookups: query_lookups(type: Dict[str, Any])
+
+**Args**
+
+- database: Entrypoint
+
+.. _plugin_operation_dffml_db_query_remove:
+
+db_query_remove
+~~~~~~~~~~~~~~~
+
+*Official*
+
+Generates a remove table query in the database.
+
+Parameters
+----------
+table_name : str
+    The name of the table to insert data in to.
+conditions : Conditions
+    Query conditions.
+
+Examples
+--------
+
+>>> import asyncio
+>>> from dffml import *
+>>>
+>>> sdb = SqliteDatabase(SqliteDatabaseConfig(filename="examples.db"))
+>>>
+>>> dataflow = DataFlow(
+...     operations={
+...         "db_query_lookup": db_query_lookup.op,
+...         "db_query_remove": db_query_remove.op,
+...         "get_single": GetSingle.imp.op,
+...     },
+...     configs={
+...         "db_query_remove": DatabaseQueryConfig(database=sdb),
+...         "db_query_lookup": DatabaseQueryConfig(database=sdb),
+...     },
+...     seed=[],
+... )
+>>>
+>>> inputs = {
+...     "remove": [
+...         Input(
+...             value="myTable",
+...             definition=db_query_remove.op.inputs["table_name"],
+...         ),
+...         Input(value=[],
+...         definition=db_query_remove.op.inputs["conditions"],),
+...     ],
+...     "lookup": [
+...         Input(
+...             value="myTable",
+...             definition=db_query_lookup.op.inputs["table_name"],
+...         ),
+...         Input(
+...             value=["firstName", "lastName", "age"],
+...             definition=db_query_lookup.op.inputs["cols"],
+...         ),
+...         Input(value=[], definition=db_query_lookup.op.inputs["conditions"],),
+...         Input(
+...             value=[db_query_lookup.op.outputs["lookups"].name],
+...             definition=GetSingle.op.inputs["spec"],
+...         ),
+...     ],
+... }
+>>>
+>>> async def main():
+...     async for ctx, result in MemoryOrchestrator.run(dataflow, inputs):
+...         if result:
+...             print(result)
+>>>
+>>> asyncio.run(main())
+{'query_lookups': []}
+
+**Stage: processing**
+
+
+
+**Inputs**
+
+- table_name: query_table(type: str)
+- conditions: query_conditions(type: Conditions)
+
+**Args**
+
+- database: Entrypoint
+
+.. _plugin_operation_dffml_db_query_update:
+
+db_query_update
+~~~~~~~~~~~~~~~
+
+*Official*
+
+Generates an Update table query in the database.
+
+Parameters
+----------
+table_name : str
+    The name of the table to insert data in to.
+data : dict
+    Data to be updated into the table.
+conditions : list
+    List of query conditions.
+
+Examples
+--------
+
+>>> import asyncio
+>>> from dffml import *
+>>>
+>>> sdb = SqliteDatabase(SqliteDatabaseConfig(filename="examples.db"))
+>>>
+>>> dataflow = DataFlow(
+...     operations={
+...         "db_query_update": db_query_update.op,
+...         "db_query_lookup": db_query_lookup.op,
+...         "get_single": GetSingle.imp.op,
+...     },
+...     configs={
+...         "db_query_update": DatabaseQueryConfig(database=sdb),
+...         "db_query_lookup": DatabaseQueryConfig(database=sdb),
+...     },
+...     seed=[],
+... )
+>>>
+>>> inputs = {
+...     "update": [
+...         Input(
+...             value="myTable",
+...             definition=db_query_update.op.inputs["table_name"],
+...         ),
+...         Input(
+...             value={
+...                 "key": 10,
+...                 "firstName": "John",
+...                 "lastName": "Doe",
+...                 "age": 17,
+...             },
+...             definition=db_query_update.op.inputs["data"],
+...         ),
+...         Input(value=[], definition=db_query_update.op.inputs["conditions"],),
+...     ],
+...     "lookup": [
+...         Input(
+...             value="myTable",
+...             definition=db_query_lookup.op.inputs["table_name"],
+...         ),
+...         Input(
+...             value=["firstName", "lastName", "age"],
+...             definition=db_query_lookup.op.inputs["cols"],
+...         ),
+...         Input(value=[], definition=db_query_lookup.op.inputs["conditions"],),
+...         Input(
+...             value=[db_query_lookup.op.outputs["lookups"].name],
+...             definition=GetSingle.op.inputs["spec"],
+...         ),
+...     ],
+... }
+>>>
+>>> async def main():
+...     async for ctx, result in MemoryOrchestrator.run(dataflow, inputs):
+...         if result:
+...             print(result)
+>>>
+>>> asyncio.run(main())
+{'query_lookups': [{'firstName': 'John', 'lastName': 'Doe', 'age': 17}]}
+
+**Stage: processing**
+
+
+
+**Inputs**
+
+- table_name: query_table(type: str)
+- data: query_data(type: Dict[str, Any])
+- conditions: query_conditions(type: Conditions)
+
+**Args**
+
+- database: Entrypoint
+
 .. _plugin_operation_dffml_dffml_dataflow_run:
 
 dffml.dataflow.run
@@ -98,22 +659,25 @@ dffml.dataflow.run
 Starts a subflow ``self.config.dataflow`` and adds ``inputs`` in it.
 
 Parameters
-++++++++++
+----------
 inputs : dict
     The inputs to add to the subflow. These should be a key value mapping of
     the context string to the inputs which should be seeded for that context
     string.
 
 Returns
-+++++++
+-------
 dict
     Maps context strings in inputs to output after running through dataflow.
 
 Examples
-++++++++
+--------
 
 The following shows how to use run dataflow in its default behavior.
 
+>>> import asyncio
+>>> from dffml import *
+>>>
 >>> URL = Definition(name="URL", primitive="string")
 >>>
 >>> subflow = DataFlow.auto(GetSingle)
@@ -126,10 +690,10 @@ The following shows how to use run dataflow in its default behavior.
 ... )
 >>>
 >>> dataflow = DataFlow.auto(run_dataflow, GetSingle)
->>> dataflow.configs[run_dataflow.imp.op.name] = RunDataFlowConfig(subflow)
+>>> dataflow.configs[run_dataflow.op.name] = RunDataFlowConfig(subflow)
 >>> dataflow.seed.append(
 ...     Input(
-...         value=[run_dataflow.imp.op.outputs["results"].name],
+...         value=[run_dataflow.op.outputs["results"].name],
 ...         definition=GetSingle.op.inputs["spec"]
 ...     )
 ... )
@@ -146,7 +710,7 @@ The following shows how to use run dataflow in its default behavior.
 ...                         }
 ...                     ]
 ...                 },
-...                 definition=run_dataflow.imp.op.inputs["inputs"]
+...                 definition=run_dataflow.op.inputs["inputs"]
 ...             )
 ...         ]
 ...     }):
@@ -156,8 +720,11 @@ The following shows how to use run dataflow in its default behavior.
 {'flow_results': {'dffml': {'URL': 'https://github.com/intel/dffml'}}}
 
 The following shows how to use run dataflow with custom inputs and outputs.
-This allows you to run a subflow as if it were an opertion.
+This allows you to run a subflow as if it were an operation.
 
+>>> import asyncio
+>>> from dffml import *
+>>>
 >>> URL = Definition(name="URL", primitive="string")
 >>>
 >>> @op(
@@ -227,7 +794,48 @@ dffml.mapping.create
 
 *Official*
 
-No description
+Creates a mapping of a given key and value.
+
+Parameters
+----------
+key : str
+    The key for the mapping.
+value : Any
+    The value for the mapping.
+
+Returns
+-------
+dict
+    A dictionary containing the mapping created.
+
+Examples
+--------
+
+>>> import asyncio
+>>> from dffml import *
+>>>
+>>> dataflow = DataFlow.auto(create_mapping, GetSingle)
+>>> dataflow.seed.append(
+...     Input(
+...         value=[create_mapping.op.outputs["mapping"].name],
+...         definition=GetSingle.op.inputs["spec"],
+...     )
+... )
+>>> inputs = [
+...     Input(
+...         value="key1", definition=create_mapping.op.inputs["key"],
+...     ),
+...     Input(
+...         value=42, definition=create_mapping.op.inputs["value"],
+...     ),
+... ]
+>>>
+>>> async def main():
+...     async for ctx, result in MemoryOrchestrator.run(dataflow, inputs):
+...         print(result)
+>>>
+>>> asyncio.run(main())
+{'mapping': {'key1': 42}}
 
 **Stage: processing**
 
@@ -249,7 +857,51 @@ dffml.mapping.extract
 
 *Official*
 
-No description
+Extracts value from a given mapping.
+
+Parameters
+----------
+mapping : dict
+    The mapping to extract the value from.
+traverse : list[str]
+    A list of keys to traverse through the mapping dictionary and extract the values.
+
+Returns
+-------
+dict
+    A dictionary containing the value of the keys.
+
+Examples
+--------
+
+>>> import asyncio
+>>> from dffml import *
+>>>
+>>> dataflow = DataFlow.auto(mapping_extract_value, GetSingle)
+>>>
+>>> dataflow.seed.append(
+...     Input(
+...         value=[mapping_extract_value.op.outputs["value"].name],
+...         definition=GetSingle.op.inputs["spec"],
+...     )
+... )
+>>> inputs = [
+...     Input(
+...         value={"key1": {"key2": 42}},
+...         definition=mapping_extract_value.op.inputs["mapping"],
+...     ),
+...     Input(
+...         value=["key1", "key2"],
+...         definition=mapping_extract_value.op.inputs["traverse"],
+...     ),
+... ]
+>>>
+>>> async def main():
+...     async for ctx, result in MemoryOrchestrator.run(dataflow, inputs):
+...         print(result)
+>>>
+>>> asyncio.run(main())
+{'value': 42}
 
 **Stage: processing**
 
@@ -271,7 +923,63 @@ dffml.model.predict
 
 *Official*
 
-No description
+Predict using dffml models.
+
+Parameters
+----------
+features : dict
+    A dictionary contaning feature name and feature value.
+
+Returns
+-------
+dict
+    A dictionary containing prediction.
+
+Examples
+--------
+
+The following example shows how to use model_predict.
+
+>>> import asyncio
+>>> from dffml import *
+>>>
+>>> slr_model = SLRModel(
+...     features=Features(Feature("Years", int, 1)),
+...     predict=Feature("Salary", int, 1),
+...     directory="tempdir",
+... )
+>>> dataflow = DataFlow(
+...     operations={
+...         "prediction_using_model": model_predict,
+...         "get_single": GetSingle,
+...     },
+...     configs={"prediction_using_model": ModelPredictConfig(model=slr_model)},
+... )
+>>> dataflow.seed.append(
+...     Input(
+...         value=[model_predict.op.outputs["prediction"].name],
+...         definition=GetSingle.op.inputs["spec"],
+...     )
+... )
+>>>
+>>> async def main():
+...     await train(
+...         slr_model,
+...         {"Years": 0, "Salary": 10},
+...         {"Years": 1, "Salary": 20},
+...         {"Years": 2, "Salary": 30},
+...         {"Years": 3, "Salary": 40},
+...     )
+...     inputs = [
+...        Input(
+...            value={"Years": 4}, definition=model_predict.op.inputs["features"],
+...        )
+...     ]
+...     async for ctx, results in MemoryOrchestrator.run(dataflow, inputs):
+...         print(results)
+>>>
+>>> asyncio.run(main())
+{'model_predictions': {'Salary': {'confidence': 1.0, 'value': 50}}}
 
 **Stage: processing**
 
@@ -299,23 +1007,26 @@ get_multi
 Output operation to get all Inputs matching given definitions.
 
 Parameters
-++++++++++
+----------
 spec : list
     List of definition names. Any Inputs with matching definition will be
     returned.
 
 Returns
-+++++++
+-------
 dict
     Maps definition names to all the Inputs of that definition
 
 Examples
-++++++++
+--------
 
 The following shows how to grab all Inputs with the URL definition. If we
 had we run an operation which output a URL, that output URL would have also
 been returned to us.
 
+>>> import asyncio
+>>> from dffml import *
+>>>
 >>> URL = Definition(name="URL", primitive="string")
 >>>
 >>> dataflow = DataFlow.auto(GetMulti)
@@ -348,11 +1059,11 @@ been returned to us.
 
 **Inputs**
 
-- spec: get_n_spec(type: array)
+- spec: get_multi_spec(type: array)
 
 **Outputs**
 
-- output: get_n_output(type: map)
+- output: get_multi_output(type: map)
 
 .. _plugin_operation_dffml_get_single:
 
@@ -364,29 +1075,33 @@ get_single
 Output operation to get a single Input for each definition given.
 
 Parameters
-++++++++++
+----------
 spec : list
     List of definition names. An Input with matching definition will be
     returned.
 
 Returns
-+++++++
+-------
 dict
     Maps definition names to an Input of that definition
 
 Examples
-++++++++
+--------
 
 The following shows how to grab an Inputs with the URL definition. If we
 had we run an operation which output a URL, that output URL could have also
 been returned to us.
 
+>>> import asyncio
+>>> from dffml import *
+>>>
 >>> URL = Definition(name="URL", primitive="string")
+>>> ORG = Definition(name="ORG", primitive="string")
 >>>
 >>> dataflow = DataFlow.auto(GetSingle)
 >>> dataflow.seed.append(
 ...     Input(
-...         value=[URL.name],
+...         value=[{"Repo Link": URL.name}, ORG.name],
 ...         definition=GetSingle.op.inputs["spec"]
 ...     )
 ... )
@@ -396,12 +1111,16 @@ been returned to us.
 ...         Input(
 ...             value="https://github.com/intel/dffml",
 ...             definition=URL
+...         ),
+...         Input(
+...             value="Intel",
+...             definition=ORG
 ...         )
 ...     ]):
 ...         print(results)
 ...
 >>> asyncio.run(main())
-{'URL': 'https://github.com/intel/dffml'}
+{'ORG': 'Intel', 'Repo Link': 'https://github.com/intel/dffml'}
 
 **Stage: output**
 
@@ -446,19 +1165,23 @@ literal_eval
 Evaluate the input using ast.literal_eval()
 
 Parameters
-++++++++++
-inputs : str
+----------
+str_to_eval : str
     A string to be evaluated.
 
 Returns
-+++++++
-A python literal.
+-------
+dict
+    A dict containing python literal.
 
 Examples
-++++++++
+--------
 
 The following example shows how to use literal_eval.
 
+>>> import asyncio
+>>> from dffml import *
+>>>
 >>> dataflow = DataFlow.auto(literal_eval, GetSingle)
 >>> dataflow.seed.append(
 ...    Input(
@@ -493,6 +1216,73 @@ The following example shows how to use literal_eval.
 
 - str_after_eval: EvaluatedStr(type: generic)
 
+.. _plugin_operation_dffml_multiply:
+
+multiply
+~~~~~~~~
+
+*Official*
+
+Multiply record values
+
+Parameters
+----------
+multiplicand : generic
+    An arithmetic type value.
+multiplier : generic
+    An arithmetic type value.
+
+Returns
+-------
+dict
+    A dict containing the product.
+
+Examples
+--------
+
+The following example shows how to use multiply.
+
+>>> import asyncio
+>>> from dffml import *
+>>> 
+>>> dataflow = DataFlow.auto(multiply, GetSingle)
+>>> dataflow.seed.append(
+...    Input(
+...        value=[multiply.op.outputs["product"].name,],
+...        definition=GetSingle.op.inputs["spec"],
+...    )
+... )
+>>> inputs = [
+...    Input(
+...        value=12,
+...        definition=multiply.op.inputs["multiplicand"],
+...    ),
+...    Input(
+...        value=3,
+...        definition=multiply.op.inputs["multiplier"],
+...    ),
+... ]
+>>> 
+>>> async def main():
+...     async for ctx, results in MemoryOrchestrator.run(dataflow, inputs):
+...         print(results)
+>>> 
+>>> asyncio.run(main())
+{'product': 36}
+
+**Stage: processing**
+
+
+
+**Inputs**
+
+- multiplicand: multiplicand_def(type: generic)
+- multiplier: multiplier_def(type: generic)
+
+**Outputs**
+
+- product: product(type: generic)
+
 .. _plugin_operation_dffml_print_output:
 
 print_output
@@ -503,29 +1293,31 @@ print_output
 Print the output on stdout using python print()
 
 Parameters
-++++++++++
-inputs : list
-    A list of Inputs whose value is to be printed.
+----------
+data : Any
+    A python literal to be printed.
 
 Examples
-++++++++
+--------
 
 The following example shows how to use print_output.
 
->>> dataflow = DataFlow.auto(print_output, GetSingle)
+>>> import asyncio
+>>> from dffml import *
+>>>
+>>> dataflow = DataFlow.auto(print_output)
 >>> inputs = [
 ...     Input(
-...         value="print_output example",
-...         definition=dataflow.definitions["DataToPrint"],
-...         parents=None,)]
+...         value="print_output example", definition=print_output.op.inputs["data"]
+...     )
+... ]
 >>>
 >>> async def main():
 ...     async for ctx, results in MemoryOrchestrator.run(dataflow, inputs):
-...         print("String to be printed is 'print_output example'")
+...         pass
 >>>
 >>> asyncio.run(main())
 print_output example
-String to be printed is 'print_output example'
 
 **Stage: processing**
 
@@ -533,12 +1325,12 @@ String to be printed is 'print_output example'
 
 **Inputs**
 
-- data: DataToPrint(type: str)
+- data: DataToPrint(type: generic)
 
 .. _plugin_operation_dffml_feature_git:
 
 dffml_feature_git
------------------
++++++++++++++++++
 
 .. code-block:: console
 
@@ -583,8 +1375,8 @@ No description
 
 - repo: git_repository(type: Dict[str, str])
 
-  - URL: str
   - directory: str
+  - URL: str(default: None)
 
 .. _plugin_operation_dffml_feature_git_clone_git_repo:
 
@@ -607,8 +1399,8 @@ No description
 
 - repo: git_repository(type: Dict[str, str])
 
-  - URL: str
   - directory: str
+  - URL: str(default: None)
 
 **Conditions**
 
@@ -652,8 +1444,8 @@ No description
 
 - repo: git_repository(type: Dict[str, str])
 
-  - URL: str
   - directory: str
+  - URL: str(default: None)
 - branch: git_branch(type: str)
 - start_end: date_pair(type: List[date])
 
@@ -678,8 +1470,8 @@ No description
 
 - repo: git_repository(type: Dict[str, str])
 
-  - URL: str
   - directory: str
+  - URL: str(default: None)
 - branch: git_branch(type: str)
 - start_end: date_pair(type: List[date])
 
@@ -704,17 +1496,17 @@ No description
 
 - repo: git_repository(type: Dict[str, str])
 
-  - URL: str
   - directory: str
+  - URL: str(default: None)
 - commit: git_commit(type: string)
 
 **Outputs**
 
 - repo: git_repository_checked_out(type: Dict[str, str])
 
-  - URL: str
   - directory: str
-  - commit: str
+  - URL: str(default: None)
+  - commit: str(default: None)
 
 .. _plugin_operation_dffml_feature_git_git_repo_commit_from_date:
 
@@ -733,8 +1525,8 @@ No description
 
 - repo: git_repository(type: Dict[str, str])
 
-  - URL: str
   - directory: str
+  - URL: str(default: None)
 - branch: git_branch(type: str)
 - date: date(type: string)
 
@@ -759,8 +1551,8 @@ No description
 
 - repo: git_repository(type: Dict[str, str])
 
-  - URL: str
   - directory: str
+  - URL: str(default: None)
 
 **Outputs**
 
@@ -787,8 +1579,8 @@ Was there a release within this date range
 
 - repo: git_repository(type: Dict[str, str])
 
-  - URL: str
   - directory: str
+  - URL: str(default: None)
 - branch: git_branch(type: str)
 - start_end: date_pair(type: List[date])
 
@@ -832,9 +1624,9 @@ On OSX
 
 - repo: git_repository_checked_out(type: Dict[str, str])
 
-  - URL: str
   - directory: str
-  - commit: str
+  - URL: str(default: None)
+  - commit: str(default: None)
 
 **Outputs**
 
@@ -860,6 +1652,27 @@ No description
 **Outputs**
 
 - code_to_comment_ratio: language_to_comment_ratio(type: int)
+
+.. _plugin_operation_dffml_feature_git_make_quarters:
+
+make_quarters
+~~~~~~~~~~~~~
+
+*Official*
+
+No description
+
+**Stage: processing**
+
+
+
+**Inputs**
+
+- number: quarters(type: int)
+
+**Outputs**
+
+- quarters: quarter(type: int)
 
 .. _plugin_operation_dffml_feature_git_quarters_back_to_date:
 
@@ -905,10 +1718,1097 @@ No description
 
 - work: work_spread(type: int)
 
+.. _plugin_operation_shouldi:
+
+shouldi
++++++++
+
+.. code-block:: console
+
+    pip install shouldi
+
+
+.. _plugin_operation_shouldi_cleanup_pypi_package:
+
+cleanup_pypi_package
+~~~~~~~~~~~~~~~~~~~~
+
+*Official*
+
+Remove the directory containing the source code release.
+
+**Stage: cleanup**
+
+
+
+**Inputs**
+
+- directory: run_bandit.inputs.pkg(type: str)
+
+.. _plugin_operation_shouldi_pypi_package_contents:
+
+pypi_package_contents
+~~~~~~~~~~~~~~~~~~~~~
+
+*Official*
+
+Download a source code release and extract it to a temporary directory.
+
+**Stage: processing**
+
+
+
+**Inputs**
+
+- url: pypi_package_contents.inputs.url(type: str)
+
+**Outputs**
+
+- directory: run_bandit.inputs.pkg(type: str)
+
+.. _plugin_operation_shouldi_pypi_package_json:
+
+pypi_package_json
+~~~~~~~~~~~~~~~~~
+
+*Official*
+
+Download the information on the package in JSON format.
+
+**Stage: processing**
+
+
+
+**Inputs**
+
+- package: safety_check.inputs.package(type: str)
+
+**Outputs**
+
+- version: safety_check.inputs.version(type: str)
+- url: pypi_package_contents.inputs.url(type: str)
+
+.. _plugin_operation_shouldi_run_bandit:
+
+run_bandit
+~~~~~~~~~~
+
+*Official*
+
+CLI usage: dffml service dev run -log debug shouldi.bandit:run_bandit -pkg .
+
+**Stage: processing**
+
+
+
+**Inputs**
+
+- pkg: run_bandit.inputs.pkg(type: str)
+
+**Outputs**
+
+- result: run_bandit.outputs.result(type: map)
+
+.. _plugin_operation_shouldi_safety_check:
+
+safety_check
+~~~~~~~~~~~~
+
+*Official*
+
+No description
+
+**Stage: processing**
+
+
+
+**Inputs**
+
+- package: safety_check.inputs.package(type: str)
+- version: safety_check.inputs.version(type: str)
+
+**Outputs**
+
+- result: safety_check.outputs.result(type: int)
+
+.. _plugin_operation_dffml_operations_nlp:
+
+dffml_operations_nlp
+++++++++++++++++++++
+
+.. code-block:: console
+
+    pip install dffml-operations-nlp
+
+
+.. _plugin_operation_dffml_operations_nlp_collect_output:
+
+collect_output
+~~~~~~~~~~~~~~
+
+*Official*
+
+No description
+
+**Stage: processing**
+
+
+
+**Inputs**
+
+- sentence: sentence(type: string)
+- length: source_length(type: string)
+
+**Outputs**
+
+- all: all_sentences(type: List[string])
+
+.. _plugin_operation_dffml_operations_nlp_count_vectorizer:
+
+count_vectorizer
+~~~~~~~~~~~~~~~~
+
+*Official*
+
+Converts a collection of text documents to a matrix of token counts using sklearn CountVectorizer's `fit_transform` method. 
+For details on parameters check https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.CountVectorizer.html
+Parameters specific to this operation are described below.
+
+Parameters
+----------
+text : list
+    A list of strings.
+
+get_feature_names: bool
+    If `True` return feature names using get_feature_names method of CountVectorizer.
+
+Returns
+-------
+result: list
+    A list containing token counts and feature names if `get_feature_names` is `True`.
+
+**Stage: processing**
+
+
+
+**Inputs**
+
+- text: count_vectorizer.inputs.text(type: array)
+- encoding: count_vectorizer.inputs.encoding(type: str)
+- decode_error: count_vectorizer.inputs.decode_error(type: str)
+- strip_accents: count_vectorizer.inputs.strip_accents(type: str)
+- lowercase: count_vectorizer.inputs.lowercase(type: bool)
+- stop_words: count_vectorizer.inputs.stop_words(type: str)
+- token_pattern: count_vectorizer.inputs.token_pattern(type: str)
+- ngram_range: count_vectorizer.inputs.ngram_range(type: array)
+- analyzer: count_vectorizer.inputs.analyzer(type: str)
+- max_df: count_vectorizer.inputs.max_df(type: float)
+- min_df: count_vectorizer.inputs.min_df(type: float)
+- max_features: count_vectorizer.inputs.max_features(type: int)
+- vocabulary: count_vectorizer.inputs.vocabulary(type: map)
+- binary: count_vectorizer.inputs.binary(type: bool)
+- get_feature_names: count_vectorizer.inputs.get_feature_names(type: bool)
+
+**Outputs**
+
+- result: count_vectorizer.outputs.result(type: array)
+
+.. _plugin_operation_dffml_operations_nlp_extract_array_from_matrix:
+
+extract_array_from_matrix
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+*Official*
+
+Returns row from `input_matrix` based on index of `single_text_example` 
+in `collected_text`.
+
+Parameters
+----------
+single_text_example : str
+    String to be used for indexing into `collected_text`.
+
+collected_text: list
+    List of strings.
+
+input_matrix: list
+    A 2-D matrix where each row represents vector corresponding
+    to `single_text_example`.
+
+Returns
+-------
+result: A 1-d array.
+
+**Stage: processing**
+
+
+
+**Inputs**
+
+- single_text_example: extract_array_from_matrix.inputs.single_text_example(type: str)
+- collected_text: extract_array_from_matrix.inputs.collected_text(type: array)
+- input_matrix: extract_array_from_matrix.inputs.input_matrix(type: array)
+
+**Outputs**
+
+- result: extract_array_from_matrix.outputs.result(type: array)
+
+.. _plugin_operation_dffml_operations_nlp_get_embedding:
+
+get_embedding
+~~~~~~~~~~~~~
+
+*Official*
+
+Maps words of text data to their corresponding word vectors.
+
+Parameters
+----------
+text : str
+    String to be converted to word vectors.
+
+max_len: int
+    Maximum length of sentence.
+    If the length of `text` > `max_len`, `text` is truncated
+    to have length = `max_len`.
+    If the length of `text` < `max_len`, `text` is padded with
+    `pad_token` such that len(`text`) = `max_len`.
+
+pad_token: str
+    Token to be used for padding `text` if len(`text`) < `max_len`
+
+spacy_model: str
+    Spacy model to be used for assigning vectors to tokens.
+
+Returns
+-------
+result: A 2-d array of shape (max_len, embedding_size of vectors).
+
+**Stage: processing**
+
+
+
+**Inputs**
+
+- text: text_def(type: str)
+- spacy_model: spacy_model_name_def(type: str)
+- max_len: max_len_def(type: int)
+- pad_token: pad_token_def(type: str)
+
+**Outputs**
+
+- embedding: embedding(type: generic)
+
+.. _plugin_operation_dffml_operations_nlp_get_noun_chunks:
+
+get_noun_chunks
+~~~~~~~~~~~~~~~
+
+*Official*
+
+Extracts the noun chunks from text.
+
+Parameters
+----------
+text : str
+    String to extract noun chunks from.
+
+spacy_model: str
+    A spacy model with the capability of parsing.
+
+Returns
+-------
+result: list
+    A list containing noun chunks.
+
+**Stage: processing**
+
+
+
+**Inputs**
+
+- text: get_noun_chunks.inputs.text(type: str)
+- spacy_model: get_noun_chunks.inputs.spacy_model(type: str)
+
+**Outputs**
+
+- result: get_noun_chunks.outputs.result(type: array)
+
+.. _plugin_operation_dffml_operations_nlp_get_sentences:
+
+get_sentences
+~~~~~~~~~~~~~
+
+*Official*
+
+Extracts the sentences from text.
+
+Parameters
+----------
+text : str
+    String to extract sentences from.
+
+spacy_model: str
+    A spacy model with the capability of parsing. Sentence 
+    boundaries are calculated from the syntactic dependency parse.
+
+Returns
+-------
+result: list
+    A list containing sentences.
+
+**Stage: processing**
+
+
+
+**Inputs**
+
+- text: get_sentences.inputs.text(type: str)
+- spacy_model: get_sentences.inputs.spacy_model(type: str)
+
+**Outputs**
+
+- result: get_sentences.outputs.result(type: array)
+
+.. _plugin_operation_dffml_operations_nlp_get_similarity:
+
+get_similarity
+~~~~~~~~~~~~~~
+
+*Official*
+
+Calculates similarity between two text strings as a score between 0 and 1.
+
+Parameters
+----------
+text_1 : str
+    First string to compare.
+
+text_2 : str
+    Second string to compare.
+
+spacy_model: str
+    Spacy model to be used for extracting word vectors which are used for calculating similarity.
+
+Returns
+-------
+result: float
+    A similarity score between 0 and 1.
+
+**Stage: processing**
+
+
+
+**Inputs**
+
+- text_1: get_similarity.inputs.text_1(type: str)
+- text_2: get_similarity.inputs.text_2(type: str)
+- spacy_model: get_similarity.inputs.spacy_model(type: str)
+
+**Outputs**
+
+- result: get_similarity.outputs.result(type: float)
+
+.. _plugin_operation_dffml_operations_nlp_lemmatizer:
+
+lemmatizer
+~~~~~~~~~~
+
+*Official*
+
+Reduce words in the text to their dictionary form (lemma)
+
+Parameters
+----------
+text : str
+    String to lemmatize.
+
+spacy_model: str
+    Spacy model to be used for lemmatization.
+
+Returns
+-------
+result: list
+    A list containing base form of the words.
+
+**Stage: processing**
+
+
+
+**Inputs**
+
+- text: lemmatizer.inputs.text(type: str)
+- spacy_model: lemmatizer.inputs.spacy_model(type: str)
+
+**Outputs**
+
+- result: lemmatizer.outputs.result(type: array)
+
+.. _plugin_operation_dffml_operations_nlp_pos_tagger:
+
+pos_tagger
+~~~~~~~~~~
+
+*Official*
+
+Assigns part-of-speech tags to text.
+
+Parameters
+----------
+text : str
+    Text to be tagged.
+
+spacy_model: str
+    A spacy model with tagger and parser.
+
+Returns
+-------
+result: list
+    A list containing tuples of word and their respective pos tag.
+
+**Stage: processing**
+
+
+
+**Inputs**
+
+- text: pos_tagger.inputs.text(type: str)
+- spacy_model: pos_tagger.inputs.spacy_model(type: str)
+- tag_type: pos_tagger.inputs.tag_type(type: str)
+
+**Outputs**
+
+- result: pos_tagger.outputs.result(type: array)
+
+.. _plugin_operation_dffml_operations_nlp_remove_stopwords:
+
+remove_stopwords
+~~~~~~~~~~~~~~~~
+
+*Official*
+
+Removes stopword from text data.
+
+Parameters
+----------
+text : str
+    String to be cleaned.
+
+custom_stop_words: List[str], default = None
+    List of words to be considered as stop words.
+
+Returns
+-------
+result: A string without stop words.
+
+**Stage: processing**
+
+
+
+**Inputs**
+
+- text: remove_stopwords.inputs.text(type: str)
+- custom_stop_words: remove_stopwords.inputs.custom_stop_words(type: array)
+
+**Outputs**
+
+- result: remove_stopwords.outputs.result(type: str)
+
+.. _plugin_operation_dffml_operations_nlp_tfidf_vectorizer:
+
+tfidf_vectorizer
+~~~~~~~~~~~~~~~~
+
+*Official*
+
+Convert a collection of raw documents to a matrix of TF-IDF features using sklearn TfidfVectorizer's `fit_transform` method.
+For details on parameters check https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.TfidfVectorizer.html
+Parameters specific to this operation are described below.
+
+Parameters
+----------
+text : list
+    A list of strings.
+
+get_feature_names: bool
+    If `True` return feature names using get_feature_names method of TfidfVectorizer.
+
+Returns
+-------
+result: list
+    A list containing token counts and feature names if `get_feature_names` is `True`.
+
+**Stage: processing**
+
+
+
+**Inputs**
+
+- text: tfidf_vectorizer.inputs.text(type: array)
+- encoding: tfidf_vectorizer.inputs.encoding(type: str)
+- decode_error: tfidf_vectorizer.inputs.decode_error(type: str)
+- strip_accents: tfidf_vectorizer.inputs.strip_accents(type: str)
+- lowercase: tfidf_vectorizer.inputs.lowercase(type: bool)
+- analyzer: tfidf_vectorizer.inputs.analyzer(type: str)
+- stop_words: tfidf_vectorizer.inputs.stop_words(type: str)
+- token_pattern: tfidf_vectorizer.inputs.token_pattern(type: str)
+- ngram_range: tfidf_vectorizer.inputs.ngram_range(type: array)
+- max_df: tfidf_vectorizer.inputs.max_df(type: str)
+- min_df: tfidf_vectorizer.inputs.min_df(type: str)
+- max_features: tfidf_vectorizer.inputs.max_features(type: str)
+- vocabulary: tfidf_vectorizer.inputs.vocabulary(type: str)
+- binary: tfidf_vectorizer.inputs.binary(type: bool)
+- norm: tfidf_vectorizer.inputs.norm(type: str)
+- use_idf: tfidf_vectorizer.inputs.use_idf(type: bool)
+- smooth_idf: tfidf_vectorizer.inputs.smooth_idf(type: bool)
+- sublinear_tf: tfidf_vectorizer.inputs.sublinear_tf(type: bool)
+- get_feature_names: tfidf_vectorizer.inputs.get_feature_names(type: bool)
+
+**Outputs**
+
+- result: tfidf_vectorizer.outputs.result(type: array)
+
+.. _plugin_operation_dffml_operations_image:
+
+dffml_operations_image
+++++++++++++++++++++++
+
+.. code-block:: console
+
+    pip install dffml-operations-image
+
+
+.. _plugin_operation_dffml_operations_image_Haralick:
+
+Haralick
+~~~~~~~~
+
+*Official*
+
+Computes Haralick texture features
+
+**Stage: processing**
+
+
+
+**Inputs**
+
+- f: Haralick.inputs.f(type: array)
+- ignore_zeros: Haralick.inputs.ignore_zeros(type: bool)
+- preserve_haralick_bug: Haralick.inputs.preserve_haralick_bug(type: bool)
+- compute_14th_feature: Haralick.inputs.compute_14th_feature(type: bool)
+- return_mean: Haralick.inputs.return_mean(type: bool)
+- return_mean_ptp: Haralick.inputs.return_mean_ptp(type: bool)
+- use_x_minus_y_variance: Haralick.inputs.use_x_minus_y_variance(type: bool)
+- distance: Haralick.inputs.distance(type: int)
+
+**Outputs**
+
+- result: Haralick.outputs.result(type: array)
+
+.. _plugin_operation_dffml_operations_image_HuMoments:
+
+HuMoments
+~~~~~~~~~
+
+*Official*
+
+Calculates seven Hu invariants
+
+**Stage: processing**
+
+
+
+**Inputs**
+
+- m: HuMoments.inputs.m(type: array)
+
+**Outputs**
+
+- result: HuMoments.outputs.result(type: array)
+
+.. _plugin_operation_dffml_operations_image_calcHist:
+
+calcHist
+~~~~~~~~
+
+*Official*
+
+Calculates a histogram
+
+**Stage: processing**
+
+
+
+**Inputs**
+
+- images: calcHist.inputs.images(type: array)
+- channels: calcHist.inputs.channels(type: array)
+- mask: calcHist.inputs.mask(type: array)
+- histSize: calcHist.inputs.histSize(type: array)
+- ranges: calcHist.inputs.ranges(type: array)
+
+**Outputs**
+
+- result: calcHist.outputs.result(type: array)
+
+.. _plugin_operation_dffml_operations_image_convert_color:
+
+convert_color
+~~~~~~~~~~~~~
+
+*Official*
+
+Converts images from one color space to another
+
+**Stage: processing**
+
+
+
+**Inputs**
+
+- src: convert_color.inputs.src(type: array)
+- code: convert_color.inputs.code(type: str)
+
+**Outputs**
+
+- result: convert_color.outputs.result(type: array)
+
+.. _plugin_operation_dffml_operations_image_flatten:
+
+flatten
+~~~~~~~
+
+*Official*
+
+No description
+
+**Stage: processing**
+
+
+
+**Inputs**
+
+- array: flatten.inputs.array(type: array)
+
+**Outputs**
+
+- result: flatten.outputs.result(type: array)
+
+.. _plugin_operation_dffml_operations_image_normalize:
+
+normalize
+~~~~~~~~~
+
+*Official*
+
+Normalizes arrays
+
+**Stage: processing**
+
+
+
+**Inputs**
+
+- src: normalize.inputs.src(type: array)
+- alpha: normalize.inputs.alpha(type: int)
+- beta: normalize.inputs.beta(type: int)
+- norm_type: normalize.inputs.norm_type(type: int)
+- dtype: normalize.inputs.dtype(type: int)
+- mask: normalize.inputs.mask(type: array)
+
+**Outputs**
+
+- result: normalize.outputs.result(type: array)
+
+.. _plugin_operation_dffml_operations_image_resize:
+
+resize
+~~~~~~
+
+*Official*
+
+Resizes image array to the specified new dimensions
+
+- If the new dimensions are in 2D, the image is converted to grayscale.
+
+- To enlarge the image (src dimensions < dsize),
+    it will resize the image with INTER_CUBIC interpolation.
+
+- To shrink the image (src dimensions > dsize),
+    it will resize the image with INTER_AREA interpolation
+
+**Stage: processing**
+
+
+
+**Inputs**
+
+- src: resize.inputs.src(type: array)
+- dsize: resize.inputs.dsize(type: array)
+- fx: resize.inputs.fx(type: float)
+- fy: resize.inputs.fy(type: float)
+- interpolation: resize.inputs.interpolation(type: int)
+
+**Outputs**
+
+- result: resize.outputs.result(type: array)
+
+.. _plugin_operation_dffml_operations_deploy:
+
+dffml_operations_deploy
++++++++++++++++++++++++
+
+.. code-block:: console
+
+    pip install dffml-operations-deploy
+
+
+.. _plugin_operation_dffml_operations_deploy_check_if_default_branch:
+
+check_if_default_branch
+~~~~~~~~~~~~~~~~~~~~~~~
+
+*Official*
+
+No description
+
+**Stage: processing**
+
+
+
+**Inputs**
+
+- payload: git_payload(type: Dict[str,Any])
+
+**Outputs**
+
+- is_default_branch: is_default_branch(type: bool)
+
+.. _plugin_operation_dffml_operations_deploy_check_secret_match:
+
+check_secret_match
+~~~~~~~~~~~~~~~~~~
+
+*Official*
+
+No description
+
+**Stage: processing**
+
+
+
+**Inputs**
+
+- headers: webhook_headers(type: Dict[str,Any])
+- body: payload(type: bytes)
+
+**Outputs**
+
+- git_payload: git_payload(type: Dict[str,Any])
+
+**Args**
+
+- secret: Entrypoint
+
+.. _plugin_operation_dffml_operations_deploy_docker_build_image:
+
+docker_build_image
+~~~~~~~~~~~~~~~~~~
+
+*Official*
+
+No description
+
+**Stage: processing**
+
+
+
+**Inputs**
+
+- docker_commands: docker_commands(type: Dict[str,Any])
+
+**Outputs**
+
+- build_status: is_image_built(type: bool)
+
+**Conditions**
+
+- is_default_branch: bool
+- got_running_containers: bool
+
+.. _plugin_operation_dffml_operations_deploy_get_image_tag:
+
+get_image_tag
+~~~~~~~~~~~~~
+
+*Official*
+
+No description
+
+**Stage: processing**
+
+
+
+**Inputs**
+
+- payload: git_payload(type: Dict[str,Any])
+
+**Outputs**
+
+- image_tag: docker_image_tag(type: str)
+
+.. _plugin_operation_dffml_operations_deploy_get_running_containers:
+
+get_running_containers
+~~~~~~~~~~~~~~~~~~~~~~
+
+*Official*
+
+No description
+
+**Stage: processing**
+
+
+
+**Inputs**
+
+- tag: docker_image_tag(type: str)
+
+**Outputs**
+
+- running_containers: docker_running_containers(type: List[str])
+
+.. _plugin_operation_dffml_operations_deploy_get_status_running_containers:
+
+get_status_running_containers
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+*Official*
+
+No description
+
+**Stage: processing**
+
+
+
+**Inputs**
+
+- containers: docker_running_containers(type: List[str])
+
+**Outputs**
+
+- status: got_running_containers(type: bool)
+
+.. _plugin_operation_dffml_operations_deploy_get_url_from_payload:
+
+get_url_from_payload
+~~~~~~~~~~~~~~~~~~~~
+
+*Official*
+
+No description
+
+**Stage: processing**
+
+
+
+**Inputs**
+
+- payload: git_payload(type: Dict[str,Any])
+
+**Outputs**
+
+- url: URL(type: string)
+
+.. _plugin_operation_dffml_operations_deploy_parse_docker_commands:
+
+parse_docker_commands
+~~~~~~~~~~~~~~~~~~~~~
+
+*Official*
+
+No description
+
+**Stage: processing**
+
+
+
+**Inputs**
+
+- repo: git_repository(type: Dict[str, str])
+
+  - directory: str
+  - URL: str(default: None)
+- image_tag: docker_image_tag(type: str)
+
+**Outputs**
+
+- docker_commands: docker_commands(type: Dict[str,Any])
+
+.. _plugin_operation_dffml_operations_deploy_restart_running_containers:
+
+restart_running_containers
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+*Official*
+
+No description
+
+**Stage: processing**
+
+
+
+**Inputs**
+
+- docker_commands: docker_commands(type: Dict[str,Any])
+- containers: docker_running_containers(type: List[str])
+
+**Outputs**
+
+- containers: docker_restarted_containers(type: str)
+
+**Conditions**
+
+- is_image_built: bool
+
+.. _plugin_operation_dffml_operations_binsec:
+
+dffml_operations_binsec
++++++++++++++++++++++++
+
+.. code-block:: console
+
+    pip install dffml-operations-binsec
+
+
+.. _plugin_operation_dffml_operations_binsec_cleanup_rpm:
+
+cleanup_rpm
+~~~~~~~~~~~
+
+*Official*
+
+No description
+
+**Stage: cleanup**
+
+
+
+**Inputs**
+
+- rpm: RPMObject(type: python_obj)
+
+.. _plugin_operation_dffml_operations_binsec_files_in_rpm:
+
+files_in_rpm
+~~~~~~~~~~~~
+
+*Official*
+
+No description
+
+**Stage: processing**
+
+
+
+**Inputs**
+
+- rpm: RPMObject(type: python_obj)
+
+**Outputs**
+
+- files: rpm_filename(type: str)
+
+.. _plugin_operation_dffml_operations_binsec_is_binary_pie:
+
+is_binary_pie
+~~~~~~~~~~~~~
+
+*Official*
+
+No description
+
+**Stage: processing**
+
+
+
+**Inputs**
+
+- rpm: RPMObject(type: python_obj)
+- filename: rpm_filename(type: str)
+
+**Outputs**
+
+- is_pie: binary_is_PIE(type: bool)
+
+.. _plugin_operation_dffml_operations_binsec_url_to_urlbytes:
+
+url_to_urlbytes
+~~~~~~~~~~~~~~~
+
+*Official*
+
+No description
+
+**Stage: processing**
+
+
+
+**Inputs**
+
+- URL: URL(type: string)
+
+**Outputs**
+
+- download: URLBytes(type: python_obj)
+
+.. _plugin_operation_dffml_operations_binsec_urlbytes_to_rpmfile:
+
+urlbytes_to_rpmfile
+~~~~~~~~~~~~~~~~~~~
+
+*Official*
+
+No description
+
+**Stage: processing**
+
+
+
+**Inputs**
+
+- download: URLBytes(type: python_obj)
+
+**Outputs**
+
+- rpm: RPMObject(type: python_obj)
+
+.. _plugin_operation_dffml_operations_binsec_urlbytes_to_tarfile:
+
+urlbytes_to_tarfile
+~~~~~~~~~~~~~~~~~~~
+
+*Official*
+
+No description
+
+**Stage: processing**
+
+
+
+**Inputs**
+
+- download: URLBytes(type: python_obj)
+
+**Outputs**
+
+- rpm: RPMObject(type: python_obj)
+
 .. _plugin_operation_dffml_feature_auth:
 
 dffml_feature_auth
-------------------
+++++++++++++++++++
 
 .. code-block:: console
 

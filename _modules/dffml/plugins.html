@@ -1,0 +1,396 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>dffml.plugins &mdash; DFFML 0.4.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/tabs.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/tabs.js"></script>
+        <script src="../../_static/copybutton.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="author" title="About these documents" href="../../about.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> DFFML
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.4.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Introduction</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../concepts/index.html">Concepts</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Usage</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../quickstart/model.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples/index.html">Examples</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../plugins/index.html">Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cli.html">Command Line</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../plugins/service/http/index.html">HTTP API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../troubleshooting.html">Troubleshooting</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Subprojects</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../shouldi.html">shouldi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../swportal.html">Software Portal</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Community</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/intel/dffml">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://intel.github.io/dffml/master/">Master Branch Docs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../publications.html">Publications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contact.html">Contact Us</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing/index.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../news/index.html">News</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../changelog.html">Changelog</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">DFFML</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>dffml.plugins</li>
+    
+    
+
+
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+
+
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for dffml.plugins</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This file is imported by the top level setup.py and therefore must remain as</span>
+<span class="sd">independent as possible (no relative imports)</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">pathlib</span>
+<span class="kn">import</span> <span class="nn">inspect</span>
+<span class="kn">import</span> <span class="nn">platform</span>
+<span class="kn">import</span> <span class="nn">tempfile</span>
+<span class="kn">import</span> <span class="nn">contextlib</span>
+<span class="kn">import</span> <span class="nn">subprocess</span>
+<span class="kn">import</span> <span class="nn">importlib.util</span>
+
+
+<span class="k">def</span> <span class="nf">inpath</span><span class="p">(</span><span class="n">binary</span><span class="p">):</span>
+    <span class="k">return</span> <span class="nb">any</span><span class="p">(</span>
+        <span class="nb">list</span><span class="p">(</span>
+            <span class="nb">map</span><span class="p">(</span>
+                <span class="k">lambda</span> <span class="n">dirname</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dirname</span><span class="p">,</span> <span class="n">binary</span><span class="p">)),</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;PATH&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">),</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
+
+
+<span class="c1"># List of plugins</span>
+<span class="n">CORE_PLUGINS</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">(</span><span class="s2">&quot;configloader&quot;</span><span class="p">,</span> <span class="s2">&quot;yaml&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;configloader&quot;</span><span class="p">,</span> <span class="s2">&quot;image&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;model&quot;</span><span class="p">,</span> <span class="s2">&quot;scratch&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;model&quot;</span><span class="p">,</span> <span class="s2">&quot;scikit&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;model&quot;</span><span class="p">,</span> <span class="s2">&quot;tensorflow&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;model&quot;</span><span class="p">,</span> <span class="s2">&quot;tensorflow_hub&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;model&quot;</span><span class="p">,</span> <span class="s2">&quot;vowpalWabbit&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;model&quot;</span><span class="p">,</span> <span class="s2">&quot;xgboost&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;model&quot;</span><span class="p">,</span> <span class="s2">&quot;pytorch&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;model&quot;</span><span class="p">,</span> <span class="s2">&quot;spacy&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;model&quot;</span><span class="p">,</span> <span class="s2">&quot;daal4py&quot;</span><span class="p">),</span>
+<span class="p">]</span>
+
+<span class="c1"># Models which currently don&#39;t support Windows or MacOS</span>
+<span class="k">if</span> <span class="n">platform</span><span class="o">.</span><span class="n">system</span><span class="p">()</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">&quot;Windows&quot;</span><span class="p">,</span> <span class="s2">&quot;Darwin&quot;</span><span class="p">}:</span>
+    <span class="n">CORE_PLUGINS</span> <span class="o">+=</span> <span class="p">[</span>
+        <span class="p">(</span><span class="s2">&quot;model&quot;</span><span class="p">,</span> <span class="s2">&quot;autosklearn&quot;</span><span class="p">),</span>
+    <span class="p">]</span>
+
+<span class="n">CORE_PLUGINS</span> <span class="o">+=</span> <span class="p">[</span>
+    <span class="p">(</span><span class="s2">&quot;examples&quot;</span><span class="p">,</span> <span class="s2">&quot;shouldi&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;feature&quot;</span><span class="p">,</span> <span class="s2">&quot;git&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;feature&quot;</span><span class="p">,</span> <span class="s2">&quot;auth&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;operations&quot;</span><span class="p">,</span> <span class="s2">&quot;binsec&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;operations&quot;</span><span class="p">,</span> <span class="s2">&quot;deploy&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;operations&quot;</span><span class="p">,</span> <span class="s2">&quot;image&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;operations&quot;</span><span class="p">,</span> <span class="s2">&quot;nlp&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;service&quot;</span><span class="p">,</span> <span class="s2">&quot;http&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;source&quot;</span><span class="p">,</span> <span class="s2">&quot;mysql&quot;</span><span class="p">),</span>
+<span class="p">]</span>
+
+
+<div class="viewcode-block" id="python_package_installed"><a class="viewcode-back" href="../../api/plugins.html#dffml.plugins.python_package_installed">[docs]</a><span class="k">def</span> <span class="nf">python_package_installed</span><span class="p">(</span><span class="n">module_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Check if a Python package is installed and can be imported</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">spec</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">with</span> <span class="n">contextlib</span><span class="o">.</span><span class="n">suppress</span><span class="p">(</span><span class="ne">ModuleNotFoundError</span><span class="p">):</span>
+        <span class="n">spec</span> <span class="o">=</span> <span class="n">importlib</span><span class="o">.</span><span class="n">util</span><span class="o">.</span><span class="n">find_spec</span><span class="p">(</span><span class="n">module_name</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="n">spec</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span></div>
+
+
+<span class="c1"># Dependencies of plugins and how to check if they exist on the system or not</span>
+<span class="n">CORE_PLUGIN_DEPS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="p">(</span><span class="s2">&quot;model&quot;</span><span class="p">,</span> <span class="s2">&quot;autosklearn&quot;</span><span class="p">):</span> <span class="p">{</span>
+        <span class="s2">&quot;swig&quot;</span><span class="p">:</span> <span class="k">lambda</span><span class="p">:</span> <span class="n">inpath</span><span class="p">(</span><span class="s2">&quot;swig&quot;</span><span class="p">),</span>
+        <span class="s2">&quot;cython&quot;</span><span class="p">:</span> <span class="k">lambda</span><span class="p">:</span> <span class="n">inpath</span><span class="p">(</span><span class="s2">&quot;cython&quot;</span><span class="p">),</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="n">platform</span><span class="o">.</span><span class="n">system</span><span class="p">()</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">&quot;Windows&quot;</span><span class="p">,</span> <span class="s2">&quot;Darwin&quot;</span><span class="p">}</span>
+    <span class="ow">and</span> <span class="ow">not</span> <span class="n">python_package_installed</span><span class="p">(</span><span class="s2">&quot;autosklearn&quot;</span><span class="p">)</span>
+    <span class="k">else</span> <span class="p">{},</span>
+<span class="p">}</span>
+
+<span class="c1"># All packages under configloader/ are really named dffml-config-{name}</span>
+<span class="n">ALTERNATIVES</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;configloader&quot;</span><span class="p">:</span> <span class="s2">&quot;config&quot;</span><span class="p">}</span>
+
+<span class="c1"># Build a dict of plugin_type_name (aka model, config): list(package_names)</span>
+<span class="k">def</span> <span class="nf">package_names_by_plugin</span><span class="p">(</span><span class="n">validation</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="n">by_plugin</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="p">(</span><span class="n">plugin_type</span> <span class="o">+</span> <span class="p">(</span><span class="s2">&quot;s&quot;</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">plugin_type</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;s&quot;</span><span class="p">)</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span><span class="p">)):</span> <span class="p">[</span>
+            <span class="s2">&quot;dffml-</span><span class="si">%s</span><span class="s2">-</span><span class="si">%s</span><span class="s2">&quot;</span>
+            <span class="o">%</span> <span class="p">(</span>
+                <span class="n">ALTERNATIVES</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">plugin_type</span><span class="p">,</span> <span class="n">plugin_type</span><span class="p">),</span>
+                <span class="n">name</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">,</span> <span class="s2">&quot;-&quot;</span><span class="p">),</span>
+            <span class="p">)</span>
+            <span class="k">for</span> <span class="n">sub_plugin_type</span><span class="p">,</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">CORE_PLUGINS</span>
+            <span class="k">if</span> <span class="n">sub_plugin_type</span> <span class="o">==</span> <span class="n">plugin_type</span>
+            <span class="ow">and</span> <span class="p">(</span><span class="ow">not</span> <span class="n">validation</span> <span class="ow">or</span> <span class="n">validation</span><span class="p">(</span><span class="n">sub_plugin_type</span><span class="p">,</span> <span class="n">name</span><span class="p">))</span>
+        <span class="p">]</span>
+        <span class="k">for</span> <span class="n">plugin_type</span><span class="p">,</span> <span class="n">plugin_name</span> <span class="ow">in</span> <span class="n">CORE_PLUGINS</span>
+        <span class="k">if</span> <span class="n">plugin_type</span> <span class="o">!=</span> <span class="s2">&quot;examples&quot;</span>
+    <span class="p">}</span>
+    <span class="c1"># Operations used to be named features</span>
+    <span class="n">by_plugin</span><span class="p">[</span><span class="s2">&quot;operations&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">by_plugin</span><span class="p">[</span><span class="s2">&quot;features&quot;</span><span class="p">])</span>
+    <span class="k">del</span> <span class="n">by_plugin</span><span class="p">[</span><span class="s2">&quot;features&quot;</span><span class="p">]</span>
+
+    <span class="c1"># All packages</span>
+    <span class="n">by_plugin</span><span class="p">[</span><span class="s2">&quot;all&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s2">&quot;dffml-</span><span class="si">%s</span><span class="s2">-</span><span class="si">%s</span><span class="s2">&quot;</span>
+        <span class="o">%</span> <span class="p">(</span><span class="n">ALTERNATIVES</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">plugin_type</span><span class="p">,</span> <span class="n">plugin_type</span><span class="p">),</span> <span class="n">name</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">,</span> <span class="s2">&quot;-&quot;</span><span class="p">),)</span>
+        <span class="k">for</span> <span class="n">plugin_type</span><span class="p">,</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">CORE_PLUGINS</span>
+        <span class="k">if</span> <span class="n">plugin_type</span> <span class="o">!=</span> <span class="s2">&quot;examples&quot;</span>
+        <span class="ow">and</span> <span class="p">(</span><span class="ow">not</span> <span class="n">validation</span> <span class="ow">or</span> <span class="n">validation</span><span class="p">(</span><span class="n">plugin_type</span><span class="p">,</span> <span class="n">name</span><span class="p">))</span>
+    <span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">by_plugin</span>
+
+
+<span class="n">PACKAGE_NAMES_BY_PLUGIN</span> <span class="o">=</span> <span class="n">package_names_by_plugin</span><span class="p">()</span>
+
+<span class="c1"># Same as PACKAGE_NAMES_BY_PLUGIN but only with plugins that have all their</span>
+<span class="c1"># pre-install dependencies met</span>
+<span class="n">PACKAGE_NAMES_BY_PLUGIN_INSTALLABLE</span> <span class="o">=</span> <span class="n">package_names_by_plugin</span><span class="p">(</span>
+    <span class="k">lambda</span> <span class="n">plugin_type</span><span class="p">,</span> <span class="n">plugin_name</span><span class="p">:</span> <span class="nb">all</span><span class="p">(</span>
+        <span class="nb">map</span><span class="p">(</span>
+            <span class="k">lambda</span> <span class="n">check</span><span class="p">:</span> <span class="n">check</span><span class="p">(),</span>
+            <span class="n">CORE_PLUGIN_DEPS</span><span class="o">.</span><span class="n">get</span><span class="p">((</span><span class="n">plugin_type</span><span class="p">,</span> <span class="n">plugin_name</span><span class="p">),</span> <span class="p">{})</span><span class="o">.</span><span class="n">values</span><span class="p">(),</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">package_names_to_directory</span><span class="p">(</span><span class="n">validation</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="n">pkgs</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">plugin_type</span><span class="p">,</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">CORE_PLUGINS</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">plugin_type</span> <span class="o">==</span> <span class="s2">&quot;examples&quot;</span><span class="p">:</span>
+            <span class="n">pkg</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">pkg</span> <span class="o">=</span> <span class="s2">&quot;dffml-</span><span class="si">%s</span><span class="s2">-</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span>
+                <span class="n">ALTERNATIVES</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">plugin_type</span><span class="p">,</span> <span class="n">plugin_type</span><span class="p">),</span>
+                <span class="n">name</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">,</span> <span class="s2">&quot;-&quot;</span><span class="p">),</span>
+            <span class="p">)</span>
+        <span class="n">pkgs</span><span class="p">[</span><span class="n">pkg</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">plugin_type</span><span class="p">,</span>
+            <span class="n">name</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">pkgs</span>
+
+
+<span class="n">PACKAGE_NAMES_TO_DIRECTORY</span> <span class="o">=</span> <span class="n">package_names_to_directory</span><span class="p">()</span>
+<span class="n">PACKAGE_DIRECTORY_TO_NAME</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+    <span class="nb">zip</span><span class="p">(</span>
+        <span class="n">PACKAGE_NAMES_TO_DIRECTORY</span><span class="o">.</span><span class="n">values</span><span class="p">(),</span> <span class="n">PACKAGE_NAMES_TO_DIRECTORY</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2017 - 2021, Intel.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

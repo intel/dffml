@@ -2,16 +2,26 @@ API Reference
 =============
 
 .. toctree::
-   :glob:
-   :maxdepth: 2
-   :caption: Contents:
+    :glob:
+    :maxdepth: 2
+    :caption: Contents:
 
-   high_level
-   base
-   df/index
-   feature
-   record
-   model/index
-   source/index
-   db/index
-   util/index
+    version
+    noasync
+    record
+    high_level
+    plugins
+    base
+    log
+    port/index
+    source/index
+    configloader/index
+    db/index
+    operation/index
+    model/index
+    util/index
+    df/index
+    secret/index
+    cli/index
+    feature/index
+    service/index

@@ -15,7 +15,7 @@ To install black in the environment
 
 .. code-block:: console
 
-    $ pip install black
+    $ pip install black==19.10b0
 
 Run the `black <https://github.com/psf/black>`_ formatter on all Python files.
 

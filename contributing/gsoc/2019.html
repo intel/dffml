@@ -1,0 +1,370 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>GSoC 2019 &mdash; DFFML 0.4.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/tabs.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/copybutton.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="author" title="About these documents" href="../../about.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Maintainer Docs" href="../maintainers.html" />
+    <link rel="prev" title="GSoC 2020" href="2020.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> DFFML
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.4.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Introduction</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../concepts/index.html">Concepts</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Usage</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../quickstart/model.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples/index.html">Examples</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../plugins/index.html">Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cli.html">Command Line</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../plugins/service/http/index.html">HTTP API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../troubleshooting.html">Troubleshooting</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Subprojects</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../shouldi.html">shouldi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../swportal.html">Software Portal</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Community</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference external" href="https://github.com/intel/dffml">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://intel.github.io/dffml/master/">Master Branch Docs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../publications.html">Publications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contact.html">Contact Us</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Contributing</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../dev_community.html">What To Work On</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dev_env.html">Getting Set Up To Work On DFFML</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../style.html">Style</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../codebase.html">Codebase Layout And Notes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../git.html">Git and GitHub</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../testing.html">Testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../docs.html">Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../consoletest.html">consoletest Sphinx extension</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../debugging.html">Debugging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../editors/index.html">Setting Up Your Editor</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Google Summer of Code</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="rubric.html">Proposal Grading Rubric</a></li>
+<li class="toctree-l3"><a class="reference internal" href="2021.html">GSoC 2021</a></li>
+<li class="toctree-l3"><a class="reference internal" href="2020.html">GSoC 2020</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">GSoC 2019</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#student-contributions">Student Contributions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#about-the-dffml">About the DFFML</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#project-ideas">Project Ideas</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#getting-started">Getting Started</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#writing-your-gsoc-application">Writing your GSoC application</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#contacting-the-dffml-team">Contacting the DFFML team</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#thanks">Thanks</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../maintainers.html">Maintainer Docs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../news/index.html">News</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../changelog.html">Changelog</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">DFFML</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Contributing</a> &raquo;</li>
+        
+          <li><a href="index.html">Google Summer of Code</a> &raquo;</li>
+        
+      <li>GSoC 2019</li>
+    
+    
+
+
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            
+              <a href="https://github.com/intel/dffml/blob/master/docs/contributing/gsoc/2019.md" class="fa fa-github"> Edit on GitHub</a>
+            
+          
+        
+      </li>
+    
+
+
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="gsoc-2019">
+<h1>GSoC 2019<a class="headerlink" href="#gsoc-2019" title="Permalink to this headline">¶</a></h1>
+<p>DFFML participated in Google Summer of Code under the Python Software Foundation umbrella. You can read all about what this means at http://python-gsoc.org/</p>
+<div class="section" id="student-contributions">
+<h2>Student Contributions<a class="headerlink" href="#student-contributions" title="Permalink to this headline">¶</a></h2>
+<p>Huge thanks to our students of the 2019 GSoC program who significantly grew
+DFFML’s capabilities in using machine learning models and accessing various data
+sources. As well as various bug fixes.</p>
+<div class="section" id="sudharsana-sudharsana-kjl">
+<h3>Sudharsana <a class="reference external" href="https://github.com/sudharsana-kjl">&#64;sudharsana-kjl</a><a class="headerlink" href="#sudharsana-sudharsana-kjl" title="Permalink to this headline">¶</a></h3>
+<p>Project: Labeled and Versioned data sources and expansion of data source
+backends.</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/intel/dffml/pull/145">Data Source for HDFS</a></p></li>
+<li><p><a class="reference external" href="https://github.com/intel/dffml/pull/114">Data Source for MySQL protcol databases</a></p></li>
+<li><p><a class="reference external" href="https://github.com/intel/dffml/commit/1f8520137914052025d1002c004e9b5fb3df7257">CSVSource allows for setting the Repo’s <code class="docutils literal notranslate"><span class="pre">src_url</span></code> from a csv column</a></p></li>
+<li><p><a class="reference external" href="https://github.com/intel/dffml/commit/2302fb88e34319628ca49670eef234330702238d">source: json: Load JSON and patch label in dump</a></p></li>
+<li><p><a class="reference external" href="https://github.com/intel/dffml/commit/75103bb8f31f53c3cb4a07d3b45a7a6550af6ab2">Labels for JSON sources</a></p></li>
+<li><p><a class="reference external" href="https://github.com/intel/dffml/commit/c854e40f530a4109d2326ef70b541625e3b0877b">Labels for CSV sources</a></p></li>
+<li><p><a class="reference external" href="https://github.com/intel/dffml/commit/ba31ae715f0ff219ca36b99b5a912e598427a8c2">source: csv: Add update functionality</a></p></li>
+<li><p><a class="reference external" href="https://github.com/intel/dffml/commit/fd0ae3159c969e7969a1fe7d471b73421c30189d">Added support for zip file source</a></p></li>
+<li><p><a class="reference external" href="https://github.com/intel/dffml/commit/0ac6d8afa99c3b8d68f0cb4318922fe0f2836182">Git feature cloc logs if no binaries are in path</a></p></li>
+<li><p><a class="reference external" href="https://github.com/intel/dffml/commit/5b3a9702eafc5884f318a9c2dc47007b4a925d8b">util: testing: FileSourceTest fix random call</a></p></li>
+</ul>
+</div>
+<div class="section" id="yash-yashlamba">
+<h3>Yash <a class="reference external" href="https://github.com/yashlamba">&#64;yashlamba</a><a class="headerlink" href="#yash-yashlamba" title="Permalink to this headline">¶</a></h3>
+<p>Project: Addition of new Machine Learning Models written from scratch and using
+SciKit <code class="docutils literal notranslate"><span class="pre">sklearn</span></code> APIs.</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/intel/dffml/commit/7afd85a85ee48f1ba45631b2e193d51c91eaab61">Multiple Scikit Models with dynamic config</a></p></li>
+<li><p><a class="reference external" href="https://github.com/intel/dffml/commit/bab734e45500e16b5cedf307042164d7b9d2ee7d">model: scikit: corrected entry points</a></p></li>
+<li><p><a class="reference external" href="https://github.com/intel/dffml/commit/4cb581b92cf4aa22de83cb98f891d2ac6b576c50">Simple Linear Regression model from scratch</a></p></li>
+<li><p><a class="reference external" href="https://github.com/intel/dffml/commit/5384eb27e4809a2685a8a64ba9c25a59a7aff0be">Scikit Linear Regression model</a></p></li>
+<li><p><a class="reference external" href="https://github.com/intel/dffml/commit/784a1b5d340ed3875553e22e4d3047f68c603735">Added support for Gzip file source</a></p></li>
+<li><p><a class="reference external" href="https://github.com/intel/dffml/commit/a7f1089e40b0801c2c74b645b881e487bf6fdfc9">Added support for lzma file source. Added support for xz file source</a></p></li>
+<li><p><a class="reference external" href="https://github.com/intel/dffml/commit/c7c45c1dd480cd4943043a319c491a2116e77b87">Added support for bz2 file source</a></p></li>
+<li><p><a class="reference external" href="https://github.com/intel/dffml/commit/bb67660df275ab81c640d2ffd3a792b2869a47ac">docs: Fixed a few typos and grammatical errors</a></p></li>
+<li><p><a class="reference external" href="https://github.com/intel/dffml/commit/586e5be4cb69d6d179564fa26a30ce1dc13ecf44">README: Add link to CONTRIBUTING.md</a></p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="about-the-dffml">
+<h2>About the DFFML<a class="headerlink" href="#about-the-dffml" title="Permalink to this headline">¶</a></h2>
+<p>DFFML is a plugin based library / framework for machine learning. It allows users to wrap high or low level implementations of models that use various machine learning libraries, so as to interact will lots of different model implementations in the same way.</p>
+<p>DFFML is also a tool for dataset generation. DFFML defines a <code class="docutils literal notranslate"><span class="pre">Feature</span></code> abstract base class which is responsible for generating feature data given a unique key.</p>
+</div>
+<div class="section" id="project-ideas">
+<h2>Project Ideas<a class="headerlink" href="#project-ideas" title="Permalink to this headline">¶</a></h2>
+<p>We currently have three project ideas, you can read about them and discuss in their respective issues:</p>
+<ol class="simple">
+<li><p><a class="reference external" href="https://github.com/intel/dffml/issues/15">GSoC 2019 Project Idea: File Source Compression</a>. (Difficulty: easy)</p></li>
+<li><p><a class="reference external" href="https://github.com/intel/dffml/issues/9">GSoC 2019 Project Idea: Labeled and Versioned Datasets</a>. (Difficulty: intermediate)</p></li>
+<li><p><a class="reference external" href="https://github.com/intel/dffml/issues/10">GSoC 2019 Project Idea: YOLO/darknet Model</a> (Difficulty: hard)</p></li>
+</ol>
+<p>If you’ve got a brilliant idea you’d like to propose, please make a new issue with the <code class="docutils literal notranslate"><span class="pre">gsoc</span></code> and <code class="docutils literal notranslate"><span class="pre">project</span></code> tags to discuss it! Students are also welcome to add “stretch goal” ideas to their application if they’d like to start with one of our ideas but have a few extra feature ideas of their own they’d like to work on at the end of the summer if everything stays on schedule.  <a class="reference external" href="https://github.com/intel/dffml/issues">Take a look at the current open issues to see what users want</a>. Issues which we’ve talked to someone who would use this as a part of their product or service for their business have the label <code class="docutils literal notranslate"><span class="pre">customer</span></code>. Those are cool because we know they will get used!</p>
+</div>
+<div class="section" id="getting-started">
+<h2>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Follow the <a class="reference external" href="https://github.com/intel/dffml/blob/master/README.md">README</a> and make sure you can run the tensorflow and git examples, Looking at the <a class="reference external" href="https://travis-ci.org/intel/dffml">Travis CI</a> may come in handy here.</p></li>
+<li><p><a class="reference external" href="https://github.com/intel/dffml/tree/master/tests">Run the tests</a>. DFFML has unit tests which are at about 90% coverage (amount of lines of code tested) for the main library, the <a class="reference external" href="https://github.com/intel/dffml/tree/master/feature/git/tests">Git features</a>, and the <a class="reference external" href="https://github.com/intel/dffml/tree/master/model/tensorflow/tests">Tensorflow model</a>. Make sure you know how to run them, and if you’ve never done Python unittests before you might want to <a class="reference external" href="https://docs.python.org/3/library/unittest.html">read up on python’s unittest library</a>.  Figure out how to run a single test! Running one test instead of all of them will speed up your workflow when you are writing your tests!</p></li>
+<li><p>Make your first contribution!</p>
+<ul>
+<li><p>Work on anything labeled <a class="reference external" href="https://github.com/intel/dffml/labels/good%20first%20issue">good first issue</a>.</p></li>
+<li><p>Help us increase the test coverage in any of the packages (check out the python package <code class="docutils literal notranslate"><span class="pre">coverage</span></code> to learn how to do this).</p></li>
+<li><p>Write a <a class="reference external" href="https://github.com/intel/dffml/issues/13">new feature</a>! Features can do anything you want, they generate some data based on a unique key, think of them like a scraper, see the <a class="reference external" href="https://github.com/intel/dffml/tree/master/docs/tutorial/FEATURE.md">new feature guide</a> for more info. Make sure to include tests!</p></li>
+<li><p>Write a <a class="reference external" href="https://github.com/intel/dffml/issues/29">new model</a>! Models are wrappers around any machine learning implementation or library, see the <a class="reference external" href="https://github.com/intel/dffml/tree/master/docs/tutorial/MODEL.md">new model guide</a> for more info. Make sure to include tests!</p></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="writing-your-gsoc-application">
+<h2>Writing your GSoC application<a class="headerlink" href="#writing-your-gsoc-application" title="Permalink to this headline">¶</a></h2>
+<p>Instructions on <a class="reference external" href="http://python-gsoc.org/#apply">How to apply</a> can be found on the Python GSoC website.
+Please don’t forget to use our name (<strong>dffml</strong>) in your application title!</p>
+</div>
+<div class="section" id="contacting-the-dffml-team">
+<h2>Contacting the DFFML team<a class="headerlink" href="#contacting-the-dffml-team" title="Permalink to this headline">¶</a></h2>
+<p>Most of our communication will take place in the <a class="reference external" href="https://github.com/intel/dffml/labels/gsoc">issue tracker under the label ‘gsoc’</a>.  Not sure where to ask?  <a class="reference external" href="https://github.com/intel/dffml/issues/12">Try here!</a></p>
+<p>IRC: Contact us using the main python-gsoc channel, #python-gsoc on freenode. (<a class="reference external" href="http://python-gsoc.org/index.html#contact">How to connect.</a>).  Note that all our developers are located in US Pacific Standard time at this time.</p>
+</div>
+<div class="section" id="thanks">
+<h2>Thanks<a class="headerlink" href="#thanks" title="Permalink to this headline">¶</a></h2>
+<p>Thanks to <a class="reference external" href="https://github.com/terriko">Terri</a> for helping DFFML be a part of GSoC and letting us copy her format she used for <a class="reference external" href="https://github.com/intel/cve-bin-tool">CVE Binary Tool</a>, another awesome project with a security focus that’s a part of GSoC 2019.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="../maintainers.html" class="btn btn-neutral float-right" title="Maintainer Docs" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="2020.html" class="btn btn-neutral float-left" title="GSoC 2020" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2017 - 2021, Intel.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

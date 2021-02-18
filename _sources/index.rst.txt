@@ -17,7 +17,11 @@ Welcome to DFFML!
     :target: https://pypi.org/project/dffml
     :alt: PyPI version
 
-Training and using machine learning models as simple as
+You can use DFFML from the :doc:`Command Line <cli>`, :doc:`Python
+<api/high_level>`, or the :doc:`HTTP API <plugins/service/http/index>`, see the
+:doc:`quickstart/model` to get started right away.
+
+It makes training and using machine learning models as simple as
 
 .. literalinclude:: /../examples/quickstart.py
 
@@ -28,9 +32,6 @@ Output:
     Accuracy: 1.0
     {'Years': 6, 'Expertise': 13, 'Trust': 0.7, 'Salary': 70.0}
     {'Years': 7, 'Expertise': 15, 'Trust': 0.8, 'Salary': 80.0}
-
-You can use DFFML from the command line, Python, or the HTTP API, see the
-:doc:`quickstart/model` to get started right away.
 
 This is the documentation for the latest release, documentation for the master
 branch can be found `here <master/index.html>`_.
@@ -47,11 +48,11 @@ branch can be found `here <master/index.html>`_.
 .. toctree::
     :glob:
     :maxdepth: 2
-    :caption: Examples
+    :caption: Usage
 
     quickstart/model
     tutorials/index
-    usage/index
+    examples/index
 
 .. toctree::
     :glob:
@@ -62,6 +63,15 @@ branch can be found `here <master/index.html>`_.
     cli
     plugins/service/http/index
     api/index
+    troubleshooting
+
+.. toctree::
+    :glob:
+    :maxdepth: 2
+    :caption: Subprojects
+
+    shouldi
+    swportal
 
 .. toctree::
     :glob:
@@ -69,9 +79,11 @@ branch can be found `here <master/index.html>`_.
     :caption: Community
 
     GitHub <https://github.com/intel/dffml>
+    Master Branch Docs <https://intel.github.io/dffml/master/>
     publications
     contact
     contributing/index
+    news/index
     changelog
 
 Indices and tables
