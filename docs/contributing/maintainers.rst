@@ -43,14 +43,27 @@ Doing a Release
 
 - Commit the new version
 
+- Push the new version to master
+
+- Create a major.minor bugfix branch if it does not exist. Switch to it if it
+  does
+
+- Pin all the dependencies
+
 - Tag a release
+
+- Push the new branch (if created) and the tag
 
 .. code-block:: console
 
     $ dffml service dev bump packages 0.0.1
-    $ dffml service dev bump main
     $ dffml service dev bump inter
-    $ dffml service dev ci pindeps
     $ sed -i "s/Unreleased]/$(dffml service dev setuppy version dffml/version.py)] - $(date +%F)/" CHANGELOG.md
-    $ git c "release: Version $(dffml service dev setuppy version dffml/version.py)"
+    $ git status
+    $ git commit -sam "release: Version $(dffml service dev setuppy version dffml/version.py)"
+    $ git push
+    $ git checkout -b N.N.x || git checkout N.N.x
+    $ dffml service dev ci pindeps path/to/extracted/logs_NNNNN
     $ git tag $(dffml service dev setuppy version dffml/version.py)
+    $ git push -u origin N.N.x
+    $ git push --tags
