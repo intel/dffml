@@ -678,14 +678,15 @@ bump
 
 Utilities for bumping version numbers.
 
-main
-____
+inter
+_____
 
-Update the version of DFFML used by all of the plugins.
+Update the version of DFFML used by all of the plugins. Update all the
+interdepent plugin versions
 
 .. code-block:: console
 
-    dffml service dev bump main
+    dffml service dev bump inter
 
 packages
 ________
