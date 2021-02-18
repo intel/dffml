@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>dffml.service.dev &mdash; DFFML f54e5d7f documentation</title>
+  <title>dffml.service.dev &mdash; DFFML d0a24b52 documentation</title>
   
 
   
@@ -65,7 +65,7 @@
             
             
               <div class="version">
-                f54e5d7f
+                d0a24b52
               </div>
             
           
@@ -791,25 +791,51 @@
                             <span class="k">raise</span> <span class="ne">RuntimeError</span></div>
 
 
-<div class="viewcode-block" id="BumpMain"><a class="viewcode-back" href="../../../api/service/dev.html#dffml.service.dev.BumpMain">[docs]</a><span class="k">class</span> <span class="nc">BumpMain</span><span class="p">(</span><span class="n">CMD</span><span class="p">):</span>
+<div class="viewcode-block" id="BumpInter"><a class="viewcode-back" href="../../../api/service/dev.html#dffml.service.dev.BumpInter">[docs]</a><span class="k">class</span> <span class="nc">BumpInter</span><span class="p">(</span><span class="n">CMD</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Bump the version number of the main package within the dependency list of</span>
-<span class="sd">    each plugin.</span>
+<span class="sd">    Bump the version number of other plugins within the dependency list of</span>
+<span class="sd">    each plugin. This is for interdependent plugins.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">async</span> <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">main_package</span> <span class="o">=</span> <span class="n">is_develop</span><span class="p">(</span><span class="s2">&quot;dffml&quot;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">main_package</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
-                <span class="s2">&quot;Need to reinstall the main package in development mode.&quot;</span>
+        <span class="c1"># Map package names to their versions</span>
+        <span class="n">package_name_to_version</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="n">name</span><span class="p">:</span> <span class="p">(</span>
+                <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span>
+                    <span class="n">name</span> <span class="o">+</span> <span class="sa">r</span><span class="s2">&quot;&gt;=[0-9]+\.[0-9]+\..*$&quot;</span><span class="p">,</span> <span class="n">flags</span><span class="o">=</span><span class="n">re</span><span class="o">.</span><span class="n">MULTILINE</span>
+                <span class="p">),</span>
+                <span class="n">parse_version</span><span class="p">(</span>
+                    <span class="n">REPO_ROOT</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span>
+                        <span class="o">*</span><span class="n">directory</span><span class="p">,</span> <span class="n">name</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="s2">&quot;_&quot;</span><span class="p">),</span> <span class="s2">&quot;version.py&quot;</span>
+                    <span class="p">)</span>
+                <span class="p">),</span>
             <span class="p">)</span>
-        <span class="c1"># TODO Implement this in Python</span>
-        <span class="n">proc</span> <span class="o">=</span> <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">create_subprocess_exec</span><span class="p">(</span>
-            <span class="s2">&quot;bash&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">main_package</span><span class="p">,</span> <span class="s2">&quot;scripts&quot;</span><span class="p">,</span> <span class="s2">&quot;bump_deps.sh&quot;</span><span class="p">))</span>
-        <span class="p">)</span>
-        <span class="k">await</span> <span class="n">proc</span><span class="o">.</span><span class="n">wait</span><span class="p">()</span>
-        <span class="k">if</span> <span class="n">proc</span><span class="o">.</span><span class="n">returncode</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">RuntimeError</span></div>
+            <span class="k">for</span> <span class="n">directory</span><span class="p">,</span> <span class="n">name</span> <span class="ow">in</span> <span class="p">{</span>
+                <span class="s2">&quot;.&quot;</span><span class="p">:</span> <span class="s2">&quot;dffml&quot;</span><span class="p">,</span>
+                <span class="o">**</span><span class="n">PACKAGE_DIRECTORY_TO_NAME</span><span class="p">,</span>
+            <span class="p">}</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+        <span class="p">}</span>
+        <span class="c1"># Go through each plugin</span>
+        <span class="k">for</span> <span class="n">directory</span><span class="p">,</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">PACKAGE_DIRECTORY_TO_NAME</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="c1"># Update all the setup.cfg files</span>
+            <span class="n">setup_cfg_path</span> <span class="o">=</span> <span class="n">REPO_ROOT</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="o">*</span><span class="n">directory</span><span class="p">,</span> <span class="s2">&quot;setup.cfg&quot;</span><span class="p">)</span>
+            <span class="n">setup_cfg_contents</span> <span class="o">=</span> <span class="n">setup_cfg_path</span><span class="o">.</span><span class="n">read_text</span><span class="p">()</span>
+            <span class="c1"># Go through each plugin, check if it exists within the setup.cfg</span>
+            <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="p">(</span><span class="n">regex</span><span class="p">,</span> <span class="n">version</span><span class="p">)</span> <span class="ow">in</span> <span class="n">package_name_to_version</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">update_to</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&gt;=</span><span class="si">{</span><span class="n">version</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="n">setup_cfg_contents</span><span class="p">,</span> <span class="n">number_of_subs_made</span> <span class="o">=</span> <span class="n">regex</span><span class="o">.</span><span class="n">subn</span><span class="p">(</span>
+                    <span class="n">update_to</span><span class="p">,</span> <span class="n">setup_cfg_contents</span>
+                <span class="p">)</span>
+                <span class="k">if</span> <span class="n">number_of_subs_made</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot;Updated </span><span class="si">{</span><span class="n">setup_cfg_path</span><span class="si">}</span><span class="s2"> to use </span><span class="si">{</span><span class="n">update_to</span><span class="si">}</span><span class="s2">&quot;</span>
+                    <span class="p">)</span>
+            <span class="c1"># If it does, overwrite the old version with the new version</span>
+            <span class="n">setup_cfg_path</span><span class="o">.</span><span class="n">write_text</span><span class="p">(</span><span class="n">setup_cfg_contents</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="RCMissingHyphen"><a class="viewcode-back" href="../../../api/service/dev.html#dffml.service.dev.RCMissingHyphen">[docs]</a><span class="k">class</span> <span class="nc">RCMissingHyphen</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="k">pass</span></div>
 
 
 <div class="viewcode-block" id="BumpPackagesConfig"><a class="viewcode-back" href="../../../api/service/dev.html#dffml.service.dev.BumpPackagesConfig">[docs]</a><span class="nd">@configdataclass</span>
@@ -837,23 +863,48 @@
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">bump_version</span><span class="p">(</span><span class="n">original</span><span class="p">,</span> <span class="n">increment</span><span class="p">):</span>
-        <span class="c1"># Split on .</span>
-        <span class="c1"># map: int: Convert to an int</span>
-        <span class="c1"># zip: Create three instances of (original[i], increment[i])</span>
-        <span class="c1"># map: sum: Add each pair together</span>
-        <span class="c1"># map: str: Convert back to strings</span>
-        <span class="k">return</span> <span class="s2">&quot;.&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
-            <span class="nb">map</span><span class="p">(</span>
-                <span class="nb">str</span><span class="p">,</span>
-                <span class="nb">map</span><span class="p">(</span>
-                    <span class="nb">sum</span><span class="p">,</span>
-                    <span class="nb">zip</span><span class="p">(</span>
-                        <span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">original</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)),</span>
-                        <span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">increment</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)),</span>
-                    <span class="p">),</span>
-                <span class="p">),</span>
+        <span class="c1"># Ensure that we conform to semantic versioning spec. PEP-440 will</span>
+        <span class="c1"># normalize it to not have a hyphen.</span>
+        <span class="k">if</span> <span class="s2">&quot;rc&quot;</span> <span class="ow">in</span> <span class="n">original</span> <span class="ow">and</span> <span class="ow">not</span> <span class="s2">&quot;-rc&quot;</span> <span class="ow">in</span> <span class="n">original</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">RCMissingHyphen</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Semantic versioning requires a hyphen, original is in violation </span><span class="si">{</span><span class="n">original</span><span class="si">}</span><span class="s2">&quot;</span>
             <span class="p">)</span>
-        <span class="p">)</span>
+        <span class="k">if</span> <span class="s2">&quot;rc&quot;</span> <span class="ow">in</span> <span class="n">increment</span> <span class="ow">and</span> <span class="ow">not</span> <span class="s2">&quot;-rc&quot;</span> <span class="ow">in</span> <span class="n">increment</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">RCMissingHyphen</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Semantic versioning requires a hyphen, increment is in violation </span><span class="si">{</span><span class="n">increment</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+        <span class="c1"># Support for release candidates X.Y.Z-rcN</span>
+        <span class="c1"># Parse out the release candidate if it exists</span>
+        <span class="n">original_rc</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">if</span> <span class="s2">&quot;-rc&quot;</span> <span class="ow">in</span> <span class="n">original</span><span class="p">:</span>
+            <span class="n">original</span><span class="p">,</span> <span class="n">original_rc</span> <span class="o">=</span> <span class="n">original</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;-rc&quot;</span><span class="p">)</span>
+            <span class="n">original_rc</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">original_rc</span><span class="p">)</span>
+        <span class="n">increment_rc</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="s2">&quot;-rc&quot;</span> <span class="ow">in</span> <span class="n">increment</span><span class="p">:</span>
+            <span class="n">increment</span><span class="p">,</span> <span class="n">increment_rc</span> <span class="o">=</span> <span class="n">increment</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;-rc&quot;</span><span class="p">)</span>
+            <span class="n">increment_rc</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">increment_rc</span><span class="p">)</span>
+        <span class="c1"># Split on .</span>
+        <span class="c1"># zip: Create three instances of (original[i], increment[i])</span>
+        <span class="n">new_version_no_rc_numbers</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">n_original</span><span class="p">,</span> <span class="n">n_increment</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span>
+            <span class="n">original</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">),</span> <span class="n">increment</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
+        <span class="p">):</span>
+            <span class="k">if</span> <span class="n">n_increment</span> <span class="o">==</span> <span class="s2">&quot;Z&quot;</span><span class="p">:</span>
+                <span class="c1"># If &#39;Z&#39; was given as the increment, zero spot instead of sum</span>
+                <span class="n">new_version_no_rc_numbers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># Add each pair together</span>
+                <span class="n">new_version_no_rc_numbers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="nb">int</span><span class="p">(</span><span class="n">n_original</span><span class="p">)</span> <span class="o">+</span> <span class="nb">int</span><span class="p">(</span><span class="n">n_increment</span><span class="p">)</span>
+                <span class="p">)</span>
+        <span class="c1"># map: str: Convert back to strings</span>
+        <span class="c1"># Join numbers with .</span>
+        <span class="n">new_version_no_rc</span> <span class="o">=</span> <span class="s2">&quot;.&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">new_version_no_rc_numbers</span><span class="p">))</span>
+        <span class="c1"># Do not add rc if it wasn&#39;t incremented</span>
+        <span class="k">if</span> <span class="n">increment_rc</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">new_version_no_rc</span>
+        <span class="c1"># Otherwise, add rc</span>
+        <span class="k">return</span> <span class="n">new_version_no_rc</span> <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;-rc</span><span class="si">{</span><span class="n">original_rc</span> <span class="o">+</span> <span class="n">increment_rc</span><span class="si">}</span><span class="s2">&quot;</span>
 
     <span class="k">async</span> <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">main_package</span> <span class="o">=</span> <span class="n">is_develop</span><span class="p">(</span><span class="s2">&quot;dffml&quot;</span><span class="p">)</span>
@@ -861,33 +912,18 @@
             <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
                 <span class="s2">&quot;Need to reinstall the main package in development mode.&quot;</span>
             <span class="p">)</span>
-        <span class="n">main_package</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">main_package</span><span class="p">)</span>
-        <span class="n">skel</span> <span class="o">=</span> <span class="n">main_package</span> <span class="o">/</span> <span class="s2">&quot;dffml&quot;</span> <span class="o">/</span> <span class="s2">&quot;skel&quot;</span>
-        <span class="n">version_files</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span>
-            <span class="k">lambda</span> <span class="n">path</span><span class="p">:</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="o">*</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">resolve</span><span class="p">(),</span>
-            <span class="nb">filter</span><span class="p">(</span>
-                <span class="nb">bool</span><span class="p">,</span>
-                <span class="n">subprocess</span><span class="o">.</span><span class="n">check_output</span><span class="p">([</span><span class="s2">&quot;git&quot;</span><span class="p">,</span> <span class="s2">&quot;ls-files&quot;</span><span class="p">,</span> <span class="s2">&quot;*/version.py&quot;</span><span class="p">])</span>
-                <span class="o">.</span><span class="n">decode</span><span class="p">()</span>
-                <span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">),</span>
-            <span class="p">),</span>
-        <span class="p">)</span>
-        <span class="c1"># Update all the version files</span>
-        <span class="k">for</span> <span class="n">version_file</span> <span class="ow">in</span> <span class="n">version_files</span><span class="p">:</span>
-            <span class="c1"># Ignore skel</span>
-            <span class="k">if</span> <span class="n">skel</span> <span class="ow">in</span> <span class="n">version_file</span><span class="o">.</span><span class="n">parents</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
-                    <span class="s2">&quot;Skipping skel version file </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">version_file</span>
-                <span class="p">)</span>
-                <span class="k">continue</span>
+        <span class="c1"># Go through each plugin</span>
+        <span class="k">for</span> <span class="n">directory</span><span class="p">,</span> <span class="n">name</span> <span class="ow">in</span> <span class="p">{</span>
+            <span class="s2">&quot;.&quot;</span><span class="p">:</span> <span class="s2">&quot;dffml&quot;</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">PACKAGE_DIRECTORY_TO_NAME</span><span class="p">,</span>
+        <span class="p">}</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="c1"># Update all the version files</span>
+            <span class="n">version_file</span> <span class="o">=</span> <span class="n">REPO_ROOT</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span>
+                <span class="o">*</span><span class="n">directory</span><span class="p">,</span> <span class="n">name</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="s2">&quot;_&quot;</span><span class="p">),</span> <span class="s2">&quot;version.py&quot;</span>
+            <span class="p">)</span>
             <span class="c1"># If we&#39;re only supposed to increment versions of some packages,</span>
             <span class="c1"># check we&#39;re in the right package, skip if not.</span>
-            <span class="n">setup_filepath</span> <span class="o">=</span> <span class="n">version_file</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s2">&quot;setup.py&quot;</span>
-            <span class="k">with</span> <span class="n">chdir</span><span class="p">(</span><span class="n">setup_filepath</span><span class="o">.</span><span class="n">parent</span><span class="p">):</span>
-                <span class="k">try</span><span class="p">:</span>
-                    <span class="n">name</span> <span class="o">=</span> <span class="n">SetupPyKWArg</span><span class="o">.</span><span class="n">get_kwargs</span><span class="p">(</span><span class="n">setup_filepath</span><span class="p">)[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span>
-                <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
-                    <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="n">setup_filepath</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">error</span>
+            <span class="k">with</span> <span class="n">chdir</span><span class="p">(</span><span class="n">version_file</span><span class="o">.</span><span class="n">parents</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">only</span> <span class="ow">and</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">only</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
                         <span class="s2">&quot;Version file not in only </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">version_file</span>
@@ -1219,7 +1255,7 @@
 <span class="sd">    Bump the the main package in the versions plugins, or any or all libraries.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">main</span> <span class="o">=</span> <span class="n">BumpMain</span>
+    <span class="n">inter</span> <span class="o">=</span> <span class="n">BumpInter</span>
     <span class="n">packages</span> <span class="o">=</span> <span class="n">BumpPackages</span></div>
 
 

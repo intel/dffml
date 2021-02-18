@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Maintainer Docs &mdash; DFFML f54e5d7f documentation</title>
+  <title>Maintainer Docs &mdash; DFFML d0a24b52 documentation</title>
   
 
   
@@ -66,7 +66,7 @@
             
             
               <div class="version">
-                f54e5d7f
+                d0a24b52
               </div>
             
           
@@ -246,34 +246,29 @@ Add a line for the plugin along with it’s sceret.</p>
 <li><p>Increment the version number of each package</p></li>
 <li><p>Increment the version number of the main package in the dependency list of
 each package</p></li>
-</ul>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>Some plugins depend on each other. For example
-<code class="docutils literal notranslate"><span class="pre">model/tensorflow_hub</span></code> depends on <code class="docutils literal notranslate"><span class="pre">model/tensorflow</span></code>. Its important to
-update the version of <code class="docutils literal notranslate"><span class="pre">dffml-model-tensorflow</span></code> in
-<code class="docutils literal notranslate"><span class="pre">model/tensorflow_hub</span></code>.</p>
-<p>To get a list of all the plugins that depend on each other. Run the
-following set of grep commands.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>git grep dffml- <span class="p">|</span> grep setup <span class="p">|</span> grep <span class="s1">&#39;=.*\..*\.&#39;</span>
-<span class="go">examples/shouldi/setup_common.py:        [&quot;dffml-feature-git&gt;=0.2.7&quot;]</span>
-<span class="go">model/tensorflow_hub/setup.py:        [&quot;dffml-model-tensorflow&gt;=0.2.7&quot;]</span>
-<span class="go">operations/deploy/setup_common.py:        [&quot;dffml-feature-git&gt;=0.2.7&quot;]</span>
-</pre></div>
-</div>
-</div>
-<ul class="simple">
+<li><p>Increment the version number of the plugin packages in the dependency list of
+each package</p></li>
 <li><p>Modify <code class="docutils literal notranslate"><span class="pre">CHANGELOG.md</span></code> to replace the <code class="docutils literal notranslate"><span class="pre">Unreleased</span></code> section header with the
 new version and the date</p></li>
 <li><p>Commit the new version</p></li>
+<li><p>Push the new version to master</p></li>
+<li><p>Create a major.minor bugfix branch if it does not exist. Switch to it if it
+does</p></li>
+<li><p>Pin all the dependencies</p></li>
 <li><p>Tag a release</p></li>
+<li><p>Push the new branch (if created) and the tag</p></li>
 </ul>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml service dev bump packages <span class="m">0</span>.0.1 -log debug
-<span class="gp">$ </span>dffml service dev bump main
-<span class="gp">$ </span>dffml service dev ci pindeps
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml service dev bump packages <span class="m">0</span>.0.1
+<span class="gp">$ </span>dffml service dev bump inter
 <span class="gp">$ </span>sed -i <span class="s2">&quot;s/Unreleased]/</span><span class="k">$(</span>dffml service dev setuppy version dffml/version.py<span class="k">)</span><span class="s2">] - </span><span class="k">$(</span>date +%F<span class="k">)</span><span class="s2">/&quot;</span> CHANGELOG.md
-<span class="gp">$ </span>git c <span class="s2">&quot;release: Version </span><span class="k">$(</span>dffml service dev setuppy version dffml/version.py<span class="k">)</span><span class="s2">&quot;</span>
+<span class="gp">$ </span>git status
+<span class="gp">$ </span>git commit -sam <span class="s2">&quot;release: Version </span><span class="k">$(</span>dffml service dev setuppy version dffml/version.py<span class="k">)</span><span class="s2">&quot;</span>
+<span class="gp">$ </span>git push
+<span class="gp">$ </span>git checkout -b N.N.x <span class="o">||</span> git checkout N.N.x
+<span class="gp">$ </span>dffml service dev ci pindeps path/to/extracted/logs_NNNNN
 <span class="gp">$ </span>git tag <span class="k">$(</span>dffml service dev setuppy version dffml/version.py<span class="k">)</span>
+<span class="gp">$ </span>git push -u origin N.N.x
+<span class="gp">$ </span>git push --tags
 </pre></div>
 </div>
 </div>

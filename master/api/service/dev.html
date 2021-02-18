@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Service Dev &mdash; DFFML f54e5d7f documentation</title>
+  <title>Service Dev &mdash; DFFML d0a24b52 documentation</title>
   
 
   
@@ -66,7 +66,7 @@
             
             
               <div class="version">
-                f54e5d7f
+                d0a24b52
               </div>
             
           
@@ -233,9 +233,9 @@
 <em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">dffml.service.dev.</span></code><code class="sig-name descname"><span class="pre">Bump</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">extra_config</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/service/dev.html#Bump"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.service.dev.Bump" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bump the the main package in the versions plugins, or any or all libraries.</p>
 <dl class="py attribute">
-<dt id="dffml.service.dev.Bump.main">
-<code class="sig-name descname"><span class="pre">main</span></code><a class="headerlink" href="#dffml.service.dev.Bump.main" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <a class="reference internal" href="#dffml.service.dev.BumpMain" title="dffml.service.dev.BumpMain"><code class="xref py py-class docutils literal notranslate"><span class="pre">dffml.service.dev.BumpMain</span></code></a></p>
+<dt id="dffml.service.dev.Bump.inter">
+<code class="sig-name descname"><span class="pre">inter</span></code><a class="headerlink" href="#dffml.service.dev.Bump.inter" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#dffml.service.dev.BumpInter" title="dffml.service.dev.BumpInter"><code class="xref py py-class docutils literal notranslate"><span class="pre">dffml.service.dev.BumpInter</span></code></a></p>
 </dd></dl>
 
 <dl class="py attribute">
@@ -247,10 +247,10 @@
 </dd></dl>
 
 <dl class="py class">
-<dt id="dffml.service.dev.BumpMain">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">dffml.service.dev.</span></code><code class="sig-name descname"><span class="pre">BumpMain</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">extra_config</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/service/dev.html#BumpMain"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.service.dev.BumpMain" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bump the version number of the main package within the dependency list of
-each plugin.</p>
+<dt id="dffml.service.dev.BumpInter">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">dffml.service.dev.</span></code><code class="sig-name descname"><span class="pre">BumpInter</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">extra_config</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/service/dev.html#BumpInter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.service.dev.BumpInter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bump the version number of other plugins within the dependency list of
+each plugin. This is for interdependent plugins.</p>
 </dd></dl>
 
 <dl class="py class">
@@ -429,6 +429,11 @@ with an ASCII letter or digit.”</p>
 <dl class="py class">
 <dt id="dffml.service.dev.PinDepsPlugin">
 <em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">dffml.service.dev.</span></code><code class="sig-name descname"><span class="pre">PinDepsPlugin</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">setup_cfg_path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><span class="pre">pathlib.Path</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">setup_cfg_pre_deps</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">setup_cfg_post_deps</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">setup_cfg_pinned</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/service/dev.html#PinDepsPlugin"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.service.dev.PinDepsPlugin" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py exception">
+<dt id="dffml.service.dev.RCMissingHyphen">
+<em class="property"><span class="pre">exception</span> </em><code class="sig-prename descclassname"><span class="pre">dffml.service.dev.</span></code><code class="sig-name descname"><span class="pre">RCMissingHyphen</span></code><a class="reference internal" href="../../_modules/dffml/service/dev.html#RCMissingHyphen"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.service.dev.RCMissingHyphen" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py class">

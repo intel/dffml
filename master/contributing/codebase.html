@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Codebase Layout And Notes &mdash; DFFML f54e5d7f documentation</title>
+  <title>Codebase Layout And Notes &mdash; DFFML d0a24b52 documentation</title>
   
 
   
@@ -66,7 +66,7 @@
             
             
               <div class="version">
-                f54e5d7f
+                d0a24b52
               </div>
             
           
@@ -131,12 +131,9 @@
 <li class="toctree-l4"><a class="reference internal" href="#adding-a-new-plugin">Adding A New Plugin</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#one-two-punch">One-Two Punch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#double-context-entry-pattern">Double Context Entry Pattern</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#config">Config</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#setup-py">setup.py</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#checking-for-development-version">Checking For Development Version</a></li>
-</ul>
-</li>
+<li class="toctree-l3"><a class="reference internal" href="#setup-py">setup.py</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#notes-on-various-subsystems">Notes on Various Subsystems</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#working-on-skel">Working on <code class="docutils literal notranslate"><span class="pre">skel/</span></code></a></li>
 </ul>
@@ -242,16 +239,12 @@
 <li><p><a class="reference internal" href="#adding-a-new-plugin" id="id3">Adding A New Plugin</a></p></li>
 </ul>
 </li>
-<li><p><a class="reference internal" href="#one-two-punch" id="id4">One-Two Punch</a></p></li>
+<li><p><a class="reference internal" href="#double-context-entry-pattern" id="id4">Double Context Entry Pattern</a></p></li>
 <li><p><a class="reference internal" href="#config" id="id5">Config</a></p></li>
-<li><p><a class="reference internal" href="#setup-py" id="id6">setup.py</a></p>
+<li><p><a class="reference internal" href="#setup-py" id="id6">setup.py</a></p></li>
+<li><p><a class="reference internal" href="#notes-on-various-subsystems" id="id7">Notes on Various Subsystems</a></p>
 <ul>
-<li><p><a class="reference internal" href="#checking-for-development-version" id="id7">Checking For Development Version</a></p></li>
-</ul>
-</li>
-<li><p><a class="reference internal" href="#notes-on-various-subsystems" id="id8">Notes on Various Subsystems</a></p>
-<ul>
-<li><p><a class="reference internal" href="#working-on-skel" id="id9">Working on <code class="docutils literal notranslate"><span class="pre">skel/</span></code></a></p></li>
+<li><p><a class="reference internal" href="#working-on-skel" id="id8">Working on <code class="docutils literal notranslate"><span class="pre">skel/</span></code></a></p></li>
 </ul>
 </li>
 </ul>
@@ -311,8 +304,8 @@ plugins.</p>
 </ul>
 </div>
 </div>
-<div class="section" id="one-two-punch">
-<h2><a class="toc-backref" href="#id4">One-Two Punch</a><a class="headerlink" href="#one-two-punch" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="double-context-entry-pattern">
+<h2><a class="toc-backref" href="#id4">Double Context Entry Pattern</a><a class="headerlink" href="#double-context-entry-pattern" title="Permalink to this headline">¶</a></h2>
 <p>All classes in DFFML follow a double asynchronous context entry pattern. This is
 ideal for usages such as creating a connection pool, then using a connection. Be
 that with a database, client HTTP sessions, etc.</p>
@@ -395,63 +388,13 @@ that plugin are.</p>
 <p>There are various <code class="docutils literal notranslate"><span class="pre">setup.py</span></code> files throughout the codebase, one for the main
 package, one for each plugin, and one in <code class="docutils literal notranslate"><span class="pre">skel/</span></code>. There are also
 <code class="docutils literal notranslate"><span class="pre">setup_common.py</span></code> files.</p>
-<div class="section" id="checking-for-development-version">
-<h3><a class="toc-backref" href="#id7">Checking For Development Version</a><a class="headerlink" href="#checking-for-development-version" title="Permalink to this headline">¶</a></h3>
-<p>You might have asked yourself, what is this thing?</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">INSTALL_REQUIRES</span> <span class="o">=</span> <span class="p">[]</span> <span class="o">+</span> <span class="p">(</span>
-    <span class="p">[</span><span class="s2">&quot;dffml&gt;=0.3.7&quot;</span><span class="p">]</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">(</span>
-        <span class="nb">list</span><span class="p">(</span>
-            <span class="nb">map</span><span class="p">(</span>
-                <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">,</span>
-                <span class="nb">list</span><span class="p">(</span>
-                    <span class="nb">map</span><span class="p">(</span>
-                        <span class="k">lambda</span> <span class="n">syspath</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
-                            <span class="n">syspath</span><span class="p">,</span> <span class="s2">&quot;dffml.egg-link&quot;</span>
-                        <span class="p">),</span>
-                        <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="p">,</span>
-                    <span class="p">)</span>
-                <span class="p">),</span>
-            <span class="p">)</span>
-        <span class="p">)</span>
-    <span class="p">)</span>
-    <span class="k">else</span> <span class="p">[]</span>
-<span class="p">)</span>
-</pre></div>
-</div>
-<p>This code is needed because <code class="docutils literal notranslate"><span class="pre">python</span></code> will use extracted versions of packages
-over development versions if they are installed.</p>
-<p><code class="docutils literal notranslate"><span class="pre">pip</span></code> will download and extract a package (thereby installing it) if it sees
-it in the <code class="docutils literal notranslate"><span class="pre">INSTALL_REQUIRES</span></code> list. This wrecks havoc with our development
-workflow.</p>
-<p>For example, when we put the main package, <code class="docutils literal notranslate"><span class="pre">dffml</span></code> in the <code class="docutils literal notranslate"><span class="pre">INSTALL_REQUIRES</span></code>
-list of a plugin, <code class="docutils literal notranslate"><span class="pre">pip</span></code> will go off and download the appropriate version from
-PyPi and extract it to a place Python searches for packages. Now when we run
-anything we’ll end up using the version <code class="docutils literal notranslate"><span class="pre">pip</span></code> just installed instead of the
-version we’re developing on locally.</p>
-<p>The solution to this is to add the above code block to <code class="docutils literal notranslate"><span class="pre">setup.py</span></code> files. The
-innermost list is <code class="docutils literal notranslate"><span class="pre">sys.path</span></code>, which is all the places Python is going to look
-for packages when there is an <code class="docutils literal notranslate"><span class="pre">import</span></code> statement. We use <code class="docutils literal notranslate"><span class="pre">map</span></code> to apply a
-function to each directory in <code class="docutils literal notranslate"><span class="pre">sys.path</span></code>. The map will take the directory name
-and add <code class="docutils literal notranslate"><span class="pre">dffml.egg-link</span></code> to it. We add this because when you install something
-in development mode (<code class="docutils literal notranslate"><span class="pre">dffml</span></code> in this case) <code class="docutils literal notranslate"><span class="pre">pip</span></code> creates this <code class="docutils literal notranslate"><span class="pre">.egg-link</span></code>
-file. In the file is the path to the source code you’re working on. Therefore,
-if that file exists, then the package is installed in development mode. The next
-<code class="docutils literal notranslate"><span class="pre">map</span></code> then checks if any of the file paths generated by the previous <code class="docutils literal notranslate"><span class="pre">map</span></code>
-exist. If <code class="docutils literal notranslate"><span class="pre">any</span></code> of them exist, then there is a <code class="docutils literal notranslate"><span class="pre">.egg-link</span></code> file somewhere in
-Python’s search path, which means the package (<code class="docutils literal notranslate"><span class="pre">dffml</span></code> in this case, hence the
-<code class="docutils literal notranslate"><span class="pre">dffml.egg-link</span></code>) is installed in development mode.</p>
-<p>If the package is installed in development mode, then we don’t want <code class="docutils literal notranslate"><span class="pre">pip</span></code> to
-install it from PyPi, since that would cause the development version not to be
-used.</p>
-</div>
 </div>
 <div class="section" id="notes-on-various-subsystems">
-<h2><a class="toc-backref" href="#id8">Notes on Various Subsystems</a><a class="headerlink" href="#notes-on-various-subsystems" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id7">Notes on Various Subsystems</a><a class="headerlink" href="#notes-on-various-subsystems" title="Permalink to this headline">¶</a></h2>
 <p>DFFML is comprised of various subsystems. The following are some notes
 that might be helpful when working on each of them.</p>
 <div class="section" id="working-on-skel">
-<h3><a class="toc-backref" href="#id9">Working on <code class="docutils literal notranslate"><span class="pre">skel/</span></code></a><a class="headerlink" href="#working-on-skel" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id8">Working on <code class="docutils literal notranslate"><span class="pre">skel/</span></code></a><a class="headerlink" href="#working-on-skel" title="Permalink to this headline">¶</a></h3>
 <p>The packages in <code class="docutils literal notranslate"><span class="pre">skel/</span></code> are used to create new DFFML packages.</p>
 <p>For example, to create a new package containing operations we run the following.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml service dev create operations dffml-operations-feedface
