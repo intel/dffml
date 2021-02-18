@@ -137,6 +137,7 @@ class TestCI(unittest.TestCase):
     SKIP_SETUP_PY_FILES = [
         REPO_ROOT / "setup.py",
         REPO_ROOT / "dffml" / "skel" / "common" / "setup.py",
+        REPO_ROOT / "build" / "lib" / "dffml" / "skel" / "common" / "setup.py",
         REPO_ROOT / "examples" / "source" / "setup.py",
         REPO_ROOT
         / "examples"
