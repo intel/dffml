@@ -5,6 +5,7 @@ path_classifiers:
     - scripts/docs.py
   test:
     - tests
+extraction:
   python:
     python_setup:
       setup_py: setup.py
@@ -13,3 +14,9 @@ path_classifiers:
       include:
        - "dffml/**"
        - "examples/**"
+       - "model/**"
+       - "source/**"
+       - "service/**"
+       - "configloader/**"
+       - "operations/**"
+       - "feature/**"
