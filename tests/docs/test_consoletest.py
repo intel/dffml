@@ -158,6 +158,7 @@ SKIP_DOCS = ["swportal", "plugins/dffml_model"]
 # Quick examples with no install commands, no venv needed
 NO_SETUP = [
     "tutorials/doublecontextentry",
+    "tutorials/models/load",
 ]
 
 
