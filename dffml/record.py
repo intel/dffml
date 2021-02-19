@@ -129,6 +129,7 @@ class Record(object):
             del data["extra"]
         self.data = self.RECORD_DATA(**data)
         self.extra = extra
+        self.key = str(key)
 
     def dict(self):
         # TODO(p2) Remove dict method in favor of export
