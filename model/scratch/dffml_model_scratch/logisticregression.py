@@ -150,39 +150,62 @@ class LogisticRegression(SimpleModel):
         np.random.shuffle(X)
         return X
 
+    def lr_update(lr, i):
+        lr = lr / (i + 1)
+        return lr
+    
+    def gd(fun, x0, lr):
+        grad_fun = grad(fun)
+        x = x0 - lr * grad_fun(x0)
+        x0 = x
+        return x
+
     def best_separating_line(self):
         """
         Determine the best separating hyperplane (here, the integer weight) 
         s.t. w * x + b is well separable from 0.5.
         """
         self.logger.debug(
-            "Number of input records: {}".format(len(self.xData))
+            "Number of input records: {}".format(len(self.X))
         )
 
         np.random.seed(2)
         data = make_data()
-
-        x = data[:,:-1] # Features
+        X = data[:,:-1] # Features
         y = data[:,-1] # Labels
+
+        # We augment the data so that x_0 = 1 for the intercept term.
+        X = np.append(np.ones((len(X), 1)), X, axis = 1)
+
+        n_samples = len(X)
+        train = int(n_samples * 0.4)
+        val = int(n_samples * 0.8)
+
+        X_train, y_train = X[:train], y[:train]
+        X_val, y_val = X[train:val], y[train:val]
+        X_test, y_test = X[val:], y[val:]
+
+        iterations = 5000
+        m = 10
 
         #x = self.xData  # feature array
         #y = self.yData  # class array
         learning_rate = 0.01  # learning rate for step: weight -= lr * step
         w = 0.01  # initial weight
         b = 0.0  # here unbiased data is considered so b = 0
-        # epochs' loop: 1500 epochs
-        for _ in range(0, 1500):
-            z = w * x + b
+        # epochs' loop: 5000 epochs
+        for i in range(iterations):
+            z = w * X + b
             val = -self.np.multiply(y, z)
             num = -self.np.multiply(y, self.np.exp(val))
             den = 1 + self.np.exp(val)
             f = num / den  # f is gradient dJ for each data point
-            gradJ = self.np.sum(x * f)  # total dJ
+            gradJ = self.np.sum(X * f)  # total dJ
             w = w - learning_rate * gradJ / len(x)  # SAG subtraction
         # Accuracy calculation
         error = 0  # incorrect values
-        for x_id in range(len(x)):
-            yhat = x[x_id] * w + b > 0.5
+        for x_id in range(len(X)):
+            yhat = X[x_id] * w + b > 0.5
             if yhat:
                 yhat = 1
             else:
@@ -199,11 +222,11 @@ class LogisticRegression(SimpleModel):
             feature_data = record.features(
                 self.features + [self.config.predict.name]
             )
-            self.xData = self.np.append(
-                self.xData, feature_data[self.features[0]]
+            self.X = self.np.append(
+                self.X, feature_data[self.features[0]]
             )
-            self.yData = self.np.append(
-                self.yData, feature_data[self.config.predict.name]
+            self.y = self.np.append(
+                self.y, feature_data[self.config.predict.name]
             )
         self.separating_line = self.best_separating_line()
 
