@@ -118,7 +118,7 @@ class Record(object):
         extra: Optional[Dict[str, Any]] = None,
     ) -> None:
         if key is None:
-            key=""
+            key = ""
         if data is None:
             data = {}
         if extra is None:
@@ -129,11 +129,9 @@ class Record(object):
             data["extra"].update(extra)
             extra = data["extra"]
             del data["extra"]
-        self.key = str(key)        
+        self.key = str(key)
         self.data = self.RECORD_DATA(**data)
         self.extra = extra
-
-        
 
     def dict(self):
         # TODO(p2) Remove dict method in favor of export
@@ -185,11 +183,13 @@ class Record(object):
         merge(data, record.data.dict())
         self.data = self.RECORD_DATA(**data)
         self.extra.update(record.extra)  # type: ignore
-    '''
+
+    """
     @property
     def key(self) -> str:
         return self.data.key
-    '''
+    """
+
     def evaluated(self, results: Dict[str, Any], overwrite=False):
         """
         Updates features with the result dict
