@@ -51,7 +51,7 @@ package.
 
         .. code-block:: console
 
-            (.venv) C:\Users\username> python -m pip install -U dffml
+            (.venv) C:\Users\username> python3 -m pip install -U dffml
 
 .. warning::
 
