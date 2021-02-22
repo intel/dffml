@@ -16,12 +16,17 @@ from dffml import (
     SourcesContext,
 )
 
+from autograd import grad
+import autograd.numpy as np
+import matplotlib.pyplot as plt
+from scipy.stats import multivariate_normal as mvn
+
 
 @config
 class LogisticRegressionConfig:
     predict: Feature = field("Label or the value to be predicted")
     features: Features = field("Features to train on")
-    directory: pathlib.Path = field("Directory where state should be saved",)
+    directory: pathlib.Path = field("Directory where state should be saved")
 
 
 @entrypoint("scratchlgrsag")
@@ -88,8 +93,20 @@ class LogisticRegression(SimpleModel):
     def __init__(self, config):
         super().__init__(config)
         self.np = importlib.import_module("numpy")
-        self.xData = self.np.array([])
-        self.yData = self.np.array([])
+        # self.xData = self.np.array([])
+        # self.yData = self.np.array([])
+
+    """
+    Perform a fixed number of iterations of gradient descent on a function using a fixed
+    Input:
+    fun : function handle: function that takes in a numpy array of shape (d,) and re
+    x0 : initial point: numpy array of shape (d,)
+    lr : fixed learning rate: a positive float
+    iterations : number of iterations to perform: int
+
+    Return:
+    x : minimizer to fun: numpy array of shape (d,)
+    """
 
     @property
     def separating_line(self):
@@ -121,6 +138,18 @@ class LogisticRegression(SimpleModel):
         )
         return prediction
 
+    def make_data(n_samples = 500):
+        # Generate data features.
+        X1 = mvn.rvs(mean = np.array([1.1, 0]), cov = 0.2*np.eye(2), size = n_samples//2
+        X2 = mvn.rvs(mean = np.array([-1.1, 0]), cov = 0.2*np.eye(2), size = n_samples -
+        # Append data labels and combine.
+        X1 = np.hstack( (X1, np.ones((X1.shape[0], 1))))
+        X2 = np.hstack( (X2, np.zeros((X2.shape[0], 1))))
+        X = np.vstack([X1, X2])
+        # Randomly permute data.
+        np.random.shuffle(X)
+        return X
+
     def best_separating_line(self):
         """
         Determine the best separating hyperplane (here, the integer weight) 
@@ -129,8 +158,15 @@ class LogisticRegression(SimpleModel):
         self.logger.debug(
             "Number of input records: {}".format(len(self.xData))
         )
-        x = self.xData  # feature array
-        y = self.yData  # class array
+
+        np.random.seed(2)
+        data = make_data()
+
+        x = data[:,:-1] # Features
+        y = data[:,-1] # Labels
+
+        #x = self.xData  # feature array
+        #y = self.yData  # class array
         learning_rate = 0.01  # learning rate for step: weight -= lr * step
         w = 0.01  # initial weight
         b = 0.0  # here unbiased data is considered so b = 0
