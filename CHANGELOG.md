@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Tutorial on how to load models dynamically
   https://intel.github.io/dffml/tutorials/models/load.html
+### Fixed
+- Key to be forced as string on init for Record class in record.py
 
 ## [0.4.0] - 2021-02-18
 ### Added
