@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Getting Set Up To Work On DFFML &mdash; DFFML 635c637a documentation</title>
+  <title>Getting Set Up To Work On DFFML &mdash; DFFML 6cc6ea7e documentation</title>
   
 
   
@@ -66,7 +66,7 @@
             
             
               <div class="version">
-                635c637a
+                6cc6ea7e
               </div>
             
           
@@ -313,6 +313,11 @@ variable. This might need to be in <code class="docutils literal notranslate"><s
 <span class="gp">$ </span><span class="nb">source</span> ~/.bashrc
 </pre></div>
 </div>
+<p>Before contributing, you can install pre-commit hooks for DFFML:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>pre-commit install
+</pre></div>
+</div>
+<p>In case you want to skip any pre-commit checks, you can use <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">commit</span> <span class="pre">--no-verify</span></code>.</p>
 <p>If you are working on any of the plugins to DFFML maintained within it’s
 repository make sure to install those in development mode as well.</p>
 <p>For example, to install the TensorFlow models</p>
@@ -355,6 +360,10 @@ install <code class="docutils literal notranslate"><span class="pre">virtualenv<
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>pip install -U pip setuptools wheel
 <span class="gp">$ </span>pip install -e .<span class="o">[</span>dev<span class="o">]</span>
 <span class="gp">$ </span>dffml service dev install
+</pre></div>
+</div>
+<p>Install pre-commit hooks.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>pre-commit install
 </pre></div>
 </div>
 </div>
