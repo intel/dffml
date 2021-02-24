@@ -2,52 +2,28 @@
 This file contains styles tests for checking at the end of source files.
 """
 import os
-from os import path
-import mimetypes
-from pathlib import Path
-import unittest
+import pathlib
+
 from dffml.util.asynctestcase import IntegrationCLITestCase
 
-ROOT_DIR = os.path.dirname(os.path.abspath(os.path.dirname(__file__)))
+ROOT_DIR = pathlib.Path(__file__).resolve().parents[1]
 
-class TestML(unittest.TestCase):
-    def walk(self,top, topdown=True, onerror=None, followlinks=False, maxdepth=None):
-        
-        islink, join, isdir = path.islink, path.join, path.isdir
+SKIP_FILES_FORMATS = [
+                        '.zip', '.rst', '.png', '.gz', '.log', '.pyc', '.coverage', '.eggs', '.swp', '.mnistpng', 'docs/changelog.md', 
+                        'docs/shouldi.md', 'docs/swportal.rst','docs/contributing/consoletest.md', '.pyc', '.git', '.egg-info', '.sh', '.Dockerfile',
+                        '.html', '.md', '.gif', '.in', '.cfg', '.yaml', '.venv', '.pylintrc', '.yml'
+                    ]
 
-        try:
-            names = os.listdir(top)
-        except Exception as err:
-            if onerror is not None:
-                onerror(err)
-            return
+SKIP_DIRECTORIES = [
+                        '.cache/', '.idea/', '.vscode/', '.egg-info/', 'build/', 'dist/', 'docs/build/', 'venv/', 'wheelhouse/',
+                        '.mypy_cache/', 'htmlcov/', '.venv/', 'html/', 'pages/', 'pip-wheel-metadata/', 'doctest/', 'docs/api/', 
+                        '/consoletest/', 'tests/service/logs/', '__pycache__', 'git/', 'images/', 'dffml.egg-info', '.ci', 'examples'
+                    ]
 
-        dirs, nondirs = [], []
-        for name in names:
-            if isdir(join(top, name)) and not name.startswith('.') and '.egg-info' not in name:
-                dirs.append(name)
-            elif not isdir(join(top, name)) and not os.path.getsize(join(top,name)) == 0 and not '.sh' in join(top, name) :
-                nondirs.append(name)
-
-        if topdown:
-            yield top, dirs, nondirs
-
-        if maxdepth is None or maxdepth > 1:
-            for name in dirs:
-                new_path = join(top, name)
-                if followlinks or not islink(new_path):
-                    for x in self.walk(new_path, topdown, onerror, followlinks, None if maxdepth is None else maxdepth-1):
-                        yield x
-        if not topdown:
-            yield top, dirs, nondirs
-
+class TestML(IntegrationCLITestCase):
     def test_styles(self):
-        for root, dirnames, filenames in self.walk(ROOT_DIR, maxdepth=None):
-            for file in filenames:
-                with open(root + '/' +  file ,"r") as f:
-                    mime = mimetypes.guess_type(f.name)[0]
-                    if mime is not None:
-                        if "text" in mime:
-                            f.seek(0, 2)                            
-                            f.seek(f.tell() - 1, 0)
-                            self.assertEqual(f.read(), "\n", "Newline required at the end in"+root+"/"+file)
+        for path in ROOT_DIR.rglob("*.*"):
+            if not any(dirs in str(path) for dirs in SKIP_DIRECTORIES) and not any(extension in str(path) for extension in SKIP_FILES_FORMATS):
+                content = pathlib.Path(path).read_text()
+                if len(content) :
+                    self.assertEqual(content[-1], '\n', path)
