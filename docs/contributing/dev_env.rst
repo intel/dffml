@@ -101,6 +101,14 @@ variable. This might need to be in ``~/.bashrc``, ``~/.bash_profile``, or
     $ echo 'export PATH="${HOME}/.local/bin:${PATH}"' >> ~/.bashrc
     $ source ~/.bashrc
 
+Before contributing, you can install pre-commit hooks for DFFML:
+
+.. code-block:: console
+
+    $ pre-commit install
+
+In case you want to skip any pre-commit checks, you can use ``git commit --no-verify``.
+
 If you are working on any of the plugins to DFFML maintained within it's
 repository make sure to install those in development mode as well.
 
@@ -162,6 +170,13 @@ Install the packages in development mode.
     $ pip install -U pip setuptools wheel
     $ pip install -e .[dev]
     $ dffml service dev install
+
+Install pre-commit hooks.
+
+.. code-block:: console
+
+    $ pre-commit install
+
 
 Containerized Development Environment
 -------------------------------------

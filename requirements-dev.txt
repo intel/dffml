@@ -10,3 +10,4 @@ twine
 # Test requirements
 httptest>=0.0.15
 Pillow>=7.1.2
+pre-commit
