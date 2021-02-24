@@ -112,24 +112,21 @@ class Record(object):
 
     def __init__(
         self,
-        key: str = None,
+        key: str,
         *,
         data: Optional[Dict[str, Any]] = None,
         extra: Optional[Dict[str, Any]] = None,
     ) -> None:
-        if key is None:
-            key = ""
         if data is None:
             data = {}
         if extra is None:
             extra = {}
-        data["key"] = key
+        data["key"] = str(key)
         if "extra" in data:
             # Prefer extra from init arguments to extra stored in data
             data["extra"].update(extra)
             extra = data["extra"]
             del data["extra"]
-        self.key = str(key)
         self.data = self.RECORD_DATA(**data)
         self.extra = extra
 
@@ -184,11 +181,9 @@ class Record(object):
         self.data = self.RECORD_DATA(**data)
         self.extra.update(record.extra)  # type: ignore
 
-    """
     @property
     def key(self) -> str:
-        return self.data.key
-    """
+        return str(self.data.key)
 
     def evaluated(self, results: Dict[str, Any], overwrite=False):
         """
