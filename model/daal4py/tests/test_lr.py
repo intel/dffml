@@ -74,7 +74,7 @@ class TestDAAL4PyLRModel(AsyncTestCase):
             self.model, *self.test_data
         ):
             # Grab the correct value
-            correct = self.test_data[i]["Y"]
+            correct = self.test_data[int(i)]["Y"]
             # Grab the predicted value
             prediction = prediction["Y"]["value"]
             # Check that the percent error is less than 10%
