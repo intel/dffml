@@ -121,7 +121,7 @@ class Record(object):
             data = {}
         if extra is None:
             extra = {}
-        data["key"] = key
+        data["key"] = str(key)
         if "extra" in data:
             # Prefer extra from init arguments to extra stored in data
             data["extra"].update(extra)
@@ -183,7 +183,7 @@ class Record(object):
 
     @property
     def key(self) -> str:
-        return self.data.key
+        return str(self.data.key)
 
     def evaluated(self, results: Dict[str, Any], overwrite=False):
         """
