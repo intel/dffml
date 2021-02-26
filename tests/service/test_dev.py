@@ -371,14 +371,3 @@ class TestInstall(AsyncTestCase):
             Install.dep_check(
                 {("model", "vowpalWabbit"): {"feedface": lambda: False}}, []
             )
-
-
-class TestPinDeps(AsyncTestCase):
-    @cached_download_unpack_archive(
-        "https://github.com/intel/dffml/files/5978430/logs_2403.zip",
-        pathlib.Path(__file__).parent / "logs.zip",
-        pathlib.Path(__file__).parent / "logs",
-        "4422bdcaf202d8b31ea131f9042def965fc7746125fd99038ca502cbdfeb2ca5bef12f88b053dcfd8a1305a41edd3371",
-    )
-    async def test_pin_deps(self, logs):
-        await PinDeps._main(str(logs))
