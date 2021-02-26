@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Neural Networks &mdash; DFFML 2b58e177 documentation</title>
+  <title>Neural Networks &mdash; DFFML 92a54ecc documentation</title>
   
 
   
@@ -33,6 +33,7 @@
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
+        <script src="../_static/tabs.js"></script>
         <script src="../_static/copybutton.js"></script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
@@ -66,7 +67,7 @@
             
             
               <div class="version">
-                2b58e177
+                92a54ecc
               </div>
             
           
@@ -223,9 +224,14 @@ which contains images of hands in Rock/Paper/Scissors poses, each image is a 300
 which is a part of <code class="docutils literal notranslate"><span class="pre">dffml-model-pytorch</span></code>, a DFFML plugin which allows you to use PyTorch
 via DFFML. We can install it with <code class="docutils literal notranslate"><span class="pre">pip</span></code>. We will also be using image loading from
 <code class="docutils literal notranslate"><span class="pre">dffml-config-image</span></code> and YAML file loading from <code class="docutils literal notranslate"><span class="pre">dffml-config-yaml</span></code> for creating our neural network.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>pip install -U dffml-model-pytorch dffml-config-image dffml-config-yaml
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" role="tablist"><button aria-controls="panel-0-TGludXggYW5kIE1hY09T" aria-selected="true" class="sphinx-tabs-tab group-tab" id="tab-0-TGludXggYW5kIE1hY09T" name="TGludXggYW5kIE1hY09T" role="tab" tabindex="0">Linux and MacOS</button><button aria-controls="panel-0-V2luZG93cw==" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-0-V2luZG93cw==" name="V2luZG93cw==" role="tab" tabindex="-1">Windows</button></div><div aria-labelledby="tab-0-TGludXggYW5kIE1hY09T" class="sphinx-tabs-panel group-tab" id="panel-0-TGludXggYW5kIE1hY09T" name="TGludXggYW5kIE1hY09T" role="tabpanel" tabindex="0"><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>pip install -U dffml-model-pytorch dffml-config-image dffml-config-yaml
 </pre></div>
 </div>
+</div><div aria-labelledby="tab-0-V2luZG93cw==" class="sphinx-tabs-panel group-tab" hidden="true" id="panel-0-V2luZG93cw==" name="V2luZG93cw==" role="tabpanel" tabindex="0"><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp gp-VirtualEnv">(.venv)</span> <span class="go">C:\Users\username&gt; python -m pip install -U dffml-model-pytorch dffml-config-image dffml-config-yaml -f https://download.pytorch.org/whl/torch_stable.html</span>
+</pre></div>
+</div>
+</div></div>
 <p>Download the dataset and verify with with <code class="docutils literal notranslate"><span class="pre">sha384sum</span></code>.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="o">-</span><span class="n">LO</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">storage</span><span class="o">.</span><span class="n">googleapis</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">laurencemoroney</span><span class="o">-</span><span class="n">blog</span><span class="o">.</span><span class="n">appspot</span><span class="o">.</span><span class="n">com</span><span class="o">/</span>\<span class="p">{</span><span class="n">rps</span><span class="p">,</span><span class="n">rps</span><span class="o">-</span><span class="n">test</span><span class="o">-</span><span class="nb">set</span><span class="p">,</span><span class="n">rps</span><span class="o">-</span><span class="n">validation</span>\<span class="p">}</span><span class="o">.</span><span class="n">zip</span>
 <span class="n">sha384sum</span> <span class="o">-</span><span class="n">c</span> <span class="o">-</span> <span class="o">&lt;&lt;</span> <span class="n">EOF</span>

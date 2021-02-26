@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>dffml.service.dev &mdash; DFFML 2b58e177 documentation</title>
+  <title>dffml.service.dev &mdash; DFFML 92a54ecc documentation</title>
   
 
   
@@ -65,7 +65,7 @@
             
             
               <div class="version">
-                2b58e177
+                92a54ecc
               </div>
             
           
@@ -604,12 +604,6 @@
             <span class="n">package_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="o">*</span><span class="n">main_package</span><span class="o">.</span><span class="n">parts</span><span class="p">,</span> <span class="o">*</span><span class="n">package</span><span class="p">)</span>
             <span class="c1"># Install package in development mode</span>
             <span class="n">cmd</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;-e&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">package_path</span><span class="o">.</span><span class="n">absolute</span><span class="p">())]</span>
-            <span class="c1"># Temporary fix for ConfigSpace numpy incompatibility issue</span>
-            <span class="c1"># References: https://github.com/intel/dffml/issues/992</span>
-            <span class="k">if</span> <span class="n">package</span> <span class="o">==</span> <span class="p">(</span><span class="s2">&quot;model&quot;</span><span class="p">,</span> <span class="s2">&quot;autosklearn&quot;</span><span class="p">):</span>
-                <span class="n">cmd</span> <span class="o">+=</span> <span class="p">[</span>
-                    <span class="s2">&quot;https://github.com/automl/ConfigSpace/archive/86863bc2f640892675c04de0b8006a623dc14c45.zip#egg=ConfigSpace&quot;</span>
-                <span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Running: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cmd</span><span class="p">))</span>
         <span class="c1"># Packages fail to install if we run pip processes in parallel</span>
         <span class="n">proc</span> <span class="o">=</span> <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">create_subprocess_exec</span><span class="p">(</span><span class="o">*</span><span class="n">cmd</span><span class="p">)</span>
