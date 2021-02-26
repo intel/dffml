@@ -96,7 +96,7 @@ maintained as a part of the core repository, you can append ``[models]``.
 
         .. code-block:: console
 
-            (.venv) C:\Users\username> python -m pip install -U dffml[models]
+            (.venv) C:\Users\username> python -m pip install -U dffml[models] -f https://download.pytorch.org/whl/torch_stable.html
 
 If you want to install all of the machine learning model plugins and all the
 data sources and DataFlow operations that are maintained as a part of the core
@@ -114,7 +114,7 @@ repository, you can append ``[all]``.
 
         .. code-block:: console
 
-            (.venv) C:\Users\username> python -m pip install -U dffml[all]
+            (.venv) C:\Users\username> python -m pip install -U dffml[all] -f https://download.pytorch.org/whl/torch_stable.html
 
 Master Branch
 -------------

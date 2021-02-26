@@ -13,9 +13,19 @@ which is a part of ``dffml-model-pytorch``, a DFFML plugin which allows you to u
 via DFFML. We can install it with ``pip``. We will also be using image loading from
 ``dffml-config-image`` and YAML file loading from ``dffml-config-yaml`` for creating our neural network.
 
-.. code-block:: console
+.. tabs::
 
-    $ pip install -U dffml-model-pytorch dffml-config-image dffml-config-yaml
+    .. group-tab:: Linux and MacOS
+
+        .. code-block:: console
+
+            $ pip install -U dffml-model-pytorch dffml-config-image dffml-config-yaml
+
+    .. group-tab:: Windows
+
+        .. code-block:: console
+
+            (.venv) C:\Users\username> python -m pip install -U dffml-model-pytorch dffml-config-image dffml-config-yaml -f https://download.pytorch.org/whl/torch_stable.html
 
 Download the dataset and verify with with ``sha384sum``.
 
