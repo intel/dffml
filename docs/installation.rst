@@ -77,20 +77,13 @@ Installing All Plugins
 If you want to install all of the machine learning model plugins that are
 maintained as a part of the core repository, you can append ``[models]``.
 
-.. warning::
-
-   Due to an upstream issue (tracked as
-   https://github.com/intel/dffml/issues/992) installing all models
-   together requires the addtion of a patched ``ConfigSpace`` package to the
-   following install commands.
-
 .. tabs::
 
     .. group-tab:: Linux and MacOS
 
         .. code-block:: console
 
-            $ python -m pip install -U dffml[models] "https://github.com/automl/ConfigSpace/archive/86863bc2f640892675c04de0b8006a623dc14c45.zip#egg=ConfigSpace"
+            $ python -m pip install -U dffml[models]
 
     .. group-tab:: Windows
 
@@ -108,7 +101,7 @@ repository, you can append ``[all]``.
 
         .. code-block:: console
 
-            $ python -m pip install -U dffml[all] "https://github.com/automl/ConfigSpace/archive/86863bc2f640892675c04de0b8006a623dc14c45.zip#egg=ConfigSpace"
+            $ python -m pip install -U dffml[all]
 
     .. group-tab:: Windows
 
