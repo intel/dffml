@@ -25,6 +25,21 @@ working is install everything in a fresh virtual environment.
     $ python -m pip install -U dffml
     $ dffml version
 
+Logging
+-------
+
+If you are having trouble figuring out what's going on, you can enable logging.
+
+Command line utilities can enable logging by adding the ``-log debug`` option.
+
+Python programs can enable logging by putting the following at the top of their
+file.
+
+.. code-block:: python
+
+   import logging
+   logging.basicConfig(level=logging.DEBUG)
+
 EntrypointNotFound
 ------------------
 

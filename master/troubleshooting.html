@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Troubleshooting &mdash; DFFML cc291422 documentation</title>
+  <title>Troubleshooting &mdash; DFFML 616676ea documentation</title>
   
 
   
@@ -66,7 +66,7 @@
             
             
               <div class="version">
-                cc291422
+                616676ea
               </div>
             
           
@@ -111,6 +111,7 @@
 <li class="toctree-l1"><a class="reference internal" href="api/index.html">API Reference</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Troubleshooting</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#create-a-new-virtual-environment">Create a new Virtual Environment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#logging">Logging</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#entrypointnotfound">EntrypointNotFound</a></li>
 </ul>
 </li>
@@ -218,6 +219,17 @@ working is install everything in a fresh virtual environment.</p>
 <span class="gp">$ </span>python -m pip install -U pip setuptools wheel
 <span class="gp">$ </span>python -m pip install -U dffml
 <span class="gp">$ </span>dffml version
+</pre></div>
+</div>
+</div>
+<div class="section" id="logging">
+<h2>Logging<a class="headerlink" href="#logging" title="Permalink to this headline">¶</a></h2>
+<p>If you are having trouble figuring out what’s going on, you can enable logging.</p>
+<p>Command line utilities can enable logging by adding the <code class="docutils literal notranslate"><span class="pre">-log</span> <span class="pre">debug</span></code> option.</p>
+<p>Python programs can enable logging by putting the following at the top of their
+file.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">logging</span>
+<span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
