@@ -135,6 +135,11 @@ install command.
 
     $ dffml service dev install -user
 
+After you've installed plugins in development mode, you will want to not run any
+of the ``pip install`` commands, as that will uninstall the plugins you've
+installed in development mode, and overwrite them with the released versions
+from PyPi.
+
 Virtual Environment
 -------------------
 
