@@ -21,7 +21,7 @@ try:
 except ImportError:
     # Ignore import errors, package is not installed
     pass
-except Execption as error:
+except Exception as error:
     LOGGER = logging.getLogger(__package__)
     LOGGER.error(error)
 
