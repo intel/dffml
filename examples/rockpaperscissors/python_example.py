@@ -18,10 +18,10 @@ class ConvNet(nn.Module):
             in_channels=3, out_channels=32, kernel_size=5, padding=2
         )
         self.conv2 = nn.Conv2d(
-            in_channels=32, out_channels=32, kernel_size=3, padding=1
+            in_channels=self.conv1.out_channels, out_channels=32, kernel_size=3, padding=1
         )
         self.conv3 = nn.Conv2d(
-            in_channels=32, out_channels=16, kernel_size=3, padding=1
+            in_channels=self.conv2.out_channels, out_channels=16, kernel_size=3, padding=1
         )
 
         self.relu = nn.ReLU()
