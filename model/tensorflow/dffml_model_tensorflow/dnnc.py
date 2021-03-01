@@ -4,7 +4,6 @@ record.
 """
 import os
 import abc
-import hashlib
 import inspect
 import pathlib
 
