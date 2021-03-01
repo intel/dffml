@@ -1,5 +1,4 @@
 import pathlib
-import hashlib
 import contextlib
 from typing import List, Dict, Any
 
@@ -27,6 +26,7 @@ from ..util.cli.cmds import (
     KeysCMDConfig,
 )
 from ..util.cli.parser import ParseInputsAction
+from ..util.crypto import insecure_hash
 from ..base import config, field
 from ..high_level import run as run_dataflow
 
@@ -488,45 +488,37 @@ class Diagram(CMD):
             # Skip stage if not wanted
             if self.stages and stage.value not in self.stages:
                 continue
-            stage_node = hashlib.md5(
-                ("stage." + stage.value).encode()
-            ).hexdigest()
+            stage_node = insecure_hash("stage." + stage.value)
             if len(self.stages) != 1:
                 print(f"subgraph {stage_node}[{stage.value.title()} Stage]")
                 print(f"style {stage_node} fill:#afd388b5,stroke:#a4ca7a")
             for instance_name, operation in dataflow.operations.items():
                 if operation.stage != stage:
                     continue
-                subgraph_node = hashlib.md5(
-                    ("subgraph." + instance_name).encode()
-                ).hexdigest()
-                node = hashlib.md5(instance_name.encode()).hexdigest()
+                subgraph_node = insecure_hash("subgraph." + instance_name)
+                node = insecure_hash(instance_name)
                 if not self.simple:
                     print(f"subgraph {subgraph_node}[{instance_name}]")
                     print(f"style {subgraph_node} fill:#fff4de,stroke:#cece71")
                 print(f"{node}[{operation.instance_name}]")
                 for input_name in operation.inputs.keys():
-                    input_node = hashlib.md5(
-                        ("input." + instance_name + "." + input_name).encode()
-                    ).hexdigest()
+                    input_node = insecure_hash(
+                        "input." + instance_name + "." + input_name
+                    )
                     if not self.simple:
                         print(f"{input_node}({input_name})")
                         print(f"{input_node} --> {node}")
                 for output_name in operation.outputs.keys():
-                    output_node = hashlib.md5(
-                        (
-                            "output." + instance_name + "." + output_name
-                        ).encode()
-                    ).hexdigest()
+                    output_node = insecure_hash(
+                        "output." + instance_name + "." + output_name
+                    )
                     if not self.simple:
                         print(f"{output_node}({output_name})")
                         print(f"{node} --> {output_node}")
                 for condition in operation.conditions:
-                    condition_node = hashlib.md5(
-                        (
-                            "condition." + instance_name + "." + condition.name
-                        ).encode()
-                    ).hexdigest()
+                    condition_node = insecure_hash(
+                        "condition." + instance_name + "." + condition.name
+                    )
                     if not self.simple:
                         print(f"{condition_node}{'{' + condition.name + '}'}")
                         print(f"{condition_node} --> {node}")
@@ -541,15 +533,15 @@ class Diagram(CMD):
             operation = dataflow.operations[instance_name]
             if self.stages and not operation.stage.value in self.stages:
                 continue
-            node = hashlib.md5(instance_name.encode()).hexdigest()
+            node = insecure_hash(instance_name)
             for input_name, sources in input_flow.inputs.items():
                 for source in sources:
                     # TODO Put various sources in their own "Inputs" subgraphs
                     if isinstance(source, str):
                         input_definition = operation.inputs[input_name]
-                        seed_input_node = hashlib.md5(
-                            (source + "." + input_definition.name).encode()
-                        ).hexdigest()
+                        seed_input_node = insecure_hash(
+                            source + "." + input_definition.name
+                        )
                         print(
                             f"{seed_input_node}({source}<br>{input_definition.name})"
                         )
@@ -558,11 +550,9 @@ class Diagram(CMD):
                                 f"style {seed_input_node} fill:#f6dbf9,stroke:#a178ca"
                             )
                         if not self.simple:
-                            input_node = hashlib.md5(
-                                (
-                                    "input." + instance_name + "." + input_name
-                                ).encode()
-                            ).hexdigest()
+                            input_node = insecure_hash(
+                                "input." + instance_name + "." + input_name
+                            )
                             print(f"{seed_input_node} --> {input_node}")
                         else:
                             print(f"{seed_input_node} --> {node}")
@@ -577,9 +567,9 @@ class Diagram(CMD):
                             origin_definition_name = (
                                 origin + "." + definition_name
                             )
-                            seed_input_node = hashlib.md5(
-                                origin_definition_name.encode()
-                            ).hexdigest()
+                            seed_input_node = insecure_hash(
+                                origin_definition_name.encode
+                            )
                             print(
                                 f"{seed_input_node}({source}<br>{origin_definition_name})"
                             )
@@ -588,14 +578,9 @@ class Diagram(CMD):
                                     f"style {seed_input_node} fill:#f6dbf9,stroke:#a178ca"
                                 )
                             if not self.simple:
-                                input_node = hashlib.md5(
-                                    (
-                                        "input."
-                                        + instance_name
-                                        + "."
-                                        + input_name
-                                    ).encode()
-                                ).hexdigest()
+                                input_node = insecure_hash(
+                                    "input." + instance_name + "." + input_name
+                                )
                                 print(f"{seed_input_node} --> {input_node}")
                             else:
                                 print(f"{seed_input_node} --> {node}")
@@ -612,67 +597,51 @@ class Diagram(CMD):
                         ):
                             source = source[0]
                         if not self.simple:
-                            source_output_node = hashlib.md5(
-                                (
-                                    "output."
-                                    + ".".join(list(source.items())[0])
-                                ).encode()
-                            ).hexdigest()
-                            input_node = hashlib.md5(
-                                (
-                                    "input." + instance_name + "." + input_name
-                                ).encode()
-                            ).hexdigest()
+                            source_output_node = insecure_hash(
+                                "output." + ".".join(list(source.items())[0])
+                            )
+                            input_node = insecure_hash(
+                                "input." + instance_name + "." + input_name
+                            )
+
                             print(f"{source_output_node} --> {input_node}")
                         else:
-                            source_operation_node = hashlib.md5(
-                                list(source.keys())[0].encode()
-                            ).hexdigest()
+                            source_operation_node = insecure_hash(
+                                list(source.keys())[0]
+                            )
                             print(f"{source_operation_node} --> {node}")
             for i, condition in enumerate(input_flow.conditions):
                 if isinstance(condition, str):
                     if not self.simple:
                         condition_name = operation.conditions[i].name
-                        seed_condition_node = hashlib.md5(
-                            (condition + "." + condition_name).encode()
-                        ).hexdigest()
+                        seed_condition_node = insecure_hash(
+                            condition + "." + condition_name
+                        )
                         print(f"{seed_condition_node}({condition_name})")
-                        seed_dependent_node = hashlib.md5(
-                            (
-                                "condition."
-                                + instance_name
-                                + "."
-                                + condition_name
-                            ).encode()
-                        ).hexdigest()
+                        seed_dependent_node = insecure_hash(
+                            "condition." + instance_name + "." + condition_name
+                        )
                         print(
                             f"{seed_condition_node} --> {seed_dependent_node}"
                         )
                 else:
                     if not self.simple:
-                        dependee_node = hashlib.md5(
-                            (
-                                "output."
-                                + ".".join(list(condition.items())[0])
-                            ).encode()
-                        ).hexdigest()
-                        dependent_node = hashlib.md5(
-                            (
-                                "condition."
-                                + instance_name
-                                + "."
-                                + dataflow.operations[
-                                    list(condition.keys())[0]
-                                ]
-                                .outputs[list(condition.values())[0]]
-                                .name
-                            ).encode()
-                        ).hexdigest()
+                        dependee_node = insecure_hash(
+                            "output." + ".".join(list(condition.items())[0])
+                        )
+                        dependent_node = insecure_hash(
+                            "condition."
+                            + instance_name
+                            + "."
+                            + dataflow.operations[list(condition.keys())[0]]
+                            .outputs[list(condition.values())[0]]
+                            .name
+                        )
                         print(f"{dependee_node} --> {dependent_node}")
                     else:
-                        dependee_operation_node = hashlib.md5(
-                            list(condition.keys())[0].encode()
-                        ).hexdigest()
+                        dependee_operation_node = insecure_hash(
+                            list(condition.keys())[0]
+                        )
                         print(f"{dependee_operation_node} --> {node}")
         if len(self.stages) != 1:
             print(f"end")
