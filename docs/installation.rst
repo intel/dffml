@@ -45,7 +45,7 @@ package.
         .. code-block:: console
             :test:
 
-            $ python -m pip install -U dffml
+            $ python3 -m pip install -U dffml
 
     .. group-tab:: Windows
 
