@@ -1,8 +1,8 @@
 import json
 import pathlib
-import hashlib
 
 from dffml.util.net import cached_download
+from dffml.util.crypto import secure_hash
 from dffml.util.asynctestcase import AsyncTestCase
 
 from dffml.source.idx1 import IDX1SourceConfig, IDX1Source
@@ -51,9 +51,8 @@ class TestIDXSources(AsyncTestCase):
                 self.assertIn(feature_name, records[0].features())
                 for i in range(-1, 1):
                     with self.subTest(index=i):
-                        is_hash = hashlib.sha384(
-                            json.dumps(
-                                records[i].feature(feature_name)
-                            ).encode()
-                        ).hexdigest()
+                        is_hash = secure_hash(
+                            json.dumps(records[i].feature(feature_name)),
+                            algorithm="sha384",
+                        )
                         self.assertEqual(is_hash, IDX3_FIRST_LAST[i])

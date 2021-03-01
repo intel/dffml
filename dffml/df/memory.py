@@ -3,7 +3,6 @@ import abc
 import copy
 import asyncio
 import secrets
-import hashlib
 import inspect
 import itertools
 import traceback
@@ -76,6 +75,7 @@ from ..util.entrypoint import entrypoint
 from ..util.cli.arg import Arg
 from ..util.data import ignore_args
 from ..util.asynchelper import aenter_stack, concurrently
+from ..util.crypto import secure_hash
 
 from .log import LOGGER
 
@@ -859,7 +859,7 @@ class MemoryRedundancyCheckerContext(BaseRedundancyCheckerContext):
         operation.instance_name, and the sorted list of input uuids.
         """
         uid_list = [instance_name, handle] + sorted(uids)
-        return hashlib.sha384("".join(uid_list).encode("utf-8")).hexdigest()
+        return secure_hash("".join(uid_list), "sha384")
 
     async def unique(
         self, operation: Operation, parameter_set: BaseParameterSet

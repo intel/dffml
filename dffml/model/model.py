@@ -7,7 +7,6 @@ prediction accuracy.
 """
 import abc
 import json
-import hashlib
 import pathlib
 from typing import AsyncIterator, Optional
 
