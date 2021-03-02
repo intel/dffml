@@ -11,6 +11,9 @@ abstract the usage of machine learning models.
 If you want to get started creating your own model, check out the
 :ref:`model_tutorial`.
 
+You can load any of the models seen here using the 
+py:func:`Model.load <dffml.model.model.Model.load>` function.
+See the :doc:`/tutorials/models/load` tutorial for more deatils.
 .. _plugin_model_dffml:
 
 dffml
