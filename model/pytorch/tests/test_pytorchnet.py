@@ -5,6 +5,7 @@ import tempfile
 
 from dffml.cli.cli import CLI
 from dffml.util.net import cached_download_unpack_archive
+from dffml_model_pytorch.utils import create_network
 from dffml.util.asynctestcase import IntegrationCLITestCase
 from dffml.high_level import train, accuracy, predict
 from dffml import Features, Feature, DirectorySource
@@ -182,6 +183,57 @@ class TestPyTorchNeuralNetwork(IntegrationCLITestCase):
         self.assertIn("confidence", results)
         self.assertIn(results["value"], self.model.config.classifications)
         self.assertTrue(results["confidence"])
+
+    async def test_03_network_creation_from_dict(self):
+        model1 = {
+            "linear1": {
+                "layer_type": "Linear",
+                "in_features": 4096,
+                "out_features": 256,
+            },
+            "relu": {"layer_type": "ReLU"},
+            "linear_2": {
+                "layer_type": "Linear",
+                "in_features": "",
+                "out_features": 17,
+            },
+        }
+        model2 = {
+            "conv1": {
+                "layer_type": "Conv2d",
+                "in_channels": 3,
+                "out_channels": 32,
+                "kernel_size": 3,
+            },
+            "relu1": {"layer_type": "ReLU"},
+            "conv2": {
+                "layer_type": "Conv2d",
+                "in_channels": None,
+                "out_channels": 64,
+                "kernel_size": 3,
+            },
+            "relu2": {"layer_type": "ReLU"},
+            "conv3": {
+                "layer_type": "Conv2d",
+                "in_channels": "",
+                "out_channels": 96,
+                "kernel_size": 3,
+            },
+            "relu3": {"layer_type": "ReLU"},
+            "conv4": {
+                "layer_type": "Conv2d",
+                "in_channels": "96",
+                "out_channels": 32,
+                "kernel_size": 3,
+            },
+        }
+
+        model1_net = create_network(model1)
+        model2_net = create_network(model2)
+        self.assertEqual(model2_net[2].in_channels, 32)
+        self.assertEqual(model2_net[4].in_channels, 64)
+        self.assertEqual(model2_net[6].in_channels, 96)
+        self.assertEqual(model1_net[2].in_features, 256)
 
     @cached_download_unpack_archive(
         "https://storage.googleapis.com/laurencemoroney-blog.appspot.com/rps.zip",

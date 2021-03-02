@@ -17,7 +17,6 @@ def create_layer(layer_dict):
     with all the indented inner layers, else if the layer_dict is a single layer
     i.e. of type Dict[str, int/str/float/sequence/bool], that layer is returned.
     """
-
     sequential_dict = nn.Sequential()
     for name, layer in layer_dict.items():
         if isinstance(layer, dict):
@@ -32,6 +31,45 @@ def create_layer(layer_dict):
             layer_type = parameters.pop("layer_type")
             return getattr(nn, layer_type)(**parameters)
     return sequential_dict
+
+
+def create_network(network_dict):
+    sequential_network = nn.Sequential()
+    for name, layer in network_dict.items():
+        if isinstance(layer, dict):
+            parameters = {k: v for k, v in layer.items()}
+            layer_type = parameters.pop("layer_type")
+            try:
+                if not isinstance(parameters["in_channels"], int):
+                    layers = []
+                    for module in sequential_network.children():
+                        layers.append(module)
+                    for module in reversed(layers):
+                        try:
+                            parameters["in_channels"] = module.out_channels
+                            break
+                        except:
+                            pass
+            except KeyError:
+                pass
+
+            try:
+                if not isinstance(parameters["in_features"], int):
+                    layers = []
+                    for module in sequential_network.children():
+                        layers.append(module)
+                    for module in reversed(layers):
+                        try:
+                            parameters["in_features"] = module.out_features
+                            break
+                        except:
+                            pass
+            except KeyError:
+                pass
+            sequential_network.add_module(
+                name, getattr(nn, layer_type)(**parameters)
+            )
+    return sequential_network
 
 
 class NumpyToTensor(Dataset):

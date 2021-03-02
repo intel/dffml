@@ -74,7 +74,6 @@ class PyTorchNeuralNetworkContext(PyTorchModelContext):
                 len(self.classifications),
                 self.classifications,
             )
-
         model = self.parent.config.network
         self.logger.debug("Model Summary\n%r", model)
 
