@@ -8,8 +8,8 @@ Data Flow
     :caption: Contents:
 
     multicomm
+    base
+    log
+    memory
     types
     exceptions
-    base
-    memory
-    log
