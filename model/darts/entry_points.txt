@@ -1,0 +1,2 @@
+[dffml.model]
+myslr = dffml_model_darts.dartsexponentialsmoothing:ExponentialSmoothing
