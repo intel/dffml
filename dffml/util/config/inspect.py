@@ -1,9 +1,10 @@
 import inspect
-from dffml.base import field, make_config
 from typing import Callable, Optional, Dict, Tuple, Type
 
+from ...base import field, make_config
 
-def inspect_pytorch_params(cls: Callable):
+
+def inspect_params(cls: Callable):
     parameters = inspect.signature(cls).parameters
     args = {}
 
@@ -21,7 +22,7 @@ def inspect_pytorch_params(cls: Callable):
     return args
 
 
-def make_pytorch_config(
+def make_config_inspect(
     name: str,
     cls: Type,
     properties: Optional[Dict[str, Tuple[Type, field]]] = None,
@@ -34,7 +35,7 @@ def make_pytorch_config(
     if properties is None:
         properties = {}
 
-    properties.update(inspect_pytorch_params(cls))
+    properties.update(inspect_params(cls))
 
     return make_config(
         name, [tuple([key] + list(value)) for key, value in properties.items()]

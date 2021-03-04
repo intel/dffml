@@ -8,7 +8,7 @@ from torchvision import transforms
 
 from dffml.base import BaseDataFlowFacilitatorObject
 from dffml.util.entrypoint import base_entry_point, entrypoint
-from .config import make_pytorch_config
+from dffml.util.config.inspect import make_config_inspect
 
 
 def create_layer(layer_dict):
@@ -110,7 +110,7 @@ class PyTorchLoss(BaseDataFlowFacilitatorObject):
 for name, loss_class in inspect.getmembers(nn, inspect.isclass):
     if name.endswith("Loss"):
 
-        cls_config = make_pytorch_config(name + "Config", loss_class)
+        cls_config = make_config_inspect(name + "Config", loss_class)
 
         cls = entrypoint(name.lower())(
             type(
