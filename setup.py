@@ -91,6 +91,7 @@ setup(
             "df = dffml.source.df:DataFlowSource",
             "op = dffml.source.op:OpSource",
             "dir = dffml.source.dir:DirectorySource",
+            "iris.training = dffml.source.dataset.iris:iris_training.source",
         ],
         "dffml.port": ["json = dffml.port.json:JSON"],
         "dffml.service.cli": ["dev = dffml.service.dev:Develop"],
