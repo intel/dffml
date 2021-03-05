@@ -34,7 +34,7 @@ if [ ! -f pages/_static/copybutton.js ]; then
   curl -sSL -o pages/_static/copybutton.js "https://raw.githubusercontent.com/python/python-docs-theme/master/python_docs_theme/static/copybutton.js"
 fi
 sha384sum -c - <<EOF
-bf80c778867bd87d14588ff72ae10632b331427379a299ab2ac4d7ddefa9b648313720b796ab441359e0e47daf738109 pages/_static/copybutton.js
+061b550f64fb65ccb73fbe61ce15f49c17bc5f30737f42bf3c9481c89f7996d0004a11bf283d6bd26cf0b65130fc1d4b pages/_static/copybutton.js
 EOF
 touch pages/.nojekyll
 
