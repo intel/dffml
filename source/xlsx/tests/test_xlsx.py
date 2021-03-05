@@ -6,6 +6,7 @@ from dffml.record import Record
 from dffml.util.asynctestcase import AsyncTestCase
 from dffml_source_xlsx.xlsx import XLSXSource
 
+
 class TestXLSXSource(AsyncTestCase):
     async def test_xlsx_records(self):
         # Test case for xlsx load and save
