@@ -5,7 +5,7 @@ import hashlib
 import pathlib
 import functools
 import urllib.request
-from typing import List
+from typing import List, Union
 
 from .os import chdir
 
@@ -72,6 +72,35 @@ def sync_urlopen(url, protocol_allowlist=DEFAULT_PROTOCOL_ALLOWLIST):
     return urllib.request.urlopen(url)
 
 
+class NoHashToUseForValidationSuppliedError(Exception):
+    """
+    A hash to validate file contents against was not supplied.
+    """
+
+
+def validate_file_hash(
+    filepath: Union[str, pathlib.Path],
+    *,
+    expected_sha384_hash: str = None,
+    error: bool = True,
+):
+    """
+    Read the contents of a file, hash the contents, and compare that hash to the
+    one given.
+    """
+    filepath = pathlib.Path(filepath)
+    if expected_sha384_hash is None:
+        raise NoHashToUseForValidationSuppliedError(filepath)
+    filehash = hashlib.sha384(filepath.read_bytes()).hexdigest()
+    if filehash != expected_sha384_hash:
+        if error:
+            raise HashValidationError(
+                str(filepath), filehash, expected_sha384_hash
+            )
+        return False
+    return True
+
+
 def cached_download(
     url,
     target_path,
@@ -125,27 +154,21 @@ def cached_download(
     """
     target_path = pathlib.Path(target_path)
 
-    def validate_hash(error: bool = True):
-        filehash = hashlib.sha384(target_path.read_bytes()).hexdigest()
-        if filehash != expected_hash:
-            if error:
-                raise HashValidationError(
-                    str(target_path), filehash, expected_hash
-                )
-            return False
-        return True
-
     def mkwrapper(func):
         @functools.wraps(func)
         async def wrapper(*args, **kwds):
             args = list(args) + [target_path]
-            if not target_path.is_file() or not validate_hash(error=False):
+            if not target_path.is_file() or not validate_file_hash(
+                target_path, expected_sha384_hash=expected_hash, error=False,
+            ):
                 # TODO(p5) Blocking request in coroutine
                 with sync_urlopen(
                     url, protocol_allowlist=protocol_allowlist
                 ) as resp:
                     target_path.write_bytes(resp.read())
-            validate_hash()
+            validate_file_hash(
+                target_path, expected_sha384_hash=expected_hash,
+            )
             return await func(*args, **kwds)
 
         return wrapper
