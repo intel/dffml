@@ -1,0 +1,2 @@
+[dffml.source]
+misc = dffml_source_xlsx.xlsx:XLSXSource
