@@ -184,6 +184,9 @@ def mktestcase(name, import_name, module, obj):
     state = {
         "globs": {},
         "name": name,
+        "obj": obj,
+        "import_name": import_name,
+        "module": module,
         "verbose": os.environ.get("LOGGING", "").lower() == "debug",
     }
     # Check if there is a function within this file which will be used to do
