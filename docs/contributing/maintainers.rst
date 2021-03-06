@@ -52,11 +52,11 @@ Doing a Release
 
 - Push the new branch (if created) and the tag
 
-- Switch to the master branch
+- Switch to the main branch
 
 - Cherry pick the release commit from the new branch, but not the pinning commit
 
-- Push the master branch
+- Push the main branch
 
 .. code-block:: console
 

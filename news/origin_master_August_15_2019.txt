@@ -2,7 +2,7 @@
 
 
 This is our first issue of the newsletter! What's the occasion? Lot's been
-happing lately in the master branch. We're due for a release soon! The next
+happing lately in the main branch. We're due for a release soon! The next
 release will feature changes to the following areas:
 
 - Sources
@@ -13,7 +13,7 @@ release will feature changes to the following areas:
 =================================== Sources ====================================
 
 
-Labels for CSV sources were merged into master. Enabling users to save multiple
+Labels for CSV sources were merged into main. Enabling users to save multiple
 versions of datasets within the same CSV file.
 
 Example:
@@ -47,7 +47,7 @@ Work continues on the MySQL and Hadoop Sources.
 
 
 Machine Learning model packages from scratch and using the scikit machine
-learning library (sklearn) have been merged into master. With these additions
+learning library (sklearn) have been merged into main. With these additions
 developers will be able to use DFFML to make numerical predictions.
 
 Example:

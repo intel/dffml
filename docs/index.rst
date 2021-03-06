@@ -33,7 +33,7 @@ Output:
     {'Years': 6, 'Expertise': 13, 'Trust': 0.7, 'Salary': 70.0}
     {'Years': 7, 'Expertise': 15, 'Trust': 0.8, 'Salary': 80.0}
 
-This is the documentation for the latest release, documentation for the master
+This is the documentation for the latest release, documentation for the main
 branch can be found `here <master/index.html>`_.
 
 .. toctree::
@@ -79,7 +79,7 @@ branch can be found `here <master/index.html>`_.
     :caption: Community
 
     GitHub <https://github.com/intel/dffml>
-    Master Branch Docs <https://intel.github.io/dffml/master/>
+    Main Branch Docs <https://intel.github.io/dffml/master/>
     publications
     contact
     contributing/index

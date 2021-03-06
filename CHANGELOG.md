@@ -269,7 +269,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `allowempty` added to source config parameters.
 - Quickstart document to show how to use models from Python.
 - The latest release of the documentation now includes a link to the
-  documentation for the master branch (on GitHub pages).
+  documentation for the main branch (on GitHub pages).
 - Virtual environment, GitPod, and Docker development environment setup notes to
   the CONTRIBUTING.md file.
 - Changelog now included in documenation website.

@@ -41,8 +41,8 @@ development mode.
 
    This docs without ``/master/`` in the URL are built from the latest release.
 
-   The docs with ``/master/`` in the URL are built from the *master* branch.
-   The master branch is what you get when you clone the Git repo, which we're
+   The docs with ``/master/`` in the URL are built from the *main* branch.
+   The main branch is what you get when you clone the Git repo, which we're
    about to do.
 
 Installing to your home directory will reduce permissions issues. To do

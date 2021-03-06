@@ -34,7 +34,7 @@ DFFML aims to be the easiest and most convenient way to use Machine Learning.
 
 Documentation for the latest release is hosted at https://intel.github.io/dffml/
 
-Documentation for the master branch is hosted at
+Documentation for the main branch is hosted at
 https://intel.github.io/dffml/master/index.html
 
 ## Contributing

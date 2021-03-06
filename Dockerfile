@@ -87,7 +87,7 @@ RUN apt-get update && \
 # Here we install DFFML and all the plugins
 
 # The release of dffml we're using, latest is the latest PyPi release, master is
-# the master branch
+# the main branch
 ARG DFFML_RELEASE=latest
 ENV DFFML_RELEASE ${DFFML_RELEASE}
 

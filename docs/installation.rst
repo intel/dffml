@@ -109,11 +109,11 @@ repository, you can append ``[all]``.
 
             (.venv) C:\Users\username> python -m pip install -U dffml[all] -f https://download.pytorch.org/whl/torch_stable.html
 
-Master Branch
+Main Branch
 -------------
 
 If you want to stay on the bleeding edge of bug fixes, etc. You can install from
-the master branch.
+the main branch.
 
 .. tabs::
 
@@ -153,7 +153,7 @@ and replace ``-`` with ``/``.
 
 There's an online IDE based on Theia (similar to VS Code) called GitPod that
 gives you a setup development environment to get started working with/on DFFML
-right away. However, it comes with the master branch installed, you'll need to
+right away. However, it comes with the main branch installed, you'll need to
 run the above commands to get the lastest released version.
 
 .. image:: https://gitpod.io/button/open-in-gitpod.svg
