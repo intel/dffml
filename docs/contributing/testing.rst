@@ -9,13 +9,19 @@ You can run the tests with
 
 .. code-block:: console
 
-    $ python3 setup.py test
+    $ python3 -m unittest discover -v
 
 To run a specific test, use the ``-s`` flag.
 
 .. code-block:: console
 
-    $ python3 setup.py test -s tests.test_cli.TestPredict.test_record
+    $ python3 -m unittest tests.test_cli.TestPredict.test_record
+
+You can also run all tests which have a given string in their name.
+
+.. code-block:: console
+
+    $ python3 -m unittest discover -v -k unpack_
 
 Writing Tests
 -------------
