@@ -83,6 +83,7 @@ def validate_file_hash(
     *,
     expected_sha384_hash: str = None,
     error: bool = True,
+    chunk_size: int = 8192,
 ):
     """
     Read the contents of a file, hash the contents, and compare that hash to the
@@ -91,7 +92,14 @@ def validate_file_hash(
     filepath = pathlib.Path(filepath)
     if expected_sha384_hash is None:
         raise NoHashToUseForValidationSuppliedError(filepath)
-    filehash = hashlib.sha384(filepath.read_bytes()).hexdigest()
+    filehash = hashlib.sha384()
+    with open(filepath, "rb") as fileobj:
+        bytes_read = fileobj.read(chunk_size)
+        filehash.update(bytes_read)
+        while len(bytes_read) == chunk_size:
+            bytes_read = fileobj.read(chunk_size)
+            filehash.update(bytes_read)
+    filehash = filehash.hexdigest()
     if filehash != expected_sha384_hash:
         if error:
             raise HashValidationError(
