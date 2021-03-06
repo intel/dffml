@@ -1,6 +1,7 @@
+import re
 import hashlib
 import pathlib
-from typing import Union
+from typing import Union, Tuple
 
 
 class NoHashToUseForValidationSuppliedError(Exception):
@@ -95,3 +96,54 @@ def validate_file_hash(
             )
         return False
     return True
+
+
+def find_replace_with_hash_validation(
+    original_path: pathlib.Path,
+    replaced_path: pathlib.Path,
+    find_regex: str,
+    replace: str,
+    *,
+    expected_sha384_hash: str = None,
+) -> pathlib.Path:
+    r"""
+    Given an original file path, a file path to write out to, a regex to supply
+    to :py:func:`re.sub`, a string to replace, and a hash to validate the
+    replaced contents with.
+
+    Read the contents of the original file, run a regex find and replace, write
+    the contents out to ``replaced_path``. Validate the contents is as expected.
+
+    Examples
+    --------
+
+    >>> import pathlib
+    >>> from dffml import find_replace_with_hash_validation
+    >>>
+    >>> original_path = pathlib.Path("file.txt")
+    >>> original_path.write_text("Hello World\n")
+    12
+    >>>
+    >>> replaced_path = find_replace_with_hash_validation(
+    ...     original_path,
+    ...     original_path.parent / "subdir" / "new_file.txt",
+    ...     r"World",
+    ...     "FeedFace",
+    ...     expected_sha384_hash="00d7bdbf0b24d37463bd9d2107926c3fa870537c009cd64dde72c3578160d9e04f63bf487631a2e2e7610f9654cf0f78",
+    ... )
+    >>>
+    >>> print(replaced_path.read_bytes())
+    b'Hello FeedFace\n'
+    """
+    # Make directories if they don't exist
+    if not replaced_path.parent.is_dir():
+        replaced_path.parent.mkdir(parents=True)
+    if not replaced_path.is_file():
+        replaced_path.write_text(
+            re.sub(find_regex, replace, original_path.read_text())
+        )
+    # Validate the contents of replaced file
+    validate_file_hash(
+        replaced_path, expected_sha384_hash=expected_sha384_hash
+    )
+    return replaced_path
