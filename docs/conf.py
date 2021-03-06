@@ -100,7 +100,14 @@ html_context = {
 
 
 def setup(app):
-    app.add_js_file("copybutton.js")
+    app.add_stylesheet('copybutton.css')
+    app.add_stylesheet('all.css')
+    app.add_stylesheet('bootstrap.min.css')
+    app.add_javascript("copybutton.js")
+    app.add_javascript('clipboard.min.js')
+    app.add_javascript('popper.min.js')
+    app.add_javascript('bootstrap.min.js')
+
 
 
 # -- Extension configuration -------------------------------------------------
