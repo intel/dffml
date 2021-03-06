@@ -9,7 +9,6 @@ Dart Time Series models.
 ## Usage
 
 ```console
-`
 
 ## License
 
