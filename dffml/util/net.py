@@ -3,7 +3,9 @@ import os
 import shutil
 import hashlib
 import pathlib
+import inspect
 import functools
+import contextlib
 import urllib.request
 from typing import List, Union
 
@@ -96,41 +98,139 @@ def cached_download(
     --------
 
     >>> import asyncio
+    >>> import contextlib
     >>> from dffml import cached_download
     >>>
-    >>> @cached_download(
+    >>> cached_manifest = cached_download(
     ...     "https://github.com/intel/dffml/raw/152c2b92535fac6beec419236f8639b0d75d707d/MANIFEST.in",
     ...     "MANIFEST.in",
     ...     "f7aadf5cdcf39f161a779b4fa77ec56a49630cf7680e21fb3dc6c36ce2d8c6fae0d03d5d3094a6aec4fea1561393c14c",
     ... )
+    >>>
+    >>> @cached_manifest
     ... async def first_line_in_manifest_152c2b(manifest):
     ...     return manifest.read_text().split()[:2]
     >>>
     >>> asyncio.run(first_line_in_manifest_152c2b())
     ['include', 'README.md']
+    >>>
+    >>> @cached_manifest
+    ... def first_line_in_manifest_152c2b(manifest):
+    ...     return manifest.read_text().split()[:2]
+    >>>
+    >>> first_line_in_manifest_152c2b()
+    ['include', 'README.md']
+    >>>
+    >>> @cached_manifest
+    ... def first_line_in_manifest_152c2b(manifest):
+    ...     yield manifest.read_text().split()[:2]
+    >>>
+    >>> for contents in first_line_in_manifest_152c2b():
+    ...     print(contents)
+    ['include', 'README.md']
+    >>>
+    >>> @cached_manifest
+    ... async def first_line_in_manifest_152c2b(manifest):
+    ...     yield manifest.read_text().split()[:2]
+    >>>
+    >>> async def main():
+    ...     async for contents in first_line_in_manifest_152c2b():
+    ...         print(contents)
+    >>>
+    >>> asyncio.run(main())
+    ['include', 'README.md']
+    >>>
+    >>> @cached_manifest
+    ... @contextlib.contextmanager
+    ... def first_line_in_manifest_152c2b(manifest):
+    ...     yield manifest.read_text().split()[:2]
+    >>>
+    >>> with first_line_in_manifest_152c2b() as contents:
+    ...     print(contents)
+    ['include', 'README.md']
+    >>>
+    >>> @cached_manifest
+    ... @contextlib.asynccontextmanager
+    ... async def first_line_in_manifest_152c2b(manifest):
+    ...     yield manifest.read_text().split()[:2]
+    >>>
+    >>> async def main():
+    ...     async with first_line_in_manifest_152c2b() as contents:
+    ...         print(contents)
+    >>>
+    >>> asyncio.run(main())
+    ['include', 'README.md']
     """
     target_path = pathlib.Path(target_path)
 
-    def mkwrapper(func):
-        @functools.wraps(func)
-        async def wrapper(*args, **kwds):
-            args = list(args) + [target_path]
-            if not target_path.is_file() or not validate_file_hash(
-                target_path, expected_sha384_hash=expected_hash, error=False,
-            ):
-                # TODO(p5) Blocking request in coroutine
-                with sync_urlopen(
-                    url, protocol_allowlist=protocol_allowlist
-                ) as resp:
-                    target_path.write_bytes(resp.read())
-            validate_file_hash(
-                target_path, expected_sha384_hash=expected_hash,
-            )
-            return await func(*args, **kwds)
+    def add_target_to_args_and_validate(args):
+        args = list(args) + [target_path]
+        if not target_path.is_file() or not validate_file_hash(
+            target_path, expected_sha384_hash=expected_hash, error=False,
+        ):
+            # TODO(p5) Blocking request in coroutine
+            with sync_urlopen(
+                url, protocol_allowlist=protocol_allowlist
+            ) as resp:
+                target_path.write_bytes(resp.read())
+        validate_file_hash(
+            target_path, expected_sha384_hash=expected_hash,
+        )
+        return args
 
-        return wrapper
+    def wrapper(func):
 
-    return mkwrapper
+        if inspect.isasyncgenfunction(func) and hasattr(func, "__aenter__"):
+
+            @contextlib.asynccontextmanager
+            async def wrapped(*args, **kwargs):
+                async with func(
+                    *add_target_to_args_and_validate(args), **kwargs,
+                ) as result:
+                    yield result
+
+        elif inspect.isasyncgenfunction(func):
+
+            async def wrapped(*args, **kwargs):
+                async for result in func(
+                    *add_target_to_args_and_validate(args), **kwargs,
+                ):
+                    yield result
+
+        elif inspect.iscoroutinefunction(func):
+
+            async def wrapped(*args, **kwargs):
+                return await func(
+                    *add_target_to_args_and_validate(args), **kwargs,
+                )
+
+        elif inspect.isgeneratorfunction(func) and hasattr(func, "__enter__"):
+
+            @contextlib.contextmanager
+            def wrapped(*args, **kwargs):
+                with func(
+                    *add_target_to_args_and_validate(args), **kwargs,
+                ) as result:
+                    yield result
+
+        elif inspect.isgeneratorfunction(func):
+
+            def wrapped(*args, **kwargs):
+                yield from func(
+                    *add_target_to_args_and_validate(args), **kwargs,
+                )
+
+        else:
+
+            def wrapped(*args, **kwargs):
+                return func(*add_target_to_args_and_validate(args), **kwargs)
+
+        # Wrap with functools
+        wrapped = functools.wraps(func)(wrapped)
+
+        return wrapped
+
+    return wrapper
 
 
 def cached_download_unpack_archive(
