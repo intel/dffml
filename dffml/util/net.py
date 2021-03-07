@@ -95,6 +95,41 @@ def sync_urlopen(
     return urllib.request.urlopen(url, **kwargs)
 
 
+def sync_urlretrieve(
+    url: Union[str, urllib.request.Request],
+    protocol_allowlist: List[str] = DEFAULT_PROTOCOL_ALLOWLIST,
+    **kwargs,
+):
+    """
+    Check that ``url`` has a protocol defined in ``protocol_allowlist``, then
+    return the result of calling :py:func:`urllib.request.urlretrieve` passing
+    it ``url`` and any keyword arguments.
+    """
+    validate_protocol(url, protocol_allowlist=protocol_allowlist)
+    return urllib.request.urlretrieve(url, **kwargs)
+
+
+def sync_urlretrieve_and_validate(
+    url: Union[str, urllib.request.Request],
+    target_path: Union[str, pathlib.Path],
+    *,
+    expected_sha384_hash=None,
+    protocol_allowlist: List[str] = DEFAULT_PROTOCOL_ALLOWLIST,
+):
+    target_path = pathlib.Path(target_path)
+    if not target_path.is_file() or not validate_file_hash(
+        target_path, expected_sha384_hash=expected_sha384_hash, error=False,
+    ):
+        sync_urlretrieve(
+            url,
+            filename=str(target_path),
+            protocol_allowlist=protocol_allowlist,
+        )
+    validate_file_hash(
+        target_path, expected_sha384_hash=expected_sha384_hash,
+    )
+
+
 def cached_download(
     url,
     target_path,
