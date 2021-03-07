@@ -6,6 +6,7 @@ import pathlib
 import inspect
 import functools
 import contextlib
+import dataclasses
 import urllib.request
 from typing import List, Union
 
@@ -132,11 +133,99 @@ def sync_urlretrieve_and_validate(
     )
 
 
+@dataclasses.dataclass
+class CachedDownloadWrapper:
+    url: Union[str, urllib.request.Request]
+    target_path: Union[str, pathlib.Path]
+    expected_hash: str
+    protocol_allowlist: List[str] = dataclasses.field(
+        default_factory=lambda: DEFAULT_PROTOCOL_ALLOWLIST
+    )
+
+    def __post_init__(self):
+        self.target_path = pathlib.Path(self.target_path)
+
+    def __call__(self, func):
+        if inspect.isasyncgenfunction(func) and hasattr(func, "__aenter__"):
+
+            @contextlib.asynccontextmanager
+            async def wrapped(*args, **kwargs):
+                async with func(
+                    *self.add_target_to_args_and_validate(args), **kwargs,
+                ) as result:
+                    yield result
+
+        elif inspect.isasyncgenfunction(func):
+
+            async def wrapped(*args, **kwargs):
+                async for result in func(
+                    *self.add_target_to_args_and_validate(args), **kwargs,
+                ):
+                    yield result
+
+        elif inspect.iscoroutinefunction(func):
+
+            async def wrapped(*args, **kwargs):
+                return await func(
+                    *self.add_target_to_args_and_validate(args), **kwargs,
+                )
+
+        elif inspect.isgeneratorfunction(func) and hasattr(func, "__enter__"):
+
+            @contextlib.contextmanager
+            def wrapped(*args, **kwargs):
+                with func(
+                    *self.add_target_to_args_and_validate(args), **kwargs,
+                ) as result:
+                    yield result
+
+        elif inspect.isgeneratorfunction(func):
+
+            def wrapped(*args, **kwargs):
+                yield from func(
+                    *self.add_target_to_args_and_validate(args), **kwargs,
+                )
+
+        else:
+
+            def wrapped(*args, **kwargs):
+                return func(
+                    *self.add_target_to_args_and_validate(args), **kwargs
+                )
+
+        # Wrap with functools
+        wrapped = functools.wraps(func)(wrapped)
+
+        return wrapped
+
+    def __enter__(self):
+        self.add_target_to_args_and_validate([])
+        return self.target_path
+
+    def __exit__(self, _exc_type, _exc_value, _traceback):
+        pass
+
+    async def __aenter__(self):
+        return self.__enter__()
+
+    async def __aexit__(self, _exc_type, _exc_value, _traceback):
+        pass
+
+    def add_target_to_args_and_validate(self, args):
+        sync_urlretrieve_and_validate(
+            self.url,
+            self.target_path,
+            expected_sha384_hash=self.expected_hash,
+            protocol_allowlist=self.protocol_allowlist,
+        )
+        return list(args) + [self.target_path]
+
+
 def cached_download(
-    url,
-    target_path,
-    expected_hash,
-    protocol_allowlist=DEFAULT_PROTOCOL_ALLOWLIST,
+    url: Union[str, urllib.request.Request],
+    target_path: Union[str, pathlib.Path],
+    expected_hash: str,
+    protocol_allowlist: List[str] = DEFAULT_PROTOCOL_ALLOWLIST,
 ):
     """
     Download a file and verify the hash of the downloaded file. If the file
@@ -232,77 +321,21 @@ def cached_download(
     >>>
     >>> asyncio.run(main())
     ['include', 'README.md']
+    >>>
+    ... with cached_manifest as manifest_path:
+    ...     print(manifest_path.read_text().split()[:2])
+    ['include', 'README.md']
+    >>>
+    >>> async def main():
+    ...     async with cached_manifest as manifest_path:
+    ...         print(manifest_path.read_text().split()[:2])
+    >>>
+    >>> asyncio.run(main())
+    ['include', 'README.md']
     """
-    target_path = pathlib.Path(target_path)
-
-    def add_target_to_args_and_validate(args):
-        args = list(args) + [target_path]
-        if not target_path.is_file() or not validate_file_hash(
-            target_path, expected_sha384_hash=expected_hash, error=False,
-        ):
-            # TODO(p5) Blocking request in coroutine
-            with sync_urlopen(
-                url, protocol_allowlist=protocol_allowlist
-            ) as resp:
-                target_path.write_bytes(resp.read())
-        validate_file_hash(
-            target_path, expected_sha384_hash=expected_hash,
-        )
-        return args
-
-    def wrapper(func):
-
-        if inspect.isasyncgenfunction(func) and hasattr(func, "__aenter__"):
-
-            @contextlib.asynccontextmanager
-            async def wrapped(*args, **kwargs):
-                async with func(
-                    *add_target_to_args_and_validate(args), **kwargs,
-                ) as result:
-                    yield result
-
-        elif inspect.isasyncgenfunction(func):
-
-            async def wrapped(*args, **kwargs):
-                async for result in func(
-                    *add_target_to_args_and_validate(args), **kwargs,
-                ):
-                    yield result
-
-        elif inspect.iscoroutinefunction(func):
-
-            async def wrapped(*args, **kwargs):
-                return await func(
-                    *add_target_to_args_and_validate(args), **kwargs,
-                )
-
-        elif inspect.isgeneratorfunction(func) and hasattr(func, "__enter__"):
-
-            @contextlib.contextmanager
-            def wrapped(*args, **kwargs):
-                with func(
-                    *add_target_to_args_and_validate(args), **kwargs,
-                ) as result:
-                    yield result
-
-        elif inspect.isgeneratorfunction(func):
-
-            def wrapped(*args, **kwargs):
-                yield from func(
-                    *add_target_to_args_and_validate(args), **kwargs,
-                )
-
-        else:
-
-            def wrapped(*args, **kwargs):
-                return func(*add_target_to_args_and_validate(args), **kwargs)
-
-        # Wrap with functools
-        wrapped = functools.wraps(func)(wrapped)
-
-        return wrapped
-
-    return wrapper
+    return CachedDownloadWrapper(
+        url, target_path, expected_hash, protocol_allowlist=protocol_allowlist,
+    )
 
 
 def cached_download_unpack_archive(
