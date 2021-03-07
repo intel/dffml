@@ -44,20 +44,55 @@ class DirectoryNotExtractedError(Exception):
 DEFAULT_PROTOCOL_ALLOWLIST: List[str] = ["https://"]
 
 
-def sync_urlopen(url, protocol_allowlist=DEFAULT_PROTOCOL_ALLOWLIST):
+def validate_protocol(
+    url: Union[str, urllib.request.Request],
+    protocol_allowlist=DEFAULT_PROTOCOL_ALLOWLIST,
+) -> str:
     """
-    Check that ``url`` has a protocol defined in ``protocol_allowlist``, then
-    return the result of calling :py:func:`urllib.request.urlopen` passing it
-    ``url``.
+    Check that ``url`` has a protocol defined in ``protocol_allowlist``.
+    Raise
+    :py:class:`ProtocolNotAllowedError <dffml.util.net.ProtocolNotAllowedError>`
+
+    Examples
+    --------
+
+    >>> from dffml.util.net import validate_protocol, DEFAULT_PROTOCOL_ALLOWLIST
+    >>>
+    >>> validate_protocol("http://example.com")
+    Traceback (most recent call last):
+        ...
+    dffml.util.net.ProtocolNotAllowedError: Protocol of URL 'http://example.com' is not in allowlist: ['https://']
+    >>>
+    >>> validate_protocol("https://example.com")
+    'https://example.com'
+    >>>
+    >>> validate_protocol("sshfs://example.com", ["sshfs://"] + DEFAULT_PROTOCOL_ALLOWLIST)
+    'sshfs://example.com'
     """
     allowed_protocol = False
     for protocol in protocol_allowlist:
-        if url.startswith(protocol):
+        check_url = url
+        if isinstance(check_url, urllib.request.Request):
+            check_url = check_url.full_url
+        if check_url.startswith(protocol):
             allowed_protocol = True
     if not allowed_protocol:
         raise ProtocolNotAllowedError(url, protocol_allowlist)
+    return url
 
-    return urllib.request.urlopen(url)
+
+def sync_urlopen(
+    url: Union[str, urllib.request.Request],
+    protocol_allowlist: List[str] = DEFAULT_PROTOCOL_ALLOWLIST,
+    **kwargs,
+):
+    """
+    Check that ``url`` has a protocol defined in ``protocol_allowlist``, then
+    return the result of calling :py:func:`urllib.request.urlopen` passing it
+    ``url`` and any keyword arguments.
+    """
+    validate_protocol(url, protocol_allowlist=protocol_allowlist)
+    return urllib.request.urlopen(url, **kwargs)
 
 
 def cached_download(
