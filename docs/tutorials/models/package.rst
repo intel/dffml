@@ -124,7 +124,7 @@ should be run in, ensuring that accuracy and predict tests always have a trained
 model to work with.
 
 We're using the ``*`` operator here to expand the list of X, Y pair ``dict``'s.
-See the offical Python documeantion about
+See the offical Python documentation about
 `Unpacking Argument Lists <https://docs.python.org/3/tutorial/controlflow.html#unpacking-argument-lists>`_
 for more information on how the ``*``-operator works.
 
