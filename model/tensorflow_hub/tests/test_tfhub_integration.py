@@ -93,6 +93,8 @@ class TestTextClassifier(AsyncTestCase):
             "test_data=csv",
             "-source-filename",
             data_filename,
+            "-scorer",
+            "textclf",
         )
         with contextlib.redirect_stdout(self.stdout):
             # Make prediction
