@@ -21,6 +21,8 @@ from dffml.df.memory import MemoryOrchestrator
 from dffml.noasync import train
 from dffml.model.slr import SLRModel
 from dffml.util.asynctestcase import AsyncTestCase
+from dffml.util.testing.docs import run_consoletest
+from dffml.util.testing.consoletest.parser import parse_nodes
 from dffml.db.sqlite import SqliteDatabase, SqliteDatabaseConfig
 from dffml.operation.db import db_query_create_table, DatabaseQueryConfig
 
@@ -215,6 +217,15 @@ def mktestcase(name, import_name, module, obj):
     return testcase
 
 
+def mkconsoletest(_name, _import_name, _module, obj):
+    async def test_consoletest(self):
+        await run_consoletest(
+            obj, docs_root_dir=pathlib.Path(__file__).parents[1] / "docs",
+        )
+
+    return test_consoletest
+
+
 for import_name, module in modules(root, package_name, skip=skip):
     # Iterate over all of the objects in the module
     for name, obj in inspect.getmembers(module):
@@ -267,6 +278,13 @@ for name, (import_name, module, obj) in to_test.items():
     if docstring is not None and ">>>" in docstring:
         test_cases["test_docstring"] = (
             mktestcase(name, import_name, module, obj),
+        )
+    # Add a consoletest testcase if there are any testable rst nodes
+    if docstring is not None and [
+        node for node in parse_nodes(docstring) if "test" in node.options
+    ]:
+        test_cases["test_consoletest"] = mkconsoletest(
+            name, import_name, module, obj
         )
     # Only create the instance of AsyncTestCase if the object's docstring holds
     # anything that could have a testcase made out of it
