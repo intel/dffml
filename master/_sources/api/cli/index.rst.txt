@@ -6,8 +6,8 @@ Cli
     :caption: Contents:
 
     config
-    cli
-    log
     dataflow
+    log
     list
     ml
+    cli

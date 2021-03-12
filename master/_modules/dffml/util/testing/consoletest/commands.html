@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>dffml.util.testing.consoletest.commands &mdash; DFFML 91172cfe documentation</title>
+  <title>dffml.util.testing.consoletest.commands &mdash; DFFML a72a0a7b documentation</title>
   
 
   
@@ -65,7 +65,7 @@
             
             
               <div class="version">
-                91172cfe
+                a72a0a7b
               </div>
             
           
@@ -679,7 +679,7 @@
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">directories</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="c1"># Ensure that we are running pip using it&#39;s module invocation</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">cmd</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span> <span class="o">!=</span> <span class="p">[</span><span class="s2">&quot;python&quot;</span><span class="p">,</span> <span class="s2">&quot;-m&quot;</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cmd</span><span class="p">[:</span><span class="mi">2</span><span class="p">])</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">((</span><span class="s2">&quot;python&quot;</span><span class="p">,</span> <span class="s2">&quot;-m&quot;</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;python3&quot;</span><span class="p">,</span> <span class="s2">&quot;-m&quot;</span><span class="p">)):</span>
             <span class="k">raise</span> <span class="n">PipNotRunAsModule</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span>
 
 <div class="viewcode-block" id="PipInstallCommand.fix_dffml_packages"><a class="viewcode-back" href="../../../../../api/util/testing/consoletest/commands.html#dffml.util.testing.consoletest.commands.PipInstallCommand.fix_dffml_packages">[docs]</a>    <span class="k">def</span> <span class="nf">fix_dffml_packages</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">):</span>

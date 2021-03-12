@@ -71,7 +71,7 @@ project before the end of the summer, and have more that you want to do.
 
 - Make your first contribution!
 
-  - Don't be afraid to not get it write on the first try. If we all got
+  - Don't be afraid to not get it right on the first try. If we all got
     everything right on the first try there would be no bugs in software. And
     there are LOTS of bugs in software.
 
@@ -119,7 +119,7 @@ Here's a [template](https://github.com/python-gsoc/python-gsoc.github.io/blob/ma
 See the milestones prefixed with "GSoC 2021"
 https://github.com/intel/dffml/milestones?direction=desc&sort=due_date&state=open
 
-Please see the <a href="rubric.html">rubric</a> page for the project proposal
+Please see the <a href="https://intel.github.io/dffml/master/contributing/gsoc/rubric.html">rubric</a> page for the project proposal
 grading rubric.
 
 ## Contacting the DFFML team

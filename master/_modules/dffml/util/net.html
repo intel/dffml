@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>dffml.util.net &mdash; DFFML 91172cfe documentation</title>
+  <title>dffml.util.net &mdash; DFFML a72a0a7b documentation</title>
   
 
   
@@ -65,7 +65,7 @@
             
             
               <div class="version">
-                91172cfe
+                a72a0a7b
               </div>
             
           
@@ -194,7 +194,9 @@
            <div itemprop="articleBody">
             
   <h1>Source code for dffml.util.net</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">shutil</span>
+<span></span><span class="kn">import</span> <span class="nn">stat</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">shutil</span>
 <span class="kn">import</span> <span class="nn">hashlib</span>
 <span class="kn">import</span> <span class="nn">pathlib</span>
 <span class="kn">import</span> <span class="nn">functools</span>
@@ -231,6 +233,19 @@
 
     <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;Protocol of URL </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">url</span><span class="si">!r}</span><span class="s2"> is not in allowlist: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">allowlist</span><span class="si">!r}</span><span class="s2">&quot;</span></div>
+
+
+<div class="viewcode-block" id="DirectoryNotExtractedError"><a class="viewcode-back" href="../../../api/util/net.html#dffml.util.net.DirectoryNotExtractedError">[docs]</a><span class="k">class</span> <span class="nc">DirectoryNotExtractedError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Raised when extraction of directory failed!</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">directory_path</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">directory_path</span> <span class="o">=</span> <span class="n">directory_path</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;Failed to extract - </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">directory_path</span><span class="si">!r}</span><span class="s2">&quot;</span></div>
 
 
 <span class="c1"># Default list of URL protocols allowed</span>
@@ -391,12 +406,27 @@
 <span class="sd">    &gt;&gt;&gt; asyncio.run(files_in_dffml_commit_c4469a())</span>
 <span class="sd">    124</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">on_error</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">exc_info</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Error handler for shutil.rmtree</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">access</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">W_OK</span><span class="p">):</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">chmod</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">stat</span><span class="o">.</span><span class="n">S_IWUSR</span><span class="p">)</span>
+            <span class="n">func</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">pass</span>
+
     <span class="n">directory_path</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">directory_path</span><span class="p">)</span>
 
     <span class="k">async</span> <span class="k">def</span> <span class="nf">extractor</span><span class="p">(</span><span class="n">download_path</span><span class="p">):</span>
         <span class="n">download_path</span> <span class="o">=</span> <span class="n">download_path</span><span class="o">.</span><span class="n">absolute</span><span class="p">()</span>
         <span class="k">with</span> <span class="n">chdir</span><span class="p">(</span><span class="n">directory_path</span><span class="p">):</span>
-            <span class="n">shutil</span><span class="o">.</span><span class="n">unpack_archive</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">download_path</span><span class="p">),</span> <span class="s2">&quot;.&quot;</span><span class="p">)</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">shutil</span><span class="o">.</span><span class="n">unpack_archive</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">download_path</span><span class="p">),</span> <span class="s2">&quot;.&quot;</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+                <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">directory_path</span><span class="p">,</span> <span class="n">onerror</span><span class="o">=</span><span class="n">on_error</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="n">DirectoryNotExtractedError</span><span class="p">(</span><span class="n">directory_path</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">error</span>
 
     <span class="n">extract</span> <span class="o">=</span> <span class="n">cached_download</span><span class="p">(</span>
         <span class="n">url</span><span class="p">,</span> <span class="n">file_path</span><span class="p">,</span> <span class="n">expected_hash</span><span class="p">,</span> <span class="n">protocol_allowlist</span><span class="o">=</span><span class="n">protocol_allowlist</span>

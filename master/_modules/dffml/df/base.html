@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>dffml.df.base &mdash; DFFML 91172cfe documentation</title>
+  <title>dffml.df.base &mdash; DFFML a72a0a7b documentation</title>
   
 
   
@@ -65,7 +65,7 @@
             
             
               <div class="version">
-                91172cfe
+                a72a0a7b
               </div>
             
           
@@ -448,7 +448,14 @@
     <span class="p">)</span>
 
 
-<div class="viewcode-block" id="op"><a class="viewcode-back" href="../../../api/df/base.html#dffml.df.base.op">[docs]</a><span class="k">def</span> <span class="nf">op</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">imp_enter</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ctx_enter</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">config_cls</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="op"><a class="viewcode-back" href="../../../api/df/base.html#dffml.df.base.op">[docs]</a><span class="k">def</span> <span class="nf">op</span><span class="p">(</span>
+    <span class="o">*</span><span class="n">args</span><span class="p">,</span>
+    <span class="n">imp_enter</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">ctx_enter</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">config_cls</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">valid_return_none</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+<span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    The ``op`` decorator creates a subclass of</span>
 <span class="sd">    :py:class:`dffml.df.OperationImplementation` and assigns that</span>
@@ -676,7 +683,7 @@
                                     <span class="p">}</span>
 
                             <span class="n">result</span> <span class="o">=</span> <span class="n">convert_asyncgen</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
-                        <span class="k">elif</span> <span class="n">result</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="k">elif</span> <span class="n">result</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">valid_return_none</span><span class="p">:</span>
                             <span class="n">result</span> <span class="o">=</span> <span class="p">{</span>
                                 <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">outputs</span><span class="o">.</span><span class="n">keys</span><span class="p">())[</span><span class="mi">0</span><span class="p">]:</span> <span class="n">result</span>
                             <span class="p">}</span>
