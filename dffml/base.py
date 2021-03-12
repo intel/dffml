@@ -173,7 +173,9 @@ def convert_value(arg, value):
             type_cls = type_lookup
         # TODO This is a oversimplification of argparse's nargs
         if "nargs" in arg:
-            value = list(map(type_cls, value))
+            value = [
+                i if isinstance(i, type_cls) else type_cls(i) for i in value
+            ]
         elif getattr(type_cls, "CONFIGLOADABLE", False):
             pass
         else:
@@ -193,7 +195,44 @@ def convert_value(arg, value):
             ):
                 value = type_cls(**value)
             else:
-                value = type_cls(value)
+                convert = True
+                # Try to see if the value is of the type it's supposed to be
+                # already
+                if arg.annotation is not None:
+                    # The possible types are the type, the annotated type
+                    # (property_name: Annotation), and the result of calling
+                    # get_origin() on the annotation. get_origin(), for a
+                    # typing.SomeThing like typing.Dict, or typing.Tuple, will
+                    # return dict, or tuple respectively.
+                    possible_types = [
+                        arg["type"],
+                        arg.annotation,
+                        get_origin(arg.annotation),
+                    ]
+                    # In the case we have an annotation that takes arguments,
+                    # such as typing.Union. We want to check if the value is
+                    # already any of the types listed in the acceptable types
+                    # for that union of types. We can get those types by calling
+                    # get_args() on the annotation.
+                    annotation_args = get_args(arg.annotation)
+                    # We check against the args if there are any
+                    if annotation_args is not None:
+                        possible_types += annotation_args
+                    # We go through all the possible types the value should be
+                    for possible_type in possible_types:
+                        # We have to check that the possible type is a type
+                        # before checking if the value is an instance of that
+                        # type. Since it doesn't make sense to check if the
+                        # value is an instance of something that's not a type.
+                        if isinstance(possible_type, type) and isinstance(
+                            value, possible_type
+                        ):
+                            # We don't convert if the value is already of the
+                            # correct type.
+                            convert = False
+                            break
+                if convert:
+                    value = type_cls(value)
         # list -> tuple
         if arg.annotation is not None and get_origin(arg.annotation) is tuple:
             value = get_origin(arg.annotation)(value)
@@ -370,7 +409,7 @@ class BaseConfigurableMetaClass(type, abc.ABC):
             elif config is None and hasattr(self, "CONFIG"):
                 if kwargs:
                     try:
-                        config = self.CONFIG(**kwargs)
+                        config = self.CONFIG._fromdict(**kwargs)
                     except TypeError as error:
                         error.args = (
                             error.args[0].replace(
