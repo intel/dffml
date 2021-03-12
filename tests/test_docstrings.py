@@ -258,18 +258,23 @@ for import_name, module in modules(root, package_name, skip=skip):
 for name, (import_name, module, obj) in to_test.items():
     # Check that class or function has an example that could be doctested
     docstring = inspect.getdoc(obj)
-    if docstring is None or not "\n>>>" in docstring:
-        continue
     # Remove the package name from the Python style path to the object
     name = name[len(package_name) + 1 :]
-    # Create the test case class. One doctest per class
+    # Create a dictionary to hold the test case functions of the AsyncTestCase
+    # class we're going to create
+    test_cases = {}
+    # Add a doctest testcase if there are any lines to doctest
+    if docstring is not None and ">>>" in docstring:
+        test_cases["test_docstring"] = (
+            mktestcase(name, import_name, module, obj),
+        )
+    # Only create the instance of AsyncTestCase if the object's docstring holds
+    # anything that could have a testcase made out of it
+    if not test_cases:
+        continue
+    # Create the test case class with the object as a property and test cases
     testcase = type(
-        name.replace(".", "_"),
-        (unittest.TestCase,),
-        {
-            "obj": obj,
-            "test_docstring": mktestcase(name, import_name, module, obj),
-        },
+        name.replace(".", "_"), (AsyncTestCase,), {"obj": obj, **test_cases}
     )
     # Create the name of the class using the path to it and the object name
     # Add the class to this file's globals
