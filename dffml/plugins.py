@@ -55,6 +55,7 @@ CORE_PLUGINS += [
     ("operations", "nlp"),
     ("service", "http"),
     ("source", "mysql"),
+    ("source", "xlsx"),
 ]
 
 
