@@ -14,6 +14,7 @@ import httptest
 from dffml.util.os import chdir
 from dffml.util.net import cached_download, cached_download_unpack_archive
 from dffml.util.asynctestcase import AsyncTestCase
+from dffml.util.net import DirectoryNotExtractedError
 
 
 class TestCachedDownloadServer(httptest.Handler):
@@ -102,3 +103,26 @@ class TestNet(AsyncTestCase):
                 return extracted
 
             self.verify_extracted_contents(await func())
+
+    @httptest.Server(TestCachedDownloadServer)
+    async def test_cached_download_unpack_archive_failure(
+        self, ts=httptest.NoServer()
+    ):
+        with tempfile.TemporaryDirectory() as tempdir:
+
+            @cached_download_unpack_archive(
+                ts.url() + "/archive.tar.gz",
+                pathlib.Path(tempdir) / "archive.tar.gz",
+                pathlib.Path(tempdir) / "archive",
+                ARCHIVE_HASH,
+                protocol_allowlist=["http://"],
+            )
+            async def func(extracted):
+                pass  # pragma: no cov
+
+        with unittest.mock.patch(
+            "shutil.unpack_archive", side_effect=Exception
+        ):
+            with self.assertRaises(DirectoryNotExtractedError):
+                await func()
+            self.assertFalse((pathlib.Path(tempdir) / "archive").is_dir())

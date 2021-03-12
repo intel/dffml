@@ -1,3 +1,5 @@
+import stat
+import os
 import shutil
 import hashlib
 import pathlib
@@ -35,6 +37,19 @@ class ProtocolNotAllowedError(Exception):
 
     def __str__(self):
         return f"Protocol of URL {self.url!r} is not in allowlist: {self.allowlist!r}"
+
+
+class DirectoryNotExtractedError(Exception):
+    """
+    Raised when extraction of directory failed!
+    """
+
+    def __init__(self, directory_path):
+        super().__init__()
+        self.directory_path = directory_path
+
+    def __str__(self):
+        return f"Failed to extract - {self.directory_path!r}"
 
 
 # Default list of URL protocols allowed
@@ -195,12 +210,27 @@ def cached_download_unpack_archive(
     >>> asyncio.run(files_in_dffml_commit_c4469a())
     124
     """
+
+    def on_error(func, path, exc_info):
+        """
+        Error handler for shutil.rmtree
+        """
+        if not os.access(path, os.W_OK):
+            os.chmod(path, stat.S_IWUSR)
+            func(path)
+        else:
+            pass
+
     directory_path = pathlib.Path(directory_path)
 
     async def extractor(download_path):
         download_path = download_path.absolute()
         with chdir(directory_path):
-            shutil.unpack_archive(str(download_path), ".")
+            try:
+                shutil.unpack_archive(str(download_path), ".")
+            except Exception as error:
+                shutil.rmtree(directory_path, onerror=on_error)
+                raise DirectoryNotExtractedError(directory_path) from error
 
     extract = cached_download(
         url, file_path, expected_hash, protocol_allowlist=protocol_allowlist
