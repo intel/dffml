@@ -91,7 +91,6 @@ jobs:
         - operations/image
         - operations/nlp
         - source/mysql
-        - source/xlsx
         - feature/git
         - feature/auth
         - service/http
