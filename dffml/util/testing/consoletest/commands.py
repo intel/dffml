@@ -483,7 +483,7 @@ class PipInstallCommand(ConsoleCommand):
         super().__init__(cmd)
         self.directories: List[str] = []
         # Ensure that we are running pip using it's module invocation
-        if self.cmd[:2] != ["python", "-m"]:
+        if tuple(self.cmd[:2]) not in (("python", "-m"), ("python3", "-m")):
             raise PipNotRunAsModule(cmd)
 
     def fix_dffml_packages(self, ctx):
