@@ -59,18 +59,21 @@ DEFAULT_PROTOCOL_ALLOWLIST: List[str] = ["https://"]
 
 
 def progressbar(cur, total=100):
-    percent = "{:.2%}".format(cur / total)
+    """
+    Simple progressbar to show download progress.
+    """
+    percent = cur / total
+    progress = "#" * int(cur)
+
     sys.stdout.write(
-        "\rDownloading...: [%-100s] %s" % ("#" * int(cur), percent)
+        f"\rDownloading...: [{progress.ljust(100)}] {percent:.2%}"
     )
     sys.stdout.flush()
 
 
 def progress_reporthook(blocknum, blocksize, totalsize):
     """
-    blocknum: currently downloaded block
-         blocksize: block size for each transfer
-         totalsize: total size of web page files
+    Serve as a reporthook for monitoring download progress.
     """
 
     percent = (
@@ -139,7 +142,7 @@ def cached_download(
 
     >>> import asyncio
     >>> from dffml import cached_download
-    >>>
+    >>> 
     >>> @cached_download(
     ...     "https://github.com/intel/dffml/raw/152c2b92535fac6beec419236f8639b0d75d707d/MANIFEST.in",
     ...     "MANIFEST.in",
@@ -147,9 +150,10 @@ def cached_download(
     ... )
     ... async def first_line_in_manifest_152c2b(manifest):
     ...     return manifest.read_text().split()[:2]
-    >>>
+    ... 
+    >>> 
     >>> asyncio.run(first_line_in_manifest_152c2b())
-    Downloading...: [####################################################################################################] 100.00%
+    \rDownloading...: [####################################################################################################] 100.00%
     ['include', 'README.md']
     """
     target_path = pathlib.Path(target_path)
@@ -236,7 +240,7 @@ def cached_download_unpack_archive(
     ...     return len(list(dffml_dir.rglob("**/*")))
     >>>
     >>> asyncio.run(files_in_dffml_commit_c4469a())
-    Downloading...: [####################################################################################################] 100.00%
+    \rDownloading...: [####################################################################################################] 100.00%
     124
     """
 
