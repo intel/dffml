@@ -1,5 +1,6 @@
-import stat
 import os
+import sys
+import stat
 import shutil
 import hashlib
 import pathlib
@@ -8,6 +9,7 @@ import urllib.request
 from typing import List
 
 from .os import chdir
+from ..log import LOGGER
 
 
 class HashValidationError(Exception):
@@ -56,7 +58,31 @@ class DirectoryNotExtractedError(Exception):
 DEFAULT_PROTOCOL_ALLOWLIST: List[str] = ["https://"]
 
 
-def sync_urlopen(url, protocol_allowlist=DEFAULT_PROTOCOL_ALLOWLIST):
+def progressbar(cur, total=100):
+    percent = "{:.2%}".format(cur / total)
+    sys.stdout.write(
+        "\rDownloading...: [%-100s] %s" % ("#" * int(cur), percent)
+    )
+    sys.stdout.flush()
+
+
+def progress_reporthook(blocknum, blocksize, totalsize):
+    """
+    blocknum: currently downloaded block
+         blocksize: block size for each transfer
+         totalsize: total size of web page files
+    """
+
+    percent = (
+        min(1.0, 0 if totalsize == 0 else (blocknum * blocksize / totalsize))
+        * 100
+    )
+    progressbar(percent)
+
+
+def sync_urlretrieve(
+    url, target_path, protocol_allowlist=DEFAULT_PROTOCOL_ALLOWLIST
+):
     """
     Check that ``url`` has a protocol defined in ``protocol_allowlist``, then
     return the result of calling :py:func:`urllib.request.urlopen` passing it
@@ -68,8 +94,10 @@ def sync_urlopen(url, protocol_allowlist=DEFAULT_PROTOCOL_ALLOWLIST):
             allowed_protocol = True
     if not allowed_protocol:
         raise ProtocolNotAllowedError(url, protocol_allowlist)
-
-    return urllib.request.urlopen(url)
+    urllib.request.urlretrieve(
+        url, target_path, reporthook=progress_reporthook
+    )
+    sys.stdout.write("\n")
 
 
 def cached_download(
@@ -121,6 +149,7 @@ def cached_download(
     ...     return manifest.read_text().split()[:2]
     >>>
     >>> asyncio.run(first_line_in_manifest_152c2b())
+    Downloading...: [####################################################################################################] 100.00%
     ['include', 'README.md']
     """
     target_path = pathlib.Path(target_path)
@@ -141,10 +170,9 @@ def cached_download(
             args = list(args) + [target_path]
             if not target_path.is_file() or not validate_hash(error=False):
                 # TODO(p5) Blocking request in coroutine
-                with sync_urlopen(
-                    url, protocol_allowlist=protocol_allowlist
-                ) as resp:
-                    target_path.write_bytes(resp.read())
+                sync_urlretrieve(
+                    url, target_path, protocol_allowlist=protocol_allowlist
+                )
             validate_hash()
             return await func(*args, **kwds)
 
@@ -208,6 +236,7 @@ def cached_download_unpack_archive(
     ...     return len(list(dffml_dir.rglob("**/*")))
     >>>
     >>> asyncio.run(files_in_dffml_commit_c4469a())
+    Downloading...: [####################################################################################################] 100.00%
     124
     """
 
