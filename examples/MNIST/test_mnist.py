@@ -20,7 +20,32 @@ def sh_filepath(filename):
 def directory_with_data_files():
     with tempfile.TemporaryDirectory() as tempdir:
         with chdir(tempdir):
-            subprocess.check_output(["bash", sh_filepath("image_data.sh")])
+            # Replace Yann's website with GitHub mirror for stability
+            image_data_sh_path = pathlib.Path(sh_filepath("image_data.sh"))
+            image_data_sh_contents = image_data_sh_path.read_text().split("\n")
+            # First line is the curl command
+            curl = image_data_sh_contents[0].split()[:-1]
+            # Make 4 curl commands and then append the sha validation
+            image_data_sh_github_mirror_path = pathlib.Path(
+                tempdir, "image_data.sh"
+            )
+            image_data_sh_github_mirror_path.write_text(
+                "\n".join(
+                    [
+                        " ".join(curl + [url])
+                        for url in [
+                            "https://github.com/intel/dffml/files/4283897/train-labels-idx1-ubyte.gz",
+                            "https://github.com/intel/dffml/files/4283898/train-images-idx3-ubyte.gz",
+                            "https://github.com/intel/dffml/files/6138929/t10k-labels-idx1-ubyte.gz",
+                            "https://github.com/intel/dffml/files/6138930/t10k-images-idx3-ubyte.gz",
+                        ]
+                    ]
+                    + image_data_sh_contents[1:],
+                )
+            )
+            subprocess.check_output(
+                ["bash", str(image_data_sh_github_mirror_path)]
+            )
             subprocess.check_output(["bash", sh_filepath("image_file.sh")])
             for image in pathlib.Path(__file__).parent.glob("*.png"):
                 shutil.copy(str(image.absolute()), image.name)
