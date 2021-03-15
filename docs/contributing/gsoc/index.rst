@@ -10,6 +10,6 @@ http://python-gsoc.org/
     :maxdepth: 2
 
     rubric
-    2021
+    2021/index
     2020
     2019
