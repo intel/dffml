@@ -27,7 +27,7 @@ We currently have the following project ideas:
 .. toctree::
     :titlesonly:
 
-    Add set of premade DataFlows users can use out of the box for data cleanup <https://github.com/intel/dffml/issues/969>
+    cleanup_dataflows
     Refactor DataFlows to add event types <https://github.com/intel/dffml/issues/919>
     automl
     Support archive storage (such as zip and tar) of models and DataFlows (Part 1) <https://github.com/intel/dffml/issues/967>
