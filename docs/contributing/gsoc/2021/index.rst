@@ -1,11 +1,13 @@
-# GSoC 2021
+GSoC 2021
+=========
 
 DFFML is hoping to participate in Google Summer of Code under the Python
 Software Foundation umbrella. You can read all about what GSoC is at
 http://python-gsoc.org/ and
 https://summerofcode.withgoogle.com/how-it-works/#timeline
 
-## About the DFFML
+About DFFML
+-----------
 
 DFFML is a plugin based library / framework for machine learning. It allows
 users to wrap high or low level implementations of models that use various
@@ -17,27 +19,19 @@ generate and modify datasets.
 
 Read more on the about page: https://intel.github.io/dffml/master/about.html
 
-## Project Ideas
+Project Ideas
+-------------
 
 We currently have the following project ideas:
 
-- Add set of premade DataFlows users can use out of the box for data cleanup
+.. toctree::
+    :titlesonly:
 
-  - https://github.com/intel/dffml/issues/969
-
-- Refactor DataFlows to add event types
-
-  - https://github.com/intel/dffml/issues/919
-
-- Implement Auto ML
-
-  - https://github.com/intel/dffml/issues/968
-
-- Support archive storage (such as zip and tar) of models and DataFlows
-
-  - https://github.com/intel/dffml/issues/967
-
-  - https://github.com/intel/dffml/issues/662
+    Add set of premade DataFlows users can use out of the box for data cleanup <https://github.com/intel/dffml/issues/969>
+    Refactor DataFlows to add event types <https://github.com/intel/dffml/issues/919>
+    Implement Auto ML <https://github.com/intel/dffml/issues/968>
+    Support archive storage (such as zip and tar) of models and DataFlows (Part 1) <https://github.com/intel/dffml/issues/967>
+    Support archive storage (such as zip and tar) of models and DataFlows (Part 2) <https://github.com/intel/dffml/issues/662>
 
 If you've got a idea you'd like to propose, please make a new issue with the
 `gsoc: project:` prefix to discuss it! We're open to all sorts of ideas.
@@ -46,10 +40,10 @@ which don't have to be related to their main proposal (but still have to result
 in contributions to DFFML). Stretch goals are for if you finish your proposed
 project before the end of the summer, and have more that you want to do.
 
-## Getting Started
+Getting Started
+---------------
 
-- Read the
-  [contributing page](https://intel.github.io/dffml/master/contributing/)
+- Read the doc:`/contributing/index` documentation.
 
 - Get your development environment set up
 
@@ -60,11 +54,11 @@ project before the end of the summer, and have more that you want to do.
 
   - Run the examples for the various models found on the model plugins page
 
-- [Run the tests](https://github.com/intel/dffml/tree/master/tests). DFFML has
+- `Run the tests <https://github.com/intel/dffml/tree/master/tests>`_. DFFML has
   unit tests and we track coverage (amount of lines of code tested).
   Make sure you know how to run them, and if you've never done Python unittests
   before you might want to
-  [read up on python's unittest library](https://docs.python.org/3/library/unittest.html).
+  `read up on python's unittest library <https://docs.python.org/3/library/unittest.html>`_.
   Figure out how to run a single test! Running one test instead of all of them
   will speed up your workflow when you are writing your tests! (hint, it's in
   the contributing docs!)
@@ -85,18 +79,19 @@ project before the end of the summer, and have more that you want to do.
   - You could help us increase the test coverage in any of the packages (check
     out the python package `coverage` to learn how to do this).
 
-  - You could write a [new model](https://github.com/intel/dffml/issues/29)!
+  - You could write a `new model <https://github.com/intel/dffml/issues/29>`_!
     Models are wrappers around any machine learning implementation or library,
     see the
-    [new model tutorials](https://intel.github.io/dffml/master/tutorials/models/)
+    :doc:`new model tutorials </tutorials/models/index>`
     for more info. Make sure to include tests!
 
   - You could write a new operation to do something! Anything! Operations to
     grab weather and stock data have been suggested by people as good ideas.
 
-## Writing your GSoC application
+Writing your GSoC application
+-----------------------------
 
-Instructions on [How to apply](http://python-gsoc.org/#apply) can be found on
+Instructions on `How to apply <http://python-gsoc.org/#apply>`_ can be found on
 the Python GSoC website. Please don't forget to use our name (**dffml**) in your
 application title!
 
@@ -112,21 +107,24 @@ In your proposal, we're looking to see:
     contributions to DFFML you've done up until now and compare what you're
     proposing to what you've done.
 
-Here's a [template](https://github.com/python-gsoc/python-gsoc.github.io/blob/master/2019/application2019.md)
+Here's a template:
+https://github.com/python-gsoc/python-gsoc.github.io/blob/464c41fc7b90d4e57a0a4582bf3531d8a742cc6b/2019/application2019.md
 
-## Deadlines
+Deadlines
+---------
 
 See the milestones prefixed with "GSoC 2021"
 https://github.com/intel/dffml/milestones?direction=desc&sort=due_date&state=open
 
-Please see the <a href="https://intel.github.io/dffml/master/contributing/gsoc/rubric.html">rubric</a> page for the project proposal
-grading rubric.
+Please see the :doc:`/contributing/gsoc/rubric` page for the project
+proposal grading rubric.
 
-## Contacting the DFFML team
+Contacting the DFFML team
+-------------------------
 
-Most of our communication takes place on the [Gitter
-channel](https://gitter.im/dffml/community) you can also check out the Community
-page in the docs for more ways to get in touch.
+Most of our communication takes place on the
+`Gitter channel <https://gitter.im/dffml/community>`_ you can also check out the
+:doc:`/contact` page in the docs for more ways to get in touch.
 
 We run a weekly meeting that we encourage everyone to join. We get people
 started and do debugging.
@@ -137,18 +135,20 @@ different angle. And when in doubt use the source! Reading the source of
 something you're importing or using can be very helpful in figuring out your
 problem.
 
-## Mentors
+Mentors
+-------
 
 This years mentors are as follows.
 
-- John Andersen [@pdxjohnny](https://github.com/pdxjohnny)
-- Yash Lamba [@yashlamba](https://github.com/yashlamba)
-- Saksham Arora [@sakshamarora1](https://github.com/sakshamarora1)
+- John Andersen `@pdxjohnny <https://github.com/pdxjohnny>`_
+- Yash Lamba `@yashlamba <https://github.com/yashlamba>`_
+- Saksham Arora `@sakshamarora1 <https://github.com/sakshamarora1>`_
 
-## Thanks
+Thanks
+------
 
-Big thanks to [Terri](https://github.com/terriko) her work organizing GSoC and
-letting us copy her format she used for
-[CVE Binary Tool](https://github.com/intel/cve-bin-tool), another awesome
-project with a security focus that has been (and still is) a part of GSoC as
-well. Check them out too!
+Big thanks to `Terri Oda <https://github.com/terriko>`_ her work organizing GSoC
+and letting us copy her format she used for
+`CVE Binary Tool <https://github.com/intel/cve-bin-tool>`_, another awesome
+project with a security focus that has also been (and still is) a part of GSoC
+as well. Check them out too!
