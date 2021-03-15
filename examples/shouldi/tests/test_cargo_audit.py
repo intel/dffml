@@ -1,3 +1,4 @@
+import shutil
 import pathlib
 
 from dffml import prepend_to_path, AsyncTestCase
@@ -24,6 +25,11 @@ class TestRunCargoAuditOp(AsyncTestCase):
             / "cargo-audit"
         ).is_file():
             await run_cargo_build(cargo_audit / "cargo-audit-0.14.0")
+
+        # Fix for https://github.com/RustSec/cargo-audit/issues/331
+        advisory_db_path = pathlib.Path("~", ".cargo", "advisory-db")
+        if advisory_db_path.is_dir():
+            shutil.rmtree(str(advisory_db_path))
 
         with prepend_to_path(
             rust / "rust-1.50.0-x86_64-unknown-linux-gnu" / "cargo" / "bin",

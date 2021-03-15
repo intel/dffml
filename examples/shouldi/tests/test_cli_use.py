@@ -1,5 +1,6 @@
 import io
 import json
+import shutil
 import asyncio
 import pathlib
 import subprocess
@@ -84,6 +85,11 @@ class TestCLIUse(AsyncTestCase):
                 / "cargo-audit"
             ).is_file():
                 await run_cargo_build(cargo_audit / "cargo-audit-0.14.0")
+
+            # Fix for https://github.com/RustSec/cargo-audit/issues/331
+            advisory_db_path = pathlib.Path("~", ".cargo", "advisory-db")
+            if advisory_db_path.is_dir():
+                shutil.rmtree(str(advisory_db_path))
 
             with patch("sys.stdout", new_callable=io.StringIO) as stdout:
                 await ShouldI._main(
