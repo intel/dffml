@@ -29,7 +29,7 @@ We currently have the following project ideas:
 
     Add set of premade DataFlows users can use out of the box for data cleanup <https://github.com/intel/dffml/issues/969>
     Refactor DataFlows to add event types <https://github.com/intel/dffml/issues/919>
-    Implement Auto ML <https://github.com/intel/dffml/issues/968>
+    automl
     Support archive storage (such as zip and tar) of models and DataFlows (Part 1) <https://github.com/intel/dffml/issues/967>
     Support archive storage (such as zip and tar) of models and DataFlows (Part 2) <https://github.com/intel/dffml/issues/662>
 
