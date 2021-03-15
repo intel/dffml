@@ -21,7 +21,7 @@ async def main():
 
     # Make predictions
     async for i, features, prediction in predict(model, "predict.csv"):
-        features["Salary"] = prediction["Salary"]["value"]
+        features["Salary"] = prediction["Salary"]
         print(features)
 
 

@@ -49,7 +49,8 @@ CREATE TABLE IF NOT EXISTS `record_data` (
                     "SepalWidth",
                 ]
             },
-            predictions={"target_name": ("flower_type", "flower_confidence")},
+            predictions={"target_name": "flower_type"},
+            confidences={"target_name": "flower_confidence"},
             ca=cls.ca,
             init=cls.SQL_SETUP,
             record="SELECT * FROM record_data WHERE `key`=%s",

@@ -70,5 +70,5 @@ class TestML(AsyncTestCase):
         predictions = [
             prediction for prediction in predict(model, predict_data)
         ]
-        self.assertEqual(round(predictions[0][2]["Salary"]["value"]), 70)
-        self.assertEqual(round(predictions[1][2]["Salary"]["value"]), 80)
+        self.assertEqual(round(predictions[0][2]["Salary"]), 70)
+        self.assertEqual(round(predictions[1][2]["Salary"]), 80)

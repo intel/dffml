@@ -100,8 +100,7 @@ class TestCSV(AsyncTestCase):
         results = results[0]
         self.assertIn("key", results)
         self.assertEqual("0", results["key"])
-        self.assertIn("prediction", results)
-        self.assertIn("Salary", results["prediction"])
-        results = results["prediction"]["Salary"]
-        self.assertIn("value", results)
-        self.assertEqual(70, round(results["value"]))
+        self.assertIn("predictions", results)
+        self.assertIn("Salary", results["predictions"])
+        results = results["predictions"]["Salary"]
+        self.assertEqual(70, round(results))

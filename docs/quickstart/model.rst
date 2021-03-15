@@ -98,12 +98,12 @@ DFFML command line from other scripts or languages.
             },
             "key": "0",
             "last_updated": "2020-02-07T14:17:08Z",
-            "prediction": {
-                "Salary": {
-                    "confidence": 1.0,
-                    "value": 70.13972055888223
-                }
-            }
+            "predictions": {
+                "Salary": 70.13972055888223
+            },
+            "confidences": {
+                "Salary": 1.0,
+            },
         },
         {
             "extra": {},
@@ -114,11 +114,11 @@ DFFML command line from other scripts or languages.
             },
             "key": "1",
             "last_updated": "2020-02-07T14:17:08Z",
-            "prediction": {
-                "Salary": {
-                    "confidence": 1.0,
-                    "value": 80.15968063872255
-                }
+            "predictions": {
+                "Salary": 80.15968063872255
+            },
+            "confidences": {
+                "Salary": 1.0,
             }
         }
     ]
@@ -268,11 +268,11 @@ You should see the following prediction
                     "Trust": 0.9,
                     "Years": 8
                 },
-                "prediction": {
-                    "Salary": {
-                        "confidence": 1.0,
-                        "value": 90.00000000000001
-                    }
+                "predictions": {
+                    "Salary": 90.00000000000001
+                },
+                "confidences": {
+                    "Salary": 1.0,
                 },
                 "last_updated": "2020-04-14T20:07:11Z",
                 "extra": {}

@@ -14,7 +14,7 @@ def create_row(column1, column2, width):
         column1 = "Value:  " + str(column2["value"])
         column2 = "Confidence:   " + str(column2["confidence"])
 
-    row += "|" + column1[:column1_width].center(column1_width) + "|"
+    row += "|" + str(column1[:column1_width]).center(column1_width) + "|"
 
     if isinstance(column2, (list, tuple,)):
         row += (

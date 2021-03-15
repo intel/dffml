@@ -107,12 +107,10 @@ class TestScikitClassification(AsyncTestCase):
         self.assertTrue(isinstance(results, list))
         self.assertTrue(results)
         results = results[0]
-        self.assertIn("prediction", results)
-        results = results["prediction"]
+        self.assertIn("predictions", results)
+        results = results["predictions"]
         self.assertIn("true_label", results)
         results = results["true_label"]
-        self.assertIn("value", results)
-        results = results["value"]
         self.assertEqual(y.item(), results)
 
 
@@ -208,12 +206,10 @@ class TestScikitRegression(AsyncTestCase):
         self.assertTrue(isinstance(results, list))
         self.assertTrue(results)
         results = results[0]
-        self.assertIn("prediction", results)
-        results = results["prediction"]
+        self.assertIn("predictions", results)
+        results = results["predictions"]
         self.assertIn("true_label", results)
         results = results["true_label"]
-        self.assertIn("value", results)
-        results = results["value"]
         self.assertTrue(results is not None)
 
 
@@ -358,10 +354,8 @@ class TestScikitClustering(AsyncTestCase):
             self.assertTrue(isinstance(results, list))
             self.assertTrue(results)
             results = results[0]
-            self.assertIn("prediction", results)
-            results = results["prediction"]
+            self.assertIn("predictions", results)
+            results = results["predictions"]
             self.assertIn("cluster", results)
             results = results["cluster"]
-            self.assertIn("value", results)
-            results = results["value"]
             self.assertTrue(results is not None)

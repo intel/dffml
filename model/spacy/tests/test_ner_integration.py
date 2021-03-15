@@ -164,12 +164,10 @@ class TestSpacyNERModel(AsyncTestCase):
             self.assertTrue(isinstance(results, list))
             self.assertTrue(results)
             results = results[0]
-            self.assertIn("prediction", results)
-            results = results["prediction"]
+            self.assertIn("predictions", results)
+            results = results["predictions"]
             self.assertIn("Tag", results)
             results = results["Tag"]
-            self.assertIn("value", results)
-            results = results["value"]
             self.assertIn(results[0][1], ["ORG", "PERSON"])
 
         # Make prediction using dffml.operations.predict
@@ -196,8 +194,6 @@ class TestSpacyNERModel(AsyncTestCase):
         result = result["model_predictions"]
         self.assertIn("Tag", result)
         result = result["Tag"]
-        self.assertIn("value", result)
-        result = result["value"]
         self.assertIn(result[0][1], ["ORG", "PERSON"])
 
         # Test .sh files
@@ -250,10 +246,8 @@ class TestSpacyNERModel(AsyncTestCase):
                 self.assertTrue(isinstance(results, list))
                 self.assertTrue(results)
                 results = results[0]
-                self.assertIn("prediction", results)
-                results = results["prediction"]
+                self.assertIn("predictions", results)
+                results = results["predictions"]
                 self.assertIn("Tag", results)
                 results = results["Tag"]
-                self.assertIn("value", results)
-                results = results["value"]
                 self.assertIn(result[0][1], ["ORG", "PERSON"])

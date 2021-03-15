@@ -242,7 +242,7 @@ async def interpret_message(self, message):
         m = {}
         for pred in preds:
             pred = pred.predictions()
-            m.update({p: pred[p]["value"] for p in pred})
+            m.update({p: pred[p] for p in pred})
         message = [f"{k}: {v}" for k, v in m.items()]
         message = "\n".join(message)
     return {"message": message}

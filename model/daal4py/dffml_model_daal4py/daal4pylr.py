@@ -120,11 +120,8 @@ class DAAL4PyLRModel(SimpleModel):
                 },
                 "key": "0",
                 "last_updated": "2020-07-22T02:53:11Z",
-                "prediction": {
-                    "ans": {
-                        "confidence": null,
-                        "value": 1.1907472649730522
-                    }
+                "predictions": {
+                    "ans": 1.1907472649730522
                 }
             }
         ]
@@ -237,6 +234,6 @@ class DAAL4PyLRModel(SimpleModel):
                 prediction = preds.prediction.flat[0]
             else:
                 prediction = preds.prediction
-            record.predicted(target, prediction, float("nan"))
+            record.predicted(target, prediction)
             # Yield the record to the caller
             yield record

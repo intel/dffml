@@ -152,11 +152,11 @@ class MySLRModel(SimpleModel):
                 },
                 "key": "0",
                 "last_updated": "2020-11-15T16:22:25Z",
-                "prediction": {
-                    "y": {
-                        "confidence": 1.0,
-                        "value": 7.999999999999998
-                    }
+                "predictions": {
+                    "y": 7.999999999999998
+                }
+                "confidences": {
+                    "y": 1.0,
                 }
             }
         ]

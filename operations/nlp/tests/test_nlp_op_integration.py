@@ -93,10 +93,8 @@ class TestNLPOps(AsyncTestCase):
             self.assertTrue(isinstance(results, list))
             self.assertTrue(results)
             results = results[0].data.dict()
-            self.assertIn("prediction", results)
-            results = results["prediction"]
+            self.assertIn("predictions", results)
+            results = results["predictions"]
             self.assertIn("sentiment", results)
             results = results["sentiment"]
-            self.assertIn("value", results)
-            results = results["value"]
             self.assertIn(results, [0, 1])

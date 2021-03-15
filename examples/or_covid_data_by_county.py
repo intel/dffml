@@ -83,9 +83,7 @@ class FBProphetModel(SimpleModel):
         ):
             # Set the predicted value
             # TODO do not use nan for confidence
-            record.predicted(
-                self.config.predict.name, value.yhat, float("nan")
-            )
+            record.predicted(self.config.predict.name, value.yhat)
             # Yield the record
             yield record
 
@@ -176,7 +174,7 @@ async def main():
             model, *want_predictions, keep_record=True
         ):
             # Get predicted value for cases
-            predicted_cases = record.prediction("cases")["value"]
+            predicted_cases = record.prediction("cases")
             # Report actual value for cases if we have it
             actual_cases = "Actual Cases Unknown"
             features = record.features()
@@ -193,7 +191,7 @@ async def main():
                 cases_to_deaths_model, record, keep_record=True
             ):
                 # Get predicted value for deaths
-                predicted_deaths = record.prediction("deaths")["value"]
+                predicted_deaths = record.prediction("deaths")
                 # Report actual value for deaths if we have it
                 actual_deaths = "Actual Deaths Unknown"
                 if "deaths" in features:

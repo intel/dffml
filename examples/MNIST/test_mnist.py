@@ -80,5 +80,5 @@ class TestMNIST(unittest.TestCase):
             records = json.loads(stdout.decode())
             # Check the label
             self.assertIsInstance(
-                round(records[0]["prediction"]["label"]["value"]), int
+                round(records[0]["predictions"]["label"]), int
             )

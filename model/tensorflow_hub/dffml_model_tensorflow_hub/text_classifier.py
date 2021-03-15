@@ -359,11 +359,11 @@ class TextClassificationModel(Model):
                 },
                 "key": "0",
                 "last_updated": "2020-05-14T20:14:30Z",
-                "prediction": {
-                    "sentiment": {
-                        "confidence": 0.9999992847442627,
-                        "value": 1
-                    }
+                "predictions": {
+                    "sentiment": 1
+                }
+                "confidences": {
+                    "sentiment": 0.9999992847442627,
                 }
             },
             {
@@ -374,11 +374,11 @@ class TextClassificationModel(Model):
                 },
                 "key": "1",
                 "last_updated": "2020-05-14T20:14:30Z",
-                "prediction": {
-                    "sentiment": {
-                        "confidence": 0.9999088048934937,
-                        "value": 1
-                    }
+                "predictions": {
+                    "sentiment": 1
+                }
+                "confidences": {
+                    "sentiment": 0.9999088048934937,
                 }
             }
         ]

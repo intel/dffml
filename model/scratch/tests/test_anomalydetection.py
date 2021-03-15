@@ -89,7 +89,7 @@ class TestAnomalyModel(AsyncTestCase):
             # Grab the correct value
             correct = features["Y"]
             # Grab the predicted value
-            prediction = prediction["Y"]["value"]
+            prediction = prediction["Y"]
             if prediction == correct:
                 right_prediction += 1
             else:

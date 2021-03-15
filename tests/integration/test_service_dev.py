@@ -78,6 +78,4 @@ class TestDevelop(AsyncTestCase):
         results = results["model_predictions"]
         self.assertIn("Salary", results)
         results = results["Salary"]
-        self.assertIn("value", results)
-        results = results["value"]
         self.assertEqual(results, 90.0)

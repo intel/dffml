@@ -151,7 +151,7 @@ class SpacyNERModelContext(ModelContext):
         async for record in sources.records():
             doc = self.nlp(record.feature("sentence"))
             prediction = [(ent.text, ent.label_) for ent in doc.ents]
-            record.predicted("Tag", prediction, "Nan")
+            record.predicted("Tag", prediction)
             yield record
 
 
@@ -279,10 +279,8 @@ class SpacyNERModel(Model):
                 },
                 "key": 0,
                 "last_updated": "2020-07-27T16:26:18Z",
-                "prediction": {
-                    "Answer": {
-                        "confidence": null,
-                        "value": [
+                "predictions": {
+                    "Answer": [
                             [
                                 "Alex",
                                 "PERSON"
@@ -292,7 +290,6 @@ class SpacyNERModel(Model):
                                 "GPE"
                             ]
                         ]
-                    }
                 }
             }
         ]

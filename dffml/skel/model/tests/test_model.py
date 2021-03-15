@@ -71,7 +71,7 @@ class TestMySLRModel(AsyncTestCase):
             # Grab the correct value
             correct = features["Y"]
             # Grab the predicted value
-            prediction = prediction["Y"]["value"]
+            prediction = prediction["Y"]
             # Check that the prediction is within 10% error of the actual value
             acceptable = 0.1
             self.assertLess(prediction, correct * (1.0 + acceptable))

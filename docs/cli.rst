@@ -101,11 +101,11 @@ Output
                 "f1": 0.8
             },
             "last_updated": "2020-03-19T13:41:08Z",
-            "prediction": {
-                "ans": {
-                    "confidence": 1.0,
-                    "value": 1
-                }
+            "predictions": {
+                "ans": 1
+            },
+            "confidences": {
+                "ans": 1.0
             },
             "key": "0"
         }

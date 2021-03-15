@@ -20,5 +20,5 @@ print("Accuracy:", accuracy(model, CSVSource(filename="test.csv")))
 for i, features, prediction in predict(
     model, {"sentence": "This track is horrible"},
 ):
-    features["sentiment"] = prediction["sentiment"]["value"]
+    features["sentiment"] = prediction["sentiment"]
     print(features)

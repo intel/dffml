@@ -105,4 +105,4 @@ class TestDNN(AsyncTestCase):
             ]
             self.assertEqual(len(res), 1)
             self.assertEqual(res[0].key, a.key)
-            self.assertTrue(res[0].prediction(target_name).value)
+            self.assertTrue(res[0].prediction(target_name))

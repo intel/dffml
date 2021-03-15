@@ -103,10 +103,8 @@ class TestVWModel(AsyncTestCase):
         self.assertTrue(isinstance(results, list))
         self.assertTrue(results)
         results = results[0]
-        self.assertIn("prediction", results)
-        results = results["prediction"]
+        self.assertIn("predictions", results)
+        results = results["predictions"]
         self.assertIn("true_class", results)
         results = results["true_class"]
-        self.assertIn("value", results)
-        results = results["value"]
         self.assertIn(results, [1, -1])

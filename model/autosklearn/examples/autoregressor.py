@@ -21,7 +21,7 @@ def main():
 
     # Make prediction
     for i, features, prediction in predict(model, "predict.csv"):
-        features["TARGET"] = prediction["TARGET"]["value"]
+        features["TARGET"] = prediction["TARGET"]
         print(features)
 
 

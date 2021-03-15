@@ -63,5 +63,5 @@ class TestExample(unittest.TestCase):
             records = json.loads(stdout.decode())
             # Check the classification
             self.assertAlmostEqual(
-                round(records[0]["prediction"]["classification"]["value"]), 1
+                round(records[0]["predictions"]["classification"]), 1
             )

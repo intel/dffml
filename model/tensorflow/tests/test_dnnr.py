@@ -119,8 +119,7 @@ class TestDNN(AsyncTestCase):
             self.assertEqual(len(res), 1)
             self.assertEqual(res[0].key, a.key)
             test_error_norm = abs(
-                (test_target - res[0].prediction(target_name).value)
-                / test_target
+                (test_target - res[0].prediction(target_name)) / test_target
                 + 1e-6
             )
             error_threshold = 0.3

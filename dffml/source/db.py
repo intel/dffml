@@ -25,18 +25,14 @@ class DbSourceContext(BaseSourceContext):
                 key_value_pairs[key] = record.data.features[modified_key]
             elif "_value" in key:
                 target = key.replace("_value", "")
-                if record.data.prediction:
-                    key_value_pairs[key] = record.data.prediction[target][
-                        "value"
-                    ]
+                if record.data.predictions:
+                    key_value_pairs[key] = record.data.predictions[target]
                 else:
                     key_value_pairs[key] = None
             elif "_confidence" in key:
                 target = key.replace("_confidence", "")
-                if record.data.prediction:
-                    key_value_pairs[key] = record.data.prediction[target][
-                        "confidence"
-                    ]
+                if record.data.confidences:
+                    key_value_pairs[key] = record.data.confidences[target]
                 else:
                     key_value_pairs[key] = 1
             else:
@@ -55,19 +51,23 @@ class DbSourceContext(BaseSourceContext):
     def convert_to_record(self, result):
         modified_record = {
             "key": "",
-            "data": {"features": {}, "prediction": {}},
+            "data": {"features": {}, "predictions": {}, "confidences": {}},
         }
         for key, value in result.items():
             if key.startswith("feature_"):
                 modified_record["data"]["features"][
                     key.replace("feature_", "")
                 ] = value
-            elif ("_value" in key) or ("_confidence" in key):
-                target = key.replace("_value", "").replace("_confidence", "")
-                modified_record["data"]["prediction"][target] = {
-                    "value": result[target + "_value"],
-                    "confidence": result[target + "_confidence"],
-                }
+            elif "_value" in key:
+                target = key.replace("_value", "")
+                modified_record["data"]["predictions"][target] = result[
+                    target + "_value"
+                ]
+            elif "_confidence" in key:
+                target = key.replace("_confidence", "")
+                modified_record["data"]["confidences"][target] = result[
+                    target + "_confidence"
+                ]
             else:
                 modified_record[key] = value
         return Record(modified_record["key"], data=modified_record["data"])
@@ -88,19 +88,22 @@ class DbSourceContext(BaseSourceContext):
         if row is not None:
             features = {}
             predictions = {}
+            confidences = {}
             for key, value in row.items():
                 if key.startswith("feature_"):
                     features[key.replace("feature_", "")] = value
                 elif "_value" in key:
                     target = key.replace("_value", "")
-                    predictions[target] = {
-                        "value": row[target + "_value"],
-                        "confidence": row[target + "_confidence"],
-                    }
+                    predictions[target] = row[target + "_value"]
+                    confidences[target] = row[target + "_confidence"]
             record.merge(
                 Record(
                     row["key"],
-                    data={"features": features, "prediction": predictions},
+                    data={
+                        "features": features,
+                        "predictions": predictions,
+                        "confidences": confidences,
+                    },
                 )
             )
         return record

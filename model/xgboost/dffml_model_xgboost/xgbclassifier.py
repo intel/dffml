@@ -268,9 +268,7 @@ class XGBClassifierModel(SimpleModel):
         predictions = self.saved.predict(pd.DataFrame(xdata))
         # Update records and yield them to caller
         for record, prediction in zip(input_data, predictions):
-            record.predicted(
-                self.config.predict.name, float(prediction), float("nan")
-            )
+            record.predicted(self.config.predict.name, float(prediction))
             yield record
 
     async def get_input_data(self, sources: Sources) -> list:

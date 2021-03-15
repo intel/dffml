@@ -472,10 +472,7 @@ class TestPredict(RecordsTestCase):
             "-source-filename",
             self.temp_filename,
         )
-        results = {
-            record.key: record.prediction("fake").confidence
-            for record in results
-        }
+        results = {record.key: record.confidence("fake") for record in results}
         for record in self.records:
             self.assertEqual(float(record.key), results[record.key])
 
@@ -498,9 +495,6 @@ class TestPredict(RecordsTestCase):
             *subset_urls,
         )
         self.assertEqual(len(results), len(subset))
-        results = {
-            record.key: record.prediction("fake").confidence
-            for record in results
-        }
+        results = {record.key: record.confidence("fake") for record in results}
         for record in subset:
             self.assertEqual(float(record.key), results[record.key])

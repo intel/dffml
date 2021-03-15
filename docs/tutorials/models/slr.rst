@@ -101,7 +101,7 @@ We must set the ``CONFIG`` attribute to the respective ``Config`` class.
 
 .. literalinclude:: /../dffml/skel/model/REPLACE_IMPORT_PACKAGE_NAME/myslr.py
     :test:
-    :lines: 179-180
+    :lines: 180-181
 
 We can override the ``__init__()`` method to do validation on the ``features``
 config property. Simple linear regression only supports one input feature, so we
@@ -109,7 +109,7 @@ will raise a ``ValueError`` if the user supplys more than one feature.
 
 .. literalinclude:: /../dffml/skel/model/REPLACE_IMPORT_PACKAGE_NAME/myslr.py
     :test:
-    :lines: 182-186
+    :lines: 183-187
 
 Train
 -----
@@ -125,7 +125,7 @@ is saved and loaded from a JSON file on disk.
 
 .. literalinclude:: /../dffml/skel/model/REPLACE_IMPORT_PACKAGE_NAME/myslr.py
     :test:
-    :lines: 188-202
+    :lines: 189-203
 
 Accuracy
 --------
@@ -154,7 +154,7 @@ closer to making the correct prediction for each record.
 
 .. literalinclude:: /../dffml/skel/model/REPLACE_IMPORT_PACKAGE_NAME/myslr.py
     :test:
-    :lines: 204-230
+    :lines: 205-231
 
 Predict
 -------
@@ -169,7 +169,7 @@ confidence in our prediction.
 
 .. literalinclude:: /../dffml/skel/model/REPLACE_IMPORT_PACKAGE_NAME/myslr.py
     :test:
-    :lines: 232-251
+    :lines: 233-251
 
 Python Usage
 ------------
@@ -271,11 +271,11 @@ Now let's make predictions
             },
             "key": "0",
             "last_updated": "2020-05-24T22:48:11Z",
-            "prediction": {
-                "Salary": {
-                    "confidence": 1.0,
-                    "value": 110.0
-                }
+            "predictions": {
+                "Salary": 110.0
+            },
+            "confidences": {
+                "Salary": 1.0,
             }
         }
     ]
@@ -331,11 +331,11 @@ assessment.
                 "features": {
                     "Years": 8
                 },
-                "prediction": {
-                    "Salary": {
-                        "confidence": 1.0,
-                        "value": 110.0
-                    }
+                "predictions": {
+                    "Salary": 110.0
+                },
+                "confidences": {
+                    "Salary": 1.0,
                 },
                 "last_updated": "2020-04-14T20:07:11Z",
                 "extra": {}

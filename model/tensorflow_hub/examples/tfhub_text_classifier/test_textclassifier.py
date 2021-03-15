@@ -67,5 +67,5 @@ class TestExample(unittest.TestCase):
 
             # Check the sentiment
             self.assertIsInstance(
-                round(records[0]["prediction"]["sentiment"]["value"]), int
+                round(records[0]["predictions"]["sentiment"]), int
             )

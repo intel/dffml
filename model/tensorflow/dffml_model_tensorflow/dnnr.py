@@ -145,9 +145,7 @@ class DNNRegressionModelContext(TensorflowModelContext):
         predict, predictions, target = await self.get_predictions(sources)
         for record, pred_dict in zip(predict, predictions):
             # TODO Instead of float("nan") save accuracy value and use that.
-            record.predicted(
-                target, float(pred_dict["predictions"]), float("nan")
-            )
+            record.predicted(target, float(pred_dict["predictions"]))
             yield record
 
 
@@ -201,11 +199,8 @@ class DNNRegressionModel(Model):
                     "TARGET": 0.84
                 },
                 "last_updated": "2019-10-24T15:26:41Z",
-                "prediction": {
-                    "TARGET" : {
-                        "confidence": null,
-                        "value": 1.1983429193496704
-                    }
+                "predictions": {
+                    "TARGET" : 1.1983429193496704
                 },
                 "key": 0
             }

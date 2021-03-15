@@ -78,7 +78,7 @@ class TestSLR(AsyncTestCase):
             # Grab the correct value
             correct = self.test_data[int(i)]["Y"]
             # Grab the predicted value
-            prediction = prediction["Y"]["value"]
+            prediction = prediction["Y"]
             # Check that the percent error is less than 10%
             self.assertLess(prediction, correct * 1.1)
             self.assertGreater(prediction, correct * (1.0 - 0.1))

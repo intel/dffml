@@ -134,7 +134,7 @@ var runit = async function() {
   });
   console.log("Model context predict", prediction);
 
-  if (prediction.mish_the_smish.prediction.Salary.value !== 70) {
+  if (prediction.mish_the_smish.prediction.Salary !== 70) {
     console.error(prediction)
     throw new Error("prediction.mish_the_smish.prediction.value was not 70!");
   }

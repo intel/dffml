@@ -31,8 +31,11 @@ class MySQLSourceConfig:
     features: Dict[str, str] = field(
         "Mapping of feature names to column names"
     )
-    predictions: Dict[str, Tuple[str, str]] = field(
-        "Mapping of prediction names to tuples of (value, confidence) column names"
+    predictions: Dict[str, str] = field(
+        "Mapping of prediction names to their column names"
+    )
+    confidences: Dict[str, str] = field(
+        "Mapping of confidence names to their column names"
     )
     update: str = field("Query to update a single record")
     record: str = field("Query to get a single record")
@@ -60,19 +63,22 @@ class MySQLSourceContext(BaseSourceContext):
         predictions = record.predictions(self.parent.config.predictions.keys())
         for (
             feature_name,
-            (value_column_name, confidence_column_name),
+            value_column_name,
         ) in self.parent.config.predictions.items():
             bindings[value_column_name] = None
+            if feature_name in predictions:
+                bindings[value_column_name] = predictions[feature_name]
+        confidences = record.confidences(self.parent.config.confidences.keys())
+        for (
+            feature_name,
+            confidence_column_name,
+        ) in self.parent.config.confidences.items():
             if confidence_column_name is not None:
                 bindings[confidence_column_name] = None
-            if feature_name in predictions:
-                bindings[value_column_name] = predictions[feature_name][
-                    "value"
-                ]
-                if confidence_column_name is not None:
-                    bindings[confidence_column_name] = predictions[
+                if feature_name in confidences:
+                    bindings[confidence_column_name] = confidences[
                         feature_name
-                    ]["confidence"]
+                    ]
         # Bindings should be the values for each column, where the value for the
         # key is not repeated for the UPDATE. If useing REPLACE INTO, don't
         # repeat values
@@ -86,22 +92,29 @@ class MySQLSourceContext(BaseSourceContext):
     def row_to_record(self, row):
         features = {}
         predictions = {}
+        confidences = {}
         # Features
         for feature_name, column_name in self.parent.config.features.items():
             features[feature_name] = row[column_name]
         # Predictions
         for (
             feature_name,
-            (value_column_name, confidence_column_name),
+            value_column_name,
         ) in self.parent.config.predictions.items():
-            predictions[feature_name] = {
-                "value": row[value_column_name],
-                # Set confidence to Not A Number if not given
-                "confidence": row.get(confidence_column_name, float("nan")),
-            }
+            predictions[feature_name] = row[value_column_name]
+        # Confidences
+        for (
+            feature_name,
+            confidence_column_name,
+        ) in self.parent.config.confidences.items():
+            confidences[feature_name] = row[confidence_column_name]
         return Record(
             row[self.parent.config.key],
-            data={"features": features, "prediction": predictions},
+            data={
+                "features": features,
+                "predictions": predictions,
+                "confidences": confidences,
+            },
         )
 
     async def records(self) -> AsyncIterator[Record]:

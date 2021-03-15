@@ -363,12 +363,11 @@ class DNNClassifierModel(Model):
                     "classification": 1
                 },
                 "last_updated": "2019-07-31T02:00:12Z",
-                "prediction": {
-                    "classification":
-                        {
-                            "confidence": 0.9999997615814209,
-                            "value": 1
-                        }
+                "predictions": {
+                    "classification": 1
+                },
+                "confidences": {
+                    "classification": 0.9999997615814209,
                 },
                 "key": "0"
             },

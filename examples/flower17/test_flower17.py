@@ -56,9 +56,7 @@ class TestFLOWER17(AsyncTestCase):
                 records = await CLI.cli(*cmd)
 
                 # Check the label for 1 record
-                self.assertIsInstance(
-                    records[0].prediction("label")["value"], str
-                )
+                self.assertIsInstance(records[0].prediction("label"), str)
 
     async def test_shell_pytorch(self):
         with directory_with_data_files() as tempdir:
@@ -92,6 +90,4 @@ class TestFLOWER17(AsyncTestCase):
                 records = await CLI.cli(*cmd[1:-1])
 
                 # Check the label for 1 record
-                self.assertIsInstance(
-                    records[0].prediction("label")["value"], str
-                )
+                self.assertIsInstance(records[0].prediction("label"), str)

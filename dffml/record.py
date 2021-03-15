@@ -18,49 +18,18 @@ class NoSuchFeature(KeyError):
     pass  # pragma: no cov
 
 
-class RecordPrediction(dict):
-
-    EXPORTED = ["value", "confidence"]
-
-    def __init__(self, *, confidence: float = 0.0, value: Any = None) -> None:
-        self["confidence"] = confidence
-        self["value"] = value
-
-    @property
-    def confidence(self):
-        return self["confidence"]
-
-    @property
-    def value(self):
-        return self["value"]
-
-    def dict(self):
-        if not self:
-            return []
-        return self
-
-    def __len__(self):
-        if self["confidence"] == 0.0 and self["value"] is None:
-            return 0
-        return 2
-
-    def __bool__(self):
-        return bool(len(self))
-
-    __nonzero__ = __bool__
-
-
 class RecordData(object):
 
     DATE_FORMAT = "%Y-%m-%dT%H:%M:%SZ"
-    EXPORTED = ["key", "features", "prediction"]
+    EXPORTED = ["key", "features", "predictions", "confidences"]
 
     def __init__(
         self,
         *,
         key: Optional[str] = None,
         features: Optional[Dict[str, Any]] = None,
-        prediction: Optional[Dict[str, Any]] = None,
+        predictions: Optional[Dict[str, Any]] = None,
+        confidences: Optional[Dict[str, float]] = None,
         last_updated: Optional[datetime] = None,
     ) -> None:
         # If the record is not evaluated or predicted then don't report out a new
@@ -70,17 +39,20 @@ class RecordData(object):
             key = ""
         if features is None:
             features = {}
-        if prediction is None:
-            prediction = {}
+        if predictions is None:
+            predictions = {}
+        if confidences is None:
+            confidences = {}
         if last_updated is None:
             last_updated = self.last_updated_default
         if isinstance(last_updated, str):
             last_updated = datetime.strptime(last_updated, self.DATE_FORMAT)
-        for _key, _val in prediction.items():
-            prediction[_key] = RecordPrediction(**_val)
+        for _key, _val in predictions.items():
+            predictions[_key] = _val
         self.key = key
         self.features = features
-        self.prediction = prediction
+        self.predictions = predictions
+        self.confidences = confidences
         self.last_updated = last_updated
 
     def dict(self):
@@ -168,9 +140,12 @@ class Record(object):
                 + [divider]
                 + [
                     create_row(pred, conf_val, width)
-                    for pred, conf_val in self.data.prediction.items()
+                    for pred, conf_val in zip(
+                        self.data.predictions.items(),
+                        self.data.confidences.items(),
+                    )
                 ]
-                if self.data.prediction
+                if self.data.predictions
                 else ["Prediction:    Undetermined".rjust(width)]
             )
         ).rstrip()
@@ -281,16 +256,20 @@ class Record(object):
             raise NoSuchFeature(name)
         return self.data.features[name]
 
-    def predicted(self, target: str, value: Any, confidence: float):
+    def predicted(
+        self, target: str, value: Any, confidence: Optional[float] = None
+    ):
         """
-        Set the prediction for this record.
+        Set the prediction and confidence for this record.
 
         Parameters
         ----------
         target : str
-            The target you want to store the prediction at.
+            The target you want to store the prediction and confidence at.
         value : Any
             The prediction.
+        confidence: float
+            The confidence.
 
         Examples
         --------
@@ -300,14 +279,16 @@ class Record(object):
         >>> example = Record("example", data=dict(features=dict(dead="beef")))
         >>> example.predicted("target_name", "feed", 1.00)
         >>> print(example.prediction("target_name"))
-        {'confidence': 1.0, 'value': 'feed'}
+        feed
+        >>> print(example.confidence("target_name"))
+        1.0
         """
-        self.data.prediction[target] = RecordPrediction(
-            value=value, confidence=float(confidence)
-        )
+        self.data.predictions[target] = value
+        if confidence:
+            self.data.confidences[target] = confidence
         self.data.last_updated = datetime.now()
 
-    def prediction(self, target: str) -> RecordPrediction:
+    def prediction(self, target: str) -> Any:
         """
         Get the prediction for this record.
 
@@ -318,8 +299,34 @@ class Record(object):
 
         Returns
         -------
-        RecordPrediction
+        Any
             The prediction of the target specified.
+
+        Examples
+        --------
+
+        >>> from dffml import *
+        >>>
+        >>> example = Record("example", data=dict(features=dict(dead="beef")))
+        >>> example.predicted("target_name", "feed")
+        >>> print(example.prediction("target_name"))
+        feed
+        """
+        return self.data.predictions[target]
+
+    def confidence(self, target: str) -> float:
+        """
+        Get the confidence for the predictions of this record.
+
+        Parameters
+        ----------
+        target : str
+            The name of the feature that will be returned.
+
+        Returns
+        -------
+        float
+            The confidence of predictions of the target specified.
 
         Examples
         --------
@@ -329,9 +336,11 @@ class Record(object):
         >>> example = Record("example", data=dict(features=dict(dead="beef")))
         >>> example.predicted("target_name", "feed", 1.00)
         >>> print(example.prediction("target_name"))
-        {'confidence': 1.0, 'value': 'feed'}
+        feed
+        >>> print(example.confidence("target_name"))
+        1.0
         """
-        return self.data.prediction[target]
+        return self.data.confidences[target]
 
     def predictions(self, subset: List[str] = []) -> Dict[str, Any]:
         """
@@ -345,7 +354,7 @@ class Record(object):
         Returns
         -------
         dict
-            The prediction of the specified subset.
+            The predictions of the specified subset.
 
         Examples
         --------
@@ -354,16 +363,57 @@ class Record(object):
         >>>
         >>> example = Record("example", data=dict(features=dict(dead="beef")))
         >>> example.predicted("target_name1", "feed", 1.00)
-        >>> example.predicted("target_name2", "deed", 0.97)
-        >>> print(example.predictions(["target_name1", "target_name2"]))
-        {'target_name1': {'confidence': 1.0, 'value': 'feed'}, 'target_name2': {'confidence': 0.97, 'value': 'deed'}}
+        >>> example.predicted("target_name2", "deed")
+        >>> print(example.predictions())
+        {'target_name1': 'feed', 'target_name2': 'deed'}
         """
+        results = {}
         if not subset:
-            return self.data.prediction
+            return self.data.predictions
         for name in subset:
             if (
-                not name in self.data.prediction
-                or self.data.prediction[name] is None
+                not name in self.data.predictions
+                or self.data.predictions[name] is None
             ):
                 return {}
-        return {name: self.data.prediction[name] for name in subset}
+        for name in subset:
+            results[name] = self.data.predictions[name]
+        return results
+
+    def confidences(self, subset: List[str] = []) -> Dict[str, Any]:
+        """
+        Get the confidences for the subset of record.
+
+        Parameters
+        ----------
+        subset : list[str]
+            The list of subset of the record that predictions are returned for.
+
+        Returns
+        -------
+        dict
+            The confidences of the specified subset.
+
+        Examples
+        --------
+
+        >>> from dffml import *
+        >>>
+        >>> example = Record("example", data=dict(features=dict(dead="beef")))
+        >>> example.predicted("target_name1", "feed", 1.00)
+        >>> example.predicted("target_name2", "deed")
+        >>> print(example.confidences())
+        {'target_name1': 1.0}
+        """
+        results = {}
+        if not subset:
+            return self.data.confidences
+        for name in subset:
+            if (
+                not name in self.data.confidences
+                or self.data.confidences[name] is None
+            ):
+                return {}
+        for name in subset:
+            results[name] = self.data.confidences[name]
+        return results

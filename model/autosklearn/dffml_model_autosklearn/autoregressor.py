@@ -148,11 +148,8 @@ class AutoSklearnRegressorModel(Model):
                 },
                 "key": "0",
                 "last_updated": "2020-11-23T05:52:13Z",
-                "prediction": {
-                    "TARGET": {
-                        "confidence": NaN,
-                        "value": 3.566799074411392
-                    }
+                "predictions": {
+                    "TARGET": 3.566799074411392
                 }
             }
         ]

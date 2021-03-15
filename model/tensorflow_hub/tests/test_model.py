@@ -63,7 +63,7 @@ class TestTextClassificationModel(AsyncTestCase):
             target_name = model.config.predict.name
             async with sources() as sctx, model() as mctx:
                 async for record in mctx.predict(sctx):
-                    prediction = record.prediction(target_name).value
+                    prediction = record.prediction(target_name)
                     self.assertIn(prediction, ["0", "1"])
 
 

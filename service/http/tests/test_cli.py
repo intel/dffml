@@ -275,7 +275,7 @@ class TestServer(AsyncTestCase):
                     self.assertEqual(len(records), 10)
                     for record in records.values():
                         should_be = m * record["features"]["f1"] + b
-                        prediction = record["prediction"]["ans"]["value"]
+                        prediction = record["predictions"]["ans"]
                         percent_error = abs(should_be - prediction) / should_be
                         self.assertLess(percent_error, 0.2)
 

@@ -67,12 +67,8 @@ class TestQuickstart(AsyncTestCase):
             stdout = subprocess.check_output(["sh", sh_filepath("predict.sh")])
             records = json.loads(stdout.decode())
             # Check the salary
-            self.assertEqual(
-                round(records[0]["prediction"]["Salary"]["value"]), 70
-            )
-            self.assertEqual(
-                round(records[1]["prediction"]["Salary"]["value"]), 80
-            )
+            self.assertEqual(round(records[0]["predictions"]["Salary"]), 70)
+            self.assertEqual(round(records[1]["predictions"]["Salary"]), 80)
 
     async def test_http(self):
         # Read in command to start HTTP server
@@ -118,7 +114,7 @@ class TestQuickstart(AsyncTestCase):
                 for record in records.values():
                     # Correct value should be 90
                     should_be = 90
-                    prediction = record["prediction"]["Salary"]["value"]
+                    prediction = record["predictions"]["Salary"]
                     # Check prediction within 20% of correct value
                     percent_error = abs(should_be - prediction) / should_be
                     self.assertLess(percent_error, 0.2)

@@ -140,10 +140,7 @@ class TestPyTorchNeuralNetwork(AsyncTestCase):
         self.assertTrue(pred)
         self.assertTrue(pred[target])
         results = pred[target]
-        self.assertIn("value", results)
-        self.assertIn("confidence", results)
-        self.assertIn(results["value"], self.model.config.classifications)
-        self.assertTrue(results["confidence"])
+        self.assertIn(results, self.model.config.classifications)
 
     async def test_shell(self):
         def clean_args(fd, directory):
@@ -178,8 +175,6 @@ class TestPyTorchNeuralNetwork(AsyncTestCase):
         self.assertTrue(results)
         results = results[0]
         self.assertTrue(results.prediction("label"))
+        self.assertTrue(results.confidence("label"))
         results = results.prediction("label")
-        self.assertIn("value", results)
-        self.assertIn("confidence", results)
-        self.assertIn(isinstance(results["value"], str), [True])
-        self.assertTrue(results["confidence"])
+        self.assertIn(isinstance(results, str), [True])

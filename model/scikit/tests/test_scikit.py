@@ -132,8 +132,8 @@ class TestScikitModel:
             target = model.config.predict.name
             async with sources() as sctx, model() as mctx:
                 async for record in mctx.predict(sctx):
-                    prediction = record.prediction(target).value
-                    if self.MODEL_TYPE == "CLASSIFICATION":
+                    prediction = record.prediction(target)
+                    if self.MODEL_TYPE is "CLASSIFICATION":
                         self.assertIn(prediction, [2, 4])
                     elif self.MODEL_TYPE == "REGRESSION":
                         correct = FEATURE_DATA_REGRESSION[int(record.key)][3]

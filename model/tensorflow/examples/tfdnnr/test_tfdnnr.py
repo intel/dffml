@@ -55,5 +55,5 @@ class TestExample(unittest.TestCase):
             records = json.loads(stdout.decode())
             # Check the TARGET
             self.assertIsInstance(
-                round(records[0]["prediction"]["TARGET"]["value"]), int
+                round(records[0]["predictions"]["TARGET"]), int
             )

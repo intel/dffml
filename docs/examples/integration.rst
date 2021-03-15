@@ -504,11 +504,11 @@ to make a prediction on the DFFML repo.
             },
             "key": "https://github.com/intel/dffml",
             "last_updated": "2020-10-12T21:15:13Z",
-            "prediction": {
-                "maintained": {
-                    "confidence": 0.9999271631240845,
-                    "value": "1"
-                }
+            "predictions": {
+                "maintained": "1"
+            },
+            "confidences": {
+                "maintained": 0.9999271631240845,
             }
         }
     ]

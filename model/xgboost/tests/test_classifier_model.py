@@ -100,7 +100,7 @@ class TestXGBClassifier(AsyncTestCase):
         async for i, features, prediction in predict(
             self.model, self.testsource
         ):
-            unique_predict.add(prediction["Target"]["value"])
+            unique_predict.add(prediction["Target"])
 
         # values in both sets must be equal
         self.assertTrue(unique_predict == unique_train)
@@ -115,7 +115,7 @@ class TestXGBClassifier(AsyncTestCase):
             self.model, self.testsource
         ):
             correct.append(features["Target"])
-            predictions.append(prediction["Target"]["value"])
+            predictions.append(prediction["Target"])
 
         # calculate F1 score
         res = f1_score(correct, predictions, average="micro")

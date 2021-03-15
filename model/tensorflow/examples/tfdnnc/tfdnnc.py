@@ -39,5 +39,5 @@ for i, features, prediction in predict(
         "SepalWidth": 3.1,
     },
 ):
-    features["classification"] = prediction["classification"]["value"]
+    features["classification"] = prediction["classification"]
     print(features)

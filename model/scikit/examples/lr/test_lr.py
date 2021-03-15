@@ -55,6 +55,4 @@ class TestExample(unittest.TestCase):
             )
             records = json.loads(stdout.decode())
             # Check the salary
-            self.assertEqual(
-                round(records[0]["prediction"]["Salary"]["value"]), 70.0
-            )
+            self.assertEqual(round(records[0]["predictions"]["Salary"]), 70.0)

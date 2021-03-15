@@ -64,9 +64,6 @@ class TestLogisticRegression(AsyncTestCase):
             self.assertTrue(isinstance(results, list))
             self.assertEqual(len(results), 10)
             for i, result in enumerate(results):
-                self.assertIn("prediction", result)
-                result = result["prediction"]
+                self.assertIn("predictions", result)
+                result = result["predictions"]
                 self.assertIn("ans", result)
-                result = result["ans"]
-                self.assertIn("value", result)
-                result = result["value"]

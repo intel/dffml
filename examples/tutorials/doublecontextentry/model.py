@@ -28,7 +28,7 @@ async def main():
             )
             # Make predictions
             async for i, features, prediction in predict(mctx, sctx):
-                features["Salary"] = round(prediction["Salary"]["value"])
+                features["Salary"] = round(prediction["Salary"])
                 print(features)
 
 

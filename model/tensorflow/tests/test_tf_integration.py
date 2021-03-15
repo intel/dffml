@@ -109,12 +109,10 @@ class TestDNNC(AsyncTestCase):
             self.assertTrue(isinstance(results, list))
             self.assertTrue(results)
             results = results[0]
-            self.assertIn("prediction", results)
-            results = results["prediction"]
+            self.assertIn("predictions", results)
+            results = results["predictions"]
             self.assertIn("true_class", results)
             results = results["true_class"]
-            self.assertIn("value", results)
-            results = results["value"]
             self.assertIn(results, [0, 1, 2, 3])
 
 
@@ -191,10 +189,8 @@ class TestDNNR(AsyncTestCase):
             self.assertTrue(isinstance(results, list))
             self.assertTrue(results)
             results = results[0]
-            self.assertIn("prediction", results)
-            results = results["prediction"]
+            self.assertIn("predictions", results)
+            results = results["predictions"]
             self.assertIn("true_target", results)
             results = results["true_target"]
-            self.assertIn("value", results)
-            results = results["value"]
             self.assertTrue(results is not None)

@@ -529,12 +529,12 @@ class TestModel(TestRoutesRunning, AsyncTestCase):
                 record = Record(key, data=record_data)
                 self.assertEqual(int(record.key), i)
                 self.assertEqual(
-                    record.feature("by_ten"),
-                    record.prediction("Salary").value / 10,
+                    record.feature("by_ten"), record.prediction("Salary") / 10,
                 )
-                self.assertEqual(
-                    float(record.key), record.prediction("Salary").confidence
-                )
+                if record.data.confidences:
+                    self.assertEqual(
+                        float(record.key), record.confidence("Salary"),
+                    )
                 i += 1
             self.assertEqual(i, self.num_records)
 

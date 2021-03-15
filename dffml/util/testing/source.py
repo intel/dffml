@@ -5,7 +5,7 @@ import abc
 import random
 import tempfile
 
-from ...record import Record, RecordPrediction
+from ...record import Record
 from ..asynctestcase import AsyncTestCase
 
 
@@ -31,11 +31,8 @@ class SourceTest(abc.ABC):
                     "SepalLength": 5.8,
                     "SepalWidth": 2.7,
                 },
-                "prediction": {
-                    "target_name": RecordPrediction(
-                        value="feedface", confidence=0.42
-                    )
-                },
+                "predictions": {"target_name": "feedface"},
+                "confidences": {"target_name": 0.42},
             },
         )
         empty_record = Record(
@@ -62,21 +59,16 @@ class SourceTest(abc.ABC):
                 with self.subTest(key=full_key):
                     record = await sourceContext.record(full_key)
                     self.assertEqual(
-                        record.data.prediction["target_name"]["value"],
-                        "feedface",
+                        record.data.predictions["target_name"], "feedface"
                     )
                     self.assertEqual(
-                        record.data.prediction["target_name"]["confidence"],
-                        0.42,
+                        record.data.confidences["target_name"], 0.42
                     )
                 with self.subTest(key=empty_key):
                     record = await sourceContext.record(empty_key)
                     self.assertEqual(
-                        [
-                            val["value"]
-                            for _, val in record.data.prediction.items()
-                        ],
-                        [None] * (len(record.data.prediction)),
+                        [val for _, val in record.data.predictions.items()],
+                        [None] * (len(record.data.predictions)),
                     )
                 with self.subTest(both=[full_key, empty_key]):
                     records = {

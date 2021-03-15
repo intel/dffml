@@ -129,11 +129,11 @@ class SLRModel(SimpleModel):
                 },
                 "key": "0",
                 "last_updated": "2020-11-15T16:22:25Z",
-                "prediction": {
-                    "ans": {
-                        "confidence": 0.9355670103092784,
-                        "value": 1
-                    }
+                "predictions": {
+                    "ans": 1
+                }
+                "confidences": {
+                    "ans": 0.9355670103092784
                 }
             }
         ]

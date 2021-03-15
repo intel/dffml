@@ -61,10 +61,8 @@ class TestSLR(AsyncTestCase):
             self.assertTrue(isinstance(results, list))
             self.assertEqual(len(results), 6)
             for i, result in enumerate(results):
-                self.assertIn("prediction", result)
-                result = result["prediction"]
+                self.assertIn("predictions", result)
+                result = result["predictions"]
                 self.assertIn("Salary", result)
                 result = result["Salary"]
-                self.assertIn("value", result)
-                result = result["value"]
                 self.assertEqual(round(result), i * 10 + 30)

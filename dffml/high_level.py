@@ -274,7 +274,8 @@ async def save(source: BaseSource, *args: Record) -> None:
     ...             "myrecord",
     ...             data={
     ...                 "features": {"Years": 0, "Expertise": 1, "Trust": 0.1},
-    ...                 "prediction": {"Salary": {"value": 10, "confidence": 1.0}},
+    ...                 "predictions": {"Salary": 10},
+    ...                 "confidences": {"Salary": 1.0},
     ...             }
     ...         )
     ...     )
@@ -522,7 +523,7 @@ async def predict(
     ...         {"Years": 6},
     ...         {"Years": 7},
     ...     ):
-    ...         features["Salary"] = round(prediction["Salary"]["value"])
+    ...         features["Salary"] = round(prediction["Salary"])
     ...         print(features)
     >>>
     >>> asyncio.run(main())

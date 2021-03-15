@@ -107,11 +107,12 @@ class TestAutoClassifierModel(AsyncTestCase):
                 self.assertTrue(isinstance(results, list))
                 self.assertTrue(results)
                 results = results[0]
-                self.assertIn("prediction", results)
-                results = results["prediction"]
+                self.assertIn("predictions", results)
+                self.assertIn("confidences", results)
+                self.assertGreaterEqual(
+                    results["confidences"]["classification"], 0.3
+                )
+                results = results["predictions"]
                 self.assertIn("classification", results)
                 results = results["classification"]
-                self.assertIn("value", results)
-                self.assertIn("confidence", results)
-                self.assertEqual(results["value"], 1)
-                self.assertGreaterEqual(results["confidence"], 0.3)
+                self.assertEqual(results, 1)

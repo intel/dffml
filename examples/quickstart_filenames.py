@@ -24,5 +24,5 @@ for i, features, prediction in predict(
     {"Years": 6, "Expertise": 13, "Trust": 0.7},
     {"Years": 7, "Expertise": 15, "Trust": 0.8},
 ):
-    features["Salary"] = prediction["Salary"]["value"]
+    features["Salary"] = prediction["Salary"]
     print(features)

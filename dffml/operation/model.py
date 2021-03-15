@@ -28,7 +28,7 @@ class ModelPredictConfig:
         )
     },
     outputs={
-        "prediction": Definition(
+        "predictions": Definition(
             name="model_predictions", primitive="Dict[str, Any]"
         )
     },
@@ -72,7 +72,7 @@ async def model_predict(self, features: Dict[str, Any]) -> Dict[str, Any]:
     ... )
     >>> dataflow.seed.append(
     ...     Input(
-    ...         value=[model_predict.op.outputs["prediction"].name],
+    ...         value=[model_predict.op.outputs["predictions"].name],
     ...         definition=GetSingle.op.inputs["spec"],
     ...     )
     ... )
@@ -94,7 +94,7 @@ async def model_predict(self, features: Dict[str, Any]) -> Dict[str, Any]:
     ...         print(results)
     >>>
     >>> asyncio.run(main())
-    {'model_predictions': {'Salary': {'confidence': 1.0, 'value': 50}}}
+    {'model_predictions': {'Salary': 50}}
     """
 
     async with Sources(
@@ -106,4 +106,4 @@ async def model_predict(self, features: Dict[str, Any]) -> Dict[str, Any]:
     ) as source:
         async with source() as sctx:
             async for record in self.mctx.predict(sctx):
-                return {"prediction": record.predictions()}
+                return {"predictions": record.predictions()}

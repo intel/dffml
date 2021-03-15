@@ -11,11 +11,11 @@
         },
         "key": "four",
         "last_updated": "2020-03-18T04:07:01Z",
-        "prediction": {
-            "label": {
-                "confidence": 0.9977860450744629,
-                "value": 4
-            }
+        "predictions": {
+            "label": 4
+        },
+        "confidences": {
+            "label": 0.9977860450744629,
         }
     },
     {
@@ -30,11 +30,11 @@
         },
         "key": "five",
         "last_updated": "2020-03-18T04:07:01Z",
-        "prediction": {
-            "label": {
-                "confidence": 1.0,
-                "value": 5
-            }
+        "predictions": {
+            "label": 5
+        },
+        "confidences": {
+            "label": 1.0
         }
     },
     {
@@ -49,11 +49,11 @@
         },
         "key": "three",
         "last_updated": "2020-03-18T04:07:01Z",
-        "prediction": {
-            "label": {
-                "confidence": 0.9998736381530762,
-                "value": 3
-            }
+        "predictions": {
+            "label": 3
+        },
+        "confidences": {
+            "label": 0.9998736381530762,
         }
     },
     {
@@ -68,11 +68,11 @@
         },
         "key": "two",
         "last_updated": "2020-03-18T04:07:01Z",
-        "prediction": {
-            "label": {
-                "confidence": 1.0,
-                "value": 2
-            }
+        "predictions": {
+            "label": 2
+        },
+        "confidences": {
+            "label": 1.0,
         }
     }
 ]

@@ -91,7 +91,7 @@ class TestXGBRegressor(AsyncTestCase):
             # Grab the correct value
             correct = features["Target"]
             # Grab the predicted value
-            prediction = prediction["Target"]["value"]
+            prediction = prediction["Target"]
             # Check that the prediction is within 30% error of the actual value
             error = abs((prediction - correct) / correct)
 

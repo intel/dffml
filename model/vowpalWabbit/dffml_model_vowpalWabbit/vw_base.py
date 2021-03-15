@@ -428,11 +428,11 @@ class VWModel(Model):
                 },
                 "key": "0",
                 "last_updated": "2020-05-29T16:36:57Z",
-                "prediction": {
-                    "B": {
-                        "confidence": 0.38683876649129145,
-                        "value": 0.0
-                    }
+                "predictions": {
+                    "B": 0.0
+                }
+                "confidences": {
+                    "B": 0.38683876649129145,
                 }
             }
         ]

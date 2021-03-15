@@ -16,5 +16,5 @@ print("Accuracy:", accuracy(model, CSVSource(filename="dataset.csv")))
 
 # Make prediction
 for i, features, prediction in predict(model, {"f1": 0.8, "ans": 0}):
-    features["ans"] = prediction["ans"]["value"]
+    features["ans"] = prediction["ans"]
     print(features)

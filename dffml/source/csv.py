@@ -165,22 +165,31 @@ class CSVSource(FileSource, MemorySource):
             if features:
                 record_data["features"] = features
 
-            # Getting all prediction target names
-            target_keys = filter(
+            # Getting all prediction and confidence target names
+            target_keys_preds = filter(
                 lambda x: x.startswith("prediction_"), csv_meta.keys()
             )
-            target_keys = map(
-                lambda x: x.replace("prediction_", ""), target_keys
+            target_keys_conf = filter(
+                lambda x: x.startswith("confidence_"), csv_meta.keys()
+            )
+            target_keys_preds = map(
+                lambda x: x.replace("prediction_", ""), target_keys_preds
+            )
+            target_keys_conf = map(
+                lambda x: x.replace("confidence_", ""), target_keys_conf
             )
 
             predictions = {
-                target_name: {
-                    "value": str(csv_meta["prediction_" + target_name]),
-                    "confidence": float(csv_meta["confidence_" + target_name]),
-                }
-                for target_name in target_keys
+                target_name: str(csv_meta["prediction_" + target_name])
+                for target_name in target_keys_preds
             }
-            record_data.update({"prediction": predictions})
+            confidences = {
+                target_name: float(csv_meta["confidence_" + target_name])
+                for target_name in target_keys_conf
+            }
+            record_data.update(
+                {"predictions": predictions, "confidences": confidences}
+            )
             # If there was no data in the row, skip it
             if not record_data and key == str(index[tag] - 1):
                 continue
@@ -218,7 +227,9 @@ class CSVSource(FileSource, MemorySource):
             for tag, records in open_file.write_out.items():
                 for record in records.values():
                     feature_fieldnames |= set(record.data.features.keys())
-                    prediction_fieldnames |= set(record.data.prediction.keys())
+                    prediction_fieldnames |= set(
+                        record.data.predictions.keys()
+                    )
             fieldnames += sorted(list(feature_fieldnames))
             fieldnames += itertools.chain(
                 *list(
@@ -245,10 +256,16 @@ class CSVSource(FileSource, MemorySource):
                     for key, value in record_data.get("features", {}).items():
                         row[key] = value
                     # Write the prediction
-                    if "prediction" in record_data:
-                        for key, value in record_data["prediction"].items():
-                            row["prediction_" + key] = value["value"]
-                            row["confidence_" + key] = value["confidence"]
+                    if "predictions" in record_data:
+                        for key, value in record_data["predictions"].items():
+                            row["prediction_" + key] = value
+                            if (
+                                "confidences" in record_data
+                                and key in record_data["confidences"]
+                            ):
+                                row["confidence_" + key] = record_data[
+                                    "confidences"
+                                ][key]
                     writer.writerow(row)
             del self.OPEN_CSV_FILES[self.config.filename]
             self.logger.debug(f"{self.config.filename} written")

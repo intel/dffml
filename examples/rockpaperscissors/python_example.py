@@ -97,12 +97,12 @@ async def main():
             "Image filename", "Prediction", "Confidence"
         )
     )
-    async for key, features, prediction in predict(model, predict_source):
+    async for key, features, prediction, confidence in predict(
+        model, predict_source
+    ):
         print(
             "{:>40} \t {:>10} \t {:>10}".format(
-                "rps-predict/" + key,
-                prediction["label"]["value"],
-                prediction["label"]["confidence"],
+                "rps-predict/" + key, prediction["label"], confidence["label"],
             )
         )
 

@@ -58,14 +58,16 @@ class TestML(AsyncTestCase):
                 "1",
                 data={
                     "features": {"A": 0, "B": 1},
-                    "prediction": {"C": {"value": 1, "confidence": 1.0}},
+                    "predictions": {"C": 1},
+                    "confidences": {"C": 1.0},
                 },
             ),
             Record(
                 "2",
                 data={
                     "features": {"A": 3, "B": 4},
-                    "prediction": {"C": {"value": 2, "confidence": 1.0}},
+                    "predictions": {"C": 2},
+                    "confidences": {"C": 1.0},
                 },
             ),
         )
@@ -77,13 +79,15 @@ class TestML(AsyncTestCase):
                 {
                     "key": "1",
                     "features": {"A": 0, "B": 1},
-                    "prediction": {"C": {"confidence": 1.0, "value": "1"}},
+                    "predictions": {"C": "1"},
+                    "confidences": {"C": 1.0},
                     "extra": {},
                 },
                 {
                     "key": "2",
                     "features": {"A": 3, "B": 4},
-                    "prediction": {"C": {"confidence": 1.0, "value": "2"}},
+                    "predictions": {"C": "2"},
+                    "confidences": {"C": 1.0},
                     "extra": {},
                 },
             ],
@@ -97,7 +101,8 @@ class TestML(AsyncTestCase):
                 {
                     "key": "1",
                     "features": {"A": 0, "B": 1},
-                    "prediction": {"C": {"confidence": 1.0, "value": "1"}},
+                    "predictions": {"C": "1"},
+                    "confidences": {"C": 1.0},
                     "extra": {},
                 }
             ],
@@ -130,8 +135,8 @@ class TestML(AsyncTestCase):
         predictions = [
             prediction async for prediction in predict(model, predict_data)
         ]
-        self.assertEqual(round(predictions[0][2]["Salary"]["value"]), 70)
-        self.assertEqual(round(predictions[1][2]["Salary"]["value"]), 80)
+        self.assertEqual(round(predictions[0][2]["Salary"]), 70)
+        self.assertEqual(round(predictions[1][2]["Salary"]), 80)
 
 
 class TestDataFlow(TestOrchestrator):

@@ -63,9 +63,7 @@ class TestResNet18Model(AsyncTestCase):
             self.assertTrue(isinstance(results, list))
             self.assertTrue(results)
             results = results[0]
+            self.assertTrue(results.confidence("label"))
             self.assertTrue(results.prediction("label"))
             results = results.prediction("label")
-            self.assertIn("value", results)
-            self.assertIn("confidence", results)
-            self.assertIn(isinstance(results["value"], str), [True])
-            self.assertTrue(results["confidence"])
+            self.assertIn(isinstance(results, str), [True])
