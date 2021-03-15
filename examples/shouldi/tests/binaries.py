@@ -60,20 +60,20 @@ cached_target_cri_resource_manager = cached_download_unpack_archive(
 
 # Rust
 cached_rust = cached_download_unpack_archive(
-    "https://static.rust-lang.org/dist/rust-1.42.0-x86_64-unknown-linux-gnu.tar.gz",
+    "https://static.rust-lang.org/dist/rust-1.50.0-x86_64-unknown-linux-gnu.tar.gz",
     downloads / "rust.tar.gz",
     downloads / "rust-download",
-    "ad2ab72dc407b0f5d34621640555e2da751da8803cbad734396faa54111e03093093f6fa66f14a1948bece8f9e33730d",
+    "f6eb40e09d7fa6f38f7374f6736a773b01ac191e5d421d583b7e7dd4d07c44fc6b8a7a2637af780cfab08b91715f8147",
 )
 cached_cargo_audit = cached_download_unpack_archive(
-    "https://github.com/RustSec/cargo-audit/archive/v0.11.2.tar.gz",
+    "https://github.com/RustSec/cargo-audit/archive/v0.14.0.tar.gz",
     downloads / "cargo_audit.tar.gz",
     downloads / "cargo-audit-download",
-    "dea36731efaac4d0fd37a295c65520a7e9b23b5faa0a92dce7ab20764f8323fc34856079524c676e4cad1cb065ee6472",
+    "871b353a43c1c90892c85534c688a4a74c8b488ae2f7851e6e0753810f4423a4176d24eb707dd8e4ba31afd7785f1205",
 )
-cached_target_crates = cached_download_unpack_archive(
-    "https://github.com/rust-lang/crates.io/archive/8c1a7e29073e175f0e69e0e537374269da244cee.tar.gz",
-    downloads / "crates.tar.gz",
-    downloads / "crates-download",
-    "1bf0c3459373882f51132942872d0dbf8da01eee8d42c3c2090d234e4db99b39d4858c1fd2492c85917d670cae2519ca",
+cached_target_rust_clippy = cached_download_unpack_archive(
+    "https://github.com/rust-lang/rust-clippy/archive/52c25e9136f533c350fa1916b5bf5103f69c0f4d.tar.gz",
+    downloads / "rust-clippy.tar.gz",
+    downloads / "rust-clippy-download",
+    "25d4eb2845136f1338ebc13443867ffce74830f034f581aa0cc87f160a9d44269c9d849674a5ca0fa637632e9575d951",
 )
