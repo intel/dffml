@@ -1,4 +1,5 @@
 import json
+import pathlib
 import asyncio
 from typing import Dict, Any
 
@@ -27,8 +28,12 @@ async def run_npm_audit(pkg: str) -> Dict[str, Any]:
     """
     CLI usage: dffml service dev run -log debug shouldi.npm_audit:run_npm_audit -pkg .
     """
+    # Run yarn if there is a yarn.lock, otherwise run npm
+    npm_or_yarn = "npm"
+    if pathlib.Path(pkg, "yarn.lock").is_file():
+        npm_or_yarn = "yarn"
     proc = await asyncio.create_subprocess_exec(
-        "npm",
+        npm_or_yarn,
         "audit",
         "--json",
         cwd=pkg,
