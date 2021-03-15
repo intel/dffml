@@ -28,7 +28,7 @@ We currently have the following project ideas:
     :titlesonly:
 
     cleanup_dataflows
-    Refactor DataFlows to add event types <https://github.com/intel/dffml/issues/919>
+    dataflow_event_types
     automl
     Support archive storage (such as zip and tar) of models and DataFlows (Part 1) <https://github.com/intel/dffml/issues/967>
     Support archive storage (such as zip and tar) of models and DataFlows (Part 2) <https://github.com/intel/dffml/issues/662>
