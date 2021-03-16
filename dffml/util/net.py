@@ -151,7 +151,6 @@ def cached_download(
     ... 
     >>> 
     >>> asyncio.run(first_line_in_manifest_152c2b())
-    \rDownloading...: [####################################################################################################] 100.00%
     ['include', 'README.md']
     """
     target_path = pathlib.Path(target_path)
@@ -238,7 +237,6 @@ def cached_download_unpack_archive(
     ...     return len(list(dffml_dir.rglob("**/*")))
     >>>
     >>> asyncio.run(files_in_dffml_commit_c4469a())
-    \rDownloading...: [####################################################################################################] 100.00%
     124
     """
 
