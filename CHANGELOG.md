@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Tutorial on how to load models dynamically
   https://intel.github.io/dffml/tutorials/models/load.html
+- Added download progressbar in `util/net.py`
 ### Fixed
 - Record object key properties are now always strings
 

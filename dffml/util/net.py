@@ -1,5 +1,4 @@
 import os
-import sys
 import stat
 import shutil
 import hashlib
@@ -9,7 +8,7 @@ import urllib.request
 from typing import List
 
 from .os import chdir
-from ..log import LOGGER
+from .log import LOGGER, get_download_logger
 
 
 class HashValidationError(Exception):
@@ -56,6 +55,7 @@ class DirectoryNotExtractedError(Exception):
 
 # Default list of URL protocols allowed
 DEFAULT_PROTOCOL_ALLOWLIST: List[str] = ["https://"]
+download_logger = get_download_logger(LOGGER)
 
 
 def progressbar(cur, total=100):
@@ -63,12 +63,11 @@ def progressbar(cur, total=100):
     Simple progressbar to show download progress.
     """
     percent = cur / total
-    progress = "#" * int(cur)
+    progress = "#" * int(cur / 2)
 
-    sys.stdout.write(
-        f"\rDownloading...: [{progress.ljust(100)}] {percent:.2%}"
+    download_logger.debug(
+        f"\rDownloading...: [{progress.ljust(50)}] {percent:.2%}\r"
     )
-    sys.stdout.flush()
 
 
 def progress_reporthook(blocknum, blocksize, totalsize):
@@ -100,7 +99,6 @@ def sync_urlretrieve(
     urllib.request.urlretrieve(
         url, target_path, reporthook=progress_reporthook
     )
-    sys.stdout.write("\n")
 
 
 def cached_download(
