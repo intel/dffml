@@ -102,12 +102,10 @@ class CSVSource(FileSource, MemorySource):
         open_file.write_out = {}
         # If there is no key track row index to be used as key by tag
         index = {}
-
         for row in dict_reader:
-            # strip the keys and values of row
+            # Strip the keys and values of row
             if not self.config.nostrip:
                 row = {k.strip(): v.strip() for k, v in row.items()}
-
             # Grab tag from row
             tag = row.get(self.config.tagcol, self.config.tag)
             # Load via ConfigLoaders if loadfiles parameter is given
