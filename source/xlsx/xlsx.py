@@ -23,6 +23,11 @@ class XLSXSource(FileSource, MemorySource):
     CONFIG = XLSXSourceConfig
 
     async def load_fd(self, fd):
+        # TODO issue #1044
+        if not hasattr(fd.name):
+            raise NotImplementedError(
+                "{} does not have name attribute".format(fd)
+            )
         excel_file = load_workbook(fd.name)  # Loading the Workbook
         excel_sheet = excel_file.active  # Current Working Sheet
 
@@ -47,6 +52,11 @@ class XLSXSource(FileSource, MemorySource):
         self.logger.debug("%r loaded %d records", self, len(self.mem))
 
     async def dump_fd(self, fd):
+        # TODO issue #1044
+        if not hasattr(fd.name):
+            raise NotImplementedError(
+                "{} does not have name attribute".format(fd)
+            )
         excel_file = Workbook()
         excel_sheet = excel_file.active  # Current Working Sheet
         features = []  # Record what features are present in the XLSX files
