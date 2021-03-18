@@ -1,4 +1,5 @@
 import operator
+from typing import Union
 import torch.nn as nn
 
 from dffml.base import config, field
@@ -54,7 +55,7 @@ class Network(nn.Module):
 
 @config
 class PyTorchNeuralNetworkConfig(PyTorchModelConfig):
-    network: Network = field("Model", default=None)
+    network: Union[Network, nn.Module] = field("Model", default=None)
 
 
 class PyTorchNeuralNetworkContext(PyTorchModelContext):
