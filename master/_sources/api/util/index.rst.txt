@@ -14,6 +14,7 @@ Utilities
     log
     net
     packaging
+    file
     asynctestcase
     asynchelper
     os

@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>dffml.util.testing.consoletest.commands &mdash; DFFML 214675d9 documentation</title>
+  <title>dffml.util.testing.consoletest.commands &mdash; DFFML 4db8d9da documentation</title>
   
 
   
@@ -65,7 +65,7 @@
             
             
               <div class="version">
-                214675d9
+                4db8d9da
               </div>
             
           
@@ -210,9 +210,13 @@
 <span class="kn">import</span> <span class="nn">pathlib</span>
 <span class="kn">import</span> <span class="nn">inspect</span>
 <span class="kn">import</span> <span class="nn">tempfile</span>
+<span class="kn">import</span> <span class="nn">functools</span>
 <span class="kn">import</span> <span class="nn">contextlib</span>
 <span class="kn">import</span> <span class="nn">subprocess</span>
+<span class="kn">import</span> <span class="nn">http.server</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">IO</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Optional</span>
+
+<span class="kn">import</span> <span class="nn">httptest</span>
 
 <span class="kn">from</span> <span class="nn">....</span> <span class="kn">import</span> <span class="n">plugins</span>
 
@@ -781,6 +785,45 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">cleanup</span><span class="p">()</span></div>
 
 
+<div class="viewcode-block" id="SimpleHTTPServerCommand"><a class="viewcode-back" href="../../../../../api/util/testing/consoletest/commands.html#dffml.util.testing.consoletest.commands.SimpleHTTPServerCommand">[docs]</a><span class="k">class</span> <span class="nc">SimpleHTTPServerCommand</span><span class="p">(</span><span class="n">ConsoleCommand</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ts</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="fm">__aenter__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;OperationImplementationContext&quot;</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ts</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">):</span>
+        <span class="c1"># Default the port to 8000</span>
+        <span class="n">given_port</span> <span class="o">=</span> <span class="s2">&quot;8000&quot;</span>
+        <span class="c1"># Grab port number if given</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">cmd</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">isdigit</span><span class="p">():</span>
+            <span class="n">given_port</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cmd</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">if</span> <span class="s2">&quot;--cgi&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">cmd</span><span class="p">:</span>
+            <span class="c1"># Start CGI server if requseted</span>
+            <span class="n">handler_class</span> <span class="o">=</span> <span class="n">http</span><span class="o">.</span><span class="n">server</span><span class="o">.</span><span class="n">CGIHTTPRequestHandler</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Default to simple http server</span>
+            <span class="n">handler_class</span> <span class="o">=</span> <span class="n">http</span><span class="o">.</span><span class="n">server</span><span class="o">.</span><span class="n">SimpleHTTPRequestHandler</span>
+        <span class="c1"># Specify directory if given</span>
+        <span class="n">directory</span> <span class="o">=</span> <span class="n">ctx</span><span class="p">[</span><span class="s2">&quot;cwd&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="s2">&quot;--directory&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">cmd</span><span class="p">:</span>
+            <span class="n">directory</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cmd</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">cmd</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;--directory&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="c1"># Ensure handler is relative to directory</span>
+        <span class="n">handler_class</span> <span class="o">=</span> <span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span><span class="n">handler_class</span><span class="p">,</span> <span class="n">directory</span><span class="o">=</span><span class="n">directory</span><span class="p">)</span>
+
+        <span class="c1"># Start a server with a random port</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ts</span> <span class="o">=</span> <span class="n">httptest</span><span class="o">.</span><span class="n">Server</span><span class="p">(</span><span class="n">handler_class</span><span class="p">)</span><span class="o">.</span><span class="fm">__enter__</span><span class="p">()</span>
+        <span class="c1"># Map the port that was given to the port that was used</span>
+        <span class="n">ctx</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;HTTP_SERVER&quot;</span><span class="p">,</span> <span class="p">{})</span>
+        <span class="n">ctx</span><span class="p">[</span><span class="s2">&quot;HTTP_SERVER&quot;</span><span class="p">][</span><span class="n">given_port</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ts</span><span class="o">.</span><span class="n">server_port</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="fm">__aexit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_value</span><span class="p">,</span> <span class="n">traceback</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ts</span><span class="o">.</span><span class="fm">__exit__</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ts</span> <span class="o">=</span> <span class="kc">None</span></div>
+
+
 <span class="k">def</span> <span class="nf">within_qoute</span><span class="p">(</span><span class="n">current</span><span class="p">,</span> <span class="n">qoute</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;&quot;&#39;</span><span class="p">,</span> <span class="s2">&quot;&#39;&quot;</span><span class="p">)):</span>
     <span class="n">within</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">char</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">current</span><span class="p">):</span>
@@ -864,6 +907,9 @@
     <span class="c1"># Handle docker commands</span>
     <span class="k">if</span> <span class="n">cmd</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="p">[</span><span class="s2">&quot;docker&quot;</span><span class="p">,</span> <span class="s2">&quot;run&quot;</span><span class="p">]:</span>
         <span class="k">return</span> <span class="n">DockerRunCommand</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span>
+    <span class="c1"># Handle simple http server</span>
+    <span class="k">if</span> <span class="n">cmd</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span> <span class="o">==</span> <span class="p">[</span><span class="s2">&quot;-m&quot;</span><span class="p">,</span> <span class="s2">&quot;http.server&quot;</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="n">SimpleHTTPServerCommand</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span>
     <span class="c1"># Regular console command</span>
     <span class="k">return</span> <span class="n">ConsoleCommand</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span>
 

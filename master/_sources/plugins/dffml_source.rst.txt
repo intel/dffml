@@ -283,6 +283,22 @@ Source to read files in .ini format.
 
   - default: False
 
+.. _plugin_source_dffml_iris_training:
+
+iris.training
+~~~~~~~~~~~~~
+
+*Official*
+
+No description
+
+**Args**
+
+- cache_dir: Path
+
+  - default: /home/runner/.cache/dffml/datasets/iris
+  - cache_dir
+
 .. _plugin_source_dffml_json:
 
 json

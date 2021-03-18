@@ -247,6 +247,7 @@ database by calling the API.
     :poll-until:
     :ignore-errors:
     :compare-output: bool(stdout.count(b"github.com") >= 1)
+    :replace: cmds[0][2] = cmds[0][2].replace("8000", str(ctx["HTTP_SERVER"]["8000"]))
 
     $ curl -v 'http://127.0.0.1:8000/cgi-bin/api.py?action=dump' | \
         python3 -m json.tool
@@ -538,6 +539,7 @@ Test the new prediction capabilities from the command line with ``curl``
 
 .. code-block:: console
     :test:
+    :replace: cmds[0][2] = cmds[0][2].replace("8000", str(ctx["HTTP_SERVER"]["8000"]))
 
     $ curl -v 'http://127.0.0.1:8000/cgi-bin/api.py?action=predict&URL=https://github.com/intel/dffml' | \
         python -m json.tool

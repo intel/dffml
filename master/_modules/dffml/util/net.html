@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>dffml.util.net &mdash; DFFML 214675d9 documentation</title>
+  <title>dffml.util.net &mdash; DFFML 4db8d9da documentation</title>
   
 
   
@@ -65,7 +65,7 @@
             
             
               <div class="version">
-                214675d9
+                4db8d9da
               </div>
             
           
@@ -199,26 +199,15 @@
 <span class="kn">import</span> <span class="nn">shutil</span>
 <span class="kn">import</span> <span class="nn">hashlib</span>
 <span class="kn">import</span> <span class="nn">pathlib</span>
+<span class="kn">import</span> <span class="nn">inspect</span>
 <span class="kn">import</span> <span class="nn">functools</span>
+<span class="kn">import</span> <span class="nn">contextlib</span>
+<span class="kn">import</span> <span class="nn">dataclasses</span>
 <span class="kn">import</span> <span class="nn">urllib.request</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Union</span>
 
 <span class="kn">from</span> <span class="nn">.os</span> <span class="kn">import</span> <span class="n">chdir</span>
-
-
-<div class="viewcode-block" id="HashValidationError"><a class="viewcode-back" href="../../../api/util/net.html#dffml.util.net.HashValidationError">[docs]</a><span class="k">class</span> <span class="nc">HashValidationError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Raised when hash of file is not what was expected</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">expected</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">path</span> <span class="o">=</span> <span class="n">path</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">value</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">expected</span> <span class="o">=</span> <span class="n">expected</span>
-
-    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="si">}</span><span class="s2"> hash was </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s2">, should be </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">expected</span><span class="si">}</span><span class="s2">&quot;</span></div>
+<span class="kn">from</span> <span class="nn">.file</span> <span class="kn">import</span> <span class="n">validate_file_hash</span>
 
 
 <div class="viewcode-block" id="ProtocolNotAllowedError"><a class="viewcode-back" href="../../../api/util/net.html#dffml.util.net.ProtocolNotAllowedError">[docs]</a><span class="k">class</span> <span class="nc">ProtocolNotAllowedError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
@@ -252,27 +241,187 @@
 <span class="n">DEFAULT_PROTOCOL_ALLOWLIST</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;https://&quot;</span><span class="p">]</span>
 
 
-<div class="viewcode-block" id="sync_urlopen"><a class="viewcode-back" href="../../../api/util/net.html#dffml.util.net.sync_urlopen">[docs]</a><span class="k">def</span> <span class="nf">sync_urlopen</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">protocol_allowlist</span><span class="o">=</span><span class="n">DEFAULT_PROTOCOL_ALLOWLIST</span><span class="p">):</span>
+<div class="viewcode-block" id="validate_protocol"><a class="viewcode-back" href="../../../api/util/net.html#dffml.util.net.validate_protocol">[docs]</a><span class="k">def</span> <span class="nf">validate_protocol</span><span class="p">(</span>
+    <span class="n">url</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">urllib</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">Request</span><span class="p">],</span>
+    <span class="n">protocol_allowlist</span><span class="o">=</span><span class="n">DEFAULT_PROTOCOL_ALLOWLIST</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Check that ``url`` has a protocol defined in ``protocol_allowlist``, then</span>
-<span class="sd">    return the result of calling :py:func:`urllib.request.urlopen` passing it</span>
-<span class="sd">    ``url``.</span>
+<span class="sd">    Check that ``url`` has a protocol defined in ``protocol_allowlist``.</span>
+<span class="sd">    Raise</span>
+<span class="sd">    :py:class:`ProtocolNotAllowedError &lt;dffml.util.net.ProtocolNotAllowedError&gt;`</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+
+<span class="sd">    &gt;&gt;&gt; from dffml.util.net import validate_protocol, DEFAULT_PROTOCOL_ALLOWLIST</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; validate_protocol(&quot;http://example.com&quot;)</span>
+<span class="sd">    Traceback (most recent call last):</span>
+<span class="sd">        ...</span>
+<span class="sd">    dffml.util.net.ProtocolNotAllowedError: Protocol of URL &#39;http://example.com&#39; is not in allowlist: [&#39;https://&#39;]</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; validate_protocol(&quot;https://example.com&quot;)</span>
+<span class="sd">    &#39;https://example.com&#39;</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; validate_protocol(&quot;sshfs://example.com&quot;, [&quot;sshfs://&quot;] + DEFAULT_PROTOCOL_ALLOWLIST)</span>
+<span class="sd">    &#39;sshfs://example.com&#39;</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">allowed_protocol</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="k">for</span> <span class="n">protocol</span> <span class="ow">in</span> <span class="n">protocol_allowlist</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">url</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">protocol</span><span class="p">):</span>
+        <span class="n">check_url</span> <span class="o">=</span> <span class="n">url</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">check_url</span><span class="p">,</span> <span class="n">urllib</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">Request</span><span class="p">):</span>
+            <span class="n">check_url</span> <span class="o">=</span> <span class="n">check_url</span><span class="o">.</span><span class="n">full_url</span>
+        <span class="k">if</span> <span class="n">check_url</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">protocol</span><span class="p">):</span>
             <span class="n">allowed_protocol</span> <span class="o">=</span> <span class="kc">True</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">allowed_protocol</span><span class="p">:</span>
         <span class="k">raise</span> <span class="n">ProtocolNotAllowedError</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">protocol_allowlist</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">url</span></div>
 
-    <span class="k">return</span> <span class="n">urllib</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="n">url</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="sync_urlopen"><a class="viewcode-back" href="../../../api/util/net.html#dffml.util.net.sync_urlopen">[docs]</a><span class="k">def</span> <span class="nf">sync_urlopen</span><span class="p">(</span>
+    <span class="n">url</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">urllib</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">Request</span><span class="p">],</span>
+    <span class="n">protocol_allowlist</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">DEFAULT_PROTOCOL_ALLOWLIST</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Check that ``url`` has a protocol defined in ``protocol_allowlist``, then</span>
+<span class="sd">    return the result of calling :py:func:`urllib.request.urlopen` passing it</span>
+<span class="sd">    ``url`` and any keyword arguments.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">validate_protocol</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">protocol_allowlist</span><span class="o">=</span><span class="n">protocol_allowlist</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">urllib</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="sync_urlretrieve"><a class="viewcode-back" href="../../../api/util/net.html#dffml.util.net.sync_urlretrieve">[docs]</a><span class="k">def</span> <span class="nf">sync_urlretrieve</span><span class="p">(</span>
+    <span class="n">url</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">urllib</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">Request</span><span class="p">],</span>
+    <span class="n">protocol_allowlist</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">DEFAULT_PROTOCOL_ALLOWLIST</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Check that ``url`` has a protocol defined in ``protocol_allowlist``, then</span>
+<span class="sd">    return the result of calling :py:func:`urllib.request.urlretrieve` passing</span>
+<span class="sd">    it ``url`` and any keyword arguments.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">validate_protocol</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">protocol_allowlist</span><span class="o">=</span><span class="n">protocol_allowlist</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">urllib</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">urlretrieve</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+
+<span class="k">def</span> <span class="nf">sync_urlretrieve_and_validate</span><span class="p">(</span>
+    <span class="n">url</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">urllib</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">Request</span><span class="p">],</span>
+    <span class="n">target_path</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">],</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">expected_sha384_hash</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">protocol_allowlist</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">DEFAULT_PROTOCOL_ALLOWLIST</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="n">target_path</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">target_path</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">target_path</span><span class="o">.</span><span class="n">is_file</span><span class="p">()</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">validate_file_hash</span><span class="p">(</span>
+        <span class="n">target_path</span><span class="p">,</span> <span class="n">expected_sha384_hash</span><span class="o">=</span><span class="n">expected_sha384_hash</span><span class="p">,</span> <span class="n">error</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">target_path</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">is_dir</span><span class="p">():</span>
+            <span class="n">target_path</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">sync_urlretrieve</span><span class="p">(</span>
+            <span class="n">url</span><span class="p">,</span>
+            <span class="n">filename</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">target_path</span><span class="p">),</span>
+            <span class="n">protocol_allowlist</span><span class="o">=</span><span class="n">protocol_allowlist</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="n">validate_file_hash</span><span class="p">(</span>
+        <span class="n">target_path</span><span class="p">,</span> <span class="n">expected_sha384_hash</span><span class="o">=</span><span class="n">expected_sha384_hash</span><span class="p">,</span>
+    <span class="p">)</span>
+
+
+<div class="viewcode-block" id="CachedDownloadWrapper"><a class="viewcode-back" href="../../../api/util/net.html#dffml.util.net.CachedDownloadWrapper">[docs]</a><span class="nd">@dataclasses</span><span class="o">.</span><span class="n">dataclass</span>
+<span class="k">class</span> <span class="nc">CachedDownloadWrapper</span><span class="p">:</span>
+    <span class="n">url</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">urllib</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">Request</span><span class="p">]</span>
+    <span class="n">target_path</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]</span>
+    <span class="n">expected_hash</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">protocol_allowlist</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">dataclasses</span><span class="o">.</span><span class="n">field</span><span class="p">(</span>
+        <span class="n">default_factory</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="n">DEFAULT_PROTOCOL_ALLOWLIST</span>
+    <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">target_path</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">target_path</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">inspect</span><span class="o">.</span><span class="n">isasyncgenfunction</span><span class="p">(</span><span class="n">func</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="s2">&quot;__aenter__&quot;</span><span class="p">):</span>
+
+            <span class="nd">@contextlib</span><span class="o">.</span><span class="n">asynccontextmanager</span>
+            <span class="k">async</span> <span class="k">def</span> <span class="nf">wrapped</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+                <span class="k">async</span> <span class="k">with</span> <span class="n">func</span><span class="p">(</span>
+                    <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">add_target_to_args_and_validate</span><span class="p">(</span><span class="n">args</span><span class="p">),</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+                <span class="p">)</span> <span class="k">as</span> <span class="n">result</span><span class="p">:</span>
+                    <span class="k">yield</span> <span class="n">result</span>
+
+        <span class="k">elif</span> <span class="n">inspect</span><span class="o">.</span><span class="n">isasyncgenfunction</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+
+            <span class="k">async</span> <span class="k">def</span> <span class="nf">wrapped</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+                <span class="k">async</span> <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">func</span><span class="p">(</span>
+                    <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">add_target_to_args_and_validate</span><span class="p">(</span><span class="n">args</span><span class="p">),</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+                <span class="p">):</span>
+                    <span class="k">yield</span> <span class="n">result</span>
+
+        <span class="k">elif</span> <span class="n">inspect</span><span class="o">.</span><span class="n">iscoroutinefunction</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+
+            <span class="k">async</span> <span class="k">def</span> <span class="nf">wrapped</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+                <span class="k">return</span> <span class="k">await</span> <span class="n">func</span><span class="p">(</span>
+                    <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">add_target_to_args_and_validate</span><span class="p">(</span><span class="n">args</span><span class="p">),</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+                <span class="p">)</span>
+
+        <span class="k">elif</span> <span class="n">inspect</span><span class="o">.</span><span class="n">isgeneratorfunction</span><span class="p">(</span><span class="n">func</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="s2">&quot;__enter__&quot;</span><span class="p">):</span>
+
+            <span class="nd">@contextlib</span><span class="o">.</span><span class="n">contextmanager</span>
+            <span class="k">def</span> <span class="nf">wrapped</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+                <span class="k">with</span> <span class="n">func</span><span class="p">(</span>
+                    <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">add_target_to_args_and_validate</span><span class="p">(</span><span class="n">args</span><span class="p">),</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+                <span class="p">)</span> <span class="k">as</span> <span class="n">result</span><span class="p">:</span>
+                    <span class="k">yield</span> <span class="n">result</span>
+
+        <span class="k">elif</span> <span class="n">inspect</span><span class="o">.</span><span class="n">isgeneratorfunction</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+
+            <span class="k">def</span> <span class="nf">wrapped</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+                <span class="k">yield from</span> <span class="n">func</span><span class="p">(</span>
+                    <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">add_target_to_args_and_validate</span><span class="p">(</span><span class="n">args</span><span class="p">),</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+                <span class="p">)</span>
+
+        <span class="k">else</span><span class="p">:</span>
+
+            <span class="k">def</span> <span class="nf">wrapped</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">func</span><span class="p">(</span>
+                    <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">add_target_to_args_and_validate</span><span class="p">(</span><span class="n">args</span><span class="p">),</span> <span class="o">**</span><span class="n">kwargs</span>
+                <span class="p">)</span>
+
+        <span class="c1"># Wrap with functools</span>
+        <span class="n">wrapped</span> <span class="o">=</span> <span class="n">functools</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)(</span><span class="n">wrapped</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">wrapped</span>
+
+    <span class="k">def</span> <span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_target_to_args_and_validate</span><span class="p">([])</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">target_path</span>
+
+    <span class="k">def</span> <span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_exc_type</span><span class="p">,</span> <span class="n">_exc_value</span><span class="p">,</span> <span class="n">_traceback</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="fm">__aenter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__enter__</span><span class="p">()</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="fm">__aexit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_exc_type</span><span class="p">,</span> <span class="n">_exc_value</span><span class="p">,</span> <span class="n">_traceback</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+    <span class="k">def</span> <span class="nf">add_target_to_args_and_validate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
+        <span class="n">sync_urlretrieve_and_validate</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">url</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">target_path</span><span class="p">,</span>
+            <span class="n">expected_sha384_hash</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">expected_hash</span><span class="p">,</span>
+            <span class="n">protocol_allowlist</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">protocol_allowlist</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">+</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">target_path</span><span class="p">]</span></div>
 
 
 <div class="viewcode-block" id="cached_download"><a class="viewcode-back" href="../../../api/util/net.html#dffml.util.net.cached_download">[docs]</a><span class="k">def</span> <span class="nf">cached_download</span><span class="p">(</span>
-    <span class="n">url</span><span class="p">,</span>
-    <span class="n">target_path</span><span class="p">,</span>
-    <span class="n">expected_hash</span><span class="p">,</span>
-    <span class="n">protocol_allowlist</span><span class="o">=</span><span class="n">DEFAULT_PROTOCOL_ALLOWLIST</span><span class="p">,</span>
+    <span class="n">url</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">urllib</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">Request</span><span class="p">],</span>
+    <span class="n">target_path</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">],</span>
+    <span class="n">expected_hash</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">protocol_allowlist</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">DEFAULT_PROTOCOL_ALLOWLIST</span><span class="p">,</span>
 <span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Download a file and verify the hash of the downloaded file. If the file</span>
@@ -306,47 +455,83 @@
 <span class="sd">    --------</span>
 
 <span class="sd">    &gt;&gt;&gt; import asyncio</span>
+<span class="sd">    &gt;&gt;&gt; import contextlib</span>
 <span class="sd">    &gt;&gt;&gt; from dffml import cached_download</span>
 <span class="sd">    &gt;&gt;&gt;</span>
-<span class="sd">    &gt;&gt;&gt; @cached_download(</span>
+<span class="sd">    &gt;&gt;&gt; cached_manifest = cached_download(</span>
 <span class="sd">    ...     &quot;https://github.com/intel/dffml/raw/152c2b92535fac6beec419236f8639b0d75d707d/MANIFEST.in&quot;,</span>
 <span class="sd">    ...     &quot;MANIFEST.in&quot;,</span>
 <span class="sd">    ...     &quot;f7aadf5cdcf39f161a779b4fa77ec56a49630cf7680e21fb3dc6c36ce2d8c6fae0d03d5d3094a6aec4fea1561393c14c&quot;,</span>
 <span class="sd">    ... )</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; @cached_manifest</span>
 <span class="sd">    ... async def first_line_in_manifest_152c2b(manifest):</span>
 <span class="sd">    ...     return manifest.read_text().split()[:2]</span>
 <span class="sd">    &gt;&gt;&gt;</span>
 <span class="sd">    &gt;&gt;&gt; asyncio.run(first_line_in_manifest_152c2b())</span>
 <span class="sd">    [&#39;include&#39;, &#39;README.md&#39;]</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; @cached_manifest</span>
+<span class="sd">    ... def first_line_in_manifest_152c2b(manifest):</span>
+<span class="sd">    ...     return manifest.read_text().split()[:2]</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; first_line_in_manifest_152c2b()</span>
+<span class="sd">    [&#39;include&#39;, &#39;README.md&#39;]</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; @cached_manifest</span>
+<span class="sd">    ... def first_line_in_manifest_152c2b(manifest):</span>
+<span class="sd">    ...     yield manifest.read_text().split()[:2]</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; for contents in first_line_in_manifest_152c2b():</span>
+<span class="sd">    ...     print(contents)</span>
+<span class="sd">    [&#39;include&#39;, &#39;README.md&#39;]</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; @cached_manifest</span>
+<span class="sd">    ... async def first_line_in_manifest_152c2b(manifest):</span>
+<span class="sd">    ...     yield manifest.read_text().split()[:2]</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; async def main():</span>
+<span class="sd">    ...     async for contents in first_line_in_manifest_152c2b():</span>
+<span class="sd">    ...         print(contents)</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; asyncio.run(main())</span>
+<span class="sd">    [&#39;include&#39;, &#39;README.md&#39;]</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; @cached_manifest</span>
+<span class="sd">    ... @contextlib.contextmanager</span>
+<span class="sd">    ... def first_line_in_manifest_152c2b(manifest):</span>
+<span class="sd">    ...     yield manifest.read_text().split()[:2]</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; with first_line_in_manifest_152c2b() as contents:</span>
+<span class="sd">    ...     print(contents)</span>
+<span class="sd">    [&#39;include&#39;, &#39;README.md&#39;]</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; @cached_manifest</span>
+<span class="sd">    ... @contextlib.asynccontextmanager</span>
+<span class="sd">    ... async def first_line_in_manifest_152c2b(manifest):</span>
+<span class="sd">    ...     yield manifest.read_text().split()[:2]</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; async def main():</span>
+<span class="sd">    ...     async with first_line_in_manifest_152c2b() as contents:</span>
+<span class="sd">    ...         print(contents)</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; asyncio.run(main())</span>
+<span class="sd">    [&#39;include&#39;, &#39;README.md&#39;]</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    ... with cached_manifest as manifest_path:</span>
+<span class="sd">    ...     print(manifest_path.read_text().split()[:2])</span>
+<span class="sd">    [&#39;include&#39;, &#39;README.md&#39;]</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; async def main():</span>
+<span class="sd">    ...     async with cached_manifest as manifest_path:</span>
+<span class="sd">    ...         print(manifest_path.read_text().split()[:2])</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; asyncio.run(main())</span>
+<span class="sd">    [&#39;include&#39;, &#39;README.md&#39;]</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">target_path</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">target_path</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">validate_hash</span><span class="p">(</span><span class="n">error</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
-        <span class="n">filehash</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha384</span><span class="p">(</span><span class="n">target_path</span><span class="o">.</span><span class="n">read_bytes</span><span class="p">())</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
-        <span class="k">if</span> <span class="n">filehash</span> <span class="o">!=</span> <span class="n">expected_hash</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">error</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="n">HashValidationError</span><span class="p">(</span>
-                    <span class="nb">str</span><span class="p">(</span><span class="n">target_path</span><span class="p">),</span> <span class="n">filehash</span><span class="p">,</span> <span class="n">expected_hash</span>
-                <span class="p">)</span>
-            <span class="k">return</span> <span class="kc">False</span>
-        <span class="k">return</span> <span class="kc">True</span>
-
-    <span class="k">def</span> <span class="nf">mkwrapper</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
-        <span class="nd">@functools</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
-        <span class="k">async</span> <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">):</span>
-            <span class="n">args</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">+</span> <span class="p">[</span><span class="n">target_path</span><span class="p">]</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">target_path</span><span class="o">.</span><span class="n">is_file</span><span class="p">()</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">validate_hash</span><span class="p">(</span><span class="n">error</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-                <span class="c1"># TODO(p5) Blocking request in coroutine</span>
-                <span class="k">with</span> <span class="n">sync_urlopen</span><span class="p">(</span>
-                    <span class="n">url</span><span class="p">,</span> <span class="n">protocol_allowlist</span><span class="o">=</span><span class="n">protocol_allowlist</span>
-                <span class="p">)</span> <span class="k">as</span> <span class="n">resp</span><span class="p">:</span>
-                    <span class="n">target_path</span><span class="o">.</span><span class="n">write_bytes</span><span class="p">(</span><span class="n">resp</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
-            <span class="n">validate_hash</span><span class="p">()</span>
-            <span class="k">return</span> <span class="k">await</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">)</span>
-
-        <span class="k">return</span> <span class="n">wrapper</span>
-
-    <span class="k">return</span> <span class="n">mkwrapper</span></div>
+    <span class="k">return</span> <span class="n">CachedDownloadWrapper</span><span class="p">(</span>
+        <span class="n">url</span><span class="p">,</span> <span class="n">target_path</span><span class="p">,</span> <span class="n">expected_hash</span><span class="p">,</span> <span class="n">protocol_allowlist</span><span class="o">=</span><span class="n">protocol_allowlist</span><span class="p">,</span>
+    <span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="cached_download_unpack_archive"><a class="viewcode-back" href="../../../api/util/net.html#dffml.util.net.cached_download_unpack_archive">[docs]</a><span class="k">def</span> <span class="nf">cached_download_unpack_archive</span><span class="p">(</span>

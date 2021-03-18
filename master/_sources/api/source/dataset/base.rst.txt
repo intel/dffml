@@ -1,0 +1,5 @@
+Source Dataset Base
+===================
+
+.. automodule:: dffml.source.dataset.base
+   :members:

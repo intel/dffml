@@ -1,0 +1,5 @@
+Util File
+=========
+
+.. automodule:: dffml.util.file
+   :members:

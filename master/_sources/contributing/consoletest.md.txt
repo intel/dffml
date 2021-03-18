@@ -45,14 +45,25 @@ remainder of the test of this document.
 ```rst
 .. code-block:: console
     :test:
-    :daemon: 9000
+    :daemon: 8000
 
-    $ python -m http.server 9000
+    $ python -m http.server
 ```
 
 `poll-until` means run the following command until the contents of the
 Python code in the `compare-output` option evaluates to `True`. Ignore any
 errors by specifying the `ignore-errors` option.
+
+Content of command can be replaced using the `:replace:` option. Usually you'll
+want to use this if something you need in the example relies on a value within
+the `ctx` dictionary. When starting the built in Python http server, the port
+that the server binds to will be stored in the `HTTP_SERVER` dictionary in the
+context. By default the server binds to port `8000`, if you tell it to bind on
+another port, you'll want to reference the `HTTP_SERVER` dictionary to find out
+what random port it is really bound to for the test's lifetime. We always bind
+to random ports to avoid collisions with already bound services.
+
+The current working directory can be accessed via `ctx["cwd"]`.
 
 ```rst
 .. code-block:: console
@@ -60,19 +71,20 @@ errors by specifying the `ignore-errors` option.
     :poll-until:
     :ignore-errors:
     :compare-output: bool(b":compare-output:" in stdout)
+    :replace: cmds[0][-1] = cmds[0][-1].replace("8000", str(ctx["HTTP_SERVER"]["8000"]))
 
-    $ curl -sfL http://localhost:9000/README.md
+    $ curl -sfL http://localhost:8000/README.md
 ```
 
-Declare that we want to replace the existing daemon labeled "9000" with this new
+Declare that we want to replace the existing daemon labeled "8000" with this new
 process. Terminate the previously running HTTP server by sending it a `Ctrl-C`.
 
 ```rst
 .. code-block:: console
     :test:
-    :daemon: 9000
+    :daemon: 8000
 
-    $ python -m http.server --cgi 9000
+    $ python -m http.server --cgi 8000
 ```
 
 Commands should be placed on separate lines, `&&` and command substitution are
@@ -86,10 +98,6 @@ currently not supported.
     $ chmod 755 cgi-bin
     $ touch cgi-bin/api.py
 ```
-
-Content of command can be replaced using the `:replace:` option. Usually you'll
-want to use this if something you need in the example relies on a value within
-the `ctx` dictionary.
 
 ```rst
 .. code-block:: console
@@ -136,6 +144,15 @@ Pipes are supported. The `stdin` option allows for specifying the input to a
 command. String literals will be decoded, for example `\n` will become a
 newline.
 
+```rst
+.. code-block:: console
+    :test:
+    :stdin: Hello World
+
+    $ cat
+    Hello World
+```
+
 When running network clients such as `curl` against a server, you will sometimes
 need to use `:poll-until:` and `:ignore-errors:` to re-run the client until the
 server is ready to respond to requests.
@@ -143,13 +160,13 @@ server is ready to respond to requests.
 ```rst
 .. code-block:: console
     :test:
-    :stdin: http://localhost:9000/cgi-bin/api.py?Hello=World
     :poll-until:
     :ignore-errors:
     :compare-output-imports: json
     :compare-output: bool({"Hello": "World"} == json.loads(stdout.decode()))
+    :replace: cmds[0][-1] = cmds[0][-1].replace("8000", str(ctx["HTTP_SERVER"]["8000"]))
 
-    $ cat | xargs curl -vfL
+    $ curl -vfL http://localhost:8000/cgi-bin/api.py?Hello=World
 ```
 
 ### `conf.py`

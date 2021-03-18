@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>dffml.service.dev &mdash; DFFML 214675d9 documentation</title>
+  <title>dffml.service.dev &mdash; DFFML 4db8d9da documentation</title>
   
 
   
@@ -65,7 +65,7 @@
             
             
               <div class="version">
-                214675d9
+                4db8d9da
               </div>
             
           
@@ -594,10 +594,9 @@
         <span class="c1"># If on Windows, PyTorch wants us to use a find links URL for pip</span>
         <span class="k">if</span> <span class="n">platform</span><span class="o">.</span><span class="n">system</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;Windows&quot;</span><span class="p">:</span>
             <span class="n">cmd</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;-f&quot;</span><span class="p">,</span> <span class="s2">&quot;https://download.pytorch.org/whl/torch_stable.html&quot;</span><span class="p">]</span>
-        <span class="c1"># Install to prefix, since --user sometimes fails</span>
+        <span class="c1"># Install user site directory</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="p">:</span>
-            <span class="n">local_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;~&quot;</span><span class="p">,</span> <span class="s2">&quot;.local&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">expanduser</span><span class="p">()</span><span class="o">.</span><span class="n">absolute</span><span class="p">()</span>
-            <span class="n">cmd</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;--prefix=</span><span class="si">{</span><span class="n">local_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">cmd</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;--user&quot;</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">package</span> <span class="ow">in</span> <span class="n">CORE_PLUGINS</span><span class="p">:</span>
             <span class="k">if</span> <span class="s2">&quot;/&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">package</span><span class="p">)</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">skip</span><span class="p">:</span>
                 <span class="k">continue</span>

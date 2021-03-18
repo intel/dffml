@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Testing &mdash; DFFML 214675d9 documentation</title>
+  <title>Testing &mdash; DFFML 4db8d9da documentation</title>
   
 
   
@@ -66,7 +66,7 @@
             
             
               <div class="version">
-                214675d9
+                4db8d9da
               </div>
             
           
@@ -227,11 +227,15 @@
 unit tests, some have integration tests, eventually all will have integration
 tests.</p>
 <p>You can run the tests with</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python3 setup.py <span class="nb">test</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python3 -m unittest discover -v
 </pre></div>
 </div>
 <p>To run a specific test, use the <code class="docutils literal notranslate"><span class="pre">-s</span></code> flag.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python3 setup.py <span class="nb">test</span> -s tests.test_cli.TestPredict.test_record
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python3 -m unittest tests.test_cli.TestPredict.test_record
+</pre></div>
+</div>
+<p>You can also run all tests which have a given string in their name.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python3 -m unittest discover -v -k unpack_
 </pre></div>
 </div>
 <div class="section" id="writing-tests">

@@ -117,7 +117,7 @@ Example usage of Logistic Regression using Python
 
 **slr.py**
 
-.. literalinclude:: ../../examples/model/slr/slr.py
+.. literalinclude:: /../examples/model/slr/slr.py
     :test:
 
 .. code-block:: console
@@ -3070,7 +3070,7 @@ No description
   - default: None
   - Standard Deviation values for normalizing Tensor image
 
-- network: Network
+- network: typing.Union[dffml_model_pytorch.pytorch_net.Network, torch.nn.modules.module.Module]
 
   - default: None
   - Model

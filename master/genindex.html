@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Index &mdash; DFFML 214675d9 documentation</title>
+  <title>Index &mdash; DFFML 4db8d9da documentation</title>
   
 
   
@@ -65,7 +65,7 @@
             
             
               <div class="version">
-                214675d9
+                4db8d9da
               </div>
             
           
@@ -432,6 +432,8 @@
 </li>
       <li><a href="api/util/net.html#dffml.util.net.cached_download_unpack_archive">cached_download_unpack_archive() (in module dffml.util.net)</a>
 </li>
+      <li><a href="api/util/net.html#dffml.util.net.CachedDownloadWrapper">CachedDownloadWrapper (class in dffml.util.net)</a>
+</li>
       <li><a href="api/df/memory.html#dffml.df.memory.MemoryInputNetworkContext.cadd">cadd() (dffml.df.memory.MemoryInputNetworkContext method)</a>
 </li>
       <li><a href="api/util/testing/consoletest/commands.html#dffml.util.testing.consoletest.commands.CDCommand">CDCommand (class in dffml.util.testing.consoletest.commands)</a>
@@ -548,8 +550,6 @@
         <li><a href="api/util/cli/cmds.html#dffml.util.cli.cmds.ModelCMD.CONFIG">(dffml.util.cli.cmds.ModelCMD attribute)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/base.html#dffml.base.BaseConfigurable.config">config() (dffml.base.BaseConfigurable class method)</a>
 
       <ul>
@@ -560,6 +560,8 @@
         <li><a href="api/base.html#dffml.base.config">(in module dffml.base)</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/base.html#dffml.base.config_asdict">config_asdict() (in module dffml.base)</a>
 </li>
       <li><a href="api/base.html#dffml.base.BaseConfigurable.config_get">config_get() (dffml.base.BaseConfigurable class method)</a>
@@ -633,10 +635,16 @@
 </li>
         <li><a href="api/source/source.html#dffml.source.source.ValidationSources.CONTEXT">(dffml.source.source.ValidationSources attribute)</a>
 </li>
+        <li><a href="api/source/wrapper.html#dffml.source.wrapper.WrapperSource.CONTEXT">(dffml.source.wrapper.WrapperSource attribute)</a>
+</li>
         <li><a href="api/util/asynchelper.html#dffml.util.asynchelper.AsyncContextManagerList.CONTEXT">(dffml.util.asynchelper.AsyncContextManagerList attribute)</a>
 </li>
       </ul></li>
+      <li><a href="api/source/wrapper.html#dffml.source.wrapper.context_managed_wrapper_source">context_managed_wrapper_source() (in module dffml.source.wrapper)</a>
+</li>
       <li><a href="api/util/asynchelper.html#dffml.util.asynchelper.context_stacker">context_stacker() (in module dffml.util.asynchelper)</a>
+</li>
+      <li><a href="api/source/wrapper.html#dffml.source.wrapper.ContextManagedWrapperSource">ContextManagedWrapperSource (class in dffml.source.wrapper)</a>
 </li>
       <li><a href="api/df/exceptions.html#dffml.df.exceptions.ContextNotPresent">ContextNotPresent</a>
 </li>
@@ -697,6 +705,8 @@
       <li><a href="api/source/df.html#dffml.source.df.DataFlowSourceConfig">DataFlowSourceConfig (class in dffml.source.df)</a>
 </li>
       <li><a href="api/source/df.html#dffml.source.df.DataFlowSourceContext">DataFlowSourceContext (class in dffml.source.df)</a>
+</li>
+      <li><a href="api/source/dataset/base.html#dffml.source.dataset.base.dataset_source">dataset_source() (in module dffml.source.dataset.base)</a>
 </li>
       <li><a href="api/operation/db.html#dffml.operation.db.db_query_create_table">db_query_create_table() (in module dffml.operation.db)</a>
 </li>
@@ -1018,8 +1028,6 @@
         <li><a href="api/port/port.html#module-dffml.port.port">module</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     dffml.secret.base
 
@@ -1034,6 +1042,8 @@
         <li><a href="api/secret/ini.html#module-dffml.secret.ini">module</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     dffml.service.dev
 
@@ -1046,6 +1056,20 @@
 
       <ul>
         <li><a href="api/source/csv.html#module-dffml.source.csv">module</a>
+</li>
+      </ul></li>
+      <li>
+    dffml.source.dataset.base
+
+      <ul>
+        <li><a href="api/source/dataset/base.html#module-dffml.source.dataset.base">module</a>
+</li>
+      </ul></li>
+      <li>
+    dffml.source.dataset.iris
+
+      <ul>
+        <li><a href="api/source/dataset/iris.html#module-dffml.source.dataset.iris">module</a>
 </li>
       </ul></li>
       <li>
@@ -1133,6 +1157,13 @@
 </li>
       </ul></li>
       <li>
+    dffml.source.wrapper
+
+      <ul>
+        <li><a href="api/source/wrapper.html#module-dffml.source.wrapper">module</a>
+</li>
+      </ul></li>
+      <li>
     dffml.util.asynchelper
 
       <ul>
@@ -1196,6 +1227,13 @@
 </li>
       </ul></li>
       <li>
+    dffml.util.config.inspect
+
+      <ul>
+        <li><a href="api/util/config/inspect.html#module-dffml.util.config.inspect">module</a>
+</li>
+      </ul></li>
+      <li>
     dffml.util.config.numpy
 
       <ul>
@@ -1221,6 +1259,13 @@
 
       <ul>
         <li><a href="api/util/entrypoint.html#module-dffml.util.entrypoint">module</a>
+</li>
+      </ul></li>
+      <li>
+    dffml.util.file
+
+      <ul>
+        <li><a href="api/util/file.html#module-dffml.util.file">module</a>
 </li>
       </ul></li>
       <li>
@@ -1449,12 +1494,12 @@
 </li>
       <li><a href="api/record.html#dffml.record.Record.features">features() (dffml.record.Record method)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/base.html#dffml.base.field">field() (in module dffml.base)</a>
 </li>
       <li><a href="api/source/file.html#dffml.source.file.FileSource">FileSource (class in dffml.source.file)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/source/file.html#dffml.source.file.FileSourceConfig">FileSourceConfig (class in dffml.source.file)</a>
 </li>
       <li><a href="api/util/testing/source.html#dffml.util.testing.source.FileSourceTest">FileSourceTest (class in dffml.util.testing.source)</a>
@@ -1463,11 +1508,17 @@
 </li>
       <li><a href="api/util/testing/consoletest/commands.html#dffml.util.testing.consoletest.commands.DockerRunCommand.find_name">find_name() (dffml.util.testing.consoletest.commands.DockerRunCommand static method)</a>
 </li>
+      <li><a href="api/util/file.html#dffml.util.file.find_replace_with_hash_validation">find_replace_with_hash_validation() (in module dffml.util.file)</a>
+</li>
       <li><a href="api/util/testing/consoletest/commands.html#dffml.util.testing.consoletest.commands.PipInstallCommand.fix_dffml_packages">fix_dffml_packages() (dffml.util.testing.consoletest.commands.PipInstallCommand method)</a>
 </li>
       <li><a href="api/source/dir.html#dffml.source.dir.FolderNotFoundError">FolderNotFoundError</a>
 </li>
       <li><a href="api/df/types.html#dffml.df.types.Forward">Forward (class in dffml.df.types)</a>
+</li>
+      <li><a href="api/source/wrapper.html#dffml.source.wrapper.FunctionDidNotYieldSource">FunctionDidNotYieldSource</a>
+</li>
+      <li><a href="api/source/wrapper.html#dffml.source.wrapper.FunctionMustBeGenerator">FunctionMustBeGenerator</a>
 </li>
   </ul></td>
 </tr></table>
@@ -1515,7 +1566,7 @@
 <h2 id="H">H</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/util/net.html#dffml.util.net.HashValidationError">HashValidationError</a>
+      <li><a href="api/util/file.html#dffml.util.file.HashValidationError">HashValidationError</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
@@ -1581,10 +1632,10 @@
 </li>
       <li><a href="api/df/base.html#dffml.df.base.BaseOrchestratorConfig.input_network">input_network() (dffml.df.base.BaseOrchestratorConfig property)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/df/types.html#dffml.df.types.InputFlow">InputFlow (class in dffml.df.types)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/df/base.html#dffml.df.base.BaseDefinitionSetContext.inputs">inputs() (dffml.df.base.BaseDefinitionSetContext method)</a>
 
       <ul>
@@ -1630,6 +1681,8 @@
       <li><a href="api/operation/dataflow.html#dffml.operation.dataflow.InvalidCustomRunDataFlowContext">InvalidCustomRunDataFlowContext</a>
 </li>
       <li><a href="api/operation/dataflow.html#dffml.operation.dataflow.InvalidCustomRunDataFlowOutputs">InvalidCustomRunDataFlowOutputs</a>
+</li>
+      <li><a href="api/source/dataset/iris.html#dffml.source.dataset.iris.iris_training">iris_training() (in module dffml.source.dataset.iris)</a>
 </li>
       <li><a href="api/base.html#dffml.base.is_config_dict">is_config_dict() (in module dffml.base)</a>
 </li>
@@ -1762,6 +1815,8 @@
       <li><a href="api/db/sql.html#dffml.db.sql.SQLDatabaseContext.make_condition_expression">make_condition_expression() (dffml.db.sql.SQLDatabaseContext class method)</a>
 </li>
       <li><a href="api/base.html#dffml.base.make_config">make_config() (in module dffml.base)</a>
+</li>
+      <li><a href="api/util/config/inspect.html#dffml.util.config.inspect.make_config_inspect">make_config_inspect() (in module dffml.util.config.inspect)</a>
 </li>
       <li><a href="api/util/config/numpy.html#dffml.util.config.numpy.make_config_numpy">make_config_numpy() (in module dffml.util.config.numpy)</a>
 </li>
@@ -1969,6 +2024,10 @@
 </li>
         <li><a href="api/source/csv.html#module-dffml.source.csv">dffml.source.csv</a>
 </li>
+        <li><a href="api/source/dataset/base.html#module-dffml.source.dataset.base">dffml.source.dataset.base</a>
+</li>
+        <li><a href="api/source/dataset/iris.html#module-dffml.source.dataset.iris">dffml.source.dataset.iris</a>
+</li>
         <li><a href="api/source/db.html#module-dffml.source.db">dffml.source.db</a>
 </li>
         <li><a href="api/source/df.html#module-dffml.source.df">dffml.source.df</a>
@@ -1993,6 +2052,8 @@
 </li>
         <li><a href="api/source/source.html#module-dffml.source.source">dffml.source.source</a>
 </li>
+        <li><a href="api/source/wrapper.html#module-dffml.source.wrapper">dffml.source.wrapper</a>
+</li>
         <li><a href="api/util/asynchelper.html#module-dffml.util.asynchelper">dffml.util.asynchelper</a>
 </li>
         <li><a href="api/util/asynctestcase.html#module-dffml.util.asynctestcase">dffml.util.asynctestcase</a>
@@ -2011,6 +2072,8 @@
 </li>
         <li><a href="api/util/config/fields.html#module-dffml.util.config.fields">dffml.util.config.fields</a>
 </li>
+        <li><a href="api/util/config/inspect.html#module-dffml.util.config.inspect">dffml.util.config.inspect</a>
+</li>
         <li><a href="api/util/config/numpy.html#module-dffml.util.config.numpy">dffml.util.config.numpy</a>
 </li>
         <li><a href="api/util/data.html#module-dffml.util.data">dffml.util.data</a>
@@ -2018,6 +2081,8 @@
         <li><a href="api/util/display.html#module-dffml.util.display">dffml.util.display</a>
 </li>
         <li><a href="api/util/entrypoint.html#module-dffml.util.entrypoint">dffml.util.entrypoint</a>
+</li>
+        <li><a href="api/util/file.html#module-dffml.util.file">dffml.util.file</a>
 </li>
         <li><a href="api/util/log.html#module-dffml.util.log">dffml.util.log</a>
 </li>
@@ -2089,6 +2154,8 @@
       <li><a href="api/util/testing/consoletest/parser.html#dffml.util.testing.consoletest.parser.Node">Node (class in dffml.util.testing.consoletest.parser)</a>
 </li>
       <li><a href="api/util/testing/consoletest/util.html#dffml.util.testing.consoletest.util.nodes_to_test">nodes_to_test() (in module dffml.util.testing.consoletest.util)</a>
+</li>
+      <li><a href="api/util/file.html#dffml.util.file.NoHashToUseForValidationSuppliedError">NoHashToUseForValidationSuppliedError</a>
 </li>
       <li><a href="api/util/asynctestcase.html#dffml.util.asynctestcase.non_existant_tempfile">non_existant_tempfile() (in module dffml.util.asynctestcase)</a>
 </li>
@@ -2295,6 +2362,8 @@
 </li>
         <li><a href="api/source/source.html#dffml.source.source.SourcesContext.record">(dffml.source.source.SourcesContext method)</a>
 </li>
+        <li><a href="api/source/wrapper.html#dffml.source.wrapper.WrapperSourceContext.record">(dffml.source.wrapper.WrapperSourceContext method)</a>
+</li>
       </ul></li>
       <li><a href="api/source/df.html#dffml.source.df.RecordContextHandle">RecordContextHandle (class in dffml.source.df)</a>
 </li>
@@ -2324,6 +2393,8 @@
         <li><a href="api/source/source.html#dffml.source.source.SubsetSourcesContext.records">(dffml.source.source.SubsetSourcesContext method)</a>
 </li>
         <li><a href="api/source/source.html#dffml.source.source.ValidationSourcesContext.records">(dffml.source.source.ValidationSourcesContext method)</a>
+</li>
+        <li><a href="api/source/wrapper.html#dffml.source.wrapper.WrapperSourceContext.records">(dffml.source.wrapper.WrapperSourceContext method)</a>
 </li>
       </ul></li>
       <li><a href="api/df/multicomm.html#dffml.df.multicomm.BaseMultiCommContext.register">register() (dffml.df.multicomm.BaseMultiCommContext method)</a>
@@ -2364,6 +2435,8 @@
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/source/wrapper.html#dffml.source.wrapper.ContextManagedWrapperSource.remove_self_from_args">remove_self_from_args() (dffml.source.wrapper.ContextManagedWrapperSource class method)</a>
+</li>
       <li><a href="api/df/base.html#dffml.df.base.BaseInputSet.remove_unvalidated_inputs">remove_unvalidated_inputs() (dffml.df.base.BaseInputSet method)</a>
 
       <ul>
@@ -2494,6 +2567,8 @@
 </li>
       <li><a href="api/service/dev.html#dffml.service.dev.SetupPyVersionConfig">SetupPyVersionConfig (class in dffml.service.dev)</a>
 </li>
+      <li><a href="api/util/testing/consoletest/commands.html#dffml.util.testing.consoletest.commands.SimpleHTTPServerCommand">SimpleHTTPServerCommand (class in dffml.util.testing.consoletest.commands)</a>
+</li>
       <li><a href="api/model/model.html#dffml.model.model.SimpleModel">SimpleModel (class in dffml.model.model)</a>
 </li>
       <li><a href="api/model/model.html#dffml.model.model.SimpleModelNoContext">SimpleModelNoContext (class in dffml.model.model)</a>
@@ -2558,6 +2633,8 @@
 </li>
       <li><a href="api/util/net.html#dffml.util.net.sync_urlopen">sync_urlopen() (in module dffml.util.net)</a>
 </li>
+      <li><a href="api/util/net.html#dffml.util.net.sync_urlretrieve">sync_urlretrieve() (in module dffml.util.net)</a>
+</li>
   </ul></td>
 </tr></table>
 
@@ -2621,6 +2698,8 @@
 </li>
         <li><a href="api/source/source.html#dffml.source.source.SourcesContext.update">(dffml.source.source.SourcesContext method)</a>
 </li>
+        <li><a href="api/source/wrapper.html#dffml.source.wrapper.WrapperSourceContext.update">(dffml.source.wrapper.WrapperSourceContext method)</a>
+</li>
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
@@ -2634,16 +2713,20 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/df/types.html#dffml.df.types.Definition.validate">validate() (dffml.df.types.Definition property)</a>
 </li>
+      <li><a href="api/util/file.html#dffml.util.file.validate_file_hash">validate_file_hash() (in module dffml.util.file)</a>
+</li>
+      <li><a href="api/util/net.html#dffml.util.net.validate_protocol">validate_protocol() (in module dffml.util.net)</a>
+</li>
       <li><a href="api/source/source.html#dffml.source.source.ValidationSources">ValidationSources (class in dffml.source.source)</a>
 </li>
       <li><a href="api/source/source.html#dffml.source.source.ValidationSourcesContext">ValidationSourcesContext (class in dffml.source.source)</a>
 </li>
       <li><a href="api/df/types.html#dffml.df.types.Operation.validator">validator() (dffml.df.types.Operation property)</a>
 </li>
-      <li><a href="api/df/exceptions.html#dffml.df.exceptions.ValidatorMissing">ValidatorMissing</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/df/exceptions.html#dffml.df.exceptions.ValidatorMissing">ValidatorMissing</a>
+</li>
       <li><a href="api/db/base.html#dffml.db.base.Condition.value">value() (dffml.db.base.Condition property)</a>
 </li>
       <li><a href="api/cli/cli.html#dffml.cli.cli.Version">Version (class in dffml.cli.cli)</a>
@@ -2662,11 +2745,15 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/source/source.html#dffml.source.source.SourcesContext.with_features">with_features() (dffml.source.source.SourcesContext method)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/base.html#dffml.base.BaseConfigurable.withconfig">withconfig() (dffml.base.BaseConfigurable class method)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/base.html#dffml.base.BaseConfigurableMetaClass.wrap">wrap() (dffml.base.BaseConfigurableMetaClass class method)</a>
+</li>
+      <li><a href="api/source/wrapper.html#dffml.source.wrapper.WrapperSource">WrapperSource (class in dffml.source.wrapper)</a>
+</li>
+      <li><a href="api/source/wrapper.html#dffml.source.wrapper.WrapperSourceContext">WrapperSourceContext (class in dffml.source.wrapper)</a>
 </li>
   </ul></td>
 </tr></table>

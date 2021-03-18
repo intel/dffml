@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>dffml.base &mdash; DFFML 214675d9 documentation</title>
+  <title>dffml.base &mdash; DFFML 4db8d9da documentation</title>
   
 
   
@@ -65,7 +65,7 @@
             
             
               <div class="version">
-                214675d9
+                4db8d9da
               </div>
             
           
@@ -369,7 +369,9 @@
             <span class="n">type_cls</span> <span class="o">=</span> <span class="n">type_lookup</span>
         <span class="c1"># TODO This is a oversimplification of argparse&#39;s nargs</span>
         <span class="k">if</span> <span class="s2">&quot;nargs&quot;</span> <span class="ow">in</span> <span class="n">arg</span><span class="p">:</span>
-            <span class="n">value</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">type_cls</span><span class="p">,</span> <span class="n">value</span><span class="p">))</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="n">i</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">type_cls</span><span class="p">)</span> <span class="k">else</span> <span class="n">type_cls</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">value</span>
+            <span class="p">]</span>
         <span class="k">elif</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">type_cls</span><span class="p">,</span> <span class="s2">&quot;CONFIGLOADABLE&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
             <span class="k">pass</span>
         <span class="k">else</span><span class="p">:</span>
@@ -389,7 +391,44 @@
             <span class="p">):</span>
                 <span class="n">value</span> <span class="o">=</span> <span class="n">type_cls</span><span class="p">(</span><span class="o">**</span><span class="n">value</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">value</span> <span class="o">=</span> <span class="n">type_cls</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+                <span class="n">convert</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="c1"># Try to see if the value is of the type it&#39;s supposed to be</span>
+                <span class="c1"># already</span>
+                <span class="k">if</span> <span class="n">arg</span><span class="o">.</span><span class="n">annotation</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="c1"># The possible types are the type, the annotated type</span>
+                    <span class="c1"># (property_name: Annotation), and the result of calling</span>
+                    <span class="c1"># get_origin() on the annotation. get_origin(), for a</span>
+                    <span class="c1"># typing.SomeThing like typing.Dict, or typing.Tuple, will</span>
+                    <span class="c1"># return dict, or tuple respectively.</span>
+                    <span class="n">possible_types</span> <span class="o">=</span> <span class="p">[</span>
+                        <span class="n">arg</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">],</span>
+                        <span class="n">arg</span><span class="o">.</span><span class="n">annotation</span><span class="p">,</span>
+                        <span class="n">get_origin</span><span class="p">(</span><span class="n">arg</span><span class="o">.</span><span class="n">annotation</span><span class="p">),</span>
+                    <span class="p">]</span>
+                    <span class="c1"># In the case we have an annotation that takes arguments,</span>
+                    <span class="c1"># such as typing.Union. We want to check if the value is</span>
+                    <span class="c1"># already any of the types listed in the acceptable types</span>
+                    <span class="c1"># for that union of types. We can get those types by calling</span>
+                    <span class="c1"># get_args() on the annotation.</span>
+                    <span class="n">annotation_args</span> <span class="o">=</span> <span class="n">get_args</span><span class="p">(</span><span class="n">arg</span><span class="o">.</span><span class="n">annotation</span><span class="p">)</span>
+                    <span class="c1"># We check against the args if there are any</span>
+                    <span class="k">if</span> <span class="n">annotation_args</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="n">possible_types</span> <span class="o">+=</span> <span class="n">annotation_args</span>
+                    <span class="c1"># We go through all the possible types the value should be</span>
+                    <span class="k">for</span> <span class="n">possible_type</span> <span class="ow">in</span> <span class="n">possible_types</span><span class="p">:</span>
+                        <span class="c1"># We have to check that the possible type is a type</span>
+                        <span class="c1"># before checking if the value is an instance of that</span>
+                        <span class="c1"># type. Since it doesn&#39;t make sense to check if the</span>
+                        <span class="c1"># value is an instance of something that&#39;s not a type.</span>
+                        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">possible_type</span><span class="p">,</span> <span class="nb">type</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span>
+                            <span class="n">value</span><span class="p">,</span> <span class="n">possible_type</span>
+                        <span class="p">):</span>
+                            <span class="c1"># We don&#39;t convert if the value is already of the</span>
+                            <span class="c1"># correct type.</span>
+                            <span class="n">convert</span> <span class="o">=</span> <span class="kc">False</span>
+                            <span class="k">break</span>
+                <span class="k">if</span> <span class="n">convert</span><span class="p">:</span>
+                    <span class="n">value</span> <span class="o">=</span> <span class="n">type_cls</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
         <span class="c1"># list -&gt; tuple</span>
         <span class="k">if</span> <span class="n">arg</span><span class="o">.</span><span class="n">annotation</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">get_origin</span><span class="p">(</span><span class="n">arg</span><span class="o">.</span><span class="n">annotation</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">tuple</span><span class="p">:</span>
             <span class="n">value</span> <span class="o">=</span> <span class="n">get_origin</span><span class="p">(</span><span class="n">arg</span><span class="o">.</span><span class="n">annotation</span><span class="p">)(</span><span class="n">value</span><span class="p">)</span>
@@ -566,7 +605,7 @@
             <span class="k">elif</span> <span class="n">config</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;CONFIG&quot;</span><span class="p">):</span>
                 <span class="k">if</span> <span class="n">kwargs</span><span class="p">:</span>
                     <span class="k">try</span><span class="p">:</span>
-                        <span class="n">config</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">CONFIG</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+                        <span class="n">config</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">CONFIG</span><span class="o">.</span><span class="n">_fromdict</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
                     <span class="k">except</span> <span class="ne">TypeError</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
                         <span class="n">error</span><span class="o">.</span><span class="n">args</span> <span class="o">=</span> <span class="p">(</span>
                             <span class="n">error</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span>

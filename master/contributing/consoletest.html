@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>consoletest Sphinx extension &mdash; DFFML 214675d9 documentation</title>
+  <title>consoletest Sphinx extension &mdash; DFFML 4db8d9da documentation</title>
   
 
   
@@ -66,7 +66,7 @@
             
             
               <div class="version">
-                214675d9
+                4db8d9da
               </div>
             
           
@@ -263,30 +263,40 @@ directory. Mark the server as a daemon which will run in the background for the
 remainder of the test of this document.</p>
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span><span class="p">..</span> <span class="ow">code-block</span><span class="p">::</span> console
     <span class="nc">:test:</span>
-    <span class="nc">:daemon:</span> 9000
+    <span class="nc">:daemon:</span> 8000
 
-    $ python -m http.server 9000
+    $ python -m http.server
 </pre></div>
 </div>
 <p><code class="docutils literal notranslate"><span class="pre">poll-until</span></code> means run the following command until the contents of the
 Python code in the <code class="docutils literal notranslate"><span class="pre">compare-output</span></code> option evaluates to <code class="docutils literal notranslate"><span class="pre">True</span></code>. Ignore any
 errors by specifying the <code class="docutils literal notranslate"><span class="pre">ignore-errors</span></code> option.</p>
+<p>Content of command can be replaced using the <code class="docutils literal notranslate"><span class="pre">:replace:</span></code> option. Usually you’ll
+want to use this if something you need in the example relies on a value within
+the <code class="docutils literal notranslate"><span class="pre">ctx</span></code> dictionary. When starting the built in Python http server, the port
+that the server binds to will be stored in the <code class="docutils literal notranslate"><span class="pre">HTTP_SERVER</span></code> dictionary in the
+context. By default the server binds to port <code class="docutils literal notranslate"><span class="pre">8000</span></code>, if you tell it to bind on
+another port, you’ll want to reference the <code class="docutils literal notranslate"><span class="pre">HTTP_SERVER</span></code> dictionary to find out
+what random port it is really bound to for the test’s lifetime. We always bind
+to random ports to avoid collisions with already bound services.</p>
+<p>The current working directory can be accessed via <code class="docutils literal notranslate"><span class="pre">ctx[&quot;cwd&quot;]</span></code>.</p>
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span><span class="p">..</span> <span class="ow">code-block</span><span class="p">::</span> console
     <span class="nc">:test:</span>
     <span class="nc">:poll-until:</span>
     <span class="nc">:ignore-errors:</span>
     <span class="nc">:compare-output:</span> bool(b&quot;:compare-output:&quot; in stdout)
+    <span class="nc">:replace:</span> cmds[0][-1] = cmds[0][-1].replace(&quot;8000&quot;, str(ctx[&quot;HTTP_SERVER&quot;][&quot;8000&quot;]))
 
-    $ curl -sfL http://localhost:9000/README.md
+    $ curl -sfL http://localhost:8000/README.md
 </pre></div>
 </div>
-<p>Declare that we want to replace the existing daemon labeled “9000” with this new
+<p>Declare that we want to replace the existing daemon labeled “8000” with this new
 process. Terminate the previously running HTTP server by sending it a <code class="docutils literal notranslate"><span class="pre">Ctrl-C</span></code>.</p>
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span><span class="p">..</span> <span class="ow">code-block</span><span class="p">::</span> console
     <span class="nc">:test:</span>
-    <span class="nc">:daemon:</span> 9000
+    <span class="nc">:daemon:</span> 8000
 
-    $ python -m http.server --cgi 9000
+    $ python -m http.server --cgi 8000
 </pre></div>
 </div>
 <p>Commands should be placed on separate lines, <code class="docutils literal notranslate"><span class="pre">&amp;&amp;</span></code> and command substitution are
@@ -299,9 +309,6 @@ currently not supported.</p>
     $ touch cgi-bin/api.py
 </pre></div>
 </div>
-<p>Content of command can be replaced using the <code class="docutils literal notranslate"><span class="pre">:replace:</span></code> option. Usually you’ll
-want to use this if something you need in the example relies on a value within
-the <code class="docutils literal notranslate"><span class="pre">ctx</span></code> dictionary.</p>
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span><span class="p">..</span> <span class="ow">code-block</span><span class="p">::</span> console
     <span class="nc">:test:</span>
     <span class="nc">:replace:</span> import os; cmds[-1][-1] = os.path.join(ctx[&quot;cwd&quot;], cmds[-1][-1])
@@ -341,18 +348,26 @@ is left off, contents will be appended to the file, rather than overwriting.</p>
 <p>Pipes are supported. The <code class="docutils literal notranslate"><span class="pre">stdin</span></code> option allows for specifying the input to a
 command. String literals will be decoded, for example <code class="docutils literal notranslate"><span class="pre">\n</span></code> will become a
 newline.</p>
+<div class="highlight-rst notranslate"><div class="highlight"><pre><span></span><span class="p">..</span> <span class="ow">code-block</span><span class="p">::</span> console
+    <span class="nc">:test:</span>
+    <span class="nc">:stdin:</span> Hello World
+
+    $ cat
+    Hello World
+</pre></div>
+</div>
 <p>When running network clients such as <code class="docutils literal notranslate"><span class="pre">curl</span></code> against a server, you will sometimes
 need to use <code class="docutils literal notranslate"><span class="pre">:poll-until:</span></code> and <code class="docutils literal notranslate"><span class="pre">:ignore-errors:</span></code> to re-run the client until the
 server is ready to respond to requests.</p>
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span><span class="p">..</span> <span class="ow">code-block</span><span class="p">::</span> console
     <span class="nc">:test:</span>
-    <span class="nc">:stdin:</span> http://localhost:9000/cgi-bin/api.py?Hello=World
     <span class="nc">:poll-until:</span>
     <span class="nc">:ignore-errors:</span>
     <span class="nc">:compare-output-imports:</span> json
     <span class="nc">:compare-output:</span> bool({&quot;Hello&quot;: &quot;World&quot;} == json.loads(stdout.decode()))
+    <span class="nc">:replace:</span> cmds[0][-1] = cmds[0][-1].replace(&quot;8000&quot;, str(ctx[&quot;HTTP_SERVER&quot;][&quot;8000&quot;]))
 
-    $ cat | xargs curl -vfL
+    $ curl -vfL http://localhost:8000/cgi-bin/api.py?Hello=World
 </pre></div>
 </div>
 <div class="section" id="conf-py">
