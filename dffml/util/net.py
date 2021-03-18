@@ -120,6 +120,8 @@ def sync_urlretrieve_and_validate(
     if not target_path.is_file() or not validate_file_hash(
         target_path, expected_sha384_hash=expected_sha384_hash, error=False,
     ):
+        if not target_path.parent.is_dir():
+            target_path.parent.mkdir(parents=True)
         sync_urlretrieve(
             url,
             filename=str(target_path),
