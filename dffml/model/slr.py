@@ -142,7 +142,7 @@ class SLRModel(SimpleModel):
 
     **slr.py**
 
-    .. literalinclude:: ../../examples/model/slr/slr.py
+    .. literalinclude:: /../examples/model/slr/slr.py
         :test:
 
     .. code-block:: console

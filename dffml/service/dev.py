@@ -398,10 +398,9 @@ class Install(CMD):
         # If on Windows, PyTorch wants us to use a find links URL for pip
         if platform.system() == "Windows":
             cmd += ["-f", "https://download.pytorch.org/whl/torch_stable.html"]
-        # Install to prefix, since --user sometimes fails
+        # Install user site directory
         if self.user:
-            local_path = Path("~", ".local").expanduser().absolute()
-            cmd.append(f"--prefix={local_path}")
+            cmd.append(f"--user")
         for package in CORE_PLUGINS:
             if "/".join(package) in self.skip:
                 continue

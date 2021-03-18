@@ -3,10 +3,14 @@
 import os
 import sys
 import ast
+import site
 import pathlib
 from io import open
 import importlib.util
 from setuptools import find_packages, setup
+
+# See https://github.com/pypa/pip/issues/7953
+site.ENABLE_USER_SITE = "--user" in sys.argv[1:]
 
 
 class InstallException(Exception):
@@ -68,6 +72,8 @@ setup(
     packages=find_packages(),
     include_package_data=True,
     zip_safe=False,
+    # Temporary until we split consoletest into it's own package
+    install_requires=["httptest>=0.0.17"],
     extras_require={
         "dev": DEV_REQUIRES,
         **plugins.PACKAGE_NAMES_BY_PLUGIN_INSTALLABLE,
@@ -85,6 +91,7 @@ setup(
             "df = dffml.source.df:DataFlowSource",
             "op = dffml.source.op:OpSource",
             "dir = dffml.source.dir:DirectorySource",
+            "iris.training = dffml.source.dataset.iris:iris_training.source",
         ],
         "dffml.port": ["json = dffml.port.json:JSON"],
         "dffml.service.cli": ["dev = dffml.service.dev:Develop"],

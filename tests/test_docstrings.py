@@ -21,6 +21,8 @@ from dffml.df.memory import MemoryOrchestrator
 from dffml.noasync import train
 from dffml.model.slr import SLRModel
 from dffml.util.asynctestcase import AsyncTestCase
+from dffml.util.testing.docs import run_consoletest
+from dffml.util.testing.consoletest.parser import parse_nodes
 from dffml.db.sqlite import SqliteDatabase, SqliteDatabaseConfig
 from dffml.operation.db import db_query_create_table, DatabaseQueryConfig
 
@@ -184,6 +186,9 @@ def mktestcase(name, import_name, module, obj):
     state = {
         "globs": {},
         "name": name,
+        "obj": obj,
+        "import_name": import_name,
+        "module": module,
         "verbose": os.environ.get("LOGGING", "").lower() == "debug",
     }
     # Check if there is a function within this file which will be used to do
@@ -210,6 +215,15 @@ def mktestcase(name, import_name, module, obj):
             run_doctest(obj, state)
 
     return testcase
+
+
+def mkconsoletest(_name, _import_name, _module, obj):
+    async def test_consoletest(self):
+        await run_consoletest(
+            obj, docs_root_dir=pathlib.Path(__file__).parents[1] / "docs",
+        )
+
+    return test_consoletest
 
 
 for import_name, module in modules(root, package_name, skip=skip):
@@ -255,18 +269,30 @@ for import_name, module in modules(root, package_name, skip=skip):
 for name, (import_name, module, obj) in to_test.items():
     # Check that class or function has an example that could be doctested
     docstring = inspect.getdoc(obj)
-    if docstring is None or not "\n>>>" in docstring:
-        continue
     # Remove the package name from the Python style path to the object
     name = name[len(package_name) + 1 :]
-    # Create the test case class. One doctest per class
+    # Create a dictionary to hold the test case functions of the AsyncTestCase
+    # class we're going to create
+    test_cases = {}
+    # Add a doctest testcase if there are any lines to doctest
+    if docstring is not None and ">>>" in docstring:
+        test_cases["test_docstring"] = (
+            mktestcase(name, import_name, module, obj),
+        )
+    # Add a consoletest testcase if there are any testable rst nodes
+    if docstring is not None and [
+        node for node in parse_nodes(docstring) if "test" in node.options
+    ]:
+        test_cases["test_consoletest"] = mkconsoletest(
+            name, import_name, module, obj
+        )
+    # Only create the instance of AsyncTestCase if the object's docstring holds
+    # anything that could have a testcase made out of it
+    if not test_cases:
+        continue
+    # Create the test case class with the object as a property and test cases
     testcase = type(
-        name.replace(".", "_"),
-        (unittest.TestCase,),
-        {
-            "obj": obj,
-            "test_docstring": mktestcase(name, import_name, module, obj),
-        },
+        name.replace(".", "_"), (AsyncTestCase,), {"obj": obj, **test_cases}
     )
     # Create the name of the class using the path to it and the object name
     # Add the class to this file's globals

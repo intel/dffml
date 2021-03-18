@@ -1,9 +1,13 @@
 import os
 import sys
 import ast
+import site
 from io import open
 from pathlib import Path
 from setuptools import find_packages, setup
+
+# See https://github.com/pypa/pip/issues/7953
+site.ENABLE_USER_SITE = "--user" in sys.argv[1:]
 
 ORG = "intel"
 NAME = "dffml-model-vowpalWabbit"
