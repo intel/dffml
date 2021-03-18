@@ -41,11 +41,6 @@ class DirectoryNotExtractedError(Exception):
         return f"Failed to extract - {self.directory_path!r}"
 
 
-# Default list of URL protocols allowed
-DEFAULT_PROTOCOL_ALLOWLIST: List[str] = ["https://"]
-download_logger = get_download_logger(LOGGER)
-
-
 def progressbar(cur, total=100):
     """
     Simple progressbar to show download progress.
@@ -68,6 +63,11 @@ def progress_reporthook(blocknum, blocksize, totalsize):
         * 100
     )
     progressbar(percent)
+
+
+# Default list of URL protocols allowed
+DEFAULT_PROTOCOL_ALLOWLIST: List[str] = ["https://"]
+download_logger = get_download_logger(LOGGER)
 
 
 def validate_protocol(
