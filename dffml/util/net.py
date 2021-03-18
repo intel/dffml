@@ -1,29 +1,17 @@
 import os
 import stat
 import shutil
-import hashlib
 import pathlib
+import inspect
 import functools
+import contextlib
+import dataclasses
 import urllib.request
-from typing import List
+from typing import List, Union
 
 from .os import chdir
+from .file import validate_file_hash
 from .log import LOGGER, get_download_logger
-
-
-class HashValidationError(Exception):
-    """
-    Raised when hash of file is not what was expected
-    """
-
-    def __init__(self, path, value, expected):
-        super().__init__()
-        self.path = path
-        self.value = value
-        self.expected = expected
-
-    def __str__(self):
-        return f"{self.path} hash was {self.value}, should be {self.expected}"
 
 
 class ProtocolNotAllowedError(Exception):
@@ -82,30 +70,188 @@ def progress_reporthook(blocknum, blocksize, totalsize):
     progressbar(percent)
 
 
-def sync_urlretrieve(
-    url, target_path, protocol_allowlist=DEFAULT_PROTOCOL_ALLOWLIST
+def validate_protocol(
+    url: Union[str, urllib.request.Request],
+    protocol_allowlist=DEFAULT_PROTOCOL_ALLOWLIST,
+) -> str:
+    """
+    Check that ``url`` has a protocol defined in ``protocol_allowlist``.
+    Raise
+    :py:class:`ProtocolNotAllowedError <dffml.util.net.ProtocolNotAllowedError>`
+
+    Examples
+    --------
+
+    >>> from dffml.util.net import validate_protocol, DEFAULT_PROTOCOL_ALLOWLIST
+    >>>
+    >>> validate_protocol("http://example.com")
+    Traceback (most recent call last):
+        ...
+    dffml.util.net.ProtocolNotAllowedError: Protocol of URL 'http://example.com' is not in allowlist: ['https://']
+    >>>
+    >>> validate_protocol("https://example.com")
+    'https://example.com'
+    >>>
+    >>> validate_protocol("sshfs://example.com", ["sshfs://"] + DEFAULT_PROTOCOL_ALLOWLIST)
+    'sshfs://example.com'
+    """
+    allowed_protocol = False
+    for protocol in protocol_allowlist:
+        check_url = url
+        if isinstance(check_url, urllib.request.Request):
+            check_url = check_url.full_url
+        if check_url.startswith(protocol):
+            allowed_protocol = True
+    if not allowed_protocol:
+        raise ProtocolNotAllowedError(url, protocol_allowlist)
+    return url
+
+
+def sync_urlopen(
+    url: Union[str, urllib.request.Request],
+    protocol_allowlist: List[str] = DEFAULT_PROTOCOL_ALLOWLIST,
+    **kwargs,
 ):
     """
     Check that ``url`` has a protocol defined in ``protocol_allowlist``, then
     return the result of calling :py:func:`urllib.request.urlopen` passing it
-    ``url``.
+    ``url`` and any keyword arguments.
     """
-    allowed_protocol = False
-    for protocol in protocol_allowlist:
-        if url.startswith(protocol):
-            allowed_protocol = True
-    if not allowed_protocol:
-        raise ProtocolNotAllowedError(url, protocol_allowlist)
-    urllib.request.urlretrieve(
-        url, target_path, reporthook=progress_reporthook
+    validate_protocol(url, protocol_allowlist=protocol_allowlist)
+    return urllib.request.urlopen(url, **kwargs)
+
+
+def sync_urlretrieve(
+    url: Union[str, urllib.request.Request],
+    protocol_allowlist: List[str] = DEFAULT_PROTOCOL_ALLOWLIST,
+    **kwargs,
+):
+    """
+    Check that ``url`` has a protocol defined in ``protocol_allowlist``, then
+    return the result of calling :py:func:`urllib.request.urlretrieve` passing
+    it ``url`` and any keyword arguments.
+    """
+    validate_protocol(url, protocol_allowlist=protocol_allowlist)
+    return urllib.request.urlretrieve(url, **kwargs)
+
+
+def sync_urlretrieve_and_validate(
+    url: Union[str, urllib.request.Request],
+    target_path: Union[str, pathlib.Path],
+    *,
+    expected_sha384_hash=None,
+    protocol_allowlist: List[str] = DEFAULT_PROTOCOL_ALLOWLIST,
+):
+    target_path = pathlib.Path(target_path)
+    if not target_path.is_file() or not validate_file_hash(
+        target_path, expected_sha384_hash=expected_sha384_hash, error=False,
+    ):
+        if not target_path.parent.is_dir():
+            target_path.parent.mkdir(parents=True)
+        sync_urlretrieve(
+            url,
+            filename=str(target_path),
+            protocol_allowlist=protocol_allowlist,
+            reporthook=progress_reporthook,
+        )
+    validate_file_hash(
+        target_path, expected_sha384_hash=expected_sha384_hash,
     )
 
 
+@dataclasses.dataclass
+class CachedDownloadWrapper:
+    url: Union[str, urllib.request.Request]
+    target_path: Union[str, pathlib.Path]
+    expected_hash: str
+    protocol_allowlist: List[str] = dataclasses.field(
+        default_factory=lambda: DEFAULT_PROTOCOL_ALLOWLIST
+    )
+
+    def __post_init__(self):
+        self.target_path = pathlib.Path(self.target_path)
+
+    def __call__(self, func):
+        if inspect.isasyncgenfunction(func) and hasattr(func, "__aenter__"):
+
+            @contextlib.asynccontextmanager
+            async def wrapped(*args, **kwargs):
+                async with func(
+                    *self.add_target_to_args_and_validate(args), **kwargs,
+                ) as result:
+                    yield result
+
+        elif inspect.isasyncgenfunction(func):
+
+            async def wrapped(*args, **kwargs):
+                async for result in func(
+                    *self.add_target_to_args_and_validate(args), **kwargs,
+                ):
+                    yield result
+
+        elif inspect.iscoroutinefunction(func):
+
+            async def wrapped(*args, **kwargs):
+                return await func(
+                    *self.add_target_to_args_and_validate(args), **kwargs,
+                )
+
+        elif inspect.isgeneratorfunction(func) and hasattr(func, "__enter__"):
+
+            @contextlib.contextmanager
+            def wrapped(*args, **kwargs):
+                with func(
+                    *self.add_target_to_args_and_validate(args), **kwargs,
+                ) as result:
+                    yield result
+
+        elif inspect.isgeneratorfunction(func):
+
+            def wrapped(*args, **kwargs):
+                yield from func(
+                    *self.add_target_to_args_and_validate(args), **kwargs,
+                )
+
+        else:
+
+            def wrapped(*args, **kwargs):
+                return func(
+                    *self.add_target_to_args_and_validate(args), **kwargs
+                )
+
+        # Wrap with functools
+        wrapped = functools.wraps(func)(wrapped)
+
+        return wrapped
+
+    def __enter__(self):
+        self.add_target_to_args_and_validate([])
+        return self.target_path
+
+    def __exit__(self, _exc_type, _exc_value, _traceback):
+        pass
+
+    async def __aenter__(self):
+        return self.__enter__()
+
+    async def __aexit__(self, _exc_type, _exc_value, _traceback):
+        pass
+
+    def add_target_to_args_and_validate(self, args):
+        sync_urlretrieve_and_validate(
+            self.url,
+            self.target_path,
+            expected_sha384_hash=self.expected_hash,
+            protocol_allowlist=self.protocol_allowlist,
+        )
+        return list(args) + [self.target_path]
+
+
 def cached_download(
-    url,
-    target_path,
-    expected_hash,
-    protocol_allowlist=DEFAULT_PROTOCOL_ALLOWLIST,
+    url: Union[str, urllib.request.Request],
+    target_path: Union[str, pathlib.Path],
+    expected_hash: str,
+    protocol_allowlist: List[str] = DEFAULT_PROTOCOL_ALLOWLIST,
 ):
     """
     Download a file and verify the hash of the downloaded file. If the file
@@ -139,47 +285,83 @@ def cached_download(
     --------
 
     >>> import asyncio
+    >>> import contextlib
     >>> from dffml import cached_download
-    >>> 
-    >>> @cached_download(
+    >>>
+    >>> cached_manifest = cached_download(
     ...     "https://github.com/intel/dffml/raw/152c2b92535fac6beec419236f8639b0d75d707d/MANIFEST.in",
     ...     "MANIFEST.in",
     ...     "f7aadf5cdcf39f161a779b4fa77ec56a49630cf7680e21fb3dc6c36ce2d8c6fae0d03d5d3094a6aec4fea1561393c14c",
     ... )
+    >>>
+    >>> @cached_manifest
     ... async def first_line_in_manifest_152c2b(manifest):
     ...     return manifest.read_text().split()[:2]
-    ... 
-    >>> 
+    >>>
     >>> asyncio.run(first_line_in_manifest_152c2b())
     ['include', 'README.md']
+    >>>
+    >>> @cached_manifest
+    ... def first_line_in_manifest_152c2b(manifest):
+    ...     return manifest.read_text().split()[:2]
+    >>>
+    >>> first_line_in_manifest_152c2b()
+    ['include', 'README.md']
+    >>>
+    >>> @cached_manifest
+    ... def first_line_in_manifest_152c2b(manifest):
+    ...     yield manifest.read_text().split()[:2]
+    >>>
+    >>> for contents in first_line_in_manifest_152c2b():
+    ...     print(contents)
+    ['include', 'README.md']
+    >>>
+    >>> @cached_manifest
+    ... async def first_line_in_manifest_152c2b(manifest):
+    ...     yield manifest.read_text().split()[:2]
+    >>>
+    >>> async def main():
+    ...     async for contents in first_line_in_manifest_152c2b():
+    ...         print(contents)
+    >>>
+    >>> asyncio.run(main())
+    ['include', 'README.md']
+    >>>
+    >>> @cached_manifest
+    ... @contextlib.contextmanager
+    ... def first_line_in_manifest_152c2b(manifest):
+    ...     yield manifest.read_text().split()[:2]
+    >>>
+    >>> with first_line_in_manifest_152c2b() as contents:
+    ...     print(contents)
+    ['include', 'README.md']
+    >>>
+    >>> @cached_manifest
+    ... @contextlib.asynccontextmanager
+    ... async def first_line_in_manifest_152c2b(manifest):
+    ...     yield manifest.read_text().split()[:2]
+    >>>
+    >>> async def main():
+    ...     async with first_line_in_manifest_152c2b() as contents:
+    ...         print(contents)
+    >>>
+    >>> asyncio.run(main())
+    ['include', 'README.md']
+    >>>
+    ... with cached_manifest as manifest_path:
+    ...     print(manifest_path.read_text().split()[:2])
+    ['include', 'README.md']
+    >>>
+    >>> async def main():
+    ...     async with cached_manifest as manifest_path:
+    ...         print(manifest_path.read_text().split()[:2])
+    >>>
+    >>> asyncio.run(main())
+    ['include', 'README.md']
     """
-    target_path = pathlib.Path(target_path)
-
-    def validate_hash(error: bool = True):
-        filehash = hashlib.sha384(target_path.read_bytes()).hexdigest()
-        if filehash != expected_hash:
-            if error:
-                raise HashValidationError(
-                    str(target_path), filehash, expected_hash
-                )
-            return False
-        return True
-
-    def mkwrapper(func):
-        @functools.wraps(func)
-        async def wrapper(*args, **kwds):
-            args = list(args) + [target_path]
-            if not target_path.is_file() or not validate_hash(error=False):
-                # TODO(p5) Blocking request in coroutine
-                sync_urlretrieve(
-                    url, target_path, protocol_allowlist=protocol_allowlist
-                )
-            validate_hash()
-            return await func(*args, **kwds)
-
-        return wrapper
-
-    return mkwrapper
+    return CachedDownloadWrapper(
+        url, target_path, expected_hash, protocol_allowlist=protocol_allowlist,
+    )
 
 
 def cached_download_unpack_archive(
