@@ -239,7 +239,7 @@ information on the HTTP service.
 
     $ pip install -U dffml-service-http
 
-We start the HTTP service and tell it that we want to make our model accessable
+We start the HTTP service and tell it that we want to make our model accessible
 via the HTTP :ref:`plugin_service_http_api_model` API.
 
 .. warning::
