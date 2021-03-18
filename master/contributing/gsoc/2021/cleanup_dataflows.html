@@ -1,0 +1,397 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Dataset Cleanup Operations and DataFlows &mdash; DFFML 214675d9 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/tabs.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/copybutton.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="author" title="About these documents" href="../../../about.html" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Refactor of DataFlows to Include Event Type" href="dataflow_event_types.html" />
+    <link rel="prev" title="GSoC 2021" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> DFFML
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                214675d9
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Introduction</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../concepts/index.html">Concepts</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Usage</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../quickstart/model.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/index.html">Examples</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../plugins/index.html">Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../cli.html">Command Line</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../plugins/service/http/index.html">HTTP API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../troubleshooting.html">Troubleshooting</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Subprojects</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../shouldi.html">shouldi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../swportal.html">Software Portal</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Community</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference external" href="https://github.com/intel/dffml">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://intel.github.io/dffml/master/">Master Branch Docs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../publications.html">Publications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contact.html">Contact Us</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Contributing</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../dev_community.html">What To Work On</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../dev_env.html">Getting Set Up To Work On DFFML</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../style.html">Style</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../codebase.html">Codebase Layout And Notes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../git.html">Git and GitHub</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../testing.html">Testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../docs.html">Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../consoletest.html">consoletest Sphinx extension</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../debugging.html">Debugging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../editors/index.html">Setting Up Your Editor</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">Google Summer of Code</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../rubric.html">Proposal Grading Rubric</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="index.html">GSoC 2021</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="index.html#about-dffml">About DFFML</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="index.html#project-ideas">Project Ideas</a></li>
+<li class="toctree-l4"><a class="reference internal" href="index.html#getting-started">Getting Started</a></li>
+<li class="toctree-l4"><a class="reference internal" href="index.html#writing-your-gsoc-application">Writing your GSoC application</a></li>
+<li class="toctree-l4"><a class="reference internal" href="index.html#deadlines">Deadlines</a></li>
+<li class="toctree-l4"><a class="reference internal" href="index.html#contacting-the-dffml-team">Contacting the DFFML team</a></li>
+<li class="toctree-l4"><a class="reference internal" href="index.html#mentors">Mentors</a></li>
+<li class="toctree-l4"><a class="reference internal" href="index.html#thanks">Thanks</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../2020.html">GSoC 2020</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../2019.html">GSoC 2019</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../maintainers.html">Maintainer Docs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../news/index.html">News</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../changelog.html">Changelog</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">DFFML</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Contributing</a> &raquo;</li>
+        
+          <li><a href="../index.html">Google Summer of Code</a> &raquo;</li>
+        
+          <li><a href="index.html">GSoC 2021</a> &raquo;</li>
+        
+      <li>Dataset Cleanup Operations and DataFlows</li>
+    
+    
+
+
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            
+              <a href="https://github.com/intel/dffml/blob/master/docs/contributing/gsoc/2021/cleanup_dataflows.md" class="fa fa-github"> Edit on GitHub</a>
+            
+          
+        
+      </li>
+    
+
+
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="dataset-cleanup-operations-and-dataflows">
+<h1>Dataset Cleanup Operations and DataFlows<a class="headerlink" href="#dataset-cleanup-operations-and-dataflows" title="Permalink to this headline">¶</a></h1>
+<p>The goal here is to provide data flows that would work “out of the box” for most
+users dataset cleanup needs.</p>
+<p>This might mean data flows that drop outliers, convert dates, etc.</p>
+<p>We need to take an evidence based approach. Using several real world popular
+datasets (which have no legal or ethical questions whatsoever, we try to stay
+out of trouble here!) we’ll want to see what cleanup is required for each of
+them. We’ll then make sure that we have pre-made data flows which work for all
+of that set of example datasets.</p>
+<p>We probably want to come up with an easier way to chain data flows together as a
+part of this (rather than the merge command). This means taking the cleaned up
+data from one data flow and cleaning that further using another data flow.</p>
+<div class="section" id="skills">
+<h2>Skills<a class="headerlink" href="#skills" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Python</p></li>
+<li><p>Experience with feature engineering</p></li>
+</ul>
+</div>
+<div class="section" id="difficulty">
+<h2>Difficulty<a class="headerlink" href="#difficulty" title="Permalink to this headline">¶</a></h2>
+<p>Intermediate</p>
+</div>
+<div class="section" id="related-readings">
+<h2>Related Readings<a class="headerlink" href="#related-readings" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>https://intel.github.io/dffml/master/contributing/gsoc/2021/index.html</p></li>
+<li><p>We have some preprocessing operations for images and NLP already. Some of them leverage scikit</p>
+<ul>
+<li><p>https://intel.github.io/dffml/master/plugins/dffml_operation.html#dffml-operations-nlp</p></li>
+<li><p>https://intel.github.io/dffml/master/plugins/dffml_operation.html#dffml-operations-image</p></li>
+<li><p>https://scikit-learn.org/stable/modules/preprocessing.html#preprocessing</p></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="getting-started">
+<h2>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Read the contributing guidelines</p>
+<ul>
+<li><p>https://intel.github.io/dffml/master/contributing/index.html</p></li>
+</ul>
+</li>
+<li><p>Go through the quickstart</p>
+<ul>
+<li><p>https://intel.github.io/dffml/master/quickstart/model.html</p></li>
+</ul>
+</li>
+<li><p>Go trough the model tutorials</p>
+<ul>
+<li><p>https://intel.github.io/dffml/master/tutorials/models/</p></li>
+</ul>
+</li>
+<li><p>Go through the model plugins</p>
+<ul>
+<li><p>https://intel.github.io/dffml/master/plugins/dffml_model.html</p></li>
+</ul>
+</li>
+<li><p>Go through the data flow related docs and tutorials</p>
+<ul>
+<li><p>https://intel.github.io/dffml/master/tutorials/dataflows/index.html</p></li>
+<li><p>https://intel.github.io/dffml/master/examples/integration.html</p></li>
+<li><p>https://intel.github.io/dffml/master/examples/shouldi.html</p></li>
+<li><p>https://intel.github.io/dffml/master/examples/dataflows.html</p></li>
+<li><p>https://intel.github.io/dffml/master/examples/mnist.html</p></li>
+<li><p>https://intel.github.io/dffml/master/examples/flower17/flower17.html</p></li>
+<li><p>https://intel.github.io/dffml/master/examples/webhook/index.html</p></li>
+</ul>
+</li>
+<li><p>Find a few public datasets that are in need of cleanup</p>
+<ul>
+<li><p>Make sure there are a mix of data types, floats, ints, boolean values.</p></li>
+<li><p>Make sure that across all the examples you find, there are at least 4
+categorical columns of a string data type. For example, city names, animal
+names, etc.</p></li>
+</ul>
+</li>
+<li><p>Prototype what steps you need to take to cleanup the data</p>
+<ul>
+<li><p>A step might be, remove outliers, encode categorical data to numeric,
+normalize, etc.</p></li>
+</ul>
+</li>
+<li><p>Implement any cleanup steps for those datasets</p></li>
+<li><p>Run the datasets through a few models, with and without cleanup steps applied.
+Record the difference in accuracy. Make sure that you choose datasets which
+result in good accuracy after cleanup. We want to use simple examples.</p></li>
+</ul>
+</div>
+<div class="section" id="potential-mentors">
+<h2>Potential Mentors<a class="headerlink" href="#potential-mentors" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/pdxjohnny">John Andersen</a></p></li>
+<li><p><a class="reference external" href="https://github.com/sakshamarora1">Saksham Arora</a></p></li>
+</ul>
+</div>
+<div class="section" id="tracking-and-discussion">
+<h2>Tracking and Discussion<a class="headerlink" href="#tracking-and-discussion" title="Permalink to this headline">¶</a></h2>
+<p>This project is related to the following issues. Please discuss and ask
+questions in the issue comments. Please also ping mentors on
+<a class="reference external" href="https://gitter.im/dffml/community">Gitter</a> when you post on the following
+issues so that they are sure to see that you’ve commented.</p>
+<ul class="simple">
+<li><p>https://github.com/intel/dffml/issues/969 (main issue to track this project)</p></li>
+<li><p>https://github.com/intel/dffml/issues/819</p></li>
+<li><p>https://github.com/intel/dffml/issues/652</p></li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="dataflow_event_types.html" class="btn btn-neutral float-right" title="Refactor of DataFlows to Include Event Type" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="index.html" class="btn btn-neutral float-left" title="GSoC 2021" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2017 - 2021, Intel.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
