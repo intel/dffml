@@ -5,4 +5,5 @@ if [ "x${1}" == "x" ]; then
   exit 1
 fi
 
-exec python -c "import doctest, dffml; print(doctest.script_from_examples(dffml.${1}.__doc__))"
+export OBJ="${1}"
+exec python -m black --config pyproject.toml -c "$(python -c 'import os, doctest, dffml; print(doctest.script_from_examples(getattr(dffml, os.environ["OBJ"]).__doc__))')"
