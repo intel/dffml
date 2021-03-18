@@ -72,6 +72,8 @@ setup(
     packages=find_packages(),
     include_package_data=True,
     zip_safe=False,
+    # Temporary until we split consoletest into it's own package
+    install_requires=["httptest>=0.0.17"],
     extras_require={
         "dev": DEV_REQUIRES,
         **plugins.PACKAGE_NAMES_BY_PLUGIN_INSTALLABLE,

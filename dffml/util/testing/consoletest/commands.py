@@ -14,9 +14,13 @@ import asyncio
 import pathlib
 import inspect
 import tempfile
+import functools
 import contextlib
 import subprocess
+import http.server
 from typing import IO, Any, Dict, List, Union, Optional
+
+import httptest
 
 from .... import plugins
 
@@ -585,6 +589,45 @@ class DockerRunCommand(ConsoleCommand):
         self.cleanup()
 
 
+class SimpleHTTPServerCommand(ConsoleCommand):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.ts = None
+
+    async def __aenter__(self) -> "OperationImplementationContext":
+        self.ts = None
+
+    async def run(self, ctx):
+        # Default the port to 8000
+        given_port = "8000"
+        # Grab port number if given
+        if self.cmd[-1].isdigit():
+            given_port = self.cmd[-1]
+        if "--cgi" in self.cmd:
+            # Start CGI server if requseted
+            handler_class = http.server.CGIHTTPRequestHandler
+        else:
+            # Default to simple http server
+            handler_class = http.server.SimpleHTTPRequestHandler
+        # Specify directory if given
+        directory = ctx["cwd"]
+        if "--directory" in self.cmd:
+            directory = self.cmd[self.cmd.index("--directory") + 1]
+        # Ensure handler is relative to directory
+        handler_class = functools.partial(handler_class, directory=directory)
+
+        # Start a server with a random port
+        self.ts = httptest.Server(handler_class).__enter__()
+        # Map the port that was given to the port that was used
+        ctx.setdefault("HTTP_SERVER", {})
+        ctx["HTTP_SERVER"][given_port] = self.ts.server_port
+        return self
+
+    async def __aexit__(self, exc_type, exc_value, traceback):
+        self.ts.__exit__(None, None, None)
+        self.ts = None
+
+
 def within_qoute(current, qoute=('"', "'")):
     within = False
     for i, char in enumerate(current):
@@ -668,6 +711,9 @@ def build_command(cmd):
     # Handle docker commands
     if cmd[:2] == ["docker", "run"]:
         return DockerRunCommand(cmd)
+    # Handle simple http server
+    if cmd[1:3] == ["-m", "http.server"]:
+        return SimpleHTTPServerCommand(cmd)
     # Regular console command
     return ConsoleCommand(cmd)
 
