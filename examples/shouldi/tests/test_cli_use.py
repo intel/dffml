@@ -1,4 +1,7 @@
 import io
+import json
+import shutil
+import asyncio
 import pathlib
 import subprocess
 from unittest.mock import patch
@@ -13,7 +16,7 @@ from .binaries import (
     cached_target_javascript_algorithms,
     cached_rust,
     cached_cargo_audit,
-    cached_target_crates,
+    cached_target_rust_clippy,
 )
 
 
@@ -21,16 +24,28 @@ class TestCLIUse(AsyncTestCase):
     async def test_use_python(self):
         dffml_source_root = list(pathlib.Path(__file__).parents)[3]
         with patch("sys.stdout", new_callable=io.StringIO) as stdout:
-            await ShouldI.cli("use", str(dffml_source_root))
+            await ShouldI._main("use", str(dffml_source_root))
             output = stdout.getvalue()
-        self.assertIn("high=0", output)
+        results = json.loads(output)
+        # The use of input() triggers B322, which is a false positive since we
+        # don't support Python 2
+        self.assertLess(
+            list(results.values())[0]["static_analysis"][0]["high"], 2
+        )
+        if list(results.values())[0]["static_analysis"][0]["high"] > 0:
+            self.assertEqual(
+                list(results.values())[0]["static_analysis"][0]["report"][
+                    "run_bandit.outputs.result"
+                ]["CONFIDENCE.HIGH_AND_SEVERITY.HIGH.issues"][0]["test_id"],
+                "B322",
+            )
 
     @cached_node
     @cached_target_javascript_algorithms
     async def test_use_javascript(self, node, javascript_algo):
         with prepend_to_path(node / "node-v14.2.0-linux-x64" / "bin",):
             with patch("sys.stdout", new_callable=io.StringIO) as stdout:
-                await ShouldI.cli(
+                await ShouldI._main(
                     "use",
                     str(
                         javascript_algo
@@ -38,48 +53,68 @@ class TestCLIUse(AsyncTestCase):
                     ),
                 )
                 output = stdout.getvalue()
-        self.assertIn("high=2941", output)
+        results = json.loads(output)
+        self.assertGreater(
+            list(results.values())[0]["static_analysis"][0]["high"], 2940
+        )
 
-    @cached_node
     @cached_rust
     @cached_cargo_audit
-    @cached_target_crates
-    async def test_use_rust(self, node, rust, cargo_audit, crates):
+    @cached_target_rust_clippy
+    async def test_use_rust(self, rust, cargo_audit, rust_clippy):
         if not (rust / "rust-install" / "bin" / "cargo").is_file():
             subprocess.check_call(
                 [
                     str(
                         rust
-                        / "rust-1.42.0-x86_64-unknown-linux-gnu"
+                        / "rust-1.50.0-x86_64-unknown-linux-gnu"
                         / "install.sh"
                     ),
                     f"--prefix={(rust / 'rust-install').resolve()}",
                 ]
             )
         with prepend_to_path(
-            node / "node-v14.2.0-linux-x64" / "bin",
             rust / "rust-install" / "bin",
-            cargo_audit / "cargo-audit-0.11.2" / "target" / "release",
+            cargo_audit / "cargo-audit-0.14.0" / "target" / "release",
         ):
             if not (
                 cargo_audit
-                / "cargo-audit-0.11.2"
+                / "cargo-audit-0.14.0"
                 / "target"
                 / "release"
                 / "cargo-audit"
             ).is_file():
-                await run_cargo_build(cargo_audit / "cargo-audit-0.11.2")
+                await run_cargo_build(cargo_audit / "cargo-audit-0.14.0")
+
+            # Fix for https://github.com/RustSec/cargo-audit/issues/331
+            advisory_db_path = pathlib.Path("~", ".cargo", "advisory-db")
+            if advisory_db_path.is_dir():
+                shutil.rmtree(str(advisory_db_path))
 
             with patch("sys.stdout", new_callable=io.StringIO) as stdout:
-                await ShouldI.cli(
+                await ShouldI._main(
                     "use",
                     str(
-                        crates
-                        / "crates.io-8c1a7e29073e175f0e69e0e537374269da244cee"
+                        rust_clippy
+                        / "rust-clippy-52c25e9136f533c350fa1916b5bf5103f69c0f4d"
                     ),
                 )
             output = stdout.getvalue()
-            # cargo audit
-            self.assertIn("low=8,", output)
-            # npm audit
-            self.assertIn("high=8,", output)
+            print(output)
+            results = json.loads(output)
+
+            from pprint import pprint
+
+            pprint(results)
+
+            contexts = 0
+            reports = 0
+            for context in results.values():
+                contexts += 1
+                for report in context["static_analysis"]:
+                    reports += 1
+                    self.assertGreater(
+                        report["report"]["qualitative"]["low"], -1
+                    )
+            self.assertEqual(contexts, 1, "One project context expected")
+            self.assertEqual(reports, 1, "One reports expected")

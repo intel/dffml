@@ -10,7 +10,10 @@ import asyncio
 import pathlib
 import getpass
 import tempfile
+import platform
+import textwrap
 import importlib
+import itertools
 import subprocess
 import contextlib
 import dataclasses
@@ -40,6 +43,7 @@ from ..plugins import (
     CORE_PLUGINS,
     CORE_PLUGIN_DEPS,
     PACKAGE_NAMES_TO_DIRECTORY,
+    PACKAGE_DIRECTORY_TO_NAME,
 )
 
 config = configparser.ConfigParser()
@@ -51,6 +55,8 @@ with contextlib.suppress(KeyError):
 
 NAME = config.get("user", "name", fallback="Unknown")
 EMAIL = config.get("user", "email", fallback="unknown@example.com")
+
+REPO_ROOT = pathlib.Path(__file__).parents[2]
 
 
 def create_from_skel(plugin_type):
@@ -388,8 +394,10 @@ class Install(CMD):
             "-m",
             "pip",
             "install",
-            "--use-feature=2020-resolver",
         ]
+        # If on Windows, PyTorch wants us to use a find links URL for pip
+        if platform.system() == "Windows":
+            cmd += ["-f", "https://download.pytorch.org/whl/torch_stable.html"]
         # Install to prefix, since --user sometimes fails
         if self.user:
             local_path = Path("~", ".local").expanduser().absolute()
@@ -451,9 +459,49 @@ class SetupPyKWArg(CMD):
         print(self.get_kwargs(self.setupfilepath)[self.kwarg])
 
 
+class VersionNotFoundError(Exception):
+    """
+    Raised when a version.py file is parsed and no VERSION variable is found.
+    """
+
+
+@configdataclass
+class SetupPyVersionConfig:
+    versionfilepath: str = field("Path to version.py")
+
+
+class SetupPyVersion(CMD):
+    """
+    Read a version.py file that would be referenced by a setup.py or setup.cfg.
+    The version.py file contains the version of the package in the VERSION
+    variable.
+    """
+
+    CONFIG = SetupPyVersionConfig
+
+    def parse_version(self, filename: str):
+        self.logger.debug("Checking for VERSION in file %r", filename)
+        with open(filename, "r") as f:
+            for line in f:
+                self.logger.debug("Checking for VERSION in line %r", line)
+                if line.startswith("VERSION"):
+                    return ast.literal_eval(
+                        line.strip().split("=")[-1].strip()
+                    )
+        raise VersionNotFoundError(self.versionfilepath)
+
+    async def run(self):
+        print(self.parse_version(self.versionfilepath))
+
+
+# Instance of parse_version method as function for logging
+parse_version = SetupPyVersion().parse_version
+
+
 class SetupPy(CMD):
 
     kwarg = SetupPyKWArg
+    version = SetupPyVersion
 
 
 class RepoDirtyError(Exception):
@@ -475,6 +523,8 @@ class Release(CMD):
     CONFIG = ReleaseConfig
 
     async def run(self):
+        # Ensure we have a pathlib.Path object
+        self.package = Path(self.package).resolve()
         # Ensure target plugin directory has no unstaged changes
         cmd = ["git", "status", "--porcelain", str(self.package)]
         self.logger.debug("Running: %s", " ".join(cmd))
@@ -490,12 +540,14 @@ class Release(CMD):
             raise RepoDirtyError("Uncommited changes")
         # cd to directory
         with chdir(str(self.package)):
+            # Get name
+            name = {(): "dffml", **PACKAGE_DIRECTORY_TO_NAME,}[
+                self.package.relative_to(REPO_ROOT).parts
+            ]
             # Load version
-            setup_kwargs = SetupPyKWArg.get_kwargs(
-                os.path.join(os.getcwd(), "setup.py")
+            version = parse_version(
+                str(self.package / name.replace("-", "_") / "version.py")
             )
-            name = setup_kwargs["name"]
-            version = setup_kwargs["version"]
             # Check if version is on PyPi
             url = f"https://pypi.org/pypi/{name}/json"
             # TODO(p5) Blocking request in coroutine
@@ -527,6 +579,7 @@ class Release(CMD):
                     # Upload if not present
                     for cmd in [
                         [sys.executable, "setup.py", "sdist"],
+                        [sys.executable, "setup.py", "bdist_wheel"],
                         [sys.executable, "-m", "twine", "upload", "dist/*"],
                     ]:
                         print(f"$ {' '.join(cmd)}")
@@ -536,25 +589,51 @@ class Release(CMD):
                             raise RuntimeError
 
 
-class BumpMain(CMD):
+class BumpInter(CMD):
     """
-    Bump the version number of the main package within the dependency list of
-    each plugin.
+    Bump the version number of other plugins within the dependency list of
+    each plugin. This is for interdependent plugins.
     """
 
     async def run(self):
-        main_package = is_develop("dffml")
-        if not main_package:
-            raise NotImplementedError(
-                "Need to reinstall the main package in development mode."
+        # Map package names to their versions
+        package_name_to_version = {
+            name: (
+                re.compile(
+                    name + r">=[0-9]+\.[0-9]+\..*$", flags=re.MULTILINE
+                ),
+                parse_version(
+                    REPO_ROOT.joinpath(
+                        *directory, name.replace("-", "_"), "version.py"
+                    )
+                ),
             )
-        # TODO Implement this in Python
-        proc = await asyncio.create_subprocess_exec(
-            "bash", str(pathlib.Path(main_package, "scripts", "bump_deps.sh"))
-        )
-        await proc.wait()
-        if proc.returncode != 0:
-            raise RuntimeError
+            for directory, name in {
+                ".": "dffml",
+                **PACKAGE_DIRECTORY_TO_NAME,
+            }.items()
+        }
+        # Go through each plugin
+        for directory, name in PACKAGE_DIRECTORY_TO_NAME.items():
+            # Update all the setup.cfg files
+            setup_cfg_path = REPO_ROOT.joinpath(*directory, "setup.cfg")
+            setup_cfg_contents = setup_cfg_path.read_text()
+            # Go through each plugin, check if it exists within the setup.cfg
+            for name, (regex, version) in package_name_to_version.items():
+                update_to = f"{name}>={version}"
+                setup_cfg_contents, number_of_subs_made = regex.subn(
+                    update_to, setup_cfg_contents
+                )
+                if number_of_subs_made:
+                    self.logger.debug(
+                        f"Updated {setup_cfg_path} to use {update_to}"
+                    )
+            # If it does, overwrite the old version with the new version
+            setup_cfg_path.write_text(setup_cfg_contents)
+
+
+class RCMissingHyphen(Exception):
+    pass
 
 
 @configdataclass
@@ -582,23 +661,48 @@ class BumpPackages(CMD):
 
     @staticmethod
     def bump_version(original, increment):
-        # Split on .
-        # map: int: Convert to an int
-        # zip: Create three instances of (original[i], increment[i])
-        # map: sum: Add each pair together
-        # map: str: Convert back to strings
-        return ".".join(
-            map(
-                str,
-                map(
-                    sum,
-                    zip(
-                        map(int, original.split(".")),
-                        map(int, increment.split(".")),
-                    ),
-                ),
+        # Ensure that we conform to semantic versioning spec. PEP-440 will
+        # normalize it to not have a hyphen.
+        if "rc" in original and not "-rc" in original:
+            raise RCMissingHyphen(
+                f"Semantic versioning requires a hyphen, original is in violation {original}"
             )
-        )
+        if "rc" in increment and not "-rc" in increment:
+            raise RCMissingHyphen(
+                f"Semantic versioning requires a hyphen, increment is in violation {increment}"
+            )
+        # Support for release candidates X.Y.Z-rcN
+        # Parse out the release candidate if it exists
+        original_rc = 0
+        if "-rc" in original:
+            original, original_rc = original.split("-rc")
+            original_rc = int(original_rc)
+        increment_rc = None
+        if "-rc" in increment:
+            increment, increment_rc = increment.split("-rc")
+            increment_rc = int(increment_rc)
+        # Split on .
+        # zip: Create three instances of (original[i], increment[i])
+        new_version_no_rc_numbers = []
+        for n_original, n_increment in zip(
+            original.split("."), increment.split(".")
+        ):
+            if n_increment == "Z":
+                # If 'Z' was given as the increment, zero spot instead of sum
+                new_version_no_rc_numbers.append(0)
+            else:
+                # Add each pair together
+                new_version_no_rc_numbers.append(
+                    int(n_original) + int(n_increment)
+                )
+        # map: str: Convert back to strings
+        # Join numbers with .
+        new_version_no_rc = ".".join(map(str, new_version_no_rc_numbers))
+        # Do not add rc if it wasn't incremented
+        if increment_rc is None:
+            return new_version_no_rc
+        # Otherwise, add rc
+        return new_version_no_rc + f"-rc{original_rc + increment_rc}"
 
     async def run(self):
         main_package = is_develop("dffml")
@@ -606,33 +710,18 @@ class BumpPackages(CMD):
             raise NotImplementedError(
                 "Need to reinstall the main package in development mode."
             )
-        main_package = pathlib.Path(main_package)
-        skel = main_package / "dffml" / "skel"
-        version_files = map(
-            lambda path: pathlib.Path(*path.split("/")).resolve(),
-            filter(
-                bool,
-                subprocess.check_output(["git", "ls-files", "*/version.py"])
-                .decode()
-                .split("\n"),
-            ),
-        )
-        # Update all the version files
-        for version_file in version_files:
-            # Ignore skel
-            if skel in version_file.parents:
-                self.logger.debug(
-                    "Skipping skel version file %s", version_file
-                )
-                continue
+        # Go through each plugin
+        for directory, name in {
+            ".": "dffml",
+            **PACKAGE_DIRECTORY_TO_NAME,
+        }.items():
+            # Update all the version files
+            version_file = REPO_ROOT.joinpath(
+                *directory, name.replace("-", "_"), "version.py"
+            )
             # If we're only supposed to increment versions of some packages,
             # check we're in the right package, skip if not.
-            setup_filepath = version_file.parent.parent / "setup.py"
-            with chdir(setup_filepath.parent):
-                try:
-                    name = SetupPyKWArg.get_kwargs(setup_filepath)["name"]
-                except Exception as error:
-                    raise Exception(setup_filepath) from error
+            with chdir(version_file.parents[1]):
                 if self.only and name not in self.only:
                     self.logger.debug(
                         "Version file not in only %s", version_file
@@ -663,7 +752,7 @@ class BumpPackages(CMD):
 
 @configdataclass
 class PinDepsConfig:
-    logs: pathlib.Path = field("Path to log file for main plugin")
+    logs: pathlib.Path = field("Path to CI log zip file")
     update: bool = field(
         "Update all requirements.txt files with pinned dependneices",
         default=False,
@@ -673,9 +762,10 @@ class PinDepsConfig:
 @dataclasses.dataclass
 class PinDepsPlugin:
     path: str
-    requirements_txt_path: pathlib.Path
-    requirements_txt_contents: str
-    requirements_txt_pinned: str
+    setup_cfg_path: pathlib.Path
+    setup_cfg_pre_deps: str
+    setup_cfg_post_deps: str
+    setup_cfg_pinned: str
 
 
 class PinDeps(CMD):
@@ -718,8 +808,8 @@ class PinDeps(CMD):
     @classmethod
     def remove_ansi_escape(cls, contents):
         """
-        Found on Stack Overflow from Martijn Pieters, only modified input variable
-        name.
+        Found on Stack Overflow from Martijn Pieters, only modified input
+        variable name.
         - https://stackoverflow.com/a/14693789
         - https://creativecommons.org/licenses/by-sa/4.0/
         """
@@ -773,55 +863,180 @@ class PinDeps(CMD):
                 # with contextlib.suppress(Exception):
                 ci_installed[package_name] = line[1]
 
+        # Add all the core plugins to the list of installed packages
+        for (
+            plugin_name,
+            plugin_directory,
+        ) in PACKAGE_NAMES_TO_DIRECTORY.items():
+            ci_installed[plugin_name] = parse_version(
+                str(
+                    REPO_ROOT.joinpath(
+                        *plugin_directory,
+                        plugin_name.replace("-", "_"),
+                        "version.py",
+                    )
+                )
+            )
+            print(
+                parse_version(
+                    str(
+                        pathlib.Path(
+                            *plugin_directory,
+                            plugin_name.replace("-", "_"),
+                            "version.py",
+                        )
+                    )
+                )
+            )
+
         return ci_installed
 
-    async def pin_deps(self, contents: bytes):
-        if not b"PLUGIN=" in contents:
-            return
+    FIND_CI_INSTALLED_LINUX_PLUGIN_VERSION_REGEX = re.compile(
+        r"\(([a-z./]+), ([0-9.]+)\)"
+    )
+    FIND_CI_INSTALLED_NON_LINUX_VERSION_REGEX = re.compile(r"\(([0-9.]+)\)")
 
+    @classmethod
+    def find_ci_installed(cls, logs_dir: pathlib.Path):
+        ci_installed = {}
+
+        for log_file_path in logs_dir.rglob("*.txt"):
+            if "windows" in log_file_path.stem:
+                platform_system = "Windows"
+            elif "macos" in log_file_path.stem:
+                platform_system = "Darwin"
+            else:
+                platform_system = "Linux"
+
+                match = cls.FIND_CI_INSTALLED_LINUX_PLUGIN_VERSION_REGEX.search(
+                    log_file_path.stem
+                )
+                if not match:
+                    continue
+
+                plugin, python_version = match.groups()
+                # Only look for the pip freeze on the main plugin
+                if plugin != ".":
+                    continue
+
+            contents = log_file_path.read_bytes()
+            if not b"pip freeze" in contents:
+                continue
+
+            if platform_system in ("Windows", "Darwin"):
+                python_version = cls.FIND_CI_INSTALLED_NON_LINUX_VERSION_REGEX.search(
+                    log_file_path.stem
+                ).groups()[
+                    0
+                ]
+
+            ci_installed[
+                (platform_system, python_version)
+            ] = cls.parse_github_actions_log_file(contents)
+
+        return ci_installed
+
+    async def pin_deps(self, logs_dir: pathlib.Path):
         root = pathlib.Path(__file__).parents[2]
 
-        ci_installed = self.parse_github_actions_log_file(contents)
+        ci_installed = self.find_ci_installed(logs_dir)
 
-        for requirements_txt_path in root.rglob("requirements.txt"):
-            self.logger.debug(requirements_txt_path)
-            requirements_txt_contents = requirements_txt_path.read_text()
-            modify_contents = requirements_txt_contents.split("\n")
-            # Add all packages in requirements files to set of required
-            # packages
-            for i, line in enumerate(modify_contents):
+        # for setup_cfg_path in root.rglob("setup.cfg"):
+        for package_directory in PACKAGE_DIRECTORY_TO_NAME.keys():
+            setup_cfg_path = root.joinpath(*package_directory, "setup.cfg")
+            setup_cfg_contents = setup_cfg_path.read_text()
+            # Pull the dependencies out of the install_requires list
+            setup_cfg_lines = setup_cfg_contents.split("\n")
+            setup_cfg_lines = [line.rstrip() for line in setup_cfg_lines]
+            dependencies = setup_cfg_lines[
+                setup_cfg_lines.index("install_requires =") + 1 :
+            ]
+            # Find the last depedency in the list by looking for when the
+            # indentation level goes back to normal, meaning no indent.
+            for i, line in enumerate(dependencies):
+                current_indent = len(line) - len(line.lstrip())
+                if current_indent == 0:
+                    break
+            # The contents of the file up until the point where the
+            # install_requires list starts
+            setup_cfg_pre_deps = setup_cfg_lines[
+                : setup_cfg_lines.index("install_requires =") + 1
+            ]
+            # The contents of the file immediatly after the install_requires
+            # list. We are going to replace what's between these two.
+            setup_cfg_post_deps = setup_cfg_lines[
+                setup_cfg_lines.index("install_requires =") + 1 + i :
+            ]
+            # The dependency list ends when the indent level changes
+            dependencies = dependencies[:i]
+            dependencies = [line.strip() for line in dependencies]
+            # Remove comments
+            # TODO Remove?: dependencies = [line for line in dependencies if not line.startswith("#")]
+            # Add all packages in setup.cfg files to set of required packages
+            for i, line in enumerate(dependencies):
                 # Skip comments
-                if line.strip().startswith("#") or not line:
+                if line.startswith("#") or not line:
                     continue
                 package_name = self.requirement_package_name(line)
                 if not package_name:
                     continue
                 # Ensure package was installed in CI
-                if not package_name in ci_installed:
-                    raise ValueError(
-                        f"Plugin {requirements_txt_path.parent}: {package_name!r} not in {ci_installed}"
-                    )
+                for supported_os, supported_python in [
+                    ("Linux", "3.7"),
+                    ("Linux", "3.8"),
+                ]:
+                    if (supported_os, supported_python) not in ci_installed:
+                        raise ValueError(
+                            f"Supported OS/Python version {supported_os} {supported_python}: not in {ci_installed.keys()}"
+                        )
+                    if (
+                        package_name
+                        not in ci_installed[(supported_os, supported_python)]
+                    ):
+                        raise ValueError(
+                            f"Plugin {setup_cfg_path.parent}: {package_name!r} not in {ci_installed[(supported_os, supported_python)]}"
+                        )
                 # Modify the line to be a pinned package
-                modify_contents[i] = (
-                    package_name + "==" + ci_installed[package_name]
-                )
+                line_contents = []
+                for (
+                    (platform_system, python_version),
+                    packages_installed,
+                ) in ci_installed.items():
+                    if package_name not in packages_installed:
+                        continue
+                    package_version_installed = packages_installed[
+                        package_name
+                    ]
+                    line_contents.append(
+                        f'{package_name}=={package_version_installed}; platform_system == "{platform_system}" and python_version == "{python_version}"',
+                    )
+                dependencies[i] = "\t".join(line_contents)
 
-                self.logger.debug(f"{line:<40} | {modify_contents[i]}")
+                self.logger.debug(f"{line:<40} | {dependencies[i]}")
 
             yield PinDepsPlugin(
-                path=str(requirements_txt_path.relative_to(root)),
-                requirements_txt_path=requirements_txt_path,
-                requirements_txt_contents=requirements_txt_contents,
-                requirements_txt_pinned="\n".join(modify_contents),
+                path=str(setup_cfg_path.relative_to(root)),
+                setup_cfg_path=setup_cfg_path,
+                setup_cfg_pre_deps=setup_cfg_pre_deps,
+                setup_cfg_post_deps=setup_cfg_post_deps,
+                setup_cfg_pinned=[
+                    (" " * 4) + line.replace("\t", "\n" + (" " * 4))
+                    for line in dependencies
+                ],
             )
 
     async def run(self):
-        async for plugin in self.pin_deps(
-            pathlib.Path(self.logs).read_bytes()
-        ):
+        async for plugin in self.pin_deps(pathlib.Path(self.logs)):
+            yield plugin
             if self.update:
-                plugin.requirements_txt_path.write_text(
-                    plugin.requirements_txt_pinned
+                plugin.setup_cfg_path.write_text(
+                    "\n".join(
+                        itertools.chain(
+                            plugin.setup_cfg_pre_deps,
+                            plugin.setup_cfg_pinned,
+                            plugin.setup_cfg_post_deps,
+                        )
+                    )
                 )
 
 
@@ -838,7 +1053,7 @@ class Bump(CMD):
     Bump the the main package in the versions plugins, or any or all libraries.
     """
 
-    main = BumpMain
+    inter = BumpInter
     packages = BumpPackages
 
 

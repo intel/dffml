@@ -152,12 +152,18 @@ class XGBRegressorModel(SimpleModel):
 
     Python usage
 
+    **run.py**
+
     .. literalinclude:: /../model/xgboost/examples/diabetesregression.py
+        :test:
+        :filepath: run.py
 
     Output
 
     .. code-block::
+        :test:
 
+        $ python run.py
         Test accuracy: 0.6669655406927468
         Training accuracy: 0.819782501866115
     """

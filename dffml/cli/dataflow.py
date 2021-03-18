@@ -550,7 +550,9 @@ class Diagram(CMD):
                         seed_input_node = hashlib.md5(
                             (source + "." + input_definition.name).encode()
                         ).hexdigest()
-                        print(f"{seed_input_node}({input_definition.name})")
+                        print(
+                            f"{seed_input_node}({source}<br>{input_definition.name})"
+                        )
                         if len(self.stages) == 1:
                             print(
                                 f"style {seed_input_node} fill:#f6dbf9,stroke:#a178ca"
@@ -579,7 +581,7 @@ class Diagram(CMD):
                                 origin_definition_name.encode()
                             ).hexdigest()
                             print(
-                                f"{seed_input_node}({origin_definition_name})"
+                                f"{seed_input_node}({source}<br>{origin_definition_name})"
                             )
                             if len(self.stages) == 1:
                                 print(
@@ -598,6 +600,17 @@ class Diagram(CMD):
                             else:
                                 print(f"{seed_input_node} --> {node}")
                     else:
+                        # In order to support selection an input based using an
+                        # alternate definition along with restriction to inputs
+                        # who's origins match the alternate definitions in the
+                        # list. We select the first output source since that
+                        # will be the immediate alternate definition
+                        if (
+                            isinstance(source, list)
+                            and source
+                            and isinstance(source[0], dict)
+                        ):
+                            source = source[0]
                         if not self.simple:
                             source_output_node = hashlib.md5(
                                 (

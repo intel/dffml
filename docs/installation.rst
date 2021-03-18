@@ -45,13 +45,34 @@ package.
         .. code-block:: console
             :test:
 
-            $ python -m pip install --use-feature=2020-resolver -U dffml
+            $ python3 -m pip install -U dffml
 
     .. group-tab:: Windows
 
         .. code-block:: console
 
-            (.venv) C:\Users\username> python -m pip install --use-feature=2020-resolver -U dffml
+            (.venv) C:\Users\username> python -m pip install -U dffml
+
+.. warning::
+
+    Make sure that if pip is complaining that directories are not in your
+    ``PATH``, that you add those directories to your ``PATH`` environment
+    variable!.
+
+You should now be able to run the ``dffml version`` command. If you have issues
+adding directories to your ``PATH``, you can always run ``dffml`` command line
+commands using Pythons module run syntax (``python -m``).
+
+.. code-block:: console
+    :test:
+
+    $ python -m dffml version
+    $ dffml version
+
+You can now see the :doc:`/quickstart/model` to get started using DFFML!
+
+Installing All Plugins
+----------------------
 
 If you want to install all of the machine learning model plugins that are
 maintained as a part of the core repository, you can append ``[models]``.
@@ -62,13 +83,13 @@ maintained as a part of the core repository, you can append ``[models]``.
 
         .. code-block:: console
 
-            $ python -m pip install --use-feature=2020-resolver -U dffml[models]
+            $ python -m pip install -U dffml[models]
 
     .. group-tab:: Windows
 
         .. code-block:: console
 
-            (.venv) C:\Users\username> python -m pip install --use-feature=2020-resolver -U dffml[models]
+            (.venv) C:\Users\username> python -m pip install -U dffml[models] -f https://download.pytorch.org/whl/torch_stable.html
 
 If you want to install all of the machine learning model plugins and all the
 data sources and DataFlow operations that are maintained as a part of the core
@@ -80,13 +101,16 @@ repository, you can append ``[all]``.
 
         .. code-block:: console
 
-            $ python -m pip install --use-feature=2020-resolver -U dffml[all]
+            $ python -m pip install -U dffml[all]
 
     .. group-tab:: Windows
 
         .. code-block:: console
 
-            (.venv) C:\Users\username> python -m pip install --use-feature=2020-resolver -U dffml[all]
+            (.venv) C:\Users\username> python -m pip install -U dffml[all] -f https://download.pytorch.org/whl/torch_stable.html
+
+Master Branch
+-------------
 
 If you want to stay on the bleeding edge of bug fixes, etc. You can install from
 the master branch.
@@ -98,13 +122,13 @@ the master branch.
         .. code-block:: console
             :test:
 
-            $ python -m pip install --use-feature=2020-resolver -U "https://github.com/intel/dffml/archive/master.zip#egg=dffml"
+            $ python -m pip install -U "https://github.com/intel/dffml/archive/master.zip#egg=dffml"
 
     .. group-tab:: Windows
 
         .. code-block:: console
 
-            (.venv) C:\Users\username> python -m pip install --use-feature=2020-resolver -U "https://github.com/intel/dffml/archive/master.zip#egg=dffml"
+            (.venv) C:\Users\username> python -m pip install -U "https://github.com/intel/dffml/archive/master.zip#egg=dffml"
 
 You can also install the bleeding edge version of any plugin. To get the
 subdirectory you should use, take the package name on PyPi and remove ``dffml-``
@@ -117,14 +141,14 @@ and replace ``-`` with ``/``.
         .. code-block:: console
             :test:
 
-            $ python -m pip install --use-feature=2020-resolver -U "https://github.com/intel/dffml/archive/master.zip#egg=dffml" \
+            $ python -m pip install -U "https://github.com/intel/dffml/archive/master.zip#egg=dffml" \
                 "https://github.com/intel/dffml/archive/master.zip#egg=dffml-feature-git&subdirectory=feature/git"
 
     .. group-tab:: Windows
 
         .. code-block:: console
 
-            (.venv) C:\Users\username> python -m pip install --use-feature=2020-resolver -U "https://github.com/intel/dffml/archive/master.zip#egg=dffml" ^
+            (.venv) C:\Users\username> python -m pip install -U "https://github.com/intel/dffml/archive/master.zip#egg=dffml" ^
                 "https://github.com/intel/dffml/archive/master.zip#egg=dffml-feature-git&subdirectory=feature/git"
 
 There's an online IDE based on Theia (similar to VS Code) called GitPod that

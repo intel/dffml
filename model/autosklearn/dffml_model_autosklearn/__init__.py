@@ -1,8 +1,13 @@
 """
 .. warning:
 
-    Follow these instructions before running the above install
-    command to ensure that ``auto-sklearn`` installs correctly
+    auto-sklearn introduces a GPLv3 transitive dependency, ``lazy_import``!
+    See
+    https://softwareengineering.stackexchange.com/questions/323500/open-source-transitive-dependency-licenses
+    for more information
+
+Follow these instructions before running the above install
+command to ensure that ``auto-sklearn`` installs correctly
 
 **Ubuntu Installation**
 
@@ -21,3 +26,6 @@ Install other PyPi dependencies with
 
 For more information about installation visit https://automl.github.io/auto-sklearn/master/installation.html#installation
 """
+
+from .autoregressor import AutoSklearnRegressorModel
+from .autoclassifier import AutoSklearnClassifierModel

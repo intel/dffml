@@ -30,6 +30,7 @@ from dffml_service_http.routes import (
     MODEL_NOT_LOADED,
     MODEL_NO_SOURCES,
     HTTPChannelConfig,
+    DISALLOW_CACHING,
 )
 from dffml_service_http.util.testing import (
     ServerRunner,
@@ -56,6 +57,27 @@ def model_load(loading=None):
 class TestRoutesService(TestRoutesRunning, AsyncTestCase):
     async def test_not_found_handler(self):
         with self.assertRaisesRegex(ServerException, "Not Found"):
+            async with self.get("/non-existant"):
+                pass  # pramga: no cov
+
+    def set_no_cache_do_not_set_any_headers(self, response):
+        pass
+
+    async def test_check_allow_caching_header_not_found(self):
+        self.cli.set_no_cache = self.set_no_cache_do_not_set_any_headers
+        with self.assertRaisesRegex(Exception, "No cache header .* not in"):
+            async with self.get("/non-existant"):
+                pass  # pramga: no cov
+
+    def set_no_cache_bad_values_for_headers(self, response):
+        for header, value in DISALLOW_CACHING.items():
+            response.headers[header] = "BAD!"
+
+    async def test_check_allow_caching_header_not_correct(self):
+        self.cli.set_no_cache = self.set_no_cache_bad_values_for_headers
+        with self.assertRaisesRegex(
+            Exception, "No cache header .* should have been .* but was"
+        ):
             async with self.get("/non-existant"):
                 pass  # pramga: no cov
 

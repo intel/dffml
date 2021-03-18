@@ -45,7 +45,9 @@ class DependencyDB(abc.ABC):
 
     def load(config: str):
         try:
-            for i in pkg_resources.iter_entry_points(__package__):
+            for i in pkg_resources.iter_entry_points(
+                __package__.replace(".", "_")
+            ):
                 loaded = i.load()
                 if loaded.applicable(config):
                     return loaded(config)

@@ -24,10 +24,11 @@ class PyTorchPreTrainedModelConfig(PyTorchModelConfig):
         "Tweak pretrained model by training again", default=False
     )
     add_layers: bool = field(
-        "Add layers on top of pretrained model", default=False,
+        "Replace the last layer of the pretrained model", default=False,
     )
     layers: dict = field(
-        "Extra layers to be added on top of pretrained model", default=None
+        "Extra layers to replace the last layer of the pretrained model",
+        default=None,
     )
 
 

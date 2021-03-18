@@ -28,38 +28,89 @@ class DAAL4PyLRModelConfig:
 
 @entrypoint("daal4pylr")
 class DAAL4PyLRModel(SimpleModel):
-    """
+    r"""
     Implemented using daal4py.
 
     First we create the training and testing datasets
 
-    .. literalinclude:: /../model/daal4py/examples/lr/train_data.sh
+    **train.csv**
 
-    .. literalinclude:: /../model/daal4py/examples/lr/test_data.sh
+    .. code-block::
+        :test:
+        :filepath: train.csv
+
+        f1,ans
+        12.4,11.2
+        14.3,12.5
+        14.5,12.7
+        14.9,13.1
+        16.1,14.1
+        16.9,14.8
+        16.5,14.4
+        15.4,13.4
+        17.0,14.9
+        17.9,15.6
+        18.8,16.4
+        20.3,17.7
+        22.4,19.6
+        19.4,16.9
+        15.5,14.0
+        16.7,14.6
+
+    **test.csv**
+
+    .. code-block::
+        :test:
+        :filepath: test.csv
+
+        f1,ans
+        18.8,16.4
+        20.3,17.7
+        22.4,19.6
+        19.4,16.9
+        15.5,14.0
+        16.7,14.6
 
     Train the model
 
-    .. literalinclude:: /../model/daal4py/examples/lr/train.sh
+    .. code-block:: console
+        :test:
+
+        $ dffml train \
+            -model daal4pylr \
+            -model-features f1:float:1 \
+            -model-predict ans:int:1 \
+            -model-directory tempdir \
+            -sources f=csv \
+            -source-filename train.csv
 
     Assess the accuracy
 
-    .. literalinclude:: /../model/daal4py/examples/lr/accuracy.sh
+    .. code-block:: console
+        :test:
 
-    Output
-
-    .. code-block::
-
+        $ dffml accuracy \
+            -model daal4pylr \
+            -model-features f1:float:1 \
+            -model-predict ans:int:1 \
+            -model-directory tempdir \
+            -sources f=csv \
+            -source-filename test.csv
         0.6666666666666666
-
 
     Make a prediction
 
-    .. literalinclude:: /../model/daal4py/examples/lr/predict.sh
+    .. code-block:: console
+        :test:
 
-    Output
-
-    .. code-block:: json
-
+        $ echo -e 'f1,ans\n0.8,1\n' | \
+          dffml predict all \
+            -model daal4pylr \
+            -model-features f1:float:1 \
+            -model-predict ans:int:1 \
+            -model-directory tempdir \
+            -sources f=csv \
+            -source-filename /dev/stdin
         [
             {
                 "extra": {},
@@ -78,13 +129,20 @@ class DAAL4PyLRModel(SimpleModel):
             }
         ]
 
-
-
-
-
     Example usage of daal4py Linear Regression model using python API
 
-    .. literalinclude:: /../model/daal4py/examples/lr/textclassifier.py
+    **run.py**
+
+    .. literalinclude:: /../model/daal4py/examples/lr/lr.py
+        :test:
+        :filepath: run.py
+
+    Run the file
+
+    .. code-block:: console
+        :test:
+
+        $ python run.py
     """
 
     CONFIG = DAAL4PyLRModelConfig

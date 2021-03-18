@@ -68,8 +68,28 @@ Verify you can use ``dffml`` from the command line.
 
 .. code-block:: console
 
-    $ dffml version
-    dffml version 0.3.1 (devmode: /wherever/you/cloned/dffml)
+    $ dffml version -no-errors
+    dffml 0.3.7 /home/user/Documents/python/dffml/dffml 3c887378
+    dffml-config-yaml 0.0.10 /home/user/Documents/python/dffml/configloader/yaml/dffml_config_yaml 3c887378
+    dffml-config-image 0.0.3 /home/user/Documents/python/dffml/configloader/image/dffml_config_image 3c887378
+    dffml-model-scratch 0.0.8 /home/user/Documents/python/dffml/model/scratch/dffml_model_scratch 3c887378
+    dffml-model-scikit 0.0.9 /home/user/Documents/python/dffml/model/scikit/dffml_model_scikit 3c887378
+    dffml-model-tensorflow 0.2.7 /home/user/Documents/python/dffml/model/tensorflow/dffml_model_tensorflow 3c887378
+    dffml-model-tensorflow-hub 0.0.5 /home/user/Documents/python/dffml/model/tensorflow_hub/dffml_model_tensorflow_hub 3c887378
+    dffml-model-vowpalWabbit 0.0.1 /home/user/Documents/python/dffml/model/vowpalWabbit/dffml_model_vowpalWabbit 3c887378
+    dffml-model-xgboost 0.0.1 /home/user/Documents/python/dffml/model/xgboost/dffml_model_xgboost 3c887378
+    dffml-model-pytorch ERROR
+    dffml-model-spacy 0.0.1 /home/user/Documents/python/dffml/model/spacy/dffml_model_spacy 3c887378
+    dffml-model-daal4py not installed
+    dffml-model-autosklearn 0.0.1 /home/user/Documents/python/dffml/model/autosklearn/dffml_model_autosklearn 3c887378
+    dffml-feature-git 0.2.7 /home/user/Documents/python/dffml/feature/git/dffml_feature_git 3c887378
+    dffml-feature-auth 0.0.8 /home/user/Documents/python/dffml/feature/auth/dffml_feature_auth 3c887378
+    dffml-operations-binsec 0.0.1 /home/user/Documents/python/dffml/operations/binsec/dffml_operations_binsec 3c887378
+    dffml-operations-deploy 0.0.1 /home/user/Documents/python/dffml/operations/deploy/dffml_operations_deploy 3c887378
+    dffml-operations-image 0.0.1 /home/user/Documents/python/dffml/operations/image/dffml_operations_image 3c887378
+    dffml-operations-nlp 0.0.1 /home/user/Documents/python/dffml/operations/nlp/dffml_operations_nlp 3c887378
+    dffml-service-http 0.0.10 /home/user/Documents/python/dffml/service/http/dffml_service_http 3c887378
+    dffml-source-mysql 0.0.9 /home/user/Documents/python/dffml/source/mysql/dffml_source_mysql 3c887378
 
 If you see ``dffml`` in ``~/.local/bin`` but you can't run it on the command
 line, then you'll need to add that directory to your ``PATH`` environment
@@ -80,6 +100,14 @@ variable. This might need to be in ``~/.bashrc``, ``~/.bash_profile``, or
 
     $ echo 'export PATH="${HOME}/.local/bin:${PATH}"' >> ~/.bashrc
     $ source ~/.bashrc
+
+Before contributing, you can install pre-commit hooks for DFFML:
+
+.. code-block:: console
+
+    $ pre-commit install
+
+In case you want to skip any pre-commit checks, you can use ``git commit --no-verify``.
 
 If you are working on any of the plugins to DFFML maintained within it's
 repository make sure to install those in development mode as well.
@@ -106,6 +134,11 @@ install command.
 .. code-block:: console
 
     $ dffml service dev install -user
+
+After you've installed plugins in development mode, you will want to not run any
+of the ``pip install`` commands, as that will uninstall the plugins you've
+installed in development mode, and overwrite them with the released versions
+from PyPi.
 
 Virtual Environment
 -------------------
@@ -139,9 +172,16 @@ Install the packages in development mode.
 
 .. code-block:: console
 
-    $ pip install -U setuptools
+    $ pip install -U pip setuptools wheel
     $ pip install -e .[dev]
     $ dffml service dev install
+
+Install pre-commit hooks.
+
+.. code-block:: console
+
+    $ pre-commit install
+
 
 Containerized Development Environment
 -------------------------------------
@@ -202,7 +242,7 @@ all the packages in development mode.
     $ mkdir -p .venv
     $ export HOME="${PWD}/.venv"
     $ export PATH="${HOME}/.local/bin:${PATH}"
-    $ pip install --user -U pip setuptools
+    $ pip install --user -U pip setuptools wheel
     $ pip install --prefix=~/.local -e .[dev]
     $ dffml service dev install -user
 

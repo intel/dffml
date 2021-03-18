@@ -2,7 +2,8 @@
 */.gitignore
 */.github
 */.coveragerc
-*/setup_common.py
+*/setup.py
+*/setup.cfg
 */pyproject.toml
 */MANIFEST.in
 */REPLACE_IMPORT_PACKAGE_NAME/version.py

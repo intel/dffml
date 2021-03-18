@@ -11,26 +11,6 @@ DESCRIPTION = "DFFML model vowpalWabbit"
 AUTHOR_NAME = "Himanshu Tripathi"
 AUTHOR_EMAIL = "himanshutripathi366@gmail.com"
 
-INSTALL_REQUIRES = [] + (
-    ["dffml>=0.3.7"]
-    if not any(
-        list(
-            map(
-                os.path.isfile,
-                list(
-                    map(
-                        lambda syspath: os.path.join(
-                            syspath, "dffml.egg-link"
-                        ),
-                        sys.path,
-                    )
-                ),
-            )
-        )
-    )
-    else []
-)
-
 IMPORT_NAME = (
     NAME
     if "replace_package_name".upper() != NAME
@@ -38,12 +18,6 @@ IMPORT_NAME = (
 ).replace("-", "_")
 
 SELF_PATH = os.path.dirname(os.path.realpath(__file__))
-
-REQUIREMENTS_TXT_PATH = Path(SELF_PATH, "requirements.txt")
-if REQUIREMENTS_TXT_PATH.is_file():
-    INSTALL_REQUIRES += list(
-        map(lambda i: i.strip(), REQUIREMENTS_TXT_PATH.read_text().split("\n"))
-    )
 
 with open(os.path.join(SELF_PATH, IMPORT_NAME, "version.py"), "r") as f:
     for line in f:
@@ -78,7 +52,5 @@ setup(
         "Programming Language :: Python :: Implementation :: CPython",
         "Programming Language :: Python :: Implementation :: PyPy",
     ],
-    install_requires=INSTALL_REQUIRES,
-    packages=find_packages(),
     entry_points={"dffml.model": [f"vwmodel = {IMPORT_NAME}.vw_base:VWModel"]},
 )

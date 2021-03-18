@@ -1,7 +1,16 @@
 from unittest.mock import patch
 from typing import NamedTuple
 
-from dffml.base import config
+from dffml import (
+    run,
+    DataFlow,
+    GetSingle,
+    Input,
+    Definition,
+    op,
+    config,
+    OperationException,
+)
 from dffml.util.cli.arg import Arg, parse_unknown
 from dffml.util.entrypoint import entrypoint
 from dffml.df.types import Definition, DataFlow, Input
@@ -141,3 +150,55 @@ class TestMemoryOrchestrator(AsyncTestCase):
                     pass
 
         self.assertFalse(ran)
+
+
+@op(
+    outputs={"result": Definition(name="fail_result", primitive="string")},
+    retry=3,
+)
+async def fail_and_retry(self):
+    i = getattr(self.parent, "i", 0)
+    i += 1
+    setattr(self.parent, "i", i)
+    if i <= 2:
+        raise Exception(f"Failure {i}")
+    return {"result": "done"}
+
+
+class TestMemoryOperationImplementationNetworkContext(AsyncTestCase):
+    @staticmethod
+    async def run_dataflow(dataflow):
+        async for ctx, results in run(
+            dataflow,
+            [
+                Input(
+                    value=[fail_and_retry.op.outputs["result"].name],
+                    definition=GetSingle.op.inputs["spec"],
+                ),
+            ],
+        ):
+            yield results
+
+    async def test_retry_success(self):
+        done = False
+        async for results in self.run_dataflow(
+            DataFlow.auto(fail_and_retry, GetSingle)
+        ):
+            done = True
+            self.assertEqual(results, {"fail_result": "done"})
+        self.assertTrue(done)
+
+    async def test_retry_fail(self):
+        dataflow = DataFlow(
+            GetSingle, operations={"fail_and_retry": fail_and_retry}
+        )
+        dataflow.operations["fail_and_retry"] = dataflow.operations[
+            "fail_and_retry"
+        ]._replace(retry=dataflow.operations["fail_and_retry"].retry - 1)
+
+        try:
+            async for results in self.run_dataflow(dataflow):
+                pass
+        except OperationException as error:
+            self.assertEqual(error.__cause__.__class__, Exception)
+            self.assertEqual(error.__cause__.args[0], "Failure 2")

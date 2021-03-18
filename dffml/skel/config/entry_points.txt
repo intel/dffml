@@ -1,0 +1,2 @@
+[dffml.configloader]
+misc = REPLACE_IMPORT_PACKAGE_NAME.configloader:MiscConfigLoader

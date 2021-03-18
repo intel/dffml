@@ -32,7 +32,6 @@ CORE_PLUGINS = [
     ("model", "scikit"),
     ("model", "tensorflow"),
     ("model", "tensorflow_hub"),
-    ("model", "transformers"),
     ("model", "vowpalWabbit"),
     ("model", "xgboost"),
     ("model", "pytorch"),
@@ -78,11 +77,6 @@ CORE_PLUGIN_DEPS = {
     if platform.system() not in {"Windows", "Darwin"}
     and not python_package_installed("autosklearn")
     else {},
-}
-
-CORE_PLUGIN_DEPS[("model", "daal4py")] = {
-    # Must be installed already via conda, do not provide a pypi package yet
-    "daal4py": lambda: python_package_installed("daal4py")
 }
 
 # All packages under configloader/ are really named dffml-config-{name}
@@ -153,3 +147,8 @@ def package_names_to_directory(validation=None):
 
 
 PACKAGE_NAMES_TO_DIRECTORY = package_names_to_directory()
+PACKAGE_DIRECTORY_TO_NAME = dict(
+    zip(
+        PACKAGE_NAMES_TO_DIRECTORY.values(), PACKAGE_NAMES_TO_DIRECTORY.keys(),
+    )
+)

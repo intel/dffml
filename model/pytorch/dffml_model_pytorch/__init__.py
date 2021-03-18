@@ -134,6 +134,12 @@ Unzip the file
 
     unzip hymenoptera_data.zip
 
+We first create a YAML file to define the last layer(s) to replace from the network architecture
+
+**layers.yaml**
+
+.. literalinclude:: /../model/pytorch/examples/resnet18/layers.yaml
+
 Train the model
 
 .. literalinclude:: /../model/pytorch/examples/resnet18/train.sh

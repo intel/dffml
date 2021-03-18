@@ -1,6 +1,10 @@
 name: Tests
 
-on: [push, pull_request]
+on:
+  push: {}
+  pull_request: {}
+  schedule:
+  - cron:  '0 3 * * *'
 
 jobs:
   lint:
@@ -39,12 +43,6 @@ jobs:
         key: ${{ runner.os }}-pip-${{ hashFiles('**/setup.py') }}
         restore-keys: |
           ${{ runner.os }}-pip-
-    - name: Setup conda
-      uses: s-weigand/setup-conda@v1
-      with:
-        update-conda: true
-        python-version: ${{ matrix.python-version }}
-        conda-channels: anaconda, conda-forge
     - name: Install dependencies
       run: |
         set -x
@@ -75,7 +73,29 @@ jobs:
       fail-fast: false
       max-parallel: 100
       matrix:
-        plugin: [., examples/shouldi, model/daal4py, model/tensorflow, model/tensorflow_hub, model/transformers, model/scratch, model/scikit, model/vowpalWabbit, model/autosklearn, model/spacy, model/pytorch, model/xgboost, operations/binsec, operations/deploy, operations/image, operations/nlp, source/mysql, feature/git, feature/auth, service/http, configloader/yaml, configloader/image]
+        plugin:
+        - .
+        - examples/shouldi
+        - model/daal4py
+        - model/tensorflow
+        - model/tensorflow_hub
+        - model/scratch
+        - model/scikit
+        - model/vowpalWabbit
+        - model/autosklearn
+        - model/spacy
+        - model/pytorch
+        - model/xgboost
+        - operations/binsec
+        - operations/deploy
+        - operations/image
+        - operations/nlp
+        - source/mysql
+        - feature/git
+        - feature/auth
+        - service/http
+        - configloader/yaml
+        - configloader/image
         python-version: [3.7, 3.8]
 
     steps:
@@ -107,12 +127,6 @@ jobs:
         key: ${{ hashFiles('examples/shouldi/tests/binaries.py') }}
         restore-keys: |
           ${{ runner.os }}-shouldi-test-binaries-
-    - name: Setup conda
-      uses: s-weigand/setup-conda@v1
-      with:
-        update-conda: true
-        python-version: ${{ matrix.python-version }}
-        conda-channels: anaconda, conda-forge
     - name: Install dependencies
       run: |
         set -x
@@ -120,8 +134,6 @@ jobs:
     - name: Test
       run: |
         set -x
-        export CONDA_PREFIX="${CONDA}"
-        export CONDA_SHLVL="${SHLVL}"
         export GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}
         export PYTHON=python${{ matrix.python-version }}
         export PLUGIN=${{ matrix.plugin }}
@@ -133,18 +145,20 @@ jobs:
         model/daal4py=${{ secrets.PYPI_MODEL_DAAL4PY }}
         model/tensorflow=${{ secrets.PYPI_MODEL_TENSORFLOW }}
         model/tensorflow_hub=${{ secrets.PYPI_MODEL_TENSORFLOW_HUB }}
-        model/transformers=${{ secrets.PYPI_MODEL_TRANSFORMERS }}
         model/scratch=${{ secrets.PYPI_MODEL_SCRATCH }}
         model/scikit=${{ secrets.PYPI_MODEL_SCIKIT }}
+        model/spacy=${{ secrets.PYPI_MODEL_SPACY }}
         model/vowpalWabbit=${{ secrets.PYPI_MODEL_VOWPALWABBIT }}
         model/autosklearn=${{ secrets.PYPI_MODEL_AUTOSKLEARN }}
         model/pytorch=${{ secrets.PYPI_MODEL_PYTORCH }}
+        model/xgboost=${{ secrets.PYPI_MODEL_XGBOOST }}
         source/mysql=${{ secrets.PYPI_SOURCE_MYSQL }}
         feature/git=${{ secrets.PYPI_FEATURE_GIT }}
         feature/auth=${{ secrets.PYPI_FEATURE_AUTH }}
         operations/binsec=${{ secrets.PYPI_OPERATIONS_BINSEC }}
         operations/deploy=${{ secrets.PYPI_OPERATIONS_DEPLOY }}
         operations/image=${{ secrets.PYPI_OPERATIONS_IMAGE }}
+        operations/nlp=${{ secrets.PYPI_OPERATIONS_NLP }}
         service/http=${{ secrets.PYPI_SERVICE_HTTP }}
         configloader/yaml=${{ secrets.PYPI_CONFIG_YAML }}
         configloader/image=${{ secrets.PYPI_CONFIG_IMAGE }}
@@ -172,12 +186,15 @@ jobs:
         - docs/cli.rst
         - docs/examples/dataflows.rst
         - docs/examples/integration.rst
+        - docs/examples/or_covid_data_by_county.rst
         - docs/examples/shouldi.rst
         - docs/installation.rst
+        - docs/troubleshooting.rst
         - docs/tutorials/dataflows/io.rst
         - docs/tutorials/dataflows/nlp.rst
         - docs/tutorials/models/iris.rst
         - docs/tutorials/models/package.rst
+        - docs/tutorials/models/docs.rst
         - docs/tutorials/models/slr.rst
         - docs/tutorials/sources/complex.rst
         - docs/tutorials/sources/file.rst
@@ -189,12 +206,6 @@ jobs:
         git remote set-url origin https://github.com/intel/dffml
         git fetch --prune --unshallow
         git fetch --depth=1 origin +refs/tags/*:refs/tags/*
-    - name: Setup conda
-      uses: s-weigand/setup-conda@v1
-      with:
-        update-conda: true
-        python-version: ${{ matrix.python-version }}
-        conda-channels: anaconda, conda-forge
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v2
       with:
@@ -217,8 +228,6 @@ jobs:
     - name: Test
       run: |
         set -x
-        export CONDA_PREFIX="${CONDA}"
-        export CONDA_SHLVL="${SHLVL}"
         export GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}
         export PYTHON=python${{ matrix.python-version }}
         export PLUGIN=${{ matrix.plugin }}
@@ -257,12 +266,13 @@ jobs:
       run: |
         pip install -U pip setuptools wheel
         pip install -e .[dev]
-        pip install torch===1.7.0 torchvision===0.8.1 -f https://download.pytorch.org/whl/torch_stable.html
         dffml service dev install -skip model/daal4py
         # Remove dataclasses. See https://github.com/intel/dffml/issues/882
         python scripts/tempfix/pytorch/pytorch/46930.py
     - name: Test
-      run: python setup.py test
+      run: |
+        python setup.py test
+        python -m pip freeze
 
   macos:
     runs-on: macos-latest
@@ -299,4 +309,6 @@ jobs:
         # Remove dataclasses. See https://github.com/intel/dffml/issues/882
         python scripts/tempfix/pytorch/pytorch/46930.py
     - name: Test
-      run: python setup.py test
+      run: |
+        python setup.py test
+        python -m pip freeze

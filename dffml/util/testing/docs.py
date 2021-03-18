@@ -54,10 +54,17 @@ async def run_consoletest(
     """
     if repo_root_dir is None:
         repo_root_dir = pathlib.Path(inspect.getsourcefile(obj)).parent
-        while not (repo_root_dir / ".git").is_dir():
+        while repo_root_dir != repo_root_dir.parent and (
+            not (repo_root_dir / ".git").is_dir()
+            or not (repo_root_dir / "setup.py").is_file()
+        ):
             repo_root_dir = repo_root_dir.parent
     if docs_root_dir is None:
         docs_root_dir = pathlib.Path(inspect.getsourcefile(obj)).parent
+    # Failsafe for if we traversed up all the way to the root of the filesystem
+    # for the repo root dir.
+    if repo_root_dir == repo_root_dir.parent:
+        repo_root_dir = docs_root_dir
 
     with contextlib.ExitStack() as stack:
         await run_nodes(

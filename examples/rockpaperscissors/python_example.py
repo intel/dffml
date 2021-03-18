@@ -1,6 +1,5 @@
 import torch.nn as nn
 import asyncio
-import logging
 
 from dffml import train, accuracy, predict, DirectorySource, Features, Feature
 from dffml_model_pytorch import PyTorchNeuralNetwork, CrossEntropyLossFunction
@@ -28,7 +27,7 @@ class ConvNet(nn.Module):
         self.relu = nn.ReLU()
         self.pooling = nn.MaxPool2d(kernel_size=2)
 
-        self.linear = nn.Linear(in_features=1296, out_features=3)
+        self.linear = nn.Linear(in_features=16 * 9 * 9, out_features=3)
 
     def forward(self, x):
         # block 1
@@ -44,7 +43,7 @@ class ConvNet(nn.Module):
         x = self.pooling(self.relu(self.conv3(x)))
 
         # fully connected layer
-        x = self.linear(x.view(-1, 1296))
+        x = self.linear(x.view(-1, 16 * 9 * 9))
         return x
 
 
@@ -85,12 +84,8 @@ predict_source = DirectorySource(foldername="rps-predict", feature="image",)
 
 
 async def main():
-    logging.basicConfig(level=logging.DEBUG)
-
     # Train the model
     await train(model, train_source)
-
-    logging.getLogger().setLevel(logging.CRITICAL)
 
     # Assess the accuracy
     acc = await accuracy(model, test_source)

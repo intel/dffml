@@ -5,12 +5,14 @@ import pathlib
 import tempfile
 import unittest
 import contextlib
+import dataclasses
 import unittest.mock
 import importlib.util
 
 from dffml.util.asynctestcase import AsyncTestCase
 
 from dffml.util.testing.consoletest.commands import *
+from dffml.util.testing.consoletest.cli import main as consoletest_doc
 
 
 ROOT_PATH = pathlib.Path(__file__).parent.parent.parent
@@ -27,7 +29,7 @@ for module_name in ["literalinclude_diff"]:
     setattr(sys.modules[__name__], module_name, module)
 
 
-class TestDocs(unittest.TestCase):
+class TestDocs(AsyncTestCase):
     """
     A testcase for each doc will be added to this class
     """
@@ -67,9 +69,19 @@ class TestDocs(unittest.TestCase):
         self.assertListEqual(should_have, docs)
 
 
-def mktestcase(filepath: pathlib.Path, relative: pathlib.Path):
-    # The test case itself, assigned to test_doctest of each class
-    def testcase(self):
+def mktestcase(filepath: pathlib.Path, relative: pathlib.Path, builder: bool):
+    async def testcase(self):
+        return await consoletest_doc(
+            [
+                str(filepath.resolve()),
+                "--root",
+                str(ROOT_PATH),
+                "--docs",
+                str(DOCS_PATH),
+            ]
+        )
+
+    def builder_testcase(self):
         from sphinx.cmd.build import (
             get_parser,
             Tee,
@@ -137,10 +149,17 @@ def mktestcase(filepath: pathlib.Path, relative: pathlib.Path):
             app.build(False, [])
         self.assertFalse(app.statuscode)
 
+    if builder:
+        return builder_testcase
     return testcase
 
 
-SKIP_DOCS = ["plugins/dffml_model"]
+SKIP_DOCS = ["swportal", "plugins/dffml_model"]
+# Quick examples with no install commands, no venv needed
+NO_SETUP = [
+    "tutorials/doublecontextentry",
+    "tutorials/models/load",
+]
 
 
 for filepath in DOCS_PATH.rglob("*.rst"):
@@ -149,23 +168,26 @@ for filepath in DOCS_PATH.rglob("*.rst"):
     relative = filepath.relative_to(DOCS_PATH).with_suffix("")
     if str(relative) in SKIP_DOCS:
         continue
-    TestDocs.TESTABLE_DOCS.append(str(relative))
-    name = "test_" + str(relative).replace(os.sep, "_")
-    # Do not add the tests if we are running with GitHub Actions for the main
-    # package. This is because there are seperate jobs for each tutorial test
-    # and the TestDocs.test__all_docs_being_tested ensures that we are running a
-    # job for each tutorial
-    if (
-        "GITHUB_ACTIONS" in os.environ
-        and "PLUGIN" in os.environ
-        and os.environ["PLUGIN"] == "."
-    ):
-        continue
-    setattr(
-        TestDocs,
-        name,
-        unittest.skipIf(
+    # Create the testcase
+    testcase = mktestcase(filepath, relative, str(relative) not in NO_SETUP)
+    if str(relative) not in NO_SETUP:
+        # Don't check for a long test entry in the workflow if doc in NO_SETUP
+        TestDocs.TESTABLE_DOCS.append(str(relative))
+        # Skip if not in NO_SETUP and RUN_CONSOLETESTS not set
+        testcase = unittest.skipIf(
             "RUN_CONSOLETESTS" not in os.environ,
             "RUN_CONSOLETESTS environment variable not set",
-        )(mktestcase(filepath, relative)),
-    )
+        )(testcase)
+        # Do not add the tests if we are running with GitHub Actions for the main
+        # package. This is because there are seperate jobs for each tutorial test
+        # and the TestDocs.test__all_docs_being_tested ensures that we are running a
+        # job for each tutorial
+        if (
+            "GITHUB_ACTIONS" in os.environ
+            and "PLUGIN" in os.environ
+            and os.environ["PLUGIN"] == "."
+        ):
+            continue
+    # Add the testcase
+    name = "test_" + str(relative).replace(os.sep, "_")
+    setattr(TestDocs, name, testcase)

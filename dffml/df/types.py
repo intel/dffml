@@ -177,6 +177,7 @@ class Operation(NamedTuple, Entrypoint):
     expand: Optional[List[str]] = []
     instance_name: Optional[str] = None
     validator: bool = False
+    retry: int = 0
 
     def export(self):
         exported = {
@@ -186,6 +187,7 @@ class Operation(NamedTuple, Entrypoint):
             "conditions": self.conditions.copy(),
             "stage": self.stage.value,
             "expand": self.expand.copy(),
+            "retry": self.retry,
         }
         for to_string in ["inputs", "outputs"]:
             exported[to_string] = dict(
@@ -381,7 +383,11 @@ class Input(object):
         return repr(self)
 
     def export(self):
-        return dict(value=self.value, definition=self.definition.export())
+        return dict(
+            value=self.value,
+            definition=self.definition.export(),
+            origin=self.origin,
+        )
 
     @classmethod
     def _fromdict(cls, **kwargs):
@@ -605,6 +611,7 @@ class DataFlow:
             set(
                 itertools.chain(
                     self.definitions.values(),
+                    [item.definition for item in self.seed],
                     *[
                         itertools.chain(
                             operation.inputs.values(),
@@ -655,6 +662,17 @@ class DataFlow:
                             operation
                         )
                     else:
+                        # In order to support selection an input based using an
+                        # alternate definition along with restriction to inputs
+                        # who's origins match the alternate definitions in the
+                        # list. We select the first output source since that
+                        # will be the immediate alternate definition
+                        if (
+                            isinstance(output_source, list)
+                            and output_source
+                            and isinstance(output_source[0], dict)
+                        ):
+                            output_source = output_source[0]
                         for origin in output_source.items():
                             # If we have an output_source item with an origin
                             # that has a list as it's value we know that the key

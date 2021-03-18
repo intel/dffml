@@ -9,45 +9,6 @@ NAME = "dffml-operations-deploy"
 DESCRIPTION = "DFFML operations deploy"
 AUTHOR_NAME = "Aghin Shah Alin"
 AUTHOR_EMAIL = "aghinsa@gmail.com"
-# Install dffml if it is not installed in development mode
-INSTALL_REQUIRES = [] + (
-    ["dffml>=0.3.7"]
-    if not any(
-        list(
-            map(
-                os.path.isfile,
-                list(
-                    map(
-                        lambda syspath: os.path.join(
-                            syspath, "dffml.egg-link"
-                        ),
-                        sys.path,
-                    )
-                ),
-            )
-        )
-    )
-    else []
-    + (
-        ["dffml-feature-git>=0.2.7"]
-        if not any(
-            list(
-                map(
-                    os.path.isfile,
-                    list(
-                        map(
-                            lambda syspath: os.path.join(
-                                syspath, "dffml-feature-git.egg-link"
-                            ),
-                            sys.path,
-                        )
-                    ),
-                )
-            )
-        )
-        else []
-    )
-)
 
 IMPORT_NAME = (
     NAME
@@ -92,6 +53,4 @@ KWARGS = dict(
         "Programming Language :: Python :: Implementation :: CPython",
         "Programming Language :: Python :: Implementation :: PyPy",
     ],
-    install_requires=INSTALL_REQUIRES,
-    packages=find_packages(),
 )

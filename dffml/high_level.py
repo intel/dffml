@@ -4,47 +4,65 @@ in a lot of quick and dirty python files.
 """
 import asyncio
 import pathlib
+import contextlib
 from typing import Optional, Tuple, List, Union, Dict, Any, AsyncIterator
 
 from .record import Record
+from .model.model import Model
 from .df.types import DataFlow, Input
 from .df.memory import MemoryOrchestrator
-from .source.source import Sources, BaseSource
+from .source.source import (
+    Sources,
+    SourcesContext,
+    BaseSource,
+    BaseSourceContext,
+    BaseSource,
+)
 from .source.memory import MemorySource, MemorySourceConfig
 from .df.base import BaseInputSetContext, BaseOrchestrator, BaseInputSet
 
 
-def _records_to_sources(*args):
+@contextlib.asynccontextmanager
+async def _records_to_sources(*args):
     """
     Create a memory source out of any records passed as a variable length list.
     Add all sources found in the variable length list to a list of sources, and
     the created source containing records, and return that list of sources.
     """
-    # If the first arg is an instance of sources, append the rest to that.
-    if args and isinstance(args[0], Sources):
-        sources = args[0]
-    else:
-        sources = Sources(
-            *[arg for arg in args if isinstance(arg, BaseSource)]
-        )
+    sources = Sources()
+    sctxs = []
     # Records to add to memory source
     records = []
-    # Make args mutable
-    args = list(args)
     # Convert dicts to records
     for i, arg in enumerate(args):
         if isinstance(arg, dict):
             arg = Record(i, data={"features": arg})
         if isinstance(arg, Record):
             records.append(arg)
-        if isinstance(arg, str) and "." in arg:
+        elif isinstance(arg, pathlib.Path) or (
+            isinstance(arg, str) and "." in arg
+        ):
             filepath = pathlib.Path(arg)
-            source = BaseSource.load(filepath.suffix.replace(".", ""))
+            source = BaseSource.load(filepath.suffixes[0].replace(".", ""))
             sources.append(source(filename=arg))
+        elif isinstance(arg, (Sources, BaseSource)):
+            sources.append(arg)
+        elif isinstance(arg, (SourcesContext, BaseSourceContext)):
+            sctxs.append(arg)
+        else:
+            raise ValueError(
+                f"Don't know what to do with non-source type: {arg!r}"
+            )
     # Create memory source if there are any records
     if records:
         sources.append(MemorySource(MemorySourceConfig(records=records)))
-    return sources
+    # Open the sources
+    async with sources as sources:
+        async with sources() as sctx:
+            # Add any already open source contexts
+            for already_open_sctx in sctxs:
+                sctx.append(already_open_sctx)
+            yield sctx
 
 
 async def run(
@@ -266,10 +284,9 @@ async def save(source: BaseSource, *args: Record) -> None:
     key,tag,Expertise,Trust,Years,prediction_Salary,confidence_Salary
     myrecord,untagged,1,0.1,0,10,1.0
     """
-    async with source:
-        async with source() as sctx:
-            for record in args:
-                await sctx.update(record)
+    async with _records_to_sources(source) as sctx:
+        for record in args:
+            await sctx.update(record)
 
 
 async def load(source: BaseSource, *args: str) -> AsyncIterator[Record]:
@@ -325,17 +342,15 @@ async def load(source: BaseSource, *args: str) -> AsyncIterator[Record]:
     {'key': '1', 'features': {'A': 0, 'B': 1}, 'extra': {}}
     {'key': '2', 'features': {'A': 3, 'B': 4}, 'extra': {}}
     """
-    source = _records_to_sources(source)
-    async with source:
-        async with source() as sctx:
-            if args:
-                # If specific records are to be loaded
-                for record in args:
-                    yield await sctx.record(record)
-            else:
-                # All the records are loaded
-                async for record in sctx.records():
-                    yield record
+    async with _records_to_sources(source) as sctx:
+        if args:
+            # If specific records are to be loaded
+            for record in args:
+                yield await sctx.record(record)
+        else:
+            # All the records are loaded
+            async for record in sctx.records():
+                yield record
 
 
 async def train(model, *args: Union[BaseSource, Record, Dict[str, Any]]):
@@ -380,10 +395,15 @@ async def train(model, *args: Union[BaseSource, Record, Dict[str, Any]]):
     >>>
     >>> asyncio.run(main())
     """
-    sources = _records_to_sources(*args)
-    async with sources as sources, model as model:
-        async with sources() as sctx, model() as mctx:
-            return await mctx.train(sctx)
+    async with contextlib.AsyncExitStack() as astack:
+        # Open sources
+        sctx = await astack.enter_async_context(_records_to_sources(*args))
+        # Allow for keep models open
+        if isinstance(model, Model):
+            model = await astack.enter_async_context(model)
+            mctx = await astack.enter_async_context(model())
+        # Run training
+        return await mctx.train(sctx)
 
 
 async def accuracy(
@@ -439,10 +459,15 @@ async def accuracy(
     >>> asyncio.run(main())
     Accuracy: 1.0
     """
-    sources = _records_to_sources(*args)
-    async with sources as sources, model as model:
-        async with sources() as sctx, model() as mctx:
-            return float(await mctx.accuracy(sctx))
+    async with contextlib.AsyncExitStack() as astack:
+        # Open sources
+        sctx = await astack.enter_async_context(_records_to_sources(*args))
+        # Allow for keep models open
+        if isinstance(model, Model):
+            model = await astack.enter_async_context(model)
+            mctx = await astack.enter_async_context(model())
+        # Run accuracy method
+        return float(await mctx.accuracy(sctx))
 
 
 async def predict(
@@ -504,14 +529,19 @@ async def predict(
     {'Years': 6, 'Salary': 70}
     {'Years': 7, 'Salary': 80}
     """
-    sources = _records_to_sources(*args)
-    async with sources as sources, model as model:
-        async with sources() as sctx, model() as mctx:
-            async for record in mctx.predict(sctx):
-                yield record if keep_record else (
-                    record.key,
-                    record.features(),
-                    record.predictions(),
-                )
-                if update:
-                    await sctx.update(record)
+    async with contextlib.AsyncExitStack() as astack:
+        # Open sources
+        sctx = await astack.enter_async_context(_records_to_sources(*args))
+        # Allow for keep models open
+        if isinstance(model, Model):
+            model = await astack.enter_async_context(model)
+            mctx = await astack.enter_async_context(model())
+        # Run predictions
+        async for record in mctx.predict(sctx):
+            yield record if keep_record else (
+                record.key,
+                record.features(),
+                record.predictions(),
+            )
+            if update:
+                await sctx.update(record)

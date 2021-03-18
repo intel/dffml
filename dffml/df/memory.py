@@ -27,6 +27,7 @@ from .exceptions import (
     ContextNotPresent,
     DefinitionNotInContext,
     ValidatorMissing,
+    MultipleAncestorsFoundError,
 )
 from .types import (
     Input,
@@ -573,7 +574,18 @@ class MemoryInputNetworkContext(BaseInputNetworkContext):
                     for input_source in input_sources:
                         # Create a list of places this input originates from
                         origins = []
-                        if isinstance(input_source, dict):
+                        # Handle the case where we look at the first instance in
+                        # the list for the immediate alternate definition then
+                        # trace back through input origins to make sure they all
+                        # match
+                        if isinstance(input_source, list):
+                            # TODO Refactor this since we have duplicate code
+                            if isinstance(input_source[0], dict):
+                                for origin in input_source[0].items():
+                                    origins.append(origin)
+                            else:
+                                origins.append(input_source[0])
+                        elif isinstance(input_source, dict):
                             for origin in input_source.items():
                                 origins.append(origin)
                         else:
@@ -621,6 +633,74 @@ class MemoryInputNetworkContext(BaseInputNetworkContext):
                                     .name
                                 ):
                                     continue
+                                # When the input_source is a list of alternate
+                                # definitions we need to check each parent to
+                                # verity that it's origin matches with the list
+                                # given by input_source
+                                if isinstance(input_source, list):
+                                    all_parent_origins_match = True
+                                    # Make a list of all the origins
+                                    ancestor_origins = []
+                                    for ancestor_origin in input_source:
+                                        if isinstance(ancestor_origin, dict):
+                                            for (
+                                                ancestor_origin
+                                            ) in ancestor_origin.items():
+                                                ancestor_origins.append(
+                                                    ancestor_origin
+                                                )
+                                        else:
+                                            ancestor_origins.append(
+                                                ancestor_origin
+                                            )
+                                    i = 1
+                                    current_parent = item
+                                    while i < len(ancestor_origins):
+                                        ancestor_origin = ancestor_origins[i]
+                                        # Go through all the parents. Create a
+                                        # list of possible parents based on if
+                                        # their origin matches the alternate
+                                        # definition
+                                        possible_parents = [
+                                            parent
+                                            for parent in current_parent.parents
+                                            # If the input source is a dict then
+                                            # we need to convert it to a tuple
+                                            # for comparison to the origin
+                                            if parent.origin == ancestor_origin
+                                        ]
+                                        if not possible_parents:
+                                            all_parent_origins_match = False
+                                            break
+                                        elif len(possible_parents) > 1:
+                                            # TODO Go through each option and
+                                            # check if either is a viable
+                                            # option. Our current implementation
+                                            # only allows for valeting one path,
+                                            # due to a single current_parent
+                                            # If there is more than one option
+                                            # raise an error since we don't know
+                                            # who to choose
+                                            raise MultipleAncestorsFoundError(
+                                                (
+                                                    operation.instance_name,
+                                                    input_name,
+                                                    ancestor_origin,
+                                                    [
+                                                        parent.__dict__
+                                                        for parent in possible_parents
+                                                    ],
+                                                )
+                                            )
+                                        # Move on to the next origin to validate
+                                        i += 1
+                                        # The current_parent becomes the only
+                                        # possible parent
+                                        current_parent = possible_parents[0]
+                                    # If we didn't find any ancestor paths that
+                                    # matched then we don't use this Input
+                                    if not all_parent_origins_match:
+                                        continue
                                 gather[input_name].append(
                                     Parameter(
                                         key=input_name,
@@ -1018,7 +1098,7 @@ class MemoryOperationImplementationNetworkContext(
                     operation.instance_name
                 )
 
-    async def run(
+    async def run_no_retry(
         self,
         ctx: BaseInputSetContext,
         octx: BaseOrchestratorContext,
@@ -1026,7 +1106,7 @@ class MemoryOperationImplementationNetworkContext(
         inputs: Dict[str, Any],
     ) -> Union[bool, Dict[str, Any]]:
         """
-        Run an operation in our network.
+        Run an operation in our network without retry if it fails
         """
         # Check that our network contains the operation
         await self.ensure_contains(operation)
@@ -1069,6 +1149,33 @@ class MemoryOperationImplementationNetworkContext(
             )
             self.logger.debug("---")
             return outputs
+
+    async def run(
+        self,
+        ctx: BaseInputSetContext,
+        octx: BaseOrchestratorContext,
+        operation: Operation,
+        inputs: Dict[str, Any],
+    ) -> Union[bool, Dict[str, Any]]:
+        """
+        Run an operation in our network.
+        """
+        if not operation.retry:
+            return await self.run_no_retry(ctx, octx, operation, inputs)
+        for retry in range(0, operation.retry):
+            try:
+                return await self.run_no_retry(ctx, octx, operation, inputs)
+            except Exception:
+                # Raise if no more tries left
+                if (retry + 1) == operation.retry:
+                    raise
+                # Otherwise if there was an exception log it
+                self.logger.error(
+                    "%r: try %d: %s",
+                    operation.instance_name,
+                    retry + 1,
+                    traceback.format_exc().rstrip(),
+                )
 
     async def operation_completed(self):
         await self.completed_event.wait()
@@ -1723,12 +1830,10 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
         # Run output operations and create a dict mapping the operation name to
         # the output of that operation
         try:
-            output = {
-                operation.instance_name: results
-                async for operation, results in self.run_stage(
-                    ctx, Stage.OUTPUT
-                )
-            }
+            output = {}
+            async for operation, results in self.run_stage(ctx, Stage.OUTPUT):
+                output.setdefault(operation.instance_name, {})
+                output[operation.instance_name].update(results)
         except:
             if strict:
                 raise

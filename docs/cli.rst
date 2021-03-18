@@ -17,7 +17,27 @@ logs.
     .. code-block:: console
         :test:
 
-        $ python -m pip install --use-feature=2020-resolver dffml-config-yaml
+        $ python -m pip install dffml-config-yaml
+
+Version
+-------
+
+List the version of the main package, all the plugins, and their install status.
+
+.. code-block:: console
+    :test:
+
+    $ dffml version
+
+Packages
+--------
+
+List the names of all the packages maintained as a part of the core dffml repo.
+
+.. code-block:: console
+    :test:
+
+    $ dffml packages
 
 Model
 -----
@@ -629,6 +649,19 @@ setuppy
 
 Utilities for working with ``setup.py`` files.
 
+version
+_______
+
+
+Read a ``version.py`` file and extract the version number from the ``VERSION``
+variable within it. This does not execute code, it only parses it.
+
+.. code-block:: console
+    :test:
+
+    $ dffml service dev setuppy version dffml_model_mycoolmodel/version.py
+    0.0.1
+
 kwarg
 _____
 
@@ -636,7 +669,6 @@ _____
 argument.
 
 .. code-block:: console
-    :test:
 
     $ dffml service dev setuppy kwarg name setup.py
     dffml-model-mycoolmodel
@@ -646,14 +678,15 @@ bump
 
 Utilities for bumping version numbers.
 
-main
-____
+inter
+_____
 
-Update the version of DFFML used by all of the plugins.
+Update the version of DFFML used by all of the plugins. Update all the
+interdepent plugin versions
 
 .. code-block:: console
 
-    dffml service dev bump main
+    dffml service dev bump inter
 
 packages
 ________

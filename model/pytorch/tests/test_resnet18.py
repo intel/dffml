@@ -1,5 +1,6 @@
 import os
 import subprocess
+import shutil
 
 from dffml.cli.cli import CLI
 from dffml.util.os import chdir
@@ -29,6 +30,8 @@ class TestResNet18Model(IntegrationCLITestCase):
             for idx, word in enumerate(cmnd):
                 cmnd[idx] = word.strip()
             cmnd[cmnd.index("-model-directory") + 1] = directory
+            if "-model-epochs" in cmnd:
+                cmnd[cmnd.index("-model-epochs") + 1] = "1"
             return cmnd
 
         with chdir(tempdir):
@@ -39,6 +42,10 @@ class TestResNet18Model(IntegrationCLITestCase):
             )
             subprocess.check_output(
                 ["bash", sh_filepath("resnet18", "unknown_data.sh")]
+            )
+            shutil.copy(
+                sh_filepath("resnet18", "layers.yaml"),
+                os.path.join(os.getcwd(), "layers.yaml"),
             )
 
             with open(sh_filepath("resnet18", "train.sh"), "r") as f:

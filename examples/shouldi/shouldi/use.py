@@ -61,7 +61,7 @@ class UseConfig:
 class Use(CMD):
     CONFIG = UseConfig
 
-    async def run(self):
+    async def _run(self):
         # Make a corresponding list of path objects in case any of the targets
         # we are given are paths on disk rather than Git repo URLs
         paths = [
@@ -96,4 +96,12 @@ class Use(CMD):
                 for target_name, path in zip(self.targets, paths)
             },
         ):
-            print(results)
+            yield target_name, results
+
+    async def run(self):
+        return dict(
+            [
+                (str(target_name), results)
+                async for target_name, results in self._run()
+            ]
+        )

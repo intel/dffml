@@ -1,0 +1,2 @@
+[dffml.service.cli]
+misc = REPLACE_IMPORT_PACKAGE_NAME.misc:MiscService

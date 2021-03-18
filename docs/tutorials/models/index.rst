@@ -21,5 +21,7 @@ package it so others can use it easily.
     :caption: Contents:
 
     iris
+    load
     slr
     package
+    docs

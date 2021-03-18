@@ -63,6 +63,7 @@ branch can be found `here <master/index.html>`_.
     cli
     plugins/service/http/index
     api/index
+    troubleshooting
 
 .. toctree::
     :glob:
@@ -78,9 +79,11 @@ branch can be found `here <master/index.html>`_.
     :caption: Community
 
     GitHub <https://github.com/intel/dffml>
+    Master Branch Docs <https://intel.github.io/dffml/master/>
     publications
     contact
     contributing/index
+    news/index
     changelog
 
 Indices and tables

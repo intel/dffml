@@ -24,3 +24,7 @@ class InputValidationError(Exception):
 
 class ValidatorMissing(Exception):
     pass
+
+
+class MultipleAncestorsFoundError(NotImplementedError):
+    pass

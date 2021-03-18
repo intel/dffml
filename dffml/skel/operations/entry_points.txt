@@ -1,0 +1,4 @@
+[dffml.operation]
+calc_add = REPLACE_IMPORT_PACKAGE_NAME.operations:calc_add
+calc_mult = REPLACE_IMPORT_PACKAGE_NAME.operations:calc_mult
+calc_parse_line = REPLACE_IMPORT_PACKAGE_NAME.operations:calc_parse_line

@@ -26,10 +26,40 @@ function run_plugin_examples() {
   fi
   cd "${SRC_ROOT}/${PLUGIN}/examples"
   if [ -f "requirements.txt" ]; then
-    "${PYTHON}" -m pip install --use-feature=2020-resolver -r requirements.txt
+    "${PYTHON}" -m pip install -r requirements.txt
   fi
   "${PYTHON}" -m unittest discover -v
   cd "${SRC_ROOT}/${PLUGIN}"
+}
+
+test_no_skips() {
+  # Log skipped tests to file
+  check_skips="$(mktemp)"
+  TEMP_DIRS+=("${check_skips}")
+
+  # Run with coverage
+  RUN_CONSOLETESTS=1 "${PYTHON}" -u -m coverage run setup.py test 2>&1 | tee "${check_skips}"
+  "${PYTHON}" -m coverage report -m
+
+  # Fail if any coroutines were not awaited
+  unawaited=$(grep -nE 'coroutine .* was never awaited' "${check_skips}" | wc -l)
+  if [ "$unawaited" -ne 0 ]; then
+    echo "Found un-awaited coroutines" >&2
+    exit 1
+  fi
+
+  # Fail if any tests were skipped or errored
+  skipped=$(tail -n 1 "${check_skips}" | grep -E '(skipped=[0-9]+)' | wc -l)
+  if [ "$skipped" -ne 0 ]; then
+    echo "Tests were skipped" >&2
+    exit 1
+  fi
+
+  errors=$(grep -E '(errors=[0-9]+)' "${check_skips}" | wc -l)
+  if [ "$errors" -ne 0 ]; then
+    echo "Tests errored" >&2
+    exit 1
+  fi
 }
 
 function run_plugin() {
@@ -38,16 +68,18 @@ function run_plugin() {
   cd "${SRC_ROOT}/${PLUGIN}"
 
   # Install plugin
-  "${PYTHON}" -m pip install --use-feature=2020-resolver -U -e .
-
-  # Run the tests but not the long documentation consoletests
-  "${PYTHON}" -u setup.py test
+  "${PYTHON}" -m pip install -U -e .
 
   if [ "x${PLUGIN}" != "x." ]; then
+    # Test ensuring no tests were skipped
+    test_no_skips
     # Run examples if they exist and we aren't at the root
     run_plugin_examples
   else
     # If we are at the root. Install plugsin and run various integration tests
+
+    # Run the tests but not the long documentation consoletests
+    "${PYTHON}" -u setup.py test
 
     # Try running create command
     plugin_creation_dir="$(mktemp -d)"
@@ -63,7 +95,7 @@ function run_plugin() {
     for plugin in ${PLUGINS[@]}; do
       dffml service dev create "${plugin}" "ci-test-${plugin}"
       cd "ci-test-${plugin}"
-      "${PYTHON}" -m pip install --use-feature=2020-resolver -U .
+      "${PYTHON}" -m pip install -U .
       "${PYTHON}" setup.py test
       cd "${plugin_creation_dir}"
     done
@@ -76,26 +108,8 @@ function run_plugin() {
     # Run the examples
     run_plugin_examples
 
-    # Log skipped tests to file
-    check_skips="$(mktemp)"
-    TEMP_DIRS+=("${check_skips}")
-
-    # Run with coverage
-    RUN_CONSOLETESTS=1 "${PYTHON}" -u -m coverage run setup.py test 2>&1 | tee "${check_skips}"
-    "${PYTHON}" -m coverage report -m
-
-    # Fail if any tests were skipped or errored
-    skipped=$(tail -n 1 "${check_skips}" | grep -E '(skipped=.*)' | wc -l)
-    if [ "$skipped" -ne 0 ]; then
-      echo "Tests were skipped" >&2
-      exit 1
-    fi
-
-    errors=$(grep -E '(errors=.*)' "${check_skips}" | wc -l)
-    if [ "$errors" -ne 0 ]; then
-      echo "Tests errored" >&2
-      exit 1
-    fi
+    # Test ensuring no tests were skipped
+    test_no_skips
   fi
 
   cd "${SRC_ROOT}"
@@ -103,7 +117,8 @@ function run_plugin() {
   # Report installed versions of packages
   "${PYTHON}" -m pip freeze
 
-  if [ "x${GITHUB_ACTIONS}" == "xtrue" ] && [ "x${GITHUB_REF}" == "xrefs/heads/master" ]; then
+  if [[ "x${GITHUB_ACTIONS}" == "xtrue" ]] && \
+     [[ "x${GITHUB_REF}" =~ xrefs/heads/[a-zA-Z0-9]*\.[a-zA-Z0-9]*\.[a-zA-Z0-9]* ]]; then
     git status
     dffml service dev release "${PLUGIN}"
   fi
@@ -116,10 +131,21 @@ function run_consoletest() {
 
   cd "${SRC_ROOT}"
 
-  # Install base package with testing and development utilities
-  "${PYTHON}" -m pip install --use-feature=2020-resolver -U -e ".[dev]"
+  # Log tests to file
+  test_log="$(mktemp)"
+  TEMP_DIRS+=("${test_log}")
 
-  RUN_CONSOLETESTS=1 "${PYTHON}" -u setup.py test -s "tests.docs.test_consoletest.TestDocs.test_${PLUGIN}"
+  # Install base package with testing and development utilities
+  "${PYTHON}" -m pip install -U -e ".[dev]"
+
+  RUN_CONSOLETESTS=1 "${PYTHON}" -u setup.py test -s "tests.docs.test_consoletest.TestDocs.test_${PLUGIN}" 2>&1 | tee "${test_log}"
+
+  # Fail if any coroutines were not awaited
+  unawaited=$(grep -nE 'coroutine .* was never awaited' "${test_log}" | wc -l)
+  if [ "$unawaited" -ne 0 ]; then
+    echo "Found un-awaited coroutines" >&2
+    exit 1
+  fi
 
   cd "${SRC_ROOT}"
 
@@ -173,7 +199,11 @@ function run_docs() {
   # Remove dataclasses. See https://github.com/intel/dffml/issues/882
   "${PYTHON}" "${TEMPFIX}/pytorch/pytorch/46930.py" ~/.local
 
-  last_release=$("${PYTHON}" -m dffml service dev setuppy kwarg version setup.py)
+  last_release=$(git log -p -- dffml/version.py \
+                 | grep \+VERSION \
+                 | grep -v rc \
+                 | sed -e 's/.* = "//g' -e 's/"//g' \
+                 | head -n 1)
 
   # Fail if there are any changes to the Git repo
   changes=$(git status --porcelain | wc -l)

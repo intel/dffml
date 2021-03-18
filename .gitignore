@@ -13,6 +13,7 @@ wheelhouse/
 *.png
 *.eggs
 *.swp
+*.zip
 .mypy_cache/
 *.egg-info/
 htmlcov/
@@ -32,4 +33,4 @@ docs/shouldi.md
 docs/swportal.rst
 docs/contributing/consoletest.md
 /consoletest/
-tests/service/logs.txt
+tests/service/logs/
