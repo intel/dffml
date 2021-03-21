@@ -112,7 +112,7 @@ This is because Google does not support multiple return values, and it looks a
 bit more organized to have multi line descriptions for arguments indented on the
 following line.
 
-Mre information on the Numpy docstiring format can be found
+More information on the Numpy docstiring format can be found
 `here <https://numpydoc.readthedocs.io/en/latest/format.html>`_.
 
 Example Docstring
