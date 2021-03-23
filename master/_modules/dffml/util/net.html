@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>dffml.util.net &mdash; DFFML cd58ea6f documentation</title>
+  <title>dffml.util.net &mdash; DFFML d1d2b0c8 documentation</title>
   
 
   
@@ -65,7 +65,7 @@
             
             
               <div class="version">
-                cd58ea6f
+                d1d2b0c8
               </div>
             
           
@@ -194,10 +194,9 @@
            <div itemprop="articleBody">
             
   <h1>Source code for dffml.util.net</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">stat</span>
-<span class="kn">import</span> <span class="nn">os</span>
+<span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">stat</span>
 <span class="kn">import</span> <span class="nn">shutil</span>
-<span class="kn">import</span> <span class="nn">hashlib</span>
 <span class="kn">import</span> <span class="nn">pathlib</span>
 <span class="kn">import</span> <span class="nn">inspect</span>
 <span class="kn">import</span> <span class="nn">functools</span>
@@ -208,6 +207,7 @@
 
 <span class="kn">from</span> <span class="nn">.os</span> <span class="kn">import</span> <span class="n">chdir</span>
 <span class="kn">from</span> <span class="nn">.file</span> <span class="kn">import</span> <span class="n">validate_file_hash</span>
+<span class="kn">from</span> <span class="nn">.log</span> <span class="kn">import</span> <span class="n">LOGGER</span><span class="p">,</span> <span class="n">get_download_logger</span>
 
 
 <div class="viewcode-block" id="ProtocolNotAllowedError"><a class="viewcode-back" href="../../../api/util/net.html#dffml.util.net.ProtocolNotAllowedError">[docs]</a><span class="k">class</span> <span class="nc">ProtocolNotAllowedError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
@@ -237,8 +237,33 @@
         <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;Failed to extract - </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">directory_path</span><span class="si">!r}</span><span class="s2">&quot;</span></div>
 
 
+<div class="viewcode-block" id="progressbar"><a class="viewcode-back" href="../../../api/util/net.html#dffml.util.net.progressbar">[docs]</a><span class="k">def</span> <span class="nf">progressbar</span><span class="p">(</span><span class="n">cur</span><span class="p">,</span> <span class="n">total</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Simple progressbar to show download progress.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">percent</span> <span class="o">=</span> <span class="n">cur</span> <span class="o">/</span> <span class="n">total</span>
+    <span class="n">progress</span> <span class="o">=</span> <span class="s2">&quot;#&quot;</span> <span class="o">*</span> <span class="nb">int</span><span class="p">(</span><span class="n">cur</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+
+    <span class="n">download_logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\r</span><span class="s2">Downloading...: [</span><span class="si">{</span><span class="n">progress</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span><span class="si">}</span><span class="s2">] </span><span class="si">{</span><span class="n">percent</span><span class="si">:</span><span class="s2">.2%</span><span class="si">}</span><span class="se">\r</span><span class="s2">&quot;</span>
+    <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="progress_reporthook"><a class="viewcode-back" href="../../../api/util/net.html#dffml.util.net.progress_reporthook">[docs]</a><span class="k">def</span> <span class="nf">progress_reporthook</span><span class="p">(</span><span class="n">blocknum</span><span class="p">,</span> <span class="n">blocksize</span><span class="p">,</span> <span class="n">totalsize</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Serve as a reporthook for monitoring download progress.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">percent</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="nb">min</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mi">0</span> <span class="k">if</span> <span class="n">totalsize</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="p">(</span><span class="n">blocknum</span> <span class="o">*</span> <span class="n">blocksize</span> <span class="o">/</span> <span class="n">totalsize</span><span class="p">))</span>
+        <span class="o">*</span> <span class="mi">100</span>
+    <span class="p">)</span>
+    <span class="n">progressbar</span><span class="p">(</span><span class="n">percent</span><span class="p">)</span></div>
+
+
 <span class="c1"># Default list of URL protocols allowed</span>
 <span class="n">DEFAULT_PROTOCOL_ALLOWLIST</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;https://&quot;</span><span class="p">]</span>
+<span class="n">download_logger</span> <span class="o">=</span> <span class="n">get_download_logger</span><span class="p">(</span><span class="n">LOGGER</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="validate_protocol"><a class="viewcode-back" href="../../../api/util/net.html#dffml.util.net.validate_protocol">[docs]</a><span class="k">def</span> <span class="nf">validate_protocol</span><span class="p">(</span>
@@ -323,6 +348,7 @@
             <span class="n">url</span><span class="p">,</span>
             <span class="n">filename</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">target_path</span><span class="p">),</span>
             <span class="n">protocol_allowlist</span><span class="o">=</span><span class="n">protocol_allowlist</span><span class="p">,</span>
+            <span class="n">reporthook</span><span class="o">=</span><span class="n">progress_reporthook</span><span class="p">,</span>
         <span class="p">)</span>
     <span class="n">validate_file_hash</span><span class="p">(</span>
         <span class="n">target_path</span><span class="p">,</span> <span class="n">expected_sha384_hash</span><span class="o">=</span><span class="n">expected_sha384_hash</span><span class="p">,</span>
