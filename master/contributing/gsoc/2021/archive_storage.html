@@ -1,0 +1,372 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Support Archive Storage for Models &mdash; DFFML cd58ea6f documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/tabs.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/copybutton.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="author" title="About these documents" href="../../../about.html" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="GSoC 2020" href="../2020.html" />
+    <link rel="prev" title="Implementing AutoML" href="automl.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> DFFML
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                cd58ea6f
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Introduction</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../concepts/index.html">Concepts</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Usage</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../quickstart/model.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/index.html">Examples</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../plugins/index.html">Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../cli.html">Command Line</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../plugins/service/http/index.html">HTTP API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../troubleshooting.html">Troubleshooting</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Subprojects</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../shouldi.html">shouldi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../swportal.html">Software Portal</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Community</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference external" href="https://github.com/intel/dffml">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://intel.github.io/dffml/master/">Master Branch Docs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../publications.html">Publications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contact.html">Contact Us</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Contributing</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../dev_community.html">What To Work On</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../dev_env.html">Getting Set Up To Work On DFFML</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../style.html">Style</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../codebase.html">Codebase Layout And Notes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../git.html">Git and GitHub</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../testing.html">Testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../docs.html">Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../consoletest.html">consoletest Sphinx extension</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../debugging.html">Debugging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../editors/index.html">Setting Up Your Editor</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">Google Summer of Code</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../rubric.html">Proposal Grading Rubric</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="index.html">GSoC 2021</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="index.html#about-dffml">About DFFML</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="index.html#project-ideas">Project Ideas</a></li>
+<li class="toctree-l4"><a class="reference internal" href="index.html#getting-started">Getting Started</a></li>
+<li class="toctree-l4"><a class="reference internal" href="index.html#writing-your-gsoc-application">Writing your GSoC application</a></li>
+<li class="toctree-l4"><a class="reference internal" href="index.html#deadlines">Deadlines</a></li>
+<li class="toctree-l4"><a class="reference internal" href="index.html#contacting-the-dffml-team">Contacting the DFFML team</a></li>
+<li class="toctree-l4"><a class="reference internal" href="index.html#mentors">Mentors</a></li>
+<li class="toctree-l4"><a class="reference internal" href="index.html#thanks">Thanks</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../2020.html">GSoC 2020</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../2019.html">GSoC 2019</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../maintainers.html">Maintainer Docs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../news/index.html">News</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../changelog.html">Changelog</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">DFFML</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Contributing</a> &raquo;</li>
+        
+          <li><a href="../index.html">Google Summer of Code</a> &raquo;</li>
+        
+          <li><a href="index.html">GSoC 2021</a> &raquo;</li>
+        
+      <li>Support Archive Storage for Models</li>
+    
+    
+
+
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            
+              <a href="https://github.com/intel/dffml/blob/master/docs/contributing/gsoc/2021/archive_storage.md" class="fa fa-github"> Edit on GitHub</a>
+            
+          
+        
+      </li>
+    
+
+
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="support-archive-storage-for-models">
+<h1>Support Archive Storage for Models<a class="headerlink" href="#support-archive-storage-for-models" title="Permalink to this headline">¶</a></h1>
+<p>The goal of this project is the modify Models and DataFlows to support saving
+and loading from archives (such as <code class="docutils literal notranslate"><span class="pre">.zip</span></code> and <code class="docutils literal notranslate"><span class="pre">.tar</span></code> for example).</p>
+<p>Currently all DFFML models have a <code class="docutils literal notranslate"><span class="pre">directory</span></code> property, which is where they
+store the contents of the model’s state. It does not currently hold a copy of
+the model’s config.</p>
+<p>We’ll want to modify the Model’s context entry and exit code to have it
+pack/unpack it’s config and its saved state directory from/into the archive at
+<code class="docutils literal notranslate"><span class="pre">location</span></code>.</p>
+<div class="section" id="skills">
+<h2>Skills<a class="headerlink" href="#skills" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Python</p></li>
+</ul>
+</div>
+<div class="section" id="difficulty">
+<h2>Difficulty<a class="headerlink" href="#difficulty" title="Permalink to this headline">¶</a></h2>
+<p>Beginner/Intermediate</p>
+</div>
+<div class="section" id="related-readings">
+<h2>Related Readings<a class="headerlink" href="#related-readings" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>https://intel.github.io/dffml/master/contributing/gsoc/2021/</p></li>
+</ul>
+</div>
+<div class="section" id="getting-started">
+<h2>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Read the contributing guidelines</p>
+<ul>
+<li><p>https://intel.github.io/dffml/master/contributing/index.html</p></li>
+</ul>
+</li>
+<li><p>Go through the quickstart</p>
+<ul>
+<li><p>https://intel.github.io/dffml/master/quickstart/model.html</p></li>
+</ul>
+</li>
+<li><p>Go trough the model tutorials</p>
+<ul>
+<li><p>https://intel.github.io/dffml/master/tutorials/models/</p></li>
+</ul>
+</li>
+<li><p>Go through the model plugins</p>
+<ul>
+<li><p>https://intel.github.io/dffml/master/plugins/dffml_model.html</p></li>
+</ul>
+</li>
+<li><p>Start programming to understand better what will need to happen. The following
+is a rough guide meant to give you some activities that will help you better
+understand what needs to be done so you can write a more complete proposal.</p>
+<ul>
+<li><p>Rename the <code class="docutils literal notranslate"><span class="pre">directory</span></code> property to <code class="docutils literal notranslate"><span class="pre">location</span></code> for all models.</p></li>
+<li><p>On <code class="docutils literal notranslate"><span class="pre">__aenter__()</span></code> of <code class="docutils literal notranslate"><span class="pre">dffml.model.model.Model</span></code>, if <code class="docutils literal notranslate"><span class="pre">location</span></code> has an
+extension, such as zip or tar, extract it to a temporary directory.</p></li>
+<li><p>Write a method, <code class="docutils literal notranslate"><span class="pre">get_directory()</span></code>, which returns the location of the
+temporary directory property on the <code class="docutils literal notranslate"><span class="pre">Model</span></code> class.</p></li>
+<li><p>On <code class="docutils literal notranslate"><span class="pre">__aexit__()</span></code> , pack the model state directory into the <code class="docutils literal notranslate"><span class="pre">location</span></code>, along
+with it’s config.</p></li>
+<li><p>Understand where all the code for models are that will potentially need to
+be changed (<code class="docutils literal notranslate"><span class="pre">dffml/model</span></code> and <code class="docutils literal notranslate"><span class="pre">model/</span></code>)</p></li>
+<li><p>Make this work with test cases for the SLR model.</p></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="potential-mentors">
+<h2>Potential Mentors<a class="headerlink" href="#potential-mentors" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/pdxjohnny">John Andersen</a></p></li>
+<li><p><a class="reference external" href="https://github.com/yashlamba">Yash Lamba</a></p></li>
+<li><p><a class="reference external" href="https://github.com/sakshamarora1">Saksham Arora</a></p></li>
+</ul>
+</div>
+<div class="section" id="tracking-and-discussion">
+<h2>Tracking and Discussion<a class="headerlink" href="#tracking-and-discussion" title="Permalink to this headline">¶</a></h2>
+<p>This project is related to the following issues. Please discuss and ask
+questions in the issue comments. Please also ping mentors on
+<a class="reference external" href="https://gitter.im/dffml/community">Gitter</a> when you post on the following
+issues so that they are sure to see that you’ve commented.</p>
+<ul class="simple">
+<li><p>https://github.com/intel/dffml/issues/662</p></li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="../2020.html" class="btn btn-neutral float-right" title="GSoC 2020" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="automl.html" class="btn btn-neutral float-left" title="Implementing AutoML" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2017 - 2021, Intel.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
