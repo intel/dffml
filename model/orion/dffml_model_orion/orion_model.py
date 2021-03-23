@@ -96,8 +96,6 @@ class OrionModelContext(ModelContext):
             for feature_name in features_list:
                 data_dict[feature_name].append(data.feature(feature_name))
         dataframe = pd.DataFrame(data_dict, columns=features_list)
-        # print(dataframe.info())
-        # print(len(dataframe))
         return dataframe
 
     async def train(self, sources: Sources):
@@ -125,7 +123,7 @@ class OrionModelContext(ModelContext):
     ) -> AsyncIterator[Tuple[Record, bool, float]]:
         self._load_model("pred")
         prediction_data = await self._generate_dataframe(
-            sources, self.test_features
+            sources, self.input_features
         )
         anomalies = self.model.detect(prediction_data)
         async for record in sources.records():
@@ -137,7 +135,9 @@ class OrionModelContext(ModelContext):
             if len(prediction):
                 severity = prediction.iloc[0]["severity"]
                 record.predicted("is_anomaly", True, severity)
-                yield record
+            else:
+                record.predicted("is_anomaly", False, 0)
+            yield record
 
 
 @entrypoint("orion")
