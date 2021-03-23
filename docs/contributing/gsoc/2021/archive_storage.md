@@ -21,7 +21,7 @@ Beginner/Intermediate
 
 ## Related Readings
 
-- https://intel.github.io/dffml/master/docs/contributing/gsoc/2021/
+- https://intel.github.io/dffml/master/contributing/gsoc/2021/
 
 ## Getting Started
 
