@@ -1,7 +1,6 @@
-import stat
 import os
+import stat
 import shutil
-import hashlib
 import pathlib
 import inspect
 import functools
@@ -12,6 +11,7 @@ from typing import List, Union
 
 from .os import chdir
 from .file import validate_file_hash
+from .log import LOGGER, get_download_logger
 
 
 class ProtocolNotAllowedError(Exception):
@@ -41,8 +41,33 @@ class DirectoryNotExtractedError(Exception):
         return f"Failed to extract - {self.directory_path!r}"
 
 
+def progressbar(cur, total=100):
+    """
+    Simple progressbar to show download progress.
+    """
+    percent = cur / total
+    progress = "#" * int(cur / 2)
+
+    download_logger.debug(
+        f"\rDownloading...: [{progress.ljust(50)}] {percent:.2%}\r"
+    )
+
+
+def progress_reporthook(blocknum, blocksize, totalsize):
+    """
+    Serve as a reporthook for monitoring download progress.
+    """
+
+    percent = (
+        min(1.0, 0 if totalsize == 0 else (blocknum * blocksize / totalsize))
+        * 100
+    )
+    progressbar(percent)
+
+
 # Default list of URL protocols allowed
 DEFAULT_PROTOCOL_ALLOWLIST: List[str] = ["https://"]
+download_logger = get_download_logger(LOGGER)
 
 
 def validate_protocol(
@@ -127,6 +152,7 @@ def sync_urlretrieve_and_validate(
             url,
             filename=str(target_path),
             protocol_allowlist=protocol_allowlist,
+            reporthook=progress_reporthook,
         )
     validate_file_hash(
         target_path, expected_sha384_hash=expected_sha384_hash,
