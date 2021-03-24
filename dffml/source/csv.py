@@ -43,6 +43,7 @@ CSV_SOURCE_CONFIG_DEFAULT_KEY = "key"
 CSV_SOURCE_CONFIG_DEFAULT_tag = "untagged"
 CSV_SOURCE_CONFIG_DEFAULT_tag_COLUMN = "tag"
 CSV_SOURCE_CONFIG_DEFAULT_LOADFILES_NAME = None
+CSV_SOURCE_CONFIG_DEFAULT_NOSTRIP = False
 
 
 @config
@@ -51,6 +52,7 @@ class CSVSourceConfig(FileSourceConfig):
     tag: str = CSV_SOURCE_CONFIG_DEFAULT_tag
     tagcol: str = CSV_SOURCE_CONFIG_DEFAULT_tag_COLUMN
     loadfiles: List[str] = CSV_SOURCE_CONFIG_DEFAULT_LOADFILES_NAME
+    nostrip: bool = CSV_SOURCE_CONFIG_DEFAULT_NOSTRIP
 
 
 # CSVSource is a bit of a mess
@@ -101,6 +103,9 @@ class CSVSource(FileSource, MemorySource):
         # If there is no key track row index to be used as key by tag
         index = {}
         for row in dict_reader:
+            # Strip the keys and values of row
+            if not self.config.nostrip:
+                row = {k.strip(): v.strip() for k, v in row.items()}
             # Grab tag from row
             tag = row.get(self.config.tagcol, self.config.tag)
             # Load via ConfigLoaders if loadfiles parameter is given
