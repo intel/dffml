@@ -58,6 +58,10 @@ Uses a CSV file as the source of record feature data
 
   - default: None
 
+- nostrip: String
+
+  - default: False
+
 .. _plugin_source_dffml_db:
 
 db

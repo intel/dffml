@@ -7,6 +7,6 @@ Models
     :caption: Contents:
 
     model
-    log
     accuracy
+    log
     slr
