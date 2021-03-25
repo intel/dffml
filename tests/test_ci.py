@@ -7,6 +7,7 @@ import pathlib
 import unittest
 import platform
 import itertools
+import subprocess
 from typing import List, Optional, Union, Callable
 
 from dffml.plugins import PACKAGE_DIRECTORY_TO_NAME
@@ -263,4 +264,56 @@ class TestCI(unittest.TestCase):
         # auto-deployed to PyPi.
         self.assertListEqual(
             plugins_with_pypi_tokens, sorted(PACKAGE_DIRECTORY_TO_NAME.keys())
+        )
+
+
+class TestSecurity(unittest.TestCase):
+    """
+    Tests to keep our codebase secure
+    """
+
+    def test_hash_usages(self):
+        """
+        Make sure we've audited everywhere hashlib is used
+        """
+
+        output = subprocess.check_output(
+            ["git", "grep", "hashlib", "--", "**/*.py"], cwd=str(REPO_ROOT)
+        ).decode()
+
+        file_name_to_list_of_lines = {}
+        for line in filter(bool, output.split("\n")):
+            filename, line = line.split(":", maxsplit=1)
+            # Skip this file
+            if filename == str(
+                pathlib.Path(__file__).resolve().relative_to(REPO_ROOT)
+            ):
+                continue
+            file_name_to_list_of_lines.setdefault(filename, [])
+            file_name_to_list_of_lines[filename].append(line)
+
+        self.maxDiff = None
+        self.assertDictEqual(
+            file_name_to_list_of_lines,
+            {
+                "dffml/util/crypto.py": [
+                    "import hashlib",
+                    "SECURE_HASH_ALGORITHM = hashlib.sha384",
+                    "INSECURE_HASH_ALGORITHM = hashlib.md5",
+                ],
+                "dffml/util/file.py": [
+                    "    >>> import hashlib",
+                    "    >>> expected_sha384_hash = hashlib.sha384(correct_contents).hexdigest()",
+                ],
+                "feature/auth/dffml_feature_auth/feature/operations.py": [
+                    "import hashlib",
+                    "        # ---- BEGIN Python hashlib docs ----",
+                    "        # ---- END Python hashlib docs ----",
+                    '        hashed_password = hashlib.pbkdf2_hmac("sha384", password, salt, 100000)',
+                ],
+                "operations/deploy/dffml_operations_deploy/operations.py": [
+                    "import hashlib",
+                    "    calculated = hmac.new(key, body, hashlib.sha1).hexdigest()",
+                ],
+            },
         )
