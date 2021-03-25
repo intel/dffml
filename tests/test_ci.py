@@ -128,7 +128,7 @@ class TestGitIgnore(unittest.TestCase):
         )
 
 
-REPO_ROOT = pathlib.Path(__file__).parents[1]
+REPO_ROOT = pathlib.Path(__file__).resolve().parents[1]
 
 
 @unittest.skipUnless(platform.system() == "Linux", "Only runs on Linux")
