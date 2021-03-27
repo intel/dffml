@@ -44,3 +44,44 @@ def iris_training(
                 )
             )
         )
+
+
+@dataset_source("iris.test")
+def iris_test(
+    cache_dir: pathlib.Path = (
+        pathlib.Path("~", ".cache", "dffml", "datasets", "iris")
+        .expanduser()
+        .resolve()
+    )
+):
+    """
+    Examples
+    --------
+
+    >>> from dffml.noasync import load
+    >>> from dffml import iris_test
+    >>>
+    >>> records = list(load(iris_test.source()))
+    >>> print(len(records))
+    30
+    >>> records[0].export()
+    {'key': '0', 'features': {'SepalLength': 5.9, 'SepalWidth': 3.0, 'PetalLength': 4.2, 'PetalWidth': 1.5, 'classification': 1}, 'extra': {}}
+    """
+    with cached_download(
+        "http://download.tensorflow.org/data/iris_test.csv",
+        cache_dir / "test_original.csv",
+        "8c2cda42ce5ce6f977d17d668b1c98a45bfe320175f33e97293c62ab543b3439eab934d8e11b1208de1e4a9eb1957714",
+        protocol_allowlist=["http://"],
+    ) as original_path:
+        # Create a CSV source using header replaced file
+        yield CSVSource(
+            filename=str(
+                find_replace_with_hash_validation(
+                    original_path,
+                    cache_dir / "test.csv",
+                    r".*setosa,versicolor,virginica",
+                    "SepalLength,SepalWidth,PetalLength,PetalWidth,classification",
+                    expected_sha384_hash="4c6c65ca1d0420196626d1a7fb961a4ab770fc2306dad2742f7b08a918bbdfb8ca47a0217cab513f0be18633dc8d5fab",
+                )
+            )
+        )
