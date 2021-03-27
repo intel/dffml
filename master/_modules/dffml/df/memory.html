@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>dffml.df.memory &mdash; DFFML cfadbd0f documentation</title>
+  <title>dffml.df.memory &mdash; DFFML 68aec70e documentation</title>
   
 
   
@@ -65,7 +65,7 @@
             
             
               <div class="version">
-                cfadbd0f
+                68aec70e
               </div>
             
           
@@ -199,7 +199,6 @@
 <span class="kn">import</span> <span class="nn">copy</span>
 <span class="kn">import</span> <span class="nn">asyncio</span>
 <span class="kn">import</span> <span class="nn">secrets</span>
-<span class="kn">import</span> <span class="nn">hashlib</span>
 <span class="kn">import</span> <span class="nn">inspect</span>
 <span class="kn">import</span> <span class="nn">itertools</span>
 <span class="kn">import</span> <span class="nn">traceback</span>
@@ -272,6 +271,7 @@
 <span class="kn">from</span> <span class="nn">..util.cli.arg</span> <span class="kn">import</span> <span class="n">Arg</span>
 <span class="kn">from</span> <span class="nn">..util.data</span> <span class="kn">import</span> <span class="n">ignore_args</span>
 <span class="kn">from</span> <span class="nn">..util.asynchelper</span> <span class="kn">import</span> <span class="n">aenter_stack</span><span class="p">,</span> <span class="n">concurrently</span>
+<span class="kn">from</span> <span class="nn">..util.crypto</span> <span class="kn">import</span> <span class="n">secure_hash</span>
 
 <span class="kn">from</span> <span class="nn">.log</span> <span class="kn">import</span> <span class="n">LOGGER</span>
 
@@ -1055,7 +1055,7 @@
 <span class="sd">        operation.instance_name, and the sorted list of input uuids.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">uid_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">instance_name</span><span class="p">,</span> <span class="n">handle</span><span class="p">]</span> <span class="o">+</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">uids</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha384</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">uid_list</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">secure_hash</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">uid_list</span><span class="p">),</span> <span class="s2">&quot;sha384&quot;</span><span class="p">)</span>
 
 <div class="viewcode-block" id="MemoryRedundancyCheckerContext.unique"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryRedundancyCheckerContext.unique">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">unique</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">operation</span><span class="p">:</span> <span class="n">Operation</span><span class="p">,</span> <span class="n">parameter_set</span><span class="p">:</span> <span class="n">BaseParameterSet</span>

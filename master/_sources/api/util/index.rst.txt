@@ -9,6 +9,7 @@ Utilities
     :caption: Contents:
 
     data
+    crypto
     asynctestcase
     display
     asynchelper

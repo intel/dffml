@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>dffml.cli.dataflow &mdash; DFFML cfadbd0f documentation</title>
+  <title>dffml.cli.dataflow &mdash; DFFML 68aec70e documentation</title>
   
 
   
@@ -65,7 +65,7 @@
             
             
               <div class="version">
-                cfadbd0f
+                68aec70e
               </div>
             
           
@@ -195,7 +195,6 @@
             
   <h1>Source code for dffml.cli.dataflow</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">pathlib</span>
-<span class="kn">import</span> <span class="nn">hashlib</span>
 <span class="kn">import</span> <span class="nn">contextlib</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Any</span>
 
@@ -223,6 +222,7 @@
     <span class="n">KeysCMDConfig</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="kn">from</span> <span class="nn">..util.cli.parser</span> <span class="kn">import</span> <span class="n">ParseInputsAction</span>
+<span class="kn">from</span> <span class="nn">..util.crypto</span> <span class="kn">import</span> <span class="n">insecure_hash</span>
 <span class="kn">from</span> <span class="nn">..base</span> <span class="kn">import</span> <span class="n">config</span><span class="p">,</span> <span class="n">field</span>
 <span class="kn">from</span> <span class="nn">..high_level</span> <span class="kn">import</span> <span class="n">run</span> <span class="k">as</span> <span class="n">run_dataflow</span>
 
@@ -684,45 +684,37 @@
             <span class="c1"># Skip stage if not wanted</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">stages</span> <span class="ow">and</span> <span class="n">stage</span><span class="o">.</span><span class="n">value</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">stages</span><span class="p">:</span>
                 <span class="k">continue</span>
-            <span class="n">stage_node</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">md5</span><span class="p">(</span>
-                <span class="p">(</span><span class="s2">&quot;stage.&quot;</span> <span class="o">+</span> <span class="n">stage</span><span class="o">.</span><span class="n">value</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">()</span>
-            <span class="p">)</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
+            <span class="n">stage_node</span> <span class="o">=</span> <span class="n">insecure_hash</span><span class="p">(</span><span class="s2">&quot;stage.&quot;</span> <span class="o">+</span> <span class="n">stage</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stages</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
                 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;subgraph </span><span class="si">{</span><span class="n">stage_node</span><span class="si">}</span><span class="s2">[</span><span class="si">{</span><span class="n">stage</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">title</span><span class="p">()</span><span class="si">}</span><span class="s2"> Stage]&quot;</span><span class="p">)</span>
                 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;style </span><span class="si">{</span><span class="n">stage_node</span><span class="si">}</span><span class="s2"> fill:#afd388b5,stroke:#a4ca7a&quot;</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">instance_name</span><span class="p">,</span> <span class="n">operation</span> <span class="ow">in</span> <span class="n">dataflow</span><span class="o">.</span><span class="n">operations</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
                 <span class="k">if</span> <span class="n">operation</span><span class="o">.</span><span class="n">stage</span> <span class="o">!=</span> <span class="n">stage</span><span class="p">:</span>
                     <span class="k">continue</span>
-                <span class="n">subgraph_node</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">md5</span><span class="p">(</span>
-                    <span class="p">(</span><span class="s2">&quot;subgraph.&quot;</span> <span class="o">+</span> <span class="n">instance_name</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">()</span>
-                <span class="p">)</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
-                <span class="n">node</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">md5</span><span class="p">(</span><span class="n">instance_name</span><span class="o">.</span><span class="n">encode</span><span class="p">())</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
+                <span class="n">subgraph_node</span> <span class="o">=</span> <span class="n">insecure_hash</span><span class="p">(</span><span class="s2">&quot;subgraph.&quot;</span> <span class="o">+</span> <span class="n">instance_name</span><span class="p">)</span>
+                <span class="n">node</span> <span class="o">=</span> <span class="n">insecure_hash</span><span class="p">(</span><span class="n">instance_name</span><span class="p">)</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">simple</span><span class="p">:</span>
                     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;subgraph </span><span class="si">{</span><span class="n">subgraph_node</span><span class="si">}</span><span class="s2">[</span><span class="si">{</span><span class="n">instance_name</span><span class="si">}</span><span class="s2">]&quot;</span><span class="p">)</span>
                     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;style </span><span class="si">{</span><span class="n">subgraph_node</span><span class="si">}</span><span class="s2"> fill:#fff4de,stroke:#cece71&quot;</span><span class="p">)</span>
                 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">node</span><span class="si">}</span><span class="s2">[</span><span class="si">{</span><span class="n">operation</span><span class="o">.</span><span class="n">instance_name</span><span class="si">}</span><span class="s2">]&quot;</span><span class="p">)</span>
                 <span class="k">for</span> <span class="n">input_name</span> <span class="ow">in</span> <span class="n">operation</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-                    <span class="n">input_node</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">md5</span><span class="p">(</span>
-                        <span class="p">(</span><span class="s2">&quot;input.&quot;</span> <span class="o">+</span> <span class="n">instance_name</span> <span class="o">+</span> <span class="s2">&quot;.&quot;</span> <span class="o">+</span> <span class="n">input_name</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">()</span>
-                    <span class="p">)</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
+                    <span class="n">input_node</span> <span class="o">=</span> <span class="n">insecure_hash</span><span class="p">(</span>
+                        <span class="s2">&quot;input.&quot;</span> <span class="o">+</span> <span class="n">instance_name</span> <span class="o">+</span> <span class="s2">&quot;.&quot;</span> <span class="o">+</span> <span class="n">input_name</span>
+                    <span class="p">)</span>
                     <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">simple</span><span class="p">:</span>
                         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">input_node</span><span class="si">}</span><span class="s2">(</span><span class="si">{</span><span class="n">input_name</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
                         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">input_node</span><span class="si">}</span><span class="s2"> --&gt; </span><span class="si">{</span><span class="n">node</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
                 <span class="k">for</span> <span class="n">output_name</span> <span class="ow">in</span> <span class="n">operation</span><span class="o">.</span><span class="n">outputs</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-                    <span class="n">output_node</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">md5</span><span class="p">(</span>
-                        <span class="p">(</span>
-                            <span class="s2">&quot;output.&quot;</span> <span class="o">+</span> <span class="n">instance_name</span> <span class="o">+</span> <span class="s2">&quot;.&quot;</span> <span class="o">+</span> <span class="n">output_name</span>
-                        <span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">()</span>
-                    <span class="p">)</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
+                    <span class="n">output_node</span> <span class="o">=</span> <span class="n">insecure_hash</span><span class="p">(</span>
+                        <span class="s2">&quot;output.&quot;</span> <span class="o">+</span> <span class="n">instance_name</span> <span class="o">+</span> <span class="s2">&quot;.&quot;</span> <span class="o">+</span> <span class="n">output_name</span>
+                    <span class="p">)</span>
                     <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">simple</span><span class="p">:</span>
                         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">output_node</span><span class="si">}</span><span class="s2">(</span><span class="si">{</span><span class="n">output_name</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
                         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">node</span><span class="si">}</span><span class="s2"> --&gt; </span><span class="si">{</span><span class="n">output_node</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
                 <span class="k">for</span> <span class="n">condition</span> <span class="ow">in</span> <span class="n">operation</span><span class="o">.</span><span class="n">conditions</span><span class="p">:</span>
-                    <span class="n">condition_node</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">md5</span><span class="p">(</span>
-                        <span class="p">(</span>
-                            <span class="s2">&quot;condition.&quot;</span> <span class="o">+</span> <span class="n">instance_name</span> <span class="o">+</span> <span class="s2">&quot;.&quot;</span> <span class="o">+</span> <span class="n">condition</span><span class="o">.</span><span class="n">name</span>
-                        <span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">()</span>
-                    <span class="p">)</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
+                    <span class="n">condition_node</span> <span class="o">=</span> <span class="n">insecure_hash</span><span class="p">(</span>
+                        <span class="s2">&quot;condition.&quot;</span> <span class="o">+</span> <span class="n">instance_name</span> <span class="o">+</span> <span class="s2">&quot;.&quot;</span> <span class="o">+</span> <span class="n">condition</span><span class="o">.</span><span class="n">name</span>
+                    <span class="p">)</span>
                     <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">simple</span><span class="p">:</span>
                         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">condition_node</span><span class="si">}{</span><span class="s1">&#39;{&#39;</span> <span class="o">+</span> <span class="n">condition</span><span class="o">.</span><span class="n">name</span> <span class="o">+</span> <span class="s1">&#39;}&#39;</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
                         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">condition_node</span><span class="si">}</span><span class="s2"> --&gt; </span><span class="si">{</span><span class="n">node</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -737,15 +729,15 @@
             <span class="n">operation</span> <span class="o">=</span> <span class="n">dataflow</span><span class="o">.</span><span class="n">operations</span><span class="p">[</span><span class="n">instance_name</span><span class="p">]</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">stages</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">operation</span><span class="o">.</span><span class="n">stage</span><span class="o">.</span><span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">stages</span><span class="p">:</span>
                 <span class="k">continue</span>
-            <span class="n">node</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">md5</span><span class="p">(</span><span class="n">instance_name</span><span class="o">.</span><span class="n">encode</span><span class="p">())</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
+            <span class="n">node</span> <span class="o">=</span> <span class="n">insecure_hash</span><span class="p">(</span><span class="n">instance_name</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">input_name</span><span class="p">,</span> <span class="n">sources</span> <span class="ow">in</span> <span class="n">input_flow</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
                 <span class="k">for</span> <span class="n">source</span> <span class="ow">in</span> <span class="n">sources</span><span class="p">:</span>
                     <span class="c1"># TODO Put various sources in their own &quot;Inputs&quot; subgraphs</span>
                     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
                         <span class="n">input_definition</span> <span class="o">=</span> <span class="n">operation</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="n">input_name</span><span class="p">]</span>
-                        <span class="n">seed_input_node</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">md5</span><span class="p">(</span>
-                            <span class="p">(</span><span class="n">source</span> <span class="o">+</span> <span class="s2">&quot;.&quot;</span> <span class="o">+</span> <span class="n">input_definition</span><span class="o">.</span><span class="n">name</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">()</span>
-                        <span class="p">)</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
+                        <span class="n">seed_input_node</span> <span class="o">=</span> <span class="n">insecure_hash</span><span class="p">(</span>
+                            <span class="n">source</span> <span class="o">+</span> <span class="s2">&quot;.&quot;</span> <span class="o">+</span> <span class="n">input_definition</span><span class="o">.</span><span class="n">name</span>
+                        <span class="p">)</span>
                         <span class="nb">print</span><span class="p">(</span>
                             <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">seed_input_node</span><span class="si">}</span><span class="s2">(</span><span class="si">{</span><span class="n">source</span><span class="si">}</span><span class="s2">&lt;br&gt;</span><span class="si">{</span><span class="n">input_definition</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">)&quot;</span>
                         <span class="p">)</span>
@@ -754,11 +746,9 @@
                                 <span class="sa">f</span><span class="s2">&quot;style </span><span class="si">{</span><span class="n">seed_input_node</span><span class="si">}</span><span class="s2"> fill:#f6dbf9,stroke:#a178ca&quot;</span>
                             <span class="p">)</span>
                         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">simple</span><span class="p">:</span>
-                            <span class="n">input_node</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">md5</span><span class="p">(</span>
-                                <span class="p">(</span>
-                                    <span class="s2">&quot;input.&quot;</span> <span class="o">+</span> <span class="n">instance_name</span> <span class="o">+</span> <span class="s2">&quot;.&quot;</span> <span class="o">+</span> <span class="n">input_name</span>
-                                <span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">()</span>
-                            <span class="p">)</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
+                            <span class="n">input_node</span> <span class="o">=</span> <span class="n">insecure_hash</span><span class="p">(</span>
+                                <span class="s2">&quot;input.&quot;</span> <span class="o">+</span> <span class="n">instance_name</span> <span class="o">+</span> <span class="s2">&quot;.&quot;</span> <span class="o">+</span> <span class="n">input_name</span>
+                            <span class="p">)</span>
                             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">seed_input_node</span><span class="si">}</span><span class="s2"> --&gt; </span><span class="si">{</span><span class="n">input_node</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
                         <span class="k">else</span><span class="p">:</span>
                             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">seed_input_node</span><span class="si">}</span><span class="s2"> --&gt; </span><span class="si">{</span><span class="n">node</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -773,9 +763,9 @@
                             <span class="n">origin_definition_name</span> <span class="o">=</span> <span class="p">(</span>
                                 <span class="n">origin</span> <span class="o">+</span> <span class="s2">&quot;.&quot;</span> <span class="o">+</span> <span class="n">definition_name</span>
                             <span class="p">)</span>
-                            <span class="n">seed_input_node</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">md5</span><span class="p">(</span>
-                                <span class="n">origin_definition_name</span><span class="o">.</span><span class="n">encode</span><span class="p">()</span>
-                            <span class="p">)</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
+                            <span class="n">seed_input_node</span> <span class="o">=</span> <span class="n">insecure_hash</span><span class="p">(</span>
+                                <span class="n">origin_definition_name</span><span class="o">.</span><span class="n">encode</span>
+                            <span class="p">)</span>
                             <span class="nb">print</span><span class="p">(</span>
                                 <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">seed_input_node</span><span class="si">}</span><span class="s2">(</span><span class="si">{</span><span class="n">source</span><span class="si">}</span><span class="s2">&lt;br&gt;</span><span class="si">{</span><span class="n">origin_definition_name</span><span class="si">}</span><span class="s2">)&quot;</span>
                             <span class="p">)</span>
@@ -784,14 +774,9 @@
                                     <span class="sa">f</span><span class="s2">&quot;style </span><span class="si">{</span><span class="n">seed_input_node</span><span class="si">}</span><span class="s2"> fill:#f6dbf9,stroke:#a178ca&quot;</span>
                                 <span class="p">)</span>
                             <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">simple</span><span class="p">:</span>
-                                <span class="n">input_node</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">md5</span><span class="p">(</span>
-                                    <span class="p">(</span>
-                                        <span class="s2">&quot;input.&quot;</span>
-                                        <span class="o">+</span> <span class="n">instance_name</span>
-                                        <span class="o">+</span> <span class="s2">&quot;.&quot;</span>
-                                        <span class="o">+</span> <span class="n">input_name</span>
-                                    <span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">()</span>
-                                <span class="p">)</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
+                                <span class="n">input_node</span> <span class="o">=</span> <span class="n">insecure_hash</span><span class="p">(</span>
+                                    <span class="s2">&quot;input.&quot;</span> <span class="o">+</span> <span class="n">instance_name</span> <span class="o">+</span> <span class="s2">&quot;.&quot;</span> <span class="o">+</span> <span class="n">input_name</span>
+                                <span class="p">)</span>
                                 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">seed_input_node</span><span class="si">}</span><span class="s2"> --&gt; </span><span class="si">{</span><span class="n">input_node</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
                             <span class="k">else</span><span class="p">:</span>
                                 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">seed_input_node</span><span class="si">}</span><span class="s2"> --&gt; </span><span class="si">{</span><span class="n">node</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -808,67 +793,51 @@
                         <span class="p">):</span>
                             <span class="n">source</span> <span class="o">=</span> <span class="n">source</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
                         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">simple</span><span class="p">:</span>
-                            <span class="n">source_output_node</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">md5</span><span class="p">(</span>
-                                <span class="p">(</span>
-                                    <span class="s2">&quot;output.&quot;</span>
-                                    <span class="o">+</span> <span class="s2">&quot;.&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">source</span><span class="o">.</span><span class="n">items</span><span class="p">())[</span><span class="mi">0</span><span class="p">])</span>
-                                <span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">()</span>
-                            <span class="p">)</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
-                            <span class="n">input_node</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">md5</span><span class="p">(</span>
-                                <span class="p">(</span>
-                                    <span class="s2">&quot;input.&quot;</span> <span class="o">+</span> <span class="n">instance_name</span> <span class="o">+</span> <span class="s2">&quot;.&quot;</span> <span class="o">+</span> <span class="n">input_name</span>
-                                <span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">()</span>
-                            <span class="p">)</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
+                            <span class="n">source_output_node</span> <span class="o">=</span> <span class="n">insecure_hash</span><span class="p">(</span>
+                                <span class="s2">&quot;output.&quot;</span> <span class="o">+</span> <span class="s2">&quot;.&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">source</span><span class="o">.</span><span class="n">items</span><span class="p">())[</span><span class="mi">0</span><span class="p">])</span>
+                            <span class="p">)</span>
+                            <span class="n">input_node</span> <span class="o">=</span> <span class="n">insecure_hash</span><span class="p">(</span>
+                                <span class="s2">&quot;input.&quot;</span> <span class="o">+</span> <span class="n">instance_name</span> <span class="o">+</span> <span class="s2">&quot;.&quot;</span> <span class="o">+</span> <span class="n">input_name</span>
+                            <span class="p">)</span>
+
                             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">source_output_node</span><span class="si">}</span><span class="s2"> --&gt; </span><span class="si">{</span><span class="n">input_node</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
                         <span class="k">else</span><span class="p">:</span>
-                            <span class="n">source_operation_node</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">md5</span><span class="p">(</span>
-                                <span class="nb">list</span><span class="p">(</span><span class="n">source</span><span class="o">.</span><span class="n">keys</span><span class="p">())[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">encode</span><span class="p">()</span>
-                            <span class="p">)</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
+                            <span class="n">source_operation_node</span> <span class="o">=</span> <span class="n">insecure_hash</span><span class="p">(</span>
+                                <span class="nb">list</span><span class="p">(</span><span class="n">source</span><span class="o">.</span><span class="n">keys</span><span class="p">())[</span><span class="mi">0</span><span class="p">]</span>
+                            <span class="p">)</span>
                             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">source_operation_node</span><span class="si">}</span><span class="s2"> --&gt; </span><span class="si">{</span><span class="n">node</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">condition</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">input_flow</span><span class="o">.</span><span class="n">conditions</span><span class="p">):</span>
                 <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">condition</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
                     <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">simple</span><span class="p">:</span>
                         <span class="n">condition_name</span> <span class="o">=</span> <span class="n">operation</span><span class="o">.</span><span class="n">conditions</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">name</span>
-                        <span class="n">seed_condition_node</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">md5</span><span class="p">(</span>
-                            <span class="p">(</span><span class="n">condition</span> <span class="o">+</span> <span class="s2">&quot;.&quot;</span> <span class="o">+</span> <span class="n">condition_name</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">()</span>
-                        <span class="p">)</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
+                        <span class="n">seed_condition_node</span> <span class="o">=</span> <span class="n">insecure_hash</span><span class="p">(</span>
+                            <span class="n">condition</span> <span class="o">+</span> <span class="s2">&quot;.&quot;</span> <span class="o">+</span> <span class="n">condition_name</span>
+                        <span class="p">)</span>
                         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">seed_condition_node</span><span class="si">}</span><span class="s2">(</span><span class="si">{</span><span class="n">condition_name</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
-                        <span class="n">seed_dependent_node</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">md5</span><span class="p">(</span>
-                            <span class="p">(</span>
-                                <span class="s2">&quot;condition.&quot;</span>
-                                <span class="o">+</span> <span class="n">instance_name</span>
-                                <span class="o">+</span> <span class="s2">&quot;.&quot;</span>
-                                <span class="o">+</span> <span class="n">condition_name</span>
-                            <span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">()</span>
-                        <span class="p">)</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
+                        <span class="n">seed_dependent_node</span> <span class="o">=</span> <span class="n">insecure_hash</span><span class="p">(</span>
+                            <span class="s2">&quot;condition.&quot;</span> <span class="o">+</span> <span class="n">instance_name</span> <span class="o">+</span> <span class="s2">&quot;.&quot;</span> <span class="o">+</span> <span class="n">condition_name</span>
+                        <span class="p">)</span>
                         <span class="nb">print</span><span class="p">(</span>
                             <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">seed_condition_node</span><span class="si">}</span><span class="s2"> --&gt; </span><span class="si">{</span><span class="n">seed_dependent_node</span><span class="si">}</span><span class="s2">&quot;</span>
                         <span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">simple</span><span class="p">:</span>
-                        <span class="n">dependee_node</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">md5</span><span class="p">(</span>
-                            <span class="p">(</span>
-                                <span class="s2">&quot;output.&quot;</span>
-                                <span class="o">+</span> <span class="s2">&quot;.&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">condition</span><span class="o">.</span><span class="n">items</span><span class="p">())[</span><span class="mi">0</span><span class="p">])</span>
-                            <span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">()</span>
-                        <span class="p">)</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
-                        <span class="n">dependent_node</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">md5</span><span class="p">(</span>
-                            <span class="p">(</span>
-                                <span class="s2">&quot;condition.&quot;</span>
-                                <span class="o">+</span> <span class="n">instance_name</span>
-                                <span class="o">+</span> <span class="s2">&quot;.&quot;</span>
-                                <span class="o">+</span> <span class="n">dataflow</span><span class="o">.</span><span class="n">operations</span><span class="p">[</span>
-                                    <span class="nb">list</span><span class="p">(</span><span class="n">condition</span><span class="o">.</span><span class="n">keys</span><span class="p">())[</span><span class="mi">0</span><span class="p">]</span>
-                                <span class="p">]</span>
-                                <span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="n">condition</span><span class="o">.</span><span class="n">values</span><span class="p">())[</span><span class="mi">0</span><span class="p">]]</span>
-                                <span class="o">.</span><span class="n">name</span>
-                            <span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">()</span>
-                        <span class="p">)</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
+                        <span class="n">dependee_node</span> <span class="o">=</span> <span class="n">insecure_hash</span><span class="p">(</span>
+                            <span class="s2">&quot;output.&quot;</span> <span class="o">+</span> <span class="s2">&quot;.&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">condition</span><span class="o">.</span><span class="n">items</span><span class="p">())[</span><span class="mi">0</span><span class="p">])</span>
+                        <span class="p">)</span>
+                        <span class="n">dependent_node</span> <span class="o">=</span> <span class="n">insecure_hash</span><span class="p">(</span>
+                            <span class="s2">&quot;condition.&quot;</span>
+                            <span class="o">+</span> <span class="n">instance_name</span>
+                            <span class="o">+</span> <span class="s2">&quot;.&quot;</span>
+                            <span class="o">+</span> <span class="n">dataflow</span><span class="o">.</span><span class="n">operations</span><span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="n">condition</span><span class="o">.</span><span class="n">keys</span><span class="p">())[</span><span class="mi">0</span><span class="p">]]</span>
+                            <span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="n">condition</span><span class="o">.</span><span class="n">values</span><span class="p">())[</span><span class="mi">0</span><span class="p">]]</span>
+                            <span class="o">.</span><span class="n">name</span>
+                        <span class="p">)</span>
                         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">dependee_node</span><span class="si">}</span><span class="s2"> --&gt; </span><span class="si">{</span><span class="n">dependent_node</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
                     <span class="k">else</span><span class="p">:</span>
-                        <span class="n">dependee_operation_node</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">md5</span><span class="p">(</span>
-                            <span class="nb">list</span><span class="p">(</span><span class="n">condition</span><span class="o">.</span><span class="n">keys</span><span class="p">())[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">encode</span><span class="p">()</span>
-                        <span class="p">)</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
+                        <span class="n">dependee_operation_node</span> <span class="o">=</span> <span class="n">insecure_hash</span><span class="p">(</span>
+                            <span class="nb">list</span><span class="p">(</span><span class="n">condition</span><span class="o">.</span><span class="n">keys</span><span class="p">())[</span><span class="mi">0</span><span class="p">]</span>
+                        <span class="p">)</span>
                         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">dependee_operation_node</span><span class="si">}</span><span class="s2"> --&gt; </span><span class="si">{</span><span class="n">node</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stages</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;end&quot;</span><span class="p">)</span>
