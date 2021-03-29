@@ -4,7 +4,6 @@
 Base class for Scikit models
 """
 import json
-import hashlib
 import pathlib
 import logging
 import importlib
@@ -30,6 +29,7 @@ from dffml.model.accuracy import Accuracy
 from dffml.source.source import Sources, SourcesContext
 from dffml.model.model import ModelConfig, ModelContext, Model, ModelNotTrained
 from dffml.feature.feature import Features, Feature
+from dffml.util.crypto import secure_hash
 
 
 class ScikitConfig(ModelConfig, NamedTuple):
@@ -64,9 +64,9 @@ class ScikitContext(ModelContext):
                 if k not in ["features", "tcluster", "predict"]
             ]
         )
-        return hashlib.sha384(
-            "".join([params] + self.features).encode()
-        ).hexdigest()
+        return secure_hash(
+            "".join([params] + self.features), algorithm="sha384"
+        )
 
     @property
     def _filepath(self):

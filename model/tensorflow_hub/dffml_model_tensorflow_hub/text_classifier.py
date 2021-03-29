@@ -5,7 +5,6 @@ Description of what this model does
 """
 # TODO Add docstrings
 import os
-import hashlib
 import pathlib
 import importlib
 from typing import AsyncIterator, Tuple, Any, List, Type
@@ -17,6 +16,7 @@ os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
 from dffml.record import Record
 from dffml.model.accuracy import Accuracy
 from dffml.util.entrypoint import entrypoint
+from dffml.util.crypto import secure_hash
 from dffml.base import config, field
 from dffml.feature.feature import Feature, Features
 from dffml.source.source import Sources, SourcesContext
@@ -118,7 +118,7 @@ class TextClassifierContext(ModelContext):
             str(len(self.cids)),
             self.parent.config.model_path,
         ]
-        model = hashlib.sha384("".join(_to_hash).encode("utf-8")).hexdigest()
+        model = secure_hash("".join(_to_hash), algorithm="sha384")
         # Needed to save updated model
         if not os.path.isdir(self.parent.config.directory):
             raise NotADirectoryError(

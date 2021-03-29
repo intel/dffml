@@ -5,7 +5,6 @@ Base class for VW models
 """
 import os
 import json
-import hashlib
 from pathlib import Path
 from typing import AsyncIterator, Tuple, Any, List
 
@@ -19,6 +18,7 @@ from dffml.record import Record
 from dffml.model.accuracy import Accuracy
 from dffml.source.source import Sources, SourcesContext
 from dffml.util.entrypoint import entrypoint
+from dffml.util.crypto import secure_hash
 from dffml.base import config, field
 from dffml.feature.feature import Features, Feature
 from dffml.model.model import ModelContext, Model, ModelNotTrained
@@ -141,9 +141,9 @@ class VWContext(ModelContext):
             ]
         )
         params = "".join(params)
-        return hashlib.sha384(
-            "".join([params] + self.features).encode()
-        ).hexdigest()
+        return secure_hash(
+            "".join([params] + self.features), algorithm="sha384"
+        )
 
     def applicable_features(self, features):
         usable = []
@@ -449,7 +449,7 @@ class VWModel(Model):
     def _filename(self):
         return os.path.join(
             self.config.directory,
-            hashlib.sha384(self.config.predict.name.encode()).hexdigest()
+            secure_hash(self.config.predict.name, algorithm="sha384")
             + ".json",
         )
 

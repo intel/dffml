@@ -1,7 +1,8 @@
 import re
-import hashlib
 import pathlib
 from typing import Union, Tuple
+
+from .crypto import SECURE_HASH_ALGORITHM
 
 
 class NoHashToUseForValidationSuppliedError(Exception):
@@ -81,7 +82,7 @@ def validate_file_hash(
     filepath = pathlib.Path(filepath)
     if expected_sha384_hash is None:
         raise NoHashToUseForValidationSuppliedError(filepath)
-    filehash = hashlib.sha384()
+    filehash = SECURE_HASH_ALGORITHM()
     with open(filepath, "rb") as fileobj:
         bytes_read = fileobj.read(chunk_size)
         filehash.update(bytes_read)
