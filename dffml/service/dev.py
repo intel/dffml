@@ -4,6 +4,7 @@ import sys
 import ast
 import json
 import pydoc
+import runpy
 import shutil
 import string
 import asyncio
@@ -17,7 +18,9 @@ import itertools
 import subprocess
 import contextlib
 import dataclasses
+import http.server
 import configparser
+import socketserver
 import pkg_resources
 import unittest.mock
 import urllib.request
@@ -33,6 +36,7 @@ from ..util.cli.cmd import CMD
 from ..util.entrypoint import load
 from ..base import MissingConfig, config as configdataclass, field
 from ..util.packaging import is_develop
+from ..util.net import cached_download
 from ..util.data import traverse_config_get, export
 from ..df.types import Input, DataFlow
 from ..df.memory import MemoryOrchestrator
@@ -753,7 +757,7 @@ class BumpPackages(CMD):
 class PinDepsConfig:
     logs: pathlib.Path = field("Path to CI log zip file")
     update: bool = field(
-        "Update all requirements.txt files with pinned dependneices",
+        "Update all requirements.txt files with pinned dependencies",
         default=False,
     )
 
@@ -1056,6 +1060,96 @@ class Bump(CMD):
     packages = BumpPackages
 
 
+class SphinxBuildError(Exception):
+    """
+    Raised when sphinx-build command exits with a non-zero error code.
+    """
+
+    def __str__(self):
+        return "[ERROR] Failed run sphinx, is it installed (pip install -U .[dev])?"
+
+
+class MakeDocs(CMD):
+    """
+    Generate docs of the complete package 
+    """
+
+    async def run(self):
+
+        root = Path(__file__).parents[2]
+
+        pages_path = root / "pages"
+
+        shutil.rmtree(pages_path, ignore_errors=True)
+
+        docs_path = root / "docs"
+
+        files_to_check = [
+            ("changelog.md", "CHANGELOG.md"),
+            ("shouldi.md", "examples/shouldi/README.md"),
+            ("swportal.rst", "examples/swportal/README.rst"),
+            (
+                "contributing/consoletest.md",
+                "dffml/util/testing/consoletest/README.md",
+            ),
+        ]
+
+        for symlink, source in files_to_check:
+            file_path = docs_path / symlink
+            if not file_path.exists():
+                file_path.symlink_to(root / source)
+
+        # HTTP Service Docs
+        service_path = docs_path / "plugins/service"
+        service_path.mkdir(parents=True, exist_ok=True)
+        http_docs_pth = service_path / "http"
+        os.unlink(http_docs_pth)
+        http_docs_pth.symlink_to(root / "service/http/docs")
+
+        # Main Docs
+        runpy.run_path(root / "scripts/docs.py")
+        runpy.run_path(root / "scripts/docs_api.py")
+
+        cmd = ["sphinx-build", "-W", "-b", "html", "docs", "pages"]
+        print(f"$ {' '.join(cmd)}")
+        proc = await asyncio.create_subprocess_exec(*cmd)
+        await proc.wait()
+        if proc.returncode != 0:
+            raise SphinxBuildError
+
+        images_path = docs_path / "images"
+        images_set = set(images_path.iterdir())
+        target_set = set(pages_path.iterdir())
+
+        files_to_copy = list(images_set - target_set)
+        for file in files_to_copy:
+            shutil.copy(file, pages_path)
+
+        copybutton_path = pages_path / "_static/copybutton.js"
+
+        with cached_download(
+            "https://raw.githubusercontent.com/python/python-docs-theme/master/python_docs_theme/static/copybutton.js",
+            copybutton_path,
+            "061b550f64fb65ccb73fbe61ce15f49c17bc5f30737f42bf3c9481c89f7996d0004a11bf283d6bd26cf0b65130fc1d4b",
+        ) as _:
+            pass
+
+        nojekyll_path = pages_path / ".nojekyll"
+        nojekyll_path.touch(exist_ok=True)
+
+        if os.environ.get("HTTP") is not None:
+            PORT = 8080
+
+            class Handler(http.server.SimpleHTTPRequestHandler):
+                def __init__(self, *args, **kwargs):
+                    super().__init__(
+                        *args, directory=str(pages_path), **kwargs
+                    )
+
+            with socketserver.TCPServer(("", PORT), Handler) as httpd:
+                httpd.serve_forever()
+
+
 class Develop(CMD):
     """
     Development utilities for hacking on DFFML itself
@@ -1071,3 +1165,4 @@ class Develop(CMD):
     setuppy = SetupPy
     bump = Bump
     ci = CI
+    docs = MakeDocs
