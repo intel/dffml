@@ -1086,6 +1086,12 @@ class MakeDocs(CMD):
 
     CONFIG = MakeDocsConfig
 
+    async def _exec_cmd(self, cmd: List[str]) -> int:
+        print(f"$ {' '.join(cmd)}")
+        proc = await asyncio.create_subprocess_exec(*cmd)
+        await proc.wait()
+        return proc.returncode
+
     async def run(self):
         root = Path(__file__).parents[2]
         pages_path = root / "pages"
@@ -1118,8 +1124,13 @@ class MakeDocs(CMD):
         http_docs_pth.symlink_to(root / "service" / "http" / "docs")
 
         # Main Docs
-        runpy.run_path(root / "scripts" / "docs.py")
-        runpy.run_path(root / "scripts" / "docs_api.py")
+        scripts_path = root / "scripts"
+        scripts_to_run = ["docs.py", "docs_api.py"]
+        for script in scripts_to_run:
+            cmd = [sys.executable, str(scripts_path / script)]
+            returncode = await self._exec_cmd(cmd)
+            if returncode != 0:
+                raise RuntimeError
 
         cmd = [
             f"{[e.name  for e in pkg_resources.iter_entry_points('console_scripts') if e.name.startswith('sphinx-build')][0]}",
@@ -1129,10 +1140,8 @@ class MakeDocs(CMD):
             "docs",
             "pages",
         ]
-        print(f"$ {' '.join(cmd)}")
-        proc = await asyncio.create_subprocess_exec(*cmd)
-        await proc.wait()
-        if proc.returncode != 0:
+        returncode = await self._exec_cmd(cmd)
+        if returncode != 0:
             raise SphinxBuildError
 
         images_path = docs_path / "images"
