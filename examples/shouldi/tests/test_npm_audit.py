@@ -18,4 +18,4 @@ class TestRunNPMAuditOp(AsyncTestCase):
                     / "javascript-algorithms-ba2d8dc4a8e27659c1420fe52390cb7981df4a94"
                 )
             )
-            self.assertEqual(results["report"]["high"], 2941)
+            self.assertGreater(results["report"]["high"], 2941)
