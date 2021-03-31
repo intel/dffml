@@ -1,12 +1,21 @@
 import sys
+import json
 import pathlib
 import argparse
 import contextlib
+import dataclasses
 from typing import List
 
-from .parser import parse_nodes
+from .parser import parse_nodes, Node
 from .runner import run_nodes
 from .util import code_block_to_dict, literalinclude_to_dict
+
+
+class JSONEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, Node):
+            return dataclasses.asdict(obj)
+        return json.JSONEncoder.default(self, obj)
 
 
 async def main(argv: List[str]) -> None:
@@ -16,6 +25,12 @@ async def main(argv: List[str]) -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "infile", type=argparse.FileType("r", encoding="UTF-8")
+    )
+    parser.add_argument(
+        "--parse",
+        action="store_true",
+        default=False,
+        help="Dump parsed nodes as JSON and exit without running",
     )
     parser.add_argument("--root", type=pathlib.Path, default=pathlib.Path(""))
     parser.add_argument("--docs", type=pathlib.Path, default=pathlib.Path(""))
@@ -42,9 +57,13 @@ async def main(argv: List[str]) -> None:
         exec(args.setup, local_variables, local_variables)
         args.setup = local_variables["setup"]
 
-    nodes = []
+    nodes = list(parse_nodes(args.infile.read()))
 
-    for node in parse_nodes(args.infile.read()):
+    if args.parse:
+        print(json.dumps(nodes, indent=4, sort_keys=True, cls=JSONEncoder))
+        return
+
+    for node in nodes:
         if not node.options.get("test", False):
             continue
         if node.directive == "code-block":
