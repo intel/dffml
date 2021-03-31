@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>consoletest Sphinx extension &mdash; DFFML 68aec70e documentation</title>
+  <title>consoletest Sphinx extension &mdash; DFFML 9b8ac1f0 documentation</title>
   
 
   
@@ -66,7 +66,7 @@
             
             
               <div class="version">
-                68aec70e
+                9b8ac1f0
               </div>
             
           
@@ -243,12 +243,12 @@ intended results.</p>
 </ul>
 <div class="section" id="example">
 <h2>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h2>
-<p>Each <code class="docutils literal notranslate"><span class="pre">.rst</span></code>, <code class="docutils literal notranslate"><span class="pre">.md</span></code>, .etc file will get it’s own temporary directory in which the
-test will run.</p>
-<p>One “test” is the running of all directives in a file marked with the <code class="docutils literal notranslate"><span class="pre">:test:</span></code>
-option.</p>
-<p>We can run <code class="docutils literal notranslate"><span class="pre">consoletest</span></code> on a file by invoicing it as a Python module. We’ll
-test the following command in this document by running:</p>
+<p>We can run <code class="docutils literal notranslate"><span class="pre">consoletest</span></code> on a file by invoking it as a Python module.</p>
+<p>If you want to see what will get parsed before it’s run, add the <code class="docutils literal notranslate"><span class="pre">--parse</span></code>
+command line flag. This will dump the parsed directives as JSON without running.</p>
+<p>We can run all the ReStructuredText directives with <code class="docutils literal notranslate"><span class="pre">:test:</span></code> options by passing
+the file with the directives as an argument to the CLI. A temporary directory
+will be created in which the test will run.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python -m dffml.util.testing.consoletest dffml/util/testing/consoletest/README.md
 </pre></div>
 </div>
