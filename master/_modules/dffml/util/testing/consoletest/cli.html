@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>dffml.util.testing.consoletest.cli &mdash; DFFML 9b8ac1f0 documentation</title>
+  <title>dffml.util.testing.consoletest.cli &mdash; DFFML 39778992 documentation</title>
   
 
   
@@ -65,7 +65,7 @@
             
             
               <div class="version">
-                9b8ac1f0
+                39778992
               </div>
             
           
@@ -195,23 +195,14 @@
             
   <h1>Source code for dffml.util.testing.consoletest.cli</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">sys</span>
-<span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">pathlib</span>
 <span class="kn">import</span> <span class="nn">argparse</span>
 <span class="kn">import</span> <span class="nn">contextlib</span>
-<span class="kn">import</span> <span class="nn">dataclasses</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
 
-<span class="kn">from</span> <span class="nn">.parser</span> <span class="kn">import</span> <span class="n">parse_nodes</span><span class="p">,</span> <span class="n">Node</span>
+<span class="kn">from</span> <span class="nn">.parser</span> <span class="kn">import</span> <span class="n">parse_nodes</span>
 <span class="kn">from</span> <span class="nn">.runner</span> <span class="kn">import</span> <span class="n">run_nodes</span>
 <span class="kn">from</span> <span class="nn">.util</span> <span class="kn">import</span> <span class="n">code_block_to_dict</span><span class="p">,</span> <span class="n">literalinclude_to_dict</span>
-
-
-<div class="viewcode-block" id="JSONEncoder"><a class="viewcode-back" href="../../../../../api/util/testing/consoletest/cli.html#dffml.util.testing.consoletest.cli.JSONEncoder">[docs]</a><span class="k">class</span> <span class="nc">JSONEncoder</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">JSONEncoder</span><span class="p">):</span>
-<div class="viewcode-block" id="JSONEncoder.default"><a class="viewcode-back" href="../../../../../api/util/testing/consoletest/cli.html#dffml.util.testing.consoletest.cli.JSONEncoder.default">[docs]</a>    <span class="k">def</span> <span class="nf">default</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">Node</span><span class="p">):</span>
-            <span class="k">return</span> <span class="n">dataclasses</span><span class="o">.</span><span class="n">asdict</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">JSONEncoder</span><span class="o">.</span><span class="n">default</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">)</span></div></div>
 
 
 <div class="viewcode-block" id="main"><a class="viewcode-back" href="../../../../../api/util/testing/consoletest/cli.html#dffml.util.testing.consoletest.cli.main">[docs]</a><span class="k">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">argv</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -221,12 +212,6 @@
     <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">()</span>
     <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
         <span class="s2">&quot;infile&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="n">argparse</span><span class="o">.</span><span class="n">FileType</span><span class="p">(</span><span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;UTF-8&quot;</span><span class="p">)</span>
-    <span class="p">)</span>
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
-        <span class="s2">&quot;--parse&quot;</span><span class="p">,</span>
-        <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
-        <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Dump parsed nodes as JSON and exit without running&quot;</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--root&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">))</span>
     <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--docs&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">))</span>
@@ -253,13 +238,9 @@
         <span class="n">exec</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">setup</span><span class="p">,</span> <span class="n">local_variables</span><span class="p">,</span> <span class="n">local_variables</span><span class="p">)</span>
         <span class="n">args</span><span class="o">.</span><span class="n">setup</span> <span class="o">=</span> <span class="n">local_variables</span><span class="p">[</span><span class="s2">&quot;setup&quot;</span><span class="p">]</span>
 
-    <span class="n">nodes</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">parse_nodes</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">infile</span><span class="o">.</span><span class="n">read</span><span class="p">()))</span>
+    <span class="n">nodes</span> <span class="o">=</span> <span class="p">[]</span>
 
-    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">parse</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">nodes</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">sort_keys</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="bp">cls</span><span class="o">=</span><span class="n">JSONEncoder</span><span class="p">))</span>
-        <span class="k">return</span>
-
-    <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">nodes</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">parse_nodes</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">infile</span><span class="o">.</span><span class="n">read</span><span class="p">()):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">node</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;test&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
             <span class="k">continue</span>
         <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">directive</span> <span class="o">==</span> <span class="s2">&quot;code-block&quot;</span><span class="p">:</span>

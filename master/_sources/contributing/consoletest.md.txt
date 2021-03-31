@@ -17,14 +17,14 @@ intended results.
 
 ## Example
 
-We can run `consoletest` on a file by invoking it as a Python module.
+Each `.rst`, `.md`, .etc file will get it's own temporary directory in which the
+test will run.
 
-If you want to see what will get parsed before it's run, add the `--parse`
-command line flag. This will dump the parsed directives as JSON without running.
+One "test" is the running of all directives in a file marked with the `:test:`
+option.
 
-We can run all the ReStructuredText directives with `:test:` options by passing
-the file with the directives as an argument to the CLI. A temporary directory
-will be created in which the test will run.
+We can run `consoletest` on a file by invoicing it as a Python module. We'll
+test the following command in this document by running:
 
 ```console
 $ python -m dffml.util.testing.consoletest dffml/util/testing/consoletest/README.md
