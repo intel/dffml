@@ -18,18 +18,18 @@ CLI and other services.
     :maxdepth: 2
     :caption: Contents:
 
-    wrapper
-    df
-    memory
-    json
     idx3
     source
+    wrapper
     idx1
-    db
-    dir
+    file
+    ini
     csv
     op
-    ini
+    memory
+    df
+    db
+    dir
     log
-    file
+    json
     dataset/index

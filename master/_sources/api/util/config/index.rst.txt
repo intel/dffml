@@ -6,6 +6,6 @@ Util Config
     :caption: Contents:
 
     fields
-    exceptions
-    numpy
     inspect
+    numpy
+    exceptions

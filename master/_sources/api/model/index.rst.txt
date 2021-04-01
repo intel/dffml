@@ -8,5 +8,5 @@ Models
 
     model
     accuracy
-    log
     slr
+    log
