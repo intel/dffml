@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Calls to hashlib now go through helper functions
 ### Fixed
 - Record object key properties are now always strings
+- Download progressbar only reports min 1% changes, to avoid flooding logs
 
 ## [0.4.0] - 2021-02-18
 ### Added
