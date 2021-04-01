@@ -7,5 +7,6 @@ https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions
 .. toctree::
     :titlesonly:
 
+    0001-2nd-and-3rd-party-plugins
     0002-Object-Loading-and-Instantiation-in-Examples
     0003-Config-Property-Mutable-vs-Immutable
