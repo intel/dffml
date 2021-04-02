@@ -41,15 +41,13 @@ class DirectoryNotExtractedError(Exception):
         return f"Failed to extract - {self.directory_path!r}"
 
 
-def progressbar(cur, total=100):
+def progressbar(percent):
     """
     Simple progressbar to show download progress.
     """
-    percent = cur / total
-    progress = "#" * int(cur / 2)
-
+    progress = "#" * int(percent / 2)
     download_logger.debug(
-        f"\rDownloading...: [{progress.ljust(50)}] {percent:.2%}\r"
+        f"\rDownloading...: [{progress.ljust(50)}] {int(percent)}%\r"
     )
 
 
@@ -57,7 +55,6 @@ def progress_reporthook(blocknum, blocksize, totalsize):
     """
     Serve as a reporthook for monitoring download progress.
     """
-
     percent = (
         min(1.0, 0 if totalsize == 0 else (blocknum * blocksize / totalsize))
         * 100
