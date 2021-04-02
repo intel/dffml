@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>dffml.util.net &mdash; DFFML a13c7f15 documentation</title>
+  <title>dffml.util.net &mdash; DFFML b66b8bd2 documentation</title>
   
 
   
@@ -65,7 +65,7 @@
             
             
               <div class="version">
-                a13c7f15
+                b66b8bd2
               </div>
             
           
@@ -237,15 +237,13 @@
         <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;Failed to extract - </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">directory_path</span><span class="si">!r}</span><span class="s2">&quot;</span></div>
 
 
-<div class="viewcode-block" id="progressbar"><a class="viewcode-back" href="../../../api/util/net.html#dffml.util.net.progressbar">[docs]</a><span class="k">def</span> <span class="nf">progressbar</span><span class="p">(</span><span class="n">cur</span><span class="p">,</span> <span class="n">total</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
+<div class="viewcode-block" id="progressbar"><a class="viewcode-back" href="../../../api/util/net.html#dffml.util.net.progressbar">[docs]</a><span class="k">def</span> <span class="nf">progressbar</span><span class="p">(</span><span class="n">percent</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Simple progressbar to show download progress.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">percent</span> <span class="o">=</span> <span class="n">cur</span> <span class="o">/</span> <span class="n">total</span>
-    <span class="n">progress</span> <span class="o">=</span> <span class="s2">&quot;#&quot;</span> <span class="o">*</span> <span class="nb">int</span><span class="p">(</span><span class="n">cur</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
-
+    <span class="n">progress</span> <span class="o">=</span> <span class="s2">&quot;#&quot;</span> <span class="o">*</span> <span class="nb">int</span><span class="p">(</span><span class="n">percent</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
     <span class="n">download_logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
-        <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\r</span><span class="s2">Downloading...: [</span><span class="si">{</span><span class="n">progress</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span><span class="si">}</span><span class="s2">] </span><span class="si">{</span><span class="n">percent</span><span class="si">:</span><span class="s2">.2%</span><span class="si">}</span><span class="se">\r</span><span class="s2">&quot;</span>
+        <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\r</span><span class="s2">Downloading...: [</span><span class="si">{</span><span class="n">progress</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span><span class="si">}</span><span class="s2">] </span><span class="si">{</span><span class="nb">int</span><span class="p">(</span><span class="n">percent</span><span class="p">)</span><span class="si">}</span><span class="s2">%</span><span class="se">\r</span><span class="s2">&quot;</span>
     <span class="p">)</span></div>
 
 
@@ -253,7 +251,6 @@
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Serve as a reporthook for monitoring download progress.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-
     <span class="n">percent</span> <span class="o">=</span> <span class="p">(</span>
         <span class="nb">min</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mi">0</span> <span class="k">if</span> <span class="n">totalsize</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="p">(</span><span class="n">blocknum</span> <span class="o">*</span> <span class="n">blocksize</span> <span class="o">/</span> <span class="n">totalsize</span><span class="p">))</span>
         <span class="o">*</span> <span class="mi">100</span>
