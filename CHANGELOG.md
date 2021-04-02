@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Added
 - Consolidate test case classes
+- Pandas DataFrame's can now be passed directly to high level APIs
 - Tutorial on how to load models dynamically
   https://intel.github.io/dffml/tutorials/models/load.html
 - Download progressbar in `util/net.py`
