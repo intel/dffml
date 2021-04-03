@@ -1072,6 +1072,9 @@ class SphinxBuildError(Exception):
 
 @configdataclass
 class MakeDocsConfig:
+    target_dir: Path = field(
+        "Path to target directory for saving docs", default=None
+    )
     port: int = field("PORT for the local docs server", default=8080)
     http: str = field(
         "If set  a SimpleHTTP server would be started to show generated docs.",
@@ -1094,7 +1097,11 @@ class MakeDocs(CMD):
 
     async def run(self):
         root = Path(__file__).parents[2]
-        pages_path = root / "pages"
+        pages_path = (
+            root / "pages"
+            if self.target_dir is None
+            else Path(self.target_dir)
+        )
         shutil.rmtree(pages_path, ignore_errors=True)
 
         docs_path = root / "docs"
@@ -1133,12 +1140,16 @@ class MakeDocs(CMD):
                 raise RuntimeError
 
         cmd = [
-            f"{[e.name  for e in pkg_resources.iter_entry_points('console_scripts') if e.name.startswith('sphinx-build')][0]}",
+            [
+                e.name
+                for e in pkg_resources.iter_entry_points("console_scripts")
+                if e.name.startswith("sphinx-build")
+            ][0],
             "-W",
             "-b",
             "html",
             "docs",
-            "pages",
+            str(pages_path),
         ]
         returncode = await self._exec_cmd(cmd)
         if returncode != 0:
