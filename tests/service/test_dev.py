@@ -24,13 +24,12 @@ from dffml.service.dev import (
     BumpPackages,
     MissingDependenciesError,
     Install,
-    PinDeps,
     VersionNotFoundError,
     RCMissingHyphen,
+    SphinxBuildError,
 )
 from dffml.util.os import chdir
 from dffml.util.skel import Skel
-from dffml.util.net import cached_download_unpack_archive
 from dffml.util.packaging import is_develop
 from dffml.util.asynctestcase import AsyncTestCase, IntegrationCLITestCase
 
@@ -371,3 +370,54 @@ class TestInstall(AsyncTestCase):
             Install.dep_check(
                 {("model", "vowpalWabbit"): {"feedface": lambda: False}}, []
             )
+
+
+class TestMakeDocs(AsyncTestCase):
+
+    root = pathlib.Path(__file__).parents[2]
+    docs_root = root / "docs"
+
+    symlinks_to_chk = [
+        (("changelog.md",), ("CHANGELOG.md",)),
+        (("shouldi.md",), ("examples", "shouldi", "README.md",)),
+        (("swportal.rst",), ("examples", "swportal", "README.rst",)),
+        (
+            ("contributing", "consoletest.md",),
+            ("dffml", "util", "testing", "consoletest", "README.md",),
+        ),
+        (("plugins", "service", "http",), ("service", "http", "docs",),),
+    ]
+
+    files_to_check = [
+        (file_name,) for file_name in os.listdir(docs_root / "images")
+    ] + [("_static", "copybutton.js",), (".nojekyll",)]
+
+    async def test_files(self):
+        with tempfile.TemporaryDirectory() as tempdir:
+            await Develop.cli("docs", "-target-dir", tempdir)
+
+            for symlink, source in self.symlinks_to_chk:
+                symlink_path = self.docs_root.joinpath(*symlink)
+                source_path = self.root.joinpath(*source)
+                self.assertTrue(symlink_path.exists())
+                self.assertTrue(symlink_path.resolve() == source_path)
+
+            for file_name in self.files_to_check:
+                file_path = pathlib.Path(tempdir).joinpath(*file_name)
+                self.assertTrue(file_path.exists())
+
+    async def test_cmd_seq(self):
+        stdout = io.StringIO()
+        with contextlib.redirect_stdout(stdout):
+            with tempfile.TemporaryDirectory() as tempdir:
+                await Develop.cli("docs", "-target-dir", tempdir)
+                self.assertEqual(
+                    stdout.getvalue().strip(),
+                    inspect.cleandoc(
+                        f"""
+                        $ {sys.executable} {self.root}/scripts/docs.py
+                        $ {sys.executable} {self.root}/scripts/docs_api.py
+                        $ sphinx-build -W -b html docs {tempdir}
+                        """
+                    ),
+                )
