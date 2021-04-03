@@ -393,6 +393,9 @@ class TestMakeDocs(AsyncTestCase):
     ] + [("_static", "copybutton.js",), (".nojekyll",)]
 
     async def test_files(self):
+        if not is_develop("dffml"):
+            self.skipTest("dffml not installed in development mode")
+
         with tempfile.TemporaryDirectory() as tempdir:
             await Develop.cli("docs", "-target-dir", tempdir)
 
@@ -407,6 +410,9 @@ class TestMakeDocs(AsyncTestCase):
                 self.assertTrue(file_path.exists())
 
     async def test_cmd_seq(self):
+        if not is_develop("dffml"):
+            self.skipTest("dffml not installed in development mode")
+
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
             with tempfile.TemporaryDirectory() as tempdir:
