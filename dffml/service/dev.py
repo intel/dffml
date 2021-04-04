@@ -1,4 +1,5 @@
 import os
+import io
 import re
 import sys
 import ast
@@ -1039,6 +1040,41 @@ class PinDeps(CMD):
                 )
 
 
+class CommitLint(CMD):
+    """
+    Enforce commit message style 
+    """
+
+    async def _get_cmd_output(self, cmd: List[str]) -> io.StringIO:
+        stdout = io.StringIO()
+        print(f"$ {' '.join(cmd)}")
+        proc = await asyncio.create_subprocess_exec(*cmd, stdout=stdout)
+        await proc.wait()
+        return stdout
+
+    async def _get_relevant_commits(self):
+        cmd = [
+            "git",
+            "log",
+            "--no-merges",
+            "--oneline",
+            "--format",
+            "%s",
+            f"{self._get_current_branch()}",
+            "^master",  #! This needs to change when master is renamed to main.
+        ]
+        commits = self._get_cmd_output(cmd).getvalue()
+        return commits
+
+    async def _get_current_branch(self):
+        cmd = ["git", "branch", "--show-current"]
+        current_branch = self._get_cmd_output(cmd).getvalue()
+        return current_branch
+
+    async def run(self):
+        print(self._get_relevant_commits())
+
+
 class CI(CMD):
     """
     CI related commands
@@ -1071,3 +1107,4 @@ class Develop(CMD):
     setuppy = SetupPy
     bump = Bump
     ci = CI
+    lintcommits = CommitLint
