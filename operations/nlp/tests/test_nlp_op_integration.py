@@ -8,7 +8,7 @@ import subprocess
 
 from dffml.cli.cli import CLI
 from dffml.util.os import chdir
-from dffml.util.asynctestcase import IntegrationCLITestCase
+from dffml.util.asynctestcase import AsyncTestCase
 
 ROOT = pathlib.Path(__file__).resolve().parents[3]
 
@@ -33,7 +33,7 @@ def directory_with_csv_files():
             yield tempdir
 
 
-class TestNLPOps(IntegrationCLITestCase):
+class TestNLPOps(AsyncTestCase):
     async def test_run(self):
         self.required_plugins("dffml-operations-nlp", "dffml-model-tensorflow")
 
