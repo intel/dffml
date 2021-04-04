@@ -1045,12 +1045,13 @@ class CommitLint(CMD):
     Enforce commit message style 
     """
 
-    async def _get_cmd_output(self, cmd: List[str]) -> io.StringIO:
-        stdout = io.StringIO()
-        print(f"$ {' '.join(cmd)}")
-        proc = await asyncio.create_subprocess_exec(*cmd, stdout=stdout)
-        await proc.wait()
-        return stdout
+    async def _get_cmd_output(self, cmd: List[str]):
+        proc = await asyncio.create_subprocess_exec(
+            *cmd, stdout=asyncio.subprocess.PIPE
+        )
+        stdout, _ = await proc.communicate()
+        output = stdout.decode().strip()
+        return output
 
     async def _get_relevant_commits(self):
         cmd = [
@@ -1058,21 +1059,20 @@ class CommitLint(CMD):
             "log",
             "--no-merges",
             "--oneline",
-            "--format",
-            "%s",
-            f"{self._get_current_branch()}",
+            "--format=%s",
+            f"{await self._get_current_branch()}",
             "^master",  #! This needs to change when master is renamed to main.
         ]
-        commits = self._get_cmd_output(cmd).getvalue()
+        commits = await self._get_cmd_output(cmd)
         return commits
 
     async def _get_current_branch(self):
         cmd = ["git", "branch", "--show-current"]
-        current_branch = self._get_cmd_output(cmd).getvalue()
+        current_branch = await self._get_cmd_output(cmd)
         return current_branch
 
     async def run(self):
-        print(self._get_relevant_commits())
+        print(await self._get_relevant_commits())
 
 
 class CI(CMD):
