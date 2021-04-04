@@ -1046,10 +1046,13 @@ class CommitLint(CMD):
     """
 
     async def _get_cmd_output(self, cmd: List[str]):
+        print(f"$ {' '.join(cmd)}")
         proc = await asyncio.create_subprocess_exec(
             *cmd, stdout=asyncio.subprocess.PIPE
         )
         stdout, _ = await proc.communicate()
+        if proc.returncode != 0:
+            raise RuntimeError
         output = stdout.decode().strip()
         return output
 
@@ -1060,7 +1063,7 @@ class CommitLint(CMD):
             "--no-merges",
             "--oneline",
             "--format=%s",
-            f"{await self._get_current_branch()}",
+            await self._get_current_branch(),
             "^master",  #! This needs to change when master is renamed to main.
         ]
         commits = await self._get_cmd_output(cmd)
@@ -1071,8 +1074,25 @@ class CommitLint(CMD):
         current_branch = await self._get_cmd_output(cmd)
         return current_branch
 
+    async def _get_commmit_details(self, msg):
+        cmd = ["git", "log", f"--grep={msg}"]
+        commit_details = await self._get_cmd_output(cmd)
+        return commit_details
+
+    def _validate_commit_msg(self, msg):
+        root = Path(__file__).parents[2]
+
+        return True
+
     async def run(self):
-        print(await self._get_relevant_commits())
+
+        commits = await self._get_relevant_commits()
+        commits_list = commits.split("\n")
+
+        for commit in commits_list:
+            print("=" * 32)
+            print("commit:", commit)
+            print(await self._get_commmit_details(commit))
 
 
 class CI(CMD):
