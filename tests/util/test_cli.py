@@ -21,7 +21,7 @@ from dffml.util.cli.cmd import (
 )
 from dffml.util.cli.parser import list_action, ParseInputsAction
 from dffml.util.cli.cmds import ListEntrypoint
-from dffml.util.asynctestcase import AsyncTestCase, IntegrationCLITestCase
+from dffml.util.asynctestcase import AsyncTestCase, AsyncTestCase
 from dffml.base import config, field
 from dffml.configloader.configloader import ConfigLoaders
 
@@ -186,7 +186,7 @@ class TestCMD(AsyncTestCase):
             mock_method.assert_called_once()
 
 
-class TestArg(IntegrationCLITestCase):
+class TestArg(AsyncTestCase):
     def test_init(self):
         arg = Arg("-test", key="value")
         self.assertEqual(arg.name, "-test")
