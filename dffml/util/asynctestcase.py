@@ -31,6 +31,39 @@ from .os import chdir
 from .packaging import is_develop
 
 
+@contextlib.contextmanager
+def non_existant_tempfile():
+    """
+    Yield the filename of a non-existant file within a temporary directory
+    """
+    with tempfile.TemporaryDirectory() as testdir:
+        yield os.path.join(testdir, str(random.random()))
+
+
+def relative_path(*args):
+    """
+    Returns a pathlib.Path object with the path relative to this file.
+    """
+    target = pathlib.Path(__file__).parents[0] / args[0]
+    for path in list(args)[1:]:
+        target /= path
+    return target
+
+
+@contextlib.contextmanager
+def relative_chdir(*args):
+    """
+    Change directory to a location relative to the location of this file.
+    """
+    target = relative_path(*args)
+    orig_dir = os.getcwd()
+    try:
+        os.chdir(target)
+        yield target
+    finally:
+        os.chdir(orig_dir)
+
+
 class AsyncTestCase(unittest.TestCase):
     """
     Runs any ``test_`` methods as coroutines in the default event loop.
@@ -46,8 +79,20 @@ class AsyncTestCase(unittest.TestCase):
     ...         await asyncio.sleep(1)
     """
 
+    REQUIRED_PLUGINS = []
     # The event loop to run test_ functions in
     loop = asyncio.get_event_loop()
+
+    async def setUp(self):
+        self._stack = contextlib.ExitStack().__enter__()
+        self._astack = await contextlib.AsyncExitStack().__aenter__()
+        self.required_plugins(*self.REQUIRED_PLUGINS)
+        self.stdout = io.StringIO()
+        self._stack.enter_context(chdir(self.mktempdir()))
+
+    async def tearDown(self):
+        self._stack.__exit__(None, None, None)
+        await self._astack.__aexit__(None, None, None)
 
     def async_wrapper(self, coro):
         """
@@ -85,27 +130,6 @@ class AsyncTestCase(unittest.TestCase):
                 setattr(self, name, self.async_wrapper(method))
         return super().run(result=result)
 
-
-@contextlib.contextmanager
-def non_existant_tempfile():
-    """
-    Yield the filename of a non-existant file within a temporary directory
-    """
-    with tempfile.TemporaryDirectory() as testdir:
-        yield os.path.join(testdir, str(random.random()))
-
-
-class AsyncExitStackTestCase(AsyncTestCase):
-    async def setUp(self):
-        super().setUp()
-        self._stack = contextlib.ExitStack().__enter__()
-        self._astack = await contextlib.AsyncExitStack().__aenter__()
-
-    async def tearDown(self):
-        super().tearDown()
-        self._stack.__exit__(None, None, None)
-        await self._astack.__aexit__(None, None, None)
-
     def mktempfile(
         self, suffix: Optional[str] = None, text: Optional[str] = None
     ):
@@ -118,40 +142,6 @@ class AsyncExitStackTestCase(AsyncTestCase):
 
     def mktempdir(self):
         return self._stack.enter_context(tempfile.TemporaryDirectory())
-
-
-def relative_path(*args):
-    """
-    Returns a pathlib.Path object with the path relative to this file.
-    """
-    target = pathlib.Path(__file__).parents[0] / args[0]
-    for path in list(args)[1:]:
-        target /= path
-    return target
-
-
-@contextlib.contextmanager
-def relative_chdir(*args):
-    """
-    Change directory to a location relative to the location of this file.
-    """
-    target = relative_path(*args)
-    orig_dir = os.getcwd()
-    try:
-        os.chdir(target)
-        yield target
-    finally:
-        os.chdir(orig_dir)
-
-
-class IntegrationCLITestCase(AsyncExitStackTestCase):
-    REQUIRED_PLUGINS = []
-
-    async def setUp(self):
-        await super().setUp()
-        self.required_plugins(*self.REQUIRED_PLUGINS)
-        self.stdout = io.StringIO()
-        self._stack.enter_context(chdir(self.mktempdir()))
 
     def required_plugins(self, *args):
         if not all(map(is_develop, args)):
