@@ -13,7 +13,7 @@ from dffml.source.source import Sources
 from dffml.model.accuracy import Accuracy
 from dffml import train, accuracy, predict, run_consoletest
 from dffml.util.entrypoint import entrypoint
-from dffml.util.asynctestcase import IntegrationCLITestCase
+from dffml.util.asynctestcase import AsyncTestCase
 from dffml.feature.feature import Feature, Features
 from dffml.model.model import SimpleModel, ModelNotTrained
 from dffml.source.memory import MemorySource, MemorySourceConfig
@@ -25,7 +25,7 @@ from dffml_model_xgboost.xgbregressor import (
 )
 
 
-class TestXGBRegressor(IntegrationCLITestCase):
+class TestXGBRegressor(AsyncTestCase):
     @classmethod
     def setUpClass(cls):
         # Create a temporary directory to store the trained model
@@ -103,7 +103,7 @@ class TestXGBRegressor(IntegrationCLITestCase):
         self.assertLess(unacceptable_error, 10)
 
 
-class TestXGBClassifierDocstring(IntegrationCLITestCase):
+class TestXGBClassifierDocstring(AsyncTestCase):
     async def test_docstring(self):
         await run_consoletest(
             XGBRegressorModel,
