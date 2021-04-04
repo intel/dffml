@@ -31,7 +31,7 @@ from dffml.service.dev import (
 from dffml.util.os import chdir
 from dffml.util.skel import Skel
 from dffml.util.packaging import is_develop
-from dffml.util.asynctestcase import AsyncTestCase, IntegrationCLITestCase
+from dffml.util.asynctestcase import AsyncTestCase, AsyncTestCase
 
 from ..util.test_skel import COMMON_FILES
 
@@ -267,7 +267,7 @@ class TestRelease(AsyncTestCase):
                 )
 
 
-class TestSetupPyVersion(IntegrationCLITestCase):
+class TestSetupPyVersion(AsyncTestCase):
     async def test_success(self):
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
