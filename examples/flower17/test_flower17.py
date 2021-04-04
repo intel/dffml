@@ -8,7 +8,7 @@ import shlex
 
 from dffml.util.os import chdir
 from dffml.cli.cli import CLI
-from dffml.util.asynctestcase import IntegrationCLITestCase
+from dffml.util.asynctestcase import AsyncTestCase
 
 
 def sh_filepath(filename):
@@ -28,7 +28,7 @@ def directory_with_data_files():
             yield tempdir
 
 
-class TestFLOWER17(IntegrationCLITestCase):
+class TestFLOWER17(AsyncTestCase):
     async def test_shell_sklearn(self):
         with directory_with_data_files() as tempdir:
             # Create the dataflow config files
