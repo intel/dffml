@@ -4,12 +4,12 @@ import pathlib
 import contextlib
 
 from dffml.cli.cli import CLI
-from dffml import IntegrationCLITestCase, run_consoletest
+from dffml import AsyncTestCase, run_consoletest
 
 from dffml_model_daal4py.daal4pylr import DAAL4PyLRModel
 
 
-class TestDAAL4PyLRModel(IntegrationCLITestCase):
+class TestDAAL4PyLRModel(AsyncTestCase):
     async def test_consoletest(self):
         await run_consoletest(
             DAAL4PyLRModel,
