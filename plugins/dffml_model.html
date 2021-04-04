@@ -4,7 +4,8 @@
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  
+  <meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>Models &mdash; DFFML 0.4.0 documentation</title>
@@ -91,19 +92,19 @@
               
             
             
-              <p class="caption"><span class="caption-text">Introduction</span></p>
+              <p><span class="caption-text">Introduction</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../about.html">About</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../concepts/index.html">Concepts</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Usage</span></p>
+<p><span class="caption-text">Usage</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../quickstart/model.html">Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Examples</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Reference</span></p>
+<p><span class="caption-text">Reference</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Plugins</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="dffml_source.html">Sources</a></li>
@@ -193,12 +194,12 @@
 <li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../troubleshooting.html">Troubleshooting</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Subprojects</span></p>
+<p><span class="caption-text">Subprojects</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../shouldi.html">shouldi</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../swportal.html">Software Portal</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Community</span></p>
+<p><span class="caption-text">Community</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/intel/dffml">GitHub</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://intel.github.io/dffml/master/">Master Branch Docs</a></li>
@@ -272,18 +273,18 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="models">
+  <section id="models">
 <span id="plugin-models"></span><h1>Models<a class="headerlink" href="#models" title="Permalink to this headline">¶</a></h1>
 <p>Models are implementations of <a class="reference internal" href="../api/model/model.html#dffml.model.model.Model" title="dffml.model.model.Model"><code class="xref py py-class docutils literal notranslate"><span class="pre">dffml.model.model.Model</span></code></a>, they
 abstract the usage of machine learning models.</p>
 <p>If you want to get started creating your own model, check out the
 <a class="reference internal" href="../tutorials/models/index.html#model-tutorial"><span class="std std-ref">Models</span></a>.</p>
-<div class="section" id="dffml">
+<section id="dffml">
 <span id="plugin-model-dffml"></span><h2>dffml<a class="headerlink" href="#dffml" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install dffml</span>
 </pre></div>
 </div>
-<div class="section" id="slr">
+<section id="slr">
 <span id="plugin-model-dffml-slr"></span><h3>slr<a class="headerlink" href="#slr" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>Logistic Regression training one variable to predict another.</p>
@@ -395,9 +396,9 @@ abstract the usage of machine learning models.</p>
 </ul>
 </li>
 </ul>
-</div>
-</div>
-<div class="section" id="dffml-model-tensorflow">
+</section>
+</section>
+<section id="dffml-model-tensorflow">
 <span id="plugin-model-dffml-model-tensorflow"></span><h2>dffml_model_tensorflow<a class="headerlink" href="#dffml-model-tensorflow" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install dffml-model-tensorflow</span>
 </pre></div>
@@ -411,7 +412,7 @@ after the hash of their feature names and hidden layer config. Which means
 if any of those parameters change between invocations, it’s being told to
 look for a different saved model.</p>
 </div>
-<div class="section" id="tfdnnc">
+<section id="tfdnnc">
 <span id="plugin-model-dffml-model-tensorflow-tfdnnc"></span><h3>tfdnnc<a class="headerlink" href="#tfdnnc" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>Implemented using Tensorflow’s DNNClassifier.</p>
@@ -613,8 +614,8 @@ look for a different saved model.</p>
 </ul>
 </li>
 </ul>
-</div>
-<div class="section" id="tfdnnr">
+</section>
+<section id="tfdnnr">
 <span id="plugin-model-dffml-model-tensorflow-tfdnnr"></span><h3>tfdnnr<a class="headerlink" href="#tfdnnr" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>Implemented using Tensorflow’s DNNEstimator.</p>
@@ -785,20 +786,20 @@ predict).</p>
 </ul>
 </li>
 </ul>
-</div>
-</div>
-<div class="section" id="dffml-model-xgboost">
+</section>
+</section>
+<section id="dffml-model-xgboost">
 <span id="plugin-model-dffml-model-xgboost"></span><h2>dffml_model_xgboost<a class="headerlink" href="#dffml-model-xgboost" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install dffml-model-xgboost</span>
 </pre></div>
 </div>
-<div class="section" id="xgbclassifier">
+<section id="xgbclassifier">
 <span id="plugin-model-dffml-model-xgboost-xgbclassifier"></span><h3>xgbclassifier<a class="headerlink" href="#xgbclassifier" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>Model using xgboost to perform classification prediction via gradient boosted trees.
 XGBoost is a leading software library for working with standard tabular data (the type of data you store in Pandas DataFrames,
 as opposed to more exotic types of data like images and videos). With careful parameter tuning, you can train highly accurate models.</p>
-<div class="section" id="examples">
+<section id="examples">
 <h4>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h4>
 <p>Command line usage</p>
 <p>First download the training and test files, change the headers to DFFML
@@ -1007,15 +1008,15 @@ $ sed -i &#39;s/.*setosa,versicolor,virginica/SepalLength,SepalWidth,PetalLength
 </ul>
 </li>
 </ul>
-</div>
-</div>
-<div class="section" id="xgbregressor">
+</section>
+</section>
+<section id="xgbregressor">
 <span id="plugin-model-dffml-model-xgboost-xgbregressor"></span><h3>xgbregressor<a class="headerlink" href="#xgbregressor" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>Model using xgboost to perform regression prediction via gradient boosted trees
 XGBoost is a leading software library for working with standard tabular data (the type of data you store in Pandas DataFrames,
 as opposed to more exotic types of data like images and videos). With careful parameter tuning, you can train highly accurate models.</p>
-<div class="section" id="id1">
+<section id="id1">
 <h4>Examples<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h4>
 <p>Command line usage</p>
 <p>First download the training and test files, change the headers to DFFML
@@ -1222,15 +1223,15 @@ Training accuracy: 0.819782501866115
 </ul>
 </li>
 </ul>
-</div>
-</div>
-</div>
-<div class="section" id="dffml-model-vowpalwabbit">
+</section>
+</section>
+</section>
+<section id="dffml-model-vowpalwabbit">
 <span id="plugin-model-dffml-model-vowpalwabbit"></span><h2>dffml_model_vowpalWabbit<a class="headerlink" href="#dffml-model-vowpalwabbit" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install dffml-model-vowpalWabbit</span>
 </pre></div>
 </div>
-<div class="section" id="vwmodel">
+<section id="vwmodel">
 <span id="plugin-model-dffml-model-vowpalwabbit-vwmodel"></span><h3>vwmodel<a class="headerlink" href="#vwmodel" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>Implemented using Vowpal Wabbit.</p>
@@ -1377,14 +1378,14 @@ Training accuracy: 0.819782501866115
 </ul>
 </li>
 </ul>
-</div>
-</div>
-<div class="section" id="dffml-model-tensorflow-hub">
+</section>
+</section>
+<section id="dffml-model-tensorflow-hub">
 <span id="plugin-model-dffml-model-tensorflow-hub"></span><h2>dffml_model_tensorflow_hub<a class="headerlink" href="#dffml-model-tensorflow-hub" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install dffml-model-tensorflow-hub</span>
 </pre></div>
 </div>
-<div class="section" id="text-classifier">
+<section id="text-classifier">
 <span id="plugin-model-dffml-model-tensorflow-hub-text-classifier"></span><h3>text_classifier<a class="headerlink" href="#text-classifier" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>Implemented using Tensorflow hub pretrained models.</p>
@@ -1609,14 +1610,14 @@ EOF
 </ul>
 </li>
 </ul>
-</div>
-</div>
-<div class="section" id="dffml-model-spacy">
+</section>
+</section>
+<section id="dffml-model-spacy">
 <span id="plugin-model-dffml-model-spacy"></span><h2>dffml_model_spacy<a class="headerlink" href="#dffml-model-spacy" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install dffml-model-spacy</span>
 </pre></div>
 </div>
-<div class="section" id="spacyner">
+<section id="spacyner">
 <span id="plugin-model-dffml-model-spacy-spacyner"></span><h3>spacyner<a class="headerlink" href="#spacyner" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>Implemented using <a class="reference external" href="https://spacy.io/usage/training">Spacy statistical models</a> .</p>
@@ -1800,20 +1801,20 @@ is value of the flag <cite>is_predicting</cite>.</p>
 </ul>
 </li>
 </ul>
-</div>
-</div>
-<div class="section" id="dffml-model-scratch">
+</section>
+</section>
+<section id="dffml-model-scratch">
 <span id="plugin-model-dffml-model-scratch"></span><h2>dffml_model_scratch<a class="headerlink" href="#dffml-model-scratch" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install dffml-model-scratch</span>
 </pre></div>
 </div>
-<div class="section" id="anomalydetection">
+<section id="anomalydetection">
 <span id="plugin-model-dffml-model-scratch-anomalydetection"></span><h3>anomalydetection<a class="headerlink" href="#anomalydetection" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>Model for Anomaly Detection using multivariate Gaussian distribution to predict probabilities of all records in the dataset
 and identify outliers. F1 score is used as the evaluation metric for this model. This model works well as it recognises dependencies
 across various features, and works particularly well if the features have a Gaussian Distribution.</p>
-<div class="section" id="id2">
+<section id="id2">
 <h4>Examples<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h4>
 <p>Command line usage</p>
 <p>Create training and test datasets</p>
@@ -1943,9 +1944,9 @@ across various features, and works particularly well if the features have a Gaus
 </ul>
 </li>
 </ul>
-</div>
-</div>
-<div class="section" id="scratchlgrsag">
+</section>
+</section>
+<section id="scratchlgrsag">
 <span id="plugin-model-dffml-model-scratch-scratchlgrsag"></span><h3>scratchlgrsag<a class="headerlink" href="#scratchlgrsag" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>Logistic Regression using stochastic average gradient descent optimizer</p>
@@ -2059,9 +2060,9 @@ across various features, and works particularly well if the features have a Gaus
 </ul>
 </li>
 </ul>
-</div>
-</div>
-<div class="section" id="dffml-model-scikit">
+</section>
+</section>
+<section id="dffml-model-scikit">
 <span id="plugin-model-dffml-model-scikit"></span><h2>dffml_model_scikit<a class="headerlink" href="#dffml-model-scikit" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install dffml-model-scikit</span>
 </pre></div>
@@ -2546,8 +2547,8 @@ Ensure that <cite>predict</cite> and <cite>accuracy</cite> for these algorithms 
 </ul>
 </li>
 </ul>
-</div>
-<div class="section" id="dffml-model-pytorch">
+</section>
+<section id="dffml-model-pytorch">
 <span id="plugin-model-dffml-model-pytorch"></span><h2>dffml_model_pytorch<a class="headerlink" href="#dffml-model-pytorch" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install dffml-model-pytorch</span>
 </pre></div>
@@ -2890,7 +2891,7 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <span class="o">+----------------------------------------------------------------------------------------------------------------------------------------------+</span>
 </pre></div>
 </div>
-<div class="section" id="alexnet">
+<section id="alexnet">
 <span id="plugin-model-dffml-model-pytorch-alexnet"></span><h3>alexnet<a class="headerlink" href="#alexnet" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>No description</p>
@@ -3008,8 +3009,8 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 </ul>
 </li>
 </ul>
-</div>
-<div class="section" id="densenet121">
+</section>
+<section id="densenet121">
 <span id="plugin-model-dffml-model-pytorch-densenet121"></span><h3>densenet121<a class="headerlink" href="#densenet121" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>No description</p>
@@ -3127,8 +3128,8 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 </ul>
 </li>
 </ul>
-</div>
-<div class="section" id="densenet161">
+</section>
+<section id="densenet161">
 <span id="plugin-model-dffml-model-pytorch-densenet161"></span><h3>densenet161<a class="headerlink" href="#densenet161" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>No description</p>
@@ -3246,8 +3247,8 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 </ul>
 </li>
 </ul>
-</div>
-<div class="section" id="densenet169">
+</section>
+<section id="densenet169">
 <span id="plugin-model-dffml-model-pytorch-densenet169"></span><h3>densenet169<a class="headerlink" href="#densenet169" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>No description</p>
@@ -3365,8 +3366,8 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 </ul>
 </li>
 </ul>
-</div>
-<div class="section" id="densenet201">
+</section>
+<section id="densenet201">
 <span id="plugin-model-dffml-model-pytorch-densenet201"></span><h3>densenet201<a class="headerlink" href="#densenet201" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>No description</p>
@@ -3484,8 +3485,8 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 </ul>
 </li>
 </ul>
-</div>
-<div class="section" id="googlenet">
+</section>
+<section id="googlenet">
 <span id="plugin-model-dffml-model-pytorch-googlenet"></span><h3>googlenet<a class="headerlink" href="#googlenet" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>No description</p>
@@ -3603,8 +3604,8 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 </ul>
 </li>
 </ul>
-</div>
-<div class="section" id="inception-v3">
+</section>
+<section id="inception-v3">
 <span id="plugin-model-dffml-model-pytorch-inception-v3"></span><h3>inception_v3<a class="headerlink" href="#inception-v3" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>No description</p>
@@ -3722,8 +3723,8 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 </ul>
 </li>
 </ul>
-</div>
-<div class="section" id="mnasnet0-5">
+</section>
+<section id="mnasnet0-5">
 <span id="plugin-model-dffml-model-pytorch-mnasnet0-5"></span><h3>mnasnet0_5<a class="headerlink" href="#mnasnet0-5" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>No description</p>
@@ -3841,8 +3842,8 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 </ul>
 </li>
 </ul>
-</div>
-<div class="section" id="mnasnet1-0">
+</section>
+<section id="mnasnet1-0">
 <span id="plugin-model-dffml-model-pytorch-mnasnet1-0"></span><h3>mnasnet1_0<a class="headerlink" href="#mnasnet1-0" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>No description</p>
@@ -3960,8 +3961,8 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 </ul>
 </li>
 </ul>
-</div>
-<div class="section" id="mobilenet-v2">
+</section>
+<section id="mobilenet-v2">
 <span id="plugin-model-dffml-model-pytorch-mobilenet-v2"></span><h3>mobilenet_v2<a class="headerlink" href="#mobilenet-v2" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>No description</p>
@@ -4079,8 +4080,8 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 </ul>
 </li>
 </ul>
-</div>
-<div class="section" id="pytorchnet">
+</section>
+<section id="pytorchnet">
 <span id="plugin-model-dffml-model-pytorch-pytorchnet"></span><h3>pytorchnet<a class="headerlink" href="#pytorchnet" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>No description</p>
@@ -4180,8 +4181,8 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 </ul>
 </li>
 </ul>
-</div>
-<div class="section" id="resnet101">
+</section>
+<section id="resnet101">
 <span id="plugin-model-dffml-model-pytorch-resnet101"></span><h3>resnet101<a class="headerlink" href="#resnet101" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>No description</p>
@@ -4299,8 +4300,8 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 </ul>
 </li>
 </ul>
-</div>
-<div class="section" id="resnet152">
+</section>
+<section id="resnet152">
 <span id="plugin-model-dffml-model-pytorch-resnet152"></span><h3>resnet152<a class="headerlink" href="#resnet152" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>No description</p>
@@ -4418,8 +4419,8 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 </ul>
 </li>
 </ul>
-</div>
-<div class="section" id="resnet18">
+</section>
+<section id="resnet18">
 <span id="plugin-model-dffml-model-pytorch-resnet18"></span><h3>resnet18<a class="headerlink" href="#resnet18" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>No description</p>
@@ -4537,8 +4538,8 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 </ul>
 </li>
 </ul>
-</div>
-<div class="section" id="resnet34">
+</section>
+<section id="resnet34">
 <span id="plugin-model-dffml-model-pytorch-resnet34"></span><h3>resnet34<a class="headerlink" href="#resnet34" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>No description</p>
@@ -4656,8 +4657,8 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 </ul>
 </li>
 </ul>
-</div>
-<div class="section" id="resnet50">
+</section>
+<section id="resnet50">
 <span id="plugin-model-dffml-model-pytorch-resnet50"></span><h3>resnet50<a class="headerlink" href="#resnet50" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>No description</p>
@@ -4775,8 +4776,8 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 </ul>
 </li>
 </ul>
-</div>
-<div class="section" id="resnext101-32x8d">
+</section>
+<section id="resnext101-32x8d">
 <span id="plugin-model-dffml-model-pytorch-resnext101-32x8d"></span><h3>resnext101_32x8d<a class="headerlink" href="#resnext101-32x8d" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>No description</p>
@@ -4894,8 +4895,8 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 </ul>
 </li>
 </ul>
-</div>
-<div class="section" id="resnext50-32x4d">
+</section>
+<section id="resnext50-32x4d">
 <span id="plugin-model-dffml-model-pytorch-resnext50-32x4d"></span><h3>resnext50_32x4d<a class="headerlink" href="#resnext50-32x4d" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>No description</p>
@@ -5013,8 +5014,8 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 </ul>
 </li>
 </ul>
-</div>
-<div class="section" id="shufflenet-v2-x0-5">
+</section>
+<section id="shufflenet-v2-x0-5">
 <span id="plugin-model-dffml-model-pytorch-shufflenet-v2-x0-5"></span><h3>shufflenet_v2_x0_5<a class="headerlink" href="#shufflenet-v2-x0-5" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>No description</p>
@@ -5132,8 +5133,8 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 </ul>
 </li>
 </ul>
-</div>
-<div class="section" id="shufflenet-v2-x1-0">
+</section>
+<section id="shufflenet-v2-x1-0">
 <span id="plugin-model-dffml-model-pytorch-shufflenet-v2-x1-0"></span><h3>shufflenet_v2_x1_0<a class="headerlink" href="#shufflenet-v2-x1-0" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>No description</p>
@@ -5251,8 +5252,8 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 </ul>
 </li>
 </ul>
-</div>
-<div class="section" id="vgg11">
+</section>
+<section id="vgg11">
 <span id="plugin-model-dffml-model-pytorch-vgg11"></span><h3>vgg11<a class="headerlink" href="#vgg11" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>No description</p>
@@ -5370,8 +5371,8 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 </ul>
 </li>
 </ul>
-</div>
-<div class="section" id="vgg11-bn">
+</section>
+<section id="vgg11-bn">
 <span id="plugin-model-dffml-model-pytorch-vgg11-bn"></span><h3>vgg11_bn<a class="headerlink" href="#vgg11-bn" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>No description</p>
@@ -5489,8 +5490,8 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 </ul>
 </li>
 </ul>
-</div>
-<div class="section" id="vgg13">
+</section>
+<section id="vgg13">
 <span id="plugin-model-dffml-model-pytorch-vgg13"></span><h3>vgg13<a class="headerlink" href="#vgg13" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>No description</p>
@@ -5608,8 +5609,8 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 </ul>
 </li>
 </ul>
-</div>
-<div class="section" id="vgg13-bn">
+</section>
+<section id="vgg13-bn">
 <span id="plugin-model-dffml-model-pytorch-vgg13-bn"></span><h3>vgg13_bn<a class="headerlink" href="#vgg13-bn" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>No description</p>
@@ -5727,8 +5728,8 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 </ul>
 </li>
 </ul>
-</div>
-<div class="section" id="vgg16">
+</section>
+<section id="vgg16">
 <span id="plugin-model-dffml-model-pytorch-vgg16"></span><h3>vgg16<a class="headerlink" href="#vgg16" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>No description</p>
@@ -5846,8 +5847,8 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 </ul>
 </li>
 </ul>
-</div>
-<div class="section" id="vgg16-bn">
+</section>
+<section id="vgg16-bn">
 <span id="plugin-model-dffml-model-pytorch-vgg16-bn"></span><h3>vgg16_bn<a class="headerlink" href="#vgg16-bn" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>No description</p>
@@ -5965,8 +5966,8 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 </ul>
 </li>
 </ul>
-</div>
-<div class="section" id="vgg19">
+</section>
+<section id="vgg19">
 <span id="plugin-model-dffml-model-pytorch-vgg19"></span><h3>vgg19<a class="headerlink" href="#vgg19" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>No description</p>
@@ -6084,8 +6085,8 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 </ul>
 </li>
 </ul>
-</div>
-<div class="section" id="vgg19-bn">
+</section>
+<section id="vgg19-bn">
 <span id="plugin-model-dffml-model-pytorch-vgg19-bn"></span><h3>vgg19_bn<a class="headerlink" href="#vgg19-bn" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>No description</p>
@@ -6203,8 +6204,8 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 </ul>
 </li>
 </ul>
-</div>
-<div class="section" id="wide-resnet101-2">
+</section>
+<section id="wide-resnet101-2">
 <span id="plugin-model-dffml-model-pytorch-wide-resnet101-2"></span><h3>wide_resnet101_2<a class="headerlink" href="#wide-resnet101-2" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>No description</p>
@@ -6322,8 +6323,8 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 </ul>
 </li>
 </ul>
-</div>
-<div class="section" id="wide-resnet50-2">
+</section>
+<section id="wide-resnet50-2">
 <span id="plugin-model-dffml-model-pytorch-wide-resnet50-2"></span><h3>wide_resnet50_2<a class="headerlink" href="#wide-resnet50-2" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>No description</p>
@@ -6441,14 +6442,14 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 </ul>
 </li>
 </ul>
-</div>
-</div>
-<div class="section" id="dffml-model-daal4py">
+</section>
+</section>
+<section id="dffml-model-daal4py">
 <span id="plugin-model-dffml-model-daal4py"></span><h2>dffml_model_daal4py<a class="headerlink" href="#dffml-model-daal4py" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install dffml-model-daal4py</span>
 </pre></div>
 </div>
-<div class="section" id="daal4pylr">
+<section id="daal4pylr">
 <span id="plugin-model-dffml-model-daal4py-daal4pylr"></span><h3>daal4pylr<a class="headerlink" href="#daal4pylr" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>Implemented using daal4py.</p>
@@ -6578,9 +6579,9 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 </ul>
 </li>
 </ul>
-</div>
-</div>
-<div class="section" id="dffml-model-autosklearn">
+</section>
+</section>
+<section id="dffml-model-autosklearn">
 <span id="plugin-model-dffml-model-autosklearn"></span><h2>dffml_model_autosklearn<a class="headerlink" href="#dffml-model-autosklearn" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install dffml-model-autosklearn</span>
 </pre></div>
@@ -6598,7 +6599,7 @@ command to ensure that <code class="docutils literal notranslate"><span class="p
 </pre></div>
 </div>
 <p>For more information about installation visit <a class="reference external" href="https://automl.github.io/auto-sklearn/master/installation.html#installation">https://automl.github.io/auto-sklearn/master/installation.html#installation</a></p>
-<div class="section" id="autoclassifier">
+<section id="autoclassifier">
 <span id="plugin-model-dffml-model-autosklearn-autoclassifier"></span><h3>autoclassifier<a class="headerlink" href="#autoclassifier" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>No description</p>
@@ -6791,8 +6792,8 @@ command to ensure that <code class="docutils literal notranslate"><span class="p
 </ul>
 </li>
 </ul>
-</div>
-<div class="section" id="autoregressor">
+</section>
+<section id="autoregressor">
 <span id="plugin-model-dffml-model-autosklearn-autoregressor"></span><h3>autoregressor<a class="headerlink" href="#autoregressor" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p><code class="docutils literal notranslate"><span class="pre">autoregressor</span></code> / <code class="docutils literal notranslate"><span class="pre">AutoSklearnRegressorModel</span></code> will use <code class="docutils literal notranslate"><span class="pre">auto-sklearn</span></code>
@@ -7115,9 +7116,9 @@ of the model.</p>
 </ul>
 </li>
 </ul>
-</div>
-</div>
-</div>
+</section>
+</section>
+</section>
 
 
            </div>

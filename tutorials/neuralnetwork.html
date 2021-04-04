@@ -4,7 +4,8 @@
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  
+  <meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>Neural Networks &mdash; DFFML 0.4.0 documentation</title>
@@ -91,13 +92,13 @@
               
             
             
-              <p class="caption"><span class="caption-text">Introduction</span></p>
+              <p><span class="caption-text">Introduction</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../about.html">About</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../concepts/index.html">Concepts</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Usage</span></p>
+<p><span class="caption-text">Usage</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../quickstart/model.html">Quickstart</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Tutorials</a><ul class="current">
@@ -115,7 +116,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Examples</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Reference</span></p>
+<p><span class="caption-text">Reference</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../plugins/index.html">Plugins</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../cli.html">Command Line</a></li>
@@ -123,12 +124,12 @@
 <li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../troubleshooting.html">Troubleshooting</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Subprojects</span></p>
+<p><span class="caption-text">Subprojects</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../shouldi.html">shouldi</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../swportal.html">Software Portal</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Community</span></p>
+<p><span class="caption-text">Community</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/intel/dffml">GitHub</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://intel.github.io/dffml/master/">Master Branch Docs</a></li>
@@ -212,9 +213,9 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="neural-networks">
+  <section id="neural-networks">
 <h1>Neural Networks<a class="headerlink" href="#neural-networks" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="rock-paper-scissors-hand-pose-classification">
+<section id="rock-paper-scissors-hand-pose-classification">
 <h2>Rock Paper Scissors Hand Pose Classification<a class="headerlink" href="#rock-paper-scissors-hand-pose-classification" title="Permalink to this headline">¶</a></h2>
 <p>This tutorial will show you how to train and test a PyTorch based custom neural network model made using DFFML.
 The dataset we will be using is the <a class="reference external" href="http://www.laurencemoroney.com/rock-paper-scissors-dataset/">rock-paper-scissors-dataset</a>
@@ -259,8 +260,8 @@ it is rock, paper or scissors!</p>
 </ol>
 </dd>
 </dl>
-</div>
-<div class="section" id="command-line">
+</section>
+<section id="command-line">
 <h2>Command Line<a class="headerlink" href="#command-line" title="Permalink to this headline">¶</a></h2>
 <p>We first create a YAML file to define the neural network with all the information about the layers along with
 the forward method which is passed as list of layers under the model name key:</p>
@@ -524,8 +525,8 @@ the top level layers (Sequential or Single) sequentially in the order they were 
 <span class="o">+----------------------------------------------------------------------------------------------------------------------------------------------+</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="python-api">
+</section>
+<section id="python-api">
 <h2>Python API<a class="headerlink" href="#python-api" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">torch.nn</span> <span class="k">as</span> <span class="nn">nn</span>
 <span class="kn">import</span> <span class="nn">asyncio</span>
@@ -732,8 +733,8 @@ the top level layers (Sequential or Single) sequentially in the order they were 
 </pre></div>
 </div>
 <p>The model predicts the hand poses correctly with great confidence!</p>
-</div>
-</div>
+</section>
+</section>
 
 
            </div>

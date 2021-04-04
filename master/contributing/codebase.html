@@ -4,7 +4,8 @@
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  
+  <meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>Codebase Layout And Notes &mdash; DFFML b66b8bd2 documentation</title>
@@ -91,19 +92,19 @@
               
             
             
-              <p class="caption"><span class="caption-text">Introduction</span></p>
+              <p><span class="caption-text">Introduction</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../about.html">About</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../concepts/index.html">Concepts</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Usage</span></p>
+<p><span class="caption-text">Usage</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../quickstart/model.html">Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Examples</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Reference</span></p>
+<p><span class="caption-text">Reference</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../plugins/index.html">Plugins</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../cli.html">Command Line</a></li>
@@ -111,12 +112,12 @@
 <li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../troubleshooting.html">Troubleshooting</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Subprojects</span></p>
+<p><span class="caption-text">Subprojects</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../shouldi.html">shouldi</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../swportal.html">Software Portal</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Community</span></p>
+<p><span class="caption-text">Community</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference external" href="https://github.com/intel/dffml">GitHub</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://intel.github.io/dffml/master/">Master Branch Docs</a></li>
@@ -227,7 +228,7 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="codebase-layout-and-notes">
+  <section id="codebase-layout-and-notes">
 <h1><a class="toc-backref" href="#id1">Codebase Layout And Notes</a><a class="headerlink" href="#codebase-layout-and-notes" title="Permalink to this headline">¶</a></h1>
 <div class="contents topic" id="contents">
 <p class="topic-title">Contents</p>
@@ -251,7 +252,7 @@
 </li>
 </ul>
 </div>
-<div class="section" id="plugins">
+<section id="plugins">
 <h2><a class="toc-backref" href="#id2">Plugins</a><a class="headerlink" href="#plugins" title="Permalink to this headline">¶</a></h2>
 <p>DFFML is plugin based. This means that the source code for the main
 package <code class="docutils literal notranslate"><span class="pre">dffml</span></code>, is separate from the source code for many of the things you
@@ -269,7 +270,7 @@ which is located in the <code class="docutils literal notranslate"><span class="
 <p>The plugin packages are located within their respective directories at the root
 of the git repo. For example, source base classes are in <code class="docutils literal notranslate"><span class="pre">dffml/source/</span></code> and
 source plugin packages are in <code class="docutils literal notranslate"><span class="pre">source/</span></code>.</p>
-<div class="section" id="adding-a-new-plugin">
+<section id="adding-a-new-plugin">
 <h3><a class="toc-backref" href="#id3">Adding A New Plugin</a><a class="headerlink" href="#adding-a-new-plugin" title="Permalink to this headline">¶</a></h3>
 <p>To add a new <em>Official</em> plugin to DFFML. You need to first create the plugin in
 the appropriate directory. Then add it to the lists of core plugins.</p>
@@ -302,9 +303,9 @@ plugins.</p>
 </ul>
 </li>
 </ul>
-</div>
-</div>
-<div class="section" id="double-context-entry-pattern">
+</section>
+</section>
+<section id="double-context-entry-pattern">
 <h2><a class="toc-backref" href="#id4">Double Context Entry Pattern</a><a class="headerlink" href="#double-context-entry-pattern" title="Permalink to this headline">¶</a></h2>
 <p>All classes in DFFML follow a double asynchronous context entry pattern. This is
 ideal for usages such as creating a connection pool, then using a connection. Be
@@ -335,8 +336,8 @@ that with a database, client HTTP sessions, etc.</p>
 <span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="config">
+</section>
+<section id="config">
 <h2><a class="toc-backref" href="#id5">Config</a><a class="headerlink" href="#config" title="Permalink to this headline">¶</a></h2>
 <p>Much of the DFFML codebase is dedicated to transforming configuration structures
 between their incoming form to a <code class="docutils literal notranslate"><span class="pre">dict</span></code> which can be used to determine what
@@ -382,18 +383,18 @@ that plugin are.</p>
 <span class="go">      work:int:10 \</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="setup-py">
+</section>
+<section id="setup-py">
 <h2><a class="toc-backref" href="#id6">setup.py</a><a class="headerlink" href="#setup-py" title="Permalink to this headline">¶</a></h2>
 <p>There are various <code class="docutils literal notranslate"><span class="pre">setup.py</span></code> files throughout the codebase, one for the main
 package, one for each plugin, and one in <code class="docutils literal notranslate"><span class="pre">skel/</span></code>. There are also
 <code class="docutils literal notranslate"><span class="pre">setup_common.py</span></code> files.</p>
-</div>
-<div class="section" id="notes-on-various-subsystems">
+</section>
+<section id="notes-on-various-subsystems">
 <h2><a class="toc-backref" href="#id7">Notes on Various Subsystems</a><a class="headerlink" href="#notes-on-various-subsystems" title="Permalink to this headline">¶</a></h2>
 <p>DFFML is comprised of various subsystems. The following are some notes
 that might be helpful when working on each of them.</p>
-<div class="section" id="working-on-skel">
+<section id="working-on-skel">
 <h3><a class="toc-backref" href="#id8">Working on <code class="docutils literal notranslate"><span class="pre">skel/</span></code></a><a class="headerlink" href="#working-on-skel" title="Permalink to this headline">¶</a></h3>
 <p>The packages in <code class="docutils literal notranslate"><span class="pre">skel/</span></code> are used to create new DFFML packages.</p>
 <p>For example, to create a new package containing operations we run the following.</p>
@@ -406,9 +407,9 @@ files in from <code class="docutils literal notranslate"><span class="pre">commo
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml service dev skel link
 </pre></div>
 </div>
-</div>
-</div>
-</div>
+</section>
+</section>
+</section>
 
 
            </div>

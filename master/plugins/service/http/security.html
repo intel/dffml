@@ -4,7 +4,8 @@
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  
+  <meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>Security &mdash; DFFML b66b8bd2 documentation</title>
@@ -91,19 +92,19 @@
               
             
             
-              <p class="caption"><span class="caption-text">Introduction</span></p>
+              <p><span class="caption-text">Introduction</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../about.html">About</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../concepts/index.html">Concepts</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Usage</span></p>
+<p><span class="caption-text">Usage</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../quickstart/model.html">Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../examples/index.html">Examples</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Reference</span></p>
+<p><span class="caption-text">Reference</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../index.html">Plugins</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../cli.html">Command Line</a></li>
@@ -126,12 +127,12 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">API Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../troubleshooting.html">Troubleshooting</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Subprojects</span></p>
+<p><span class="caption-text">Subprojects</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../shouldi.html">shouldi</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../swportal.html">Software Portal</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Community</span></p>
+<p><span class="caption-text">Community</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/intel/dffml">GitHub</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://intel.github.io/dffml/master/">Master Branch Docs</a></li>
@@ -215,10 +216,10 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="security">
+  <section id="security">
 <h1>Security<a class="headerlink" href="#security" title="Permalink to this headline">¶</a></h1>
 <p>Vulnerabilities should be reported via <a class="reference external" href="https://intel.com/security">https://intel.com/security</a></p>
-<div class="section" id="cors">
+<section id="cors">
 <h2>CORS<a class="headerlink" href="#cors" title="Permalink to this headline">¶</a></h2>
 <p>You’ll want to configure the domains that should be able to request the API via
 the CORS flag, if you are putting this on a different domain.</p>
@@ -235,14 +236,14 @@ all origins via <code class="docutils literal notranslate"><span class="pre">*</
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml service http server -cors <span class="s1">&#39;*&#39;</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="atomic-mode">
+</section>
+<section id="atomic-mode">
 <h2>Atomic Mode<a class="headerlink" href="#atomic-mode" title="Permalink to this headline">¶</a></h2>
 <p>The <code class="docutils literal notranslate"><span class="pre">-mc-atomic</span></code> flag will disable all routes other than those registered via
 <code class="docutils literal notranslate"><span class="pre">-mc-config</span></code>. If you want the server to only respond using the specified
 dataflows, and provide no other functionality, use this option.</p>
-</div>
-<div class="section" id="multitenancy">
+</section>
+<section id="multitenancy">
 <h2>Multitenancy<a class="headerlink" href="#multitenancy" title="Permalink to this headline">¶</a></h2>
 <p>The HTTP API service is <strong>not</strong> intended for multi-tenant use, and most likely
 never will be.</p>
@@ -250,8 +251,8 @@ never will be.</p>
 server (TLS client authentication protects anyone you haven’t given a <code class="docutils literal notranslate"><span class="pre">.key</span></code>
 and <code class="docutils literal notranslate"><span class="pre">.pem</span></code> file to from connecting. So two people could access it at the same
 time, but they won’t be stopped from clobbering each other’s work.</p>
-</div>
-<div class="section" id="file-network-etc-access">
+</section>
+<section id="file-network-etc-access">
 <h2>File, Network, Etc. Access<a class="headerlink" href="#file-network-etc-access" title="Permalink to this headline">¶</a></h2>
 <p>Since this just exposes existing DFFML APIs, its damn near impossible for use to
 lock everything down within all the plugins of DFFML you might choose to expose
@@ -267,8 +268,8 @@ files on your system, you do not want to take this chance!</p>
 MySQL protocol connections they will be originating from whatever machine is
 running the HTTP API. So that means it might have access to internal databases
 or something listing only on <code class="docutils literal notranslate"><span class="pre">127.0.0.1</span></code>.</p>
-</div>
-<div class="section" id="authentication">
+</section>
+<section id="authentication">
 <h2>Authentication<a class="headerlink" href="#authentication" title="Permalink to this headline">¶</a></h2>
 <p>TLS client authentication is currently used. There are scripts to generate basic
 functioning certs. These certs should <strong>not</strong> be used in a production capacity.</p>
@@ -313,8 +314,8 @@ command is run because it’s already been used to create <code class="docutils 
 <span class="go">... JSON output ...</span>
 </pre></div>
 </div>
-</div>
-</div>
+</section>
+</section>
 
 
            </div>

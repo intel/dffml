@@ -4,7 +4,8 @@
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  
+  <meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>Use a Model &mdash; DFFML b66b8bd2 documentation</title>
@@ -91,13 +92,13 @@
               
             
             
-              <p class="caption"><span class="caption-text">Introduction</span></p>
+              <p><span class="caption-text">Introduction</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../about.html">About</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../concepts/index.html">Concepts</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Usage</span></p>
+<p><span class="caption-text">Usage</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../quickstart/model.html">Quickstart</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">Tutorials</a><ul class="current">
@@ -122,7 +123,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../examples/index.html">Examples</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Reference</span></p>
+<p><span class="caption-text">Reference</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../plugins/index.html">Plugins</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../cli.html">Command Line</a></li>
@@ -130,12 +131,12 @@
 <li class="toctree-l1"><a class="reference internal" href="../../api/index.html">API Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../troubleshooting.html">Troubleshooting</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Subprojects</span></p>
+<p><span class="caption-text">Subprojects</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../shouldi.html">shouldi</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../swportal.html">Software Portal</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Community</span></p>
+<p><span class="caption-text">Community</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/intel/dffml">GitHub</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://intel.github.io/dffml/master/">Master Branch Docs</a></li>
@@ -221,7 +222,7 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="use-a-model">
+  <section id="use-a-model">
 <span id="model-tutorial-iris"></span><h1>Use a Model<a class="headerlink" href="#use-a-model" title="Permalink to this headline">¶</a></h1>
 <p>For this tutorial we’ll be using <a class="reference internal" href="../../plugins/dffml_model.html"><span class="doc">Models</span></a> that exist within
 DFFML.</p>
@@ -230,7 +231,7 @@ the <code class="docutils literal notranslate"><span class="pre">dffml-model-ten
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python -m pip install dffml-model-tensorflow
 </pre></div>
 </div>
-<div class="section" id="iris-dataset">
+<section id="iris-dataset">
 <h2>Iris Dataset<a class="headerlink" href="#iris-dataset" title="Permalink to this headline">¶</a></h2>
 <p>We’re going to train the model on the iris dataset. Let’s download the training
 and test files now.</p>
@@ -260,8 +261,8 @@ and test files now.</p>
 <span class="gp">$ </span>sed -i <span class="s1">&#39;s/.*setosa,versicolor,virginica/SepalLength,SepalWidth,PetalLength,PetalWidth,classification/g&#39;</span> iris_training.csv iris_test.csv
 </pre></div>
 </div>
-</div>
-<div class="section" id="python-usage">
+</section>
+<section id="python-usage">
 <h2>Python Usage<a class="headerlink" href="#python-usage" title="Permalink to this headline">¶</a></h2>
 <p>We can create a Tensorflow classification model from Python code as follows.</p>
 <p>This example makes use of <code class="docutils literal notranslate"><span class="pre">dffml.noasync</span></code> which contains versions of
@@ -323,14 +324,14 @@ neither dataset.</p>
 <span class="go">{&#39;PetalLength&#39;: 5.4, &#39;PetalWidth&#39;: 2.1, &#39;SepalLength&#39;: 6.9, &#39;SepalWidth&#39;: 3.1, &#39;classification&#39;: 2}</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="command-line-usage">
+</section>
+<section id="command-line-usage">
 <h2>Command Line Usage<a class="headerlink" href="#command-line-usage" title="Permalink to this headline">¶</a></h2>
 <p>Reference the
 <a class="reference internal" href="../../plugins/dffml_model.html#plugin-model-dffml-model-tensorflow-tfdnnc"><span class="std std-ref">TensorFlow Classifier</span></a> on
 the Model plugins page for CLI usage examples.</p>
-</div>
-</div>
+</section>
+</section>
 
 
            </div>

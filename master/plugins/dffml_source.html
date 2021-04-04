@@ -4,7 +4,8 @@
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  
+  <meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>Sources &mdash; DFFML b66b8bd2 documentation</title>
@@ -91,19 +92,19 @@
               
             
             
-              <p class="caption"><span class="caption-text">Introduction</span></p>
+              <p><span class="caption-text">Introduction</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../about.html">About</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../concepts/index.html">Concepts</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Usage</span></p>
+<p><span class="caption-text">Usage</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../quickstart/model.html">Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Examples</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Reference</span></p>
+<p><span class="caption-text">Reference</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Plugins</a><ul class="current">
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Sources</a><ul>
@@ -137,12 +138,12 @@
 <li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../troubleshooting.html">Troubleshooting</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Subprojects</span></p>
+<p><span class="caption-text">Subprojects</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../shouldi.html">shouldi</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../swportal.html">Software Portal</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Community</span></p>
+<p><span class="caption-text">Community</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/intel/dffml">GitHub</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://intel.github.io/dffml/master/">Master Branch Docs</a></li>
@@ -216,18 +217,18 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="sources">
+  <section id="sources">
 <span id="plugin-sources"></span><h1>Sources<a class="headerlink" href="#sources" title="Permalink to this headline">¶</a></h1>
 <p>Sources are implementations of <a class="reference internal" href="../api/source/source.html#dffml.source.source.BaseSource" title="dffml.source.source.BaseSource"><code class="xref py py-class docutils literal notranslate"><span class="pre">dffml.source.source.BaseSource</span></code></a>, they
 abstract the loading and storage of data / datasets.</p>
 <p>If you want to get started creating your own source, check out the
 <a class="reference internal" href="../tutorials/sources/complex.html#source-tutorial"><span class="std std-ref">Example SQLite source</span></a>.</p>
-<div class="section" id="dffml">
+<section id="dffml">
 <span id="plugin-source-dffml"></span><h2>dffml<a class="headerlink" href="#dffml" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install dffml</span>
 </pre></div>
 </div>
-<div class="section" id="csv">
+<section id="csv">
 <span id="plugin-source-dffml-csv"></span><h3>csv<a class="headerlink" href="#csv" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>Uses a CSV file as the source of record feature data</p>
@@ -270,8 +271,8 @@ abstract the loading and storage of data / datasets.</p>
 </ul>
 </li>
 </ul>
-</div>
-<div class="section" id="db">
+</section>
+<section id="db">
 <span id="plugin-source-dffml-db"></span><h3>db<a class="headerlink" href="#db" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>No description</p>
@@ -281,8 +282,8 @@ abstract the loading and storage of data / datasets.</p>
 <li><p>table_name: String</p></li>
 <li><p>model_columns: List of strings</p></li>
 </ul>
-</div>
-<div class="section" id="df">
+</section>
+<section id="df">
 <span id="plugin-source-dffml-df"></span><h3>df<a class="headerlink" href="#df" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">asyncio</span>
@@ -400,8 +401,8 @@ abstract the loading and storage of data / datasets.</p>
 </ul>
 </li>
 </ul>
-</div>
-<div class="section" id="dir">
+</section>
+<section id="dir">
 <span id="plugin-source-dffml-dir"></span><h3>dir<a class="headerlink" href="#dir" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>Source to read files in a folder.</p>
@@ -425,8 +426,8 @@ abstract the loading and storage of data / datasets.</p>
 </ul>
 </li>
 </ul>
-</div>
-<div class="section" id="plugin-source-dffml-idx1">
+</section>
+<section id="plugin-source-dffml-idx1">
 <span id="idx1"></span><h3>idx1<a class="headerlink" href="#plugin-source-dffml-idx1" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>Source to read files in IDX1 format (such as MNIST digit label dataset).</p>
@@ -449,8 +450,8 @@ abstract the loading and storage of data / datasets.</p>
 </ul>
 </li>
 </ul>
-</div>
-<div class="section" id="plugin-source-dffml-idx3">
+</section>
+<section id="plugin-source-dffml-idx3">
 <span id="idx3"></span><h3>idx3<a class="headerlink" href="#plugin-source-dffml-idx3" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>Source to read files in IDX3 format (such as MNIST digit image dataset).</p>
@@ -473,8 +474,8 @@ abstract the loading and storage of data / datasets.</p>
 </ul>
 </li>
 </ul>
-</div>
-<div class="section" id="ini">
+</section>
+<section id="ini">
 <span id="plugin-source-dffml-ini"></span><h3>ini<a class="headerlink" href="#ini" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>Source to read files in .ini format.</p>
@@ -492,8 +493,8 @@ abstract the loading and storage of data / datasets.</p>
 </ul>
 </li>
 </ul>
-</div>
-<div class="section" id="iris-training">
+</section>
+<section id="iris-training">
 <span id="plugin-source-dffml-iris-training"></span><h3>iris.training<a class="headerlink" href="#iris-training" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>No description</p>
@@ -506,8 +507,8 @@ abstract the loading and storage of data / datasets.</p>
 </ul>
 </li>
 </ul>
-</div>
-<div class="section" id="json">
+</section>
+<section id="json">
 <span id="plugin-source-dffml-json"></span><h3>json<a class="headerlink" href="#json" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>JSONSource reads and write from a JSON file on open / close. Otherwise
@@ -531,8 +532,8 @@ stored in memory.</p>
 </ul>
 </li>
 </ul>
-</div>
-<div class="section" id="memory">
+</section>
+<section id="memory">
 <span id="plugin-source-dffml-memory"></span><h3>memory<a class="headerlink" href="#memory" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>Stores records in a dict in memory</p>
@@ -546,8 +547,8 @@ stored in memory.</p>
 </ul>
 </li>
 </ul>
-</div>
-<div class="section" id="op">
+</section>
+<section id="op">
 <span id="plugin-source-dffml-op"></span><h3>op<a class="headerlink" href="#op" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>No description</p>
@@ -567,14 +568,14 @@ stored in memory.</p>
 </ul>
 </li>
 </ul>
-</div>
-</div>
-<div class="section" id="dffml-source-mysql">
+</section>
+</section>
+<section id="dffml-source-mysql">
 <span id="plugin-source-dffml-source-mysql"></span><h2>dffml_source_mysql<a class="headerlink" href="#dffml-source-mysql" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install dffml-source-mysql</span>
 </pre></div>
 </div>
-<div class="section" id="mysql">
+<section id="mysql">
 <span id="plugin-source-dffml-source-mysql-mysql"></span><h3>mysql<a class="headerlink" href="#mysql" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <div class="admonition warning">
@@ -589,7 +590,7 @@ appear within <code class="docutils literal notranslate"><span class="pre">updat
 appear within <code class="docutils literal notranslate"><span class="pre">update</span></code> query.</p></li>
 </ul>
 </div>
-<div class="section" id="examples">
+<section id="examples">
 <h4>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h4>
 <p>Read MySQL or MariaDB’s documentation to understand how to properly setup
 your server for encrypted connections.</p>
@@ -674,10 +675,10 @@ your server for encrypted connections.</p>
 </ul>
 </li>
 </ul>
-</div>
-</div>
-</div>
-</div>
+</section>
+</section>
+</section>
+</section>
 
 
            </div>

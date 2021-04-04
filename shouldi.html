@@ -4,7 +4,8 @@
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  
+  <meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>shouldi &mdash; DFFML 0.4.0 documentation</title>
@@ -91,19 +92,19 @@
               
             
             
-              <p class="caption"><span class="caption-text">Introduction</span></p>
+              <p><span class="caption-text">Introduction</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="about.html">About</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="concepts/index.html">Concepts</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Usage</span></p>
+<p><span class="caption-text">Usage</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="quickstart/model.html">Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorials/index.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="examples/index.html">Examples</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Reference</span></p>
+<p><span class="caption-text">Reference</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="plugins/index.html">Plugins</a></li>
 <li class="toctree-l1"><a class="reference internal" href="cli.html">Command Line</a></li>
@@ -111,7 +112,7 @@
 <li class="toctree-l1"><a class="reference internal" href="api/index.html">API Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Subprojects</span></p>
+<p><span class="caption-text">Subprojects</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">shouldi</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#what-is-shouldi">What Is ShouldI?</a></li>
@@ -130,7 +131,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="swportal.html">Software Portal</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Community</span></p>
+<p><span class="caption-text">Community</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/intel/dffml">GitHub</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://intel.github.io/dffml/master/">Master Branch Docs</a></li>
@@ -212,10 +213,10 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="shouldi">
+  <section id="shouldi">
 <h1>shouldi<a class="headerlink" href="#shouldi" title="Permalink to this headline">¶</a></h1>
 <p><img alt="shouldi" src="https://github.com/intel/dffml/raw/master/examples/shouldi/shouldi.jpg" /></p>
-<div class="section" id="what-is-shouldi">
+<section id="what-is-shouldi">
 <h2>What Is ShouldI?<a class="headerlink" href="#what-is-shouldi" title="Permalink to this headline">¶</a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">shouldi</span></code> is a tool that runs static analysis tools to let you know if there are
 any issues in any of the python packages you were thinking of installing.</p>
@@ -223,14 +224,14 @@ any issues in any of the python packages you were thinking of installing.</p>
 <blockquote>
 <div><p><code class="docutils literal notranslate"><span class="pre">shouldi</span></code> is in its very early stages. Expect things to change.</p>
 </div></blockquote>
-</div>
-<div class="section" id="installation">
+</section>
+<section id="installation">
 <h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python3 -m pip install -U shouldi
 </pre></div>
 </div>
-</div>
-<div class="section" id="usage">
+</section>
+<section id="usage">
 <h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h2>
 <p>There are several different subcommands of <code class="docutils literal notranslate"><span class="pre">shoudli</span></code></p>
 <ul class="simple">
@@ -251,7 +252,7 @@ static analysis tools for that language</p></li>
 </ul>
 </li>
 </ul>
-<div class="section" id="install-command">
+<section id="install-command">
 <h3>Install Command<a class="headerlink" href="#install-command" title="Permalink to this headline">¶</a></h3>
 <p>Run bandit and safety. Tell the person who ran the command not to install the
 Python package if there were any issues found by either tool.</p>
@@ -260,8 +261,8 @@ Python package if there were any issues found by either tool.</p>
 <span class="go">Do not install insecure-package! {&#39;safety_check_number_of_issues&#39;: 1}</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="use-command">
+</section>
+<section id="use-command">
 <h3>Use Command<a class="headerlink" href="#use-command" title="Permalink to this headline">¶</a></h3>
 <p>Given a Git URL or a directory, figure out what the language the codebase is and
 run the appropriate static analysis tools for that language.</p>
@@ -299,8 +300,8 @@ run the appropriate static analysis tools for that language.</p>
 <span class="go">{&#39;static_analysis&#39;: SAResultsSpec(critical=1, high=2941, medium=16, low=41049, report={&#39;npm_audit_output&#39;: {&#39;info&#39;: 0, &#39;low&#39;: 41049, &#39;moderate&#39;: 16, &#39;high&#39;: 2941, &#39;critical&#39;: 1}})}</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="project-command">
+</section>
+<section id="project-command">
 <h3>Project Command<a class="headerlink" href="#project-command" title="Permalink to this headline">¶</a></h3>
 <p>Given a directory, output a JSON describing the dependencies found within that
 directory.</p>
@@ -391,19 +392,19 @@ the above <code class="docutils literal notranslate"><span class="pre">deps.yaml
 <span class="go">}</span>
 </pre></div>
 </div>
-</div>
-</div>
-<div class="section" id="license">
+</section>
+</section>
+<section id="license">
 <h2>License<a class="headerlink" href="#license" title="Permalink to this headline">¶</a></h2>
 <p>shouldi is distributed under the <a class="reference external" href="https://spdx.org/licenses/MIT.html">MIT License</a>.</p>
-<div class="section" id="what-s-this-really-called">
+<section id="what-s-this-really-called">
 <h3>What’s This Really Called<a class="headerlink" href="#what-s-this-really-called" title="Permalink to this headline">¶</a></h3>
 <p>The real name of this package is “DFFML Evaluator for PyPi Packages”. <code class="docutils literal notranslate"><span class="pre">shouldi</span></code>
 is mearly the command line invokation, and we claim <code class="docutils literal notranslate"><span class="pre">shouldi</span></code>, the package name
 on PyPi, to avoid a supply chain attack.</p>
-</div>
-</div>
-</div>
+</section>
+</section>
+</section>
 
 
            </div>

@@ -4,7 +4,8 @@
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  
+  <meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>consoletest Sphinx extension &mdash; DFFML 0.4.0 documentation</title>
@@ -91,19 +92,19 @@
               
             
             
-              <p class="caption"><span class="caption-text">Introduction</span></p>
+              <p><span class="caption-text">Introduction</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../about.html">About</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../concepts/index.html">Concepts</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Usage</span></p>
+<p><span class="caption-text">Usage</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../quickstart/model.html">Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Examples</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Reference</span></p>
+<p><span class="caption-text">Reference</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../plugins/index.html">Plugins</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../cli.html">Command Line</a></li>
@@ -111,12 +112,12 @@
 <li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../troubleshooting.html">Troubleshooting</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Subprojects</span></p>
+<p><span class="caption-text">Subprojects</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../shouldi.html">shouldi</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../swportal.html">Software Portal</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Community</span></p>
+<p><span class="caption-text">Community</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference external" href="https://github.com/intel/dffml">GitHub</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://intel.github.io/dffml/master/">Master Branch Docs</a></li>
@@ -225,7 +226,7 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="consoletest-sphinx-extension">
+  <section id="consoletest-sphinx-extension">
 <h1>consoletest Sphinx extension<a class="headerlink" href="#consoletest-sphinx-extension" title="Permalink to this headline">¶</a></h1>
 <p>This Sphinx extension allows you to tests your <code class="docutils literal notranslate"><span class="pre">code-block</span></code> and
 <code class="docutils literal notranslate"><span class="pre">literalinclude</span></code> directives in your documentation to make sure that the command
@@ -241,7 +242,7 @@ intended results.</p>
 </ul>
 </li>
 </ul>
-<div class="section" id="example">
+<section id="example">
 <h2>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h2>
 <p>Each <code class="docutils literal notranslate"><span class="pre">.rst</span></code>, <code class="docutils literal notranslate"><span class="pre">.md</span></code>, .etc file will get it’s own temporary directory in which the
 test will run.</p>
@@ -355,7 +356,7 @@ server is ready to respond to requests.</p>
     $ cat | xargs curl -vfL
 </pre></div>
 </div>
-<div class="section" id="conf-py">
+<section id="conf-py">
 <h3><code class="docutils literal notranslate"><span class="pre">conf.py</span></code><a class="headerlink" href="#conf-py" title="Permalink to this headline">¶</a></h3>
 <p>If you install DFFML you will have <code class="docutils literal notranslate"><span class="pre">consoletest</span></code> installed. Simply add it to
 your list of extensions using it’s full path.</p>
@@ -446,13 +447,13 @@ containing the packages being tested already installed.</p></li>
         <span class="k">await</span> <span class="n">command</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">ctx</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-</div>
-<div class="section" id="options">
+</section>
+</section>
+<section id="options">
 <h2>Options<a class="headerlink" href="#options" title="Permalink to this headline">¶</a></h2>
 <p>Multiple options have been added to the <code class="docutils literal notranslate"><span class="pre">code-block</span></code> and <code class="docutils literal notranslate"><span class="pre">literalinclude</span></code>
 directives.</p>
-<div class="section" id="code-block">
+<section id="code-block">
 <h3><code class="docutils literal notranslate"><span class="pre">code-block</span></code><a class="headerlink" href="#code-block" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">test</span></code>: Boolean</p>
@@ -519,8 +520,8 @@ For example <code class="docutils literal notranslate"><span class="pre">\n</spa
 </ul>
 </li>
 </ul>
-</div>
-<div class="section" id="literalinclude">
+</section>
+<section id="literalinclude">
 <h3><code class="docutils literal notranslate"><span class="pre">literalinclude</span></code><a class="headerlink" href="#literalinclude" title="Permalink to this headline">¶</a></h3>
 <ul>
 <li><p><code class="docutils literal notranslate"><span class="pre">test</span></code>: Boolean</p>
@@ -539,9 +540,9 @@ path relative to the current working directory (<code class="docutils literal no
 </ul>
 </li>
 </ul>
-</div>
-</div>
-</div>
+</section>
+</section>
+</section>
 
 
            </div>

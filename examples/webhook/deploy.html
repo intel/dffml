@@ -4,7 +4,8 @@
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  
+  <meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>Deploying with the HTTP Service &mdash; DFFML 0.4.0 documentation</title>
@@ -91,13 +92,13 @@
               
             
             
-              <p class="caption"><span class="caption-text">Introduction</span></p>
+              <p><span class="caption-text">Introduction</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../about.html">About</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../concepts/index.html">Concepts</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Usage</span></p>
+<p><span class="caption-text">Usage</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../quickstart/model.html">Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
@@ -122,7 +123,7 @@
 </ul>
 </li>
 </ul>
-<p class="caption"><span class="caption-text">Reference</span></p>
+<p><span class="caption-text">Reference</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../plugins/index.html">Plugins</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../cli.html">Command Line</a></li>
@@ -130,12 +131,12 @@
 <li class="toctree-l1"><a class="reference internal" href="../../api/index.html">API Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../troubleshooting.html">Troubleshooting</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Subprojects</span></p>
+<p><span class="caption-text">Subprojects</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../shouldi.html">shouldi</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../swportal.html">Software Portal</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Community</span></p>
+<p><span class="caption-text">Community</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/intel/dffml">GitHub</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://intel.github.io/dffml/master/">Master Branch Docs</a></li>
@@ -221,7 +222,7 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="deploying-with-the-http-service">
+  <section id="deploying-with-the-http-service">
 <span id="usage-ffmpeg-deploy"></span><h1>Deploying with the HTTP Service<a class="headerlink" href="#deploying-with-the-http-service" title="Permalink to this headline">¶</a></h1>
 <p>In this tutorial we will deploy a dataflow(ffmpeg dataflow) which converts a video to gif over an HTTP service. We’ll
 also see how to deploy the same in a docker container. Finally in <a class="reference internal" href="#usage-ffmpeg-deploy-serve"><span class="std std-ref">Serving the DataFlow</span></a>
@@ -236,7 +237,7 @@ directory of the DFFML source code.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>pip install dffml-config-yaml dffml-http-service
 </pre></div>
 </div>
-<div class="section" id="writing-the-function">
+<section id="writing-the-function">
 <h2>Writing the function<a class="headerlink" href="#writing-the-function" title="Permalink to this headline">¶</a></h2>
 <p>We’ll first write the function to convert videos files to gif by calling
 <code class="docutils literal notranslate"><span class="pre">ffmpeg</span></code> (Make sure you <a class="reference external" href="https://www.ffmpeg.org/download.html">download and install</a> it) in
@@ -274,8 +275,8 @@ bytes.</p>
     <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;output_file&quot;</span><span class="p">:</span> <span class="n">out</span><span class="p">}</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="dataflow-and-config-files">
+</section>
+<section id="dataflow-and-config-files">
 <h2>Dataflow and Config files<a class="headerlink" href="#dataflow-and-config-files" title="Permalink to this headline">¶</a></h2>
 <p>DFFML can create a dataflow out of our python function.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml dataflow create -config yaml operations:convert_to_gif get_single <span class="se">\</span>
@@ -325,8 +326,8 @@ where <code class="docutils literal notranslate"><span class="pre">results</span
 </li>
 </ul>
 <p>For more details see <a class="reference external" href="../../plugins/service/http/dataflow.html#HttpChannelConfig">HttpChannelConfig</a> .</p>
-</div>
-<div class="section" id="serving-the-dataflow">
+</section>
+<section id="serving-the-dataflow">
 <span id="usage-ffmpeg-deploy-serve"></span><h2>Serving the DataFlow<a class="headerlink" href="#serving-the-dataflow" title="Permalink to this headline">¶</a></h2>
 <p>Serving the dataflow on port 8080</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml service http server -insecure -mc-config deploy -port <span class="m">8080</span>
@@ -344,9 +345,9 @@ tutorial. See documentation on HTTP API
 </div>
 <p>You should replace <code class="docutils literal notranslate"><span class="pre">input.mp4</span></code> with path to your video file and <code class="docutils literal notranslate"><span class="pre">output.gif</span></code> to where you want the converted gif
 to be output to. An example video is available <a class="reference external" href="https://github.com/intel/dffml/raw/master/examples/ffmpeg/input.mp4">here</a> .</p>
-</div>
-</div>
-<div class="section" id="deploying-via-container">
+</section>
+</section>
+<section id="deploying-via-container">
 <h1>Deploying via container<a class="headerlink" href="#deploying-via-container" title="Permalink to this headline">¶</a></h1>
 <p><strong>Dockerfile</strong></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Usage</span>
@@ -405,7 +406,7 @@ are gathered from the github html url, received in the webhook.</p>
 </div>
 <p>Now in <a class="reference internal" href="webhook.html#usage-webhook"><span class="std std-ref">Redeploying on receving GitHub webhook</span></a> we’ll setup this container to be automatically redeployed
 whenever we push to the Git repo containing this code.</p>
-</div>
+</section>
 
 
            </div>

@@ -4,7 +4,8 @@
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  
+  <meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>Documentation &mdash; DFFML 0.4.0 documentation</title>
@@ -91,19 +92,19 @@
               
             
             
-              <p class="caption"><span class="caption-text">Introduction</span></p>
+              <p><span class="caption-text">Introduction</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../about.html">About</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../concepts/index.html">Concepts</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Usage</span></p>
+<p><span class="caption-text">Usage</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../quickstart/model.html">Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Examples</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Reference</span></p>
+<p><span class="caption-text">Reference</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../plugins/index.html">Plugins</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../cli.html">Command Line</a></li>
@@ -111,12 +112,12 @@
 <li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../troubleshooting.html">Troubleshooting</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Subprojects</span></p>
+<p><span class="caption-text">Subprojects</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../shouldi.html">shouldi</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../swportal.html">Software Portal</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Community</span></p>
+<p><span class="caption-text">Community</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference external" href="https://github.com/intel/dffml">GitHub</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://intel.github.io/dffml/master/">Master Branch Docs</a></li>
@@ -219,7 +220,7 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="documentation">
+  <section id="documentation">
 <h1>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">¶</a></h1>
 <p>You’ll want to have all of the official plugins installed when generating the
 documentation. See <a class="reference internal" href="dev_env.html#dev-env-install-official-plugins"><span class="std std-ref">Installing Plugins In Development Mode</span></a>.</p>
@@ -231,7 +232,7 @@ documentation. See <a class="reference internal" href="dev_env.html#dev-env-inst
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python3 -m http.server --directory pages/ <span class="m">7000</span>
 </pre></div>
 </div>
-<div class="section" id="examples">
+<section id="examples">
 <h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
 <p>Most of the codebase uses the <code class="docutils literal notranslate"><span class="pre">async</span></code> and <code class="docutils literal notranslate"><span class="pre">await</span></code> keywords. As such, almost
 every example block will need to define code that use those keywords within a
@@ -252,8 +253,8 @@ code in a separate file and format it there before copying it into the example.<
 <span class="sd">    &quot;&quot;&quot;</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="setup-for-example-code">
+</section>
+<section id="setup-for-example-code">
 <h2>Setup for Example Code<a class="headerlink" href="#setup-for-example-code" title="Permalink to this headline">¶</a></h2>
 <p>Everything the example code needs must be setup within the
 <code class="docutils literal notranslate"><span class="pre">tests/test_doctests.py</span></code> file. It imports all of the files within <code class="docutils literal notranslate"><span class="pre">dffml/</span></code>
@@ -261,8 +262,8 @@ and creates a <code class="docutils literal notranslate"><span class="pre">unitt
 It also creates a temporary directory for the tests to run in.</p>
 <p>See that file for more details on doing extra setup and tear down for specific
 tests.</p>
-</div>
-<div class="section" id="doctests">
+</section>
+<section id="doctests">
 <h2>Doctests<a class="headerlink" href="#doctests" title="Permalink to this headline">¶</a></h2>
 <p>To run all the examples</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python3 setup.py <span class="nb">test</span> -s tests.test_docstrings
@@ -273,8 +274,8 @@ tests.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python3 setup.py <span class="nb">test</span> -s tests.test_docstrings.util_asynctestcase_AsyncTestCase
 </pre></div>
 </div>
-</div>
-</div>
+</section>
+</section>
 
 
            </div>

@@ -4,7 +4,8 @@
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  
+  <meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>Style &mdash; DFFML b66b8bd2 documentation</title>
@@ -91,19 +92,19 @@
               
             
             
-              <p class="caption"><span class="caption-text">Introduction</span></p>
+              <p><span class="caption-text">Introduction</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../about.html">About</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../concepts/index.html">Concepts</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Usage</span></p>
+<p><span class="caption-text">Usage</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../quickstart/model.html">Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Examples</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Reference</span></p>
+<p><span class="caption-text">Reference</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../plugins/index.html">Plugins</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../cli.html">Command Line</a></li>
@@ -111,12 +112,12 @@
 <li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../troubleshooting.html">Troubleshooting</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Subprojects</span></p>
+<p><span class="caption-text">Subprojects</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../shouldi.html">shouldi</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../swportal.html">Software Portal</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Community</span></p>
+<p><span class="caption-text">Community</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference external" href="https://github.com/intel/dffml">GitHub</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://intel.github.io/dffml/master/">Master Branch Docs</a></li>
@@ -224,14 +225,14 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="style">
+  <section id="style">
 <h1>Style<a class="headerlink" href="#style" title="Permalink to this headline">¶</a></h1>
 <p>This document talks about code formatting, conventions, documentation, and any
 stylistic choices that we adhere to.</p>
 <p>Try to run the formatters before every commit. This way, if you push up files
 for review, they are easy to read, even if your pull request isn’t yet ready to
 merge.</p>
-<div class="section" id="python-file-formatting">
+<section id="python-file-formatting">
 <h2>Python File Formatting<a class="headerlink" href="#python-file-formatting" title="Permalink to this headline">¶</a></h2>
 <p>To install black in the environment</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>pip install <span class="nv">black</span><span class="o">==</span><span class="m">19</span>.10b0
@@ -248,23 +249,23 @@ merge.</p>
 <span class="p">}</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="javascript-file-formatting">
+</section>
+<section id="javascript-file-formatting">
 <h2>JavaScript File Formatting<a class="headerlink" href="#javascript-file-formatting" title="Permalink to this headline">¶</a></h2>
 <p>Run the <a class="reference external" href="https://github.com/beautify-web/js-beautify">js-beautify</a> formatter
 on all JavaScript files. Use the following options.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>js-beautify -r -n -s <span class="m">2</span> file_to_format.js
 </pre></div>
 </div>
-</div>
-<div class="section" id="naming-conventions">
+</section>
+<section id="naming-conventions">
 <h2>Naming Conventions<a class="headerlink" href="#naming-conventions" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>Variables should always use underscores, as well as functions and methods.</p></li>
 <li><p>Classes should use CamelCase.</p></li>
 </ul>
-</div>
-<div class="section" id="imports">
+</section>
+<section id="imports">
 <h2>Imports<a class="headerlink" href="#imports" title="Permalink to this headline">¶</a></h2>
 <p>Here’s an example of how we style our imports.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">re</span>
@@ -312,8 +313,8 @@ or in the tests for an <em>Official</em> plugin).</p></li>
 should be following reverse <a class="reference external" href="https://lwn.net/Articles/758915/">reverse christmas tree</a> style. This means that lines with the least
 characters go before lines with more characters. If you’re feeling wordy you can
 refer to this as “XMAS tree” instead of “reverse reverse christmas tree”.</p>
-</div>
-<div class="section" id="docstrings">
+</section>
+<section id="docstrings">
 <h2>Docstrings<a class="headerlink" href="#docstrings" title="Permalink to this headline">¶</a></h2>
 <p>We use Numpy style docstrings, as opposed to Google or the Sphinx default.</p>
 <p>This is because Google does not support multiple return values, and it looks a
@@ -321,7 +322,7 @@ bit more organized to have multi line descriptions for arguments indented on the
 following line.</p>
 <p>More information on the Numpy docstiring format can be found
 <a class="reference external" href="https://numpydoc.readthedocs.io/en/latest/format.html">here</a>.</p>
-<div class="section" id="example-docstring">
+<section id="example-docstring">
 <h3>Example Docstring<a class="headerlink" href="#example-docstring" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Tuple</span>
 
@@ -364,9 +365,9 @@ following line.</p>
     <span class="p">)</span>
 </pre></div>
 </div>
-</div>
-</div>
-</div>
+</section>
+</section>
+</section>
 
 
            </div>

@@ -4,7 +4,8 @@
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  
+  <meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>Software Portal &mdash; DFFML b66b8bd2 documentation</title>
@@ -91,19 +92,19 @@
               
             
             
-              <p class="caption"><span class="caption-text">Introduction</span></p>
+              <p><span class="caption-text">Introduction</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="about.html">About</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="concepts/index.html">Concepts</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Usage</span></p>
+<p><span class="caption-text">Usage</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="quickstart/model.html">Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorials/index.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="examples/index.html">Examples</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Reference</span></p>
+<p><span class="caption-text">Reference</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="plugins/index.html">Plugins</a></li>
 <li class="toctree-l1"><a class="reference internal" href="cli.html">Command Line</a></li>
@@ -111,7 +112,7 @@
 <li class="toctree-l1"><a class="reference internal" href="api/index.html">API Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Subprojects</span></p>
+<p><span class="caption-text">Subprojects</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="shouldi.html">shouldi</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Software Portal</a><ul>
@@ -126,7 +127,7 @@
 </ul>
 </li>
 </ul>
-<p class="caption"><span class="caption-text">Community</span></p>
+<p><span class="caption-text">Community</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/intel/dffml">GitHub</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://intel.github.io/dffml/master/">Master Branch Docs</a></li>
@@ -208,14 +209,14 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="software-portal">
+  <section id="software-portal">
 <h1>Software Portal<a class="headerlink" href="#software-portal" title="Permalink to this headline">¶</a></h1>
 <p>Example of using DFFML to create a web app to discover information about
 software.</p>
 <p>All the code for this example project is located under the
 <a class="reference external" href="https://github.com/intel/dffml/blob/master/examples/swportal/">examples/swportal</a>
 directory of the DFFML source code.</p>
-<div class="section" id="setup">
+<section id="setup">
 <h2>Setup<a class="headerlink" href="#setup" title="Permalink to this headline">¶</a></h2>
 <p>Install dependencies</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python -m pip install -U pip setuptools wheel
@@ -223,8 +224,8 @@ directory of the DFFML source code.</p>
 <span class="gp">$ </span>python -m pip install -r requirements.txt
 </pre></div>
 </div>
-</div>
-<div class="section" id="usage">
+</section>
+<section id="usage">
 <h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h2>
 <p>Run the http service and navigate to <a class="reference external" href="http://localhost:8080/">http://localhost:8080/</a></p>
 <div class="admonition warning">
@@ -251,8 +252,8 @@ tutorial. See documentation on HTTP API
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>curl -sf http://localhost:8080/projects/72b4720a-a547-4ef7-9729-dbbe3265ddaa
 </pre></div>
 </div>
-</div>
-<div class="section" id="structure">
+</section>
+<section id="structure">
 <h2>Structure<a class="headerlink" href="#structure" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>The codebase for the client is in <cite>html-client/</cite></p></li>
@@ -263,18 +264,18 @@ tutorial. See documentation on HTTP API
 </ul>
 </li>
 </ul>
-<div class="section" id="html-client">
+<section id="html-client">
 <h3>HTML Client<a class="headerlink" href="#html-client" title="Permalink to this headline">¶</a></h3>
 <p>The website displayed to clients is all vanila HTML, CSS, and JavaScript.</p>
-</div>
-<div class="section" id="projects">
+</section>
+<section id="projects">
 <h3>Projects<a class="headerlink" href="#projects" title="Permalink to this headline">¶</a></h3>
 <p>Each project has a DataFlow which describes how data for the project should be
 collected. Static data can be added directly to the dataflow file. When
 gernating data dynamiclly is required, code can be added to <cite>operations/</cite>.</p>
-</div>
-</div>
-<div class="section" id="notes">
+</section>
+</section>
+<section id="notes">
 <h2>Notes<a class="headerlink" href="#notes" title="Permalink to this headline">¶</a></h2>
 <p>Run a single project’s DataFlow from the command line</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml dataflow run single <span class="se">\</span>
@@ -282,8 +283,8 @@ gernating data dynamiclly is required, code can be added to <cite>operations/</c
 <span class="go">    -log debug</span>
 </pre></div>
 </div>
-</div>
-</div>
+</section>
+</section>
 
 
            </div>

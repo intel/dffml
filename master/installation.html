@@ -4,7 +4,8 @@
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  
+  <meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>Installation &mdash; DFFML b66b8bd2 documentation</title>
@@ -92,7 +93,7 @@
               
             
             
-              <p class="caption"><span class="caption-text">Introduction</span></p>
+              <p><span class="caption-text">Introduction</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="about.html">About</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Installation</a><ul>
@@ -104,13 +105,13 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="concepts/index.html">Concepts</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Usage</span></p>
+<p><span class="caption-text">Usage</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="quickstart/model.html">Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorials/index.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="examples/index.html">Examples</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Reference</span></p>
+<p><span class="caption-text">Reference</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="plugins/index.html">Plugins</a></li>
 <li class="toctree-l1"><a class="reference internal" href="cli.html">Command Line</a></li>
@@ -118,12 +119,12 @@
 <li class="toctree-l1"><a class="reference internal" href="api/index.html">API Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Subprojects</span></p>
+<p><span class="caption-text">Subprojects</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="shouldi.html">shouldi</a></li>
 <li class="toctree-l1"><a class="reference internal" href="swportal.html">Software Portal</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Community</span></p>
+<p><span class="caption-text">Community</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/intel/dffml">GitHub</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://intel.github.io/dffml/master/">Master Branch Docs</a></li>
@@ -205,7 +206,7 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="installation">
+  <section id="installation">
 <h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
 <p>DFFML currently <strong>supports Python 3.7 and 3.8 on Linux</strong>. If your distribution’s
 package manager doesn’t provide Python 3.7 or 3.8,
@@ -254,7 +255,7 @@ commands using Pythons module run syntax (<code class="docutils literal notransl
 </pre></div>
 </div>
 <p>You can now see the <a class="reference internal" href="quickstart/model.html"><span class="doc">Quickstart</span></a> to get started using DFFML!</p>
-<div class="section" id="installing-all-plugins">
+<section id="installing-all-plugins">
 <h2>Installing All Plugins<a class="headerlink" href="#installing-all-plugins" title="Permalink to this headline">¶</a></h2>
 <p>If you want to install all of the machine learning model plugins that are
 maintained as a part of the core repository, you can append <code class="docutils literal notranslate"><span class="pre">[models]</span></code>.</p>
@@ -277,8 +278,8 @@ repository, you can append <code class="docutils literal notranslate"><span clas
 </pre></div>
 </div>
 </div></div>
-</div>
-<div class="section" id="master-branch">
+</section>
+<section id="master-branch">
 <h2>Master Branch<a class="headerlink" href="#master-branch" title="Permalink to this headline">¶</a></h2>
 <p>If you want to stay on the bleeding edge of bug fixes, etc. You can install from
 the master branch.</p>
@@ -308,8 +309,8 @@ gives you a setup development environment to get started working with/on DFFML
 right away. However, it comes with the master branch installed, you’ll need to
 run the above commands to get the lastest released version.</p>
 <a class="reference external image-reference" href="https://gitpod.io/#https://github.com/intel/dffml"><img alt="https://gitpod.io/button/open-in-gitpod.svg" src="https://gitpod.io/button/open-in-gitpod.svg" /></a>
-</div>
-<div class="section" id="ubuntu">
+</section>
+<section id="ubuntu">
 <h2>Ubuntu<a class="headerlink" href="#ubuntu" title="Permalink to this headline">¶</a></h2>
 <p>For Ubuntu 20.XX python3 means Python 3.8 so far as <code class="docutils literal notranslate"><span class="pre">apt</span></code> is concerend.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo apt-get update <span class="o">&amp;&amp;</span> sudo apt-get install -y python3 python3-pip
@@ -321,8 +322,8 @@ the following packages to get <code class="docutils literal notranslate"><span c
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo apt-get update <span class="o">&amp;&amp;</span> sudo apt-get install -y python3.7 python3-pip
 </pre></div>
 </div>
-</div>
-<div class="section" id="docker">
+</section>
+<section id="docker">
 <h2>Docker<a class="headerlink" href="#docker" title="Permalink to this headline">¶</a></h2>
 <p>This is a good option if you don’t want to deal with installing Python 3.7.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>docker pull intelotc/dffml
@@ -361,8 +362,8 @@ to that being on the host.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml pip install example
 </pre></div>
 </div>
-</div>
-</div>
+</section>
+</section>
 
 
            </div>

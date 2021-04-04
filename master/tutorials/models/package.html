@@ -4,7 +4,8 @@
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  
+  <meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>Packaging a Model &mdash; DFFML b66b8bd2 documentation</title>
@@ -91,13 +92,13 @@
               
             
             
-              <p class="caption"><span class="caption-text">Introduction</span></p>
+              <p><span class="caption-text">Introduction</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../about.html">About</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../concepts/index.html">Concepts</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Usage</span></p>
+<p><span class="caption-text">Usage</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../quickstart/model.html">Quickstart</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">Tutorials</a><ul class="current">
@@ -125,7 +126,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../examples/index.html">Examples</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Reference</span></p>
+<p><span class="caption-text">Reference</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../plugins/index.html">Plugins</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../cli.html">Command Line</a></li>
@@ -133,12 +134,12 @@
 <li class="toctree-l1"><a class="reference internal" href="../../api/index.html">API Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../troubleshooting.html">Troubleshooting</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Subprojects</span></p>
+<p><span class="caption-text">Subprojects</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../shouldi.html">shouldi</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../swportal.html">Software Portal</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Community</span></p>
+<p><span class="caption-text">Community</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/intel/dffml">GitHub</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://intel.github.io/dffml/master/">Master Branch Docs</a></li>
@@ -224,13 +225,13 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="packaging-a-model">
+  <section id="packaging-a-model">
 <span id="model-tutorial-package"></span><h1>Packaging a Model<a class="headerlink" href="#packaging-a-model" title="Permalink to this headline">¶</a></h1>
 <p>In the pervious tutorial we created a DFFML style model, which we could use from
 the command line, HTTP service, etc. We’re now going to take that model and
 package it so that it can be published to PyPi for others to download via
 <code class="docutils literal notranslate"><span class="pre">pip</span></code> and use as they do the rest of the <a class="reference internal" href="../../plugins/dffml_model.html#plugin-models"><span class="std std-ref">Models</span></a> plugins.</p>
-<div class="section" id="create-the-package">
+<section id="create-the-package">
 <h2>Create the Package<a class="headerlink" href="#create-the-package" title="Permalink to this headline">¶</a></h2>
 <p>To create a new model we first create a new Python package. DFFML has a helper
 to create it for you.</p>
@@ -247,8 +248,8 @@ modifications though if you made any).</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">cd</span> dffml-model-myslr
 </pre></div>
 </div>
-</div>
-<div class="section" id="install-the-package">
+</section>
+<section id="install-the-package">
 <h2>Install the Package<a class="headerlink" href="#install-the-package" title="Permalink to this headline">¶</a></h2>
 <p>If you’re planing on importing any third party packages, anything on
 <a class="reference external" href="https://pypi.org">PyPi</a>, you’ll want to add it to the <code class="docutils literal notranslate"><span class="pre">setup.cfg</span></code> file
@@ -267,12 +268,12 @@ package.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python -m pip install -e .
 </pre></div>
 </div>
-</div>
-<div class="section" id="testing">
+</section>
+<section id="testing">
 <h2>Testing<a class="headerlink" href="#testing" title="Permalink to this headline">¶</a></h2>
 <p>Packages should have tests to make sure that when you change things they don’t
 break before you release your package to users.</p>
-<div class="section" id="imports">
+<section id="imports">
 <h3>Imports<a class="headerlink" href="#imports" title="Permalink to this headline">¶</a></h3>
 <p>Let’s import everything we’ll need. Since DFFML heavily leverages <code class="docutils literal notranslate"><span class="pre">async</span></code>
 code, we’ll have our test cases derive from <code class="xref py py-class docutils literal notranslate"><span class="pre">AsyncTestCase</span></code>, rather
@@ -285,8 +286,8 @@ than <a class="reference external" href="https://docs.python.org/3/library/unitt
 <span class="kn">from</span> <span class="nn">dffml_model_myslr.myslr</span> <span class="kn">import</span> <span class="n">MySLRModel</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="test-data">
+</section>
+<section id="test-data">
 <h3>Test data<a class="headerlink" href="#test-data" title="Permalink to this headline">¶</a></h3>
 <p>We usually try to randomly generate training and test data, but for this example
 we’re just going to hard code in some data.</p>
@@ -321,8 +322,8 @@ we’re just going to hard code in some data.</p>
 <span class="p">]</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="testcase-class">
+</section>
+<section id="testcase-class">
 <h3>TestCase Class<a class="headerlink" href="#testcase-class" title="Permalink to this headline">¶</a></h3>
 <p>We create a temporary directory for our tests to use, and clean it up when
 they’re done.</p>
@@ -345,8 +346,8 @@ they’re done.</p>
         <span class="bp">cls</span><span class="o">.</span><span class="n">model_dir</span><span class="o">.</span><span class="n">cleanup</span><span class="p">()</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="testing-train">
+</section>
+<section id="testing-train">
 <h3>Testing Train<a class="headerlink" href="#testing-train" title="Permalink to this headline">¶</a></h3>
 <p>Similarly to the quickstart, all we need to to is pass the model and training
 data to the <code class="xref py py-func docutils literal notranslate"><span class="pre">train</span></code> function.</p>
@@ -363,8 +364,8 @@ for more information on how the <code class="docutils literal notranslate"><span
         <span class="k">await</span> <span class="n">train</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <span class="o">*</span><span class="p">[{</span><span class="s2">&quot;X&quot;</span><span class="p">:</span> <span class="n">x</span><span class="p">,</span> <span class="s2">&quot;Y&quot;</span><span class="p">:</span> <span class="n">y</span><span class="p">}</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">TRAIN_DATA</span><span class="p">])</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="testing-accuracy">
+</section>
+<section id="testing-accuracy">
 <h3>Testing Accuracy<a class="headerlink" href="#testing-accuracy" title="Permalink to this headline">¶</a></h3>
 <p>Once again, all we need to to is pass the model and test data to the
 <code class="xref py py-func docutils literal notranslate"><span class="pre">accuracy</span></code> function. Then we check if it’s in an
@@ -381,8 +382,8 @@ acceptable range.</p>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="mf">0.8</span> <span class="o">&lt;=</span> <span class="n">res</span> <span class="o">&lt;</span> <span class="mf">1.0</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="testing-prediction">
+</section>
+<section id="testing-prediction">
 <h3>Testing Prediction<a class="headerlink" href="#testing-prediction" title="Permalink to this headline">¶</a></h3>
 <p>Finally, we use the test data and model with the
 <code class="xref py py-func docutils literal notranslate"><span class="pre">predict</span></code> function. Then we check if each predicted Y
@@ -403,8 +404,8 @@ value is within 10% of what it should be.</p>
             <span class="bp">self</span><span class="o">.</span><span class="n">assertGreater</span><span class="p">(</span><span class="n">prediction</span><span class="p">,</span> <span class="n">correct</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">acceptable</span><span class="p">))</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="run-the-tests">
+</section>
+<section id="run-the-tests">
 <h3>Run the tests<a class="headerlink" href="#run-the-tests" title="Permalink to this headline">¶</a></h3>
 <p>We can run the tests using the <code class="docutils literal notranslate"><span class="pre">unittest</span></code> module. The create command gave us
 both unit tests and integration tests. We want to only run the unit tests right
@@ -425,9 +426,9 @@ now (<code class="docutils literal notranslate"><span class="pre">tests.test_mod
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nv">LOGGING</span><span class="o">=</span>debug python -m unittest -v tests.test_model
 </pre></div>
 </div>
-</div>
-</div>
-<div class="section" id="entrypoint-registration">
+</section>
+</section>
+<section id="entrypoint-registration">
 <h2>Entrypoint Registration<a class="headerlink" href="#entrypoint-registration" title="Permalink to this headline">¶</a></h2>
 <p>In the <a class="reference internal" href="slr.html#model-tutorial-slr"><span class="std std-ref">Writing a Model</span></a> tutorial we refrenced the new model on the
 command line via it’s entrypoint style path. This is in the format of
@@ -450,8 +451,8 @@ system.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python setup.py egg_info
 </pre></div>
 </div>
-</div>
-<div class="section" id="command-line-usage">
+</section>
+<section id="command-line-usage">
 <h2>Command Line Usage<a class="headerlink" href="#command-line-usage" title="Permalink to this headline">¶</a></h2>
 <p>Let’s add some training data to a CSV file.</p>
 <p><strong>train.csv</strong></p>
@@ -475,8 +476,8 @@ reference it by it’s short name.</p>
 <span class="go">    -source-filename train.csv</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="uploading-to-pypi">
+</section>
+<section id="uploading-to-pypi">
 <h2>Uploading to PyPi<a class="headerlink" href="#uploading-to-pypi" title="Permalink to this headline">¶</a></h2>
 <p>You can now upload your package to PyPi, so that other’s can install it using
 <code class="docutils literal notranslate"><span class="pre">pip</span></code>, by running the following commands.</p>
@@ -489,8 +490,8 @@ within the DFFML source tree, and submit a pull request.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python3 setup.py sdist <span class="o">&amp;&amp;</span> python3 -m twine upload dist/*
 </pre></div>
 </div>
-</div>
-</div>
+</section>
+</section>
 
 
            </div>

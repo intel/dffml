@@ -4,7 +4,8 @@
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  
+  <meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>About &mdash; DFFML 0.4.0 documentation</title>
@@ -91,7 +92,7 @@
               
             
             
-              <p class="caption"><span class="caption-text">Introduction</span></p>
+              <p><span class="caption-text">Introduction</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">About</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#mission-statement">Mission Statement</a></li>
@@ -109,13 +110,13 @@
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="concepts/index.html">Concepts</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Usage</span></p>
+<p><span class="caption-text">Usage</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="quickstart/model.html">Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorials/index.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="examples/index.html">Examples</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Reference</span></p>
+<p><span class="caption-text">Reference</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="plugins/index.html">Plugins</a></li>
 <li class="toctree-l1"><a class="reference internal" href="cli.html">Command Line</a></li>
@@ -123,12 +124,12 @@
 <li class="toctree-l1"><a class="reference internal" href="api/index.html">API Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Subprojects</span></p>
+<p><span class="caption-text">Subprojects</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="shouldi.html">shouldi</a></li>
 <li class="toctree-l1"><a class="reference internal" href="swportal.html">Software Portal</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Community</span></p>
+<p><span class="caption-text">Community</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/intel/dffml">GitHub</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://intel.github.io/dffml/master/">Master Branch Docs</a></li>
@@ -210,7 +211,7 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="about">
+  <section id="about">
 <h1>About<a class="headerlink" href="#about" title="Permalink to this headline">¶</a></h1>
 <p>Data Flow Facilitator for Machine Learning (DFFML) makes it easy to generate
 datasets, train and use machine learning models, and integrate machine learning
@@ -229,7 +230,7 @@ could use them to build a web app for instance.</p></li>
 <a class="reference internal" href="plugins/index.html#plugins"><span class="std std-ref">Plugins</span></a> pages. DFFML has a plugin based architecture, which allows us to
 include some sources, models, and operations as a part of the main package,
 <code class="docutils literal notranslate"><span class="pre">dffml</span></code>, and other functionality in more specific packages.</p>
-<div class="section" id="mission-statement">
+<section id="mission-statement">
 <h2>Mission Statement<a class="headerlink" href="#mission-statement" title="Permalink to this headline">¶</a></h2>
 <p>DFFML aims to be the easiest and most convenient way to use Machine Learning.</p>
 <ul class="simple">
@@ -246,8 +247,8 @@ locking which we call DataFlows.</p></li>
 <li><p>DataFlows make it easy to generate datasets or modify existing datasets for
 rapid iteration on feature engineering.</p></li>
 </ul>
-</div>
-<div class="section" id="why-dffml">
+</section>
+<section id="why-dffml">
 <h2>Why DFFML<a class="headerlink" href="#why-dffml" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>You want a “just bring your data” approach to machine learning.</p>
@@ -264,12 +265,12 @@ managed locking. Making the feature engineering iteration process very fast.</p>
 </ul>
 </li>
 </ul>
-</div>
-<div class="section" id="architecture">
+</section>
+<section id="architecture">
 <h2>Architecture<a class="headerlink" href="#architecture" title="Permalink to this headline">¶</a></h2>
 <p>This is a high level overview of how DFFML works.</p>
-<img alt="Architecture Diagram" src="_images/arch.svg" /></div>
-<div class="section" id="machine-learning">
+<img alt="Architecture Diagram" src="_images/arch.svg" /></section>
+<section id="machine-learning">
 <h2>Machine Learning<a class="headerlink" href="#machine-learning" title="Permalink to this headline">¶</a></h2>
 <p>Python was chosen because of the machine learning community’s preference towards
 it. In addition to the data flow side of DFFML, there is a machine learning
@@ -278,8 +279,8 @@ models. It also allows for wrapping existing models so as to expose them via the
 standardized API. Models can then be integrated into data flows as operations.
 This enables trivial layering of models to create complex features. See
 <a class="reference internal" href="plugins/dffml_model.html#plugin-models"><span class="std std-ref">Models</span></a> for existing models and usage.</p>
-</div>
-<div class="section" id="data-flows-directed-graph-execution">
+</section>
+<section id="data-flows-directed-graph-execution">
 <h2>Data Flows - Directed Graph Execution<a class="headerlink" href="#data-flows-directed-graph-execution" title="Permalink to this headline">¶</a></h2>
 <p>The idea behind this project is to provide a way to link together various new
 or existing pieces of code and run them via an orchestration engine that
@@ -293,8 +294,8 @@ which are just functions (but could be anything, some SaaS web API endpoint for
 instance). All the data generated by running these operations is query-able,
 allowing us to structure the output in whatever way is most fitting for our
 application.</p>
-<img alt="DataFlow for shouldi tool" src="_images/shouldi-dataflow.svg" /></div>
-<div class="section" id="consistent-api">
+<img alt="DataFlow for shouldi tool" src="_images/shouldi-dataflow.svg" /></section>
+<section id="consistent-api">
 <h2>Consistent API<a class="headerlink" href="#consistent-api" title="Permalink to this headline">¶</a></h2>
 <p>DFFML decouples the interface through which the flow is accessed from the flow
 itself. For instance, data flows can be run via the library, HTTP API, CLI, or
@@ -305,8 +306,8 @@ executed by the orchestrator will let us take existing API endpoints and code in
 other languages and combine them into one cohesive workflow. The architecture
 itself is programming language agnostic, the first implementation has been
 written in Python.</p>
-</div>
-<div class="section" id="plugins">
+</section>
+<section id="plugins">
 <h2>Plugins<a class="headerlink" href="#plugins" title="Permalink to this headline">¶</a></h2>
 <p>We take a community driven approach to content. Architecture is plugin based,
 which means anyone can swap out any piece by writing their own plugin and
@@ -315,8 +316,8 @@ publish operations and machine learning models that work out of the box with
 everything else maintained as a part of the core repository and with other
 developers models and operations. <a class="reference internal" href="tutorials/index.html"><span class="doc">Tutorials</span></a> show how to create your
 own plugins.</p>
-</div>
-<div class="section" id="users">
+</section>
+<section id="users">
 <h2>Users<a class="headerlink" href="#users" title="Permalink to this headline">¶</a></h2>
 <p>The following is a list of organizations and projects using DFFML. Please let us
 know if you are using DFFML and we’ll add you to the list. If you want help
@@ -328,8 +329,8 @@ using DFFML, see the <a class="reference internal" href="contact.html"><span cla
 </ul>
 </li>
 </ul>
-</div>
-<div class="section" id="philosophy">
+</section>
+<section id="philosophy">
 <h2>Philosophy<a class="headerlink" href="#philosophy" title="Permalink to this headline">¶</a></h2>
 <p>DFFML is an event driven directed graph execution architecture tightly coupled
 with the typical machine learning workflow. The core concept is that all
@@ -356,8 +357,8 @@ deploying and knitting together new or existing services without the need for
 those services to know anything about each other. This could be thought of as a
 level of abstraction beyond serverless architecture, which is where we’re hoping
 to take the project.</p>
-</div>
-<div class="section" id="team">
+</section>
+<section id="team">
 <h2>Team<a class="headerlink" href="#team" title="Permalink to this headline">¶</a></h2>
 <p>We have an awesome team working on the project. We hold weekly meetings
 and have a mailing list and chat! If you want to get involved, ask questions, or
@@ -409,8 +410,8 @@ Software Foundation. Big thanks to Aghin, Himanshu, and Saksham!</p>
 <li><p>Yash Lamba</p></li>
 <li><p>Yash Varshney</p></li>
 </ul>
-</div>
-</div>
+</section>
+</section>
 
 
            </div>

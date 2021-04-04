@@ -4,7 +4,8 @@
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  
+  <meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>Quickstart &mdash; DFFML 0.4.0 documentation</title>
@@ -91,13 +92,13 @@
               
             
             
-              <p class="caption"><span class="caption-text">Introduction</span></p>
+              <p><span class="caption-text">Introduction</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../about.html">About</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../concepts/index.html">Concepts</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Usage</span></p>
+<p><span class="caption-text">Usage</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Quickstart</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#example-dataset">Example Dataset</a></li>
@@ -114,7 +115,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Examples</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Reference</span></p>
+<p><span class="caption-text">Reference</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../plugins/index.html">Plugins</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../cli.html">Command Line</a></li>
@@ -122,12 +123,12 @@
 <li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../troubleshooting.html">Troubleshooting</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Subprojects</span></p>
+<p><span class="caption-text">Subprojects</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../shouldi.html">shouldi</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../swportal.html">Software Portal</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Community</span></p>
+<p><span class="caption-text">Community</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/intel/dffml">GitHub</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://intel.github.io/dffml/master/">Master Branch Docs</a></li>
@@ -209,7 +210,7 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="quickstart">
+  <section id="quickstart">
 <h1>Quickstart<a class="headerlink" href="#quickstart" title="Permalink to this headline">¶</a></h1>
 <p>In this example we have employee data telling us the employee’s years of
 experience, our level of trust in them, their level of expertise, and their
@@ -223,7 +224,7 @@ another separate Python package from DFFML which we can install via <code class=
 </div>
 <p>We will be using scikit’s linear regression model. Other available models can be
 found on the <a class="reference internal" href="../plugins/dffml_model.html"><span class="doc">Models</span></a> plugin page.</p>
-<div class="section" id="example-dataset">
+<section id="example-dataset">
 <h2>Example Dataset<a class="headerlink" href="#example-dataset" title="Permalink to this headline">¶</a></h2>
 <p>We’ll be using the following simple dataset for this example.</p>
 <table class="docutils align-default">
@@ -322,8 +323,8 @@ data. We’ll be asking for a prediction of the salary for the following.</p>
 <span class="n">EOF</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="command-line">
+</section>
+<section id="command-line">
 <h2>Command Line<a class="headerlink" href="#command-line" title="Permalink to this headline">¶</a></h2>
 <p>For each command, we specify which model we want to use, and what our data
 sources are. A detailed explanation of all the command line flags follows.</p>
@@ -404,7 +405,7 @@ DFFML command line from other scripts or languages.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">&quot;confidence&quot;</span></code> value is determined by the underlying model implementation.
 The scikit linear regression model just reports whatever the accuracy was on the
 test dataset as the confidence.</p>
-<div class="section" id="command-line-flags-explained">
+<section id="command-line-flags-explained">
 <span id="quickstart-command-line-flags-explained"></span><h3>Command Line Flags Explained<a class="headerlink" href="#command-line-flags-explained" title="Permalink to this headline">¶</a></h3>
 <ul>
 <li><p><code class="docutils literal notranslate"><span class="pre">-model</span> <span class="pre">scikitlr</span></code></p>
@@ -477,9 +478,9 @@ each this way.</p></li>
 </ul>
 </li>
 </ul>
-</div>
-</div>
-<div class="section" id="python">
+</section>
+</section>
+<section id="python">
 <h2>Python<a class="headerlink" href="#python" title="Permalink to this headline">¶</a></h2>
 <p>If we wanted to do everything within Python our file might look like this</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">Features</span><span class="p">,</span> <span class="n">Feature</span>
@@ -533,8 +534,8 @@ each this way.</p></li>
 </div>
 <p>Check out the plugin docs for <a class="reference internal" href="../plugins/dffml_model.html"><span class="doc">Models</span></a> for usage of other
 models. The <a class="reference internal" href="../api/high_level.html"><span class="doc">API</span></a> docs may also be useful.</p>
-</div>
-<div class="section" id="data-sources">
+</section>
+<section id="data-sources">
 <h2>Data Sources<a class="headerlink" href="#data-sources" title="Permalink to this headline">¶</a></h2>
 <p>DFFML makes it easy to pull data from various sources. All we have to do is
 supply the filenames in place of the data.</p>
@@ -568,8 +569,8 @@ supply the filenames in place of the data.</p>
     <span class="nb">print</span><span class="p">(</span><span class="n">features</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="async">
+</section>
+<section id="async">
 <h2>Async<a class="headerlink" href="#async" title="Permalink to this headline">¶</a></h2>
 <p>You may have noticed we’re importing from <code class="docutils literal notranslate"><span class="pre">dffml.noasync</span></code>. If you’re using
 <code class="docutils literal notranslate"><span class="pre">asyncio</span></code> then you can just import from <code class="docutils literal notranslate"><span class="pre">dffml</span></code>.</p>
@@ -622,8 +623,8 @@ supply the filenames in place of the data.</p>
 <span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="http">
+</section>
+<section id="http">
 <h2>HTTP<a class="headerlink" href="#http" title="Permalink to this headline">¶</a></h2>
 <p>We can also deploy our trained model behind an HTTP server.</p>
 <p>First we need to install the HTTP service, which is the HTTP server which will
@@ -679,8 +680,8 @@ assessment.</p>
 <span class="p">}</span>
 </pre></div>
 </div>
-</div>
-</div>
+</section>
+</section>
 
 
            </div>

@@ -4,7 +4,8 @@
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  
+  <meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>Gitter ML Inference Chatbot &mdash; DFFML 0.4.0 documentation</title>
@@ -91,13 +92,13 @@
               
             
             
-              <p class="caption"><span class="caption-text">Introduction</span></p>
+              <p><span class="caption-text">Introduction</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../about.html">About</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../concepts/index.html">Concepts</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Usage</span></p>
+<p><span class="caption-text">Usage</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../quickstart/model.html">Quickstart</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">Tutorials</a><ul class="current">
@@ -120,7 +121,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../examples/index.html">Examples</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Reference</span></p>
+<p><span class="caption-text">Reference</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../plugins/index.html">Plugins</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../cli.html">Command Line</a></li>
@@ -128,12 +129,12 @@
 <li class="toctree-l1"><a class="reference internal" href="../../api/index.html">API Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../troubleshooting.html">Troubleshooting</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Subprojects</span></p>
+<p><span class="caption-text">Subprojects</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../shouldi.html">shouldi</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../swportal.html">Software Portal</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Community</span></p>
+<p><span class="caption-text">Community</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/intel/dffml">GitHub</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://intel.github.io/dffml/master/">Master Branch Docs</a></li>
@@ -219,7 +220,7 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="gitter-ml-inference-chatbot">
+  <section id="gitter-ml-inference-chatbot">
 <h1>Gitter ML Inference Chatbot<a class="headerlink" href="#gitter-ml-inference-chatbot" title="Permalink to this headline">¶</a></h1>
 <p>This tutorial shows how to use configs in DFFML operations. We’ll be implementing
 a Gitter chatbot. Let’s take a look at the final result before moving forward.</p>
@@ -523,7 +524,7 @@ loads secret token and bot name from the ini config file.</p>
 
 </pre></div>
 </div>
-<div class="section" id="detour-what-are-imp-enter-and-ctx-enter">
+<section id="detour-what-are-imp-enter-and-ctx-enter">
 <h2>Detour: What are imp_enter and ctx_enter?<a class="headerlink" href="#detour-what-are-imp-enter-and-ctx-enter" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">config_cls</span><span class="o">=</span><span class="n">GitterChannelConfig</span><span class="p">,</span>
 <span class="n">imp_enter</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;secret&quot;</span><span class="p">:</span> <span class="k">lambda</span> <span class="bp">self</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">secret</span><span class="p">},</span>
@@ -547,8 +548,8 @@ return value to <code class="docutils literal notranslate"><span class="pre">sct
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="bp">self</span><span class="o">.</span><span class="n">sctx</span><span class="o">.</span><span class="n">call_a_method</span><span class="p">()</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="running-the-dataflow">
+</section>
+<section id="running-the-dataflow">
 <h2>Running the dataflow<a class="headerlink" href="#running-the-dataflow" title="Permalink to this headline">¶</a></h2>
 <p><strong>run.py</strong></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span>
@@ -615,8 +616,8 @@ return value to <code class="docutils literal notranslate"><span class="pre">sct
 <span class="go">    -inputs test_community1/community=room_name</span>
 </pre></div>
 </div>
-</div>
-</div>
+</section>
+</section>
 
 
            </div>

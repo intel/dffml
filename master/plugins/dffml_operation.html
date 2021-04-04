@@ -4,7 +4,8 @@
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  
+  <meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>Operations &mdash; DFFML b66b8bd2 documentation</title>
@@ -91,19 +92,19 @@
               
             
             
-              <p class="caption"><span class="caption-text">Introduction</span></p>
+              <p><span class="caption-text">Introduction</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../about.html">About</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../concepts/index.html">Concepts</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Usage</span></p>
+<p><span class="caption-text">Usage</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../quickstart/model.html">Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Examples</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Reference</span></p>
+<p><span class="caption-text">Reference</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Plugins</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="dffml_source.html">Sources</a></li>
@@ -216,12 +217,12 @@
 <li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../troubleshooting.html">Troubleshooting</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Subprojects</span></p>
+<p><span class="caption-text">Subprojects</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../shouldi.html">shouldi</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../swportal.html">Software Portal</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Community</span></p>
+<p><span class="caption-text">Community</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/intel/dffml">GitHub</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://intel.github.io/dffml/master/">Master Branch Docs</a></li>
@@ -295,7 +296,7 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="operations">
+  <section id="operations">
 <h1>Operations<a class="headerlink" href="#operations" title="Permalink to this headline">¶</a></h1>
 <p>Operations Implementations are subclasses of
 <a class="reference internal" href="../api/df/base.html#dffml.df.base.OperationImplementation" title="dffml.df.base.OperationImplementation"><code class="xref py py-class docutils literal notranslate"><span class="pre">dffml.df.base.OperationImplementation</span></code></a>, they are functions or classes
@@ -303,23 +304,23 @@ which could do anything, make HTTP requests, do inference, etc.</p>
 <p>They don’t necessarily have to be written in Python. Although DFFML isn’t quite
 to the point where it can use operations written in other languages yet, it’s on
 the roadmap.</p>
-<div class="section" id="dffml">
+<section id="dffml">
 <span id="plugin-operation-dffml"></span><h2>dffml<a class="headerlink" href="#dffml" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install dffml</span>
 </pre></div>
 </div>
-<div class="section" id="acceptuserinput">
+<section id="acceptuserinput">
 <span id="plugin-operation-dffml-acceptuserinput"></span><h3>AcceptUserInput<a class="headerlink" href="#acceptuserinput" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>Accept input from stdin using python input()</p>
-<div class="section" id="returns">
+<section id="returns">
 <h4>Returns<a class="headerlink" href="#returns" title="Permalink to this headline">¶</a></h4>
 <dl class="simple">
 <dt>dict</dt><dd><p>A dictionary containing user input.</p>
 </dd>
 </dl>
-</div>
-<div class="section" id="examples">
+</section>
+<section id="examples">
 <h4>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h4>
 <p>The following example shows how to use AcceptUserInput.
 (Assumes that the input from stdio is “Data flow is awesome”!)</p>
@@ -347,9 +348,9 @@ the roadmap.</p>
 <ul class="simple">
 <li><p>InputData: UserInput(type: str)</p></li>
 </ul>
-</div>
-</div>
-<div class="section" id="associate">
+</section>
+</section>
+<section id="associate">
 <span id="plugin-operation-dffml-associate"></span><h3>associate<a class="headerlink" href="#associate" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>No description</p>
@@ -362,11 +363,11 @@ the roadmap.</p>
 <ul class="simple">
 <li><p>output: associate_output(type: Dict[str, Any])</p></li>
 </ul>
-</div>
-<div class="section" id="associate-definition">
+</section>
+<section id="associate-definition">
 <span id="plugin-operation-dffml-associate-definition"></span><h3>associate_definition<a class="headerlink" href="#associate-definition" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
-<div class="section" id="id1">
+<section id="id1">
 <h4>Examples<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h4>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">asyncio</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="o">*</span>
@@ -418,13 +419,13 @@ the roadmap.</p>
 <ul class="simple">
 <li><p>output: associate_output(type: Dict[str, Any])</p></li>
 </ul>
-</div>
-</div>
-<div class="section" id="db-query-create-table">
+</section>
+</section>
+<section id="db-query-create-table">
 <span id="plugin-operation-dffml-db-query-create-table"></span><h3>db_query_create_table<a class="headerlink" href="#db-query-create-table" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>Generates a create table query in the database.</p>
-<div class="section" id="parameters">
+<section id="parameters">
 <h4>Parameters<a class="headerlink" href="#parameters" title="Permalink to this headline">¶</a></h4>
 <dl class="simple">
 <dt>table_name<span class="classifier">str</span></dt><dd><p>The name of the table to be created.</p>
@@ -432,8 +433,8 @@ the roadmap.</p>
 <dt>cols<span class="classifier">list[str]</span></dt><dd><p>Columns of the table.</p>
 </dd>
 </dl>
-</div>
-<div class="section" id="id2">
+</section>
+<section id="id2">
 <h4>Examples<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h4>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">asyncio</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="o">*</span>
@@ -479,13 +480,13 @@ the roadmap.</p>
 <ul class="simple">
 <li><p>database: Entrypoint</p></li>
 </ul>
-</div>
-</div>
-<div class="section" id="db-query-insert">
+</section>
+</section>
+<section id="db-query-insert">
 <span id="plugin-operation-dffml-db-query-insert"></span><h3>db_query_insert<a class="headerlink" href="#db-query-insert" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>Generates an insert query in the database.</p>
-<div class="section" id="id3">
+<section id="id3">
 <h4>Parameters<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h4>
 <dl class="simple">
 <dt>table_name<span class="classifier">str</span></dt><dd><p>The name of the table to insert data in to.</p>
@@ -493,8 +494,8 @@ the roadmap.</p>
 <dt>data<span class="classifier">dict</span></dt><dd><p>Data to be inserted into the table.</p>
 </dd>
 </dl>
-</div>
-<div class="section" id="id4">
+</section>
+<section id="id4">
 <h4>Examples<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h4>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">asyncio</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="o">*</span>
@@ -559,13 +560,13 @@ the roadmap.</p>
 <ul class="simple">
 <li><p>database: Entrypoint</p></li>
 </ul>
-</div>
-</div>
-<div class="section" id="db-query-insert-or-update">
+</section>
+</section>
+<section id="db-query-insert-or-update">
 <span id="plugin-operation-dffml-db-query-insert-or-update"></span><h3>db_query_insert_or_update<a class="headerlink" href="#db-query-insert-or-update" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>Automatically uses the better suited operation, insert query or update query.</p>
-<div class="section" id="id5">
+<section id="id5">
 <h4>Parameters<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h4>
 <dl class="simple">
 <dt>table_name<span class="classifier">str</span></dt><dd><p>The name of the table to insert data in to.</p>
@@ -573,8 +574,8 @@ the roadmap.</p>
 <dt>data<span class="classifier">dict</span></dt><dd><p>Data to be inserted or updated into the table.</p>
 </dd>
 </dl>
-</div>
-<div class="section" id="id6">
+</section>
+<section id="id6">
 <h4>Examples<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h4>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">asyncio</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="o">*</span>
@@ -647,13 +648,13 @@ the roadmap.</p>
 <ul class="simple">
 <li><p>database: Entrypoint</p></li>
 </ul>
-</div>
-</div>
-<div class="section" id="db-query-lookup">
+</section>
+</section>
+<section id="db-query-lookup">
 <span id="plugin-operation-dffml-db-query-lookup"></span><h3>db_query_lookup<a class="headerlink" href="#db-query-lookup" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>Generates a lookup query in the database.</p>
-<div class="section" id="id7">
+<section id="id7">
 <h4>Parameters<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h4>
 <dl class="simple">
 <dt>table_name<span class="classifier">str</span></dt><dd><p>The name of the table.</p>
@@ -663,8 +664,8 @@ the roadmap.</p>
 <dt>conditions<span class="classifier">Conditions</span></dt><dd><p>Query conditions.</p>
 </dd>
 </dl>
-</div>
-<div class="section" id="id8">
+</section>
+<section id="id8">
 <h4>Examples<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h4>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">asyncio</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="o">*</span>
@@ -722,13 +723,13 @@ the roadmap.</p>
 <ul class="simple">
 <li><p>database: Entrypoint</p></li>
 </ul>
-</div>
-</div>
-<div class="section" id="db-query-remove">
+</section>
+</section>
+<section id="db-query-remove">
 <span id="plugin-operation-dffml-db-query-remove"></span><h3>db_query_remove<a class="headerlink" href="#db-query-remove" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>Generates a remove table query in the database.</p>
-<div class="section" id="id9">
+<section id="id9">
 <h4>Parameters<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h4>
 <dl class="simple">
 <dt>table_name<span class="classifier">str</span></dt><dd><p>The name of the table to insert data in to.</p>
@@ -736,8 +737,8 @@ the roadmap.</p>
 <dt>conditions<span class="classifier">Conditions</span></dt><dd><p>Query conditions.</p>
 </dd>
 </dl>
-</div>
-<div class="section" id="id10">
+</section>
+<section id="id10">
 <h4>Examples<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h4>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">asyncio</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="o">*</span>
@@ -802,13 +803,13 @@ the roadmap.</p>
 <ul class="simple">
 <li><p>database: Entrypoint</p></li>
 </ul>
-</div>
-</div>
-<div class="section" id="db-query-update">
+</section>
+</section>
+<section id="db-query-update">
 <span id="plugin-operation-dffml-db-query-update"></span><h3>db_query_update<a class="headerlink" href="#db-query-update" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>Generates an Update table query in the database.</p>
-<div class="section" id="id11">
+<section id="id11">
 <h4>Parameters<a class="headerlink" href="#id11" title="Permalink to this headline">¶</a></h4>
 <dl class="simple">
 <dt>table_name<span class="classifier">str</span></dt><dd><p>The name of the table to insert data in to.</p>
@@ -818,8 +819,8 @@ the roadmap.</p>
 <dt>conditions<span class="classifier">list</span></dt><dd><p>List of query conditions.</p>
 </dd>
 </dl>
-</div>
-<div class="section" id="id12">
+</section>
+<section id="id12">
 <h4>Examples<a class="headerlink" href="#id12" title="Permalink to this headline">¶</a></h4>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">asyncio</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="o">*</span>
@@ -893,13 +894,13 @@ the roadmap.</p>
 <ul class="simple">
 <li><p>database: Entrypoint</p></li>
 </ul>
-</div>
-</div>
-<div class="section" id="dffml-dataflow-run">
+</section>
+</section>
+<section id="dffml-dataflow-run">
 <span id="plugin-operation-dffml-dffml-dataflow-run"></span><h3>dffml.dataflow.run<a class="headerlink" href="#dffml-dataflow-run" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>Starts a subflow <code class="docutils literal notranslate"><span class="pre">self.config.dataflow</span></code> and adds <code class="docutils literal notranslate"><span class="pre">inputs</span></code> in it.</p>
-<div class="section" id="id13">
+<section id="id13">
 <h4>Parameters<a class="headerlink" href="#id13" title="Permalink to this headline">¶</a></h4>
 <dl class="simple">
 <dt>inputs<span class="classifier">dict</span></dt><dd><p>The inputs to add to the subflow. These should be a key value mapping of
@@ -907,15 +908,15 @@ the context string to the inputs which should be seeded for that context
 string.</p>
 </dd>
 </dl>
-</div>
-<div class="section" id="id14">
+</section>
+<section id="id14">
 <h4>Returns<a class="headerlink" href="#id14" title="Permalink to this headline">¶</a></h4>
 <dl class="simple">
 <dt>dict</dt><dd><p>Maps context strings in inputs to output after running through dataflow.</p>
 </dd>
 </dl>
-</div>
-<div class="section" id="id15">
+</section>
+<section id="id15">
 <h4>Examples<a class="headerlink" href="#id15" title="Permalink to this headline">¶</a></h4>
 <p>The following shows how to use run dataflow in its default behavior.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">asyncio</span>
@@ -1028,13 +1029,13 @@ This allows you to run a subflow as if it were an operation.</p>
 <ul class="simple">
 <li><p>dataflow: DataFlow</p></li>
 </ul>
-</div>
-</div>
-<div class="section" id="dffml-mapping-create">
+</section>
+</section>
+<section id="dffml-mapping-create">
 <span id="plugin-operation-dffml-dffml-mapping-create"></span><h3>dffml.mapping.create<a class="headerlink" href="#dffml-mapping-create" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>Creates a mapping of a given key and value.</p>
-<div class="section" id="id16">
+<section id="id16">
 <h4>Parameters<a class="headerlink" href="#id16" title="Permalink to this headline">¶</a></h4>
 <dl class="simple">
 <dt>key<span class="classifier">str</span></dt><dd><p>The key for the mapping.</p>
@@ -1042,15 +1043,15 @@ This allows you to run a subflow as if it were an operation.</p>
 <dt>value<span class="classifier">Any</span></dt><dd><p>The value for the mapping.</p>
 </dd>
 </dl>
-</div>
-<div class="section" id="id17">
+</section>
+<section id="id17">
 <h4>Returns<a class="headerlink" href="#id17" title="Permalink to this headline">¶</a></h4>
 <dl class="simple">
 <dt>dict</dt><dd><p>A dictionary containing the mapping created.</p>
 </dd>
 </dl>
-</div>
-<div class="section" id="id18">
+</section>
+<section id="id18">
 <h4>Examples<a class="headerlink" href="#id18" title="Permalink to this headline">¶</a></h4>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">asyncio</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="o">*</span>
@@ -1089,13 +1090,13 @@ This allows you to run a subflow as if it were an operation.</p>
 <ul class="simple">
 <li><p>mapping: mapping(type: map)</p></li>
 </ul>
-</div>
-</div>
-<div class="section" id="dffml-mapping-extract">
+</section>
+</section>
+<section id="dffml-mapping-extract">
 <span id="plugin-operation-dffml-dffml-mapping-extract"></span><h3>dffml.mapping.extract<a class="headerlink" href="#dffml-mapping-extract" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>Extracts value from a given mapping.</p>
-<div class="section" id="id19">
+<section id="id19">
 <h4>Parameters<a class="headerlink" href="#id19" title="Permalink to this headline">¶</a></h4>
 <dl class="simple">
 <dt>mapping<span class="classifier">dict</span></dt><dd><p>The mapping to extract the value from.</p>
@@ -1103,15 +1104,15 @@ This allows you to run a subflow as if it were an operation.</p>
 <dt>traverse<span class="classifier">list[str]</span></dt><dd><p>A list of keys to traverse through the mapping dictionary and extract the values.</p>
 </dd>
 </dl>
-</div>
-<div class="section" id="id20">
+</section>
+<section id="id20">
 <h4>Returns<a class="headerlink" href="#id20" title="Permalink to this headline">¶</a></h4>
 <dl class="simple">
 <dt>dict</dt><dd><p>A dictionary containing the value of the keys.</p>
 </dd>
 </dl>
-</div>
-<div class="section" id="id21">
+</section>
+<section id="id21">
 <h4>Examples<a class="headerlink" href="#id21" title="Permalink to this headline">¶</a></h4>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">asyncio</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="o">*</span>
@@ -1153,27 +1154,27 @@ This allows you to run a subflow as if it were an operation.</p>
 <ul class="simple">
 <li><p>value: value(type: generic)</p></li>
 </ul>
-</div>
-</div>
-<div class="section" id="dffml-model-predict">
+</section>
+</section>
+<section id="dffml-model-predict">
 <span id="plugin-operation-dffml-dffml-model-predict"></span><h3>dffml.model.predict<a class="headerlink" href="#dffml-model-predict" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>Predict using dffml models.</p>
-<div class="section" id="id22">
+<section id="id22">
 <h4>Parameters<a class="headerlink" href="#id22" title="Permalink to this headline">¶</a></h4>
 <dl class="simple">
 <dt>features<span class="classifier">dict</span></dt><dd><p>A dictionary contaning feature name and feature value.</p>
 </dd>
 </dl>
-</div>
-<div class="section" id="id23">
+</section>
+<section id="id23">
 <h4>Returns<a class="headerlink" href="#id23" title="Permalink to this headline">¶</a></h4>
 <dl class="simple">
 <dt>dict</dt><dd><p>A dictionary containing prediction.</p>
 </dd>
 </dl>
-</div>
-<div class="section" id="id24">
+</section>
+<section id="id24">
 <h4>Examples<a class="headerlink" href="#id24" title="Permalink to this headline">¶</a></h4>
 <p>The following example shows how to use model_predict.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">asyncio</span>
@@ -1231,28 +1232,28 @@ This allows you to run a subflow as if it were an operation.</p>
 <ul class="simple">
 <li><p>model: Entrypoint</p></li>
 </ul>
-</div>
-</div>
-<div class="section" id="get-multi">
+</section>
+</section>
+<section id="get-multi">
 <span id="plugin-operation-dffml-get-multi"></span><h3>get_multi<a class="headerlink" href="#get-multi" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>Output operation to get all Inputs matching given definitions.</p>
-<div class="section" id="id25">
+<section id="id25">
 <h4>Parameters<a class="headerlink" href="#id25" title="Permalink to this headline">¶</a></h4>
 <dl class="simple">
 <dt>spec<span class="classifier">list</span></dt><dd><p>List of definition names. Any Inputs with matching definition will be
 returned.</p>
 </dd>
 </dl>
-</div>
-<div class="section" id="id26">
+</section>
+<section id="id26">
 <h4>Returns<a class="headerlink" href="#id26" title="Permalink to this headline">¶</a></h4>
 <dl class="simple">
 <dt>dict</dt><dd><p>Maps definition names to all the Inputs of that definition</p>
 </dd>
 </dl>
-</div>
-<div class="section" id="id27">
+</section>
+<section id="id27">
 <h4>Examples<a class="headerlink" href="#id27" title="Permalink to this headline">¶</a></h4>
 <p>The following shows how to grab all Inputs with the URL definition. If we
 had we run an operation which output a URL, that output URL would have also
@@ -1296,28 +1297,28 @@ been returned to us.</p>
 <ul class="simple">
 <li><p>output: get_multi_output(type: map)</p></li>
 </ul>
-</div>
-</div>
-<div class="section" id="get-single">
+</section>
+</section>
+<section id="get-single">
 <span id="plugin-operation-dffml-get-single"></span><h3>get_single<a class="headerlink" href="#get-single" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>Output operation to get a single Input for each definition given.</p>
-<div class="section" id="id28">
+<section id="id28">
 <h4>Parameters<a class="headerlink" href="#id28" title="Permalink to this headline">¶</a></h4>
 <dl class="simple">
 <dt>spec<span class="classifier">list</span></dt><dd><p>List of definition names. An Input with matching definition will be
 returned.</p>
 </dd>
 </dl>
-</div>
-<div class="section" id="id29">
+</section>
+<section id="id29">
 <h4>Returns<a class="headerlink" href="#id29" title="Permalink to this headline">¶</a></h4>
 <dl class="simple">
 <dt>dict</dt><dd><p>Maps definition names to an Input of that definition</p>
 </dd>
 </dl>
-</div>
-<div class="section" id="id30">
+</section>
+<section id="id30">
 <h4>Examples<a class="headerlink" href="#id30" title="Permalink to this headline">¶</a></h4>
 <p>The following shows how to grab an Inputs with the URL definition. If we
 had we run an operation which output a URL, that output URL could have also
@@ -1362,9 +1363,9 @@ been returned to us.</p>
 <ul class="simple">
 <li><p>output: get_single_output(type: map)</p></li>
 </ul>
-</div>
-</div>
-<div class="section" id="group-by">
+</section>
+</section>
+<section id="group-by">
 <span id="plugin-operation-dffml-group-by"></span><h3>group_by<a class="headerlink" href="#group-by" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>No description</p>
@@ -1377,26 +1378,26 @@ been returned to us.</p>
 <ul class="simple">
 <li><p>output: group_by_output(type: Dict[str, List[Any]])</p></li>
 </ul>
-</div>
-<div class="section" id="literal-eval">
+</section>
+<section id="literal-eval">
 <span id="plugin-operation-dffml-literal-eval"></span><h3>literal_eval<a class="headerlink" href="#literal-eval" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>Evaluate the input using ast.literal_eval()</p>
-<div class="section" id="id31">
+<section id="id31">
 <h4>Parameters<a class="headerlink" href="#id31" title="Permalink to this headline">¶</a></h4>
 <dl class="simple">
 <dt>str_to_eval<span class="classifier">str</span></dt><dd><p>A string to be evaluated.</p>
 </dd>
 </dl>
-</div>
-<div class="section" id="id32">
+</section>
+<section id="id32">
 <h4>Returns<a class="headerlink" href="#id32" title="Permalink to this headline">¶</a></h4>
 <dl class="simple">
 <dt>dict</dt><dd><p>A dict containing python literal.</p>
 </dd>
 </dl>
-</div>
-<div class="section" id="id33">
+</section>
+<section id="id33">
 <h4>Examples<a class="headerlink" href="#id33" title="Permalink to this headline">¶</a></h4>
 <p>The following example shows how to use literal_eval.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">asyncio</span>
@@ -1434,13 +1435,13 @@ been returned to us.</p>
 <ul class="simple">
 <li><p>str_after_eval: EvaluatedStr(type: generic)</p></li>
 </ul>
-</div>
-</div>
-<div class="section" id="multiply">
+</section>
+</section>
+<section id="multiply">
 <span id="plugin-operation-dffml-multiply"></span><h3>multiply<a class="headerlink" href="#multiply" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>Multiply record values</p>
-<div class="section" id="id34">
+<section id="id34">
 <h4>Parameters<a class="headerlink" href="#id34" title="Permalink to this headline">¶</a></h4>
 <dl class="simple">
 <dt>multiplicand<span class="classifier">generic</span></dt><dd><p>An arithmetic type value.</p>
@@ -1448,15 +1449,15 @@ been returned to us.</p>
 <dt>multiplier<span class="classifier">generic</span></dt><dd><p>An arithmetic type value.</p>
 </dd>
 </dl>
-</div>
-<div class="section" id="id35">
+</section>
+<section id="id35">
 <h4>Returns<a class="headerlink" href="#id35" title="Permalink to this headline">¶</a></h4>
 <dl class="simple">
 <dt>dict</dt><dd><p>A dict containing the product.</p>
 </dd>
 </dl>
-</div>
-<div class="section" id="id36">
+</section>
+<section id="id36">
 <h4>Examples<a class="headerlink" href="#id36" title="Permalink to this headline">¶</a></h4>
 <p>The following example shows how to use multiply.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">asyncio</span>
@@ -1498,20 +1499,20 @@ been returned to us.</p>
 <ul class="simple">
 <li><p>product: product(type: generic)</p></li>
 </ul>
-</div>
-</div>
-<div class="section" id="print-output">
+</section>
+</section>
+<section id="print-output">
 <span id="plugin-operation-dffml-print-output"></span><h3>print_output<a class="headerlink" href="#print-output" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>Print the output on stdout using python print()</p>
-<div class="section" id="id37">
+<section id="id37">
 <h4>Parameters<a class="headerlink" href="#id37" title="Permalink to this headline">¶</a></h4>
 <dl class="simple">
 <dt>data<span class="classifier">Any</span></dt><dd><p>A python literal to be printed.</p>
 </dd>
 </dl>
-</div>
-<div class="section" id="id38">
+</section>
+<section id="id38">
 <h4>Examples<a class="headerlink" href="#id38" title="Permalink to this headline">¶</a></h4>
 <p>The following example shows how to use print_output.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">asyncio</span>
@@ -1537,15 +1538,15 @@ been returned to us.</p>
 <ul class="simple">
 <li><p>data: DataToPrint(type: generic)</p></li>
 </ul>
-</div>
-</div>
-</div>
-<div class="section" id="dffml-feature-git">
+</section>
+</section>
+</section>
+<section id="dffml-feature-git">
 <span id="plugin-operation-dffml-feature-git"></span><h2>dffml_feature_git<a class="headerlink" href="#dffml-feature-git" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install dffml-feature-git</span>
 </pre></div>
 </div>
-<div class="section" id="check-if-valid-git-repository-url">
+<section id="check-if-valid-git-repository-url">
 <span id="plugin-operation-dffml-feature-git-check-if-valid-git-repository-url"></span><h3>check_if_valid_git_repository_URL<a class="headerlink" href="#check-if-valid-git-repository-url" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>No description</p>
@@ -1558,8 +1559,8 @@ been returned to us.</p>
 <ul class="simple">
 <li><p>valid: valid_git_repository_URL(type: boolean)</p></li>
 </ul>
-</div>
-<div class="section" id="cleanup-git-repo">
+</section>
+<section id="cleanup-git-repo">
 <span id="plugin-operation-dffml-feature-git-cleanup-git-repo"></span><h3>cleanup_git_repo<a class="headerlink" href="#cleanup-git-repo" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>No description</p>
@@ -1573,8 +1574,8 @@ been returned to us.</p>
 </ul>
 </li>
 </ul>
-</div>
-<div class="section" id="clone-git-repo">
+</section>
+<section id="clone-git-repo">
 <span id="plugin-operation-dffml-feature-git-clone-git-repo"></span><h3>clone_git_repo<a class="headerlink" href="#clone-git-repo" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>No description</p>
@@ -1596,8 +1597,8 @@ been returned to us.</p>
 <ul class="simple">
 <li><p>valid_git_repository_URL: boolean</p></li>
 </ul>
-</div>
-<div class="section" id="count-authors">
+</section>
+<section id="count-authors">
 <span id="plugin-operation-dffml-feature-git-count-authors"></span><h3>count_authors<a class="headerlink" href="#count-authors" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>No description</p>
@@ -1610,8 +1611,8 @@ been returned to us.</p>
 <ul class="simple">
 <li><p>authors: author_count(type: int)</p></li>
 </ul>
-</div>
-<div class="section" id="git-commits">
+</section>
+<section id="git-commits">
 <span id="plugin-operation-dffml-feature-git-git-commits"></span><h3>git_commits<a class="headerlink" href="#git-commits" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>No description</p>
@@ -1631,8 +1632,8 @@ been returned to us.</p>
 <ul class="simple">
 <li><p>commits: commit_count(type: int)</p></li>
 </ul>
-</div>
-<div class="section" id="git-repo-author-lines-for-dates">
+</section>
+<section id="git-repo-author-lines-for-dates">
 <span id="plugin-operation-dffml-feature-git-git-repo-author-lines-for-dates"></span><h3>git_repo_author_lines_for_dates<a class="headerlink" href="#git-repo-author-lines-for-dates" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>No description</p>
@@ -1652,8 +1653,8 @@ been returned to us.</p>
 <ul class="simple">
 <li><p>author_lines: author_line_count(type: Dict[str, int])</p></li>
 </ul>
-</div>
-<div class="section" id="git-repo-checkout">
+</section>
+<section id="git-repo-checkout">
 <span id="plugin-operation-dffml-feature-git-git-repo-checkout"></span><h3>git_repo_checkout<a class="headerlink" href="#git-repo-checkout" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>No description</p>
@@ -1678,8 +1679,8 @@ been returned to us.</p>
 </ul>
 </li>
 </ul>
-</div>
-<div class="section" id="git-repo-commit-from-date">
+</section>
+<section id="git-repo-commit-from-date">
 <span id="plugin-operation-dffml-feature-git-git-repo-commit-from-date"></span><h3>git_repo_commit_from_date<a class="headerlink" href="#git-repo-commit-from-date" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>No description</p>
@@ -1699,8 +1700,8 @@ been returned to us.</p>
 <ul class="simple">
 <li><p>commit: git_commit(type: string)</p></li>
 </ul>
-</div>
-<div class="section" id="git-repo-default-branch">
+</section>
+<section id="git-repo-default-branch">
 <span id="plugin-operation-dffml-feature-git-git-repo-default-branch"></span><h3>git_repo_default_branch<a class="headerlink" href="#git-repo-default-branch" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>No description</p>
@@ -1722,8 +1723,8 @@ been returned to us.</p>
 <ul class="simple">
 <li><p>no_git_branch_given: boolean</p></li>
 </ul>
-</div>
-<div class="section" id="git-repo-release">
+</section>
+<section id="git-repo-release">
 <span id="plugin-operation-dffml-feature-git-git-repo-release"></span><h3>git_repo_release<a class="headerlink" href="#git-repo-release" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>Was there a release within this date range</p>
@@ -1743,8 +1744,8 @@ been returned to us.</p>
 <ul class="simple">
 <li><p>present: release_within_period(type: bool)</p></li>
 </ul>
-</div>
-<div class="section" id="lines-of-code-by-language">
+</section>
+<section id="lines-of-code-by-language">
 <span id="plugin-operation-dffml-feature-git-lines-of-code-by-language"></span><h3>lines_of_code_by_language<a class="headerlink" href="#lines-of-code-by-language" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>This operation relys on <code class="docutils literal notranslate"><span class="pre">tokei</span></code>. Here’s how to install version 10.1.1,
@@ -1778,8 +1779,8 @@ check it’s releases page to make sure you’re installing the latest version.<
 <ul class="simple">
 <li><p>lines_by_language: lines_by_language_count(type: Dict[str, Dict[str, int]])</p></li>
 </ul>
-</div>
-<div class="section" id="lines-of-code-to-comments">
+</section>
+<section id="lines-of-code-to-comments">
 <span id="plugin-operation-dffml-feature-git-lines-of-code-to-comments"></span><h3>lines_of_code_to_comments<a class="headerlink" href="#lines-of-code-to-comments" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>No description</p>
@@ -1792,8 +1793,8 @@ check it’s releases page to make sure you’re installing the latest version.<
 <ul class="simple">
 <li><p>code_to_comment_ratio: language_to_comment_ratio(type: int)</p></li>
 </ul>
-</div>
-<div class="section" id="make-quarters">
+</section>
+<section id="make-quarters">
 <span id="plugin-operation-dffml-feature-git-make-quarters"></span><h3>make_quarters<a class="headerlink" href="#make-quarters" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>No description</p>
@@ -1806,8 +1807,8 @@ check it’s releases page to make sure you’re installing the latest version.<
 <ul class="simple">
 <li><p>quarters: quarter(type: int)</p></li>
 </ul>
-</div>
-<div class="section" id="quarters-back-to-date">
+</section>
+<section id="quarters-back-to-date">
 <span id="plugin-operation-dffml-feature-git-quarters-back-to-date"></span><h3>quarters_back_to_date<a class="headerlink" href="#quarters-back-to-date" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>No description</p>
@@ -1822,8 +1823,8 @@ check it’s releases page to make sure you’re installing the latest version.<
 <li><p>date: date(type: string)</p></li>
 <li><p>start_end: date_pair(type: List[date])</p></li>
 </ul>
-</div>
-<div class="section" id="work">
+</section>
+<section id="work">
 <span id="plugin-operation-dffml-feature-git-work"></span><h3>work<a class="headerlink" href="#work" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>No description</p>
@@ -1836,14 +1837,14 @@ check it’s releases page to make sure you’re installing the latest version.<
 <ul class="simple">
 <li><p>work: work_spread(type: int)</p></li>
 </ul>
-</div>
-</div>
-<div class="section" id="shouldi">
+</section>
+</section>
+<section id="shouldi">
 <span id="plugin-operation-shouldi"></span><h2>shouldi<a class="headerlink" href="#shouldi" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install shouldi</span>
 </pre></div>
 </div>
-<div class="section" id="cleanup-pypi-package">
+<section id="cleanup-pypi-package">
 <span id="plugin-operation-shouldi-cleanup-pypi-package"></span><h3>cleanup_pypi_package<a class="headerlink" href="#cleanup-pypi-package" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>Remove the directory containing the source code release.</p>
@@ -1852,8 +1853,8 @@ check it’s releases page to make sure you’re installing the latest version.<
 <ul class="simple">
 <li><p>directory: run_bandit.inputs.pkg(type: str)</p></li>
 </ul>
-</div>
-<div class="section" id="pypi-package-contents">
+</section>
+<section id="pypi-package-contents">
 <span id="plugin-operation-shouldi-pypi-package-contents"></span><h3>pypi_package_contents<a class="headerlink" href="#pypi-package-contents" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>Download a source code release and extract it to a temporary directory.</p>
@@ -1866,8 +1867,8 @@ check it’s releases page to make sure you’re installing the latest version.<
 <ul class="simple">
 <li><p>directory: run_bandit.inputs.pkg(type: str)</p></li>
 </ul>
-</div>
-<div class="section" id="pypi-package-json">
+</section>
+<section id="pypi-package-json">
 <span id="plugin-operation-shouldi-pypi-package-json"></span><h3>pypi_package_json<a class="headerlink" href="#pypi-package-json" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>Download the information on the package in JSON format.</p>
@@ -1881,8 +1882,8 @@ check it’s releases page to make sure you’re installing the latest version.<
 <li><p>version: safety_check.inputs.version(type: str)</p></li>
 <li><p>url: pypi_package_contents.inputs.url(type: str)</p></li>
 </ul>
-</div>
-<div class="section" id="run-bandit">
+</section>
+<section id="run-bandit">
 <span id="plugin-operation-shouldi-run-bandit"></span><h3>run_bandit<a class="headerlink" href="#run-bandit" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>CLI usage: dffml service dev run -log debug shouldi.bandit:run_bandit -pkg .</p>
@@ -1895,8 +1896,8 @@ check it’s releases page to make sure you’re installing the latest version.<
 <ul class="simple">
 <li><p>result: run_bandit.outputs.result(type: map)</p></li>
 </ul>
-</div>
-<div class="section" id="safety-check">
+</section>
+<section id="safety-check">
 <span id="plugin-operation-shouldi-safety-check"></span><h3>safety_check<a class="headerlink" href="#safety-check" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>No description</p>
@@ -1910,14 +1911,14 @@ check it’s releases page to make sure you’re installing the latest version.<
 <ul class="simple">
 <li><p>result: safety_check.outputs.result(type: int)</p></li>
 </ul>
-</div>
-</div>
-<div class="section" id="dffml-operations-nlp">
+</section>
+</section>
+<section id="dffml-operations-nlp">
 <span id="plugin-operation-dffml-operations-nlp"></span><h2>dffml_operations_nlp<a class="headerlink" href="#dffml-operations-nlp" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install dffml-operations-nlp</span>
 </pre></div>
 </div>
-<div class="section" id="collect-output">
+<section id="collect-output">
 <span id="plugin-operation-dffml-operations-nlp-collect-output"></span><h3>collect_output<a class="headerlink" href="#collect-output" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>No description</p>
@@ -1931,14 +1932,14 @@ check it’s releases page to make sure you’re installing the latest version.<
 <ul class="simple">
 <li><p>all: all_sentences(type: List[string])</p></li>
 </ul>
-</div>
-<div class="section" id="count-vectorizer">
+</section>
+<section id="count-vectorizer">
 <span id="plugin-operation-dffml-operations-nlp-count-vectorizer"></span><h3>count_vectorizer<a class="headerlink" href="#count-vectorizer" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>Converts a collection of text documents to a matrix of token counts using sklearn CountVectorizer’s <cite>fit_transform</cite> method.
 For details on parameters check <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.CountVectorizer.html">https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.CountVectorizer.html</a>
 Parameters specific to this operation are described below.</p>
-<div class="section" id="id39">
+<section id="id39">
 <h4>Parameters<a class="headerlink" href="#id39" title="Permalink to this headline">¶</a></h4>
 <dl class="simple">
 <dt>text<span class="classifier">list</span></dt><dd><p>A list of strings.</p>
@@ -1946,8 +1947,8 @@ Parameters specific to this operation are described below.</p>
 <dt>get_feature_names: bool</dt><dd><p>If <cite>True</cite> return feature names using get_feature_names method of CountVectorizer.</p>
 </dd>
 </dl>
-</div>
-<div class="section" id="id40">
+</section>
+<section id="id40">
 <h4>Returns<a class="headerlink" href="#id40" title="Permalink to this headline">¶</a></h4>
 <dl class="simple">
 <dt>result: list</dt><dd><p>A list containing token counts and feature names if <cite>get_feature_names</cite> is <cite>True</cite>.</p>
@@ -1976,14 +1977,14 @@ Parameters specific to this operation are described below.</p>
 <ul class="simple">
 <li><p>result: count_vectorizer.outputs.result(type: array)</p></li>
 </ul>
-</div>
-</div>
-<div class="section" id="extract-array-from-matrix">
+</section>
+</section>
+<section id="extract-array-from-matrix">
 <span id="plugin-operation-dffml-operations-nlp-extract-array-from-matrix"></span><h3>extract_array_from_matrix<a class="headerlink" href="#extract-array-from-matrix" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>Returns row from <cite>input_matrix</cite> based on index of <cite>single_text_example</cite>
 in <cite>collected_text</cite>.</p>
-<div class="section" id="id41">
+<section id="id41">
 <h4>Parameters<a class="headerlink" href="#id41" title="Permalink to this headline">¶</a></h4>
 <dl class="simple">
 <dt>single_text_example<span class="classifier">str</span></dt><dd><p>String to be used for indexing into <cite>collected_text</cite>.</p>
@@ -1994,8 +1995,8 @@ in <cite>collected_text</cite>.</p>
 to <cite>single_text_example</cite>.</p>
 </dd>
 </dl>
-</div>
-<div class="section" id="id42">
+</section>
+<section id="id42">
 <h4>Returns<a class="headerlink" href="#id42" title="Permalink to this headline">¶</a></h4>
 <p>result: A 1-d array.</p>
 <p><strong>Stage: processing</strong></p>
@@ -2009,13 +2010,13 @@ to <cite>single_text_example</cite>.</p>
 <ul class="simple">
 <li><p>result: extract_array_from_matrix.outputs.result(type: array)</p></li>
 </ul>
-</div>
-</div>
-<div class="section" id="get-embedding">
+</section>
+</section>
+<section id="get-embedding">
 <span id="plugin-operation-dffml-operations-nlp-get-embedding"></span><h3>get_embedding<a class="headerlink" href="#get-embedding" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>Maps words of text data to their corresponding word vectors.</p>
-<div class="section" id="id43">
+<section id="id43">
 <h4>Parameters<a class="headerlink" href="#id43" title="Permalink to this headline">¶</a></h4>
 <dl class="simple">
 <dt>text<span class="classifier">str</span></dt><dd><p>String to be converted to word vectors.</p>
@@ -2031,8 +2032,8 @@ If the length of <cite>text</cite> &lt; <cite>max_len</cite>, <cite>text</cite> 
 <dt>spacy_model: str</dt><dd><p>Spacy model to be used for assigning vectors to tokens.</p>
 </dd>
 </dl>
-</div>
-<div class="section" id="id44">
+</section>
+<section id="id44">
 <h4>Returns<a class="headerlink" href="#id44" title="Permalink to this headline">¶</a></h4>
 <p>result: A 2-d array of shape (max_len, embedding_size of vectors).</p>
 <p><strong>Stage: processing</strong></p>
@@ -2047,13 +2048,13 @@ If the length of <cite>text</cite> &lt; <cite>max_len</cite>, <cite>text</cite> 
 <ul class="simple">
 <li><p>embedding: embedding(type: generic)</p></li>
 </ul>
-</div>
-</div>
-<div class="section" id="get-noun-chunks">
+</section>
+</section>
+<section id="get-noun-chunks">
 <span id="plugin-operation-dffml-operations-nlp-get-noun-chunks"></span><h3>get_noun_chunks<a class="headerlink" href="#get-noun-chunks" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>Extracts the noun chunks from text.</p>
-<div class="section" id="id45">
+<section id="id45">
 <h4>Parameters<a class="headerlink" href="#id45" title="Permalink to this headline">¶</a></h4>
 <dl class="simple">
 <dt>text<span class="classifier">str</span></dt><dd><p>String to extract noun chunks from.</p>
@@ -2061,8 +2062,8 @@ If the length of <cite>text</cite> &lt; <cite>max_len</cite>, <cite>text</cite> 
 <dt>spacy_model: str</dt><dd><p>A spacy model with the capability of parsing.</p>
 </dd>
 </dl>
-</div>
-<div class="section" id="id46">
+</section>
+<section id="id46">
 <h4>Returns<a class="headerlink" href="#id46" title="Permalink to this headline">¶</a></h4>
 <dl class="simple">
 <dt>result: list</dt><dd><p>A list containing noun chunks.</p>
@@ -2078,13 +2079,13 @@ If the length of <cite>text</cite> &lt; <cite>max_len</cite>, <cite>text</cite> 
 <ul class="simple">
 <li><p>result: get_noun_chunks.outputs.result(type: array)</p></li>
 </ul>
-</div>
-</div>
-<div class="section" id="get-sentences">
+</section>
+</section>
+<section id="get-sentences">
 <span id="plugin-operation-dffml-operations-nlp-get-sentences"></span><h3>get_sentences<a class="headerlink" href="#get-sentences" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>Extracts the sentences from text.</p>
-<div class="section" id="id47">
+<section id="id47">
 <h4>Parameters<a class="headerlink" href="#id47" title="Permalink to this headline">¶</a></h4>
 <dl class="simple">
 <dt>text<span class="classifier">str</span></dt><dd><p>String to extract sentences from.</p>
@@ -2093,8 +2094,8 @@ If the length of <cite>text</cite> &lt; <cite>max_len</cite>, <cite>text</cite> 
 boundaries are calculated from the syntactic dependency parse.</p>
 </dd>
 </dl>
-</div>
-<div class="section" id="id48">
+</section>
+<section id="id48">
 <h4>Returns<a class="headerlink" href="#id48" title="Permalink to this headline">¶</a></h4>
 <dl class="simple">
 <dt>result: list</dt><dd><p>A list containing sentences.</p>
@@ -2110,13 +2111,13 @@ boundaries are calculated from the syntactic dependency parse.</p>
 <ul class="simple">
 <li><p>result: get_sentences.outputs.result(type: array)</p></li>
 </ul>
-</div>
-</div>
-<div class="section" id="get-similarity">
+</section>
+</section>
+<section id="get-similarity">
 <span id="plugin-operation-dffml-operations-nlp-get-similarity"></span><h3>get_similarity<a class="headerlink" href="#get-similarity" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>Calculates similarity between two text strings as a score between 0 and 1.</p>
-<div class="section" id="id49">
+<section id="id49">
 <h4>Parameters<a class="headerlink" href="#id49" title="Permalink to this headline">¶</a></h4>
 <dl class="simple">
 <dt>text_1<span class="classifier">str</span></dt><dd><p>First string to compare.</p>
@@ -2126,8 +2127,8 @@ boundaries are calculated from the syntactic dependency parse.</p>
 <dt>spacy_model: str</dt><dd><p>Spacy model to be used for extracting word vectors which are used for calculating similarity.</p>
 </dd>
 </dl>
-</div>
-<div class="section" id="id50">
+</section>
+<section id="id50">
 <h4>Returns<a class="headerlink" href="#id50" title="Permalink to this headline">¶</a></h4>
 <dl class="simple">
 <dt>result: float</dt><dd><p>A similarity score between 0 and 1.</p>
@@ -2144,13 +2145,13 @@ boundaries are calculated from the syntactic dependency parse.</p>
 <ul class="simple">
 <li><p>result: get_similarity.outputs.result(type: float)</p></li>
 </ul>
-</div>
-</div>
-<div class="section" id="lemmatizer">
+</section>
+</section>
+<section id="lemmatizer">
 <span id="plugin-operation-dffml-operations-nlp-lemmatizer"></span><h3>lemmatizer<a class="headerlink" href="#lemmatizer" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>Reduce words in the text to their dictionary form (lemma)</p>
-<div class="section" id="id51">
+<section id="id51">
 <h4>Parameters<a class="headerlink" href="#id51" title="Permalink to this headline">¶</a></h4>
 <dl class="simple">
 <dt>text<span class="classifier">str</span></dt><dd><p>String to lemmatize.</p>
@@ -2158,8 +2159,8 @@ boundaries are calculated from the syntactic dependency parse.</p>
 <dt>spacy_model: str</dt><dd><p>Spacy model to be used for lemmatization.</p>
 </dd>
 </dl>
-</div>
-<div class="section" id="id52">
+</section>
+<section id="id52">
 <h4>Returns<a class="headerlink" href="#id52" title="Permalink to this headline">¶</a></h4>
 <dl class="simple">
 <dt>result: list</dt><dd><p>A list containing base form of the words.</p>
@@ -2175,13 +2176,13 @@ boundaries are calculated from the syntactic dependency parse.</p>
 <ul class="simple">
 <li><p>result: lemmatizer.outputs.result(type: array)</p></li>
 </ul>
-</div>
-</div>
-<div class="section" id="pos-tagger">
+</section>
+</section>
+<section id="pos-tagger">
 <span id="plugin-operation-dffml-operations-nlp-pos-tagger"></span><h3>pos_tagger<a class="headerlink" href="#pos-tagger" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>Assigns part-of-speech tags to text.</p>
-<div class="section" id="id53">
+<section id="id53">
 <h4>Parameters<a class="headerlink" href="#id53" title="Permalink to this headline">¶</a></h4>
 <dl class="simple">
 <dt>text<span class="classifier">str</span></dt><dd><p>Text to be tagged.</p>
@@ -2189,8 +2190,8 @@ boundaries are calculated from the syntactic dependency parse.</p>
 <dt>spacy_model: str</dt><dd><p>A spacy model with tagger and parser.</p>
 </dd>
 </dl>
-</div>
-<div class="section" id="id54">
+</section>
+<section id="id54">
 <h4>Returns<a class="headerlink" href="#id54" title="Permalink to this headline">¶</a></h4>
 <dl class="simple">
 <dt>result: list</dt><dd><p>A list containing tuples of word and their respective pos tag.</p>
@@ -2207,13 +2208,13 @@ boundaries are calculated from the syntactic dependency parse.</p>
 <ul class="simple">
 <li><p>result: pos_tagger.outputs.result(type: array)</p></li>
 </ul>
-</div>
-</div>
-<div class="section" id="remove-stopwords">
+</section>
+</section>
+<section id="remove-stopwords">
 <span id="plugin-operation-dffml-operations-nlp-remove-stopwords"></span><h3>remove_stopwords<a class="headerlink" href="#remove-stopwords" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>Removes stopword from text data.</p>
-<div class="section" id="id55">
+<section id="id55">
 <h4>Parameters<a class="headerlink" href="#id55" title="Permalink to this headline">¶</a></h4>
 <dl class="simple">
 <dt>text<span class="classifier">str</span></dt><dd><p>String to be cleaned.</p>
@@ -2221,8 +2222,8 @@ boundaries are calculated from the syntactic dependency parse.</p>
 <dt>custom_stop_words: List[str], default = None</dt><dd><p>List of words to be considered as stop words.</p>
 </dd>
 </dl>
-</div>
-<div class="section" id="id56">
+</section>
+<section id="id56">
 <h4>Returns<a class="headerlink" href="#id56" title="Permalink to this headline">¶</a></h4>
 <p>result: A string without stop words.</p>
 <p><strong>Stage: processing</strong></p>
@@ -2235,15 +2236,15 @@ boundaries are calculated from the syntactic dependency parse.</p>
 <ul class="simple">
 <li><p>result: remove_stopwords.outputs.result(type: str)</p></li>
 </ul>
-</div>
-</div>
-<div class="section" id="tfidf-vectorizer">
+</section>
+</section>
+<section id="tfidf-vectorizer">
 <span id="plugin-operation-dffml-operations-nlp-tfidf-vectorizer"></span><h3>tfidf_vectorizer<a class="headerlink" href="#tfidf-vectorizer" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>Convert a collection of raw documents to a matrix of TF-IDF features using sklearn TfidfVectorizer’s <cite>fit_transform</cite> method.
 For details on parameters check <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.TfidfVectorizer.html">https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.TfidfVectorizer.html</a>
 Parameters specific to this operation are described below.</p>
-<div class="section" id="id57">
+<section id="id57">
 <h4>Parameters<a class="headerlink" href="#id57" title="Permalink to this headline">¶</a></h4>
 <dl class="simple">
 <dt>text<span class="classifier">list</span></dt><dd><p>A list of strings.</p>
@@ -2251,8 +2252,8 @@ Parameters specific to this operation are described below.</p>
 <dt>get_feature_names: bool</dt><dd><p>If <cite>True</cite> return feature names using get_feature_names method of TfidfVectorizer.</p>
 </dd>
 </dl>
-</div>
-<div class="section" id="id58">
+</section>
+<section id="id58">
 <h4>Returns<a class="headerlink" href="#id58" title="Permalink to this headline">¶</a></h4>
 <dl class="simple">
 <dt>result: list</dt><dd><p>A list containing token counts and feature names if <cite>get_feature_names</cite> is <cite>True</cite>.</p>
@@ -2285,15 +2286,15 @@ Parameters specific to this operation are described below.</p>
 <ul class="simple">
 <li><p>result: tfidf_vectorizer.outputs.result(type: array)</p></li>
 </ul>
-</div>
-</div>
-</div>
-<div class="section" id="dffml-operations-image">
+</section>
+</section>
+</section>
+<section id="dffml-operations-image">
 <span id="plugin-operation-dffml-operations-image"></span><h2>dffml_operations_image<a class="headerlink" href="#dffml-operations-image" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install dffml-operations-image</span>
 </pre></div>
 </div>
-<div class="section" id="haralick">
+<section id="haralick">
 <span id="plugin-operation-dffml-operations-image-haralick"></span><h3>Haralick<a class="headerlink" href="#haralick" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>Computes Haralick texture features</p>
@@ -2313,8 +2314,8 @@ Parameters specific to this operation are described below.</p>
 <ul class="simple">
 <li><p>result: Haralick.outputs.result(type: array)</p></li>
 </ul>
-</div>
-<div class="section" id="humoments">
+</section>
+<section id="humoments">
 <span id="plugin-operation-dffml-operations-image-humoments"></span><h3>HuMoments<a class="headerlink" href="#humoments" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>Calculates seven Hu invariants</p>
@@ -2327,8 +2328,8 @@ Parameters specific to this operation are described below.</p>
 <ul class="simple">
 <li><p>result: HuMoments.outputs.result(type: array)</p></li>
 </ul>
-</div>
-<div class="section" id="calchist">
+</section>
+<section id="calchist">
 <span id="plugin-operation-dffml-operations-image-calchist"></span><h3>calcHist<a class="headerlink" href="#calchist" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>Calculates a histogram</p>
@@ -2345,8 +2346,8 @@ Parameters specific to this operation are described below.</p>
 <ul class="simple">
 <li><p>result: calcHist.outputs.result(type: array)</p></li>
 </ul>
-</div>
-<div class="section" id="convert-color">
+</section>
+<section id="convert-color">
 <span id="plugin-operation-dffml-operations-image-convert-color"></span><h3>convert_color<a class="headerlink" href="#convert-color" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>Converts images from one color space to another</p>
@@ -2360,8 +2361,8 @@ Parameters specific to this operation are described below.</p>
 <ul class="simple">
 <li><p>result: convert_color.outputs.result(type: array)</p></li>
 </ul>
-</div>
-<div class="section" id="flatten">
+</section>
+<section id="flatten">
 <span id="plugin-operation-dffml-operations-image-flatten"></span><h3>flatten<a class="headerlink" href="#flatten" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>No description</p>
@@ -2374,8 +2375,8 @@ Parameters specific to this operation are described below.</p>
 <ul class="simple">
 <li><p>result: flatten.outputs.result(type: array)</p></li>
 </ul>
-</div>
-<div class="section" id="normalize">
+</section>
+<section id="normalize">
 <span id="plugin-operation-dffml-operations-image-normalize"></span><h3>normalize<a class="headerlink" href="#normalize" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>Normalizes arrays</p>
@@ -2393,8 +2394,8 @@ Parameters specific to this operation are described below.</p>
 <ul class="simple">
 <li><p>result: normalize.outputs.result(type: array)</p></li>
 </ul>
-</div>
-<div class="section" id="resize">
+</section>
+<section id="resize">
 <span id="plugin-operation-dffml-operations-image-resize"></span><h3>resize<a class="headerlink" href="#resize" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>Resizes image array to the specified new dimensions</p>
@@ -2424,14 +2425,14 @@ Parameters specific to this operation are described below.</p>
 <ul class="simple">
 <li><p>result: resize.outputs.result(type: array)</p></li>
 </ul>
-</div>
-</div>
-<div class="section" id="dffml-operations-deploy">
+</section>
+</section>
+<section id="dffml-operations-deploy">
 <span id="plugin-operation-dffml-operations-deploy"></span><h2>dffml_operations_deploy<a class="headerlink" href="#dffml-operations-deploy" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install dffml-operations-deploy</span>
 </pre></div>
 </div>
-<div class="section" id="check-if-default-branch">
+<section id="check-if-default-branch">
 <span id="plugin-operation-dffml-operations-deploy-check-if-default-branch"></span><h3>check_if_default_branch<a class="headerlink" href="#check-if-default-branch" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>No description</p>
@@ -2444,8 +2445,8 @@ Parameters specific to this operation are described below.</p>
 <ul class="simple">
 <li><p>is_default_branch: is_default_branch(type: bool)</p></li>
 </ul>
-</div>
-<div class="section" id="check-secret-match">
+</section>
+<section id="check-secret-match">
 <span id="plugin-operation-dffml-operations-deploy-check-secret-match"></span><h3>check_secret_match<a class="headerlink" href="#check-secret-match" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>No description</p>
@@ -2463,8 +2464,8 @@ Parameters specific to this operation are described below.</p>
 <ul class="simple">
 <li><p>secret: Entrypoint</p></li>
 </ul>
-</div>
-<div class="section" id="docker-build-image">
+</section>
+<section id="docker-build-image">
 <span id="plugin-operation-dffml-operations-deploy-docker-build-image"></span><h3>docker_build_image<a class="headerlink" href="#docker-build-image" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>No description</p>
@@ -2482,8 +2483,8 @@ Parameters specific to this operation are described below.</p>
 <li><p>is_default_branch: bool</p></li>
 <li><p>got_running_containers: bool</p></li>
 </ul>
-</div>
-<div class="section" id="get-image-tag">
+</section>
+<section id="get-image-tag">
 <span id="plugin-operation-dffml-operations-deploy-get-image-tag"></span><h3>get_image_tag<a class="headerlink" href="#get-image-tag" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>No description</p>
@@ -2496,8 +2497,8 @@ Parameters specific to this operation are described below.</p>
 <ul class="simple">
 <li><p>image_tag: docker_image_tag(type: str)</p></li>
 </ul>
-</div>
-<div class="section" id="get-running-containers">
+</section>
+<section id="get-running-containers">
 <span id="plugin-operation-dffml-operations-deploy-get-running-containers"></span><h3>get_running_containers<a class="headerlink" href="#get-running-containers" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>No description</p>
@@ -2510,8 +2511,8 @@ Parameters specific to this operation are described below.</p>
 <ul class="simple">
 <li><p>running_containers: docker_running_containers(type: List[str])</p></li>
 </ul>
-</div>
-<div class="section" id="get-status-running-containers">
+</section>
+<section id="get-status-running-containers">
 <span id="plugin-operation-dffml-operations-deploy-get-status-running-containers"></span><h3>get_status_running_containers<a class="headerlink" href="#get-status-running-containers" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>No description</p>
@@ -2524,8 +2525,8 @@ Parameters specific to this operation are described below.</p>
 <ul class="simple">
 <li><p>status: got_running_containers(type: bool)</p></li>
 </ul>
-</div>
-<div class="section" id="get-url-from-payload">
+</section>
+<section id="get-url-from-payload">
 <span id="plugin-operation-dffml-operations-deploy-get-url-from-payload"></span><h3>get_url_from_payload<a class="headerlink" href="#get-url-from-payload" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>No description</p>
@@ -2538,8 +2539,8 @@ Parameters specific to this operation are described below.</p>
 <ul class="simple">
 <li><p>url: URL(type: string)</p></li>
 </ul>
-</div>
-<div class="section" id="parse-docker-commands">
+</section>
+<section id="parse-docker-commands">
 <span id="plugin-operation-dffml-operations-deploy-parse-docker-commands"></span><h3>parse_docker_commands<a class="headerlink" href="#parse-docker-commands" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>No description</p>
@@ -2558,8 +2559,8 @@ Parameters specific to this operation are described below.</p>
 <ul class="simple">
 <li><p>docker_commands: docker_commands(type: Dict[str,Any])</p></li>
 </ul>
-</div>
-<div class="section" id="restart-running-containers">
+</section>
+<section id="restart-running-containers">
 <span id="plugin-operation-dffml-operations-deploy-restart-running-containers"></span><h3>restart_running_containers<a class="headerlink" href="#restart-running-containers" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>No description</p>
@@ -2577,14 +2578,14 @@ Parameters specific to this operation are described below.</p>
 <ul class="simple">
 <li><p>is_image_built: bool</p></li>
 </ul>
-</div>
-</div>
-<div class="section" id="dffml-operations-binsec">
+</section>
+</section>
+<section id="dffml-operations-binsec">
 <span id="plugin-operation-dffml-operations-binsec"></span><h2>dffml_operations_binsec<a class="headerlink" href="#dffml-operations-binsec" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install dffml-operations-binsec</span>
 </pre></div>
 </div>
-<div class="section" id="cleanup-rpm">
+<section id="cleanup-rpm">
 <span id="plugin-operation-dffml-operations-binsec-cleanup-rpm"></span><h3>cleanup_rpm<a class="headerlink" href="#cleanup-rpm" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>No description</p>
@@ -2593,8 +2594,8 @@ Parameters specific to this operation are described below.</p>
 <ul class="simple">
 <li><p>rpm: RPMObject(type: python_obj)</p></li>
 </ul>
-</div>
-<div class="section" id="files-in-rpm">
+</section>
+<section id="files-in-rpm">
 <span id="plugin-operation-dffml-operations-binsec-files-in-rpm"></span><h3>files_in_rpm<a class="headerlink" href="#files-in-rpm" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>No description</p>
@@ -2607,8 +2608,8 @@ Parameters specific to this operation are described below.</p>
 <ul class="simple">
 <li><p>files: rpm_filename(type: str)</p></li>
 </ul>
-</div>
-<div class="section" id="is-binary-pie">
+</section>
+<section id="is-binary-pie">
 <span id="plugin-operation-dffml-operations-binsec-is-binary-pie"></span><h3>is_binary_pie<a class="headerlink" href="#is-binary-pie" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>No description</p>
@@ -2622,8 +2623,8 @@ Parameters specific to this operation are described below.</p>
 <ul class="simple">
 <li><p>is_pie: binary_is_PIE(type: bool)</p></li>
 </ul>
-</div>
-<div class="section" id="url-to-urlbytes">
+</section>
+<section id="url-to-urlbytes">
 <span id="plugin-operation-dffml-operations-binsec-url-to-urlbytes"></span><h3>url_to_urlbytes<a class="headerlink" href="#url-to-urlbytes" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>No description</p>
@@ -2636,8 +2637,8 @@ Parameters specific to this operation are described below.</p>
 <ul class="simple">
 <li><p>download: URLBytes(type: python_obj)</p></li>
 </ul>
-</div>
-<div class="section" id="urlbytes-to-rpmfile">
+</section>
+<section id="urlbytes-to-rpmfile">
 <span id="plugin-operation-dffml-operations-binsec-urlbytes-to-rpmfile"></span><h3>urlbytes_to_rpmfile<a class="headerlink" href="#urlbytes-to-rpmfile" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>No description</p>
@@ -2650,8 +2651,8 @@ Parameters specific to this operation are described below.</p>
 <ul class="simple">
 <li><p>rpm: RPMObject(type: python_obj)</p></li>
 </ul>
-</div>
-<div class="section" id="urlbytes-to-tarfile">
+</section>
+<section id="urlbytes-to-tarfile">
 <span id="plugin-operation-dffml-operations-binsec-urlbytes-to-tarfile"></span><h3>urlbytes_to_tarfile<a class="headerlink" href="#urlbytes-to-tarfile" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>No description</p>
@@ -2664,14 +2665,14 @@ Parameters specific to this operation are described below.</p>
 <ul class="simple">
 <li><p>rpm: RPMObject(type: python_obj)</p></li>
 </ul>
-</div>
-</div>
-<div class="section" id="dffml-feature-auth">
+</section>
+</section>
+<section id="dffml-feature-auth">
 <span id="plugin-operation-dffml-feature-auth"></span><h2>dffml_feature_auth<a class="headerlink" href="#dffml-feature-auth" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install dffml-feature-auth</span>
 </pre></div>
 </div>
-<div class="section" id="scrypt">
+<section id="scrypt">
 <span id="plugin-operation-dffml-feature-auth-scrypt"></span><h3>scrypt<a class="headerlink" href="#scrypt" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>No description</p>
@@ -2684,9 +2685,9 @@ Parameters specific to this operation are described below.</p>
 <ul class="simple">
 <li><p>password: ScryptPassword(type: string)</p></li>
 </ul>
-</div>
-</div>
-</div>
+</section>
+</section>
+</section>
 
 
            </div>

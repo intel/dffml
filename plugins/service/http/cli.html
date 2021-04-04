@@ -4,7 +4,8 @@
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  
+  <meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>Command Line &mdash; DFFML 0.4.0 documentation</title>
@@ -91,19 +92,19 @@
               
             
             
-              <p class="caption"><span class="caption-text">Introduction</span></p>
+              <p><span class="caption-text">Introduction</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../about.html">About</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../concepts/index.html">Concepts</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Usage</span></p>
+<p><span class="caption-text">Usage</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../quickstart/model.html">Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../examples/index.html">Examples</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Reference</span></p>
+<p><span class="caption-text">Reference</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../index.html">Plugins</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../cli.html">Command Line</a></li>
@@ -127,12 +128,12 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">API Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../troubleshooting.html">Troubleshooting</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Subprojects</span></p>
+<p><span class="caption-text">Subprojects</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../shouldi.html">shouldi</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../swportal.html">Software Portal</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Community</span></p>
+<p><span class="caption-text">Community</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/intel/dffml">GitHub</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://intel.github.io/dffml/master/">Master Branch Docs</a></li>
@@ -216,7 +217,7 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="command-line">
+  <section id="command-line">
 <h1>Command Line<a class="headerlink" href="#command-line" title="Permalink to this headline">¶</a></h1>
 <p>Here are some useful command line invocations of the HTTP API, with explanation
 of relevant flags.</p>
@@ -225,7 +226,7 @@ of relevant flags.</p>
 <p>You should be sure to read the <a class="reference internal" href="security.html"><span class="doc">Security</span></a> docs! Some of these examples
 are insecure and only used to help you get up and running.</p>
 </div>
-<div class="section" id="quickstart">
+<section id="quickstart">
 <h2>Quickstart<a class="headerlink" href="#quickstart" title="Permalink to this headline">¶</a></h2>
 <p>This command starts the server without TLS (<code class="docutils literal notranslate"><span class="pre">-insecure</span></code>). It tells it to
 listen on port 8080. It says that the server should be accessabel from any IP
@@ -240,8 +241,8 @@ insecure, but easy for you to access for development purposes.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml service http server -insecure -cors <span class="s1">&#39;*&#39;</span> -addr <span class="m">0</span>.0.0.0 -port <span class="m">8080</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="models">
+</section>
+<section id="models">
 <h2>Models<a class="headerlink" href="#models" title="Permalink to this headline">¶</a></h2>
 <p>To have the server start with models already configured and ready to be used for
 training, accuracy assessment, or prediction, use the <code class="docutils literal notranslate"><span class="pre">-models</span></code> flag.</p>
@@ -251,8 +252,8 @@ training, accuracy assessment, or prediction, use the <code class="docutils lite
 <span class="go">    -model-mymodel-predict Y:float:1</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="sources">
+</section>
+<section id="sources">
 <h2>Sources<a class="headerlink" href="#sources" title="Permalink to this headline">¶</a></h2>
 <p>To have the server start with sources already configured and ready to be used
 for record retrieval or updating, use the <code class="docutils literal notranslate"><span class="pre">-sources</span></code> flag.</p>
@@ -261,8 +262,8 @@ for record retrieval or updating, use the <code class="docutils literal notransl
 <span class="go">    -source-mysource-filename training.csv</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="static-content">
+</section>
+<section id="static-content">
 <h2>Static Content<a class="headerlink" href="#static-content" title="Permalink to this headline">¶</a></h2>
 <p>If you have static HTML files or other content that you want to serve via the
 HTTP server, you can do so via the <code class="docutils literal notranslate"><span class="pre">-static</span></code> flag. Content will be served from
@@ -271,8 +272,8 @@ paths, and static paths take priority over Model and Source related paths.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml service http server -static .
 </pre></div>
 </div>
-</div>
-<div class="section" id="redirects">
+</section>
+<section id="redirects">
 <h2>Redirects<a class="headerlink" href="#redirects" title="Permalink to this headline">¶</a></h2>
 <p>You might want to have the HTTP service redirect one URL to another. You can do
 this using the <code class="docutils literal notranslate"><span class="pre">-redirect</span></code> flag. Syntax is as follows</p>
@@ -294,8 +295,8 @@ this using the <code class="docutils literal notranslate"><span class="pre">-red
     <span class="n">POST</span> <span class="o">/</span><span class="n">signup</span> <span class="o">/</span><span class="n">mysignup</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="binding-to-a-random-port">
+</section>
+<section id="binding-to-a-random-port">
 <h2>Binding to a random port<a class="headerlink" href="#binding-to-a-random-port" title="Permalink to this headline">¶</a></h2>
 <p>When writing tests you might often find yourself wanting the server to bind to
 any free port.</p>
@@ -305,8 +306,8 @@ that was randomly chosen to the specified file as a string.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">-</span><span class="n">port</span> <span class="mi">0</span> <span class="o">-</span><span class="n">portfile</span> <span class="n">portfile</span><span class="o">.</span><span class="n">int</span>
 </pre></div>
 </div>
-</div>
-</div>
+</section>
+</section>
 
 
            </div>
