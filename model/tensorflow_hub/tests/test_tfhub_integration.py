@@ -11,10 +11,10 @@ import contextlib
 from dffml.cli.cli import CLI
 from dffml.df.types import DataFlow
 from dffml.service.dev import Develop
-from dffml.util.asynctestcase import IntegrationCLITestCase
+from dffml.util.asynctestcase import AsyncTestCase
 
 
-class TestTextClassifier(IntegrationCLITestCase):
+class TestTextClassifier(AsyncTestCase):
     async def test_run(self):
         self.required_plugins("dffml-model-tensorflow-hub")
         # Randomly generate sample data

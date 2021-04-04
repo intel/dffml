@@ -7,12 +7,12 @@ from dffml.record import Record
 from dffml.noasync import train, accuracy, predict
 from dffml.source.csv import CSVSource
 from dffml.feature.feature import Features, Feature
-from dffml.util.asynctestcase import IntegrationCLITestCase
+from dffml.util.asynctestcase import AsyncTestCase
 
 FEATURE_NAMES = ["Years", "Expertise", "Trust", "Salary"]
 
 
-class TestML(IntegrationCLITestCase):
+class TestML(AsyncTestCase):
     async def populate_source(self, source_cls, *records, **kwargs):
         kwargs.setdefault("allowempty", True)
         kwargs.setdefault("readwrite", True)

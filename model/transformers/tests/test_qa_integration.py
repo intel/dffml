@@ -15,7 +15,7 @@ import subprocess
 from dffml.cli.cli import CLI
 from dffml.util.os import chdir
 from dffml.service.dev import Develop
-from dffml.util.asynctestcase import IntegrationCLITestCase
+from dffml.util.asynctestcase import AsyncTestCase
 
 from .defaults import CACHE_DIR
 
@@ -49,7 +49,7 @@ def directory_with_csv_files():
             yield tempdir
 
 
-class TestQAModel(IntegrationCLITestCase):
+class TestQAModel(AsyncTestCase):
     async def test_run(self):
         self.required_plugins("dffml-model-transformers")
         # Generate sample data

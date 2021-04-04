@@ -11,10 +11,10 @@ import numpy as np
 from sklearn.datasets import make_classification, make_regression
 
 from dffml.cli.cli import CLI
-from dffml.util.asynctestcase import IntegrationCLITestCase
+from dffml.util.asynctestcase import AsyncTestCase
 
 
-class TestDNNC(IntegrationCLITestCase):
+class TestDNNC(AsyncTestCase):
     async def test_run(self):
         self.required_plugins("dffml-model-tensorflow")
 
@@ -118,7 +118,7 @@ class TestDNNC(IntegrationCLITestCase):
             self.assertIn(results, [0, 1, 2, 3])
 
 
-class TestDNNR(IntegrationCLITestCase):
+class TestDNNR(AsyncTestCase):
     async def test_run(self):
         self.required_plugins("dffml-model-tensorflow")
 

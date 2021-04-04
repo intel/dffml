@@ -7,12 +7,12 @@ import contextlib
 from dffml.cli.cli import CLI
 from dffml.df.types import DataFlow
 from dffml.service.dev import Develop
-from dffml.util.asynctestcase import IntegrationCLITestCase
+from dffml.util.asynctestcase import AsyncTestCase
 
 from .defaults import CACHE_DIR
 
 
-class TestNER(IntegrationCLITestCase):
+class TestNER(AsyncTestCase):
     async def test_run(self):
         self.required_plugins("dffml-model-transformers")
         TRAIN_DATA = []

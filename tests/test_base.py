@@ -16,7 +16,7 @@ from dffml.source.json import JSONSource
 from dffml.util.entrypoint import entrypoint, base_entry_point
 from dffml.util.cli.arg import Arg
 from dffml.util.cli.cmd import parse_unknown
-from dffml.util.asynctestcase import IntegrationCLITestCase
+from dffml.util.asynctestcase import AsyncTestCase
 
 
 @config
@@ -42,7 +42,7 @@ class FakeTesting(BaseTesting):
     CONFIG = FakeTestingConfig
 
 
-class TestAutoArgsConfig(IntegrationCLITestCase):
+class TestAutoArgsConfig(AsyncTestCase):
     def test_00_args(self):
         self.maxDiff = 99999
         self.assertEqual(

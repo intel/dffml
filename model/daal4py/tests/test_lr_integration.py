@@ -4,10 +4,10 @@ import pathlib
 import contextlib
 
 from dffml.cli.cli import CLI
-from dffml.util.asynctestcase import IntegrationCLITestCase
+from dffml.util.asynctestcase import AsyncTestCase
 
 
-class TestDAAL4PyLRModel(IntegrationCLITestCase):
+class TestDAAL4PyLRModel(AsyncTestCase):
     async def test_run(self):
         # Make a temporary directory to store the model
         directory = self.mktempdir()

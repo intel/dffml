@@ -12,10 +12,10 @@ import numpy as np
 from sklearn.datasets import make_blobs, make_regression
 
 from dffml.cli.cli import CLI
-from dffml.util.asynctestcase import IntegrationCLITestCase
+from dffml.util.asynctestcase import AsyncTestCase
 
 
-class TestScikitClassification(IntegrationCLITestCase):
+class TestScikitClassification(AsyncTestCase):
     async def test_run(self):
         self.required_plugins("dffml-model-scikit")
         # Create the training data
@@ -116,7 +116,7 @@ class TestScikitClassification(IntegrationCLITestCase):
         self.assertEqual(y.item(), results)
 
 
-class TestScikitRegression(IntegrationCLITestCase):
+class TestScikitRegression(AsyncTestCase):
     async def test_run(self):
         self.required_plugins("dffml-model-scikit")
         # Create the training data
@@ -217,7 +217,7 @@ class TestScikitRegression(IntegrationCLITestCase):
         self.assertTrue(results is not None)
 
 
-class TestScikitClustering(IntegrationCLITestCase):
+class TestScikitClustering(AsyncTestCase):
     async def test_run(self):
         self.required_plugins("dffml-model-scikit")
         # Create the training data
