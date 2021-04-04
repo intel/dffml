@@ -3,7 +3,7 @@
 # docker run --rm -ti -p 80:8080 himanshu/nlp  -insecure -log debug
 #
 # curl -v http://127.0.0.1:80/list/sources
-FROM ubuntu:20.04
+FROM ubuntu:20.10
 
 RUN apt-get update && \
   apt-get install -y \
