@@ -396,40 +396,40 @@ class TestMakeDocs(AsyncTestCase):
         if not is_develop("dffml"):
             self.skipTest("dffml not installed in development mode")
 
-            with tempfile.TemporaryDirectory() as tempdir:
-                with unittest.mock.patch(
-                    "asyncio.create_subprocess_exec", new=mkexec()
-                ):
-                    await Develop.cli("docs", "-target-dir", tempdir)
+        with tempfile.TemporaryDirectory() as tempdir:
+            with unittest.mock.patch(
+                "asyncio.create_subprocess_exec", new=mkexec()
+            ):
+                await Develop.cli("docs", "-target-dir", tempdir)
 
-                    for symlink, source in self.symlinks_to_chk:
-                        symlink_path = self.docs_root.joinpath(*symlink)
-                        source_path = self.root.joinpath(*source)
-                        self.assertTrue(symlink_path.exists())
-                        self.assertTrue(symlink_path.resolve() == source_path)
+                for symlink, source in self.symlinks_to_chk:
+                    symlink_path = self.docs_root.joinpath(*symlink)
+                    source_path = self.root.joinpath(*source)
+                    self.assertTrue(symlink_path.exists())
+                    self.assertTrue(symlink_path.resolve() == source_path)
 
-                    for file_name in self.files_to_check:
-                        file_path = pathlib.Path(tempdir).joinpath(*file_name)
-                        self.assertTrue(file_path.exists())
+                for file_name in self.files_to_check:
+                    file_path = pathlib.Path(tempdir).joinpath(*file_name)
+                    self.assertTrue(file_path.exists())
 
     async def test_cmd_seq(self):
         if not is_develop("dffml"):
             self.skipTest("dffml not installed in development mode")
 
-            stdout = io.StringIO()
+        stdout = io.StringIO()
 
-            with unittest.mock.patch(
-                "asyncio.create_subprocess_exec", new=mkexec()
-            ), contextlib.redirect_stdout(stdout):
-                with tempfile.TemporaryDirectory() as tempdir:
-                    await Develop.cli("docs", "-target-dir", tempdir)
-                    self.assertEqual(
-                        stdout.getvalue().strip(),
-                        inspect.cleandoc(
-                            f"""
-                                    $ {sys.executable} {self.root}/scripts/docs.py
-                                    $ {sys.executable} {self.root}/scripts/docs_api.py
-                                    $ sphinx-build -W -b html docs {tempdir}
-                                    """
-                        ),
-                    )
+        with unittest.mock.patch(
+            "asyncio.create_subprocess_exec", new=mkexec()
+        ), contextlib.redirect_stdout(stdout):
+            with tempfile.TemporaryDirectory() as tempdir:
+                await Develop.cli("docs", "-target-dir", tempdir)
+                self.assertEqual(
+                    stdout.getvalue().strip(),
+                    inspect.cleandoc(
+                        f"""
+                        $ {sys.executable} {self.root}/scripts/docs.py
+                        $ {sys.executable} {self.root}/scripts/docs_api.py
+                        $ sphinx-build -W -b html docs {tempdir}
+                        """
+                    ),
+                )

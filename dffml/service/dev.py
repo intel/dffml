@@ -1103,6 +1103,7 @@ class MakeDocs(CMD):
             else Path(self.target_dir)
         )
         shutil.rmtree(pages_path, ignore_errors=True)
+        pages_path.mkdir()  # needed for testing
 
         docs_path = root / "docs"
         files_to_check = [
