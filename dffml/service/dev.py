@@ -1040,14 +1040,27 @@ class PinDeps(CMD):
                 )
 
 
+class CommitLintError(Exception):
+    pass
+
+
 class CommitLint(CMD):
     """
     Enforce commit message style 
     """
 
+    def _get_ignore_filter(self):
+        return lambda x: not x.endswith("_")
+
+    def _execute_func_list(self, param, func_list):
+        for func in func_list:
+            param = func(param)
+        return param
+
     async def _get_file_mutations(self):
         no_mutation = lambda x: x
-
+        mutation_func_factory = lambda ext: lambda x: x + ext
+        extensions = await self._get_all_exts()
         mutations = {
             "prefix_mutations": [
                 no_mutation,
@@ -1056,13 +1069,9 @@ class CommitLint(CMD):
             ],
             "suffix_mutations": [
                 no_mutation,
-                *[
-                    lambda x: x + f".{ext}"
-                    for ext in await self._get_all_exts()
-                ],
+                *[mutation_func_factory(ext) for ext in extensions],
             ],
         }
-
         return mutations
 
     async def _get_cmd_output(self, cmd: List[str]):
@@ -1087,7 +1096,8 @@ class CommitLint(CMD):
             "^master",  #! This needs to change when master is renamed to main.
         ]
         commits = await self._get_cmd_output(cmd)
-        return commits
+        commits_list = commits.split("\n")
+        return commits_list
 
     async def _get_current_branch(self):
         cmd = ["git", "branch", "--show-current"]
@@ -1115,22 +1125,40 @@ class CommitLint(CMD):
             extentions.add(file_extension)
         return extentions
 
-    @classmethod
-    def validate_commit_msg(self, msg):
+    async def validate_commit_msg(self, msg):
         root = Path(__file__).parents[2]
-        test_path = "/".join(map(str.strip, msg.split(":")[:-1]))
-        print(root / test_path)
-        return False
+        test_path = "/".join(
+            filter(
+                self._get_ignore_filter(), map(str.strip, msg.split(":")[:-1])
+            )
+        )
+        mutations_dict = await self._get_file_mutations()
+        mutation_pipelines = itertools.product(
+            *[
+                [mutation for mutation in mutations_list]
+                for mutations_list in mutations_dict.values()
+            ]
+        )
+        mutated_paths = [
+            root / pathlib.Path(self._execute_func_list(test_path, pipeline))
+            for pipeline in mutation_pipelines
+        ]
+        is_valid = any(
+            [mutated_path.exists() for mutated_path in mutated_paths]
+        )
+        return is_valid
 
     async def run(self):
-        for el in await self._get_all_exts():
-            print(el)
-        # commits = await self._get_relevant_commits()
-        # commits_list = commits.split("\n")
-        # for commit in commits_list:
-        #     self.validate_commit_msg(commit)
-        #     # print("Invalid Commit:")
-        #     # print(await self._get_commmit_details(commit))
+        commits_list = await self._get_relevant_commits()
+        is_valid_lst = [
+            await self.validate_commit_msg(msg) for msg in commits_list
+        ]
+        raise_error = not all(is_valid_lst)
+        if raise_error:
+            for commit, is_valid in zip(commits_list, is_valid_lst):
+                if not is_valid:
+                    print(await self._get_commmit_details(commit))
+            raise CommitLintError
 
 
 class CI(CMD):
