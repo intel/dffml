@@ -1143,7 +1143,16 @@ class CommitLint(CMD):
             for pipeline in mutation_pipelines
         ]
         is_valid = any(
-            [mutated_path.exists() for mutated_path in mutated_paths]
+            [
+                all(
+                    [
+                        mutated_path.exists(),
+                        mutated_path != root,
+                        test_path != "",
+                    ]
+                )
+                for mutated_path in mutated_paths
+            ]
         )
         return is_valid
 
