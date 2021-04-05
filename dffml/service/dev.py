@@ -1045,6 +1045,26 @@ class CommitLint(CMD):
     Enforce commit message style 
     """
 
+    async def _get_file_mutations(self):
+        no_mutation = lambda x: x
+
+        mutations = {
+            "prefix_mutations": [
+                no_mutation,
+                lambda x: "." + x,
+                lambda x: "dffml/" + x,
+            ],
+            "suffix_mutations": [
+                no_mutation,
+                *[
+                    lambda x: x + f".{ext}"
+                    for ext in await self._get_all_exts()
+                ],
+            ],
+        }
+
+        return mutations
+
     async def _get_cmd_output(self, cmd: List[str]):
         print(f"$ {' '.join(cmd)}")
         proc = await asyncio.create_subprocess_exec(
@@ -1079,20 +1099,38 @@ class CommitLint(CMD):
         commit_details = await self._get_cmd_output(cmd)
         return commit_details
 
-    def _validate_commit_msg(self, msg):
-        root = Path(__file__).parents[2]
+    async def _get_all_exts(self):
+        cmd_1 = [
+            "git",
+            "ls-tree",
+            "-r",
+            "HEAD",
+            "--name-only",
+        ]
+        tracked_files = await self._get_cmd_output(cmd_1)
+        tracked_files = tracked_files.split("\n")
+        extentions = set()
+        for file in tracked_files:
+            _, file_extension = os.path.splitext(file)
+            extentions.add(file_extension)
+        return extentions
 
-        return True
+    @classmethod
+    def validate_commit_msg(self, msg):
+        root = Path(__file__).parents[2]
+        test_path = "/".join(map(str.strip, msg.split(":")[:-1]))
+        print(root / test_path)
+        return False
 
     async def run(self):
-
-        commits = await self._get_relevant_commits()
-        commits_list = commits.split("\n")
-
-        for commit in commits_list:
-            print("=" * 32)
-            print("commit:", commit)
-            print(await self._get_commmit_details(commit))
+        for el in await self._get_all_exts():
+            print(el)
+        # commits = await self._get_relevant_commits()
+        # commits_list = commits.split("\n")
+        # for commit in commits_list:
+        #     self.validate_commit_msg(commit)
+        #     # print("Invalid Commit:")
+        #     # print(await self._get_commmit_details(commit))
 
 
 class CI(CMD):
