@@ -1076,9 +1076,9 @@ class MakeDocsConfig:
         "Path to target directory for saving docs", default=None
     )
     port: int = field("PORT for the local docs server", default=8080)
-    http: str = field(
+    http: bool = field(
         "If set  a SimpleHTTP server would be started to show generated docs.",
-        default=None,
+        default=False,
     )
 
 
@@ -1175,7 +1175,7 @@ class MakeDocs(CMD):
         nojekyll_path = pages_path / ".nojekyll"
         nojekyll_path.touch(exist_ok=True)
 
-        if self.http is not None:
+        if self.http:
 
             handler = functools.partial(
                 http.server.SimpleHTTPRequestHandler, directory=str(pages_path)
