@@ -4,8 +4,7 @@
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  <meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
-
+  
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>DataFlow HTTP Deployment &mdash; DFFML b66b8bd2 documentation</title>
@@ -93,13 +92,13 @@
               
             
             
-              <p><span class="caption-text">Introduction</span></p>
+              <p class="caption"><span class="caption-text">Introduction</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../about.html">About</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../concepts/index.html">Concepts</a></li>
 </ul>
-<p><span class="caption-text">Usage</span></p>
+<p class="caption"><span class="caption-text">Usage</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../quickstart/model.html">Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
@@ -122,7 +121,7 @@
 </ul>
 </li>
 </ul>
-<p><span class="caption-text">Reference</span></p>
+<p class="caption"><span class="caption-text">Reference</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../plugins/index.html">Plugins</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../cli.html">Command Line</a></li>
@@ -130,12 +129,12 @@
 <li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../troubleshooting.html">Troubleshooting</a></li>
 </ul>
-<p><span class="caption-text">Subprojects</span></p>
+<p class="caption"><span class="caption-text">Subprojects</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../shouldi.html">shouldi</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../swportal.html">Software Portal</a></li>
 </ul>
-<p><span class="caption-text">Community</span></p>
+<p class="caption"><span class="caption-text">Community</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/intel/dffml">GitHub</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://intel.github.io/dffml/master/">Master Branch Docs</a></li>
@@ -219,7 +218,7 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <section id="dataflow-http-deployment">
+  <div class="section" id="dataflow-http-deployment">
 <h1>DataFlow HTTP Deployment<a class="headerlink" href="#dataflow-http-deployment" title="Permalink to this headline">¶</a></h1>
 <p>In the <a class="reference internal" href="shouldi.html"><span class="doc">Meta Static Analysis</span></a> we created a command line meta static
 analysis tool, <code class="docutils literal notranslate"><span class="pre">shouldi</span></code>.</p>
@@ -261,7 +260,7 @@ without the need to hardcode in <code class="docutils literal notranslate"><span
 <span class="go">}</span>
 </pre></div>
 </div>
-<section id="config-files">
+<div class="section" id="config-files">
 <h2>Config Files<a class="headerlink" href="#config-files" title="Permalink to this headline">¶</a></h2>
 <p>As we saw before, DataFlows can be serialized to config files. JSON
 representations of DataFlows are not fun to hand edit. YAML looks a lot cleaner.</p>
@@ -296,8 +295,8 @@ the <a class="reference internal" href="shouldi.html"><span class="doc">Meta Sta
 <span class="go">1 directory, 1 file</span>
 </pre></div>
 </div>
-</section>
-<section id="multicomms">
+</div>
+<div class="section" id="multicomms">
 <h2>MultiComms<a class="headerlink" href="#multicomms" title="Permalink to this headline">¶</a></h2>
 <p>Another concept in DFFML is the <code class="docutils literal notranslate"><span class="pre">MultiComm</span></code>, they are contain multiple
 channels of communications. <code class="docutils literal notranslate"><span class="pre">MultiComm</span></code>’s will typically be protocol based.
@@ -313,8 +312,8 @@ communication are URL paths (Example: <code class="docutils literal notranslate"
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python -m pip install dffml-service-http
 </pre></div>
 </div>
-</section>
-<section id="http-channel-config">
+</div>
+<div class="section" id="http-channel-config">
 <h2>HTTP Channel Config<a class="headerlink" href="#http-channel-config" title="Permalink to this headline">¶</a></h2>
 <p>To deploy our <code class="docutils literal notranslate"><span class="pre">shouldi</span></code> dataflow via the HTTP API, we need to register a
 communication channel, which is the association of a URL path to the dataflow.</p>
@@ -335,8 +334,8 @@ for websockets / http2).</p>
 <span class="nt">asynchronous</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">false</span>
 </pre></div>
 </div>
-</section>
-<section id="serving-the-dataflow">
+</div>
+<div class="section" id="serving-the-dataflow">
 <h2>Serving the DataFlow<a class="headerlink" href="#serving-the-dataflow" title="Permalink to this headline">¶</a></h2>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
@@ -378,8 +377,8 @@ items that you want evaluated.</p>
 <span class="go">}</span>
 </pre></div>
 </div>
-</section>
-<section id="combining-operations">
+</div>
+<div class="section" id="combining-operations">
 <h2>Combining Operations<a class="headerlink" href="#combining-operations" title="Permalink to this headline">¶</a></h2>
 <p>If you’ve gone through the <a class="reference internal" href="integration.html"><span class="doc">Automating Classification</span></a> example, you’ve seen the
 Git and source code analysis related operations (a list of all available
@@ -495,8 +494,8 @@ with the existing flow.</p>
 <p>Copy and pasting the graph into the
 <a class="reference external" href="https://mermaidjs.github.io/mermaid-live-editor">mermaidjs live editor</a>
 results in the graph.</p>
-</section>
-<section id="redeploying">
+</div>
+<div class="section" id="redeploying">
 <h2>Redeploying<a class="headerlink" href="#redeploying" title="Permalink to this headline">¶</a></h2>
 <p>We can now stop the server we had running, and start it again with the new
 configs.</p>
@@ -551,8 +550,8 @@ configs.</p>
 <span class="go">}</span>
 </pre></div>
 </div>
-</section>
-</section>
+</div>
+</div>
 
 
            </div>

@@ -4,8 +4,7 @@
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  <meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
-
+  
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>Automating Classification &mdash; DFFML 0.4.0 documentation</title>
@@ -93,13 +92,13 @@
               
             
             
-              <p><span class="caption-text">Introduction</span></p>
+              <p class="caption"><span class="caption-text">Introduction</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../about.html">About</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../concepts/index.html">Concepts</a></li>
 </ul>
-<p><span class="caption-text">Usage</span></p>
+<p class="caption"><span class="caption-text">Usage</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../quickstart/model.html">Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
@@ -122,7 +121,7 @@
 </ul>
 </li>
 </ul>
-<p><span class="caption-text">Reference</span></p>
+<p class="caption"><span class="caption-text">Reference</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../plugins/index.html">Plugins</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../cli.html">Command Line</a></li>
@@ -130,12 +129,12 @@
 <li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../troubleshooting.html">Troubleshooting</a></li>
 </ul>
-<p><span class="caption-text">Subprojects</span></p>
+<p class="caption"><span class="caption-text">Subprojects</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../shouldi.html">shouldi</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../swportal.html">Software Portal</a></li>
 </ul>
-<p><span class="caption-text">Community</span></p>
+<p class="caption"><span class="caption-text">Community</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/intel/dffml">GitHub</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://intel.github.io/dffml/master/">Master Branch Docs</a></li>
@@ -219,7 +218,7 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <section id="automating-classification">
+  <div class="section" id="automating-classification">
 <h1>Automating Classification<a class="headerlink" href="#automating-classification" title="Permalink to this headline">¶</a></h1>
 <p>This example will show you how to automate a manual classification process,
 determining if a Git repo is maintained or abandoned. We’ll be integrating
@@ -236,7 +235,7 @@ Instead of manually classifying each repo, we’re going to put some machine
 learning behind this little web app. The steps we’re going to follow here are
 generic, they do not apply specifically to this Python CGI setup, this is just
 an example that was chosen because hopefully it’ll be an easy setup.</p>
-<section id="cgi-application">
+<div class="section" id="cgi-application">
 <h2>CGI Application<a class="headerlink" href="#cgi-application" title="Permalink to this headline">¶</a></h2>
 <p>The CGI application we’ll be integrating with is comprised of five files. You
 should create these files and populate them with the code your about to see.</p>
@@ -434,8 +433,8 @@ server can run it.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>chmod <span class="m">755</span> cgi-bin cgi-bin/api.py
 </pre></div>
 </div>
-</section>
-<section id="setup">
+</div>
+<div class="section" id="setup">
 <h2>Setup<a class="headerlink" href="#setup" title="Permalink to this headline">¶</a></h2>
 <p>We’ll be using Python, and docker or podman. If you don’t have docker installed,
 but you do have podman installed, you can replace “docker” with “podman” in all
@@ -593,8 +592,8 @@ database by calling the API.</p>
 <span class="go">    python3 -m json.tool</span>
 </pre></div>
 </div>
-</section>
-<section id="gathering-data">
+</div>
+<div class="section" id="gathering-data">
 <h2>Gathering Data<a class="headerlink" href="#gathering-data" title="Permalink to this headline">¶</a></h2>
 <p>We now have our dataset of git repos and their maintenance statuses in our web
 app. If you go to <a class="reference external" href="http://127.0.0.1:8000/">http://127.0.0.1:8000/</a> you should see it.</p>
@@ -765,8 +764,8 @@ the quarter they were generated for.</p></li>
 </ul>
 </li>
 </ul>
-</section>
-<section id="training-our-model">
+</div>
+<div class="section" id="training-our-model">
 <h2>Training our Model<a class="headerlink" href="#training-our-model" title="Permalink to this headline">¶</a></h2>
 <p>The model we’ll be using is a part of <code class="docutils literal notranslate"><span class="pre">dffml-model-tensorflow</span></code>, which is
 another separate Python package from DFFML which we can install via <code class="docutils literal notranslate"><span class="pre">pip</span></code>.</p>
@@ -827,8 +826,8 @@ automatically.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>bash train.sh
 </pre></div>
 </div>
-</section>
-<section id="making-a-prediction">
+</div>
+<div class="section" id="making-a-prediction">
 <h2>Making a Prediction<a class="headerlink" href="#making-a-prediction" title="Permalink to this headline">¶</a></h2>
 <p>Run the operations on the new repo: <code class="docutils literal notranslate"><span class="pre">https://github.com/intel/dffml</span></code> and
 have the model make a prediction</p>
@@ -929,8 +928,8 @@ to make a prediction on the DFFML repo.</p>
 <span class="go">]</span>
 </pre></div>
 </div>
-</section>
-<section id="modifying-the-legacy-app">
+</div>
+<div class="section" id="modifying-the-legacy-app">
 <h2>Modifying the Legacy App<a class="headerlink" href="#modifying-the-legacy-app" title="Permalink to this headline">¶</a></h2>
 <p>Now let’s add a ‘Predict’ button to the app. The button will trigger the
 operations to be run on the new URL, and then the prediction. The demo app will
@@ -1027,8 +1026,8 @@ But you can look through the table and you’ll find that a prediction has been
 run on the repo. Congratulations! You’ve automated a manual classification
 process, and integrated machine learning into a legacy application.</p>
 <img alt="../_images/integration_demo.gif" src="../_images/integration_demo.gif" />
-</section>
-</section>
+</div>
+</div>
 
 
            </div>

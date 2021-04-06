@@ -4,8 +4,7 @@
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  <meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
-
+  
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>Testing &mdash; DFFML 0.4.0 documentation</title>
@@ -92,19 +91,19 @@
               
             
             
-              <p><span class="caption-text">Introduction</span></p>
+              <p class="caption"><span class="caption-text">Introduction</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../about.html">About</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../concepts/index.html">Concepts</a></li>
 </ul>
-<p><span class="caption-text">Usage</span></p>
+<p class="caption"><span class="caption-text">Usage</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../quickstart/model.html">Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Examples</a></li>
 </ul>
-<p><span class="caption-text">Reference</span></p>
+<p class="caption"><span class="caption-text">Reference</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../plugins/index.html">Plugins</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../cli.html">Command Line</a></li>
@@ -112,12 +111,12 @@
 <li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../troubleshooting.html">Troubleshooting</a></li>
 </ul>
-<p><span class="caption-text">Subprojects</span></p>
+<p class="caption"><span class="caption-text">Subprojects</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../shouldi.html">shouldi</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../swportal.html">Software Portal</a></li>
 </ul>
-<p><span class="caption-text">Community</span></p>
+<p class="caption"><span class="caption-text">Community</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference external" href="https://github.com/intel/dffml">GitHub</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://intel.github.io/dffml/master/">Master Branch Docs</a></li>
@@ -222,7 +221,7 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <section id="testing">
+  <div class="section" id="testing">
 <h1>Testing<a class="headerlink" href="#testing" title="Permalink to this headline">¶</a></h1>
 <p>DFFML has a test suite with unit and integration tests. All plugins also have
 unit tests, some have integration tests, eventually all will have integration
@@ -235,7 +234,7 @@ tests.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python3 setup.py <span class="nb">test</span> -s tests.test_cli.TestPredict.test_record
 </pre></div>
 </div>
-<section id="writing-tests">
+<div class="section" id="writing-tests">
 <h2>Writing Tests<a class="headerlink" href="#writing-tests" title="Permalink to this headline">¶</a></h2>
 <p>If your test is within the main package, aka <code class="docutils literal notranslate"><span class="pre">tests/</span></code>, and you need to use a
 plugin within your test, you should subclass from <code class="docutils literal notranslate"><span class="pre">IntegrationCLITestCase</span></code>.</p>
@@ -244,8 +243,8 @@ plugin within your test, you should subclass from <code class="docutils literal 
    <span class="bp">self</span><span class="o">.</span><span class="n">required_plugins</span><span class="p">(</span><span class="s2">&quot;dffml-config-png&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-</section>
-<section id="running-ci-tests-locally">
+</div>
+<div class="section" id="running-ci-tests-locally">
 <span id="id1"></span><h2>Running CI Tests Locally<a class="headerlink" href="#running-ci-tests-locally" title="Permalink to this headline">¶</a></h2>
 <p>You can run any of the CI tests with the following docker / podman command.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo docker run --rm -ti -u <span class="k">$(</span>id -u<span class="k">)</span>:<span class="k">$(</span>id -g<span class="k">)</span> <span class="se">\</span>
@@ -273,15 +272,15 @@ seems to have some weird issues, lack of <code class="docutils literal notransla
 </ul>
 <p>For example, to run the <code class="docutils literal notranslate"><span class="pre">docs</span></code> CI test, the final arguments to the above
 command would be <code class="docutils literal notranslate"><span class="pre">--entrypoint</span> <span class="pre">.ci/docker-entrypoint.sh</span> <span class="pre">python:3.7</span> <span class="pre">docs</span></code></p>
-</section>
-<section id="debug-logging">
+</div>
+<div class="section" id="debug-logging">
 <h2>Debug Logging<a class="headerlink" href="#debug-logging" title="Permalink to this headline">¶</a></h2>
 <p>To get the debug output while testing set the <code class="docutils literal notranslate"><span class="pre">LOGGING</span></code> environment variable.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">export</span> <span class="nv">LOGGING</span><span class="o">=</span>debug
 </pre></div>
 </div>
-</section>
-<section id="test-coverage">
+</div>
+<div class="section" id="test-coverage">
 <h2>Test Coverage<a class="headerlink" href="#test-coverage" title="Permalink to this headline">¶</a></h2>
 <p>Each pull request is expected to maintain or increase test coverage</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python3 -m coverage run setup.py <span class="nb">test</span>
@@ -295,13 +294,13 @@ by opening the <code class="docutils literal notranslate"><span class="pre">inde
 </pre></div>
 </div>
 <p>You can now view the coverage report at <a class="reference external" href="http://127.0.0.1:8080/">http://127.0.0.1:8080/</a></p>
-</section>
-<section id="test-datasets">
+</div>
+<div class="section" id="test-datasets">
 <h2>Test Datasets<a class="headerlink" href="#test-datasets" title="Permalink to this headline">¶</a></h2>
 <p>In order to avoid potential legal issues, all datasets included within the
 codebase of DFFML should be randomly generated.</p>
-</section>
-</section>
+</div>
+</div>
 
 
            </div>

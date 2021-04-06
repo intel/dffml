@@ -4,8 +4,7 @@
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  <meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
-
+  
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>Documenting a Model &mdash; DFFML b66b8bd2 documentation</title>
@@ -92,13 +91,13 @@
               
             
             
-              <p><span class="caption-text">Introduction</span></p>
+              <p class="caption"><span class="caption-text">Introduction</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../about.html">About</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../concepts/index.html">Concepts</a></li>
 </ul>
-<p><span class="caption-text">Usage</span></p>
+<p class="caption"><span class="caption-text">Usage</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../quickstart/model.html">Quickstart</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">Tutorials</a><ul class="current">
@@ -127,7 +126,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../examples/index.html">Examples</a></li>
 </ul>
-<p><span class="caption-text">Reference</span></p>
+<p class="caption"><span class="caption-text">Reference</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../plugins/index.html">Plugins</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../cli.html">Command Line</a></li>
@@ -135,12 +134,12 @@
 <li class="toctree-l1"><a class="reference internal" href="../../api/index.html">API Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../troubleshooting.html">Troubleshooting</a></li>
 </ul>
-<p><span class="caption-text">Subprojects</span></p>
+<p class="caption"><span class="caption-text">Subprojects</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../shouldi.html">shouldi</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../swportal.html">Software Portal</a></li>
 </ul>
-<p><span class="caption-text">Community</span></p>
+<p class="caption"><span class="caption-text">Community</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/intel/dffml">GitHub</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://intel.github.io/dffml/master/">Master Branch Docs</a></li>
@@ -226,7 +225,7 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <section id="documenting-a-model">
+  <div class="section" id="documenting-a-model">
 <span id="model-tutorial-docs"></span><h1>Documenting a Model<a class="headerlink" href="#documenting-a-model" title="Permalink to this headline">¶</a></h1>
 <p>We can write the documentation and examples for our new model within the model
 docstring. We should always include at least two examples so that others will
@@ -245,7 +244,7 @@ system.</p>
 <span class="gp">$ </span>python setup.py egg_info
 </pre></div>
 </div>
-<section id="python-docstrings">
+<div class="section" id="python-docstrings">
 <h2>Python docstrings<a class="headerlink" href="#python-docstrings" title="Permalink to this headline">¶</a></h2>
 <p>A docstring in Python is a comment immediately following a class or function
 definition. Python will print out an object’s docstring if the object is passed
@@ -274,16 +273,16 @@ treated as a backslash and not an escape character.</p>
     <span class="sa">r</span><span class="s2">&quot;&quot;&quot;</span>
 </pre></div>
 </td></tr></table></div>
-</section>
-<section id="quick-rst-background">
+</div>
+<div class="section" id="quick-rst-background">
 <h2>Quick rST background<a class="headerlink" href="#quick-rst-background" title="Permalink to this headline">¶</a></h2>
 <p>When you see something with <code class="docutils literal notranslate"><span class="pre">..</span> <span class="pre">``</span> <span class="pre">and</span> <span class="pre">``::</span></code> at the end that’s called a
 “directive”. For example you’ll see <code class="docutils literal notranslate"><span class="pre">code-block</span></code> and <code class="docutils literal notranslate"><span class="pre">literalinclude</span></code> which
 are directives. Each string that follows <code class="docutils literal notranslate"><span class="pre">::</span></code> after a directive is known as an
 “argument”. On the lines immediately following a directive you may see one or
 more of what’s called an “option”. These are strings with <code class="docutils literal notranslate"><span class="pre">:</span></code> on either end.</p>
-</section>
-<section id="consoletest">
+</div>
+<div class="section" id="consoletest">
 <h2>consoletest<a class="headerlink" href="#consoletest" title="Permalink to this headline">¶</a></h2>
 <p>We’ll be using the consoletest Sphinx extension which adds extra options to
 directives. Some options that you’ll see are <code class="docutils literal notranslate"><span class="pre">:test:</span></code> and <code class="docutils literal notranslate"><span class="pre">:filepath:</span></code>.
@@ -309,8 +308,8 @@ copied into a file of a given name within the test environment by using the
 <p>Sometimes you may just want to show a <code class="docutils literal notranslate"><span class="pre">code-block</span></code> or a <code class="docutils literal notranslate"><span class="pre">literalinclude</span></code>
 that consoletest shouldn’t run. Just leave off the <code class="docutils literal notranslate"><span class="pre">:test:</span></code> option in these
 situations.</p>
-</section>
-<section id="example-datasets">
+</div>
+<div class="section" id="example-datasets">
 <span id="model-tutorial-docs-example-datasets"></span><h2>Example Datasets<a class="headerlink" href="#example-datasets" title="Permalink to this headline">¶</a></h2>
 <p>We can include text data to be written to files within <code class="docutils literal notranslate"><span class="pre">code-block</span></code>
 directives. You may want to download data from the internet instead. Running a
@@ -375,8 +374,8 @@ by putting the filename in bold above the file contents.</p>
         0.7,7
 </pre></div>
 </td></tr></table></div>
-</section>
-<section id="example-cli-commands">
+</div>
+<div class="section" id="example-cli-commands">
 <h2>Example CLI Commands<a class="headerlink" href="#example-cli-commands" title="Permalink to this headline">¶</a></h2>
 <p>After the user has saved the training and test dataset files. We’ll give then
 the command line example usage. We’re going to document how to train the model,
@@ -516,8 +515,8 @@ in the console should be highlighted. There is no proper way to highlight a
         ]
 </pre></div>
 </td></tr></table></div>
-</section>
-<section id="example-python-usage">
+</div>
+<div class="section" id="example-python-usage">
 <h2>Example Python Usage<a class="headerlink" href="#example-python-usage" title="Permalink to this headline">¶</a></h2>
 <p>Try to include as much of the examples inline as possible. However, when it
 comes time to include a Python file in an example it’s best to leave it as a
@@ -560,8 +559,8 @@ another <code class="docutils literal notranslate"><span class="pre">&quot;&quot
     &quot;&quot;&quot;
 </pre></div>
 </td></tr></table></div>
-</section>
-<section id="testing-examples">
+</div>
+<div class="section" id="testing-examples">
 <span id="model-tutorial-docs-testing-examples"></span><h2>Testing Examples<a class="headerlink" href="#testing-examples" title="Permalink to this headline">¶</a></h2>
 <p>Using the
 <a class="reference external" href="https://github.com/intel/dffml/tree/master/dffml/util/testing/consoletest">consoletest</a>
@@ -593,8 +592,8 @@ right now (<code class="docutils literal notranslate"><span class="pre">tests.te
 <p>This tutorial will be updated to show how to build a documentation website
 just like this one which will display an HTML version of restructured text.</p>
 </div>
-</section>
-</section>
+</div>
+</div>
 
 
            </div>

@@ -4,8 +4,7 @@
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  <meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
-
+  
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>Maintainer Docs &mdash; DFFML 0.4.0 documentation</title>
@@ -92,19 +91,19 @@
               
             
             
-              <p><span class="caption-text">Introduction</span></p>
+              <p class="caption"><span class="caption-text">Introduction</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../about.html">About</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../concepts/index.html">Concepts</a></li>
 </ul>
-<p><span class="caption-text">Usage</span></p>
+<p class="caption"><span class="caption-text">Usage</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../quickstart/model.html">Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Examples</a></li>
 </ul>
-<p><span class="caption-text">Reference</span></p>
+<p class="caption"><span class="caption-text">Reference</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../plugins/index.html">Plugins</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../cli.html">Command Line</a></li>
@@ -112,12 +111,12 @@
 <li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../troubleshooting.html">Troubleshooting</a></li>
 </ul>
-<p><span class="caption-text">Subprojects</span></p>
+<p class="caption"><span class="caption-text">Subprojects</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../shouldi.html">shouldi</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../swportal.html">Software Portal</a></li>
 </ul>
-<p><span class="caption-text">Community</span></p>
+<p class="caption"><span class="caption-text">Community</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference external" href="https://github.com/intel/dffml">GitHub</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://intel.github.io/dffml/master/">Master Branch Docs</a></li>
@@ -219,11 +218,11 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <section id="maintainer-docs">
+  <div class="section" id="maintainer-docs">
 <h1>Maintainer Docs<a class="headerlink" href="#maintainer-docs" title="Permalink to this headline">¶</a></h1>
 <p>These docs are for the maintainers of DFFML, if you’re not a maintainer, you
 won’t find anything useful here, unless your just curious.</p>
-<section id="adding-a-new-plugin">
+<div class="section" id="adding-a-new-plugin">
 <h2>Adding A New Plugin<a class="headerlink" href="#adding-a-new-plugin" title="Permalink to this headline">¶</a></h2>
 <p>When a new plugin is added we need to go manually upload it for the first time.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">cd</span> model/new_model
@@ -240,8 +239,8 @@ script.</p>
 <img alt="../_images/pypi-token-to-github-secret.gif" src="../_images/pypi-token-to-github-secret.gif" />
 <p>Finally, update the <code class="docutils literal notranslate"><span class="pre">PYPI_TOKENS</span></code> file in <code class="docutils literal notranslate"><span class="pre">.github/workflows/testing.yml</span></code>.
 Add a line for the plugin along with it’s sceret.</p>
-</section>
-<section id="doing-a-release">
+</div>
+<div class="section" id="doing-a-release">
 <h2>Doing a Release<a class="headerlink" href="#doing-a-release" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>Create a major.minor bugfix branch if it does not exist. Switch to it if it
@@ -276,8 +275,8 @@ new version and the date</p></li>
 <span class="gp">$ </span>git push
 </pre></div>
 </div>
-</section>
-</section>
+</div>
+</div>
 
 
            </div>

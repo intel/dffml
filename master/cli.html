@@ -4,8 +4,7 @@
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  <meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
-
+  
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>Command Line &mdash; DFFML b66b8bd2 documentation</title>
@@ -92,19 +91,19 @@
               
             
             
-              <p><span class="caption-text">Introduction</span></p>
+              <p class="caption"><span class="caption-text">Introduction</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="about.html">About</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="concepts/index.html">Concepts</a></li>
 </ul>
-<p><span class="caption-text">Usage</span></p>
+<p class="caption"><span class="caption-text">Usage</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="quickstart/model.html">Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorials/index.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="examples/index.html">Examples</a></li>
 </ul>
-<p><span class="caption-text">Reference</span></p>
+<p class="caption"><span class="caption-text">Reference</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="plugins/index.html">Plugins</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Command Line</a><ul>
@@ -150,12 +149,12 @@
 <li class="toctree-l1"><a class="reference internal" href="api/index.html">API Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
 </ul>
-<p><span class="caption-text">Subprojects</span></p>
+<p class="caption"><span class="caption-text">Subprojects</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="shouldi.html">shouldi</a></li>
 <li class="toctree-l1"><a class="reference internal" href="swportal.html">Software Portal</a></li>
 </ul>
-<p><span class="caption-text">Community</span></p>
+<p class="caption"><span class="caption-text">Community</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/intel/dffml">GitHub</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://intel.github.io/dffml/master/">Master Branch Docs</a></li>
@@ -237,7 +236,7 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <section id="command-line">
+  <div class="section" id="command-line">
 <h1>Command Line<a class="headerlink" href="#command-line" title="Permalink to this headline">¶</a></h1>
 <p>Almost anything you can get done with the Python API you can get done with the
 command line interface too (and HTTP API).</p>
@@ -252,21 +251,21 @@ logs.</p>
 </pre></div>
 </div>
 </div>
-<section id="version">
+<div class="section" id="version">
 <h2>Version<a class="headerlink" href="#version" title="Permalink to this headline">¶</a></h2>
 <p>List the version of the main package, all the plugins, and their install status.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml version
 </pre></div>
 </div>
-</section>
-<section id="packages">
+</div>
+<div class="section" id="packages">
 <h2>Packages<a class="headerlink" href="#packages" title="Permalink to this headline">¶</a></h2>
 <p>List the names of all the packages maintained as a part of the core dffml repo.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml packages
 </pre></div>
 </div>
-</section>
-<section id="model">
+</div>
+<div class="section" id="model">
 <h2>Model<a class="headerlink" href="#model" title="Permalink to this headline">¶</a></h2>
 <p>Train, asses accuracy, and use models for prediction. See the
 plugin docs for <a class="reference internal" href="plugins/dffml_model.html"><span class="doc">Models</span></a> for usage of individual models</p>
@@ -285,7 +284,7 @@ course have separate training and test data.</p>
 <span class="n">EOF</span>
 </pre></div>
 </div>
-<section id="train">
+<div class="section" id="train">
 <h3>Train<a class="headerlink" href="#train" title="Permalink to this headline">¶</a></h3>
 <p>We specify the name of the model we want to use (options can be found on the
 <a class="reference internal" href="plugins/dffml_model.html"><span class="doc">Models</span></a> plugins page). We specify the arguments the model
@@ -305,8 +304,8 @@ more details on this.</p>
   <span class="o">-</span><span class="n">log</span> <span class="n">debug</span>
 </pre></div>
 </div>
-</section>
-<section id="accuracy">
+</div>
+<div class="section" id="accuracy">
 <h3>Accuracy<a class="headerlink" href="#accuracy" title="Permalink to this headline">¶</a></h3>
 <p>Assess the accuracy of a model by providing it with a test dataset.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dffml</span> <span class="n">accuracy</span> \
@@ -323,8 +322,8 @@ more details on this.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">1.0</span>
 </pre></div>
 </div>
-</section>
-<section id="prediction">
+</div>
+<div class="section" id="prediction">
 <h3>Prediction<a class="headerlink" href="#prediction" title="Permalink to this headline">¶</a></h3>
 <p>Ask a trained model to make a prediction.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">echo</span> <span class="o">-</span><span class="n">e</span> <span class="s1">&#39;f1,ans</span><span class="se">\n</span><span class="s1">0.8,0</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">|</span> \
@@ -358,12 +357,12 @@ more details on this.</p>
 <span class="go">]</span>
 </pre></div>
 </div>
-</section>
-</section>
-<section id="dataflow">
+</div>
+</div>
+<div class="section" id="dataflow">
 <h2>DataFlow<a class="headerlink" href="#dataflow" title="Permalink to this headline">¶</a></h2>
 <p>Create, modify, run, and visualize DataFlows.</p>
-<section id="create">
+<div class="section" id="create">
 <h3>Create<a class="headerlink" href="#create" title="Permalink to this headline">¶</a></h3>
 <p>Ouput the dataflow description to standard output using the specified
 configloader format.</p>
@@ -422,8 +421,8 @@ flag during generation.</p>
 <span class="go">    stage: processing</span>
 </pre></div>
 </div>
-</section>
-<section id="run">
+</div>
+<div class="section" id="run">
 <h3>Run<a class="headerlink" href="#run" title="Permalink to this headline">¶</a></h3>
 <p>Iterate over each record in a source and run a dataflow on it. The records
 unique key can be assigned a definition using the <code class="docutils literal notranslate"><span class="pre">-record-def</span></code> flag.</p>
@@ -458,8 +457,8 @@ scraping tasks.</p>
 <span class="go">{&#39;hello&#39;: &#39;user&#39;}</span>
 </pre></div>
 </div>
-</section>
-<section id="merge">
+</div>
+<div class="section" id="merge">
 <h3>Merge<a class="headerlink" href="#merge" title="Permalink to this headline">¶</a></h3>
 <p>Combine two dataflows into one. Dataflows must either be all linked or all not
 linked.</p>
@@ -490,8 +489,8 @@ come from the output of the <code class="docutils literal notranslate"><span cla
 <span class="go">{&#39;hello&#39;: &#39;world&#39;}</span>
 </pre></div>
 </div>
-</section>
-<section id="diagram">
+</div>
+<div class="section" id="diagram">
 <h3>Diagram<a class="headerlink" href="#diagram" title="Permalink to this headline">¶</a></h3>
 <p>Output a mermaidjs graph description of a DataFlow.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml dataflow diagram -simple hello.yaml
@@ -500,9 +499,9 @@ come from the output of the <code class="docutils literal notranslate"><span cla
 <p>You can now copy the graph description and paste it in the
 <a class="reference external" href="https://mermaidjs.github.io/mermaid-live-editor">mermaidjs live editor</a> (or
 use the CLI tool) to generate an SVG or other format of the graph.</p>
-</section>
-</section>
-<section id="edit">
+</div>
+</div>
+<div class="section" id="edit">
 <h2>Edit<a class="headerlink" href="#edit" title="Permalink to this headline">¶</a></h2>
 <p>Edit records present in a source</p>
 <div class="admonition note">
@@ -511,7 +510,7 @@ use the CLI tool) to generate an SVG or other format of the graph.</p>
 source your trying to edit is read only be default, and requires you to add
 another flag such as <code class="docutils literal notranslate"><span class="pre">readwrite</span></code> to enable editing.</p>
 </div>
-<section id="record">
+<div class="section" id="record">
 <h3>Record<a class="headerlink" href="#record" title="Permalink to this headline">¶</a></h3>
 <p>Edit individual <a class="reference internal" href="api/record.html#dffml.record.Record" title="dffml.record.Record"><code class="xref py py-class docutils literal notranslate"><span class="pre">Records</span></code></a> interactively.</p>
 <p><strong>images.csv</strong></p>
@@ -566,8 +565,8 @@ config file is not provided.</p>
 <span class="go">]</span>
 </pre></div>
 </div>
-</section>
-<section id="all">
+</div>
+<div class="section" id="all">
 <h3>All<a class="headerlink" href="#all" title="Permalink to this headline">¶</a></h3>
 <p>Update all the records in any source using the <a class="reference internal" href="api/source/df.html#dffml.source.df.DataFlowSource" title="dffml.source.df.DataFlowSource"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataFlowSource</span></code></a>.</p>
 <p>For this example, we are using the <cite>multiply</cite> operation which multiplies every value in a record by a
@@ -704,33 +703,33 @@ factor which is 10 in this case. The example dataflow file looks like this:</p>
 <span class="go">]</span>
 </pre></div>
 </div>
-</section>
-</section>
-<section id="config">
+</div>
+</div>
+<div class="section" id="config">
 <h2>Config<a class="headerlink" href="#config" title="Permalink to this headline">¶</a></h2>
-<section id="convert">
+<div class="section" id="convert">
 <span id="cli-config-convert"></span><h3>Convert<a class="headerlink" href="#convert" title="Permalink to this headline">¶</a></h3>
 <p>Convert one config file format into another.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml config convert -config-out json hello.yaml
 </pre></div>
 </div>
-</section>
-</section>
-<section id="service">
+</div>
+</div>
+<div class="section" id="service">
 <h2>Service<a class="headerlink" href="#service" title="Permalink to this headline">¶</a></h2>
 <p>Services are various command line utilities that are associated with DFFML.</p>
 <p>For a complete list of services maintained within the core codebase see the
 <a class="reference internal" href="plugins/dffml_service_cli.html"><span class="doc">Services</span></a> plugin docs.</p>
-<section id="http">
+<div class="section" id="http">
 <h3>HTTP<a class="headerlink" href="#http" title="Permalink to this headline">¶</a></h3>
 <p>Everything you can do via the Python library or command line interface you can
 also do over an HTTP interface. See the
 <a class="reference internal" href="plugins/service/http/cli.html"><span class="doc">Command Line</span></a> docs for more information.</p>
-</section>
-<section id="dev">
+</div>
+<div class="section" id="dev">
 <h3>Dev<a class="headerlink" href="#dev" title="Permalink to this headline">¶</a></h3>
 <p>Development utilities for creating new packages or hacking on the core codebase.</p>
-<section id="cli-service-dev-create">
+<div class="section" id="cli-service-dev-create">
 <span id="id1"></span><h4>Create<a class="headerlink" href="#cli-service-dev-create" title="Permalink to this headline">¶</a></h4>
 <p>You can create a new python package and start implementing a new plugin for
 DFFML right away with the <code class="docutils literal notranslate"><span class="pre">create</span></code> command of <code class="docutils literal notranslate"><span class="pre">dev</span></code>.</p>
@@ -750,8 +749,8 @@ want to mess with uploading to <code class="docutils literal notranslate"><span 
 whatever you’ve edited. This way whatever you make will be usable by others
 within the DFFML CLI and HTTP API as soon as they <code class="docutils literal notranslate"><span class="pre">pip</span></code> install your package,
 nothing else required.</p>
-</section>
-<section id="export">
+</div>
+<div class="section" id="export">
 <h4>Export<a class="headerlink" href="#export" title="Permalink to this headline">¶</a></h4>
 <p>Given the
 <a class="reference external" href="https://packaging.python.org/specifications/entry-points/">entrypoint</a>
@@ -768,14 +767,14 @@ which is what you want.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml service dev <span class="nb">export</span> -configloader yaml quickstart:model
 </pre></div>
 </div>
-</section>
-<section id="entrypoints">
+</div>
+<div class="section" id="entrypoints">
 <h4>Entrypoints<a class="headerlink" href="#entrypoints" title="Permalink to this headline">¶</a></h4>
 <p>DFFML makes heavy use of the Python
 <a class="reference external" href="https://packaging.python.org/specifications/entry-points/">entrypoint</a>
 system. The following tools will help you with development and use of the
 entrypoints system.</p>
-<section id="list">
+<div class="section" id="list">
 <h5>List<a class="headerlink" href="#list" title="Permalink to this headline">¶</a></h5>
 <p>Sometimes you’ll find that you’ve installed a package in development
 mode, but the code that’s being run when your using the CLI or HTTP API isn’t
@@ -801,12 +800,12 @@ flag to <code class="docutils literal notranslate"><span class="pre">pip</span> 
 <span class="go">clone_git_repo = dffml_feature_git.feature.operations:clone_git_repo -&gt; dffml-feature-git 0.2.0 (/home/user/Documents/python/dffml/feature/git)</span>
 </pre></div>
 </div>
-</section>
-</section>
-<section id="setuppy">
+</div>
+</div>
+<div class="section" id="setuppy">
 <h4>setuppy<a class="headerlink" href="#setuppy" title="Permalink to this headline">¶</a></h4>
 <p>Utilities for working with <code class="docutils literal notranslate"><span class="pre">setup.py</span></code> files.</p>
-<section id="id3">
+<div class="section" id="id3">
 <h5>version<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h5>
 <p>Read a <code class="docutils literal notranslate"><span class="pre">version.py</span></code> file and extract the version number from the <code class="docutils literal notranslate"><span class="pre">VERSION</span></code>
 variable within it. This does not execute code, it only parses it.</p>
@@ -814,8 +813,8 @@ variable within it. This does not execute code, it only parses it.</p>
 <span class="go">0.0.1</span>
 </pre></div>
 </div>
-</section>
-<section id="kwarg">
+</div>
+<div class="section" id="kwarg">
 <h5>kwarg<a class="headerlink" href="#kwarg" title="Permalink to this headline">¶</a></h5>
 <p><code class="docutils literal notranslate"><span class="pre">import</span></code> a <code class="docutils literal notranslate"><span class="pre">setup.py</span></code> file return the value of the specified keyword
 argument.</p>
@@ -823,31 +822,31 @@ argument.</p>
 <span class="go">dffml-model-mycoolmodel</span>
 </pre></div>
 </div>
-</section>
-</section>
-<section id="bump">
+</div>
+</div>
+<div class="section" id="bump">
 <h4>bump<a class="headerlink" href="#bump" title="Permalink to this headline">¶</a></h4>
 <p>Utilities for bumping version numbers.</p>
-<section id="inter">
+<div class="section" id="inter">
 <h5>inter<a class="headerlink" href="#inter" title="Permalink to this headline">¶</a></h5>
 <p>Update the version of DFFML used by all of the plugins. Update all the
 interdepent plugin versions</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">dffml service dev bump inter</span>
 </pre></div>
 </div>
-</section>
-<section id="id4">
+</div>
+<div class="section" id="id4">
 <h5>packages<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h5>
 <p>Update the version number of a package or all packages. Increments the version
 of each packages by the version string given.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">dffml service dev bump packages -log debug -skip dffml -- 0.0.1</span>
 </pre></div>
 </div>
-</section>
-</section>
-</section>
-</section>
-</section>
+</div>
+</div>
+</div>
+</div>
+</div>
 
 
            </div>

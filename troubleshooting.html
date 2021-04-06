@@ -4,8 +4,7 @@
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  <meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
-
+  
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>Troubleshooting &mdash; DFFML 0.4.0 documentation</title>
@@ -92,19 +91,19 @@
               
             
             
-              <p><span class="caption-text">Introduction</span></p>
+              <p class="caption"><span class="caption-text">Introduction</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="about.html">About</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="concepts/index.html">Concepts</a></li>
 </ul>
-<p><span class="caption-text">Usage</span></p>
+<p class="caption"><span class="caption-text">Usage</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="quickstart/model.html">Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorials/index.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="examples/index.html">Examples</a></li>
 </ul>
-<p><span class="caption-text">Reference</span></p>
+<p class="caption"><span class="caption-text">Reference</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="plugins/index.html">Plugins</a></li>
 <li class="toctree-l1"><a class="reference internal" href="cli.html">Command Line</a></li>
@@ -116,12 +115,12 @@
 </ul>
 </li>
 </ul>
-<p><span class="caption-text">Subprojects</span></p>
+<p class="caption"><span class="caption-text">Subprojects</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="shouldi.html">shouldi</a></li>
 <li class="toctree-l1"><a class="reference internal" href="swportal.html">Software Portal</a></li>
 </ul>
-<p><span class="caption-text">Community</span></p>
+<p class="caption"><span class="caption-text">Community</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/intel/dffml">GitHub</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://intel.github.io/dffml/master/">Master Branch Docs</a></li>
@@ -203,11 +202,11 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <section id="troubleshooting">
+  <div class="section" id="troubleshooting">
 <h1>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permalink to this headline">¶</a></h1>
 <p>This document contains solutions to common issues or things you can try to fix
 your problems.</p>
-<section id="create-a-new-virtual-environment">
+<div class="section" id="create-a-new-virtual-environment">
 <span id="troubleshooting-create-a-new-virtual-environment"></span><h2>Create a new Virtual Environment<a class="headerlink" href="#create-a-new-virtual-environment" title="Permalink to this headline">¶</a></h2>
 <p>Nine times out of ten if you’re having a problem the root cause is related to
 packages that are the wrong versions, installed incorrectly somehow, or not
@@ -221,8 +220,8 @@ working is install everything in a fresh virtual environment.</p>
 <span class="gp">$ </span>dffml version
 </pre></div>
 </div>
-</section>
-<section id="entrypointnotfound">
+</div>
+<div class="section" id="entrypointnotfound">
 <h2>EntrypointNotFound<a class="headerlink" href="#entrypointnotfound" title="Permalink to this headline">¶</a></h2>
 <p>Sometimes you will try to reference a model, operation, or source you packaged
 and installed. Sometimes you think you installed it but you didn’t. Sometimes
@@ -232,8 +231,8 @@ entry points. This will help you verify what’s installed and where it lives.</
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml service dev entrypoints list dffml.operation
 </pre></div>
 </div>
-</section>
-</section>
+</div>
+</div>
 
 
            </div>

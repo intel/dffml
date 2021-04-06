@@ -4,8 +4,7 @@
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  <meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
-
+  
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>Example SQLite source &mdash; DFFML b66b8bd2 documentation</title>
@@ -92,13 +91,13 @@
               
             
             
-              <p><span class="caption-text">Introduction</span></p>
+              <p class="caption"><span class="caption-text">Introduction</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../about.html">About</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../concepts/index.html">Concepts</a></li>
 </ul>
-<p><span class="caption-text">Usage</span></p>
+<p class="caption"><span class="caption-text">Usage</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../quickstart/model.html">Quickstart</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">Tutorials</a><ul class="current">
@@ -124,7 +123,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../examples/index.html">Examples</a></li>
 </ul>
-<p><span class="caption-text">Reference</span></p>
+<p class="caption"><span class="caption-text">Reference</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../plugins/index.html">Plugins</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../cli.html">Command Line</a></li>
@@ -132,12 +131,12 @@
 <li class="toctree-l1"><a class="reference internal" href="../../api/index.html">API Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../troubleshooting.html">Troubleshooting</a></li>
 </ul>
-<p><span class="caption-text">Subprojects</span></p>
+<p class="caption"><span class="caption-text">Subprojects</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../shouldi.html">shouldi</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../swportal.html">Software Portal</a></li>
 </ul>
-<p><span class="caption-text">Community</span></p>
+<p class="caption"><span class="caption-text">Community</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/intel/dffml">GitHub</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://intel.github.io/dffml/master/">Master Branch Docs</a></li>
@@ -223,14 +222,14 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <section id="example-sqlite-source">
+  <div class="section" id="example-sqlite-source">
 <span id="source-tutorial"></span><h1>Example SQLite source<a class="headerlink" href="#example-sqlite-source" title="Permalink to this headline">¶</a></h1>
 <p>This tutorial is for implementing a data source. Which is probably what you want
 if the way you store your data doesn’t have an existing <a class="reference internal" href="../../plugins/dffml_source.html#plugin-sources"><span class="std std-ref">Sources</span></a>
 plugin. Or even more likely, you have a very specific way an existing
 application you’re trying to integrate with stores data you want in it’s
 database.</p>
-<section id="create-the-package">
+<div class="section" id="create-the-package">
 <h2>Create the Package<a class="headerlink" href="#create-the-package" title="Permalink to this headline">¶</a></h2>
 <p>To create a new source we first create a new python package. DFFML has a script
 to create it for you.</p>
@@ -240,8 +239,8 @@ to create it for you.</p>
 </div>
 <p>This creates a Python package for you with a source that stores <code class="docutils literal notranslate"><span class="pre">Record</span></code> objects
 in memory, called <code class="docutils literal notranslate"><span class="pre">MiscSource</span></code>, and some tests.</p>
-</section>
-<section id="edit-the-source">
+</div>
+<div class="section" id="edit-the-source">
 <h2>Edit the Source<a class="headerlink" href="#edit-the-source" title="Permalink to this headline">¶</a></h2>
 <p>The implementation of a source consists mainly of creating a subclass of
 <a class="reference internal" href="../../api/source/source.html#dffml.source.source.BaseSourceContext" title="dffml.source.source.BaseSourceContext"><code class="xref py py-class docutils literal notranslate"><span class="pre">dffml.source.source.BaseSourceContext</span></code></a>. Often there will be some initial
@@ -325,8 +324,8 @@ connection establishment in the <a class="reference internal" href="../../api/so
 
 <p>We essentially just fill out the methods in the context class. And do any
 context entry and exit we need to do in the context class and its parent.</p>
-</section>
-<section id="interact-with-the-database">
+</div>
+<div class="section" id="interact-with-the-database">
 <h2>Interact with the Database<a class="headerlink" href="#interact-with-the-database" title="Permalink to this headline">¶</a></h2>
 <p>For this tutorial we’ll be implementing a source which knows how to save and
 load data from a <code class="docutils literal notranslate"><span class="pre">sqlite</span></code> database. We’ll be using the <code class="docutils literal notranslate"><span class="pre">aiosqlite</span></code> package
@@ -441,8 +440,8 @@ so.</p>
         <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">__db</span><span class="o">.</span><span class="fm">__aexit__</span><span class="p">(</span><span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_value</span><span class="p">,</span> <span class="n">traceback</span><span class="p">)</span>
 </pre></div>
 </div>
-</section>
-<section id="register-your-source">
+</div>
+<div class="section" id="register-your-source">
 <h2>Register your source<a class="headerlink" href="#register-your-source" title="Permalink to this headline">¶</a></h2>
 <p>Modify the <strong>entry_points.txt</strong> file and change the <code class="docutils literal notranslate"><span class="pre">dffml.source</span></code>
 entry point to point to your new source class (not the one ending in
@@ -461,15 +460,15 @@ we will be importing it. Add the following line to the list after <code class="d
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">aiosqlite</span><span class="o">&gt;=</span><span class="mf">0.15</span><span class="o">.</span><span class="mi">0</span>
 </pre></div>
 </div>
-</section>
-<section id="install-your-package">
+</div>
+<div class="section" id="install-your-package">
 <h2>Install your package<a class="headerlink" href="#install-your-package" title="Permalink to this headline">¶</a></h2>
 <p>The following command installs your new source.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python -m pip install -e .
 </pre></div>
 </div>
-</section>
-<section id="write-the-tests">
+</div>
+<div class="section" id="write-the-tests">
 <h2>Write the tests<a class="headerlink" href="#write-the-tests" title="Permalink to this headline">¶</a></h2>
 <p><strong>tests/test_source.py</strong></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">unittest</span>
@@ -495,14 +494,14 @@ we will be importing it. Add the following line to the list after <code class="d
 <span class="sd">        &quot;&quot;&quot;</span>
 </pre></div>
 </div>
-</section>
-<section id="run-the-tests">
+</div>
+<div class="section" id="run-the-tests">
 <h2>Run the tests<a class="headerlink" href="#run-the-tests" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python setup.py <span class="nb">test</span>
 </pre></div>
 </div>
-</section>
-</section>
+</div>
+</div>
 
 
            </div>

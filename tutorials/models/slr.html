@@ -4,8 +4,7 @@
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  <meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
-
+  
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>Writing a Model &mdash; DFFML 0.4.0 documentation</title>
@@ -92,13 +91,13 @@
               
             
             
-              <p><span class="caption-text">Introduction</span></p>
+              <p class="caption"><span class="caption-text">Introduction</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../about.html">About</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../concepts/index.html">Concepts</a></li>
 </ul>
-<p><span class="caption-text">Usage</span></p>
+<p class="caption"><span class="caption-text">Usage</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../quickstart/model.html">Quickstart</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">Tutorials</a><ul class="current">
@@ -129,7 +128,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../examples/index.html">Examples</a></li>
 </ul>
-<p><span class="caption-text">Reference</span></p>
+<p class="caption"><span class="caption-text">Reference</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../plugins/index.html">Plugins</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../cli.html">Command Line</a></li>
@@ -137,12 +136,12 @@
 <li class="toctree-l1"><a class="reference internal" href="../../api/index.html">API Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../troubleshooting.html">Troubleshooting</a></li>
 </ul>
-<p><span class="caption-text">Subprojects</span></p>
+<p class="caption"><span class="caption-text">Subprojects</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../shouldi.html">shouldi</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../swportal.html">Software Portal</a></li>
 </ul>
-<p><span class="caption-text">Community</span></p>
+<p class="caption"><span class="caption-text">Community</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/intel/dffml">GitHub</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://intel.github.io/dffml/master/">Master Branch Docs</a></li>
@@ -228,7 +227,7 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <section id="writing-a-model">
+  <div class="section" id="writing-a-model">
 <span id="model-tutorial-slr"></span><h1>Writing a Model<a class="headerlink" href="#writing-a-model" title="Permalink to this headline">¶</a></h1>
 <p>For this tutorial we’ll be implementing our own machine learning algorithm from
 scratch, which means that we’re not using a machine learning focused library to
@@ -237,7 +236,7 @@ handle calculations for us, we’ll do it all ourselves.</p>
 best fit line for a dataset.</p>
 <p>You may know the best fit line as <code class="docutils literal notranslate"><span class="pre">y</span> <span class="pre">=</span> <span class="pre">m</span> <span class="pre">*</span> <span class="pre">x</span> <span class="pre">+</span> <span class="pre">b</span></code></p>
 <p>We’ll be working the in a new file named <strong>myslr.py</strong>, open / create it now</p>
-<section id="imports">
+<div class="section" id="imports">
 <h2>Imports<a class="headerlink" href="#imports" title="Permalink to this headline">¶</a></h2>
 <p>We’re going to need a few modules from the standard library, let’s import them.</p>
 <ul class="simple">
@@ -268,8 +267,8 @@ editor or IDE so they can help us check our code before we run it.</p></li>
 <span class="p">)</span>
 </pre></div>
 </div>
-</section>
-<section id="math">
+</div>
+<div class="section" id="math">
 <h2>Math<a class="headerlink" href="#math" title="Permalink to this headline">¶</a></h2>
 <p>The first thing you’ll want to do is add some functions which calculate the best
 fit line and accuracy. These aren’t important for understanding how DFFML works.
@@ -314,8 +313,8 @@ you can copy these.</p>
     <span class="k">return</span> <span class="n">m</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">accuracy</span>
 </pre></div>
 </div>
-</section>
-<section id="config">
+</div>
+<div class="section" id="config">
 <h2>Config<a class="headerlink" href="#config" title="Permalink to this headline">¶</a></h2>
 <p>DFFML makes it so that we can use our models from the command line, HTTP API,
 and of course, Python. This all works because we define a config class for each
@@ -342,8 +341,8 @@ should use as the Y value for the regression line.</p></li>
     <span class="n">directory</span><span class="p">:</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="s2">&quot;Directory where state should be saved&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-</section>
-<section id="class">
+</div>
+<div class="section" id="class">
 <h2>Class<a class="headerlink" href="#class" title="Permalink to this headline">¶</a></h2>
 <p>The naming conventions for classes in DFFML is <code class="docutils literal notranslate"><span class="pre">TheName</span></code> + <code class="docutils literal notranslate"><span class="pre">PluginType</span></code>.
 We’re making a <code class="docutils literal notranslate"><span class="pre">Model</span></code> plugin. So the name is <code class="docutils literal notranslate"><span class="pre">MySLRModel</span></code>.</p>
@@ -372,8 +371,8 @@ will raise a <code class="docutils literal notranslate"><span class="pre">ValueE
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Model only support a single feature&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-</section>
-<section id="train">
+</div>
+<div class="section" id="train">
 <h2>Train<a class="headerlink" href="#train" title="Permalink to this headline">¶</a></h2>
 <p>The train method should train the model. First we ask the data <code class="docutils literal notranslate"><span class="pre">sources</span></code> for
 any <code class="docutils literal notranslate"><span class="pre">records</span></code> containing the features our model was told to use.
@@ -399,8 +398,8 @@ is saved and loaded from a JSON file on disk.</p>
         <span class="bp">self</span><span class="o">.</span><span class="n">storage</span><span class="p">[</span><span class="s2">&quot;regression_line&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">best_fit_line</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
 </pre></div>
 </div>
-</section>
-<section id="accuracy">
+</div>
+<div class="section" id="accuracy">
 <h2>Accuracy<a class="headerlink" href="#accuracy" title="Permalink to this headline">¶</a></h2>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -449,8 +448,8 @@ closer to making the correct prediction for each record.</p>
         <span class="k">return</span> <span class="n">Accuracy</span><span class="p">(</span><span class="n">accuracy</span><span class="p">)</span>
 </pre></div>
 </div>
-</section>
-<section id="predict">
+</div>
+<div class="section" id="predict">
 <h2>Predict<a class="headerlink" href="#predict" title="Permalink to this headline">¶</a></h2>
 <p>To make a prediction, we access the <code class="docutils literal notranslate"><span class="pre">regression_line</span></code> within <code class="docutils literal notranslate"><span class="pre">self.storage</span></code>,
 we use the <code class="docutils literal notranslate"><span class="pre">m</span></code> and <code class="docutils literal notranslate"><span class="pre">b</span></code> indexes to calculate <code class="docutils literal notranslate"><span class="pre">y</span> <span class="pre">=</span> <span class="pre">m</span> <span class="pre">*</span> <span class="pre">x</span> <span class="pre">+</span> <span class="pre">b</span></code>, we use the
@@ -480,8 +479,8 @@ confidence in our prediction.</p>
             <span class="k">yield</span> <span class="n">record</span>
 </pre></div>
 </div>
-</section>
-<section id="python-usage">
+</div>
+<div class="section" id="python-usage">
 <h2>Python Usage<a class="headerlink" href="#python-usage" title="Permalink to this headline">¶</a></h2>
 <p>We can use our new model from Python code as follows. This example makes use of
 <code class="docutils literal notranslate"><span class="pre">dffml.noasync</span></code> which contains versions of <code class="docutils literal notranslate"><span class="pre">train</span></code>, <code class="docutils literal notranslate"><span class="pre">accuracy</span></code>, and
@@ -546,8 +545,8 @@ confidence in our prediction.</p>
 <span class="go">{&#39;Years&#39;: 8, &#39;Salary&#39;: 110.0}</span>
 </pre></div>
 </div>
-</section>
-<section id="command-line-usage">
+</div>
+<div class="section" id="command-line-usage">
 <h2>Command Line Usage<a class="headerlink" href="#command-line-usage" title="Permalink to this headline">¶</a></h2>
 <p>To use your new model on the command line we’ll reference it by it’s entrypoint
 style path. This is in the format of <code class="docutils literal notranslate"><span class="pre">file:ClassWithinFile</span></code>, so for this it’ll
@@ -590,8 +589,8 @@ be <code class="docutils literal notranslate"><span class="pre">myslr:MySLRModel
 <span class="go">]</span>
 </pre></div>
 </div>
-</section>
-<section id="http-server-usage">
+</div>
+<div class="section" id="http-server-usage">
 <h2>HTTP Server Usage<a class="headerlink" href="#http-server-usage" title="Permalink to this headline">¶</a></h2>
 <p>Your model will also be accessible via the HTTP API via a similar syntax.</p>
 <p>First we need to install the HTTP service, which is the HTTP server which will
@@ -641,8 +640,8 @@ assessment.</p>
 <span class="go">}</span>
 </pre></div>
 </div>
-</section>
-</section>
+</div>
+</div>
 
 
            </div>

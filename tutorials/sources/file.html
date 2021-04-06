@@ -4,8 +4,7 @@
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  <meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
-
+  
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>Simple source for new file types &mdash; DFFML 0.4.0 documentation</title>
@@ -92,13 +91,13 @@
               
             
             
-              <p><span class="caption-text">Introduction</span></p>
+              <p class="caption"><span class="caption-text">Introduction</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../about.html">About</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../concepts/index.html">Concepts</a></li>
 </ul>
-<p><span class="caption-text">Usage</span></p>
+<p class="caption"><span class="caption-text">Usage</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../quickstart/model.html">Quickstart</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">Tutorials</a><ul class="current">
@@ -129,7 +128,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../examples/index.html">Examples</a></li>
 </ul>
-<p><span class="caption-text">Reference</span></p>
+<p class="caption"><span class="caption-text">Reference</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../plugins/index.html">Plugins</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../cli.html">Command Line</a></li>
@@ -137,12 +136,12 @@
 <li class="toctree-l1"><a class="reference internal" href="../../api/index.html">API Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../troubleshooting.html">Troubleshooting</a></li>
 </ul>
-<p><span class="caption-text">Subprojects</span></p>
+<p class="caption"><span class="caption-text">Subprojects</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../shouldi.html">shouldi</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../swportal.html">Software Portal</a></li>
 </ul>
-<p><span class="caption-text">Community</span></p>
+<p class="caption"><span class="caption-text">Community</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/intel/dffml">GitHub</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://intel.github.io/dffml/master/">Master Branch Docs</a></li>
@@ -228,13 +227,13 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <section id="simple-source-for-new-file-types">
+  <div class="section" id="simple-source-for-new-file-types">
 <h1>Simple source for new file types<a class="headerlink" href="#simple-source-for-new-file-types" title="Permalink to this headline">¶</a></h1>
 <p>This tutorial will help you with implementing your own <code class="docutils literal notranslate"><span class="pre">Source</span></code> for new file
 types. You may want to do this if you have some specific file formats from which
 you want to load and save data from.</p>
 <p>Here we will go through implementing a source for <code class="docutils literal notranslate"><span class="pre">.ini</span></code> file formats.</p>
-<section id="create-the-package">
+<div class="section" id="create-the-package">
 <h2>Create the Package<a class="headerlink" href="#create-the-package" title="Permalink to this headline">¶</a></h2>
 <p>To create a new source we first create a new Python package. DFFML has a script
 to do it for you.</p>
@@ -243,15 +242,15 @@ to do it for you.</p>
 </pre></div>
 </div>
 <p>We will start writing our source in ./dffml_source_ini/misc.py</p>
-</section>
-<section id="about-ini-files">
+</div>
+<div class="section" id="about-ini-files">
 <h2>About INI files<a class="headerlink" href="#about-ini-files" title="Permalink to this headline">¶</a></h2>
 <p>An INI file is a configuration file used by Operating Systems and programs
 to initialize program settings. It contains sections for settings and preferences
 (delimited by a string in square brackets) with each section containing one
 or more name and value parameters.</p>
-</section>
-<section id="import-modules">
+</div>
+<div class="section" id="import-modules">
 <h2>Import modules<a class="headerlink" href="#import-modules" title="Permalink to this headline">¶</a></h2>
 <p><strong>dffml_source_ini/misc.py</strong></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">configparser</span> <span class="kn">import</span> <span class="n">ConfigParser</span>
@@ -264,8 +263,8 @@ module will be helpful in parsing INI files. The <code class="docutils literal n
 will be used as base class for our new Source. The config was imported to set the
 configuration options for our new INISource. The entrypoint will be used to add the
 entrypoint to our INISource. A <code class="docutils literal notranslate"><span class="pre">Record</span></code> is a unique entry in a source.</p>
-</section>
-<section id="add-configuration">
+</div>
+<div class="section" id="add-configuration">
 <h2>Add configuration<a class="headerlink" href="#add-configuration" title="Permalink to this headline">¶</a></h2>
 <p><strong>dffml_source_ini/misc.py</strong></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@config</span>
@@ -278,8 +277,8 @@ entrypoint to our INISource. A <code class="docutils literal notranslate"><span 
 <p>Here we will be writing the configuration options which will be avaliable for our
 INISource. The INISourceConfig will be decorated by config. Here we have provided
 three configuration options.</p>
-</section>
-<section id="create-source">
+</div>
+<div class="section" id="create-source">
 <h2>Create Source<a class="headerlink" href="#create-source" title="Permalink to this headline">¶</a></h2>
 <p><strong>dffml_source_ini/misc.py</strong></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@entrypoint</span><span class="p">(</span><span class="s2">&quot;ini&quot;</span><span class="p">)</span>
@@ -303,8 +302,8 @@ that self.mem contains Record objects.</p>
 the CONFIG variable is important because the instantiated version of CONFIG is accessible
 as self.config.</p>
 <p>Next we will writing the load and dump methods for INISource.</p>
-</section>
-<section id="add-load-method">
+</div>
+<div class="section" id="add-load-method">
 <h2>Add load method<a class="headerlink" href="#add-load-method" title="Permalink to this headline">¶</a></h2>
 <p><strong>dffml_source_ini/misc.py</strong></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="k">async</span> <span class="k">def</span> <span class="nf">load_fd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fileobj</span><span class="p">):</span>
@@ -343,8 +342,8 @@ Each section consists of key value pairs stored as a dict. We’re going to trea
 this data as the feature data for each Record. To do so we pass the data as
 the value for the <code class="docutils literal notranslate"><span class="pre">features</span></code> key under the <code class="docutils literal notranslate"><span class="pre">data</span></code> keyword argument when
 creating a new Record.</p>
-</section>
-<section id="add-dump-method">
+</div>
+<div class="section" id="add-dump-method">
 <h2>Add dump method<a class="headerlink" href="#add-dump-method" title="Permalink to this headline">¶</a></h2>
 <p><strong>dffml_source_ini/misc.py</strong></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="k">async</span> <span class="k">def</span> <span class="nf">dump_fd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fileobj</span><span class="p">):</span>
@@ -373,8 +372,8 @@ creating a new Record.</p>
 fileobj is the file object. We are going over each section name and its corresponding Record.
 We are reading all the data from the memory (self.mem) and writing that data to our file
 object (fileobj). Hence dumping all our data into file.</p>
-</section>
-<section id="add-tests">
+</div>
+<div class="section" id="add-tests">
 <h2>Add Tests<a class="headerlink" href="#add-tests" title="Permalink to this headline">¶</a></h2>
 <p><strong>tests/test_source.py</strong></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
@@ -423,16 +422,16 @@ the save method to save some records to the source. Do not forget to await the s
 as it is a coroutine. Next we will use the load method to yield records from the source.
 load method will return AsyncIterator[Record] type object. Lastly, We need to check that
 the records we saved is the same record which gets loaded.</p>
-</section>
-<section id="run-the-tests">
+</div>
+<div class="section" id="run-the-tests">
 <h2>Run the tests<a class="headerlink" href="#run-the-tests" title="Permalink to this headline">¶</a></h2>
 <p>To run the tests</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python setup.py <span class="nb">test</span>
 </pre></div>
 </div>
 <p>This will look into the file test_source.py and run all the tests.</p>
-</section>
-<section id="add-the-entrypoint">
+</div>
+<div class="section" id="add-the-entrypoint">
 <h2>Add the entrypoint<a class="headerlink" href="#add-the-entrypoint" title="Permalink to this headline">¶</a></h2>
 <p>To register your source under dffml entrypoint you need to make sure you have a
 <code class="docutils literal notranslate"><span class="pre">shorthand</span></code> equals <code class="docutils literal notranslate"><span class="pre">python.path.to:Class</span></code> line in the <code class="docutils literal notranslate"><span class="pre">entry_points.txt</span></code>
@@ -444,15 +443,15 @@ file.</p>
 </div>
 <p>This will add the newly created source to the dffml entrypoints and hence can
 also be used in CLI.</p>
-</section>
-<section id="install-your-package">
+</div>
+<div class="section" id="install-your-package">
 <h2>Install your package<a class="headerlink" href="#install-your-package" title="Permalink to this headline">¶</a></h2>
 <p>To install your new source run</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python -m pip install -e .
 </pre></div>
 </div>
-</section>
-<section id="cli-usage">
+</div>
+<div class="section" id="cli-usage">
 <h2>CLI Usage<a class="headerlink" href="#cli-usage" title="Permalink to this headline">¶</a></h2>
 <p>Create a <code class="docutils literal notranslate"><span class="pre">.ini</span></code> file with some record data in it.</p>
 <p><strong>data.ini</strong></p>
@@ -487,8 +486,8 @@ also be used in CLI.</p>
 <span class="go">]</span>
 </pre></div>
 </div>
-</section>
-</section>
+</div>
+</div>
 
 
            </div>

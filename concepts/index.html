@@ -4,8 +4,7 @@
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  <meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
-
+  
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>Concepts &mdash; DFFML 0.4.0 documentation</title>
@@ -92,7 +91,7 @@
               
             
             
-              <p><span class="caption-text">Introduction</span></p>
+              <p class="caption"><span class="caption-text">Introduction</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../about.html">About</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
@@ -121,13 +120,13 @@
 </ul>
 </li>
 </ul>
-<p><span class="caption-text">Usage</span></p>
+<p class="caption"><span class="caption-text">Usage</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../quickstart/model.html">Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Examples</a></li>
 </ul>
-<p><span class="caption-text">Reference</span></p>
+<p class="caption"><span class="caption-text">Reference</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../plugins/index.html">Plugins</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../cli.html">Command Line</a></li>
@@ -135,12 +134,12 @@
 <li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../troubleshooting.html">Troubleshooting</a></li>
 </ul>
-<p><span class="caption-text">Subprojects</span></p>
+<p class="caption"><span class="caption-text">Subprojects</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../shouldi.html">shouldi</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../swportal.html">Software Portal</a></li>
 </ul>
-<p><span class="caption-text">Community</span></p>
+<p class="caption"><span class="caption-text">Community</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/intel/dffml">GitHub</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://intel.github.io/dffml/master/">Master Branch Docs</a></li>
@@ -222,7 +221,7 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <section id="concepts">
+  <div class="section" id="concepts">
 <h1>Concepts<a class="headerlink" href="#concepts" title="Permalink to this headline">¶</a></h1>
 <p>Here we explain the main concepts of DFFML. How things work, and the
 philosophies behind why they work the way they do. If anything here is unclear,
@@ -243,13 +242,13 @@ everyone can use each others plugins by publishing them to PyPi, or just
 creating a public Git repo.</p>
 <p>If you don’t see the plugin you need already implemented under
 <a class="reference internal" href="../plugins/index.html"><span class="doc">Plugins</span></a>, you can <a class="reference internal" href="../cli.html#cli-service-dev-create"><span class="std std-ref">Create</span></a> it yourself.</p>
-<section id="sources">
+<div class="section" id="sources">
 <span id="intro-sources"></span><h2>Sources<a class="headerlink" href="#sources" title="Permalink to this headline">¶</a></h2>
 <p>A <code class="docutils literal notranslate"><span class="pre">Source</span></code> of data might be something like a CSV file, SQL database, or HDFS.</p>
 <p>By providing a generic abstraction around where data is being saved and stored,
 model implementations can access the data via the same API no matter where it
 is.</p>
-<section id="records">
+<div class="section" id="records">
 <h3>Records<a class="headerlink" href="#records" title="Permalink to this headline">¶</a></h3>
 <p>A common construct within DFFML is the <code class="docutils literal notranslate"><span class="pre">Record</span></code>. A <code class="docutils literal notranslate"><span class="pre">Record</span></code> object is a
 repository of information associated with a unique key. The <code class="docutils literal notranslate"><span class="pre">Record</span></code> holds all
@@ -267,9 +266,9 @@ within a key value mapping within the <code class="docutils literal notranslate"
 <span class="p">}</span>
 </pre></div>
 </div>
-</section>
-</section>
-<section id="models">
+</div>
+</div>
+<div class="section" id="models">
 <span id="intro-models"></span><h2>Models<a class="headerlink" href="#models" title="Permalink to this headline">¶</a></h2>
 <p>A <code class="docutils literal notranslate"><span class="pre">Model</span></code> could be any implementation of a machine learning algorithm.</p>
 <p>By wrapping various implementations of machine learning algorithms in DFFML’s
@@ -277,8 +276,8 @@ API, applications using DFFML via its Python library interface, command line
 interface, or HTTP interface, can benefit from them being wrapped in a similar
 design pattern. This means that switching from a model implemented with one
 major framework to another is painless.</p>
-</section>
-<section id="dataflows">
+</div>
+<div class="section" id="dataflows">
 <span id="intro-data-flow"></span><h2>DataFlows<a class="headerlink" href="#dataflows" title="Permalink to this headline">¶</a></h2>
 <p>One can think of the data flow side of DFFML as a event loop running at a high
 level of abstraction. Event loop usually refers to waiting for <code class="docutils literal notranslate"><span class="pre">read</span></code>,
@@ -295,20 +294,20 @@ running concurrently. In addition to running concurrently, <code class="docutils
 DFFML makes heavy use of, makes it easy to run things in parallel, so as to
 fully utilize a CPUs cores and threads.</p>
 <p>The following are the key concepts relating to DataFlows.</p>
-<section id="definition">
+<div class="section" id="definition">
 <h3>Definition<a class="headerlink" href="#definition" title="Permalink to this headline">¶</a></h3>
 <p>The name of the data type, and what it’s primitive is. Primitive meaning is it a
 string, integer, float, etc.</p>
 <p>If a piece of data created or used of this data type needs to be locked, the
 definition will also specify that (<code class="docutils literal notranslate"><span class="pre">lock=True</span></code>).</p>
-</section>
-<section id="operation">
+</div>
+<div class="section" id="operation">
 <h3>Operation<a class="headerlink" href="#operation" title="Permalink to this headline">¶</a></h3>
 <p>The definition of some routine or function that will process some input
 data and produce some output data. It contains the names of the inputs and
 outputs, what stage the operation runs in, and the name of the operation.</p>
-</section>
-<section id="stage">
+</div>
+<div class="section" id="stage">
 <h3>Stage<a class="headerlink" href="#stage" title="Permalink to this headline">¶</a></h3>
 <p>Operations can be run at various different stages.</p>
 <ul class="simple">
@@ -331,44 +330,44 @@ will produce the data used as the result of running all the operations.</p></li>
 </ul>
 </li>
 </ul>
-</section>
-<section id="operation-implementation">
+</div>
+<div class="section" id="operation-implementation">
 <h3>Operation Implementation<a class="headerlink" href="#operation-implementation" title="Permalink to this headline">¶</a></h3>
 <p>The routine or function responsible for preforming an Operation.</p>
 <p>We separate the concept of an operation from its implementation because the goal
 is to allow for transparent execution of operations written in other languages,
 deployed as micro services, or parts of SaaS APIs. Transparent from the view of
 the DataFlow which defines the interconnections between operations.</p>
-</section>
-<section id="input-network">
+</div>
+<div class="section" id="input-network">
 <h3>Input Network<a class="headerlink" href="#input-network" title="Permalink to this headline">¶</a></h3>
 <p>All data, inputs and outputs live within the Input Network, since outputs of one
 operation are usually inputs to another, we refer to them all as inputs.
 Therefore, they all reside within the Input Network.</p>
-</section>
-<section id="operation-network">
+</div>
+<div class="section" id="operation-network">
 <h3>Operation Network<a class="headerlink" href="#operation-network" title="Permalink to this headline">¶</a></h3>
 <p>All the definitions of Operations reside in the Operation Network.</p>
-</section>
-<section id="operation-implementation-network">
+</div>
+<div class="section" id="operation-implementation-network">
 <h3>Operation Implementation Network<a class="headerlink" href="#operation-implementation-network" title="Permalink to this headline">¶</a></h3>
 <p>All the references to implementations of Operations reside in the Operation
 Implementation Network.</p>
 <p>This network is responsible for the execution of any given Operation within it.</p>
-</section>
-<section id="redundancy-checker">
+</div>
+<div class="section" id="redundancy-checker">
 <h3>Redundancy Checker<a class="headerlink" href="#redundancy-checker" title="Permalink to this headline">¶</a></h3>
 <p>Checks if an operation has been called before with a given set of input
 parameters. This is used because a DataFlow runs by executing all possible
 permutations of inputs for any given operation, and completes when no new
 permutations of inputs exist for every operation.</p>
-</section>
-<section id="lock-network">
+</div>
+<div class="section" id="lock-network">
 <h3>Lock Network<a class="headerlink" href="#lock-network" title="Permalink to this headline">¶</a></h3>
 <p>Manages locking of input data so that operations can run concurrently without
 managing their own resource locking.</p>
-</section>
-<section id="orchestrator">
+</div>
+<div class="section" id="orchestrator">
 <h3>Orchestrator<a class="headerlink" href="#orchestrator" title="Permalink to this headline">¶</a></h3>
 <p>The orchestrator uses the various networks to execute dataflows.</p>
 <div class="toctree-wrapper compound">
@@ -381,9 +380,9 @@ managing their own resource locking.</p>
 </li>
 </ul>
 </div>
-</section>
-</section>
-</section>
+</div>
+</div>
+</div>
 
 
            </div>
