@@ -1077,7 +1077,7 @@ class MakeDocsConfig:
     )
     port: int = field("PORT for the local docs server", default=8080)
     http: bool = field(
-        "If set  a SimpleHTTP server would be started to show generated docs.",
+        "If set a SimpleHTTP server would be started to show generated docs",
         default=False,
     )
 
