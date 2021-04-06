@@ -217,7 +217,7 @@ function run_docs() {
   master_docs="$(mktemp -d)"
   TEMP_DIRS+=("${master_docs}")
   rm -rf pages
-  dffml service dev docs
+  dffml service dev docs || ./scripts/docs.sh
 
   mv pages "${master_docs}/html"
 
@@ -239,7 +239,7 @@ function run_docs() {
   "${PYTHON}" -m dffml service dev install -user
   # Remove dataclasses. See https://github.com/intel/dffml/issues/882
   "${PYTHON}" "${TEMPFIX}/pytorch/pytorch/46930.py" ~/.local
-  dffml service dev docs
+  dffml service dev docs || ./scripts/docs.sh
   mv pages "${release_docs}/html"
 
   git clone https://github.com/intel/dffml -b gh-pages \

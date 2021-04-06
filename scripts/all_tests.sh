@@ -36,7 +36,7 @@ for PLUGIN in ${PLUGINS[@]}; do
     "${PYTHON}" -m unittest discover
     cd -
     # Generate docs
-    dffml service dev docs
+    dffml service dev docs || ./scripts/docs.sh
     # Create venv
     TMP_DIR="$(mktemp -d)"
     # Remove temporary directory when done
