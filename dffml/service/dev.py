@@ -1072,7 +1072,7 @@ class SphinxBuildError(Exception):
 
 @configdataclass
 class MakeDocsConfig:
-    target_dir: Path = field(
+    target: Path = field(
         "Path to target directory for saving docs", default=None
     )
     port: int = field("PORT for the local docs server", default=8080)
@@ -1098,9 +1098,7 @@ class MakeDocs(CMD):
     async def run(self):
         root = Path(__file__).parents[2]
         pages_path = (
-            root / "pages"
-            if self.target_dir is None
-            else Path(self.target_dir)
+            root / "pages" if self.target is None else Path(self.target)
         )
         shutil.rmtree(pages_path, ignore_errors=True)
         pages_path.mkdir()  # needed for testing

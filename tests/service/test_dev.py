@@ -400,7 +400,7 @@ class TestMakeDocs(AsyncTestCase):
             with unittest.mock.patch(
                 "asyncio.create_subprocess_exec", new=mkexec()
             ):
-                await Develop.cli("docs", "-target-dir", tempdir)
+                await Develop.cli("docs", "-target", tempdir)
 
                 for symlink, source in self.symlinks_to_chk:
                     symlink_path = self.docs_root.joinpath(*symlink)
@@ -420,16 +420,18 @@ class TestMakeDocs(AsyncTestCase):
 
         with unittest.mock.patch(
             "asyncio.create_subprocess_exec", new=mkexec()
-        ), contextlib.redirect_stdout(stdout):
-            with tempfile.TemporaryDirectory() as tempdir:
-                await Develop.cli("docs", "-target-dir", tempdir)
-                self.assertEqual(
-                    stdout.getvalue().strip(),
-                    inspect.cleandoc(
-                        f"""
-                        $ {sys.executable} {self.root}/scripts/docs.py
-                        $ {sys.executable} {self.root}/scripts/docs_api.py
-                        $ sphinx-build -W -b html docs {tempdir}
-                        """
-                    ),
-                )
+        ), contextlib.redirect_stdout(
+            stdout
+        ), tempfile.TemporaryDirectory() as tempdir:
+            await Develop.cli("docs", "-target", tempdir)
+
+        self.assertEqual(
+            stdout.getvalue().strip(),
+            inspect.cleandoc(
+                f"""
+                $ {sys.executable} {self.root}/scripts/docs.py
+                $ {sys.executable} {self.root}/scripts/docs_api.py
+                $ sphinx-build -W -b html docs {tempdir}
+                """
+            ),
+        )
