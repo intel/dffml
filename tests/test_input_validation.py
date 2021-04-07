@@ -55,6 +55,7 @@ def echo_shout(shout_in):
 
 class TestDefintion(AsyncTestCase):
     async def setUp(self):
+        await super().setUp()
         self.dataflow = DataFlow(
             operations={
                 "get_circle": get_circle.op,

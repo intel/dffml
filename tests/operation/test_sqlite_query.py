@@ -29,7 +29,8 @@ class TestSqliteQuery(AsyncTestCase):
         super().tearDownClass()
         os.unlink(cls.database_name)
 
-    def setUp(self):
+    async def setUp(self):
+        await super().setUp()
         self.table_name = "myTable"
         self.cols = {
             "key": "real",
