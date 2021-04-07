@@ -13,7 +13,7 @@ from dffml.operation.io import AcceptUserInput, print_output
 
 class TestInputOutput(AsyncTestCase):
     async def setUp(self):
-        super().setUp()
+        await super().setUp()
         self.stdout = io.StringIO()
         InputDataflow = DataFlow(
             operations={
