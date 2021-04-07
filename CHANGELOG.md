@@ -11,7 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added download progressbar in `util/net.py`
 ### Changed
 - Calls to hashlib now go through helper functions
-- Ported `scripts/docs.sh` to a CMD class in `dffml/service/dev.py`
+- Build docs using `dffml service dev docs`
 ### Fixed
 - Record object key properties are now always strings
 
