@@ -4,6 +4,7 @@ import sys
 import ast
 import json
 import pydoc
+import runpy
 import shutil
 import string
 import asyncio
@@ -12,18 +13,21 @@ import getpass
 import tempfile
 import platform
 import textwrap
+import functools
 import importlib
 import itertools
 import subprocess
 import contextlib
 import dataclasses
+import http.server
 import configparser
+import socketserver
 import pkg_resources
 import unittest.mock
 import urllib.request
 import importlib.util
 from pathlib import Path
-from typing import List, Dict, Tuple, Callable, Optional
+from typing import Any, List, Dict, Tuple, Callable, Optional
 
 from ..base import BaseConfig
 from ..util.os import chdir, MODE_BITS_SECURE
@@ -33,6 +37,7 @@ from ..util.cli.cmd import CMD
 from ..util.entrypoint import load
 from ..base import MissingConfig, config as configdataclass, field
 from ..util.packaging import is_develop
+from ..util.net import cached_download
 from ..util.data import traverse_config_get, export
 from ..df.types import Input, DataFlow
 from ..df.memory import MemoryOrchestrator
@@ -753,7 +758,7 @@ class BumpPackages(CMD):
 class PinDepsConfig:
     logs: pathlib.Path = field("Path to CI log zip file")
     update: bool = field(
-        "Update all requirements.txt files with pinned dependneices",
+        "Update all requirements.txt files with pinned dependencies",
         default=False,
     )
 
@@ -1056,6 +1061,128 @@ class Bump(CMD):
     packages = BumpPackages
 
 
+class SphinxBuildError(Exception):
+    """
+    Raised when sphinx-build command exits with a non-zero error code.
+    """
+
+    def __str__(self):
+        return "[ERROR] Failed run sphinx, is it installed (pip install -U .[dev])?"
+
+
+@configdataclass
+class MakeDocsConfig:
+    target: Path = field(
+        "Path to target directory for saving docs", default=None
+    )
+    port: int = field("PORT for the local docs server", default=8080)
+    http: bool = field(
+        "If set a SimpleHTTP server would be started to show generated docs",
+        default=False,
+    )
+
+
+class MakeDocs(CMD):
+    """
+    Generate docs of the complete package 
+    """
+
+    CONFIG = MakeDocsConfig
+
+    async def _exec_cmd(self, cmd: List[str]) -> int:
+        print(f"$ {' '.join(cmd)}")
+        proc = await asyncio.create_subprocess_exec(*cmd)
+        await proc.wait()
+        return proc.returncode
+
+    async def run(self):
+        root = Path(__file__).parents[2]
+        pages_path = (
+            root / "pages" if self.target is None else Path(self.target)
+        )
+        shutil.rmtree(pages_path, ignore_errors=True)
+        pages_path.mkdir()  # needed for testing
+
+        docs_path = root / "docs"
+        files_to_check = [
+            (("changelog.md",), ("CHANGELOG.md",)),
+            (("shouldi.md",), ("examples", "shouldi", "README.md",)),
+            (("swportal.rst",), ("examples", "swportal", "README.rst",)),
+            (
+                ("contributing", "consoletest.md",),
+                ("dffml", "util", "testing", "consoletest", "README.md",),
+            ),
+        ]
+
+        for symlink, source in files_to_check:
+            file_path = docs_path.joinpath(*symlink)
+            if not file_path.exists():
+                file_path.symlink_to(root.joinpath(*source))
+
+        # HTTP Service Docs
+        service_path = docs_path / "plugins" / "service"
+        service_path.mkdir(parents=True, exist_ok=True)
+        http_docs_pth = service_path / "http"
+
+        if http_docs_pth.exists():
+            http_docs_pth.unlink()
+
+        http_docs_pth.symlink_to(root / "service" / "http" / "docs")
+
+        # Main Docs
+        scripts_path = root / "scripts"
+        scripts_to_run = ["docs.py", "docs_api.py"]
+        for script in scripts_to_run:
+            cmd = [sys.executable, str(scripts_path / script)]
+            returncode = await self._exec_cmd(cmd)
+            if returncode != 0:
+                raise RuntimeError
+
+        cmd = [
+            [
+                e.name
+                for e in pkg_resources.iter_entry_points("console_scripts")
+                if e.name.startswith("sphinx-build")
+            ][0],
+            "-W",
+            "-b",
+            "html",
+            "docs",
+            str(pages_path),
+        ]
+        returncode = await self._exec_cmd(cmd)
+        if returncode != 0:
+            raise SphinxBuildError
+
+        images_path = docs_path / "images"
+        images_set = set(images_path.iterdir())
+        target_set = set(pages_path.iterdir())
+
+        files_to_copy = list(images_set - target_set)
+        for file in files_to_copy:
+            shutil.copy(file, pages_path)
+
+        copybutton_path = pages_path / "_static" / "copybutton.js"
+
+        cached_download(
+            "https://raw.githubusercontent.com/python/python-docs-theme/master/python_docs_theme/static/copybutton.js",
+            copybutton_path,
+            "061b550f64fb65ccb73fbe61ce15f49c17bc5f30737f42bf3c9481c89f7996d0004a11bf283d6bd26cf0b65130fc1d4b",
+        ).add_target_to_args_and_validate([])
+
+        nojekyll_path = pages_path / ".nojekyll"
+        nojekyll_path.touch(exist_ok=True)
+
+        if self.http:
+
+            handler = functools.partial(
+                http.server.SimpleHTTPRequestHandler, directory=str(pages_path)
+            )
+
+            with socketserver.TCPServer(("", self.port), handler) as httpd:
+                httpd.serve_forever()
+
+
 class Develop(CMD):
     """
     Development utilities for hacking on DFFML itself
@@ -1071,3 +1198,4 @@ class Develop(CMD):
     setuppy = SetupPy
     bump = Bump
     ci = CI
+    docs = MakeDocs

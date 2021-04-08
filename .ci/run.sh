@@ -209,7 +209,7 @@ function run_docs() {
   changes=$(git status --porcelain | wc -l)
   if [ "$changes" -ne 0 ]; then
     echo "Running docs.py resulted in changes to the Git repo" >&2
-    echo "Need to run ./scripts/docs.sh and commit changes" >&2
+    echo "Need to run dffml service dev docs and commit changes" >&2
     exit 1
   fi
 
@@ -217,7 +217,7 @@ function run_docs() {
   master_docs="$(mktemp -d)"
   TEMP_DIRS+=("${master_docs}")
   rm -rf pages
-  ./scripts/docs.sh
+  dffml service dev docs || ./scripts/docs.sh
 
   mv pages "${master_docs}/html"
 
@@ -239,7 +239,7 @@ function run_docs() {
   "${PYTHON}" -m dffml service dev install -user
   # Remove dataclasses. See https://github.com/intel/dffml/issues/882
   "${PYTHON}" "${TEMPFIX}/pytorch/pytorch/46930.py" ~/.local
-  ./scripts/docs.sh
+  dffml service dev docs || ./scripts/docs.sh
   mv pages "${release_docs}/html"
 
   git clone https://github.com/intel/dffml -b gh-pages \
