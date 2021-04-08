@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>dffml.noasync &mdash; DFFML b66b8bd2 documentation</title>
+  <title>dffml.noasync &mdash; DFFML 2e3bfeb3 documentation</title>
   
 
   
@@ -65,7 +65,7 @@
             
             
               <div class="version">
-                b66b8bd2
+                2e3bfeb3
               </div>
             
           
@@ -107,7 +107,25 @@
 <li class="toctree-l1"><a class="reference internal" href="../../plugins/index.html">Plugins</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../cli.html">Command Line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../plugins/service/http/index.html">HTTP API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../api/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/base.html">Base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/high_level.html">High_Level</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/noasync.html">Noasync</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/log.html">Log</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/plugins.html">Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/record.html">Record</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/version.html">Version</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/configloader/index.html">Configloader</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/secret/index.html">Secret</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/db/index.html">Db</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/feature/index.html">Feature</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/model/index.html">Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/port/index.html">Port</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/operation/index.html">Operation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/df/index.html">Df</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/source/index.html">Source</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/cli/index.html">Cli</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/service/index.html">Service</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/util/index.html">Util</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../troubleshooting.html">Troubleshooting</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Subprojects</span></p>
@@ -264,8 +282,8 @@
 <span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">high_level</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">))</span>
+<div class="viewcode-block" id="save"><a class="viewcode-back" href="../../api/noasync.html#dffml.noasync.save">[docs]</a><span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">high_level</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">))</span></div>
 
 
 <span class="n">save</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="p">(</span>
@@ -280,7 +298,7 @@
 <span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="load"><a class="viewcode-back" href="../../api/noasync.html#dffml.noasync.load">[docs]</a><span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
     <span class="n">async_gen</span> <span class="o">=</span> <span class="n">high_level</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span><span class="o">.</span><span class="fm">__aiter__</span><span class="p">()</span>
 
     <span class="n">loop</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">new_event_loop</span><span class="p">()</span>
@@ -297,7 +315,7 @@
             <span class="k">return</span>
         <span class="k">except</span><span class="p">:</span>
             <span class="n">cleanup</span><span class="p">()</span>
-            <span class="k">raise</span>
+            <span class="k">raise</span></div>
 
 
 <span class="n">load</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="p">(</span>
@@ -312,7 +330,7 @@
 <span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="run"><a class="viewcode-back" href="../../api/noasync.html#dffml.noasync.run">[docs]</a><span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    &gt;&gt;&gt; # Socket server derived from</span>
 <span class="sd">    &gt;&gt;&gt; # https://docs.python.org/3/library/socketserver.html#asynchronous-mixins</span>
@@ -395,7 +413,7 @@
             <span class="k">return</span>
         <span class="k">except</span><span class="p">:</span>
             <span class="n">cleanup</span><span class="p">()</span>
-            <span class="k">raise</span>
+            <span class="k">raise</span></div>
 </pre></div>
 
            </div>

@@ -1,5 +1,5 @@
-Data Flow Base Objects
-======================
+Df Base
+=======
 
 .. automodule:: dffml.df.base
    :members:

@@ -1,5 +1,5 @@
-Data Flow Types
-===============
+Df Types
+========
 
 .. automodule:: dffml.df.types
    :members:

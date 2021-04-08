@@ -1,5 +1,5 @@
-Base Database
--------------
+Db Base
+=======
 
 .. automodule:: dffml.db.base
    :members:

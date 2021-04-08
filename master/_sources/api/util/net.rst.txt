@@ -1,5 +1,5 @@
-Networking Helpers
-==================
+Util Net
+========
 
 .. automodule:: dffml.util.net
    :members:

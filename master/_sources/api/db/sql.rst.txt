@@ -1,7 +1,5 @@
-sql
-===
-
-Base class for SQL databases.
+Db Sql
+======
 
 .. automodule:: dffml.db.sql
    :members:

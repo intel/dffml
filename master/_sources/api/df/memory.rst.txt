@@ -1,5 +1,5 @@
-Data Flow Memory Objects
-========================
+Df Memory
+=========
 
 .. automodule:: dffml.df.memory
    :members:
