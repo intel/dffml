@@ -42,6 +42,7 @@ class OpenCSVFile:
 CSV_SOURCE_CONFIG_DEFAULT_KEY = "key"
 CSV_SOURCE_CONFIG_DEFAULT_tag = "untagged"
 CSV_SOURCE_CONFIG_DEFAULT_tag_COLUMN = "tag"
+CSV_SOURCE_CONFIG_DEFAULT_DELIMITER = ","
 CSV_SOURCE_CONFIG_DEFAULT_LOADFILES_NAME = None
 CSV_SOURCE_CONFIG_DEFAULT_NOSTRIP = False
 
@@ -51,6 +52,7 @@ class CSVSourceConfig(FileSourceConfig):
     key: str = CSV_SOURCE_CONFIG_DEFAULT_KEY
     tag: str = CSV_SOURCE_CONFIG_DEFAULT_tag
     tagcol: str = CSV_SOURCE_CONFIG_DEFAULT_tag_COLUMN
+    delimiter: str = CSV_SOURCE_CONFIG_DEFAULT_DELIMITER
     loadfiles: List[str] = CSV_SOURCE_CONFIG_DEFAULT_LOADFILES_NAME
     nostrip: bool = CSV_SOURCE_CONFIG_DEFAULT_NOSTRIP
 
@@ -92,7 +94,9 @@ class CSVSource(FileSource, MemorySource):
             return {}
 
     async def read_csv(self, fd, open_file):
-        dict_reader = csv.DictReader(fd, dialect="strip")
+        dict_reader = csv.DictReader(
+            fd, delimiter=self.config.delimiter, dialect="strip"
+        )
         # Record what headers are present when the file was opened
         if not self.config.key in dict_reader.fieldnames:
             open_file.write_back_key = False
