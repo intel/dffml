@@ -8,7 +8,7 @@ To build, run the docs script.
 
 .. code-block:: console
 
-    $ ./scripts/docs.sh
+    $ dffml service dev docs
 
 Python's built in HTTP server is useful for viewing the documentation.
 
