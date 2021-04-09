@@ -9,12 +9,12 @@ https://summerofcode.withgoogle.com/how-it-works/#timeline
 About DFFML
 -----------
 
-DFFML is a plugin based library / framework for machine learning. It allows
+DFFML is a plugin-based library/framework for machine learning. It allows
 users to wrap high or low level implementations of models that use various
-machine learning libraries, so as to interact will lots of different model
+machine learning libraries, so as to interact will lot of different model
 implementations in the same way.
 
-DFFML is also a tool for dataset generation. DFFML ues directed graphs to
+DFFML is also a tool for dataset generation. DFFML use directed graphs to
 generate and modify datasets.
 
 Read more on the about page: https://intel.github.io/dffml/master/about.html
@@ -32,7 +32,7 @@ We currently have the following project ideas:
     automl
     archive_storage
 
-If you've got a idea you'd like to propose, please make a new issue with the
+If you've got an idea you'd like to propose, please make a new issue with the
 `gsoc: project:` prefix to discuss it! We're open to all sorts of ideas.
 Students are also welcome to add "stretch goal" ideas to their application,
 which don't have to be related to their main proposal (but still have to result
@@ -53,27 +53,22 @@ Getting Started
 
   - Run the examples for the various models found on the model plugins page
 
-- `Run the tests <https://github.com/intel/dffml/tree/master/tests>`_. DFFML has
-  unit tests and we track coverage (amount of lines of code tested).
-  Make sure you know how to run them, and if you've never done Python unittests
+- `Run the tests <https://github.com/intel/dffml/tree/master/tests>`_. DFFML has unit tests and we track coverage (amount of lines of code tested).
+  Make sure you know how to run them, and if you've never done Python unit tests
   before you might want to
-  `read up on python's unittest library <https://docs.python.org/3/library/unittest.html>`_.
-  Figure out how to run a single test! Running one test instead of all of them
-  will speed up your workflow when you are writing your tests! (hint, it's in
+  `read up on python's unit test library <https://docs.python.org/3/library/unittest.html>`_.
+  Figure out how to run a single test! Running one test instead of all of them will speed up your workflow when you are writing your tests! (hint, it's in
   the contributing docs!)
 
 - Make your first contribution!
 
-  - Don't be afraid to not get it right on the first try. If we all got
-    everything right on the first try there would be no bugs in software. And
+  - Don't be afraid to not get it right on the first try. If we all got everything right on the first try there would be no bugs in the software. And
     there are LOTS of bugs in software.
 
-  - Doesn't have to be related to your project. Just make sure we know that you
-    understand how to interact with the community, codebase, and GitHub. If
-    you're not familiar that's okay! We'll show you the ropes, but you have to
+  - Doesn't have to be related to your project. Just make sure we know that you understand how to interact with the community, codebase, and GitHub. If you're not familiar that's okay! We'll show you the ropes, but you have to
     jump in the pool if you want to learn how to swim.
 
-  - You could start with some small and extra small issues (time wise).
+  - You could start with some small and extra small issues (time-wise).
 
   - You could help us increase the test coverage in any of the packages (check
     out the python package `coverage` to learn how to do this).
@@ -115,7 +110,7 @@ Deadlines
 See the milestones prefixed with "GSoC 2021"
 https://github.com/intel/dffml/milestones?direction=desc&sort=due_date&state=open
 
-Please see the :doc:`/contributing/gsoc/rubric` page for the project
+Please see the: doc:`/contributing/gsoc/rubric` page for the project
 proposal grading rubric.
 
 Contacting the DFFML team
@@ -137,7 +132,7 @@ problem.
 Mentors
 -------
 
-This years mentors are as follows.
+This year's mentors are as follows.
 
 - John Andersen `@pdxjohnny <https://github.com/pdxjohnny>`_
 - Yash Lamba `@yashlamba <https://github.com/yashlamba>`_
@@ -147,7 +142,7 @@ Thanks
 ------
 
 Big thanks to `Terri Oda <https://github.com/terriko>`_ her work organizing GSoC
-and letting us copy her format she used for
+and letting us copy the format she used for
 `CVE Binary Tool <https://github.com/intel/cve-bin-tool>`_, another awesome
 project with a security focus that has also been (and still is) a part of GSoC
 as well. Check them out too!
