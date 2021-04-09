@@ -1049,7 +1049,7 @@ class CommitLintError(Exception):
     pass
 
 
-class CommitLint(CMD):
+class LintCommits(CMD):
     """
     Enforce commit message style 
     """
@@ -1085,7 +1085,7 @@ class CommitLint(CMD):
         )
         stdout, _ = await proc.communicate()
         if proc.returncode != 0:
-            raise RuntimeError
+            raise RuntimeError(stdout)
         output = stdout.decode().strip()
         return output
 
@@ -1114,14 +1114,14 @@ class CommitLint(CMD):
         return commit_details
 
     async def _get_all_exts(self):
-        cmd_1 = [
+        cmd = [
             "git",
             "ls-tree",
             "-r",
             "HEAD",
             "--name-only",
         ]
-        tracked_files = await self._get_cmd_output(cmd_1)
+        tracked_files = await self._get_cmd_output(cmd)
         tracked_files = tracked_files.split("\n")
         extentions = set()
         for file in tracked_files:
@@ -1328,5 +1328,5 @@ class Develop(CMD):
     setuppy = SetupPy
     bump = Bump
     ci = CI
-    lintcommits = CommitLint
+    lintcommits = LintCommits
     docs = MakeDocs
