@@ -2,7 +2,7 @@
 # docker build -t dffml/deploy .
 # docker run --rm -ti -p 80:8080 dffml/deploy -insecure -log debug
 #
-FROM ubuntu:20.04
+FROM ubuntu:groovy-20210325
 
 RUN apt-get update && \
   apt-get install -y \
