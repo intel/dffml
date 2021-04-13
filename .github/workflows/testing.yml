@@ -86,6 +86,7 @@ jobs:
         - model/spacy
         - model/pytorch
         - model/xgboost
+        - model/h2oautoml
         - operations/binsec
         - operations/deploy
         - operations/image
@@ -152,6 +153,7 @@ jobs:
         model/autosklearn=${{ secrets.PYPI_MODEL_AUTOSKLEARN }}
         model/pytorch=${{ secrets.PYPI_MODEL_PYTORCH }}
         model/xgboost=${{ secrets.PYPI_MODEL_XGBOOST }}
+        model/h2oautoml=${{ secrets.PYPI_MODEL_H2OAUTOML }}
         source/mysql=${{ secrets.PYPI_SOURCE_MYSQL }}
         feature/git=${{ secrets.PYPI_FEATURE_GIT }}
         feature/auth=${{ secrets.PYPI_FEATURE_AUTH }}
