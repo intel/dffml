@@ -94,7 +94,7 @@ def build_args(config):
                 sanitize_default(plugin["default"]),
             )
         if "help" in plugin:
-            build += "  - %s\n" % (plugin["help"],)
+            build += "  - %s\n" % (plugin["help"].replace("**", r"\*\*"),)
         args.append(build.rstrip())
     if args:
         return "**Args**\n\n" + "\n\n".join(args)
