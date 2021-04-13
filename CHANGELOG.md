@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
-- Add h2o AutoML
+- h2o AutoML regression and classification models
 - Tutorial on how to load models dynamically
   https://intel.github.io/dffml/tutorials/models/load.html
 ### Fixed
