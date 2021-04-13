@@ -166,7 +166,7 @@ class H2oAutoMLModel(SimpleModel):
 
     **run.py**
 
-    .. literalinclude:: ../model/h2oautoml/examples/example_h2oautoml.py
+    .. literalinclude:: /../model/h2oautoml/examples/example_h2oautoml.py
         :test:
         :filepath: run.py
 
