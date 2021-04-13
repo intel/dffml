@@ -25,7 +25,7 @@ script.
 .. image:: /images/pypi-token-to-github-secret.gif
 
 Finally, update the ``PYPI_TOKENS`` file in ``.github/workflows/testing.yml``.
-Add a line for the plugin along with it's sceret.
+Add a line for the plugin along with its sceret.
 
 Doing a Release
 ---------------
