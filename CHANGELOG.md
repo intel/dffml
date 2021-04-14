@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Tutorial on how to load models dynamically
   https://intel.github.io/dffml/tutorials/models/load.html
 - Added download progressbar in `util/net.py`
+- Added `log_time` decorator for logging running time of functions/coroutines.
 ### Changed
 - Calls to hashlib now go through helper functions
 - Build docs using `dffml service dev docs`
