@@ -50,7 +50,7 @@ jobs:
     - name: Run check
       run: |
         export GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}
-        GITHUB_PAGES_KEY=${{ secrets.GITHUB_PAGES_KEY }} ./.ci/run.sh ${{ matrix.check }}
+        SSH_DFFML_GH_PAGES=${{ secrets.SSH_DFFML_GH_PAGES }} ./.ci/run.sh ${{ matrix.check }}
 
   container:
     runs-on: ubuntu-latest
