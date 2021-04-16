@@ -11,10 +11,10 @@ About DFFML
 
 DFFML is a plugin-based library/framework for machine learning. It allows
 users to wrap high or low level implementations of models that use various
-machine learning libraries, so as to interact will lot of different model
+machine learning libraries, so as to interact with lot of different model
 implementations in the same way.
 
-DFFML is also a tool for dataset generation. DFFML use directed graphs to
+DFFML is also a tool for dataset generation. DFFML uses directed graphs to
 generate and modify datasets.
 
 Read more on the about page: https://intel.github.io/dffml/master/about.html
@@ -110,7 +110,7 @@ Deadlines
 See the milestones prefixed with "GSoC 2021"
 https://github.com/intel/dffml/milestones?direction=desc&sort=due_date&state=open
 
-Please see the: doc:`/contributing/gsoc/rubric` page for the project
+Please see the :doc:`/contributing/gsoc/rubric` page for the project
 proposal grading rubric.
 
 Contacting the DFFML team
