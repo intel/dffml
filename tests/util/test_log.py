@@ -34,4 +34,3 @@ class TestTimeLog(AsyncTestCase):
             captured_logs.records[0].getMessage(),
             "dummy_coroutine took 0.1 seconds",
         )
-
