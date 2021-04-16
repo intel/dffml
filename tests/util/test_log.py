@@ -1,3 +1,4 @@
+import re
 import time
 
 from dffml.util.log import log_time
@@ -15,9 +16,11 @@ class TestTimeLog(AsyncTestCase):
             dummy_function()
 
         self.assertEqual(len(captured_logs.records), 1)
-        self.assertEqual(
-            captured_logs.records[0].getMessage(),
-            "dummy_function took 0.1 seconds",
+        self.assertTrue(
+            re.match(
+                "dummy_function took [0-9]*.[0-9]+ seconds",
+                captured_logs.records[0].getMessage(),
+            )
         )
 
     async def test_coroutine(self):
@@ -30,7 +33,9 @@ class TestTimeLog(AsyncTestCase):
             await dummy_coroutine()
 
         self.assertEqual(len(captured_logs.records), 1)
-        self.assertEqual(
-            captured_logs.records[0].getMessage(),
-            "dummy_coroutine took 0.1 seconds",
+        self.assertTrue(
+            re.match(
+                "dummy_coroutine took [0-9]*.[0-9]+ seconds",
+                captured_logs.records[0].getMessage(),
+            )
         )
