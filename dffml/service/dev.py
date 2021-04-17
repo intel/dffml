@@ -528,7 +528,7 @@ class Release(CMD):
 
     async def run(self):
         # Ensure we have a pathlib.Path object
-        self.package = Path(self.package).relative_to(REPO_ROOT).resolve()
+        self.package = REPO_ROOT
         # Ensure target plugin directory has no unstaged changes
         cmd = ["git", "status", "--porcelain", str(self.package)]
         self.logger.debug("Running: %s", " ".join(cmd))
