@@ -1,0 +1,85 @@
+city,state,month,sales
+Las Vegas city,Nevada,5,77131
+Las Vegas city,Nevada,6,667467
+Las Vegas city,Nevada,7,674107
+Las Vegas city,Nevada,8,674667
+Las Vegas city,Nevada,9,77131
+Chicago city,Illinois,10,12000
+Phoenix city,Arizona,7,1604012
+Phoenix city,Arizona,8,1604172
+Las Vegas city,Nevada,10,77131
+Chicago city,Illinois,8,73440
+Seattle city,Washington,10,87367
+Chicago city,Illinois,11,12000
+Las Vegas city,Nevada,11,77131
+Miami city,Florida,9,58796
+Phoenix city,Arizona,6,1598492
+Chicago city,Illinois,12,12000
+Seattle city,Washington,11,87367
+Orlando city,Florida,7,337737
+Phoenix city,Arizona,9,180099
+Miami city,Florida,10,58796
+Chicago city,Illinois,9,12000
+Phoenix city,Arizona,10,180099
+Seattle city,Washington,12,87367
+Orlando city,Florida,8,337737
+Las Vegas city,Nevada,12,77131
+Miami city,Florida,11,58796
+Orlando city,Florida,9,40744
+Phoenix city,Arizona,11,180099
+Chicago city,Illinois,1,12000
+Orlando city,Florida,10,40744
+Seattle city,Washington,1,87367
+Miami city,Florida,12,58796
+Orlando city,Florida,11,40744
+Phoenix city,Arizona,12,180099
+Chicago city,Illinois,2,12000
+Orlando city,Florida,12,40744
+Seattle city,Washington,2,87367
+Orlando city,Florida,1,40744
+Portland city (pt.),Oregon,1,12179
+Miami city,Florida,1,58796
+Chicago city,Illinois,3,12000
+Portland city (pt.),Oregon,2,12179
+Seattle city,Washington,3,87367
+Phoenix city,Arizona,1,180099
+Portland city (pt.),Oregon,3,12179
+Orlando city,Florida,2,40744
+Portland city (pt.),Oregon,4,12179
+Miami city,Florida,2,58796
+Seattle city,Washington,4,87367
+Chicago city,Illinois,4,12000
+Portland city (pt.),Oregon,5,12179
+Miami city,Florida,3,58796
+Phoenix city,Arizona,2,180099
+Portland city (pt.),Oregon,6,64972
+Seattle city,Washington,5,87367
+Orlando city,Florida,3,40744
+Portland city (pt.),Oregon,7,69772
+Miami city,Florida,4,58796
+Chicago city,Illinois,5,12000
+Portland city (pt.),Oregon,8,70492
+Seattle city,Washington,6,739747
+Phoenix city,Arizona,3,180099
+Portland city (pt.),Oregon,9,12179
+Miami city,Florida,5,58796
+Orlando city,Florida,4,40744
+Portland city (pt.),Oregon,10,12179
+Seattle city,Washington,7,743907
+Chicago city,Illinois,6,71200
+Portland city (pt.),Oregon,11,12179
+Miami city,Florida,6,500206
+Phoenix city,Arizona,4,180099
+Portland city (pt.),Oregon,12,12179
+Seattle city,Washington,8,744627
+Orlando city,Florida,5,40744
+Las Vegas city,Nevada,1,77131
+Seattle city,Washington,9,87367
+Chicago city,Illinois,7,75360
+Las Vegas city,Nevada,2,77131
+Miami city,Florida,7,500846
+Phoenix city,Arizona,5,180099
+Las Vegas city,Nevada,3,77131
+Miami city,Florida,8,501726
+Orlando city,Florida,6,336537
+Las Vegas city,Nevada,4,77131
