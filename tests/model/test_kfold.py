@@ -22,7 +22,7 @@ class Kfold:
         return split_data
 
 
-class TestKfoldTechnique:
+class TestKfoldTechnique(unittest.TestCase):
     def test_split(self):
         test_input = [[1], [2], [3], [4], [5], [6], [7], [8], [9], [10]]
         fold = 2
