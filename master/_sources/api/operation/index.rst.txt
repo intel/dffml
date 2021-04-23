@@ -5,12 +5,12 @@ Operation
     :maxdepth: 2
     :caption: Contents:
 
-    model
-    preprocess
-    dataflow
-    mapping
-    output
-    db
     log
+    dataflow
+    preprocess
     io
     math
+    output
+    model
+    db
+    mapping
