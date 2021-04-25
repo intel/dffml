@@ -37,9 +37,6 @@ class DataFrameSourceContext(BaseSourceContext):
 
                 df.loc[record.key, col] = prediction_data[col]
 
-        except KeyError:
-            pass
-
     async def records(self) -> AsyncIterator[Record]:
         for row in self.parent.config.dataframe.itertuples():
             features = row._asdict()
