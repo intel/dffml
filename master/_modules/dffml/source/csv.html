@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>dffml.source.csv &mdash; DFFML a4fa4fec documentation</title>
+  <title>dffml.source.csv &mdash; DFFML 64d87976 documentation</title>
   
 
   
@@ -65,7 +65,7 @@
             
             
               <div class="version">
-                a4fa4fec
+                64d87976
               </div>
             
           
@@ -257,6 +257,7 @@
 <span class="n">CSV_SOURCE_CONFIG_DEFAULT_KEY</span> <span class="o">=</span> <span class="s2">&quot;key&quot;</span>
 <span class="n">CSV_SOURCE_CONFIG_DEFAULT_tag</span> <span class="o">=</span> <span class="s2">&quot;untagged&quot;</span>
 <span class="n">CSV_SOURCE_CONFIG_DEFAULT_tag_COLUMN</span> <span class="o">=</span> <span class="s2">&quot;tag&quot;</span>
+<span class="n">CSV_SOURCE_CONFIG_DEFAULT_DELIMITER</span> <span class="o">=</span> <span class="s2">&quot;,&quot;</span>
 <span class="n">CSV_SOURCE_CONFIG_DEFAULT_LOADFILES_NAME</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="n">CSV_SOURCE_CONFIG_DEFAULT_NOSTRIP</span> <span class="o">=</span> <span class="kc">False</span>
 
@@ -266,6 +267,7 @@
     <span class="n">key</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">CSV_SOURCE_CONFIG_DEFAULT_KEY</span>
     <span class="n">tag</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">CSV_SOURCE_CONFIG_DEFAULT_tag</span>
     <span class="n">tagcol</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">CSV_SOURCE_CONFIG_DEFAULT_tag_COLUMN</span>
+    <span class="n">delimiter</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">CSV_SOURCE_CONFIG_DEFAULT_DELIMITER</span>
     <span class="n">loadfiles</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">CSV_SOURCE_CONFIG_DEFAULT_LOADFILES_NAME</span>
     <span class="n">nostrip</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">CSV_SOURCE_CONFIG_DEFAULT_NOSTRIP</span></div>
 
@@ -307,7 +309,9 @@
             <span class="k">return</span> <span class="p">{}</span>
 
     <span class="k">async</span> <span class="k">def</span> <span class="nf">read_csv</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fd</span><span class="p">,</span> <span class="n">open_file</span><span class="p">):</span>
-        <span class="n">dict_reader</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">DictReader</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="n">dialect</span><span class="o">=</span><span class="s2">&quot;strip&quot;</span><span class="p">)</span>
+        <span class="n">dict_reader</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">DictReader</span><span class="p">(</span>
+            <span class="n">fd</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">delimiter</span><span class="p">,</span> <span class="n">dialect</span><span class="o">=</span><span class="s2">&quot;strip&quot;</span>
+        <span class="p">)</span>
         <span class="c1"># Record what headers are present when the file was opened</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">key</span> <span class="ow">in</span> <span class="n">dict_reader</span><span class="o">.</span><span class="n">fieldnames</span><span class="p">:</span>
             <span class="n">open_file</span><span class="o">.</span><span class="n">write_back_key</span> <span class="o">=</span> <span class="kc">False</span>

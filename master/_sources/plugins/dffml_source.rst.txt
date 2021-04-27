@@ -54,6 +54,10 @@ Uses a CSV file as the source of record feature data
 
   - default: tag
 
+- delimiter: String
+
+  - default: ,
+
 - loadfiles: List of strings
 
   - default: None
