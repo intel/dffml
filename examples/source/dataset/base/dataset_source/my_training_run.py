@@ -1,21 +1,25 @@
 import sys
 import pathlib
 import unittest
+import asyncio
 
-from dffml.noasync import load
+from dffml import load
 
 from my_training import my_training_dataset
 
 
-def main():
+async def main():
     # Grab arguments from command line
     url = sys.argv[1]
     cache_dir = pathlib.Path(sys.argv[2])
 
     # Usage via Source class set as property .source of function
-    records = list(
-        load(my_training_dataset.source(url=url, cache_dir=cache_dir))
-    )
+    records = [
+        record
+        async for record in load(
+            my_training_dataset.source(url=url, cache_dir=cache_dir)
+        )
+    ]
 
     # Create a test case to do comparisons
     tc = unittest.TestCase()
@@ -31,8 +35,8 @@ def main():
     )
 
     # Usage as context manager to create source
-    with my_training_dataset(url=url, cache_dir=cache_dir) as source:
-        records = list(load(source))
+    async with my_training_dataset(url=url, cache_dir=cache_dir) as source:
+        records = records = [record async for record in load(source)]
         tc.assertEqual(len(records), 5)
         tc.assertDictEqual(
             records[2].export(),
@@ -45,4 +49,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    asyncio.run(main())

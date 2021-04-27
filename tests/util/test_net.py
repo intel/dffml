@@ -69,20 +69,18 @@ class TestNet(AsyncTestCase):
     async def test_cached_download(self, ts=httptest.NoServer()):
         with tempfile.TemporaryDirectory() as tempdir:
 
-            @cached_download(
+            filename = await cached_download(
                 ts.url() + "/archive.tar.gz",
                 pathlib.Path(tempdir) / "archive.tar.gz",
                 ARCHIVE_HASH,
                 protocol_allowlist=["http://"],
             )
-            async def func(filename):
-                return filename
 
             # Directory to extract to
             extracted = pathlib.Path(tempdir, "extracted")
 
             # Unpack the archive
-            shutil.unpack_archive(await func(), extracted)
+            shutil.unpack_archive(filename, extracted)
 
             self.verify_extracted_contents(extracted)
 
@@ -92,37 +90,30 @@ class TestNet(AsyncTestCase):
     ):
         with tempfile.TemporaryDirectory() as tempdir:
 
-            @cached_download_unpack_archive(
+            extracted = await cached_download_unpack_archive(
                 ts.url() + "/archive.tar.gz",
                 pathlib.Path(tempdir) / "archive.tar.gz",
                 pathlib.Path(tempdir) / "archive",
                 ARCHIVE_HASH,
                 protocol_allowlist=["http://"],
             )
-            async def func(extracted):
-                return extracted
 
-            self.verify_extracted_contents(await func())
+            self.verify_extracted_contents(extracted)
 
     @httptest.Server(TestCachedDownloadServer)
     async def test_cached_download_unpack_archive_failure(
         self, ts=httptest.NoServer()
     ):
-        with tempfile.TemporaryDirectory() as tempdir:
-
-            @cached_download_unpack_archive(
-                ts.url() + "/archive.tar.gz",
-                pathlib.Path(tempdir) / "archive.tar.gz",
-                pathlib.Path(tempdir) / "archive",
-                ARCHIVE_HASH,
-                protocol_allowlist=["http://"],
-            )
-            async def func(extracted):
-                pass  # pragma: no cov
-
         with unittest.mock.patch(
             "shutil.unpack_archive", side_effect=Exception
         ):
             with self.assertRaises(DirectoryNotExtractedError):
-                await func()
+                with tempfile.TemporaryDirectory() as tempdir:
+                    await cached_download_unpack_archive(
+                        ts.url() + "/archive.tar.gz",
+                        pathlib.Path(tempdir) / "archive.tar.gz",
+                        pathlib.Path(tempdir) / "archive",
+                        ARCHIVE_HASH,
+                        protocol_allowlist=["http://"],
+                    )
             self.assertFalse((pathlib.Path(tempdir) / "archive").is_dir())
