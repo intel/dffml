@@ -528,7 +528,7 @@ class Release(CMD):
 
     async def run(self):
         # Ensure we have a pathlib.Path object
-        self.package = REPO_ROOT
+        self.package = Path(self.package).resolve()
         # Ensure target plugin directory has no unstaged changes
         cmd = ["git", "status", "--porcelain", str(self.package)]
         self.logger.debug("Running: %s", " ".join(cmd))
@@ -545,6 +545,8 @@ class Release(CMD):
         # cd to directory
         with chdir(str(self.package)):
             # Get name
+            # TODO(2ndparty) This needs to change to support second party
+            # plugins
             name = {(): "dffml", **PACKAGE_DIRECTORY_TO_NAME,}[
                 self.package.relative_to(REPO_ROOT).parts
             ]
