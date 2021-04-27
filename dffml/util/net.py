@@ -154,7 +154,7 @@ def sync_urlretrieve_and_validate(
     validate_file_hash(
         target_path, expected_sha384_hash=expected_sha384_hash,
     )
-    return str(target_path.absolute())
+    return target_path.absolute()
 
 
 async def cached_download(
