@@ -106,10 +106,7 @@ def package_names_by_plugin(validation=None):
     # All packages
     by_plugin["all"] = [
         "dffml-%s-%s"
-        % (
-            ALTERNATIVES.get(plugin_type, plugin_type),
-            name.replace("_", "-"),
-        )
+        % (ALTERNATIVES.get(plugin_type, plugin_type), name.replace("_", "-"),)
         for plugin_type, name in CORE_PLUGINS
         if plugin_type != "examples"
         and (not validation or validation(plugin_type, name))
@@ -153,7 +150,6 @@ def package_names_to_directory(validation=None):
 PACKAGE_NAMES_TO_DIRECTORY = package_names_to_directory()
 PACKAGE_DIRECTORY_TO_NAME = dict(
     zip(
-        PACKAGE_NAMES_TO_DIRECTORY.values(),
-        PACKAGE_NAMES_TO_DIRECTORY.keys(),
+        PACKAGE_NAMES_TO_DIRECTORY.values(), PACKAGE_NAMES_TO_DIRECTORY.keys(),
     )
 )
