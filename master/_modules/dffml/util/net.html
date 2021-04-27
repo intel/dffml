@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>dffml.util.net &mdash; DFFML 64d87976 documentation</title>
+  <title>dffml.util.net &mdash; DFFML 135d8cb3 documentation</title>
   
 
   
@@ -65,7 +65,7 @@
             
             
               <div class="version">
-                64d87976
+                135d8cb3
               </div>
             
           
@@ -223,7 +223,6 @@
 <span class="kn">import</span> <span class="nn">dataclasses</span>
 <span class="kn">import</span> <span class="nn">urllib.request</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Union</span>
-
 <span class="kn">from</span> <span class="nn">.os</span> <span class="kn">import</span> <span class="n">chdir</span>
 <span class="kn">from</span> <span class="nn">.file</span> <span class="kn">import</span> <span class="n">validate_file_hash</span>
 <span class="kn">from</span> <span class="nn">.log</span> <span class="kn">import</span> <span class="n">LOGGER</span><span class="p">,</span> <span class="n">get_download_logger</span>
@@ -360,106 +359,20 @@
     <span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">target_path</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">is_dir</span><span class="p">():</span>
             <span class="n">target_path</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-        <span class="n">sync_urlretrieve</span><span class="p">(</span>
+        <span class="n">path</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">sync_urlretrieve</span><span class="p">(</span>
             <span class="n">url</span><span class="p">,</span>
             <span class="n">filename</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">target_path</span><span class="p">),</span>
             <span class="n">protocol_allowlist</span><span class="o">=</span><span class="n">protocol_allowlist</span><span class="p">,</span>
             <span class="n">reporthook</span><span class="o">=</span><span class="n">progress_reporthook</span><span class="p">,</span>
         <span class="p">)</span>
+        <span class="k">return</span> <span class="n">path</span>
     <span class="n">validate_file_hash</span><span class="p">(</span>
         <span class="n">target_path</span><span class="p">,</span> <span class="n">expected_sha384_hash</span><span class="o">=</span><span class="n">expected_sha384_hash</span><span class="p">,</span>
     <span class="p">)</span>
+    <span class="k">return</span> <span class="n">target_path</span><span class="o">.</span><span class="n">absolute</span><span class="p">()</span>
 
 
-<div class="viewcode-block" id="CachedDownloadWrapper"><a class="viewcode-back" href="../../../api/util/net.html#dffml.util.net.CachedDownloadWrapper">[docs]</a><span class="nd">@dataclasses</span><span class="o">.</span><span class="n">dataclass</span>
-<span class="k">class</span> <span class="nc">CachedDownloadWrapper</span><span class="p">:</span>
-    <span class="n">url</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">urllib</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">Request</span><span class="p">]</span>
-    <span class="n">target_path</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]</span>
-    <span class="n">expected_hash</span><span class="p">:</span> <span class="nb">str</span>
-    <span class="n">protocol_allowlist</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">dataclasses</span><span class="o">.</span><span class="n">field</span><span class="p">(</span>
-        <span class="n">default_factory</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="n">DEFAULT_PROTOCOL_ALLOWLIST</span>
-    <span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">target_path</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">target_path</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">inspect</span><span class="o">.</span><span class="n">isasyncgenfunction</span><span class="p">(</span><span class="n">func</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="s2">&quot;__aenter__&quot;</span><span class="p">):</span>
-
-            <span class="nd">@contextlib</span><span class="o">.</span><span class="n">asynccontextmanager</span>
-            <span class="k">async</span> <span class="k">def</span> <span class="nf">wrapped</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-                <span class="k">async</span> <span class="k">with</span> <span class="n">func</span><span class="p">(</span>
-                    <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">add_target_to_args_and_validate</span><span class="p">(</span><span class="n">args</span><span class="p">),</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
-                <span class="p">)</span> <span class="k">as</span> <span class="n">result</span><span class="p">:</span>
-                    <span class="k">yield</span> <span class="n">result</span>
-
-        <span class="k">elif</span> <span class="n">inspect</span><span class="o">.</span><span class="n">isasyncgenfunction</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
-
-            <span class="k">async</span> <span class="k">def</span> <span class="nf">wrapped</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-                <span class="k">async</span> <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">func</span><span class="p">(</span>
-                    <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">add_target_to_args_and_validate</span><span class="p">(</span><span class="n">args</span><span class="p">),</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
-                <span class="p">):</span>
-                    <span class="k">yield</span> <span class="n">result</span>
-
-        <span class="k">elif</span> <span class="n">inspect</span><span class="o">.</span><span class="n">iscoroutinefunction</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
-
-            <span class="k">async</span> <span class="k">def</span> <span class="nf">wrapped</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-                <span class="k">return</span> <span class="k">await</span> <span class="n">func</span><span class="p">(</span>
-                    <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">add_target_to_args_and_validate</span><span class="p">(</span><span class="n">args</span><span class="p">),</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
-                <span class="p">)</span>
-
-        <span class="k">elif</span> <span class="n">inspect</span><span class="o">.</span><span class="n">isgeneratorfunction</span><span class="p">(</span><span class="n">func</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="s2">&quot;__enter__&quot;</span><span class="p">):</span>
-
-            <span class="nd">@contextlib</span><span class="o">.</span><span class="n">contextmanager</span>
-            <span class="k">def</span> <span class="nf">wrapped</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-                <span class="k">with</span> <span class="n">func</span><span class="p">(</span>
-                    <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">add_target_to_args_and_validate</span><span class="p">(</span><span class="n">args</span><span class="p">),</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
-                <span class="p">)</span> <span class="k">as</span> <span class="n">result</span><span class="p">:</span>
-                    <span class="k">yield</span> <span class="n">result</span>
-
-        <span class="k">elif</span> <span class="n">inspect</span><span class="o">.</span><span class="n">isgeneratorfunction</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
-
-            <span class="k">def</span> <span class="nf">wrapped</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-                <span class="k">yield from</span> <span class="n">func</span><span class="p">(</span>
-                    <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">add_target_to_args_and_validate</span><span class="p">(</span><span class="n">args</span><span class="p">),</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
-                <span class="p">)</span>
-
-        <span class="k">else</span><span class="p">:</span>
-
-            <span class="k">def</span> <span class="nf">wrapped</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-                <span class="k">return</span> <span class="n">func</span><span class="p">(</span>
-                    <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">add_target_to_args_and_validate</span><span class="p">(</span><span class="n">args</span><span class="p">),</span> <span class="o">**</span><span class="n">kwargs</span>
-                <span class="p">)</span>
-
-        <span class="c1"># Wrap with functools</span>
-        <span class="n">wrapped</span> <span class="o">=</span> <span class="n">functools</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)(</span><span class="n">wrapped</span><span class="p">)</span>
-
-        <span class="k">return</span> <span class="n">wrapped</span>
-
-    <span class="k">def</span> <span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_target_to_args_and_validate</span><span class="p">([])</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">target_path</span>
-
-    <span class="k">def</span> <span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_exc_type</span><span class="p">,</span> <span class="n">_exc_value</span><span class="p">,</span> <span class="n">_traceback</span><span class="p">):</span>
-        <span class="k">pass</span>
-
-    <span class="k">async</span> <span class="k">def</span> <span class="fm">__aenter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__enter__</span><span class="p">()</span>
-
-    <span class="k">async</span> <span class="k">def</span> <span class="fm">__aexit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_exc_type</span><span class="p">,</span> <span class="n">_exc_value</span><span class="p">,</span> <span class="n">_traceback</span><span class="p">):</span>
-        <span class="k">pass</span>
-
-    <span class="k">def</span> <span class="nf">add_target_to_args_and_validate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
-        <span class="n">sync_urlretrieve_and_validate</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">url</span><span class="p">,</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">target_path</span><span class="p">,</span>
-            <span class="n">expected_sha384_hash</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">expected_hash</span><span class="p">,</span>
-            <span class="n">protocol_allowlist</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">protocol_allowlist</span><span class="p">,</span>
-        <span class="p">)</span>
-        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">+</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">target_path</span><span class="p">]</span></div>
-
-
-<div class="viewcode-block" id="cached_download"><a class="viewcode-back" href="../../../api/util/net.html#dffml.util.net.cached_download">[docs]</a><span class="k">def</span> <span class="nf">cached_download</span><span class="p">(</span>
+<div class="viewcode-block" id="cached_download"><a class="viewcode-back" href="../../../api/util/net.html#dffml.util.net.cached_download">[docs]</a><span class="k">async</span> <span class="k">def</span> <span class="nf">cached_download</span><span class="p">(</span>
     <span class="n">url</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">urllib</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">Request</span><span class="p">],</span>
     <span class="n">target_path</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">],</span>
     <span class="n">expected_hash</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
@@ -497,86 +410,29 @@
 <span class="sd">    --------</span>
 
 <span class="sd">    &gt;&gt;&gt; import asyncio</span>
-<span class="sd">    &gt;&gt;&gt; import contextlib</span>
-<span class="sd">    &gt;&gt;&gt; from dffml import cached_download</span>
+<span class="sd">    &gt;&gt;&gt; from dffml import *</span>
 <span class="sd">    &gt;&gt;&gt;</span>
-<span class="sd">    &gt;&gt;&gt; cached_manifest = cached_download(</span>
-<span class="sd">    ...     &quot;https://github.com/intel/dffml/raw/152c2b92535fac6beec419236f8639b0d75d707d/MANIFEST.in&quot;,</span>
-<span class="sd">    ...     &quot;MANIFEST.in&quot;,</span>
-<span class="sd">    ...     &quot;f7aadf5cdcf39f161a779b4fa77ec56a49630cf7680e21fb3dc6c36ce2d8c6fae0d03d5d3094a6aec4fea1561393c14c&quot;,</span>
+<span class="sd">    &gt;&gt;&gt; cached_manifest = asyncio.run(</span>
+<span class="sd">    ...     cached_download(</span>
+<span class="sd">    ...         &quot;https://github.com/intel/dffml/raw/152c2b92535fac6beec419236f8639b0d75d707d/MANIFEST.in&quot;,</span>
+<span class="sd">    ...         &quot;MANIFEST.in&quot;,</span>
+<span class="sd">    ...         &quot;f7aadf5cdcf39f161a779b4fa77ec56a49630cf7680e21fb3dc6c36ce2d8c6fae0d03d5d3094a6aec4fea1561393c14c&quot;,</span>
+<span class="sd">    ...     )</span>
 <span class="sd">    ... )</span>
 <span class="sd">    &gt;&gt;&gt;</span>
-<span class="sd">    &gt;&gt;&gt; @cached_manifest</span>
-<span class="sd">    ... async def first_line_in_manifest_152c2b(manifest):</span>
-<span class="sd">    ...     return manifest.read_text().split()[:2]</span>
-<span class="sd">    &gt;&gt;&gt;</span>
-<span class="sd">    &gt;&gt;&gt; asyncio.run(first_line_in_manifest_152c2b())</span>
-<span class="sd">    [&#39;include&#39;, &#39;README.md&#39;]</span>
-<span class="sd">    &gt;&gt;&gt;</span>
-<span class="sd">    &gt;&gt;&gt; @cached_manifest</span>
-<span class="sd">    ... def first_line_in_manifest_152c2b(manifest):</span>
-<span class="sd">    ...     return manifest.read_text().split()[:2]</span>
-<span class="sd">    &gt;&gt;&gt;</span>
-<span class="sd">    &gt;&gt;&gt; first_line_in_manifest_152c2b()</span>
-<span class="sd">    [&#39;include&#39;, &#39;README.md&#39;]</span>
-<span class="sd">    &gt;&gt;&gt;</span>
-<span class="sd">    &gt;&gt;&gt; @cached_manifest</span>
-<span class="sd">    ... def first_line_in_manifest_152c2b(manifest):</span>
-<span class="sd">    ...     yield manifest.read_text().split()[:2]</span>
-<span class="sd">    &gt;&gt;&gt;</span>
-<span class="sd">    &gt;&gt;&gt; for contents in first_line_in_manifest_152c2b():</span>
-<span class="sd">    ...     print(contents)</span>
-<span class="sd">    [&#39;include&#39;, &#39;README.md&#39;]</span>
-<span class="sd">    &gt;&gt;&gt;</span>
-<span class="sd">    &gt;&gt;&gt; @cached_manifest</span>
-<span class="sd">    ... async def first_line_in_manifest_152c2b(manifest):</span>
-<span class="sd">    ...     yield manifest.read_text().split()[:2]</span>
-<span class="sd">    &gt;&gt;&gt;</span>
-<span class="sd">    &gt;&gt;&gt; async def main():</span>
-<span class="sd">    ...     async for contents in first_line_in_manifest_152c2b():</span>
-<span class="sd">    ...         print(contents)</span>
-<span class="sd">    &gt;&gt;&gt;</span>
-<span class="sd">    &gt;&gt;&gt; asyncio.run(main())</span>
-<span class="sd">    [&#39;include&#39;, &#39;README.md&#39;]</span>
-<span class="sd">    &gt;&gt;&gt;</span>
-<span class="sd">    &gt;&gt;&gt; @cached_manifest</span>
-<span class="sd">    ... @contextlib.contextmanager</span>
-<span class="sd">    ... def first_line_in_manifest_152c2b(manifest):</span>
-<span class="sd">    ...     yield manifest.read_text().split()[:2]</span>
-<span class="sd">    &gt;&gt;&gt;</span>
-<span class="sd">    &gt;&gt;&gt; with first_line_in_manifest_152c2b() as contents:</span>
-<span class="sd">    ...     print(contents)</span>
-<span class="sd">    [&#39;include&#39;, &#39;README.md&#39;]</span>
-<span class="sd">    &gt;&gt;&gt;</span>
-<span class="sd">    &gt;&gt;&gt; @cached_manifest</span>
-<span class="sd">    ... @contextlib.asynccontextmanager</span>
-<span class="sd">    ... async def first_line_in_manifest_152c2b(manifest):</span>
-<span class="sd">    ...     yield manifest.read_text().split()[:2]</span>
-<span class="sd">    &gt;&gt;&gt;</span>
-<span class="sd">    &gt;&gt;&gt; async def main():</span>
-<span class="sd">    ...     async with first_line_in_manifest_152c2b() as contents:</span>
-<span class="sd">    ...         print(contents)</span>
-<span class="sd">    &gt;&gt;&gt;</span>
-<span class="sd">    &gt;&gt;&gt; asyncio.run(main())</span>
-<span class="sd">    [&#39;include&#39;, &#39;README.md&#39;]</span>
-<span class="sd">    &gt;&gt;&gt;</span>
-<span class="sd">    ... with cached_manifest as manifest_path:</span>
-<span class="sd">    ...     print(manifest_path.read_text().split()[:2])</span>
-<span class="sd">    [&#39;include&#39;, &#39;README.md&#39;]</span>
-<span class="sd">    &gt;&gt;&gt;</span>
-<span class="sd">    &gt;&gt;&gt; async def main():</span>
-<span class="sd">    ...     async with cached_manifest as manifest_path:</span>
-<span class="sd">    ...         print(manifest_path.read_text().split()[:2])</span>
-<span class="sd">    &gt;&gt;&gt;</span>
-<span class="sd">    &gt;&gt;&gt; asyncio.run(main())</span>
+<span class="sd">    &gt;&gt;&gt; with open(cached_manifest) as manifest:</span>
+<span class="sd">    ...     print(manifest.read().split()[:2])</span>
 <span class="sd">    [&#39;include&#39;, &#39;README.md&#39;]</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">CachedDownloadWrapper</span><span class="p">(</span>
-        <span class="n">url</span><span class="p">,</span> <span class="n">target_path</span><span class="p">,</span> <span class="n">expected_hash</span><span class="p">,</span> <span class="n">protocol_allowlist</span><span class="o">=</span><span class="n">protocol_allowlist</span><span class="p">,</span>
+    <span class="k">return</span> <span class="n">sync_urlretrieve_and_validate</span><span class="p">(</span>
+        <span class="n">url</span><span class="p">,</span>
+        <span class="n">target_path</span><span class="p">,</span>
+        <span class="n">expected_sha384_hash</span><span class="o">=</span><span class="n">expected_hash</span><span class="p">,</span>
+        <span class="n">protocol_allowlist</span><span class="o">=</span><span class="n">protocol_allowlist</span><span class="p">,</span>
     <span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="cached_download_unpack_archive"><a class="viewcode-back" href="../../../api/util/net.html#dffml.util.net.cached_download_unpack_archive">[docs]</a><span class="k">def</span> <span class="nf">cached_download_unpack_archive</span><span class="p">(</span>
+<div class="viewcode-block" id="cached_download_unpack_archive"><a class="viewcode-back" href="../../../api/util/net.html#dffml.util.net.cached_download_unpack_archive">[docs]</a><span class="k">async</span> <span class="k">def</span> <span class="nf">cached_download_unpack_archive</span><span class="p">(</span>
     <span class="n">url</span><span class="p">,</span>
     <span class="n">file_path</span><span class="p">,</span>
     <span class="n">directory_path</span><span class="p">,</span>
@@ -621,17 +477,16 @@
 <span class="sd">    &gt;&gt;&gt; import asyncio</span>
 <span class="sd">    &gt;&gt;&gt; from dffml import cached_download_unpack_archive</span>
 <span class="sd">    &gt;&gt;&gt;</span>
-<span class="sd">    &gt;&gt;&gt; @cached_download_unpack_archive(</span>
-<span class="sd">    ...     &quot;https://github.com/intel/dffml/archive/c4469abfe6007a50144858d485537324046ff229.tar.gz&quot;,</span>
-<span class="sd">    ...     &quot;dffml.tar.gz&quot;,</span>
-<span class="sd">    ...     &quot;dffml&quot;,</span>
-<span class="sd">    ...     &quot;bb9bb47c4e6e4c6b7147bb3c000bc4069d69c0c77a3e560b69f476a78e6b5084adf5467ee83cbbcc47ba5a4a0696fdfc&quot;,</span>
+<span class="sd">    &gt;&gt;&gt; dffml_dir = asyncio.run(</span>
+<span class="sd">    ...     cached_download_unpack_archive(</span>
+<span class="sd">    ...         &quot;https://github.com/intel/dffml/archive/c4469abfe6007a50144858d485537324046ff229.tar.gz&quot;,</span>
+<span class="sd">    ...         &quot;dffml.tar.gz&quot;,</span>
+<span class="sd">    ...         &quot;dffml&quot;,</span>
+<span class="sd">    ...         &quot;bb9bb47c4e6e4c6b7147bb3c000bc4069d69c0c77a3e560b69f476a78e6b5084adf5467ee83cbbcc47ba5a4a0696fdfc&quot;,</span>
+<span class="sd">    ...     )</span>
 <span class="sd">    ... )</span>
-<span class="sd">    ... async def files_in_dffml_commit_c4469a(dffml_dir):</span>
-<span class="sd">    ...     return len(list(dffml_dir.rglob(&quot;**/*&quot;)))</span>
-<span class="sd">    &gt;&gt;&gt;</span>
-<span class="sd">    &gt;&gt;&gt; asyncio.run(files_in_dffml_commit_c4469a())</span>
-<span class="sd">    124</span>
+<span class="sd">    &gt;&gt;&gt; print(len(list(dffml_dir.rglob(&quot;**/*&quot;))))</span>
+<span class="sd">    495</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">on_error</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">exc_info</span><span class="p">):</span>
@@ -647,29 +502,23 @@
     <span class="n">directory_path</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">directory_path</span><span class="p">)</span>
 
     <span class="k">async</span> <span class="k">def</span> <span class="nf">extractor</span><span class="p">(</span><span class="n">download_path</span><span class="p">):</span>
-        <span class="n">download_path</span> <span class="o">=</span> <span class="n">download_path</span><span class="o">.</span><span class="n">absolute</span><span class="p">()</span>
-        <span class="k">with</span> <span class="n">chdir</span><span class="p">(</span><span class="n">directory_path</span><span class="p">):</span>
-            <span class="k">try</span><span class="p">:</span>
-                <span class="n">shutil</span><span class="o">.</span><span class="n">unpack_archive</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">download_path</span><span class="p">),</span> <span class="s2">&quot;.&quot;</span><span class="p">)</span>
-            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
-                <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">directory_path</span><span class="p">,</span> <span class="n">onerror</span><span class="o">=</span><span class="n">on_error</span><span class="p">)</span>
-                <span class="k">raise</span> <span class="n">DirectoryNotExtractedError</span><span class="p">(</span><span class="n">directory_path</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">error</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">shutil</span><span class="o">.</span><span class="n">unpack_archive</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">download_path</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="n">directory_path</span><span class="p">))</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+            <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">directory_path</span><span class="p">,</span> <span class="n">onerror</span><span class="o">=</span><span class="n">on_error</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">DirectoryNotExtractedError</span><span class="p">(</span><span class="n">directory_path</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">error</span>
 
-    <span class="n">extract</span> <span class="o">=</span> <span class="n">cached_download</span><span class="p">(</span>
-        <span class="n">url</span><span class="p">,</span> <span class="n">file_path</span><span class="p">,</span> <span class="n">expected_hash</span><span class="p">,</span> <span class="n">protocol_allowlist</span><span class="o">=</span><span class="n">protocol_allowlist</span>
-    <span class="p">)(</span><span class="n">extractor</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">mkwrapper</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
-        <span class="nd">@functools</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
-        <span class="k">async</span> <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">):</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">directory_path</span><span class="o">.</span><span class="n">is_dir</span><span class="p">():</span>
-                <span class="n">directory_path</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-                <span class="k">await</span> <span class="n">extract</span><span class="p">()</span>
-            <span class="k">return</span> <span class="k">await</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">+</span> <span class="p">[</span><span class="n">directory_path</span><span class="p">]),</span> <span class="o">**</span><span class="n">kwds</span><span class="p">)</span>
-
-        <span class="k">return</span> <span class="n">wrapper</span>
-
-    <span class="k">return</span> <span class="n">mkwrapper</span></div>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">directory_path</span><span class="o">.</span><span class="n">is_dir</span><span class="p">():</span>
+        <span class="n">directory_path</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">await</span> <span class="n">extractor</span><span class="p">(</span>
+            <span class="k">await</span> <span class="n">cached_download</span><span class="p">(</span>
+                <span class="n">url</span><span class="p">,</span>
+                <span class="n">file_path</span><span class="p">,</span>
+                <span class="n">expected_hash</span><span class="p">,</span>
+                <span class="n">protocol_allowlist</span><span class="o">=</span><span class="n">protocol_allowlist</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+    <span class="k">return</span> <span class="n">directory_path</span><span class="o">.</span><span class="n">absolute</span><span class="p">()</span></div>
 </pre></div>
 
            </div>

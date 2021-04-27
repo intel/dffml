@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>COVID Forecasting &mdash; DFFML 64d87976 documentation</title>
+  <title>COVID Forecasting &mdash; DFFML 135d8cb3 documentation</title>
   
 
   
@@ -66,7 +66,7 @@
             
             
               <div class="version">
-                64d87976
+                135d8cb3
               </div>
             
           
@@ -376,21 +376,22 @@ there is anything that is unclear or you think could be changed / improved.</p>
             <span class="k">yield</span> <span class="n">record</span>
 
 
-<span class="c1"># DFFML has a function to download files and validate their contents using</span>
-<span class="c1"># SHA 384 hashes. If you need to download files from an http:// site, you need</span>
-<span class="c1"># to add the following to the call to cached_download()</span>
-<span class="c1">#   protocol_allowlist=[&quot;https://&quot;, &quot;http://&quot;]</span>
-<span class="nd">@cached_download</span><span class="p">(</span>
-    <span class="s2">&quot;https://github.com/intel/dffml/files/5773999/COVID.Oregon.Counties.Train.Clean.to.2020-10-24.csv.gz&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;training.csv.gz&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;af9536ab41580e04dd72b1285f6b2b703977aee5b95b80422bbe7cc11262297da265e6c0e333bfc1faa7b4f263f5496e&quot;</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="nd">@cached_download</span><span class="p">(</span>
-    <span class="s2">&quot;https://github.com/intel/dffml/files/5773998/COVID.Oregon.Counties.Test.Clean.2020-10-25.to.2020-10-31.csv.gz&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;test.csv.gz&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;10ee8bcf06a511019f98c3e0e40f315585b2ed84d4a736f743567861d72438afcb7914f117e16640800959324f0f518d&quot;</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="k">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">training_file</span><span class="p">,</span> <span class="n">test_file</span><span class="p">):</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="c1"># DFFML has a function to download files and validate their contents using</span>
+    <span class="c1"># SHA 384 hashes. If you need to download files from an http:// site, you need</span>
+    <span class="c1"># to add the following to the call to cached_download()</span>
+    <span class="c1">#   protocol_allowlist=[&quot;https://&quot;, &quot;http://&quot;]</span>
+    <span class="n">training_file</span> <span class="o">=</span> <span class="k">await</span> <span class="n">cached_download</span><span class="p">(</span>
+        <span class="s2">&quot;https://github.com/intel/dffml/files/5773999/COVID.Oregon.Counties.Train.Clean.to.2020-10-24.csv.gz&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;training.csv.gz&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;af9536ab41580e04dd72b1285f6b2b703977aee5b95b80422bbe7cc11262297da265e6c0e333bfc1faa7b4f263f5496e&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">testing_file</span> <span class="o">=</span> <span class="k">await</span> <span class="n">cached_download</span><span class="p">(</span>
+        <span class="s2">&quot;https://github.com/intel/dffml/files/5773998/COVID.Oregon.Counties.Test.Clean.2020-10-25.to.2020-10-31.csv.gz&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;test.csv.gz&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;10ee8bcf06a511019f98c3e0e40f315585b2ed84d4a736f743567861d72438afcb7914f117e16640800959324f0f518d&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
     <span class="c1"># Load the training data</span>
     <span class="n">training_data</span> <span class="o">=</span> <span class="p">[</span><span class="n">record</span> <span class="k">async</span> <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">load</span><span class="p">(</span><span class="n">training_file</span><span class="p">)]</span>
 

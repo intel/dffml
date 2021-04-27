@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Source Dataset Base &mdash; DFFML 64d87976 documentation</title>
+  <title>Source Dataset Base &mdash; DFFML 135d8cb3 documentation</title>
   
 
   
@@ -66,7 +66,7 @@
             
             
               <div class="version">
-                64d87976
+                135d8cb3
               </div>
             
           
@@ -287,7 +287,7 @@ potentially malicious files.</p>
 
 
 <span class="nd">@dataset_source</span><span class="p">(</span><span class="s2">&quot;my.training&quot;</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">my_training_dataset</span><span class="p">(</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">my_training_dataset</span><span class="p">(</span>
     <span class="n">url</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;http://download.example.com/data/my_training.csv&quot;</span><span class="p">,</span>
     <span class="n">expected_sha384_hash</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;db9ec70abdc8b74bcf91a7399144dd15fc01e3dad91bbbe3c41fbbe33065b98a3e06e8e0ba053d850d7dc19e6837310e&quot;</span><span class="p">,</span>
     <span class="n">cache_dir</span><span class="p">:</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span> <span class="o">=</span> <span class="p">(</span>
@@ -299,14 +299,14 @@ potentially malicious files.</p>
     <span class="c1"># Download the file from the url give, place the downloaded file at</span>
     <span class="c1"># ~/.cache/dffml/datasets/my/training.csv. Ensure the SHA 384 hash</span>
     <span class="c1"># of the download&#39;s contents is equal the the expected value</span>
-    <span class="k">with</span> <span class="n">cached_download</span><span class="p">(</span>
+    <span class="n">filepath</span> <span class="o">=</span> <span class="k">await</span> <span class="n">cached_download</span><span class="p">(</span>
         <span class="n">url</span><span class="p">,</span>
         <span class="n">cache_dir</span> <span class="o">/</span> <span class="s2">&quot;training.csv&quot;</span><span class="p">,</span>
         <span class="n">expected_sha384_hash</span><span class="p">,</span>
         <span class="n">protocol_allowlist</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;http://&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">DEFAULT_PROTOCOL_ALLOWLIST</span><span class="p">,</span>
-    <span class="p">)</span> <span class="k">as</span> <span class="n">filepath</span><span class="p">:</span>
-        <span class="c1"># Create a source using downloaded file</span>
-        <span class="k">yield</span> <span class="n">CSVSource</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">filepath</span><span class="p">))</span>
+    <span class="p">)</span>
+    <span class="c1"># Create a source using downloaded file</span>
+    <span class="k">yield</span> <span class="n">CSVSource</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">filepath</span><span class="p">))</span>
 </pre></div>
 </div>
 <p>We can use it from Python in two different ways as follows</p>
@@ -314,21 +314,25 @@ potentially malicious files.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">import</span> <span class="nn">pathlib</span>
 <span class="kn">import</span> <span class="nn">unittest</span>
+<span class="kn">import</span> <span class="nn">asyncio</span>
 
-<span class="kn">from</span> <span class="nn">dffml.noasync</span> <span class="kn">import</span> <span class="n">load</span>
+<span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">load</span>
 
 <span class="kn">from</span> <span class="nn">my_training</span> <span class="kn">import</span> <span class="n">my_training_dataset</span>
 
 
-<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
     <span class="c1"># Grab arguments from command line</span>
     <span class="n">url</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
     <span class="n">cache_dir</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
 
     <span class="c1"># Usage via Source class set as property .source of function</span>
-    <span class="n">records</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span>
-        <span class="n">load</span><span class="p">(</span><span class="n">my_training_dataset</span><span class="o">.</span><span class="n">source</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span> <span class="n">cache_dir</span><span class="o">=</span><span class="n">cache_dir</span><span class="p">))</span>
-    <span class="p">)</span>
+    <span class="n">records</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">record</span>
+        <span class="k">async</span> <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">load</span><span class="p">(</span>
+            <span class="n">my_training_dataset</span><span class="o">.</span><span class="n">source</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span> <span class="n">cache_dir</span><span class="o">=</span><span class="n">cache_dir</span><span class="p">)</span>
+        <span class="p">)</span>
+    <span class="p">]</span>
 
     <span class="c1"># Create a test case to do comparisons</span>
     <span class="n">tc</span> <span class="o">=</span> <span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">()</span>
@@ -344,8 +348,8 @@ potentially malicious files.</p>
     <span class="p">)</span>
 
     <span class="c1"># Usage as context manager to create source</span>
-    <span class="k">with</span> <span class="n">my_training_dataset</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span> <span class="n">cache_dir</span><span class="o">=</span><span class="n">cache_dir</span><span class="p">)</span> <span class="k">as</span> <span class="n">source</span><span class="p">:</span>
-        <span class="n">records</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">load</span><span class="p">(</span><span class="n">source</span><span class="p">))</span>
+    <span class="k">async</span> <span class="k">with</span> <span class="n">my_training_dataset</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span> <span class="n">cache_dir</span><span class="o">=</span><span class="n">cache_dir</span><span class="p">)</span> <span class="k">as</span> <span class="n">source</span><span class="p">:</span>
+        <span class="n">records</span> <span class="o">=</span> <span class="n">records</span> <span class="o">=</span> <span class="p">[</span><span class="n">record</span> <span class="k">async</span> <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">load</span><span class="p">(</span><span class="n">source</span><span class="p">)]</span>
         <span class="n">tc</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">records</span><span class="p">),</span> <span class="mi">5</span><span class="p">)</span>
         <span class="n">tc</span><span class="o">.</span><span class="n">assertDictEqual</span><span class="p">(</span>
             <span class="n">records</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">export</span><span class="p">(),</span>
@@ -358,7 +362,7 @@ potentially malicious files.</p>
 
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
-    <span class="n">main</span><span class="p">()</span>
+    <span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
 </pre></div>
 </div>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python3 run.py http://localhost:8080/my_training.csv cache_dir
