@@ -6,17 +6,21 @@ import pathlib
 import subprocess
 from unittest.mock import patch
 
-from dffml import prepend_to_path, AsyncTestCase
+from dffml import (
+    prepend_to_path,
+    AsyncTestCase,
+    cached_download_unpack_archive,
+)
 
 from shouldi.cli import ShouldI
 from shouldi.rust.cargo_audit import run_cargo_build
 
 from .binaries import (
-    cached_node,
-    cached_target_javascript_algorithms,
-    cached_rust,
-    cached_cargo_audit,
-    cached_target_rust_clippy,
+    CACHED_NODE,
+    CACHED_TARGET_JAVASCRIPT_ALGORITHMS,
+    CACHED_RUST,
+    CACHED_CARGO_AUDIT,
+    CACHED_TARGET_RUST_CLIPPY,
 )
 
 
@@ -40,9 +44,11 @@ class TestCLIUse(AsyncTestCase):
                 "B322",
             )
 
-    @cached_node
-    @cached_target_javascript_algorithms
-    async def test_use_javascript(self, node, javascript_algo):
+    async def test_use_javascript(self):
+        node = await cached_download_unpack_archive(*CACHED_NODE)
+        javascript_algo = await cached_download_unpack_archive(
+            *CACHED_TARGET_JAVASCRIPT_ALGORITHMS
+        )
         with prepend_to_path(node / "node-v14.2.0-linux-x64" / "bin",):
             with patch("sys.stdout", new_callable=io.StringIO) as stdout:
                 await ShouldI._main(
@@ -58,10 +64,12 @@ class TestCLIUse(AsyncTestCase):
             list(results.values())[0]["static_analysis"][0]["high"], 2940
         )
 
-    @cached_rust
-    @cached_cargo_audit
-    @cached_target_rust_clippy
-    async def test_use_rust(self, rust, cargo_audit, rust_clippy):
+    async def test_use_rust(self):
+        rust = await cached_download_unpack_archive(*CACHED_RUST)
+        cargo_audit = await cached_download_unpack_archive(*CACHED_CARGO_AUDIT)
+        rust_clippy = await cached_download_unpack_archive(
+            *CACHED_TARGET_RUST_CLIPPY
+        )
         if not (rust / "rust-install" / "bin" / "cargo").is_file():
             subprocess.check_call(
                 [

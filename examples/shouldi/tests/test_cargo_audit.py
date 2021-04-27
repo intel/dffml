@@ -1,22 +1,28 @@
 import shutil
 import pathlib
 
-from dffml import prepend_to_path, AsyncTestCase
+from dffml import (
+    prepend_to_path,
+    AsyncTestCase,
+    cached_download_unpack_archive,
+)
 
 from shouldi.rust.cargo_audit import run_cargo_audit, run_cargo_build
 
 from .binaries import (
-    cached_rust,
-    cached_cargo_audit,
-    cached_target_rust_clippy,
+    CACHED_RUST,
+    CACHED_CARGO_AUDIT,
+    CACHED_TARGET_RUST_CLIPPY,
 )
 
 
 class TestRunCargoAuditOp(AsyncTestCase):
-    @cached_rust
-    @cached_cargo_audit
-    @cached_target_rust_clippy
-    async def test_run(self, rust, cargo_audit, rust_clippy):
+    async def test_run(self):
+        rust = await cached_download_unpack_archive(*CACHED_RUST)
+        cargo_audit = await cached_download_unpack_archive(*CACHED_CARGO_AUDIT)
+        rust_clippy = await cached_download_unpack_archive(
+            *CACHED_TARGET_RUST_CLIPPY
+        )
         if not (
             cargo_audit
             / "cargo-audit-0.14.0"

@@ -1,21 +1,27 @@
 import pathlib
 
-from dffml import prepend_to_path, AsyncTestCase
+from dffml import (
+    prepend_to_path,
+    AsyncTestCase,
+    cached_download_unpack_archive,
+)
 
 from shouldi.java.dependency_check import run_dependency_check
 
 from .binaries import (
-    cached_openjdk,
-    cached_dependency_check,
-    cached_target_rxjava,
+    CACHED_OPENJDK,
+    CACHED_DEPENDENCY_CHECK,
+    CACHED_TARGET_RXJAVA,
 )
 
 
 class TestRunDependencyCheckOp(AsyncTestCase):
-    @cached_openjdk
-    @cached_dependency_check
-    @cached_target_rxjava
-    async def test_run(self, java, dependency_check, rxjava):
+    async def test_run(self):
+        java = await cached_download_unpack_archive(*CACHED_OPENJDK)
+        dependency_check = await cached_download_unpack_archive(
+            *CACHED_DEPENDENCY_CHECK
+        )
+        rxjava = await cached_download_unpack_archive(*CACHED_TARGET_RXJAVA)
         with prepend_to_path(
             java / "jdk-14" / "bin",
             dependency_check / "dependency-check" / "bin",

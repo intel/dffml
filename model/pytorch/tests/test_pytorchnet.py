@@ -2,6 +2,7 @@ import torch.nn as nn
 import os
 import shutil
 import tempfile
+import asyncio
 
 from dffml.cli.cli import CLI
 from dffml.util.net import cached_download_unpack_archive
@@ -76,56 +77,62 @@ class TestPyTorchNeuralNetwork(IntegrationCLITestCase):
             optimizer="Adam",
             enableGPU=True,
         )
+        cls.traindir = asyncio.run(
+            cached_download_unpack_archive(
+                "https://storage.googleapis.com/laurencemoroney-blog.appspot.com/rps.zip",
+                "rps.zip",
+                "traindir",
+                "c6a9119b0c6a0907b782bd99e04ce09a0924c0895df6a26bc6fb06baca4526f55e51f7156cceb4791cc65632d66085e8",
+            )
+        )
+        cls.testdir = asyncio.run(
+            cached_download_unpack_archive(
+                "https://storage.googleapis.com/laurencemoroney-blog.appspot.com/rps-test-set.zip",
+                "rps-test-set.zip",
+                "testdir",
+                "fc45a0ebe58b9aafc3cd5a60020fa042d3a19c26b0f820aee630b9602c8f53dd52fd40f35d44432dd031dea8f30a5f66",
+            )
+        )
+        cls.predictdir = asyncio.run(
+            cached_download_unpack_archive(
+                "https://storage.googleapis.com/laurencemoroney-blog.appspot.com/rps-validation.zip",
+                "rps-validation.zip",
+                "predictdir",
+                "375457bb95771ffeace2beedab877292d232f31e76502618d25e0d92a3e029d386429f52c771b05ae1c7229d2f5ecc29",
+            )
+        )
 
     @classmethod
     def tearDownClass(cls):
         cls.model_dir.cleanup()
 
-    @cached_download_unpack_archive(
-        "https://storage.googleapis.com/laurencemoroney-blog.appspot.com/rps.zip",
-        "rps.zip",
-        "traindir",
-        "c6a9119b0c6a0907b782bd99e04ce09a0924c0895df6a26bc6fb06baca4526f55e51f7156cceb4791cc65632d66085e8",
-    )
-    async def test_00_train(self, traindir):
+    async def test_00_train(self):
         await train(
             self.model,
             DirectorySource(
-                foldername=str(traindir) + "/rps",
+                foldername=str(self.traindir) + "/rps",
                 feature="image",
                 labels=["rock", "paper", "scissors"],
             ),
         )
 
-    @cached_download_unpack_archive(
-        "https://storage.googleapis.com/laurencemoroney-blog.appspot.com/rps-test-set.zip",
-        "rps-test-set.zip",
-        "testdir",
-        "fc45a0ebe58b9aafc3cd5a60020fa042d3a19c26b0f820aee630b9602c8f53dd52fd40f35d44432dd031dea8f30a5f66",
-    )
-    async def test_01_accuracy(self, testdir):
+    async def test_01_accuracy(self):
         acc = await accuracy(
             self.model,
             DirectorySource(
-                foldername=str(testdir) + "/rps-test-set",
+                foldername=str(self.testdir) + "/rps-test-set",
                 feature="image",
                 labels=["rock", "paper", "scissors"],
             ),
         )
         self.assertGreater(acc, 0)
 
-    @cached_download_unpack_archive(
-        "https://storage.googleapis.com/laurencemoroney-blog.appspot.com/rps-validation.zip",
-        "rps-validation.zip",
-        "predictdir",
-        "375457bb95771ffeace2beedab877292d232f31e76502618d25e0d92a3e029d386429f52c771b05ae1c7229d2f5ecc29",
-    )
-    async def test_02_predict(self, predictdir):
+    async def test_02_predict(self):
         target = self.model.config.predict.name
         predict_value = 0
         async for key, features, prediction in predict(
             self.model,
-            DirectorySource(foldername=str(predictdir), feature="image",),
+            DirectorySource(foldername=str(self.predictdir), feature="image",),
         ):
             pred = prediction
             break
@@ -138,25 +145,7 @@ class TestPyTorchNeuralNetwork(IntegrationCLITestCase):
         self.assertIn(results["value"], self.model.config.classifications)
         self.assertTrue(results["confidence"])
 
-    @cached_download_unpack_archive(
-        "https://storage.googleapis.com/laurencemoroney-blog.appspot.com/rps.zip",
-        "rps.zip",
-        "traindir",
-        "c6a9119b0c6a0907b782bd99e04ce09a0924c0895df6a26bc6fb06baca4526f55e51f7156cceb4791cc65632d66085e8",
-    )
-    @cached_download_unpack_archive(
-        "https://storage.googleapis.com/laurencemoroney-blog.appspot.com/rps-test-set.zip",
-        "rps-test-set.zip",
-        "testdir",
-        "fc45a0ebe58b9aafc3cd5a60020fa042d3a19c26b0f820aee630b9602c8f53dd52fd40f35d44432dd031dea8f30a5f66",
-    )
-    @cached_download_unpack_archive(
-        "https://storage.googleapis.com/laurencemoroney-blog.appspot.com/rps-validation.zip",
-        "rps-validation.zip",
-        "predictdir",
-        "375457bb95771ffeace2beedab877292d232f31e76502618d25e0d92a3e029d386429f52c771b05ae1c7229d2f5ecc29",
-    )
-    async def test_shell(self, traindir, testdir, predictdir):
+    async def test_shell(self):
         def clean_args(fd, directory):
             cmnd = " ".join(fd.readlines()).split("\\\n")
             cmnd = " ".join(cmnd).split()
@@ -172,15 +161,17 @@ class TestPyTorchNeuralNetwork(IntegrationCLITestCase):
         )
 
         with open(sh_filepath("train.sh"), "r") as f:
-            train_command = clean_args(f, str(traindir) + "/rps")
+            train_command = clean_args(f, str(self.traindir) + "/rps")
         await CLI.cli(*train_command[1:])
 
         with open(sh_filepath("accuracy.sh"), "r") as f:
-            accuracy_command = clean_args(f, str(testdir) + "/rps-test-set")
+            accuracy_command = clean_args(
+                f, str(self.testdir) + "/rps-test-set"
+            )
         await CLI.cli(*accuracy_command[1:])
 
         with open(sh_filepath("predict.sh"), "r") as f:
-            predict_command = clean_args(f, str(predictdir))
+            predict_command = clean_args(f, str(self.predictdir))
         results = await CLI.cli(*predict_command[1:-1])
 
         self.assertTrue(isinstance(results, list))
