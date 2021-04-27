@@ -17,6 +17,7 @@ from typing import Type, List, BinaryIO
 from dffml.version import VERSION
 from dffml.df.types import DataFlow
 from dffml.service.dev import (
+    REPO_ROOT,
     Develop,
     RepoDirtyError,
     Export,
@@ -214,6 +215,10 @@ def fake_urlopen(url):
 
 
 class TestRelease(AsyncTestCase):
+    async def setUp(self):
+        await super().setUp()
+        self._stack.enter_context(chdir(REPO_ROOT))
+
     async def test_uncommited_changes(self):
         class FailedFakeProcess(FakeProcess):
             async def communicate(self):
