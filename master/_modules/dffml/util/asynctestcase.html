@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>dffml.util.asynctestcase &mdash; DFFML 135d8cb3 documentation</title>
+  <title>dffml.util.asynctestcase &mdash; DFFML 60088c46 documentation</title>
   
 
   
@@ -65,7 +65,7 @@
             
             
               <div class="version">
-                135d8cb3
+                60088c46
               </div>
             
           
@@ -246,6 +246,39 @@
 <span class="kn">from</span> <span class="nn">.packaging</span> <span class="kn">import</span> <span class="n">is_develop</span>
 
 
+<div class="viewcode-block" id="non_existant_tempfile"><a class="viewcode-back" href="../../../api/util/asynctestcase.html#dffml.util.asynctestcase.non_existant_tempfile">[docs]</a><span class="nd">@contextlib</span><span class="o">.</span><span class="n">contextmanager</span>
+<span class="k">def</span> <span class="nf">non_existant_tempfile</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Yield the filename of a non-existant file within a temporary directory</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">with</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">TemporaryDirectory</span><span class="p">()</span> <span class="k">as</span> <span class="n">testdir</span><span class="p">:</span>
+        <span class="k">yield</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">testdir</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()))</span></div>
+
+
+<div class="viewcode-block" id="relative_path"><a class="viewcode-back" href="../../../api/util/asynctestcase.html#dffml.util.asynctestcase.relative_path">[docs]</a><span class="k">def</span> <span class="nf">relative_path</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns a pathlib.Path object with the path relative to this file.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">target</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parents</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">args</span><span class="p">)[</span><span class="mi">1</span><span class="p">:]:</span>
+        <span class="n">target</span> <span class="o">/=</span> <span class="n">path</span>
+    <span class="k">return</span> <span class="n">target</span></div>
+
+
+<div class="viewcode-block" id="relative_chdir"><a class="viewcode-back" href="../../../api/util/asynctestcase.html#dffml.util.asynctestcase.relative_chdir">[docs]</a><span class="nd">@contextlib</span><span class="o">.</span><span class="n">contextmanager</span>
+<span class="k">def</span> <span class="nf">relative_chdir</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Change directory to a location relative to the location of this file.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">target</span> <span class="o">=</span> <span class="n">relative_path</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
+    <span class="n">orig_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="n">target</span><span class="p">)</span>
+        <span class="k">yield</span> <span class="n">target</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="n">orig_dir</span><span class="p">)</span></div>
+
+
 <div class="viewcode-block" id="AsyncTestCase"><a class="viewcode-back" href="../../../api/util/asynctestcase.html#dffml.util.asynctestcase.AsyncTestCase">[docs]</a><span class="k">class</span> <span class="nc">AsyncTestCase</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Runs any ``test_`` methods as coroutines in the default event loop.</span>
@@ -261,8 +294,20 @@
 <span class="sd">    ...         await asyncio.sleep(1)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
+    <span class="n">REQUIRED_PLUGINS</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="c1"># The event loop to run test_ functions in</span>
     <span class="n">loop</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">get_event_loop</span><span class="p">()</span>
+
+<div class="viewcode-block" id="AsyncTestCase.setUp"><a class="viewcode-back" href="../../../api/util/asynctestcase.html#dffml.util.asynctestcase.AsyncTestCase.setUp">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">setUp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_stack</span> <span class="o">=</span> <span class="n">contextlib</span><span class="o">.</span><span class="n">ExitStack</span><span class="p">()</span><span class="o">.</span><span class="fm">__enter__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_astack</span> <span class="o">=</span> <span class="k">await</span> <span class="n">contextlib</span><span class="o">.</span><span class="n">AsyncExitStack</span><span class="p">()</span><span class="o">.</span><span class="fm">__aenter__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">required_plugins</span><span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">REQUIRED_PLUGINS</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stdout</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">StringIO</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_stack</span><span class="o">.</span><span class="n">enter_context</span><span class="p">(</span><span class="n">chdir</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mktempdir</span><span class="p">()))</span></div>
+
+<div class="viewcode-block" id="AsyncTestCase.tearDown"><a class="viewcode-back" href="../../../api/util/asynctestcase.html#dffml.util.asynctestcase.AsyncTestCase.tearDown">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">tearDown</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_stack</span><span class="o">.</span><span class="fm">__exit__</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_astack</span><span class="o">.</span><span class="fm">__aexit__</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="AsyncTestCase.async_wrapper"><a class="viewcode-back" href="../../../api/util/asynctestcase.html#dffml.util.asynctestcase.AsyncTestCase.async_wrapper">[docs]</a>    <span class="k">def</span> <span class="nf">async_wrapper</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coro</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -298,28 +343,7 @@
                 <span class="n">name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;test_&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">name</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;setUp&quot;</span><span class="p">,</span> <span class="s2">&quot;tearDown&quot;</span><span class="p">]</span>
             <span class="p">):</span>
                 <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">async_wrapper</span><span class="p">(</span><span class="n">method</span><span class="p">))</span>
-        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">result</span><span class="o">=</span><span class="n">result</span><span class="p">)</span></div></div>
-
-
-<div class="viewcode-block" id="non_existant_tempfile"><a class="viewcode-back" href="../../../api/util/asynctestcase.html#dffml.util.asynctestcase.non_existant_tempfile">[docs]</a><span class="nd">@contextlib</span><span class="o">.</span><span class="n">contextmanager</span>
-<span class="k">def</span> <span class="nf">non_existant_tempfile</span><span class="p">():</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Yield the filename of a non-existant file within a temporary directory</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">with</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">TemporaryDirectory</span><span class="p">()</span> <span class="k">as</span> <span class="n">testdir</span><span class="p">:</span>
-        <span class="k">yield</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">testdir</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()))</span></div>
-
-
-<div class="viewcode-block" id="AsyncExitStackTestCase"><a class="viewcode-back" href="../../../api/util/asynctestcase.html#dffml.util.asynctestcase.AsyncExitStackTestCase">[docs]</a><span class="k">class</span> <span class="nc">AsyncExitStackTestCase</span><span class="p">(</span><span class="n">AsyncTestCase</span><span class="p">):</span>
-<div class="viewcode-block" id="AsyncExitStackTestCase.setUp"><a class="viewcode-back" href="../../../api/util/asynctestcase.html#dffml.util.asynctestcase.AsyncExitStackTestCase.setUp">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">setUp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">setUp</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_stack</span> <span class="o">=</span> <span class="n">contextlib</span><span class="o">.</span><span class="n">ExitStack</span><span class="p">()</span><span class="o">.</span><span class="fm">__enter__</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_astack</span> <span class="o">=</span> <span class="k">await</span> <span class="n">contextlib</span><span class="o">.</span><span class="n">AsyncExitStack</span><span class="p">()</span><span class="o">.</span><span class="fm">__aenter__</span><span class="p">()</span></div>
-
-<div class="viewcode-block" id="AsyncExitStackTestCase.tearDown"><a class="viewcode-back" href="../../../api/util/asynctestcase.html#dffml.util.asynctestcase.AsyncExitStackTestCase.tearDown">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">tearDown</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">tearDown</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_stack</span><span class="o">.</span><span class="fm">__exit__</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_astack</span><span class="o">.</span><span class="fm">__aexit__</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">result</span><span class="o">=</span><span class="n">result</span><span class="p">)</span></div>
 
     <span class="k">def</span> <span class="nf">mktempfile</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">suffix</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">text</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
@@ -332,41 +356,7 @@
         <span class="k">return</span> <span class="n">filename</span>
 
     <span class="k">def</span> <span class="nf">mktempdir</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stack</span><span class="o">.</span><span class="n">enter_context</span><span class="p">(</span><span class="n">tempfile</span><span class="o">.</span><span class="n">TemporaryDirectory</span><span class="p">())</span></div>
-
-
-<div class="viewcode-block" id="relative_path"><a class="viewcode-back" href="../../../api/util/asynctestcase.html#dffml.util.asynctestcase.relative_path">[docs]</a><span class="k">def</span> <span class="nf">relative_path</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Returns a pathlib.Path object with the path relative to this file.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">target</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parents</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">args</span><span class="p">)[</span><span class="mi">1</span><span class="p">:]:</span>
-        <span class="n">target</span> <span class="o">/=</span> <span class="n">path</span>
-    <span class="k">return</span> <span class="n">target</span></div>
-
-
-<div class="viewcode-block" id="relative_chdir"><a class="viewcode-back" href="../../../api/util/asynctestcase.html#dffml.util.asynctestcase.relative_chdir">[docs]</a><span class="nd">@contextlib</span><span class="o">.</span><span class="n">contextmanager</span>
-<span class="k">def</span> <span class="nf">relative_chdir</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Change directory to a location relative to the location of this file.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">target</span> <span class="o">=</span> <span class="n">relative_path</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
-    <span class="n">orig_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span>
-    <span class="k">try</span><span class="p">:</span>
-        <span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="n">target</span><span class="p">)</span>
-        <span class="k">yield</span> <span class="n">target</span>
-    <span class="k">finally</span><span class="p">:</span>
-        <span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="n">orig_dir</span><span class="p">)</span></div>
-
-
-<div class="viewcode-block" id="IntegrationCLITestCase"><a class="viewcode-back" href="../../../api/util/asynctestcase.html#dffml.util.asynctestcase.IntegrationCLITestCase">[docs]</a><span class="k">class</span> <span class="nc">IntegrationCLITestCase</span><span class="p">(</span><span class="n">AsyncExitStackTestCase</span><span class="p">):</span>
-    <span class="n">REQUIRED_PLUGINS</span> <span class="o">=</span> <span class="p">[]</span>
-
-<div class="viewcode-block" id="IntegrationCLITestCase.setUp"><a class="viewcode-back" href="../../../api/util/asynctestcase.html#dffml.util.asynctestcase.IntegrationCLITestCase.setUp">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">setUp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">await</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">setUp</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">required_plugins</span><span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">REQUIRED_PLUGINS</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">stdout</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">StringIO</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_stack</span><span class="o">.</span><span class="n">enter_context</span><span class="p">(</span><span class="n">chdir</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mktempdir</span><span class="p">()))</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stack</span><span class="o">.</span><span class="n">enter_context</span><span class="p">(</span><span class="n">tempfile</span><span class="o">.</span><span class="n">TemporaryDirectory</span><span class="p">())</span>
 
     <span class="k">def</span> <span class="nf">required_plugins</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">is_develop</span><span class="p">,</span> <span class="n">args</span><span class="p">)):</span>

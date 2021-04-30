@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>dffml.service.dev &mdash; DFFML 135d8cb3 documentation</title>
+  <title>dffml.service.dev &mdash; DFFML 60088c46 documentation</title>
   
 
   
@@ -65,7 +65,7 @@
             
             
               <div class="version">
-                135d8cb3
+                60088c46
               </div>
             
           
@@ -760,6 +760,8 @@
         <span class="c1"># cd to directory</span>
         <span class="k">with</span> <span class="n">chdir</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">package</span><span class="p">)):</span>
             <span class="c1"># Get name</span>
+            <span class="c1"># TODO(2ndparty) This needs to change to support second party</span>
+            <span class="c1"># plugins</span>
             <span class="n">name</span> <span class="o">=</span> <span class="p">{():</span> <span class="s2">&quot;dffml&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">PACKAGE_DIRECTORY_TO_NAME</span><span class="p">,}[</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">package</span><span class="o">.</span><span class="n">relative_to</span><span class="p">(</span><span class="n">REPO_ROOT</span><span class="p">)</span><span class="o">.</span><span class="n">parts</span>
             <span class="p">]</span>

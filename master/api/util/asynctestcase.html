@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Util Asynctestcase &mdash; DFFML 135d8cb3 documentation</title>
+  <title>Util Asynctestcase &mdash; DFFML 60088c46 documentation</title>
   
 
   
@@ -66,7 +66,7 @@
             
             
               <div class="version">
-                135d8cb3
+                60088c46
               </div>
             
           
@@ -250,23 +250,6 @@ development mode.</p>
 $ dffml service dev install</p>
 <p>Add the -user flag to install to ~/.local</p>
 <dl class="py class">
-<dt id="dffml.util.asynctestcase.AsyncExitStackTestCase">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">dffml.util.asynctestcase.</span></code><code class="sig-name descname"><span class="pre">AsyncExitStackTestCase</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/util/asynctestcase.html#AsyncExitStackTestCase"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.util.asynctestcase.AsyncExitStackTestCase" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="py method">
-<dt id="dffml.util.asynctestcase.AsyncExitStackTestCase.setUp">
-<em class="property"><span class="pre">async</span> </em><code class="sig-name descname"><span class="pre">setUp</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/util/asynctestcase.html#AsyncExitStackTestCase.setUp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.util.asynctestcase.AsyncExitStackTestCase.setUp" title="Permalink to this definition">¶</a></dt>
-<dd><p>Hook method for setting up the test fixture before exercising it.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="dffml.util.asynctestcase.AsyncExitStackTestCase.tearDown">
-<em class="property"><span class="pre">async</span> </em><code class="sig-name descname"><span class="pre">tearDown</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/util/asynctestcase.html#AsyncExitStackTestCase.tearDown"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.util.asynctestcase.AsyncExitStackTestCase.tearDown" title="Permalink to this definition">¶</a></dt>
-<dd><p>Hook method for deconstructing the test fixture after testing it.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
 <dt id="dffml.util.asynctestcase.AsyncTestCase">
 <em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">dffml.util.asynctestcase.</span></code><code class="sig-name descname"><span class="pre">AsyncTestCase</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/util/asynctestcase.html#AsyncTestCase"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.util.asynctestcase.AsyncTestCase" title="Permalink to this definition">¶</a></dt>
 <dd><p>Runs any <code class="docutils literal notranslate"><span class="pre">test_</span></code> methods as coroutines in the default event loop.</p>
@@ -293,15 +276,16 @@ $ dffml service dev install</p>
 in the event loop.</p>
 </dd></dl>
 
+<dl class="py method">
+<dt id="dffml.util.asynctestcase.AsyncTestCase.setUp">
+<em class="property"><span class="pre">async</span> </em><code class="sig-name descname"><span class="pre">setUp</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/util/asynctestcase.html#AsyncTestCase.setUp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.util.asynctestcase.AsyncTestCase.setUp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hook method for setting up the test fixture before exercising it.</p>
 </dd></dl>
 
-<dl class="py class">
-<dt id="dffml.util.asynctestcase.IntegrationCLITestCase">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">dffml.util.asynctestcase.</span></code><code class="sig-name descname"><span class="pre">IntegrationCLITestCase</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/util/asynctestcase.html#IntegrationCLITestCase"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.util.asynctestcase.IntegrationCLITestCase" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="py method">
-<dt id="dffml.util.asynctestcase.IntegrationCLITestCase.setUp">
-<em class="property"><span class="pre">async</span> </em><code class="sig-name descname"><span class="pre">setUp</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/util/asynctestcase.html#IntegrationCLITestCase.setUp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.util.asynctestcase.IntegrationCLITestCase.setUp" title="Permalink to this definition">¶</a></dt>
-<dd><p>Hook method for setting up the test fixture before exercising it.</p>
+<dl class="py method">
+<dt id="dffml.util.asynctestcase.AsyncTestCase.tearDown">
+<em class="property"><span class="pre">async</span> </em><code class="sig-name descname"><span class="pre">tearDown</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/util/asynctestcase.html#AsyncTestCase.tearDown"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.util.asynctestcase.AsyncTestCase.tearDown" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hook method for deconstructing the test fixture after testing it.</p>
 </dd></dl>
 
 </dd></dl>
