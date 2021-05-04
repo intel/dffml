@@ -1,25 +1,21 @@
 import unittest
 from random import randrange
 
-import pandas as pd
+from dffml import *
 
 
 class Kfold:
-    def split(
-        self, data, folds=3, shuffle=False
+    async def split(
+        self, source, fold_size, shuffle=False, *args
     ):  # Will split the data into required number of folds
-        fold_size = int(len(data) / folds)
-        if shuffle == True:
-            data_duplicate = data.sample(frac=1).reset_index(drop=True)
-        else:
-            data_duplicate = data
+        fold = list()
         split_data = list()
-        for i in range(folds):
-            x = i * fold_size
-            fold = list()
-            for j in range(x, x + fold_size):
-                fold.append(data[j])
-            split_data.append(fold)
+        async for record in load(source):
+            if len(fold) < fold_size:
+                fold.append(record.export())
+            else:
+                split_data.append(fold)
+                fold = []
         return split_data
 
 
