@@ -43,9 +43,15 @@ class DataFrameSourceContext(BaseSourceContext):
             yield Record(str(row.Index), data={"features": features})
 
     async def record(self, key: str) -> Record:
+        data = self.parent.config.dataframe.iloc[int(key)]
+        predictions = {
+            key: data[key] for key in self.parent.config.predictions
+        }
+        features = {
+            key: value for key in data.items() if key not in predictions
+        }
         return Record(
-            str(key),
-            data={"features": {**self.parent.config.dataframe.iloc[int(key)]}},
+            str(key), data={"features": features, "predictions": predictions},
         )
 
 
