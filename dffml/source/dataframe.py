@@ -27,15 +27,14 @@ class DataFrameSourceContext(BaseSourceContext):
             df.loc[record.key, col] = feature_data[col]
 
         # Store prediction
-        try:
-            for col in self.parent.config.predictions:
+        for col in self.parent.config.predictions:
 
-                prediction = record.prediction(col)
-                prediction_columns = self.parent.config.predictions
-                prediction_data = OrderedDict.fromkeys(prediction_columns)
-                prediction_data.update(prediction.dict())
+            prediction = record.prediction(col)
+            prediction_columns = self.parent.config.predictions
+            prediction_data = OrderedDict.fromkeys(prediction_columns)
+            prediction_data.update(prediction.dict())
 
-                df.loc[record.key, col] = prediction_data[col]
+            df.loc[record.key, col] = prediction_data[col]
 
     async def records(self) -> AsyncIterator[Record]:
         for row in self.parent.config.dataframe.itertuples():
