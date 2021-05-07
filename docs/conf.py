@@ -62,6 +62,8 @@ extensions = [
     "dffml.util.testing.consoletest.builder",
     "literalinclude_diff",
     "literalinclude_relative",
+    "nbsphinx",
+    "nbsphinx_link",
 ]
 
 intersphinx_mapping = {"python": ("https://docs.python.org/3", None)}

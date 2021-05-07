@@ -78,6 +78,10 @@ if [[ "x${PLUGIN}" == "xmodel/autosklearn" ]] || \
   python -m pip install liac-arff psutil smac==0.12.3
 fi
 
+if [[ "x${PLUGIN}" == "xdocs" ]]; then
+  sudo apt-get install -y pandoc
+fi
+
 # ==========================  END  INSTALL DEPENDENCIES ========================
 
 

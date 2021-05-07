@@ -7,6 +7,7 @@ The following are some example use cases of DFFML.
     :maxdepth: 2
     :caption: Contents:
 
+    notebooks/index
     integration
     shouldi
     dataflows
