@@ -24,10 +24,10 @@ CACHED_OPENJDK = (
     "d87ab7b623e17c85d763fd9bf810fc6de7d7c001facf238266bb316586081732cfd4b08d9fbaa83655cbdf9a4f497ac9",
 )
 CACHED_DEPENDENCY_CHECK = (
-    "https://dl.bintray.com/jeremy-long/owasp/dependency-check-5.3.2-release.zip",
+    "https://github.com/jeremylong/DependencyCheck/releases/download/v6.1.6/dependency-check-6.1.6-release.zip",
     downloads / "dependency_check.zip",
     downloads / "dependency_check-download",
-    "02652657e658193369ccd38c000dfbdcbafdcbe991467a8d4f4ef6845ec7af1eae6e2739df6ec851b2d5684fede77c5b",
+    "3b2575281395ef805cce2b74e70509dcb7f1b86dcfba5eb91ff9037206c2b3027a2d1d7397c93c5d50a341e6a8b72158",
 )
 CACHED_TARGET_RXJAVA = (
     "https://github.com/ReactiveX/RxJava/archive/v2.2.16.tar.gz",
