@@ -32,5 +32,7 @@ class TestRunDependencyCheckOp(AsyncTestCase):
                 / "bin"
                 / "dependency-check.sh"
             ).chmod(0o755)
-            results = await run_dependency_check(str(rxjava / "RxJava-2.2.16"))
+            results = await run_dependency_check.test(
+                pkg=str(rxjava / "RxJava-2.2.16")
+            )
             self.assertGreater(results["report"]["total_CVE"], 3)
