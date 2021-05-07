@@ -1,6 +1,7 @@
 import json
 import os
 import tempfile
+import urllib.parse
 from pathlib import Path
 import asyncio
 from typing import Dict, Any
@@ -23,43 +24,50 @@ class DependencyCheckError(Exception):
     inputs={"pkg": package_src_dir},
     outputs={"report": dependency_check_output},
 )
-async def run_dependency_check(pkg: str) -> Dict[str, Any]:
+async def run_dependency_check(self, pkg: str) -> Dict[str, Any]:
     """
     CLI usage: dffml service dev run -log debug shouldi.dependency_check:run_dependency_check -pkg .
     """
     with tempfile.TemporaryDirectory() as tempdir:
+        # Define command
+        cmd = [
+            "dependency-check.sh",
+            "-f",
+            "JSON",
+            "--out",
+            os.path.abspath(tempdir),
+        ]
+        kwargs = {
+            "stdout": asyncio.subprocess.PIPE,
+            "stderr": asyncio.subprocess.PIPE,
+        }
+        # Dependency check version 6 requires proxy be set explicitly
+        for env_var in ["HTTPS_PROXY", "https_proxy"]:
+            if env_var in os.environ:
+                parse_result = urllib.parse.urlparse(os.environ[env_var])
+                cmd += [
+                    "--proxyserver",
+                    parse_result.hostname,
+                    "--proxyport",
+                    str(parse_result.port)
+                    if parse_result.port is not None
+                    else "8080",
+                ]
+                break
+        # Directory or file to scan
+        cmd.append("-s")
         if Path(pkg).is_file():
-            proc = await asyncio.create_subprocess_exec(
-                "dependency-check.sh",
-                "-f",
-                "JSON",
-                "--out",
-                os.path.abspath(tempdir),
-                "-s",
-                pkg,
-                cwd=os.path.dirname(pkg),
-                stdout=asyncio.subprocess.PIPE,
-                stderr=asyncio.subprocess.PIPE,
-            )
-            _, stderr = await proc.communicate()
-            if proc.returncode != 0:
-                raise DependencyCheckError(stderr.decode())
+            cmd.append(os.path.basename(pkg))
+            kwargs["cwd"] = os.path.dirname(pkg)
         else:
-            proc = await asyncio.create_subprocess_exec(
-                "dependency-check.sh",
-                "-f",
-                "JSON",
-                "--out",
-                os.path.abspath(tempdir),
-                "-s",
-                ".",
-                cwd=pkg,
-                stdout=asyncio.subprocess.PIPE,
-                stderr=asyncio.subprocess.PIPE,
-            )
-            _, stderr = await proc.communicate()
-            if proc.returncode != 0:
-                raise DependencyCheckError(stderr.decode())
+            cmd.append(".")
+            kwargs["cwd"] = pkg
+        # Run command
+        self.logger.debug(f"Running {cmd}, {kwargs}")
+        proc = await asyncio.create_subprocess_exec(*cmd, **kwargs)
+        _, stderr = await proc.communicate()
+        if proc.returncode != 0:
+            raise DependencyCheckError(stderr.decode())
 
         with open(
             os.path.join(
