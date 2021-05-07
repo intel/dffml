@@ -8,6 +8,6 @@ Databases are an abstraction around common database operations.
     :maxdepth: 2
     :caption: Contents:
 
-    sqlite
-    sql
     base
+    sql
+    sqlite

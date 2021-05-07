@@ -6,7 +6,7 @@ Models
     :maxdepth: 2
     :caption: Contents:
 
-    slr
-    log
-    model
     accuracy
+    log
+    slr
+    model

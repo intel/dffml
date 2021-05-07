@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Documentation &mdash; DFFML 469dc6d4 documentation</title>
+  <title>Documentation &mdash; DFFML 1411ccf9 documentation</title>
   
 
   
@@ -34,6 +34,7 @@
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/copybutton.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
@@ -66,7 +67,7 @@
             
             
               <div class="version">
-                469dc6d4
+                1411ccf9
               </div>
             
           
@@ -108,25 +109,25 @@
 <li class="toctree-l1"><a class="reference internal" href="../plugins/index.html">Plugins</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../cli.html">Command Line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../plugins/service/http/index.html">HTTP API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../api/log.html">Log</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../api/record.html">Record</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../api/plugins.html">Plugins</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../api/high_level.html">High_Level</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../api/version.html">Version</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../api/base.html">Base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/plugins.html">Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/log.html">Log</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/version.html">Version</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../api/noasync.html">Noasync</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../api/source/index.html">Source</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../api/service/index.html">Service</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../api/operation/index.html">Operation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../api/feature/index.html">Feature</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../api/configloader/index.html">Configloader</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../api/port/index.html">Port</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/record.html">Record</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/high_level.html">High_Level</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../api/model/index.html">Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/service/index.html">Service</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/configloader/index.html">Configloader</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/db/index.html">Db</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/port/index.html">Port</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/operation/index.html">Operation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/source/index.html">Source</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/feature/index.html">Feature</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../api/cli/index.html">Cli</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/df/index.html">Df</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../api/secret/index.html">Secret</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../api/util/index.html">Util</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../api/db/index.html">Db</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../api/df/index.html">Df</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../troubleshooting.html">Troubleshooting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../arch/index.html">Architecture</a></li>
 </ul>
@@ -238,11 +239,42 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="documentation">
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="documentation">
 <h1>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">¶</a></h1>
-<p>You’ll want to have all of the official plugins installed when generating the
-documentation. See <a class="reference internal" href="dev_env.html#dev-env-install-official-plugins"><span class="std std-ref">Installing Plugins In Development Mode</span></a>.</p>
-<p>To build, run the docs script.</p>
+<p>Before building the docs, you’ll want to have pandocs as well as all of the
+official plugins installed. See <a class="reference internal" href="dev_env.html#dev-env-install-official-plugins"><span class="std std-ref">Installing Plugins In Development Mode</span></a>.
+For most Linux distros, you can install pandocs by</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo apt-get install pandoc
+</pre></div>
+</div>
+<p>For alternative ways to install, refer to
+<a class="reference external" href="https://pandoc.org/installing.html">pandocs documentation</a>.</p>
+<p>After you have installed the required plugins, you can build the docs by running the
+script.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml service dev docs
 </pre></div>
 </div>

@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>FLOWER17 Species classification using Transfer Learning &mdash; DFFML 469dc6d4 documentation</title>
+  <title>FLOWER17 Species classification using Transfer Learning &mdash; DFFML 1411ccf9 documentation</title>
   
 
   
@@ -34,6 +34,7 @@
         <script src="../../_static/underscore.js"></script>
         <script src="../../_static/doctools.js"></script>
         <script src="../../_static/copybutton.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
@@ -66,7 +67,7 @@
             
             
               <div class="version">
-                469dc6d4
+                1411ccf9
               </div>
             
           
@@ -102,6 +103,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../quickstart/model.html">Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">Examples</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../notebooks/index.html">Notebooks</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../integration.html">Automating Classification</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../shouldi.html">Meta Static Analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../dataflows.html">DataFlow HTTP Deployment</a></li>
@@ -121,25 +123,25 @@
 <li class="toctree-l1"><a class="reference internal" href="../../plugins/index.html">Plugins</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../cli.html">Command Line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../plugins/service/http/index.html">HTTP API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../api/log.html">Log</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../api/record.html">Record</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../api/plugins.html">Plugins</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../api/high_level.html">High_Level</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../api/version.html">Version</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api/base.html">Base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/plugins.html">Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/log.html">Log</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/version.html">Version</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api/noasync.html">Noasync</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../api/source/index.html">Source</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../api/service/index.html">Service</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../api/operation/index.html">Operation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../api/feature/index.html">Feature</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../api/configloader/index.html">Configloader</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../api/port/index.html">Port</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/record.html">Record</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/high_level.html">High_Level</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api/model/index.html">Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/service/index.html">Service</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/configloader/index.html">Configloader</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/db/index.html">Db</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/port/index.html">Port</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/operation/index.html">Operation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/source/index.html">Source</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/feature/index.html">Feature</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api/cli/index.html">Cli</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/df/index.html">Df</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api/secret/index.html">Secret</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api/util/index.html">Util</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../api/db/index.html">Db</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../api/df/index.html">Df</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../troubleshooting.html">Troubleshooting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../arch/index.html">Architecture</a></li>
 </ul>
@@ -234,7 +236,31 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="flower17-species-classification-using-transfer-learning">
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="flower17-species-classification-using-transfer-learning">
 <h1>FLOWER17 Species classification using Transfer Learning<a class="headerlink" href="#flower17-species-classification-using-transfer-learning" title="Permalink to this headline">¶</a></h1>
 <p>The model we’ll be using is <a class="reference internal" href="../../plugins/dffml_model.html#plugin-model-dffml-model-pytorch-alexnet"><span class="std std-ref">AlexNet CNN Model</span></a>
 which is a part of <code class="docutils literal notranslate"><span class="pre">dffml-model-pytorch</span></code>, a DFFML plugin which allows you to use PyTorch
