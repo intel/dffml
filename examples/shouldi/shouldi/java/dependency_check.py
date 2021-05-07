@@ -6,7 +6,7 @@ from pathlib import Path
 import asyncio
 from typing import Dict, Any
 
-from dffml import op, Definition
+from dffml import op, Definition, concurrently
 
 package_src_dir = Definition(name="package_src_dir", primitive="str")
 dependency_check_output = Definition(
@@ -65,9 +65,28 @@ async def run_dependency_check(self, pkg: str) -> Dict[str, Any]:
         # Run command
         self.logger.debug(f"Running {cmd}, {kwargs}")
         proc = await asyncio.create_subprocess_exec(*cmd, **kwargs)
-        _, stderr = await proc.communicate()
+        output = []
+        work = {
+            asyncio.create_task(proc.stdout.readline()): "stdout.readline",
+            asyncio.create_task(proc.stderr.readline()): "stderr.readline",
+            asyncio.create_task(proc.wait()): "wait",
+        }
+        async for event, result in concurrently(work):
+            if event.endswith("readline"):
+                # Log line read
+                self.logger.debug(f"{event}: {result.decode().rstrip()}")
+                # Append to output in case of error
+                output.append(result)
+                # Read another line if that's the event
+                coro = getattr(proc, event.split(".")[0]).readline()
+                task = asyncio.create_task(coro)
+                work[task] = event
+            else:
+                # When wait() returns process has exited
+                break
+
         if proc.returncode != 0:
-            raise DependencyCheckError(stderr.decode())
+            raise DependencyCheckError(b"\n".join(output).decode())
 
         with open(
             os.path.join(
