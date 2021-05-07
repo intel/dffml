@@ -83,16 +83,16 @@ class TestCLIUse(AsyncTestCase):
             )
         with prepend_to_path(
             rust / "rust-install" / "bin",
-            cargo_audit / "cargo-audit-0.14.0" / "target" / "release",
+            cargo_audit / "rustsec-0.14.0" / "target" / "release",
         ):
             if not (
                 cargo_audit
-                / "cargo-audit-0.14.0"
+                / "rustsec-0.14.0"
                 / "target"
                 / "release"
                 / "cargo-audit"
             ).is_file():
-                await run_cargo_build(cargo_audit / "cargo-audit-0.14.0")
+                await run_cargo_build(cargo_audit / "rustsec-0.14.0")
 
             # Fix for https://github.com/RustSec/cargo-audit/issues/331
             advisory_db_path = pathlib.Path("~", ".cargo", "advisory-db")
