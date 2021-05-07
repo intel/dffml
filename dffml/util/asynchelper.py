@@ -105,7 +105,6 @@ async def concurrently(
             )
 
             for task in done:
-                logger.debug("[%s] done", task)
                 # Remove the task from the set of tasks we are waiting for
                 tasks.remove(task)
                 # Get the tasks exception if any
