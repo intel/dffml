@@ -44,21 +44,36 @@ def progressbar(percent):
     """
     Simple progressbar to show download progress.
     """
-    progress = "#" * int(percent / 2)
+    progress = "#" * int(percent / 4)
     download_logger.debug(
-        f"\rDownloading...: [{progress.ljust(50)}] {int(percent)}%\r"
+        f"Downloading: [{progress.ljust(25)}] {int(percent)}%"
     )
+
+
+def progressbar_no_totalsize(blocknum):
+    """
+    Progress bar that bounces back and forth since we don't know total size.
+    """
+    blank = " " * 25
+    progress = blank[: blocknum % 25] + "#" + blank[(blocknum % 25) + 1 :]
+    download_logger.debug(f"Downloading: [{progress}] ?%")
 
 
 def progress_reporthook(blocknum, blocksize, totalsize):
     """
     Serve as a reporthook for monitoring download progress.
     """
-    percent = (
-        min(1.0, 0 if totalsize == 0 else (blocknum * blocksize / totalsize))
-        * 100
-    )
-    progressbar(percent)
+    if totalsize < 0:
+        progressbar_no_totalsize(blocknum + 6)
+    else:
+        percent = (
+            min(
+                1.0,
+                0 if totalsize == 0 else (blocknum * blocksize / totalsize),
+            )
+            * 100
+        )
+        progressbar(percent)
 
 
 # Default list of URL protocols allowed
