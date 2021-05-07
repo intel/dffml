@@ -1,10 +1,19 @@
 Documentation
 =============
 
-You'll want to have all of the official plugins installed when generating the
-documentation. See :ref:`dev_env_install_official_plugins`.
+Before building the docs, you'll want to have pandocs as well as all of the
+official plugins installed. See :ref:`dev_env_install_official_plugins`.
+For most Linux distros, you can install pandocs by
 
-To build, run the docs script.
+.. code-block:: console
+
+    $ sudo apt-get install pandoc
+
+For alternative ways to install, refer to
+`pandocs documentation <https://pandoc.org/installing.html>`_.
+
+After you have installed the required plugins, you can build the docs by running the
+script.
 
 .. code-block:: console
 
