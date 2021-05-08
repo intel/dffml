@@ -58,16 +58,16 @@ CACHED_TARGET_CRI_RESOURCE_MANAGER = (
 
 # Rust
 CACHED_RUST = (
-    "https://static.rust-lang.org/dist/rust-1.50.0-x86_64-unknown-linux-gnu.tar.gz",
+    "https://static.rust-lang.org/dist/rust-1.52.0-x86_64-unknown-linux-gnu.tar.gz",
     downloads / "rust.tar.gz",
     downloads / "rust-download",
-    "f6eb40e09d7fa6f38f7374f6736a773b01ac191e5d421d583b7e7dd4d07c44fc6b8a7a2637af780cfab08b91715f8147",
+    "816355b36682fdd888da4dca19b9b08c9670d49d7f4bf4ecfd9fafad8e966ebbf7b393f3e3b07705355cb420698daf4e",
 )
 CACHED_CARGO_AUDIT = (
-    "https://github.com/RustSec/cargo-audit/archive/v0.14.0.tar.gz",
+    "https://github.com/RustSec/cargo-audit/archive/v0.14.1.tar.gz",
     downloads / "cargo_audit.tar.gz",
     downloads / "cargo-audit-download",
-    "871b353a43c1c90892c85534c688a4a74c8b488ae2f7851e6e0753810f4423a4176d24eb707dd8e4ba31afd7785f1205",
+    "594bd8f82473ca61c40a915eecb896c6f8608437bb91ae41d531d851285a584e2d7d1c37845f897c71d80260df051950",
 )
 CACHED_TARGET_RUST_CLIPPY = (
     "https://github.com/rust-lang/rust-clippy/archive/52c25e9136f533c350fa1916b5bf5103f69c0f4d.tar.gz",
