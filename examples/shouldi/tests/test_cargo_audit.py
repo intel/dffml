@@ -24,9 +24,9 @@ class TestRunCargoAuditOp(AsyncTestCase):
             *CACHED_TARGET_RUST_CLIPPY
         )
         if not (
-            cargo_audit / "rustsec-0.14.0" / "target" / "release" / "rustsec"
+            cargo_audit / "rustsec-0.14.1" / "target" / "release" / "rustsec"
         ).is_file():
-            await run_cargo_build(cargo_audit / "rustsec-0.14.0")
+            await run_cargo_build(cargo_audit / "rustsec-0.14.1")
 
         # Fix for https://github.com/RustSec/rustsec/issues/331
         advisory_db_path = pathlib.Path("~", ".cargo", "advisory-db")
@@ -34,8 +34,8 @@ class TestRunCargoAuditOp(AsyncTestCase):
             shutil.rmtree(str(advisory_db_path))
 
         with prepend_to_path(
-            rust / "rust-1.50.0-x86_64-unknown-linux-gnu" / "cargo" / "bin",
-            cargo_audit / "rustsec-0.14.0" / "target" / "release",
+            rust / "rust-1.52.0-x86_64-unknown-linux-gnu" / "cargo" / "bin",
+            cargo_audit / "rustsec-0.14.1" / "target" / "release",
         ):
             results = await run_cargo_audit(
                 str(
