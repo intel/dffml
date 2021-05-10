@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>dffml.util.log &mdash; DFFML 1411ccf9 documentation</title>
+  <title>dffml.util.log &mdash; DFFML acd139b2 documentation</title>
   
 
   
@@ -66,7 +66,7 @@
             
             
               <div class="version">
-                1411ccf9
+                acd139b2
               </div>
             
           
@@ -241,16 +241,8 @@
 <span class="sd">    Helper function to create a child logger for displaying download progress</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">logger</span> <span class="o">=</span> <span class="n">root_logger</span><span class="o">.</span><span class="n">getChild</span><span class="p">(</span><span class="s2">&quot;download_logger&quot;</span><span class="p">)</span>
-
     <span class="n">duplicate_filter</span> <span class="o">=</span> <span class="n">DuplicateFilter</span><span class="p">()</span>
-    <span class="n">progress_handler</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">StreamHandler</span><span class="p">()</span>
-    <span class="n">formatter</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">Formatter</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\x1b</span><span class="s2">[80D</span><span class="se">\x1b</span><span class="s2">[K</span><span class="si">%(message)s</span><span class="s2">&quot;</span><span class="p">)</span>
-
-    <span class="n">progress_handler</span><span class="o">.</span><span class="n">setFormatter</span><span class="p">(</span><span class="n">formatter</span><span class="p">)</span>
-    <span class="n">progress_handler</span><span class="o">.</span><span class="n">terminator</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
-    <span class="n">logger</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="n">progress_handler</span><span class="p">)</span>
     <span class="n">logger</span><span class="o">.</span><span class="n">addFilter</span><span class="p">(</span><span class="n">duplicate_filter</span><span class="p">)</span>
-
     <span class="k">return</span> <span class="n">logger</span></div>
 </pre></div>
 

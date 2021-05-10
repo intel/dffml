@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>dffml.util.net &mdash; DFFML 1411ccf9 documentation</title>
+  <title>dffml.util.net &mdash; DFFML acd139b2 documentation</title>
   
 
   
@@ -66,7 +66,7 @@
             
             
               <div class="version">
-                1411ccf9
+                acd139b2
               </div>
             
           
@@ -260,21 +260,36 @@
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Simple progressbar to show download progress.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">progress</span> <span class="o">=</span> <span class="s2">&quot;#&quot;</span> <span class="o">*</span> <span class="nb">int</span><span class="p">(</span><span class="n">percent</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">progress</span> <span class="o">=</span> <span class="s2">&quot;#&quot;</span> <span class="o">*</span> <span class="nb">int</span><span class="p">(</span><span class="n">percent</span> <span class="o">/</span> <span class="mi">4</span><span class="p">)</span>
     <span class="n">download_logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
-        <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\r</span><span class="s2">Downloading...: [</span><span class="si">{</span><span class="n">progress</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span><span class="si">}</span><span class="s2">] </span><span class="si">{</span><span class="nb">int</span><span class="p">(</span><span class="n">percent</span><span class="p">)</span><span class="si">}</span><span class="s2">%</span><span class="se">\r</span><span class="s2">&quot;</span>
+        <span class="sa">f</span><span class="s2">&quot;Downloading: [</span><span class="si">{</span><span class="n">progress</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="mi">25</span><span class="p">)</span><span class="si">}</span><span class="s2">] </span><span class="si">{</span><span class="nb">int</span><span class="p">(</span><span class="n">percent</span><span class="p">)</span><span class="si">}</span><span class="s2">%&quot;</span>
     <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="progressbar_no_totalsize"><a class="viewcode-back" href="../../../api/util/net.html#dffml.util.net.progressbar_no_totalsize">[docs]</a><span class="k">def</span> <span class="nf">progressbar_no_totalsize</span><span class="p">(</span><span class="n">blocknum</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Progress bar that bounces back and forth since we don&#39;t know total size.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">blank</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span> <span class="o">*</span> <span class="mi">25</span>
+    <span class="n">progress</span> <span class="o">=</span> <span class="n">blank</span><span class="p">[:</span> <span class="n">blocknum</span> <span class="o">%</span> <span class="mi">25</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;#&quot;</span> <span class="o">+</span> <span class="n">blank</span><span class="p">[(</span><span class="n">blocknum</span> <span class="o">%</span> <span class="mi">25</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span> <span class="p">:]</span>
+    <span class="n">download_logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Downloading: [</span><span class="si">{</span><span class="n">progress</span><span class="si">}</span><span class="s2">] ?%&quot;</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="progress_reporthook"><a class="viewcode-back" href="../../../api/util/net.html#dffml.util.net.progress_reporthook">[docs]</a><span class="k">def</span> <span class="nf">progress_reporthook</span><span class="p">(</span><span class="n">blocknum</span><span class="p">,</span> <span class="n">blocksize</span><span class="p">,</span> <span class="n">totalsize</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Serve as a reporthook for monitoring download progress.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">percent</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="nb">min</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mi">0</span> <span class="k">if</span> <span class="n">totalsize</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="p">(</span><span class="n">blocknum</span> <span class="o">*</span> <span class="n">blocksize</span> <span class="o">/</span> <span class="n">totalsize</span><span class="p">))</span>
-        <span class="o">*</span> <span class="mi">100</span>
-    <span class="p">)</span>
-    <span class="n">progressbar</span><span class="p">(</span><span class="n">percent</span><span class="p">)</span></div>
+    <span class="k">if</span> <span class="n">totalsize</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">progressbar_no_totalsize</span><span class="p">(</span><span class="n">blocknum</span> <span class="o">+</span> <span class="mi">6</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">percent</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="nb">min</span><span class="p">(</span>
+                <span class="mf">1.0</span><span class="p">,</span>
+                <span class="mi">0</span> <span class="k">if</span> <span class="n">totalsize</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="p">(</span><span class="n">blocknum</span> <span class="o">*</span> <span class="n">blocksize</span> <span class="o">/</span> <span class="n">totalsize</span><span class="p">),</span>
+            <span class="p">)</span>
+            <span class="o">*</span> <span class="mi">100</span>
+        <span class="p">)</span>
+        <span class="n">progressbar</span><span class="p">(</span><span class="n">percent</span><span class="p">)</span></div>
 
 
 <span class="c1"># Default list of URL protocols allowed</span>
