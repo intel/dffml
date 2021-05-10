@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>dffml.df.types &mdash; DFFML acd139b2 documentation</title>
+  <title>dffml.df.types &mdash; DFFML 11d6c259 documentation</title>
   
 
   
@@ -66,7 +66,7 @@
             
             
               <div class="version">
-                acd139b2
+                11d6c259
               </div>
             
           
@@ -219,7 +219,7 @@
 <span class="kn">import</span> <span class="nn">itertools</span>
 <span class="kn">import</span> <span class="nn">pkg_resources</span>
 <span class="kn">from</span> <span class="nn">enum</span> <span class="kn">import</span> <span class="n">Enum</span>
-<span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span><span class="p">,</span> <span class="n">field</span><span class="p">,</span> <span class="n">asdict</span>
+<span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span><span class="p">,</span> <span class="n">field</span><span class="p">,</span> <span class="n">asdict</span><span class="p">,</span> <span class="n">replace</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="p">(</span>
     <span class="n">NamedTuple</span><span class="p">,</span>
     <span class="n">Union</span><span class="p">,</span>
@@ -383,17 +383,21 @@
 <span class="sd">    &quot;&quot;&quot;</span></div>
 
 
-<div class="viewcode-block" id="Operation"><a class="viewcode-back" href="../../../api/df/types.html#dffml.df.types.Operation">[docs]</a><span class="nd">@base_entry_point</span><span class="p">(</span><span class="s2">&quot;dffml.operation&quot;</span><span class="p">,</span> <span class="s2">&quot;operation&quot;</span><span class="p">)</span>
-<span class="k">class</span> <span class="nc">Operation</span><span class="p">(</span><span class="n">NamedTuple</span><span class="p">,</span> <span class="n">Entrypoint</span><span class="p">):</span>
+<div class="viewcode-block" id="Operation"><a class="viewcode-back" href="../../../api/df/types.html#dffml.df.types.Operation">[docs]</a><span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nd">@base_entry_point</span><span class="p">(</span><span class="s2">&quot;dffml.operation&quot;</span><span class="p">,</span> <span class="s2">&quot;operation&quot;</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">Operation</span><span class="p">(</span><span class="n">Entrypoint</span><span class="p">):</span>
     <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
-    <span class="n">inputs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Definition</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
-    <span class="n">outputs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Definition</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">inputs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Definition</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="p">{})</span>
+    <span class="n">outputs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Definition</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="p">{})</span>
     <span class="n">stage</span><span class="p">:</span> <span class="n">Stage</span> <span class="o">=</span> <span class="n">Stage</span><span class="o">.</span><span class="n">PROCESSING</span>
-    <span class="n">conditions</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Definition</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">expand</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">conditions</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Definition</span><span class="p">]]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="p">[])</span>
+    <span class="n">expand</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="p">[])</span>
     <span class="n">instance_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">validator</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="n">retry</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">def</span> <span class="nf">_replace</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">replace</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">export</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">exported</span> <span class="o">=</span> <span class="p">{</span>
@@ -475,7 +479,7 @@
                 <span class="k">return</span> <span class="n">obj</span>
         <span class="k">return</span> <span class="kc">None</span>
 
-    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Operation.load"><a class="viewcode-back" href="../../../api/df/types.html#dffml.df.types.Operation.load">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">loading</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="n">loading_classes</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="c1"># Load operations</span>
@@ -496,7 +500,7 @@
                     <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">op</span><span class="p">:</span> <span class="n">op</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">loading_classes</span><span class="p">))),</span>
                 <span class="p">)</span>
             <span class="p">)</span>
-        <span class="k">return</span> <span class="n">loading_classes</span>
+        <span class="k">return</span> <span class="n">loading_classes</span></div>
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">_fromdict</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>

@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>dffml.df.base &mdash; DFFML acd139b2 documentation</title>
+  <title>dffml.df.base &mdash; DFFML 11d6c259 documentation</title>
   
 
   
@@ -66,7 +66,7 @@
             
             
               <div class="version">
-                acd139b2
+                11d6c259
               </div>
             
           
@@ -229,7 +229,7 @@
     <span class="n">Optional</span><span class="p">,</span>
     <span class="n">Set</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">is_dataclass</span>
+<span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span><span class="p">,</span> <span class="n">is_dataclass</span><span class="p">,</span> <span class="n">replace</span>
 <span class="kn">from</span> <span class="nn">contextlib</span> <span class="kn">import</span> <span class="n">asynccontextmanager</span>
 
 <span class="kn">from</span> <span class="nn">.exceptions</span> <span class="kn">import</span> <span class="n">NotOpImp</span>
@@ -1204,12 +1204,16 @@
 <span class="sd">    &quot;&quot;&quot;</span></div>
 
 
-<div class="viewcode-block" id="BaseOrchestratorConfig"><a class="viewcode-back" href="../../../api/df/base.html#dffml.df.base.BaseOrchestratorConfig">[docs]</a><span class="k">class</span> <span class="nc">BaseOrchestratorConfig</span><span class="p">(</span><span class="n">BaseConfig</span><span class="p">,</span> <span class="n">NamedTuple</span><span class="p">):</span>
+<div class="viewcode-block" id="BaseOrchestratorConfig"><a class="viewcode-back" href="../../../api/df/base.html#dffml.df.base.BaseOrchestratorConfig">[docs]</a><span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">BaseOrchestratorConfig</span><span class="p">:</span>
     <span class="n">input_network</span><span class="p">:</span> <span class="n">BaseInputNetwork</span>
     <span class="n">operation_network</span><span class="p">:</span> <span class="n">BaseOperationNetwork</span>
     <span class="n">lock_network</span><span class="p">:</span> <span class="n">BaseLockNetwork</span>
     <span class="n">opimp_network</span><span class="p">:</span> <span class="n">BaseOperationImplementationNetwork</span>
-    <span class="n">rchecker</span><span class="p">:</span> <span class="n">BaseRedundancyChecker</span></div>
+    <span class="n">rchecker</span><span class="p">:</span> <span class="n">BaseRedundancyChecker</span>
+
+    <span class="k">def</span> <span class="nf">_replace</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">replace</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="BaseOrchestratorContext"><a class="viewcode-back" href="../../../api/df/base.html#dffml.df.base.BaseOrchestratorContext">[docs]</a><span class="k">class</span> <span class="nc">BaseOrchestratorContext</span><span class="p">(</span><span class="n">BaseDataFlowObjectContext</span><span class="p">):</span>

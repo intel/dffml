@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Df Types &mdash; DFFML acd139b2 documentation</title>
+  <title>Df Types &mdash; DFFML 11d6c259 documentation</title>
   
 
   
@@ -67,7 +67,7 @@
             
             
               <div class="version">
-                acd139b2
+                11d6c259
               </div>
             
           
@@ -399,14 +399,8 @@ returned tuple is an empty list.</p>
 
 <dl class="py class">
 <dt id="dffml.df.types.Operation">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">dffml.df.types.</span></code><code class="sig-name descname"><span class="pre">Operation</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inputs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outputs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stage</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conditions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expand</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">instance_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">validator</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">retry</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/types.html#Operation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.df.types.Operation" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">dffml.df.types.</span></code><code class="sig-name descname"><span class="pre">Operation</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="pre">name:</span> <span class="pre">str,</span> <span class="pre">inputs:</span> <span class="pre">Dict[str,</span> <span class="pre">dffml.df.types.Definition]</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;,</span> <span class="pre">outputs:</span> <span class="pre">Dict[str,</span> <span class="pre">dffml.df.types.Definition]</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;,</span> <span class="pre">stage:</span> <span class="pre">dffml.df.types.Stage</span> <span class="pre">=</span> <span class="pre">&lt;Stage.PROCESSING:</span> <span class="pre">'processing'&gt;,</span> <span class="pre">conditions:</span> <span class="pre">Union[List[dffml.df.types.Definition],</span> <span class="pre">NoneType]</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;,</span> <span class="pre">expand:</span> <span class="pre">Union[List[str],</span> <span class="pre">NoneType]</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;,</span> <span class="pre">instance_name:</span> <span class="pre">Union[str,</span> <span class="pre">NoneType]</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">validator:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False,</span> <span class="pre">retry:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">0</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/types.html#Operation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.df.types.Operation" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="py method">
-<dt id="dffml.df.types.Operation.conditions">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">conditions</span></code><a class="headerlink" href="#dffml.df.types.Operation.conditions" title="Permalink to this definition">¶</a></dt>
-<dd><p>Alias for field number 4</p>
-</dd></dl>
-
-<dl class="py method">
 <dt id="dffml.df.types.Operation.definitions">
 <em class="property"><span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">definitions</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#dffml.df.types.Operation" title="dffml.df.types.Operation"><span class="pre">dffml.df.types.Operation</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/types.html#Operation.definitions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.df.types.Operation.definitions" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create key value mapping of definition names to definitions for all
@@ -414,51 +408,10 @@ given operations.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="dffml.df.types.Operation.expand">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">expand</span></code><a class="headerlink" href="#dffml.df.types.Operation.expand" title="Permalink to this definition">¶</a></dt>
-<dd><p>Alias for field number 5</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="dffml.df.types.Operation.inputs">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">inputs</span></code><a class="headerlink" href="#dffml.df.types.Operation.inputs" title="Permalink to this definition">¶</a></dt>
-<dd><p>Alias for field number 1</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="dffml.df.types.Operation.instance_name">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">instance_name</span></code><a class="headerlink" href="#dffml.df.types.Operation.instance_name" title="Permalink to this definition">¶</a></dt>
-<dd><p>Alias for field number 6</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="dffml.df.types.Operation.name">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">name</span></code><a class="headerlink" href="#dffml.df.types.Operation.name" title="Permalink to this definition">¶</a></dt>
-<dd><p>Alias for field number 0</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="dffml.df.types.Operation.outputs">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">outputs</span></code><a class="headerlink" href="#dffml.df.types.Operation.outputs" title="Permalink to this definition">¶</a></dt>
-<dd><p>Alias for field number 2</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="dffml.df.types.Operation.retry">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">retry</span></code><a class="headerlink" href="#dffml.df.types.Operation.retry" title="Permalink to this definition">¶</a></dt>
-<dd><p>Alias for field number 8</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="dffml.df.types.Operation.stage">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">stage</span></code><a class="headerlink" href="#dffml.df.types.Operation.stage" title="Permalink to this definition">¶</a></dt>
-<dd><p>Alias for field number 3</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="dffml.df.types.Operation.validator">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">validator</span></code><a class="headerlink" href="#dffml.df.types.Operation.validator" title="Permalink to this definition">¶</a></dt>
-<dd><p>Alias for field number 7</p>
+<dt id="dffml.df.types.Operation.load">
+<em class="property"><span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">load</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">loading</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/types.html#Operation.load"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.df.types.Operation.load" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads all installed loading and returns them as a list. Sources to be
+loaded should be registered to ENTRYPOINT via setuptools.</p>
 </dd></dl>
 
 </dd></dl>
