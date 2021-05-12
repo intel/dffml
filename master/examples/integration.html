@@ -13,6 +13,8 @@
   
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/tabs.css" type="text/css" />
 
   
@@ -30,6 +32,7 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
@@ -680,63 +683,36 @@ will be run concurrently with other operations. Here’s an example of the
 <code class="docutils literal notranslate"><span class="pre">git_commits</span></code> operation, which will find the number of commits within a date
 range. This function / operation was installed when you installed the
 <code class="docutils literal notranslate"><span class="pre">dffml-feature-git</span></code> package via <code class="docutils literal notranslate"><span class="pre">pip</span></code>.</p>
-<div class="highlight-default notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
-<span class="normal"> 2</span>
-<span class="normal"> 3</span>
-<span class="normal"> 4</span>
-<span class="normal"> 5</span>
-<span class="normal"> 6</span>
-<span class="normal"> 7</span>
-<span class="normal"> 8</span>
-<span class="normal"> 9</span>
-<span class="normal">10</span>
-<span class="normal">11</span>
-<span class="normal">12</span>
-<span class="normal">13</span>
-<span class="normal">14</span>
-<span class="normal">15</span>
-<span class="normal">16</span>
-<span class="normal">17</span>
-<span class="normal">18</span>
-<span class="normal">19</span>
-<span class="normal">20</span>
-<span class="normal">21</span>
-<span class="normal">22</span>
-<span class="normal">23</span>
-<span class="normal">24</span>
-<span class="normal">25</span>
-<span class="normal">26</span>
-<span class="normal">27</span>
-<span class="normal">28</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="nd">@op</span><span class="p">(</span>
-    <span class="n">inputs</span><span class="o">=</span><span class="p">{</span>
-        <span class="s2">&quot;repo&quot;</span><span class="p">:</span> <span class="n">git_repository</span><span class="p">,</span>
-        <span class="s2">&quot;branch&quot;</span><span class="p">:</span> <span class="n">git_branch</span><span class="p">,</span>
-        <span class="s2">&quot;start_end&quot;</span><span class="p">:</span> <span class="n">date_pair</span><span class="p">,</span>
-    <span class="p">},</span>
-    <span class="n">outputs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;commits&quot;</span><span class="p">:</span> <span class="n">commit_count</span><span class="p">},</span>
-<span class="p">)</span>
-<span class="k">async</span> <span class="k">def</span> <span class="nf">git_commits</span><span class="p">(</span><span class="n">repo</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="n">branch</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">start_end</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]):</span>
-    <span class="n">start</span><span class="p">,</span> <span class="n">end</span> <span class="o">=</span> <span class="n">start_end</span>
-    <span class="n">commit_count</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="n">proc</span> <span class="o">=</span> <span class="k">await</span> <span class="n">create</span><span class="p">(</span>
-        <span class="s2">&quot;git&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;log&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;--oneline&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;--before&quot;</span><span class="p">,</span>
-        <span class="n">start</span><span class="p">,</span>
-        <span class="s2">&quot;--after&quot;</span><span class="p">,</span>
-        <span class="n">end</span><span class="p">,</span>
-        <span class="n">branch</span><span class="p">,</span>
-        <span class="n">cwd</span><span class="o">=</span><span class="n">repo</span><span class="o">.</span><span class="n">directory</span><span class="p">,</span>
-    <span class="p">)</span>
-    <span class="k">while</span> <span class="ow">not</span> <span class="n">proc</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">at_eof</span><span class="p">():</span>
-        <span class="n">line</span> <span class="o">=</span> <span class="k">await</span> <span class="n">proc</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
-        <span class="k">if</span> <span class="n">line</span> <span class="o">!=</span> <span class="sa">b</span><span class="s2">&quot;&quot;</span><span class="p">:</span>
-            <span class="n">commit_count</span> <span class="o">+=</span> <span class="mi">1</span>
-    <span class="k">await</span> <span class="n">stop</span><span class="p">(</span><span class="n">proc</span><span class="p">)</span>
-    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;commits&quot;</span><span class="p">:</span> <span class="n">commit_count</span><span class="p">}</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="nd">@op</span><span class="p">(</span>
+<span class="linenos"> 2</span>    <span class="n">inputs</span><span class="o">=</span><span class="p">{</span>
+<span class="linenos"> 3</span>        <span class="s2">&quot;repo&quot;</span><span class="p">:</span> <span class="n">git_repository</span><span class="p">,</span>
+<span class="linenos"> 4</span>        <span class="s2">&quot;branch&quot;</span><span class="p">:</span> <span class="n">git_branch</span><span class="p">,</span>
+<span class="linenos"> 5</span>        <span class="s2">&quot;start_end&quot;</span><span class="p">:</span> <span class="n">date_pair</span><span class="p">,</span>
+<span class="linenos"> 6</span>    <span class="p">},</span>
+<span class="linenos"> 7</span>    <span class="n">outputs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;commits&quot;</span><span class="p">:</span> <span class="n">commit_count</span><span class="p">},</span>
+<span class="linenos"> 8</span><span class="p">)</span>
+<span class="linenos"> 9</span><span class="k">async</span> <span class="k">def</span> <span class="nf">git_commits</span><span class="p">(</span><span class="n">repo</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="n">branch</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">start_end</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]):</span>
+<span class="linenos">10</span>    <span class="n">start</span><span class="p">,</span> <span class="n">end</span> <span class="o">=</span> <span class="n">start_end</span>
+<span class="linenos">11</span>    <span class="n">commit_count</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="linenos">12</span>    <span class="n">proc</span> <span class="o">=</span> <span class="k">await</span> <span class="n">create</span><span class="p">(</span>
+<span class="linenos">13</span>        <span class="s2">&quot;git&quot;</span><span class="p">,</span>
+<span class="linenos">14</span>        <span class="s2">&quot;log&quot;</span><span class="p">,</span>
+<span class="linenos">15</span>        <span class="s2">&quot;--oneline&quot;</span><span class="p">,</span>
+<span class="linenos">16</span>        <span class="s2">&quot;--before&quot;</span><span class="p">,</span>
+<span class="linenos">17</span>        <span class="n">start</span><span class="p">,</span>
+<span class="linenos">18</span>        <span class="s2">&quot;--after&quot;</span><span class="p">,</span>
+<span class="linenos">19</span>        <span class="n">end</span><span class="p">,</span>
+<span class="linenos">20</span>        <span class="n">branch</span><span class="p">,</span>
+<span class="linenos">21</span>        <span class="n">cwd</span><span class="o">=</span><span class="n">repo</span><span class="o">.</span><span class="n">directory</span><span class="p">,</span>
+<span class="linenos">22</span>    <span class="p">)</span>
+<span class="linenos">23</span>    <span class="k">while</span> <span class="ow">not</span> <span class="n">proc</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">at_eof</span><span class="p">():</span>
+<span class="linenos">24</span>        <span class="n">line</span> <span class="o">=</span> <span class="k">await</span> <span class="n">proc</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
+<span class="linenos">25</span>        <span class="k">if</span> <span class="n">line</span> <span class="o">!=</span> <span class="sa">b</span><span class="s2">&quot;&quot;</span><span class="p">:</span>
+<span class="linenos">26</span>            <span class="n">commit_count</span> <span class="o">+=</span> <span class="mi">1</span>
+<span class="linenos">27</span>    <span class="k">await</span> <span class="n">stop</span><span class="p">(</span><span class="n">proc</span><span class="p">)</span>
+<span class="linenos">28</span>    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;commits&quot;</span><span class="p">:</span> <span class="n">commit_count</span><span class="p">}</span>
 </pre></div>
-</td></tr></table></div>
+</div>
 <p>We’re going to use the operations provided in <code class="docutils literal notranslate"><span class="pre">dffml-feature-git</span></code> to gather
 our dataset. The following command creates a <code class="docutils literal notranslate"><span class="pre">DataFlow</span></code> description of how
 all the operations within <code class="docutils literal notranslate"><span class="pre">dffml-feature-git</span></code> link together. The <code class="docutils literal notranslate"><span class="pre">DataFlow</span></code>

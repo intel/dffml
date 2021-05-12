@@ -13,6 +13,8 @@
   
   <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/tabs.css" type="text/css" />
 
   
@@ -30,6 +32,7 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
         <script src="../../_static/doctools.js"></script>
@@ -232,18 +235,18 @@
 <span id="port-port"></span><h1>Port Port<a class="headerlink" href="#module-dffml.port.port" title="Permalink to this headline">¶</a></h1>
 <p>Port subclasses import and export records.</p>
 <dl class="py class">
-<dt id="dffml.port.port.Port">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">dffml.port.port.</span></code><code class="sig-name descname"><span class="pre">Port</span></code><a class="reference internal" href="../../_modules/dffml/port/port.html#Port"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.port.port.Port" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="dffml.port.port.Port">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">dffml.port.port.</span></span><span class="sig-name descname"><span class="pre">Port</span></span><a class="reference internal" href="../../_modules/dffml/port/port.html#Port"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.port.port.Port" title="Permalink to this definition">¶</a></dt>
 <dd><p>Port records into the format the porter understands</p>
 <dl class="py method">
-<dt id="dffml.port.port.Port.export_fd">
-<em class="property"><span class="pre">abstract</span> <span class="pre">async</span> </em><code class="sig-name descname"><span class="pre">export_fd</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="../source/source.html#dffml.source.source.BaseSource" title="dffml.source.source.BaseSource"><span class="pre">dffml.source.source.BaseSource</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">fd</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/port/port.html#Port.export_fd"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.port.port.Port.export_fd" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="dffml.port.port.Port.export_fd">
+<em class="property"><span class="pre">abstract</span> <span class="pre">async</span> </em><span class="sig-name descname"><span class="pre">export_fd</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="../source/source.html#dffml.source.source.BaseSource" title="dffml.source.source.BaseSource"><span class="pre">dffml.source.source.BaseSource</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">fd</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/port/port.html#Port.export_fd"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.port.port.Port.export_fd" title="Permalink to this definition">¶</a></dt>
 <dd><p>Export records</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="dffml.port.port.Port.import_fd">
-<em class="property"><span class="pre">abstract</span> <span class="pre">async</span> </em><code class="sig-name descname"><span class="pre">import_fd</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="../source/source.html#dffml.source.source.BaseSource" title="dffml.source.source.BaseSource"><span class="pre">dffml.source.source.BaseSource</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">fd</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/port/port.html#Port.import_fd"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.port.port.Port.import_fd" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="dffml.port.port.Port.import_fd">
+<em class="property"><span class="pre">abstract</span> <span class="pre">async</span> </em><span class="sig-name descname"><span class="pre">import_fd</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="../source/source.html#dffml.source.source.BaseSource" title="dffml.source.source.BaseSource"><span class="pre">dffml.source.source.BaseSource</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">fd</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/port/port.html#Port.import_fd"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.port.port.Port.import_fd" title="Permalink to this definition">¶</a></dt>
 <dd><p>Import records</p>
 </dd></dl>
 

@@ -13,6 +13,8 @@
   
   <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/tabs.css" type="text/css" />
 
   
@@ -30,6 +32,7 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
         <script src="../../_static/doctools.js"></script>
@@ -266,11 +269,11 @@
 <div class="section" id="module-dffml.source.wrapper">
 <span id="source-wrapper"></span><h1>Source Wrapper<a class="headerlink" href="#module-dffml.source.wrapper" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
-<dt id="dffml.source.wrapper.ContextManagedWrapperSource">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">dffml.source.wrapper.</span></code><code class="sig-name descname"><span class="pre">ContextManagedWrapperSource</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Type</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../base.html#dffml.base.BaseConfig" title="dffml.base.BaseConfig"><span class="pre">dffml.base.BaseConfig</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/wrapper.html#ContextManagedWrapperSource"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.source.wrapper.ContextManagedWrapperSource" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="dffml.source.wrapper.ContextManagedWrapperSource">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">dffml.source.wrapper.</span></span><span class="sig-name descname"><span class="pre">ContextManagedWrapperSource</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Type</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../base.html#dffml.base.BaseConfig" title="dffml.base.BaseConfig"><span class="pre">dffml.base.BaseConfig</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/wrapper.html#ContextManagedWrapperSource"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.source.wrapper.ContextManagedWrapperSource" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="py method">
-<dt id="dffml.source.wrapper.ContextManagedWrapperSource.remove_self_from_args">
-<em class="property"><span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">remove_self_from_args</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/wrapper.html#ContextManagedWrapperSource.remove_self_from_args"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.source.wrapper.ContextManagedWrapperSource.remove_self_from_args" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="dffml.source.wrapper.ContextManagedWrapperSource.remove_self_from_args">
+<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">remove_self_from_args</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/wrapper.html#ContextManagedWrapperSource.remove_self_from_args"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.source.wrapper.ContextManagedWrapperSource.remove_self_from_args" title="Permalink to this definition">¶</a></dt>
 <dd><p>Remove class from args if called as method</p>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">MyConextManagedSource</span><span class="p">(</span><span class="n">ContextManagedWrapperSource</span><span class="p">):</span>
@@ -293,23 +296,23 @@
 </dd></dl>
 
 <dl class="py exception">
-<dt id="dffml.source.wrapper.FunctionDidNotYieldSource">
-<em class="property"><span class="pre">exception</span> </em><code class="sig-prename descclassname"><span class="pre">dffml.source.wrapper.</span></code><code class="sig-name descname"><span class="pre">FunctionDidNotYieldSource</span></code><a class="reference internal" href="../../_modules/dffml/source/wrapper.html#FunctionDidNotYieldSource"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.source.wrapper.FunctionDidNotYieldSource" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="dffml.source.wrapper.FunctionDidNotYieldSource">
+<em class="property"><span class="pre">exception</span> </em><span class="sig-prename descclassname"><span class="pre">dffml.source.wrapper.</span></span><span class="sig-name descname"><span class="pre">FunctionDidNotYieldSource</span></span><a class="reference internal" href="../../_modules/dffml/source/wrapper.html#FunctionDidNotYieldSource"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.source.wrapper.FunctionDidNotYieldSource" title="Permalink to this definition">¶</a></dt>
 <dd><p>Raised when the function wrapped by context_managed_wrapper_source() did not
 yield an object of instance <a class="reference internal" href="source.html#dffml.source.source.BaseSource" title="dffml.source.source.BaseSource"><code class="xref py py-class docutils literal notranslate"><span class="pre">dffml.source.source.BaseSource</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py exception">
-<dt id="dffml.source.wrapper.FunctionMustBeGenerator">
-<em class="property"><span class="pre">exception</span> </em><code class="sig-prename descclassname"><span class="pre">dffml.source.wrapper.</span></code><code class="sig-name descname"><span class="pre">FunctionMustBeGenerator</span></code><a class="reference internal" href="../../_modules/dffml/source/wrapper.html#FunctionMustBeGenerator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.source.wrapper.FunctionMustBeGenerator" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="dffml.source.wrapper.FunctionMustBeGenerator">
+<em class="property"><span class="pre">exception</span> </em><span class="sig-prename descclassname"><span class="pre">dffml.source.wrapper.</span></span><span class="sig-name descname"><span class="pre">FunctionMustBeGenerator</span></span><a class="reference internal" href="../../_modules/dffml/source/wrapper.html#FunctionMustBeGenerator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.source.wrapper.FunctionMustBeGenerator" title="Permalink to this definition">¶</a></dt>
 <dd><p>Raised when the function to be wrapped by context_managed_wrapper_source()
 was not an async generator or a generator. The wrapped function must be one
 of the two in order to be made into a context manager.</p>
 </dd></dl>
 
 <dl class="py class">
-<dt id="dffml.source.wrapper.WrapperSource">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">dffml.source.wrapper.</span></code><code class="sig-name descname"><span class="pre">WrapperSource</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Type</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../base.html#dffml.base.BaseConfig" title="dffml.base.BaseConfig"><span class="pre">dffml.base.BaseConfig</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/wrapper.html#WrapperSource"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.source.wrapper.WrapperSource" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="dffml.source.wrapper.WrapperSource">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">dffml.source.wrapper.</span></span><span class="sig-name descname"><span class="pre">WrapperSource</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Type</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../base.html#dffml.base.BaseConfig" title="dffml.base.BaseConfig"><span class="pre">dffml.base.BaseConfig</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/wrapper.html#WrapperSource"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.source.wrapper.WrapperSource" title="Permalink to this definition">¶</a></dt>
 <dd><p>Source used to wrap other sources</p>
 <p class="rubric">Examples</p>
 <p>A memory source pre-populated with a some records.</p>
@@ -340,19 +343,19 @@ of the two in order to be made into a context manager.</p>
 </pre></div>
 </div>
 <dl class="py attribute">
-<dt id="dffml.source.wrapper.WrapperSource.CONTEXT">
-<code class="sig-name descname"><span class="pre">CONTEXT</span></code><a class="headerlink" href="#dffml.source.wrapper.WrapperSource.CONTEXT" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="dffml.source.wrapper.WrapperSource.CONTEXT">
+<span class="sig-name descname"><span class="pre">CONTEXT</span></span><a class="headerlink" href="#dffml.source.wrapper.WrapperSource.CONTEXT" title="Permalink to this definition">¶</a></dt>
 <dd><p>alias of <a class="reference internal" href="#dffml.source.wrapper.WrapperSourceContext" title="dffml.source.wrapper.WrapperSourceContext"><code class="xref py py-class docutils literal notranslate"><span class="pre">dffml.source.wrapper.WrapperSourceContext</span></code></a></p>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="py class">
-<dt id="dffml.source.wrapper.WrapperSourceContext">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">dffml.source.wrapper.</span></code><code class="sig-name descname"><span class="pre">WrapperSourceContext</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="source.html#dffml.source.source.BaseSource" title="dffml.source.source.BaseSource"><span class="pre">dffml.source.source.BaseSource</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/wrapper.html#WrapperSourceContext"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.source.wrapper.WrapperSourceContext" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="dffml.source.wrapper.WrapperSourceContext">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">dffml.source.wrapper.</span></span><span class="sig-name descname"><span class="pre">WrapperSourceContext</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="source.html#dffml.source.source.BaseSource" title="dffml.source.source.BaseSource"><span class="pre">dffml.source.source.BaseSource</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/wrapper.html#WrapperSourceContext"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.source.wrapper.WrapperSourceContext" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="py method">
-<dt id="dffml.source.wrapper.WrapperSourceContext.record">
-<em class="property"><span class="pre">async</span> </em><code class="sig-name descname"><span class="pre">record</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">AsyncIterator</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../record.html#dffml.record.Record" title="dffml.record.Record"><span class="pre">dffml.record.Record</span></a><span class="p"><span class="pre">]</span></span><a class="reference internal" href="../../_modules/dffml/source/wrapper.html#WrapperSourceContext.record"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.source.wrapper.WrapperSourceContext.record" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="dffml.source.wrapper.WrapperSourceContext.record">
+<em class="property"><span class="pre">async</span> </em><span class="sig-name descname"><span class="pre">record</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">AsyncIterator</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../record.html#dffml.record.Record" title="dffml.record.Record"><span class="pre">dffml.record.Record</span></a><span class="p"><span class="pre">]</span></span><a class="reference internal" href="../../_modules/dffml/source/wrapper.html#WrapperSourceContext.record"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.source.wrapper.WrapperSourceContext.record" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get a record from the source or add it if it doesn’t exist.</p>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">asyncio</span>
@@ -377,8 +380,8 @@ of the two in order to be made into a context manager.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="dffml.source.wrapper.WrapperSourceContext.records">
-<code class="sig-name descname"><span class="pre">records</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <span class="pre">AsyncIterator</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../record.html#dffml.record.Record" title="dffml.record.Record"><span class="pre">dffml.record.Record</span></a><span class="p"><span class="pre">]</span></span><a class="reference internal" href="../../_modules/dffml/source/wrapper.html#WrapperSourceContext.records"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.source.wrapper.WrapperSourceContext.records" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="dffml.source.wrapper.WrapperSourceContext.records">
+<span class="sig-name descname"><span class="pre">records</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <span class="pre">AsyncIterator</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../record.html#dffml.record.Record" title="dffml.record.Record"><span class="pre">dffml.record.Record</span></a><span class="p"><span class="pre">]</span></span><a class="reference internal" href="../../_modules/dffml/source/wrapper.html#WrapperSourceContext.records"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.source.wrapper.WrapperSourceContext.records" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a list of records retrieved from self.src</p>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">asyncio</span>
@@ -397,8 +400,8 @@ of the two in order to be made into a context manager.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="dffml.source.wrapper.WrapperSourceContext.update">
-<em class="property"><span class="pre">async</span> </em><code class="sig-name descname"><span class="pre">update</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">record</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="../record.html#dffml.record.Record" title="dffml.record.Record"><span class="pre">dffml.record.Record</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/wrapper.html#WrapperSourceContext.update"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.source.wrapper.WrapperSourceContext.update" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="dffml.source.wrapper.WrapperSourceContext.update">
+<em class="property"><span class="pre">async</span> </em><span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">record</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="../record.html#dffml.record.Record" title="dffml.record.Record"><span class="pre">dffml.record.Record</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/wrapper.html#WrapperSourceContext.update"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.source.wrapper.WrapperSourceContext.update" title="Permalink to this definition">¶</a></dt>
 <dd><p>Updates a record for a source</p>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">asyncio</span>
@@ -424,8 +427,8 @@ of the two in order to be made into a context manager.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="dffml.source.wrapper.context_managed_wrapper_source">
-<code class="sig-prename descclassname"><span class="pre">dffml.source.wrapper.</span></code><code class="sig-name descname"><span class="pre">context_managed_wrapper_source</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">entrypoint_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qualname_suffix</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'Source'</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#dffml.source.wrapper.ContextManagedWrapperSource" title="dffml.source.wrapper.ContextManagedWrapperSource"><span class="pre">dffml.source.wrapper.ContextManagedWrapperSource</span></a><a class="reference internal" href="../../_modules/dffml/source/wrapper.html#context_managed_wrapper_source"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.source.wrapper.context_managed_wrapper_source" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="dffml.source.wrapper.context_managed_wrapper_source">
+<span class="sig-prename descclassname"><span class="pre">dffml.source.wrapper.</span></span><span class="sig-name descname"><span class="pre">context_managed_wrapper_source</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">entrypoint_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qualname_suffix</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'Source'</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#dffml.source.wrapper.ContextManagedWrapperSource" title="dffml.source.wrapper.ContextManagedWrapperSource"><span class="pre">dffml.source.wrapper.ContextManagedWrapperSource</span></a><a class="reference internal" href="../../_modules/dffml/source/wrapper.html#context_managed_wrapper_source"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.source.wrapper.context_managed_wrapper_source" title="Permalink to this definition">¶</a></dt>
 <dd><p>Given a function which can function as a context manager (any function which
 uses the <code class="docutils literal notranslate"><span class="pre">yield</span></code> keyword). Make the function into a context manger or an
 async context manager depending on if it’s defined <code class="docutils literal notranslate"><span class="pre">async</span></code> or not.</p>

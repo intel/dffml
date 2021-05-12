@@ -13,6 +13,8 @@
   
   <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/tabs.css" type="text/css" />
 
   
@@ -30,6 +32,7 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
         <script src="../../_static/doctools.js"></script>
@@ -242,20 +245,20 @@
   <div class="section" id="module-dffml.util.net">
 <span id="networking-helpers"></span><h1>Networking Helpers<a class="headerlink" href="#module-dffml.util.net" title="Permalink to this headline">¶</a></h1>
 <dl class="py exception">
-<dt id="dffml.util.net.HashValidationError">
-<em class="property"><span class="pre">exception</span> </em><code class="sig-prename descclassname"><span class="pre">dffml.util.net.</span></code><code class="sig-name descname"><span class="pre">HashValidationError</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expected</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/util/net.html#HashValidationError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.util.net.HashValidationError" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="dffml.util.net.HashValidationError">
+<em class="property"><span class="pre">exception</span> </em><span class="sig-prename descclassname"><span class="pre">dffml.util.net.</span></span><span class="sig-name descname"><span class="pre">HashValidationError</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expected</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/util/net.html#HashValidationError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.util.net.HashValidationError" title="Permalink to this definition">¶</a></dt>
 <dd><p>Raised when hash of file is not what was expected</p>
 </dd></dl>
 
 <dl class="py exception">
-<dt id="dffml.util.net.ProtocolNotAllowedError">
-<em class="property"><span class="pre">exception</span> </em><code class="sig-prename descclassname"><span class="pre">dffml.util.net.</span></code><code class="sig-name descname"><span class="pre">ProtocolNotAllowedError</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allowlist</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/util/net.html#ProtocolNotAllowedError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.util.net.ProtocolNotAllowedError" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="dffml.util.net.ProtocolNotAllowedError">
+<em class="property"><span class="pre">exception</span> </em><span class="sig-prename descclassname"><span class="pre">dffml.util.net.</span></span><span class="sig-name descname"><span class="pre">ProtocolNotAllowedError</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allowlist</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/util/net.html#ProtocolNotAllowedError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.util.net.ProtocolNotAllowedError" title="Permalink to this definition">¶</a></dt>
 <dd><p>Raised when a URL’s protocol is not in allowed list of protocols.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="dffml.util.net.cached_download">
-<code class="sig-prename descclassname"><span class="pre">dffml.util.net.</span></code><code class="sig-name descname"><span class="pre">cached_download</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expected_hash</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">protocol_allowlist</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">['https://']</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/util/net.html#cached_download"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.util.net.cached_download" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="dffml.util.net.cached_download">
+<span class="sig-prename descclassname"><span class="pre">dffml.util.net.</span></span><span class="sig-name descname"><span class="pre">cached_download</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expected_hash</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">protocol_allowlist</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">['https://']</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/util/net.html#cached_download"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.util.net.cached_download" title="Permalink to this definition">¶</a></dt>
 <dd><p>Download a file and verify the hash of the downloaded file. If the file
 already exists and the hash matches, do not re-download the file.</p>
 <p>The path to the downloaded file is prepended to the argument list of the
@@ -297,8 +300,8 @@ need to override this.</p></li>
 </dd></dl>
 
 <dl class="py function">
-<dt id="dffml.util.net.cached_download_unpack_archive">
-<code class="sig-prename descclassname"><span class="pre">dffml.util.net.</span></code><code class="sig-name descname"><span class="pre">cached_download_unpack_archive</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">directory_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expected_hash</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">protocol_allowlist</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">['https://']</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/util/net.html#cached_download_unpack_archive"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.util.net.cached_download_unpack_archive" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="dffml.util.net.cached_download_unpack_archive">
+<span class="sig-prename descclassname"><span class="pre">dffml.util.net.</span></span><span class="sig-name descname"><span class="pre">cached_download_unpack_archive</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">directory_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expected_hash</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">protocol_allowlist</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">['https://']</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/util/net.html#cached_download_unpack_archive"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.util.net.cached_download_unpack_archive" title="Permalink to this definition">¶</a></dt>
 <dd><p>Download an archive and extract it to a directory on disk.</p>
 <p>Verify the hash of the downloaded file. If the hash matches the file is not
 re-downloaded.</p>
@@ -344,8 +347,8 @@ need to override this.</p></li>
 </dd></dl>
 
 <dl class="py function">
-<dt id="dffml.util.net.sync_urlopen">
-<code class="sig-prename descclassname"><span class="pre">dffml.util.net.</span></code><code class="sig-name descname"><span class="pre">sync_urlopen</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">protocol_allowlist</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">['https://']</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/util/net.html#sync_urlopen"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.util.net.sync_urlopen" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="dffml.util.net.sync_urlopen">
+<span class="sig-prename descclassname"><span class="pre">dffml.util.net.</span></span><span class="sig-name descname"><span class="pre">sync_urlopen</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">protocol_allowlist</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">['https://']</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/util/net.html#sync_urlopen"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.util.net.sync_urlopen" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check that <code class="docutils literal notranslate"><span class="pre">url</span></code> has a protocol defined in <code class="docutils literal notranslate"><span class="pre">protocol_allowlist</span></code>, then
 return the result of calling <a class="reference external" href="https://docs.python.org/3/library/urllib.request.html#urllib.request.urlopen" title="(in Python v3.9)"><code class="xref py py-func docutils literal notranslate"><span class="pre">urllib.request.urlopen()</span></code></a> passing it
 <code class="docutils literal notranslate"><span class="pre">url</span></code>.</p>

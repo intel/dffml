@@ -13,6 +13,8 @@
   
   <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/tabs.css" type="text/css" />
 
   
@@ -30,6 +32,7 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
         <script src="../../_static/doctools.js"></script>
@@ -244,44 +247,44 @@
 <p>Loader subclasses know how to load classes under their entry point which conform
 to their subclasses.</p>
 <dl class="py class">
-<dt id="dffml.util.entrypoint.Entrypoint">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">dffml.util.entrypoint.</span></code><code class="sig-name descname"><span class="pre">Entrypoint</span></code><a class="reference internal" href="../../_modules/dffml/util/entrypoint.html#Entrypoint"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.util.entrypoint.Entrypoint" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="dffml.util.entrypoint.Entrypoint">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">dffml.util.entrypoint.</span></span><span class="sig-name descname"><span class="pre">Entrypoint</span></span><a class="reference internal" href="../../_modules/dffml/util/entrypoint.html#Entrypoint"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.util.entrypoint.Entrypoint" title="Permalink to this definition">¶</a></dt>
 <dd><p>Uses the pkg_resources.iter_entry_points on the ENTRYPOINT of the class</p>
 <dl class="py method">
-<dt id="dffml.util.entrypoint.Entrypoint.load">
-<em class="property"><span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">load</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">loading</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/util/entrypoint.html#Entrypoint.load"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.util.entrypoint.Entrypoint.load" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="dffml.util.entrypoint.Entrypoint.load">
+<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">loading</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/util/entrypoint.html#Entrypoint.load"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.util.entrypoint.Entrypoint.load" title="Permalink to this definition">¶</a></dt>
 <dd><p>Loads all installed loading and returns them as a list. Sources to be
 loaded should be registered to ENTRYPOINT via setuptools.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="dffml.util.entrypoint.Entrypoint.load_dict">
-<em class="property"><span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">load_dict</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">to_load</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/util/entrypoint.html#Entrypoint.load_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.util.entrypoint.Entrypoint.load_dict" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="dffml.util.entrypoint.Entrypoint.load_dict">
+<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">load_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">to_load</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/util/entrypoint.html#Entrypoint.load_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.util.entrypoint.Entrypoint.load_dict" title="Permalink to this definition">¶</a></dt>
 <dd><p>Loads each class tagged with the key it should be accessed by without
 instantiating it.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="dffml.util.entrypoint.Entrypoint.load_multiple">
-<em class="property"><span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">load_multiple</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">to_load</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/util/entrypoint.html#Entrypoint.load_multiple"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.util.entrypoint.Entrypoint.load_multiple" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="dffml.util.entrypoint.Entrypoint.load_multiple">
+<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">load_multiple</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">to_load</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/util/entrypoint.html#Entrypoint.load_multiple"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.util.entrypoint.Entrypoint.load_multiple" title="Permalink to this definition">¶</a></dt>
 <dd><p>Loads each class requested without instantiating it.</p>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="py exception">
-<dt id="dffml.util.entrypoint.EntrypointNotFound">
-<em class="property"><span class="pre">exception</span> </em><code class="sig-prename descclassname"><span class="pre">dffml.util.entrypoint.</span></code><code class="sig-name descname"><span class="pre">EntrypointNotFound</span></code><a class="reference internal" href="../../_modules/dffml/util/entrypoint.html#EntrypointNotFound"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.util.entrypoint.EntrypointNotFound" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="dffml.util.entrypoint.EntrypointNotFound">
+<em class="property"><span class="pre">exception</span> </em><span class="sig-prename descclassname"><span class="pre">dffml.util.entrypoint.</span></span><span class="sig-name descname"><span class="pre">EntrypointNotFound</span></span><a class="reference internal" href="../../_modules/dffml/util/entrypoint.html#EntrypointNotFound"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.util.entrypoint.EntrypointNotFound" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py exception">
-<dt id="dffml.util.entrypoint.MissingLabel">
-<em class="property"><span class="pre">exception</span> </em><code class="sig-prename descclassname"><span class="pre">dffml.util.entrypoint.</span></code><code class="sig-name descname"><span class="pre">MissingLabel</span></code><a class="reference internal" href="../../_modules/dffml/util/entrypoint.html#MissingLabel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.util.entrypoint.MissingLabel" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="dffml.util.entrypoint.MissingLabel">
+<em class="property"><span class="pre">exception</span> </em><span class="sig-prename descclassname"><span class="pre">dffml.util.entrypoint.</span></span><span class="sig-name descname"><span class="pre">MissingLabel</span></span><a class="reference internal" href="../../_modules/dffml/util/entrypoint.html#MissingLabel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.util.entrypoint.MissingLabel" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
-<dt id="dffml.util.entrypoint.base_entry_point">
-<code class="sig-prename descclassname"><span class="pre">dffml.util.entrypoint.</span></code><code class="sig-name descname"><span class="pre">base_entry_point</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">entrypoint</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/util/entrypoint.html#base_entry_point"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.util.entrypoint.base_entry_point" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="dffml.util.entrypoint.base_entry_point">
+<span class="sig-prename descclassname"><span class="pre">dffml.util.entrypoint.</span></span><span class="sig-name descname"><span class="pre">base_entry_point</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">entrypoint</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/util/entrypoint.html#base_entry_point"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.util.entrypoint.base_entry_point" title="Permalink to this definition">¶</a></dt>
 <dd><p>Any class which subclasses from Entrypoint needs this decorator applied to
 it. The decorator sets the ENTRYPOINT and ENTRY_POINT_NAME properties on
 the class.</p>
@@ -310,8 +313,8 @@ argument if it were joined with hyphens.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="dffml.util.entrypoint.entrypoint">
-<code class="sig-prename descclassname"><span class="pre">dffml.util.entrypoint.</span></code><code class="sig-name descname"><span class="pre">entrypoint</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">label</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/util/entrypoint.html#entrypoint"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.util.entrypoint.entrypoint" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="dffml.util.entrypoint.entrypoint">
+<span class="sig-prename descclassname"><span class="pre">dffml.util.entrypoint.</span></span><span class="sig-name descname"><span class="pre">entrypoint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">label</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/util/entrypoint.html#entrypoint"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.util.entrypoint.entrypoint" title="Permalink to this definition">¶</a></dt>
 <dd><p>If a class if going to be registered with setuptools as an entrypoint it
 must have the label it will be registered under associated with it via this
 decorator.</p>
@@ -336,8 +339,8 @@ it with label set to mylabel.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="dffml.util.entrypoint.load">
-<code class="sig-prename descclassname"><span class="pre">dffml.util.entrypoint.</span></code><code class="sig-name descname"><span class="pre">load</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">relative</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span> </span><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><span class="pre">pathlib.Path</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">Iterator</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><a class="reference internal" href="../../_modules/dffml/util/entrypoint.html#load"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.util.entrypoint.load" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="dffml.util.entrypoint.load">
+<span class="sig-prename descclassname"><span class="pre">dffml.util.entrypoint.</span></span><span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">relative</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span> </span><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><span class="pre">pathlib.Path</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">Iterator</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><a class="reference internal" href="../../_modules/dffml/util/entrypoint.html#load"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.util.entrypoint.load" title="Permalink to this definition">¶</a></dt>
 <dd><p>Load objects given the entrypoint formatted path to the object. Roughly how
 the python stdlib docs say entrypoint loading works.</p>
 </dd></dl>

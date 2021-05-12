@@ -13,6 +13,8 @@
   
   <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/tabs.css" type="text/css" />
 
   
@@ -30,6 +32,7 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
         <script src="../../_static/doctools.js"></script>
@@ -234,8 +237,8 @@
   <div class="section" id="module-dffml.df.types">
 <span id="data-flow-types"></span><h1>Data Flow Types<a class="headerlink" href="#module-dffml.df.types" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
-<dt id="dffml.df.types.Definition">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">dffml.df.types.</span></code><code class="sig-name descname"><span class="pre">Definition</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="pre">name:</span> <span class="pre">str,</span> <span class="pre">primitive:</span> <span class="pre">str,</span> <span class="pre">default:</span> <span class="pre">Any</span> <span class="pre">=</span> <span class="pre">&lt;dffml.df.types._NO_DEFAULT</span> <span class="pre">object&gt;,</span> <span class="pre">lock:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False,</span> <span class="pre">spec:</span> <span class="pre">Optional[NamedTuple]</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">subspec:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False,</span> <span class="pre">validate:</span> <span class="pre">Optional[Callable[[Any],</span> <span class="pre">Any]]</span> <span class="pre">=</span> <span class="pre">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/types.html#Definition"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.df.types.Definition" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="dffml.df.types.Definition">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">dffml.df.types.</span></span><span class="sig-name descname"><span class="pre">Definition</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">name:</span> <span class="pre">str,</span> <span class="pre">primitive:</span> <span class="pre">str,</span> <span class="pre">default:</span> <span class="pre">Any</span> <span class="pre">=</span> <span class="pre">&lt;dffml.df.types._NO_DEFAULT</span> <span class="pre">object&gt;,</span> <span class="pre">lock:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False,</span> <span class="pre">spec:</span> <span class="pre">Optional[NamedTuple]</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">subspec:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False,</span> <span class="pre">validate:</span> <span class="pre">Optional[Callable[[Any],</span> <span class="pre">Any]]</span> <span class="pre">=</span> <span class="pre">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/types.html#Definition"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.df.types.Definition" title="Permalink to this definition">¶</a></dt>
 <dd><p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">Definition</span><span class="p">,</span> <span class="n">Input</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">NamedTuple</span>
@@ -257,71 +260,71 @@
 <span class="go">Input(value={&#39;bob&#39;: Person(name=&#39;Bob&#39;, age=42)}, definition=AddressBook)</span>
 </pre></div>
 </div>
-<dl class="py method">
-<dt id="dffml.df.types.Definition.default">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">default</span></code><a class="headerlink" href="#dffml.df.types.Definition.default" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="dffml.df.types.Definition.default">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">default</span></span><a class="headerlink" href="#dffml.df.types.Definition.default" title="Permalink to this definition">¶</a></dt>
 <dd><p>Alias for field number 2</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="dffml.df.types.Definition.lock">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">lock</span></code><a class="headerlink" href="#dffml.df.types.Definition.lock" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="dffml.df.types.Definition.lock">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">lock</span></span><a class="headerlink" href="#dffml.df.types.Definition.lock" title="Permalink to this definition">¶</a></dt>
 <dd><p>Alias for field number 3</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="dffml.df.types.Definition.name">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">name</span></code><a class="headerlink" href="#dffml.df.types.Definition.name" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="dffml.df.types.Definition.name">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#dffml.df.types.Definition.name" title="Permalink to this definition">¶</a></dt>
 <dd><p>Alias for field number 0</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="dffml.df.types.Definition.primitive">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">primitive</span></code><a class="headerlink" href="#dffml.df.types.Definition.primitive" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="dffml.df.types.Definition.primitive">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">primitive</span></span><a class="headerlink" href="#dffml.df.types.Definition.primitive" title="Permalink to this definition">¶</a></dt>
 <dd><p>Alias for field number 1</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="dffml.df.types.Definition.spec">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">spec</span></code><a class="headerlink" href="#dffml.df.types.Definition.spec" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="dffml.df.types.Definition.spec">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">spec</span></span><a class="headerlink" href="#dffml.df.types.Definition.spec" title="Permalink to this definition">¶</a></dt>
 <dd><p>Alias for field number 4</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="dffml.df.types.Definition.subspec">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">subspec</span></code><a class="headerlink" href="#dffml.df.types.Definition.subspec" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="dffml.df.types.Definition.subspec">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">subspec</span></span><a class="headerlink" href="#dffml.df.types.Definition.subspec" title="Permalink to this definition">¶</a></dt>
 <dd><p>Alias for field number 5</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="dffml.df.types.Definition.validate">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">validate</span></code><a class="headerlink" href="#dffml.df.types.Definition.validate" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="dffml.df.types.Definition.validate">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">validate</span></span><a class="headerlink" href="#dffml.df.types.Definition.validate" title="Permalink to this definition">¶</a></dt>
 <dd><p>Alias for field number 6</p>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="py exception">
-<dt id="dffml.df.types.DefinitionMissing">
-<em class="property"><span class="pre">exception</span> </em><code class="sig-prename descclassname"><span class="pre">dffml.df.types.</span></code><code class="sig-name descname"><span class="pre">DefinitionMissing</span></code><a class="reference internal" href="../../_modules/dffml/df/types.html#DefinitionMissing"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.df.types.DefinitionMissing" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="dffml.df.types.DefinitionMissing">
+<em class="property"><span class="pre">exception</span> </em><span class="sig-prename descclassname"><span class="pre">dffml.df.types.</span></span><span class="sig-name descname"><span class="pre">DefinitionMissing</span></span><a class="reference internal" href="../../_modules/dffml/df/types.html#DefinitionMissing"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.df.types.DefinitionMissing" title="Permalink to this definition">¶</a></dt>
 <dd><p>Definition missing from linked DataFlow</p>
 </dd></dl>
 
 <dl class="py exception">
-<dt id="dffml.df.types.FailedToLoadOperation">
-<em class="property"><span class="pre">exception</span> </em><code class="sig-prename descclassname"><span class="pre">dffml.df.types.</span></code><code class="sig-name descname"><span class="pre">FailedToLoadOperation</span></code><a class="reference internal" href="../../_modules/dffml/df/types.html#FailedToLoadOperation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.df.types.FailedToLoadOperation" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="dffml.df.types.FailedToLoadOperation">
+<em class="property"><span class="pre">exception</span> </em><span class="sig-prename descclassname"><span class="pre">dffml.df.types.</span></span><span class="sig-name descname"><span class="pre">FailedToLoadOperation</span></span><a class="reference internal" href="../../_modules/dffml/df/types.html#FailedToLoadOperation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.df.types.FailedToLoadOperation" title="Permalink to this definition">¶</a></dt>
 <dd><p>Raised when an Operation wasn’t found to be registered with the
 dffml.operation entrypoint.</p>
 </dd></dl>
 
 <dl class="py class">
-<dt id="dffml.df.types.Forward">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">dffml.df.types.</span></code><code class="sig-name descname"><span class="pre">Forward</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">book</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Definitions</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/types.html#Forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.df.types.Forward" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="dffml.df.types.Forward">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">dffml.df.types.</span></span><span class="sig-name descname"><span class="pre">Forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">book</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Definitions</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/types.html#Forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.df.types.Forward" title="Permalink to this definition">¶</a></dt>
 <dd><p>Keeps a map of operation instance_names to list of definitions
 of inputs which should be forwarded to the subflow running in that operation.</p>
 <dl class="py method">
-<dt id="dffml.df.types.Forward.get_instances_to_forward">
-<code class="sig-name descname"><span class="pre">get_instances_to_forward</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">definition</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#dffml.df.types.Definition" title="dffml.df.types.Definition"><span class="pre">dffml.df.types.Definition</span></a></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><a class="reference internal" href="../../_modules/dffml/df/types.html#Forward.get_instances_to_forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.df.types.Forward.get_instances_to_forward" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="dffml.df.types.Forward.get_instances_to_forward">
+<span class="sig-name descname"><span class="pre">get_instances_to_forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">definition</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#dffml.df.types.Definition" title="dffml.df.types.Definition"><span class="pre">dffml.df.types.Definition</span></a></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><a class="reference internal" href="../../_modules/dffml/df/types.html#Forward.get_instances_to_forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.df.types.Forward.get_instances_to_forward" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a list of all instances of operation to which <cite>definition</cite> should
 be forwarded to.</p>
 </dd></dl>
@@ -329,23 +332,23 @@ be forwarded to.</p>
 </dd></dl>
 
 <dl class="py class">
-<dt id="dffml.df.types.Input">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">dffml.df.types.</span></code><code class="sig-name descname"><span class="pre">Input</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">definition</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#dffml.df.types.Definition" title="dffml.df.types.Definition"><span class="pre">dffml.df.types.Definition</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">parents</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#dffml.df.types.Input" title="dffml.df.types.Input"><span class="pre">dffml.df.types.Input</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">origin</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span> </span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#dffml.df.types.Operation" title="dffml.df.types.Operation"><span class="pre">dffml.df.types.Operation</span></a><span class="p"><span class="pre">,</span> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'seed'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">validated</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><span class="pre">bool</span></a></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">uid</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/types.html#Input"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.df.types.Input" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="dffml.df.types.Input">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">dffml.df.types.</span></span><span class="sig-name descname"><span class="pre">Input</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">definition</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#dffml.df.types.Definition" title="dffml.df.types.Definition"><span class="pre">dffml.df.types.Definition</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">parents</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#dffml.df.types.Input" title="dffml.df.types.Input"><span class="pre">dffml.df.types.Input</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">origin</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span> </span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#dffml.df.types.Operation" title="dffml.df.types.Operation"><span class="pre">dffml.df.types.Operation</span></a><span class="p"><span class="pre">,</span> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'seed'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">validated</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><span class="pre">bool</span></a></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">uid</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/types.html#Input"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.df.types.Input" title="Permalink to this definition">¶</a></dt>
 <dd><p>All inputs have a unique id. Without it they can’t be tracked for locking
 purposes.</p>
 </dd></dl>
 
 <dl class="py class">
-<dt id="dffml.df.types.InputFlow">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">dffml.df.types.</span></code><code class="sig-name descname"><span class="pre">InputFlow</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span> </span><a class="reference internal" href="#dffml.df.types.Operation" title="dffml.df.types.Operation"><span class="pre">dffml.df.types.Operation</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conditions</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span> </span><a class="reference internal" href="#dffml.df.types.Operation" title="dffml.df.types.Operation"><span class="pre">dffml.df.types.Operation</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/types.html#InputFlow"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.df.types.InputFlow" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="dffml.df.types.InputFlow">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">dffml.df.types.</span></span><span class="sig-name descname"><span class="pre">InputFlow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span> </span><a class="reference internal" href="#dffml.df.types.Operation" title="dffml.df.types.Operation"><span class="pre">dffml.df.types.Operation</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conditions</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span> </span><a class="reference internal" href="#dffml.df.types.Operation" title="dffml.df.types.Operation"><span class="pre">dffml.df.types.Operation</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/types.html#InputFlow"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.df.types.InputFlow" title="Permalink to this definition">¶</a></dt>
 <dd><p>Inputs of an operation by their name as used by the operation implementation
 mapped to a list of locations they can come from. The list contains strings
 in the format of operation_instance_name.key_in_output_mapping or the
 literal “seed” which specifies that the value could be seeded to the
 network.</p>
 <dl class="py method">
-<dt id="dffml.df.types.InputFlow.get_alternate_definitions">
-<em class="property"><span class="pre">static</span> </em><code class="sig-name descname"><span class="pre">get_alternate_definitions</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">origin</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span> </span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span> </span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><a class="reference internal" href="../../_modules/dffml/df/types.html#InputFlow.get_alternate_definitions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.df.types.InputFlow.get_alternate_definitions" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="dffml.df.types.InputFlow.get_alternate_definitions">
+<em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">get_alternate_definitions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">origin</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span> </span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span> </span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><a class="reference internal" href="../../_modules/dffml/df/types.html#InputFlow.get_alternate_definitions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.df.types.InputFlow.get_alternate_definitions" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the alternate definitions and origin for an entry within an input
 flow. If there are no alternate defintions then the first element of the
 returned tuple is an empty list.</p>
@@ -375,120 +378,120 @@ returned tuple is an empty list.</p>
 </dd></dl>
 
 <dl class="py class">
-<dt id="dffml.df.types.Operation">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">dffml.df.types.</span></code><code class="sig-name descname"><span class="pre">Operation</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inputs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outputs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stage</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conditions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expand</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">instance_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">validator</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">retry</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/types.html#Operation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.df.types.Operation" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="py method">
-<dt id="dffml.df.types.Operation.conditions">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">conditions</span></code><a class="headerlink" href="#dffml.df.types.Operation.conditions" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="dffml.df.types.Operation">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">dffml.df.types.</span></span><span class="sig-name descname"><span class="pre">Operation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inputs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outputs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stage</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conditions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expand</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">instance_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">validator</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">retry</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/types.html#Operation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.df.types.Operation" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py property">
+<dt class="sig sig-object py" id="dffml.df.types.Operation.conditions">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">conditions</span></span><a class="headerlink" href="#dffml.df.types.Operation.conditions" title="Permalink to this definition">¶</a></dt>
 <dd><p>Alias for field number 4</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="dffml.df.types.Operation.definitions">
-<em class="property"><span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">definitions</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#dffml.df.types.Operation" title="dffml.df.types.Operation"><span class="pre">dffml.df.types.Operation</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/types.html#Operation.definitions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.df.types.Operation.definitions" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="dffml.df.types.Operation.definitions">
+<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">definitions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#dffml.df.types.Operation" title="dffml.df.types.Operation"><span class="pre">dffml.df.types.Operation</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/types.html#Operation.definitions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.df.types.Operation.definitions" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create key value mapping of definition names to definitions for all
 given operations.</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="dffml.df.types.Operation.expand">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">expand</span></code><a class="headerlink" href="#dffml.df.types.Operation.expand" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="dffml.df.types.Operation.expand">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">expand</span></span><a class="headerlink" href="#dffml.df.types.Operation.expand" title="Permalink to this definition">¶</a></dt>
 <dd><p>Alias for field number 5</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="dffml.df.types.Operation.inputs">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">inputs</span></code><a class="headerlink" href="#dffml.df.types.Operation.inputs" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="dffml.df.types.Operation.inputs">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">inputs</span></span><a class="headerlink" href="#dffml.df.types.Operation.inputs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Alias for field number 1</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="dffml.df.types.Operation.instance_name">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">instance_name</span></code><a class="headerlink" href="#dffml.df.types.Operation.instance_name" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="dffml.df.types.Operation.instance_name">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">instance_name</span></span><a class="headerlink" href="#dffml.df.types.Operation.instance_name" title="Permalink to this definition">¶</a></dt>
 <dd><p>Alias for field number 6</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="dffml.df.types.Operation.name">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">name</span></code><a class="headerlink" href="#dffml.df.types.Operation.name" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="dffml.df.types.Operation.name">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#dffml.df.types.Operation.name" title="Permalink to this definition">¶</a></dt>
 <dd><p>Alias for field number 0</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="dffml.df.types.Operation.outputs">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">outputs</span></code><a class="headerlink" href="#dffml.df.types.Operation.outputs" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="dffml.df.types.Operation.outputs">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">outputs</span></span><a class="headerlink" href="#dffml.df.types.Operation.outputs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Alias for field number 2</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="dffml.df.types.Operation.retry">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">retry</span></code><a class="headerlink" href="#dffml.df.types.Operation.retry" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="dffml.df.types.Operation.retry">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">retry</span></span><a class="headerlink" href="#dffml.df.types.Operation.retry" title="Permalink to this definition">¶</a></dt>
 <dd><p>Alias for field number 8</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="dffml.df.types.Operation.stage">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">stage</span></code><a class="headerlink" href="#dffml.df.types.Operation.stage" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="dffml.df.types.Operation.stage">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">stage</span></span><a class="headerlink" href="#dffml.df.types.Operation.stage" title="Permalink to this definition">¶</a></dt>
 <dd><p>Alias for field number 3</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="dffml.df.types.Operation.validator">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">validator</span></code><a class="headerlink" href="#dffml.df.types.Operation.validator" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="dffml.df.types.Operation.validator">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">validator</span></span><a class="headerlink" href="#dffml.df.types.Operation.validator" title="Permalink to this definition">¶</a></dt>
 <dd><p>Alias for field number 7</p>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="py class">
-<dt id="dffml.df.types.Output">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">dffml.df.types.</span></code><code class="sig-name descname"><span class="pre">Output</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">select</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fill</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">single</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ismap</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/types.html#Output"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.df.types.Output" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="py method">
-<dt id="dffml.df.types.Output.fill">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">fill</span></code><a class="headerlink" href="#dffml.df.types.Output.fill" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="dffml.df.types.Output">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">dffml.df.types.</span></span><span class="sig-name descname"><span class="pre">Output</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">select</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fill</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">single</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ismap</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/types.html#Output"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.df.types.Output" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py property">
+<dt class="sig sig-object py" id="dffml.df.types.Output.fill">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">fill</span></span><a class="headerlink" href="#dffml.df.types.Output.fill" title="Permalink to this definition">¶</a></dt>
 <dd><p>Alias for field number 2</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="dffml.df.types.Output.ismap">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">ismap</span></code><a class="headerlink" href="#dffml.df.types.Output.ismap" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="dffml.df.types.Output.ismap">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">ismap</span></span><a class="headerlink" href="#dffml.df.types.Output.ismap" title="Permalink to this definition">¶</a></dt>
 <dd><p>Alias for field number 4</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="dffml.df.types.Output.name">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">name</span></code><a class="headerlink" href="#dffml.df.types.Output.name" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="dffml.df.types.Output.name">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#dffml.df.types.Output.name" title="Permalink to this definition">¶</a></dt>
 <dd><p>Alias for field number 0</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="dffml.df.types.Output.select">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">select</span></code><a class="headerlink" href="#dffml.df.types.Output.select" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="dffml.df.types.Output.select">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">select</span></span><a class="headerlink" href="#dffml.df.types.Output.select" title="Permalink to this definition">¶</a></dt>
 <dd><p>Alias for field number 1</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="dffml.df.types.Output.single">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">single</span></code><a class="headerlink" href="#dffml.df.types.Output.single" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="dffml.df.types.Output.single">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">single</span></span><a class="headerlink" href="#dffml.df.types.Output.single" title="Permalink to this definition">¶</a></dt>
 <dd><p>Alias for field number 3</p>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="py class">
-<dt id="dffml.df.types.Parameter">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">dffml.df.types.</span></code><code class="sig-name descname"><span class="pre">Parameter</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">origin</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#dffml.df.types.Input" title="dffml.df.types.Input"><span class="pre">dffml.df.types.Input</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">definition</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#dffml.df.types.Definition" title="dffml.df.types.Definition"><span class="pre">dffml.df.types.Definition</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/types.html#Parameter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.df.types.Parameter" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="dffml.df.types.Parameter">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">dffml.df.types.</span></span><span class="sig-name descname"><span class="pre">Parameter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">origin</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#dffml.df.types.Input" title="dffml.df.types.Input"><span class="pre">dffml.df.types.Input</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">definition</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#dffml.df.types.Definition" title="dffml.df.types.Definition"><span class="pre">dffml.df.types.Definition</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/types.html#Parameter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.df.types.Parameter" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py exception">
-<dt id="dffml.df.types.PrimitiveDoesNotMatchValue">
-<em class="property"><span class="pre">exception</span> </em><code class="sig-prename descclassname"><span class="pre">dffml.df.types.</span></code><code class="sig-name descname"><span class="pre">PrimitiveDoesNotMatchValue</span></code><a class="reference internal" href="../../_modules/dffml/df/types.html#PrimitiveDoesNotMatchValue"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.df.types.PrimitiveDoesNotMatchValue" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="dffml.df.types.PrimitiveDoesNotMatchValue">
+<em class="property"><span class="pre">exception</span> </em><span class="sig-prename descclassname"><span class="pre">dffml.df.types.</span></span><span class="sig-name descname"><span class="pre">PrimitiveDoesNotMatchValue</span></span><a class="reference internal" href="../../_modules/dffml/df/types.html#PrimitiveDoesNotMatchValue"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.df.types.PrimitiveDoesNotMatchValue" title="Permalink to this definition">¶</a></dt>
 <dd><p>Primitive does not match the value type</p>
 </dd></dl>
 
 <dl class="py class">
-<dt id="dffml.df.types.Stage">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">dffml.df.types.</span></code><code class="sig-name descname"><span class="pre">Stage</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/types.html#Stage"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.df.types.Stage" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="dffml.df.types.Stage">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">dffml.df.types.</span></span><span class="sig-name descname"><span class="pre">Stage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/types.html#Stage"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.df.types.Stage" title="Permalink to this definition">¶</a></dt>
 <dd><p>An enumeration.</p>
 </dd></dl>
 

@@ -13,6 +13,8 @@
   
   <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/tabs.css" type="text/css" />
 
   
@@ -30,6 +32,7 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
         <script src="../../_static/doctools.js"></script>
@@ -241,33 +244,33 @@
   <div class="section" id="module-dffml.source.db">
 <span id="source-db"></span><h1>Source Db<a class="headerlink" href="#module-dffml.source.db" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
-<dt id="dffml.source.db.DbSource">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">dffml.source.db.</span></code><code class="sig-name descname"><span class="pre">DbSource</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cfg</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Type</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../base.html#dffml.base.BaseConfig" title="dffml.base.BaseConfig"><span class="pre">dffml.base.BaseConfig</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/db.html#DbSource"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.source.db.DbSource" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="dffml.source.db.DbSource">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">dffml.source.db.</span></span><span class="sig-name descname"><span class="pre">DbSource</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cfg</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Type</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../base.html#dffml.base.BaseConfig" title="dffml.base.BaseConfig"><span class="pre">dffml.base.BaseConfig</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/db.html#DbSource"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.source.db.DbSource" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="py attribute">
-<dt id="dffml.source.db.DbSource.CONFIG">
-<code class="sig-name descname"><span class="pre">CONFIG</span></code><a class="headerlink" href="#dffml.source.db.DbSource.CONFIG" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="dffml.source.db.DbSource.CONFIG">
+<span class="sig-name descname"><span class="pre">CONFIG</span></span><a class="headerlink" href="#dffml.source.db.DbSource.CONFIG" title="Permalink to this definition">¶</a></dt>
 <dd><p>alias of <a class="reference internal" href="#dffml.source.db.DbSourceConfig" title="dffml.source.db.DbSourceConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">dffml.source.db.DbSourceConfig</span></code></a></p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt id="dffml.source.db.DbSource.CONTEXT">
-<code class="sig-name descname"><span class="pre">CONTEXT</span></code><a class="headerlink" href="#dffml.source.db.DbSource.CONTEXT" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="dffml.source.db.DbSource.CONTEXT">
+<span class="sig-name descname"><span class="pre">CONTEXT</span></span><a class="headerlink" href="#dffml.source.db.DbSource.CONTEXT" title="Permalink to this definition">¶</a></dt>
 <dd><p>alias of <a class="reference internal" href="#dffml.source.db.DbSourceContext" title="dffml.source.db.DbSourceContext"><code class="xref py py-class docutils literal notranslate"><span class="pre">dffml.source.db.DbSourceContext</span></code></a></p>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="py class">
-<dt id="dffml.source.db.DbSourceConfig">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">dffml.source.db.</span></code><code class="sig-name descname"><span class="pre">DbSourceConfig</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">db</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="../db/base.html#dffml.db.base.BaseDatabase" title="dffml.db.base.BaseDatabase"><span class="pre">dffml.db.base.BaseDatabase</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">table_name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_columns</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/db.html#DbSourceConfig"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.source.db.DbSourceConfig" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="dffml.source.db.DbSourceConfig">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">dffml.source.db.</span></span><span class="sig-name descname"><span class="pre">DbSourceConfig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">db</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="../db/base.html#dffml.db.base.BaseDatabase" title="dffml.db.base.BaseDatabase"><span class="pre">dffml.db.base.BaseDatabase</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">table_name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_columns</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/db.html#DbSourceConfig"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.source.db.DbSourceConfig" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py class">
-<dt id="dffml.source.db.DbSourceContext">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">dffml.source.db.</span></code><code class="sig-name descname"><span class="pre">DbSourceContext</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="source.html#dffml.source.source.BaseSource" title="dffml.source.source.BaseSource"><span class="pre">dffml.source.source.BaseSource</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/db.html#DbSourceContext"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.source.db.DbSourceContext" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="dffml.source.db.DbSourceContext">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">dffml.source.db.</span></span><span class="sig-name descname"><span class="pre">DbSourceContext</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="source.html#dffml.source.source.BaseSource" title="dffml.source.source.BaseSource"><span class="pre">dffml.source.source.BaseSource</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/db.html#DbSourceContext"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.source.db.DbSourceContext" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="py method">
-<dt id="dffml.source.db.DbSourceContext.record">
-<em class="property"><span class="pre">async</span> </em><code class="sig-name descname"><span class="pre">record</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/db.html#DbSourceContext.record"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.source.db.DbSourceContext.record" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="dffml.source.db.DbSourceContext.record">
+<em class="property"><span class="pre">async</span> </em><span class="sig-name descname"><span class="pre">record</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/db.html#DbSourceContext.record"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.source.db.DbSourceContext.record" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get a record from the source or add it if it doesn’t exist.</p>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">asyncio</span>
@@ -292,8 +295,8 @@
 </dd></dl>
 
 <dl class="py method">
-<dt id="dffml.source.db.DbSourceContext.records">
-<code class="sig-name descname"><span class="pre">records</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <span class="pre">AsyncIterator</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../record.html#dffml.record.Record" title="dffml.record.Record"><span class="pre">dffml.record.Record</span></a><span class="p"><span class="pre">]</span></span><a class="reference internal" href="../../_modules/dffml/source/db.html#DbSourceContext.records"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.source.db.DbSourceContext.records" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="dffml.source.db.DbSourceContext.records">
+<span class="sig-name descname"><span class="pre">records</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <span class="pre">AsyncIterator</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../record.html#dffml.record.Record" title="dffml.record.Record"><span class="pre">dffml.record.Record</span></a><span class="p"><span class="pre">]</span></span><a class="reference internal" href="../../_modules/dffml/source/db.html#DbSourceContext.records"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.source.db.DbSourceContext.records" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a list of records retrieved from self.src</p>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">asyncio</span>
@@ -312,8 +315,8 @@
 </dd></dl>
 
 <dl class="py method">
-<dt id="dffml.source.db.DbSourceContext.update">
-<em class="property"><span class="pre">async</span> </em><code class="sig-name descname"><span class="pre">update</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">record</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="../record.html#dffml.record.Record" title="dffml.record.Record"><span class="pre">dffml.record.Record</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/db.html#DbSourceContext.update"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.source.db.DbSourceContext.update" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="dffml.source.db.DbSourceContext.update">
+<em class="property"><span class="pre">async</span> </em><span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">record</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="../record.html#dffml.record.Record" title="dffml.record.Record"><span class="pre">dffml.record.Record</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/db.html#DbSourceContext.update"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.source.db.DbSourceContext.update" title="Permalink to this definition">¶</a></dt>
 <dd><p>Updates a record for a source</p>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">asyncio</span>

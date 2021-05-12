@@ -13,6 +13,8 @@
   
   <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/tabs.css" type="text/css" />
 
   
@@ -30,6 +32,7 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
         <script src="../../_static/doctools.js"></script>
@@ -243,20 +246,20 @@
 <span id="util-tempdir"></span><h1>Util Tempdir<a class="headerlink" href="#module-dffml.util.tempdir" title="Permalink to this headline">¶</a></h1>
 <p>Create and remove OS temporary directories.</p>
 <dl class="py class">
-<dt id="dffml.util.tempdir.TempDir">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">dffml.util.tempdir.</span></code><code class="sig-name descname"><span class="pre">TempDir</span></code><a class="reference internal" href="../../_modules/dffml/util/tempdir.html#TempDir"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.util.tempdir.TempDir" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="dffml.util.tempdir.TempDir">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">dffml.util.tempdir.</span></span><span class="sig-name descname"><span class="pre">TempDir</span></span><a class="reference internal" href="../../_modules/dffml/util/tempdir.html#TempDir"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.util.tempdir.TempDir" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates and deletes temporary directories. Removes any created directories
 when the program using this class terminates (see rmtempdirs for details).</p>
 <dl class="py method">
-<dt id="dffml.util.tempdir.TempDir.mktempdir">
-<code class="sig-name descname"><span class="pre">mktempdir</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/util/tempdir.html#TempDir.mktempdir"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.util.tempdir.TempDir.mktempdir" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="dffml.util.tempdir.TempDir.mktempdir">
+<span class="sig-name descname"><span class="pre">mktempdir</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/util/tempdir.html#TempDir.mktempdir"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.util.tempdir.TempDir.mktempdir" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a temporary directory using TempDir’s SUFFIX and PREFIX.
 Adds the directory to the to be deleted queue.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="dffml.util.tempdir.TempDir.rmtempdirs">
-<code class="sig-name descname"><span class="pre">rmtempdirs</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/util/tempdir.html#TempDir.rmtempdirs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.util.tempdir.TempDir.rmtempdirs" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="dffml.util.tempdir.TempDir.rmtempdirs">
+<span class="sig-name descname"><span class="pre">rmtempdirs</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/util/tempdir.html#TempDir.rmtempdirs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.util.tempdir.TempDir.rmtempdirs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Removes all created temporary directories. Decorated with the
 atexit.register method to ensure all created directories will be removed
 on termination.</p>

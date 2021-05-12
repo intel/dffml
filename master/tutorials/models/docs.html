@@ -13,6 +13,8 @@
   
   <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/tabs.css" type="text/css" />
 
   
@@ -30,6 +32,7 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
         <script src="../../_static/doctools.js"></script>
@@ -310,13 +313,11 @@ will be treated as a “raw literal”. For more information on raw literals see
 In our case it essentially means that when we have a backslash it will be
 treated as a backslash and not an escape character.</p>
 <p><strong>dffml_model_myslr/myslr.py</strong></p>
-<div class="highlight-default notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">66</span>
-<span class="normal">67</span>
-<span class="normal">68</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="nd">@entrypoint</span><span class="p">(</span><span class="s2">&quot;myslr&quot;</span><span class="p">)</span>
-<span class="k">class</span> <span class="nc">MySLRModel</span><span class="p">(</span><span class="n">SimpleModel</span><span class="p">):</span>
-    <span class="sa">r</span><span class="s2">&quot;&quot;&quot;</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">66</span><span class="nd">@entrypoint</span><span class="p">(</span><span class="s2">&quot;myslr&quot;</span><span class="p">)</span>
+<span class="linenos">67</span><span class="k">class</span> <span class="nc">MySLRModel</span><span class="p">(</span><span class="n">SimpleModel</span><span class="p">):</span>
+<span class="linenos">68</span>    <span class="sa">r</span><span class="s2">&quot;&quot;&quot;</span>
 </pre></div>
-</td></tr></table></div>
+</div>
 </div>
 <div class="section" id="quick-rst-background">
 <h2>Quick rST background<a class="headerlink" href="#quick-rst-background" title="Permalink to this headline">¶</a></h2>
@@ -363,61 +364,35 @@ good way to do that.</p>
 We always try to make it clear to the user what file they should be writing it
 by putting the filename in bold above the file contents.</p>
 <p><strong>dffml_model_myslr/myslr.py</strong></p>
-<div class="highlight-rst notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">71</span>
-<span class="normal">72</span>
-<span class="normal">73</span>
-<span class="normal">74</span>
-<span class="normal">75</span>
-<span class="normal">76</span>
-<span class="normal">77</span>
-<span class="normal">78</span>
-<span class="normal">79</span>
-<span class="normal">80</span>
-<span class="normal">81</span>
-<span class="normal">82</span>
-<span class="normal">83</span>
-<span class="normal">84</span>
-<span class="normal">85</span>
-<span class="normal">86</span>
-<span class="normal">87</span>
-<span class="normal">88</span>
-<span class="normal">89</span>
-<span class="normal">90</span>
-<span class="normal">91</span>
-<span class="normal">92</span>
-<span class="normal">93</span>
-<span class="normal">94</span>
-<span class="normal">95</span>
-<span class="normal">96</span>
-<span class="normal">97</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span>    The dataset used for training
-
-    <span class="gs">**train.csv**</span>
-
-<span class="p">    ..</span> <span class="ow">code-block</span><span class="p">::</span>
-        <span class="nc">:test:</span>
-        <span class="nc">:filepath:</span> train.csv
-
-        x,y
-        0.0,0
-        0.1,1
-        0.2,2
-        0.3,3
-        0.4,4
-        0.5,5
-
-    The dataset used for testing
-
-    <span class="gs">**test.csv**</span>
-
-<span class="p">    ..</span> <span class="ow">code-block</span><span class="p">::</span>
-        <span class="nc">:test:</span>
-        <span class="nc">:filepath:</span> test.csv
-
-        x,y
-        0.6,6
-        0.7,7
+<div class="highlight-rst notranslate"><div class="highlight"><pre><span></span><span class="linenos">71</span>    The dataset used for training
+<span class="linenos">72</span>
+<span class="linenos">73</span>    <span class="gs">**train.csv**</span>
+<span class="linenos">74</span>
+<span class="linenos">75</span><span class="p">    ..</span> <span class="ow">code-block</span><span class="p">::</span>
+<span class="linenos">76</span>        <span class="nc">:test:</span>
+<span class="linenos">77</span>        <span class="nc">:filepath:</span> train.csv
+<span class="linenos">78</span>
+<span class="linenos">79</span>        x,y
+<span class="linenos">80</span>        0.0,0
+<span class="linenos">81</span>        0.1,1
+<span class="linenos">82</span>        0.2,2
+<span class="linenos">83</span>        0.3,3
+<span class="linenos">84</span>        0.4,4
+<span class="linenos">85</span>        0.5,5
+<span class="linenos">86</span>
+<span class="linenos">87</span>    The dataset used for testing
+<span class="linenos">88</span>
+<span class="linenos">89</span>    <span class="gs">**test.csv**</span>
+<span class="linenos">90</span>
+<span class="linenos">91</span><span class="p">    ..</span> <span class="ow">code-block</span><span class="p">::</span>
+<span class="linenos">92</span>        <span class="nc">:test:</span>
+<span class="linenos">93</span>        <span class="nc">:filepath:</span> test.csv
+<span class="linenos">94</span>
+<span class="linenos">95</span>        x,y
+<span class="linenos">96</span>        0.6,6
+<span class="linenos">97</span>        0.7,7
 </pre></div>
-</td></tr></table></div>
+</div>
 </div>
 <div class="section" id="example-cli-commands">
 <h2>Example CLI Commands<a class="headerlink" href="#example-cli-commands" title="Permalink to this headline">¶</a></h2>
@@ -430,135 +405,72 @@ in the console should be highlighted. There is no proper way to highlight a
 <code class="docutils literal notranslate"><span class="pre">.csv</span></code> file, which is why we didn’t talk about highlighting in the
 <a class="reference internal" href="#model-tutorial-docs-example-datasets"><span class="std std-ref">Example Datasets</span></a> section.</p>
 <p><strong>dffml_model_myslr/myslr.py</strong></p>
-<div class="highlight-rst notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 99</span>
-<span class="normal">100</span>
-<span class="normal">101</span>
-<span class="normal">102</span>
-<span class="normal">103</span>
-<span class="normal">104</span>
-<span class="normal">105</span>
-<span class="normal">106</span>
-<span class="normal">107</span>
-<span class="normal">108</span>
-<span class="normal">109</span>
-<span class="normal">110</span>
-<span class="normal">111</span>
-<span class="normal">112</span>
-<span class="normal">113</span>
-<span class="normal">114</span>
-<span class="normal">115</span>
-<span class="normal">116</span>
-<span class="normal">117</span>
-<span class="normal">118</span>
-<span class="normal">119</span>
-<span class="normal">120</span>
-<span class="normal">121</span>
-<span class="normal">122</span>
-<span class="normal">123</span>
-<span class="normal">124</span>
-<span class="normal">125</span>
-<span class="normal">126</span>
-<span class="normal">127</span>
-<span class="normal">128</span>
-<span class="normal">129</span>
-<span class="normal">130</span>
-<span class="normal">131</span>
-<span class="normal">132</span>
-<span class="normal">133</span>
-<span class="normal">134</span>
-<span class="normal">135</span>
-<span class="normal">136</span>
-<span class="normal">137</span>
-<span class="normal">138</span>
-<span class="normal">139</span>
-<span class="normal">140</span>
-<span class="normal">141</span>
-<span class="normal">142</span>
-<span class="normal">143</span>
-<span class="normal">144</span>
-<span class="normal">145</span>
-<span class="normal">146</span>
-<span class="normal">147</span>
-<span class="normal">148</span>
-<span class="normal">149</span>
-<span class="normal">150</span>
-<span class="normal">151</span>
-<span class="normal">152</span>
-<span class="normal">153</span>
-<span class="normal">154</span>
-<span class="normal">155</span>
-<span class="normal">156</span>
-<span class="normal">157</span>
-<span class="normal">158</span>
-<span class="normal">159</span>
-<span class="normal">160</span>
-<span class="normal">161</span>
-<span class="normal">162</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span>    Train the model
-
-<span class="p">    ..</span> <span class="ow">code-block</span><span class="p">::</span> console
-        <span class="nc">:test:</span>
-
-        $ dffml train \
-            -model myslr \
-            -model-features x:float:1 \
-            -model-predict y:int:1 \
-            -model-directory tempdir \
-            -sources f=csv \
-            -source-filename train.csv
-
-    Assess the accuracy
-
-<span class="p">    ..</span> <span class="ow">code-block</span><span class="p">::</span> console
-        <span class="nc">:test:</span>
-
-        $ dffml accuracy \
-            -model myslr \
-            -model-features x:float:1 \
-            -model-predict y:int:1 \
-            -model-directory tempdir \
-            -sources f=csv \
-            -source-filename test.csv
-        1.0
-
-    Make a prediction
-
-    <span class="gs">**predict.csv**</span>
-
-<span class="p">    ..</span> <span class="ow">code-block</span><span class="p">::</span>
-        <span class="nc">:test:</span>
-        <span class="nc">:filepath:</span> predict.csv
-
-        x
-        0.8
-
-<span class="p">    ..</span> <span class="ow">code-block</span><span class="p">::</span> console
-        <span class="nc">:test:</span>
-
-        $ dffml predict all \
-            -model myslr \
-            -model-features x:float:1 \
-            -model-predict y:int:1 \
-            -model-directory tempdir \
-            -sources f=csv \
-            -source-filename predict.csv
-        [
-            {
-                &quot;extra&quot;: {},
-                &quot;features&quot;: {
-                    &quot;x&quot;: 0.8
-                },
-                &quot;key&quot;: &quot;0&quot;,
-                &quot;last_updated&quot;: &quot;2020-11-15T16:22:25Z&quot;,
-                &quot;prediction&quot;: {
-                    &quot;y&quot;: {
-                        &quot;confidence&quot;: 1.0,
-                        &quot;value&quot;: 7.999999999999998
-                    }
-                }
-            }
-        ]
+<div class="highlight-rst notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 99</span>    Train the model
+<span class="linenos">100</span>
+<span class="linenos">101</span><span class="p">    ..</span> <span class="ow">code-block</span><span class="p">::</span> console
+<span class="linenos">102</span>        <span class="nc">:test:</span>
+<span class="linenos">103</span>
+<span class="linenos">104</span>        $ dffml train \
+<span class="linenos">105</span>            -model myslr \
+<span class="linenos">106</span>            -model-features x:float:1 \
+<span class="linenos">107</span>            -model-predict y:int:1 \
+<span class="linenos">108</span>            -model-directory tempdir \
+<span class="linenos">109</span>            -sources f=csv \
+<span class="linenos">110</span>            -source-filename train.csv
+<span class="linenos">111</span>
+<span class="linenos">112</span>    Assess the accuracy
+<span class="linenos">113</span>
+<span class="linenos">114</span><span class="p">    ..</span> <span class="ow">code-block</span><span class="p">::</span> console
+<span class="linenos">115</span>        <span class="nc">:test:</span>
+<span class="linenos">116</span>
+<span class="linenos">117</span>        $ dffml accuracy \
+<span class="linenos">118</span>            -model myslr \
+<span class="linenos">119</span>            -model-features x:float:1 \
+<span class="linenos">120</span>            -model-predict y:int:1 \
+<span class="linenos">121</span>            -model-directory tempdir \
+<span class="linenos">122</span>            -sources f=csv \
+<span class="linenos">123</span>            -source-filename test.csv
+<span class="linenos">124</span>        1.0
+<span class="linenos">125</span>
+<span class="linenos">126</span>    Make a prediction
+<span class="linenos">127</span>
+<span class="linenos">128</span>    <span class="gs">**predict.csv**</span>
+<span class="linenos">129</span>
+<span class="linenos">130</span><span class="p">    ..</span> <span class="ow">code-block</span><span class="p">::</span>
+<span class="linenos">131</span>        <span class="nc">:test:</span>
+<span class="linenos">132</span>        <span class="nc">:filepath:</span> predict.csv
+<span class="linenos">133</span>
+<span class="linenos">134</span>        x
+<span class="linenos">135</span>        0.8
+<span class="linenos">136</span>
+<span class="linenos">137</span><span class="p">    ..</span> <span class="ow">code-block</span><span class="p">::</span> console
+<span class="linenos">138</span>        <span class="nc">:test:</span>
+<span class="linenos">139</span>
+<span class="linenos">140</span>        $ dffml predict all \
+<span class="linenos">141</span>            -model myslr \
+<span class="linenos">142</span>            -model-features x:float:1 \
+<span class="linenos">143</span>            -model-predict y:int:1 \
+<span class="linenos">144</span>            -model-directory tempdir \
+<span class="linenos">145</span>            -sources f=csv \
+<span class="linenos">146</span>            -source-filename predict.csv
+<span class="linenos">147</span>        [
+<span class="linenos">148</span>            {
+<span class="linenos">149</span>                &quot;extra&quot;: {},
+<span class="linenos">150</span>                &quot;features&quot;: {
+<span class="linenos">151</span>                    &quot;x&quot;: 0.8
+<span class="linenos">152</span>                },
+<span class="linenos">153</span>                &quot;key&quot;: &quot;0&quot;,
+<span class="linenos">154</span>                &quot;last_updated&quot;: &quot;2020-11-15T16:22:25Z&quot;,
+<span class="linenos">155</span>                &quot;prediction&quot;: {
+<span class="linenos">156</span>                    &quot;y&quot;: {
+<span class="linenos">157</span>                        &quot;confidence&quot;: 1.0,
+<span class="linenos">158</span>                        &quot;value&quot;: 7.999999999999998
+<span class="linenos">159</span>                    }
+<span class="linenos">160</span>                }
+<span class="linenos">161</span>            }
+<span class="linenos">162</span>        ]
 </pre></div>
-</td></tr></table></div>
+</div>
 </div>
 <div class="section" id="example-python-usage">
 <h2>Example Python Usage<a class="headerlink" href="#example-python-usage" title="Permalink to this headline">¶</a></h2>
@@ -568,41 +480,29 @@ separate file and use <code class="docutils literal notranslate"><span class="pr
 because the auto formatter, <a class="reference external" href="https://github.com/psf/black">black</a>, can only
 format Python files. It can’t format examples within rST within a docstring.</p>
 <p><strong>dffml_model_myslr/myslr.py</strong></p>
-<div class="highlight-rst notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">164</span>
-<span class="normal">165</span>
-<span class="normal">166</span>
-<span class="normal">167</span>
-<span class="normal">168</span>
-<span class="normal">169</span>
-<span class="normal">170</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span>    Example usage of Logistic Regression using Python
-
-    <span class="gs">**example_myslr.py**</span>
-
-<span class="p">    ..</span> <span class="ow">literalinclude</span><span class="p">::</span> ../examples/example_myslr.py
-        <span class="nc">:test:</span>
-        <span class="nc">:filepath:</span> example_myslr.py
+<div class="highlight-rst notranslate"><div class="highlight"><pre><span></span><span class="linenos">164</span>    Example usage of Logistic Regression using Python
+<span class="linenos">165</span>
+<span class="linenos">166</span>    <span class="gs">**example_myslr.py**</span>
+<span class="linenos">167</span>
+<span class="linenos">168</span><span class="p">    ..</span> <span class="ow">literalinclude</span><span class="p">::</span> ../examples/example_myslr.py
+<span class="linenos">169</span>        <span class="nc">:test:</span>
+<span class="linenos">170</span>        <span class="nc">:filepath:</span> example_myslr.py
 </pre></div>
-</td></tr></table></div>
+</div>
 <p>By specifying the <code class="docutils literal notranslate"><span class="pre">:filepath:</span></code> we copied the contents of the Python example
 to the test environment’s directory. The last thing we need to do is run the
 Python example and show what it’s output would be. Then end the docstring with
 another <code class="docutils literal notranslate"><span class="pre">&quot;&quot;&quot;`</span></code>.</p>
 <p><strong>dffml_model_myslr/myslr.py</strong></p>
-<div class="highlight-rst notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">172</span>
-<span class="normal">173</span>
-<span class="normal">174</span>
-<span class="normal">175</span>
-<span class="normal">176</span>
-<span class="normal">177</span>
-<span class="normal">178</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="p">    ..</span> <span class="ow">code-block</span><span class="p">::</span> console
-        <span class="nc">:test:</span>
-
-        $ python example_myslr.py
-        Accuracy: 1.0
-        {&#39;x&#39;: 0.9, &#39;y&#39;: 4}
-    &quot;&quot;&quot;
+<div class="highlight-rst notranslate"><div class="highlight"><pre><span></span><span class="linenos">172</span><span class="p">    ..</span> <span class="ow">code-block</span><span class="p">::</span> console
+<span class="linenos">173</span>        <span class="nc">:test:</span>
+<span class="linenos">174</span>
+<span class="linenos">175</span>        $ python example_myslr.py
+<span class="linenos">176</span>        Accuracy: 1.0
+<span class="linenos">177</span>        {&#39;x&#39;: 0.9, &#39;y&#39;: 4}
+<span class="linenos">178</span>    &quot;&quot;&quot;
 </pre></div>
-</td></tr></table></div>
+</div>
 </div>
 <div class="section" id="testing-examples">
 <span id="model-tutorial-docs-testing-examples"></span><h2>Testing Examples<a class="headerlink" href="#testing-examples" title="Permalink to this headline">¶</a></h2>

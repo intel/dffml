@@ -13,6 +13,8 @@
   
   <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/tabs.css" type="text/css" />
 
   
@@ -30,6 +32,7 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
         <script src="../../_static/doctools.js"></script>
@@ -243,34 +246,34 @@
 <p>Source to store records in a dictionary.</p>
 <span class="target" id="module-dffml.source.memory"></span><p>Fake data sources used for testing</p>
 <dl class="py class">
-<dt id="dffml.source.memory.MemorySource">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">dffml.source.memory.</span></code><code class="sig-name descname"><span class="pre">MemorySource</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#dffml.source.memory.MemorySourceConfig" title="dffml.source.memory.MemorySourceConfig"><span class="pre">dffml.source.memory.MemorySourceConfig</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/memory.html#MemorySource"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.source.memory.MemorySource" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="dffml.source.memory.MemorySource">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">dffml.source.memory.</span></span><span class="sig-name descname"><span class="pre">MemorySource</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#dffml.source.memory.MemorySourceConfig" title="dffml.source.memory.MemorySourceConfig"><span class="pre">dffml.source.memory.MemorySourceConfig</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/memory.html#MemorySource"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.source.memory.MemorySource" title="Permalink to this definition">¶</a></dt>
 <dd><p>Stores records in a dict in memory</p>
 <dl class="py attribute">
-<dt id="dffml.source.memory.MemorySource.CONFIG">
-<code class="sig-name descname"><span class="pre">CONFIG</span></code><a class="headerlink" href="#dffml.source.memory.MemorySource.CONFIG" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="dffml.source.memory.MemorySource.CONFIG">
+<span class="sig-name descname"><span class="pre">CONFIG</span></span><a class="headerlink" href="#dffml.source.memory.MemorySource.CONFIG" title="Permalink to this definition">¶</a></dt>
 <dd><p>alias of <a class="reference internal" href="#dffml.source.memory.MemorySourceConfig" title="dffml.source.memory.MemorySourceConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">dffml.source.memory.MemorySourceConfig</span></code></a></p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt id="dffml.source.memory.MemorySource.CONTEXT">
-<code class="sig-name descname"><span class="pre">CONTEXT</span></code><a class="headerlink" href="#dffml.source.memory.MemorySource.CONTEXT" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="dffml.source.memory.MemorySource.CONTEXT">
+<span class="sig-name descname"><span class="pre">CONTEXT</span></span><a class="headerlink" href="#dffml.source.memory.MemorySource.CONTEXT" title="Permalink to this definition">¶</a></dt>
 <dd><p>alias of <a class="reference internal" href="#dffml.source.memory.MemorySourceContext" title="dffml.source.memory.MemorySourceContext"><code class="xref py py-class docutils literal notranslate"><span class="pre">dffml.source.memory.MemorySourceContext</span></code></a></p>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="py class">
-<dt id="dffml.source.memory.MemorySourceConfig">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">dffml.source.memory.</span></code><code class="sig-name descname"><span class="pre">MemorySourceConfig</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">records</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../record.html#dffml.record.Record" title="dffml.record.Record"><span class="pre">dffml.record.Record</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">display</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/memory.html#MemorySourceConfig"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.source.memory.MemorySourceConfig" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="dffml.source.memory.MemorySourceConfig">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">dffml.source.memory.</span></span><span class="sig-name descname"><span class="pre">MemorySourceConfig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">records</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../record.html#dffml.record.Record" title="dffml.record.Record"><span class="pre">dffml.record.Record</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">display</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/memory.html#MemorySourceConfig"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.source.memory.MemorySourceConfig" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py class">
-<dt id="dffml.source.memory.MemorySourceContext">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">dffml.source.memory.</span></code><code class="sig-name descname"><span class="pre">MemorySourceContext</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="source.html#dffml.source.source.BaseSource" title="dffml.source.source.BaseSource"><span class="pre">dffml.source.source.BaseSource</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/memory.html#MemorySourceContext"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.source.memory.MemorySourceContext" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="dffml.source.memory.MemorySourceContext">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">dffml.source.memory.</span></span><span class="sig-name descname"><span class="pre">MemorySourceContext</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="source.html#dffml.source.source.BaseSource" title="dffml.source.source.BaseSource"><span class="pre">dffml.source.source.BaseSource</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/memory.html#MemorySourceContext"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.source.memory.MemorySourceContext" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="py method">
-<dt id="dffml.source.memory.MemorySourceContext.record">
-<em class="property"><span class="pre">async</span> </em><code class="sig-name descname"><span class="pre">record</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="../record.html#dffml.record.Record" title="dffml.record.Record"><span class="pre">dffml.record.Record</span></a><a class="reference internal" href="../../_modules/dffml/source/memory.html#MemorySourceContext.record"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.source.memory.MemorySourceContext.record" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="dffml.source.memory.MemorySourceContext.record">
+<em class="property"><span class="pre">async</span> </em><span class="sig-name descname"><span class="pre">record</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="../record.html#dffml.record.Record" title="dffml.record.Record"><span class="pre">dffml.record.Record</span></a><a class="reference internal" href="../../_modules/dffml/source/memory.html#MemorySourceContext.record"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.source.memory.MemorySourceContext.record" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get a record from the source or add it if it doesn’t exist.</p>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">asyncio</span>
@@ -295,8 +298,8 @@
 </dd></dl>
 
 <dl class="py method">
-<dt id="dffml.source.memory.MemorySourceContext.records">
-<code class="sig-name descname"><span class="pre">records</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <span class="pre">AsyncIterator</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../record.html#dffml.record.Record" title="dffml.record.Record"><span class="pre">dffml.record.Record</span></a><span class="p"><span class="pre">]</span></span><a class="reference internal" href="../../_modules/dffml/source/memory.html#MemorySourceContext.records"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.source.memory.MemorySourceContext.records" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="dffml.source.memory.MemorySourceContext.records">
+<span class="sig-name descname"><span class="pre">records</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <span class="pre">AsyncIterator</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../record.html#dffml.record.Record" title="dffml.record.Record"><span class="pre">dffml.record.Record</span></a><span class="p"><span class="pre">]</span></span><a class="reference internal" href="../../_modules/dffml/source/memory.html#MemorySourceContext.records"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.source.memory.MemorySourceContext.records" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a list of records retrieved from self.src</p>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">asyncio</span>
@@ -315,8 +318,8 @@
 </dd></dl>
 
 <dl class="py method">
-<dt id="dffml.source.memory.MemorySourceContext.update">
-<em class="property"><span class="pre">async</span> </em><code class="sig-name descname"><span class="pre">update</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">record</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/memory.html#MemorySourceContext.update"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.source.memory.MemorySourceContext.update" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="dffml.source.memory.MemorySourceContext.update">
+<em class="property"><span class="pre">async</span> </em><span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">record</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/memory.html#MemorySourceContext.update"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.source.memory.MemorySourceContext.update" title="Permalink to this definition">¶</a></dt>
 <dd><p>Updates a record for a source</p>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">asyncio</span>
