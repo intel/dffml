@@ -23,7 +23,7 @@ To test notebooks, DFFML utilizes
 ``testbook`` provides different ways to access, unittest and mock the code inside
 a notebook. Following is an example of how `testbook` can be used to test a notebook,
 in this case,
-:doc:`../examples/notebooks/moving_between_models`.
+:doc:`../examples/notebooks/moving_between_models`
 
 .. literalinclude:: /../tests/notebooks/test_moving_between_models.py
 
@@ -36,12 +36,12 @@ present in the same directory to the documentation. To overcome this,
 ``nbsphinx-link`` is used, which allows you to create a symblic link to
 notebooks in other directories.
 
-You can create the link to a notebook in a file with extention ``.nblink`` as follows.
+You can create the link to a notebook in a file with extention ``.nblink`` as follows
 
 .. literalinclude:: /examples/notebooks/moving_between_models.nblink
 
-After the link has been created, the nblink file is simply added to a toctree
-to be displayed in the documentation.
+After the link has been created, the ``nblink`` file is simply added to a toctree
+to be displayed in the documentation
 
 .. code-block:: text
 
