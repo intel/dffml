@@ -191,6 +191,7 @@ jobs:
         - docs/examples/integration.rst
         - docs/examples/or_covid_data_by_county.rst
         - docs/examples/shouldi.rst
+        - docs/examples/icecream_sales.rst
         - docs/installation.rst
         - docs/troubleshooting.rst
         - docs/tutorials/dataflows/io.rst
