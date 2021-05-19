@@ -1,0 +1,398 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Notebooks &mdash; DFFML a118bf53 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/tabs.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/copybutton.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="consoletest Sphinx extension" href="consoletest.html" />
+    <link rel="prev" title="Documentation" href="docs.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> DFFML
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                a118bf53
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Introduction</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../concepts/index.html">Concepts</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Usage</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart/model.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Examples</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../plugins/index.html">Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cli.html">Command Line</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../plugins/service/http/index.html">HTTP API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/base.html">Base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/plugins.html">Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/log.html">Log</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/version.html">Version</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/noasync.html">Noasync</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/record.html">Record</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/high_level.html">High_Level</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/model/index.html">Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/service/index.html">Service</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/configloader/index.html">Configloader</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/db/index.html">Db</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/port/index.html">Port</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/operation/index.html">Operation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/source/index.html">Source</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/feature/index.html">Feature</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/cli/index.html">Cli</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/df/index.html">Df</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/secret/index.html">Secret</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/util/index.html">Util</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../arch/index.html">Architecture</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Subprojects</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../shouldi.html">shouldi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../swportal.html">Software Portal</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Community</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference external" href="https://github.com/intel/dffml">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://intel.github.io/dffml/master/">Master Branch Docs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../publications.html">Publications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contact.html">Contact Us</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Contributing</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="dev_community.html">What To Work On</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dev_env.html">Getting Set Up To Work On DFFML</a></li>
+<li class="toctree-l2"><a class="reference internal" href="style.html">Style</a></li>
+<li class="toctree-l2"><a class="reference internal" href="codebase.html">Codebase Layout And Notes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="git.html">Git and GitHub</a></li>
+<li class="toctree-l2"><a class="reference internal" href="testing.html">Testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="docs.html">Documentation</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Notebooks</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#code-formatting">Code Formatting</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#testing">Testing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#documentation">Documentation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="consoletest.html">consoletest Sphinx extension</a></li>
+<li class="toctree-l2"><a class="reference internal" href="debugging.html">Debugging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="editors/index.html">Setting Up Your Editor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gsoc/index.html">Google Summer of Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintainers.html">Maintainer Docs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../news/index.html">News</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">DFFML</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Contributing</a> &raquo;</li>
+        
+      <li>Notebooks</li>
+    
+    
+
+
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            
+              <a href="https://github.com/intel/dffml/blob/master/docs/contributing/notebooks.rst" class="fa fa-github"> Edit on GitHub</a>
+            
+          
+        
+      </li>
+    
+
+
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="notebooks">
+<h1>Notebooks<a class="headerlink" href="#notebooks" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="code-formatting">
+<h2>Code Formatting<a class="headerlink" href="#code-formatting" title="Permalink to this headline">¶</a></h2>
+<p>After having written a notebook, it should be made sure that the code is
+in the right format, ie. the <code class="docutils literal notranslate"><span class="pre">black</span></code> formatters code style. A
+convenient way to achieve this in <code class="docutils literal notranslate"><span class="pre">jupyter</span> <span class="pre">notebook</span></code> is to install the
+<a class="reference external" href="https://github.com/drillan/jupyter-black">jupyter-black extension</a>.</p>
+</div>
+<div class="section" id="testing">
+<h2>Testing<a class="headerlink" href="#testing" title="Permalink to this headline">¶</a></h2>
+<p>Once you’ve made an example notebook, the code inside the notebook will need
+to be tested before it can be merged into the codebase. Notebooks cannot be
+tested in the typical manner, as a notebook file consists of more than just the code.
+To test notebooks, DFFML utilizes
+<a class="reference external" href="https://testbook.readthedocs.io/en/latest/usage/index.html">testbook</a>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">testbook</span></code> provides different ways to access, unittest and mock the code inside
+a notebook. Following is an example of how <cite>testbook</cite> can be used to test a notebook,
+in this case,
+<a class="reference internal" href="../examples/notebooks/moving_between_models.html"><span class="doc">Moving Between Models</span></a></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">testbook</span> <span class="kn">import</span> <span class="n">testbook</span>
+<span class="kn">import</span> <span class="nn">unittest</span>
+
+
+<span class="k">class</span> <span class="nc">TestNotebook</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+    <span class="c1"># Giving testbook the path to notebook</span>
+    <span class="nd">@testbook</span><span class="p">(</span><span class="s2">&quot;examples/notebooks/moving_between_models.ipynb&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">test_stdout</span><span class="p">(</span><span class="n">tb</span><span class="p">,</span> <span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Execute specific cells using a range</span>
+        <span class="n">tb</span><span class="o">.</span><span class="n">execute_cell</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+        <span class="c1"># Using inject function to insert and execute our own code during the execution of the notebook.</span>
+        <span class="c1"># Here, we use it to mock the cached_download() call to change the directory of saving the dataset</span>
+        <span class="c1"># to be able to gitignore it later on and avoid spam.</span>
+        <span class="n">tb</span><span class="o">.</span><span class="n">inject</span><span class="p">(</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            data_path = await cached_download(</span>
+<span class="sd">                &quot;https://archive.ics.uci.edu/ml/machine-learning-databases/wine-quality/winequality-red.csv&quot;,</span>
+<span class="sd">                &quot;tests/notebooks/data/wine_quality.csv&quot;,</span>
+<span class="sd">                &quot;789e98688f9ff18d4bae35afb71b006116ec9c529c1b21563fdaf5e785aea8b3937a55a4919c91ca2b0acb671300072c&quot;,</span>
+<span class="sd">            )</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+        <span class="p">)</span>
+        <span class="c1"># Insert and execute an assertion.</span>
+        <span class="n">tb</span><span class="o">.</span><span class="n">inject</span><span class="p">(</span>
+            <span class="s2">&quot;assert &#39;tests/notebooks/data/wine_quality.csv&#39; in str(data_path)&quot;</span>
+        <span class="p">)</span>
+        <span class="c1"># Execute the rest of the cells.</span>
+        <span class="n">tb</span><span class="o">.</span><span class="n">execute_cell</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">21</span><span class="p">))</span>
+        <span class="c1"># Get the output of specific cells and make assertions.</span>
+        <span class="k">assert</span> <span class="n">tb</span><span class="o">.</span><span class="n">cell_output_text</span><span class="p">(</span><span class="mi">13</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;1599 1279 320&quot;</span>
+        <span class="k">assert</span> <span class="s2">&quot;Accuracy1&quot;</span> <span class="ow">and</span> <span class="s2">&quot;Accuracy2&quot;</span> <span class="ow">in</span> <span class="n">tb</span><span class="o">.</span><span class="n">cell_output_text</span><span class="p">(</span><span class="mi">19</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="s2">&quot;confidence&quot;</span> <span class="ow">and</span> <span class="s2">&quot;value&quot;</span> <span class="ow">in</span> <span class="n">tb</span><span class="o">.</span><span class="n">cell_output_text</span><span class="p">(</span><span class="mi">21</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="s2">&quot;confidence&quot;</span> <span class="ow">and</span> <span class="s2">&quot;value&quot;</span> <span class="ow">in</span> <span class="n">tb</span><span class="o">.</span><span class="n">cell_output_text</span><span class="p">(</span><span class="mi">22</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="documentation">
+<h2>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">¶</a></h2>
+<p>Notebooks are added to the documentation by utilizing <code class="docutils literal notranslate"><span class="pre">nbsphinx</span></code> and
+<code class="docutils literal notranslate"><span class="pre">nbsphinx-link</span></code>. <code class="docutils literal notranslate"><span class="pre">nbsphinx</span></code> only lets you add notebooks that are
+present in the same directory to the documentation. To overcome this,
+<code class="docutils literal notranslate"><span class="pre">nbsphinx-link</span></code> is used, which allows you to create a symblic link to
+notebooks in other directories.</p>
+<p>You can create the link to a notebook in a file with extention <code class="docutils literal notranslate"><span class="pre">.nblink</span></code> as follows</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;path&quot;</span><span class="p">:</span> <span class="s2">&quot;../../../examples/notebooks/moving_between_models.ipynb&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>After the link has been created, the <code class="docutils literal notranslate"><span class="pre">nblink</span></code> file is simply added to a toctree
+to be displayed in the documentation</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>.. toctree::
+    :maxdepth: 2
+
+    moving_between_models
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="consoletest.html" class="btn btn-neutral float-right" title="consoletest Sphinx extension" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="docs.html" class="btn btn-neutral float-left" title="Documentation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2017 - 2021, Intel.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
