@@ -1,8 +1,6 @@
 Notebooks
 =========
 
-DFFML is currently in the phase of adapting to notebooks. 
-
 Code Formatting
 ---------------
 
