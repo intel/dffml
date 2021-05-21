@@ -5,18 +5,18 @@ Source
     :maxdepth: 2
     :caption: Contents:
 
-    json
+    dir
+    idx1
     idx3
-    csv
+    db
+    df
+    wrapper
+    json
+    memory
+    file
     source
     op
-    log
+    csv
     ini
-    df
-    file
-    idx1
-    dir
-    memory
-    wrapper
-    db
+    log
     dataset/index
