@@ -272,7 +272,7 @@ function run_docs() {
   TEMP_DIRS+=("${ssh_key_dir}")
   mkdir -p ~/.ssh
   chmod 700 ~/.ssh
-  "${PYTHON}" -c "import pathlib, base64, os; keyfile = pathlib.Path(\"${ssh_key_dir}/github\").absolute(); keyfile.write_bytes(b''); keyfile.chmod(0o600); keyfile.write_bytes(base64.b32decode(os.environ['GITHUB_PAGES_KEY']))"
+  "${PYTHON}" -c "import pathlib, base64, os; keyfile = pathlib.Path(\"${ssh_key_dir}/github\").absolute(); keyfile.write_bytes(b''); keyfile.chmod(0o600); keyfile.write_bytes(base64.b32decode(os.environ['SSH_DFFML_GH_PAGES']))"
   ssh-keygen -y -f "${ssh_key_dir}/github" > "${ssh_key_dir}/github.pub"
   export GIT_SSH_COMMAND="${GIT_SSH_COMMAND} -o IdentityFile=${ssh_key_dir}/github"
 

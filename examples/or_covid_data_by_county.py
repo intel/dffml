@@ -90,21 +90,22 @@ class FBProphetModel(SimpleModel):
             yield record
 
 
-# DFFML has a function to download files and validate their contents using
-# SHA 384 hashes. If you need to download files from an http:// site, you need
-# to add the following to the call to cached_download()
-#   protocol_allowlist=["https://", "http://"]
-@cached_download(
-    "https://github.com/intel/dffml/files/5773999/COVID.Oregon.Counties.Train.Clean.to.2020-10-24.csv.gz",
-    "training.csv.gz",
-    "af9536ab41580e04dd72b1285f6b2b703977aee5b95b80422bbe7cc11262297da265e6c0e333bfc1faa7b4f263f5496e",
-)
-@cached_download(
-    "https://github.com/intel/dffml/files/5773998/COVID.Oregon.Counties.Test.Clean.2020-10-25.to.2020-10-31.csv.gz",
-    "test.csv.gz",
-    "10ee8bcf06a511019f98c3e0e40f315585b2ed84d4a736f743567861d72438afcb7914f117e16640800959324f0f518d",
-)
-async def main(training_file, test_file):
+async def main():
+    # DFFML has a function to download files and validate their contents using
+    # SHA 384 hashes. If you need to download files from an http:// site, you need
+    # to add the following to the call to cached_download()
+    #   protocol_allowlist=["https://", "http://"]
+    training_file = await cached_download(
+        "https://github.com/intel/dffml/files/5773999/COVID.Oregon.Counties.Train.Clean.to.2020-10-24.csv.gz",
+        "training.csv.gz",
+        "af9536ab41580e04dd72b1285f6b2b703977aee5b95b80422bbe7cc11262297da265e6c0e333bfc1faa7b4f263f5496e",
+    )
+    testing_file = await cached_download(
+        "https://github.com/intel/dffml/files/5773998/COVID.Oregon.Counties.Test.Clean.2020-10-25.to.2020-10-31.csv.gz",
+        "test.csv.gz",
+        "10ee8bcf06a511019f98c3e0e40f315585b2ed84d4a736f743567861d72438afcb7914f117e16640800959324f0f518d",
+    )
+
     # Load the training data
     training_data = [record async for record in load(training_file)]
 

@@ -12,10 +12,10 @@ import numpy as np
 from sklearn.datasets import make_blobs, make_regression
 
 from dffml.cli.cli import CLI
-from dffml.util.asynctestcase import IntegrationCLITestCase
+from dffml.util.asynctestcase import AsyncTestCase
 
 
-class TestScikitClassification(IntegrationCLITestCase):
+class TestScikitClassification(AsyncTestCase):
     async def test_run(self):
         self.required_plugins("dffml-model-scikit")
         # Create the training data
@@ -116,7 +116,7 @@ class TestScikitClassification(IntegrationCLITestCase):
         self.assertEqual(y.item(), results)
 
 
-class TestScikitRegression(IntegrationCLITestCase):
+class TestScikitRegression(AsyncTestCase):
     async def test_run(self):
         self.required_plugins("dffml-model-scikit")
         # Create the training data
@@ -217,7 +217,7 @@ class TestScikitRegression(IntegrationCLITestCase):
         self.assertTrue(results is not None)
 
 
-class TestScikitClustering(IntegrationCLITestCase):
+class TestScikitClustering(AsyncTestCase):
     async def test_run(self):
         self.required_plugins("dffml-model-scikit")
         # Create the training data
@@ -270,7 +270,7 @@ class TestScikitClustering(IntegrationCLITestCase):
             "tran_w_labl",
             "tran_wo_labl",
         ]:
-            if algo is "ind_w_labl":
+            if algo == "ind_w_labl":
                 model, true_clstr, train_file, test_file, predict_file = (
                     "scikitkmeans",
                     "true_label:int:1",
@@ -278,7 +278,7 @@ class TestScikitClustering(IntegrationCLITestCase):
                     test_filename,
                     predict_filename,
                 )
-            elif algo is "ind_wo_labl":
+            elif algo == "ind_wo_labl":
                 model, true_clstr, train_file, test_file, predict_file = (
                     "scikitap",
                     None,
@@ -286,7 +286,7 @@ class TestScikitClustering(IntegrationCLITestCase):
                     test_filename,
                     predict_filename,
                 )
-            elif algo is "tran_w_labl":
+            elif algo == "tran_w_labl":
                 model, true_clstr, train_file, test_file, predict_file = (
                     "scikitoptics",
                     "true_label:int:1",
@@ -294,7 +294,7 @@ class TestScikitClustering(IntegrationCLITestCase):
                     train_filename,
                     train_filename,
                 )
-            elif algo is "tran_wo_labl":
+            elif algo == "tran_wo_labl":
                 model, true_clstr, train_file, test_file, predict_file = (
                     "scikitac",
                     None,

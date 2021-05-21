@@ -17,7 +17,7 @@ class TestScikitModel:
     def setUpClass(cls):
         cls.model_dir = tempfile.TemporaryDirectory()
         cls.features = Features()
-        if cls.MODEL_TYPE is "CLASSIFICATION":
+        if cls.MODEL_TYPE == "CLASSIFICATION":
             cls.features.append(Feature("A", float, 1))
             cls.features.append(Feature("B", float, 1))
             cls.features.append(Feature("C", float, 1))
@@ -50,7 +50,7 @@ class TestScikitModel:
                 )
                 for i in range(0, len(A))
             ]
-        elif cls.MODEL_TYPE is "REGRESSION":
+        elif cls.MODEL_TYPE == "REGRESSION":
             cls.features.append(Feature("A", float, 1))
             cls.features.append(Feature("B", float, 1))
             cls.features.append(Feature("C", float, 1))
@@ -69,7 +69,7 @@ class TestScikitModel:
                 )
                 for i in range(0, len(A))
             ]
-        elif cls.MODEL_TYPE is "CLUSTERING":
+        elif cls.MODEL_TYPE == "CLUSTERING":
             cls.features.append(Feature("A", float, 1))
             cls.features.append(Feature("B", float, 1))
             cls.features.append(Feature("C", float, 1))
@@ -122,7 +122,7 @@ class TestScikitModel:
         async with self.sources as sources, self.model as model:
             async with sources() as sctx, model() as mctx:
                 res = await mctx.accuracy(sctx)
-                if self.MODEL_TYPE is "CLUSTERING":
+                if self.MODEL_TYPE == "CLUSTERING":
                     self.assertTrue(res is not None)
                 else:
                     self.assertTrue(0 <= res <= 1)
@@ -133,15 +133,15 @@ class TestScikitModel:
             async with sources() as sctx, model() as mctx:
                 async for record in mctx.predict(sctx):
                     prediction = record.prediction(target).value
-                    if self.MODEL_TYPE is "CLASSIFICATION":
+                    if self.MODEL_TYPE == "CLASSIFICATION":
                         self.assertIn(prediction, [2, 4])
-                    elif self.MODEL_TYPE is "REGRESSION":
+                    elif self.MODEL_TYPE == "REGRESSION":
                         correct = FEATURE_DATA_REGRESSION[int(record.key)][3]
                         self.assertGreater(
                             prediction, correct - (correct * 0.40)
                         )
                         self.assertLess(prediction, correct + (correct * 0.40))
-                    elif self.MODEL_TYPE is "CLUSTERING":
+                    elif self.MODEL_TYPE == "CLUSTERING":
                         self.assertIn(prediction, [-1, 0, 1, 2, 3, 4, 5, 6, 7])
 
 

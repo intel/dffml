@@ -5,7 +5,7 @@ import shutil
 from dffml.cli.cli import CLI
 from dffml.util.os import chdir
 from dffml.util.net import cached_download_unpack_archive
-from dffml.util.asynctestcase import IntegrationCLITestCase
+from dffml.util.asynctestcase import AsyncTestCase
 
 
 def sh_filepath(sub_dir, filename):
@@ -14,14 +14,14 @@ def sh_filepath(sub_dir, filename):
     )
 
 
-class TestResNet18Model(IntegrationCLITestCase):
-    @cached_download_unpack_archive(
-        "https://download.pytorch.org/tutorial/hymenoptera_data.zip",
-        "hymenoptera_data.zip",
-        "tempdir",
-        "491db45cfcab02d99843fbdcf0574ecf99aa4f056d52c660a39248b5524f9e6e8f896d9faabd27ffcfc2eaca0cec6f39",
-    )
-    async def test_shell(self, tempdir):
+class TestResNet18Model(AsyncTestCase):
+    async def test_shell(self):
+        tempdir = await cached_download_unpack_archive(
+            "https://download.pytorch.org/tutorial/hymenoptera_data.zip",
+            "hymenoptera_data.zip",
+            "tempdir",
+            "491db45cfcab02d99843fbdcf0574ecf99aa4f056d52c660a39248b5524f9e6e8f896d9faabd27ffcfc2eaca0cec6f39",
+        )
         self.required_plugins("dffml-model-pytorch", "dffml-config-image")
 
         def clean_args(fd, directory):

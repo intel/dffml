@@ -13,7 +13,7 @@ from typing import (
     Optional,
     Set,
 )
-from dataclasses import is_dataclass
+from dataclasses import dataclass, is_dataclass, replace
 from contextlib import asynccontextmanager
 
 from .exceptions import NotOpImp
@@ -988,12 +988,16 @@ class OperationException(Exception):
     """
 
 
-class BaseOrchestratorConfig(BaseConfig, NamedTuple):
+@dataclass(frozen=True)
+class BaseOrchestratorConfig:
     input_network: BaseInputNetwork
     operation_network: BaseOperationNetwork
     lock_network: BaseLockNetwork
     opimp_network: BaseOperationImplementationNetwork
     rchecker: BaseRedundancyChecker
+
+    def _replace(self, **kwargs):
+        return replace(self, **kwargs)
 
 
 class BaseOrchestratorContext(BaseDataFlowObjectContext):

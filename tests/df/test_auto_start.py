@@ -14,6 +14,7 @@ async def announce():
 
 class TestAutoStart(AsyncTestCase):
     async def setUp(self):
+        await super().setUp()
         dataflow = DataFlow(
             operations={
                 "announce": announce.op,

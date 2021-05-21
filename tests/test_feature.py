@@ -8,7 +8,8 @@ from dffml.util.asynctestcase import AsyncTestCase
 
 
 class TestFeature(AsyncTestCase):
-    def setUp(self):
+    async def setUp(self):
+        await super().setUp()
         self.feature = Feature("name", int, 1)
 
     def test_default_dtype(self):
@@ -33,7 +34,8 @@ class TestFeature(AsyncTestCase):
 
 
 class TestFeatures(AsyncTestCase):
-    def setUp(self):
+    async def setUp(self):
+        await super().setUp()
         self.one = Feature("one", int, 1)
         self.two = Feature("two", float, 2)
         self.three = Feature("three", int, 1)

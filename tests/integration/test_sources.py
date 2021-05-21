@@ -6,10 +6,10 @@ import json
 import contextlib
 
 from dffml.cli.cli import CLI
-from dffml.util.asynctestcase import IntegrationCLITestCase
+from dffml.util.asynctestcase import AsyncTestCase
 
 
-class TestCSV(IntegrationCLITestCase):
+class TestCSV(AsyncTestCase):
     async def test_string_keys(self):
         # Test for issue #207
         self.required_plugins("dffml-model-scikit")

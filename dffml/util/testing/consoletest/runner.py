@@ -18,8 +18,8 @@ async def run_nodes(
     setup: Optional[List[ConsoletestCommand]] = None,
 ) -> None:
     # Ensure pathlib objects
-    repo_root_dir = pathlib.Path(repo_root_dir)
-    docs_root_dir = pathlib.Path(docs_root_dir)
+    repo_root_dir = pathlib.Path(repo_root_dir).resolve()
+    docs_root_dir = pathlib.Path(docs_root_dir).resolve()
     # Create an async exit stack
     async with contextlib.AsyncExitStack() as astack:
         tempdir = stack.enter_context(tempfile.TemporaryDirectory())

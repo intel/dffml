@@ -7,10 +7,10 @@ import pathlib
 import contextlib
 
 from dffml.cli.cli import CLI
-from dffml.util.asynctestcase import IntegrationCLITestCase
+from dffml.util.asynctestcase import AsyncTestCase
 
 
-class TestList(IntegrationCLITestCase):
+class TestList(AsyncTestCase):
     async def test_records(self):
         keys = ["A", "B", "C"]
         records = await CLI.cli(
@@ -27,7 +27,7 @@ class TestList(IntegrationCLITestCase):
             self.assertIn(key, records)
 
 
-class TestMerge(IntegrationCLITestCase):
+class TestMerge(AsyncTestCase):
     async def test_memory_to_json(self):
         keys = ["A", "B", "C"]
         filename = self.mktempfile()
