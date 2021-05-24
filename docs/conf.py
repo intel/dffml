@@ -27,7 +27,7 @@ from dffml.version import VERSION
 
 project = "DFFML"
 copyright = "2017 - %d, Intel" % (datetime.datetime.today().year,)
-author = "John Andersen"
+author = "DFFML Authors"
 
 # The short X.Y version
 version = VERSION
