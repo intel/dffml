@@ -13,7 +13,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added `log_time` decorator for logging running time of functions/coroutines.
 - Usecase example notebook for "Moving between models"
 - Documentation and testing support for notebooks
-
 ### Changed
 - Calls to hashlib now go through helper functions
 - Build docs using `dffml service dev docs`
