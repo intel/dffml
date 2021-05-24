@@ -546,6 +546,8 @@ class Release(CMD):
         # cd to directory
         with chdir(str(self.package)):
             # Get name
+            # TODO(2ndparty) This needs to change to support second party
+            # plugins
             name = {(): "dffml", **PACKAGE_DIRECTORY_TO_NAME,}[
                 self.package.relative_to(REPO_ROOT).parts
             ]
@@ -1294,11 +1296,11 @@ class MakeDocs(CMD):
 
         copybutton_path = pages_path / "_static" / "copybutton.js"
 
-        cached_download(
+        await cached_download(
             "https://raw.githubusercontent.com/python/python-docs-theme/master/python_docs_theme/static/copybutton.js",
             copybutton_path,
             "061b550f64fb65ccb73fbe61ce15f49c17bc5f30737f42bf3c9481c89f7996d0004a11bf283d6bd26cf0b65130fc1d4b",
-        ).add_target_to_args_and_validate([])
+        )
 
         nojekyll_path = pages_path / ".nojekyll"
         nojekyll_path.touch(exist_ok=True)

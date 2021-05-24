@@ -46,6 +46,7 @@ class TestMySQLDatabase(AsyncTestCase):
         cls._exit_stack.__exit__(None, None, None)
 
     async def setUp(self):
+        await super().setUp()
         self.sdb = MySQLDatabase(self.database_config)
         self.table_name = "myTable"
         self.cols = {

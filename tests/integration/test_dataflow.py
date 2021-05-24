@@ -15,10 +15,10 @@ from dffml.df.types import Operation, DataFlow, Input
 from dffml.cli.cli import CLI
 from dffml.util.entrypoint import load
 from dffml.configloader.configloader import BaseConfigLoader, ConfigLoaders
-from dffml.util.asynctestcase import IntegrationCLITestCase, relative_path
+from dffml.util.asynctestcase import AsyncTestCase, relative_path
 
 
-class TestDataFlow(IntegrationCLITestCase):
+class TestDataFlow(AsyncTestCase):
 
     REQUIRED_PLUGINS = ["shouldi", "dffml-config-yaml", "dffml-feature-git"]
 

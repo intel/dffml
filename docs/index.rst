@@ -64,6 +64,7 @@ branch can be found `here <master/index.html>`_.
     plugins/service/http/index
     api/index
     troubleshooting
+    arch/index
 
 .. toctree::
     :glob:

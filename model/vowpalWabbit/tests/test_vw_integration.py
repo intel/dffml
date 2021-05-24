@@ -12,10 +12,10 @@ import numpy as np
 from sklearn.datasets import make_classification
 
 from dffml.cli.cli import CLI
-from dffml.util.asynctestcase import IntegrationCLITestCase
+from dffml.util.asynctestcase import AsyncTestCase
 
 
-class TestVWModel(IntegrationCLITestCase):
+class TestVWModel(AsyncTestCase):
     async def test_run(self):
         self.required_plugins("dffml-model-vowpalWabbit")
         # Create the training data

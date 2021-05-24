@@ -10,10 +10,10 @@ import unittest.mock
 from dffml.df.types import DataFlow
 from dffml.cli.cli import CLI
 from dffml.service.dev import Develop
-from dffml.util.asynctestcase import IntegrationCLITestCase, relative_chdir
+from dffml.util.asynctestcase import AsyncTestCase, relative_chdir
 
 
-class TestDevelop(IntegrationCLITestCase):
+class TestDevelop(AsyncTestCase):
     async def test_export(self):
         self.required_plugins("shouldi")
         stdout = io.StringIO()

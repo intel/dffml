@@ -4,10 +4,10 @@ import pathlib
 import contextlib
 
 from dffml.cli.cli import CLI
-from dffml.util.asynctestcase import IntegrationCLITestCase
+from dffml.util.asynctestcase import AsyncTestCase
 
 
-class TestSLR(IntegrationCLITestCase):
+class TestSLR(AsyncTestCase):
     async def test_run(self):
         # Make a temporary directory to store the model
         directory = self.mktempdir()

@@ -8,7 +8,6 @@ import contextlib
 import dataclasses
 import urllib.request
 from typing import List, Union
-
 from .os import chdir
 from .file import validate_file_hash
 from .log import LOGGER, get_download_logger
@@ -45,21 +44,36 @@ def progressbar(percent):
     """
     Simple progressbar to show download progress.
     """
-    progress = "#" * int(percent / 2)
+    progress = "#" * int(percent / 4)
     download_logger.debug(
-        f"\rDownloading...: [{progress.ljust(50)}] {int(percent)}%\r"
+        f"Downloading: [{progress.ljust(25)}] {int(percent)}%"
     )
+
+
+def progressbar_no_totalsize(blocknum):
+    """
+    Progress bar that bounces back and forth since we don't know total size.
+    """
+    blank = " " * 25
+    progress = blank[: blocknum % 25] + "#" + blank[(blocknum % 25) + 1 :]
+    download_logger.debug(f"Downloading: [{progress}] ?%")
 
 
 def progress_reporthook(blocknum, blocksize, totalsize):
     """
     Serve as a reporthook for monitoring download progress.
     """
-    percent = (
-        min(1.0, 0 if totalsize == 0 else (blocknum * blocksize / totalsize))
-        * 100
-    )
-    progressbar(percent)
+    if totalsize < 0:
+        progressbar_no_totalsize(blocknum + 6)
+    else:
+        percent = (
+            min(
+                1.0,
+                0 if totalsize == 0 else (blocknum * blocksize / totalsize),
+            )
+            * 100
+        )
+        progressbar(percent)
 
 
 # Default list of URL protocols allowed
@@ -145,106 +159,20 @@ def sync_urlretrieve_and_validate(
     ):
         if not target_path.parent.is_dir():
             target_path.parent.mkdir(parents=True)
-        sync_urlretrieve(
+        path, _ = sync_urlretrieve(
             url,
             filename=str(target_path),
             protocol_allowlist=protocol_allowlist,
             reporthook=progress_reporthook,
         )
+        return path
     validate_file_hash(
         target_path, expected_sha384_hash=expected_sha384_hash,
     )
+    return target_path.absolute()
 
 
-@dataclasses.dataclass
-class CachedDownloadWrapper:
-    url: Union[str, urllib.request.Request]
-    target_path: Union[str, pathlib.Path]
-    expected_hash: str
-    protocol_allowlist: List[str] = dataclasses.field(
-        default_factory=lambda: DEFAULT_PROTOCOL_ALLOWLIST
-    )
-
-    def __post_init__(self):
-        self.target_path = pathlib.Path(self.target_path)
-
-    def __call__(self, func):
-        if inspect.isasyncgenfunction(func) and hasattr(func, "__aenter__"):
-
-            @contextlib.asynccontextmanager
-            async def wrapped(*args, **kwargs):
-                async with func(
-                    *self.add_target_to_args_and_validate(args), **kwargs,
-                ) as result:
-                    yield result
-
-        elif inspect.isasyncgenfunction(func):
-
-            async def wrapped(*args, **kwargs):
-                async for result in func(
-                    *self.add_target_to_args_and_validate(args), **kwargs,
-                ):
-                    yield result
-
-        elif inspect.iscoroutinefunction(func):
-
-            async def wrapped(*args, **kwargs):
-                return await func(
-                    *self.add_target_to_args_and_validate(args), **kwargs,
-                )
-
-        elif inspect.isgeneratorfunction(func) and hasattr(func, "__enter__"):
-
-            @contextlib.contextmanager
-            def wrapped(*args, **kwargs):
-                with func(
-                    *self.add_target_to_args_and_validate(args), **kwargs,
-                ) as result:
-                    yield result
-
-        elif inspect.isgeneratorfunction(func):
-
-            def wrapped(*args, **kwargs):
-                yield from func(
-                    *self.add_target_to_args_and_validate(args), **kwargs,
-                )
-
-        else:
-
-            def wrapped(*args, **kwargs):
-                return func(
-                    *self.add_target_to_args_and_validate(args), **kwargs
-                )
-
-        # Wrap with functools
-        wrapped = functools.wraps(func)(wrapped)
-
-        return wrapped
-
-    def __enter__(self):
-        self.add_target_to_args_and_validate([])
-        return self.target_path
-
-    def __exit__(self, _exc_type, _exc_value, _traceback):
-        pass
-
-    async def __aenter__(self):
-        return self.__enter__()
-
-    async def __aexit__(self, _exc_type, _exc_value, _traceback):
-        pass
-
-    def add_target_to_args_and_validate(self, args):
-        sync_urlretrieve_and_validate(
-            self.url,
-            self.target_path,
-            expected_sha384_hash=self.expected_hash,
-            protocol_allowlist=self.protocol_allowlist,
-        )
-        return list(args) + [self.target_path]
-
-
-def cached_download(
+async def cached_download(
     url: Union[str, urllib.request.Request],
     target_path: Union[str, pathlib.Path],
     expected_hash: str,
@@ -282,86 +210,29 @@ def cached_download(
     --------
 
     >>> import asyncio
-    >>> import contextlib
-    >>> from dffml import cached_download
+    >>> from dffml import *
     >>>
-    >>> cached_manifest = cached_download(
-    ...     "https://github.com/intel/dffml/raw/152c2b92535fac6beec419236f8639b0d75d707d/MANIFEST.in",
-    ...     "MANIFEST.in",
-    ...     "f7aadf5cdcf39f161a779b4fa77ec56a49630cf7680e21fb3dc6c36ce2d8c6fae0d03d5d3094a6aec4fea1561393c14c",
+    >>> cached_manifest = asyncio.run(
+    ...     cached_download(
+    ...         "https://github.com/intel/dffml/raw/152c2b92535fac6beec419236f8639b0d75d707d/MANIFEST.in",
+    ...         "MANIFEST.in",
+    ...         "f7aadf5cdcf39f161a779b4fa77ec56a49630cf7680e21fb3dc6c36ce2d8c6fae0d03d5d3094a6aec4fea1561393c14c",
+    ...     )
     ... )
     >>>
-    >>> @cached_manifest
-    ... async def first_line_in_manifest_152c2b(manifest):
-    ...     return manifest.read_text().split()[:2]
-    >>>
-    >>> asyncio.run(first_line_in_manifest_152c2b())
-    ['include', 'README.md']
-    >>>
-    >>> @cached_manifest
-    ... def first_line_in_manifest_152c2b(manifest):
-    ...     return manifest.read_text().split()[:2]
-    >>>
-    >>> first_line_in_manifest_152c2b()
-    ['include', 'README.md']
-    >>>
-    >>> @cached_manifest
-    ... def first_line_in_manifest_152c2b(manifest):
-    ...     yield manifest.read_text().split()[:2]
-    >>>
-    >>> for contents in first_line_in_manifest_152c2b():
-    ...     print(contents)
-    ['include', 'README.md']
-    >>>
-    >>> @cached_manifest
-    ... async def first_line_in_manifest_152c2b(manifest):
-    ...     yield manifest.read_text().split()[:2]
-    >>>
-    >>> async def main():
-    ...     async for contents in first_line_in_manifest_152c2b():
-    ...         print(contents)
-    >>>
-    >>> asyncio.run(main())
-    ['include', 'README.md']
-    >>>
-    >>> @cached_manifest
-    ... @contextlib.contextmanager
-    ... def first_line_in_manifest_152c2b(manifest):
-    ...     yield manifest.read_text().split()[:2]
-    >>>
-    >>> with first_line_in_manifest_152c2b() as contents:
-    ...     print(contents)
-    ['include', 'README.md']
-    >>>
-    >>> @cached_manifest
-    ... @contextlib.asynccontextmanager
-    ... async def first_line_in_manifest_152c2b(manifest):
-    ...     yield manifest.read_text().split()[:2]
-    >>>
-    >>> async def main():
-    ...     async with first_line_in_manifest_152c2b() as contents:
-    ...         print(contents)
-    >>>
-    >>> asyncio.run(main())
-    ['include', 'README.md']
-    >>>
-    ... with cached_manifest as manifest_path:
-    ...     print(manifest_path.read_text().split()[:2])
-    ['include', 'README.md']
-    >>>
-    >>> async def main():
-    ...     async with cached_manifest as manifest_path:
-    ...         print(manifest_path.read_text().split()[:2])
-    >>>
-    >>> asyncio.run(main())
+    >>> with open(cached_manifest) as manifest:
+    ...     print(manifest.read().split()[:2])
     ['include', 'README.md']
     """
-    return CachedDownloadWrapper(
-        url, target_path, expected_hash, protocol_allowlist=protocol_allowlist,
+    return sync_urlretrieve_and_validate(
+        url,
+        target_path,
+        expected_sha384_hash=expected_hash,
+        protocol_allowlist=protocol_allowlist,
     )
 
 
-def cached_download_unpack_archive(
+async def cached_download_unpack_archive(
     url,
     file_path,
     directory_path,
@@ -406,17 +277,16 @@ def cached_download_unpack_archive(
     >>> import asyncio
     >>> from dffml import cached_download_unpack_archive
     >>>
-    >>> @cached_download_unpack_archive(
-    ...     "https://github.com/intel/dffml/archive/c4469abfe6007a50144858d485537324046ff229.tar.gz",
-    ...     "dffml.tar.gz",
-    ...     "dffml",
-    ...     "bb9bb47c4e6e4c6b7147bb3c000bc4069d69c0c77a3e560b69f476a78e6b5084adf5467ee83cbbcc47ba5a4a0696fdfc",
+    >>> dffml_dir = asyncio.run(
+    ...     cached_download_unpack_archive(
+    ...         "https://github.com/intel/dffml/archive/c4469abfe6007a50144858d485537324046ff229.tar.gz",
+    ...         "dffml.tar.gz",
+    ...         "dffml",
+    ...         "bb9bb47c4e6e4c6b7147bb3c000bc4069d69c0c77a3e560b69f476a78e6b5084adf5467ee83cbbcc47ba5a4a0696fdfc",
+    ...     )
     ... )
-    ... async def files_in_dffml_commit_c4469a(dffml_dir):
-    ...     return len(list(dffml_dir.rglob("**/*")))
-    >>>
-    >>> asyncio.run(files_in_dffml_commit_c4469a())
-    124
+    >>> print(len(list(dffml_dir.rglob("**/*"))))
+    495
     """
 
     def on_error(func, path, exc_info):
@@ -432,26 +302,20 @@ def cached_download_unpack_archive(
     directory_path = pathlib.Path(directory_path)
 
     async def extractor(download_path):
-        download_path = download_path.absolute()
-        with chdir(directory_path):
-            try:
-                shutil.unpack_archive(str(download_path), ".")
-            except Exception as error:
-                shutil.rmtree(directory_path, onerror=on_error)
-                raise DirectoryNotExtractedError(directory_path) from error
+        try:
+            shutil.unpack_archive(str(download_path), str(directory_path))
+        except Exception as error:
+            shutil.rmtree(directory_path, onerror=on_error)
+            raise DirectoryNotExtractedError(directory_path) from error
 
-    extract = cached_download(
-        url, file_path, expected_hash, protocol_allowlist=protocol_allowlist
-    )(extractor)
-
-    def mkwrapper(func):
-        @functools.wraps(func)
-        async def wrapper(*args, **kwds):
-            if not directory_path.is_dir():
-                directory_path.mkdir(parents=True)
-                await extract()
-            return await func(*(list(args) + [directory_path]), **kwds)
-
-        return wrapper
-
-    return mkwrapper
+    if not directory_path.is_dir():
+        directory_path.mkdir(parents=True)
+        await extractor(
+            await cached_download(
+                url,
+                file_path,
+                expected_hash,
+                protocol_allowlist=protocol_allowlist,
+            )
+        )
+    return directory_path.absolute()

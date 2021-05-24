@@ -21,6 +21,7 @@ htmlcov/
 html/
 pages/
 examples/shouldi/response.json
+examples/notebooks/.ipynb_checkpoints/
 docs/plugins/service/http
 *pip-wheel-metadata/
 *.gz
@@ -34,3 +35,4 @@ docs/swportal.rst
 docs/contributing/consoletest.md
 /consoletest/
 tests/service/logs/
+tests/notebooks/data/

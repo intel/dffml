@@ -1,16 +1,22 @@
 import pathlib
 
-from dffml import prepend_to_path, AsyncTestCase
+from dffml import (
+    prepend_to_path,
+    AsyncTestCase,
+    cached_download_unpack_archive,
+)
 
 from shouldi.javascript.npm_audit import run_npm_audit
 
-from .binaries import cached_node, cached_target_javascript_algorithms
+from .binaries import CACHED_NODE, CACHED_TARGET_JAVASCRIPT_ALGORITHMS
 
 
 class TestRunNPMAuditOp(AsyncTestCase):
-    @cached_node
-    @cached_target_javascript_algorithms
-    async def test_run(self, node, javascript_algo):
+    async def test_run(self):
+        node = await cached_download_unpack_archive(*CACHED_NODE)
+        javascript_algo = await cached_download_unpack_archive(
+            *CACHED_TARGET_JAVASCRIPT_ALGORITHMS
+        )
         with prepend_to_path(node / "node-v14.2.0-linux-x64" / "bin"):
             results = await run_npm_audit(
                 str(

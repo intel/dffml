@@ -2,14 +2,18 @@ import os
 import copy
 import pathlib
 
-from dffml import prepend_to_path, AsyncTestCase
+from dffml import (
+    prepend_to_path,
+    AsyncTestCase,
+    cached_download_unpack_archive,
+)
 
 from shouldi.golang.golangci_lint import run_golangci_lint
 
 from .binaries import (
-    cached_golang,
-    cached_golangci_lint,
-    cached_target_cri_resource_manager,
+    CACHED_GOLANG,
+    CACHED_GOLANGCI_LINT,
+    CACHED_TARGET_CRI_RESOURCE_MANAGER,
 )
 
 
@@ -27,10 +31,14 @@ class TestRunGolangci_lintOp(AsyncTestCase):
         # Reset the rest
         os.environ.update(self.old_environ)
 
-    @cached_golang
-    @cached_golangci_lint
-    @cached_target_cri_resource_manager
-    async def test_run(self, golang, golangci_lint, cri_resource_manager):
+    async def test_run(self):
+        golang = await cached_download_unpack_archive(*CACHED_GOLANG)
+        golangci_lint = await cached_download_unpack_archive(
+            *CACHED_GOLANGCI_LINT
+        )
+        cri_resource_manager = await cached_download_unpack_archive(
+            *CACHED_TARGET_CRI_RESOURCE_MANAGER
+        )
         os.environ["GOROOT"] = str(golang / "go")
         os.environ["GOPATH"] = str(cri_resource_manager / ".gopath")
         os.environ["GOBIN"] = str(cri_resource_manager / ".gopath" / "bin")

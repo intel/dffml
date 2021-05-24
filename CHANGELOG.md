@@ -6,12 +6,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
+- Consolidate test case classes
 - Tutorial on how to load models dynamically
   https://intel.github.io/dffml/tutorials/models/load.html
 - Added download progressbar in `util/net.py`
+- Usecase example notebook for "Moving between models"
+- Documentation and testing support for notebooks
 ### Changed
 - Calls to hashlib now go through helper functions
 - Build docs using `dffml service dev docs`
+- `cached_download/unpack_archive()` are now functions
 ### Fixed
 - Record object key properties are now always strings
 

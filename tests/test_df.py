@@ -79,7 +79,8 @@ DATAFLOW = DataFlow.auto(*OPIMPS)
 
 
 class TestMemoryKeyValueStore(AsyncTestCase):
-    def setUp(self):
+    async def setUp(self):
+        await super().setUp()
         self.kvStore = MemoryKeyValueStore(BaseConfig())
 
     async def test_get_set(self):
@@ -96,12 +97,14 @@ class TestMemoryKeyValueStore(AsyncTestCase):
 
 class TestMemoryOperationImplementationNetwork(AsyncTestCase):
     async def setUp(self):
+        await super().setUp()
         self.operationsNetwork = MemoryOperationImplementationNetwork.withconfig(
             {}
         )
         self.operationsNetworkCtx = await self.operationsNetwork.__aenter__()
 
     async def tearDown(self):
+        await super().tearDown()
         await self.operationsNetwork.__aexit__(None, None, None)
 
     async def test_contains_true(self):

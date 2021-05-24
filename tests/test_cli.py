@@ -22,7 +22,7 @@ from dffml.model.accuracy import Accuracy as AccuracyType
 from dffml.util.entrypoint import entrypoint
 from dffml.util.asynctestcase import (
     AsyncTestCase,
-    AsyncExitStackTestCase,
+    AsyncTestCase,
     non_existant_tempfile,
 )
 from dffml.base import config
@@ -37,7 +37,7 @@ from .test_df import OPERATIONS, OPIMPS
 from dffml import op, DataFlow, Definition
 
 
-class RecordsTestCase(AsyncExitStackTestCase):
+class RecordsTestCase(AsyncTestCase):
     async def setUp(self):
         await super().setUp()
         self.records = [

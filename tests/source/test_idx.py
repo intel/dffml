@@ -27,8 +27,8 @@ IDX3_FIRST_LAST = [
 
 
 class TestIDXSources(AsyncTestCase):
-    @cached_download(*IDX1_FILE)
-    async def test_idx1(self, filename):
+    async def test_idx1(self):
+        filename = await cached_download(*IDX1_FILE)
         feature_name = "label"
         async with IDX1Source(
             IDX1SourceConfig(filename=str(filename), feature=feature_name)
@@ -39,8 +39,8 @@ class TestIDXSources(AsyncTestCase):
                 self.assertIn(feature_name, records[0].features())
                 self.assertEqual(records[0].feature(feature_name), 5)
 
-    @cached_download(*IDX3_FILE)
-    async def test_idx3(self, filename):
+    async def test_idx3(self):
+        filename = await cached_download(*IDX3_FILE)
         feature_name = "image"
         async with IDX3Source(
             IDX3SourceConfig(filename=str(filename), feature=feature_name)
