@@ -83,6 +83,20 @@ source_suffix = {
     ".md": "markdown",
 }
 
+# Download button for ipython notebooks
+nb_version = ""
+if "." not in version:
+    nb_version = "master/"
+# This is processed by Jinja2 and inserted before each notebook
+nbsphinx_prolog = r"""
+{% set docname = env.doc2path(env.docname, base=None) %}
+
+.. image:: ../../images/Download-.ipynb-button.svg
+    :target: https://intel.github.io/dffml/{{nbversion}}{{docname[:-6]}}ipynb
+    :alt: Notebook download button
+
+|
+"""
 
 # -- Options for HTML output -------------------------------------------------
 
