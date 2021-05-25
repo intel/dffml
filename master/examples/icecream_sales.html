@@ -1,0 +1,728 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Ice Cream Sales &mdash; DFFML cb30c384 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/tabs.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/copybutton.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Plugins" href="../plugins/index.html" />
+    <link rel="prev" title="Redeploying on receving GitHub webhook" href="webhook/webhook.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> DFFML
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                cb30c384
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Introduction</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../concepts/index.html">Concepts</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Usage</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../quickstart/model.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Examples</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="notebooks/index.html">Notebooks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="integration.html">Automating Classification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="shouldi.html">Meta Static Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dataflows.html">DataFlow HTTP Deployment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mnist.html">MNIST Handwriten Digits</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flower17/flower17.html">Flower17 Species Classification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="or_covid_data_by_county.html">COVID Forecasting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="webhook/index.html">Continuous Deployment of DataFlows</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Ice Cream Sales</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#dataset">Dataset</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#operations">Operations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dataflow">Dataflow</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#merge-command">Merge Command</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#model-training">Model Training</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#model-accuracy">Model Accuracy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#prediction">Prediction</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../plugins/index.html">Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cli.html">Command Line</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../plugins/service/http/index.html">HTTP API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/noasync.html">Noasync</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/base.html">Base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/plugins.html">Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/record.html">Record</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/high_level.html">High_Level</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/version.html">Version</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/log.html">Log</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/db/index.html">Db</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/df/index.html">Df</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/service/index.html">Service</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/configloader/index.html">Configloader</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/model/index.html">Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/source/index.html">Source</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/secret/index.html">Secret</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/util/index.html">Util</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/cli/index.html">Cli</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/operation/index.html">Operation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/feature/index.html">Feature</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/port/index.html">Port</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../arch/index.html">Architecture</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Subprojects</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../shouldi.html">shouldi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../swportal.html">Software Portal</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Community</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/intel/dffml">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://intel.github.io/dffml/master/">Master Branch Docs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../publications.html">Publications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contact.html">Contact Us</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../news/index.html">News</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">DFFML</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Examples</a> &raquo;</li>
+        
+      <li>Ice Cream Sales</li>
+    
+    
+
+
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            
+              <a href="https://github.com/intel/dffml/blob/master/docs/examples/icecream_sales.rst" class="fa fa-github"> Edit on GitHub</a>
+            
+          
+        
+      </li>
+    
+
+
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="ice-cream-sales">
+<h1>Ice Cream Sales<a class="headerlink" href="#ice-cream-sales" title="Permalink to this headline">¶</a></h1>
+<p>In this tutorial we are going to predict ice-cream sales.</p>
+<p>This example consist of the following steps</p>
+<ul class="simple">
+<li><p>Writing Operations to get population and temperature.</p></li>
+<li><p>Creating dataflow for the operations that we have written above.</p></li>
+<li><p>Using <cite>merge</cite> command for the data processing.</p></li>
+<li><p>Training a model from the preprocessed data.</p></li>
+<li><p>Getting the accuracy of the model</p></li>
+<li><p>Getting predictions from the model using test dataset.</p></li>
+</ul>
+<div class="section" id="dataset">
+<h2>Dataset<a class="headerlink" href="#dataset" title="Permalink to this headline">¶</a></h2>
+<p>In this we have two datasets for training and testing. We have
+fields city, state, month, sales. This is a dummy dataset.</p>
+<p><strong>dataset.csv</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">city</span><span class="p">,</span><span class="n">state</span><span class="p">,</span><span class="n">month</span><span class="p">,</span><span class="n">sales</span>
+<span class="n">Las</span> <span class="n">Vegas</span> <span class="n">city</span><span class="p">,</span><span class="n">Nevada</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">77131</span>
+<span class="n">Las</span> <span class="n">Vegas</span> <span class="n">city</span><span class="p">,</span><span class="n">Nevada</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">667467</span>
+<span class="n">Las</span> <span class="n">Vegas</span> <span class="n">city</span><span class="p">,</span><span class="n">Nevada</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">674107</span>
+<span class="n">Las</span> <span class="n">Vegas</span> <span class="n">city</span><span class="p">,</span><span class="n">Nevada</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">674667</span>
+<span class="n">Las</span> <span class="n">Vegas</span> <span class="n">city</span><span class="p">,</span><span class="n">Nevada</span><span class="p">,</span><span class="mi">9</span><span class="p">,</span><span class="mi">77131</span>
+<span class="n">Chicago</span> <span class="n">city</span><span class="p">,</span><span class="n">Illinois</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">12000</span>
+<span class="n">Phoenix</span> <span class="n">city</span><span class="p">,</span><span class="n">Arizona</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">1604012</span>
+<span class="n">Phoenix</span> <span class="n">city</span><span class="p">,</span><span class="n">Arizona</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">1604172</span>
+<span class="n">Las</span> <span class="n">Vegas</span> <span class="n">city</span><span class="p">,</span><span class="n">Nevada</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">77131</span>
+<span class="n">Chicago</span> <span class="n">city</span><span class="p">,</span><span class="n">Illinois</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">73440</span>
+<span class="n">Seattle</span> <span class="n">city</span><span class="p">,</span><span class="n">Washington</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">87367</span>
+<span class="n">Chicago</span> <span class="n">city</span><span class="p">,</span><span class="n">Illinois</span><span class="p">,</span><span class="mi">11</span><span class="p">,</span><span class="mi">12000</span>
+<span class="n">Las</span> <span class="n">Vegas</span> <span class="n">city</span><span class="p">,</span><span class="n">Nevada</span><span class="p">,</span><span class="mi">11</span><span class="p">,</span><span class="mi">77131</span>
+<span class="n">Miami</span> <span class="n">city</span><span class="p">,</span><span class="n">Florida</span><span class="p">,</span><span class="mi">9</span><span class="p">,</span><span class="mi">58796</span>
+<span class="n">Phoenix</span> <span class="n">city</span><span class="p">,</span><span class="n">Arizona</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">1598492</span>
+<span class="n">Chicago</span> <span class="n">city</span><span class="p">,</span><span class="n">Illinois</span><span class="p">,</span><span class="mi">12</span><span class="p">,</span><span class="mi">12000</span>
+<span class="n">Seattle</span> <span class="n">city</span><span class="p">,</span><span class="n">Washington</span><span class="p">,</span><span class="mi">11</span><span class="p">,</span><span class="mi">87367</span>
+<span class="n">Orlando</span> <span class="n">city</span><span class="p">,</span><span class="n">Florida</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">337737</span>
+<span class="n">Phoenix</span> <span class="n">city</span><span class="p">,</span><span class="n">Arizona</span><span class="p">,</span><span class="mi">9</span><span class="p">,</span><span class="mi">180099</span>
+<span class="n">Miami</span> <span class="n">city</span><span class="p">,</span><span class="n">Florida</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">58796</span>
+<span class="n">Chicago</span> <span class="n">city</span><span class="p">,</span><span class="n">Illinois</span><span class="p">,</span><span class="mi">9</span><span class="p">,</span><span class="mi">12000</span>
+<span class="n">Phoenix</span> <span class="n">city</span><span class="p">,</span><span class="n">Arizona</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">180099</span>
+<span class="n">Seattle</span> <span class="n">city</span><span class="p">,</span><span class="n">Washington</span><span class="p">,</span><span class="mi">12</span><span class="p">,</span><span class="mi">87367</span>
+<span class="n">Orlando</span> <span class="n">city</span><span class="p">,</span><span class="n">Florida</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">337737</span>
+<span class="n">Las</span> <span class="n">Vegas</span> <span class="n">city</span><span class="p">,</span><span class="n">Nevada</span><span class="p">,</span><span class="mi">12</span><span class="p">,</span><span class="mi">77131</span>
+<span class="n">Miami</span> <span class="n">city</span><span class="p">,</span><span class="n">Florida</span><span class="p">,</span><span class="mi">11</span><span class="p">,</span><span class="mi">58796</span>
+<span class="n">Orlando</span> <span class="n">city</span><span class="p">,</span><span class="n">Florida</span><span class="p">,</span><span class="mi">9</span><span class="p">,</span><span class="mi">40744</span>
+<span class="n">Phoenix</span> <span class="n">city</span><span class="p">,</span><span class="n">Arizona</span><span class="p">,</span><span class="mi">11</span><span class="p">,</span><span class="mi">180099</span>
+<span class="n">Chicago</span> <span class="n">city</span><span class="p">,</span><span class="n">Illinois</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">12000</span>
+<span class="n">Orlando</span> <span class="n">city</span><span class="p">,</span><span class="n">Florida</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">40744</span>
+<span class="n">Seattle</span> <span class="n">city</span><span class="p">,</span><span class="n">Washington</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">87367</span>
+<span class="n">Miami</span> <span class="n">city</span><span class="p">,</span><span class="n">Florida</span><span class="p">,</span><span class="mi">12</span><span class="p">,</span><span class="mi">58796</span>
+<span class="n">Orlando</span> <span class="n">city</span><span class="p">,</span><span class="n">Florida</span><span class="p">,</span><span class="mi">11</span><span class="p">,</span><span class="mi">40744</span>
+<span class="n">Phoenix</span> <span class="n">city</span><span class="p">,</span><span class="n">Arizona</span><span class="p">,</span><span class="mi">12</span><span class="p">,</span><span class="mi">180099</span>
+<span class="n">Chicago</span> <span class="n">city</span><span class="p">,</span><span class="n">Illinois</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">12000</span>
+<span class="n">Orlando</span> <span class="n">city</span><span class="p">,</span><span class="n">Florida</span><span class="p">,</span><span class="mi">12</span><span class="p">,</span><span class="mi">40744</span>
+<span class="n">Seattle</span> <span class="n">city</span><span class="p">,</span><span class="n">Washington</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">87367</span>
+<span class="n">Orlando</span> <span class="n">city</span><span class="p">,</span><span class="n">Florida</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">40744</span>
+<span class="n">Portland</span> <span class="n">city</span> <span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="p">),</span><span class="n">Oregon</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">12179</span>
+<span class="n">Miami</span> <span class="n">city</span><span class="p">,</span><span class="n">Florida</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">58796</span>
+<span class="n">Chicago</span> <span class="n">city</span><span class="p">,</span><span class="n">Illinois</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">12000</span>
+<span class="n">Portland</span> <span class="n">city</span> <span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="p">),</span><span class="n">Oregon</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">12179</span>
+<span class="n">Seattle</span> <span class="n">city</span><span class="p">,</span><span class="n">Washington</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">87367</span>
+<span class="n">Phoenix</span> <span class="n">city</span><span class="p">,</span><span class="n">Arizona</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">180099</span>
+<span class="n">Portland</span> <span class="n">city</span> <span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="p">),</span><span class="n">Oregon</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">12179</span>
+<span class="n">Orlando</span> <span class="n">city</span><span class="p">,</span><span class="n">Florida</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">40744</span>
+<span class="n">Portland</span> <span class="n">city</span> <span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="p">),</span><span class="n">Oregon</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">12179</span>
+<span class="n">Miami</span> <span class="n">city</span><span class="p">,</span><span class="n">Florida</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">58796</span>
+<span class="n">Seattle</span> <span class="n">city</span><span class="p">,</span><span class="n">Washington</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">87367</span>
+<span class="n">Chicago</span> <span class="n">city</span><span class="p">,</span><span class="n">Illinois</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">12000</span>
+<span class="n">Portland</span> <span class="n">city</span> <span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="p">),</span><span class="n">Oregon</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">12179</span>
+<span class="n">Miami</span> <span class="n">city</span><span class="p">,</span><span class="n">Florida</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">58796</span>
+<span class="n">Phoenix</span> <span class="n">city</span><span class="p">,</span><span class="n">Arizona</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">180099</span>
+<span class="n">Portland</span> <span class="n">city</span> <span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="p">),</span><span class="n">Oregon</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">64972</span>
+<span class="n">Seattle</span> <span class="n">city</span><span class="p">,</span><span class="n">Washington</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">87367</span>
+<span class="n">Orlando</span> <span class="n">city</span><span class="p">,</span><span class="n">Florida</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">40744</span>
+<span class="n">Portland</span> <span class="n">city</span> <span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="p">),</span><span class="n">Oregon</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">69772</span>
+<span class="n">Miami</span> <span class="n">city</span><span class="p">,</span><span class="n">Florida</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">58796</span>
+<span class="n">Chicago</span> <span class="n">city</span><span class="p">,</span><span class="n">Illinois</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">12000</span>
+<span class="n">Portland</span> <span class="n">city</span> <span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="p">),</span><span class="n">Oregon</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">70492</span>
+<span class="n">Seattle</span> <span class="n">city</span><span class="p">,</span><span class="n">Washington</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">739747</span>
+<span class="n">Phoenix</span> <span class="n">city</span><span class="p">,</span><span class="n">Arizona</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">180099</span>
+<span class="n">Portland</span> <span class="n">city</span> <span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="p">),</span><span class="n">Oregon</span><span class="p">,</span><span class="mi">9</span><span class="p">,</span><span class="mi">12179</span>
+<span class="n">Miami</span> <span class="n">city</span><span class="p">,</span><span class="n">Florida</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">58796</span>
+<span class="n">Orlando</span> <span class="n">city</span><span class="p">,</span><span class="n">Florida</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">40744</span>
+<span class="n">Portland</span> <span class="n">city</span> <span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="p">),</span><span class="n">Oregon</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">12179</span>
+<span class="n">Seattle</span> <span class="n">city</span><span class="p">,</span><span class="n">Washington</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">743907</span>
+<span class="n">Chicago</span> <span class="n">city</span><span class="p">,</span><span class="n">Illinois</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">71200</span>
+<span class="n">Portland</span> <span class="n">city</span> <span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="p">),</span><span class="n">Oregon</span><span class="p">,</span><span class="mi">11</span><span class="p">,</span><span class="mi">12179</span>
+<span class="n">Miami</span> <span class="n">city</span><span class="p">,</span><span class="n">Florida</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">500206</span>
+<span class="n">Phoenix</span> <span class="n">city</span><span class="p">,</span><span class="n">Arizona</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">180099</span>
+<span class="n">Portland</span> <span class="n">city</span> <span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="p">),</span><span class="n">Oregon</span><span class="p">,</span><span class="mi">12</span><span class="p">,</span><span class="mi">12179</span>
+<span class="n">Seattle</span> <span class="n">city</span><span class="p">,</span><span class="n">Washington</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">744627</span>
+<span class="n">Orlando</span> <span class="n">city</span><span class="p">,</span><span class="n">Florida</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">40744</span>
+<span class="n">Las</span> <span class="n">Vegas</span> <span class="n">city</span><span class="p">,</span><span class="n">Nevada</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">77131</span>
+<span class="n">Seattle</span> <span class="n">city</span><span class="p">,</span><span class="n">Washington</span><span class="p">,</span><span class="mi">9</span><span class="p">,</span><span class="mi">87367</span>
+<span class="n">Chicago</span> <span class="n">city</span><span class="p">,</span><span class="n">Illinois</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">75360</span>
+<span class="n">Las</span> <span class="n">Vegas</span> <span class="n">city</span><span class="p">,</span><span class="n">Nevada</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">77131</span>
+<span class="n">Miami</span> <span class="n">city</span><span class="p">,</span><span class="n">Florida</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">500846</span>
+<span class="n">Phoenix</span> <span class="n">city</span><span class="p">,</span><span class="n">Arizona</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">180099</span>
+<span class="n">Las</span> <span class="n">Vegas</span> <span class="n">city</span><span class="p">,</span><span class="n">Nevada</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">77131</span>
+<span class="n">Miami</span> <span class="n">city</span><span class="p">,</span><span class="n">Florida</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">501726</span>
+<span class="n">Orlando</span> <span class="n">city</span><span class="p">,</span><span class="n">Florida</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">336537</span>
+<span class="n">Las</span> <span class="n">Vegas</span> <span class="n">city</span><span class="p">,</span><span class="n">Nevada</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">77131</span>
+</pre></div>
+</div>
+<p><strong>test_dataset.csv</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">city</span><span class="p">,</span><span class="n">state</span><span class="p">,</span><span class="n">month</span><span class="p">,</span><span class="n">sales</span>
+<span class="n">Salem</span> <span class="n">city</span><span class="p">,</span><span class="n">Oregon</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">29436</span>
+<span class="n">Salem</span> <span class="n">city</span><span class="p">,</span><span class="n">Oregon</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">224048</span>
+<span class="n">Salem</span> <span class="n">city</span><span class="p">,</span><span class="n">Oregon</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">29436</span>
+<span class="n">Salem</span> <span class="n">city</span><span class="p">,</span><span class="n">Oregon</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">29436</span>
+<span class="n">Salem</span> <span class="n">city</span><span class="p">,</span><span class="n">Oregon</span><span class="p">,</span><span class="mi">11</span><span class="p">,</span><span class="mi">29436</span>
+<span class="n">Salem</span> <span class="n">city</span><span class="p">,</span><span class="n">Oregon</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">224528</span>
+<span class="n">Salem</span> <span class="n">city</span><span class="p">,</span><span class="n">Oregon</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">29436</span>
+<span class="n">Salem</span> <span class="n">city</span><span class="p">,</span><span class="n">Oregon</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">29436</span>
+<span class="n">Salem</span> <span class="n">city</span><span class="p">,</span><span class="n">Oregon</span><span class="p">,</span><span class="mi">12</span><span class="p">,</span><span class="mi">29436</span>
+<span class="n">Salem</span> <span class="n">city</span><span class="p">,</span><span class="n">Oregon</span><span class="p">,</span><span class="mi">9</span><span class="p">,</span><span class="mi">29436</span>
+<span class="n">Salem</span> <span class="n">city</span><span class="p">,</span><span class="n">Oregon</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">218928</span>
+<span class="n">Salem</span> <span class="n">city</span><span class="p">,</span><span class="n">Oregon</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">29436</span>
+<span class="n">Buffalo</span> <span class="n">city</span><span class="p">,</span><span class="n">New</span> <span class="n">York</span><span class="p">,</span><span class="mi">12</span><span class="p">,</span><span class="mi">37528</span>
+<span class="n">Buffalo</span> <span class="n">city</span><span class="p">,</span><span class="n">New</span> <span class="n">York</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">37528</span>
+<span class="n">Buffalo</span> <span class="n">city</span><span class="p">,</span><span class="n">New</span> <span class="n">York</span><span class="p">,</span><span class="mi">9</span><span class="p">,</span><span class="mi">37528</span>
+<span class="n">Buffalo</span> <span class="n">city</span><span class="p">,</span><span class="n">New</span> <span class="n">York</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">295435</span>
+<span class="n">Buffalo</span> <span class="n">city</span><span class="p">,</span><span class="n">New</span> <span class="n">York</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">37528</span>
+<span class="n">Buffalo</span> <span class="n">city</span><span class="p">,</span><span class="n">New</span> <span class="n">York</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">37528</span>
+<span class="n">Buffalo</span> <span class="n">city</span><span class="p">,</span><span class="n">New</span> <span class="n">York</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">37528</span>
+<span class="n">Buffalo</span> <span class="n">city</span><span class="p">,</span><span class="n">New</span> <span class="n">York</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">303835</span>
+<span class="n">Buffalo</span> <span class="n">city</span><span class="p">,</span><span class="n">New</span> <span class="n">York</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">37528</span>
+<span class="n">Buffalo</span> <span class="n">city</span><span class="p">,</span><span class="n">New</span> <span class="n">York</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">37528</span>
+<span class="n">Buffalo</span> <span class="n">city</span><span class="p">,</span><span class="n">New</span> <span class="n">York</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">300555</span>
+<span class="n">Buffalo</span> <span class="n">city</span><span class="p">,</span><span class="n">New</span> <span class="n">York</span><span class="p">,</span><span class="mi">11</span><span class="p">,</span><span class="mi">37528</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="operations">
+<h2>Operations<a class="headerlink" href="#operations" title="Permalink to this headline">¶</a></h2>
+<p>We will be writing two operations:</p>
+<ol class="arabic simple">
+<li><p>An operation to get the temperature given the city, month.</p></li>
+<li><p>An operation to get the population given the city, state</p></li>
+</ol>
+<p>First we need to find some official sources from where we can get
+the temperature and population for the cities that we have.</p>
+<p>We will be using <a class="reference external" href="https://www.ncdc.noaa.gov/cdo-web/">https://www.ncdc.noaa.gov/cdo-web/</a> to get the datasets for
+the temperature and for the population we are using
+<a class="reference external" href="https://www2.census.gov/programs-surveys/popest/datasets/2010-2019/cities/totals/">https://www2.census.gov/programs-surveys/popest/datasets/2010-2019/cities/totals/</a>
+for getting the population datasets.</p>
+<p>Since the datasets are huge, hence we are using only specific files
+from the dataset to get the values we need.</p>
+<p>We will be using the <cite>cached_download</cite> method which caches the downloaded
+files and speeds up the development time.</p>
+<p><strong>operations.py</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">pathlib</span>
+
+<span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">op</span><span class="p">,</span>
+    <span class="n">load</span><span class="p">,</span>
+    <span class="n">export</span><span class="p">,</span>
+    <span class="n">Definition</span><span class="p">,</span>
+    <span class="n">cached_download</span><span class="p">,</span>
+<span class="p">)</span>
+
+
+<span class="n">temperature_dataset_urls</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;Phoenix city&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://www.ncdc.noaa.gov/cag/city/time-series/USW00023183-tavg-all-1-2020-2021.json?base_prd=true&amp;begbaseyear=1933&amp;endbaseyear=2000&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;expected_sha384_hash&quot;</span><span class="p">:</span> <span class="s2">&quot;f26d3d8cb691f2c5544d05da35995329028cf04356f8018a94102701bc49edd34911a0a076eed376a11f1514ce06b277&quot;</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;Orlando city&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://www.ncdc.noaa.gov/cag/city/time-series/USW00012815-tavg-all-2-2020-2021.json?base_prd=true&amp;begbaseyear=1952&amp;endbaseyear=2000&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;expected_sha384_hash&quot;</span><span class="p">:</span> <span class="s2">&quot;e239a9245188797da6c2b73a837785f075c462a8de6fce135a3db94c4155b586456263961c68ead2758f8185ef0a70c0&quot;</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;Miami city&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://www.ncdc.noaa.gov/cag/city/time-series/USW00012839-tavg-all-1-2020-2021.json?base_prd=true&amp;begbaseyear=1948&amp;endbaseyear=2000&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;expected_sha384_hash&quot;</span><span class="p">:</span> <span class="s2">&quot;797c5e1645b381c242fa1defcd0cd63549770a2e68481da9253bfc04e6ece826899d19112b52ae03e84bc7ad25d4063f&quot;</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;Portland city (pt.)&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://www.ncdc.noaa.gov/cag/city/time-series/USW00024229-tavg-all-1-2020-2021.json?base_prd=true&amp;begbaseyear=1938&amp;endbaseyear=2000&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;expected_sha384_hash&quot;</span><span class="p">:</span> <span class="s2">&quot;a0f2a87bca37cfe7ea79a25d58d0280af1c4347360ab7bcadb3be4a71963ec234d14c763c12dafd9facf5fe75f3a9502&quot;</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;New York city&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://www.ncdc.noaa.gov/cag/city/time-series/USW00094789-tavg-all-1-2020-2021.json?base_prd=true&amp;begbaseyear=1948&amp;endbaseyear=2000&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;expected_sha384_hash&quot;</span><span class="p">:</span> <span class="s2">&quot;4e029455185fbed76e9e9bd71344dd424a3de767a4e0fc0439fbadc5cc8bfa203bbfa8e5545df8ac7812124d3d5674f0&quot;</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;Las Vegas city&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://www.ncdc.noaa.gov/cag/city/time-series/USW00023169-tavg-all-1-2020-2021.json?base_prd=true&amp;begbaseyear=1948&amp;endbaseyear=2000&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;expected_sha384_hash&quot;</span><span class="p">:</span> <span class="s2">&quot;d7082f31f97c56a36f579f6fd0d361caff0aa585dcadf3a63294d74bd31881517d7a0e970537993cb75c17ccba1ceb4e&quot;</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;Seattle city&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://www.ncdc.noaa.gov/cag/city/time-series/USW00024233-tavg-all-1-2020-2021.json?base_prd=true&amp;begbaseyear=1948&amp;endbaseyear=2000&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;expected_sha384_hash&quot;</span><span class="p">:</span> <span class="s2">&quot;d4c291ead4a5f4a15b7d4ef456b73e3754b4bbbff3614b56d7bdff4631d2af3205795cc39ca132091b413f95e56768c0&quot;</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;Chicago city&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://www.ncdc.noaa.gov/cag/city/time-series/USW00094846-tavg-all-1-2020-2021.json?base_prd=true&amp;begbaseyear=1958&amp;endbaseyear=2000&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;expected_sha384_hash&quot;</span><span class="p">:</span> <span class="s2">&quot;1ee80e616b70f16c193e565215f216a354324f58f12373502fb7763edb304af4bbd56d06c3c8bc0f0a23f7e7e85a5a0e&quot;</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;Buffalo city&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://www.ncdc.noaa.gov/cag/city/time-series/USH00301012-tavg-all-1-2020-2021.json?base_prd=true&amp;begbaseyear=1958&amp;endbaseyear=2000&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;expected_sha384_hash&quot;</span><span class="p">:</span> <span class="s2">&quot;8ffbaf046ac1b3538d1a825942beb1f1a5420d18fe69fce090f34167df78ea3c863202b520558ffd5bf99425ffd8b232&quot;</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;Salem city&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://www.ncdc.noaa.gov/cag/city/time-series/USW00024232-tavg-all-1-2020-2021.json?base_prd=true&amp;begbaseyear=1958&amp;endbaseyear=2000&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;expected_sha384_hash&quot;</span><span class="p">:</span> <span class="s2">&quot;d1df691b45ea66be3329e31d5f7d84a583164c8293842490c8a32c46dd89bb776182ed4c4a0e51968b3bf60d76f1998b&quot;</span><span class="p">,</span>
+    <span class="p">},</span>
+<span class="p">}</span>
+
+
+<span class="n">population_dataset_urls</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;Arizona&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://www2.census.gov/programs-surveys/popest/datasets/2010-2019/cities/totals/sub-est2019_4.csv&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;expected_sha384_hash&quot;</span><span class="p">:</span> <span class="s2">&quot;56f6dc515f42e584df8f2806dea2fc0f955916bc9b697975b5bb62a4efd5efa1065738a56f049053164ecd150cf84f5c&quot;</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;Florida&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://www2.census.gov/programs-surveys/popest/datasets/2010-2019/cities/totals/sub-est2019_12.csv&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;expected_sha384_hash&quot;</span><span class="p">:</span> <span class="s2">&quot;969cc1abd2f3f30a9208277fcb760d4cc9e9deb67a605ca0017daf784782d5180a1e2d5c6982a84783ec310c3dde13d2&quot;</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;Oregon&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://www2.census.gov/programs-surveys/popest/datasets/2010-2019/cities/totals/sub-est2019_41.csv&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;expected_sha384_hash&quot;</span><span class="p">:</span> <span class="s2">&quot;c11bb1be135eb9f2521e6397339c10c87baae4669aab46198f87716cc652a2f8c85a96c477aabe7e11240d5049b1149a&quot;</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;New York&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://www2.census.gov/programs-surveys/popest/datasets/2010-2019/cities/totals/sub-est2019_36.csv&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;expected_sha384_hash&quot;</span><span class="p">:</span> <span class="s2">&quot;cd77a3c4ab0099a8353e5118e82c184622274484328883f86eae59755a6a81ad039c5c55339f730a990b0bf412acc6c2&quot;</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;Nevada&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://www2.census.gov/programs-surveys/popest/datasets/2010-2019/cities/totals/sub-est2019_32.csv&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;expected_sha384_hash&quot;</span><span class="p">:</span> <span class="s2">&quot;d8518c388107483dc0da65e33769ea8e8d7983ce17f79f7020201cf3754cd4a59b9ce57e479b4c1208a46c2dd8be4fde&quot;</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;Washington&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://www2.census.gov/programs-surveys/popest/datasets/2010-2019/cities/totals/sub-est2019_53.csv&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;expected_sha384_hash&quot;</span><span class="p">:</span> <span class="s2">&quot;b426810c8438585c67057c5073281fce6b20d6bf013370256d6dbdcc4ad0b92c7d673c1e7d6e2a1d14e59f7bbc6599ad&quot;</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;Illinois&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://www2.census.gov/programs-surveys/popest/datasets/2010-2019/cities/totals/sub-est2019_17.csv&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;expected_sha384_hash&quot;</span><span class="p">:</span> <span class="s2">&quot;a55edf7f31ccdc792d183bb0c1dccbc55f6cfb5d518502e3fc5278d230a0174a741ae625d2b00e650dc1d8cd39f2e989&quot;</span><span class="p">,</span>
+    <span class="p">},</span>
+<span class="p">}</span>
+
+
+<span class="n">temperature_def</span> <span class="o">=</span> <span class="n">Definition</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;temperature&quot;</span><span class="p">,</span> <span class="n">primitive</span><span class="o">=</span><span class="s2">&quot;generic&quot;</span><span class="p">)</span>
+<span class="n">population_def</span> <span class="o">=</span> <span class="n">Definition</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;population&quot;</span><span class="p">,</span> <span class="n">primitive</span><span class="o">=</span><span class="s2">&quot;generic&quot;</span><span class="p">)</span>
+
+
+<span class="nd">@op</span><span class="p">(</span><span class="n">outputs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;temperature&quot;</span><span class="p">:</span> <span class="n">temperature_def</span><span class="p">})</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">lookup_temperature</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">city</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">month</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">city</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">temperature_dataset_urls</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;City: </span><span class="si">{</span><span class="n">city</span><span class="si">}</span><span class="s2"> not found in dataset&quot;</span><span class="p">)</span>
+
+    <span class="n">cache_dir</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;~&quot;</span><span class="p">,</span> <span class="s2">&quot;.cache&quot;</span><span class="p">,</span> <span class="s2">&quot;dffml&quot;</span><span class="p">,</span> <span class="s2">&quot;datasets&quot;</span><span class="p">,</span> <span class="s2">&quot;temperature&quot;</span><span class="p">)</span>
+        <span class="o">.</span><span class="n">expanduser</span><span class="p">()</span>
+        <span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
+    <span class="p">)</span>
+
+    <span class="n">filepath</span> <span class="o">=</span> <span class="k">await</span> <span class="n">cached_download</span><span class="p">(</span>
+        <span class="n">temperature_dataset_urls</span><span class="p">[</span><span class="n">city</span><span class="p">][</span><span class="s2">&quot;url&quot;</span><span class="p">],</span>
+        <span class="n">cache_dir</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">city</span><span class="si">}</span><span class="s2">.json&quot;</span><span class="p">,</span>
+        <span class="n">temperature_dataset_urls</span><span class="p">[</span><span class="n">city</span><span class="p">][</span><span class="s2">&quot;expected_sha384_hash&quot;</span><span class="p">],</span>
+    <span class="p">)</span>
+    <span class="n">dataset</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span><span class="o">.</span><span class="n">read_text</span><span class="p">())</span>
+    <span class="n">temperature</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">][</span>
+        <span class="sa">f</span><span class="s2">&quot;20200</span><span class="si">{</span><span class="n">month</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">if</span> <span class="n">month</span> <span class="o">&lt;</span> <span class="mi">10</span> <span class="k">else</span> <span class="sa">f</span><span class="s2">&quot;2020</span><span class="si">{</span><span class="n">month</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="p">][</span><span class="s2">&quot;value&quot;</span><span class="p">]</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;temperature&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">temperature</span><span class="p">)}</span>
+
+
+<span class="nd">@op</span><span class="p">(</span><span class="n">outputs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;population&quot;</span><span class="p">:</span> <span class="n">population_def</span><span class="p">})</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">lookup_population</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">city</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">state</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">city</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">temperature_dataset_urls</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;City: </span><span class="si">{</span><span class="n">city</span><span class="si">}</span><span class="s2"> not found in dataset&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">state</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">population_dataset_urls</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;State: </span><span class="si">{</span><span class="n">state</span><span class="si">}</span><span class="s2"> not found in dataset&quot;</span><span class="p">)</span>
+
+    <span class="n">cache_dir</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;~&quot;</span><span class="p">,</span> <span class="s2">&quot;.cache&quot;</span><span class="p">,</span> <span class="s2">&quot;dffml&quot;</span><span class="p">,</span> <span class="s2">&quot;datasets&quot;</span><span class="p">,</span> <span class="s2">&quot;population&quot;</span><span class="p">)</span>
+        <span class="o">.</span><span class="n">expanduser</span><span class="p">()</span>
+        <span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
+    <span class="p">)</span>
+
+    <span class="n">filepath</span> <span class="o">=</span> <span class="k">await</span> <span class="n">cached_download</span><span class="p">(</span>
+        <span class="n">population_dataset_urls</span><span class="p">[</span><span class="n">state</span><span class="p">][</span><span class="s2">&quot;url&quot;</span><span class="p">],</span>
+        <span class="n">cache_dir</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">state</span><span class="si">}</span><span class="s2">.csv&quot;</span><span class="p">,</span>
+        <span class="n">population_dataset_urls</span><span class="p">[</span><span class="n">state</span><span class="p">][</span><span class="s2">&quot;expected_sha384_hash&quot;</span><span class="p">],</span>
+    <span class="p">)</span>
+    <span class="k">async</span> <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">load</span><span class="p">(</span><span class="n">filepath</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">export</span><span class="p">(</span><span class="n">record</span><span class="p">)[</span><span class="s2">&quot;features&quot;</span><span class="p">][</span><span class="s2">&quot;NAME&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">city</span><span class="p">:</span>
+            <span class="n">population</span> <span class="o">=</span> <span class="n">export</span><span class="p">(</span><span class="n">record</span><span class="p">)[</span><span class="s2">&quot;features&quot;</span><span class="p">][</span><span class="s2">&quot;POPESTIMATE2019&quot;</span><span class="p">]</span>
+            <span class="k">yield</span> <span class="p">{</span><span class="s2">&quot;population&quot;</span><span class="p">:</span> <span class="n">population</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>In the <cite>lookup_temperature</cite> operation we would take the inputs
+as city and month, we would go over the dataset links that we
+have and download the file for that particular city and return
+the temperature for that specific month.</p>
+<p>In the <cite>lookup_population</cite> operation we would take the inputs
+as city and state, we would go over all the state datasets
+that we have and download the matching dataset for state and
+returns the population for that particular city.</p>
+</div>
+<div class="section" id="dataflow">
+<h2>Dataflow<a class="headerlink" href="#dataflow" title="Permalink to this headline">¶</a></h2>
+<p>Now we will be creating a dataflow using the operations that
+we have written earlier. The main objective of the dataflow
+would be to give output after running the operations over our
+dummy dataset that we have.</p>
+<p><strong>dataflow.sh</strong></p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml dataflow create <span class="se">\</span>
+<span class="go">    -flow \</span>
+<span class="go">        &#39;[{&quot;seed&quot;: [&quot;city&quot;]}]&#39;=operations:lookup_temperature.inputs.city \</span>
+<span class="go">        &#39;[{&quot;seed&quot;: [&quot;month&quot;]}]&#39;=operations:lookup_temperature.inputs.month \</span>
+<span class="go">        &#39;[{&quot;seed&quot;: [&quot;city&quot;]}]&#39;=operations:lookup_population.inputs.city \</span>
+<span class="go">        &#39;[{&quot;seed&quot;: [&quot;state&quot;]}]&#39;=operations:lookup_population.inputs.state \</span>
+<span class="go">    -inputs \</span>
+<span class="go">        &#39;[&quot;temperature&quot;, &quot;population&quot;]&#39;=get_single_spec \</span>
+<span class="go">        -- \</span>
+<span class="go">        operations:lookup_population \</span>
+<span class="go">        operations:lookup_temperature \</span>
+<span class="go">        get_single | \</span>
+<span class="go">        tee preprocess_ops.json</span>
+</pre></div>
+</div>
+<p>The dataflow create command will create a dataflow for us
+in the json format. Now we can use this dataflow within our
+merge command.</p>
+</div>
+<div class="section" id="merge-command">
+<h2>Merge Command<a class="headerlink" href="#merge-command" title="Permalink to this headline">¶</a></h2>
+<p>We will be using the merge command. In the merge command we
+would go over the dataset.csv file run it through the dataflow
+that we have created earlier and dump the values of population
+and temperature in a new file.</p>
+<p><strong>processing.sh</strong></p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml merge <span class="nv">text</span><span class="o">=</span>df <span class="nv">temp</span><span class="o">=</span>csv <span class="se">\</span>
+<span class="go">    -source-text-dataflow preprocess_ops.json \</span>
+<span class="go">    -source-text-features city:str:1 state:str:1 month:int:1 \</span>
+<span class="go">    -source-text-source csv \</span>
+<span class="go">    -source-text-source-filename dataset.csv \</span>
+<span class="go">    -source-temp-filename preprocessed.csv \</span>
+<span class="go">    -source-temp-allowempty \</span>
+<span class="go">    -source-temp-readwrite \</span>
+<span class="go">    -log debug</span>
+<span class="gp">$ </span>cat preprocessed.csv
+</pre></div>
+</div>
+</div>
+<div class="section" id="model-training">
+<h2>Model Training<a class="headerlink" href="#model-training" title="Permalink to this headline">¶</a></h2>
+<p>Now we will be training our model, the model which
+we will be using is <cite>tfdnnr</cite> model. You may also
+use any other model for this purpose.</p>
+<p>Our model will be trained on temperature and population
+and the output being sales.</p>
+<p><strong>train.sh</strong></p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml train <span class="se">\</span>
+<span class="go">    -model tfdnnr \</span>
+<span class="go">    -model-epochs 300 \</span>
+<span class="go">    -model-steps 20 \</span>
+<span class="go">    -model-hidden 9 18 9 \</span>
+<span class="go">    -model-features population:int:1 temperature:float:1 \</span>
+<span class="go">    -model-predict sales:int:1 \</span>
+<span class="go">    -model-directory tempdir \</span>
+<span class="go">    -sources f=csv \</span>
+<span class="go">    -source-filename preprocessed.csv \</span>
+<span class="go">    -log debug</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="model-accuracy">
+<h2>Model Accuracy<a class="headerlink" href="#model-accuracy" title="Permalink to this headline">¶</a></h2>
+<p>The accuracy of the trained model can be found out
+using the accuracy method.</p>
+<p><strong>accuracy.sh</strong></p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml accuracy <span class="se">\</span>
+<span class="go">    -model tfdnnr \</span>
+<span class="go">    -model-hidden 9 18 9 \</span>
+<span class="go">    -model-features population:int:1 temperature:float:1 \</span>
+<span class="go">    -model-predict sales:int:1 \</span>
+<span class="go">    -model-directory tempdir \</span>
+<span class="go">    -sources f=csv \</span>
+<span class="go">    -source-filename preprocessed.csv \</span>
+<span class="go">    -log debug</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="prediction">
+<h2>Prediction<a class="headerlink" href="#prediction" title="Permalink to this headline">¶</a></h2>
+<p>For the prediction we will using the <cite>test_dataset.csv</cite> this data
+was not present in the training dataset.</p>
+<p>Here insted of creating and intermediary file we are directly
+providing the output of the dataflow (temperature and population)
+for the prediction of sales.</p>
+<p><strong>predict.sh</strong></p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml predict all <span class="se">\</span>
+<span class="go">    -model tfdnnr \</span>
+<span class="go">    -model-hidden 9 18 9 \</span>
+<span class="go">    -model-features population:int:1 temperature:float:1 \</span>
+<span class="go">    -model-predict sales:int:1 \</span>
+<span class="go">    -model-directory tempdir \</span>
+<span class="go">    -sources preprocess=df \</span>
+<span class="go">    -source-preprocess-dataflow preprocess_ops.json \</span>
+<span class="go">    -source-preprocess-features city:str:1 state:str:1 month:int:1 \</span>
+<span class="go">    -source-preprocess-source csv \</span>
+<span class="go">    -source-preprocess-source-filename test_dataset.csv \</span>
+<span class="go">    -log debug</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="../plugins/index.html" class="btn btn-neutral float-right" title="Plugins" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="webhook/webhook.html" class="btn btn-neutral float-left" title="Redeploying on receving GitHub webhook" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2017 - 2021, Intel.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
