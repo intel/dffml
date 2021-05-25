@@ -84,13 +84,16 @@ source_suffix = {
 }
 
 # Download button for ipython notebooks
+nb_version = ""
+if "." not in version:
+    nb_version = "master/"
 # This is processed by Jinja2 and inserted before each notebook
 nbsphinx_prolog = r"""
 {% set docname = env.doc2path(env.docname, base=None) %}
 
-.. image:: https://img.shields.io/badge/Download-.ipynb-orange?style=for-the-badge&logo=jupyter
-    :target: https://intel.github.io/dffml/master/{{docname[:-6]}}ipynb
-    :alt: Test Status
+.. image:: ../../images/Download-.ipynb-button.svg
+    :target: https://intel.github.io/dffml/{{nbversion}}{{docname[:-6]}}ipynb
+    :alt: Notebook download button
 
 |
 """
