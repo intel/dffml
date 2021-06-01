@@ -15,3 +15,4 @@ The following are some example use cases of DFFML.
     flower17/flower17
     or_covid_data_by_county
     webhook/index
+    icecream_sales
