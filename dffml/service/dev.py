@@ -1086,6 +1086,7 @@ class LintCommits(CMD):
         proc = await asyncio.create_subprocess_exec(
             *cmd, stdout=asyncio.subprocess.PIPE
         )
+        await proc.wait()
         stdout, _ = await proc.communicate()
         if proc.returncode != 0:
             raise RuntimeError(stdout)
