@@ -460,28 +460,28 @@ class TestLintCommits(AsyncTestCase):
         "cleanup: Fix importing by using importlib.import_module ",
     ]
 
-    @unittest.mock.patch.dict(
-        os.environ, {"GIT_DISCOVERY_ACROSS_FILESYSTEM": "1"}
-    )
     async def test_should_validate(self):
-        self.assertTrue(
-            all(
-                [
-                    await self.LintCommitsObj.validate_commit_msg(msg)
-                    for msg in self.valid_commits
-                ]
+        with unittest.mock.patch.dict(
+            os.environ, {"GIT_DISCOVERY_ACROSS_FILESYSTEM": "1"}
+        ):
+            self.assertTrue(
+                all(
+                    [
+                        await self.LintCommitsObj.validate_commit_msg(msg)
+                        for msg in self.valid_commits
+                    ]
+                )
             )
-        )
 
-    @unittest.mock.patch.dict(
-        os.environ, {"GIT_DISCOVERY_ACROSS_FILESYSTEM": "1"}
-    )
     async def test_shouldnot_validate(self):
-        self.assertTrue(
-            not any(
-                [
-                    await self.LintCommitsObj.validate_commit_msg(msg)
-                    for msg in self.invalid_commits
-                ]
+        with unittest.mock.patch.dict(
+            os.environ, {"GIT_DISCOVERY_ACROSS_FILESYSTEM": "1"}
+        ):
+            self.assertTrue(
+                not any(
+                    [
+                        await self.LintCommitsObj.validate_commit_msg(msg)
+                        for msg in self.invalid_commits
+                    ]
+                )
             )
-        )
