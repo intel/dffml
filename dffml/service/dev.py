@@ -1093,13 +1093,14 @@ class LintCommits(CMD):
         return output
 
     async def _get_relevant_commits(self):
+        current_branch = await self._get_current_branch()
         cmd = [
             "git",
             "log",
             "--no-merges",
             "--oneline",
             "--format=%s",
-            await self._get_current_branch(),
+            current_branch,
             "^master",  #! This needs to change when master is renamed to main.
         ]
         commits = await self._get_cmd_output(cmd)
