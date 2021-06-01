@@ -190,6 +190,10 @@ function run_style() {
   done
 }
 
+function run_commit(){
+  dffml service dev lintcommits
+}
+
 function run_docs() {
   export GIT_SSH_COMMAND='ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no'
 
@@ -313,6 +317,8 @@ elif [ "x${1}" == "xwhitespace" ]; then
   run_whitespace
 elif [ "x${1}" == "xstyle" ]; then
   run_style
+elif [ "x${1}" == "xcommit" ]; then
+  run_commit
 elif [ "x${1}" == "xdocs" ]; then
   run_docs
 elif [ "x${1}" == "xlines" ]; then
