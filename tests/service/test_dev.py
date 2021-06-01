@@ -27,7 +27,8 @@ from dffml.service.dev import (
     Install,
     VersionNotFoundError,
     RCMissingHyphen,
-    SphinxBuildError,
+    LintCommits,
+    CommitLintError,
 )
 from dffml.util.os import chdir
 from dffml.util.skel import Skel
@@ -439,4 +440,48 @@ class TestMakeDocs(AsyncTestCase):
                 $ sphinx-build -W -b html docs {tempdir}
                 """
             ),
+        )
+
+
+class TestLintCommits(AsyncTestCase):
+    LintCommitsObj = LintCommits()
+    valid_commits = [
+        "docs: contributing: editors: vscode: Shorten title",
+        "df: memory: Log on instance creation with given config ",
+        "source: file: Change label to tag ",
+        "model: scikit: Use make_config_numpy ",
+        "cli: dataflow: Merge seed arrays ",
+    ]
+    invalid_commits = [
+        "service: http: routes: Default to setting no-cache on all respones ",
+        "docs: contributing: consoletest: README: Add documentation ",
+        "style: Fixed JS API newline ",
+        "shouldi: Use high level run ",
+        "cleanup: Fix importing by using importlib.import_module ",
+    ]
+
+    @unittest.mock.patch.dict(
+        os.environ, {"GIT_DISCOVERY_ACROSS_FILESYSTEM": "1"}
+    )
+    async def test_should_validate(self):
+        self.assertTrue(
+            all(
+                [
+                    await self.LintCommitsObj.validate_commit_msg(msg)
+                    for msg in self.valid_commits
+                ]
+            )
+        )
+
+    @unittest.mock.patch.dict(
+        os.environ, {"GIT_DISCOVERY_ACROSS_FILESYSTEM": "1"}
+    )
+    async def test_shouldnot_validate(self):
+        self.assertTrue(
+            not any(
+                [
+                    await self.LintCommitsObj.validate_commit_msg(msg)
+                    for msg in self.invalid_commits
+                ]
+            )
         )
