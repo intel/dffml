@@ -3,7 +3,7 @@
 """Logging"""
 import time
 import logging
-import asyncio
+import inspect
 import functools
 from contextlib import contextmanager
 
@@ -36,34 +36,31 @@ def get_download_logger(root_logger):
 
 def log_time(func):
     """ 
-    Decorator that can take either coroutine or normal function 
-    
-    Found on Stack Overflow from Mikhail Gerasimov, only modified 
-    slightly to fit our needs.
-    - https://stackoverflow.com/a/44176794/10108465
-    - https://creativecommons.org/licenses/by-sa/3.0/
+    Decorator that can take either coroutine or normal function
+    and log its runtime.
     """
 
     logger = LOGGER.getChild("duration_logger")
 
     @contextmanager
     def time_it():
-        start_ts = time.time()
+        start_ts = time.monotonic()
         yield
-        dur = time.time() - start_ts
+        dur = time.monotonic() - start_ts
         logger.debug("{} took {:.2} seconds".format(func.__name__, dur))
 
     @functools.wraps(func)
     def wrapper(*args, **kwargs):
-        if not asyncio.iscoroutinefunction(func):
-            with time_it():
-                return func(*args, **kwargs)
-        else:
+        if inspect.iscoroutinefunction(func):
 
             async def tmp():
                 with time_it():
                     return await func(*args, **kwargs)
 
             return tmp()
+
+        else:
+            with time_it():
+                return func(*args, **kwargs)
 
     return wrapper
