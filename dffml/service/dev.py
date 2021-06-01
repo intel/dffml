@@ -1082,6 +1082,7 @@ class LintCommits(CMD):
         return mutations
 
     async def _get_cmd_output(self, cmd: List[str]):
+        print(f"$ {' '.join(cmd)}")
         proc = await asyncio.create_subprocess_exec(
             *cmd, stdout=asyncio.subprocess.PIPE
         )
