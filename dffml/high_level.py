@@ -11,7 +11,8 @@ from .record import Record
 from .model.model import Model
 from .df.types import DataFlow, Input
 from .df.memory import MemoryOrchestrator
-from .accuracy.accuracy import Accuracy, AccuracyContext
+from .model.accuracy import Accuracy
+from .accuracy.accuracy import AccuracyScorer, AccuracyContext
 from .source.source import (
     Sources,
     SourcesContext,
@@ -470,7 +471,7 @@ async def accuracy(
             model = await astack.enter_async_context(model)
             mctx = await astack.enter_async_context(model())
         # Allow for keep models open
-        if isinstance(model, Accuracy):
+        if isinstance(accuracy_scorer, AccuracyScorer):
             accuracy_scorer = await astack.enter_async_context(accuracy_scorer)
             actx = await astack.enter_async_context(accuracy_scorer())
         # Run accuracy method
