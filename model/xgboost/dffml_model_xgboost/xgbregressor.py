@@ -124,7 +124,8 @@ class XGBRegressorModel(SimpleModel):
               PetalLength:float:1 \
               PetalWidth:float:1 \
             -model-predict classification \
-            -model-directory model 
+            -model-directory model \
+            -scorer mse
         
     Output
 
