@@ -1,4 +1,5 @@
 dffml accuracy \
+    -scorer clf \
     -model tfdnnc \
     -model-batchsize 1000 \
     -model-hidden 30 50 25 \
