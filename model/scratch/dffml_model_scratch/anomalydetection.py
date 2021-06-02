@@ -196,7 +196,8 @@ class AnomalyModel(SimpleModel):
             -model anomalydetection \
             -model-features A:float:2 \
             -model-predict Y:int:1 \
-            -model-directory tempdir
+            -model-directory tempdir \
+            -scorer anomalyscore
 
 
     Make predictions
@@ -287,57 +288,6 @@ class AnomalyModel(SimpleModel):
             mu.tolist(),
             sigma2.tolist(),
         )
-
-    async def accuracy(self, sources: SourcesContext) -> Accuracy:
-        # Load saved anomalies
-        anomalies = self.storage.get("anomalies", None)
-        # Ensure the model has been trained before we try to make a prediction
-        if anomalies is None:
-            raise ModelNotTrained("Train model before assessing for accuracy.")
-
-        epsilon, _F1val, mu, sigma2 = anomalies
-
-        X = []
-        Y = []
-        # Go through all records that have the feature we're training on and the
-        # feature we want to predict.
-        async for record in sources.with_features(
-            self.features + [self.parent.config.predict.name]
-        ):
-            record_data = []
-            for feature in record.features(self.features).values():
-                record_data.extend(
-                    [feature] if np.isscalar(feature) else feature
-                )
-
-            X.append(record_data)
-            Y.append(record.feature(self.parent.config.predict.name))
-
-        self.logger.debug("Number of test records: %d", len(X))
-
-        # Number of features
-        nof = len(self.features)
-
-        X = np.reshape(X, (len(X), nof))
-
-        Y = np.reshape(Y, (len(Y), 1))
-
-        mu = np.array(mu)
-        sigma2 = np.array(sigma2)
-        p = multivariateGaussian(X, mu, sigma2)
-
-        pred = (p < epsilon).astype(int)
-
-        F1 = getF1(Y, pred)
-
-        outliers = p < epsilon
-
-        listOfOl = findIndices(outliers)
-
-        accuracy = F1
-        # Update the accuracy
-        self.storage["anomalies"] = epsilon, F1, mu.tolist(), sigma2.tolist()
-        return Accuracy(accuracy)
 
     async def get_input_data(self, sources: SourcesContext) -> list:
         saved_records = []
