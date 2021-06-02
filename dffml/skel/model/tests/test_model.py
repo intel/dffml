@@ -1,5 +1,6 @@
 import tempfile
 
+from dffml.accuracy import MeanSquaredErrorAccuracy
 from dffml import train, accuracy, predict, Feature, Features, AsyncTestCase
 
 from REPLACE_IMPORT_PACKAGE_NAME.myslr import MySLRModel
@@ -45,6 +46,7 @@ class TestMySLRModel(AsyncTestCase):
             predict=Feature("Y", float, 1),
             directory=cls.model_dir.name,
         )
+        cls.scorer = MeanSquaredErrorAccuracy()
 
     @classmethod
     def tearDownClass(cls):
@@ -58,7 +60,7 @@ class TestMySLRModel(AsyncTestCase):
     async def test_01_accuracy(self):
         # Use the test data to assess the model's accuracy
         res = await accuracy(
-            self.model, *[{"X": x, "Y": y} for x, y in TEST_DATA]
+            self.model, self.scorer, *[{"X": x, "Y": y} for x, y in TEST_DATA]
         )
         # Ensure the accuracy is above 80%
         self.assertTrue(0.8 <= res < 1.0)
