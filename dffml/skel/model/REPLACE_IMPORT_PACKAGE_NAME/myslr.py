@@ -116,6 +116,7 @@ class MySLRModel(SimpleModel):
 
         $ dffml accuracy \
             -model myslr \
+            -scorer mse \
             -model-features x:float:1 \
             -model-predict y:int:1 \
             -model-directory tempdir \
@@ -200,34 +201,6 @@ class MySLRModel(SimpleModel):
         self.logger.debug("Number of training records: %d", len(x))
         # Save m, b, and accuracy
         self.storage["regression_line"] = best_fit_line(x, y)
-
-    async def accuracy(self, sources: SourcesContext) -> Accuracy:
-        # Load saved regression line
-        regression_line = self.storage.get("regression_line", None)
-        # Ensure the model has been trained before we try to make a prediction
-        if regression_line is None:
-            raise ModelNotTrained("Train model before assessing for accuracy")
-        # Split regression line tuple into variables, ignore accuracy from
-        # training data since we'll be re-calculating it for the test data
-        m, b, _accuracy = regression_line
-        # X and Y data
-        x = []
-        y = []
-        # Go through all records that have the feature we're testing on and the
-        # feature we want to predict.
-        async for record in sources.with_features(
-            [self.config.features[0].name, self.config.predict.name]
-        ):
-            x.append(record.feature(self.config.features[0].name))
-            y.append(record.feature(self.config.predict.name))
-        # Use self.logger to report how many records are being used for testing
-        self.logger.debug("Number of test records: %d", len(x))
-        # Calculate the regression line for test data and accuracy of line
-        regression_line = [m * x_element + b for x_element in x]
-        accuracy = coeff_of_deter(y, regression_line)
-        # Update the accuracy to be the accuracy when assessed on the test data
-        self.storage["regression_line"] = m, b, accuracy
-        return Accuracy(accuracy)
 
     async def predict(self, sources: SourcesContext) -> AsyncIterator[Record]:
         # Load saved regression line
