@@ -52,6 +52,9 @@ setup(
         "dffml.model": [
             "scratchlgrsag = dffml_model_scratch.logisticregression:LogisticRegression",
             "anomalydetection = dffml_model_scratch.anomalydetection:AnomalyModel",
-        ]
+        ],
+        "dffml.accuracy": [
+            "anomalyscore = dffml_model_scratch.anomaly_detection_scorer:AnomalyDetectionAccuracy",
+        ],
     },
 )
