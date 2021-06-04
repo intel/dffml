@@ -11,4 +11,5 @@ dffml accuracy \
   -sources f=dir \
     -source-foldername rps-test-set \
     -source-feature image \
-    -source-labels rock paper scissors
+    -source-labels rock paper scissors \
+  -scorer pytorchscore
