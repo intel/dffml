@@ -14,4 +14,5 @@ dffml accuracy \
     -source-foldername hymenoptera_data/val \
     -source-feature image \
     -source-labels ants bees \
+  -scorer pytorchscore \
   -log critical
