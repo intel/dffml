@@ -3,6 +3,7 @@ import asyncio
 
 from dffml import train, accuracy, predict, DirectorySource, Features, Feature
 from dffml_model_pytorch import PyTorchNeuralNetwork, CrossEntropyLossFunction
+from dffml_model_pytorch.pytorch_accuracy_scorer import PytorchAccuracy
 
 
 # Define the Neural Network
@@ -88,7 +89,8 @@ async def main():
     await train(model, train_source)
 
     # Assess the accuracy
-    acc = await accuracy(model, test_source)
+    scorer = PytorchAccuracy()
+    acc = await accuracy(model, scorer, test_source)
     print("\nTesting Accuracy: ", acc)
 
     # Make Predictions
