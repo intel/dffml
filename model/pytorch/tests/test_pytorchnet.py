@@ -11,6 +11,7 @@ from dffml.high_level import train, accuracy, predict
 from dffml import Features, Feature, DirectorySource
 from dffml_model_pytorch import PyTorchNeuralNetwork
 from dffml_model_pytorch.utils import CrossEntropyLossFunction
+from dffml_model_pytorch.pytorch_accuracy_scorer import PytorchAccuracy
 
 
 class ConvNet(nn.Module):
@@ -101,6 +102,7 @@ class TestPyTorchNeuralNetwork(AsyncTestCase):
                 "375457bb95771ffeace2beedab877292d232f31e76502618d25e0d92a3e029d386429f52c771b05ae1c7229d2f5ecc29",
             )
         )
+        cls.scorer = PytorchAccuracy()
 
     @classmethod
     def tearDownClass(cls):
@@ -119,6 +121,7 @@ class TestPyTorchNeuralNetwork(AsyncTestCase):
     async def test_01_accuracy(self):
         acc = await accuracy(
             self.model,
+            self.scorer,
             DirectorySource(
                 foldername=str(self.testdir) + "/rps-test-set",
                 feature="image",
