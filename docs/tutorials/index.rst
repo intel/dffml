@@ -14,6 +14,7 @@ See :ref:`troubleshooting_create_a_new_virtual_environment` for more details.
 
     models/index
     sources/index
+    accuracy/index
     dataflows/index
     neuralnetwork
     doublecontextentry
