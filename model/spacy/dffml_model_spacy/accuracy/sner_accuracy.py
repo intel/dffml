@@ -34,12 +34,16 @@ class SpacyNerAccuracyContext(AccuracyContext):
         mctx.nlp = spacy.load(mctx.parent.config.directory)
 
         scorer = Scorer()
+        examples = []
         for input_, annot in test_examples:
-            doc_gold_text = mctx.nlp.make_doc(input_)
-            gold = GoldParse(doc_gold_text, entities=annot["entities"])
             pred_value = mctx.nlp(input_)
-            scorer.score(pred_value, gold)
-        return scorer.scores["tags_acc"]
+            example = Example.from_dict(
+                pred_value, {"entities": annot["entities"]}
+            )
+            example.reference = mctx.nlp.make_doc(input_)
+            examples.append(example)
+        scores = scorer.score(examples)
+        return scores["token_acc"]
 
 
 @entrypoint("sner")
