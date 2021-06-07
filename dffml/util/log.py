@@ -35,9 +35,37 @@ def get_download_logger(root_logger):
 
 
 def log_time(func):
-    """ 
+    """
     Decorator that can take either coroutine or normal function
     and log its runtime.
+
+    Examples
+    --------
+
+    >>> import time 
+    >>> import asyncio 
+    >>> from dffml import log_time 
+    >>> 
+    >>> @log_time
+    ... def simple_function():
+    ...     time.sleep(1)
+    ...     return True 
+    ... 
+    >>> 
+    >>> @log_time 
+    ... async def coroutine():
+    ...     time.sleep(1)
+    ...     return True 
+    ... 
+    >>> 
+    >>> simple_function()
+    DEBUG:dffml.util.duration_logger: simple_function took 1.0 seconds
+    True
+    >>> 
+    >>> asyncio.run(coroutine())
+    DEBUG:asyncio:Using selector: EpollSelector
+    DEBUG:dffml.util.duration_logger: coroutine took 1.0 seconds
+    True
     """
 
     logger = LOGGER.getChild("duration_logger")
@@ -47,7 +75,7 @@ def log_time(func):
         start_ts = time.monotonic()
         yield
         dur = time.monotonic() - start_ts
-        logger.debug("{} took {:.2} seconds".format(func.__name__, dur))
+        logger.debug(" {} took {:.2} seconds".format(func.__name__, dur))
 
     @functools.wraps(func)
     def wrapper(*args, **kwargs):
