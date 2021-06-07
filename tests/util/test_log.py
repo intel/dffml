@@ -18,7 +18,7 @@ class TestTimeLog(AsyncTestCase):
         self.assertEqual(len(captured_logs.records), 1)
         self.assertTrue(
             re.match(
-                "dummy_function took [0-9]*.[0-9]+ seconds",
+                " dummy_function took [0-9]*.[0-9]+ seconds",
                 captured_logs.records[0].getMessage(),
             )
         )
@@ -33,9 +33,10 @@ class TestTimeLog(AsyncTestCase):
             await dummy_coroutine()
 
         self.assertEqual(len(captured_logs.records), 1)
+
         self.assertTrue(
             re.match(
-                "dummy_coroutine took [0-9]*.[0-9]+ seconds",
+                " dummy_coroutine took [0-9]*.[0-9]+ seconds",
                 captured_logs.records[0].getMessage(),
             )
         )
