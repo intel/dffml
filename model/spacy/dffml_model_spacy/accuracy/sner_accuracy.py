@@ -2,7 +2,7 @@ import os
 
 import spacy
 from spacy.scorer import Scorer
-from spacy.gold import GoldParse
+from spacy.training import Example
 
 from dffml import (
     config,
