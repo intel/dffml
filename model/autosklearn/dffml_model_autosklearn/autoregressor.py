@@ -111,6 +111,7 @@ class AutoSklearnRegressorModel(Model):
             -model-features \
               Feature1:float:1 \
               Feature2:float:1 \
+            -scorer mse \
             -log critical
         0.9961211434899032
 
