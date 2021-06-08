@@ -95,7 +95,8 @@ class DAAL4PyLRModel(SimpleModel):
             -model-predict ans:int:1 \
             -model-directory tempdir \
             -sources f=csv \
-            -source-filename test.csv
+            -source-filename test.csv \
+            -scorer mse \
         0.6666666666666666
 
     Make a prediction
