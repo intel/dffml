@@ -231,6 +231,7 @@ class SpacyNERModel(Model):
             -model-model_name_or_path en_core_web_sm \
             -model-location temp \
             -model-n_iter 5 \
+            -scorer sner \
             -log debug
         0.0
 
