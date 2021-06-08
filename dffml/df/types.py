@@ -1,5 +1,6 @@
 import uuid
 import copy
+import types
 import itertools
 import pkg_resources
 from enum import Enum
@@ -101,7 +102,7 @@ class Definition(NamedTuple):
         else:
             exported["spec"] = export_dict(
                 name=self.spec.__qualname__,
-                types=self.spec._field_types,
+                types=self.spec.__annotations__,
                 defaults=self.spec._field_defaults,
             )
         return exported
@@ -135,8 +136,16 @@ class Definition(NamedTuple):
             for key, dtype in annotations_with_defaults.items():
                 annotations[key] = dtype
             def_tuple["__annotations__"] = annotations
-            kwargs["spec"] = type(
-                kwargs["spec"]["name"], (NamedTuple,), def_tuple
+
+            def populate_ns(ns):
+                ns.update(def_tuple)
+                ns["__module__"] = "dffml.types"
+                return None
+
+            kwargs["spec"] = types.new_class(
+                kwargs["spec"]["name"],
+                bases=(NamedTuple,),
+                exec_body=populate_ns,
             )
         return cls(**kwargs)
 
