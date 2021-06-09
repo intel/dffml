@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Maintainer Docs &mdash; DFFML 0cdcb4807 documentation</title>
+  <title>Maintainer Docs &mdash; DFFML 283295533 documentation</title>
   
 
   
@@ -70,7 +70,7 @@
             
             
               <div class="version">
-                0cdcb4807
+                283295533
               </div>
             
           
@@ -313,8 +313,6 @@ new version and the date</p></li>
 <span class="gp">$ </span>dffml service dev bump inter
 <span class="gp">$ </span>sed -i <span class="s2">&quot;s/Unreleased]/</span><span class="k">$(</span>dffml service dev setuppy version dffml/version.py<span class="k">)</span><span class="s2">] - </span><span class="k">$(</span>date +%F<span class="k">)</span><span class="s2">/&quot;</span> CHANGELOG.md
 <span class="gp">$ </span>git commit -sam <span class="s2">&quot;release: Version </span><span class="k">$(</span>dffml service dev setuppy version dffml/version.py<span class="k">)</span><span class="s2">&quot;</span>
-<span class="gp">$ </span>dffml service dev ci pindeps path/to/extracted/logs_NNNNN
-<span class="gp">$ </span>git commit -sam <span class="s2">&quot;release: </span><span class="k">$(</span>dffml service dev setuppy version dffml/version.py<span class="k">)</span><span class="s2">: Pin dependency versions&quot;</span>
 <span class="gp">$ </span>git tag <span class="k">$(</span>dffml service dev setuppy version dffml/version.py<span class="k">)</span>
 <span class="gp">$ </span>git push -u origin N.N.x
 <span class="gp">$ </span>git push --tags
