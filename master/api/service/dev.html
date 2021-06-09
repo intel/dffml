@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Service Dev &mdash; DFFML 51e21dc40 documentation</title>
+  <title>Service Dev &mdash; DFFML 0cdcb4807 documentation</title>
   
 
   
@@ -70,7 +70,7 @@
             
             
               <div class="version">
-                51e21dc40
+                0cdcb4807
               </div>
             
           
@@ -301,12 +301,6 @@ given.</p>
 <dt class="sig sig-object py" id="dffml.service.dev.CI">
 <em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">dffml.service.dev.</span></span><span class="sig-name descname"><span class="pre">CI</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">extra_config</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/service/dev.html#CI"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.service.dev.CI" title="Permalink to this definition">¶</a></dt>
 <dd><p>CI related commands</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="dffml.service.dev.CI.pindeps">
-<span class="sig-name descname"><span class="pre">pindeps</span></span><a class="headerlink" href="#dffml.service.dev.CI.pindeps" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <a class="reference internal" href="#dffml.service.dev.PinDeps" title="dffml.service.dev.PinDeps"><code class="xref py py-class docutils literal notranslate"><span class="pre">dffml.service.dev.PinDeps</span></code></a></p>
-</dd></dl>
-
 </dd></dl>
 
 <dl class="py class">
@@ -438,47 +432,6 @@ installs of plugins</p>
 <dd><p>Raised when a package has non-pip installable dependencies, or pip
 installable dependencies that must be installed before running the setup.py</p>
 </dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="dffml.service.dev.PinDeps">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">dffml.service.dev.</span></span><span class="sig-name descname"><span class="pre">PinDeps</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">extra_config</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/service/dev.html#PinDeps"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.service.dev.PinDeps" title="Permalink to this definition">¶</a></dt>
-<dd><p>Parse a GitHub Actions log archive to produce pinned dependencies for each
-requirements.txt</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="dffml.service.dev.PinDeps.CONFIG">
-<span class="sig-name descname"><span class="pre">CONFIG</span></span><a class="headerlink" href="#dffml.service.dev.PinDeps.CONFIG" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <a class="reference internal" href="#dffml.service.dev.PinDepsConfig" title="dffml.service.dev.PinDepsConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">dffml.service.dev.PinDepsConfig</span></code></a></p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="dffml.service.dev.PinDeps.remove_ansi_escape">
-<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">remove_ansi_escape</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">contents</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/service/dev.html#PinDeps.remove_ansi_escape"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.service.dev.PinDeps.remove_ansi_escape" title="Permalink to this definition">¶</a></dt>
-<dd><p>Found on Stack Overflow from Martijn Pieters, only modified input
-variable name.
-- <a class="reference external" href="https://stackoverflow.com/a/14693789">https://stackoverflow.com/a/14693789</a>
-- <a class="reference external" href="https://creativecommons.org/licenses/by-sa/4.0/">https://creativecommons.org/licenses/by-sa/4.0/</a></p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="dffml.service.dev.PinDeps.requirement_package_name">
-<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">requirement_package_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/service/dev.html#PinDeps.requirement_package_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.service.dev.PinDeps.requirement_package_name" title="Permalink to this definition">¶</a></dt>
-<dd><p>Parse a line from requirements.txt and return the package name</p>
-<p>“Per PEP 508, valid project names must: Consist only of ASCII letters,
-digits, underscores (_), hyphens (-), and/or periods (.), and. Start &amp; end
-with an ASCII letter or digit.”</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="dffml.service.dev.PinDepsConfig">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">dffml.service.dev.</span></span><span class="sig-name descname"><span class="pre">PinDepsConfig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">logs</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><span class="pre">pathlib.Path</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">update</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><span class="pre">bool</span></a></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/service/dev.html#PinDepsConfig"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.service.dev.PinDepsConfig" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="dffml.service.dev.PinDepsPlugin">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">dffml.service.dev.</span></span><span class="sig-name descname"><span class="pre">PinDepsPlugin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">setup_cfg_path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><span class="pre">pathlib.Path</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">setup_cfg_pre_deps</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">setup_cfg_post_deps</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">setup_cfg_pinned</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/service/dev.html#PinDepsPlugin"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.service.dev.PinDepsPlugin" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
 
 <dl class="py exception">
 <dt class="sig sig-object py" id="dffml.service.dev.RCMissingHyphen">
