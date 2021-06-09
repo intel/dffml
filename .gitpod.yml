@@ -1,3 +1,4 @@
+
 image:
     file: scripts/gitpod.Dockerfile
 tasks:
@@ -9,3 +10,7 @@ tasks:
       dffml service dev install &&
       echo -e '#!/bin/sh\nexec python3 -m black --check .' > .git/hooks/pre-commit &&
       chmod 755 .git/hooks/pre-commit
+
+vscode:
+  extensions:
+    - ms-python.python
