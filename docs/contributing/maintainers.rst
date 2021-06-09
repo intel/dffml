@@ -46,8 +46,6 @@ Doing a Release
 
 - Commit the new version
 
-- Pin all the dependencies
-
 - Tag a release
 
 - Push the new branch (if created) and the tag
