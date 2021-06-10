@@ -5,3 +5,4 @@ Notebooks
     :maxdepth: 2
 
     moving_between_models
+    evaluating_model_performance
