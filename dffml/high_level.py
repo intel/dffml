@@ -474,6 +474,10 @@ async def accuracy(
         if isinstance(accuracy_scorer, AccuracyScorer):
             accuracy_scorer = await astack.enter_async_context(accuracy_scorer)
             actx = await astack.enter_async_context(accuracy_scorer())
+        else:
+            # TODO Replace this with static type checking and maybe dynamic
+            # through something like pydantic. See issue #36
+            raise TypeError(f"{accuracy_scorer} is not an AccuracyScorer")
         # Run accuracy method
         return float(await actx.score(mctx, sctx))
 
