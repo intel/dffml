@@ -69,4 +69,4 @@ jobs:
     - name: Test
       run: |
         set -x
-        python setup.py test
+        python -m unittest discover -v

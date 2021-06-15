@@ -38,7 +38,7 @@ test_no_skips() {
   TEMP_DIRS+=("${check_skips}")
 
   # Run with coverage
-  RUN_CONSOLETESTS=1 "${PYTHON}" -u -m coverage run setup.py test 2>&1 | tee "${check_skips}"
+  RUN_CONSOLETESTS=1 "${PYTHON}" -u -m coverage run -m unittest discover -v 2>&1 | tee "${check_skips}"
   "${PYTHON}" -m coverage report -m
 
   # Fail if any coroutines were not awaited
@@ -79,7 +79,7 @@ function run_plugin() {
     # If we are at the root. Install plugsin and run various integration tests
 
     # Run the tests but not the long documentation consoletests
-    "${PYTHON}" -u setup.py test
+    "${PYTHON}" -u -m unittest discover -v
 
     # Try running create command
     plugin_creation_dir="$(mktemp -d)"
@@ -96,7 +96,7 @@ function run_plugin() {
       dffml service dev create "${plugin}" "ci-test-${plugin}"
       cd "ci-test-${plugin}"
       "${PYTHON}" -m pip install -U .
-      "${PYTHON}" setup.py test
+      "${PYTHON}" -m unittest discover -v
       cd "${plugin_creation_dir}"
     done
 
@@ -138,7 +138,7 @@ function run_consoletest() {
   # Install base package with testing and development utilities
   "${PYTHON}" -m pip install -U -e ".[dev]"
 
-  RUN_CONSOLETESTS=1 "${PYTHON}" -u setup.py test -s "tests.docs.test_consoletest.TestDocs.test_${PLUGIN}" 2>&1 | tee "${test_log}"
+  RUN_CONSOLETESTS=1 "${PYTHON}" -u -m unittest "tests.docs.test_consoletest.TestDocs.test_${PLUGIN}" 2>&1 | tee "${test_log}"
 
   # Fail if any coroutines were not awaited
   unawaited=$(grep -nE 'coroutine .* was never awaited' "${test_log}" | wc -l)
