@@ -42,30 +42,39 @@ def log_time(func):
     Examples
     --------
 
-    >>> import time 
-    >>> import asyncio 
-    >>> from dffml import log_time 
-    >>> 
+    >>> import time
+    >>> import asyncio
+    >>> import logging
+    >>>
+    >>> logging.basicConfig(level=logging.DEBUG)
+    >>>
+    >>> from dffml import log_time
+    >>>
     >>> @log_time
     ... def simple_function():
     ...     time.sleep(1)
-    ...     return True 
-    ... 
-    >>> 
-    >>> @log_time 
+    ...     return True
+    ...
+    >>>
+    >>> @log_time
     ... async def coroutine():
     ...     time.sleep(1)
-    ...     return True 
-    ... 
-    >>> 
+    ...     return True
+    ...
+    >>>
     >>> simple_function()
-    DEBUG:dffml.util.duration_logger: simple_function took 1.0 seconds
     True
-    >>> 
+    >>>
     >>> asyncio.run(coroutine())
-    DEBUG:asyncio:Using selector: EpollSelector
-    DEBUG:dffml.util.duration_logger: coroutine took 1.0 seconds
     True
+
+    You should see
+
+    .. code-block::
+
+        DEBUG:dffml.util.duration_logger: coroutine took 1.0 seconds
+
+    Since logging was enabled using ``basicConfig``.
     """
 
     logger = LOGGER.getChild("duration_logger")
