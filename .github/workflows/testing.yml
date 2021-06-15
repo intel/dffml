@@ -194,6 +194,7 @@ jobs:
         - docs/examples/icecream_sales.rst
         - docs/installation.rst
         - docs/troubleshooting.rst
+        - docs/tutorials/accuracy/mse.rst
         - docs/tutorials/dataflows/io.rst
         - docs/tutorials/dataflows/nlp.rst
         - docs/tutorials/models/iris.rst
