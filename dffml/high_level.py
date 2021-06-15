@@ -409,7 +409,7 @@ async def train(model, *args: Union[BaseSource, Record, Dict[str, Any]]):
 
 async def accuracy(
     model,
-    accuracy_scorer: Union[Accuracy, AccuracyContext],
+    accuracy_scorer: Union[AccuracyScorer, AccuracyContext],
     *args: Union[BaseSource, Record, Dict[str, Any]],
 ) -> float:
     """
