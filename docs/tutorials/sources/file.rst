@@ -177,7 +177,7 @@ To run the tests
 .. code-block:: console
     :test:
 
-    $ python setup.py test
+    $ python -m unittest discover -v
 
 This will look into the file test_source.py and run all the tests.
 

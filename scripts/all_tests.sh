@@ -21,7 +21,7 @@ PLUGINS=("${SRC_ROOT}/" \
 	"${SRC_ROOT}/source/mysql")
 for PLUGIN in ${PLUGINS[@]}; do
   cd "${PLUGIN}"
-  "${PYTHON}" setup.py test
+  "${PYTHON}" -m unittest discover -v
   exit_code=$?
   if [ "x${exit_code}" == "x0" ]; then
     echo "[PASS]: ${PLUGIN}"
@@ -59,7 +59,7 @@ for PLUGIN in ${PLUGINS[@]}; do
       dffml service dev create "${SKEL}" "test-${SKEL}"
       cd "test-${SKEL}"
       "${PYTHON}" setup.py install
-      "${PYTHON}" setup.py test
+      "${PYTHON}" -m unittest discover -v
       cd -
     done
     # Deactivate venv
