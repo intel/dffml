@@ -275,7 +275,7 @@ jobs:
         python scripts/tempfix/pytorch/pytorch/46930.py
     - name: Test
       run: |
-        python setup.py test
+        python -m unittest discover -v
         python -m pip freeze
 
   macos:
@@ -314,5 +314,5 @@ jobs:
         python scripts/tempfix/pytorch/pytorch/46930.py
     - name: Test
       run: |
-        python setup.py test
+        python -m unittest discover -v
         python -m pip freeze

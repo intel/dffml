@@ -113,4 +113,4 @@ Run the tests
 .. code-block:: console
     :test:
 
-    $ python setup.py test
+    $ python -m unittest discover -v
