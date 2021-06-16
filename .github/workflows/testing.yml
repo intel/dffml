@@ -272,8 +272,6 @@ jobs:
         pip install -U pip setuptools wheel
         pip install -e .[dev]
         dffml service dev install -skip model/daal4py
-        # Remove dataclasses. See https://github.com/intel/dffml/issues/882
-        python scripts/tempfix/pytorch/pytorch/46930.py
     - name: Test
       run: |
         python -m unittest discover -v
@@ -313,8 +311,6 @@ jobs:
         dffml service dev install -skip model/daal4py
         # XGBoost requires libomp on OSX
         brew install libomp
-        # Remove dataclasses. See https://github.com/intel/dffml/issues/882
-        python scripts/tempfix/pytorch/pytorch/46930.py
     - name: Test
       run: |
         python -m unittest discover -v
