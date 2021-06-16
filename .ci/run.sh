@@ -102,8 +102,6 @@ function run_plugin() {
 
     # Install all the plugins so examples can use them
     "${PYTHON}" -m dffml service dev install
-    # Remove dataclasses. See https://github.com/intel/dffml/issues/882
-    "${PYTHON}" "${TEMPFIX}/pytorch/pytorch/46930.py"
 
     # Run the examples
     run_plugin_examples
@@ -196,8 +194,6 @@ function run_docs() {
   cd "${SRC_ROOT}"
   "${PYTHON}" -m pip install --prefix=~/.local -U -e "${SRC_ROOT}[dev]"
   "${PYTHON}" -m dffml service dev install -user
-  # Remove dataclasses. See https://github.com/intel/dffml/issues/882
-  "${PYTHON}" "${TEMPFIX}/pytorch/pytorch/46930.py" ~/.local
 
   last_release=$(git log -p -- dffml/version.py \
                  | grep \+VERSION \
@@ -237,8 +233,6 @@ function run_docs() {
   rm -rf ~/.local
   "${PYTHON}" -m pip install --prefix=~/.local -U -e "${SRC_ROOT}[dev]"
   "${PYTHON}" -m dffml service dev install -user
-  # Remove dataclasses. See https://github.com/intel/dffml/issues/882
-  "${PYTHON}" "${TEMPFIX}/pytorch/pytorch/46930.py" ~/.local
   dffml service dev docs || ./scripts/docs.sh
   mv pages "${release_docs}/html"
 
