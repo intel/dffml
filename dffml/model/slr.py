@@ -97,7 +97,8 @@ class SLRModel(SimpleModel):
             -model-predict ans:int:1 \
             -model-directory tempdir \
             -sources f=csv \
-            -source-filename dataset.csv
+            -source-filename dataset.csv \
+            -scorer mse \
         1.0
 
     Make a prediction
