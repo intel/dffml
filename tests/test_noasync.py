@@ -8,6 +8,7 @@ from dffml.noasync import train, accuracy, predict
 from dffml.source.csv import CSVSource
 from dffml.feature.feature import Features, Feature
 from dffml.util.asynctestcase import AsyncTestCase
+from dffml.accuracy import MeanSquaredErrorAccuracy
 
 FEATURE_NAMES = ["Years", "Expertise", "Trust", "Salary"]
 
@@ -65,7 +66,8 @@ class TestML(AsyncTestCase):
         # Train the model
         train(model, training_data)
         # Assess accuracy
-        accuracy(model, test_data)
+        scorer = MeanSquaredErrorAccuracy()
+        accuracy(model, scorer, test_data)
         # Make prediction
         predictions = [
             prediction for prediction in predict(model, predict_data)
