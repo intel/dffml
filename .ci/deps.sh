@@ -56,6 +56,10 @@ if [[ "x${PLUGIN}" == "xsource/mysql" ]] || \
   docker pull mariadb:10
 fi
 
+if [[ "x${PLUGIN}" == "xmodel/tensorflow" ]]; then
+  python -m pip install scikit-learn
+fi
+
 # ===========================  END  TEST DEPENDENCIES ==========================
 
 
