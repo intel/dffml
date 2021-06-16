@@ -84,9 +84,6 @@ class FakeModelContext(ModelContext):
     async def train(self, sources: Sources):
         pass
 
-    async def accuracy(self, sources: Sources) -> AccuracyType:
-        return AccuracyType(0.42)
-
     async def predict(self, sources: SourcesContext) -> AsyncIterator[Record]:
         target = self.parent.config.predict.name
         async for record in sources.with_features(
@@ -438,23 +435,6 @@ class TestTrain(RecordsTestCase):
             "-source-filename",
             self.temp_filename,
         )
-
-
-class TestAccuracy(RecordsTestCase):
-    async def test_run(self):
-        result = await Accuracy.cli(
-            "-model",
-            "fake",
-            "-model-features",
-            "fake",
-            "-model-predict",
-            "fake",
-            "-sources",
-            "primary=json",
-            "-source-filename",
-            self.temp_filename,
-        )
-        self.assertEqual(result, 0.42)
 
 
 class TestPredict(RecordsTestCase):
