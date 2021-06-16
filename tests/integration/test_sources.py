@@ -75,6 +75,8 @@ class TestCSV(AsyncTestCase):
             "test_data=csv",
             "-source-filename",
             test_filename,
+            "-scorer",
+            "mse",
         )
         # Ensure JSON output works as expected (#261)
         with contextlib.redirect_stdout(self.stdout):
