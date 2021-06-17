@@ -2,7 +2,7 @@
 set -xe
 
 if [ "x${DFFML_RELEASE}" == "xmaster" ]; then
-  pip install -e .
+  pip install -e .[dev]
   dffml service dev install
 elif [ "x${DFFML_RELEASE}" == "xlatest" ]; then
   pip install dffml[all]
