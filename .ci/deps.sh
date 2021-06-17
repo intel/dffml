@@ -60,6 +60,10 @@ if [[ "x${PLUGIN}" == "xmodel/tensorflow" ]]; then
   python -m pip install scikit-learn
 fi
 
+if [[ "x${PLUGIN}" == "xsource/mysql" ]]; then
+  python -m pip install docker
+fi
+
 # ===========================  END  TEST DEPENDENCIES ==========================
 
 
