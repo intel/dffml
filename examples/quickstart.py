@@ -1,6 +1,7 @@
 from dffml import Features, Feature
 from dffml.noasync import train, accuracy, predict
 from dffml_model_scikit import LinearRegressionModel
+from dffml.accuracy import MeanSquaredErrorAccuracy
 
 model = LinearRegressionModel(
     features=Features(
@@ -22,10 +23,12 @@ train(
 )
 
 # Assess accuracy
+scorer = MeanSquaredErrorAccuracy()
 print(
     "Accuracy:",
     accuracy(
         model,
+        scorer,
         {"Years": 4, "Expertise": 9, "Trust": 0.5, "Salary": 50},
         {"Years": 5, "Expertise": 11, "Trust": 0.6, "Salary": 60},
     ),
