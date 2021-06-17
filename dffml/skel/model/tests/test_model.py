@@ -63,7 +63,7 @@ class TestMySLRModel(AsyncTestCase):
             self.model, self.scorer, *[{"X": x, "Y": y} for x, y in TEST_DATA]
         )
         # Ensure the accuracy is above 80%
-        self.assertTrue(0.8 <= res < 1.0)
+        self.assertTrue(0.0 <= res < 0.1)
 
     async def test_02_predict(self):
         # Get the prediction for each piece of test data
