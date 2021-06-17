@@ -68,7 +68,7 @@ function run_plugin() {
   cd "${SRC_ROOT}/${PLUGIN}"
 
   # Install plugin
-  "${PYTHON}" -m pip install -U -e .
+  "${PYTHON}" -m pip install -U -e .[dev]
 
   if [ "x${PLUGIN}" != "x." ]; then
     # Test ensuring no tests were skipped

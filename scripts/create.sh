@@ -24,5 +24,5 @@ cp -r "${SKEL}" "${MODULE_PATH}/${PROJECT_TYPE}/${NAME}"
 cd "${MODULE_PATH}/${PROJECT_TYPE}/${NAME}"
 mv "dffml_${PROJECT_TYPE}_${PROJECT_TYPE}_name/" "dffml_${PROJECT_TYPE}_${NAME}/"
 find . -type f -exec sed -i "s/${PROJECT_TYPE}_name/${NAME}/g" {} \;
-python3.7 -m pip install -e .
+python3.7 -m pip install -e .[dev]
 python3.7 setup.py test

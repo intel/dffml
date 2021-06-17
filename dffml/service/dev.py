@@ -411,7 +411,7 @@ class Install(CMD):
                 continue
             package_path = Path(*main_package.parts, *package)
             # Install package in development mode
-            cmd += ["-e", str(package_path.absolute())]
+            cmd += ["-e", str(package_path.absolute()) + "[dev]"]
         self.logger.debug("Running: %s", " ".join(cmd))
         # Packages fail to install if we run pip processes in parallel
         proc = await asyncio.create_subprocess_exec(*cmd)
