@@ -4,4 +4,5 @@ dffml accuracy \
   -model-predict Salary:float:1 \
   -model-location tempdir \
   -sources f=csv \
-  -source-filename test.csv
+  -source-filename test.csv \
+  -scorer mse
