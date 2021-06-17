@@ -39,7 +39,7 @@ class TestQuickstart(AsyncTestCase):
         stdout = subprocess.check_output([sys.executable, filepath])
         lines = stdout.decode().split("\n")
         # Check the Accuracy
-        self.assertIn("Accuracy: 1.0", lines[0])
+        self.assertIn("Accuracy: 0.0", lines[0])
         # Check the salary
         self.assertEqual(round(ast.literal_eval(lines[1])["Salary"]), 70)
         self.assertEqual(round(ast.literal_eval(lines[2])["Salary"]), 80)
@@ -62,7 +62,7 @@ class TestQuickstart(AsyncTestCase):
             stdout = subprocess.check_output(
                 ["sh", sh_filepath("accuracy.sh")]
             )
-            self.assertEqual(stdout.decode().strip(), "1.0")
+            self.assertAlmostEqual(float(stdout.decode().strip()), 0.0)
             # Make the prediction
             stdout = subprocess.check_output(["sh", sh_filepath("predict.sh")])
             records = json.loads(stdout.decode())
