@@ -198,7 +198,7 @@ dependencies listed in **requirements.txt** as well.
 .. code-block:: console
     :test:
 
-    $ python -m pip install -e .
+    $ python -m pip install -e .[dev]
 
 Safety Operation
 ----------------

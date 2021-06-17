@@ -22,7 +22,7 @@ system.
 
     $ dffml service dev create model dffml-model-myslr
     $ cd dffml-model-myslr
-    $ python -m pip install -e .
+    $ python -m pip install -e .[dev]
     $ python setup.py egg_info
 
 Python docstrings
