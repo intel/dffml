@@ -79,7 +79,7 @@ the :doc:`/examples/shouldi` example.
     $ git clone --depth=1 https://github.com/intel/dffml dffml
     $ cd dffml
     $ cd examples/shouldi
-    $ python -m pip install -e .
+    $ python -m pip install -e .[dev]
 
 Config files are named after the dataflow they are associated with. In the
 :ref:`examples_shouldi_visualizing_the_dataflow` section of the

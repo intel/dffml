@@ -61,7 +61,7 @@ package.
 .. code-block:: console
     :test:
 
-    $ python -m pip install -e .
+    $ python -m pip install -e .[dev]
 
 Testing
 -------

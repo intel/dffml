@@ -91,7 +91,7 @@ fi
 # plugins that they depend on here
 
 if [ "x${PLUGIN}" == "xmodel/tensorflow_hub" ]; then
-  python -m pip install -U -e "./model/tensorflow"
+  python -m pip install -U -e "./model/tensorflow"[dev]
 fi
 
 if [[ "x${PLUGIN}" == "xmodel/spacy" ]]; then
@@ -100,22 +100,22 @@ if [[ "x${PLUGIN}" == "xmodel/spacy" ]]; then
 fi
 
 if [[ "x${PLUGIN}" == "xmodel/pytorch" ]]; then
-  python -m pip install -U -e "./configloader/image"
-  python -m pip install -U -e "./configloader/yaml"
+  python -m pip install -U -e "./configloader/image"[dev]
+  python -m pip install -U -e "./configloader/yaml"[dev]
 fi
 
 if [[ "x${PLUGIN}" == "xoperations/deploy" ]]; then
-  python -m pip install -U -e "./feature/git"
+  python -m pip install -U -e "./feature/git"[dev]
 fi
 
 if [[ "x${PLUGIN}" == "xoperations/nlp" ]]; then
   python -m pip install spacy
   python -m spacy download en_core_web_sm
-  python -m pip install -U -e "./model/tensorflow"
+  python -m pip install -U -e "./model/tensorflow"[dev]
 fi
 
 if [ "x${PLUGIN}" = "xexamples/shouldi" ]; then
-  python -m pip install -U -e "./feature/git"
+  python -m pip install -U -e "./feature/git"[dev]
 fi
 
 # ===========================  END  INTER DEPENDENCIES =========================
