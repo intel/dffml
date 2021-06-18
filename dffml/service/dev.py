@@ -757,7 +757,6 @@ class BumpPackages(CMD):
             self.logger.debug("Updated version file %s", version_file)
 
 
-
 class CommitLintError(Exception):
     pass
 
@@ -820,7 +819,7 @@ class LintCommits(CMD):
         return commits_list
 
     async def _get_current_branch(self):
-        cmd = ["git", "branch", "--show-current"]
+        cmd = ["git", "rev-parse", "--abbrev-ref", "HEAD"]
         current_branch = await self._get_cmd_output(cmd)
         return current_branch
 
@@ -888,6 +887,7 @@ class LintCommits(CMD):
                 if not is_valid:
                     print(await self._get_commmit_details(commit))
             raise CommitLintError
+
 
 class CI(CMD):
     """
