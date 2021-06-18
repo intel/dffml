@@ -923,6 +923,14 @@ class CI(CMD):
     """
 
 
+class Lint(CMD):
+    """
+    Linting related commands
+    """
+
+    commits = LintCommits
+
+
 class Bump(CMD):
     """
     Bump the the main package in the versions plugins, or any or all libraries.
@@ -1069,5 +1077,5 @@ class Develop(CMD):
     setuppy = SetupPy
     bump = Bump
     ci = CI
-    lintcommits = LintCommits
+    lint = Lint
     docs = MakeDocs
