@@ -836,14 +836,14 @@ class LintCommits(CMD):
             "sed",
             "-e",
             "'s/)//g'",
-            "|",
-            "rev",
-            "|",
-            "cut",
-            "-d/",
-            "-f1",
-            "|",
-            "rev",
+            # "|",
+            # "rev",
+            # "|",
+            # "cut",
+            # "-d/",
+            # "-f1",
+            # "|",
+            # "rev",
         ]
         current_branch = await self._get_cmd_output(cmd)
         return current_branch

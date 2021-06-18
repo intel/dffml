@@ -461,27 +461,21 @@ class TestLintCommits(AsyncTestCase):
     ]
 
     async def test_should_validate(self):
-        with unittest.mock.patch.dict(
-            os.environ, {"GIT_DISCOVERY_ACROSS_FILESYSTEM": "1"}
-        ):
-            self.assertTrue(
-                all(
-                    [
-                        await self.LintCommitsObj.validate_commit_msg(msg)
-                        for msg in self.valid_commits
-                    ]
-                )
+        self.assertTrue(
+            all(
+                [
+                    await self.LintCommitsObj.validate_commit_msg(msg)
+                    for msg in self.valid_commits
+                ]
             )
+        )
 
     async def test_shouldnot_validate(self):
-        with unittest.mock.patch.dict(
-            os.environ, {"GIT_DISCOVERY_ACROSS_FILESYSTEM": "1"}
-        ):
-            self.assertTrue(
-                not any(
-                    [
-                        await self.LintCommitsObj.validate_commit_msg(msg)
-                        for msg in self.invalid_commits
-                    ]
-                )
+        self.assertTrue(
+            not any(
+                [
+                    await self.LintCommitsObj.validate_commit_msg(msg)
+                    for msg in self.invalid_commits
+                ]
             )
+        )
