@@ -794,12 +794,15 @@ class LintCommits(CMD):
     async def _get_cmd_output(self, cmd: List[str]):
         print(f"$ {' '.join(cmd)}")
         proc = await asyncio.create_subprocess_shell(
-            " ".join(cmd), stdout=asyncio.subprocess.PIPE, cwd=REPO_ROOT
+            " ".join(cmd),
+            stdout=asyncio.subprocess.PIPE,
+            stderr=asyncio.subprocess.PIPE,
+            cwd=REPO_ROOT,
         )
         await proc.wait()
-        stdout, _ = await proc.communicate()
+        stdout, stderr = await proc.communicate()
         if proc.returncode != 0:
-            raise RuntimeError(stdout)
+            raise RuntimeError(stderr)
         output = stdout.decode().strip()
         return output
 
