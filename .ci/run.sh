@@ -191,7 +191,7 @@ function run_style() {
 }
 
 function run_commit(){
-  dffml service dev lintcommits
+  dffml service dev lint commits
 }
 
 function run_docs() {
