@@ -793,8 +793,8 @@ class LintCommits(CMD):
 
     async def _get_cmd_output(self, cmd: List[str]):
         print(f"$ {' '.join(cmd)}")
-        proc = await asyncio.create_subprocess_exec(
-            *cmd, stdout=asyncio.subprocess.PIPE
+        proc = await asyncio.create_subprocess_shell(
+            " ".join(cmd), stdout=asyncio.subprocess.PIPE, cwd=REPO_ROOT
         )
         await proc.wait()
         stdout, _ = await proc.communicate()
@@ -819,12 +819,37 @@ class LintCommits(CMD):
         return commits_list
 
     async def _get_current_branch(self):
-        cmd = ["git", "rev-parse", "--abbrev-ref", "HEAD"]
+        cmd = [
+            "git",
+            "log",
+            "-n",
+            "1",
+            "--decorate=full",
+            "|",
+            "head",
+            "-n",
+            "1",
+            "|",
+            "awk",
+            "'{print $NF}'",
+            "|",
+            "sed",
+            "-e",
+            "'s/)//g'",
+            "|",
+            "rev",
+            "|",
+            "cut",
+            "-d/",
+            "-f1",
+            "|",
+            "rev",
+        ]
         current_branch = await self._get_cmd_output(cmd)
         return current_branch
 
     async def _get_commmit_details(self, msg):
-        cmd = ["git", "log", f"--grep={msg}"]
+        cmd = ["git", "log", f"""--grep='{msg}'"""]
         commit_details = await self._get_cmd_output(cmd)
         return commit_details
 
