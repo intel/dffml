@@ -447,17 +447,17 @@ class TestLintCommits(AsyncTestCase):
     LintCommitsObj = LintCommits()
     valid_commits = [
         "docs: contributing: editors: vscode: Shorten title",
-        "df: memory: Log on instance creation with given config ",
-        "source: file: Change label to tag ",
-        "model: scikit: Use make_config_numpy ",
-        "cli: dataflow: Merge seed arrays ",
+        "df: memory: Log on instance creation with given config",
+        "source: file: Change label to tag",
+        "model: scikit: Use make_config_numpy",
+        "cli: dataflow: Merge seed arrays",
     ]
     invalid_commits = [
-        "service: http: routes: Default to setting no-cache on all respones ",
-        "docs: contributing: consoletest: README: Add documentation ",
-        "style: Fixed JS API newline ",
-        "shouldi: Use high level run ",
-        "cleanup: Fix importing by using importlib.import_module ",
+        "service: http: routes: Default to setting no-cache on all respones",
+        "docs: contributing: consoletest: README: Add documentation",
+        "style: Fixed JS API newline",
+        "shouldi: Use high level run",
+        "cleanup: Fix importing by using importlib.import_module",
     ]
 
     async def test_should_validate(self):
