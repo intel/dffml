@@ -5,9 +5,9 @@ Df
     :maxdepth: 2
     :caption: Contents:
 
-    base
-    multicomm
-    types
     memory
-    log
     exceptions
+    multicomm
+    base
+    log
+    types
