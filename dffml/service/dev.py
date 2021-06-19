@@ -807,7 +807,12 @@ class LintCommits(CMD):
         return output
 
     async def _get_relevant_commits(self):
-        current_branch = await self._get_current_branch()
+        GITHUB_REF = os.environ.get("GITHUB_REF", None)
+        current_branch = (
+            await self._get_current_branch()
+            if GITHUB_REF is None
+            else GITHUB_REF
+        )
         cmd = [
             "git",
             "log",
