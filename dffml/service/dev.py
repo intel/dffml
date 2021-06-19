@@ -807,11 +807,11 @@ class LintCommits(CMD):
         return output
 
     async def _get_relevant_commits(self):
-        GITHUB_REF = os.environ.get("GITHUB_REF", None)
+        GITHUB_HEAD_REF = os.environ.get("GITHUB_HEAD_REF", None)
         current_branch = (
             await self._get_current_branch()
-            if GITHUB_REF is None
-            else GITHUB_REF
+            if GITHUB_HEAD_REF is None
+            else GITHUB_HEAD_REF
         )
         cmd = [
             "git",
