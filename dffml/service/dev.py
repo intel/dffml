@@ -813,17 +813,20 @@ class LintCommits(CMD):
             if GITHUB_HEAD_REF is None
             else GITHUB_HEAD_REF
         )
-        cmd = [
-            "git",
-            "log",
-            "--no-merges",
-            "--oneline",
-            "--format=%s",
-            current_branch,
-            "^master",  #! This needs to change when master is renamed to main.
-        ]
+        # cmd = [
+        #     "git",
+        #     "log",
+        #     "--no-merges",
+        #     "--oneline",
+        #     "--format=%s",
+        #     current_branch,
+        #     "^master",  #! This needs to change when master is renamed to main.
+        # ]
+        cmd = ["git", "cherry", "-v", "master"]
         commits = await self._get_cmd_output(cmd)
-        commits_list = commits.split("\n")
+        commits_list = [
+            " ".join(line.split()[2:]) for line in commits.split("\n")
+        ]
         return commits_list
 
     async def _get_current_branch(self):
