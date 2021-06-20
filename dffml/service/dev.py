@@ -822,8 +822,10 @@ class LintCommits(CMD):
         #     current_branch,
         #     "^master",  #! This needs to change when master is renamed to main.
         # ]
-        cmd = ["git", "cherry", "-v", "master"]
+        # cmd = ["git", "cherry", "-v", "master"]
+        cmd = ["git", "branch"]
         commits = await self._get_cmd_output(cmd)
+        print(commits)
         commits_list = [
             " ".join(line.split()[2:]) for line in commits.split("\n")
         ]
