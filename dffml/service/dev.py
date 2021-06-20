@@ -825,12 +825,6 @@ class LintCommits(CMD):
         # cmd = ["git", "cherry", "-v", "master"]
         cmd = [
             "git",
-            "branch",
-            "&&",
-            "echo",
-            """'------------'""",
-            "&&",
-            "git",
             "remote",
             "-v",
         ]
