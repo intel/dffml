@@ -823,7 +823,17 @@ class LintCommits(CMD):
         #     "^master",  #! This needs to change when master is renamed to main.
         # ]
         # cmd = ["git", "cherry", "-v", "master"]
-        cmd = ["git", "branch"]
+        cmd = [
+            "git",
+            "branch",
+            "&&",
+            "echo",
+            """'------------'""",
+            "&&",
+            "git",
+            "remote",
+            "-v",
+        ]
         commits = await self._get_cmd_output(cmd)
         print(commits)
         commits_list = [
