@@ -807,66 +807,13 @@ class LintCommits(CMD):
         return output
 
     async def _get_relevant_commits(self):
-        GITHUB_HEAD_REF = os.environ.get("GITHUB_HEAD_REF", None)
-        current_branch = (
-            await self._get_current_branch()
-            if GITHUB_HEAD_REF is None
-            else GITHUB_HEAD_REF
-        )
-        # cmd = [
-        #     "git",
-        #     "log",
-        #     "--no-merges",
-        #     "--oneline",
-        #     "--format=%s",
-        #     current_branch,
-        #     "^master",  #! This needs to change when master is renamed to main.
-        # ]
+        #! This needs to change when master is renamed to main.
         cmd = ["git", "cherry", "-v", "origin/master"]
-        # cmd = [
-        #     "git",
-        #     "branch",
-        #     "&&",
-        #     "git",
-        #     "remote",
-        #     "-v",
-        # ]
         commits = await self._get_cmd_output(cmd)
-        print(commits)
         commits_list = [
             " ".join(line.split()[2:]) for line in commits.split("\n")
         ]
         return commits_list
-
-    async def _get_current_branch(self):
-        cmd = [
-            "git",
-            "log",
-            "-n",
-            "1",
-            "--decorate=full",
-            "|",
-            "head",
-            "-n",
-            "1",
-            "|",
-            "awk",
-            "'{print $NF}'",
-            "|",
-            "sed",
-            "-e",
-            "'s/)//g'",
-            # "|",
-            # "rev",
-            # "|",
-            # "cut",
-            # "-d/",
-            # "-f1",
-            # "|",
-            # "rev",
-        ]
-        current_branch = await self._get_cmd_output(cmd)
-        return current_branch
 
     async def _get_commmit_details(self, msg):
         cmd = ["git", "log", f"""--grep='{msg}'"""]
