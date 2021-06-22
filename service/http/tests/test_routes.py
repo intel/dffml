@@ -281,8 +281,7 @@ class TestRoutesConfigure(TestRoutesRunning, AsyncTestCase):
                         pass  # pramga: no cov
 
     async def test_scorer(self):
-        config = parse_unknown()
-        async with self.post("/configure/scorer/mse/mymse", json=config) as r:
+        async with self.post("/configure/scorer/mse/mymse", json={}) as r:
             self.assertEqual(await r.json(), OK)
             self.assertIn("mymse", self.cli.app["scorers"])
             self.assertEqual(
@@ -296,9 +295,8 @@ class TestRoutesConfigure(TestRoutesRunning, AsyncTestCase):
                     self.assertIn("msectx", self.cli.app["scorer_contexts"])
 
     async def test_scorer_config_error(self):
-        config = parse_unknown()
         with self.assertRaisesRegex(ServerException, "scorer mymse not found"):
-            async with self.post("/configure/scorer/mymse/mymse", json=config):
+            async with self.post("/configure/scorer/mymse/mymse", json={}):
                 pass  # pramga: no cov
 
     async def test_scorer_context_scorer_not_found(self):
