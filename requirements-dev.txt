@@ -9,7 +9,7 @@ testbook
 nbsphinx
 nbsphinx_link
 black==19.10b0
-jsbeautifier
+jsbeautifier>=1.14.0
 twine
 # Test requirements
 httptest>=0.0.15
