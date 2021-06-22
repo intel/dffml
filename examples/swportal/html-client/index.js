@@ -3,11 +3,11 @@ class API {
     return results[Object.keys(results)[0]];
   }
 
-  async getProject (projectUUID) {
+  async getProject(projectUUID) {
     return this._getOnlyContext(await (await fetch('/projects/' + projectUUID)).json());
   }
 
-  async getProjects () {
+  async getProjects() {
     return this._getOnlyContext(this._getOnlyContext(await (await fetch('/projects')).json()));
   }
 }
@@ -47,7 +47,7 @@ class App {
     this.elements.displayProjectLegal.innerText = project.legal;
   }
 
-  async refreshDisplayProject (projectUUID) {
+  async refreshDisplayProject(projectUUID) {
     if (typeof projectUUID === "undefined" ||
       projectUUID === null ||
       projectUUID === "")
@@ -75,7 +75,7 @@ class App {
     });
   }
 
-  async refreshProjectsList () {
+  async refreshProjectsList() {
     this.populateProjectsList(await this.api.getProjects());
   }
 }
