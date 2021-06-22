@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Testing &mdash; DFFML aef2eb893 documentation</title>
+  <title>Testing &mdash; DFFML 383d5b1d4 documentation</title>
   
 
   
@@ -70,7 +70,7 @@
             
             
               <div class="version">
-                aef2eb893
+                383d5b1d4
               </div>
             
           
@@ -288,11 +288,17 @@ tests.</p>
 </div>
 <div class="section" id="writing-tests">
 <h2>Writing Tests<a class="headerlink" href="#writing-tests" title="Permalink to this headline">¶</a></h2>
-<p>If your test is within the main package, aka <code class="docutils literal notranslate"><span class="pre">tests/</span></code>, and you need to use a
-plugin within your test, you should subclass from <code class="docutils literal notranslate"><span class="pre">IntegrationCLITestCase</span></code>.</p>
+<p>If your test is within the main package, aka <code class="docutils literal notranslate"><span class="pre">tests/</span></code> you should subclass from
+<code class="docutils literal notranslate"><span class="pre">AsyncTestCase</span></code>.</p>
 <p>For example if you need test something where you had to load a PNG, you’d do</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">async</span> <span class="k">def</span> <span class="nf">test_something_with_a_png</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
    <span class="bp">self</span><span class="o">.</span><span class="n">required_plugins</span><span class="p">(</span><span class="s2">&quot;dffml-config-png&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>If all methods within a class require a plugin or set of plugins, those plugin
+names can be listed in the <code class="docutils literal notranslate"><span class="pre">REQUIRED_PLUGINS</span></code> class variable.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">MyTest</span><span class="p">(</span><span class="n">AsyncTestCase</span><span class="p">):</span>
+   <span class="n">REQUIRED_PLUGINS</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;dffml-config-png&quot;</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
