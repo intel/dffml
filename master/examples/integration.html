@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Automating Classification &mdash; DFFML 5270c614f documentation</title>
+  <title>Automating Classification &mdash; DFFML aef2eb893 documentation</title>
   
 
   
@@ -71,7 +71,7 @@
             
             
               <div class="version">
-                5270c614f
+                aef2eb893
               </div>
             
           
@@ -328,7 +328,7 @@ should create these files and populate them with the code your about to see.</p>
 </div>
 <p>Then the JavaScript, which will interact with the CGI API.</p>
 <p><strong>main.js</strong></p>
-<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kd">function</span> <span class="nx">populate_table</span> <span class="p">(</span><span class="nx">tableDOM</span><span class="p">,</span> <span class="nx">URLs</span><span class="p">)</span> <span class="p">{</span>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kd">function</span> <span class="nx">populate_table</span><span class="p">(</span><span class="nx">tableDOM</span><span class="p">,</span> <span class="nx">URLs</span><span class="p">)</span> <span class="p">{</span>
   <span class="kd">var</span> <span class="nx">row</span><span class="p">;</span>
   <span class="kd">var</span> <span class="nx">col</span><span class="p">;</span>
   <span class="c1">// Clear the table</span>
@@ -365,7 +365,7 @@ should create these files and populate them with the code your about to see.</p>
   <span class="p">}</span>
 <span class="p">}</span>
 
-<span class="kd">function</span> <span class="nx">refreshTable</span> <span class="p">(</span><span class="nx">tableDOM</span><span class="p">)</span> <span class="p">{</span>
+<span class="kd">function</span> <span class="nx">refreshTable</span><span class="p">(</span><span class="nx">tableDOM</span><span class="p">)</span> <span class="p">{</span>
   <span class="k">return</span> <span class="nx">fetch</span><span class="p">(</span><span class="s1">&#39;cgi-bin/api.py?action=dump&#39;</span><span class="p">)</span>
     <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">response</span><span class="p">)</span> <span class="p">{</span>
       <span class="k">return</span> <span class="nx">response</span><span class="p">.</span><span class="nx">json</span><span class="p">()</span>
@@ -375,7 +375,7 @@ should create these files and populate them with the code your about to see.</p>
     <span class="p">});</span>
 <span class="p">}</span>
 
-<span class="kd">function</span> <span class="nx">setMaintenance</span> <span class="p">(</span><span class="nx">URL</span><span class="p">,</span> <span class="nx">maintained</span><span class="p">)</span> <span class="p">{</span>
+<span class="kd">function</span> <span class="nx">setMaintenance</span><span class="p">(</span><span class="nx">URL</span><span class="p">,</span> <span class="nx">maintained</span><span class="p">)</span> <span class="p">{</span>
   <span class="k">return</span> <span class="nx">fetch</span><span class="p">(</span><span class="s1">&#39;cgi-bin/api.py?action=set&#39;</span> <span class="o">+</span>
       <span class="s1">&#39;&amp;maintained=&#39;</span> <span class="o">+</span> <span class="nb">Number</span><span class="p">(</span><span class="nx">maintained</span><span class="p">)</span> <span class="o">+</span>
       <span class="s1">&#39;&amp;URL=&#39;</span> <span class="o">+</span> <span class="nx">URL</span><span class="p">)</span>
@@ -998,7 +998,7 @@ database.</p>
 <p>Hook up the predict button to call our new API by adding an event listener when
 the Predict button is clicked.</p>
 <p><strong>ml.js</strong></p>
-<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kd">function</span> <span class="nx">predict</span> <span class="p">(</span><span class="nx">URL</span><span class="p">)</span> <span class="p">{</span>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kd">function</span> <span class="nx">predict</span><span class="p">(</span><span class="nx">URL</span><span class="p">)</span> <span class="p">{</span>
   <span class="k">return</span> <span class="nx">fetch</span><span class="p">(</span><span class="s1">&#39;cgi-bin/api.py?action=predict&amp;URL=&#39;</span> <span class="o">+</span> <span class="nx">URL</span><span class="p">)</span>
     <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">response</span><span class="p">)</span> <span class="p">{</span>
       <span class="k">return</span> <span class="nx">response</span><span class="p">.</span><span class="nx">json</span><span class="p">()</span>
