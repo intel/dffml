@@ -1,4 +1,4 @@
-function predict (URL) {
+function predict(URL) {
   return fetch('cgi-bin/api.py?action=predict&URL=' + URL)
     .then(function(response) {
       return response.json()

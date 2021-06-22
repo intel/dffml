@@ -22,7 +22,7 @@ class DFFMLHTTPAPIObjectContext {
 }
 
 class DFFMLHTTPAPISourceContext extends DFFMLHTTPAPIObjectContext {
-  async records (chunk_size) {
+  async records(chunk_size) {
     // TODO https://www.codementor.io/tiagolopesferreira/asynchronous-iterators-in-javascript-jl1yg8la1
     var response = await this.api.request("/source/" + this.label + "/records/" + chunk_size);
 
@@ -31,7 +31,7 @@ class DFFMLHTTPAPISourceContext extends DFFMLHTTPAPIObjectContext {
     return response.records;
   }
 
-  async update (record) {
+  async update(record) {
     // https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
     var response = await this.api.request("/source/" + this.label + "/update/" + record.key, {
       method: 'POST', // *GET, POST, PUT, DELETE, etc.
@@ -51,7 +51,7 @@ class DFFMLHTTPAPISourceContext extends DFFMLHTTPAPIObjectContext {
 }
 
 class DFFMLHTTPAPIModelContext extends DFFMLHTTPAPIObjectContext {
-  async train (sources) {
+  async train(sources) {
     var source_context_names = [];
     for (var sctx of sources) {
       source_context_names.push(sctx.label);
@@ -75,7 +75,7 @@ class DFFMLHTTPAPIModelContext extends DFFMLHTTPAPIObjectContext {
     return response.records;
   }
 
-  async accuracy (sources) {
+  async accuracy(sources) {
     var source_context_names = [];
     for (var sctx of sources) {
       source_context_names.push(sctx.label);
@@ -99,7 +99,7 @@ class DFFMLHTTPAPIModelContext extends DFFMLHTTPAPIObjectContext {
     return response.records;
   }
 
-  async predict (records) {
+  async predict(records) {
     var response = await this.api.request("/model/" + this.label + "/predict/0", {
       method: 'POST',
       mode: 'cors',
@@ -129,7 +129,7 @@ class DFFMLHTTPAPIObject {
     this.config = {};
   }
 
-  async configure (plugin, label, config) {
+  async configure(plugin, label, config) {
     var response = await this.api.request("/configure/" + this.plugin_type + "/" + plugin + "/" + label, {
       method: 'POST', // *GET, POST, PUT, DELETE, etc.
       mode: 'cors', // no-cors, cors, *same-origin
@@ -152,7 +152,7 @@ class DFFMLHTTPAPIObject {
     return response;
   }
 
-  async context (ctx_label) {
+  async context(ctx_label) {
     var response = await this.api.request("/context/" + this.plugin_type + "/" + this.label + "/" + ctx_label);
 
     await response.json();
@@ -178,7 +178,7 @@ class DFFMLHTTPAPI {
     this.endpoint = endpoint;
   }
 
-  async request (path, options) {
+  async request(path, options) {
     const url = this.endpoint + path;
     const response = await fetch(url, options);
     if (response.status < 400) {
@@ -198,7 +198,7 @@ class DFFMLHTTPAPI {
    * path: Path to place uploaded file at
    * file: String of file contents or input_element.files[0]
    */
-  async upload (path, file) {
+  async upload(path, file) {
     const formData = new FormData();
 
     if (typeof file === "string") {

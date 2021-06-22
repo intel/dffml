@@ -65,7 +65,7 @@ Here's an example of how we style our imports.
 
     from dffml.record import Record
     from dffml.configloader.configloader import BaseConfigLoader
-    from dffml.util.asynctestcase import AsyncTestCase, IntegrationCLITestCase
+    from dffml.util.asynctestcase import AsyncTestCase
 
     import dffml_model_scikit
 
