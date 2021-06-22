@@ -26,8 +26,8 @@ You can also run all tests which have a given string in their name.
 Writing Tests
 -------------
 
-If your test is within the main package, aka ``tests/``, and you need to use a
-plugin within your test, you should subclass from ``IntegrationCLITestCase``.
+If your test is within the main package, aka ``tests/`` you should subclass from
+``AsyncTestCase``.
 
 For example if you need test something where you had to load a PNG, you'd do
 
@@ -35,6 +35,14 @@ For example if you need test something where you had to load a PNG, you'd do
 
     async def test_something_with_a_png(self):
        self.required_plugins("dffml-config-png")
+
+If all methods within a class require a plugin or set of plugins, those plugin
+names can be listed in the ``REQUIRED_PLUGINS`` class variable.
+
+.. code-block:: python
+
+    class MyTest(AsyncTestCase):
+       REQUIRED_PLUGINS = ["dffml-config-png"]
 
 .. _running_ci_tests_locally:
 
