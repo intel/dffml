@@ -9,5 +9,5 @@ Databases are an abstraction around common database operations.
     :caption: Contents:
 
     sql
-    base
     sqlite
+    base

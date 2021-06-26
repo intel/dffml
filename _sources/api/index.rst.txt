@@ -6,22 +6,22 @@ API Reference
     :maxdepth: 2
     :caption: Contents:
 
-    record
-    base
-    noasync
-    log
-    version
     plugins
     high_level
-    feature/index
-    operation/index
-    configloader/index
-    port/index
-    df/index
+    record
+    base
+    version
+    log
+    noasync
     service/index
-    util/index
+    port/index
     secret/index
-    cli/index
+    util/index
+    df/index
     source/index
     model/index
+    cli/index
     db/index
+    operation/index
+    feature/index
+    configloader/index

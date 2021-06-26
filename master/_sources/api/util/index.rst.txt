@@ -5,19 +5,19 @@ Util
     :maxdepth: 2
     :caption: Contents:
 
+    asynctestcase
+    os
+    tempdir
     net
     file
-    packaging
     display
-    data
-    asynchelper
+    entrypoint
+    packaging
     log
     crypto
+    asynchelper
+    data
     skel
-    entrypoint
-    os
-    asynctestcase
-    tempdir
-    cli/index
-    config/index
     testing/index
+    config/index
+    cli/index

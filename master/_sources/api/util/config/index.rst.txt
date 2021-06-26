@@ -7,5 +7,5 @@ Util Config
 
     numpy
     exceptions
-    fields
     inspect
+    fields
