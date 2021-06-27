@@ -451,6 +451,7 @@ class TestLintCommits(AsyncTestCase):
         "source: file: Change label to tag",
         "model: scikit: Use make_config_numpy",
         "cli: dataflow: Merge seed arrays",
+        "tests : service : dev : updated test for LintCommits",
     ]
     invalid_commits = [
         "service: http: routes: Default to setting no-cache on all respones",
@@ -458,6 +459,7 @@ class TestLintCommits(AsyncTestCase):
         "style: Fixed JS API newline",
         "shouldi: Use high level run",
         "cleanup: Fix importing by using importlib.import_module",
+        "tests : service : test_dev : updated test for LintCommits",
     ]
 
     async def test_should_validate(self):
