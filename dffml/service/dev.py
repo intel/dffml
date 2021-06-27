@@ -774,6 +774,15 @@ class LintCommits(CMD):
             param = func(param)
         return param
 
+    def _test_mutation(self, x):
+        blocks = x.split("/")
+        first_block = blocks[0].lower()
+        if first_block in "tests":
+            blocks[-1] = "test_" + blocks[-1]
+            mutated_msg = "/".join(blocks)
+            return mutated_msg
+        return x
+
     async def _get_file_mutations(self):
         no_mutation = lambda x: x
         mutation_func_factory = lambda ext: lambda x: x + ext
@@ -784,6 +793,7 @@ class LintCommits(CMD):
                 lambda x: "." + x,
                 lambda x: "dffml/" + x,
             ],
+            "body_mutations": [self._test_mutation],
             "suffix_mutations": [
                 no_mutation,
                 *[mutation_func_factory(ext) for ext in extensions],
