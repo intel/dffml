@@ -788,7 +788,7 @@ class LintCommits(CMD):
         mutation_func_factory = lambda ext: lambda x: x + ext
         extensions = (
             await self._get_all_exts()
-            if self.extensions is None
+            if not hasattr(self, "extensions")
             else self.extensions
         )
         mutations = {
@@ -848,7 +848,6 @@ class LintCommits(CMD):
         for file in tracked_files:
             _, file_extension = os.path.splitext(file)
             extentions.add(file_extension)
-        self.extensions = extentions
         return extentions
 
     async def validate_commit_msg(self, msg):
@@ -884,7 +883,7 @@ class LintCommits(CMD):
         return is_valid
 
     async def run(self):
-        self.extensions = None
+        self.extensions = await self._get_all_exts()
         commits_list = await self._get_relevant_commits()
         is_valid_lst = [
             await self.validate_commit_msg(msg) for msg in commits_list
