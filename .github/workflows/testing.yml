@@ -271,6 +271,10 @@ jobs:
       run: |
         pip install -U pip setuptools wheel
         pip install -e .[dev]
+        echo Install torch and torch vision seperately to avoid MemoryError
+        echo See https://stackoverflow.com/a/52845257
+        pip install --no-cache -f https://download.pytorch.org/whl/torch_stable.html torch
+        pip install --no-cache -f https://download.pytorch.org/whl/torch_stable.html torchvision
         dffml service dev install -skip model/daal4py
     - name: Test
       run: |
