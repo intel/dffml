@@ -10,8 +10,6 @@ import importlib
 
 from typing import AsyncIterator, Tuple, Any, NamedTuple
 
-from sklearn.metrics import silhouette_score, mutual_info_score
-
 # https://intelpython.github.io/daal4py/sklearn.html
 try:
     import daal4py.sklearn
