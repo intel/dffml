@@ -466,9 +466,7 @@ class TestLintCommits(AsyncTestCase):
         self.assertTrue(
             all(
                 [
-                    await self.LintCommitsObj.validate_commit_msg(
-                        msg, loop=self.loop
-                    )
+                    await self.LintCommitsObj.validate_commit_msg(msg)
                     for msg in self.valid_commits
                 ]
             )
@@ -478,9 +476,7 @@ class TestLintCommits(AsyncTestCase):
         self.assertTrue(
             not any(
                 [
-                    await self.LintCommitsObj.validate_commit_msg(
-                        msg, loop=self.loop
-                    )
+                    await self.LintCommitsObj.validate_commit_msg(msg)
                     for msg in self.invalid_commits
                 ]
             )
