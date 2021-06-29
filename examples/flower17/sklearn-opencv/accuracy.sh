@@ -1,5 +1,5 @@
 dffml accuracy \
-  -scorer mse \
+  -scorer skmodelscore \
   -model scikitrfc \
   -model-features \
     Histogram:int:$((8*8*8)) \
