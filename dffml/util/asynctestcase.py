@@ -16,7 +16,6 @@ Add the -user flag to install to ~/.local
 """
 import io
 import os
-import sys
 import random
 import pathlib
 import asyncio
@@ -83,11 +82,6 @@ class AsyncTestCase(unittest.TestCase):
     REQUIRED_PLUGINS = []
     # The event loop to run test_ functions in
     loop = asyncio.get_event_loop()
-    if sys.platform != "win32":
-        policy = asyncio.get_event_loop_policy()
-        watcher = asyncio.SafeChildWatcher()
-        watcher.attach_loop(loop)
-        policy.set_child_watcher(watcher)
 
     async def setUp(self):
         self._stack = contextlib.ExitStack().__enter__()
