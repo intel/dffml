@@ -8,10 +8,13 @@ from dffml.source.source import Sources
 from dffml.source.memory import MemorySource, MemorySourceConfig
 from dffml.feature import Feature, Features
 from dffml.util.asynctestcase import AsyncTestCase
-from dffml.accuracy import MeanSquaredErrorAccuracy, ClassificationAccuracy
 
 import dffml_model_scikit.scikit_models
 from sklearn.datasets import make_blobs
+from model.scikit.dffml_model_scikit import (
+    SklearnModelAccuracy,
+    ScorerWillNotWork,
+)
 
 
 class TestScikitModel:
@@ -113,11 +116,7 @@ class TestScikitModel:
         cls.model = cls.MODEL(
             cls.MODEL_CONFIG(**{**properties, **config_fields})
         )
-        cls.scorer = (
-            MeanSquaredErrorAccuracy()
-            if cls.MODEL_TYPE == "REGRESSION"
-            else ClassificationAccuracy()
-        )
+        cls.scorer = cls.SCORER()
 
     @classmethod
     def tearDownClass(cls):
@@ -129,12 +128,14 @@ class TestScikitModel:
                 await mctx.train(sctx)
 
     async def test_01_accuracy(self):
-        res = await accuracy(self.model, self.scorer, self.sources)
         if self.MODEL_TYPE == "CLUSTERING":
-            self.assertTrue(res is not None)
+            with self.assertRaises(ScorerWillNotWork):
+                await accuracy(self.model, self.scorer, self.sources)
         elif self.MODEL_TYPE == "REGRESSION":
+            res = await accuracy(self.model, self.scorer, self.sources)
             self.assertTrue(0 <= res <= float("inf"))
         else:
+            res = await accuracy(self.model, self.scorer, self.sources)
             self.assertTrue(0 <= res <= 1)
 
     async def test_02_predict(self):
@@ -293,7 +294,7 @@ for clf in CLASSIFIERS:
             "MODEL_CONFIG": getattr(
                 dffml_model_scikit.scikit_models, clf + "ModelConfig"
             ),
-            "SCORER": ClassificationAccuracy(),
+            "SCORER": SklearnModelAccuracy,
         },
     )
     setattr(sys.modules[__name__], test_cls.__qualname__, test_cls)
@@ -308,10 +309,11 @@ for reg in REGRESSORS:
             "MODEL_CONFIG": getattr(
                 dffml_model_scikit.scikit_models, reg + "ModelConfig"
             ),
-            "SCORER": MeanSquaredErrorAccuracy(),
+            "SCORER": SklearnModelAccuracy,
         },
     )
     setattr(sys.modules[__name__], test_cls.__qualname__, test_cls)
+
 
 for clstr in CLUSTERERS:
     for true_clstr_present in [True, False]:
@@ -328,6 +330,7 @@ for clstr in CLUSTERERS:
                     dffml_model_scikit.scikit_models, clstr + "ModelConfig"
                 ),
                 "TRUE_CLSTR_PRESENT": true_clstr_present,
+                "SCORER": SklearnModelAccuracy,
             },
         )
         setattr(sys.modules[__name__], test_cls.__qualname__, test_cls)
