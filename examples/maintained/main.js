@@ -1,4 +1,4 @@
-function populate_table (tableDOM, URLs) {
+function populate_table(tableDOM, URLs) {
   var row;
   var col;
   // Clear the table
@@ -35,7 +35,7 @@ function populate_table (tableDOM, URLs) {
   }
 }
 
-function refreshTable (tableDOM) {
+function refreshTable(tableDOM) {
   return fetch('cgi-bin/api.py?action=dump')
     .then(function(response) {
       return response.json()
@@ -45,7 +45,7 @@ function refreshTable (tableDOM) {
     });
 }
 
-function setMaintenance (URL, maintained) {
+function setMaintenance(URL, maintained) {
   return fetch('cgi-bin/api.py?action=set' +
       '&maintained=' + Number(maintained) +
       '&URL=' + URL)

@@ -46,8 +46,6 @@ Doing a Release
 
 - Commit the new version
 
-- Pin all the dependencies
-
 - Tag a release
 
 - Push the new branch (if created) and the tag
@@ -65,8 +63,6 @@ Doing a Release
     $ dffml service dev bump inter
     $ sed -i "s/Unreleased]/$(dffml service dev setuppy version dffml/version.py)] - $(date +%F)/" CHANGELOG.md
     $ git commit -sam "release: Version $(dffml service dev setuppy version dffml/version.py)"
-    $ dffml service dev ci pindeps path/to/extracted/logs_NNNNN
-    $ git commit -sam "release: $(dffml service dev setuppy version dffml/version.py): Pin dependency versions"
     $ git tag $(dffml service dev setuppy version dffml/version.py)
     $ git push -u origin N.N.x
     $ git push --tags
