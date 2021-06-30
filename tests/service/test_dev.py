@@ -462,26 +462,60 @@ class TestLintCommits(AsyncTestCase):
         "tests : service : test_dev : updated test for LintCommits",
     ]
 
+    async def fake_get_all_exts(self):
+        return {
+            "",
+            ".py",
+            ".mp4",
+            ".js",
+            ".toml",
+            ".ini",
+            ".csv",
+            ".md",
+            ".json",
+            ".in",
+            ".txt",
+            ".yaml",
+            ".cfg",
+            ".css",
+            ".svg",
+            ".html",
+            ".jpg",
+            ".yml",
+            ".gif",
+            ".ipynb",
+            ".rst",
+            ".sh",
+            ".nblink",
+            ".png",
+            ".Dockerfile",
+            ".pdf",
+        }
+
     async def test_should_validate(self):
-        self.assertTrue(
-            all(
-                [
-                    await self.LintCommitsObj.validate_commit_msg(
-                        msg, loop=self.loop
-                    )
-                    for msg in self.valid_commits
-                ]
+        with unittest.mock.patch(
+            "dffml.service.dev.LintCommits._get_all_exts",
+            self.fake_get_all_exts,
+        ):
+            self.assertTrue(
+                all(
+                    [
+                        await self.LintCommitsObj.validate_commit_msg(msg)
+                        for msg in self.valid_commits
+                    ]
+                )
             )
-        )
 
     async def test_shouldnot_validate(self):
-        self.assertTrue(
-            not any(
-                [
-                    await self.LintCommitsObj.validate_commit_msg(
-                        msg, loop=self.loop
-                    )
-                    for msg in self.invalid_commits
-                ]
+        with unittest.mock.patch(
+            "dffml.service.dev.LintCommits._get_all_exts",
+            self.fake_get_all_exts,
+        ):
+            self.assertTrue(
+                not any(
+                    [
+                        await self.LintCommitsObj.validate_commit_msg(msg)
+                        for msg in self.invalid_commits
+                    ]
+                )
             )
-        )
