@@ -783,11 +783,11 @@ class LintCommits(CMD):
             return mutated_msg
         return x
 
-    async def _get_file_mutations(self, loop=None):
+    async def _get_file_mutations(self):
         no_mutation = lambda x: x
         mutation_func_factory = lambda ext: lambda x: x + ext
         extensions = (
-            await self._get_all_exts(loop=loop)
+            await self._get_all_exts()
             if not hasattr(self, "extensions")
             else self.extensions
         )
@@ -805,7 +805,7 @@ class LintCommits(CMD):
         }
         return mutations
 
-    async def _get_cmd_output(self, cmd: List[str], loop=None):
+    async def _get_cmd_output(self, cmd: List[str]):
         print(f"$ {' '.join(cmd)}")
 
         proc = await asyncio.create_subprocess_shell(
@@ -813,7 +813,6 @@ class LintCommits(CMD):
             stdout=asyncio.subprocess.PIPE,
             stderr=asyncio.subprocess.PIPE,
             cwd=REPO_ROOT,
-            loop=loop,
         )
         await proc.wait()
         stdout, stderr = await proc.communicate()
@@ -836,7 +835,7 @@ class LintCommits(CMD):
         commit_details = await self._get_cmd_output(cmd)
         return commit_details
 
-    async def _get_all_exts(self, loop=None):
+    async def _get_all_exts(self,):
         cmd = [
             "git",
             "ls-tree",
@@ -844,22 +843,23 @@ class LintCommits(CMD):
             "HEAD",
             "--name-only",
         ]
-        tracked_files = await self._get_cmd_output(cmd, loop=loop)
+        tracked_files = await self._get_cmd_output(cmd)
         tracked_files = tracked_files.split("\n")
         extentions = set()
         for file in tracked_files:
             _, file_extension = os.path.splitext(file)
             extentions.add(file_extension)
+        print(extentions)
         return extentions
 
-    async def validate_commit_msg(self, msg, loop=None):
+    async def validate_commit_msg(self, msg):
         root = Path(__file__).parents[2]
         test_path = "/".join(
             filter(
                 self._get_ignore_filter(), map(str.strip, msg.split(":")[:-1])
             )
         )
-        mutations_dict = await self._get_file_mutations(loop=loop)
+        mutations_dict = await self._get_file_mutations()
         mutation_pipelines = itertools.product(
             *[
                 [mutation for mutation in mutations_list]
