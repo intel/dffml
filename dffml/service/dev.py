@@ -907,12 +907,6 @@ class LintCommits(CMD):
                 for mutated_path in mutated_paths
             ]
         )
-        # print(
-        #     self._make_composite_function(
-        #         self._substitution_mutation, self._test_mutation
-        #     )("shouldi/tests/cli")
-        # )
-        # print(muta)
         return is_valid
 
     async def run(self):
