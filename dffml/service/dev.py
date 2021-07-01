@@ -766,6 +766,8 @@ class LintCommits(CMD):
     Enforce commit message style 
     """
 
+    substitutions = {"shouldi": "examples/shouldi/"}
+
     def _get_ignore_filter(self):
         return lambda x: not x.endswith("_")
 
@@ -774,14 +776,32 @@ class LintCommits(CMD):
             param = func(param)
         return param
 
+    def _make_composite_function(self, *func):
+        def compose(f, g):
+            return lambda x: f(g(x))
+
+        return functools.reduce(compose, func, lambda x: x)
+
     def _test_mutation(self, x):
+        # Conditional mutations like this should
+        # behave like no_mutation if condition is
+        # not met
         blocks = x.split("/")
         first_block = blocks[0].lower()
-        if first_block in "tests":
+        second_block = blocks[1] if len(blocks) >= 3 else None
+        if any(
+            [
+                first_block in "tests",
+                second_block in "tests" if second_block is not None else False,
+            ]
+        ):
             blocks[-1] = "test_" + blocks[-1]
             mutated_msg = "/".join(blocks)
             return mutated_msg
         return x
+
+    def _substitution_mutation(self, x):
+        return "/".join([self.substitutions.get(i, i) for i in x.split("/")])
 
     async def _get_file_mutations(self):
         no_mutation = lambda x: x
@@ -797,10 +817,15 @@ class LintCommits(CMD):
                 lambda x: "." + x,
                 lambda x: "dffml/" + x,
             ],
-            "body_mutations": [self._test_mutation],
+            "body_mutations": [
+                self._make_composite_function(
+                    self._substitution_mutation, self._test_mutation
+                )
+            ],
             "suffix_mutations": [
                 no_mutation,
                 *[mutation_func_factory(ext) for ext in extensions],
+                lambda x: x + "/shouldi",
             ],
         }
         return mutations
@@ -882,6 +907,12 @@ class LintCommits(CMD):
                 for mutated_path in mutated_paths
             ]
         )
+        # print(
+        #     self._make_composite_function(
+        #         self._substitution_mutation, self._test_mutation
+        #     )("shouldi/tests/cli")
+        # )
+        # print(muta)
         return is_valid
 
     async def run(self):
