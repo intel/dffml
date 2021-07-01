@@ -1,0 +1,5 @@
+Operation Archive
+=================
+
+.. automodule:: dffml.operation.archive
+   :members:

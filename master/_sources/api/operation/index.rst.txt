@@ -12,5 +12,7 @@ Operation
     preprocess
     mapping
     log
+    compression
     dataflow
     math
+    archive
