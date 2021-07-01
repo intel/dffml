@@ -41,15 +41,7 @@ class ScikitScorerContext(AccuracyContext):
             )
         y_true = np.asarray(y_true)
         y_pred = np.asarray(y_pred)
-        if type(self.parent).__name__ in [
-            "RecallScoreScorer",
-            "PrecisionScoreScorer",
-            "JaccardScoreScorer",
-            "F1ScoreScorer",
-            "AveragePrecisionScoreScorer",
-        ]:
-            return self.scorer(y_true, y_pred, pos_label=2)
-        return self.scorer(y_true, y_pred)
+        return self.scorer(y_true, y_pred, **self.parent.config._asdict())
 
 
 class ScikitScorer(AccuracyScorer):
