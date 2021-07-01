@@ -5,5 +5,5 @@ Source Dataset
     :maxdepth: 2
     :caption: Contents:
 
-    iris
     base
+    iris

@@ -6,5 +6,5 @@ Db
     :caption: Contents:
 
     sql
-    sqlite
     base
+    sqlite
