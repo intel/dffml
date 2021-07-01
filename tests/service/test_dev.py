@@ -452,12 +452,13 @@ class TestLintCommits(AsyncTestCase):
         "model: scikit: Use make_config_numpy",
         "cli: dataflow: Merge seed arrays",
         "tests : service : dev : updated test for LintCommits",
+        "shouldi: Use high level run",
+        "shouldi: tests: cli: Include node",
     ]
     invalid_commits = [
         "service: http: routes: Default to setting no-cache on all respones",
         "docs: contributing: consoletest: README: Add documentation",
         "style: Fixed JS API newline",
-        "shouldi: Use high level run",
         "cleanup: Fix importing by using importlib.import_module",
         "tests : service : test_dev : updated test for LintCommits",
     ]
