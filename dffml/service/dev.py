@@ -874,7 +874,6 @@ class LintCommits(CMD):
         for file in tracked_files:
             _, file_extension = os.path.splitext(file)
             extentions.add(file_extension)
-        print(extentions)
         return extentions
 
     async def validate_commit_msg(self, msg):
