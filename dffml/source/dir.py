@@ -43,7 +43,8 @@ class DirectorySource(MemorySource):
     def __init__(self, config):
         super().__init__(config)
         if isinstance(getattr(self.config, "foldername", None), str):
-            self.config.foldername = pathlib.Path(self.config.foldername)
+            with self.config.no_enforce_immutable():
+                self.config.foldername = pathlib.Path(self.config.foldername)
 
     async def __aenter__(self) -> "BaseSourceContext":
         await self._open()
@@ -64,9 +65,10 @@ class DirectorySource(MemorySource):
         ):
             if os.path.isfile(self.config.labels[0]):
                 # Update labels with list read from the file
-                self.config.labels = pathlib.Path.read_text(
-                    pathlib.Path(self.config.labels[0])
-                ).split(",")
+                with self.config.no_enforce_immutable():
+                    self.config.labels = pathlib.Path.read_text(
+                        pathlib.Path(self.config.labels[0])
+                    ).split(",")
 
         elif self.config.labels != ["unlabelled"]:
             label_folders = [

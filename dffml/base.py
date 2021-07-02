@@ -14,6 +14,7 @@ import collections.abc
 from argparse import ArgumentParser
 from typing import Dict, Any, Type, Optional, Union
 
+from .util.python import within_method
 from .util.data import get_args, get_origin
 from .util.cli.arg import Arg
 from .util.data import (
@@ -291,6 +292,7 @@ def field(
     action=None,
     required: bool = False,
     labeled: bool = False,
+    mutable: bool = False,
     metadata: Optional[dict] = None,
     **kwargs,
 ):
@@ -305,6 +307,7 @@ def field(
     metadata["required"] = required
     metadata["labeled"] = labeled
     metadata["action"] = action
+    metadata["mutable"] = mutable
     return dataclasses.field(*args, metadata=metadata, **kwargs)
 
 
@@ -312,17 +315,147 @@ def config_asdict(self, *args, **kwargs):
     return export_dict(**dataclasses.asdict(self, *args, **kwargs))
 
 
-def config(cls):
+def config_ensure_immutable_init(self):
     """
-    Decorator to create a dataclass
+    Initialize immutable support config instance local variables.
+
+    We can't call this on ``__init__`` so we call it whenever we are about to
+    use it.
     """
-    datacls = dataclasses.dataclass(eq=True, init=True)(cls)
+    if hasattr(self, "_mutable_callbacks"):
+        return
+    self._mutable_callbacks = set()
+    self._data = {}
+    # Only enforce mutable/immutable checks if _enforce_immutable == True
+    self._enforce_immutable = True
+
+
+def config_add_mutable_callback(self, func):
+    config_ensure_immutable_init(self)
+    self._mutable_callbacks.add(func)
+
+
+@contextlib.contextmanager
+def config_no_enforce_immutable(self):
+    """
+    By default, all properties of a config object are immutable. If you would
+    like to mutate immutable properties, you must explicitly call this method
+    using it as a context manager.
+
+    Examples
+    --------
+
+    >>> from dffml import config
+    >>>
+    >>> @config
+    ... class MyConfig:
+    ...     C: int
+    >>>
+    >>> config = MyConfig(C=2)
+    >>> with config.no_enforce_immutable():
+    ...     config.C = 1
+    """
+    config_ensure_immutable_init(self)
+    self._enforce_immutable = False
+    try:
+        yield
+    finally:
+        self._enforce_immutable = True
+
+
+def config_make_getter(key):
+    """
+    Create a getter function for use with :py:func:`property` on config objects.
+    """
+
+    def getter_mutable(self):
+        if not key in self._data:
+            raise AttributeError(key)
+        return self._data[key]
+
+    return getter_mutable
+
+
+class ImmutableConfigPropertyError(Exception):
+    """
+    Raised when config property was changed but was not marked as mutable.
+    """
+
+
+class NoMutableCallbacksError(Exception):
+    """
+    Raised when a config property is mutated but there are not mutable callbacks
+    present to handle it's update.
+    """
+
+
+def config_make_setter(key, immutable):
+    """
+    Create a setter function for use with :py:func:`property` on config objects.
+    """
+
+    def setter_immutable(self, value):
+        config_ensure_immutable_init(self)
+        # Reach into caller's stack frame to check if we are in the
+        # __init__ function of the dataclass. If we are in the __init__
+        # method we should not enforce immutability. Set max_depth to 4 in
+        # case of __post_init__. No point in searching farther.
+        if within_method(self, "__init__", max_depth=4):
+            # Mutate without checks if we are within the __init__ code of
+            # the class. Then bail out, we're done here.
+            self._data[key] = value
+            return
+        # Raise if the property is immutable and we're in enforcing mode
+        if self._enforce_immutable:
+            if immutable:
+                raise ImmutableConfigPropertyError(
+                    f"Attempted to mutate immutable property {self.__class__.__qualname__}.{key}"
+                )
+            # Ensure we have callbacks if we're mutating
+            if self._mutable_callbacks:
+                raise NoMutableCallbacksError(
+                    "Config instance has no mutable_callbacks registered but a mutable property was updated"
+                )
+        # Call callbacks to notify we've mutated
+        for func in self._mutable_callbacks:
+            func(key, value)
+        # Mutate property
+        self._data[key] = value
+
+    return setter_immutable
+
+
+def _config(datacls):
     datacls._fromdict = classmethod(_fromdict)
     datacls._replace = lambda self, *args, **kwargs: dataclasses.replace(
         self, *args, **kwargs
     )
     datacls._asdict = config_asdict
+    datacls.add_mutable_callback = config_add_mutable_callback
+    datacls.no_enforce_immutable = config_no_enforce_immutable
+
+    for field in dataclasses.fields(datacls):
+        # Make deleter None so it raises AttributeError: can't delete attribute
+        setattr(
+            datacls,
+            field.name,
+            property(
+                config_make_getter(field.name),
+                config_make_setter(
+                    field.name, field.metadata.get("mutable", False)
+                ),
+                None,
+            ),
+        )
+
     return datacls
+
+
+def config(cls):
+    """
+    Decorator to create a dataclass
+    """
+    return _config(dataclasses.dataclass(eq=True, init=True)(cls))
 
 
 def make_config(cls_name: str, fields, *args, namespace=None, **kwargs):
@@ -354,8 +487,10 @@ def make_config(cls_name: str, fields, *args, namespace=None, **kwargs):
             fields_non_default.append((name, cls, field))
     fields = fields_non_default + fields_default
     # Create dataclass
-    return dataclasses.make_dataclass(
-        cls_name, fields, *args, namespace=namespace, **kwargs
+    return _config(
+        dataclasses.make_dataclass(
+            cls_name, fields, *args, namespace=namespace, **kwargs
+        )
     )
 
 

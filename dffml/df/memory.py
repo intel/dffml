@@ -1549,7 +1549,8 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
         if self.config.max_ctxs is not None and self.config.max_ctxs > len(
             ctxs
         ):
-            self.config.max_ctxs = None
+            with self.config.no_enforce_immutable():
+                self.config.max_ctxs = None
         # Create tasks to wait on the results of each of the contexts submitted
         for ctxs_index in range(0, len(ctxs)):
             if (

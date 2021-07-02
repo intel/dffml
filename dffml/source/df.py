@@ -164,7 +164,10 @@ class DataFlowSourceContext(BaseSourceContext):
             async with config_cls.withconfig({}) as configloader:
                 async with configloader() as loader:
                     exported = await loader.loadb(dataflow_path.read_bytes())
-                self.parent.config.dataflow = DataFlow._fromdict(**exported)
+                with self.parent.config.no_enforce_immutable():
+                    self.parent.config.dataflow = DataFlow._fromdict(
+                        **exported
+                    )
 
         self.octx = await self.parent.orchestrator(
             self.parent.config.dataflow
