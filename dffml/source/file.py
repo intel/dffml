@@ -40,7 +40,8 @@ class FileSource(BaseSource):
         super().__init__(config)
 
         if isinstance(getattr(self.config, "filename", None), str):
-            self.config.filename = pathlib.Path(self.config.filename)
+            with self.config.no_enforce_immutable():
+                self.config.filename = pathlib.Path(self.config.filename)
 
     async def __aenter__(self) -> "BaseSourceContext":
         await self._open()

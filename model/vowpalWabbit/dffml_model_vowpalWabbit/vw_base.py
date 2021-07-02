@@ -212,7 +212,8 @@ class VWContext(ModelContext):
         return
 
     async def __aenter__(self):
-        self.parent.config.vwcmd = self.modify_config()
+        with self.parent.config.no_enforce_immutable():
+            self.parent.config.vwcmd = self.modify_config()
         self.clf = self._load_model()
         return self
 
