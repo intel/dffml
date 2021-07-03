@@ -2,7 +2,7 @@
 # Copyright (c) 2019 Intel Corporation
 """
 Model subclasses are responsible for training themselves on records, making
-predictions about the value of a feature in the record, and assessing thei
+predictions about the value of a feature in the record, and assessing their
 prediction accuracy.
 """
 import abc
@@ -35,7 +35,7 @@ class ModelConfig:
 
 class ModelContext(abc.ABC, BaseDataFlowFacilitatorObjectContext):
     """
-    Abstract base class which should be derived from and implmented using
+    Abstract base class which should be derived from and implemented using
     various machine learning frameworks or concepts.
     """
 
@@ -69,7 +69,7 @@ class ModelContext(abc.ABC, BaseDataFlowFacilitatorObjectContext):
 @base_entry_point("dffml.model", "model")
 class Model(BaseDataFlowFacilitatorObject):
     """
-    Abstract base class which should be derived from and implmented using
+    Abstract base class which should be derived from and implemented using
     various machine learning frameworks or concepts.
     """
 
