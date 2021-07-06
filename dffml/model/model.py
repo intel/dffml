@@ -69,7 +69,7 @@ class ModelContext(abc.ABC, BaseDataFlowFacilitatorObjectContext):
 @base_entry_point("dffml.model", "model")
 class Model(BaseDataFlowFacilitatorObject):
     """
-    Abstract base class which should be derived from and implmented using
+    Abstract base class which should be derived from and implemented using
     various machine learning frameworks or concepts.
     """
 
