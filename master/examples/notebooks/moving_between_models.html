@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Moving Between Models &mdash; DFFML 5edb09378 documentation</title>
+  <title>Moving Between Models &mdash; DFFML 4a3cec0f5 documentation</title>
   
 
   
@@ -47,7 +47,7 @@
     <link rel="author" title="About these documents" href="../../about.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Automating Classification" href="../integration.html" />
+    <link rel="next" title="Evaluating Model Performance" href="evaluating_model_performance.html" />
     <link rel="prev" title="Notebooks" href="index.html" /> 
 </head>
 
@@ -72,7 +72,7 @@
             
             
               <div class="version">
-                5edb09378
+                4a3cec0f5
               </div>
             
           
@@ -118,6 +118,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#Predict-using-our-Models">Predict using our Models</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="evaluating_model_performance.html">Evaluating Model Performance</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../integration.html">Automating Classification</a></li>
@@ -525,6 +526,7 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="section" id="Moving-Between-Models">
 <h1>Moving Between Models<a class="headerlink" href="#Moving-Between-Models" title="Permalink to this headline">¶</a></h1>
+<p>In this demo, we’ll be using the Red Wine Quality dataset. The datset can be used in both regression and classification models. The purpose of this notebook is to show how to work with multiple models in DFFML.</p>
 <div class="section" id="Import-Packages">
 <h2>Import Packages<a class="headerlink" href="#Import-Packages" title="Permalink to this headline">¶</a></h2>
 <p>Let us import dffml and other packages that we might need.</p>
@@ -561,7 +563,7 @@ div.rendered_html tbody tr:hover {
 <div class="section" id="Build-our-Dataset">
 <h2>Build our Dataset<a class="headerlink" href="#Build-our-Dataset" title="Permalink to this headline">¶</a></h2>
 <p>Dffml has a very convinient function <code class="docutils literal notranslate"><span class="pre">cached_download()</span></code> that can be used to download datasets and make sure you don’t download them if you have already.</p>
-<div class="nbinput docutils container">
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
@@ -571,17 +573,8 @@ div.rendered_html tbody tr:hover {
     <span class="s2">&quot;wine_quality.csv&quot;</span><span class="p">,</span>
     <span class="s2">&quot;789e98688f9ff18d4bae35afb71b006116ec9c529c1b21563fdaf5e785aea8b3937a55a4919c91ca2b0acb671300072c&quot;</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">data_path</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-/home/hash1m/dffml/examples/notebooks/wine_quality.csv
-</pre></div></div>
 </div>
 <p>In Dffml, we try to use asynchronicity where we can, to get that extra bit of performance. Let’s use the async version of <code class="docutils literal notranslate"><span class="pre">load()</span></code> to load the dataset that we just downloaded into a source. We can easily achieve this by declaring a <code class="docutils literal notranslate"><span class="pre">CSVSource</span></code> with the data_path and the delimiter since the data we downloaded seems to have a non-comma delimiter.</p>
 <p>After that, we can just create an array of <code class="docutils literal notranslate"><span class="pre">records</span></code> by loading each one through the <code class="docutils literal notranslate"><span class="pre">load()</span></code> function.</p>
@@ -814,7 +807,7 @@ Accuracy2: 0.6
           </div>
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="../integration.html" class="btn btn-neutral float-right" title="Automating Classification" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="evaluating_model_performance.html" class="btn btn-neutral float-right" title="Evaluating Model Performance" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
         <a href="index.html" class="btn btn-neutral float-left" title="Notebooks" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 

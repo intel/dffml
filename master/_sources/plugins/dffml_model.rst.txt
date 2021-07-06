@@ -383,6 +383,14 @@ dffml_model_xgboost
     pip install dffml-model-xgboost
 
 
+**OSX Installation**
+
+XGBoost on OSX requires libomp
+
+.. code-block:: console
+
+    $ brew install libomp
+
 .. _plugin_model_dffml_model_xgboost_xgbclassifier:
 
 xgbclassifier
