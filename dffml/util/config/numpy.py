@@ -146,10 +146,12 @@ def make_config_numpy(
     generate a config class with properties containing the correct types,
     and default values.
     """
-    if properties is None:
-        properties = {}
+    docparams = numpy_docstring_args(cls)
 
-    properties.update(numpy_docstring_args(cls))
+    if properties is None:
+        properties = docparams
+    else:
+        docparams.update(properties)
 
     return make_config(
         name, [tuple([key] + list(value)) for key, value in properties.items()]
