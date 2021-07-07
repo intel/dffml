@@ -2063,7 +2063,7 @@ No description
   - default: False
   - Replace the last layer of the pretrained model
 
-- layers: dict
+- layers: typing.Union[dict, torch.nn.modules.container.ModuleDict, torch.nn.modules.container.Sequential, torch.nn.modules.container.ModuleList, torch.nn.modules.module.Module]
 
   - default: None
   - Extra layers to replace the last layer of the pretrained model
@@ -2166,7 +2166,7 @@ No description
   - default: False
   - Replace the last layer of the pretrained model
 
-- layers: dict
+- layers: typing.Union[dict, torch.nn.modules.container.ModuleDict, torch.nn.modules.container.Sequential, torch.nn.modules.container.ModuleList, torch.nn.modules.module.Module]
 
   - default: None
   - Extra layers to replace the last layer of the pretrained model
@@ -2269,7 +2269,7 @@ No description
   - default: False
   - Replace the last layer of the pretrained model
 
-- layers: dict
+- layers: typing.Union[dict, torch.nn.modules.container.ModuleDict, torch.nn.modules.container.Sequential, torch.nn.modules.container.ModuleList, torch.nn.modules.module.Module]
 
   - default: None
   - Extra layers to replace the last layer of the pretrained model
@@ -2372,7 +2372,7 @@ No description
   - default: False
   - Replace the last layer of the pretrained model
 
-- layers: dict
+- layers: typing.Union[dict, torch.nn.modules.container.ModuleDict, torch.nn.modules.container.Sequential, torch.nn.modules.container.ModuleList, torch.nn.modules.module.Module]
 
   - default: None
   - Extra layers to replace the last layer of the pretrained model
@@ -2475,7 +2475,7 @@ No description
   - default: False
   - Replace the last layer of the pretrained model
 
-- layers: dict
+- layers: typing.Union[dict, torch.nn.modules.container.ModuleDict, torch.nn.modules.container.Sequential, torch.nn.modules.container.ModuleList, torch.nn.modules.module.Module]
 
   - default: None
   - Extra layers to replace the last layer of the pretrained model
@@ -2578,7 +2578,7 @@ No description
   - default: False
   - Replace the last layer of the pretrained model
 
-- layers: dict
+- layers: typing.Union[dict, torch.nn.modules.container.ModuleDict, torch.nn.modules.container.Sequential, torch.nn.modules.container.ModuleList, torch.nn.modules.module.Module]
 
   - default: None
   - Extra layers to replace the last layer of the pretrained model
@@ -2681,7 +2681,7 @@ No description
   - default: False
   - Replace the last layer of the pretrained model
 
-- layers: dict
+- layers: typing.Union[dict, torch.nn.modules.container.ModuleDict, torch.nn.modules.container.Sequential, torch.nn.modules.container.ModuleList, torch.nn.modules.module.Module]
 
   - default: None
   - Extra layers to replace the last layer of the pretrained model
@@ -2784,7 +2784,7 @@ No description
   - default: False
   - Replace the last layer of the pretrained model
 
-- layers: dict
+- layers: typing.Union[dict, torch.nn.modules.container.ModuleDict, torch.nn.modules.container.Sequential, torch.nn.modules.container.ModuleList, torch.nn.modules.module.Module]
 
   - default: None
   - Extra layers to replace the last layer of the pretrained model
@@ -2887,7 +2887,7 @@ No description
   - default: False
   - Replace the last layer of the pretrained model
 
-- layers: dict
+- layers: typing.Union[dict, torch.nn.modules.container.ModuleDict, torch.nn.modules.container.Sequential, torch.nn.modules.container.ModuleList, torch.nn.modules.module.Module]
 
   - default: None
   - Extra layers to replace the last layer of the pretrained model
@@ -2990,7 +2990,7 @@ No description
   - default: False
   - Replace the last layer of the pretrained model
 
-- layers: dict
+- layers: typing.Union[dict, torch.nn.modules.container.ModuleDict, torch.nn.modules.container.Sequential, torch.nn.modules.container.ModuleList, torch.nn.modules.module.Module]
 
   - default: None
   - Extra layers to replace the last layer of the pretrained model
@@ -3181,7 +3181,7 @@ No description
   - default: False
   - Replace the last layer of the pretrained model
 
-- layers: dict
+- layers: typing.Union[dict, torch.nn.modules.container.ModuleDict, torch.nn.modules.container.Sequential, torch.nn.modules.container.ModuleList, torch.nn.modules.module.Module]
 
   - default: None
   - Extra layers to replace the last layer of the pretrained model
@@ -3284,7 +3284,7 @@ No description
   - default: False
   - Replace the last layer of the pretrained model
 
-- layers: dict
+- layers: typing.Union[dict, torch.nn.modules.container.ModuleDict, torch.nn.modules.container.Sequential, torch.nn.modules.container.ModuleList, torch.nn.modules.module.Module]
 
   - default: None
   - Extra layers to replace the last layer of the pretrained model
@@ -3387,7 +3387,7 @@ No description
   - default: False
   - Replace the last layer of the pretrained model
 
-- layers: dict
+- layers: typing.Union[dict, torch.nn.modules.container.ModuleDict, torch.nn.modules.container.Sequential, torch.nn.modules.container.ModuleList, torch.nn.modules.module.Module]
 
   - default: None
   - Extra layers to replace the last layer of the pretrained model
@@ -3490,7 +3490,7 @@ No description
   - default: False
   - Replace the last layer of the pretrained model
 
-- layers: dict
+- layers: typing.Union[dict, torch.nn.modules.container.ModuleDict, torch.nn.modules.container.Sequential, torch.nn.modules.container.ModuleList, torch.nn.modules.module.Module]
 
   - default: None
   - Extra layers to replace the last layer of the pretrained model
@@ -3593,7 +3593,7 @@ No description
   - default: False
   - Replace the last layer of the pretrained model
 
-- layers: dict
+- layers: typing.Union[dict, torch.nn.modules.container.ModuleDict, torch.nn.modules.container.Sequential, torch.nn.modules.container.ModuleList, torch.nn.modules.module.Module]
 
   - default: None
   - Extra layers to replace the last layer of the pretrained model
@@ -3696,7 +3696,7 @@ No description
   - default: False
   - Replace the last layer of the pretrained model
 
-- layers: dict
+- layers: typing.Union[dict, torch.nn.modules.container.ModuleDict, torch.nn.modules.container.Sequential, torch.nn.modules.container.ModuleList, torch.nn.modules.module.Module]
 
   - default: None
   - Extra layers to replace the last layer of the pretrained model
@@ -3799,7 +3799,7 @@ No description
   - default: False
   - Replace the last layer of the pretrained model
 
-- layers: dict
+- layers: typing.Union[dict, torch.nn.modules.container.ModuleDict, torch.nn.modules.container.Sequential, torch.nn.modules.container.ModuleList, torch.nn.modules.module.Module]
 
   - default: None
   - Extra layers to replace the last layer of the pretrained model
@@ -3902,7 +3902,7 @@ No description
   - default: False
   - Replace the last layer of the pretrained model
 
-- layers: dict
+- layers: typing.Union[dict, torch.nn.modules.container.ModuleDict, torch.nn.modules.container.Sequential, torch.nn.modules.container.ModuleList, torch.nn.modules.module.Module]
 
   - default: None
   - Extra layers to replace the last layer of the pretrained model
@@ -4005,7 +4005,7 @@ No description
   - default: False
   - Replace the last layer of the pretrained model
 
-- layers: dict
+- layers: typing.Union[dict, torch.nn.modules.container.ModuleDict, torch.nn.modules.container.Sequential, torch.nn.modules.container.ModuleList, torch.nn.modules.module.Module]
 
   - default: None
   - Extra layers to replace the last layer of the pretrained model
@@ -4108,7 +4108,7 @@ No description
   - default: False
   - Replace the last layer of the pretrained model
 
-- layers: dict
+- layers: typing.Union[dict, torch.nn.modules.container.ModuleDict, torch.nn.modules.container.Sequential, torch.nn.modules.container.ModuleList, torch.nn.modules.module.Module]
 
   - default: None
   - Extra layers to replace the last layer of the pretrained model
@@ -4211,7 +4211,7 @@ No description
   - default: False
   - Replace the last layer of the pretrained model
 
-- layers: dict
+- layers: typing.Union[dict, torch.nn.modules.container.ModuleDict, torch.nn.modules.container.Sequential, torch.nn.modules.container.ModuleList, torch.nn.modules.module.Module]
 
   - default: None
   - Extra layers to replace the last layer of the pretrained model
@@ -4314,7 +4314,7 @@ No description
   - default: False
   - Replace the last layer of the pretrained model
 
-- layers: dict
+- layers: typing.Union[dict, torch.nn.modules.container.ModuleDict, torch.nn.modules.container.Sequential, torch.nn.modules.container.ModuleList, torch.nn.modules.module.Module]
 
   - default: None
   - Extra layers to replace the last layer of the pretrained model
@@ -4417,7 +4417,7 @@ No description
   - default: False
   - Replace the last layer of the pretrained model
 
-- layers: dict
+- layers: typing.Union[dict, torch.nn.modules.container.ModuleDict, torch.nn.modules.container.Sequential, torch.nn.modules.container.ModuleList, torch.nn.modules.module.Module]
 
   - default: None
   - Extra layers to replace the last layer of the pretrained model
@@ -4520,7 +4520,7 @@ No description
   - default: False
   - Replace the last layer of the pretrained model
 
-- layers: dict
+- layers: typing.Union[dict, torch.nn.modules.container.ModuleDict, torch.nn.modules.container.Sequential, torch.nn.modules.container.ModuleList, torch.nn.modules.module.Module]
 
   - default: None
   - Extra layers to replace the last layer of the pretrained model
@@ -4623,7 +4623,7 @@ No description
   - default: False
   - Replace the last layer of the pretrained model
 
-- layers: dict
+- layers: typing.Union[dict, torch.nn.modules.container.ModuleDict, torch.nn.modules.container.Sequential, torch.nn.modules.container.ModuleList, torch.nn.modules.module.Module]
 
   - default: None
   - Extra layers to replace the last layer of the pretrained model
@@ -4726,7 +4726,7 @@ No description
   - default: False
   - Replace the last layer of the pretrained model
 
-- layers: dict
+- layers: typing.Union[dict, torch.nn.modules.container.ModuleDict, torch.nn.modules.container.Sequential, torch.nn.modules.container.ModuleList, torch.nn.modules.module.Module]
 
   - default: None
   - Extra layers to replace the last layer of the pretrained model
@@ -4829,7 +4829,7 @@ No description
   - default: False
   - Replace the last layer of the pretrained model
 
-- layers: dict
+- layers: typing.Union[dict, torch.nn.modules.container.ModuleDict, torch.nn.modules.container.Sequential, torch.nn.modules.container.ModuleList, torch.nn.modules.module.Module]
 
   - default: None
   - Extra layers to replace the last layer of the pretrained model
@@ -4932,7 +4932,7 @@ No description
   - default: False
   - Replace the last layer of the pretrained model
 
-- layers: dict
+- layers: typing.Union[dict, torch.nn.modules.container.ModuleDict, torch.nn.modules.container.Sequential, torch.nn.modules.container.ModuleList, torch.nn.modules.module.Module]
 
   - default: None
   - Extra layers to replace the last layer of the pretrained model
@@ -5035,7 +5035,7 @@ No description
   - default: False
   - Replace the last layer of the pretrained model
 
-- layers: dict
+- layers: typing.Union[dict, torch.nn.modules.container.ModuleDict, torch.nn.modules.container.Sequential, torch.nn.modules.container.ModuleList, torch.nn.modules.module.Module]
 
   - default: None
   - Extra layers to replace the last layer of the pretrained model

@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Operations for file (de)compression
 - Usecase example notebook for "Evaluating Model Performance"
 - Tests for all notebooks auto created and run via ``test_notebooks.py``
+- Support for additional layers in pytorch pretrained models via Python API
 ### Changed
 - Calls to hashlib now go through helper functions
 - Build docs using `dffml service dev docs`
