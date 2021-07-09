@@ -29,7 +29,7 @@ class TestNotebook(AsyncTestCase):
 def mk_notebook_test(path: pathlib.Path):
     def testcase(self):
         with chdir(NOTEBOOK_DATA_PATH):
-            with testbook(path, execute=True) as tb:
+            with testbook(path, timeout=-1, execute=True) as tb:
                 pass
 
     return testcase
