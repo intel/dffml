@@ -7,7 +7,11 @@ prediction accuracy.
 """
 import abc
 import json
+import shutil
 import pathlib
+from sys import path
+import zipfile
+from tempfile import mkdtemp, tempdir
 from typing import AsyncIterator, Optional
 
 from ..base import (
@@ -16,11 +20,15 @@ from ..base import (
     BaseDataFlowFacilitatorObject,
 )
 from ..record import Record
-from ..feature import Features
+
 from .accuracy import Accuracy
-from ..util.entrypoint import base_entry_point
+from ..feature import Features
+from ..df.types import DataFlow, Input
+from ..df.memory import MemoryOrchestrator
 from ..util.os import MODE_BITS_SECURE
+from ..util.entrypoint import base_entry_point
 from ..source.source import Sources, SourcesContext
+from ..operation.archive import make_zip_archive, extract_zip_archive
 
 
 class ModelNotTrained(Exception):
@@ -29,7 +37,7 @@ class ModelNotTrained(Exception):
 
 @config
 class ModelConfig:
-    directory: str
+    location: str
     features: Features
 
 
@@ -80,28 +88,87 @@ class Model(BaseDataFlowFacilitatorObject):
         # TODO Just in case its a string. We should make it so that on
         # instantiation of an @config we convert properties to their correct
         # types.
-        directory = getattr(self.config, "directory", None)
-        if isinstance(directory, str):
-            directory = pathlib.Path(directory)
-        if isinstance(directory, pathlib.Path):
-            # to treat "~" as the the home directory rather than a literal
-            directory = directory.expanduser().resolve()
-            self.config.directory = directory
+        location = getattr(self.config, "location", None)
+        if isinstance(location, str):
+            location = pathlib.Path(location)
+        if isinstance(location, pathlib.Path):
+            # to treat "~" as the the home location rather than a literal
+            location = location.expanduser().resolve()
+            self.config.location = location
+        self.location_is_file = self.config.location.is_file()
 
     def __call__(self) -> ModelContext:
-        self._make_config_directory()
+        self._make_config_location()
         return self.CONTEXT(self)
 
-    def _make_config_directory(self):
+    async def __aenter__(self):
+        if self.location_is_file:
+            location = self.config.location
+            temp_dir = self._get_directory()
+            if zipfile.is_zipfile(location):
+                await self._run_operation("extract", location, temp_dir)
+            self.config.location = temp_dir
+            self.config.file_location = location
+
+    async def __aexit__(self, exc_type, exc_value, traceback):
+        if self.location_is_file:
+            config_path = self.config.location / "config.json"
+            config_path.write_text(json.dumps(self.config))
+            output_location = self.config.file_location
+            await self._run_operation(
+                "archive", self.temp_dir, output_location
+            )
+            shutil.rmtree(self.temp_dir)
+
+    async def _run_operation(self, action, input_path, output_path):
+        operations = {
+            "zip": {
+                "extract": extract_zip_archive,
+                "archive": make_zip_archive,
+            }
+        }
+        file_type = (
+            input_path.suffix if action == "extract" else output_path.suffix
+        )
+        operation = operations[file_type][action]
+
+        dataflow = self._create_dataflow(
+            operation,
+            {
+                "input_directory_path": input_path,
+                "output_file_path": output_path,
+            },
+        )
+
+        async for _, _ in MemoryOrchestrator.run(dataflow):
+            pass
+
+    def _create_dataflow(self, operation, seed):
+        dataflow = DataFlow(
+            operations={operation.op.name: operation},
+            seed={
+                Input(value=val, definition=operation.op.inputs[input_name])
+                for input_name, val in seed.items()
+            },
+            implementations={operation.op.name: operation.imp},
+        )
+        return dataflow
+
+    def _get_directory(self) -> pathlib.Path:
+        if not getattr(self, "temp_dir", None):
+            self.temp_dir = pathlib.Path(mkdtemp())
+        return self.temp_dir
+
+    def _make_config_location(self):
         """
-        If the config object for this model contains the directory property
+        If the config object for this model contains the location property
         then create it if it does not exist.
         """
-        directory = getattr(self.config, "directory", None)
-        if directory is not None:
-            directory = pathlib.Path(directory)
-            if not directory.is_dir():
-                directory.mkdir(mode=MODE_BITS_SECURE, parents=True)
+        location = getattr(self.config, "location", None)
+        if location is not None:
+            location = pathlib.Path(location)
+            if not location.is_dir():
+                location.mkdir(mode=MODE_BITS_SECURE, parents=True)
 
 
 class SimpleModelNoContext:
@@ -127,15 +194,17 @@ class SimpleModel(Model):
         return self
 
     async def __aenter__(self) -> Model:
+        await super().__aenter__()
         self._in_context += 1
         # If we've already entered the model's context once, don't reload
         if self._in_context > 1:
             return self
-        self._make_config_directory()
+        self._make_config_location()
         self.open()
         return self
 
     async def __aexit__(self, exc_type, exc_value, traceback):
+        await super().__aexit__(exc_type, exc_value, traceback)
         self._in_context -= 1
         if not self._in_context:
             self.close()
@@ -152,7 +221,7 @@ class SimpleModel(Model):
         """
         Load saved model from disk if it exists.
         """
-        # Load saved data if this is the first time we've entred the model
+        # Load saved data if this is the first time we've entered the model
         filepath = self.disk_path(extention=".json")
         if filepath.is_file():
             self.storage = json.loads(filepath.read_text())
@@ -171,20 +240,20 @@ class SimpleModel(Model):
     def disk_path(self, extention: Optional[str] = None):
         """
         We do this for convenience of the user so they can usually just use the
-        default directory and if they train models with different parameters
+        default location and if they train models with different parameters
         this method transparently to the user creates a filename unique the that
         configuration of the model where data is saved and loaded.
         """
         # Export the config to a dictionary
         exported = self.config._asdict()
-        # Remove the directory from the exported dict
-        if "directory" in exported:
-            del exported["directory"]
+        # Remove the location from the exported dict
+        if "location" in exported:
+            del exported["location"]
         # Replace features with the sorted list of features
         if "features" in exported:
             exported["features"] = dict(sorted(exported["features"].items()))
         # Hash the exported config
-        return pathlib.Path(self.config.directory, "Model",)
+        return pathlib.Path(self.config.location, "Model",)
 
     def applicable_features(self, features):
         usable = []
