@@ -12,18 +12,11 @@ convenient way to achieve this in ``jupyter notebook`` is to install the
 Testing
 -------
 
-Once you've made an example notebook, the code inside the notebook will need
-to be tested before it can be merged into the codebase. Notebooks cannot be
-tested in the typical manner, as a notebook file consists of more than just the code.
-To test notebooks, DFFML utilizes 
+To test notebooks, DFFML utilizes
 `testbook <https://testbook.readthedocs.io/en/latest/usage/index.html>`_.
 
-``testbook`` provides different ways to access, unittest and mock the code inside
-a notebook. Following is an example of how `testbook` can be used to test a notebook,
-in this case,
-:doc:`../examples/notebooks/moving_between_models`
-
-.. literalinclude:: /../tests/notebooks/test_moving_between_models.py
+``testbook`` provides different ways to access, unittest and mock the code
+inside a notebook. See ``tests/test_notebooks.py``.
 
 Documentation
 -------------
