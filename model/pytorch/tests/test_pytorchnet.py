@@ -67,7 +67,7 @@ class TestPyTorchNeuralNetwork(AsyncTestCase):
             classifications=["rock", "paper", "scissors"],
             features=Features(Feature("image", int, 300 * 300)),
             predict=Feature("label", int, 1),
-            directory=cls.model_dir.name,
+            location=cls.model_dir.name,
             network=RockPaperScissorsModel,
             epochs=1,
             batch_size=32,
