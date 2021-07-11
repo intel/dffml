@@ -29,7 +29,7 @@ class TestResNet18Model(AsyncTestCase):
             cmnd = " ".join(cmnd).split()
             for idx, word in enumerate(cmnd):
                 cmnd[idx] = word.strip()
-            cmnd[cmnd.index("-model-directory") + 1] = directory
+            cmnd[cmnd.index("-model-location") + 1] = directory
             if "-model-epochs" in cmnd:
                 cmnd[cmnd.index("-model-epochs") + 1] = "1"
             return cmnd
