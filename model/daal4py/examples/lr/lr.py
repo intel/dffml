@@ -5,7 +5,7 @@ from dffml_model_daal4py.daal4pylr import DAAL4PyLRModel
 model = DAAL4PyLRModel(
     features=Features(Feature("f1", float, 1)),
     predict=Feature("ans", int, 1),
-    directory="tempdir",
+    location="tempdir",
 )
 
 # Train the model

@@ -28,7 +28,7 @@ class TestTextClassificationModel(AsyncTestCase):
         cls.model_dir = tempfile.TemporaryDirectory()
         cls.model = TextClassificationModel(
             TextClassifierConfig(
-                directory=cls.model_dir.name,
+                location=cls.model_dir.name,
                 classifications=[0, 1],
                 features=cls.features,
                 predict=Feature("X", int, 1),

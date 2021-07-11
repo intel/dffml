@@ -36,7 +36,7 @@ class TestXGBClassifier(AsyncTestCase):
                     Feature("Feature1", float, 1), Feature("Feature2")
                 ),
                 predict=Feature("Target", float, 1),
-                directory=cls.model_dir.name,
+                location=cls.model_dir.name,
             )
         )
         # Generating data f(x1,x2) = (2*x1 + 3*x2)//2

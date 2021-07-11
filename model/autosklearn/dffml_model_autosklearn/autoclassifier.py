@@ -21,7 +21,7 @@ class AutoSklearnClassifierModelContext(AutoSklearnModelContext):
         config = self.parent.config._asdict()
         del config["predict"]
         del config["features"]
-        del config["directory"]
+        del config["location"]
         self._model = autosklearn.classification.AutoSklearnClassifier(
             **config
         )

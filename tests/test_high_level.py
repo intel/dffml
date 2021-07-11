@@ -109,7 +109,7 @@ class TestML(AsyncTestCase):
         dffml_model_scikit = importlib.import_module("dffml_model_scikit")
         # Instantiate the model
         model = dffml_model_scikit.LinearRegressionModel(
-            directory=self.mktempdir(),
+            location=self.mktempdir(),
             predict=Feature("Salary", int, 1),
             features=Features(
                 Feature("Years", int, 1),

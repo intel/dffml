@@ -34,7 +34,7 @@ class TestAnomalyModel(AsyncTestCase):
         cls.model = AnomalyModel(
             features=Features(Feature("A", int, 1), Feature("B", int, 2),),
             predict=Feature("Y", int, 1),
-            directory=cls.model_dir.name,
+            location=cls.model_dir.name,
         )
 
         # Generating data

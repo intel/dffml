@@ -12,7 +12,7 @@ Training:
         -model PYTORCH_MODEL_ENTRYPOINT \\
         -model-features FEATURE_DEFINITION \\
         -model-predict TO_PREDICT \\
-        -model-directory MODEL_DIRECTORY \\
+        -model-location MODEL_LOCATION \\
         -model-CONFIGS CONFIG_VALUES \\
         -sources f=TRAINING_DATA_SOURCE_TYPE \\
         -source-CONFIGS TRAINING_DATA \\
@@ -26,7 +26,7 @@ Testing and Accuracy:
         -model PYTORCH_MODEL_ENTRYPOINT \\
         -model-features FEATURE_DEFINITION \\
         -model-predict TO_PREDICT \\
-        -model-directory MODEL_DIRECTORY \\
+        -model-location MODEL_LOCATION \\
         -model-CONFIGS CONFIG_VALUES \\
         -sources f=TESTING_DATA_SOURCE_TYPE \\
         -source-CONFIGS TESTING_DATA \\
@@ -40,7 +40,7 @@ Predicting with trained model:
         -model PYTORCH_MODEL_ENTRYPOINT \\
         -model-features FEATURE_DEFINITION \\
         -model-predict TO_PREDICT \\
-        -model-directory MODEL_DIRECTORY \\
+        -model-location MODEL_LOCATION \\
         -model-CONFIGS CONFIG_VALUES \\
         -sources f=PREDICT_DATA_SOURCE_TYPE \\
         -source-CONFIGS PREDICTION_DATA \\

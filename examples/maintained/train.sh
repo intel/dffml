@@ -8,7 +8,7 @@ dffml train all \
   -model-steps 4000 \
   -model-predict maintained:int:1 \
   -model-classifications 0 1 \
-  -model-directory modeldir \
+  -model-location modeldir \
   -model-features \
     authors:int:10 \
     commits:int:10 \

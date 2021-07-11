@@ -129,9 +129,9 @@ for entry_point_name, name, cls in [
         )
     dffml_config_properties = {
         **{
-            "directory": (
+            "location": (
                 pathlib.Path,
-                field("Directory where state should be saved",),
+                field("Location where state should be saved",),
             ),
             "features": (Features, field("Features to train on")),
         },

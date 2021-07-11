@@ -21,7 +21,7 @@ from dffml import (
 class LogisticRegressionConfig:
     predict: Feature = field("Label or the value to be predicted")
     features: Features = field("Features to train on")
-    directory: pathlib.Path = field("Directory where state should be saved",)
+    location: pathlib.Path = field("Location where state should be saved",)
 
 
 @entrypoint("scratchlgrsag")

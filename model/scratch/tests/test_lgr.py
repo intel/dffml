@@ -53,7 +53,7 @@ class TestLogisticRegression(AsyncTestCase):
             cls.test_data.append({"X": x, "Y": y})
         # Create an instance of the model
         cls.model = LogisticRegression(
-            directory=cls.model_dir.name,
+            location=cls.model_dir.name,
             predict=Feature("Y", float, 1),
             features=Features(Feature("X", float, 1)),
         )

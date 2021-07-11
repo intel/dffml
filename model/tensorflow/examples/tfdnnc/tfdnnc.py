@@ -14,7 +14,7 @@ model = DNNClassifierModel(
     steps=20000,
     classifications=[0, 1, 2],
     clstype=int,
-    directory="tempdir",
+    location="tempdir",
 )
 
 # Train the model

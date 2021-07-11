@@ -43,7 +43,7 @@ class TestMySLRModel(AsyncTestCase):
         cls.model = MySLRModel(
             features=Features(Feature("X", float, 1)),
             predict=Feature("Y", float, 1),
-            directory=cls.model_dir.name,
+            location=cls.model_dir.name,
         )
 
     @classmethod

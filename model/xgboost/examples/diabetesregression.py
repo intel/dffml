@@ -21,7 +21,7 @@ model = XGBRegressorModel(
     XGBRegressorModelConfig(
         features=Features(Feature("data", float, 10)),
         predict=Feature("target", float, 1),
-        directory="model",
+        location="model",
         max_depth=3,
         learning_rate=0.05,
         n_estimators=400,

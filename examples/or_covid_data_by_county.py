@@ -14,7 +14,7 @@ from fbprophet import Prophet
 class FBProphetModelConfig:
     date: Feature = field("Name of feature containing date value")
     predict: Feature = field("Label or the value to be predicted")
-    directory: pathlib.Path = field("Directory where state should be saved")
+    location: pathlib.Path = field("Location where state should be saved")
 
 
 @entrypoint("fbprophet")
@@ -27,7 +27,7 @@ class FBProphetModel(SimpleModel):
         # The saved model
         self.saved = None
         self.saved_filepath = pathlib.Path(
-            self.config.directory, "model.joblib"
+            self.config.location, "model.joblib"
         )
         # Load saved model if it exists
         if self.saved_filepath.is_file():
@@ -119,7 +119,7 @@ async def main():
     cases_to_deaths_model = SLRModel(
         features=Features(Feature("cases", int)),
         predict=Feature("deaths", int),
-        directory="cases_to_deaths.model",
+        location="cases_to_deaths.model",
     )
 
     # Train the model to learn the relationship between cases and deaths
@@ -136,7 +136,7 @@ async def main():
         county: FBProphetModel(
             date=Feature("date", str),
             predict=Feature("cases", int),
-            directory=f"date_to_cases.{county}.model",
+            location=f"date_to_cases.{county}.model",
         )
         for county in counties
     }

@@ -8,7 +8,7 @@ from dffml_model_scratch.anomalydetection import AnomalyModel
 model = AnomalyModel(
     features=Features(Feature("A", int, 2),),
     predict=Feature("Y", int, 1),
-    directory="model",
+    location="model",
 )
 
 

@@ -245,7 +245,7 @@ We do the same steps we did with Python, only using the command line interface.
         -model myslr:MySLRModel \
         -model-features Years:int:1 \
         -model-predict Salary:float:1 \
-        -model-directory modeldir \
+        -model-location modeldir \
         -sources f=csv \
         -source-filename train.csv
 
@@ -260,7 +260,7 @@ Now let's make predictions
         -model myslr:MySLRModel \
         -model-features Years:int:1 \
         -model-predict Salary:float:1 \
-        -model-directory modeldir \
+        -model-location modeldir \
         -sources f=csv \
         -source-filename predict.csv
     [
@@ -311,7 +311,7 @@ via the HTTP :ref:`plugin_service_http_api_model` API.
         -models mymodel=myslr:MySLRModel \
         -model-features Years:int:1 \
         -model-predict Salary:float:1 \
-        -model-directory modeldir
+        -model-location modeldir
 
 We can then ask the HTTP service to make predictions, or do training or accuracy
 assessment.

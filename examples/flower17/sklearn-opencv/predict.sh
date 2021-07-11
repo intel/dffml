@@ -5,7 +5,7 @@ dffml predict all \
     HuMoments:int:7 \
     Haralick:int:13 \
   -model-predict label:str:1 \
-  -model-directory tempdir \
+  -model-location tempdir \
   -sources images=df \
     -source-images-source csv \
     -source-images-source-filename unknown_images.csv \

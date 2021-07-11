@@ -13,5 +13,5 @@ dffml train \
   -model-per_run_time_limit 30 \
   -model-ensemble_size 50 \
   -model-delete_tmp_folder_after_terminate False \
-  -model-directory tempdir \
+  -model-location tempdir \
   -log debug

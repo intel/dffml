@@ -103,7 +103,7 @@ def getF1(Yval, pred):
 class AnomalyModelConfig:
     features: Features = field("Features to train on")
     predict: Feature = field("Label or the value to be predicted")
-    directory: pathlib.Path = field("Directory where state should be saved")
+    location: pathlib.Path = field("Location where state should be saved")
     k: float = field("Validation set size", default=0.8)
 
 
@@ -183,7 +183,7 @@ class AnomalyModel(SimpleModel):
             -model anomalydetection \
             -model-features A:float:2 \
             -model-predict Y:int:1  \
-            -model-directory tempdir
+            -model-location tempdir
 
     Assess the accuracy
 
@@ -196,7 +196,7 @@ class AnomalyModel(SimpleModel):
             -model anomalydetection \
             -model-features A:float:2 \
             -model-predict Y:int:1 \
-            -model-directory tempdir
+            -model-location tempdir
 
 
     Make predictions
@@ -210,7 +210,7 @@ class AnomalyModel(SimpleModel):
             -model anomalydetection \
             -model-features A:float:2 \
             -model-predict Y:int:1 \
-            -model-directory tempdir
+            -model-location tempdir
 
 
     Python usage
