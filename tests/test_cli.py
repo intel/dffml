@@ -75,7 +75,7 @@ class RecordsTestCase(AsyncTestCase):
 class FakeConfig:
     features: Features
     predict: Feature
-    directory: str = os.path.join(
+    location: str = os.path.join(
         os.path.expanduser("~"), ".cache", "dffml", "test_cli", "fake"
     )
 
