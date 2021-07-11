@@ -50,7 +50,7 @@ def best_fit_line(x, y):
 class SLRModelConfig:
     predict: Feature = field("Label or the value to be predicted")
     features: Features = field("Features to train on. For SLR only 1 allowed")
-    directory: pathlib.Path = field("Directory where state should be saved")
+    location: pathlib.Path = field("Location where state should be saved")
 
 
 @entrypoint("slr")
@@ -82,7 +82,7 @@ class SLRModel(SimpleModel):
             -model slr \
             -model-features f1:float:1 \
             -model-predict ans:int:1 \
-            -model-directory tempdir \
+            -model-location tempdir \
             -sources f=csv \
             -source-filename dataset.csv
 
@@ -95,7 +95,7 @@ class SLRModel(SimpleModel):
             -model slr \
             -model-features f1:float:1 \
             -model-predict ans:int:1 \
-            -model-directory tempdir \
+            -model-location tempdir \
             -sources f=csv \
             -source-filename dataset.csv
         1.0
@@ -118,7 +118,7 @@ class SLRModel(SimpleModel):
             -model slr \
             -model-features f1:float:1 \
             -model-predict ans:int:1 \
-            -model-directory tempdir \
+            -model-location tempdir \
             -sources f=csv \
             -source-filename predict.csv
         [

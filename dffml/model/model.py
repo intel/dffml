@@ -29,7 +29,7 @@ class ModelNotTrained(Exception):
 
 @config
 class ModelConfig:
-    directory: str
+    location: str
     features: Features
 
 
@@ -80,28 +80,28 @@ class Model(BaseDataFlowFacilitatorObject):
         # TODO Just in case its a string. We should make it so that on
         # instantiation of an @config we convert properties to their correct
         # types.
-        directory = getattr(self.config, "directory", None)
-        if isinstance(directory, str):
-            directory = pathlib.Path(directory)
-        if isinstance(directory, pathlib.Path):
-            # to treat "~" as the the home directory rather than a literal
-            directory = directory.expanduser().resolve()
-            self.config.directory = directory
+        location = getattr(self.config, "location", None)
+        if isinstance(location, str):
+            location = pathlib.Path(location)
+        if isinstance(location, pathlib.Path):
+            # to treat "~" as the the home location rather than a literal
+            location = location.expanduser().resolve()
+            self.config.location = location
 
     def __call__(self) -> ModelContext:
-        self._make_config_directory()
+        self._make_config_location()
         return self.CONTEXT(self)
 
-    def _make_config_directory(self):
+    def _make_config_location(self):
         """
-        If the config object for this model contains the directory property
+        If the config object for this model contains the location property
         then create it if it does not exist.
         """
-        directory = getattr(self.config, "directory", None)
-        if directory is not None:
-            directory = pathlib.Path(directory)
-            if not directory.is_dir():
-                directory.mkdir(mode=MODE_BITS_SECURE, parents=True)
+        location = getattr(self.config, "location", None)
+        if location is not None:
+            location = pathlib.Path(location)
+            if not location.is_dir():
+                location.mkdir(mode=MODE_BITS_SECURE, parents=True)
 
 
 class SimpleModelNoContext:
@@ -131,7 +131,7 @@ class SimpleModel(Model):
         # If we've already entered the model's context once, don't reload
         if self._in_context > 1:
             return self
-        self._make_config_directory()
+        self._make_config_location()
         self.open()
         return self
 
@@ -171,20 +171,20 @@ class SimpleModel(Model):
     def disk_path(self, extention: Optional[str] = None):
         """
         We do this for convenience of the user so they can usually just use the
-        default directory and if they train models with different parameters
+        default location and if they train models with different parameters
         this method transparently to the user creates a filename unique the that
         configuration of the model where data is saved and loaded.
         """
         # Export the config to a dictionary
         exported = self.config._asdict()
-        # Remove the directory from the exported dict
-        if "directory" in exported:
-            del exported["directory"]
+        # Remove the location from the exported dict
+        if "location" in exported:
+            del exported["location"]
         # Replace features with the sorted list of features
         if "features" in exported:
             exported["features"] = dict(sorted(exported["features"].items()))
         # Hash the exported config
-        return pathlib.Path(self.config.directory, "Model",)
+        return pathlib.Path(self.config.location, "Model",)
 
     def applicable_features(self, features):
         usable = []

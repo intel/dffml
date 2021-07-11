@@ -53,7 +53,7 @@ class TestVWModel(AsyncTestCase):
         )
         cls.model = VWModel(
             VWConfig(
-                directory=cls.model_dir.name,
+                location=cls.model_dir.name,
                 features=cls.features,
                 predict=Feature("X", float, 1),
                 # A and B will be namespace n1

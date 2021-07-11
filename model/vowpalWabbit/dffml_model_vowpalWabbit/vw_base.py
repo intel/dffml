@@ -35,7 +35,7 @@ class InputError(Exception):
 class VWConfig:
     features: Features
     predict: Feature = field("Feature to predict")
-    directory: Path = field("Directory where state should be saved")
+    location: Path = field("Location where state should be saved")
     class_cost: Features = field(
         "Features with name `Cost_{class}` contaning cost of `class` for each input example, used when `csoaa` is used",
         default=None,
@@ -153,7 +153,7 @@ class VWContext(ModelContext):
 
     def modify_config(self):
         vwcmd = self.parent.config.vwcmd
-        direc = self.parent.config.directory
+        direc = self.parent.config.location
         # direct all output files to a single folder
         # unless full path for respective outputs is provided
         for arg in [
@@ -179,7 +179,7 @@ class VWContext(ModelContext):
 
     def _filename(self):
         return os.path.join(
-            self.parent.config.directory, self._features_hash + ".vw"
+            self.parent.config.location, self._features_hash + ".vw"
         )
 
     def _load_model(self):
@@ -448,7 +448,7 @@ class VWModel(Model):
 
     def _filename(self):
         return os.path.join(
-            self.config.directory,
+            self.config.location,
             secure_hash(self.config.predict.name, algorithm="sha384")
             + ".json",
         )

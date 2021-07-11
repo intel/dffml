@@ -21,7 +21,7 @@ class AutoSklearnRegressorModelContext(AutoSklearnModelContext):
         config = self.parent.config._asdict()
         del config["predict"]
         del config["features"]
-        del config["directory"]
+        del config["location"]
         self._model = autosklearn.regression.AutoSklearnRegressor(**config)
         return self._model
 
@@ -94,7 +94,7 @@ class AutoSklearnRegressorModel(Model):
             -model-per_run_time_limit 30 \
             -model-ensemble_size 50 \
             -model-delete_tmp_folder_after_terminate False \
-            -model-directory tempdir \
+            -model-location tempdir \
             -log debug
 
     Assess the accuracy
@@ -105,7 +105,7 @@ class AutoSklearnRegressorModel(Model):
         $ dffml accuracy \
             -model autoregressor \
             -model-predict TARGET:float:1 \
-            -model-directory tempdir \
+            -model-location tempdir \
             -sources f=csv \
             -source-filename test.csv \
             -model-features \
@@ -132,7 +132,7 @@ class AutoSklearnRegressorModel(Model):
 
         $ dffml predict all \
             -model autoregressor \
-            -model-directory tempdir \
+            -model-location tempdir \
             -model-predict TARGET:float:1 \
             -sources iris=csv \
             -model-features \

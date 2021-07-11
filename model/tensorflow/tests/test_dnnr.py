@@ -29,7 +29,7 @@ class TestDNN(AsyncTestCase):
         cls.features = Features(cls.feature1, cls.feature2)
         cls.model = DNNRegressionModel(
             DNNRegressionModelConfig(
-                directory=cls.model_dir.name,
+                location=cls.model_dir.name,
                 steps=1000,
                 epochs=40,
                 hidden=[50, 20, 10],
@@ -71,11 +71,11 @@ class TestDNN(AsyncTestCase):
                 "feature_1:float:1",
                 "--model-features",
                 "feature_2:float:1",
-                "-model-directory",
+                "-model-location",
                 self.model_dir.name,
             )
         )
-        self.assertEqual(config.directory, pathlib.Path(self.model_dir.name))
+        self.assertEqual(config.location, pathlib.Path(self.model_dir.name))
         self.assertEqual(config.steps, 3000)
         self.assertEqual(config.epochs, 30)
         self.assertEqual(config.hidden, [12, 40, 15])
@@ -108,7 +108,7 @@ class TestDNN(AsyncTestCase):
                 self.model_dir.cleanup()
                 self.model_dir = tempfile.TemporaryDirectory()
                 self.model.config = self.model.config._replace(
-                    directory=self.model_dir.name
+                    location=self.model_dir.name
                 )
                 continue
             self.assertGreater(res, 0.8)

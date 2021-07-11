@@ -21,7 +21,7 @@ from dffml.model.model import SimpleModel, ModelNotTrained
 
 @config
 class XGBRegressorModelConfig:
-    directory: pathlib.Path = field("Directory where model should be saved")
+    location: pathlib.Path = field("Location where model should be saved")
     features: Features = field("Features on which we train the model")
     predict: Feature = field("Value to be predicted")
     learning_rate: float = field("Learning rate to train with", default=0.05)
@@ -98,7 +98,7 @@ class XGBRegressorModel(SimpleModel):
               PetalLength:float:1 \
               PetalWidth:float:1 \
             -model-predict classification \
-            -model-directory model \
+            -model-location model \
             -model-max_depth 3 \
             -model-learning_rate 0.01 \
             -model-n_estimators 200 \
@@ -124,7 +124,7 @@ class XGBRegressorModel(SimpleModel):
               PetalLength:float:1 \
               PetalWidth:float:1 \
             -model-predict classification \
-            -model-directory model 
+            -model-location model 
         
     Output
 
@@ -148,7 +148,7 @@ class XGBRegressorModel(SimpleModel):
               PetalLength:float:1 \
               PetalWidth:float:1 \
             -model-predict classification \
-            -model-directory model 
+            -model-location model 
 
     Python usage
 
@@ -175,7 +175,7 @@ class XGBRegressorModel(SimpleModel):
         # The saved model
         self.saved = None
         self.saved_filepath = pathlib.Path(
-            self.config.directory, "model.joblib"
+            self.config.location, "model.joblib"
         )
         # Load saved model if it exists
         if self.saved_filepath.is_file():

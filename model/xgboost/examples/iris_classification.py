@@ -21,7 +21,7 @@ model = XGBClassifierModel(
     XGBClassifierModelConfig(
         features=Features(Feature("data", float,)),
         predict=Feature("target", float, 1),
-        directory="model",
+        location="model",
         max_depth=3,
         learning_rate=0.01,
         n_estimators=200,

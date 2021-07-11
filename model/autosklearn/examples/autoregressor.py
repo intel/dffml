@@ -7,7 +7,7 @@ model = AutoSklearnRegressorModel(
         Feature("Feature1", float, 1), Feature("Feature2", float, 1),
     ),
     predict=Feature("TARGET", float, 1),
-    directory="tempdir-python",
+    location="tempdir-python",
     time_left_for_this_task=120,
 )
 

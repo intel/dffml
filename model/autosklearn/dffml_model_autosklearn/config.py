@@ -27,9 +27,9 @@ AutoSklearnConfig = make_config_numpy(
     properties={
         "features": (Features, field("Features to train on")),
         "predict": (Feature, field("Label or the value to be predicted")),
-        "directory": (
+        "location": (
             pathlib.Path,
-            field("Directory where state should be saved",),
+            field("Location where state should be saved",),
         ),
     },
 )
@@ -46,7 +46,7 @@ class AutoSklearnModelContext(ModelContext):
         self._model = None
         self.features = self._get_feature_names()
         self.path = self.filepath(
-            self.parent.config.directory, "trained_model.sav"
+            self.parent.config.location, "trained_model.sav"
         )
         self.load_model()
 
@@ -59,8 +59,8 @@ class AutoSklearnModelContext(ModelContext):
             ret_record.append(record)
         return ret_record
 
-    def filepath(self, directory, file):
-        return directory / file
+    def filepath(self, location, file):
+        return location / file
 
     def load_model(self):
         if self.path.is_file():
