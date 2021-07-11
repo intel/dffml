@@ -216,7 +216,7 @@ class TestRoutesConfigure(TestRoutesRunning, AsyncTestCase):
             Model, "load", new=model_load
         ):
             config = await parse_unknown(
-                "--model-directory",
+                "--model-location",
                 tempdir,
                 "--model-features",
                 "Years:int:1",
@@ -252,7 +252,7 @@ class TestRoutesConfigure(TestRoutesRunning, AsyncTestCase):
 
     async def test_model_config_error(self):
         # Should be directory, not folder
-        config = await parse_unknown("--model-directory", "mymodel_dir")
+        config = await parse_unknown("--model-location", "mymodel_dir")
         with patch.object(Model, "load", new=model_load):
             with self.assertRaisesRegex(ServerException, "missing.*features"):
                 async with self.post(
