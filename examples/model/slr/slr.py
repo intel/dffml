@@ -4,7 +4,7 @@ from dffml.noasync import train, accuracy, predict
 model = SLRModel(
     features=Features(Feature("f1", float, 1)),
     predict=Feature("ans", int, 1),
-    location="tempdir",
+    directory="tempdir",
 )
 
 # Train the model
