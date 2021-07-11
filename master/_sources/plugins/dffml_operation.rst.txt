@@ -150,6 +150,42 @@ Examples
 
 - output: associate_output(type: Dict[str, Any])
 
+.. _plugin_operation_dffml_bz2_compress:
+
+bz2_compress
+~~~~~~~~~~~~
+
+*Official*
+
+No description
+
+**Stage: processing**
+
+
+
+**Inputs**
+
+- input_file_path: decompressed_bz2_file_path(type: str)
+- output_file_path: compressed_bz2_file_path(type: str)
+
+.. _plugin_operation_dffml_bz2_decompress:
+
+bz2_decompress
+~~~~~~~~~~~~~~
+
+*Official*
+
+No description
+
+**Stage: processing**
+
+
+
+**Inputs**
+
+- input_file_path: compressed_bz2_file_path(type: str)
+- output_file_path: decompressed_bz2_file_path(type: str)
+
 .. _plugin_operation_dffml_db_query_create_table:
 
 db_query_create_table
@@ -997,6 +1033,56 @@ The following example shows how to use model_predict.
 
 - model: Entrypoint
 
+.. _plugin_operation_dffml_extract_tar_archive:
+
+extract_tar_archive
+~~~~~~~~~~~~~~~~~~~
+
+*Official*
+
+Extracts a given tar file.
+
+Parameters
+----------
+input_file_path : str
+    Path to the tar file
+output_directory_path : str
+    Path where all the files should be extracted
+
+**Stage: processing**
+
+
+
+**Inputs**
+
+- input_file_path: tar_file(type: str)
+- output_directory_path: directory(type: str)
+
+.. _plugin_operation_dffml_extract_zip_archive:
+
+extract_zip_archive
+~~~~~~~~~~~~~~~~~~~
+
+*Official*
+
+Extracts a given zip file.
+
+Parameters
+----------
+input_file_path : str
+    Path to the zip file
+output_directory_path : str
+    Path where all the files should be extracted
+
+**Stage: processing**
+
+
+
+**Inputs**
+
+- input_file_path: zip_file(type: str)
+- output_directory_path: directory(type: str)
+
 .. _plugin_operation_dffml_get_multi:
 
 get_multi
@@ -1155,6 +1241,42 @@ No description
 
 - output: group_by_output(type: Dict[str, List[Any]])
 
+.. _plugin_operation_dffml_gz_compress:
+
+gz_compress
+~~~~~~~~~~~
+
+*Official*
+
+No description
+
+**Stage: processing**
+
+
+
+**Inputs**
+
+- input_file_path: decompressed_gz_file_path(type: str)
+- output_file_path: compressed_gz_file_path(type: str)
+
+.. _plugin_operation_dffml_gz_decompress:
+
+gz_decompress
+~~~~~~~~~~~~~
+
+*Official*
+
+No description
+
+**Stage: processing**
+
+
+
+**Inputs**
+
+- input_file_path: compressed_gz_file_path(type: str)
+- output_file_path: decompressed_gz_file_path(type: str)
+
 .. _plugin_operation_dffml_literal_eval:
 
 literal_eval
@@ -1215,6 +1337,56 @@ The following example shows how to use literal_eval.
 **Outputs**
 
 - str_after_eval: EvaluatedStr(type: generic)
+
+.. _plugin_operation_dffml_make_tar_archive:
+
+make_tar_archive
+~~~~~~~~~~~~~~~~
+
+*Official*
+
+Creates tar file of a directory.
+
+Parameters
+----------
+input_directory_path : str
+    Path to directory to be archived as a tarfile.
+output_file_path : str
+    Path where the output archive should be saved (should include file name)
+
+**Stage: processing**
+
+
+
+**Inputs**
+
+- input_directory_path: directory(type: str)
+- output_file_path: tar_file(type: str)
+
+.. _plugin_operation_dffml_make_zip_archive:
+
+make_zip_archive
+~~~~~~~~~~~~~~~~
+
+*Official*
+
+Creates zip file of a directory.
+
+Parameters
+----------
+input_directory_path : str
+    Path to directory to be archived
+output_file_path : str
+    Path where the output archive should be saved (should include file name)
+
+**Stage: processing**
+
+
+
+**Inputs**
+
+- input_directory_path: directory(type: str)
+- output_file_path: zip_file(type: str)
 
 .. _plugin_operation_dffml_multiply:
 
@@ -1326,6 +1498,42 @@ print_output example
 **Inputs**
 
 - data: DataToPrint(type: generic)
+
+.. _plugin_operation_dffml_xz_compress:
+
+xz_compress
+~~~~~~~~~~~
+
+*Official*
+
+No description
+
+**Stage: processing**
+
+
+
+**Inputs**
+
+- input_file_path: decompressed_xz_file_path(type: str)
+- output_file_path: compressed_xz_file_path(type: str)
+
+.. _plugin_operation_dffml_xz_decompress:
+
+xz_decompress
+~~~~~~~~~~~~~
+
+*Official*
+
+No description
+
+**Stage: processing**
+
+
+
+**Inputs**
+
+- input_file_path: compressed_xz_file_path(type: str)
+- output_file_path: decompressed_xz_file_path(type: str)
 
 .. _plugin_operation_dffml_feature_git:
 

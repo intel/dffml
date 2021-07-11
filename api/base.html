@@ -94,19 +94,19 @@
               
             
             
-              <p class="caption"><span class="caption-text">Introduction</span></p>
+              <p class="caption" role="heading"><span class="caption-text">Introduction</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../about.html">About</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../concepts/index.html">Concepts</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Usage</span></p>
+<p class="caption" role="heading"><span class="caption-text">Usage</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../quickstart/model.html">Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Examples</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Reference</span></p>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../plugins/index.html">Plugins</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../cli.html">Command Line</a></li>
@@ -135,12 +135,12 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../troubleshooting.html">Troubleshooting</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Subprojects</span></p>
+<p class="caption" role="heading"><span class="caption-text">Subprojects</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../shouldi.html">shouldi</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../swportal.html">Software Portal</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Community</span></p>
+<p class="caption" role="heading"><span class="caption-text">Community</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/intel/dffml">GitHub</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://intel.github.io/dffml/master/">Master Branch Docs</a></li>
@@ -254,7 +254,7 @@ only parameter to the __init__ of a BaseDataFlowFacilitatorObject.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="dffml.base.BaseConfigurable.args">
-<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">args</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">above</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span> </span><a class="reference internal" href="util/cli/arg.html#dffml.util.cli.arg.Arg" title="dffml.util.cli.arg.Arg"><span class="pre">dffml.util.cli.arg.Arg</span></a><span class="p"><span class="pre">]</span></span><a class="reference internal" href="../_modules/dffml/base.html#BaseConfigurable.args"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.base.BaseConfigurable.args" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">args</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">above</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span> </span><a class="reference internal" href="util/cli/arg.html#dffml.util.cli.arg.Arg" title="dffml.util.cli.arg.Arg"><span class="pre">dffml.util.cli.arg.Arg</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/dffml/base.html#BaseConfigurable.args"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.base.BaseConfigurable.args" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a dict containing arguments required for this class</p>
 </dd></dl>
 
@@ -267,12 +267,12 @@ config dict.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="dffml.base.BaseConfigurable.config_get">
-<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">config_get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">above</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#dffml.base.BaseConfig" title="dffml.base.BaseConfig"><span class="pre">dffml.base.BaseConfig</span></a><a class="reference internal" href="../_modules/dffml/base.html#BaseConfigurable.config_get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.base.BaseConfigurable.config_get" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">config_get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">above</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#dffml.base.BaseConfig" title="dffml.base.BaseConfig"><span class="pre">dffml.base.BaseConfig</span></a></span></span><a class="reference internal" href="../_modules/dffml/base.html#BaseConfigurable.config_get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.base.BaseConfigurable.config_get" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="dffml.base.BaseConfigurable.config_set">
-<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">config_set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">above</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#dffml.base.BaseConfig" title="dffml.base.BaseConfig"><span class="pre">dffml.base.BaseConfig</span></a><a class="reference internal" href="../_modules/dffml/base.html#BaseConfigurable.config_set"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.base.BaseConfigurable.config_set" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">config_set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">above</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#dffml.base.BaseConfig" title="dffml.base.BaseConfig"><span class="pre">dffml.base.BaseConfig</span></a></span></span><a class="reference internal" href="../_modules/dffml/base.html#BaseConfigurable.config_set"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.base.BaseConfigurable.config_set" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
