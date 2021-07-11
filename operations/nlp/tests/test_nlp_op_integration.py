@@ -43,7 +43,7 @@ class TestNLPOps(AsyncTestCase):
             cmnd = " ".join(cmnd).split()
             for idx, word in enumerate(cmnd):
                 cmnd[idx] = word.strip()
-            cmnd[cmnd.index("-model-directory") + 1] = directory
+            cmnd[cmnd.index("-model-location") + 1] = directory
             cmnd[cmnd.index("-source-text-dataflow") + 1] = os.path.join(
                 directory, "nlp_ops_dataflow.json",
             )
