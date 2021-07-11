@@ -239,7 +239,7 @@ The following is an example request body to configure a model. The URL this
     "model": {
       "plugin": null,
       "config": {
-        "directory": {
+        "location": {
           "plugin": [
             "/home/user/modeldirs/mymodel"
           ],

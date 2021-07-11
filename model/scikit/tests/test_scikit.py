@@ -95,7 +95,7 @@ class TestScikitModel:
             MemorySource(MemorySourceConfig(records=cls.records))
         )
         properties = {
-            "directory": cls.model_dir.name,
+            "location": cls.model_dir.name,
             "features": cls.features,
         }
         config_fields = dict()

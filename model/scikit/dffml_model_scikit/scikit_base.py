@@ -33,7 +33,7 @@ from dffml.util.crypto import secure_hash
 
 
 class ScikitConfig(ModelConfig, NamedTuple):
-    directory: pathlib.Path
+    location: pathlib.Path
     predict: Feature
     features: Features
     tcluster: Feature
@@ -70,14 +70,14 @@ class ScikitContext(ModelContext):
 
     @property
     def _filepath(self):
-        return self.parent.config.directory / "ScikitFeatures.joblib"
+        return self.parent.config.location / "ScikitFeatures.joblib"
 
     async def __aenter__(self):
         if self._filepath.is_file():
             self.clf = self.joblib.load(str(self._filepath))
         else:
             config = self.parent.config._asdict()
-            del config["directory"]
+            del config["location"]
             del config["predict"]
             del config["features"]
             self.clf = self.parent.SCIKIT_MODEL(**config)
@@ -163,7 +163,7 @@ class ScikitContextUnsprvised(ScikitContext):
             self.clf = self.joblib.load(str(self._filepath))
         else:
             config = self.parent.config._asdict()
-            del config["directory"]
+            del config["location"]
             del config["features"]
             del config["tcluster"]
             del config["predict"]
@@ -281,7 +281,7 @@ class Scikit(Model):
 
     @property
     def _filepath(self):
-        return self.config.directory / "Scikit.json"
+        return self.config.location / "Scikit.json"
 
     async def __aenter__(self) -> "Scikit":
         if self._filepath.is_file():
@@ -296,4 +296,4 @@ class ScikitUnsprvised(Scikit):
     @property
     def _filepath(self):
         model_name = self.SCIKIT_MODEL.__name__
-        return self.config.directory / "ScikitUnsupervised.json"
+        return self.config.location / "ScikitUnsupervised.json"

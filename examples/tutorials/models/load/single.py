@@ -11,7 +11,7 @@ async def main():
     model = SLRModel(
         features=Features(Feature("Years", int, 1)),
         predict=Feature("Salary", int, 1),
-        directory="slr-model",
+        location="slr-model",
     )
 
     # Train the model

@@ -4,7 +4,7 @@ dffml accuracy \
   -model-layers @layers.yaml \
   -model-clstype str \
   -model-classifications ants bees \
-  -model-directory resnet18_model \
+  -model-location resnet18_model \
   -model-imageSize 224 \
   -model-batch_size 32 \
   -model-enableGPU \

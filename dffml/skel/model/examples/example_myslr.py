@@ -6,7 +6,7 @@ from REPLACE_IMPORT_PACKAGE_NAME.myslr import MySLRModel
 model = MySLRModel(
     features=Features(Feature("x", float, 1)),
     predict=Feature("y", int, 1),
-    directory="tempdir",
+    location="tempdir",
 )
 
 # Train the model

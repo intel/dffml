@@ -25,7 +25,7 @@ class TestSLR(AsyncTestCase):
             "Years:int:1",
             "-model-predict",
             "Salary:int:1",
-            "-model-directory",
+            "-model-location",
             directory,
         ]
         # Train the model

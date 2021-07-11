@@ -43,7 +43,7 @@ class TestDNN(AsyncTestCase):
         )
         cls.model = DNNClassifierModel(
             DNNClassifierModelConfig(
-                directory=cls.model_dir.name,
+                location=cls.model_dir.name,
                 steps=1000,
                 epochs=40,
                 hidden=[50, 20, 10],
@@ -71,11 +71,11 @@ class TestDNN(AsyncTestCase):
                 "int",
                 "--model-features",
                 "starts_with_a:int:1",
-                "-model-directory",
+                "-model-location",
                 self.model_dir.name,
             )
         )
-        self.assertEqual(config.directory, pathlib.Path(self.model_dir.name))
+        self.assertEqual(config.location, pathlib.Path(self.model_dir.name))
         self.assertEqual(config.steps, 3000)
         self.assertEqual(config.epochs, 30)
         self.assertEqual(config.hidden, [12, 40, 15])
@@ -93,7 +93,7 @@ class TestDNN(AsyncTestCase):
                 self.model_dir.cleanup()
                 self.model_dir = tempfile.TemporaryDirectory()
                 self.model.config = self.model.config._replace(
-                    directory=self.model_dir.name
+                    location=self.model_dir.name
                 )
                 continue
             self.assertGreater(res, 0.9)

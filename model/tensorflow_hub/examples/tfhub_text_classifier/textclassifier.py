@@ -7,7 +7,7 @@ model = TextClassificationModel(
     predict=Feature("sentiment", int, 1),
     classifications=[0, 1, 2],
     clstype=int,
-    directory="tempdir",
+    location="tempdir",
 )
 
 # Train the model

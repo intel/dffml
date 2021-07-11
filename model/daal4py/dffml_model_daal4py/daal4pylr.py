@@ -23,7 +23,7 @@ from dffml import (
 class DAAL4PyLRModelConfig:
     predict: Feature = field("Label or the value to be predicted")
     features: Features = field("Features to train on. For SLR only 1 allowed")
-    directory: pathlib.Path = field("Directory where state should be saved",)
+    location: pathlib.Path = field("Location where state should be saved",)
 
 
 @entrypoint("daal4pylr")
@@ -80,7 +80,7 @@ class DAAL4PyLRModel(SimpleModel):
             -model daal4pylr \
             -model-features f1:float:1 \
             -model-predict ans:int:1 \
-            -model-directory tempdir \
+            -model-location tempdir \
             -sources f=csv \
             -source-filename train.csv
 
@@ -93,7 +93,7 @@ class DAAL4PyLRModel(SimpleModel):
             -model daal4pylr \
             -model-features f1:float:1 \
             -model-predict ans:int:1 \
-            -model-directory tempdir \
+            -model-location tempdir \
             -sources f=csv \
             -source-filename test.csv
         0.6666666666666666
@@ -108,7 +108,7 @@ class DAAL4PyLRModel(SimpleModel):
             -model daal4pylr \
             -model-features f1:float:1 \
             -model-predict ans:int:1 \
-            -model-directory tempdir \
+            -model-location tempdir \
             -sources f=csv \
             -source-filename /dev/stdin
         [
@@ -159,7 +159,7 @@ class DAAL4PyLRModel(SimpleModel):
         self.lm_predictor = self.d4p.linear_regression_prediction()
         self.ac_predictor = self.d4p.linear_regression_prediction()
         self.path = self.filepath(
-            self.parent.config.directory, "trained_model.sav"
+            self.parent.config.location, "trained_model.sav"
         )
         self.lm_trained = None
         self.load_model()
@@ -177,8 +177,8 @@ class DAAL4PyLRModel(SimpleModel):
         if self.path.is_file():
             self.lm_trained = self.joblib.load(self.path)
 
-    def filepath(self, directory, file_name):
-        return directory / file_name
+    def filepath(self, location, file_name):
+        return location / file_name
 
     async def train(self, sources: Sources) -> None:
         async for record in sources.with_features(

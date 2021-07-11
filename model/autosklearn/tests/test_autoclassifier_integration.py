@@ -63,7 +63,7 @@ class TestAutoClassifierModel(AsyncTestCase):
             cmnd = " ".join(cmnd).split()
             for idx, word in enumerate(cmnd):
                 cmnd[idx] = word.strip()
-            cmnd[cmnd.index("-model-directory") + 1] = directory
+            cmnd[cmnd.index("-model-location") + 1] = directory
             return cmnd
 
         with directory_with_csv_files() as tempdir:

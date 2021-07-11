@@ -28,7 +28,7 @@ from dffml.model.model import ModelContext, Model, ModelNotTrained
 class TensorflowBaseConfig:
     predict: Feature = field("Feature name holding target values")
     features: Features = field("Features to train on")
-    directory: pathlib.Path = field("Directory where state should be saved")
+    location: pathlib.Path = field("Location where state should be saved")
     steps: int = field("Number of steps to train the model", default=3000)
     epochs: int = field(
         "Number of iterations to pass over all records in a source", default=30
@@ -101,15 +101,15 @@ class TensorflowModelContext(ModelContext):
         Creates the path to the model dir by using the provided model dir and
         the sha384 hash of the concatenated feature names.
         """
-        if self.parent.config.directory is None:
+        if self.parent.config.location is None:
             return None
         _to_hash = self.features + list(map(str, self.parent.config.hidden))
         model = "DNNModel"
-        if not os.path.isdir(self.parent.config.directory):
+        if not os.path.isdir(self.parent.config.location):
             raise NotADirectoryError(
-                "%s is not a directory" % (self.parent.config.directory)
+                "%s is not a directory" % (self.parent.config.location)
             )
-        return os.path.join(self.parent.config.directory, model)
+        return os.path.join(self.parent.config.location, model)
 
     async def predict_input_fn(self, sources: SourcesContext, **kwargs):
         """

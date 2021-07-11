@@ -49,7 +49,7 @@ class TestDAAL4PyLRModel(AsyncTestCase):
             cls.test_data.append({"X": x, "Y": y})
         # Create an instance of the model
         cls.model = DAAL4PyLRModel(
-            directory=cls.model_dir.name,
+            location=cls.model_dir.name,
             predict=Feature("Y", float, 1),
             features=Features(Feature("X", float, 1)),
         )

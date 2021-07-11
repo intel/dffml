@@ -5,7 +5,7 @@ dffml train \
   -model-classifications rock paper scissors \
   -model-predict label:int:1 \
   -model-network @model.yaml \
-  -model-directory rps_model \
+  -model-location rps_model \
   -model-loss crossentropyloss \
   -model-optimizer Adam \
   -model-validation_split 0.2 \

@@ -38,7 +38,7 @@ class TextClassifierConfig:
     predict: Feature = field("Feature name holding classification value")
     classifications: List[str] = field("Options for value of classification")
     features: Features = field("Features to train on")
-    directory: pathlib.Path = field("Directory where state should be saved")
+    location: pathlib.Path = field("Location where state should be saved")
     trainable: str = field(
         "Tweak pretrained model by training again", default=True
     )
@@ -111,7 +111,7 @@ class TextClassifierContext(ModelContext):
         return [name for name in self.parent.config.features.names()]
 
     def _model_dir_path(self):
-        if self.parent.config.directory is None:
+        if self.parent.config.location is None:
             return None
         _to_hash = self.features + [
             self.classification,
@@ -120,14 +120,14 @@ class TextClassifierContext(ModelContext):
         ]
         model = secure_hash("".join(_to_hash), algorithm="sha384")
         # Needed to save updated model
-        if not os.path.isdir(self.parent.config.directory):
+        if not os.path.isdir(self.parent.config.location):
             raise NotADirectoryError(
-                "%s is not a directory" % (self.parent.config.directory)
+                "%s is not a directory" % (self.parent.config.location)
             )
         os.makedirs(
-            os.path.join(self.parent.config.directory, model), exist_ok=True
+            os.path.join(self.parent.config.location, model), exist_ok=True
         )
-        return os.path.join(self.parent.config.directory, model)
+        return os.path.join(self.parent.config.location, model)
 
     def _mkcids(self, classifications):
         """

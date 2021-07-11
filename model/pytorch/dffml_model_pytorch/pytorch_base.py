@@ -26,7 +26,7 @@ from .utils import NumpyToTensor, PyTorchLoss, CrossEntropyLossFunction
 class PyTorchModelConfig:
     predict: Feature = field("Feature name holding classification value")
     features: Features = field("Features to train on")
-    directory: pathlib.Path = field("Directory where state should be saved")
+    location: pathlib.Path = field("Location where state should be saved")
     classifications: List[str] = field(
         "Options for value of classification", default=None
     )
@@ -128,15 +128,15 @@ class PyTorchModelContext(ModelContext):
         return [name for name in self.parent.config.features.names()]
 
     def _model_path(self):
-        if self.parent.config.directory is None:
+        if self.parent.config.location is None:
             return None
-        if not os.path.isdir(self.parent.config.directory):
+        if not os.path.isdir(self.parent.config.location):
             raise NotADirectoryError(
-                "%s is not a directory" % (self.parent.config.directory)
+                "%s is not a directory" % (self.parent.config.location)
             )
-        os.makedirs(self.parent.config.directory, exist_ok=True)
+        os.makedirs(self.parent.config.location, exist_ok=True)
 
-        return os.path.join(self.parent.config.directory, "model.pt")
+        return os.path.join(self.parent.config.location, "model.pt")
 
     def _mkcids(self, classifications):
         """
