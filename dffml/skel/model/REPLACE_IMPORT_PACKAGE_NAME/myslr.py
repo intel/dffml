@@ -60,7 +60,7 @@ class MySLRModelConfig:
         "Features to train on (myslr only supports one)"
     )
     predict: Feature = field("Label or the value to be predicted")
-    directory: pathlib.Path = field("Directory where state should be saved")
+    location: pathlib.Path = field("Location where state should be saved")
 
 
 @entrypoint("myslr")
@@ -105,7 +105,7 @@ class MySLRModel(SimpleModel):
             -model myslr \
             -model-features x:float:1 \
             -model-predict y:int:1 \
-            -model-directory tempdir \
+            -model-location tempdir \
             -sources f=csv \
             -source-filename train.csv
 
@@ -118,7 +118,7 @@ class MySLRModel(SimpleModel):
             -model myslr \
             -model-features x:float:1 \
             -model-predict y:int:1 \
-            -model-directory tempdir \
+            -model-location tempdir \
             -sources f=csv \
             -source-filename test.csv
         1.0
@@ -141,7 +141,7 @@ class MySLRModel(SimpleModel):
             -model myslr \
             -model-features x:float:1 \
             -model-predict y:int:1 \
-            -model-directory tempdir \
+            -model-location tempdir \
             -sources f=csv \
             -source-filename predict.csv
         [
