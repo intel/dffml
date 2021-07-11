@@ -27,7 +27,7 @@ from dffml_service_http.routes import DISALLOW_CACHING
 
 @config
 class FakeModelConfig:
-    directory: str
+    location: str
     features: Features
     predict: Feature
 
