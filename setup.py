@@ -127,6 +127,18 @@ setup(
             "db_query_remove = dffml.operation.db:db_query_remove",
             "db_query_insert_or_update = dffml.operation.db:db_query_insert_or_update",
             "db_query_lookup = dffml.operation.db:db_query_lookup",
+            # Archive
+            "make_zip_archive = dffml.operation.archive:make_zip_archive",
+            "extract_zip_archive = dffml.operation.archive:extract_zip_archive",
+            "make_tar_archive = dffml.operation.archive:make_tar_archive",
+            "extract_tar_archive = dffml.operation.archive:extract_tar_archive",
+            # Compression
+            "gz_compress = dffml.operation.compression:gz_compress",
+            "gz_decompress = dffml.operation.compression:gz_decompress",
+            "bz2_compress = dffml.operation.compression:bz2_compress",
+            "bz2_decompress = dffml.operation.compression:bz2_decompress",
+            "xz_compress = dffml.operation.compression:xz_compress",
+            "xz_decompress = dffml.operation.compression:xz_decompress",
         ],
         "dffml.kvstore": ["memory = dffml.df.memory:MemoryKeyValueStore"],
         "dffml.input.network": ["memory = dffml.df.memory:MemoryInputNetwork"],
