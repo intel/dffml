@@ -9,7 +9,7 @@ model = LinearRegressionModel(
         Feature("Trust", float, 1),
     ),
     predict=Feature("Salary", int, 1),
-    directory="tempdir",
+    location="tempdir",
 )
 
 # Train the model

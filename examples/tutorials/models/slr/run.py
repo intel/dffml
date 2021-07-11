@@ -10,7 +10,7 @@ async def main():
     model = MySLRModel(
         features=Features(Feature("Years", int, 1)),
         predict=Feature("Salary", int, 1),
-        directory="model",
+        location="model",
     )
 
     # Train the model
