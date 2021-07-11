@@ -107,7 +107,7 @@ We can now use this dataflow to preprocess the data and make it ready to be fed 
         -model-clstype int \
         -model-predict sentiment:int:1 \
         -model-classifications 0 1 \
-        -model-directory tempdir \
+        -model-location tempdir \
         -model-features embedding:float:[1,10,96] \
         -sources text=df \
         -source-text-dataflow nlp_ops_dataflow.json \
@@ -132,7 +132,7 @@ Assess accuracy:
         -model-clstype int \
         -model-predict sentiment:int:1 \
         -model-classifications 0 1 \
-        -model-directory tempdir \
+        -model-location tempdir \
         -model-features embedding:float:[1,10,96] \
         -sources text=df \
         -source-text-dataflow nlp_ops_dataflow.json \
@@ -165,7 +165,7 @@ Make prediction on test data:
         -model-clstype int \
         -model-predict sentiment:int:1 \
         -model-classifications 0 1 \
-        -model-directory tempdir \
+        -model-location tempdir \
         -model-features embedding:float:[1,10,96] \
         -sources text=df \
         -source-text-dataflow nlp_ops_dataflow.json \
@@ -273,7 +273,7 @@ We can now use this dataflow to preprocess the data and make it ready to be fed 
         -model scikitgnb \
         -model-features extract_array_from_matrix.outputs.result:float:1 \
         -model-predict sentiment:int:1 \
-        -model-directory tempdir \
+        -model-location tempdir \
         -sources text=df \
         -source-text-dataflow nlp_ops_dataflow.json \
         -source-text-features sentence:str:1 \
@@ -290,7 +290,7 @@ Assess accuracy:
         -model scikitgnb \
         -model-features extract_array_from_matrix.outputs.result:float:1 \
         -model-predict sentiment:int:1 \
-        -model-directory tempdir \
+        -model-location tempdir \
         -sources text=df \
         -source-text-dataflow nlp_ops_dataflow.json \
         -source-text-features sentence:str:1 \
@@ -348,7 +348,7 @@ Now we can make prediction on test data:
         -model scikitgnb \
         -model-features extract_array_from_matrix.outputs.result:float:1 \
         -model-predict sentiment:int:1 \
-        -model-directory tempdir \
+        -model-location tempdir \
         -sources temp=json \
         -source-temp-filename test_data_preprocessed.json \
         -pretty

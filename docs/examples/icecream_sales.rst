@@ -142,7 +142,7 @@ and the output being sales.
         -model-hidden 9 18 9 \
         -model-features population:int:1 temperature:float:1 \
         -model-predict sales:int:1 \
-        -model-directory tempdir \
+        -model-location tempdir \
         -sources f=csv \
         -source-filename preprocessed.csv \
         -log debug
@@ -163,7 +163,7 @@ using the accuracy method.
         -model-hidden 9 18 9 \
         -model-features population:int:1 temperature:float:1 \
         -model-predict sales:int:1 \
-        -model-directory tempdir \
+        -model-location tempdir \
         -sources f=csv \
         -source-filename preprocessed.csv \
         -log debug
@@ -188,7 +188,7 @@ for the prediction of sales.
         -model-hidden 9 18 9 \
         -model-features population:int:1 temperature:float:1 \
         -model-predict sales:int:1 \
-        -model-directory tempdir \
+        -model-location tempdir \
         -sources preprocess=df \
         -source-preprocess-dataflow preprocess_ops.json \
         -source-preprocess-features city:str:1 state:str:1 month:int:1 \
