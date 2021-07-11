@@ -224,7 +224,7 @@ async def interpret_message(self, message):
                 *cmds,
                 "-model",
                 model_type,
-                "-model-directory",
+                "-model-location",
                 "tempModel",
                 "-model-features",
                 *features,
