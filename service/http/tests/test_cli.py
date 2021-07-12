@@ -230,7 +230,7 @@ class TestServer(AsyncTestCase):
             model = SLRModel(
                 features=Features(Feature("f1", float, 1)),
                 predict=Feature("ans", int, 1),
-                directory=tempdir,
+                location=tempdir,
             )
 
             # y = m * x + b for equation SLR is solving for
@@ -254,7 +254,7 @@ class TestServer(AsyncTestCase):
                         "0",
                         "-models",
                         "mymodel=slr",
-                        "-model-mymodel-directory",
+                        "-model-mymodel-location",
                         tempdir,
                         "-model-mymodel-features",
                         "f1:float:1",
