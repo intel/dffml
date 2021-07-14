@@ -68,6 +68,7 @@ for extension, compression_cls in SUPPORTED_COMPRESSION_FORMATS.items():
     )
 
     compress = op(
+        name=f"{extension}_compress",
         inputs={
             "input_file_path": decompressed_file_path,
             "output_file_path": compressed_file_path,
@@ -75,6 +76,7 @@ for extension, compression_cls in SUPPORTED_COMPRESSION_FORMATS.items():
         outputs={"output_path": compressed_output_file_path},
     )(make_compress(extension, compression_cls))
     decompress = op(
+        name=f"{extension}_decompress",
         inputs={
             "input_file_path": compressed_file_path,
             "output_file_path": decompressed_file_path,
