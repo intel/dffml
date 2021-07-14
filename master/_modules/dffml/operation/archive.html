@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>dffml.operation.archive &mdash; DFFML 3497822bb documentation</title>
+  <title>dffml.operation.archive &mdash; DFFML 97f39e9ac documentation</title>
   
 
   
@@ -69,7 +69,7 @@
             
             
               <div class="version">
-                3497822bb
+                97f39e9ac
               </div>
             
           
@@ -217,7 +217,8 @@
            <div itemprop="articleBody">
             
   <h1>Source code for dffml.operation.archive</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">tarfile</span>
+<span></span><span class="kn">from</span> <span class="nn">os</span> <span class="kn">import</span> <span class="n">name</span>
+<span class="kn">import</span> <span class="nn">tarfile</span>
 <span class="kn">import</span> <span class="nn">zipfile</span>
 <span class="kn">import</span> <span class="nn">pathlib</span>
 
@@ -229,15 +230,20 @@
 <span class="n">DIRECTORY</span> <span class="o">=</span> <span class="n">Definition</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;directory&quot;</span><span class="p">,</span> <span class="n">primitive</span><span class="o">=</span><span class="s2">&quot;str&quot;</span><span class="p">)</span>
 <span class="n">ZIP_FILE</span> <span class="o">=</span> <span class="n">Definition</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;zip_file&quot;</span><span class="p">,</span> <span class="n">primitive</span><span class="o">=</span><span class="s2">&quot;str&quot;</span><span class="p">)</span>
 <span class="n">TAR_FILE</span> <span class="o">=</span> <span class="n">Definition</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;tar_file&quot;</span><span class="p">,</span> <span class="n">primitive</span><span class="o">=</span><span class="s2">&quot;str&quot;</span><span class="p">)</span>
+<span class="n">OUTPUT_ZIPFILE_PATH</span> <span class="o">=</span> <span class="n">Definition</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;output_zipfile_path&quot;</span><span class="p">,</span> <span class="n">primitive</span><span class="o">=</span><span class="s2">&quot;str&quot;</span><span class="p">)</span>
+<span class="n">OUTPUT_TARFILE_PATH</span> <span class="o">=</span> <span class="n">Definition</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;output_tarfile_path&quot;</span><span class="p">,</span> <span class="n">primitive</span><span class="o">=</span><span class="s2">&quot;str&quot;</span><span class="p">)</span>
+<span class="n">OUTPUT_DIRECTORY_PATH</span> <span class="o">=</span> <span class="n">Definition</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;output_directory_path&quot;</span><span class="p">,</span> <span class="n">primitive</span><span class="o">=</span><span class="s2">&quot;str&quot;</span>
+<span class="p">)</span>
 
 
 <div class="viewcode-block" id="make_zip_archive"><a class="viewcode-back" href="../../../api/operation/archive.html#dffml.operation.archive.make_zip_archive">[docs]</a><span class="nd">@op</span><span class="p">(</span>
     <span class="n">inputs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;input_directory_path&quot;</span><span class="p">:</span> <span class="n">DIRECTORY</span><span class="p">,</span> <span class="s2">&quot;output_file_path&quot;</span><span class="p">:</span> <span class="n">ZIP_FILE</span><span class="p">},</span>
-    <span class="n">outputs</span><span class="o">=</span><span class="p">{},</span>
+    <span class="n">outputs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;output_path&quot;</span><span class="p">:</span> <span class="n">OUTPUT_ZIPFILE_PATH</span><span class="p">},</span>
 <span class="p">)</span>
 <span class="k">async</span> <span class="k">def</span> <span class="nf">make_zip_archive</span><span class="p">(</span>
     <span class="n">input_directory_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">output_file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-<span class="p">):</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Creates zip file of a directory.</span>
 
@@ -247,19 +253,25 @@
 <span class="sd">        Path to directory to be archived</span>
 <span class="sd">    output_file_path : str</span>
 <span class="sd">        Path where the output archive should be saved (should include file name)</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    dict</span>
+<span class="sd">        Path to the output zip file</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">with</span> <span class="n">zipfile</span><span class="o">.</span><span class="n">ZipFile</span><span class="p">(</span><span class="n">output_file_path</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="nb">zip</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">input_directory_path</span><span class="p">)</span><span class="o">.</span><span class="n">rglob</span><span class="p">(</span><span class="s2">&quot;*&quot;</span><span class="p">):</span>
-            <span class="nb">zip</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="n">file</span><span class="o">.</span><span class="n">name</span><span class="p">)</span></div>
+            <span class="nb">zip</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="n">file</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;output_path&quot;</span><span class="p">:</span> <span class="n">output_file_path</span><span class="p">}</span></div>
 
 
 <div class="viewcode-block" id="extract_zip_archive"><a class="viewcode-back" href="../../../api/operation/archive.html#dffml.operation.archive.extract_zip_archive">[docs]</a><span class="nd">@op</span><span class="p">(</span>
     <span class="n">inputs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;input_file_path&quot;</span><span class="p">:</span> <span class="n">ZIP_FILE</span><span class="p">,</span> <span class="s2">&quot;output_directory_path&quot;</span><span class="p">:</span> <span class="n">DIRECTORY</span><span class="p">},</span>
-    <span class="n">outputs</span><span class="o">=</span><span class="p">{},</span>
+    <span class="n">outputs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;output_path&quot;</span><span class="p">:</span> <span class="n">OUTPUT_DIRECTORY_PATH</span><span class="p">},</span>
 <span class="p">)</span>
 <span class="k">async</span> <span class="k">def</span> <span class="nf">extract_zip_archive</span><span class="p">(</span>
     <span class="n">input_file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">output_directory_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-<span class="p">):</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Extracts a given zip file.</span>
 
@@ -269,18 +281,24 @@
 <span class="sd">        Path to the zip file</span>
 <span class="sd">    output_directory_path : str</span>
 <span class="sd">        Path where all the files should be extracted</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    dict</span>
+<span class="sd">        Path to the directory where the archive has been extracted</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">with</span> <span class="n">zipfile</span><span class="o">.</span><span class="n">ZipFile</span><span class="p">(</span><span class="n">input_file_path</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="nb">zip</span><span class="p">:</span>
-        <span class="nb">zip</span><span class="o">.</span><span class="n">extractall</span><span class="p">(</span><span class="n">output_directory_path</span><span class="p">)</span></div>
+        <span class="nb">zip</span><span class="o">.</span><span class="n">extractall</span><span class="p">(</span><span class="n">output_directory_path</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;output_path&quot;</span><span class="p">:</span> <span class="n">output_directory_path</span><span class="p">}</span></div>
 
 
 <div class="viewcode-block" id="make_tar_archive"><a class="viewcode-back" href="../../../api/operation/archive.html#dffml.operation.archive.make_tar_archive">[docs]</a><span class="nd">@op</span><span class="p">(</span>
     <span class="n">inputs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;input_directory_path&quot;</span><span class="p">:</span> <span class="n">DIRECTORY</span><span class="p">,</span> <span class="s2">&quot;output_file_path&quot;</span><span class="p">:</span> <span class="n">TAR_FILE</span><span class="p">},</span>
-    <span class="n">outputs</span><span class="o">=</span><span class="p">{},</span>
+    <span class="n">outputs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;output_path&quot;</span><span class="p">:</span> <span class="n">OUTPUT_TARFILE_PATH</span><span class="p">},</span>
 <span class="p">)</span>
 <span class="k">async</span> <span class="k">def</span> <span class="nf">make_tar_archive</span><span class="p">(</span>
     <span class="n">input_directory_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">output_file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-<span class="p">):</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Creates tar file of a directory.</span>
 
@@ -290,19 +308,25 @@
 <span class="sd">        Path to directory to be archived as a tarfile.</span>
 <span class="sd">    output_file_path : str</span>
 <span class="sd">        Path where the output archive should be saved (should include file name)</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    dict</span>
+<span class="sd">        Path to the created tar file.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">with</span> <span class="n">tarfile</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">output_file_path</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;x&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">tar</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">input_directory_path</span><span class="p">)</span><span class="o">.</span><span class="n">rglob</span><span class="p">(</span><span class="s2">&quot;*&quot;</span><span class="p">):</span>
-            <span class="n">tar</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="n">file</span><span class="o">.</span><span class="n">name</span><span class="p">)</span></div>
+            <span class="n">tar</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="n">file</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;output_path&quot;</span><span class="p">:</span> <span class="n">output_file_path</span><span class="p">}</span></div>
 
 
 <div class="viewcode-block" id="extract_tar_archive"><a class="viewcode-back" href="../../../api/operation/archive.html#dffml.operation.archive.extract_tar_archive">[docs]</a><span class="nd">@op</span><span class="p">(</span>
     <span class="n">inputs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;input_file_path&quot;</span><span class="p">:</span> <span class="n">TAR_FILE</span><span class="p">,</span> <span class="s2">&quot;output_directory_path&quot;</span><span class="p">:</span> <span class="n">DIRECTORY</span><span class="p">},</span>
-    <span class="n">outputs</span><span class="o">=</span><span class="p">{},</span>
+    <span class="n">outputs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;output_path&quot;</span><span class="p">:</span> <span class="n">OUTPUT_DIRECTORY_PATH</span><span class="p">},</span>
 <span class="p">)</span>
 <span class="k">async</span> <span class="k">def</span> <span class="nf">extract_tar_archive</span><span class="p">(</span>
     <span class="n">input_file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">output_directory_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-<span class="p">):</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Extracts a given tar file.</span>
 
@@ -312,9 +336,15 @@
 <span class="sd">        Path to the tar file</span>
 <span class="sd">    output_directory_path : str</span>
 <span class="sd">        Path where all the files should be extracted</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    dict</span>
+<span class="sd">        Path to the directory where the archive has been extracted</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">with</span> <span class="n">tarfile</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">input_file_path</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">tar</span><span class="p">:</span>
-        <span class="n">tar</span><span class="o">.</span><span class="n">extractall</span><span class="p">(</span><span class="n">output_directory_path</span><span class="p">)</span></div>
+        <span class="n">tar</span><span class="o">.</span><span class="n">extractall</span><span class="p">(</span><span class="n">output_directory_path</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;output_path&quot;</span><span class="p">:</span> <span class="n">output_directory_path</span><span class="p">}</span></div>
 </pre></div>
 
            </div>

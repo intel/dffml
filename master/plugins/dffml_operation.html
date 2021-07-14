@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Operations &mdash; DFFML 3497822bb documentation</title>
+  <title>Operations &mdash; DFFML 97f39e9ac documentation</title>
   
 
   
@@ -70,7 +70,7 @@
             
             
               <div class="version">
-                3497822bb
+                97f39e9ac
               </div>
             
           
@@ -487,6 +487,10 @@ the roadmap.</p>
 <li><p>input_file_path: decompressed_bz2_file_path(type: str)</p></li>
 <li><p>output_file_path: compressed_bz2_file_path(type: str)</p></li>
 </ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>output_path: compressed_output_bz2_file_path(type: str)</p></li>
+</ul>
 </div>
 <div class="section" id="bz2-decompress">
 <span id="plugin-operation-dffml-bz2-decompress"></span><h3>bz2_decompress<a class="headerlink" href="#bz2-decompress" title="Permalink to this headline">¶</a></h3>
@@ -497,6 +501,10 @@ the roadmap.</p>
 <ul class="simple">
 <li><p>input_file_path: compressed_bz2_file_path(type: str)</p></li>
 <li><p>output_file_path: decompressed_bz2_file_path(type: str)</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>output_path: decompressed_output_bz2_file_path(type: str)</p></li>
 </ul>
 </div>
 <div class="section" id="db-query-create-table">
@@ -1324,11 +1332,22 @@ This allows you to run a subflow as if it were an operation.</p>
 <dt>output_directory_path<span class="classifier">str</span></dt><dd><p>Path where all the files should be extracted</p>
 </dd>
 </dl>
+</div>
+<div class="section" id="id26">
+<h4>Returns<a class="headerlink" href="#id26" title="Permalink to this headline">¶</a></h4>
+<dl class="simple">
+<dt>dict</dt><dd><p>Path to the directory where the archive has been extracted</p>
+</dd>
+</dl>
 <p><strong>Stage: processing</strong></p>
 <p><strong>Inputs</strong></p>
 <ul class="simple">
 <li><p>input_file_path: tar_file(type: str)</p></li>
 <li><p>output_directory_path: directory(type: str)</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>output_path: output_directory_path(type: str)</p></li>
 </ul>
 </div>
 </div>
@@ -1336,12 +1355,19 @@ This allows you to run a subflow as if it were an operation.</p>
 <span id="plugin-operation-dffml-extract-zip-archive"></span><h3>extract_zip_archive<a class="headerlink" href="#extract-zip-archive" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>Extracts a given zip file.</p>
-<div class="section" id="id26">
-<h4>Parameters<a class="headerlink" href="#id26" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="id27">
+<h4>Parameters<a class="headerlink" href="#id27" title="Permalink to this headline">¶</a></h4>
 <dl class="simple">
 <dt>input_file_path<span class="classifier">str</span></dt><dd><p>Path to the zip file</p>
 </dd>
 <dt>output_directory_path<span class="classifier">str</span></dt><dd><p>Path where all the files should be extracted</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="id28">
+<h4>Returns<a class="headerlink" href="#id28" title="Permalink to this headline">¶</a></h4>
+<dl class="simple">
+<dt>dict</dt><dd><p>Path to the directory where the archive has been extracted</p>
 </dd>
 </dl>
 <p><strong>Stage: processing</strong></p>
@@ -1350,29 +1376,33 @@ This allows you to run a subflow as if it were an operation.</p>
 <li><p>input_file_path: zip_file(type: str)</p></li>
 <li><p>output_directory_path: directory(type: str)</p></li>
 </ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>output_path: output_directory_path(type: str)</p></li>
+</ul>
 </div>
 </div>
 <div class="section" id="get-multi">
 <span id="plugin-operation-dffml-get-multi"></span><h3>get_multi<a class="headerlink" href="#get-multi" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>Output operation to get all Inputs matching given definitions.</p>
-<div class="section" id="id27">
-<h4>Parameters<a class="headerlink" href="#id27" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="id29">
+<h4>Parameters<a class="headerlink" href="#id29" title="Permalink to this headline">¶</a></h4>
 <dl class="simple">
 <dt>spec<span class="classifier">list</span></dt><dd><p>List of definition names. Any Inputs with matching definition will be
 returned.</p>
 </dd>
 </dl>
 </div>
-<div class="section" id="id28">
-<h4>Returns<a class="headerlink" href="#id28" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="id30">
+<h4>Returns<a class="headerlink" href="#id30" title="Permalink to this headline">¶</a></h4>
 <dl class="simple">
 <dt>dict</dt><dd><p>Maps definition names to all the Inputs of that definition</p>
 </dd>
 </dl>
 </div>
-<div class="section" id="id29">
-<h4>Examples<a class="headerlink" href="#id29" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="id31">
+<h4>Examples<a class="headerlink" href="#id31" title="Permalink to this headline">¶</a></h4>
 <p>The following shows how to grab all Inputs with the URL definition. If we
 had we run an operation which output a URL, that output URL would have also
 been returned to us.</p>
@@ -1421,23 +1451,23 @@ been returned to us.</p>
 <span id="plugin-operation-dffml-get-single"></span><h3>get_single<a class="headerlink" href="#get-single" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>Output operation to get a single Input for each definition given.</p>
-<div class="section" id="id30">
-<h4>Parameters<a class="headerlink" href="#id30" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="id32">
+<h4>Parameters<a class="headerlink" href="#id32" title="Permalink to this headline">¶</a></h4>
 <dl class="simple">
 <dt>spec<span class="classifier">list</span></dt><dd><p>List of definition names. An Input with matching definition will be
 returned.</p>
 </dd>
 </dl>
 </div>
-<div class="section" id="id31">
-<h4>Returns<a class="headerlink" href="#id31" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="id33">
+<h4>Returns<a class="headerlink" href="#id33" title="Permalink to this headline">¶</a></h4>
 <dl class="simple">
 <dt>dict</dt><dd><p>Maps definition names to an Input of that definition</p>
 </dd>
 </dl>
 </div>
-<div class="section" id="id32">
-<h4>Examples<a class="headerlink" href="#id32" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="id34">
+<h4>Examples<a class="headerlink" href="#id34" title="Permalink to this headline">¶</a></h4>
 <p>The following shows how to grab an Inputs with the URL definition. If we
 had we run an operation which output a URL, that output URL could have also
 been returned to us.</p>
@@ -1507,6 +1537,10 @@ been returned to us.</p>
 <li><p>input_file_path: decompressed_gz_file_path(type: str)</p></li>
 <li><p>output_file_path: compressed_gz_file_path(type: str)</p></li>
 </ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>output_path: compressed_output_gz_file_path(type: str)</p></li>
+</ul>
 </div>
 <div class="section" id="gz-decompress">
 <span id="plugin-operation-dffml-gz-decompress"></span><h3>gz_decompress<a class="headerlink" href="#gz-decompress" title="Permalink to this headline">¶</a></h3>
@@ -1518,27 +1552,31 @@ been returned to us.</p>
 <li><p>input_file_path: compressed_gz_file_path(type: str)</p></li>
 <li><p>output_file_path: decompressed_gz_file_path(type: str)</p></li>
 </ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>output_path: decompressed_output_gz_file_path(type: str)</p></li>
+</ul>
 </div>
 <div class="section" id="literal-eval">
 <span id="plugin-operation-dffml-literal-eval"></span><h3>literal_eval<a class="headerlink" href="#literal-eval" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>Evaluate the input using ast.literal_eval()</p>
-<div class="section" id="id33">
-<h4>Parameters<a class="headerlink" href="#id33" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="id35">
+<h4>Parameters<a class="headerlink" href="#id35" title="Permalink to this headline">¶</a></h4>
 <dl class="simple">
 <dt>str_to_eval<span class="classifier">str</span></dt><dd><p>A string to be evaluated.</p>
 </dd>
 </dl>
 </div>
-<div class="section" id="id34">
-<h4>Returns<a class="headerlink" href="#id34" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="id36">
+<h4>Returns<a class="headerlink" href="#id36" title="Permalink to this headline">¶</a></h4>
 <dl class="simple">
 <dt>dict</dt><dd><p>A dict containing python literal.</p>
 </dd>
 </dl>
 </div>
-<div class="section" id="id35">
-<h4>Examples<a class="headerlink" href="#id35" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="id37">
+<h4>Examples<a class="headerlink" href="#id37" title="Permalink to this headline">¶</a></h4>
 <p>The following example shows how to use literal_eval.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">asyncio</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="o">*</span>
@@ -1581,12 +1619,19 @@ been returned to us.</p>
 <span id="plugin-operation-dffml-make-tar-archive"></span><h3>make_tar_archive<a class="headerlink" href="#make-tar-archive" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>Creates tar file of a directory.</p>
-<div class="section" id="id36">
-<h4>Parameters<a class="headerlink" href="#id36" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="id38">
+<h4>Parameters<a class="headerlink" href="#id38" title="Permalink to this headline">¶</a></h4>
 <dl class="simple">
 <dt>input_directory_path<span class="classifier">str</span></dt><dd><p>Path to directory to be archived as a tarfile.</p>
 </dd>
 <dt>output_file_path<span class="classifier">str</span></dt><dd><p>Path where the output archive should be saved (should include file name)</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="id39">
+<h4>Returns<a class="headerlink" href="#id39" title="Permalink to this headline">¶</a></h4>
+<dl class="simple">
+<dt>dict</dt><dd><p>Path to the created tar file.</p>
 </dd>
 </dl>
 <p><strong>Stage: processing</strong></p>
@@ -1595,18 +1640,29 @@ been returned to us.</p>
 <li><p>input_directory_path: directory(type: str)</p></li>
 <li><p>output_file_path: tar_file(type: str)</p></li>
 </ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>output_path: output_tarfile_path(type: str)</p></li>
+</ul>
 </div>
 </div>
 <div class="section" id="make-zip-archive">
 <span id="plugin-operation-dffml-make-zip-archive"></span><h3>make_zip_archive<a class="headerlink" href="#make-zip-archive" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>Creates zip file of a directory.</p>
-<div class="section" id="id37">
-<h4>Parameters<a class="headerlink" href="#id37" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="id40">
+<h4>Parameters<a class="headerlink" href="#id40" title="Permalink to this headline">¶</a></h4>
 <dl class="simple">
 <dt>input_directory_path<span class="classifier">str</span></dt><dd><p>Path to directory to be archived</p>
 </dd>
 <dt>output_file_path<span class="classifier">str</span></dt><dd><p>Path where the output archive should be saved (should include file name)</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="id41">
+<h4>Returns<a class="headerlink" href="#id41" title="Permalink to this headline">¶</a></h4>
+<dl class="simple">
+<dt>dict</dt><dd><p>Path to the output zip file</p>
 </dd>
 </dl>
 <p><strong>Stage: processing</strong></p>
@@ -1615,14 +1671,18 @@ been returned to us.</p>
 <li><p>input_directory_path: directory(type: str)</p></li>
 <li><p>output_file_path: zip_file(type: str)</p></li>
 </ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>output_path: output_zipfile_path(type: str)</p></li>
+</ul>
 </div>
 </div>
 <div class="section" id="multiply">
 <span id="plugin-operation-dffml-multiply"></span><h3>multiply<a class="headerlink" href="#multiply" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>Multiply record values</p>
-<div class="section" id="id38">
-<h4>Parameters<a class="headerlink" href="#id38" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="id42">
+<h4>Parameters<a class="headerlink" href="#id42" title="Permalink to this headline">¶</a></h4>
 <dl class="simple">
 <dt>multiplicand<span class="classifier">generic</span></dt><dd><p>An arithmetic type value.</p>
 </dd>
@@ -1630,15 +1690,15 @@ been returned to us.</p>
 </dd>
 </dl>
 </div>
-<div class="section" id="id39">
-<h4>Returns<a class="headerlink" href="#id39" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="id43">
+<h4>Returns<a class="headerlink" href="#id43" title="Permalink to this headline">¶</a></h4>
 <dl class="simple">
 <dt>dict</dt><dd><p>A dict containing the product.</p>
 </dd>
 </dl>
 </div>
-<div class="section" id="id40">
-<h4>Examples<a class="headerlink" href="#id40" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="id44">
+<h4>Examples<a class="headerlink" href="#id44" title="Permalink to this headline">¶</a></h4>
 <p>The following example shows how to use multiply.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">asyncio</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="o">*</span>
@@ -1685,15 +1745,15 @@ been returned to us.</p>
 <span id="plugin-operation-dffml-print-output"></span><h3>print_output<a class="headerlink" href="#print-output" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>Print the output on stdout using python print()</p>
-<div class="section" id="id41">
-<h4>Parameters<a class="headerlink" href="#id41" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="id45">
+<h4>Parameters<a class="headerlink" href="#id45" title="Permalink to this headline">¶</a></h4>
 <dl class="simple">
 <dt>data<span class="classifier">Any</span></dt><dd><p>A python literal to be printed.</p>
 </dd>
 </dl>
 </div>
-<div class="section" id="id42">
-<h4>Examples<a class="headerlink" href="#id42" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="id46">
+<h4>Examples<a class="headerlink" href="#id46" title="Permalink to this headline">¶</a></h4>
 <p>The following example shows how to use print_output.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">asyncio</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="o">*</span>
@@ -1730,6 +1790,10 @@ been returned to us.</p>
 <li><p>input_file_path: decompressed_xz_file_path(type: str)</p></li>
 <li><p>output_file_path: compressed_xz_file_path(type: str)</p></li>
 </ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>output_path: compressed_output_xz_file_path(type: str)</p></li>
+</ul>
 </div>
 <div class="section" id="xz-decompress">
 <span id="plugin-operation-dffml-xz-decompress"></span><h3>xz_decompress<a class="headerlink" href="#xz-decompress" title="Permalink to this headline">¶</a></h3>
@@ -1740,6 +1804,10 @@ been returned to us.</p>
 <ul class="simple">
 <li><p>input_file_path: compressed_xz_file_path(type: str)</p></li>
 <li><p>output_file_path: decompressed_xz_file_path(type: str)</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>output_path: decompressed_output_xz_file_path(type: str)</p></li>
 </ul>
 </div>
 </div>
@@ -2141,8 +2209,8 @@ check it’s releases page to make sure you’re installing the latest version.<
 <p>Converts a collection of text documents to a matrix of token counts using sklearn CountVectorizer’s <cite>fit_transform</cite> method.
 For details on parameters check <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.CountVectorizer.html">https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.CountVectorizer.html</a>
 Parameters specific to this operation are described below.</p>
-<div class="section" id="id43">
-<h4>Parameters<a class="headerlink" href="#id43" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="id47">
+<h4>Parameters<a class="headerlink" href="#id47" title="Permalink to this headline">¶</a></h4>
 <dl class="simple">
 <dt>text<span class="classifier">list</span></dt><dd><p>A list of strings.</p>
 </dd>
@@ -2150,8 +2218,8 @@ Parameters specific to this operation are described below.</p>
 </dd>
 </dl>
 </div>
-<div class="section" id="id44">
-<h4>Returns<a class="headerlink" href="#id44" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="id48">
+<h4>Returns<a class="headerlink" href="#id48" title="Permalink to this headline">¶</a></h4>
 <dl class="simple">
 <dt>result: list</dt><dd><p>A list containing token counts and feature names if <cite>get_feature_names</cite> is <cite>True</cite>.</p>
 </dd>
@@ -2186,8 +2254,8 @@ Parameters specific to this operation are described below.</p>
 <p><em>Official</em></p>
 <p>Returns row from <cite>input_matrix</cite> based on index of <cite>single_text_example</cite>
 in <cite>collected_text</cite>.</p>
-<div class="section" id="id45">
-<h4>Parameters<a class="headerlink" href="#id45" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="id49">
+<h4>Parameters<a class="headerlink" href="#id49" title="Permalink to this headline">¶</a></h4>
 <dl class="simple">
 <dt>single_text_example<span class="classifier">str</span></dt><dd><p>String to be used for indexing into <cite>collected_text</cite>.</p>
 </dd>
@@ -2198,8 +2266,8 @@ to <cite>single_text_example</cite>.</p>
 </dd>
 </dl>
 </div>
-<div class="section" id="id46">
-<h4>Returns<a class="headerlink" href="#id46" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="id50">
+<h4>Returns<a class="headerlink" href="#id50" title="Permalink to this headline">¶</a></h4>
 <p>result: A 1-d array.</p>
 <p><strong>Stage: processing</strong></p>
 <p><strong>Inputs</strong></p>
@@ -2218,8 +2286,8 @@ to <cite>single_text_example</cite>.</p>
 <span id="plugin-operation-dffml-operations-nlp-get-embedding"></span><h3>get_embedding<a class="headerlink" href="#get-embedding" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>Maps words of text data to their corresponding word vectors.</p>
-<div class="section" id="id47">
-<h4>Parameters<a class="headerlink" href="#id47" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="id51">
+<h4>Parameters<a class="headerlink" href="#id51" title="Permalink to this headline">¶</a></h4>
 <dl class="simple">
 <dt>text<span class="classifier">str</span></dt><dd><p>String to be converted to word vectors.</p>
 </dd>
@@ -2235,8 +2303,8 @@ If the length of <cite>text</cite> &lt; <cite>max_len</cite>, <cite>text</cite> 
 </dd>
 </dl>
 </div>
-<div class="section" id="id48">
-<h4>Returns<a class="headerlink" href="#id48" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="id52">
+<h4>Returns<a class="headerlink" href="#id52" title="Permalink to this headline">¶</a></h4>
 <p>result: A 2-d array of shape (max_len, embedding_size of vectors).</p>
 <p><strong>Stage: processing</strong></p>
 <p><strong>Inputs</strong></p>
@@ -2256,8 +2324,8 @@ If the length of <cite>text</cite> &lt; <cite>max_len</cite>, <cite>text</cite> 
 <span id="plugin-operation-dffml-operations-nlp-get-noun-chunks"></span><h3>get_noun_chunks<a class="headerlink" href="#get-noun-chunks" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>Extracts the noun chunks from text.</p>
-<div class="section" id="id49">
-<h4>Parameters<a class="headerlink" href="#id49" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="id53">
+<h4>Parameters<a class="headerlink" href="#id53" title="Permalink to this headline">¶</a></h4>
 <dl class="simple">
 <dt>text<span class="classifier">str</span></dt><dd><p>String to extract noun chunks from.</p>
 </dd>
@@ -2265,8 +2333,8 @@ If the length of <cite>text</cite> &lt; <cite>max_len</cite>, <cite>text</cite> 
 </dd>
 </dl>
 </div>
-<div class="section" id="id50">
-<h4>Returns<a class="headerlink" href="#id50" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="id54">
+<h4>Returns<a class="headerlink" href="#id54" title="Permalink to this headline">¶</a></h4>
 <dl class="simple">
 <dt>result: list</dt><dd><p>A list containing noun chunks.</p>
 </dd>
@@ -2287,8 +2355,8 @@ If the length of <cite>text</cite> &lt; <cite>max_len</cite>, <cite>text</cite> 
 <span id="plugin-operation-dffml-operations-nlp-get-sentences"></span><h3>get_sentences<a class="headerlink" href="#get-sentences" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>Extracts the sentences from text.</p>
-<div class="section" id="id51">
-<h4>Parameters<a class="headerlink" href="#id51" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="id55">
+<h4>Parameters<a class="headerlink" href="#id55" title="Permalink to this headline">¶</a></h4>
 <dl class="simple">
 <dt>text<span class="classifier">str</span></dt><dd><p>String to extract sentences from.</p>
 </dd>
@@ -2297,8 +2365,8 @@ boundaries are calculated from the syntactic dependency parse.</p>
 </dd>
 </dl>
 </div>
-<div class="section" id="id52">
-<h4>Returns<a class="headerlink" href="#id52" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="id56">
+<h4>Returns<a class="headerlink" href="#id56" title="Permalink to this headline">¶</a></h4>
 <dl class="simple">
 <dt>result: list</dt><dd><p>A list containing sentences.</p>
 </dd>
@@ -2319,8 +2387,8 @@ boundaries are calculated from the syntactic dependency parse.</p>
 <span id="plugin-operation-dffml-operations-nlp-get-similarity"></span><h3>get_similarity<a class="headerlink" href="#get-similarity" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>Calculates similarity between two text strings as a score between 0 and 1.</p>
-<div class="section" id="id53">
-<h4>Parameters<a class="headerlink" href="#id53" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="id57">
+<h4>Parameters<a class="headerlink" href="#id57" title="Permalink to this headline">¶</a></h4>
 <dl class="simple">
 <dt>text_1<span class="classifier">str</span></dt><dd><p>First string to compare.</p>
 </dd>
@@ -2330,8 +2398,8 @@ boundaries are calculated from the syntactic dependency parse.</p>
 </dd>
 </dl>
 </div>
-<div class="section" id="id54">
-<h4>Returns<a class="headerlink" href="#id54" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="id58">
+<h4>Returns<a class="headerlink" href="#id58" title="Permalink to this headline">¶</a></h4>
 <dl class="simple">
 <dt>result: float</dt><dd><p>A similarity score between 0 and 1.</p>
 </dd>
@@ -2353,8 +2421,8 @@ boundaries are calculated from the syntactic dependency parse.</p>
 <span id="plugin-operation-dffml-operations-nlp-lemmatizer"></span><h3>lemmatizer<a class="headerlink" href="#lemmatizer" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>Reduce words in the text to their dictionary form (lemma)</p>
-<div class="section" id="id55">
-<h4>Parameters<a class="headerlink" href="#id55" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="id59">
+<h4>Parameters<a class="headerlink" href="#id59" title="Permalink to this headline">¶</a></h4>
 <dl class="simple">
 <dt>text<span class="classifier">str</span></dt><dd><p>String to lemmatize.</p>
 </dd>
@@ -2362,8 +2430,8 @@ boundaries are calculated from the syntactic dependency parse.</p>
 </dd>
 </dl>
 </div>
-<div class="section" id="id56">
-<h4>Returns<a class="headerlink" href="#id56" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="id60">
+<h4>Returns<a class="headerlink" href="#id60" title="Permalink to this headline">¶</a></h4>
 <dl class="simple">
 <dt>result: list</dt><dd><p>A list containing base form of the words.</p>
 </dd>
@@ -2384,8 +2452,8 @@ boundaries are calculated from the syntactic dependency parse.</p>
 <span id="plugin-operation-dffml-operations-nlp-pos-tagger"></span><h3>pos_tagger<a class="headerlink" href="#pos-tagger" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>Assigns part-of-speech tags to text.</p>
-<div class="section" id="id57">
-<h4>Parameters<a class="headerlink" href="#id57" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="id61">
+<h4>Parameters<a class="headerlink" href="#id61" title="Permalink to this headline">¶</a></h4>
 <dl class="simple">
 <dt>text<span class="classifier">str</span></dt><dd><p>Text to be tagged.</p>
 </dd>
@@ -2393,8 +2461,8 @@ boundaries are calculated from the syntactic dependency parse.</p>
 </dd>
 </dl>
 </div>
-<div class="section" id="id58">
-<h4>Returns<a class="headerlink" href="#id58" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="id62">
+<h4>Returns<a class="headerlink" href="#id62" title="Permalink to this headline">¶</a></h4>
 <dl class="simple">
 <dt>result: list</dt><dd><p>A list containing tuples of word and their respective pos tag.</p>
 </dd>
@@ -2416,8 +2484,8 @@ boundaries are calculated from the syntactic dependency parse.</p>
 <span id="plugin-operation-dffml-operations-nlp-remove-stopwords"></span><h3>remove_stopwords<a class="headerlink" href="#remove-stopwords" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>Removes stopword from text data.</p>
-<div class="section" id="id59">
-<h4>Parameters<a class="headerlink" href="#id59" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="id63">
+<h4>Parameters<a class="headerlink" href="#id63" title="Permalink to this headline">¶</a></h4>
 <dl class="simple">
 <dt>text<span class="classifier">str</span></dt><dd><p>String to be cleaned.</p>
 </dd>
@@ -2425,8 +2493,8 @@ boundaries are calculated from the syntactic dependency parse.</p>
 </dd>
 </dl>
 </div>
-<div class="section" id="id60">
-<h4>Returns<a class="headerlink" href="#id60" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="id64">
+<h4>Returns<a class="headerlink" href="#id64" title="Permalink to this headline">¶</a></h4>
 <p>result: A string without stop words.</p>
 <p><strong>Stage: processing</strong></p>
 <p><strong>Inputs</strong></p>
@@ -2446,8 +2514,8 @@ boundaries are calculated from the syntactic dependency parse.</p>
 <p>Convert a collection of raw documents to a matrix of TF-IDF features using sklearn TfidfVectorizer’s <cite>fit_transform</cite> method.
 For details on parameters check <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.TfidfVectorizer.html">https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.TfidfVectorizer.html</a>
 Parameters specific to this operation are described below.</p>
-<div class="section" id="id61">
-<h4>Parameters<a class="headerlink" href="#id61" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="id65">
+<h4>Parameters<a class="headerlink" href="#id65" title="Permalink to this headline">¶</a></h4>
 <dl class="simple">
 <dt>text<span class="classifier">list</span></dt><dd><p>A list of strings.</p>
 </dd>
@@ -2455,8 +2523,8 @@ Parameters specific to this operation are described below.</p>
 </dd>
 </dl>
 </div>
-<div class="section" id="id62">
-<h4>Returns<a class="headerlink" href="#id62" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="id66">
+<h4>Returns<a class="headerlink" href="#id66" title="Permalink to this headline">¶</a></h4>
 <dl class="simple">
 <dt>result: list</dt><dd><p>A list containing token counts and feature names if <cite>get_feature_names</cite> is <cite>True</cite>.</p>
 </dd>

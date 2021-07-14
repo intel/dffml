@@ -168,6 +168,10 @@ No description
 - input_file_path: decompressed_bz2_file_path(type: str)
 - output_file_path: compressed_bz2_file_path(type: str)
 
+**Outputs**
+
+- output_path: compressed_output_bz2_file_path(type: str)
+
 .. _plugin_operation_dffml_bz2_decompress:
 
 bz2_decompress
@@ -185,6 +189,10 @@ No description
 
 - input_file_path: compressed_bz2_file_path(type: str)
 - output_file_path: decompressed_bz2_file_path(type: str)
+
+**Outputs**
+
+- output_path: decompressed_output_bz2_file_path(type: str)
 
 .. _plugin_operation_dffml_db_query_create_table:
 
@@ -1049,6 +1057,11 @@ input_file_path : str
 output_directory_path : str
     Path where all the files should be extracted
 
+Returns
+-------
+dict
+    Path to the directory where the archive has been extracted
+
 **Stage: processing**
 
 
@@ -1057,6 +1070,10 @@ output_directory_path : str
 
 - input_file_path: tar_file(type: str)
 - output_directory_path: directory(type: str)
+
+**Outputs**
+
+- output_path: output_directory_path(type: str)
 
 .. _plugin_operation_dffml_extract_zip_archive:
 
@@ -1074,6 +1091,11 @@ input_file_path : str
 output_directory_path : str
     Path where all the files should be extracted
 
+Returns
+-------
+dict
+    Path to the directory where the archive has been extracted
+
 **Stage: processing**
 
 
@@ -1082,6 +1104,10 @@ output_directory_path : str
 
 - input_file_path: zip_file(type: str)
 - output_directory_path: directory(type: str)
+
+**Outputs**
+
+- output_path: output_directory_path(type: str)
 
 .. _plugin_operation_dffml_get_multi:
 
@@ -1259,6 +1285,10 @@ No description
 - input_file_path: decompressed_gz_file_path(type: str)
 - output_file_path: compressed_gz_file_path(type: str)
 
+**Outputs**
+
+- output_path: compressed_output_gz_file_path(type: str)
+
 .. _plugin_operation_dffml_gz_decompress:
 
 gz_decompress
@@ -1276,6 +1306,10 @@ No description
 
 - input_file_path: compressed_gz_file_path(type: str)
 - output_file_path: decompressed_gz_file_path(type: str)
+
+**Outputs**
+
+- output_path: decompressed_output_gz_file_path(type: str)
 
 .. _plugin_operation_dffml_literal_eval:
 
@@ -1354,6 +1388,11 @@ input_directory_path : str
 output_file_path : str
     Path where the output archive should be saved (should include file name)
 
+Returns
+-------
+dict
+    Path to the created tar file.
+
 **Stage: processing**
 
 
@@ -1362,6 +1401,10 @@ output_file_path : str
 
 - input_directory_path: directory(type: str)
 - output_file_path: tar_file(type: str)
+
+**Outputs**
+
+- output_path: output_tarfile_path(type: str)
 
 .. _plugin_operation_dffml_make_zip_archive:
 
@@ -1379,6 +1422,11 @@ input_directory_path : str
 output_file_path : str
     Path where the output archive should be saved (should include file name)
 
+Returns
+-------
+dict
+    Path to the output zip file
+
 **Stage: processing**
 
 
@@ -1387,6 +1435,10 @@ output_file_path : str
 
 - input_directory_path: directory(type: str)
 - output_file_path: zip_file(type: str)
+
+**Outputs**
+
+- output_path: output_zipfile_path(type: str)
 
 .. _plugin_operation_dffml_multiply:
 
@@ -1517,6 +1569,10 @@ No description
 - input_file_path: decompressed_xz_file_path(type: str)
 - output_file_path: compressed_xz_file_path(type: str)
 
+**Outputs**
+
+- output_path: compressed_output_xz_file_path(type: str)
+
 .. _plugin_operation_dffml_xz_decompress:
 
 xz_decompress
@@ -1534,6 +1590,10 @@ No description
 
 - input_file_path: compressed_xz_file_path(type: str)
 - output_file_path: decompressed_xz_file_path(type: str)
+
+**Outputs**
+
+- output_path: decompressed_output_xz_file_path(type: str)
 
 .. _plugin_operation_dffml_feature_git:
 

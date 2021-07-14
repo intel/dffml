@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Operation Archive &mdash; DFFML 3497822bb documentation</title>
+  <title>Operation Archive &mdash; DFFML 97f39e9ac documentation</title>
   
 
   
@@ -70,7 +70,7 @@
             
             
               <div class="version">
-                3497822bb
+                97f39e9ac
               </div>
             
           
@@ -266,7 +266,7 @@
 <span id="operation-archive"></span><h1>Operation Archive<a class="headerlink" href="#module-dffml.operation.archive" title="Permalink to this headline">¶</a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="dffml.operation.archive.extract_tar_archive">
-<em class="property"><span class="pre">async</span> </em><span class="sig-prename descclassname"><span class="pre">dffml.operation.archive.</span></span><span class="sig-name descname"><span class="pre">extract_tar_archive</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_file_path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_directory_path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/operation/archive.html#extract_tar_archive"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.operation.archive.extract_tar_archive" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">async</span> </em><span class="sig-prename descclassname"><span class="pre">dffml.operation.archive.</span></span><span class="sig-name descname"><span class="pre">extract_tar_archive</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_file_path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_directory_path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><span class="pre">dict</span></a></span></span><a class="reference internal" href="../../_modules/dffml/operation/archive.html#extract_tar_archive"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.operation.archive.extract_tar_archive" title="Permalink to this definition">¶</a></dt>
 <dd><p>Extracts a given tar file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -275,12 +275,18 @@
 <li><p><strong>output_directory_path</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – Path where all the files should be extracted</p></li>
 </ul>
 </dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Path to the directory where the archive has been extracted</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)">dict</a></p>
+</dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="dffml.operation.archive.extract_zip_archive">
-<em class="property"><span class="pre">async</span> </em><span class="sig-prename descclassname"><span class="pre">dffml.operation.archive.</span></span><span class="sig-name descname"><span class="pre">extract_zip_archive</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_file_path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_directory_path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/operation/archive.html#extract_zip_archive"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.operation.archive.extract_zip_archive" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">async</span> </em><span class="sig-prename descclassname"><span class="pre">dffml.operation.archive.</span></span><span class="sig-name descname"><span class="pre">extract_zip_archive</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_file_path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_directory_path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><span class="pre">dict</span></a></span></span><a class="reference internal" href="../../_modules/dffml/operation/archive.html#extract_zip_archive"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.operation.archive.extract_zip_archive" title="Permalink to this definition">¶</a></dt>
 <dd><p>Extracts a given zip file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -289,12 +295,18 @@
 <li><p><strong>output_directory_path</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – Path where all the files should be extracted</p></li>
 </ul>
 </dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Path to the directory where the archive has been extracted</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)">dict</a></p>
+</dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="dffml.operation.archive.make_tar_archive">
-<em class="property"><span class="pre">async</span> </em><span class="sig-prename descclassname"><span class="pre">dffml.operation.archive.</span></span><span class="sig-name descname"><span class="pre">make_tar_archive</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_directory_path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_file_path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/operation/archive.html#make_tar_archive"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.operation.archive.make_tar_archive" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">async</span> </em><span class="sig-prename descclassname"><span class="pre">dffml.operation.archive.</span></span><span class="sig-name descname"><span class="pre">make_tar_archive</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_directory_path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_file_path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><span class="pre">dict</span></a></span></span><a class="reference internal" href="../../_modules/dffml/operation/archive.html#make_tar_archive"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.operation.archive.make_tar_archive" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates tar file of a directory.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -303,12 +315,18 @@
 <li><p><strong>output_file_path</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – Path where the output archive should be saved (should include file name)</p></li>
 </ul>
 </dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Path to the created tar file.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)">dict</a></p>
+</dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="dffml.operation.archive.make_zip_archive">
-<em class="property"><span class="pre">async</span> </em><span class="sig-prename descclassname"><span class="pre">dffml.operation.archive.</span></span><span class="sig-name descname"><span class="pre">make_zip_archive</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_directory_path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_file_path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/operation/archive.html#make_zip_archive"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.operation.archive.make_zip_archive" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">async</span> </em><span class="sig-prename descclassname"><span class="pre">dffml.operation.archive.</span></span><span class="sig-name descname"><span class="pre">make_zip_archive</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_directory_path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_file_path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><span class="pre">dict</span></a></span></span><a class="reference internal" href="../../_modules/dffml/operation/archive.html#make_zip_archive"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.operation.archive.make_zip_archive" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates zip file of a directory.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -316,6 +334,12 @@
 <li><p><strong>input_directory_path</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – Path to directory to be archived</p></li>
 <li><p><strong>output_file_path</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – Path where the output archive should be saved (should include file name)</p></li>
 </ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Path to the output zip file</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)">dict</a></p>
 </dd>
 </dl>
 </dd></dl>
