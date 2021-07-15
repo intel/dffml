@@ -286,7 +286,7 @@ async def cached_download_unpack_archive(
     ...     )
     ... )
     >>> print(len(list(dffml_dir.rglob("**/*"))))
-    495
+    124
     """
 
     def on_error(func, path, exc_info):
