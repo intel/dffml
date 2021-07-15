@@ -6,8 +6,10 @@ import inspect
 import functools
 import contextlib
 import dataclasses
+import email.message
 import urllib.request
-from typing import List, Union
+from typing import List, Union, Tuple
+
 from .os import chdir
 from .file import validate_file_hash
 from .log import LOGGER, get_download_logger
@@ -136,14 +138,15 @@ def sync_urlretrieve(
     url: Union[str, urllib.request.Request],
     protocol_allowlist: List[str] = DEFAULT_PROTOCOL_ALLOWLIST,
     **kwargs,
-):
+) -> Tuple[pathlib.Path, email.message.EmailMessage]:
     """
     Check that ``url`` has a protocol defined in ``protocol_allowlist``, then
     return the result of calling :py:func:`urllib.request.urlretrieve` passing
     it ``url`` and any keyword arguments.
     """
     validate_protocol(url, protocol_allowlist=protocol_allowlist)
-    return urllib.request.urlretrieve(url, **kwargs)
+    path, headers = urllib.request.urlretrieve(url, **kwargs)
+    return pathlib.Path(path), headers
 
 
 def sync_urlretrieve_and_validate(
