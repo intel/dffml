@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>dffml.source.dataset.iris &mdash; DFFML 1d84c2e97 documentation</title>
+  <title>dffml.source.dataset.iris &mdash; DFFML ca3e51f7b documentation</title>
   
 
   
@@ -69,7 +69,7 @@
             
             
               <div class="version">
-                1d84c2e97
+                ca3e51f7b
               </div>
             
           
@@ -226,7 +226,7 @@
 
 
 <div class="viewcode-block" id="iris_training"><a class="viewcode-back" href="../../../../api/source/dataset/iris.html#dffml.source.dataset.iris.iris_training">[docs]</a><span class="nd">@dataset_source</span><span class="p">(</span><span class="s2">&quot;iris.training&quot;</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">iris_training</span><span class="p">(</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">iris_training</span><span class="p">(</span>
     <span class="n">cache_dir</span><span class="p">:</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span> <span class="o">=</span> <span class="p">(</span>
         <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;~&quot;</span><span class="p">,</span> <span class="s2">&quot;.cache&quot;</span><span class="p">,</span> <span class="s2">&quot;dffml&quot;</span><span class="p">,</span> <span class="s2">&quot;datasets&quot;</span><span class="p">,</span> <span class="s2">&quot;iris&quot;</span><span class="p">)</span>
         <span class="o">.</span><span class="n">expanduser</span><span class="p">()</span>
@@ -237,6 +237,11 @@
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
 
+<span class="sd">    .. code-block:: console</span>
+<span class="sd">        :test:</span>
+
+<span class="sd">        $ dffml list records -sources training=iris.training</span>
+
 <span class="sd">    &gt;&gt;&gt; from dffml.noasync import load</span>
 <span class="sd">    &gt;&gt;&gt; from dffml import iris_training</span>
 <span class="sd">    &gt;&gt;&gt;</span>
@@ -246,23 +251,24 @@
 <span class="sd">    &gt;&gt;&gt; records[0].export()</span>
 <span class="sd">    {&#39;key&#39;: &#39;0&#39;, &#39;features&#39;: {&#39;SepalLength&#39;: 6.4, &#39;SepalWidth&#39;: 2.8, &#39;PetalLength&#39;: 5.6, &#39;PetalWidth&#39;: 2.2, &#39;classification&#39;: 2}, &#39;extra&#39;: {}}</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">with</span> <span class="n">cached_download</span><span class="p">(</span>
+    <span class="n">original_path</span> <span class="o">=</span> <span class="k">await</span> <span class="n">cached_download</span><span class="p">(</span>
         <span class="s2">&quot;http://download.tensorflow.org/data/iris_training.csv&quot;</span><span class="p">,</span>
         <span class="n">cache_dir</span> <span class="o">/</span> <span class="s2">&quot;training_original.csv&quot;</span><span class="p">,</span>
         <span class="s2">&quot;376c8ea3b7f85caff195b4abe62f34e8f4e7aece8bd087bbd746518a9d1fd60ae3b4274479f88ab0aa5c839460d535ef&quot;</span><span class="p">,</span>
-    <span class="p">)</span> <span class="k">as</span> <span class="n">original_path</span><span class="p">:</span>
-        <span class="c1"># Create a CSV source using header replaced file</span>
-        <span class="k">yield</span> <span class="n">CSVSource</span><span class="p">(</span>
-            <span class="n">filename</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span>
-                <span class="n">find_replace_with_hash_validation</span><span class="p">(</span>
-                    <span class="n">original_path</span><span class="p">,</span>
-                    <span class="n">cache_dir</span> <span class="o">/</span> <span class="s2">&quot;training.csv&quot;</span><span class="p">,</span>
-                    <span class="sa">r</span><span class="s2">&quot;.*setosa,versicolor,virginica&quot;</span><span class="p">,</span>
-                    <span class="s2">&quot;SepalLength,SepalWidth,PetalLength,PetalWidth,classification&quot;</span><span class="p">,</span>
-                    <span class="n">expected_sha384_hash</span><span class="o">=</span><span class="s2">&quot;946d1bb691d6a2ca5037028a0c6ac29d68f4026e293fd64f985a61cf31fb72b19d50baa61038398442430db8af926bbd&quot;</span><span class="p">,</span>
-                <span class="p">)</span>
+        <span class="n">protocol_allowlist</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;http://&quot;</span><span class="p">],</span>
+    <span class="p">)</span>
+    <span class="c1"># Create a CSV source using header replaced file</span>
+    <span class="k">yield</span> <span class="n">CSVSource</span><span class="p">(</span>
+        <span class="n">filename</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span>
+            <span class="n">find_replace_with_hash_validation</span><span class="p">(</span>
+                <span class="n">original_path</span><span class="p">,</span>
+                <span class="n">cache_dir</span> <span class="o">/</span> <span class="s2">&quot;training.csv&quot;</span><span class="p">,</span>
+                <span class="sa">r</span><span class="s2">&quot;.*setosa,versicolor,virginica&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;SepalLength,SepalWidth,PetalLength,PetalWidth,classification&quot;</span><span class="p">,</span>
+                <span class="n">expected_sha384_hash</span><span class="o">=</span><span class="s2">&quot;946d1bb691d6a2ca5037028a0c6ac29d68f4026e293fd64f985a61cf31fb72b19d50baa61038398442430db8af926bbd&quot;</span><span class="p">,</span>
             <span class="p">)</span>
-        <span class="p">)</span></div>
+        <span class="p">)</span>
+    <span class="p">)</span></div>
 </pre></div>
 
            </div>
