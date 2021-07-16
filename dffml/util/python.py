@@ -59,11 +59,22 @@ def modules(
     ...     return (root / "dom") in path.parents or path.name.startswith("__")
     ...
     >>> # Print the first module
-    >>> for import_name, module in dffml.modules(root, package_name, skip=skip):
-    ...     print(import_name)
-    ...     break
+    >>> for import_name, module in sorted(
+    ...         dffml.modules(root, package_name, skip=skip),
+    ...         key=lambda import_name_and_module: import_name_and_module[0],
+    ...     ):
+    ...     print(import_name, sorted(module.__dict__.keys())[0])
     ...
-    xml.sax.expatreader
+    xml.etree.ElementInclude ElementTree
+    xml.etree.ElementPath _SelectorContext
+    xml.etree.ElementTree Comment
+    xml.etree.cElementTree Comment
+    xml.parsers.expat EXPAT_VERSION
+    xml.sax._exceptions SAXException
+    xml.sax.expatreader AttributesImpl
+    xml.sax.handler ContentHandler
+    xml.sax.saxutils XMLFilterBase
+    xml.sax.xmlreader AttributesImpl
     """
     for path in pathlib.Path(root).rglob("*.py"):
         # Figure out name
