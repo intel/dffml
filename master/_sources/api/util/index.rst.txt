@@ -6,6 +6,7 @@ Util
     :caption: Contents:
 
     os
+    python
     asynctestcase
     display
     crypto
