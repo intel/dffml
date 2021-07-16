@@ -116,7 +116,7 @@ class Definition(NamedTuple):
             # typing.NamedTuple API as of 3.7 does not provide a clean way to
             # create a new NamedTuple class where you specify the type hinting
             # and the default values. The following is based on looking at the
-            # soruce code
+            # source code
             # https://github.com/python/cpython/blob/3.7/Lib/typing.py#L1360
             # and seeing that we can hijack the __annotations__ property to
             # allow us to set default values
@@ -332,7 +332,7 @@ class Input(object):
         uid: Optional[str] = "",
     ):
         # NOTE For some reason doctests end up with id(type(definition)) not
-        # equal to id(Definition). Therfore just compare the class name.
+        # equal to id(Definition). Therefore just compare the class name.
         if definition.__class__.__qualname__ != "Definition":
             raise TypeError("Input given non definition")
         # TODO Add optional parameter Input.target which specifies the operation
@@ -553,7 +553,7 @@ class DataFlow:
         for operation in args:
             name = getattr(getattr(operation, "op", operation), "name")
             if name in operations:
-                raise ValueError("Operation given as possitional and in dict")
+                raise ValueError("Operation given as positional and in dict")
             operations[name] = operation
 
         self.operations = operations
