@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>MNIST Handwriten Digits &mdash; DFFML 5f9a550f2 documentation</title>
+  <title>MNIST Handwriten Digits &mdash; DFFML 5c1d437ea documentation</title>
   
 
   
@@ -70,7 +70,7 @@
             
             
               <div class="version">
-                5f9a550f2
+                5c1d437ea
               </div>
             
           
@@ -309,7 +309,7 @@ and the seed to have the input of the associate_definition operation come from t
     -model-clstype int \
     -model-predict label:int:1 \
     -model-classifications $(seq 0 9) \
-    -model-directory tempdir \
+    -model-location tempdir \
     -model-features image:int:$((28 * 28)) \
     -sources images=df label=idx1 \
     -source-images-dataflow normalize.yaml \
@@ -329,7 +329,7 @@ and the seed to have the input of the associate_definition operation come from t
     -model-hidden 30 50 25 \
     -model-clstype int \
     -model-predict label:int:1 \
-    -model-directory tempdir \
+    -model-location tempdir \
     -model-classifications $(seq 0 9) \
     -model-features image:int:$((28 * 28)) \
     -sources images=df label=idx1 \
@@ -388,7 +388,7 @@ and to have the input of the associate_definition operation come from the output
     -model-hidden 30 50 25 \
     -model-clstype int \
     -model-predict label:int:1 \
-    -model-directory tempdir \
+    -model-location tempdir \
     -model-classifications $(seq 0 9) \
     -model-features image:int:$((28 * 28)) \
     -sources images=df \

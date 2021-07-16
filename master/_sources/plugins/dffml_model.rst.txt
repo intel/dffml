@@ -57,7 +57,7 @@ Train the model
         -model slr \
         -model-features f1:float:1 \
         -model-predict ans:int:1 \
-        -model-directory tempdir \
+        -model-location tempdir \
         -sources f=csv \
         -source-filename dataset.csv
 
@@ -70,7 +70,7 @@ Assess the accuracy
         -model slr \
         -model-features f1:float:1 \
         -model-predict ans:int:1 \
-        -model-directory tempdir \
+        -model-location tempdir \
         -sources f=csv \
         -source-filename dataset.csv
     1.0
@@ -93,7 +93,7 @@ Make a prediction
         -model slr \
         -model-features f1:float:1 \
         -model-predict ans:int:1 \
-        -model-directory tempdir \
+        -model-location tempdir \
         -sources f=csv \
         -source-filename predict.csv
     [
@@ -137,9 +137,9 @@ Example usage of Logistic Regression using Python
 
   - Features to train on. For SLR only 1 allowed
 
-- directory: Path
+- location: Path
 
-  - Directory where state should be saved
+  - Location where state should be saved
 
 .. _plugin_model_dffml_model_tensorflow:
 
@@ -234,9 +234,9 @@ Example usage of Tensorflow DNNClassifier model using python API
 
   - Features to train on
 
-- directory: Path
+- location: Path
 
-  - Directory where state should be saved
+  - Location where state should be saved
 
 - steps: Integer
 
@@ -354,9 +354,9 @@ predict).
 
   - Features to train on
 
-- directory: Path
+- location: Path
 
-  - Directory where state should be saved
+  - Location where state should be saved
 
 - steps: Integer
 
@@ -434,7 +434,7 @@ Run the train command
           PetalLength:float:1 \
           PetalWidth:float:1 \
         -model-predict classification \
-        -model-directory model \
+        -model-location model \
         -model-max_depth 3 \
         -model-learning_rate 0.01 \
         -model-learning_rate 0.01 \
@@ -461,7 +461,7 @@ Assess the accuracy
           PetalLength:float:1 \
           PetalWidth:float:1 \
         -model-predict classification \
-        -model-directory model 
+        -model-location model 
 
 
 Make predictions
@@ -479,7 +479,7 @@ Make predictions
           PetalLength:float:1 \
           PetalWidth:float:1 \
         -model-predict classification \
-        -model-directory model 
+        -model-location model 
         
 
 Python usage
@@ -495,9 +495,9 @@ Output
 
 **Args**
 
-- directory: Path
+- location: Path
 
-  - Directory where model should be saved
+  - Location where model should be saved
 
 - features: List of features
 
@@ -609,7 +609,7 @@ Run the train command
           PetalLength:float:1 \
           PetalWidth:float:1 \
         -model-predict classification \
-        -model-directory model \
+        -model-location model \
         -model-max_depth 3 \
         -model-learning_rate 0.01 \
         -model-n_estimators 200 \
@@ -635,7 +635,7 @@ Assess the accuracy
           PetalLength:float:1 \
           PetalWidth:float:1 \
         -model-predict classification \
-        -model-directory model 
+        -model-location model 
     
 Output
 
@@ -659,7 +659,7 @@ Make predictions
           PetalLength:float:1 \
           PetalWidth:float:1 \
         -model-predict classification \
-        -model-directory model 
+        -model-location model 
 
 Python usage
 
@@ -680,9 +680,9 @@ Output
 
 **Args**
 
-- directory: Path
+- location: Path
 
-  - Directory where model should be saved
+  - Location where model should be saved
 
 - features: List of features
 
@@ -820,9 +820,9 @@ Output
 
   - Feature to predict
 
-- directory: Path
+- location: Path
 
-  - Directory where state should be saved
+  - Location where state should be saved
 
 - class_cost: List of features
 
@@ -968,9 +968,9 @@ Example usage of Tensorflow_hub Text Classifier model using python API
 
   - Features to train on
 
-- directory: Path
+- location: Path
 
-  - Directory where state should be saved
+  - Location where state should be saved
 
 - trainable: String
 
@@ -1122,7 +1122,7 @@ Train the model
         -source-opimp dffml_model_spacy.ner.utils:parser \
         -source-args train.json False \
         -model-model_name_or_path en_core_web_sm \
-        -model-directory temp \
+        -model-location temp \
         -model-n_iter 5 \
         -log debug
 
@@ -1137,7 +1137,7 @@ Assess the accuracy
         -source-opimp dffml_model_spacy.ner.utils:parser \
         -source-args train.json False \
         -model-model_name_or_path en_core_web_sm \
-        -model-directory temp \
+        -model-location temp \
         -model-n_iter 5 \
         -log debug
     0.0
@@ -1153,7 +1153,7 @@ Make a prediction
         -source-opimp dffml_model_spacy.ner.utils:parser \
         -source-args test.json True \
         -model-model_name_or_path en_core_web_sm \
-        -model-directory temp \
+        -model-location temp \
         -model-n_iter 5 \
         -log debug
     [
@@ -1210,9 +1210,9 @@ is value of the flag `is_predicting`.
 
 **Args**
 
-- directory: String
+- location: String
 
-  - Output directory
+  - Output location
 
 - model_name_or_path: String
 
@@ -1318,7 +1318,7 @@ Train the model
         -model anomalydetection \
         -model-features A:float:2 \
         -model-predict Y:int:1  \
-        -model-directory tempdir
+        -model-location tempdir
 
 Assess the accuracy
 
@@ -1331,7 +1331,7 @@ Assess the accuracy
         -model anomalydetection \
         -model-features A:float:2 \
         -model-predict Y:int:1 \
-        -model-directory tempdir
+        -model-location tempdir
 
 
 Make predictions
@@ -1345,7 +1345,7 @@ Make predictions
         -model anomalydetection \
         -model-features A:float:2 \
         -model-predict Y:int:1 \
-        -model-directory tempdir
+        -model-location tempdir
 
 
 Python usage
@@ -1373,9 +1373,9 @@ Output
 
   - Label or the value to be predicted
 
-- directory: Path
+- location: Path
 
-  - Directory where state should be saved
+  - Location where state should be saved
 
 - k: float
 
@@ -1449,9 +1449,9 @@ Example usage of Logistic Regression using Python
 
   - Features to train on
 
-- directory: Path
+- location: Path
 
-  - Directory where state should be saved
+  - Location where state should be saved
 
 .. _plugin_model_dffml_model_scikit:
 
@@ -1477,7 +1477,7 @@ Training:
         -model SCIKIT_MODEL_ENTRYPOINT \
         -model-features FEATURE_DEFINITION \
         -model-predict TO_PREDICT \
-        -model-directory MODEL_DIRECTORY \
+        -model-location MODEL_DIRECTORY \
         -model-SCIKIT_PARAMETER_NAME SCIKIT_PARAMETER_VALUE \
         -sources f=TRAINING_DATA_SOURCE_TYPE \
         -source-filename TRAINING_DATA_FILE_NAME \
@@ -1491,7 +1491,7 @@ Testing and Accuracy:
         -model SCIKIT_MODEL_ENTRYPOINT \
         -model-features FEATURE_DEFINITION \
         -model-predict TO_PREDICT \
-        -model-directory MODEL_DIRECTORY \
+        -model-location MODEL_DIRECTORY \
         -sources f=TESTING_DATA_SOURCE_TYPE \
         -source-filename TESTING_DATA_FILE_NAME \
         -log debug
@@ -1504,7 +1504,7 @@ Predicting with trained model:
         -model SCIKIT_MODEL_ENTRYPOINT \
         -model-features FEATURE_DEFINITION \
         -model-predict TO_PREDICT \
-        -model-directory MODEL_DIRECTORY \
+        -model-location MODEL_DIRECTORY \
         -sources f=PREDICT_DATA_SOURCE_TYPE \
         -source-filename PREDICT_DATA_FILE_NAME \
         -log debug
@@ -1687,7 +1687,7 @@ Example below uses KMeans Clustering Model on a small randomly generated dataset
     $ dffml train \
         -model scikitkmeans \
         -model-features Col1:float:1 Col2:float:1 Col3:float:1 Col4:float:1 \
-        -model-directory tempdir \
+        -model-location tempdir \
         -sources f=csv \
         -source-filename train.csv \
         -source-readonly \
@@ -1696,7 +1696,7 @@ Example below uses KMeans Clustering Model on a small randomly generated dataset
         -model scikitkmeans \
         -model-features Col1:float:1 Col2:float:1 Col3:float:1 Col4:float:1\
         -model-tcluster cluster:int:1 \
-        -model-directory tempdir \
+        -model-location tempdir \
         -sources f=csv \
         -source-filename test.csv \
         -source-readonly \
@@ -1706,7 +1706,7 @@ Example below uses KMeans Clustering Model on a small randomly generated dataset
       dffml predict all \
         -model scikitkmeans \
         -model-features Col1:float:1 Col2:float:1 Col3:float:1 Col4:float:1 \
-        -model-directory tempdir \
+        -model-location tempdir \
         -sources f=csv \
         -source-filename /dev/stdin \
         -source-readonly \
@@ -1745,7 +1745,7 @@ Example usage of KMeans Clustering Model using python API:
             Feature("Col4", float, 1),
         ),
         tcluster=Feature("cluster", int, 1),
-        directory="tempdir",
+        location="tempdir",
     )
 
     # Train the model
@@ -1782,9 +1782,9 @@ Ensure that `predict` and `accuracy` for these algorithms uses training data.
 
   - Features to train on
 
-- directory: Path
+- location: Path
 
-  - Directory where state should be saved
+  - Location where state should be saved
 
 
 
@@ -1811,7 +1811,7 @@ Training:
         -model PYTORCH_MODEL_ENTRYPOINT \
         -model-features FEATURE_DEFINITION \
         -model-predict TO_PREDICT \
-        -model-directory MODEL_DIRECTORY \
+        -model-location MODEL_LOCATION \
         -model-CONFIGS CONFIG_VALUES \
         -sources f=TRAINING_DATA_SOURCE_TYPE \
         -source-CONFIGS TRAINING_DATA \
@@ -1825,7 +1825,7 @@ Testing and Accuracy:
         -model PYTORCH_MODEL_ENTRYPOINT \
         -model-features FEATURE_DEFINITION \
         -model-predict TO_PREDICT \
-        -model-directory MODEL_DIRECTORY \
+        -model-location MODEL_LOCATION \
         -model-CONFIGS CONFIG_VALUES \
         -sources f=TESTING_DATA_SOURCE_TYPE \
         -source-CONFIGS TESTING_DATA \
@@ -1839,7 +1839,7 @@ Predicting with trained model:
         -model PYTORCH_MODEL_ENTRYPOINT \
         -model-features FEATURE_DEFINITION \
         -model-predict TO_PREDICT \
-        -model-directory MODEL_DIRECTORY \
+        -model-location MODEL_LOCATION \
         -model-CONFIGS CONFIG_VALUES \
         -sources f=PREDICT_DATA_SOURCE_TYPE \
         -source-CONFIGS PREDICTION_DATA \
@@ -1984,9 +1984,9 @@ No description
 
   - Features to train on
 
-- directory: Path
+- location: Path
 
-  - Directory where state should be saved
+  - Location where state should be saved
 
 - classifications: List of strings
 
@@ -2087,9 +2087,9 @@ No description
 
   - Features to train on
 
-- directory: Path
+- location: Path
 
-  - Directory where state should be saved
+  - Location where state should be saved
 
 - classifications: List of strings
 
@@ -2190,9 +2190,9 @@ No description
 
   - Features to train on
 
-- directory: Path
+- location: Path
 
-  - Directory where state should be saved
+  - Location where state should be saved
 
 - classifications: List of strings
 
@@ -2293,9 +2293,9 @@ No description
 
   - Features to train on
 
-- directory: Path
+- location: Path
 
-  - Directory where state should be saved
+  - Location where state should be saved
 
 - classifications: List of strings
 
@@ -2396,9 +2396,9 @@ No description
 
   - Features to train on
 
-- directory: Path
+- location: Path
 
-  - Directory where state should be saved
+  - Location where state should be saved
 
 - classifications: List of strings
 
@@ -2499,9 +2499,9 @@ No description
 
   - Features to train on
 
-- directory: Path
+- location: Path
 
-  - Directory where state should be saved
+  - Location where state should be saved
 
 - classifications: List of strings
 
@@ -2602,9 +2602,9 @@ No description
 
   - Features to train on
 
-- directory: Path
+- location: Path
 
-  - Directory where state should be saved
+  - Location where state should be saved
 
 - classifications: List of strings
 
@@ -2705,9 +2705,9 @@ No description
 
   - Features to train on
 
-- directory: Path
+- location: Path
 
-  - Directory where state should be saved
+  - Location where state should be saved
 
 - classifications: List of strings
 
@@ -2808,9 +2808,9 @@ No description
 
   - Features to train on
 
-- directory: Path
+- location: Path
 
-  - Directory where state should be saved
+  - Location where state should be saved
 
 - classifications: List of strings
 
@@ -2911,9 +2911,9 @@ No description
 
   - Features to train on
 
-- directory: Path
+- location: Path
 
-  - Directory where state should be saved
+  - Location where state should be saved
 
 - classifications: List of strings
 
@@ -3014,9 +3014,9 @@ No description
 
   - Features to train on
 
-- directory: Path
+- location: Path
 
-  - Directory where state should be saved
+  - Location where state should be saved
 
 - classifications: List of strings
 
@@ -3102,9 +3102,9 @@ No description
 
   - Features to train on
 
-- directory: Path
+- location: Path
 
-  - Directory where state should be saved
+  - Location where state should be saved
 
 - classifications: List of strings
 
@@ -3205,9 +3205,9 @@ No description
 
   - Features to train on
 
-- directory: Path
+- location: Path
 
-  - Directory where state should be saved
+  - Location where state should be saved
 
 - classifications: List of strings
 
@@ -3308,9 +3308,9 @@ No description
 
   - Features to train on
 
-- directory: Path
+- location: Path
 
-  - Directory where state should be saved
+  - Location where state should be saved
 
 - classifications: List of strings
 
@@ -3411,9 +3411,9 @@ No description
 
   - Features to train on
 
-- directory: Path
+- location: Path
 
-  - Directory where state should be saved
+  - Location where state should be saved
 
 - classifications: List of strings
 
@@ -3514,9 +3514,9 @@ No description
 
   - Features to train on
 
-- directory: Path
+- location: Path
 
-  - Directory where state should be saved
+  - Location where state should be saved
 
 - classifications: List of strings
 
@@ -3617,9 +3617,9 @@ No description
 
   - Features to train on
 
-- directory: Path
+- location: Path
 
-  - Directory where state should be saved
+  - Location where state should be saved
 
 - classifications: List of strings
 
@@ -3720,9 +3720,9 @@ No description
 
   - Features to train on
 
-- directory: Path
+- location: Path
 
-  - Directory where state should be saved
+  - Location where state should be saved
 
 - classifications: List of strings
 
@@ -3823,9 +3823,9 @@ No description
 
   - Features to train on
 
-- directory: Path
+- location: Path
 
-  - Directory where state should be saved
+  - Location where state should be saved
 
 - classifications: List of strings
 
@@ -3926,9 +3926,9 @@ No description
 
   - Features to train on
 
-- directory: Path
+- location: Path
 
-  - Directory where state should be saved
+  - Location where state should be saved
 
 - classifications: List of strings
 
@@ -4029,9 +4029,9 @@ No description
 
   - Features to train on
 
-- directory: Path
+- location: Path
 
-  - Directory where state should be saved
+  - Location where state should be saved
 
 - classifications: List of strings
 
@@ -4132,9 +4132,9 @@ No description
 
   - Features to train on
 
-- directory: Path
+- location: Path
 
-  - Directory where state should be saved
+  - Location where state should be saved
 
 - classifications: List of strings
 
@@ -4235,9 +4235,9 @@ No description
 
   - Features to train on
 
-- directory: Path
+- location: Path
 
-  - Directory where state should be saved
+  - Location where state should be saved
 
 - classifications: List of strings
 
@@ -4338,9 +4338,9 @@ No description
 
   - Features to train on
 
-- directory: Path
+- location: Path
 
-  - Directory where state should be saved
+  - Location where state should be saved
 
 - classifications: List of strings
 
@@ -4441,9 +4441,9 @@ No description
 
   - Features to train on
 
-- directory: Path
+- location: Path
 
-  - Directory where state should be saved
+  - Location where state should be saved
 
 - classifications: List of strings
 
@@ -4544,9 +4544,9 @@ No description
 
   - Features to train on
 
-- directory: Path
+- location: Path
 
-  - Directory where state should be saved
+  - Location where state should be saved
 
 - classifications: List of strings
 
@@ -4647,9 +4647,9 @@ No description
 
   - Features to train on
 
-- directory: Path
+- location: Path
 
-  - Directory where state should be saved
+  - Location where state should be saved
 
 - classifications: List of strings
 
@@ -4750,9 +4750,9 @@ No description
 
   - Features to train on
 
-- directory: Path
+- location: Path
 
-  - Directory where state should be saved
+  - Location where state should be saved
 
 - classifications: List of strings
 
@@ -4853,9 +4853,9 @@ No description
 
   - Features to train on
 
-- directory: Path
+- location: Path
 
-  - Directory where state should be saved
+  - Location where state should be saved
 
 - classifications: List of strings
 
@@ -4956,9 +4956,9 @@ No description
 
   - Features to train on
 
-- directory: Path
+- location: Path
 
-  - Directory where state should be saved
+  - Location where state should be saved
 
 - classifications: List of strings
 
@@ -5108,7 +5108,7 @@ Train the model
         -model daal4pylr \
         -model-features f1:float:1 \
         -model-predict ans:int:1 \
-        -model-directory tempdir \
+        -model-location tempdir \
         -sources f=csv \
         -source-filename train.csv
 
@@ -5121,7 +5121,7 @@ Assess the accuracy
         -model daal4pylr \
         -model-features f1:float:1 \
         -model-predict ans:int:1 \
-        -model-directory tempdir \
+        -model-location tempdir \
         -sources f=csv \
         -source-filename test.csv
     0.6666666666666666
@@ -5136,7 +5136,7 @@ Make a prediction
         -model daal4pylr \
         -model-features f1:float:1 \
         -model-predict ans:int:1 \
-        -model-directory tempdir \
+        -model-location tempdir \
         -sources f=csv \
         -source-filename /dev/stdin
     [
@@ -5182,9 +5182,9 @@ Run the file
 
   - Features to train on. For SLR only 1 allowed
 
-- directory: Path
+- location: Path
 
-  - Directory where state should be saved
+  - Location where state should be saved
 
 .. _plugin_model_dffml_model_autosklearn:
 
@@ -5242,9 +5242,9 @@ No description
 
   - Label or the value to be predicted
 
-- directory: Path
+- location: Path
 
-  - Directory where state should be saved
+  - Location where state should be saved
 
 - time_left_for_this_task: Integer
 
@@ -5445,7 +5445,7 @@ Train the model
         -model-per_run_time_limit 30 \
         -model-ensemble_size 50 \
         -model-delete_tmp_folder_after_terminate False \
-        -model-directory tempdir \
+        -model-location tempdir \
         -log debug
 
 Assess the accuracy
@@ -5456,7 +5456,7 @@ Assess the accuracy
     $ dffml accuracy \
         -model autoregressor \
         -model-predict TARGET:float:1 \
-        -model-directory tempdir \
+        -model-location tempdir \
         -sources f=csv \
         -source-filename test.csv \
         -model-features \
@@ -5483,7 +5483,7 @@ Make a prediction
 
     $ dffml predict all \
         -model autoregressor \
-        -model-directory tempdir \
+        -model-location tempdir \
         -model-predict TARGET:float:1 \
         -sources iris=csv \
         -model-features \
@@ -5539,9 +5539,9 @@ Run the file
 
   - Label or the value to be predicted
 
-- directory: Path
+- location: Path
 
-  - Directory where state should be saved
+  - Location where state should be saved
 
 - time_left_for_this_task: Integer
 

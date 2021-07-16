@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Packaging a Model &mdash; DFFML 5f9a550f2 documentation</title>
+  <title>Packaging a Model &mdash; DFFML 5c1d437ea documentation</title>
   
 
   
@@ -70,7 +70,7 @@
             
             
               <div class="version">
-                5f9a550f2
+                5c1d437ea
               </div>
             
           
@@ -383,7 +383,7 @@ they’re done.</p>
         <span class="bp">cls</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">MySLRModel</span><span class="p">(</span>
             <span class="n">features</span><span class="o">=</span><span class="n">Features</span><span class="p">(</span><span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;X&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span>
             <span class="n">predict</span><span class="o">=</span><span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;Y&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
-            <span class="n">directory</span><span class="o">=</span><span class="bp">cls</span><span class="o">.</span><span class="n">model_dir</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">location</span><span class="o">=</span><span class="bp">cls</span><span class="o">.</span><span class="n">model_dir</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
         <span class="p">)</span>
 
     <span class="nd">@classmethod</span>
@@ -517,7 +517,7 @@ reference it by it’s short name.</p>
 <span class="go">    -model myslr \</span>
 <span class="go">    -model-features Years:int:1 \</span>
 <span class="go">    -model-predict Salary:float:1 \</span>
-<span class="go">    -model-directory modeldir \</span>
+<span class="go">    -model-location modeldir \</span>
 <span class="go">    -sources f=csv \</span>
 <span class="go">    -source-filename train.csv</span>
 </pre></div>

@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>COVID Forecasting &mdash; DFFML 5f9a550f2 documentation</title>
+  <title>COVID Forecasting &mdash; DFFML 5c1d437ea documentation</title>
   
 
   
@@ -70,7 +70,7 @@
             
             
               <div class="version">
-                5f9a550f2
+                5c1d437ea
               </div>
             
           
@@ -330,7 +330,7 @@ there is anything that is unclear or you think could be changed / improved.</p>
 <span class="k">class</span> <span class="nc">FBProphetModelConfig</span><span class="p">:</span>
     <span class="n">date</span><span class="p">:</span> <span class="n">Feature</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="s2">&quot;Name of feature containing date value&quot;</span><span class="p">)</span>
     <span class="n">predict</span><span class="p">:</span> <span class="n">Feature</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="s2">&quot;Label or the value to be predicted&quot;</span><span class="p">)</span>
-    <span class="n">directory</span><span class="p">:</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="s2">&quot;Directory where state should be saved&quot;</span><span class="p">)</span>
+    <span class="n">location</span><span class="p">:</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="s2">&quot;Location where state should be saved&quot;</span><span class="p">)</span>
 
 
 <span class="nd">@entrypoint</span><span class="p">(</span><span class="s2">&quot;fbprophet&quot;</span><span class="p">)</span>
@@ -343,7 +343,7 @@ there is anything that is unclear or you think could be changed / improved.</p>
         <span class="c1"># The saved model</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">saved</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">saved_filepath</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">directory</span><span class="p">,</span> <span class="s2">&quot;model.joblib&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">location</span><span class="p">,</span> <span class="s2">&quot;model.joblib&quot;</span>
         <span class="p">)</span>
         <span class="c1"># Load saved model if it exists</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">saved_filepath</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
@@ -435,7 +435,7 @@ there is anything that is unclear or you think could be changed / improved.</p>
     <span class="n">cases_to_deaths_model</span> <span class="o">=</span> <span class="n">SLRModel</span><span class="p">(</span>
         <span class="n">features</span><span class="o">=</span><span class="n">Features</span><span class="p">(</span><span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;cases&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">)),</span>
         <span class="n">predict</span><span class="o">=</span><span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;deaths&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">),</span>
-        <span class="n">directory</span><span class="o">=</span><span class="s2">&quot;cases_to_deaths.model&quot;</span><span class="p">,</span>
+        <span class="n">location</span><span class="o">=</span><span class="s2">&quot;cases_to_deaths.model&quot;</span><span class="p">,</span>
     <span class="p">)</span>
 
     <span class="c1"># Train the model to learn the relationship between cases and deaths</span>
@@ -452,7 +452,7 @@ there is anything that is unclear or you think could be changed / improved.</p>
         <span class="n">county</span><span class="p">:</span> <span class="n">FBProphetModel</span><span class="p">(</span>
             <span class="n">date</span><span class="o">=</span><span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;date&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">),</span>
             <span class="n">predict</span><span class="o">=</span><span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;cases&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">),</span>
-            <span class="n">directory</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;date_to_cases.</span><span class="si">{</span><span class="n">county</span><span class="si">}</span><span class="s2">.model&quot;</span><span class="p">,</span>
+            <span class="n">location</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;date_to_cases.</span><span class="si">{</span><span class="n">county</span><span class="si">}</span><span class="s2">.model&quot;</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="k">for</span> <span class="n">county</span> <span class="ow">in</span> <span class="n">counties</span>
     <span class="p">}</span>

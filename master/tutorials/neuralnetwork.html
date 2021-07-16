@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Neural Networks &mdash; DFFML 5f9a550f2 documentation</title>
+  <title>Neural Networks &mdash; DFFML 5c1d437ea documentation</title>
   
 
   
@@ -71,7 +71,7 @@
             
             
               <div class="version">
-                5f9a550f2
+                5c1d437ea
               </div>
             
           
@@ -438,7 +438,7 @@ the top level layers (Sequential or Single) sequentially in the order they were 
   -model-classifications rock paper scissors \
   -model-predict label:int:1 \
   -model-network @model.yaml \
-  -model-directory rps_model \
+  -model-location rps_model \
   -model-loss crossentropyloss \
   -model-optimizer Adam \
   -model-validation_split 0.2 \
@@ -466,7 +466,7 @@ the top level layers (Sequential or Single) sequentially in the order they were 
   -model-classifications rock paper scissors \
   -model-predict label:int:1 \
   -model-network @model.yaml \
-  -model-directory rps_model \
+  -model-location rps_model \
   -model-imageSize 150 \
   -model-enableGPU \
   -sources f=dir \
@@ -487,7 +487,7 @@ the top level layers (Sequential or Single) sequentially in the order they were 
   -model-classifications rock paper scissors \
   -model-predict label:int:1 \
   -model-network @model.yaml \
-  -model-directory rps_model \
+  -model-location rps_model \
   -model-imageSize 150 \
   -model-enableGPU \
   -sources f=dir \
@@ -637,7 +637,7 @@ the top level layers (Sequential or Single) sequentially in the order they were 
     <span class="n">classifications</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;rock&quot;</span><span class="p">,</span> <span class="s2">&quot;paper&quot;</span><span class="p">,</span> <span class="s2">&quot;scissors&quot;</span><span class="p">],</span>
     <span class="n">features</span><span class="o">=</span><span class="n">Features</span><span class="p">(</span><span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;image&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">300</span> <span class="o">*</span> <span class="mi">300</span><span class="p">)),</span>
     <span class="n">predict</span><span class="o">=</span><span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;label&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
-    <span class="n">directory</span><span class="o">=</span><span class="s2">&quot;rps_model&quot;</span><span class="p">,</span>
+    <span class="n">location</span><span class="o">=</span><span class="s2">&quot;rps_model&quot;</span><span class="p">,</span>
     <span class="n">network</span><span class="o">=</span><span class="n">RockPaperScissorsModel</span><span class="p">,</span>
     <span class="n">epochs</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
     <span class="n">batch_size</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span>

@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Model Slr &mdash; DFFML 5f9a550f2 documentation</title>
+  <title>Model Slr &mdash; DFFML 5c1d437ea documentation</title>
   
 
   
@@ -70,7 +70,7 @@
             
             
               <div class="version">
-                5f9a550f2
+                5c1d437ea
               </div>
             
           
@@ -276,7 +276,7 @@
 <span class="go">    -model slr \</span>
 <span class="go">    -model-features f1:float:1 \</span>
 <span class="go">    -model-predict ans:int:1 \</span>
-<span class="go">    -model-directory tempdir \</span>
+<span class="go">    -model-location tempdir \</span>
 <span class="go">    -sources f=csv \</span>
 <span class="go">    -source-filename dataset.csv</span>
 </pre></div>
@@ -286,7 +286,7 @@
 <span class="go">    -model slr \</span>
 <span class="go">    -model-features f1:float:1 \</span>
 <span class="go">    -model-predict ans:int:1 \</span>
-<span class="go">    -model-directory tempdir \</span>
+<span class="go">    -model-location tempdir \</span>
 <span class="go">    -sources f=csv \</span>
 <span class="go">    -source-filename dataset.csv</span>
 <span class="go">1.0</span>
@@ -302,7 +302,7 @@
 <span class="go">    -model slr \</span>
 <span class="go">    -model-features f1:float:1 \</span>
 <span class="go">    -model-predict ans:int:1 \</span>
-<span class="go">    -model-directory tempdir \</span>
+<span class="go">    -model-location tempdir \</span>
 <span class="go">    -sources f=csv \</span>
 <span class="go">    -source-filename predict.csv</span>
 <span class="go">[</span>
@@ -331,7 +331,7 @@
 <span class="n">model</span> <span class="o">=</span> <span class="n">SLRModel</span><span class="p">(</span>
     <span class="n">features</span><span class="o">=</span><span class="n">Features</span><span class="p">(</span><span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;f1&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span>
     <span class="n">predict</span><span class="o">=</span><span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;ans&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
-    <span class="n">directory</span><span class="o">=</span><span class="s2">&quot;tempdir&quot;</span><span class="p">,</span>
+    <span class="n">location</span><span class="o">=</span><span class="s2">&quot;tempdir&quot;</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="c1"># Train the model</span>
@@ -361,7 +361,7 @@
 
 <dl class="py class">
 <dt class="sig sig-object py" id="dffml.model.slr.SLRModelConfig">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">dffml.model.slr.</span></span><span class="sig-name descname"><span class="pre">SLRModelConfig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">predict</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="../feature/feature.html#dffml.feature.feature.Feature" title="dffml.feature.feature.Feature"><span class="pre">dffml.feature.feature.Feature</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">features</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="../feature/feature.html#dffml.feature.feature.Features" title="dffml.feature.feature.Features"><span class="pre">dffml.feature.feature.Features</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">directory</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><span class="pre">pathlib.Path</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/model/slr.html#SLRModelConfig"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.model.slr.SLRModelConfig" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">dffml.model.slr.</span></span><span class="sig-name descname"><span class="pre">SLRModelConfig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">predict</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="../feature/feature.html#dffml.feature.feature.Feature" title="dffml.feature.feature.Feature"><span class="pre">dffml.feature.feature.Feature</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">features</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="../feature/feature.html#dffml.feature.feature.Features" title="dffml.feature.feature.Features"><span class="pre">dffml.feature.feature.Features</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">location</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><span class="pre">pathlib.Path</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/model/slr.html#SLRModelConfig"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.model.slr.SLRModelConfig" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </div>

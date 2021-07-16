@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>dffml.model.model &mdash; DFFML 5f9a550f2 documentation</title>
+  <title>dffml.model.model &mdash; DFFML 5c1d437ea documentation</title>
   
 
   
@@ -69,7 +69,7 @@
             
             
               <div class="version">
-                5f9a550f2
+                5c1d437ea
               </div>
             
           
@@ -221,7 +221,7 @@
 <span class="c1"># Copyright (c) 2019 Intel Corporation</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">Model subclasses are responsible for training themselves on records, making</span>
-<span class="sd">predictions about the value of a feature in the record, and assessing thei</span>
+<span class="sd">predictions about the value of a feature in the record, and assessing their</span>
 <span class="sd">prediction accuracy.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">abc</span>
@@ -248,13 +248,13 @@
 
 <div class="viewcode-block" id="ModelConfig"><a class="viewcode-back" href="../../../api/model/model.html#dffml.model.model.ModelConfig">[docs]</a><span class="nd">@config</span>
 <span class="k">class</span> <span class="nc">ModelConfig</span><span class="p">:</span>
-    <span class="n">directory</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">location</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">features</span><span class="p">:</span> <span class="n">Features</span></div>
 
 
 <div class="viewcode-block" id="ModelContext"><a class="viewcode-back" href="../../../api/model/model.html#dffml.model.model.ModelContext">[docs]</a><span class="k">class</span> <span class="nc">ModelContext</span><span class="p">(</span><span class="n">abc</span><span class="o">.</span><span class="n">ABC</span><span class="p">,</span> <span class="n">BaseDataFlowFacilitatorObjectContext</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Abstract base class which should be derived from and implmented using</span>
+<span class="sd">    Abstract base class which should be derived from and implemented using</span>
 <span class="sd">    various machine learning frameworks or concepts.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -299,28 +299,28 @@
         <span class="c1"># TODO Just in case its a string. We should make it so that on</span>
         <span class="c1"># instantiation of an @config we convert properties to their correct</span>
         <span class="c1"># types.</span>
-        <span class="n">directory</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">,</span> <span class="s2">&quot;directory&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">directory</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-            <span class="n">directory</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">directory</span><span class="p">)</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">directory</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">):</span>
-            <span class="c1"># to treat &quot;~&quot; as the the home directory rather than a literal</span>
-            <span class="n">directory</span> <span class="o">=</span> <span class="n">directory</span><span class="o">.</span><span class="n">expanduser</span><span class="p">()</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">directory</span> <span class="o">=</span> <span class="n">directory</span>
+        <span class="n">location</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">,</span> <span class="s2">&quot;location&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">location</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">location</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">location</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">location</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">):</span>
+            <span class="c1"># to treat &quot;~&quot; as the the home location rather than a literal</span>
+            <span class="n">location</span> <span class="o">=</span> <span class="n">location</span><span class="o">.</span><span class="n">expanduser</span><span class="p">()</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">location</span> <span class="o">=</span> <span class="n">location</span>
 
     <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ModelContext</span><span class="p">:</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_make_config_directory</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_make_config_location</span><span class="p">()</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">CONTEXT</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">_make_config_directory</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_make_config_location</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        If the config object for this model contains the directory property</span>
+<span class="sd">        If the config object for this model contains the location property</span>
 <span class="sd">        then create it if it does not exist.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">directory</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">,</span> <span class="s2">&quot;directory&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">directory</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">directory</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">directory</span><span class="p">)</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">directory</span><span class="o">.</span><span class="n">is_dir</span><span class="p">():</span>
-                <span class="n">directory</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="n">MODE_BITS_SECURE</span><span class="p">,</span> <span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+        <span class="n">location</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">,</span> <span class="s2">&quot;location&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">location</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">location</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">location</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">location</span><span class="o">.</span><span class="n">is_dir</span><span class="p">():</span>
+                <span class="n">location</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="n">MODE_BITS_SECURE</span><span class="p">,</span> <span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="SimpleModelNoContext"><a class="viewcode-back" href="../../../api/model/model.html#dffml.model.model.SimpleModelNoContext">[docs]</a><span class="k">class</span> <span class="nc">SimpleModelNoContext</span><span class="p">:</span>
@@ -350,7 +350,7 @@
         <span class="c1"># If we&#39;ve already entered the model&#39;s context once, don&#39;t reload</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_in_context</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_make_config_directory</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_make_config_location</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">open</span><span class="p">()</span>
         <span class="k">return</span> <span class="bp">self</span>
 
@@ -390,20 +390,20 @@
 <div class="viewcode-block" id="SimpleModel.disk_path"><a class="viewcode-back" href="../../../api/model/model.html#dffml.model.model.SimpleModel.disk_path">[docs]</a>    <span class="k">def</span> <span class="nf">disk_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">extention</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        We do this for convenience of the user so they can usually just use the</span>
-<span class="sd">        default directory and if they train models with different parameters</span>
+<span class="sd">        default location and if they train models with different parameters</span>
 <span class="sd">        this method transparently to the user creates a filename unique the that</span>
 <span class="sd">        configuration of the model where data is saved and loaded.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Export the config to a dictionary</span>
         <span class="n">exported</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">_asdict</span><span class="p">()</span>
-        <span class="c1"># Remove the directory from the exported dict</span>
-        <span class="k">if</span> <span class="s2">&quot;directory&quot;</span> <span class="ow">in</span> <span class="n">exported</span><span class="p">:</span>
-            <span class="k">del</span> <span class="n">exported</span><span class="p">[</span><span class="s2">&quot;directory&quot;</span><span class="p">]</span>
+        <span class="c1"># Remove the location from the exported dict</span>
+        <span class="k">if</span> <span class="s2">&quot;location&quot;</span> <span class="ow">in</span> <span class="n">exported</span><span class="p">:</span>
+            <span class="k">del</span> <span class="n">exported</span><span class="p">[</span><span class="s2">&quot;location&quot;</span><span class="p">]</span>
         <span class="c1"># Replace features with the sorted list of features</span>
         <span class="k">if</span> <span class="s2">&quot;features&quot;</span> <span class="ow">in</span> <span class="n">exported</span><span class="p">:</span>
             <span class="n">exported</span><span class="p">[</span><span class="s2">&quot;features&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">exported</span><span class="p">[</span><span class="s2">&quot;features&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">()))</span>
         <span class="c1"># Hash the exported config</span>
-        <span class="k">return</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">directory</span><span class="p">,</span> <span class="s2">&quot;Model&quot;</span><span class="p">,)</span></div>
+        <span class="k">return</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">location</span><span class="p">,</span> <span class="s2">&quot;Model&quot;</span><span class="p">,)</span></div>
 
     <span class="k">def</span> <span class="nf">applicable_features</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">features</span><span class="p">):</span>
         <span class="n">usable</span> <span class="o">=</span> <span class="p">[]</span>

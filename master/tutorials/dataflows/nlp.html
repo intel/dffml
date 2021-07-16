@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Using NLP Operations &mdash; DFFML 5f9a550f2 documentation</title>
+  <title>Using NLP Operations &mdash; DFFML 5c1d437ea documentation</title>
   
 
   
@@ -70,7 +70,7 @@
             
             
               <div class="version">
-                5f9a550f2
+                5c1d437ea
               </div>
             
           
@@ -342,7 +342,7 @@ results in the graph.</p>
 <span class="go">    -model-clstype int \</span>
 <span class="go">    -model-predict sentiment:int:1 \</span>
 <span class="go">    -model-classifications 0 1 \</span>
-<span class="go">    -model-directory tempdir \</span>
+<span class="go">    -model-location tempdir \</span>
 <span class="go">    -model-features embedding:float:[1,10,96] \</span>
 <span class="go">    -sources text=df \</span>
 <span class="go">    -source-text-dataflow nlp_ops_dataflow.json \</span>
@@ -363,7 +363,7 @@ is (1,10,96).</p>
 <span class="go">    -model-clstype int \</span>
 <span class="go">    -model-predict sentiment:int:1 \</span>
 <span class="go">    -model-classifications 0 1 \</span>
-<span class="go">    -model-directory tempdir \</span>
+<span class="go">    -model-location tempdir \</span>
 <span class="go">    -model-features embedding:float:[1,10,96] \</span>
 <span class="go">    -sources text=df \</span>
 <span class="go">    -source-text-dataflow nlp_ops_dataflow.json \</span>
@@ -388,7 +388,7 @@ is (1,10,96).</p>
 <span class="go">    -model-clstype int \</span>
 <span class="go">    -model-predict sentiment:int:1 \</span>
 <span class="go">    -model-classifications 0 1 \</span>
-<span class="go">    -model-directory tempdir \</span>
+<span class="go">    -model-location tempdir \</span>
 <span class="go">    -model-features embedding:float:[1,10,96] \</span>
 <span class="go">    -sources text=df \</span>
 <span class="go">    -source-text-dataflow nlp_ops_dataflow.json \</span>
@@ -471,7 +471,7 @@ which will return the array corresponding to each sentence.</p>
 <span class="go">    -model scikitgnb \</span>
 <span class="go">    -model-features extract_array_from_matrix.outputs.result:float:1 \</span>
 <span class="go">    -model-predict sentiment:int:1 \</span>
-<span class="go">    -model-directory tempdir \</span>
+<span class="go">    -model-location tempdir \</span>
 <span class="go">    -sources text=df \</span>
 <span class="go">    -source-text-dataflow nlp_ops_dataflow.json \</span>
 <span class="go">    -source-text-features sentence:str:1 \</span>
@@ -485,7 +485,7 @@ which will return the array corresponding to each sentence.</p>
 <span class="go">    -model scikitgnb \</span>
 <span class="go">    -model-features extract_array_from_matrix.outputs.result:float:1 \</span>
 <span class="go">    -model-predict sentiment:int:1 \</span>
-<span class="go">    -model-directory tempdir \</span>
+<span class="go">    -model-location tempdir \</span>
 <span class="go">    -sources text=df \</span>
 <span class="go">    -source-text-dataflow nlp_ops_dataflow.json \</span>
 <span class="go">    -source-text-features sentence:str:1 \</span>
@@ -530,7 +530,7 @@ randomized output order.</p>
 <span class="go">    -model scikitgnb \</span>
 <span class="go">    -model-features extract_array_from_matrix.outputs.result:float:1 \</span>
 <span class="go">    -model-predict sentiment:int:1 \</span>
-<span class="go">    -model-directory tempdir \</span>
+<span class="go">    -model-location tempdir \</span>
 <span class="go">    -sources temp=json \</span>
 <span class="go">    -source-temp-filename test_data_preprocessed.json \</span>
 <span class="go">    -pretty</span>

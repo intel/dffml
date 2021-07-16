@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Writing a Model &mdash; DFFML 5f9a550f2 documentation</title>
+  <title>Writing a Model &mdash; DFFML 5c1d437ea documentation</title>
   
 
   
@@ -70,7 +70,7 @@
             
             
               <div class="version">
-                5f9a550f2
+                5c1d437ea
               </div>
             
           
@@ -386,7 +386,7 @@ should use as the Y value for the regression line.</p></li>
         <span class="s2">&quot;Features to train on (myslr only supports one)&quot;</span>
     <span class="p">)</span>
     <span class="n">predict</span><span class="p">:</span> <span class="n">Feature</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="s2">&quot;Label or the value to be predicted&quot;</span><span class="p">)</span>
-    <span class="n">directory</span><span class="p">:</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="s2">&quot;Directory where state should be saved&quot;</span><span class="p">)</span>
+    <span class="n">location</span><span class="p">:</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="s2">&quot;Location where state should be saved&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -568,7 +568,7 @@ confidence in our prediction.</p>
     <span class="n">model</span> <span class="o">=</span> <span class="n">MySLRModel</span><span class="p">(</span>
         <span class="n">features</span><span class="o">=</span><span class="n">Features</span><span class="p">(</span><span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;Years&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span>
         <span class="n">predict</span><span class="o">=</span><span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;Salary&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
-        <span class="n">directory</span><span class="o">=</span><span class="s2">&quot;model&quot;</span><span class="p">,</span>
+        <span class="n">location</span><span class="o">=</span><span class="s2">&quot;model&quot;</span><span class="p">,</span>
     <span class="p">)</span>
 
     <span class="c1"># Train the model</span>
@@ -605,7 +605,7 @@ be <code class="docutils literal notranslate"><span class="pre">myslr:MySLRModel
 <span class="go">    -model myslr:MySLRModel \</span>
 <span class="go">    -model-features Years:int:1 \</span>
 <span class="go">    -model-predict Salary:float:1 \</span>
-<span class="go">    -model-directory modeldir \</span>
+<span class="go">    -model-location modeldir \</span>
 <span class="go">    -sources f=csv \</span>
 <span class="go">    -source-filename train.csv</span>
 </pre></div>
@@ -616,7 +616,7 @@ be <code class="docutils literal notranslate"><span class="pre">myslr:MySLRModel
 <span class="go">    -model myslr:MySLRModel \</span>
 <span class="go">    -model-features Years:int:1 \</span>
 <span class="go">    -model-predict Salary:float:1 \</span>
-<span class="go">    -model-directory modeldir \</span>
+<span class="go">    -model-location modeldir \</span>
 <span class="go">    -sources f=csv \</span>
 <span class="go">    -source-filename predict.csv</span>
 <span class="go">[</span>
@@ -659,7 +659,7 @@ you get up and running.</p>
 <span class="go">    -models mymodel=myslr:MySLRModel \</span>
 <span class="go">    -model-features Years:int:1 \</span>
 <span class="go">    -model-predict Salary:float:1 \</span>
-<span class="go">    -model-directory modeldir</span>
+<span class="go">    -model-location modeldir</span>
 </pre></div>
 </div>
 <p>We can then ask the HTTP service to make predictions, or do training or accuracy

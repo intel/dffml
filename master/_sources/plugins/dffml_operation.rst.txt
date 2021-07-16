@@ -990,7 +990,7 @@ The following example shows how to use model_predict.
 >>> slr_model = SLRModel(
 ...     features=Features(Feature("Years", int, 1)),
 ...     predict=Feature("Salary", int, 1),
-...     directory="tempdir",
+...     location="tempdir",
 ... )
 >>> dataflow = DataFlow(
 ...     operations={

@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Models &mdash; DFFML 5f9a550f2 documentation</title>
+  <title>Models &mdash; DFFML 5c1d437ea documentation</title>
   
 
   
@@ -70,7 +70,7 @@
             
             
               <div class="version">
-                5f9a550f2
+                5c1d437ea
               </div>
             
           
@@ -353,7 +353,7 @@ See the <a class="reference internal" href="../tutorials/models/load.html"><span
 <span class="go">    -model slr \</span>
 <span class="go">    -model-features f1:float:1 \</span>
 <span class="go">    -model-predict ans:int:1 \</span>
-<span class="go">    -model-directory tempdir \</span>
+<span class="go">    -model-location tempdir \</span>
 <span class="go">    -sources f=csv \</span>
 <span class="go">    -source-filename dataset.csv</span>
 </pre></div>
@@ -363,7 +363,7 @@ See the <a class="reference internal" href="../tutorials/models/load.html"><span
 <span class="go">    -model slr \</span>
 <span class="go">    -model-features f1:float:1 \</span>
 <span class="go">    -model-predict ans:int:1 \</span>
-<span class="go">    -model-directory tempdir \</span>
+<span class="go">    -model-location tempdir \</span>
 <span class="go">    -sources f=csv \</span>
 <span class="go">    -source-filename dataset.csv</span>
 <span class="go">1.0</span>
@@ -379,7 +379,7 @@ See the <a class="reference internal" href="../tutorials/models/load.html"><span
 <span class="go">    -model slr \</span>
 <span class="go">    -model-features f1:float:1 \</span>
 <span class="go">    -model-predict ans:int:1 \</span>
-<span class="go">    -model-directory tempdir \</span>
+<span class="go">    -model-location tempdir \</span>
 <span class="go">    -sources f=csv \</span>
 <span class="go">    -source-filename predict.csv</span>
 <span class="go">[</span>
@@ -408,7 +408,7 @@ See the <a class="reference internal" href="../tutorials/models/load.html"><span
 <span class="n">model</span> <span class="o">=</span> <span class="n">SLRModel</span><span class="p">(</span>
     <span class="n">features</span><span class="o">=</span><span class="n">Features</span><span class="p">(</span><span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;f1&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span>
     <span class="n">predict</span><span class="o">=</span><span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;ans&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
-    <span class="n">directory</span><span class="o">=</span><span class="s2">&quot;tempdir&quot;</span><span class="p">,</span>
+    <span class="n">location</span><span class="o">=</span><span class="s2">&quot;tempdir&quot;</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="c1"># Train the model</span>
@@ -440,9 +440,9 @@ See the <a class="reference internal" href="../tutorials/models/load.html"><span
 <li><p>Features to train on. For SLR only 1 allowed</p></li>
 </ul>
 </li>
-<li><p>directory: Path</p>
+<li><p>location: Path</p>
 <ul>
-<li><p>Directory where state should be saved</p></li>
+<li><p>Location where state should be saved</p></li>
 </ul>
 </li>
 </ul>
@@ -483,7 +483,7 @@ look for a different saved model.</p>
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">epochs</span> <span class="mi">3000</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">steps</span> <span class="mi">20000</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">predict</span> <span class="n">classification</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">1</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">directory</span> <span class="n">tempdir</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">location</span> <span class="n">tempdir</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">classifications</span> <span class="mi">0</span> <span class="mi">1</span> <span class="mi">2</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">clstype</span> <span class="nb">int</span> \
   <span class="o">-</span><span class="n">sources</span> <span class="n">iris</span><span class="o">=</span><span class="n">csv</span> \
@@ -500,7 +500,7 @@ look for a different saved model.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dffml</span> <span class="n">accuracy</span> \
   <span class="o">-</span><span class="n">model</span> <span class="n">tfdnnc</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">predict</span> <span class="n">classification</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">1</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">directory</span> <span class="n">tempdir</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">location</span> <span class="n">tempdir</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">classifications</span> <span class="mi">0</span> <span class="mi">1</span> <span class="mi">2</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">clstype</span> <span class="nb">int</span> \
   <span class="o">-</span><span class="n">sources</span> <span class="n">iris</span><span class="o">=</span><span class="n">csv</span> \
@@ -522,7 +522,7 @@ look for a different saved model.</p>
 <span class="n">dffml</span> <span class="n">predict</span> <span class="nb">all</span> \
   <span class="o">-</span><span class="n">model</span> <span class="n">tfdnnc</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">predict</span> <span class="n">classification</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">1</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">directory</span> <span class="n">tempdir</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">location</span> <span class="n">tempdir</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">classifications</span> <span class="mi">0</span> <span class="mi">1</span> <span class="mi">2</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">clstype</span> <span class="nb">int</span> \
   <span class="o">-</span><span class="n">sources</span> <span class="n">iris</span><span class="o">=</span><span class="n">csv</span> \
@@ -575,7 +575,7 @@ look for a different saved model.</p>
     <span class="n">steps</span><span class="o">=</span><span class="mi">20000</span><span class="p">,</span>
     <span class="n">classifications</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>
     <span class="n">clstype</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span>
-    <span class="n">directory</span><span class="o">=</span><span class="s2">&quot;tempdir&quot;</span><span class="p">,</span>
+    <span class="n">location</span><span class="o">=</span><span class="s2">&quot;tempdir&quot;</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="c1"># Train the model</span>
@@ -616,9 +616,9 @@ look for a different saved model.</p>
 <li><p>Features to train on</p></li>
 </ul>
 </li>
-<li><p>directory: Path</p>
+<li><p>location: Path</p>
 <ul>
-<li><p>Directory where state should be saved</p></li>
+<li><p>Location where state should be saved</p></li>
 </ul>
 </li>
 <li><p>steps: Integer</p>
@@ -704,7 +704,7 @@ from where this command is run as it overwrites any existing files.</p></li>
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">epochs</span> <span class="mi">300</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">steps</span> <span class="mi">2000</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">predict</span> <span class="n">TARGET</span><span class="p">:</span><span class="nb">float</span><span class="p">:</span><span class="mi">1</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">directory</span> <span class="n">tempdir</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">location</span> <span class="n">tempdir</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">hidden</span> <span class="mi">8</span> <span class="mi">16</span> <span class="mi">8</span> \
   <span class="o">-</span><span class="n">sources</span> <span class="n">s</span><span class="o">=</span><span class="n">csv</span> \
   <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">filename</span> <span class="n">train</span><span class="o">.</span><span class="n">csv</span> \
@@ -718,7 +718,7 @@ from where this command is run as it overwrites any existing files.</p></li>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dffml</span> <span class="n">accuracy</span> \
   <span class="o">-</span><span class="n">model</span> <span class="n">tfdnnr</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">predict</span> <span class="n">TARGET</span><span class="p">:</span><span class="nb">float</span><span class="p">:</span><span class="mi">1</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">directory</span> <span class="n">tempdir</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">location</span> <span class="n">tempdir</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">hidden</span> <span class="mi">8</span> <span class="mi">16</span> <span class="mi">8</span> \
   <span class="o">-</span><span class="n">sources</span> <span class="n">s</span><span class="o">=</span><span class="n">csv</span> \
   <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">filename</span> <span class="n">test</span><span class="o">.</span><span class="n">csv</span> \
@@ -737,7 +737,7 @@ from where this command is run as it overwrites any existing files.</p></li>
   <span class="n">dffml</span> <span class="n">predict</span> <span class="nb">all</span> \
   <span class="o">-</span><span class="n">model</span> <span class="n">tfdnnr</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">predict</span> <span class="n">TARGET</span><span class="p">:</span><span class="nb">float</span><span class="p">:</span><span class="mi">1</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">directory</span> <span class="n">tempdir</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">location</span> <span class="n">tempdir</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">hidden</span> <span class="mi">8</span> <span class="mi">16</span> <span class="mi">8</span> \
   <span class="o">-</span><span class="n">sources</span> <span class="n">s</span><span class="o">=</span><span class="n">csv</span> \
   <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">filename</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">stdin</span> \
@@ -781,7 +781,7 @@ from where this command is run as it overwrites any existing files.</p></li>
     <span class="n">epochs</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span>
     <span class="n">steps</span><span class="o">=</span><span class="mi">2000</span><span class="p">,</span>
     <span class="n">hidden</span><span class="o">=</span><span class="p">[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">8</span><span class="p">],</span>
-    <span class="n">directory</span><span class="o">=</span><span class="s2">&quot;tempdir&quot;</span><span class="p">,</span>
+    <span class="n">location</span><span class="o">=</span><span class="s2">&quot;tempdir&quot;</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="c1"># Train the model</span>
@@ -812,9 +812,9 @@ predict).</p>
 <li><p>Features to train on</p></li>
 </ul>
 </li>
-<li><p>directory: Path</p>
+<li><p>location: Path</p>
 <ul>
-<li><p>Directory where state should be saved</p></li>
+<li><p>Location where state should be saved</p></li>
 </ul>
 </li>
 <li><p>steps: Integer</p>
@@ -876,7 +876,7 @@ $ sed -i &#39;s/.*setosa,versicolor,virginica/SepalLength,SepalWidth,PetalLength
 <span class="go">      PetalLength:float:1 \</span>
 <span class="go">      PetalWidth:float:1 \</span>
 <span class="go">    -model-predict classification \</span>
-<span class="go">    -model-directory model \</span>
+<span class="go">    -model-location model \</span>
 <span class="go">    -model-max_depth 3 \</span>
 <span class="go">    -model-learning_rate 0.01 \</span>
 <span class="go">    -model-learning_rate 0.01 \</span>
@@ -899,7 +899,7 @@ $ sed -i &#39;s/.*setosa,versicolor,virginica/SepalLength,SepalWidth,PetalLength
 <span class="go">      PetalLength:float:1 \</span>
 <span class="go">      PetalWidth:float:1 \</span>
 <span class="go">    -model-predict classification \</span>
-<span class="go">    -model-directory model</span>
+<span class="go">    -model-location model</span>
 </pre></div>
 </div>
 <p>Make predictions</p>
@@ -913,7 +913,7 @@ $ sed -i &#39;s/.*setosa,versicolor,virginica/SepalLength,SepalWidth,PetalLength
 <span class="go">      PetalLength:float:1 \</span>
 <span class="go">      PetalWidth:float:1 \</span>
 <span class="go">    -model-predict classification \</span>
-<span class="go">    -model-directory model</span>
+<span class="go">    -model-location model</span>
 </pre></div>
 </div>
 <p>Python usage</p>
@@ -940,7 +940,7 @@ $ sed -i &#39;s/.*setosa,versicolor,virginica/SepalLength,SepalWidth,PetalLength
     <span class="n">XGBClassifierModelConfig</span><span class="p">(</span>
         <span class="n">features</span><span class="o">=</span><span class="n">Features</span><span class="p">(</span><span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">,)),</span>
         <span class="n">predict</span><span class="o">=</span><span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;target&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
-        <span class="n">directory</span><span class="o">=</span><span class="s2">&quot;model&quot;</span><span class="p">,</span>
+        <span class="n">location</span><span class="o">=</span><span class="s2">&quot;model&quot;</span><span class="p">,</span>
         <span class="n">max_depth</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
         <span class="n">learning_rate</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>
         <span class="n">n_estimators</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span>
@@ -975,9 +975,9 @@ $ sed -i &#39;s/.*setosa,versicolor,virginica/SepalLength,SepalWidth,PetalLength
 </div>
 <p><strong>Args</strong></p>
 <ul class="simple">
-<li><p>directory: Path</p>
+<li><p>location: Path</p>
 <ul>
-<li><p>Directory where model should be saved</p></li>
+<li><p>Location where model should be saved</p></li>
 </ul>
 </li>
 <li><p>features: List of features</p>
@@ -1092,7 +1092,7 @@ $ sed -i &#39;s/.*setosa,versicolor,virginica/SepalLength,SepalWidth,PetalLength
 <span class="go">      PetalLength:float:1 \</span>
 <span class="go">      PetalWidth:float:1 \</span>
 <span class="go">    -model-predict classification \</span>
-<span class="go">    -model-directory model \</span>
+<span class="go">    -model-location model \</span>
 <span class="go">    -model-max_depth 3 \</span>
 <span class="go">    -model-learning_rate 0.01 \</span>
 <span class="go">    -model-n_estimators 200 \</span>
@@ -1114,7 +1114,7 @@ $ sed -i &#39;s/.*setosa,versicolor,virginica/SepalLength,SepalWidth,PetalLength
 <span class="go">      PetalLength:float:1 \</span>
 <span class="go">      PetalWidth:float:1 \</span>
 <span class="go">    -model-predict classification \</span>
-<span class="go">    -model-directory model</span>
+<span class="go">    -model-location model</span>
 </pre></div>
 </div>
 <p>Output</p>
@@ -1132,7 +1132,7 @@ $ sed -i &#39;s/.*setosa,versicolor,virginica/SepalLength,SepalWidth,PetalLength
 <span class="go">      PetalLength:float:1 \</span>
 <span class="go">      PetalWidth:float:1 \</span>
 <span class="go">    -model-predict classification \</span>
-<span class="go">    -model-directory model</span>
+<span class="go">    -model-location model</span>
 </pre></div>
 </div>
 <p>Python usage</p>
@@ -1160,7 +1160,7 @@ $ sed -i &#39;s/.*setosa,versicolor,virginica/SepalLength,SepalWidth,PetalLength
     <span class="n">XGBRegressorModelConfig</span><span class="p">(</span>
         <span class="n">features</span><span class="o">=</span><span class="n">Features</span><span class="p">(</span><span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="mi">10</span><span class="p">)),</span>
         <span class="n">predict</span><span class="o">=</span><span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;target&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
-        <span class="n">directory</span><span class="o">=</span><span class="s2">&quot;model&quot;</span><span class="p">,</span>
+        <span class="n">location</span><span class="o">=</span><span class="s2">&quot;model&quot;</span><span class="p">,</span>
         <span class="n">max_depth</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
         <span class="n">learning_rate</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span>
         <span class="n">n_estimators</span><span class="o">=</span><span class="mi">400</span><span class="p">,</span>
@@ -1196,9 +1196,9 @@ Training accuracy: 0.819782501866115
 </div>
 <p><strong>Args</strong></p>
 <ul class="simple">
-<li><p>directory: Path</p>
+<li><p>location: Path</p>
 <ul>
-<li><p>Directory where model should be saved</p></li>
+<li><p>Location where model should be saved</p></li>
 </ul>
 </li>
 <li><p>features: List of features</p>
@@ -1373,9 +1373,9 @@ Training accuracy: 0.819782501866115
 <li><p>Feature to predict</p></li>
 </ul>
 </li>
-<li><p>directory: Path</p>
+<li><p>location: Path</p>
 <ul>
-<li><p>Directory where state should be saved</p></li>
+<li><p>Location where state should be saved</p></li>
 </ul>
 </li>
 <li><p>class_cost: List of features</p>
@@ -1467,7 +1467,7 @@ EOF
   <span class="o">-</span><span class="n">model</span> <span class="n">text_classifier</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">epochs</span> <span class="mi">30</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">predict</span> <span class="n">sentiment</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">1</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">directory</span> <span class="n">tempdir</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">location</span> <span class="n">tempdir</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">classifications</span> <span class="mi">0</span> <span class="mi">1</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">clstype</span> <span class="nb">int</span> \
   <span class="o">-</span><span class="n">sources</span> <span class="n">f</span><span class="o">=</span><span class="n">csv</span> \
@@ -1484,7 +1484,7 @@ EOF
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dffml</span> <span class="n">accuracy</span> \
   <span class="o">-</span><span class="n">model</span> <span class="n">text_classifier</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">predict</span> <span class="n">sentiment</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">1</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">directory</span> <span class="n">tempdir</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">location</span> <span class="n">tempdir</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">classifications</span> <span class="mi">0</span> <span class="mi">1</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">model_path</span> <span class="s2">&quot;https://tfhub.dev/google/tf2-preview/gnews-swivel-20dim-with-oov/1&quot;</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">clstype</span> <span class="nb">int</span> \
@@ -1503,7 +1503,7 @@ EOF
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dffml</span> <span class="n">predict</span> <span class="nb">all</span> \
   <span class="o">-</span><span class="n">model</span> <span class="n">text_classifier</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">predict</span> <span class="n">sentiment</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">1</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">directory</span> <span class="n">tempdir</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">location</span> <span class="n">tempdir</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">classifications</span> <span class="mi">0</span> <span class="mi">1</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">model_path</span> <span class="s2">&quot;https://tfhub.dev/google/tf2-preview/gnews-swivel-20dim-with-oov/1&quot;</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">clstype</span> <span class="nb">int</span> \
@@ -1559,7 +1559,7 @@ EOF
     <span class="n">predict</span><span class="o">=</span><span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;sentiment&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
     <span class="n">classifications</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>
     <span class="n">clstype</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span>
-    <span class="n">directory</span><span class="o">=</span><span class="s2">&quot;tempdir&quot;</span><span class="p">,</span>
+    <span class="n">location</span><span class="o">=</span><span class="s2">&quot;tempdir&quot;</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="c1"># Train the model</span>
@@ -1593,9 +1593,9 @@ EOF
 <li><p>Features to train on</p></li>
 </ul>
 </li>
-<li><p>directory: Path</p>
+<li><p>location: Path</p>
 <ul>
-<li><p>Directory where state should be saved</p></li>
+<li><p>Location where state should be saved</p></li>
 </ul>
 </li>
 <li><p>trainable: String</p>
@@ -1735,7 +1735,7 @@ EOF
 <span class="go">    -source-opimp dffml_model_spacy.ner.utils:parser \</span>
 <span class="go">    -source-args train.json False \</span>
 <span class="go">    -model-model_name_or_path en_core_web_sm \</span>
-<span class="go">    -model-directory temp \</span>
+<span class="go">    -model-location temp \</span>
 <span class="go">    -model-n_iter 5 \</span>
 <span class="go">    -log debug</span>
 </pre></div>
@@ -1747,7 +1747,7 @@ EOF
 <span class="go">    -source-opimp dffml_model_spacy.ner.utils:parser \</span>
 <span class="go">    -source-args train.json False \</span>
 <span class="go">    -model-model_name_or_path en_core_web_sm \</span>
-<span class="go">    -model-directory temp \</span>
+<span class="go">    -model-location temp \</span>
 <span class="go">    -model-n_iter 5 \</span>
 <span class="go">    -log debug</span>
 <span class="go">0.0</span>
@@ -1760,7 +1760,7 @@ EOF
 <span class="go">    -source-opimp dffml_model_spacy.ner.utils:parser \</span>
 <span class="go">    -source-args test.json True \</span>
 <span class="go">    -model-model_name_or_path en_core_web_sm \</span>
-<span class="go">    -model-directory temp \</span>
+<span class="go">    -model-location temp \</span>
 <span class="go">    -model-n_iter 5 \</span>
 <span class="go">    -log debug</span>
 <span class="go">[</span>
@@ -1832,9 +1832,9 @@ is:</p>
 is value of the flag <cite>is_predicting</cite>.</p>
 <p><strong>Args</strong></p>
 <ul class="simple">
-<li><p>directory: String</p>
+<li><p>location: String</p>
 <ul>
-<li><p>Output directory</p></li>
+<li><p>Output location</p></li>
 </ul>
 </li>
 <li><p>model_name_or_path: String</p>
@@ -1921,7 +1921,7 @@ across various features, and works particularly well if the features have a Gaus
 <span class="go">    -model anomalydetection \</span>
 <span class="go">    -model-features A:float:2 \</span>
 <span class="go">    -model-predict Y:int:1  \</span>
-<span class="go">    -model-directory tempdir</span>
+<span class="go">    -model-location tempdir</span>
 </pre></div>
 </div>
 <p>Assess the accuracy</p>
@@ -1931,7 +1931,7 @@ across various features, and works particularly well if the features have a Gaus
 <span class="go">    -model anomalydetection \</span>
 <span class="go">    -model-features A:float:2 \</span>
 <span class="go">    -model-predict Y:int:1 \</span>
-<span class="go">    -model-directory tempdir</span>
+<span class="go">    -model-location tempdir</span>
 </pre></div>
 </div>
 <p>Make predictions</p>
@@ -1941,7 +1941,7 @@ across various features, and works particularly well if the features have a Gaus
 <span class="go">    -model anomalydetection \</span>
 <span class="go">    -model-features A:float:2 \</span>
 <span class="go">    -model-predict Y:int:1 \</span>
-<span class="go">    -model-directory tempdir</span>
+<span class="go">    -model-location tempdir</span>
 </pre></div>
 </div>
 <p>Python usage</p>
@@ -1955,7 +1955,7 @@ across various features, and works particularly well if the features have a Gaus
 <span class="n">model</span> <span class="o">=</span> <span class="n">AnomalyModel</span><span class="p">(</span>
     <span class="n">features</span><span class="o">=</span><span class="n">Features</span><span class="p">(</span><span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">2</span><span class="p">),),</span>
     <span class="n">predict</span><span class="o">=</span><span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;Y&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
-    <span class="n">directory</span><span class="o">=</span><span class="s2">&quot;model&quot;</span><span class="p">,</span>
+    <span class="n">location</span><span class="o">=</span><span class="s2">&quot;model&quot;</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -1987,9 +1987,9 @@ across various features, and works particularly well if the features have a Gaus
 <li><p>Label or the value to be predicted</p></li>
 </ul>
 </li>
-<li><p>directory: Path</p>
+<li><p>location: Path</p>
 <ul>
-<li><p>Directory where state should be saved</p></li>
+<li><p>Location where state should be saved</p></li>
 </ul>
 </li>
 <li><p>k: float</p>
@@ -2021,7 +2021,7 @@ across various features, and works particularly well if the features have a Gaus
   <span class="o">-</span><span class="n">model</span> <span class="n">scratchlgrsag</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">features</span> <span class="n">f1</span><span class="p">:</span><span class="nb">float</span><span class="p">:</span><span class="mi">1</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">predict</span> <span class="n">ans</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">1</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">directory</span> <span class="n">tempdir</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">location</span> <span class="n">tempdir</span> \
   <span class="o">-</span><span class="n">sources</span> <span class="n">f</span><span class="o">=</span><span class="n">csv</span> \
   <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">filename</span> <span class="n">dataset</span><span class="o">.</span><span class="n">csv</span> \
   <span class="o">-</span><span class="n">log</span> <span class="n">debug</span>
@@ -2032,7 +2032,7 @@ across various features, and works particularly well if the features have a Gaus
   <span class="o">-</span><span class="n">model</span> <span class="n">scratchlgrsag</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">features</span> <span class="n">f1</span><span class="p">:</span><span class="nb">float</span><span class="p">:</span><span class="mi">1</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">predict</span> <span class="n">ans</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">1</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">directory</span> <span class="n">tempdir</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">location</span> <span class="n">tempdir</span> \
   <span class="o">-</span><span class="n">sources</span> <span class="n">f</span><span class="o">=</span><span class="n">csv</span> \
   <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">filename</span> <span class="n">dataset</span><span class="o">.</span><span class="n">csv</span> \
   <span class="o">-</span><span class="n">log</span> <span class="n">debug</span>
@@ -2048,7 +2048,7 @@ across various features, and works particularly well if the features have a Gaus
   <span class="o">-</span><span class="n">model</span> <span class="n">scratchlgrsag</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">features</span> <span class="n">f1</span><span class="p">:</span><span class="nb">float</span><span class="p">:</span><span class="mi">1</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">predict</span> <span class="n">ans</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">1</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">directory</span> <span class="n">tempdir</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">location</span> <span class="n">tempdir</span> \
   <span class="o">-</span><span class="n">sources</span> <span class="n">f</span><span class="o">=</span><span class="n">csv</span> \
   <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">filename</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">stdin</span> \
   <span class="o">-</span><span class="n">log</span> <span class="n">debug</span>
@@ -2082,7 +2082,7 @@ across various features, and works particularly well if the features have a Gaus
 <span class="n">model</span> <span class="o">=</span> <span class="n">LogisticRegression</span><span class="p">(</span>
     <span class="n">features</span><span class="o">=</span><span class="n">Features</span><span class="p">(</span><span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;f1&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span>
     <span class="n">predict</span><span class="o">=</span><span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;ans&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
-    <span class="n">directory</span><span class="o">=</span><span class="s2">&quot;tempdir&quot;</span><span class="p">,</span>
+    <span class="n">location</span><span class="o">=</span><span class="s2">&quot;tempdir&quot;</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="c1"># Train the model</span>
@@ -2109,9 +2109,9 @@ across various features, and works particularly well if the features have a Gaus
 <li><p>Features to train on</p></li>
 </ul>
 </li>
-<li><p>directory: Path</p>
+<li><p>location: Path</p>
 <ul>
-<li><p>Directory where state should be saved</p></li>
+<li><p>Location where state should be saved</p></li>
 </ul>
 </li>
 </ul>
@@ -2131,7 +2131,7 @@ their feature names.</p>
 <span class="go">    -model SCIKIT_MODEL_ENTRYPOINT \</span>
 <span class="go">    -model-features FEATURE_DEFINITION \</span>
 <span class="go">    -model-predict TO_PREDICT \</span>
-<span class="go">    -model-directory MODEL_DIRECTORY \</span>
+<span class="go">    -model-location MODEL_DIRECTORY \</span>
 <span class="go">    -model-SCIKIT_PARAMETER_NAME SCIKIT_PARAMETER_VALUE \</span>
 <span class="go">    -sources f=TRAINING_DATA_SOURCE_TYPE \</span>
 <span class="go">    -source-filename TRAINING_DATA_FILE_NAME \</span>
@@ -2143,7 +2143,7 @@ their feature names.</p>
 <span class="go">    -model SCIKIT_MODEL_ENTRYPOINT \</span>
 <span class="go">    -model-features FEATURE_DEFINITION \</span>
 <span class="go">    -model-predict TO_PREDICT \</span>
-<span class="go">    -model-directory MODEL_DIRECTORY \</span>
+<span class="go">    -model-location MODEL_DIRECTORY \</span>
 <span class="go">    -sources f=TESTING_DATA_SOURCE_TYPE \</span>
 <span class="go">    -source-filename TESTING_DATA_FILE_NAME \</span>
 <span class="go">    -log debug</span>
@@ -2154,7 +2154,7 @@ their feature names.</p>
 <span class="go">    -model SCIKIT_MODEL_ENTRYPOINT \</span>
 <span class="go">    -model-features FEATURE_DEFINITION \</span>
 <span class="go">    -model-predict TO_PREDICT \</span>
-<span class="go">    -model-directory MODEL_DIRECTORY \</span>
+<span class="go">    -model-location MODEL_DIRECTORY \</span>
 <span class="go">    -sources f=PREDICT_DATA_SOURCE_TYPE \</span>
 <span class="go">    -source-filename PREDICT_DATA_FILE_NAME \</span>
 <span class="go">    -log debug</span>
@@ -2397,7 +2397,7 @@ their feature names.</p>
   <span class="o">-</span><span class="n">model</span> <span class="n">scikitlr</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">features</span> <span class="n">Years</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">1</span> <span class="n">Expertise</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">1</span> <span class="n">Trust</span><span class="p">:</span><span class="nb">float</span><span class="p">:</span><span class="mi">1</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">predict</span> <span class="n">Salary</span><span class="p">:</span><span class="nb">float</span><span class="p">:</span><span class="mi">1</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">directory</span> <span class="n">tempdir</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">location</span> <span class="n">tempdir</span> \
   <span class="o">-</span><span class="n">sources</span> <span class="n">f</span><span class="o">=</span><span class="n">csv</span> \
   <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">filename</span> <span class="n">train</span><span class="o">.</span><span class="n">csv</span>
 </pre></div>
@@ -2407,7 +2407,7 @@ their feature names.</p>
   <span class="o">-</span><span class="n">model</span> <span class="n">scikitlr</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">features</span> <span class="n">Years</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">1</span> <span class="n">Expertise</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">1</span> <span class="n">Trust</span><span class="p">:</span><span class="nb">float</span><span class="p">:</span><span class="mi">1</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">predict</span> <span class="n">Salary</span><span class="p">:</span><span class="nb">float</span><span class="p">:</span><span class="mi">1</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">directory</span> <span class="n">tempdir</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">location</span> <span class="n">tempdir</span> \
   <span class="o">-</span><span class="n">sources</span> <span class="n">f</span><span class="o">=</span><span class="n">csv</span> \
   <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">filename</span> <span class="n">test</span><span class="o">.</span><span class="n">csv</span>
 </pre></div>
@@ -2422,7 +2422,7 @@ their feature names.</p>
   <span class="o">-</span><span class="n">model</span> <span class="n">scikitlr</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">features</span> <span class="n">Years</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">1</span> <span class="n">Expertise</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">1</span> <span class="n">Trust</span><span class="p">:</span><span class="nb">float</span><span class="p">:</span><span class="mi">1</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">predict</span> <span class="n">Salary</span><span class="p">:</span><span class="nb">float</span><span class="p">:</span><span class="mi">1</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">directory</span> <span class="n">tempdir</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">location</span> <span class="n">tempdir</span> \
   <span class="o">-</span><span class="n">sources</span> <span class="n">f</span><span class="o">=</span><span class="n">csv</span> \
   <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">filename</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">stdin</span>
 </pre></div>
@@ -2460,7 +2460,7 @@ their feature names.</p>
         <span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;Trust&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
     <span class="p">),</span>
     <span class="n">predict</span><span class="o">=</span><span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;Salary&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
-    <span class="n">directory</span><span class="o">=</span><span class="s2">&quot;tempdir&quot;</span><span class="p">,</span>
+    <span class="n">location</span><span class="o">=</span><span class="s2">&quot;tempdir&quot;</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="c1"># Train the model</span>
@@ -2500,7 +2500,7 @@ their feature names.</p>
 <span class="gp"> $ </span>dffml train <span class="se">\</span>
 <span class="go">     -model scikitkmeans \</span>
 <span class="go">     -model-features Col1:float:1 Col2:float:1 Col3:float:1 Col4:float:1 \</span>
-<span class="go">     -model-directory tempdir \</span>
+<span class="go">     -model-location tempdir \</span>
 <span class="go">     -sources f=csv \</span>
 <span class="go">     -source-filename train.csv \</span>
 <span class="go">     -source-readonly \</span>
@@ -2509,7 +2509,7 @@ their feature names.</p>
 <span class="go">     -model scikitkmeans \</span>
 <span class="go">     -model-features Col1:float:1 Col2:float:1 Col3:float:1 Col4:float:1\</span>
 <span class="go">     -model-tcluster cluster:int:1 \</span>
-<span class="go">     -model-directory tempdir \</span>
+<span class="go">     -model-location tempdir \</span>
 <span class="go">     -sources f=csv \</span>
 <span class="go">     -source-filename test.csv \</span>
 <span class="go">     -source-readonly \</span>
@@ -2519,7 +2519,7 @@ their feature names.</p>
 <span class="go">   dffml predict all \</span>
 <span class="go">     -model scikitkmeans \</span>
 <span class="go">     -model-features Col1:float:1 Col2:float:1 Col3:float:1 Col4:float:1 \</span>
-<span class="go">     -model-directory tempdir \</span>
+<span class="go">     -model-location tempdir \</span>
 <span class="go">     -sources f=csv \</span>
 <span class="go">     -source-filename /dev/stdin \</span>
 <span class="go">     -source-readonly \</span>
@@ -2556,7 +2556,7 @@ their feature names.</p>
         <span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;Col4&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
     <span class="p">),</span>
     <span class="n">tcluster</span><span class="o">=</span><span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;cluster&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
-    <span class="n">directory</span><span class="o">=</span><span class="s2">&quot;tempdir&quot;</span><span class="p">,</span>
+    <span class="n">location</span><span class="o">=</span><span class="s2">&quot;tempdir&quot;</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="c1"># Train the model</span>
@@ -2596,9 +2596,9 @@ Ensure that <cite>predict</cite> and <cite>accuracy</cite> for these algorithms 
 <li><p>Features to train on</p></li>
 </ul>
 </li>
-<li><p>directory: Path</p>
+<li><p>location: Path</p>
 <ul>
-<li><p>Directory where state should be saved</p></li>
+<li><p>Location where state should be saved</p></li>
 </ul>
 </li>
 </ul>
@@ -2616,7 +2616,7 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <span class="go">    -model PYTORCH_MODEL_ENTRYPOINT \</span>
 <span class="go">    -model-features FEATURE_DEFINITION \</span>
 <span class="go">    -model-predict TO_PREDICT \</span>
-<span class="go">    -model-directory MODEL_DIRECTORY \</span>
+<span class="go">    -model-location MODEL_LOCATION \</span>
 <span class="go">    -model-CONFIGS CONFIG_VALUES \</span>
 <span class="go">    -sources f=TRAINING_DATA_SOURCE_TYPE \</span>
 <span class="go">    -source-CONFIGS TRAINING_DATA \</span>
@@ -2628,7 +2628,7 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <span class="go">    -model PYTORCH_MODEL_ENTRYPOINT \</span>
 <span class="go">    -model-features FEATURE_DEFINITION \</span>
 <span class="go">    -model-predict TO_PREDICT \</span>
-<span class="go">    -model-directory MODEL_DIRECTORY \</span>
+<span class="go">    -model-location MODEL_LOCATION \</span>
 <span class="go">    -model-CONFIGS CONFIG_VALUES \</span>
 <span class="go">    -sources f=TESTING_DATA_SOURCE_TYPE \</span>
 <span class="go">    -source-CONFIGS TESTING_DATA \</span>
@@ -2640,7 +2640,7 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <span class="go">    -model PYTORCH_MODEL_ENTRYPOINT \</span>
 <span class="go">    -model-features FEATURE_DEFINITION \</span>
 <span class="go">    -model-predict TO_PREDICT \</span>
-<span class="go">    -model-directory MODEL_DIRECTORY \</span>
+<span class="go">    -model-location MODEL_LOCATION \</span>
 <span class="go">    -model-CONFIGS CONFIG_VALUES \</span>
 <span class="go">    -sources f=PREDICT_DATA_SOURCE_TYPE \</span>
 <span class="go">    -source-CONFIGS PREDICTION_DATA \</span>
@@ -2824,7 +2824,7 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
   -model-layers @layers.yaml \
   -model-clstype str \
   -model-classifications ants bees \
-  -model-directory resnet18_model \
+  -model-location resnet18_model \
   -model-imageSize 224 \
   -model-epochs 5 \
   -model-batch_size 32 \
@@ -2845,7 +2845,7 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
   -model-layers @layers.yaml \
   -model-clstype str \
   -model-classifications ants bees \
-  -model-directory resnet18_model \
+  -model-location resnet18_model \
   -model-imageSize 224 \
   -model-batch_size 32 \
   -model-enableGPU \
@@ -2879,7 +2879,7 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
   -model-layers @layers.yaml \
   -model-clstype str \
   -model-classifications ants bees \
-  -model-directory resnet18_model \
+  -model-location resnet18_model \
   -model-imageSize 224 \
   -model-enableGPU \
   -model-features image:int:$((500*500)) \
@@ -2962,9 +2962,9 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Features to train on</p></li>
 </ul>
 </li>
-<li><p>directory: Path</p>
+<li><p>location: Path</p>
 <ul>
-<li><p>Directory where state should be saved</p></li>
+<li><p>Location where state should be saved</p></li>
 </ul>
 </li>
 <li><p>classifications: List of strings</p>
@@ -3081,9 +3081,9 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Features to train on</p></li>
 </ul>
 </li>
-<li><p>directory: Path</p>
+<li><p>location: Path</p>
 <ul>
-<li><p>Directory where state should be saved</p></li>
+<li><p>Location where state should be saved</p></li>
 </ul>
 </li>
 <li><p>classifications: List of strings</p>
@@ -3200,9 +3200,9 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Features to train on</p></li>
 </ul>
 </li>
-<li><p>directory: Path</p>
+<li><p>location: Path</p>
 <ul>
-<li><p>Directory where state should be saved</p></li>
+<li><p>Location where state should be saved</p></li>
 </ul>
 </li>
 <li><p>classifications: List of strings</p>
@@ -3319,9 +3319,9 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Features to train on</p></li>
 </ul>
 </li>
-<li><p>directory: Path</p>
+<li><p>location: Path</p>
 <ul>
-<li><p>Directory where state should be saved</p></li>
+<li><p>Location where state should be saved</p></li>
 </ul>
 </li>
 <li><p>classifications: List of strings</p>
@@ -3438,9 +3438,9 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Features to train on</p></li>
 </ul>
 </li>
-<li><p>directory: Path</p>
+<li><p>location: Path</p>
 <ul>
-<li><p>Directory where state should be saved</p></li>
+<li><p>Location where state should be saved</p></li>
 </ul>
 </li>
 <li><p>classifications: List of strings</p>
@@ -3557,9 +3557,9 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Features to train on</p></li>
 </ul>
 </li>
-<li><p>directory: Path</p>
+<li><p>location: Path</p>
 <ul>
-<li><p>Directory where state should be saved</p></li>
+<li><p>Location where state should be saved</p></li>
 </ul>
 </li>
 <li><p>classifications: List of strings</p>
@@ -3676,9 +3676,9 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Features to train on</p></li>
 </ul>
 </li>
-<li><p>directory: Path</p>
+<li><p>location: Path</p>
 <ul>
-<li><p>Directory where state should be saved</p></li>
+<li><p>Location where state should be saved</p></li>
 </ul>
 </li>
 <li><p>classifications: List of strings</p>
@@ -3795,9 +3795,9 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Features to train on</p></li>
 </ul>
 </li>
-<li><p>directory: Path</p>
+<li><p>location: Path</p>
 <ul>
-<li><p>Directory where state should be saved</p></li>
+<li><p>Location where state should be saved</p></li>
 </ul>
 </li>
 <li><p>classifications: List of strings</p>
@@ -3914,9 +3914,9 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Features to train on</p></li>
 </ul>
 </li>
-<li><p>directory: Path</p>
+<li><p>location: Path</p>
 <ul>
-<li><p>Directory where state should be saved</p></li>
+<li><p>Location where state should be saved</p></li>
 </ul>
 </li>
 <li><p>classifications: List of strings</p>
@@ -4033,9 +4033,9 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Features to train on</p></li>
 </ul>
 </li>
-<li><p>directory: Path</p>
+<li><p>location: Path</p>
 <ul>
-<li><p>Directory where state should be saved</p></li>
+<li><p>Location where state should be saved</p></li>
 </ul>
 </li>
 <li><p>classifications: List of strings</p>
@@ -4152,9 +4152,9 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Features to train on</p></li>
 </ul>
 </li>
-<li><p>directory: Path</p>
+<li><p>location: Path</p>
 <ul>
-<li><p>Directory where state should be saved</p></li>
+<li><p>Location where state should be saved</p></li>
 </ul>
 </li>
 <li><p>classifications: List of strings</p>
@@ -4253,9 +4253,9 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Features to train on</p></li>
 </ul>
 </li>
-<li><p>directory: Path</p>
+<li><p>location: Path</p>
 <ul>
-<li><p>Directory where state should be saved</p></li>
+<li><p>Location where state should be saved</p></li>
 </ul>
 </li>
 <li><p>classifications: List of strings</p>
@@ -4372,9 +4372,9 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Features to train on</p></li>
 </ul>
 </li>
-<li><p>directory: Path</p>
+<li><p>location: Path</p>
 <ul>
-<li><p>Directory where state should be saved</p></li>
+<li><p>Location where state should be saved</p></li>
 </ul>
 </li>
 <li><p>classifications: List of strings</p>
@@ -4491,9 +4491,9 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Features to train on</p></li>
 </ul>
 </li>
-<li><p>directory: Path</p>
+<li><p>location: Path</p>
 <ul>
-<li><p>Directory where state should be saved</p></li>
+<li><p>Location where state should be saved</p></li>
 </ul>
 </li>
 <li><p>classifications: List of strings</p>
@@ -4610,9 +4610,9 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Features to train on</p></li>
 </ul>
 </li>
-<li><p>directory: Path</p>
+<li><p>location: Path</p>
 <ul>
-<li><p>Directory where state should be saved</p></li>
+<li><p>Location where state should be saved</p></li>
 </ul>
 </li>
 <li><p>classifications: List of strings</p>
@@ -4729,9 +4729,9 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Features to train on</p></li>
 </ul>
 </li>
-<li><p>directory: Path</p>
+<li><p>location: Path</p>
 <ul>
-<li><p>Directory where state should be saved</p></li>
+<li><p>Location where state should be saved</p></li>
 </ul>
 </li>
 <li><p>classifications: List of strings</p>
@@ -4848,9 +4848,9 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Features to train on</p></li>
 </ul>
 </li>
-<li><p>directory: Path</p>
+<li><p>location: Path</p>
 <ul>
-<li><p>Directory where state should be saved</p></li>
+<li><p>Location where state should be saved</p></li>
 </ul>
 </li>
 <li><p>classifications: List of strings</p>
@@ -4967,9 +4967,9 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Features to train on</p></li>
 </ul>
 </li>
-<li><p>directory: Path</p>
+<li><p>location: Path</p>
 <ul>
-<li><p>Directory where state should be saved</p></li>
+<li><p>Location where state should be saved</p></li>
 </ul>
 </li>
 <li><p>classifications: List of strings</p>
@@ -5086,9 +5086,9 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Features to train on</p></li>
 </ul>
 </li>
-<li><p>directory: Path</p>
+<li><p>location: Path</p>
 <ul>
-<li><p>Directory where state should be saved</p></li>
+<li><p>Location where state should be saved</p></li>
 </ul>
 </li>
 <li><p>classifications: List of strings</p>
@@ -5205,9 +5205,9 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Features to train on</p></li>
 </ul>
 </li>
-<li><p>directory: Path</p>
+<li><p>location: Path</p>
 <ul>
-<li><p>Directory where state should be saved</p></li>
+<li><p>Location where state should be saved</p></li>
 </ul>
 </li>
 <li><p>classifications: List of strings</p>
@@ -5324,9 +5324,9 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Features to train on</p></li>
 </ul>
 </li>
-<li><p>directory: Path</p>
+<li><p>location: Path</p>
 <ul>
-<li><p>Directory where state should be saved</p></li>
+<li><p>Location where state should be saved</p></li>
 </ul>
 </li>
 <li><p>classifications: List of strings</p>
@@ -5443,9 +5443,9 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Features to train on</p></li>
 </ul>
 </li>
-<li><p>directory: Path</p>
+<li><p>location: Path</p>
 <ul>
-<li><p>Directory where state should be saved</p></li>
+<li><p>Location where state should be saved</p></li>
 </ul>
 </li>
 <li><p>classifications: List of strings</p>
@@ -5562,9 +5562,9 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Features to train on</p></li>
 </ul>
 </li>
-<li><p>directory: Path</p>
+<li><p>location: Path</p>
 <ul>
-<li><p>Directory where state should be saved</p></li>
+<li><p>Location where state should be saved</p></li>
 </ul>
 </li>
 <li><p>classifications: List of strings</p>
@@ -5681,9 +5681,9 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Features to train on</p></li>
 </ul>
 </li>
-<li><p>directory: Path</p>
+<li><p>location: Path</p>
 <ul>
-<li><p>Directory where state should be saved</p></li>
+<li><p>Location where state should be saved</p></li>
 </ul>
 </li>
 <li><p>classifications: List of strings</p>
@@ -5800,9 +5800,9 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Features to train on</p></li>
 </ul>
 </li>
-<li><p>directory: Path</p>
+<li><p>location: Path</p>
 <ul>
-<li><p>Directory where state should be saved</p></li>
+<li><p>Location where state should be saved</p></li>
 </ul>
 </li>
 <li><p>classifications: List of strings</p>
@@ -5919,9 +5919,9 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Features to train on</p></li>
 </ul>
 </li>
-<li><p>directory: Path</p>
+<li><p>location: Path</p>
 <ul>
-<li><p>Directory where state should be saved</p></li>
+<li><p>Location where state should be saved</p></li>
 </ul>
 </li>
 <li><p>classifications: List of strings</p>
@@ -6038,9 +6038,9 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Features to train on</p></li>
 </ul>
 </li>
-<li><p>directory: Path</p>
+<li><p>location: Path</p>
 <ul>
-<li><p>Directory where state should be saved</p></li>
+<li><p>Location where state should be saved</p></li>
 </ul>
 </li>
 <li><p>classifications: List of strings</p>
@@ -6157,9 +6157,9 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Features to train on</p></li>
 </ul>
 </li>
-<li><p>directory: Path</p>
+<li><p>location: Path</p>
 <ul>
-<li><p>Directory where state should be saved</p></li>
+<li><p>Location where state should be saved</p></li>
 </ul>
 </li>
 <li><p>classifications: List of strings</p>
@@ -6276,9 +6276,9 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Features to train on</p></li>
 </ul>
 </li>
-<li><p>directory: Path</p>
+<li><p>location: Path</p>
 <ul>
-<li><p>Directory where state should be saved</p></li>
+<li><p>Location where state should be saved</p></li>
 </ul>
 </li>
 <li><p>classifications: List of strings</p>
@@ -6395,9 +6395,9 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Features to train on</p></li>
 </ul>
 </li>
-<li><p>directory: Path</p>
+<li><p>location: Path</p>
 <ul>
-<li><p>Directory where state should be saved</p></li>
+<li><p>Location where state should be saved</p></li>
 </ul>
 </li>
 <li><p>classifications: List of strings</p>
@@ -6544,7 +6544,7 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <span class="go">    -model daal4pylr \</span>
 <span class="go">    -model-features f1:float:1 \</span>
 <span class="go">    -model-predict ans:int:1 \</span>
-<span class="go">    -model-directory tempdir \</span>
+<span class="go">    -model-location tempdir \</span>
 <span class="go">    -sources f=csv \</span>
 <span class="go">    -source-filename train.csv</span>
 </pre></div>
@@ -6554,7 +6554,7 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <span class="go">    -model daal4pylr \</span>
 <span class="go">    -model-features f1:float:1 \</span>
 <span class="go">    -model-predict ans:int:1 \</span>
-<span class="go">    -model-directory tempdir \</span>
+<span class="go">    -model-location tempdir \</span>
 <span class="go">    -sources f=csv \</span>
 <span class="go">    -source-filename test.csv</span>
 <span class="go">0.6666666666666666</span>
@@ -6566,7 +6566,7 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <span class="go">    -model daal4pylr \</span>
 <span class="go">    -model-features f1:float:1 \</span>
 <span class="go">    -model-predict ans:int:1 \</span>
-<span class="go">    -model-directory tempdir \</span>
+<span class="go">    -model-location tempdir \</span>
 <span class="go">    -sources f=csv \</span>
 <span class="go">    -source-filename /dev/stdin</span>
 <span class="go">[</span>
@@ -6597,7 +6597,7 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <span class="n">model</span> <span class="o">=</span> <span class="n">DAAL4PyLRModel</span><span class="p">(</span>
     <span class="n">features</span><span class="o">=</span><span class="n">Features</span><span class="p">(</span><span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;f1&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span>
     <span class="n">predict</span><span class="o">=</span><span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;ans&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
-    <span class="n">directory</span><span class="o">=</span><span class="s2">&quot;tempdir&quot;</span><span class="p">,</span>
+    <span class="n">location</span><span class="o">=</span><span class="s2">&quot;tempdir&quot;</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="c1"># Train the model</span>
@@ -6628,9 +6628,9 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Features to train on. For SLR only 1 allowed</p></li>
 </ul>
 </li>
-<li><p>directory: Path</p>
+<li><p>location: Path</p>
 <ul>
-<li><p>Directory where state should be saved</p></li>
+<li><p>Location where state should be saved</p></li>
 </ul>
 </li>
 </ul>
@@ -6670,9 +6670,9 @@ command to ensure that <code class="docutils literal notranslate"><span class="p
 <li><p>Label or the value to be predicted</p></li>
 </ul>
 </li>
-<li><p>directory: Path</p>
+<li><p>location: Path</p>
 <ul>
-<li><p>Directory where state should be saved</p></li>
+<li><p>Location where state should be saved</p></li>
 </ul>
 </li>
 <li><p>time_left_for_this_task: Integer</p>
@@ -6887,7 +6887,7 @@ to train the a scikit model for you.</p>
 <span class="go">    -model-per_run_time_limit 30 \</span>
 <span class="go">    -model-ensemble_size 50 \</span>
 <span class="go">    -model-delete_tmp_folder_after_terminate False \</span>
-<span class="go">    -model-directory tempdir \</span>
+<span class="go">    -model-location tempdir \</span>
 <span class="go">    -log debug</span>
 </pre></div>
 </div>
@@ -6895,7 +6895,7 @@ to train the a scikit model for you.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml accuracy <span class="se">\</span>
 <span class="go">    -model autoregressor \</span>
 <span class="go">    -model-predict TARGET:float:1 \</span>
-<span class="go">    -model-directory tempdir \</span>
+<span class="go">    -model-location tempdir \</span>
 <span class="go">    -sources f=csv \</span>
 <span class="go">    -source-filename test.csv \</span>
 <span class="go">    -model-features \</span>
@@ -6914,7 +6914,7 @@ to train the a scikit model for you.</p>
 <p>Make a prediction</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml predict all <span class="se">\</span>
 <span class="go">    -model autoregressor \</span>
-<span class="go">    -model-directory tempdir \</span>
+<span class="go">    -model-location tempdir \</span>
 <span class="go">    -model-predict TARGET:float:1 \</span>
 <span class="go">    -sources iris=csv \</span>
 <span class="go">    -model-features \</span>
@@ -6954,7 +6954,7 @@ of the model.</p>
         <span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;Feature1&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;Feature2&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
     <span class="p">),</span>
     <span class="n">predict</span><span class="o">=</span><span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;TARGET&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
-    <span class="n">directory</span><span class="o">=</span><span class="s2">&quot;tempdir-python&quot;</span><span class="p">,</span>
+    <span class="n">location</span><span class="o">=</span><span class="s2">&quot;tempdir-python&quot;</span><span class="p">,</span>
     <span class="n">time_left_for_this_task</span><span class="o">=</span><span class="mi">120</span><span class="p">,</span>
 <span class="p">)</span>
 
@@ -6994,9 +6994,9 @@ of the model.</p>
 <li><p>Label or the value to be predicted</p></li>
 </ul>
 </li>
-<li><p>directory: Path</p>
+<li><p>location: Path</p>
 <ul>
-<li><p>Directory where state should be saved</p></li>
+<li><p>Location where state should be saved</p></li>
 </ul>
 </li>
 <li><p>time_left_for_this_task: Integer</p>

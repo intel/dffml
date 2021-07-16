@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Model Model &mdash; DFFML 5f9a550f2 documentation</title>
+  <title>Model Model &mdash; DFFML 5c1d437ea documentation</title>
   
 
   
@@ -70,7 +70,7 @@
             
             
               <div class="version">
-                5f9a550f2
+                5c1d437ea
               </div>
             
           
@@ -258,7 +258,7 @@
 <div class="section" id="module-dffml.model.model">
 <span id="model-model"></span><h1>Model Model<a class="headerlink" href="#module-dffml.model.model" title="Permalink to this headline">¶</a></h1>
 <p>Model subclasses are responsible for training themselves on records, making
-predictions about the value of a feature in the record, and assessing thei
+predictions about the value of a feature in the record, and assessing their
 prediction accuracy.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="dffml.model.model.Model">
@@ -275,13 +275,13 @@ various machine learning frameworks or concepts.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="dffml.model.model.ModelConfig">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">dffml.model.model.</span></span><span class="sig-name descname"><span class="pre">ModelConfig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">directory</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">features</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="../feature/feature.html#dffml.feature.feature.Features" title="dffml.feature.feature.Features"><span class="pre">dffml.feature.feature.Features</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/model/model.html#ModelConfig"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.model.model.ModelConfig" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">dffml.model.model.</span></span><span class="sig-name descname"><span class="pre">ModelConfig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">location</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">features</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="../feature/feature.html#dffml.feature.feature.Features" title="dffml.feature.feature.Features"><span class="pre">dffml.feature.feature.Features</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/model/model.html#ModelConfig"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.model.model.ModelConfig" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="dffml.model.model.ModelContext">
 <em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">dffml.model.model.</span></span><span class="sig-name descname"><span class="pre">ModelContext</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#dffml.model.model.Model" title="dffml.model.model.Model"><span class="pre">dffml.model.model.Model</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/model/model.html#ModelContext"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.model.model.ModelContext" title="Permalink to this definition">¶</a></dt>
-<dd><p>Abstract base class which should be derived from and implmented using
+<dd><p>Abstract base class which should be derived from and implemented using
 various machine learning frameworks or concepts.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="dffml.model.model.ModelContext.accuracy">
@@ -328,7 +328,7 @@ as test data.</p>
 <dt class="sig sig-object py" id="dffml.model.model.SimpleModel.disk_path">
 <span class="sig-name descname"><span class="pre">disk_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">extention</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/model/model.html#SimpleModel.disk_path"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.model.model.SimpleModel.disk_path" title="Permalink to this definition">¶</a></dt>
 <dd><p>We do this for convenience of the user so they can usually just use the
-default directory and if they train models with different parameters
+default location and if they train models with different parameters
 this method transparently to the user creates a filename unique the that
 configuration of the model where data is saved and loaded.</p>
 </dd></dl>

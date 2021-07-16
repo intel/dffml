@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>dffml.model.slr &mdash; DFFML 5f9a550f2 documentation</title>
+  <title>dffml.model.slr &mdash; DFFML 5c1d437ea documentation</title>
   
 
   
@@ -69,7 +69,7 @@
             
             
               <div class="version">
-                5f9a550f2
+                5c1d437ea
               </div>
             
           
@@ -269,7 +269,7 @@
 <span class="k">class</span> <span class="nc">SLRModelConfig</span><span class="p">:</span>
     <span class="n">predict</span><span class="p">:</span> <span class="n">Feature</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="s2">&quot;Label or the value to be predicted&quot;</span><span class="p">)</span>
     <span class="n">features</span><span class="p">:</span> <span class="n">Features</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="s2">&quot;Features to train on. For SLR only 1 allowed&quot;</span><span class="p">)</span>
-    <span class="n">directory</span><span class="p">:</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="s2">&quot;Directory where state should be saved&quot;</span><span class="p">)</span></div>
+    <span class="n">location</span><span class="p">:</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="s2">&quot;Location where state should be saved&quot;</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="SLRModel"><a class="viewcode-back" href="../../../api/model/slr.html#dffml.model.slr.SLRModel">[docs]</a><span class="nd">@entrypoint</span><span class="p">(</span><span class="s2">&quot;slr&quot;</span><span class="p">)</span>
@@ -301,7 +301,7 @@
 <span class="sd">            -model slr \</span>
 <span class="sd">            -model-features f1:float:1 \</span>
 <span class="sd">            -model-predict ans:int:1 \</span>
-<span class="sd">            -model-directory tempdir \</span>
+<span class="sd">            -model-location tempdir \</span>
 <span class="sd">            -sources f=csv \</span>
 <span class="sd">            -source-filename dataset.csv</span>
 
@@ -314,7 +314,7 @@
 <span class="sd">            -model slr \</span>
 <span class="sd">            -model-features f1:float:1 \</span>
 <span class="sd">            -model-predict ans:int:1 \</span>
-<span class="sd">            -model-directory tempdir \</span>
+<span class="sd">            -model-location tempdir \</span>
 <span class="sd">            -sources f=csv \</span>
 <span class="sd">            -source-filename dataset.csv</span>
 <span class="sd">        1.0</span>
@@ -337,7 +337,7 @@
 <span class="sd">            -model slr \</span>
 <span class="sd">            -model-features f1:float:1 \</span>
 <span class="sd">            -model-predict ans:int:1 \</span>
-<span class="sd">            -model-directory tempdir \</span>
+<span class="sd">            -model-location tempdir \</span>
 <span class="sd">            -sources f=csv \</span>
 <span class="sd">            -source-filename predict.csv</span>
 <span class="sd">        [</span>

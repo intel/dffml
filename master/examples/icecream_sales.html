@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Ice Cream Sales &mdash; DFFML 5f9a550f2 documentation</title>
+  <title>Ice Cream Sales &mdash; DFFML 5c1d437ea documentation</title>
   
 
   
@@ -70,7 +70,7 @@
             
             
               <div class="version">
-                5f9a550f2
+                5c1d437ea
               </div>
             
           
@@ -628,7 +628,7 @@ and the output being sales.</p>
 <span class="go">    -model-hidden 9 18 9 \</span>
 <span class="go">    -model-features population:int:1 temperature:float:1 \</span>
 <span class="go">    -model-predict sales:int:1 \</span>
-<span class="go">    -model-directory tempdir \</span>
+<span class="go">    -model-location tempdir \</span>
 <span class="go">    -sources f=csv \</span>
 <span class="go">    -source-filename preprocessed.csv \</span>
 <span class="go">    -log debug</span>
@@ -645,7 +645,7 @@ using the accuracy method.</p>
 <span class="go">    -model-hidden 9 18 9 \</span>
 <span class="go">    -model-features population:int:1 temperature:float:1 \</span>
 <span class="go">    -model-predict sales:int:1 \</span>
-<span class="go">    -model-directory tempdir \</span>
+<span class="go">    -model-location tempdir \</span>
 <span class="go">    -sources f=csv \</span>
 <span class="go">    -source-filename preprocessed.csv \</span>
 <span class="go">    -log debug</span>
@@ -665,7 +665,7 @@ for the prediction of sales.</p>
 <span class="go">    -model-hidden 9 18 9 \</span>
 <span class="go">    -model-features population:int:1 temperature:float:1 \</span>
 <span class="go">    -model-predict sales:int:1 \</span>
-<span class="go">    -model-directory tempdir \</span>
+<span class="go">    -model-location tempdir \</span>
 <span class="go">    -sources preprocess=df \</span>
 <span class="go">    -source-preprocess-dataflow preprocess_ops.json \</span>
 <span class="go">    -source-preprocess-features city:str:1 state:str:1 month:int:1 \</span>
