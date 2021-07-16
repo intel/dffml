@@ -890,6 +890,7 @@ class MakeDocs(CMD):
             )
 
             with socketserver.TCPServer(("", self.port), handler) as httpd:
+                print(f"http://127.0.0.1:{httpd.server_address[1]}/")
                 httpd.serve_forever()
 
 
