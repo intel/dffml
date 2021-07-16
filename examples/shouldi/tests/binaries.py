@@ -64,10 +64,10 @@ CACHED_RUST = (
     "816355b36682fdd888da4dca19b9b08c9670d49d7f4bf4ecfd9fafad8e966ebbf7b393f3e3b07705355cb420698daf4e",
 )
 CACHED_CARGO_AUDIT = (
-    "https://github.com/RustSec/cargo-audit/archive/v0.14.1.tar.gz",
+    "https://github.com/RustSec/rustsec/archive/refs/tags/cargo-audit/v0.15.0.tar.gz",
     downloads / "cargo_audit.tar.gz",
     downloads / "cargo-audit-download",
-    "594bd8f82473ca61c40a915eecb896c6f8608437bb91ae41d531d851285a584e2d7d1c37845f897c71d80260df051950",
+    "2f05ede1372b4eb8101a56c5448405aba9db5cb428ebc2017a3afb9b081032e478098b5dddfc59168deb1d9fefd2e06e",
 )
 CACHED_TARGET_RUST_CLIPPY = (
     "https://github.com/rust-lang/rust-clippy/archive/52c25e9136f533c350fa1916b5bf5103f69c0f4d.tar.gz",
