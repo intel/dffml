@@ -276,8 +276,8 @@ for name, (import_name, module, obj) in to_test.items():
     test_cases = {}
     # Add a doctest testcase if there are any lines to doctest
     if docstring is not None and ">>>" in docstring:
-        test_cases["test_docstring"] = (
-            mktestcase(name, import_name, module, obj),
+        test_cases["test_docstring"] = mktestcase(
+            name, import_name, module, obj
         )
     # Add a consoletest testcase if there are any testable rst nodes
     if docstring is not None and [

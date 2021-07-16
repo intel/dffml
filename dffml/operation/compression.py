@@ -25,6 +25,7 @@ def make_compress(extension, compression_cls):
         with open(input_file_path, "rb") as f_in:
             with compression_cls.open(output_file_path, "wb") as f_out:
                 shutil.copyfileobj(f_in, f_out)
+        return {"output_path": output_file_path}
 
     return compress
 
@@ -44,6 +45,7 @@ def make_decompress(extension, compression_cls):
         with compression_cls.open(input_file_path, "rb") as f_in:
             with open(output_file_path, "wb") as f_out:
                 shutil.copyfileobj(f_in, f_out)
+        return {"output_path": output_file_path}
 
     return decompress
 
@@ -58,20 +60,28 @@ for extension, compression_cls in SUPPORTED_COMPRESSION_FORMATS.items():
     decompressed_file_path = Definition(
         name=f"decompressed_{extension}_file_path", primitive="str"
     )
+    compressed_output_file_path = Definition(
+        name=f"compressed_output_{extension}_file_path", primitive="str"
+    )
+    decompressed_output_file_path = Definition(
+        name=f"decompressed_output_{extension}_file_path", primitive="str"
+    )
 
     compress = op(
+        name=f"{extension}_compress",
         inputs={
             "input_file_path": decompressed_file_path,
             "output_file_path": compressed_file_path,
         },
-        outputs={},
+        outputs={"output_path": compressed_output_file_path},
     )(make_compress(extension, compression_cls))
     decompress = op(
+        name=f"{extension}_decompress",
         inputs={
             "input_file_path": compressed_file_path,
             "output_file_path": decompressed_file_path,
         },
-        outputs={},
+        outputs={"output_path": decompressed_output_file_path},
     )(make_decompress(extension, compression_cls))
 
     setattr(sys.modules[__name__], f"{extension}_compress", compress)
