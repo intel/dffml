@@ -63,9 +63,9 @@ def modules(
     ...     print(import_name)
     ...     break
     ...
-    xml.sax.expatreader
+    xml.etree.ElementInclude
     """
-    for path in pathlib.Path(root).rglob("*.py"):
+    for path in sorted(pathlib.Path(root).rglob("*.py")):
         # Figure out name
         import_name = pathlib.Path(str(path)[len(str(root)) :]).parts[1:]
         import_name = (
