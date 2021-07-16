@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>dffml.util.python &mdash; DFFML 9a1f4809d documentation</title>
+  <title>dffml.util.python &mdash; DFFML 9112a673e documentation</title>
   
 
   
@@ -69,7 +69,7 @@
             
             
               <div class="version">
-                9a1f4809d
+                9112a673e
               </div>
             
           
@@ -278,11 +278,22 @@
 <span class="sd">    ...     return (root / &quot;dom&quot;) in path.parents or path.name.startswith(&quot;__&quot;)</span>
 <span class="sd">    ...</span>
 <span class="sd">    &gt;&gt;&gt; # Print the first module</span>
-<span class="sd">    &gt;&gt;&gt; for import_name, module in dffml.modules(root, package_name, skip=skip):</span>
-<span class="sd">    ...     print(import_name)</span>
-<span class="sd">    ...     break</span>
+<span class="sd">    &gt;&gt;&gt; for import_name, module in sorted(</span>
+<span class="sd">    ...         dffml.modules(root, package_name, skip=skip),</span>
+<span class="sd">    ...         key=lambda import_name_and_module: import_name_and_module[0],</span>
+<span class="sd">    ...     ):</span>
+<span class="sd">    ...     print(import_name, sorted(module.__dict__.keys())[0])</span>
 <span class="sd">    ...</span>
-<span class="sd">    xml.sax.expatreader</span>
+<span class="sd">    xml.etree.ElementInclude ElementTree</span>
+<span class="sd">    xml.etree.ElementPath _SelectorContext</span>
+<span class="sd">    xml.etree.ElementTree Comment</span>
+<span class="sd">    xml.etree.cElementTree Comment</span>
+<span class="sd">    xml.parsers.expat EXPAT_VERSION</span>
+<span class="sd">    xml.sax._exceptions SAXException</span>
+<span class="sd">    xml.sax.expatreader AttributesImpl</span>
+<span class="sd">    xml.sax.handler ContentHandler</span>
+<span class="sd">    xml.sax.saxutils XMLFilterBase</span>
+<span class="sd">    xml.sax.xmlreader AttributesImpl</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">root</span><span class="p">)</span><span class="o">.</span><span class="n">rglob</span><span class="p">(</span><span class="s2">&quot;*.py&quot;</span><span class="p">):</span>
         <span class="c1"># Figure out name</span>

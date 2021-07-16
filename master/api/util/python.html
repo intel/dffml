@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Util Python &mdash; DFFML 9a1f4809d documentation</title>
+  <title>Util Python &mdash; DFFML 9112a673e documentation</title>
   
 
   
@@ -70,7 +70,7 @@
             
             
               <div class="version">
-                9a1f4809d
+                9112a673e
               </div>
             
           
@@ -314,11 +314,22 @@ follows.</p>
 <span class="gp">... </span>    <span class="k">return</span> <span class="p">(</span><span class="n">root</span> <span class="o">/</span> <span class="s2">&quot;dom&quot;</span><span class="p">)</span> <span class="ow">in</span> <span class="n">path</span><span class="o">.</span><span class="n">parents</span> <span class="ow">or</span> <span class="n">path</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;__&quot;</span><span class="p">)</span>
 <span class="gp">...</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Print the first module</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">import_name</span><span class="p">,</span> <span class="n">module</span> <span class="ow">in</span> <span class="n">dffml</span><span class="o">.</span><span class="n">modules</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">package_name</span><span class="p">,</span> <span class="n">skip</span><span class="o">=</span><span class="n">skip</span><span class="p">):</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">import_name</span><span class="p">)</span>
-<span class="gp">... </span>    <span class="k">break</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">import_name</span><span class="p">,</span> <span class="n">module</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span>
+<span class="gp">... </span>        <span class="n">dffml</span><span class="o">.</span><span class="n">modules</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">package_name</span><span class="p">,</span> <span class="n">skip</span><span class="o">=</span><span class="n">skip</span><span class="p">),</span>
+<span class="gp">... </span>        <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">import_name_and_module</span><span class="p">:</span> <span class="n">import_name_and_module</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="p">):</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">import_name</span><span class="p">,</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">module</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">keys</span><span class="p">())[</span><span class="mi">0</span><span class="p">])</span>
 <span class="gp">...</span>
-<span class="go">xml.sax.expatreader</span>
+<span class="go">xml.etree.ElementInclude ElementTree</span>
+<span class="go">xml.etree.ElementPath _SelectorContext</span>
+<span class="go">xml.etree.ElementTree Comment</span>
+<span class="go">xml.etree.cElementTree Comment</span>
+<span class="go">xml.parsers.expat EXPAT_VERSION</span>
+<span class="go">xml.sax._exceptions SAXException</span>
+<span class="go">xml.sax.expatreader AttributesImpl</span>
+<span class="go">xml.sax.handler ContentHandler</span>
+<span class="go">xml.sax.saxutils XMLFilterBase</span>
+<span class="go">xml.sax.xmlreader AttributesImpl</span>
 </pre></div>
 </div>
 </dd></dl>
