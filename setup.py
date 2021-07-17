@@ -91,6 +91,7 @@ setup(
             "df = dffml.source.df:DataFlowSource",
             "op = dffml.source.op:OpSource",
             "dir = dffml.source.dir:DirectorySource",
+            "dataframe = dffml.source.dataframe:DataFrameSource",
             "iris.training = dffml.source.dataset.iris:iris_training.source",
         ],
         "dffml.port": ["json = dffml.port.json:JSON"],
@@ -159,5 +160,10 @@ setup(
         "dffml.model": ["slr = dffml.model.slr:SLRModel"],
         # Secrets
         "dffml.secret": ["ini = dffml.secret.ini:INISecret"],
+        # Accuracy
+        "dffml.accuracy": [
+            "mse = dffml.accuracy.mse:MeanSquaredErrorAccuracy",
+            "clf = dffml.accuracy.clf:ClassificationAccuracy",
+        ],
     },
 )

@@ -61,7 +61,7 @@ package.
 .. code-block:: console
     :test:
 
-    $ python -m pip install -e .
+    $ python -m pip install -e .[dev]
 
 Testing
 -------
@@ -257,7 +257,7 @@ reference it by it's short name.
         -model myslr \
         -model-features Years:int:1 \
         -model-predict Salary:float:1 \
-        -model-directory modeldir \
+        -model-location modeldir \
         -sources f=csv \
         -source-filename train.csv
 

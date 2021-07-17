@@ -21,7 +21,7 @@ from dffml import (
 class LogisticRegressionConfig:
     predict: Feature = field("Label or the value to be predicted")
     features: Features = field("Features to train on")
-    directory: pathlib.Path = field("Directory where state should be saved",)
+    location: pathlib.Path = field("Location where state should be saved",)
 
 
 @entrypoint("scratchlgrsag")
@@ -170,13 +170,6 @@ class LogisticRegression(SimpleModel):
                 self.yData, feature_data[self.config.predict.name]
             )
         self.separating_line = self.best_separating_line()
-
-    async def accuracy(self, sources: Sources) -> Accuracy:
-        # Ensure the model has been trained before we try to make a prediction
-        if self.separating_line is None:
-            raise ModelNotTrained("Train model before assessing for accuracy.")
-        accuracy_value = self.separating_line[2]
-        return Accuracy(accuracy_value)
 
     async def predict(
         self, sources: SourcesContext

@@ -163,6 +163,11 @@ Command Line Flags Explained
   - The feature the model is trying to learn how to predict. We specify the same
     details as we did with the features to learn from.
 
+- ``-scorer mse``
+
+  - Report the modules accuracy use the Mead Squared Error accuracy scorer.
+    See the :doc:`/plugins/dffml_accuracy` plugin page for all accuracy scorers.
+
 - ``-sources f=csv``
 
   - The data sources to use as training data for the model.

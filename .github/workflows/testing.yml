@@ -194,6 +194,7 @@ jobs:
         - docs/examples/icecream_sales.rst
         - docs/installation.rst
         - docs/troubleshooting.rst
+        - docs/tutorials/accuracy/mse.rst
         - docs/tutorials/dataflows/io.rst
         - docs/tutorials/dataflows/nlp.rst
         - docs/tutorials/models/iris.rst
@@ -239,45 +240,6 @@ jobs:
         export PATH="${HOME}/.local/bin:${PATH}"
         ./.ci/run.sh consoletest ${{ matrix.docs }}
 
-  windows:
-    runs-on: windows-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        python-version: [3.7, 3.8]
-    steps:
-    - uses: actions/checkout@v2
-    - name: Checkout full upstream repo
-      run: |
-        git remote set-url origin https://github.com/intel/dffml
-        git fetch --prune --unshallow
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v2
-      with:
-        python-version: ${{ matrix.python-version }}
-    - name: Get pip cache
-      id: pip-cache
-      run: |
-        python -c "from pip._internal.locations import USER_CACHE_DIR; print('::set-output name=dir::' + USER_CACHE_DIR)"
-    - name: pip cache
-      uses: actions/cache@v1
-      with:
-        path: ${{ steps.pip-cache.outputs.dir }}
-        key: ${{ runner.os }}-pip-${{ hashFiles('**/setup.py') }}
-        restore-keys: |
-          ${{ runner.os }}-pip-
-    - name: Setup DFFML
-      run: |
-        pip install -U pip setuptools wheel
-        pip install -e .[dev]
-        dffml service dev install -skip model/daal4py
-        # Remove dataclasses. See https://github.com/intel/dffml/issues/882
-        python scripts/tempfix/pytorch/pytorch/46930.py
-    - name: Test
-      run: |
-        python setup.py test
-        python -m pip freeze
-
   macos:
     runs-on: macos-latest
     strategy:
@@ -312,9 +274,7 @@ jobs:
         dffml service dev install -skip model/daal4py
         # XGBoost requires libomp on OSX
         brew install libomp
-        # Remove dataclasses. See https://github.com/intel/dffml/issues/882
-        python scripts/tempfix/pytorch/pytorch/46930.py
     - name: Test
       run: |
-        python setup.py test
+        python -m unittest discover -v
         python -m pip freeze

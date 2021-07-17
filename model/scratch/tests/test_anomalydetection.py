@@ -23,6 +23,9 @@ from dffml import (
 )
 
 from dffml_model_scratch.anomalydetection import AnomalyModel
+from dffml_model_scratch.anomaly_detection_scorer import (
+    AnomalyDetectionAccuracy,
+)
 
 
 class TestAnomalyModel(AsyncTestCase):
@@ -34,7 +37,7 @@ class TestAnomalyModel(AsyncTestCase):
         cls.model = AnomalyModel(
             features=Features(Feature("A", int, 1), Feature("B", int, 2),),
             predict=Feature("Y", int, 1),
-            directory=cls.model_dir.name,
+            location=cls.model_dir.name,
         )
 
         # Generating data
@@ -63,6 +66,7 @@ class TestAnomalyModel(AsyncTestCase):
         cls.testsource = Sources(
             MemorySource(MemorySourceConfig(records=cls.records[1400:]))
         )
+        cls.scorer = AnomalyDetectionAccuracy()
 
     @classmethod
     def tearDownClass(cls):
@@ -75,7 +79,7 @@ class TestAnomalyModel(AsyncTestCase):
 
     async def test_01_accuracy(self):
         # Use the test data to assess the model's accuracy
-        res = await accuracy(self.model, self.testsource)
+        res = await accuracy(self.model, self.scorer, self.testsource)
         # Ensure the accuracy is above 80%
         self.assertTrue(0.8 <= res < 1.0)
 

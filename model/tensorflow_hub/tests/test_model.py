@@ -2,6 +2,7 @@ import random
 import tempfile
 
 from dffml.record import Record
+from dffml.high_level import accuracy
 from dffml.source.source import Sources
 from dffml.util.asynctestcase import AsyncTestCase
 from dffml.feature import Features, Feature
@@ -9,6 +10,9 @@ from dffml.source.memory import MemorySource, MemorySourceConfig
 from dffml_model_tensorflow_hub.text_classifier import (
     TextClassificationModel,
     TextClassifierConfig,
+)
+from dffml_model_tensorflow_hub.text_classifier_accuracy import (
+    TextClassifierAccuracy,
 )
 
 
@@ -28,7 +32,7 @@ class TestTextClassificationModel(AsyncTestCase):
         cls.model_dir = tempfile.TemporaryDirectory()
         cls.model = TextClassificationModel(
             TextClassifierConfig(
-                directory=cls.model_dir.name,
+                location=cls.model_dir.name,
                 classifications=[0, 1],
                 features=cls.features,
                 predict=Feature("X", int, 1),
@@ -42,6 +46,7 @@ class TestTextClassificationModel(AsyncTestCase):
                 epochs=30,
             )
         )
+        cls.scorer = TextClassifierAccuracy()
 
     @classmethod
     def tearDownClass(cls):
@@ -53,10 +58,8 @@ class TestTextClassificationModel(AsyncTestCase):
                 await mctx.train(sctx)
 
     async def test_01_accuracy(self):
-        async with self.sources as sources, self.model as model:
-            async with sources() as sctx, model() as mctx:
-                res = await mctx.accuracy(sctx)
-                self.assertGreater(res, 0)
+        res = await accuracy(self.model, self.scorer, self.sources)
+        self.assertGreater(res, 0)
 
     async def test_02_predict(self):
         async with self.sources as sources, self.model as model:

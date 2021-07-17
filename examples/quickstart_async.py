@@ -1,6 +1,7 @@
 import asyncio
 
 from dffml import train, accuracy, predict, Features, Feature
+from dffml.accuracy import MeanSquaredErrorAccuracy
 from dffml_model_scikit import LinearRegressionModel
 
 
@@ -12,7 +13,7 @@ async def main():
             Feature("Trust", float, 1),
         ),
         predict=Feature("Salary", int, 1),
-        directory="tempdir",
+        location="tempdir",
     )
 
     # Train the model
@@ -25,10 +26,12 @@ async def main():
     )
 
     # Assess accuracy
+    scorer = MeanSquaredErrorAccuracy()
     print(
         "Accuracy:",
         await accuracy(
             model,
+            scorer,
             {"Years": 4, "Expertise": 9, "Trust": 0.5, "Salary": 50},
             {"Years": 5, "Expertise": 11, "Trust": 0.6, "Salary": 60},
         ),

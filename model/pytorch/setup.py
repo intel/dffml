@@ -46,7 +46,10 @@ common.KWARGS["entry_points"] = {
         "shufflenet_v2_x1_0 = dffml_model_pytorch.pytorch_pretrained:ShuffleNetV2x1_0Model",
         "wide_resnet101_2 = dffml_model_pytorch.pytorch_pretrained:WideResNet101_2Model",
         "wide_resnet50_2 = dffml_model_pytorch.pytorch_pretrained:WideResNet50_2Model",
-    ]
+    ],
+    "dffml.accuracy": [
+        "pytorchscore = dffml_model_pytorch.pytorch_accuracy_scorer:PytorchAccuracy",
+    ],
 }
 
 setup(**common.KWARGS)

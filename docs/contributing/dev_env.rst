@@ -116,7 +116,7 @@ For example, to install the TensorFlow models
 
 .. code-block:: console
 
-    $ python3 -m pip install --prefix=~/.local -e model/tensorflow
+    $ python3 -m pip install --prefix=~/.local -e model/tensorflow[dev]
 
 .. _dev_env_install_official_plugins:
 

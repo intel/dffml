@@ -32,4 +32,4 @@ dataclass using the :py:func:`dataclasses.fields` function.
     <class 'dffml.model.slr.SLRModel'>
         predict: Label or the value to be predicted
         features: Features to train on. For SLR only 1 allowed
-        directory: Directory where state should be saved
+        location: Location where state should be saved

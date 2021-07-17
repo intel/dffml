@@ -4,7 +4,7 @@ dffml accuracy \
   -model-layers @layers.yaml \
   -model-clstype str \
   -model-classifications ants bees \
-  -model-directory resnet18_model \
+  -model-location resnet18_model \
   -model-imageSize 224 \
   -model-batch_size 32 \
   -model-enableGPU \
@@ -14,4 +14,5 @@ dffml accuracy \
     -source-foldername hymenoptera_data/val \
     -source-feature image \
     -source-labels ants bees \
+  -scorer pytorchscore \
   -log critical

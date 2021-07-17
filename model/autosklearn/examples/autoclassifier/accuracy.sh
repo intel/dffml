@@ -1,6 +1,6 @@
 dffml accuracy \
   -model autoclassifier \
-  -model-directory tempdir \
+  -model-location tempdir \
   -model-predict classification:int:1 \
   -sources iris=csv \
   -source-filename iris_test.csv \
@@ -9,4 +9,5 @@ dffml accuracy \
     SepalWidth:float:1 \
     PetalLength:float:1 \
     PetalWidth:float:1 \
+  -scorer mse \
   -log critical

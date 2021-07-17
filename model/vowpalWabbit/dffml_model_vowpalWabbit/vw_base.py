@@ -35,7 +35,7 @@ class InputError(Exception):
 class VWConfig:
     features: Features
     predict: Feature = field("Feature to predict")
-    directory: Path = field("Directory where state should be saved")
+    location: Path = field("Location where state should be saved")
     class_cost: Features = field(
         "Features with name `Cost_{class}` contaning cost of `class` for each input example, used when `csoaa` is used",
         default=None,
@@ -153,7 +153,7 @@ class VWContext(ModelContext):
 
     def modify_config(self):
         vwcmd = self.parent.config.vwcmd
-        direc = self.parent.config.directory
+        direc = self.parent.config.location
         # direct all output files to a single folder
         # unless full path for respective outputs is provided
         for arg in [
@@ -179,7 +179,7 @@ class VWContext(ModelContext):
 
     def _filename(self):
         return os.path.join(
-            self.parent.config.directory, self._features_hash + ".vw"
+            self.parent.config.location, self._features_hash + ".vw"
         )
 
     def _load_model(self):
@@ -280,63 +280,6 @@ class VWContext(ModelContext):
             for x in X:
                 self.clf.learn(x)
         self._save_model()
-
-    async def accuracy(self, sources: Sources) -> Accuracy:
-        if not os.path.isfile(self._filename()):
-            raise ModelNotTrained("Train model before assessing for accuracy.")
-        data = []
-        importance, tag, base, class_cost = None, None, None, None
-        if self.parent.config.importance:
-            importance = self.parent.config.importance.name
-
-        if self.parent.config.tag:
-            tag = self.parent.config.tag.name
-
-        if self.parent.config.base:
-            base = self.parent.config.base.name
-        async for record in sources.with_features(self.features):
-            feature_data = record.features(
-                self.features
-                + [self.parent.config.predict.name]
-                + self.parent.config.extra_cols
-            )
-            data.append(feature_data)
-        df = pd.DataFrame(data)
-        xdata = df.drop([self.parent.config.predict.name], 1)
-        self.logger.debug("Number of input records: {}".format(len(xdata)))
-        if not self.parent.config.noconvert:
-            xdata = df_to_vw_format(
-                xdata,
-                vwcmd=self.parent.config.vwcmd,
-                target=None,
-                namespace=self.parent.config.namespace,
-                importance=importance,
-                tag=tag,
-                base=base,
-                task=self.parent.config.task,
-                use_binary_label=self.parent.config.use_binary_label,
-            )
-        else:
-            xdata = (
-                xdata.drop(self.parent.config.extra_cols, axis=1)
-                .to_numpy()
-                .flatten()
-            )
-        ydata = np.array(df[self.parent.config.predict.name])
-        shape = [len(xdata)]
-        # TODO support probabilites
-        # if 'oaa' in self.parent.config.vwcmd and 'probabilities' in self.parent.config.vwcmd:
-        #     shape.append(self.parent.config.vwcmd['oaa'])
-        y_pred = np.empty(shape)
-        for idx, x in enumerate(xdata):
-            y_pred[idx] = self.clf.predict(x)
-
-        if self.parent.config.task in ["regression"]:
-            self.confidence = r2_score(ydata, y_pred)
-        elif self.parent.config.task in ["classification"]:
-            self.confidence = accuracy_score(ydata, y_pred)
-        self.logger.debug("Model Accuracy: {}".format(self.confidence))
-        return self.confidence
 
     async def predict(
         self, sources: SourcesContext
@@ -448,7 +391,7 @@ class VWModel(Model):
 
     def _filename(self):
         return os.path.join(
-            self.config.directory,
+            self.config.location,
             secure_hash(self.config.predict.name, algorithm="sha384")
             + ".json",
         )

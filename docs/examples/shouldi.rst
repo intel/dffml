@@ -198,7 +198,7 @@ dependencies listed in **requirements.txt** as well.
 .. code-block:: console
     :test:
 
-    $ python -m pip install -e .
+    $ python -m pip install -e .[dev]
 
 Safety Operation
 ----------------
@@ -243,7 +243,7 @@ Run the tests
 .. code-block:: console
     :test:
 
-    $ python setup.py test -s tests.test_safety
+    $ python -m unittest tests.test_safety
 
 Bandit Operation
 ----------------
@@ -326,7 +326,7 @@ Run the tests
 .. code-block:: console
     :test:
 
-    $ python setup.py test -s tests.test_bandit
+    $ python -m unittest tests.test_bandit
 
 What's the Data Flow?
 ---------------------
@@ -434,7 +434,7 @@ Run the tests
 .. code-block:: console
     :test:
 
-    $ python setup.py test -s tests.test_pypi
+    $ python -m unittest tests.test_pypi
 
 CLI
 ---
@@ -464,7 +464,7 @@ Run the all the tests this time
 .. code-block:: console
     :test:
 
-    $ python setup.py test
+    $ python -m unittest discover -v
 
 We want this to be usable as a command line utility, Python's
 :py:mod:`setuptools` allows us to define console ``entry_points``. All we have

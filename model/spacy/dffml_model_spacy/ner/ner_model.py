@@ -20,13 +20,14 @@ from dffml import (
     Record,
 )
 from dffml.model.model import Model
+from dffml.accuracy import AccuracyContext
 from dffml.source.source import Sources, SourcesContext
 from dffml.model.model import ModelContext, ModelNotTrained
 
 
 @config
 class SpacyNERModelConfig:
-    directory: str = field("Output directory")
+    location: str = field("Output location")
     model_name_or_path: str = field(
         "Model name or path to saved model. Defaults to blank 'en' model.",
         default=None,
@@ -37,7 +38,7 @@ class SpacyNERModelConfig:
     )
 
     def __post_init__(self):
-        self.directory = pathlib.Path(self.directory)
+        self.location = pathlib.Path(self.location)
 
 
 class SpacyNERModelContext(ModelContext):
@@ -110,43 +111,20 @@ class SpacyNERModelContext(ModelContext):
                     )
                 self.logger.debug(f"Losses: {losses}")
 
-        if self.parent.config.directory is not None:
-            if not self.parent.config.directory.exists():
-                self.parent.config.directory.mkdir(parents=True)
-            self.nlp.to_disk(self.parent.config.directory)
+        if self.parent.config.location is not None:
+            if not self.parent.config.location.exists():
+                self.parent.config.location.mkdir(parents=True)
+            self.nlp.to_disk(self.parent.config.location)
             self.logger.debug(
-                f"Saved model to {self.parent.config.directory.name}"
+                f"Saved model to {self.parent.config.location.name}"
             )
-
-    async def accuracy(self, sources: SourcesContext) -> Accuracy:
-        if not os.path.isdir(
-            os.path.join(self.parent.config.directory, "ner")
-        ):
-            raise ModelNotTrained("Train model before assessing for accuracy.")
-
-        test_examples = await self._preprocess_data(sources)
-        self.nlp = spacy.load(self.parent.config.directory)
-
-        scorer = Scorer()
-        examples = []
-        for input_, annot in test_examples:
-            pred_value = self.nlp(input_)
-            example = Example.from_dict(
-                pred_value, {"entities": annot["entities"]}
-            )
-            example.reference = self.nlp.make_doc(input_)
-            examples.append(example)
-        scores = scorer.score(examples)
-        return Accuracy(scores["token_acc"])
 
     async def predict(
         self, sources: SourcesContext
     ) -> AsyncIterator[Tuple[Record, Any, float]]:
-        if not os.path.isdir(
-            os.path.join(self.parent.config.directory, "ner")
-        ):
+        if not os.path.isdir(os.path.join(self.parent.config.location, "ner")):
             raise ModelNotTrained("Train model before prediction.")
-        self.nlp = spacy.load(self.parent.config.directory)
+        self.nlp = spacy.load(self.parent.config.location)
 
         async for record in sources.records():
             doc = self.nlp(record.feature("sentence"))
@@ -236,7 +214,7 @@ class SpacyNERModel(Model):
             -source-opimp dffml_model_spacy.ner.utils:parser \
             -source-args train.json False \
             -model-model_name_or_path en_core_web_sm \
-            -model-directory temp \
+            -model-location temp \
             -model-n_iter 5 \
             -log debug
 
@@ -251,8 +229,9 @@ class SpacyNERModel(Model):
             -source-opimp dffml_model_spacy.ner.utils:parser \
             -source-args train.json False \
             -model-model_name_or_path en_core_web_sm \
-            -model-directory temp \
+            -model-location temp \
             -model-n_iter 5 \
+            -scorer sner \
             -log debug
         0.0
 
@@ -267,7 +246,7 @@ class SpacyNERModel(Model):
             -source-opimp dffml_model_spacy.ner.utils:parser \
             -source-args test.json True \
             -model-model_name_or_path en_core_web_sm \
-            -model-directory temp \
+            -model-location temp \
             -model-n_iter 5 \
             -log debug
         [

@@ -4,7 +4,7 @@ dffml train \
   -model-layers @layers.yaml \
   -model-clstype str \
   -model-classifications ants bees \
-  -model-directory resnet18_model \
+  -model-location resnet18_model \
   -model-imageSize 224 \
   -model-epochs 5 \
   -model-batch_size 32 \

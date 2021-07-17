@@ -38,7 +38,7 @@ test_no_skips() {
   TEMP_DIRS+=("${check_skips}")
 
   # Run with coverage
-  RUN_CONSOLETESTS=1 "${PYTHON}" -u -m coverage run setup.py test 2>&1 | tee "${check_skips}"
+  RUN_CONSOLETESTS=1 "${PYTHON}" -u -m coverage run -m unittest discover -v 2>&1 | tee "${check_skips}"
   "${PYTHON}" -m coverage report -m
 
   # Fail if any coroutines were not awaited
@@ -68,7 +68,7 @@ function run_plugin() {
   cd "${SRC_ROOT}/${PLUGIN}"
 
   # Install plugin
-  "${PYTHON}" -m pip install -U -e .
+  "${PYTHON}" -m pip install -U -e .[dev]
 
   if [ "x${PLUGIN}" != "x." ]; then
     # Test ensuring no tests were skipped
@@ -79,7 +79,7 @@ function run_plugin() {
     # If we are at the root. Install plugsin and run various integration tests
 
     # Run the tests but not the long documentation consoletests
-    "${PYTHON}" -u setup.py test
+    "${PYTHON}" -u -m unittest discover -v
 
     # Try running create command
     plugin_creation_dir="$(mktemp -d)"
@@ -96,14 +96,12 @@ function run_plugin() {
       dffml service dev create "${plugin}" "ci-test-${plugin}"
       cd "ci-test-${plugin}"
       "${PYTHON}" -m pip install -U .
-      "${PYTHON}" setup.py test
+      "${PYTHON}" -m unittest discover -v
       cd "${plugin_creation_dir}"
     done
 
     # Install all the plugins so examples can use them
     "${PYTHON}" -m dffml service dev install
-    # Remove dataclasses. See https://github.com/intel/dffml/issues/882
-    "${PYTHON}" "${TEMPFIX}/pytorch/pytorch/46930.py"
 
     # Run the examples
     run_plugin_examples
@@ -138,7 +136,7 @@ function run_consoletest() {
   # Install base package with testing and development utilities
   "${PYTHON}" -m pip install -U -e ".[dev]"
 
-  RUN_CONSOLETESTS=1 "${PYTHON}" -u setup.py test -s "tests.docs.test_consoletest.TestDocs.test_${PLUGIN}" 2>&1 | tee "${test_log}"
+  RUN_CONSOLETESTS=1 "${PYTHON}" -u -m unittest "tests.docs.test_consoletest.TestDocs.test_${PLUGIN}" 2>&1 | tee "${test_log}"
 
   # Fail if any coroutines were not awaited
   unawaited=$(grep -nE 'coroutine .* was never awaited' "${test_log}" | wc -l)
@@ -196,8 +194,6 @@ function run_docs() {
   cd "${SRC_ROOT}"
   "${PYTHON}" -m pip install --prefix=~/.local -U -e "${SRC_ROOT}[dev]"
   "${PYTHON}" -m dffml service dev install -user
-  # Remove dataclasses. See https://github.com/intel/dffml/issues/882
-  "${PYTHON}" "${TEMPFIX}/pytorch/pytorch/46930.py" ~/.local
 
   last_release=$(git log -p -- dffml/version.py \
                  | grep \+VERSION \
@@ -237,8 +233,6 @@ function run_docs() {
   rm -rf ~/.local
   "${PYTHON}" -m pip install --prefix=~/.local -U -e "${SRC_ROOT}[dev]"
   "${PYTHON}" -m dffml service dev install -user
-  # Remove dataclasses. See https://github.com/intel/dffml/issues/882
-  "${PYTHON}" "${TEMPFIX}/pytorch/pytorch/46930.py" ~/.local
   dffml service dev docs || ./scripts/docs.sh
   mv pages "${release_docs}/html"
 

@@ -5,6 +5,7 @@ dffml accuracy  \
   -model-predict \
     B:int:1 \
   -model-noconvert \
+  -scorer mse \
   -sources f=csv \
   -source-filename train.csv
 

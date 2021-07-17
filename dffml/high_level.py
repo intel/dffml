@@ -11,12 +11,13 @@ from .record import Record
 from .model.model import Model
 from .df.types import DataFlow, Input
 from .df.memory import MemoryOrchestrator
+from .model.accuracy import Accuracy
+from .accuracy.accuracy import AccuracyScorer, AccuracyContext
 from .source.source import (
     Sources,
     SourcesContext,
     BaseSource,
     BaseSourceContext,
-    BaseSource,
 )
 from .source.memory import MemorySource, MemorySourceConfig
 from .df.base import BaseInputSetContext, BaseOrchestrator, BaseInputSet
@@ -381,7 +382,7 @@ async def train(model, *args: Union[BaseSource, Record, Dict[str, Any]]):
     ...         Feature("Years", int, 1),
     ...     ),
     ...     predict=Feature("Salary", int, 1),
-    ...     directory="tempdir",
+    ...     location="tempdir",
     ... )
     >>>
     >>> async def main():
@@ -407,7 +408,9 @@ async def train(model, *args: Union[BaseSource, Record, Dict[str, Any]]):
 
 
 async def accuracy(
-    model, *args: Union[BaseSource, Record, Dict[str, Any]]
+    model,
+    accuracy_scorer: Union[AccuracyScorer, AccuracyContext],
+    *args: Union[BaseSource, Record, Dict[str, Any]],
 ) -> float:
     """
     Assess the accuracy of a machine learning model.
@@ -443,7 +446,7 @@ async def accuracy(
     ...         Feature("Years", int, 1),
     ...     ),
     ...     predict=Feature("Salary", int, 1),
-    ...     directory="tempdir",
+    ...     location="tempdir",
     ... )
     >>>
     >>> async def main():
@@ -451,13 +454,14 @@ async def accuracy(
     ...         "Accuracy:",
     ...         await accuracy(
     ...             model,
+    ...             MeanSquaredErrorAccuracy(),
     ...             {"Years": 4, "Salary": 50},
     ...             {"Years": 5, "Salary": 60},
     ...         ),
     ...     )
     >>>
     >>> asyncio.run(main())
-    Accuracy: 1.0
+    Accuracy: 0.0
     """
     async with contextlib.AsyncExitStack() as astack:
         # Open sources
@@ -466,8 +470,16 @@ async def accuracy(
         if isinstance(model, Model):
             model = await astack.enter_async_context(model)
             mctx = await astack.enter_async_context(model())
+        # Allow for keep models open
+        if isinstance(accuracy_scorer, AccuracyScorer):
+            accuracy_scorer = await astack.enter_async_context(accuracy_scorer)
+            actx = await astack.enter_async_context(accuracy_scorer())
+        else:
+            # TODO Replace this with static type checking and maybe dynamic
+            # through something like pydantic. See issue #36
+            raise TypeError(f"{accuracy_scorer} is not an AccuracyScorer")
         # Run accuracy method
-        return float(await mctx.accuracy(sctx))
+        return float(await actx.score(mctx, sctx))
 
 
 async def predict(
@@ -513,7 +525,7 @@ async def predict(
     ...         Feature("Years", int, 1),
     ...     ),
     ...     predict=Feature("Salary", int, 1),
-    ...     directory="tempdir",
+    ...     location="tempdir",
     ... )
     >>>
     >>> async def main():

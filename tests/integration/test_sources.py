@@ -54,7 +54,7 @@ class TestCSV(AsyncTestCase):
             *features,
             "-model-predict",
             "Salary:float:1",
-            "-model-directory",
+            "-model-location",
             model_dir,
             "-sources",
             "training_data=csv",
@@ -69,12 +69,14 @@ class TestCSV(AsyncTestCase):
             *features,
             "-model-predict",
             "Salary:float:1",
-            "-model-directory",
+            "-model-location",
             model_dir,
             "-sources",
             "test_data=csv",
             "-source-filename",
             test_filename,
+            "-scorer",
+            "mse",
         )
         # Ensure JSON output works as expected (#261)
         with contextlib.redirect_stdout(self.stdout):
@@ -87,7 +89,7 @@ class TestCSV(AsyncTestCase):
                 *features,
                 "-model-predict",
                 "Salary:float:1",
-                "-model-directory",
+                "-model-location",
                 model_dir,
                 "-sources",
                 "predict_data=csv",

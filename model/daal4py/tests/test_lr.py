@@ -2,6 +2,7 @@ import tempfile
 
 from dffml import train, accuracy, predict, Feature, Features, AsyncTestCase
 
+from dffml.accuracy import MeanSquaredErrorAccuracy
 from dffml_model_daal4py.daal4pylr import DAAL4PyLRModel
 
 TRAIN_DATA = [
@@ -49,7 +50,7 @@ class TestDAAL4PyLRModel(AsyncTestCase):
             cls.test_data.append({"X": x, "Y": y})
         # Create an instance of the model
         cls.model = DAAL4PyLRModel(
-            directory=cls.model_dir.name,
+            location=cls.model_dir.name,
             predict=Feature("Y", float, 1),
             features=Features(Feature("X", float, 1)),
         )
@@ -65,7 +66,8 @@ class TestDAAL4PyLRModel(AsyncTestCase):
 
     async def test_01_accuracy(self):
         # Use the test data to assess the model's accuracy
-        res = await accuracy(self.model, *self.test_data)
+        scorer = MeanSquaredErrorAccuracy()
+        res = await accuracy(self.model, scorer, *self.test_data)
         self.assertGreater(res, 0)
 
     async def test_02_predict(self):

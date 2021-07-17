@@ -25,7 +25,7 @@ class TestSLR(AsyncTestCase):
             "Years:int:1",
             "-model-predict",
             "Salary:int:1",
-            "-model-directory",
+            "-model-location",
             directory,
         ]
         # Train the model
@@ -41,6 +41,8 @@ class TestSLR(AsyncTestCase):
         await CLI.cli(
             "accuracy",
             *model_args,
+            "-scorer",
+            "mse",
             "-sources",
             "test_data=csv",
             "-source-filename",

@@ -27,9 +27,9 @@ AutoSklearnConfig = make_config_numpy(
     properties={
         "features": (Features, field("Features to train on")),
         "predict": (Feature, field("Label or the value to be predicted")),
-        "directory": (
+        "location": (
             pathlib.Path,
-            field("Directory where state should be saved",),
+            field("Location where state should be saved",),
         ),
     },
 )
@@ -46,7 +46,7 @@ class AutoSklearnModelContext(ModelContext):
         self._model = None
         self.features = self._get_feature_names()
         self.path = self.filepath(
-            self.parent.config.directory, "trained_model.sav"
+            self.parent.config.location, "trained_model.sav"
         )
         self.load_model()
 
@@ -59,8 +59,8 @@ class AutoSklearnModelContext(ModelContext):
             ret_record.append(record)
         return ret_record
 
-    def filepath(self, directory, file):
-        return directory / file
+    def filepath(self, location, file):
+        return location / file
 
     def load_model(self):
         if self.path.is_file():
@@ -90,7 +90,9 @@ class AutoSklearnModelContext(ModelContext):
                 "Train the model first before getting preictions"
             )
         test_records = await self.get_test_records(sources)
-        x_test = pd.DataFrame([record.features() for record in test_records])
+        x_test = pd.DataFrame(
+            [record.features(self.features) for record in test_records]
+        )
         predictions = await self.get_predictions(x_test)
         probability = await self.get_probabilities(x_test)
         target = self.parent.config.predict.name
@@ -99,21 +101,6 @@ class AutoSklearnModelContext(ModelContext):
         ):
             record.predicted(target, predict, max(prob))
             yield record
-
-    async def accuracy(self, sources: Sources) -> Accuracy:
-        if not self.model:
-            raise ModelNotTrained("Train the model before assessing accuracy")
-        test_data = []
-        async for record in sources.with_features(
-            self.features + [self.parent.config.predict.name]
-        ):
-            test_data.append(record.features())
-        df = pd.DataFrame(test_data)
-        y_test = df[[self.parent.config.predict.name]]
-        x_test = df.drop(columns=[self.parent.config.predict.name])
-        predictions = await self.get_predictions(x_test)
-        accuracy = await self.accuracy_score(y_test, predictions)
-        return Accuracy(accuracy)
 
     @property
     @abc.abstractmethod

@@ -1,6 +1,10 @@
-from ..source.source import SubsetSources
+import inspect
+
+from ..model.model import Model
+from ..source.source import Sources, SubsetSources
 from ..util.cli.cmd import CMD, CMDOutputOverride
 from ..high_level import train, predict, accuracy
+from ..util.config.fields import FIELD_SOURCES
 from ..util.cli.cmds import (
     SourcesCMD,
     ModelCMD,
@@ -10,11 +14,21 @@ from ..util.cli.cmds import (
     KeysCMDConfig,
 )
 from ..base import config, field
+from ..accuracy import AccuracyScorer
 
 
 @config
 class MLCMDConfig(SourcesCMDConfig, ModelCMDConfig):
     pass
+
+
+@config
+class AccuracyCMDConfig:
+    model: Model = field("Model used for ML", required=True)
+    scorer: AccuracyScorer = field(
+        "Method to use to score accuracy", required=True
+    )
+    sources: Sources = FIELD_SOURCES
 
 
 class MLCMD(SourcesCMD, ModelCMD):
@@ -43,10 +57,14 @@ class Train(MLCMD):
 class Accuracy(MLCMD):
     """Assess model accuracy on data from given sources"""
 
-    CONFIG = MLCMDConfig
+    CONFIG = AccuracyCMDConfig
 
     async def run(self):
-        return await accuracy(self.model, self.sources)
+        # Instantiate the accuracy scorer class if for some reason it is a class
+        # at this point rather than an instance.
+        if inspect.isclass(self.scorer):
+            self.scorer = self.scorer.withconfig(self.extra_config)
+        return await accuracy(self.model, self.scorer, self.sources)
 
 
 @config
