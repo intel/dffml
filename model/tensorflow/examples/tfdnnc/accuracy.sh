@@ -1,9 +1,10 @@
 dffml accuracy \
   -model tfdnnc \
   -model-predict classification:int:1 \
-  -model-directory tempdir \
+  -model-location tempdir \
   -model-classifications 0 1 2 \
   -model-clstype int \
+  -scorer clf \
   -sources iris=csv \
   -source-filename iris_test.csv \
   -model-features \

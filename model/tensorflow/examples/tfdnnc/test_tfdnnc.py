@@ -31,8 +31,7 @@ class TestExample(unittest.TestCase):
         stdout = subprocess.check_output([sys.executable, filepath])
         lines = stdout.decode().split("\n")
         # Check the Accuracy
-        self.assertEqual(lines[0].split()[0], "Accuracy:")
-        self.assertEqual(round(float(lines[0].split()[1])), 1)
+        self.assertAlmostEqual(float(lines[0].split(":")[1]), 1.0, places=0)
         # Check the classification
         self.assertEqual(
             round(ast.literal_eval(lines[1])["classification"]), 1

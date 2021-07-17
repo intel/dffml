@@ -3,6 +3,7 @@ import tempfile
 import numpy as np
 
 from dffml.record import Record
+from dffml.high_level import accuracy
 from dffml.source.source import Sources
 from dffml.source.memory import MemorySource, MemorySourceConfig
 from dffml.feature import Feature, Features
@@ -10,6 +11,10 @@ from dffml.util.asynctestcase import AsyncTestCase
 
 import dffml_model_scikit.scikit_models
 from sklearn.datasets import make_blobs
+from model.scikit.dffml_model_scikit import (
+    SklearnModelAccuracy,
+    ScorerWillNotWork,
+)
 
 
 class TestScikitModel:
@@ -95,7 +100,7 @@ class TestScikitModel:
             MemorySource(MemorySourceConfig(records=cls.records))
         )
         properties = {
-            "directory": cls.model_dir.name,
+            "location": cls.model_dir.name,
             "features": cls.features,
         }
         config_fields = dict()
@@ -103,11 +108,15 @@ class TestScikitModel:
         if estimator_type in supervised_estimators:
             config_fields["predict"] = Feature("X", float, 1)
         elif estimator_type in unsupervised_estimators:
-            if cls.TRUE_CLSTR_PRESENT:
-                config_fields["tcluster"] = Feature("X", float, 1)
+            # TODO If cls.TRUE_CLSTR_PRESENT then we want to use the
+            # mutual_info_score scikit accuracy scorer. In this case we might
+            # want to change tcluster to a boolean config property.
+            # For more info see commit e4f523976bf37d3457cda140ceab7899420ae2c7
+            config_fields["predict"] = Feature("X", float, 1)
         cls.model = cls.MODEL(
             cls.MODEL_CONFIG(**{**properties, **config_fields})
         )
+        cls.scorer = cls.SCORER()
 
     @classmethod
     def tearDownClass(cls):
@@ -119,13 +128,15 @@ class TestScikitModel:
                 await mctx.train(sctx)
 
     async def test_01_accuracy(self):
-        async with self.sources as sources, self.model as model:
-            async with sources() as sctx, model() as mctx:
-                res = await mctx.accuracy(sctx)
-                if self.MODEL_TYPE == "CLUSTERING":
-                    self.assertTrue(res is not None)
-                else:
-                    self.assertTrue(0 <= res <= 1)
+        if self.MODEL_TYPE == "CLUSTERING":
+            with self.assertRaises(ScorerWillNotWork):
+                await accuracy(self.model, self.scorer, self.sources)
+        elif self.MODEL_TYPE == "REGRESSION":
+            res = await accuracy(self.model, self.scorer, self.sources)
+            self.assertTrue(0 <= res <= float("inf"))
+        else:
+            res = await accuracy(self.model, self.scorer, self.sources)
+            self.assertTrue(0 <= res <= 1)
 
     async def test_02_predict(self):
         async with self.sources as sources, self.model as model:
@@ -283,6 +294,7 @@ for clf in CLASSIFIERS:
             "MODEL_CONFIG": getattr(
                 dffml_model_scikit.scikit_models, clf + "ModelConfig"
             ),
+            "SCORER": SklearnModelAccuracy,
         },
     )
     setattr(sys.modules[__name__], test_cls.__qualname__, test_cls)
@@ -297,9 +309,11 @@ for reg in REGRESSORS:
             "MODEL_CONFIG": getattr(
                 dffml_model_scikit.scikit_models, reg + "ModelConfig"
             ),
+            "SCORER": SklearnModelAccuracy,
         },
     )
     setattr(sys.modules[__name__], test_cls.__qualname__, test_cls)
+
 
 for clstr in CLUSTERERS:
     for true_clstr_present in [True, False]:
@@ -316,6 +330,7 @@ for clstr in CLUSTERERS:
                     dffml_model_scikit.scikit_models, clstr + "ModelConfig"
                 ),
                 "TRUE_CLSTR_PRESENT": true_clstr_present,
+                "SCORER": SklearnModelAccuracy,
             },
         )
         setattr(sys.modules[__name__], test_cls.__qualname__, test_cls)

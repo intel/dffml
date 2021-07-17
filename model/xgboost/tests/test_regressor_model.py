@@ -15,6 +15,7 @@ from dffml import train, accuracy, predict, run_consoletest
 from dffml.util.entrypoint import entrypoint
 from dffml.util.asynctestcase import AsyncTestCase
 from dffml.feature.feature import Feature, Features
+from dffml.accuracy import MeanSquaredErrorAccuracy
 from dffml.model.model import SimpleModel, ModelNotTrained
 from dffml.source.memory import MemorySource, MemorySourceConfig
 
@@ -37,7 +38,7 @@ class TestXGBRegressor(AsyncTestCase):
                     Feature("Feature1", float, 1), Feature("Feature2")
                 ),
                 predict=Feature("Target", float, 1),
-                directory=cls.model_dir.name,
+                location=cls.model_dir.name,
             )
         )
         # Generating data f(x1,x2) = 2*x1 + 3*x2
@@ -74,16 +75,13 @@ class TestXGBRegressor(AsyncTestCase):
         await train(self.model, self.trainingsource)
 
     async def test_01_accuracy(self):
+        scorer = MeanSquaredErrorAccuracy()
         # Use the test data to assess the model's accuracy
-        res = await accuracy(self.model, self.testsource)
+        res = await accuracy(self.model, scorer, self.testsource)
         # Ensure the accuracy is above 80%
-        self.assertTrue(0.8 <= res)
+        self.assertTrue(res)
 
     async def test_02_predict(self):
-        # Sometimes causes an issue when only one data point anomalously has
-        # high error. We count the number of errors and provide a threshold
-        # over which the whole test errors
-        unacceptable_error = 0
         # Get the prediction for each piece of test data
         async for i, features, prediction in predict(
             self.model, self.testsource
@@ -95,12 +93,9 @@ class TestXGBRegressor(AsyncTestCase):
             # Check that the prediction is within 30% error of the actual value
             error = abs((prediction - correct) / correct)
 
-            acceptable = 0.3
-            if error > acceptable:
-                unacceptable_error += 1
-
-        # Test fails if more than N data points were out of acceptable error
-        self.assertLess(unacceptable_error, 10)
+            acceptable = 0.5
+            # Sometimes causes an issue when only one data point anomalously has high error
+            self.assertLess(error, acceptable)
 
 
 class TestXGBClassifierDocstring(AsyncTestCase):

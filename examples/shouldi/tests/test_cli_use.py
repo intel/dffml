@@ -70,35 +70,27 @@ class TestCLIUse(AsyncTestCase):
         rust_clippy = await cached_download_unpack_archive(
             *CACHED_TARGET_RUST_CLIPPY
         )
-        if not (rust / "rust-install" / "bin" / "cargo").is_file():
-            subprocess.check_call(
-                [
-                    str(
-                        rust
-                        / "rust-1.52.0-x86_64-unknown-linux-gnu"
-                        / "install.sh"
-                    ),
-                    f"--prefix={(rust / 'rust-install').resolve()}",
-                ]
+
+        if not (
+            cargo_audit
+            / "rustsec-cargo-audit-v0.15.0"
+            / "target"
+            / "release"
+            / "cargo-audit"
+        ).is_file():
+            await run_cargo_build(
+                cargo_audit / "rustsec-cargo-audit-v0.15.0" / "cargo-audit"
             )
+
+        # Fix for https://github.com/RustSec/rustsec/issues/331
+        advisory_db_path = pathlib.Path("~", ".cargo", "advisory-db")
+        if advisory_db_path.is_dir():
+            shutil.rmtree(str(advisory_db_path))
+
         with prepend_to_path(
-            rust / "rust-install" / "bin",
-            cargo_audit / "rustsec-0.14.1" / "target" / "release",
+            rust / "rust-1.52.0-x86_64-unknown-linux-gnu" / "cargo" / "bin",
+            cargo_audit / "rustsec-cargo-audit-v0.15.0" / "target" / "release",
         ):
-            if not (
-                cargo_audit
-                / "rustsec-0.14.1"
-                / "target"
-                / "release"
-                / "cargo-audit"
-            ).is_file():
-                await run_cargo_build(cargo_audit / "rustsec-0.14.1")
-
-            # Fix for https://github.com/RustSec/cargo-audit/issues/331
-            advisory_db_path = pathlib.Path("~", ".cargo", "advisory-db")
-            if advisory_db_path.is_dir():
-                shutil.rmtree(str(advisory_db_path))
-
             with patch("sys.stdout", new_callable=io.StringIO) as stdout:
                 await ShouldI._main(
                     "use",

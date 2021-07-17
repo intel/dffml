@@ -1,4 +1,3 @@
-import sklearn.metrics
 import autosklearn.classification
 
 from dffml.model.model import Model
@@ -21,7 +20,7 @@ class AutoSklearnClassifierModelContext(AutoSklearnModelContext):
         config = self.parent.config._asdict()
         del config["predict"]
         del config["features"]
-        del config["directory"]
+        del config["location"]
         self._model = autosklearn.classification.AutoSklearnClassifier(
             **config
         )
@@ -33,9 +32,6 @@ class AutoSklearnClassifierModelContext(AutoSklearnModelContext):
         Loads a model if already trained previously
         """
         self._model = model
-
-    async def accuracy_score(self, y_test, predictions):
-        return sklearn.metrics.accuracy_score(y_test, predictions)
 
     async def get_probabilities(self, data):
         return self.model.predict_proba(data)

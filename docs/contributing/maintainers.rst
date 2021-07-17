@@ -12,7 +12,7 @@ When a new plugin is added we need to go manually upload it for the first time.
 .. code-block:: console
 
     $ cd model/new_model
-    $ python3 setup.py test
+    $ python3 -m unittest discover -v
     $ rm -rf dist
     $ git clean -xdf
     $ python3 setup.py sdist

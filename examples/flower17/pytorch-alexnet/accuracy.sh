@@ -6,7 +6,7 @@ dffml accuracy \
   -model-classifications \
     crocus windflower fritillary tulip pansy dandelion tigerlily sunflower \
     bluebell cowslip coltsfoot snowdrop daffodil lilyvalley iris buttercup daisy \
-  -model-directory alexnet_model \
+  -model-location alexnet_model \
   -model-imageSize 224 \
   -model-trainable \
   -model-enableGPU \
@@ -19,4 +19,5 @@ dffml accuracy \
     -source-feature image \
     -source-labels \
       crocus windflower fritillary tulip pansy dandelion tigerlily sunflower \
-      bluebell cowslip coltsfoot snowdrop daffodil lilyvalley iris buttercup daisy
+      bluebell cowslip coltsfoot snowdrop daffodil lilyvalley iris buttercup daisy \
+  -scorer pytorchscore

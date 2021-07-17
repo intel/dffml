@@ -1,6 +1,7 @@
 from dffml import CSVSource, Features, Feature
 from dffml.noasync import train, accuracy, predict
 from dffml_model_tensorflow.dnnr import DNNRegressionModel
+from dffml.accuracy import MeanSquaredErrorAccuracy
 
 model = DNNRegressionModel(
     features=Features(
@@ -10,14 +11,15 @@ model = DNNRegressionModel(
     epochs=300,
     steps=2000,
     hidden=[8, 16, 8],
-    directory="tempdir",
+    location="tempdir",
 )
 
 # Train the model
 train(model, "train.csv")
 
 # Assess accuracy (alternate way of specifying data source)
-print("Accuracy:", accuracy(model, CSVSource(filename="test.csv")))
+scorer = MeanSquaredErrorAccuracy()
+print("Accuracy:", accuracy(model, scorer, CSVSource(filename="test.csv")))
 
 # Make prediction
 for i, features, prediction in predict(

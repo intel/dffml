@@ -6,10 +6,12 @@ import numpy as np
 from sklearn.datasets import make_friedman1
 
 from dffml.record import Record
+from dffml.high_level import accuracy
 from dffml.source.source import Sources
 from dffml.source.memory import MemorySource, MemorySourceConfig
 from dffml.feature import Feature, Features
 from dffml.util.asynctestcase import AsyncTestCase
+from dffml.accuracy import MeanSquaredErrorAccuracy
 from dffml_model_vowpalWabbit.vw_base import VWModel, VWConfig
 
 
@@ -53,7 +55,7 @@ class TestVWModel(AsyncTestCase):
         )
         cls.model = VWModel(
             VWConfig(
-                directory=cls.model_dir.name,
+                location=cls.model_dir.name,
                 features=cls.features,
                 predict=Feature("X", float, 1),
                 # A and B will be namespace n1
@@ -72,6 +74,7 @@ class TestVWModel(AsyncTestCase):
                 ],
             )
         )
+        cls.scorer = MeanSquaredErrorAccuracy()
 
     @classmethod
     def tearDownClass(cls):
@@ -83,10 +86,8 @@ class TestVWModel(AsyncTestCase):
                 await mctx.train(sctx)
 
     async def test_01_accuracy(self):
-        async with self.sources as sources, self.model as model:
-            async with sources() as sctx, model() as mctx:
-                res = await mctx.accuracy(sctx)
-                self.assertTrue(isinstance(res, float))
+        res = await accuracy(self.model, self.scorer, self.sources)
+        self.assertTrue(isinstance(res, float))
 
     async def test_02_predict(self):
         async with self.sources as sources, self.model as model:

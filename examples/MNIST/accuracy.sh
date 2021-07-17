@@ -1,10 +1,11 @@
 dffml accuracy \
+    -scorer clf \
     -model tfdnnc \
     -model-batchsize 1000 \
     -model-hidden 30 50 25 \
     -model-clstype int \
     -model-predict label:int:1 \
-    -model-directory tempdir \
+    -model-location tempdir \
     -model-classifications $(seq 0 9) \
     -model-features image:int:$((28 * 28)) \
     -sources images=df label=idx1 \

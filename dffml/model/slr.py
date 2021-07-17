@@ -50,7 +50,7 @@ def best_fit_line(x, y):
 class SLRModelConfig:
     predict: Feature = field("Label or the value to be predicted")
     features: Features = field("Features to train on. For SLR only 1 allowed")
-    directory: pathlib.Path = field("Directory where state should be saved")
+    location: pathlib.Path = field("Location where state should be saved")
 
 
 @entrypoint("slr")
@@ -82,7 +82,7 @@ class SLRModel(SimpleModel):
             -model slr \
             -model-features f1:float:1 \
             -model-predict ans:int:1 \
-            -model-directory tempdir \
+            -model-location tempdir \
             -sources f=csv \
             -source-filename dataset.csv
 
@@ -95,9 +95,10 @@ class SLRModel(SimpleModel):
             -model slr \
             -model-features f1:float:1 \
             -model-predict ans:int:1 \
-            -model-directory tempdir \
+            -model-location tempdir \
             -sources f=csv \
-            -source-filename dataset.csv
+            -source-filename dataset.csv \
+            -scorer mse \
         1.0
 
     Make a prediction
@@ -118,7 +119,7 @@ class SLRModel(SimpleModel):
             -model slr \
             -model-features f1:float:1 \
             -model-predict ans:int:1 \
-            -model-directory tempdir \
+            -model-location tempdir \
             -sources f=csv \
             -source-filename predict.csv
         [
@@ -178,16 +179,6 @@ class SLRModel(SimpleModel):
         self.logger.debug("Number of input records: %d", len(x))
         # Save m, b, and accuracy
         self.storage["regression_line"] = best_fit_line(x, y)
-
-    async def accuracy(self, sources: Sources) -> Accuracy:
-        # Load saved regression line
-        regression_line = self.storage.get("regression_line", None)
-        # Ensure the model has been trained before we try to make a prediction
-        if regression_line is None:
-            raise ModelNotTrained("Train model before assessing for accuracy.")
-        # Accuracy is the last element in regression_line, which is a list of
-        # three values: m, b, and accuracy.
-        return Accuracy(regression_line[2])
 
     async def predict(
         self, sources: SourcesContext

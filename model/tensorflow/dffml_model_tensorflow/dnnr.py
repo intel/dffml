@@ -125,19 +125,6 @@ class DNNRegressionModelContext(TensorflowModelContext):
         )
         return input_fn
 
-    async def accuracy(self, sources: Sources) -> Accuracy:
-        """
-        Evaluates the accuracy of our model after training using the input records
-        as test data.
-        """
-        if not os.path.isdir(self.model_dir_path):
-            raise NotADirectoryError("Model not trained")
-        input_fn = await self.evaluate_input_fn(
-            sources, batch_size=20, shuffle=False, epochs=1
-        )
-        metrics = self.model.evaluate(input_fn=input_fn)
-        return Accuracy(1 - metrics["loss"])  # 1 - mse
-
     async def predict(self, sources: SourcesContext) -> AsyncIterator[Record]:
         """
         Uses trained data to make a prediction about the quality of a record.

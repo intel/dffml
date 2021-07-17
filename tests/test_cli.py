@@ -75,7 +75,7 @@ class RecordsTestCase(AsyncTestCase):
 class FakeConfig:
     features: Features
     predict: Feature
-    directory: str = os.path.join(
+    location: str = os.path.join(
         os.path.expanduser("~"), ".cache", "dffml", "test_cli", "fake"
     )
 
@@ -83,9 +83,6 @@ class FakeConfig:
 class FakeModelContext(ModelContext):
     async def train(self, sources: Sources):
         pass
-
-    async def accuracy(self, sources: Sources) -> AccuracyType:
-        return AccuracyType(0.42)
 
     async def predict(self, sources: SourcesContext) -> AsyncIterator[Record]:
         target = self.parent.config.predict.name
@@ -438,23 +435,6 @@ class TestTrain(RecordsTestCase):
             "-source-filename",
             self.temp_filename,
         )
-
-
-class TestAccuracy(RecordsTestCase):
-    async def test_run(self):
-        result = await Accuracy.cli(
-            "-model",
-            "fake",
-            "-model-features",
-            "fake",
-            "-model-predict",
-            "fake",
-            "-sources",
-            "primary=json",
-            "-source-filename",
-            self.temp_filename,
-        )
-        self.assertEqual(result, 0.42)
 
 
 class TestPredict(RecordsTestCase):

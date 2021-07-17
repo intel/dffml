@@ -33,7 +33,7 @@ Models
 ------
 
 To have the server start with models already configured and ready to be used for
-training, accuracy assessment, or prediction, use the ``-models`` flag.
+training and prediction, use the ``-models`` flag.
 
 .. code-block:: console
 
@@ -53,6 +53,17 @@ for record retrieval or updating, use the ``-sources`` flag.
     $ dffml service http server \
         -sources mysource=csv \
         -source-mysource-filename training.csv
+
+Scorer
+------
+
+To have the server start with scorer already configured and ready to be used
+for getting the accuracy, use the ``-scorer`` flag.
+
+.. code-block:: console
+
+    $ dffml service http server \
+        -scorers myscorer=mse
 
 Static Content
 --------------

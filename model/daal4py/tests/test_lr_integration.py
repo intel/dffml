@@ -36,7 +36,7 @@ class TestDAAL4PyLRModel(AsyncTestCase):
             "f1:int:1",
             "-model-predict",
             "ans:int:1",
-            "-model-directory",
+            "-model-location",
             directory,
         ]
         # Train the model
@@ -52,6 +52,8 @@ class TestDAAL4PyLRModel(AsyncTestCase):
         await CLI.cli(
             "accuracy",
             *model_args,
+            "-scorer",
+            "mse",
             "-sources",
             "test_data=csv",
             "-source-filename",

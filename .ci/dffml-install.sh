@@ -2,11 +2,10 @@
 set -xe
 
 if [ "x${DFFML_RELEASE}" == "xmaster" ]; then
-  pip install -e .
+  pip install -e .[dev]
   dffml service dev install
 elif [ "x${DFFML_RELEASE}" == "xlatest" ]; then
   pip install dffml[all]
 else
   pip install "dffml[all]==${DFFML_RELEASE}"
 fi
-python scripts/tempfix/pytorch/pytorch/46930.py

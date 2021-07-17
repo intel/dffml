@@ -1,6 +1,6 @@
 dffml predict all \
   -model autoclassifier \
-  -model-directory tempdir \
+  -model-location tempdir \
   -model-predict classification:int:1 \
   -sources iris=csv \
   -model-features \

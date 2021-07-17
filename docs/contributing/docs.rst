@@ -68,11 +68,11 @@ To run all the examples
 
 .. code-block:: console
 
-    $ python3 setup.py test -s tests.test_docstrings
+    $ python3 -m unittest tests.test_docstrings
 
 To run a specific example, determine python path to class or function, remove
 ``dffml.`` and change rest of ``.`` to ``_``.
 
 .. code-block:: console
 
-    $ python3 setup.py test -s tests.test_docstrings.util_asynctestcase_AsyncTestCase
+    $ python3 -m unittest tests.test_docstrings.util_asynctestcase_AsyncTestCase

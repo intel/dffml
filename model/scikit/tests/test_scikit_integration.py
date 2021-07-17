@@ -63,7 +63,7 @@ class TestScikitClassification(AsyncTestCase):
             *features,
             "-model-predict",
             "true_label:int:1",
-            "-model-directory",
+            "-model-location",
             model_dir,
             "-sources",
             "training_data=csv",
@@ -73,12 +73,14 @@ class TestScikitClassification(AsyncTestCase):
         # Assess accuracy
         await CLI.cli(
             "accuracy",
+            "-scorer",
+            "mse",
             "-model",
             "scikitsvc",
             *features,
             "-model-predict",
             "true_label:int:1",
-            "-model-directory",
+            "-model-location",
             model_dir,
             "-sources",
             "test_data=csv",
@@ -96,7 +98,7 @@ class TestScikitClassification(AsyncTestCase):
                 *features,
                 "-model-predict",
                 "true_label:int:1",
-                "-model-directory",
+                "-model-location",
                 model_dir,
                 "-sources",
                 "predict_data=csv",
@@ -164,7 +166,7 @@ class TestScikitRegression(AsyncTestCase):
             *features,
             "-model-predict",
             "true_label:float:1",
-            "-model-directory",
+            "-model-location",
             model_dir,
             "-sources",
             "training_data=csv",
@@ -174,12 +176,14 @@ class TestScikitRegression(AsyncTestCase):
         # Assess accuracy
         await CLI.cli(
             "accuracy",
+            "-scorer",
+            "mse",
             "-model",
             "scikitridge",
             *features,
             "-model-predict",
             "true_label:float:1",
-            "-model-directory",
+            "-model-location",
             model_dir,
             "-sources",
             "test_data=csv",
@@ -197,7 +201,7 @@ class TestScikitRegression(AsyncTestCase):
                 *features,
                 "-model-predict",
                 "true_label:float:1",
-                "-model-directory",
+                "-model-location",
                 model_dir,
                 "-sources",
                 "predict_data=csv",
@@ -279,9 +283,10 @@ class TestScikitClustering(AsyncTestCase):
                     predict_filename,
                 )
             elif algo == "ind_wo_labl":
+                # TODO This is the case were tcluster would be set to false
                 model, true_clstr, train_file, test_file, predict_file = (
                     "scikitap",
-                    None,
+                    "true_label:int:1",
                     train_filename,
                     test_filename,
                     predict_filename,
@@ -297,7 +302,7 @@ class TestScikitClustering(AsyncTestCase):
             elif algo == "tran_wo_labl":
                 model, true_clstr, train_file, test_file, predict_file = (
                     "scikitac",
-                    None,
+                    "true_label:int:1",
                     train_filename,
                     train_filename,
                     train_filename,
@@ -308,7 +313,7 @@ class TestScikitClustering(AsyncTestCase):
                 "-model",
                 model,
                 *features,
-                "-model-directory",
+                "-model-location",
                 model_dir,
                 "-sources",
                 "training_data=csv",
@@ -320,21 +325,20 @@ class TestScikitClustering(AsyncTestCase):
                 *(
                     [
                         "accuracy",
+                        "-scorer",
+                        "mse",
                         "-model",
                         model,
                         *features,
-                        "-model-directory",
+                        "-model-location",
                         model_dir,
                         "-sources",
                         "test_data=csv",
                         "-source-filename",
                         test_file,
+                        "-model-predict",
+                        true_clstr,
                     ]
-                    + (
-                        ["-model-tcluster", true_clstr]
-                        if true_clstr is not None
-                        else []
-                    )
                 )
             )
             with contextlib.redirect_stdout(self.stdout):
@@ -344,7 +348,7 @@ class TestScikitClustering(AsyncTestCase):
                     "all",
                     "-model",
                     model,
-                    "-model-directory",
+                    "-model-location",
                     model_dir,
                     *features,
                     "-sources",

@@ -6,6 +6,7 @@ from dffml.source.source import Sources
 from dffml import train, accuracy, predict, run_consoletest
 from dffml.util.asynctestcase import AsyncTestCase
 from dffml.source.memory import MemorySource, MemorySourceConfig
+from dffml_model_spacy.accuracy import SpacyNerAccuracy
 from dffml_model_spacy.ner.ner_model import SpacyNERModel, SpacyNERModelConfig
 
 
@@ -47,11 +48,12 @@ class TestSpacyNERModel(AsyncTestCase):
         cls.model = SpacyNERModel(
             SpacyNERModelConfig(
                 model_name_or_path="en_core_web_sm",
-                directory=cls.model_dir.name,
+                location=cls.model_dir.name,
                 n_iter=10,
                 dropout=0.4,
             )
         )
+        cls.scorer = SpacyNerAccuracy()
 
     @classmethod
     def tearDownClass(cls):
@@ -61,7 +63,7 @@ class TestSpacyNERModel(AsyncTestCase):
         await train(self.model, self.train_sources)
 
     async def test_01_accuracy(self):
-        res = await accuracy(self.model, self.train_sources)
+        res = await accuracy(self.model, self.scorer, self.train_sources)
         self.assertGreaterEqual(res, 0)
 
     async def test_02_predict(self):

@@ -50,7 +50,7 @@ class TestDevelop(AsyncTestCase):
             "Years:int:1",
             "-model-predict",
             "Salary:float:1",
-            "-model-directory",
+            "-model-location",
             model_dir,
             "-sources",
             "training_data=csv",
@@ -71,7 +71,7 @@ class TestDevelop(AsyncTestCase):
             "Years:int:1",
             "-config-model-predict",
             "Salary:float:1",
-            "-config-model-directory",
+            "-config-model-location",
             model_dir,
         )
         self.assertIn("model_predictions", results)
