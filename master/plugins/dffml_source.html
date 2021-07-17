@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Sources &mdash; DFFML cab834974 documentation</title>
+  <title>Sources &mdash; DFFML 1ef5a1693 documentation</title>
   
 
   
@@ -70,7 +70,7 @@
             
             
               <div class="version">
-                cab834974
+                1ef5a1693
               </div>
             
           
@@ -113,6 +113,7 @@
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Sources</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#dffml">dffml</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#csv">csv</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#dataframe">dataframe</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#db">db</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#df">df</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#dir">dir</a></li>
@@ -324,6 +325,111 @@ abstract the loading and storage of data / datasets.</p>
 </ul>
 </li>
 </ul>
+</div>
+<div class="section" id="dataframe">
+<span id="plugin-source-dffml-dataframe"></span><h3>dataframe<a class="headerlink" href="#dataframe" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<p>Proxy for a pandas DataFrame</p>
+<div class="section" id="examples">
+<h4>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h4>
+<p>You can pass a pandas DataFrame to this class directly via the Python API.
+Or you can create DataFrames from other data sources via the Python API or
+the command line.</p>
+<p><strong>Example of creating a DataFrame from HTML via command line.</strong></p>
+<p>Create an HTML table.</p>
+<p><strong>index.html</strong></p>
+<div class="highlight-html notranslate"><div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">table</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">tr</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">th</span><span class="p">&gt;</span>Years<span class="p">&lt;/</span><span class="nt">th</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">th</span><span class="p">&gt;</span>Salary<span class="p">&lt;/</span><span class="nt">th</span><span class="p">&gt;</span>
+  <span class="p">&lt;/</span><span class="nt">tr</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">tr</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">td</span><span class="p">&gt;</span>0<span class="p">&lt;/</span><span class="nt">td</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">td</span><span class="p">&gt;</span>10<span class="p">&lt;/</span><span class="nt">td</span><span class="p">&gt;</span>
+  <span class="p">&lt;/</span><span class="nt">tr</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">tr</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">td</span><span class="p">&gt;</span>1<span class="p">&lt;/</span><span class="nt">td</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">td</span><span class="p">&gt;</span>20<span class="p">&lt;/</span><span class="nt">td</span><span class="p">&gt;</span>
+  <span class="p">&lt;/</span><span class="nt">tr</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">tr</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">td</span><span class="p">&gt;</span>2<span class="p">&lt;/</span><span class="nt">td</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">td</span><span class="p">&gt;</span>30<span class="p">&lt;/</span><span class="nt">td</span><span class="p">&gt;</span>
+  <span class="p">&lt;/</span><span class="nt">tr</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">table</span><span class="p">&gt;</span>
+</pre></div>
+</div>
+<p>Start the HTTP server to server the HTML page with the table</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python -m http.server <span class="m">8000</span>
+</pre></div>
+</div>
+<p>In another terminal. List all the records in the source.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml list records <span class="se">\</span>
+<span class="go">    -sources table=dataframe \</span>
+<span class="go">    -source-table-html http://127.0.0.1:8000/index.html \</span>
+<span class="go">    -source-table-protocol_allowlist http://</span>
+
+<span class="go">[</span>
+<span class="go">    {</span>
+<span class="go">        &quot;extra&quot;: {},</span>
+<span class="go">        &quot;features&quot;: {</span>
+<span class="go">            &quot;Salary&quot;: 10,</span>
+<span class="go">            &quot;Years&quot;: 0</span>
+<span class="go">        },</span>
+<span class="go">        &quot;key&quot;: &quot;0&quot;</span>
+<span class="go">    },</span>
+<span class="go">    {</span>
+<span class="go">        &quot;extra&quot;: {},</span>
+<span class="go">        &quot;features&quot;: {</span>
+<span class="go">            &quot;Salary&quot;: 20,</span>
+<span class="go">            &quot;Years&quot;: 1</span>
+<span class="go">        },</span>
+<span class="go">        &quot;key&quot;: &quot;1&quot;</span>
+<span class="go">    },</span>
+<span class="go">    {</span>
+<span class="go">        &quot;extra&quot;: {},</span>
+<span class="go">        &quot;features&quot;: {</span>
+<span class="go">            &quot;Salary&quot;: 30,</span>
+<span class="go">            &quot;Years&quot;: 2</span>
+<span class="go">        },</span>
+<span class="go">        &quot;key&quot;: &quot;2&quot;</span>
+<span class="go">    }</span>
+<span class="go">]</span>
+</pre></div>
+</div>
+<p><strong>Args</strong></p>
+<ul class="simple">
+<li><p>dataframe: pandas.DataFrame</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>The pandas DataFrame to proxy</p></li>
+</ul>
+</li>
+<li><p>predictions: List of strings</p>
+<ul>
+<li><p>default: []</p></li>
+<li><p>Prediction columns whose values we have to update</p></li>
+</ul>
+</li>
+<li><p>html: String</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Construct a DataFrame using DataFrame.read_html(). Passing this as URL</p></li>
+</ul>
+</li>
+<li><p>html_table_index: Integer</p>
+<ul>
+<li><p>default: 0</p></li>
+<li><p>If there are multiple html tables on a page, which one? Array indexed, so first table means 0, if you want the second table on the page, use 1 here.</p></li>
+</ul>
+</li>
+<li><p>protocol_allowlist: List of strings</p>
+<ul>
+<li><p>default: [‘<a class="reference external" href="https://">https://</a>’]</p></li>
+<li><p>List of protocols allowed for <code class="docutils literal notranslate"><span class="pre">html</span></code> URL. Example <code class="docutils literal notranslate"><span class="pre">[&quot;http://&quot;]</span></code></p></li>
+</ul>
+</li>
+</ul>
+</div>
 </div>
 <div class="section" id="db">
 <span id="plugin-source-dffml-db"></span><h3>db<a class="headerlink" href="#db" title="Permalink to this headline">¶</a></h3>
@@ -643,8 +749,8 @@ appear within <code class="docutils literal notranslate"><span class="pre">updat
 appear within <code class="docutils literal notranslate"><span class="pre">update</span></code> query.</p></li>
 </ul>
 </div>
-<div class="section" id="examples">
-<h4>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="id1">
+<h4>Examples<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h4>
 <p>Read MySQL or MariaDB’s documentation to understand how to properly setup
 your server for encrypted connections.</p>
 <ul class="simple">

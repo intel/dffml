@@ -66,6 +66,124 @@ Uses a CSV file as the source of record feature data
 
   - default: False
 
+.. _plugin_source_dffml_dataframe:
+
+dataframe
+~~~~~~~~~
+
+*Official*
+
+Proxy for a pandas DataFrame
+
+Examples
+--------
+
+You can pass a pandas DataFrame to this class directly via the Python API.
+Or you can create DataFrames from other data sources via the Python API or
+the command line.
+
+**Example of creating a DataFrame from HTML via command line.**
+
+Create an HTML table.
+
+**index.html**
+
+.. code-block:: html
+    :test:
+    :filepath: index.html
+
+    <table>
+      <tr>
+        <th>Years</th>
+        <th>Salary</th>
+      </tr>
+      <tr>
+        <td>0</td>
+        <td>10</td>
+      </tr>
+      <tr>
+        <td>1</td>
+        <td>20</td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td>30</td>
+      </tr>
+    </table>
+
+Start the HTTP server to server the HTML page with the table
+
+.. code-block:: console
+    :test:
+    :daemon: 8000
+
+    $ python -m http.server 8000
+
+In another terminal. List all the records in the source.
+
+.. code-block:: console
+    :test:
+    :replace: cmds[0][-3] = cmds[0][-3].replace("8000", str(ctx["HTTP_SERVER"]["8000"]))
+
+    $ dffml list records \
+        -sources table=dataframe \
+        -source-table-html http://127.0.0.1:8000/index.html \
+        -source-table-protocol_allowlist http://
+
+    [
+        {
+            "extra": {},
+            "features": {
+                "Salary": 10,
+                "Years": 0
+            },
+            "key": "0"
+        },
+        {
+            "extra": {},
+            "features": {
+                "Salary": 20,
+                "Years": 1
+            },
+            "key": "1"
+        },
+        {
+            "extra": {},
+            "features": {
+                "Salary": 30,
+                "Years": 2
+            },
+            "key": "2"
+        }
+    ]
+
+**Args**
+
+- dataframe: pandas.DataFrame
+
+  - default: None
+  - The pandas DataFrame to proxy
+
+- predictions: List of strings
+
+  - default: []
+  - Prediction columns whose values we have to update
+
+- html: String
+
+  - default: None
+  - Construct a DataFrame using DataFrame.read_html(). Passing this as URL
+
+- html_table_index: Integer
+
+  - default: 0
+  - If there are multiple html tables on a page, which one? Array indexed, so first table means 0, if you want the second table on the page, use 1 here.
+
+- protocol_allowlist: List of strings
+
+  - default: ['https://']
+  - List of protocols allowed for ``html`` URL. Example ``["http://"]``
+
 .. _plugin_source_dffml_db:
 
 db

@@ -1,0 +1,488 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Source Dataframe &mdash; DFFML 1ef5a1693 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/tabs.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/copybutton.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="author" title="About these documents" href="../../about.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Source Csv" href="csv.html" />
+    <link rel="prev" title="Source Memory" href="memory.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> DFFML
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1ef5a1693
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Introduction</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../concepts/index.html">Concepts</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Usage</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../quickstart/model.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples/index.html">Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../plugins/index.html">Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cli.html">Command Line</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../plugins/service/http/index.html">HTTP API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../plugins.html">Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../noasync.html">Noasync</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../base.html">Base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../record.html">Record</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../log.html">Log</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../high_level.html">High_Level</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../version.html">Version</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Source</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="idx1.html">Source Idx1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="db.html">Source Db</a></li>
+<li class="toctree-l2"><a class="reference internal" href="source.html">Source Source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="wrapper.html">Source Wrapper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="op.html">Source Op</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dir.html">Source Dir</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ini.html">Source Ini</a></li>
+<li class="toctree-l2"><a class="reference internal" href="df.html">Source Df</a></li>
+<li class="toctree-l2"><a class="reference internal" href="log.html">Source Log</a></li>
+<li class="toctree-l2"><a class="reference internal" href="memory.html">Source Memory</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Source Dataframe</a></li>
+<li class="toctree-l2"><a class="reference internal" href="csv.html">Source Csv</a></li>
+<li class="toctree-l2"><a class="reference internal" href="json.html">Source Json</a></li>
+<li class="toctree-l2"><a class="reference internal" href="file.html">Source File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="idx3.html">Source Idx3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dataset/index.html">Source Dataset</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../operation/index.html">Operation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../feature/index.html">Feature</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../accuracy/index.html">Accuracy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cli/index.html">Cli</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../secret/index.html">Secret</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../df/index.html">Df</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../db/index.html">Db</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../service/index.html">Service</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../configloader/index.html">Configloader</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../model/index.html">Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../util/index.html">Util</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../port/index.html">Port</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../arch/index.html">Architecture</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Subprojects</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../shouldi.html">shouldi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../swportal.html">Software Portal</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Community</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/intel/dffml">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://intel.github.io/dffml/master/">Master Branch Docs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../publications.html">Publications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contact.html">Contact Us</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing/index.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../news/index.html">News</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../changelog.html">Changelog</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">DFFML</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">&lt;no title&gt;</a> &raquo;</li>
+        
+          <li><a href="index.html">Source</a> &raquo;</li>
+        
+      <li>Source Dataframe</li>
+    
+    
+
+
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            
+              <a href="https://github.com/intel/dffml/blob/master/docs/api/source/dataframe.rst" class="fa fa-github"> Edit on GitHub</a>
+            
+          
+        
+      </li>
+    
+
+
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="module-dffml.source.dataframe">
+<span id="source-dataframe"></span><h1>Source Dataframe<a class="headerlink" href="#module-dffml.source.dataframe" title="Permalink to this headline">¶</a></h1>
+<p>Expose Pandas DataFrame as DFFML Source</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="dffml.source.dataframe.DataFrameSource">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">dffml.source.dataframe.</span></span><span class="sig-name descname"><span class="pre">DataFrameSource</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/dataframe.html#DataFrameSource"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.source.dataframe.DataFrameSource" title="Permalink to this definition">¶</a></dt>
+<dd><p>Proxy for a pandas DataFrame</p>
+<p class="rubric">Examples</p>
+<p>You can pass a pandas DataFrame to this class directly via the Python API.
+Or you can create DataFrames from other data sources via the Python API or
+the command line.</p>
+<p><strong>Example of creating a DataFrame from HTML via command line.</strong></p>
+<p>Create an HTML table.</p>
+<p><strong>index.html</strong></p>
+<div class="highlight-html notranslate"><div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">table</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">tr</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">th</span><span class="p">&gt;</span>Years<span class="p">&lt;/</span><span class="nt">th</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">th</span><span class="p">&gt;</span>Salary<span class="p">&lt;/</span><span class="nt">th</span><span class="p">&gt;</span>
+  <span class="p">&lt;/</span><span class="nt">tr</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">tr</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">td</span><span class="p">&gt;</span>0<span class="p">&lt;/</span><span class="nt">td</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">td</span><span class="p">&gt;</span>10<span class="p">&lt;/</span><span class="nt">td</span><span class="p">&gt;</span>
+  <span class="p">&lt;/</span><span class="nt">tr</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">tr</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">td</span><span class="p">&gt;</span>1<span class="p">&lt;/</span><span class="nt">td</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">td</span><span class="p">&gt;</span>20<span class="p">&lt;/</span><span class="nt">td</span><span class="p">&gt;</span>
+  <span class="p">&lt;/</span><span class="nt">tr</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">tr</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">td</span><span class="p">&gt;</span>2<span class="p">&lt;/</span><span class="nt">td</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">td</span><span class="p">&gt;</span>30<span class="p">&lt;/</span><span class="nt">td</span><span class="p">&gt;</span>
+  <span class="p">&lt;/</span><span class="nt">tr</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">table</span><span class="p">&gt;</span>
+</pre></div>
+</div>
+<p>Start the HTTP server to server the HTML page with the table</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python -m http.server <span class="m">8000</span>
+</pre></div>
+</div>
+<p>In another terminal. List all the records in the source.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml list records <span class="se">\</span>
+<span class="go">    -sources table=dataframe \</span>
+<span class="go">    -source-table-html http://127.0.0.1:8000/index.html \</span>
+<span class="go">    -source-table-protocol_allowlist http://</span>
+
+<span class="go">[</span>
+<span class="go">    {</span>
+<span class="go">        &quot;extra&quot;: {},</span>
+<span class="go">        &quot;features&quot;: {</span>
+<span class="go">            &quot;Salary&quot;: 10,</span>
+<span class="go">            &quot;Years&quot;: 0</span>
+<span class="go">        },</span>
+<span class="go">        &quot;key&quot;: &quot;0&quot;</span>
+<span class="go">    },</span>
+<span class="go">    {</span>
+<span class="go">        &quot;extra&quot;: {},</span>
+<span class="go">        &quot;features&quot;: {</span>
+<span class="go">            &quot;Salary&quot;: 20,</span>
+<span class="go">            &quot;Years&quot;: 1</span>
+<span class="go">        },</span>
+<span class="go">        &quot;key&quot;: &quot;1&quot;</span>
+<span class="go">    },</span>
+<span class="go">    {</span>
+<span class="go">        &quot;extra&quot;: {},</span>
+<span class="go">        &quot;features&quot;: {</span>
+<span class="go">            &quot;Salary&quot;: 30,</span>
+<span class="go">            &quot;Years&quot;: 2</span>
+<span class="go">        },</span>
+<span class="go">        &quot;key&quot;: &quot;2&quot;</span>
+<span class="go">    }</span>
+<span class="go">]</span>
+</pre></div>
+</div>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dffml.source.dataframe.DataFrameSource.CONFIG">
+<span class="sig-name descname"><span class="pre">CONFIG</span></span><a class="headerlink" href="#dffml.source.dataframe.DataFrameSource.CONFIG" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#dffml.source.dataframe.DataFrameSourceConfig" title="dffml.source.dataframe.DataFrameSourceConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">dffml.source.dataframe.DataFrameSourceConfig</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dffml.source.dataframe.DataFrameSource.CONTEXT">
+<span class="sig-name descname"><span class="pre">CONTEXT</span></span><a class="headerlink" href="#dffml.source.dataframe.DataFrameSource.CONTEXT" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#dffml.source.dataframe.DataFrameSourceContext" title="dffml.source.dataframe.DataFrameSourceContext"><code class="xref py py-class docutils literal notranslate"><span class="pre">dffml.source.dataframe.DataFrameSourceContext</span></code></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dffml.source.dataframe.DataFrameSourceConfig">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">dffml.source.dataframe.</span></span><span class="sig-name descname"><span class="pre">DataFrameSourceConfig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">dataframe:</span> <span class="pre">'pandas.DataFrame'</span> <span class="pre">=</span> <span class="pre">None</span></em>, <em class="sig-param"><span class="pre">predictions:</span> <span class="pre">List[str]</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;</span></em>, <em class="sig-param"><span class="pre">html:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">None</span></em>, <em class="sig-param"><span class="pre">html_table_index:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">0</span></em>, <em class="sig-param"><span class="pre">protocol_allowlist:</span> <span class="pre">List[str]</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/dataframe.html#DataFrameSourceConfig"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.source.dataframe.DataFrameSourceConfig" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dffml.source.dataframe.DataFrameSourceContext">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">dffml.source.dataframe.</span></span><span class="sig-name descname"><span class="pre">DataFrameSourceContext</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="source.html#dffml.source.source.BaseSource" title="dffml.source.source.BaseSource"><span class="pre">dffml.source.source.BaseSource</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/dataframe.html#DataFrameSourceContext"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.source.dataframe.DataFrameSourceContext" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="dffml.source.dataframe.DataFrameSourceContext.record">
+<em class="property"><span class="pre">async</span> </em><span class="sig-name descname"><span class="pre">record</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../record.html#dffml.record.Record" title="dffml.record.Record"><span class="pre">dffml.record.Record</span></a></span></span><a class="reference internal" href="../../_modules/dffml/source/dataframe.html#DataFrameSourceContext.record"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.source.dataframe.DataFrameSourceContext.record" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a record from the source or add it if it doesn’t exist.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="k">async</span> <span class="k">with</span> <span class="n">MemorySource</span><span class="p">(</span><span class="n">records</span><span class="o">=</span><span class="p">[</span><span class="n">Record</span><span class="p">(</span><span class="s2">&quot;example&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">features</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">dead</span><span class="o">=</span><span class="s2">&quot;beef&quot;</span><span class="p">)))])</span> <span class="k">as</span> <span class="n">source</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="c1"># Open, update, and close</span>
+<span class="gp">... </span>        <span class="k">async</span> <span class="k">with</span> <span class="n">source</span><span class="p">()</span> <span class="k">as</span> <span class="n">ctx</span><span class="p">:</span>
+<span class="gp">... </span>            <span class="n">example</span> <span class="o">=</span> <span class="k">await</span> <span class="n">ctx</span><span class="o">.</span><span class="n">record</span><span class="p">(</span><span class="s2">&quot;example&quot;</span><span class="p">)</span>
+<span class="gp">... </span>            <span class="c1"># Let&#39;s also try calling `record` for a record that doesnt exist.</span>
+<span class="gp">... </span>            <span class="n">one</span> <span class="o">=</span> <span class="k">await</span> <span class="n">ctx</span><span class="o">.</span><span class="n">record</span><span class="p">(</span><span class="s2">&quot;one&quot;</span><span class="p">)</span>
+<span class="gp">... </span>            <span class="k">await</span> <span class="n">ctx</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">one</span><span class="p">)</span>
+<span class="gp">... </span>            <span class="k">async</span> <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">ctx</span><span class="o">.</span><span class="n">records</span><span class="p">():</span>
+<span class="gp">... </span>                <span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">export</span><span class="p">())</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+<span class="go">{&#39;key&#39;: &#39;example&#39;, &#39;features&#39;: {&#39;dead&#39;: &#39;beef&#39;}, &#39;extra&#39;: {}}</span>
+<span class="go">{&#39;key&#39;: &#39;one&#39;, &#39;extra&#39;: {}}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dffml.source.dataframe.DataFrameSourceContext.records">
+<span class="sig-name descname"><span class="pre">records</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">AsyncIterator</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../record.html#dffml.record.Record" title="dffml.record.Record"><span class="pre">dffml.record.Record</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/dffml/source/dataframe.html#DataFrameSourceContext.records"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.source.dataframe.DataFrameSourceContext.records" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of records retrieved from self.src</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="k">async</span> <span class="k">with</span> <span class="n">MemorySource</span><span class="p">(</span><span class="n">records</span><span class="o">=</span><span class="p">[</span><span class="n">Record</span><span class="p">(</span><span class="s2">&quot;example&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">features</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">dead</span><span class="o">=</span><span class="s2">&quot;beef&quot;</span><span class="p">)))])</span> <span class="k">as</span> <span class="n">source</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="k">async</span> <span class="k">with</span> <span class="n">source</span><span class="p">()</span> <span class="k">as</span> <span class="n">ctx</span><span class="p">:</span>
+<span class="gp">... </span>            <span class="k">async</span> <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">ctx</span><span class="o">.</span><span class="n">records</span><span class="p">():</span>
+<span class="gp">... </span>                <span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">export</span><span class="p">())</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+<span class="go">{&#39;key&#39;: &#39;example&#39;, &#39;features&#39;: {&#39;dead&#39;: &#39;beef&#39;}, &#39;extra&#39;: {}}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dffml.source.dataframe.DataFrameSourceContext.update">
+<em class="property"><span class="pre">async</span> </em><span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">record</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="../record.html#dffml.record.Record" title="dffml.record.Record"><span class="pre">dffml.record.Record</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/dataframe.html#DataFrameSourceContext.update"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.source.dataframe.DataFrameSourceContext.update" title="Permalink to this definition">¶</a></dt>
+<dd><p>Updates a record for a source</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="k">async</span> <span class="k">with</span> <span class="n">MemorySource</span><span class="p">(</span><span class="n">records</span><span class="o">=</span><span class="p">[])</span> <span class="k">as</span> <span class="n">source</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="c1"># Open, update, and close</span>
+<span class="gp">... </span>        <span class="k">async</span> <span class="k">with</span> <span class="n">source</span><span class="p">()</span> <span class="k">as</span> <span class="n">ctx</span><span class="p">:</span>
+<span class="gp">... </span>            <span class="n">example</span> <span class="o">=</span> <span class="n">Record</span><span class="p">(</span><span class="s2">&quot;one&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">features</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">feed</span><span class="o">=</span><span class="s2">&quot;face&quot;</span><span class="p">)))</span>
+<span class="gp">... </span>            <span class="c1"># ... Update one into our records ...</span>
+<span class="gp">... </span>            <span class="k">await</span> <span class="n">ctx</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">example</span><span class="p">)</span>
+<span class="gp">... </span>            <span class="c1"># Let&#39;s check out our records after calling `record` and `update`.</span>
+<span class="gp">... </span>            <span class="k">async</span> <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">ctx</span><span class="o">.</span><span class="n">records</span><span class="p">():</span>
+<span class="gp">... </span>                <span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">export</span><span class="p">())</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+<span class="go">{&#39;key&#39;: &#39;one&#39;, &#39;features&#39;: {&#39;feed&#39;: &#39;face&#39;}, &#39;extra&#39;: {}}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="csv.html" class="btn btn-neutral float-right" title="Source Csv" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="memory.html" class="btn btn-neutral float-left" title="Source Memory" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2017 - 2021, Intel.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

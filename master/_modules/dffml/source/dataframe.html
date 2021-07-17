@@ -1,0 +1,468 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>dffml.source.dataframe &mdash; DFFML 1ef5a1693 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/tabs.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/copybutton.js"></script>
+        <script src="../../../_static/tabs.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="author" title="About these documents" href="../../../about.html" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> DFFML
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1ef5a1693
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Introduction</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../concepts/index.html">Concepts</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Usage</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../quickstart/model.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/index.html">Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../plugins/index.html">Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../cli.html">Command Line</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../plugins/service/http/index.html">HTTP API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/plugins.html">Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/noasync.html">Noasync</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/base.html">Base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/record.html">Record</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/log.html">Log</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/high_level.html">High_Level</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/version.html">Version</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/source/index.html">Source</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/operation/index.html">Operation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/feature/index.html">Feature</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/accuracy/index.html">Accuracy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/cli/index.html">Cli</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/secret/index.html">Secret</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/df/index.html">Df</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/db/index.html">Db</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/service/index.html">Service</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/configloader/index.html">Configloader</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/model/index.html">Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/util/index.html">Util</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/port/index.html">Port</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../arch/index.html">Architecture</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Subprojects</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../shouldi.html">shouldi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../swportal.html">Software Portal</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Community</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/intel/dffml">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://intel.github.io/dffml/master/">Master Branch Docs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../publications.html">Publications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contact.html">Contact Us</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributing/index.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../news/index.html">News</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../changelog.html">Changelog</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">DFFML</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>dffml.source.dataframe</li>
+    
+    
+
+
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+
+
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for dffml.source.dataframe</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Expose Pandas DataFrame as DFFML Source</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">AsyncIterator</span>
+
+
+<span class="kn">from</span> <span class="nn">..record</span> <span class="kn">import</span> <span class="n">Record</span>
+<span class="kn">from</span> <span class="nn">..base</span> <span class="kn">import</span> <span class="n">config</span><span class="p">,</span> <span class="n">field</span>
+<span class="kn">from</span> <span class="nn">..util.entrypoint</span> <span class="kn">import</span> <span class="n">entrypoint</span>
+<span class="kn">from</span> <span class="nn">..util.net</span> <span class="kn">import</span> <span class="n">DEFAULT_PROTOCOL_ALLOWLIST</span>
+<span class="kn">from</span> <span class="nn">.source</span> <span class="kn">import</span> <span class="n">BaseSourceContext</span><span class="p">,</span> <span class="n">BaseSource</span>
+
+
+<div class="viewcode-block" id="DataFrameSourceContext"><a class="viewcode-back" href="../../../api/source/dataframe.html#dffml.source.dataframe.DataFrameSourceContext">[docs]</a><span class="k">class</span> <span class="nc">DataFrameSourceContext</span><span class="p">(</span><span class="n">BaseSourceContext</span><span class="p">):</span>
+<div class="viewcode-block" id="DataFrameSourceContext.update"><a class="viewcode-back" href="../../../api/source/dataframe.html#dffml.source.dataframe.DataFrameSourceContext.update">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">record</span><span class="p">:</span> <span class="n">Record</span><span class="p">):</span>
+        <span class="c1"># Shorthand for DataFrame</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">dataframe</span>
+        <span class="c1"># Store feature data</span>
+        <span class="n">features</span> <span class="o">=</span> <span class="n">record</span><span class="o">.</span><span class="n">features</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">features</span><span class="p">:</span>
+                <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">record</span><span class="o">.</span><span class="n">key</span><span class="p">,</span> <span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">features</span><span class="p">[</span><span class="n">col</span><span class="p">]</span>
+        <span class="c1"># Store prediction</span>
+        <span class="n">predictions</span> <span class="o">=</span> <span class="n">record</span><span class="o">.</span><span class="n">predictions</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">predictions</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">predictions</span><span class="p">:</span>
+                <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">record</span><span class="o">.</span><span class="n">key</span><span class="p">,</span> <span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">predictions</span><span class="p">[</span><span class="n">col</span><span class="p">][</span><span class="s2">&quot;value&quot;</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="DataFrameSourceContext.records"><a class="viewcode-back" href="../../../api/source/dataframe.html#dffml.source.dataframe.DataFrameSourceContext.records">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">records</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AsyncIterator</span><span class="p">[</span><span class="n">Record</span><span class="p">]:</span>
+        <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">dataframe</span><span class="o">.</span><span class="n">itertuples</span><span class="p">():</span>
+            <span class="n">features</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">row</span><span class="o">.</span><span class="n">_asdict</span><span class="p">())</span>
+            <span class="n">predictions</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="n">key</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="n">features</span><span class="p">[</span><span class="n">key</span><span class="p">]}</span>
+                <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">predictions</span>
+            <span class="p">}</span>
+            <span class="k">del</span> <span class="n">features</span><span class="p">[</span><span class="s2">&quot;Index&quot;</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">predictions</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">features</span><span class="p">:</span>
+                    <span class="k">del</span> <span class="n">features</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+            <span class="k">yield</span> <span class="n">Record</span><span class="p">(</span>
+                <span class="nb">str</span><span class="p">(</span><span class="n">row</span><span class="o">.</span><span class="n">Index</span><span class="p">),</span>
+                <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;features&quot;</span><span class="p">:</span> <span class="n">features</span><span class="p">,</span> <span class="s2">&quot;prediction&quot;</span><span class="p">:</span> <span class="n">predictions</span><span class="p">},</span>
+            <span class="p">)</span></div>
+
+<div class="viewcode-block" id="DataFrameSourceContext.record"><a class="viewcode-back" href="../../../api/source/dataframe.html#dffml.source.dataframe.DataFrameSourceContext.record">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">record</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Record</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">dataframe</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">key</span><span class="p">)]</span>
+        <span class="n">predictions</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="n">key</span><span class="p">:</span> <span class="n">data</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">predictions</span>
+        <span class="p">}</span>
+        <span class="n">features</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="n">key</span><span class="p">:</span> <span class="n">value</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">predictions</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">Record</span><span class="p">(</span>
+            <span class="nb">str</span><span class="p">(</span><span class="n">key</span><span class="p">),</span> <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;features&quot;</span><span class="p">:</span> <span class="n">features</span><span class="p">,</span> <span class="s2">&quot;prediction&quot;</span><span class="p">:</span> <span class="n">predictions</span><span class="p">},</span>
+        <span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="DataFrameSourceConfig"><a class="viewcode-back" href="../../../api/source/dataframe.html#dffml.source.dataframe.DataFrameSourceConfig">[docs]</a><span class="nd">@config</span>
+<span class="k">class</span> <span class="nc">DataFrameSourceConfig</span><span class="p">:</span>
+    <span class="n">dataframe</span><span class="p">:</span> <span class="s2">&quot;pandas.DataFrame&quot;</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
+        <span class="s2">&quot;The pandas DataFrame to proxy&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span>
+    <span class="p">)</span>
+    <span class="n">predictions</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
+        <span class="s2">&quot;Prediction columns whose values we have to update&quot;</span><span class="p">,</span>
+        <span class="n">default_factory</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="p">[],</span>
+    <span class="p">)</span>
+    <span class="c1"># TODO Get rid of this basic appoach when we implement #1168</span>
+    <span class="n">html</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
+        <span class="s2">&quot;Construct a DataFrame using DataFrame.read_html(). Passing this as URL&quot;</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">html_table_index</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
+        <span class="s2">&quot;If there are multiple html tables on a page, which one? Array indexed&quot;</span>
+        <span class="s2">&quot;, so first table means 0, if you want the second table on the page&quot;</span>
+        <span class="s2">&quot;, use 1 here.&quot;</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">protocol_allowlist</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
+        <span class="s1">&#39;List of protocols allowed for ``html`` URL. Example ``[&quot;http://&quot;]``&#39;</span><span class="p">,</span>
+        <span class="n">default_factory</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="n">DEFAULT_PROTOCOL_ALLOWLIST</span><span class="p">,</span>
+    <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="DataFrameSource"><a class="viewcode-back" href="../../../api/source/dataframe.html#dffml.source.dataframe.DataFrameSource">[docs]</a><span class="nd">@entrypoint</span><span class="p">(</span><span class="s2">&quot;dataframe&quot;</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">DataFrameSource</span><span class="p">(</span><span class="n">BaseSource</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Proxy for a pandas DataFrame</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+
+<span class="sd">    You can pass a pandas DataFrame to this class directly via the Python API.</span>
+<span class="sd">    Or you can create DataFrames from other data sources via the Python API or</span>
+<span class="sd">    the command line.</span>
+
+<span class="sd">    **Example of creating a DataFrame from HTML via command line.**</span>
+
+<span class="sd">    Create an HTML table.</span>
+
+<span class="sd">    **index.html**</span>
+
+<span class="sd">    .. code-block:: html</span>
+<span class="sd">        :test:</span>
+<span class="sd">        :filepath: index.html</span>
+
+<span class="sd">        &lt;table&gt;</span>
+<span class="sd">          &lt;tr&gt;</span>
+<span class="sd">            &lt;th&gt;Years&lt;/th&gt;</span>
+<span class="sd">            &lt;th&gt;Salary&lt;/th&gt;</span>
+<span class="sd">          &lt;/tr&gt;</span>
+<span class="sd">          &lt;tr&gt;</span>
+<span class="sd">            &lt;td&gt;0&lt;/td&gt;</span>
+<span class="sd">            &lt;td&gt;10&lt;/td&gt;</span>
+<span class="sd">          &lt;/tr&gt;</span>
+<span class="sd">          &lt;tr&gt;</span>
+<span class="sd">            &lt;td&gt;1&lt;/td&gt;</span>
+<span class="sd">            &lt;td&gt;20&lt;/td&gt;</span>
+<span class="sd">          &lt;/tr&gt;</span>
+<span class="sd">          &lt;tr&gt;</span>
+<span class="sd">            &lt;td&gt;2&lt;/td&gt;</span>
+<span class="sd">            &lt;td&gt;30&lt;/td&gt;</span>
+<span class="sd">          &lt;/tr&gt;</span>
+<span class="sd">        &lt;/table&gt;</span>
+
+<span class="sd">    Start the HTTP server to server the HTML page with the table</span>
+
+<span class="sd">    .. code-block:: console</span>
+<span class="sd">        :test:</span>
+<span class="sd">        :daemon: 8000</span>
+
+<span class="sd">        $ python -m http.server 8000</span>
+
+<span class="sd">    In another terminal. List all the records in the source.</span>
+
+<span class="sd">    .. code-block:: console</span>
+<span class="sd">        :test:</span>
+<span class="sd">        :replace: cmds[0][-3] = cmds[0][-3].replace(&quot;8000&quot;, str(ctx[&quot;HTTP_SERVER&quot;][&quot;8000&quot;]))</span>
+
+<span class="sd">        $ dffml list records \</span>
+<span class="sd">            -sources table=dataframe \</span>
+<span class="sd">            -source-table-html http://127.0.0.1:8000/index.html \</span>
+<span class="sd">            -source-table-protocol_allowlist http://</span>
+
+<span class="sd">        [</span>
+<span class="sd">            {</span>
+<span class="sd">                &quot;extra&quot;: {},</span>
+<span class="sd">                &quot;features&quot;: {</span>
+<span class="sd">                    &quot;Salary&quot;: 10,</span>
+<span class="sd">                    &quot;Years&quot;: 0</span>
+<span class="sd">                },</span>
+<span class="sd">                &quot;key&quot;: &quot;0&quot;</span>
+<span class="sd">            },</span>
+<span class="sd">            {</span>
+<span class="sd">                &quot;extra&quot;: {},</span>
+<span class="sd">                &quot;features&quot;: {</span>
+<span class="sd">                    &quot;Salary&quot;: 20,</span>
+<span class="sd">                    &quot;Years&quot;: 1</span>
+<span class="sd">                },</span>
+<span class="sd">                &quot;key&quot;: &quot;1&quot;</span>
+<span class="sd">            },</span>
+<span class="sd">            {</span>
+<span class="sd">                &quot;extra&quot;: {},</span>
+<span class="sd">                &quot;features&quot;: {</span>
+<span class="sd">                    &quot;Salary&quot;: 30,</span>
+<span class="sd">                    &quot;Years&quot;: 2</span>
+<span class="sd">                },</span>
+<span class="sd">                &quot;key&quot;: &quot;2&quot;</span>
+<span class="sd">            }</span>
+<span class="sd">        ]</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">CONFIG</span> <span class="o">=</span> <span class="n">DataFrameSourceConfig</span>
+    <span class="n">CONTEXT</span> <span class="o">=</span> <span class="n">DataFrameSourceContext</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+        <span class="c1"># Create DataFrame if not given</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">dataframe</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="c1"># Try import</span>
+                <span class="kn">import</span> <span class="nn">pandas</span>
+            <span class="k">except</span> <span class="p">(</span><span class="ne">ModuleNotFoundError</span><span class="p">,</span> <span class="ne">ImportError</span><span class="p">)</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+                <span class="c1"># If it fails say that pandas must be installed to create new</span>
+                <span class="c1"># DataFrames</span>
+                <span class="k">raise</span> <span class="n">PandasNotInstalled</span><span class="p">(</span>
+                    <span class="s2">&quot;Pandas is required to create new DataFrames. $ pip install pandas&quot;</span>
+                <span class="p">)</span> <span class="kn">from</span> <span class="nn">error</span>
+            <span class="c1"># TODO Modify this in line with changes for #1168</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">html</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">dataframes</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">read_html</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">html</span><span class="p">)</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">html_table_index</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="n">dataframes</span><span class="p">):</span>
+                    <span class="k">raise</span> <span class="n">DataFrameHTMLTableIndexNotFoundError</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot;Index </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">html_table_index</span><span class="si">}</span><span class="s2"> requested&quot;</span>
+                        <span class="sa">f</span><span class="s2">&quot; </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">dataframes</span><span class="p">)</span><span class="si">}</span><span class="s2"> table(s) found.&quot;</span>
+                    <span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">dataframe</span> <span class="o">=</span> <span class="n">dataframes</span><span class="p">[</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">html_table_index</span>
+                <span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># Create empty DataFrame</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">dataframe</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2017 - 2021, Intel.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
