@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>dffml.util.testing.consoletest.commands &mdash; DFFML 5c1d437ea documentation</title>
+  <title>dffml.util.testing.consoletest.commands &mdash; DFFML cab834974 documentation</title>
   
 
   
@@ -69,7 +69,7 @@
             
             
               <div class="version">
-                5c1d437ea
+                cab834974
               </div>
             
           
@@ -121,6 +121,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../../api/source/index.html">Source</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../api/operation/index.html">Operation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../api/feature/index.html">Feature</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../api/accuracy/index.html">Accuracy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../api/cli/index.html">Cli</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../api/secret/index.html">Secret</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../api/df/index.html">Df</a></li>
@@ -746,26 +747,6 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">fix_dffml_packages</span><span class="p">(</span><span class="n">ctx</span><span class="p">)</span>
 
         <span class="k">await</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">ctx</span><span class="p">)</span>
-
-        <span class="c1"># Remove dataclasses. See https://github.com/intel/dffml/issues/882</span>
-        <span class="c1"># TODO(p0,security) Audit this</span>
-        <span class="n">remove_dataclasses_path</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="n">DFFML_ROOT</span>
-            <span class="o">/</span> <span class="s2">&quot;scripts&quot;</span>
-            <span class="o">/</span> <span class="s2">&quot;tempfix&quot;</span>
-            <span class="o">/</span> <span class="s2">&quot;pytorch&quot;</span>
-            <span class="o">/</span> <span class="s2">&quot;pytorch&quot;</span>
-            <span class="o">/</span> <span class="s2">&quot;46930.py&quot;</span>
-        <span class="p">)</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">remove_dataclasses_path</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
-            <span class="k">return</span>
-
-        <span class="n">cmd</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;python&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">remove_dataclasses_path</span><span class="p">)]</span>
-        <span class="k">if</span> <span class="s2">&quot;CONDA_PREFIX&quot;</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">:</span>
-            <span class="n">cmd</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;CONDA_PREFIX&quot;</span><span class="p">])</span>
-        <span class="k">elif</span> <span class="s2">&quot;VIRTUAL_ENV&quot;</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">:</span>
-            <span class="n">cmd</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;VIRTUAL_ENV&quot;</span><span class="p">])</span>
-        <span class="k">await</span> <span class="n">run_commands</span><span class="p">([</span><span class="n">cmd</span><span class="p">],</span> <span class="n">ctx</span><span class="p">)</span>
 
     <span class="k">async</span> <span class="k">def</span> <span class="fm">__aexit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_exc_type</span><span class="p">,</span> <span class="n">_exc_value</span><span class="p">,</span> <span class="n">_traceback</span><span class="p">):</span>
         <span class="k">return</span></div>

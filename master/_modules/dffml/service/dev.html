@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>dffml.service.dev &mdash; DFFML 5c1d437ea documentation</title>
+  <title>dffml.service.dev &mdash; DFFML cab834974 documentation</title>
   
 
   
@@ -69,7 +69,7 @@
             
             
               <div class="version">
-                5c1d437ea
+                cab834974
               </div>
             
           
@@ -121,6 +121,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../api/source/index.html">Source</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/operation/index.html">Operation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/feature/index.html">Feature</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/accuracy/index.html">Accuracy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/cli/index.html">Cli</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/secret/index.html">Secret</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/df/index.html">Df</a></li>
@@ -630,7 +631,7 @@
                 <span class="k">continue</span>
             <span class="n">package_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="o">*</span><span class="n">main_package</span><span class="o">.</span><span class="n">parts</span><span class="p">,</span> <span class="o">*</span><span class="n">package</span><span class="p">)</span>
             <span class="c1"># Install package in development mode</span>
-            <span class="n">cmd</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;-e&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">package_path</span><span class="o">.</span><span class="n">absolute</span><span class="p">())]</span>
+            <span class="n">cmd</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;-e&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">package_path</span><span class="o">.</span><span class="n">absolute</span><span class="p">())</span> <span class="o">+</span> <span class="s2">&quot;[dev]&quot;</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Running: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cmd</span><span class="p">))</span>
         <span class="c1"># Packages fail to install if we run pip processes in parallel</span>
         <span class="n">proc</span> <span class="o">=</span> <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">create_subprocess_exec</span><span class="p">(</span><span class="o">*</span><span class="n">cmd</span><span class="p">)</span>
@@ -1109,6 +1110,7 @@
             <span class="p">)</span>
 
             <span class="k">with</span> <span class="n">socketserver</span><span class="o">.</span><span class="n">TCPServer</span><span class="p">((</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">port</span><span class="p">),</span> <span class="n">handler</span><span class="p">)</span> <span class="k">as</span> <span class="n">httpd</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;http://127.0.0.1:</span><span class="si">{</span><span class="n">httpd</span><span class="o">.</span><span class="n">server_address</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">/&quot;</span><span class="p">)</span>
                 <span class="n">httpd</span><span class="o">.</span><span class="n">serve_forever</span><span class="p">()</span></div>
 
 

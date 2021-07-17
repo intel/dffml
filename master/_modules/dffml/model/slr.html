@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>dffml.model.slr &mdash; DFFML 5c1d437ea documentation</title>
+  <title>dffml.model.slr &mdash; DFFML cab834974 documentation</title>
   
 
   
@@ -69,7 +69,7 @@
             
             
               <div class="version">
-                5c1d437ea
+                cab834974
               </div>
             
           
@@ -121,6 +121,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../api/source/index.html">Source</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/operation/index.html">Operation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/feature/index.html">Feature</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/accuracy/index.html">Accuracy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/cli/index.html">Cli</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/secret/index.html">Secret</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/df/index.html">Df</a></li>
@@ -316,7 +317,8 @@
 <span class="sd">            -model-predict ans:int:1 \</span>
 <span class="sd">            -model-location tempdir \</span>
 <span class="sd">            -sources f=csv \</span>
-<span class="sd">            -source-filename dataset.csv</span>
+<span class="sd">            -source-filename dataset.csv \</span>
+<span class="sd">            -scorer mse \</span>
 <span class="sd">        1.0</span>
 
 <span class="sd">    Make a prediction</span>
@@ -397,16 +399,6 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Number of input records: </span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
         <span class="c1"># Save m, b, and accuracy</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">storage</span><span class="p">[</span><span class="s2">&quot;regression_line&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">best_fit_line</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">accuracy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sources</span><span class="p">:</span> <span class="n">Sources</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Accuracy</span><span class="p">:</span>
-        <span class="c1"># Load saved regression line</span>
-        <span class="n">regression_line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">storage</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;regression_line&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-        <span class="c1"># Ensure the model has been trained before we try to make a prediction</span>
-        <span class="k">if</span> <span class="n">regression_line</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">ModelNotTrained</span><span class="p">(</span><span class="s2">&quot;Train model before assessing for accuracy.&quot;</span><span class="p">)</span>
-        <span class="c1"># Accuracy is the last element in regression_line, which is a list of</span>
-        <span class="c1"># three values: m, b, and accuracy.</span>
-        <span class="k">return</span> <span class="n">Accuracy</span><span class="p">(</span><span class="n">regression_line</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
 
     <span class="k">async</span> <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">sources</span><span class="p">:</span> <span class="n">SourcesContext</span>

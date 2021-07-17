@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Writing a Model &mdash; DFFML 5c1d437ea documentation</title>
+  <title>Writing a Model &mdash; DFFML cab834974 documentation</title>
   
 
   
@@ -70,7 +70,7 @@
             
             
               <div class="version">
-                5c1d437ea
+                cab834974
               </div>
             
           
@@ -114,7 +114,6 @@
 <li class="toctree-l4"><a class="reference internal" href="#config">Config</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#class">Class</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#train">Train</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#accuracy">Accuracy</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#predict">Predict</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#python-usage">Python Usage</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#command-line-usage">Command Line Usage</a></li>
@@ -126,6 +125,7 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../sources/index.html">Sources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../accuracy/index.html">Scorers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../dataflows/index.html">DataFlows</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../neuralnetwork.html">Neural Networks</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../doublecontextentry.html">Double Context Entry</a></li>
@@ -148,6 +148,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../api/source/index.html">Source</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api/operation/index.html">Operation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api/feature/index.html">Feature</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/accuracy/index.html">Accuracy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api/cli/index.html">Cli</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api/secret/index.html">Secret</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api/df/index.html">Df</a></li>
@@ -429,7 +430,8 @@ let’s us avoid records that are not applicable to our model.</p>
 <p>Models should save their state to disk after training. Classes derived from
 <code class="docutils literal notranslate"><span class="pre">SimpleModel</span></code> can put anything they want saved into <code class="docutils literal notranslate"><span class="pre">self.storage</span></code>, which
 is saved and loaded from a JSON file on disk.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="k">async</span> <span class="k">def</span> <span class="nf">train</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sources</span><span class="p">:</span> <span class="n">SourcesContext</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">train</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sources</span><span class="p">:</span> <span class="n">SourcesContext</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="c1"># X and Y data</span>
         <span class="n">x</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">y</span> <span class="o">=</span> <span class="p">[]</span>
@@ -443,57 +445,6 @@ is saved and loaded from a JSON file on disk.</p>
         <span class="c1"># Use self.logger to report how many records are being used for training</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Number of training records: </span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
         <span class="c1"># Save m, b, and accuracy</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">storage</span><span class="p">[</span><span class="s2">&quot;regression_line&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">best_fit_line</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="section" id="accuracy">
-<h2>Accuracy<a class="headerlink" href="#accuracy" title="Permalink to this headline">¶</a></h2>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>The way that model accuracy is evaluated will be changing in a coming
-release. Once that happens you will no longer have to include an accuracy
-method.</p>
-<p>Reference: <a class="reference external" href="https://github.com/intel/dffml/issues/732">https://github.com/intel/dffml/issues/732</a></p>
-</div>
-<p>We give testing data <code class="docutils literal notranslate"><span class="pre">sources</span></code> to the accuracy method to determine the
-accuracy of a model. For <code class="docutils literal notranslate"><span class="pre">MySLRModel</span></code>, we’ll load the saved <code class="docutils literal notranslate"><span class="pre">m</span></code> and <code class="docutils literal notranslate"><span class="pre">b</span></code>
-values computed during training, and use them to calculate the coefficient of
-determination which we’ll be treating as the accuracy for this model.</p>
-<p>We’re storing <code class="docutils literal notranslate"><span class="pre">m</span></code>, <code class="docutils literal notranslate"><span class="pre">b</span></code>, and the <code class="docutils literal notranslate"><span class="pre">accuracy</span></code> in the <code class="docutils literal notranslate"><span class="pre">regression_line</span></code> key
-of the <code class="docutils literal notranslate"><span class="pre">self.storage</span></code> dict.</p>
-<p>Models can define accuracy however they want, so long as <code class="docutils literal notranslate"><span class="pre">1.0</span></code> is the highest
-accuracy it will ever output, and that <code class="docutils literal notranslate"><span class="pre">1.0</span></code> can be interpreted by the caller
-to mean that the model predicted the correct value for every record given to the
-accuracy method. Numbers approaching <code class="docutils literal notranslate"><span class="pre">1.0</span></code> should indicate that the model was
-closer to making the correct prediction for each record.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="k">async</span> <span class="k">def</span> <span class="nf">accuracy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sources</span><span class="p">:</span> <span class="n">SourcesContext</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Accuracy</span><span class="p">:</span>
-        <span class="c1"># Load saved regression line</span>
-        <span class="n">regression_line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">storage</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;regression_line&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-        <span class="c1"># Ensure the model has been trained before we try to make a prediction</span>
-        <span class="k">if</span> <span class="n">regression_line</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">ModelNotTrained</span><span class="p">(</span><span class="s2">&quot;Train model before assessing for accuracy&quot;</span><span class="p">)</span>
-        <span class="c1"># Split regression line tuple into variables, ignore accuracy from</span>
-        <span class="c1"># training data since we&#39;ll be re-calculating it for the test data</span>
-        <span class="n">m</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">_accuracy</span> <span class="o">=</span> <span class="n">regression_line</span>
-        <span class="c1"># X and Y data</span>
-        <span class="n">x</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">y</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="c1"># Go through all records that have the feature we&#39;re testing on and the</span>
-        <span class="c1"># feature we want to predict.</span>
-        <span class="k">async</span> <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">sources</span><span class="o">.</span><span class="n">with_features</span><span class="p">(</span>
-            <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">features</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">predict</span><span class="o">.</span><span class="n">name</span><span class="p">]</span>
-        <span class="p">):</span>
-            <span class="n">x</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">feature</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">features</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
-            <span class="n">y</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">feature</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">predict</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
-        <span class="c1"># Use self.logger to report how many records are being used for testing</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Number of test records: </span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
-        <span class="c1"># Calculate the regression line for test data and accuracy of line</span>
-        <span class="n">regression_line</span> <span class="o">=</span> <span class="p">[</span><span class="n">m</span> <span class="o">*</span> <span class="n">x_element</span> <span class="o">+</span> <span class="n">b</span> <span class="k">for</span> <span class="n">x_element</span> <span class="ow">in</span> <span class="n">x</span><span class="p">]</span>
-        <span class="n">accuracy</span> <span class="o">=</span> <span class="n">coeff_of_deter</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">regression_line</span><span class="p">)</span>
-        <span class="c1"># Update the accuracy to be the accuracy when assessed on the test data</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">storage</span><span class="p">[</span><span class="s2">&quot;regression_line&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">m</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">accuracy</span>
-        <span class="k">return</span> <span class="n">Accuracy</span><span class="p">(</span><span class="n">accuracy</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>

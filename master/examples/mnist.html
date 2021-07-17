@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>MNIST Handwriten Digits &mdash; DFFML 5c1d437ea documentation</title>
+  <title>MNIST Handwriten Digits &mdash; DFFML cab834974 documentation</title>
   
 
   
@@ -70,7 +70,7 @@
             
             
               <div class="version">
-                5c1d437ea
+                cab834974
               </div>
             
           
@@ -133,6 +133,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../api/source/index.html">Source</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../api/operation/index.html">Operation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../api/feature/index.html">Feature</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/accuracy/index.html">Accuracy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../api/cli/index.html">Cli</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../api/secret/index.html">Secret</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../api/df/index.html">Df</a></li>
@@ -324,6 +325,7 @@ and the seed to have the input of the associate_definition operation come from t
 </div>
 <p>Assess the model’s accuracy.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>dffml accuracy \
+    -scorer clf \
     -model tfdnnc \
     -model-batchsize 1000 \
     -model-hidden 30 50 25 \

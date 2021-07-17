@@ -101,7 +101,7 @@ We must set the ``CONFIG`` attribute to the respective ``Config`` class.
 
 .. literalinclude:: /../dffml/skel/model/REPLACE_IMPORT_PACKAGE_NAME/myslr.py
     :test:
-    :lines: 179-180
+    :lines: 180-181
 
 We can override the ``__init__()`` method to do validation on the ``features``
 config property. Simple linear regression only supports one input feature, so we
@@ -109,7 +109,7 @@ will raise a ``ValueError`` if the user supplys more than one feature.
 
 .. literalinclude:: /../dffml/skel/model/REPLACE_IMPORT_PACKAGE_NAME/myslr.py
     :test:
-    :lines: 182-186
+    :lines: 183-187
 
 Train
 -----
@@ -127,35 +127,6 @@ is saved and loaded from a JSON file on disk.
     :test:
     :lines: 188-202
 
-Accuracy
---------
-
-.. note::
-
-   The way that model accuracy is evaluated will be changing in a coming
-   release. Once that happens you will no longer have to include an accuracy
-   method.
-
-   Reference: https://github.com/intel/dffml/issues/732
-
-We give testing data ``sources`` to the accuracy method to determine the
-accuracy of a model. For ``MySLRModel``, we'll load the saved ``m`` and ``b``
-values computed during training, and use them to calculate the coefficient of
-determination which we'll be treating as the accuracy for this model.
-
-We're storing ``m``, ``b``, and the ``accuracy`` in the ``regression_line`` key
-of the ``self.storage`` dict.
-
-Models can define accuracy however they want, so long as ``1.0`` is the highest
-accuracy it will ever output, and that ``1.0`` can be interpreted by the caller
-to mean that the model predicted the correct value for every record given to the
-accuracy method. Numbers approaching ``1.0`` should indicate that the model was
-closer to making the correct prediction for each record.
-
-.. literalinclude:: /../dffml/skel/model/REPLACE_IMPORT_PACKAGE_NAME/myslr.py
-    :test:
-    :lines: 204-230
-
 Predict
 -------
 
@@ -169,7 +140,7 @@ confidence in our prediction.
 
 .. literalinclude:: /../dffml/skel/model/REPLACE_IMPORT_PACKAGE_NAME/myslr.py
     :test:
-    :lines: 232-251
+    :lines: 205-224
 
 Python Usage
 ------------

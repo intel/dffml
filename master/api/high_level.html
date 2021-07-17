@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>High_Level &mdash; DFFML 5c1d437ea documentation</title>
+  <title>High_Level &mdash; DFFML cab834974 documentation</title>
   
 
   
@@ -70,7 +70,7 @@
             
             
               <div class="version">
-                5c1d437ea
+                cab834974
               </div>
             
           
@@ -122,6 +122,7 @@
 <li class="toctree-l1"><a class="reference internal" href="source/index.html">Source</a></li>
 <li class="toctree-l1"><a class="reference internal" href="operation/index.html">Operation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="feature/index.html">Feature</a></li>
+<li class="toctree-l1"><a class="reference internal" href="accuracy/index.html">Accuracy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="cli/index.html">Cli</a></li>
 <li class="toctree-l1"><a class="reference internal" href="secret/index.html">Secret</a></li>
 <li class="toctree-l1"><a class="reference internal" href="df/index.html">Df</a></li>
@@ -253,7 +254,7 @@
 in a lot of quick and dirty python files.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="dffml.high_level.accuracy">
-<em class="property"><span class="pre">async</span> </em><span class="sig-prename descclassname"><span class="pre">dffml.high_level.</span></span><span class="sig-name descname"><span class="pre">accuracy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="source/source.html#dffml.source.source.BaseSource" title="dffml.source.source.BaseSource"><span class="pre">dffml.source.source.BaseSource</span></a><span class="p"><span class="pre">,</span> </span><a class="reference internal" href="record.html#dffml.record.Record" title="dffml.record.Record"><span class="pre">dffml.record.Record</span></a><span class="p"><span class="pre">,</span> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><span class="pre">float</span></a></span></span><a class="reference internal" href="../_modules/dffml/high_level.html#accuracy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.high_level.accuracy" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">async</span> </em><span class="sig-prename descclassname"><span class="pre">dffml.high_level.</span></span><span class="sig-name descname"><span class="pre">accuracy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">accuracy_scorer</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="accuracy/accuracy.html#dffml.accuracy.accuracy.AccuracyScorer" title="dffml.accuracy.accuracy.AccuracyScorer"><span class="pre">dffml.accuracy.accuracy.AccuracyScorer</span></a><span class="p"><span class="pre">,</span> </span><a class="reference internal" href="accuracy/accuracy.html#dffml.accuracy.accuracy.AccuracyContext" title="dffml.accuracy.accuracy.AccuracyContext"><span class="pre">dffml.accuracy.accuracy.AccuracyContext</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="source/source.html#dffml.source.source.BaseSource" title="dffml.source.source.BaseSource"><span class="pre">dffml.source.source.BaseSource</span></a><span class="p"><span class="pre">,</span> </span><a class="reference internal" href="record.html#dffml.record.Record" title="dffml.record.Record"><span class="pre">dffml.record.Record</span></a><span class="p"><span class="pre">,</span> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><span class="pre">float</span></a></span></span><a class="reference internal" href="../_modules/dffml/high_level.html#accuracy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.high_level.accuracy" title="Permalink to this definition">¶</a></dt>
 <dd><p>Assess the accuracy of a machine learning model.</p>
 <p>Provide records to the model to assess the percent accuracy of its
 prediction abilities. The model should be already instantiated and trained.</p>
@@ -293,13 +294,14 @@ the documentation for the model your using for further details.</p>
 <span class="gp">... </span>        <span class="s2">&quot;Accuracy:&quot;</span><span class="p">,</span>
 <span class="gp">... </span>        <span class="k">await</span> <span class="n">accuracy</span><span class="p">(</span>
 <span class="gp">... </span>            <span class="n">model</span><span class="p">,</span>
+<span class="gp">... </span>            <span class="n">MeanSquaredErrorAccuracy</span><span class="p">(),</span>
 <span class="gp">... </span>            <span class="p">{</span><span class="s2">&quot;Years&quot;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="s2">&quot;Salary&quot;</span><span class="p">:</span> <span class="mi">50</span><span class="p">},</span>
 <span class="gp">... </span>            <span class="p">{</span><span class="s2">&quot;Years&quot;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="s2">&quot;Salary&quot;</span><span class="p">:</span> <span class="mi">60</span><span class="p">},</span>
 <span class="gp">... </span>        <span class="p">),</span>
 <span class="gp">... </span>    <span class="p">)</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
-<span class="go">Accuracy: 1.0</span>
+<span class="go">Accuracy: 0.0</span>
 </pre></div>
 </div>
 </dd></dl>

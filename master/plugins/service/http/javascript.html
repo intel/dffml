@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>JavaScript &mdash; DFFML 5c1d437ea documentation</title>
+  <title>JavaScript &mdash; DFFML cab834974 documentation</title>
   
 
   
@@ -70,7 +70,7 @@
             
             
               <div class="version">
-                5c1d437ea
+                cab834974
               </div>
             
           
@@ -130,6 +130,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../api/source/index.html">Source</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/operation/index.html">Operation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/feature/index.html">Feature</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/accuracy/index.html">Accuracy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/cli/index.html">Cli</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/secret/index.html">Secret</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/df/index.html">Df</a></li>
@@ -397,8 +398,18 @@ following files.</p>
   <span class="k">await</span> <span class="nx">mctx</span><span class="p">.</span><span class="nx">train</span><span class="p">([</span><span class="nx">training_sctx</span><span class="p">]);</span>
   <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;Trained model context&quot;</span><span class="p">,</span> <span class="nx">mctx</span><span class="p">);</span>
 
-  <span class="kd">var</span> <span class="nx">accuracy</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">mctx</span><span class="p">.</span><span class="nx">accuracy</span><span class="p">([</span><span class="nx">test_sctx</span><span class="p">]);</span>
-  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;Model context accuracy&quot;</span><span class="p">,</span> <span class="nx">accuracy</span><span class="p">);</span>
+  <span class="c1">// Create a scorer</span>
+  <span class="kd">var</span> <span class="nx">scorer</span> <span class="o">=</span> <span class="nx">api</span><span class="p">.</span><span class="nx">scorer</span><span class="p">();</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;Created scorer&quot;</span><span class="p">,</span> <span class="nx">scorer</span><span class="p">);</span>
+
+  <span class="k">await</span> <span class="nx">scorer</span><span class="p">.</span><span class="nx">configure</span><span class="p">(</span><span class="s2">&quot;mse&quot;</span><span class="p">,</span> <span class="s2">&quot;mymse&quot;</span><span class="p">,</span> <span class="p">{});</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;Configured scorer&quot;</span><span class="p">,</span> <span class="nx">scorer</span><span class="p">);</span>
+
+  <span class="kd">var</span> <span class="nx">actx</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">scorer</span><span class="p">.</span><span class="nx">context</span><span class="p">(</span><span class="s2">&quot;mymse_context&quot;</span><span class="p">);</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;Created scorer context&quot;</span><span class="p">,</span> <span class="nx">actx</span><span class="p">);</span>
+
+  <span class="kd">var</span> <span class="nx">accuracy</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">actx</span><span class="p">.</span><span class="nx">score</span><span class="p">([</span><span class="nx">test_sctx</span><span class="p">]);</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;Scorer accuracy&quot;</span><span class="p">,</span> <span class="nx">accuracy</span><span class="p">);</span>
 
   <span class="kd">var</span> <span class="nx">prediction</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">mctx</span><span class="p">.</span><span class="nx">predict</span><span class="p">({</span>
     <span class="s2">&quot;mish_the_smish&quot;</span><span class="o">:</span> <span class="p">{</span>

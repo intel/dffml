@@ -14,6 +14,7 @@
     source/index
     operation/index
     feature/index
+    accuracy/index
     cli/index
     secret/index
     df/index

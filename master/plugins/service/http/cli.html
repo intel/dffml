@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Command Line &mdash; DFFML 5c1d437ea documentation</title>
+  <title>Command Line &mdash; DFFML cab834974 documentation</title>
   
 
   
@@ -70,7 +70,7 @@
             
             
               <div class="version">
-                5c1d437ea
+                cab834974
               </div>
             
           
@@ -116,6 +116,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#quickstart">Quickstart</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#models">Models</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#sources">Sources</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#scorer">Scorer</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#static-content">Static Content</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#redirects">Redirects</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#binding-to-a-random-port">Binding to a random port</a></li>
@@ -138,6 +139,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../api/source/index.html">Source</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/operation/index.html">Operation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/feature/index.html">Feature</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/accuracy/index.html">Accuracy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/cli/index.html">Cli</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/secret/index.html">Secret</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/df/index.html">Df</a></li>
@@ -291,7 +293,7 @@ insecure, but easy for you to access for development purposes.</p>
 <div class="section" id="models">
 <h2>Models<a class="headerlink" href="#models" title="Permalink to this headline">¶</a></h2>
 <p>To have the server start with models already configured and ready to be used for
-training, accuracy assessment, or prediction, use the <code class="docutils literal notranslate"><span class="pre">-models</span></code> flag.</p>
+training and prediction, use the <code class="docutils literal notranslate"><span class="pre">-models</span></code> flag.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml service http server <span class="se">\</span>
 <span class="go">    -models mymodel=slr \</span>
 <span class="go">    -model-mymodel-features X:float:1 \</span>
@@ -306,6 +308,15 @@ for record retrieval or updating, use the <code class="docutils literal notransl
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml service http server <span class="se">\</span>
 <span class="go">    -sources mysource=csv \</span>
 <span class="go">    -source-mysource-filename training.csv</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="scorer">
+<h2>Scorer<a class="headerlink" href="#scorer" title="Permalink to this headline">¶</a></h2>
+<p>To have the server start with scorer already configured and ready to be used
+for getting the accuracy, use the <code class="docutils literal notranslate"><span class="pre">-scorer</span></code> flag.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml service http server <span class="se">\</span>
+<span class="go">    -scorers myscorer=mse</span>
 </pre></div>
 </div>
 </div>

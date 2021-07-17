@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Index &mdash; DFFML 5c1d437ea documentation</title>
+  <title>Index &mdash; DFFML cab834974 documentation</title>
   
 
   
@@ -69,7 +69,7 @@
             
             
               <div class="version">
-                5c1d437ea
+                cab834974
               </div>
             
           
@@ -121,6 +121,7 @@
 <li class="toctree-l1"><a class="reference internal" href="api/source/index.html">Source</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api/operation/index.html">Operation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api/feature/index.html">Feature</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/accuracy/index.html">Accuracy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api/cli/index.html">Cli</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api/secret/index.html">Secret</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api/df/index.html">Df</a></li>
@@ -263,14 +264,20 @@
       </ul></li>
       <li><a href="api/cli/cli.html#dffml.cli.cli.CLI.accuracy">accuracy (dffml.cli.cli.CLI attribute)</a>
 </li>
-      <li><a href="api/model/model.html#dffml.model.model.ModelContext.accuracy">accuracy() (dffml.model.model.ModelContext method)</a>
+      <li><a href="api/high_level.html#dffml.high_level.accuracy">accuracy() (in module dffml.high_level)</a>
 
       <ul>
-        <li><a href="api/high_level.html#dffml.high_level.accuracy">(in module dffml.high_level)</a>
-</li>
         <li><a href="api/noasync.html#dffml.noasync.accuracy">(in module dffml.noasync)</a>
 </li>
       </ul></li>
+      <li><a href="api/cli/ml.html#dffml.cli.ml.AccuracyCMDConfig">AccuracyCMDConfig (class in dffml.cli.ml)</a>
+</li>
+      <li><a href="api/accuracy/accuracy.html#dffml.accuracy.accuracy.AccuracyConfig">AccuracyConfig (class in dffml.accuracy.accuracy)</a>
+</li>
+      <li><a href="api/accuracy/accuracy.html#dffml.accuracy.accuracy.AccuracyContext">AccuracyContext (class in dffml.accuracy.accuracy)</a>
+</li>
+      <li><a href="api/accuracy/accuracy.html#dffml.accuracy.accuracy.AccuracyScorer">AccuracyScorer (class in dffml.accuracy.accuracy)</a>
+</li>
       <li><a href="api/df/base.html#dffml.df.base.BaseLockNetworkContext.acquire">acquire() (dffml.df.base.BaseLockNetworkContext method)</a>
 
       <ul>
@@ -463,6 +470,12 @@
 </li>
       <li><a href="api/service/dev.html#dffml.service.dev.Develop.ci">ci (dffml.service.dev.Develop attribute)</a>
 </li>
+      <li><a href="api/accuracy/clf.html#dffml.accuracy.clf.ClassificationAccuracy">ClassificationAccuracy (class in dffml.accuracy.clf)</a>
+</li>
+      <li><a href="api/accuracy/clf.html#dffml.accuracy.clf.ClassificationAccuracyConfig">ClassificationAccuracyConfig (class in dffml.accuracy.clf)</a>
+</li>
+      <li><a href="api/accuracy/clf.html#dffml.accuracy.clf.ClassificationAccuracyContext">ClassificationAccuracyContext (class in dffml.accuracy.clf)</a>
+</li>
       <li><a href="api/cli/cli.html#dffml.cli.cli.CLI">CLI (class in dffml.cli.cli)</a>
 </li>
       <li><a href="api/model/model.html#dffml.model.model.SimpleModel.close">close() (dffml.model.model.SimpleModel method)</a>
@@ -475,9 +488,15 @@
 </li>
       <li><a href="api/db/base.html#dffml.db.base.Condition">Condition (class in dffml.db.base)</a>
 </li>
-      <li><a href="api/cli/cli.html#dffml.cli.cli.EditRecord.CONFIG">CONFIG (dffml.cli.cli.EditRecord attribute)</a>
+      <li><a href="api/accuracy/accuracy.html#dffml.accuracy.accuracy.AccuracyScorer.CONFIG">CONFIG (dffml.accuracy.accuracy.AccuracyScorer attribute)</a>
 
       <ul>
+        <li><a href="api/accuracy/clf.html#dffml.accuracy.clf.ClassificationAccuracy.CONFIG">(dffml.accuracy.clf.ClassificationAccuracy attribute)</a>
+</li>
+        <li><a href="api/accuracy/mse.html#dffml.accuracy.mse.MeanSquaredErrorAccuracy.CONFIG">(dffml.accuracy.mse.MeanSquaredErrorAccuracy attribute)</a>
+</li>
+        <li><a href="api/cli/cli.html#dffml.cli.cli.EditRecord.CONFIG">(dffml.cli.cli.EditRecord attribute)</a>
+</li>
         <li><a href="api/cli/cli.html#dffml.cli.cli.ImportExportCMD.CONFIG">(dffml.cli.cli.ImportExportCMD attribute)</a>
 </li>
         <li><a href="api/cli/cli.html#dffml.cli.cli.Merge.CONFIG">(dffml.cli.cli.Merge attribute)</a>
@@ -603,9 +622,15 @@
         <li><a href="api/df/memory.html#dffml.df.memory.MemoryOperationImplementationNetworkContext.contains">(dffml.df.memory.MemoryOperationImplementationNetworkContext method)</a>
 </li>
       </ul></li>
-      <li><a href="api/configloader/json.html#dffml.configloader.json.JSONConfigLoader.CONTEXT">CONTEXT (dffml.configloader.json.JSONConfigLoader attribute)</a>
+      <li><a href="api/accuracy/accuracy.html#dffml.accuracy.accuracy.AccuracyScorer.CONTEXT">CONTEXT (dffml.accuracy.accuracy.AccuracyScorer attribute)</a>
 
       <ul>
+        <li><a href="api/accuracy/clf.html#dffml.accuracy.clf.ClassificationAccuracy.CONTEXT">(dffml.accuracy.clf.ClassificationAccuracy attribute)</a>
+</li>
+        <li><a href="api/accuracy/mse.html#dffml.accuracy.mse.MeanSquaredErrorAccuracy.CONTEXT">(dffml.accuracy.mse.MeanSquaredErrorAccuracy attribute)</a>
+</li>
+        <li><a href="api/configloader/json.html#dffml.configloader.json.JSONConfigLoader.CONTEXT">(dffml.configloader.json.JSONConfigLoader attribute)</a>
+</li>
         <li><a href="api/db/sqlite.html#dffml.db.sqlite.SqliteDatabase.CONTEXT">(dffml.db.sqlite.SqliteDatabase attribute)</a>
 </li>
         <li><a href="api/df/memory.html#dffml.df.memory.MemoryInputNetwork.CONTEXT">(dffml.df.memory.MemoryInputNetwork attribute)</a>
@@ -767,6 +792,27 @@
 </li>
       <li><a href="api/service/dev.html#dffml.service.dev.Develop">Develop (class in dffml.service.dev)</a>
 </li>
+      <li>
+    dffml.accuracy.accuracy
+
+      <ul>
+        <li><a href="api/accuracy/accuracy.html#module-dffml.accuracy.accuracy">module</a>
+</li>
+      </ul></li>
+      <li>
+    dffml.accuracy.clf
+
+      <ul>
+        <li><a href="api/accuracy/clf.html#module-dffml.accuracy.clf">module</a>
+</li>
+      </ul></li>
+      <li>
+    dffml.accuracy.mse
+
+      <ul>
+        <li><a href="api/accuracy/mse.html#module-dffml.accuracy.mse">module</a>
+</li>
+      </ul></li>
       <li>
     dffml.base
 
@@ -1061,6 +1107,8 @@
         <li><a href="api/port/port.html#module-dffml.port.port">module</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     dffml.record
 
@@ -1075,8 +1123,6 @@
         <li><a href="api/secret/base.html#module-dffml.secret.base">module</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     dffml.secret.ini
 
@@ -1690,10 +1736,10 @@
 </li>
       <li><a href="api/df/memory.html#dffml.df.memory.MemoryOrchestratorContext.initialize_dataflow">initialize_dataflow() (dffml.df.memory.MemoryOrchestratorContext method)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/df/types.html#dffml.df.types.Input">Input (class in dffml.df.types)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/df/types.html#dffml.df.types.InputFlow">InputFlow (class in dffml.df.types)</a>
 </li>
       <li><a href="api/df/base.html#dffml.df.base.BaseDefinitionSetContext.inputs">inputs() (dffml.df.base.BaseDefinitionSetContext method)</a>
@@ -1735,6 +1781,8 @@
       <li><a href="api/operation/dataflow.html#dffml.operation.dataflow.InvalidCustomRunDataFlowContext">InvalidCustomRunDataFlowContext</a>
 </li>
       <li><a href="api/operation/dataflow.html#dffml.operation.dataflow.InvalidCustomRunDataFlowOutputs">InvalidCustomRunDataFlowOutputs</a>
+</li>
+      <li><a href="api/accuracy/accuracy.html#dffml.accuracy.accuracy.InvalidNumberOfFeaturesError">InvalidNumberOfFeaturesError</a>
 </li>
       <li><a href="api/source/dataset/iris.html#dffml.source.dataset.iris.iris_training">iris_training() (in module dffml.source.dataset.iris)</a>
 </li>
@@ -1882,6 +1930,12 @@
 </li>
       <li><a href="api/operation/mapping.html#dffml.operation.mapping.mapping_extract_value">mapping_extract_value() (in module dffml.operation.mapping)</a>
 </li>
+      <li><a href="api/accuracy/mse.html#dffml.accuracy.mse.MeanSquaredErrorAccuracy">MeanSquaredErrorAccuracy (class in dffml.accuracy.mse)</a>
+</li>
+      <li><a href="api/accuracy/mse.html#dffml.accuracy.mse.MeanSquaredErrorAccuracyConfig">MeanSquaredErrorAccuracyConfig (class in dffml.accuracy.mse)</a>
+</li>
+      <li><a href="api/accuracy/mse.html#dffml.accuracy.mse.MeanSquaredErrorAccuracyContext">MeanSquaredErrorAccuracyContext (class in dffml.accuracy.mse)</a>
+</li>
       <li><a href="api/df/memory.html#dffml.df.memory.MemoryDataFlowObjectContextConfig">MemoryDataFlowObjectContextConfig (class in dffml.df.memory)</a>
 </li>
       <li><a href="api/df/memory.html#dffml.df.memory.MemoryDefinitionSetContext">MemoryDefinitionSetContext (class in dffml.df.memory)</a>
@@ -1998,6 +2052,12 @@
     module
 
       <ul>
+        <li><a href="api/accuracy/accuracy.html#module-dffml.accuracy.accuracy">dffml.accuracy.accuracy</a>
+</li>
+        <li><a href="api/accuracy/clf.html#module-dffml.accuracy.clf">dffml.accuracy.clf</a>
+</li>
+        <li><a href="api/accuracy/mse.html#module-dffml.accuracy.mse">dffml.accuracy.mse</a>
+</li>
         <li><a href="api/base.html#module-dffml.base">dffml.base</a>
 </li>
         <li><a href="api/cli/cli.html#module-dffml.cli.cli">dffml.cli.cli</a>
@@ -2601,6 +2661,14 @@
         <li><a href="api/noasync.html#dffml.noasync.save">(in module dffml.noasync)</a>
 </li>
       </ul></li>
+      <li><a href="api/accuracy/accuracy.html#dffml.accuracy.accuracy.AccuracyContext.score">score() (dffml.accuracy.accuracy.AccuracyContext method)</a>
+
+      <ul>
+        <li><a href="api/accuracy/clf.html#dffml.accuracy.clf.ClassificationAccuracyContext.score">(dffml.accuracy.clf.ClassificationAccuracyContext method)</a>
+</li>
+        <li><a href="api/accuracy/mse.html#dffml.accuracy.mse.MeanSquaredErrorAccuracyContext.score">(dffml.accuracy.mse.MeanSquaredErrorAccuracyContext method)</a>
+</li>
+      </ul></li>
       <li><a href="api/df/types.html#dffml.df.types.Output.select">select (dffml.df.types.Output property)</a>
 </li>
       <li><a href="api/cli/cli.html#dffml.cli.cli.CLI.service">service (dffml.cli.cli.CLI attribute)</a>
@@ -2645,10 +2713,10 @@
         <li><a href="api/source/source.html#dffml.source.source.Sources.SINGLETON">(dffml.source.source.Sources attribute)</a>
 </li>
       </ul></li>
-      <li><a href="api/service/dev.html#dffml.service.dev.Develop.skel">skel (dffml.service.dev.Develop attribute)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/service/dev.html#dffml.service.dev.Develop.skel">skel (dffml.service.dev.Develop attribute)</a>
+</li>
       <li><a href="api/service/dev.html#dffml.service.dev.Skeleton">Skeleton (class in dffml.service.dev)</a>
 </li>
       <li><a href="api/util/skel.html#dffml.util.skel.SkelTemplateConfig">SkelTemplateConfig (class in dffml.util.skel)</a>

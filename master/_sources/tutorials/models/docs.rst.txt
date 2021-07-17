@@ -22,7 +22,7 @@ system.
 
     $ dffml service dev create model dffml-model-myslr
     $ cd dffml-model-myslr
-    $ python -m pip install -e .
+    $ python -m pip install -e .[dev]
     $ python setup.py egg_info
 
 Python docstrings
@@ -137,7 +137,7 @@ in the console should be highlighted. There is no proper way to highlight a
 
 .. literalinclude:: /../dffml/skel/model/REPLACE_IMPORT_PACKAGE_NAME/myslr.py
     :language: rst
-    :lines: 99-162
+    :lines: 99-163
     :linenos:
     :lineno-start: 99
 
@@ -154,7 +154,7 @@ format Python files. It can't format examples within rST within a docstring.
 
 .. literalinclude:: /../dffml/skel/model/REPLACE_IMPORT_PACKAGE_NAME/myslr.py
     :language: rst
-    :lines: 164-170
+    :lines: 164-171
     :linenos:
     :lineno-start: 164
 
@@ -167,7 +167,7 @@ another ``"""```.
 
 .. literalinclude:: /../dffml/skel/model/REPLACE_IMPORT_PACKAGE_NAME/myslr.py
     :language: rst
-    :lines: 172-178
+    :lines: 173-178
     :linenos:
     :lineno-start: 172
 

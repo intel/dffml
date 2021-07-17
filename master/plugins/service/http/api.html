@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>API &mdash; DFFML 5c1d437ea documentation</title>
+  <title>API &mdash; DFFML cab834974 documentation</title>
   
 
   
@@ -70,7 +70,7 @@
             
             
               <div class="version">
-                5c1d437ea
+                cab834974
               </div>
             
           
@@ -160,6 +160,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../api/source/index.html">Source</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/operation/index.html">Operation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/feature/index.html">Feature</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/accuracy/index.html">Accuracy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/cli/index.html">Cli</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/secret/index.html">Secret</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/df/index.html">Df</a></li>
@@ -743,7 +744,7 @@ response.</p>
 <p>Send a <code class="docutils literal notranslate"><span class="pre">POST</span></code> request with the JSON body being a list of source context labels
 to use as test data.</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">/model/{ctx_label}/accuracy</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/scorer/{ctx_label}/{mctx_label}/score</span></code></p></li>
 </ul>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">[</span>
   <span class="s2">&quot;my_test_dataset&quot;</span>

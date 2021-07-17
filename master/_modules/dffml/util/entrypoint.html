@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>dffml.util.entrypoint &mdash; DFFML 5c1d437ea documentation</title>
+  <title>dffml.util.entrypoint &mdash; DFFML cab834974 documentation</title>
   
 
   
@@ -69,7 +69,7 @@
             
             
               <div class="version">
-                5c1d437ea
+                cab834974
               </div>
             
           
@@ -121,6 +121,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../api/source/index.html">Source</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/operation/index.html">Operation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/feature/index.html">Feature</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/accuracy/index.html">Accuracy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/cli/index.html">Cli</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/secret/index.html">Secret</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/df/index.html">Df</a></li>
@@ -230,6 +231,10 @@
 <span class="kn">import</span> <span class="nn">traceback</span>
 <span class="kn">import</span> <span class="nn">pkg_resources</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Iterator</span><span class="p">,</span> <span class="n">Any</span>
+
+<span class="kn">from</span> <span class="nn">.log</span> <span class="kn">import</span> <span class="n">LOGGER</span>
+
+<span class="n">LOGGER</span> <span class="o">=</span> <span class="n">LOGGER</span><span class="o">.</span><span class="n">getChild</span><span class="p">(</span><span class="s2">&quot;entrypoint&quot;</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="EntrypointNotFound"><a class="viewcode-back" href="../../../api/util/entrypoint.html#dffml.util.entrypoint.EntrypointNotFound">[docs]</a><span class="k">class</span> <span class="nc">EntrypointNotFound</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
@@ -365,9 +370,13 @@
 <span class="sd">        Loads all installed loading and returns them as a list. Sources to be</span>
 <span class="sd">        loaded should be registered to ENTRYPOINT via setuptools.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># Loading from entrypoint if &quot;:&quot; is in name</span>
-        <span class="k">if</span> <span class="n">loading</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="s2">&quot;:&quot;</span> <span class="ow">in</span> <span class="n">loading</span><span class="p">:</span>
-            <span class="k">return</span> <span class="nb">next</span><span class="p">(</span><span class="n">load</span><span class="p">(</span><span class="n">loading</span><span class="p">,</span> <span class="n">relative</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="c1"># Loading from entrypoint if &quot;:&quot; is in name</span>
+            <span class="k">if</span> <span class="n">loading</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="s2">&quot;:&quot;</span> <span class="ow">in</span> <span class="n">loading</span><span class="p">:</span>
+                <span class="k">return</span> <span class="nb">next</span><span class="p">(</span><span class="n">load</span><span class="p">(</span><span class="n">loading</span><span class="p">,</span> <span class="n">relative</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="n">LOGGER</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Failed to load </span><span class="si">%r</span><span class="s2"> for </span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">loading</span><span class="p">,</span> <span class="bp">cls</span><span class="o">.</span><span class="n">ENTRYPOINT</span><span class="p">)</span>
+            <span class="k">raise</span>
         <span class="c1"># Load from registered entrypoints otherwise</span>
         <span class="n">loaded_names</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">loading_classes</span> <span class="o">=</span> <span class="p">[]</span>

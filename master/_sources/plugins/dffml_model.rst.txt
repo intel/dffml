@@ -72,7 +72,8 @@ Assess the accuracy
         -model-predict ans:int:1 \
         -model-location tempdir \
         -sources f=csv \
-        -source-filename dataset.csv
+        -source-filename dataset.csv \
+        -scorer mse \
     1.0
 
 Make a prediction
@@ -461,7 +462,8 @@ Assess the accuracy
           PetalLength:float:1 \
           PetalWidth:float:1 \
         -model-predict classification \
-        -model-location model 
+        -model-location model \
+        -scorer clf
 
 
 Make predictions
@@ -635,7 +637,8 @@ Assess the accuracy
           PetalLength:float:1 \
           PetalWidth:float:1 \
         -model-predict classification \
-        -model-location model 
+        -model-location model \
+        -scorer mse
     
 Output
 
@@ -1139,6 +1142,7 @@ Assess the accuracy
         -model-model_name_or_path en_core_web_sm \
         -model-location temp \
         -model-n_iter 5 \
+        -scorer sner \
         -log debug
     0.0
 
@@ -1331,7 +1335,8 @@ Assess the accuracy
         -model anomalydetection \
         -model-features A:float:2 \
         -model-predict Y:int:1 \
-        -model-location tempdir
+        -model-location tempdir \
+        -scorer anomalyscore
 
 
 Make predictions
@@ -1695,7 +1700,7 @@ Example below uses KMeans Clustering Model on a small randomly generated dataset
     $ dffml accuracy \
         -model scikitkmeans \
         -model-features Col1:float:1 Col2:float:1 Col3:float:1 Col4:float:1\
-        -model-tcluster cluster:int:1 \
+        -model-predict cluster:int:1 \
         -model-location tempdir \
         -sources f=csv \
         -source-filename test.csv \
@@ -1744,7 +1749,7 @@ Example usage of KMeans Clustering Model using python API:
             Feature("Col3", float, 1),
             Feature("Col4", float, 1),
         ),
-        tcluster=Feature("cluster", int, 1),
+        predict=Feature("cluster", int, 1),
         location="tempdir",
     )
 
@@ -1771,12 +1776,6 @@ Ensure that `predict` and `accuracy` for these algorithms uses training data.
 
   - Label or the value to be predicted
   - Only used by classification and regression models
-
-- tcluster: Feature
-
-  - True cluster, only used by clustering models
-  - Passed with `accuracy` to return `mutual_info_score`
-  - If not passed `accuracy` returns `silhouette_score`
 
 - features: List of features
 
@@ -5123,7 +5122,8 @@ Assess the accuracy
         -model-predict ans:int:1 \
         -model-location tempdir \
         -sources f=csv \
-        -source-filename test.csv
+        -source-filename test.csv \
+        -scorer mse \
     0.6666666666666666
 
 Make a prediction
@@ -5462,6 +5462,7 @@ Assess the accuracy
         -model-features \
           Feature1:float:1 \
           Feature2:float:1 \
+        -scorer mse \
         -log critical
     0.9961211434899032
 

@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Meta Static Analysis &mdash; DFFML 5c1d437ea documentation</title>
+  <title>Meta Static Analysis &mdash; DFFML cab834974 documentation</title>
   
 
   
@@ -70,7 +70,7 @@
             
             
               <div class="version">
-                5c1d437ea
+                cab834974
               </div>
             
           
@@ -146,6 +146,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../api/source/index.html">Source</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../api/operation/index.html">Operation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../api/feature/index.html">Feature</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/accuracy/index.html">Accuracy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../api/cli/index.html">Cli</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../api/secret/index.html">Secret</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../api/df/index.html">Df</a></li>
@@ -437,7 +438,7 @@ the latest version and use that version.</p>
 </div>
 <p>Install the newly created package in development mode to install the
 dependencies listed in <strong>requirements.txt</strong> as well.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python -m pip install -e .
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python -m pip install -e .<span class="o">[</span>dev<span class="o">]</span>
 </pre></div>
 </div>
 </div>
@@ -503,7 +504,7 @@ dependencies listed in <strong>requirements.txt</strong> as well.</p>
 </pre></div>
 </div>
 <p>Run the tests</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python setup.py <span class="nb">test</span> -s tests.test_safety
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python -m unittest tests.test_safety
 </pre></div>
 </div>
 </div>
@@ -635,7 +636,7 @@ dependencies listed in <strong>requirements.txt</strong> as well.</p>
 </pre></div>
 </div>
 <p>Run the tests</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python setup.py <span class="nb">test</span> -s tests.test_bandit
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python -m unittest tests.test_bandit
 </pre></div>
 </div>
 </div>
@@ -838,7 +839,7 @@ with it.</p>
 </pre></div>
 </div>
 <p>Run the tests</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python setup.py <span class="nb">test</span> -s tests.test_pypi
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python -m unittest tests.test_pypi
 </pre></div>
 </div>
 </div>
@@ -956,7 +957,7 @@ command line.</p>
 </pre></div>
 </div>
 <p>Run the all the tests this time</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python setup.py <span class="nb">test</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python -m unittest discover -v
 </pre></div>
 </div>
 <p>We want this to be usable as a command line utility, Python’s

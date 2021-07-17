@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Model Slr &mdash; DFFML 5c1d437ea documentation</title>
+  <title>Model Slr &mdash; DFFML cab834974 documentation</title>
   
 
   
@@ -70,7 +70,7 @@
             
             
               <div class="version">
-                5c1d437ea
+                cab834974
               </div>
             
           
@@ -122,6 +122,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../source/index.html">Source</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../operation/index.html">Operation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../feature/index.html">Feature</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../accuracy/index.html">Accuracy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../cli/index.html">Cli</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../secret/index.html">Secret</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../df/index.html">Df</a></li>
@@ -288,7 +289,8 @@
 <span class="go">    -model-predict ans:int:1 \</span>
 <span class="go">    -model-location tempdir \</span>
 <span class="go">    -sources f=csv \</span>
-<span class="go">    -source-filename dataset.csv</span>
+<span class="go">    -source-filename dataset.csv \</span>
+<span class="go">    -scorer mse \</span>
 <span class="go">1.0</span>
 </pre></div>
 </div>
@@ -327,6 +329,7 @@
 <p><strong>slr.py</strong></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">Features</span><span class="p">,</span> <span class="n">Feature</span><span class="p">,</span> <span class="n">SLRModel</span>
 <span class="kn">from</span> <span class="nn">dffml.noasync</span> <span class="kn">import</span> <span class="n">train</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">,</span> <span class="n">predict</span>
+<span class="kn">from</span> <span class="nn">dffml.accuracy</span> <span class="kn">import</span> <span class="n">MeanSquaredErrorAccuracy</span>
 
 <span class="n">model</span> <span class="o">=</span> <span class="n">SLRModel</span><span class="p">(</span>
     <span class="n">features</span><span class="o">=</span><span class="n">Features</span><span class="p">(</span><span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;f1&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span>
@@ -338,7 +341,8 @@
 <span class="n">train</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="s2">&quot;dataset.csv&quot;</span><span class="p">)</span>
 
 <span class="c1"># Assess accuracy (alternate way of specifying data source)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Accuracy:&quot;</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="s2">&quot;dataset.csv&quot;</span><span class="p">))</span>
+<span class="n">scorer</span> <span class="o">=</span> <span class="n">MeanSquaredErrorAccuracy</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Accuracy:&quot;</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">scorer</span><span class="p">,</span> <span class="s2">&quot;dataset.csv&quot;</span><span class="p">))</span>
 
 <span class="c1"># Make prediction</span>
 <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">features</span><span class="p">,</span> <span class="n">prediction</span> <span class="ow">in</span> <span class="n">predict</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;f1&quot;</span><span class="p">:</span> <span class="mf">0.8</span><span class="p">,</span> <span class="s2">&quot;ans&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">}):</span>

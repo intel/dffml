@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Model Model &mdash; DFFML 5c1d437ea documentation</title>
+  <title>Model Model &mdash; DFFML cab834974 documentation</title>
   
 
   
@@ -70,7 +70,7 @@
             
             
               <div class="version">
-                5c1d437ea
+                cab834974
               </div>
             
           
@@ -122,6 +122,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../source/index.html">Source</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../operation/index.html">Operation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../feature/index.html">Feature</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../accuracy/index.html">Accuracy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../cli/index.html">Cli</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../secret/index.html">Secret</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../df/index.html">Df</a></li>
@@ -283,13 +284,6 @@ various machine learning frameworks or concepts.</p>
 <em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">dffml.model.model.</span></span><span class="sig-name descname"><span class="pre">ModelContext</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#dffml.model.model.Model" title="dffml.model.model.Model"><span class="pre">dffml.model.model.Model</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/model/model.html#ModelContext"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.model.model.ModelContext" title="Permalink to this definition">¶</a></dt>
 <dd><p>Abstract base class which should be derived from and implemented using
 various machine learning frameworks or concepts.</p>
-<dl class="py method">
-<dt class="sig sig-object py" id="dffml.model.model.ModelContext.accuracy">
-<em class="property"><span class="pre">abstract</span> <span class="pre">async</span> </em><span class="sig-name descname"><span class="pre">accuracy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sources</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="../source/source.html#dffml.source.source.Sources" title="dffml.source.source.Sources"><span class="pre">dffml.source.source.Sources</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="accuracy.html#dffml.model.accuracy.Accuracy" title="dffml.model.accuracy.Accuracy"><span class="pre">dffml.model.accuracy.Accuracy</span></a></span></span><a class="reference internal" href="../../_modules/dffml/model/model.html#ModelContext.accuracy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.model.model.ModelContext.accuracy" title="Permalink to this definition">¶</a></dt>
-<dd><p>Evaluates the accuracy of our model after training using the input records
-as test data.</p>
-</dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="dffml.model.model.ModelContext.predict">
 <em class="property"><span class="pre">abstract</span> </em><span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sources</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="../source/source.html#dffml.source.source.SourcesContext" title="dffml.source.source.SourcesContext"><span class="pre">dffml.source.source.SourcesContext</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">AsyncIterator</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../record.html#dffml.record.Record" title="dffml.record.Record"><span class="pre">dffml.record.Record</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/dffml/model/model.html#ModelContext.predict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.model.model.ModelContext.predict" title="Permalink to this definition">¶</a></dt>

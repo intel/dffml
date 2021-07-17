@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Simple source for new file types &mdash; DFFML 5c1d437ea documentation</title>
+  <title>Simple source for new file types &mdash; DFFML cab834974 documentation</title>
   
 
   
@@ -70,7 +70,7 @@
             
             
               <div class="version">
-                5c1d437ea
+                cab834974
               </div>
             
           
@@ -125,6 +125,7 @@
 <li class="toctree-l3"><a class="reference internal" href="complex.html">Example SQLite source</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="../accuracy/index.html">Scorers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../dataflows/index.html">DataFlows</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../neuralnetwork.html">Neural Networks</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../doublecontextentry.html">Double Context Entry</a></li>
@@ -147,6 +148,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../api/source/index.html">Source</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api/operation/index.html">Operation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api/feature/index.html">Feature</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/accuracy/index.html">Accuracy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api/cli/index.html">Cli</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api/secret/index.html">Secret</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api/df/index.html">Df</a></li>
@@ -473,7 +475,7 @@ the records we saved is the same record which gets loaded.</p>
 <div class="section" id="run-the-tests">
 <h2>Run the tests<a class="headerlink" href="#run-the-tests" title="Permalink to this headline">¶</a></h2>
 <p>To run the tests</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python setup.py <span class="nb">test</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python -m unittest discover -v
 </pre></div>
 </div>
 <p>This will look into the file test_source.py and run all the tests.</p>
@@ -494,7 +496,7 @@ also be used in CLI.</p>
 <div class="section" id="install-your-package">
 <h2>Install your package<a class="headerlink" href="#install-your-package" title="Permalink to this headline">¶</a></h2>
 <p>To install your new source run</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python -m pip install -e .
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python -m pip install -e .<span class="o">[</span>dev<span class="o">]</span>
 </pre></div>
 </div>
 </div>

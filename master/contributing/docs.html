@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Documentation &mdash; DFFML 5c1d437ea documentation</title>
+  <title>Documentation &mdash; DFFML cab834974 documentation</title>
   
 
   
@@ -70,7 +70,7 @@
             
             
               <div class="version">
-                5c1d437ea
+                cab834974
               </div>
             
           
@@ -122,6 +122,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../api/source/index.html">Source</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../api/operation/index.html">Operation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../api/feature/index.html">Feature</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/accuracy/index.html">Accuracy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../api/cli/index.html">Cli</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../api/secret/index.html">Secret</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../api/df/index.html">Df</a></li>
@@ -320,12 +321,12 @@ tests.</p>
 <div class="section" id="doctests">
 <h2>Doctests<a class="headerlink" href="#doctests" title="Permalink to this headline">¶</a></h2>
 <p>To run all the examples</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python3 setup.py <span class="nb">test</span> -s tests.test_docstrings
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python3 -m unittest tests.test_docstrings
 </pre></div>
 </div>
 <p>To run a specific example, determine python path to class or function, remove
 <code class="docutils literal notranslate"><span class="pre">dffml.</span></code> and change rest of <code class="docutils literal notranslate"><span class="pre">.</span></code> to <code class="docutils literal notranslate"><span class="pre">_</span></code>.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python3 setup.py <span class="nb">test</span> -s tests.test_docstrings.util_asynctestcase_AsyncTestCase
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python3 -m unittest tests.test_docstrings.util_asynctestcase_AsyncTestCase
 </pre></div>
 </div>
 </div>

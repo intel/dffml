@@ -126,6 +126,7 @@ Assess accuracy:
     :test:
 
     $ dffml accuracy \
+        -scorer clf \
         -model tfdnnc \
         -model-batchsize 100 \
         -model-hidden 5 2 \
@@ -287,6 +288,7 @@ Assess accuracy:
     :test:
 
     $ dffml accuracy \
+        -scorer mse \
         -model scikitgnb \
         -model-features extract_array_from_matrix.outputs.result:float:1 \
         -model-predict sentiment:int:1 \

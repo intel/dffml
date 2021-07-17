@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Use a Model &mdash; DFFML 5c1d437ea documentation</title>
+  <title>Use a Model &mdash; DFFML cab834974 documentation</title>
   
 
   
@@ -70,7 +70,7 @@
             
             
               <div class="version">
-                5c1d437ea
+                cab834974
               </div>
             
           
@@ -119,6 +119,7 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../sources/index.html">Sources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../accuracy/index.html">Scorers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../dataflows/index.html">DataFlows</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../neuralnetwork.html">Neural Networks</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../doublecontextentry.html">Double Context Entry</a></li>
@@ -141,6 +142,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../api/source/index.html">Source</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api/operation/index.html">Operation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api/feature/index.html">Feature</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/accuracy/index.html">Accuracy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api/cli/index.html">Cli</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api/secret/index.html">Secret</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api/df/index.html">Df</a></li>
@@ -321,6 +323,7 @@ neither dataset.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">CSVSource</span><span class="p">,</span> <span class="n">Features</span><span class="p">,</span> <span class="n">Feature</span>
 <span class="kn">from</span> <span class="nn">dffml.noasync</span> <span class="kn">import</span> <span class="n">train</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">,</span> <span class="n">predict</span>
 <span class="kn">from</span> <span class="nn">dffml_model_tensorflow.dnnc</span> <span class="kn">import</span> <span class="n">DNNClassifierModel</span>
+<span class="kn">from</span> <span class="nn">dffml.accuracy</span> <span class="kn">import</span> <span class="n">ClassificationAccuracy</span>
 
 <span class="n">model</span> <span class="o">=</span> <span class="n">DNNClassifierModel</span><span class="p">(</span>
     <span class="n">features</span><span class="o">=</span><span class="n">Features</span><span class="p">(</span>
@@ -341,7 +344,10 @@ neither dataset.</p>
 <span class="n">train</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="s2">&quot;iris_training.csv&quot;</span><span class="p">)</span>
 
 <span class="c1"># Assess accuracy (alternate way of specifying data source)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Accuracy:&quot;</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">CSVSource</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;iris_test.csv&quot;</span><span class="p">)))</span>
+<span class="n">scorer</span> <span class="o">=</span> <span class="n">ClassificationAccuracy</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span>
+    <span class="s2">&quot;Accuracy:&quot;</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">scorer</span><span class="p">,</span> <span class="n">CSVSource</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;iris_test.csv&quot;</span><span class="p">))</span>
+<span class="p">)</span>
 
 <span class="c1"># Make prediction</span>
 <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">features</span><span class="p">,</span> <span class="n">prediction</span> <span class="ow">in</span> <span class="n">predict</span><span class="p">(</span>

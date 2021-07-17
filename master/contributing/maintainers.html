@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Maintainer Docs &mdash; DFFML 5c1d437ea documentation</title>
+  <title>Maintainer Docs &mdash; DFFML cab834974 documentation</title>
   
 
   
@@ -70,7 +70,7 @@
             
             
               <div class="version">
-                5c1d437ea
+                cab834974
               </div>
             
           
@@ -122,6 +122,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../api/source/index.html">Source</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../api/operation/index.html">Operation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../api/feature/index.html">Feature</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/accuracy/index.html">Accuracy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../api/cli/index.html">Cli</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../api/secret/index.html">Secret</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../api/df/index.html">Df</a></li>
@@ -274,7 +275,7 @@ won’t find anything useful here, unless your just curious.</p>
 <h2>Adding A New Plugin<a class="headerlink" href="#adding-a-new-plugin" title="Permalink to this headline">¶</a></h2>
 <p>When a new plugin is added we need to go manually upload it for the first time.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">cd</span> model/new_model
-<span class="gp">$ </span>python3 setup.py <span class="nb">test</span>
+<span class="gp">$ </span>python3 -m unittest discover -v
 <span class="gp">$ </span>rm -rf dist
 <span class="gp">$ </span>git clean -xdf
 <span class="gp">$ </span>python3 setup.py sdist

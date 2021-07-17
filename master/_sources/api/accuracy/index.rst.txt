@@ -1,0 +1,10 @@
+Accuracy
+========
+.. toctree::
+    :glob:
+    :maxdepth: 2
+    :caption: Contents:
+
+    clf
+    mse
+    accuracy

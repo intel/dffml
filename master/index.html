@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Welcome to DFFML! &mdash; DFFML 5c1d437ea documentation</title>
+  <title>Welcome to DFFML! &mdash; DFFML cab834974 documentation</title>
   
 
   
@@ -69,7 +69,7 @@
             
             
               <div class="version">
-                5c1d437ea
+                cab834974
               </div>
             
           
@@ -121,6 +121,7 @@
 <li class="toctree-l1"><a class="reference internal" href="api/source/index.html">Source</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api/operation/index.html">Operation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api/feature/index.html">Feature</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/accuracy/index.html">Accuracy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api/cli/index.html">Cli</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api/secret/index.html">Secret</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api/df/index.html">Df</a></li>
@@ -257,6 +258,7 @@
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">Features</span><span class="p">,</span> <span class="n">Feature</span>
 <span class="kn">from</span> <span class="nn">dffml.noasync</span> <span class="kn">import</span> <span class="n">train</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">,</span> <span class="n">predict</span>
 <span class="kn">from</span> <span class="nn">dffml_model_scikit</span> <span class="kn">import</span> <span class="n">LinearRegressionModel</span>
+<span class="kn">from</span> <span class="nn">dffml.accuracy</span> <span class="kn">import</span> <span class="n">MeanSquaredErrorAccuracy</span>
 
 <span class="n">model</span> <span class="o">=</span> <span class="n">LinearRegressionModel</span><span class="p">(</span>
     <span class="n">features</span><span class="o">=</span><span class="n">Features</span><span class="p">(</span>
@@ -278,10 +280,12 @@
 <span class="p">)</span>
 
 <span class="c1"># Assess accuracy</span>
+<span class="n">scorer</span> <span class="o">=</span> <span class="n">MeanSquaredErrorAccuracy</span><span class="p">()</span>
 <span class="nb">print</span><span class="p">(</span>
     <span class="s2">&quot;Accuracy:&quot;</span><span class="p">,</span>
     <span class="n">accuracy</span><span class="p">(</span>
         <span class="n">model</span><span class="p">,</span>
+        <span class="n">scorer</span><span class="p">,</span>
         <span class="p">{</span><span class="s2">&quot;Years&quot;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="s2">&quot;Expertise&quot;</span><span class="p">:</span> <span class="mi">9</span><span class="p">,</span> <span class="s2">&quot;Trust&quot;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span> <span class="s2">&quot;Salary&quot;</span><span class="p">:</span> <span class="mi">50</span><span class="p">},</span>
         <span class="p">{</span><span class="s2">&quot;Years&quot;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="s2">&quot;Expertise&quot;</span><span class="p">:</span> <span class="mi">11</span><span class="p">,</span> <span class="s2">&quot;Trust&quot;</span><span class="p">:</span> <span class="mf">0.6</span><span class="p">,</span> <span class="s2">&quot;Salary&quot;</span><span class="p">:</span> <span class="mi">60</span><span class="p">},</span>
     <span class="p">),</span>
@@ -351,6 +355,7 @@ branch can be found <a class="reference external" href="master/index.html">here<
 <li class="toctree-l1"><a class="reference internal" href="tutorials/index.html">Tutorials</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="tutorials/models/index.html">Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tutorials/sources/index.html">Sources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/accuracy/index.html">Scorers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tutorials/dataflows/index.html">DataFlows</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tutorials/neuralnetwork.html">Neural Networks</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tutorials/doublecontextentry.html">Double Context Entry</a></li>
@@ -376,6 +381,7 @@ branch can be found <a class="reference external" href="master/index.html">here<
 <li class="toctree-l1"><a class="reference internal" href="plugins/index.html">Plugins</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="plugins/dffml_source.html">Sources</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plugins/dffml_model.html">Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plugins/dffml_accuracy.html">Scorers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plugins/dffml_operation.html">Operations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plugins/dffml_service_cli.html">Services</a></li>
 </ul>
@@ -441,6 +447,12 @@ branch can be found <a class="reference external" href="master/index.html">here<
 <li class="toctree-l1"><a class="reference internal" href="api/feature/index.html">Feature</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="api/feature/feature.html">Feature Feature</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/feature/log.html">Feature Log</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api/accuracy/index.html">Accuracy</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/accuracy/clf.html">Accuracy Clf</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/accuracy/mse.html">Accuracy Mse</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/accuracy/accuracy.html">Accuracy Accuracy</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="api/cli/index.html">Cli</a><ul>

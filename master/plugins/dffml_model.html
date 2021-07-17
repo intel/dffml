@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Models &mdash; DFFML 5c1d437ea documentation</title>
+  <title>Models &mdash; DFFML cab834974 documentation</title>
   
 
   
@@ -45,7 +45,7 @@
     <link rel="author" title="About these documents" href="../about.html" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Operations" href="dffml_operation.html" />
+    <link rel="next" title="Scorers" href="dffml_accuracy.html" />
     <link rel="prev" title="Sources" href="dffml_source.html" /> 
 </head>
 
@@ -70,7 +70,7 @@
             
             
               <div class="version">
-                5c1d437ea
+                cab834974
               </div>
             
           
@@ -188,6 +188,7 @@
 </li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="dffml_accuracy.html">Scorers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="dffml_operation.html">Operations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="dffml_service_cli.html">Services</a></li>
 </ul>
@@ -204,6 +205,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../api/source/index.html">Source</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../api/operation/index.html">Operation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../api/feature/index.html">Feature</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/accuracy/index.html">Accuracy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../api/cli/index.html">Cli</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../api/secret/index.html">Secret</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../api/df/index.html">Df</a></li>
@@ -365,7 +367,8 @@ See the <a class="reference internal" href="../tutorials/models/load.html"><span
 <span class="go">    -model-predict ans:int:1 \</span>
 <span class="go">    -model-location tempdir \</span>
 <span class="go">    -sources f=csv \</span>
-<span class="go">    -source-filename dataset.csv</span>
+<span class="go">    -source-filename dataset.csv \</span>
+<span class="go">    -scorer mse \</span>
 <span class="go">1.0</span>
 </pre></div>
 </div>
@@ -404,6 +407,7 @@ See the <a class="reference internal" href="../tutorials/models/load.html"><span
 <p><strong>slr.py</strong></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">Features</span><span class="p">,</span> <span class="n">Feature</span><span class="p">,</span> <span class="n">SLRModel</span>
 <span class="kn">from</span> <span class="nn">dffml.noasync</span> <span class="kn">import</span> <span class="n">train</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">,</span> <span class="n">predict</span>
+<span class="kn">from</span> <span class="nn">dffml.accuracy</span> <span class="kn">import</span> <span class="n">MeanSquaredErrorAccuracy</span>
 
 <span class="n">model</span> <span class="o">=</span> <span class="n">SLRModel</span><span class="p">(</span>
     <span class="n">features</span><span class="o">=</span><span class="n">Features</span><span class="p">(</span><span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;f1&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span>
@@ -415,7 +419,8 @@ See the <a class="reference internal" href="../tutorials/models/load.html"><span
 <span class="n">train</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="s2">&quot;dataset.csv&quot;</span><span class="p">)</span>
 
 <span class="c1"># Assess accuracy (alternate way of specifying data source)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Accuracy:&quot;</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="s2">&quot;dataset.csv&quot;</span><span class="p">))</span>
+<span class="n">scorer</span> <span class="o">=</span> <span class="n">MeanSquaredErrorAccuracy</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Accuracy:&quot;</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">scorer</span><span class="p">,</span> <span class="s2">&quot;dataset.csv&quot;</span><span class="p">))</span>
 
 <span class="c1"># Make prediction</span>
 <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">features</span><span class="p">,</span> <span class="n">prediction</span> <span class="ow">in</span> <span class="n">predict</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;f1&quot;</span><span class="p">:</span> <span class="mf">0.8</span><span class="p">,</span> <span class="s2">&quot;ans&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">}):</span>
@@ -503,6 +508,7 @@ look for a different saved model.</p>
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">location</span> <span class="n">tempdir</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">classifications</span> <span class="mi">0</span> <span class="mi">1</span> <span class="mi">2</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">clstype</span> <span class="nb">int</span> \
+  <span class="o">-</span><span class="n">scorer</span> <span class="n">clf</span> \
   <span class="o">-</span><span class="n">sources</span> <span class="n">iris</span><span class="o">=</span><span class="n">csv</span> \
   <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">filename</span> <span class="n">iris_test</span><span class="o">.</span><span class="n">csv</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">features</span> \
@@ -562,6 +568,7 @@ look for a different saved model.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">CSVSource</span><span class="p">,</span> <span class="n">Features</span><span class="p">,</span> <span class="n">Feature</span>
 <span class="kn">from</span> <span class="nn">dffml.noasync</span> <span class="kn">import</span> <span class="n">train</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">,</span> <span class="n">predict</span>
 <span class="kn">from</span> <span class="nn">dffml_model_tensorflow.dnnc</span> <span class="kn">import</span> <span class="n">DNNClassifierModel</span>
+<span class="kn">from</span> <span class="nn">dffml.accuracy</span> <span class="kn">import</span> <span class="n">ClassificationAccuracy</span>
 
 <span class="n">model</span> <span class="o">=</span> <span class="n">DNNClassifierModel</span><span class="p">(</span>
     <span class="n">features</span><span class="o">=</span><span class="n">Features</span><span class="p">(</span>
@@ -582,7 +589,10 @@ look for a different saved model.</p>
 <span class="n">train</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="s2">&quot;iris_training.csv&quot;</span><span class="p">)</span>
 
 <span class="c1"># Assess accuracy (alternate way of specifying data source)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Accuracy:&quot;</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">CSVSource</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;iris_test.csv&quot;</span><span class="p">)))</span>
+<span class="n">scorer</span> <span class="o">=</span> <span class="n">ClassificationAccuracy</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span>
+    <span class="s2">&quot;Accuracy:&quot;</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">scorer</span><span class="p">,</span> <span class="n">CSVSource</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;iris_test.csv&quot;</span><span class="p">))</span>
+<span class="p">)</span>
 
 <span class="c1"># Make prediction</span>
 <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">features</span><span class="p">,</span> <span class="n">prediction</span> <span class="ow">in</span> <span class="n">predict</span><span class="p">(</span>
@@ -725,6 +735,7 @@ from where this command is run as it overwrites any existing files.</p></li>
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">features</span> \
     <span class="n">Feature1</span><span class="p">:</span><span class="nb">float</span><span class="p">:</span><span class="mi">1</span> \
     <span class="n">Feature2</span><span class="p">:</span><span class="nb">float</span><span class="p">:</span><span class="mi">1</span> \
+  <span class="o">-</span><span class="n">scorer</span> <span class="n">mse</span> \
   <span class="o">-</span><span class="n">log</span> <span class="n">critical</span>
 </pre></div>
 </div>
@@ -772,6 +783,7 @@ from where this command is run as it overwrites any existing files.</p></li>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">CSVSource</span><span class="p">,</span> <span class="n">Features</span><span class="p">,</span> <span class="n">Feature</span>
 <span class="kn">from</span> <span class="nn">dffml.noasync</span> <span class="kn">import</span> <span class="n">train</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">,</span> <span class="n">predict</span>
 <span class="kn">from</span> <span class="nn">dffml_model_tensorflow.dnnr</span> <span class="kn">import</span> <span class="n">DNNRegressionModel</span>
+<span class="kn">from</span> <span class="nn">dffml.accuracy</span> <span class="kn">import</span> <span class="n">MeanSquaredErrorAccuracy</span>
 
 <span class="n">model</span> <span class="o">=</span> <span class="n">DNNRegressionModel</span><span class="p">(</span>
     <span class="n">features</span><span class="o">=</span><span class="n">Features</span><span class="p">(</span>
@@ -788,7 +800,8 @@ from where this command is run as it overwrites any existing files.</p></li>
 <span class="n">train</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="s2">&quot;train.csv&quot;</span><span class="p">)</span>
 
 <span class="c1"># Assess accuracy (alternate way of specifying data source)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Accuracy:&quot;</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">CSVSource</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;test.csv&quot;</span><span class="p">)))</span>
+<span class="n">scorer</span> <span class="o">=</span> <span class="n">MeanSquaredErrorAccuracy</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Accuracy:&quot;</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">scorer</span><span class="p">,</span> <span class="n">CSVSource</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;test.csv&quot;</span><span class="p">)))</span>
 
 <span class="c1"># Make prediction</span>
 <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">features</span><span class="p">,</span> <span class="n">prediction</span> <span class="ow">in</span> <span class="n">predict</span><span class="p">(</span>
@@ -899,7 +912,8 @@ $ sed -i &#39;s/.*setosa,versicolor,virginica/SepalLength,SepalWidth,PetalLength
 <span class="go">      PetalLength:float:1 \</span>
 <span class="go">      PetalWidth:float:1 \</span>
 <span class="go">    -model-predict classification \</span>
-<span class="go">    -model-location model</span>
+<span class="go">    -model-location model \</span>
+<span class="go">    -scorer clf</span>
 </pre></div>
 </div>
 <p>Make predictions</p>
@@ -922,11 +936,11 @@ $ sed -i &#39;s/.*setosa,versicolor,virginica/SepalLength,SepalWidth,PetalLength
 
 <span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">Feature</span><span class="p">,</span> <span class="n">Features</span>
 <span class="kn">from</span> <span class="nn">dffml.noasync</span> <span class="kn">import</span> <span class="n">train</span><span class="p">,</span> <span class="n">accuracy</span>
+<span class="kn">from</span> <span class="nn">dffml.accuracy</span> <span class="kn">import</span> <span class="n">ClassificationAccuracy</span>
 <span class="kn">from</span> <span class="nn">dffml_model_xgboost.xgbclassifier</span> <span class="kn">import</span> <span class="p">(</span>
     <span class="n">XGBClassifierModel</span><span class="p">,</span>
     <span class="n">XGBClassifierModelConfig</span><span class="p">,</span>
 <span class="p">)</span>
-
 
 <span class="n">iris</span> <span class="o">=</span> <span class="n">load_iris</span><span class="p">()</span>
 <span class="n">y</span> <span class="o">=</span> <span class="n">iris</span><span class="p">[</span><span class="s2">&quot;target&quot;</span><span class="p">]</span>
@@ -956,14 +970,21 @@ $ sed -i &#39;s/.*setosa,versicolor,virginica/SepalLength,SepalWidth,PetalLength
 <span class="n">train</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="o">*</span><span class="p">[{</span><span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="n">x</span><span class="p">,</span> <span class="s2">&quot;target&quot;</span><span class="p">:</span> <span class="n">y</span><span class="p">}</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">trainX</span><span class="p">,</span> <span class="n">trainy</span><span class="p">)])</span>
 
 <span class="c1"># Assess accuracy</span>
+<span class="n">scorer</span> <span class="o">=</span> <span class="n">ClassificationAccuracy</span><span class="p">()</span>
 <span class="nb">print</span><span class="p">(</span>
     <span class="s2">&quot;Test accuracy:&quot;</span><span class="p">,</span>
-    <span class="n">accuracy</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="o">*</span><span class="p">[{</span><span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="n">x</span><span class="p">,</span> <span class="s2">&quot;target&quot;</span><span class="p">:</span> <span class="n">y</span><span class="p">}</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">testX</span><span class="p">,</span> <span class="n">testy</span><span class="p">)]),</span>
+    <span class="n">accuracy</span><span class="p">(</span>
+        <span class="n">model</span><span class="p">,</span>
+        <span class="n">scorer</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">[{</span><span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="n">x</span><span class="p">,</span> <span class="s2">&quot;target&quot;</span><span class="p">:</span> <span class="n">y</span><span class="p">}</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">testX</span><span class="p">,</span> <span class="n">testy</span><span class="p">)],</span>
+    <span class="p">),</span>
 <span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span>
     <span class="s2">&quot;Training accuracy:&quot;</span><span class="p">,</span>
     <span class="n">accuracy</span><span class="p">(</span>
-        <span class="n">model</span><span class="p">,</span> <span class="o">*</span><span class="p">[{</span><span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="n">x</span><span class="p">,</span> <span class="s2">&quot;target&quot;</span><span class="p">:</span> <span class="n">y</span><span class="p">}</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">trainX</span><span class="p">,</span> <span class="n">trainy</span><span class="p">)]</span>
+        <span class="n">model</span><span class="p">,</span>
+        <span class="n">scorer</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">[{</span><span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="n">x</span><span class="p">,</span> <span class="s2">&quot;target&quot;</span><span class="p">:</span> <span class="n">y</span><span class="p">}</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">trainX</span><span class="p">,</span> <span class="n">trainy</span><span class="p">)],</span>
     <span class="p">),</span>
 <span class="p">)</span>
 </pre></div>
@@ -1114,7 +1135,8 @@ $ sed -i &#39;s/.*setosa,versicolor,virginica/SepalLength,SepalWidth,PetalLength
 <span class="go">      PetalLength:float:1 \</span>
 <span class="go">      PetalWidth:float:1 \</span>
 <span class="go">    -model-predict classification \</span>
-<span class="go">    -model-location model</span>
+<span class="go">    -model-location model \</span>
+<span class="go">    -scorer mse</span>
 </pre></div>
 </div>
 <p>Output</p>
@@ -1146,6 +1168,7 @@ $ sed -i &#39;s/.*setosa,versicolor,virginica/SepalLength,SepalWidth,PetalLength
     <span class="n">XGBRegressorModel</span><span class="p">,</span>
     <span class="n">XGBRegressorModelConfig</span><span class="p">,</span>
 <span class="p">)</span>
+<span class="kn">from</span> <span class="nn">dffml.accuracy</span> <span class="kn">import</span> <span class="n">MeanSquaredErrorAccuracy</span>
 
 
 <span class="n">diabetes</span> <span class="o">=</span> <span class="n">load_diabetes</span><span class="p">()</span>
@@ -1176,14 +1199,22 @@ $ sed -i &#39;s/.*setosa,versicolor,virginica/SepalLength,SepalWidth,PetalLength
 <span class="n">train</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="o">*</span><span class="p">[{</span><span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="n">x</span><span class="p">,</span> <span class="s2">&quot;target&quot;</span><span class="p">:</span> <span class="n">y</span><span class="p">}</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">trainX</span><span class="p">,</span> <span class="n">trainy</span><span class="p">)])</span>
 
 <span class="c1"># Assess accuracy</span>
+<span class="n">scorer</span> <span class="o">=</span> <span class="n">MeanSquaredErrorAccuracy</span><span class="p">()</span>
 <span class="nb">print</span><span class="p">(</span>
     <span class="s2">&quot;Test accuracy:&quot;</span><span class="p">,</span>
-    <span class="n">accuracy</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="o">*</span><span class="p">[{</span><span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="n">x</span><span class="p">,</span> <span class="s2">&quot;target&quot;</span><span class="p">:</span> <span class="n">y</span><span class="p">}</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">testX</span><span class="p">,</span> <span class="n">testy</span><span class="p">)]),</span>
+    <span class="n">accuracy</span><span class="p">(</span>
+        <span class="n">model</span><span class="p">,</span>
+        <span class="n">scorer</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">[{</span><span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="n">x</span><span class="p">,</span> <span class="s2">&quot;target&quot;</span><span class="p">:</span> <span class="n">y</span><span class="p">}</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">testX</span><span class="p">,</span> <span class="n">testy</span><span class="p">)],</span>
+    <span class="p">),</span>
 <span class="p">)</span>
+
 <span class="nb">print</span><span class="p">(</span>
     <span class="s2">&quot;Training accuracy:&quot;</span><span class="p">,</span>
     <span class="n">accuracy</span><span class="p">(</span>
-        <span class="n">model</span><span class="p">,</span> <span class="o">*</span><span class="p">[{</span><span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="n">x</span><span class="p">,</span> <span class="s2">&quot;target&quot;</span><span class="p">:</span> <span class="n">y</span><span class="p">}</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">trainX</span><span class="p">,</span> <span class="n">trainy</span><span class="p">)]</span>
+        <span class="n">model</span><span class="p">,</span>
+        <span class="n">scorer</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">[{</span><span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="n">x</span><span class="p">,</span> <span class="s2">&quot;target&quot;</span><span class="p">:</span> <span class="n">y</span><span class="p">}</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">trainX</span><span class="p">,</span> <span class="n">trainy</span><span class="p">)],</span>
     <span class="p">),</span>
 <span class="p">)</span>
 </pre></div>
@@ -1325,6 +1356,7 @@ Training accuracy: 0.819782501866115
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">predict</span> \
     <span class="n">B</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">1</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">noconvert</span> \
+  <span class="o">-</span><span class="n">scorer</span> <span class="n">mse</span> \
   <span class="o">-</span><span class="n">sources</span> <span class="n">f</span><span class="o">=</span><span class="n">csv</span> \
   <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">filename</span> <span class="n">train</span><span class="o">.</span><span class="n">csv</span>
 
@@ -1492,6 +1524,7 @@ EOF
   <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">filename</span> <span class="n">test</span><span class="o">.</span><span class="n">csv</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">features</span> \
     <span class="n">sentence</span><span class="p">:</span><span class="nb">str</span><span class="p">:</span><span class="mi">1</span> \
+  <span class="o">-</span><span class="n">scorer</span> <span class="n">textclf</span> \
   <span class="o">-</span><span class="n">log</span> <span class="n">critical</span>
 </pre></div>
 </div>
@@ -1553,6 +1586,9 @@ EOF
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">CSVSource</span><span class="p">,</span> <span class="n">Features</span><span class="p">,</span> <span class="n">Feature</span>
 <span class="kn">from</span> <span class="nn">dffml.noasync</span> <span class="kn">import</span> <span class="n">train</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">,</span> <span class="n">predict</span>
 <span class="kn">from</span> <span class="nn">dffml_model_tensorflow_hub.text_classifier</span> <span class="kn">import</span> <span class="n">TextClassificationModel</span>
+<span class="kn">from</span> <span class="nn">dffml_model_tensorflow_hub.text_classifier_accuracy</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">TextClassifierAccuracy</span><span class="p">,</span>
+<span class="p">)</span>
 
 <span class="n">model</span> <span class="o">=</span> <span class="n">TextClassificationModel</span><span class="p">(</span>
     <span class="n">features</span><span class="o">=</span><span class="n">Features</span><span class="p">(</span><span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;sentence&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span>
@@ -1566,7 +1602,8 @@ EOF
 <span class="n">train</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="s2">&quot;train.csv&quot;</span><span class="p">)</span>
 
 <span class="c1"># Assess accuracy (alternate way of specifying data source)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Accuracy:&quot;</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">CSVSource</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;test.csv&quot;</span><span class="p">)))</span>
+<span class="n">scorer</span> <span class="o">=</span> <span class="n">TextClassifierAccuracy</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Accuracy:&quot;</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">scorer</span><span class="p">,</span> <span class="n">CSVSource</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;test.csv&quot;</span><span class="p">)))</span>
 
 <span class="c1"># Make prediction</span>
 <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">features</span><span class="p">,</span> <span class="n">prediction</span> <span class="ow">in</span> <span class="n">predict</span><span class="p">(</span>
@@ -1749,6 +1786,7 @@ EOF
 <span class="go">    -model-model_name_or_path en_core_web_sm \</span>
 <span class="go">    -model-location temp \</span>
 <span class="go">    -model-n_iter 5 \</span>
+<span class="go">    -scorer sner \</span>
 <span class="go">    -log debug</span>
 <span class="go">0.0</span>
 </pre></div>
@@ -1931,7 +1969,8 @@ across various features, and works particularly well if the features have a Gaus
 <span class="go">    -model anomalydetection \</span>
 <span class="go">    -model-features A:float:2 \</span>
 <span class="go">    -model-predict Y:int:1 \</span>
-<span class="go">    -model-location tempdir</span>
+<span class="go">    -model-location tempdir \</span>
+<span class="go">    -scorer anomalyscore</span>
 </pre></div>
 </div>
 <p>Make predictions</p>
@@ -1949,6 +1988,9 @@ across various features, and works particularly well if the features have a Gaus
 <span class="kn">from</span> <span class="nn">dffml.noasync</span> <span class="kn">import</span> <span class="n">accuracy</span><span class="p">,</span> <span class="n">predict</span><span class="p">,</span> <span class="n">train</span>
 
 <span class="kn">from</span> <span class="nn">dffml_model_scratch.anomalydetection</span> <span class="kn">import</span> <span class="n">AnomalyModel</span>
+<span class="kn">from</span> <span class="nn">dffml_model_scratch.anomaly_detection_scorer</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">AnomalyDetectionAccuracy</span><span class="p">,</span>
+<span class="p">)</span>
 
 <span class="c1"># Configure the model</span>
 
@@ -1963,10 +2005,11 @@ across various features, and works particularly well if the features have a Gaus
 <span class="n">train</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="s2">&quot;trainex.csv&quot;</span><span class="p">)</span>
 
 <span class="c1"># Assess accuracy for test set</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Test set F1 score :&quot;</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="s2">&quot;testex.csv&quot;</span><span class="p">))</span>
+<span class="n">scorer</span> <span class="o">=</span> <span class="n">AnomalyDetectionAccuracy</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Test set F1 score :&quot;</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">scorer</span><span class="p">,</span> <span class="s2">&quot;testex.csv&quot;</span><span class="p">))</span>
 
 <span class="c1"># Assess accuracy for training set</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Training set F1 score :&quot;</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="s2">&quot;trainex.csv&quot;</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Training set F1 score :&quot;</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">scorer</span><span class="p">,</span> <span class="s2">&quot;trainex.csv&quot;</span><span class="p">))</span>
 </pre></div>
 </div>
 <p>Output</p>
@@ -2035,6 +2078,7 @@ across various features, and works particularly well if the features have a Gaus
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">location</span> <span class="n">tempdir</span> \
   <span class="o">-</span><span class="n">sources</span> <span class="n">f</span><span class="o">=</span><span class="n">csv</span> \
   <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">filename</span> <span class="n">dataset</span><span class="o">.</span><span class="n">csv</span> \
+  <span class="o">-</span><span class="n">scorer</span> <span class="n">mse</span> \
   <span class="o">-</span><span class="n">log</span> <span class="n">debug</span>
 </pre></div>
 </div>
@@ -2077,6 +2121,7 @@ across various features, and works particularly well if the features have a Gaus
 <p>Example usage of Logistic Regression using Python</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">CSVSource</span><span class="p">,</span> <span class="n">Features</span><span class="p">,</span> <span class="n">Feature</span>
 <span class="kn">from</span> <span class="nn">dffml.noasync</span> <span class="kn">import</span> <span class="n">train</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">,</span> <span class="n">predict</span>
+<span class="kn">from</span> <span class="nn">dffml.accuracy</span> <span class="kn">import</span> <span class="n">MeanSquaredErrorAccuracy</span>
 <span class="kn">from</span> <span class="nn">dffml_model_scratch.logisticregression</span> <span class="kn">import</span> <span class="n">LogisticRegression</span>
 
 <span class="n">model</span> <span class="o">=</span> <span class="n">LogisticRegression</span><span class="p">(</span>
@@ -2089,7 +2134,8 @@ across various features, and works particularly well if the features have a Gaus
 <span class="n">train</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="s2">&quot;dataset.csv&quot;</span><span class="p">)</span>
 
 <span class="c1"># Assess accuracy (alternate way of specifying data source)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Accuracy:&quot;</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">CSVSource</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;dataset.csv&quot;</span><span class="p">)))</span>
+<span class="n">scorer</span> <span class="o">=</span> <span class="n">MeanSquaredErrorAccuracy</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Accuracy:&quot;</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">scorer</span><span class="p">,</span> <span class="n">CSVSource</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;dataset.csv&quot;</span><span class="p">)))</span>
 
 <span class="c1"># Make prediction</span>
 <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">features</span><span class="p">,</span> <span class="n">prediction</span> <span class="ow">in</span> <span class="n">predict</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;f1&quot;</span><span class="p">:</span> <span class="mf">0.8</span><span class="p">,</span> <span class="s2">&quot;ans&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">}):</span>
@@ -2408,6 +2454,7 @@ their feature names.</p>
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">features</span> <span class="n">Years</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">1</span> <span class="n">Expertise</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">1</span> <span class="n">Trust</span><span class="p">:</span><span class="nb">float</span><span class="p">:</span><span class="mi">1</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">predict</span> <span class="n">Salary</span><span class="p">:</span><span class="nb">float</span><span class="p">:</span><span class="mi">1</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">location</span> <span class="n">tempdir</span> \
+  <span class="o">-</span><span class="n">scorer</span> <span class="n">mse</span> \
   <span class="o">-</span><span class="n">sources</span> <span class="n">f</span><span class="o">=</span><span class="n">csv</span> \
   <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">filename</span> <span class="n">test</span><span class="o">.</span><span class="n">csv</span>
 </pre></div>
@@ -2452,6 +2499,7 @@ their feature names.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">CSVSource</span><span class="p">,</span> <span class="n">Features</span><span class="p">,</span> <span class="n">Feature</span>
 <span class="kn">from</span> <span class="nn">dffml.noasync</span> <span class="kn">import</span> <span class="n">train</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">,</span> <span class="n">predict</span>
 <span class="kn">from</span> <span class="nn">dffml_model_scikit</span> <span class="kn">import</span> <span class="n">LinearRegressionModel</span>
+<span class="kn">from</span> <span class="nn">dffml.accuracy</span> <span class="kn">import</span> <span class="n">MeanSquaredErrorAccuracy</span>
 
 <span class="n">model</span> <span class="o">=</span> <span class="n">LinearRegressionModel</span><span class="p">(</span>
     <span class="n">features</span><span class="o">=</span><span class="n">Features</span><span class="p">(</span>
@@ -2467,7 +2515,8 @@ their feature names.</p>
 <span class="n">train</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="s2">&quot;train.csv&quot;</span><span class="p">)</span>
 
 <span class="c1"># Assess accuracy (alternate way of specifying data source)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Accuracy:&quot;</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">CSVSource</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;test.csv&quot;</span><span class="p">)))</span>
+<span class="n">scorer</span> <span class="o">=</span> <span class="n">MeanSquaredErrorAccuracy</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Accuracy:&quot;</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">scorer</span><span class="p">,</span> <span class="n">CSVSource</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;test.csv&quot;</span><span class="p">)))</span>
 
 <span class="c1"># Make prediction</span>
 <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">features</span><span class="p">,</span> <span class="n">prediction</span> <span class="ow">in</span> <span class="n">predict</span><span class="p">(</span>
@@ -2508,7 +2557,7 @@ their feature names.</p>
 <span class="gp"> $ </span>dffml accuracy <span class="se">\</span>
 <span class="go">     -model scikitkmeans \</span>
 <span class="go">     -model-features Col1:float:1 Col2:float:1 Col3:float:1 Col4:float:1\</span>
-<span class="go">     -model-tcluster cluster:int:1 \</span>
+<span class="go">     -model-predict cluster:int:1 \</span>
 <span class="go">     -model-location tempdir \</span>
 <span class="go">     -sources f=csv \</span>
 <span class="go">     -source-filename test.csv \</span>
@@ -2555,7 +2604,7 @@ their feature names.</p>
         <span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;Col3&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
         <span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;Col4&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
     <span class="p">),</span>
-    <span class="n">tcluster</span><span class="o">=</span><span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;cluster&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+    <span class="n">predict</span><span class="o">=</span><span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;cluster&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
     <span class="n">location</span><span class="o">=</span><span class="s2">&quot;tempdir&quot;</span><span class="p">,</span>
 <span class="p">)</span>
 
@@ -2582,13 +2631,6 @@ Ensure that <cite>predict</cite> and <cite>accuracy</cite> for these algorithms 
 <ul>
 <li><p>Label or the value to be predicted</p></li>
 <li><p>Only used by classification and regression models</p></li>
-</ul>
-</li>
-<li><p>tcluster: Feature</p>
-<ul>
-<li><p>True cluster, only used by clustering models</p></li>
-<li><p>Passed with <cite>accuracy</cite> to return <cite>mutual_info_score</cite></p></li>
-<li><p>If not passed <cite>accuracy</cite> returns <cite>silhouette_score</cite></p></li>
 </ul>
 </li>
 <li><p>features: List of features</p>
@@ -2855,6 +2897,7 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
     -source-foldername hymenoptera_data/val \
     -source-feature image \
     -source-labels ants bees \
+  -scorer pytorchscore \
   -log critical
 </pre></div>
 </div>
@@ -6556,7 +6599,8 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <span class="go">    -model-predict ans:int:1 \</span>
 <span class="go">    -model-location tempdir \</span>
 <span class="go">    -sources f=csv \</span>
-<span class="go">    -source-filename test.csv</span>
+<span class="go">    -source-filename test.csv \</span>
+<span class="go">    -scorer mse \</span>
 <span class="go">0.6666666666666666</span>
 </pre></div>
 </div>
@@ -6593,6 +6637,7 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">CSVSource</span><span class="p">,</span> <span class="n">Features</span><span class="p">,</span> <span class="n">Feature</span>
 <span class="kn">from</span> <span class="nn">dffml.noasync</span> <span class="kn">import</span> <span class="n">train</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">,</span> <span class="n">predict</span>
 <span class="kn">from</span> <span class="nn">dffml_model_daal4py.daal4pylr</span> <span class="kn">import</span> <span class="n">DAAL4PyLRModel</span>
+<span class="kn">from</span> <span class="nn">dffml.accuracy</span> <span class="kn">import</span> <span class="n">MeanSquaredErrorAccuracy</span>
 
 <span class="n">model</span> <span class="o">=</span> <span class="n">DAAL4PyLRModel</span><span class="p">(</span>
     <span class="n">features</span><span class="o">=</span><span class="n">Features</span><span class="p">(</span><span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;f1&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span>
@@ -6604,7 +6649,8 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <span class="n">train</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="s2">&quot;train.csv&quot;</span><span class="p">)</span>
 
 <span class="c1"># Assess accuracy (alternate way of specifying data source)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Accuracy:&quot;</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">CSVSource</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;test.csv&quot;</span><span class="p">)))</span>
+<span class="n">scorer</span> <span class="o">=</span> <span class="n">MeanSquaredErrorAccuracy</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Accuracy:&quot;</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">scorer</span><span class="p">,</span> <span class="n">CSVSource</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;test.csv&quot;</span><span class="p">)))</span>
 
 <span class="c1"># Make prediction</span>
 <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">features</span><span class="p">,</span> <span class="n">prediction</span> <span class="ow">in</span> <span class="n">predict</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;f1&quot;</span><span class="p">:</span> <span class="mf">0.8</span><span class="p">,</span> <span class="s2">&quot;ans&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">}):</span>
@@ -6901,6 +6947,7 @@ to train the a scikit model for you.</p>
 <span class="go">    -model-features \</span>
 <span class="go">      Feature1:float:1 \</span>
 <span class="go">      Feature2:float:1 \</span>
+<span class="go">    -scorer mse \</span>
 <span class="go">    -log critical</span>
 <span class="go">0.9961211434899032</span>
 </pre></div>
@@ -6948,6 +6995,7 @@ of the model.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">Features</span><span class="p">,</span> <span class="n">Feature</span>
 <span class="kn">from</span> <span class="nn">dffml.noasync</span> <span class="kn">import</span> <span class="n">train</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">,</span> <span class="n">predict</span>
 <span class="kn">from</span> <span class="nn">dffml_model_autosklearn</span> <span class="kn">import</span> <span class="n">AutoSklearnRegressorModel</span>
+<span class="kn">from</span> <span class="nn">dffml.accuracy</span> <span class="kn">import</span> <span class="n">MeanSquaredErrorAccuracy</span>
 
 <span class="n">model</span> <span class="o">=</span> <span class="n">AutoSklearnRegressorModel</span><span class="p">(</span>
     <span class="n">features</span><span class="o">=</span><span class="n">Features</span><span class="p">(</span>
@@ -6964,7 +7012,8 @@ of the model.</p>
     <span class="n">train</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="s2">&quot;train.csv&quot;</span><span class="p">)</span>
 
     <span class="c1"># Assess accuracy</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Accuracy:&quot;</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="s2">&quot;test.csv&quot;</span><span class="p">))</span>
+    <span class="n">scorer</span> <span class="o">=</span> <span class="n">MeanSquaredErrorAccuracy</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Accuracy:&quot;</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">scorer</span><span class="p">,</span> <span class="s2">&quot;test.csv&quot;</span><span class="p">))</span>
 
     <span class="c1"># Make prediction</span>
     <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">features</span><span class="p">,</span> <span class="n">prediction</span> <span class="ow">in</span> <span class="n">predict</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="s2">&quot;predict.csv&quot;</span><span class="p">):</span>
@@ -7181,7 +7230,7 @@ of the model.</p>
           </div>
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="dffml_operation.html" class="btn btn-neutral float-right" title="Operations" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="dffml_accuracy.html" class="btn btn-neutral float-right" title="Scorers" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
         <a href="dffml_source.html" class="btn btn-neutral float-left" title="Sources" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 

@@ -18,7 +18,7 @@ from you can use ``git+``
 .. code-block:: console
 
     $ git clone https://github.com/intel/dffml
-    $ python3 -m pip install -e dffml/service/http
+    $ python3 -m pip install -e dffml/service/http[dev]
 
 If you want to run this securely you can see :doc:`security`.
 

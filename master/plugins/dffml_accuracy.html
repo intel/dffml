@@ -1,0 +1,1210 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Scorers &mdash; DFFML cab834974 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/tabs.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/copybutton.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Operations" href="dffml_operation.html" />
+    <link rel="prev" title="Models" href="dffml_model.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> DFFML
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                cab834974
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Introduction</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../concepts/index.html">Concepts</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Usage</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart/model.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Plugins</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="dffml_source.html">Sources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dffml_model.html">Models</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Scorers</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#dffml">dffml</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#clf">clf</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mse">mse</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#dffml-model-tensorflow-hub">dffml_model_tensorflow_hub</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#textclf">textclf</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#dffml-model-spacy">dffml_model_spacy</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#sner">sner</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#dffml-model-scratch">dffml_model_scratch</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#anomalyscore">anomalyscore</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#dffml-model-scikit">dffml_model_scikit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dffml-model-pytorch">dffml_model_pytorch</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#pytorchscore">pytorchscore</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="dffml_operation.html">Operations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dffml_service_cli.html">Services</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../cli.html">Command Line</a></li>
+<li class="toctree-l1"><a class="reference internal" href="service/http/index.html">HTTP API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/plugins.html">Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/noasync.html">Noasync</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/base.html">Base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/record.html">Record</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/log.html">Log</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/high_level.html">High_Level</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/version.html">Version</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/source/index.html">Source</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/operation/index.html">Operation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/feature/index.html">Feature</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/accuracy/index.html">Accuracy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/cli/index.html">Cli</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/secret/index.html">Secret</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/df/index.html">Df</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/db/index.html">Db</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/service/index.html">Service</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/configloader/index.html">Configloader</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/model/index.html">Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/util/index.html">Util</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/port/index.html">Port</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../arch/index.html">Architecture</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Subprojects</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../shouldi.html">shouldi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../swportal.html">Software Portal</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Community</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/intel/dffml">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://intel.github.io/dffml/master/">Master Branch Docs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../publications.html">Publications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contact.html">Contact Us</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../news/index.html">News</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">DFFML</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Plugins</a> &raquo;</li>
+        
+      <li>Scorers</li>
+    
+    
+
+
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="scorers">
+<span id="plugin-scorers"></span><h1>Scorers<a class="headerlink" href="#scorers" title="Permalink to this headline">¶</a></h1>
+<p>Accuracy Scorers are implementations of <code class="xref py py-class docutils literal notranslate"><span class="pre">dffml.accuracy.AccuracyScorer</span></code>,
+they abstract the usage of scoring methods.</p>
+<p>If you want to get started creating your own accuracy scorers,
+check out the <a class="reference internal" href="../tutorials/accuracy/index.html#accuracy-scorer-tutorial"><span class="std std-ref">Scorers</span></a>.
+.. _plugin_accuracy_dffml:</p>
+<div class="section" id="dffml">
+<h2>dffml<a class="headerlink" href="#dffml" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install dffml</span>
+</pre></div>
+</div>
+<div class="section" id="clf">
+<span id="plugin-accuracy-dffml-clf"></span><h3>clf<a class="headerlink" href="#clf" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<p>No description</p>
+</div>
+<div class="section" id="mse">
+<span id="plugin-accuracy-dffml-mse"></span><h3>mse<a class="headerlink" href="#mse" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<p>No description</p>
+</div>
+</div>
+<div class="section" id="dffml-model-tensorflow-hub">
+<span id="plugin-accuracy-dffml-model-tensorflow-hub"></span><h2>dffml_model_tensorflow_hub<a class="headerlink" href="#dffml-model-tensorflow-hub" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install dffml-model-tensorflow-hub</span>
+</pre></div>
+</div>
+<div class="section" id="textclf">
+<span id="plugin-accuracy-dffml-model-tensorflow-hub-textclf"></span><h3>textclf<a class="headerlink" href="#textclf" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<p>No description</p>
+</div>
+</div>
+<div class="section" id="dffml-model-spacy">
+<span id="plugin-accuracy-dffml-model-spacy"></span><h2>dffml_model_spacy<a class="headerlink" href="#dffml-model-spacy" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install dffml-model-spacy</span>
+</pre></div>
+</div>
+<div class="section" id="sner">
+<span id="plugin-accuracy-dffml-model-spacy-sner"></span><h3>sner<a class="headerlink" href="#sner" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<p>No description</p>
+</div>
+</div>
+<div class="section" id="dffml-model-scratch">
+<span id="plugin-accuracy-dffml-model-scratch"></span><h2>dffml_model_scratch<a class="headerlink" href="#dffml-model-scratch" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install dffml-model-scratch</span>
+</pre></div>
+</div>
+<div class="section" id="anomalyscore">
+<span id="plugin-accuracy-dffml-model-scratch-anomalyscore"></span><h3>anomalyscore<a class="headerlink" href="#anomalyscore" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<p>No description</p>
+</div>
+</div>
+<div class="section" id="dffml-model-scikit">
+<span id="plugin-accuracy-dffml-model-scikit"></span><h2>dffml_model_scikit<a class="headerlink" href="#dffml-model-scikit" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install dffml-model-scikit</span>
+</pre></div>
+</div>
+<p>Machine Learning models implemented with <a class="reference external" href="https://scikit-learn.org/stable/">scikit-learn</a>.
+Models are saved under the directory in subdirectories named after the hash of
+their feature names.</p>
+<p><strong>General Usage:</strong></p>
+<p>Training:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml train <span class="se">\</span>
+<span class="go">    -model SCIKIT_MODEL_ENTRYPOINT \</span>
+<span class="go">    -model-features FEATURE_DEFINITION \</span>
+<span class="go">    -model-predict TO_PREDICT \</span>
+<span class="go">    -model-location MODEL_DIRECTORY \</span>
+<span class="go">    -model-SCIKIT_PARAMETER_NAME SCIKIT_PARAMETER_VALUE \</span>
+<span class="go">    -sources f=TRAINING_DATA_SOURCE_TYPE \</span>
+<span class="go">    -source-filename TRAINING_DATA_FILE_NAME \</span>
+<span class="go">    -log debug</span>
+</pre></div>
+</div>
+<p>Testing and Accuracy:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml accuracy <span class="se">\</span>
+<span class="go">    -model SCIKIT_MODEL_ENTRYPOINT \</span>
+<span class="go">    -model-features FEATURE_DEFINITION \</span>
+<span class="go">    -model-predict TO_PREDICT \</span>
+<span class="go">    -model-location MODEL_DIRECTORY \</span>
+<span class="go">    -sources f=TESTING_DATA_SOURCE_TYPE \</span>
+<span class="go">    -source-filename TESTING_DATA_FILE_NAME \</span>
+<span class="go">    -log debug</span>
+</pre></div>
+</div>
+<p>Predicting with trained model:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml predict all <span class="se">\</span>
+<span class="go">    -model SCIKIT_MODEL_ENTRYPOINT \</span>
+<span class="go">    -model-features FEATURE_DEFINITION \</span>
+<span class="go">    -model-predict TO_PREDICT \</span>
+<span class="go">    -model-location MODEL_DIRECTORY \</span>
+<span class="go">    -sources f=PREDICT_DATA_SOURCE_TYPE \</span>
+<span class="go">    -source-filename PREDICT_DATA_FILE_NAME \</span>
+<span class="go">    -log debug</span>
+</pre></div>
+</div>
+<p><strong>Models Available:</strong></p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 6%" />
+<col style="width: 12%" />
+<col style="width: 6%" />
+<col style="width: 75%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Type</p></th>
+<th class="head"><p>Model</p></th>
+<th class="head"><p>Entrypoint</p></th>
+<th class="head"><p>Parameters</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td rowspan="12"><p>Regression</p></td>
+<td><p>LinearRegression</p></td>
+<td><p>scikitlr</p></td>
+<td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LinearRegression.html#sklearn.linear_model.LinearRegression/">scikitlr</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>ElasticNet</p></td>
+<td><p>scikiteln</p></td>
+<td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.ElasticNet.html#sklearn.linear_model.ElasticNet/">scikiteln</a></p></td>
+</tr>
+<tr class="row-even"><td><p>RandomForestRegressor</p></td>
+<td><p>scikitrfr</p></td>
+<td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestRegressor.html">scikitrfr</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>BayesianRidge</p></td>
+<td><p>scikitbyr</p></td>
+<td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.BayesianRidge.html#sklearn.linear_model.BayesianRidge/">scikitbyr</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Lasso</p></td>
+<td><p>scikitlas</p></td>
+<td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.Lasso.html#sklearn.linear_model.Lasso/">scikitlas</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>ARDRegression</p></td>
+<td><p>scikitard</p></td>
+<td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.ARDRegression.html#sklearn.linear_model.ARDRegression/">scikitard</a></p></td>
+</tr>
+<tr class="row-even"><td><p>RANSACRegressor</p></td>
+<td><p>scikitrsc</p></td>
+<td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.RANSACRegressor.html#sklearn.linear_model.RANSACRegressor/">scikitrsc</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>DecisionTreeRegressor</p></td>
+<td><p>scikitdtr</p></td>
+<td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.tree.DecisionTreeRegressor.html#sklearn.tree.DecisionTreeRegressor/">scikitdtr</a></p></td>
+</tr>
+<tr class="row-even"><td><p>GaussianProcessRegressor</p></td>
+<td><p>scikitgpr</p></td>
+<td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.gaussian_process.GaussianProcessRegressor.html#sklearn.gaussian_process.GaussianProcessRegressor/">scikitgpr</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>OrthogonalMatchingPursuit</p></td>
+<td><p>scikitomp</p></td>
+<td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.OrthogonalMatchingPursuit.html#sklearn.linear_model.OrthogonalMatchingPursuit/">scikitomp</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Lars</p></td>
+<td><p>scikitlars</p></td>
+<td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.Lars.html#sklearn.linear_model.Lars/">scikitlars</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Ridge</p></td>
+<td><p>scikitridge</p></td>
+<td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.Ridge.html#sklearn.linear_model.Ridge/">scikitridge</a></p></td>
+</tr>
+<tr class="row-even"><td rowspan="16"><p>Classification</p></td>
+<td><p>KNeighborsClassifier</p></td>
+<td><p>scikitknn</p></td>
+<td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.neighbors.KNeighborsClassifier.html#sklearn.neighbors.KNeighborsClassifier/">scikitknn</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>AdaBoostClassifier</p></td>
+<td><p>scikitadaboost</p></td>
+<td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.AdaBoostClassifier.html#sklearn.ensemble.AdaBoostClassifier/">scikitadaboost</a></p></td>
+</tr>
+<tr class="row-even"><td><p>GaussianProcessClassifier</p></td>
+<td><p>scikitgpc</p></td>
+<td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.gaussian_process.GaussianProcessClassifier.html#sklearn.gaussian_process.GaussianProcessClassifier/">scikitgpc</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>DecisionTreeClassifier</p></td>
+<td><p>scikitdtc</p></td>
+<td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.tree.DecisionTreeClassifier.html#sklearn.tree.DecisionTreeClassifier/">scikitdtc</a></p></td>
+</tr>
+<tr class="row-even"><td><p>RandomForestClassifier</p></td>
+<td><p>scikitrfc</p></td>
+<td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html#sklearn.ensemble.RandomForestClassifier/">scikitrfc</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>QuadraticDiscriminantAnalysis</p></td>
+<td><p>scikitqda</p></td>
+<td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.discriminant_analysis.QuadraticDiscriminantAnalysis.html#sklearn.discriminant_analysis.QuadraticDiscriminantAnalysis/">scikitqda</a></p></td>
+</tr>
+<tr class="row-even"><td><p>MLPClassifier</p></td>
+<td><p>scikitmlp</p></td>
+<td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.neural_network.MLPClassifier.html#sklearn.neural_network.MLPClassifier/">scikitmlp</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>GaussianNB</p></td>
+<td><p>scikitgnb</p></td>
+<td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.naive_bayes.GaussianNB.html#sklearn.naive_bayes.GaussianNB/">scikitgnb</a></p></td>
+</tr>
+<tr class="row-even"><td><p>SVC</p></td>
+<td><p>scikitsvc</p></td>
+<td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html#sklearn.svm.SVC/">scikitsvc</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>LogisticRegression</p></td>
+<td><p>scikitlor</p></td>
+<td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html#sklearn.linear_model.LogisticRegression/">scikitlor</a></p></td>
+</tr>
+<tr class="row-even"><td><p>GradientBoostingClassifier</p></td>
+<td><p>scikitgbc</p></td>
+<td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.GradientBoostingClassifier.html#sklearn.ensemble.GradientBoostingClassifier/">scikitgbc</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>BernoulliNB</p></td>
+<td><p>scikitbnb</p></td>
+<td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.naive_bayes.BernoulliNB.html#sklearn.naive_bayes.BernoulliNB/">scikitbnb</a></p></td>
+</tr>
+<tr class="row-even"><td><p>ExtraTreesClassifier</p></td>
+<td><p>scikitetc</p></td>
+<td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.ExtraTreesClassifier.html#sklearn.ensemble.ExtraTreesClassifier/">scikitetc</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>BaggingClassifier</p></td>
+<td><p>scikitbgc</p></td>
+<td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.BaggingClassifier.html#sklearn.ensemble.BaggingClassifier/">scikitbgc</a></p></td>
+</tr>
+<tr class="row-even"><td><p>LinearDiscriminantAnalysis</p></td>
+<td><p>scikitlda</p></td>
+<td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.discriminant_analysis.LinearDiscriminantAnalysis.html#sklearn.discriminant_analysis.LinearDiscriminantAnalysis/">scikitlda</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>MultinomialNB</p></td>
+<td><p>scikitmnb</p></td>
+<td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.naive_bayes.MultinomialNB.html#sklearn.naive_bayes.MultinomialNB/">scikitmnb</a></p></td>
+</tr>
+<tr class="row-even"><td rowspan="8"><p>Clustering</p></td>
+<td><p>KMeans</p></td>
+<td><p>scikitkmeans</p></td>
+<td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.cluster.KMeans.html#sklearn.cluster.KMeans/">scikitkmeans</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Birch</p></td>
+<td><p>scikitbirch</p></td>
+<td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.cluster.Birch.html#sklearn.cluster.Birch/">scikitbirch</a></p></td>
+</tr>
+<tr class="row-even"><td><p>MiniBatchKMeans</p></td>
+<td><p>scikitmbkmeans</p></td>
+<td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.cluster.MiniBatchKMeans.html#sklearn.cluster.MiniBatchKMeans/">scikitmbkmeans</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>AffinityPropagation</p></td>
+<td><p>scikitap</p></td>
+<td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.cluster.AffinityPropagation.html#sklearn.cluster.AffinityPropagation/">scikitap</a></p></td>
+</tr>
+<tr class="row-even"><td><p>MeanShift</p></td>
+<td><p>scikitms</p></td>
+<td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.cluster.MeanShift.html#sklearn.cluster.MeanShift/">scikitms</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>SpectralClustering</p></td>
+<td><p>scikitsc</p></td>
+<td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.cluster.SpectralClustering.html#sklearn.cluster.SpectralClustering/">scikitsc</a></p></td>
+</tr>
+<tr class="row-even"><td><p>AgglomerativeClustering</p></td>
+<td><p>scikitac</p></td>
+<td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.cluster.AgglomerativeClustering.html#sklearn.cluster.AgglomerativeClustering/">scikitac</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>OPTICS</p></td>
+<td><p>scikitoptics</p></td>
+<td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.cluster.OPTICS.html#sklearn.cluster.OPTICS/">scikitoptics</a></p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Usage Example:</strong></p>
+<p>Example below uses LinearRegression Model using the command line.</p>
+<p>Let us take a simple example:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 39%" />
+<col style="width: 21%" />
+<col style="width: 25%" />
+<col style="width: 14%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Years of Experience</p></th>
+<th class="head"><p>Expertise</p></th>
+<th class="head"><p>Trust Factor</p></th>
+<th class="head"><p>Salary</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>01</p></td>
+<td><p>0.2</p></td>
+<td><p>10</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>03</p></td>
+<td><p>0.4</p></td>
+<td><p>20</p></td>
+</tr>
+<tr class="row-even"><td><p>2</p></td>
+<td><p>05</p></td>
+<td><p>0.6</p></td>
+<td><p>30</p></td>
+</tr>
+<tr class="row-odd"><td><p>3</p></td>
+<td><p>07</p></td>
+<td><p>0.8</p></td>
+<td><p>40</p></td>
+</tr>
+<tr class="row-even"><td><p>4</p></td>
+<td><p>09</p></td>
+<td><p>1.0</p></td>
+<td><p>50</p></td>
+</tr>
+<tr class="row-odd"><td><p>5</p></td>
+<td><p>11</p></td>
+<td><p>1.2</p></td>
+<td><p>60</p></td>
+</tr>
+</tbody>
+</table>
+<p>First we create the files</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cat</span> <span class="o">&gt;</span> <span class="n">train</span><span class="o">.</span><span class="n">csv</span> <span class="o">&lt;&lt;</span> <span class="n">EOF</span>
+<span class="n">Years</span><span class="p">,</span><span class="n">Expertise</span><span class="p">,</span><span class="n">Trust</span><span class="p">,</span><span class="n">Salary</span>
+<span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mf">0.1</span><span class="p">,</span><span class="mi">10</span>
+<span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mf">0.2</span><span class="p">,</span><span class="mi">20</span>
+<span class="mi">2</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mf">0.3</span><span class="p">,</span><span class="mi">30</span>
+<span class="mi">3</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mf">0.4</span><span class="p">,</span><span class="mi">40</span>
+<span class="n">EOF</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cat</span> <span class="o">&gt;</span> <span class="n">test</span><span class="o">.</span><span class="n">csv</span> <span class="o">&lt;&lt;</span> <span class="n">EOF</span>
+<span class="n">Years</span><span class="p">,</span><span class="n">Expertise</span><span class="p">,</span><span class="n">Trust</span><span class="p">,</span><span class="n">Salary</span>
+<span class="mi">4</span><span class="p">,</span><span class="mi">9</span><span class="p">,</span><span class="mf">0.5</span><span class="p">,</span><span class="mi">50</span>
+<span class="mi">5</span><span class="p">,</span><span class="mi">11</span><span class="p">,</span><span class="mf">0.6</span><span class="p">,</span><span class="mi">60</span>
+<span class="n">EOF</span>
+</pre></div>
+</div>
+<p>Train the model</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dffml</span> <span class="n">train</span> \
+  <span class="o">-</span><span class="n">model</span> <span class="n">scikitlr</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">features</span> <span class="n">Years</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">1</span> <span class="n">Expertise</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">1</span> <span class="n">Trust</span><span class="p">:</span><span class="nb">float</span><span class="p">:</span><span class="mi">1</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">predict</span> <span class="n">Salary</span><span class="p">:</span><span class="nb">float</span><span class="p">:</span><span class="mi">1</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">location</span> <span class="n">tempdir</span> \
+  <span class="o">-</span><span class="n">sources</span> <span class="n">f</span><span class="o">=</span><span class="n">csv</span> \
+  <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">filename</span> <span class="n">train</span><span class="o">.</span><span class="n">csv</span>
+</pre></div>
+</div>
+<p>Assess accuracy</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dffml</span> <span class="n">accuracy</span> \
+  <span class="o">-</span><span class="n">model</span> <span class="n">scikitlr</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">features</span> <span class="n">Years</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">1</span> <span class="n">Expertise</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">1</span> <span class="n">Trust</span><span class="p">:</span><span class="nb">float</span><span class="p">:</span><span class="mi">1</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">predict</span> <span class="n">Salary</span><span class="p">:</span><span class="nb">float</span><span class="p">:</span><span class="mi">1</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">location</span> <span class="n">tempdir</span> \
+  <span class="o">-</span><span class="n">scorer</span> <span class="n">mse</span> \
+  <span class="o">-</span><span class="n">sources</span> <span class="n">f</span><span class="o">=</span><span class="n">csv</span> \
+  <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">filename</span> <span class="n">test</span><span class="o">.</span><span class="n">csv</span>
+</pre></div>
+</div>
+<p>Output:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mf">1.0</span>
+</pre></div>
+</div>
+<p>Make a prediction</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">echo</span> <span class="o">-</span><span class="n">e</span> <span class="s1">&#39;Years,Expertise,Trust</span><span class="se">\n</span><span class="s1">6,13,0.7</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">|</span> \
+<span class="n">dffml</span> <span class="n">predict</span> <span class="nb">all</span> \
+  <span class="o">-</span><span class="n">model</span> <span class="n">scikitlr</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">features</span> <span class="n">Years</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">1</span> <span class="n">Expertise</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">1</span> <span class="n">Trust</span><span class="p">:</span><span class="nb">float</span><span class="p">:</span><span class="mi">1</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">predict</span> <span class="n">Salary</span><span class="p">:</span><span class="nb">float</span><span class="p">:</span><span class="mi">1</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">location</span> <span class="n">tempdir</span> \
+  <span class="o">-</span><span class="n">sources</span> <span class="n">f</span><span class="o">=</span><span class="n">csv</span> \
+  <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">filename</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">stdin</span>
+</pre></div>
+</div>
+<p>Output:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">[</span>
+    <span class="p">{</span>
+        <span class="nt">&quot;extra&quot;</span><span class="p">:</span> <span class="p">{},</span>
+        <span class="nt">&quot;features&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="nt">&quot;Expertise&quot;</span><span class="p">:</span> <span class="mi">13</span><span class="p">,</span>
+            <span class="nt">&quot;Trust&quot;</span><span class="p">:</span> <span class="mf">0.7</span><span class="p">,</span>
+            <span class="nt">&quot;Years&quot;</span><span class="p">:</span> <span class="mi">6</span>
+        <span class="p">},</span>
+        <span class="nt">&quot;key&quot;</span><span class="p">:</span> <span class="s2">&quot;0&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;last_updated&quot;</span><span class="p">:</span> <span class="s2">&quot;2020-03-01T22:26:46Z&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;prediction&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="nt">&quot;Salary&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="nt">&quot;confidence&quot;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span>
+                <span class="nt">&quot;value&quot;</span><span class="p">:</span> <span class="mf">70.0</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p>Example usage of Linear Regression Model using python API:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">CSVSource</span><span class="p">,</span> <span class="n">Features</span><span class="p">,</span> <span class="n">Feature</span>
+<span class="kn">from</span> <span class="nn">dffml.noasync</span> <span class="kn">import</span> <span class="n">train</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">,</span> <span class="n">predict</span>
+<span class="kn">from</span> <span class="nn">dffml_model_scikit</span> <span class="kn">import</span> <span class="n">LinearRegressionModel</span>
+<span class="kn">from</span> <span class="nn">dffml.accuracy</span> <span class="kn">import</span> <span class="n">MeanSquaredErrorAccuracy</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">LinearRegressionModel</span><span class="p">(</span>
+    <span class="n">features</span><span class="o">=</span><span class="n">Features</span><span class="p">(</span>
+        <span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;Years&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+        <span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;Expertise&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+        <span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;Trust&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+    <span class="p">),</span>
+    <span class="n">predict</span><span class="o">=</span><span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;Salary&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+    <span class="n">location</span><span class="o">=</span><span class="s2">&quot;tempdir&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># Train the model</span>
+<span class="n">train</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="s2">&quot;train.csv&quot;</span><span class="p">)</span>
+
+<span class="c1"># Assess accuracy (alternate way of specifying data source)</span>
+<span class="n">scorer</span> <span class="o">=</span> <span class="n">MeanSquaredErrorAccuracy</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Accuracy:&quot;</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">scorer</span><span class="p">,</span> <span class="n">CSVSource</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;test.csv&quot;</span><span class="p">)))</span>
+
+<span class="c1"># Make prediction</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">features</span><span class="p">,</span> <span class="n">prediction</span> <span class="ow">in</span> <span class="n">predict</span><span class="p">(</span>
+    <span class="n">model</span><span class="p">,</span>
+    <span class="p">{</span><span class="s2">&quot;Years&quot;</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span> <span class="s2">&quot;Expertise&quot;</span><span class="p">:</span> <span class="mi">13</span><span class="p">,</span> <span class="s2">&quot;Trust&quot;</span><span class="p">:</span> <span class="mf">0.7</span><span class="p">},</span>
+    <span class="p">{</span><span class="s2">&quot;Years&quot;</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span> <span class="s2">&quot;Expertise&quot;</span><span class="p">:</span> <span class="mi">15</span><span class="p">,</span> <span class="s2">&quot;Trust&quot;</span><span class="p">:</span> <span class="mf">0.8</span><span class="p">},</span>
+<span class="p">):</span>
+    <span class="n">features</span><span class="p">[</span><span class="s2">&quot;Salary&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">prediction</span><span class="p">[</span><span class="s2">&quot;Salary&quot;</span><span class="p">][</span><span class="s2">&quot;value&quot;</span><span class="p">]</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">features</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Example below uses KMeans Clustering Model on a small randomly generated dataset.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp"> $ </span>cat &gt; train.csv &lt;&lt; EOF
+<span class="go">Col1,          Col2,        Col3,         Col4</span>
+<span class="go">5.05776417,   8.55128116,   6.15193196,  -8.67349666</span>
+<span class="go">3.48864265,  -7.25952218,  -4.89216256,   4.69308946</span>
+<span class="go">-8.16207603,  5.16792984,  -2.66971993,   0.2401882</span>
+<span class="go">6.09809669,   8.36434181,   6.70940915,  -7.91491768</span>
+<span class="go">-9.39122566,  5.39133807,  -2.29760281,  -1.69672981</span>
+<span class="go">0.48311336,   8.19998973,   7.78641979,   7.8843821</span>
+<span class="go">2.22409135,  -7.73598586,  -4.02660224,   2.82101794</span>
+<span class="go">2.8137247 ,   8.36064298,   7.66196849,   3.12704676</span>
+<span class="go">EOF</span>
+<span class="gp"> $ </span>cat &gt; test.csv &lt;&lt; EOF
+<span class="go">Col1,             Col2,          Col3,         Col4,    cluster</span>
+<span class="go">-10.16770144,   2.73057215,  -1.49351481,   2.43005691,    6</span>
+<span class="go">3.59705381,  -4.76520663,  -3.34916068,   5.72391486,     1</span>
+<span class="go">4.01612313,  -4.641852  ,  -4.77333308,   5.87551683,     0</span>
+<span class="go">EOF</span>
+<span class="gp"> $ </span>dffml train <span class="se">\</span>
+<span class="go">     -model scikitkmeans \</span>
+<span class="go">     -model-features Col1:float:1 Col2:float:1 Col3:float:1 Col4:float:1 \</span>
+<span class="go">     -model-location tempdir \</span>
+<span class="go">     -sources f=csv \</span>
+<span class="go">     -source-filename train.csv \</span>
+<span class="go">     -source-readonly \</span>
+<span class="go">     -log debug</span>
+<span class="gp"> $ </span>dffml accuracy <span class="se">\</span>
+<span class="go">     -model scikitkmeans \</span>
+<span class="go">     -model-features Col1:float:1 Col2:float:1 Col3:float:1 Col4:float:1\</span>
+<span class="go">     -model-predict cluster:int:1 \</span>
+<span class="go">     -model-location tempdir \</span>
+<span class="go">     -sources f=csv \</span>
+<span class="go">     -source-filename test.csv \</span>
+<span class="go">     -source-readonly \</span>
+<span class="go">     -log debug</span>
+<span class="go"> 0.6365141682948129</span>
+<span class="gp"> $ </span><span class="nb">echo</span> -e <span class="s1">&#39;Col1,Col2,Col3,Col4\n6.09809669,8.36434181,6.70940915,-7.91491768\n&#39;</span> <span class="p">|</span> <span class="se">\</span>
+<span class="go">   dffml predict all \</span>
+<span class="go">     -model scikitkmeans \</span>
+<span class="go">     -model-features Col1:float:1 Col2:float:1 Col3:float:1 Col4:float:1 \</span>
+<span class="go">     -model-location tempdir \</span>
+<span class="go">     -sources f=csv \</span>
+<span class="go">     -source-filename /dev/stdin \</span>
+<span class="go">     -source-readonly \</span>
+<span class="go">     -log debug</span>
+<span class="go"> [</span>
+<span class="go">     {</span>
+<span class="go">         &quot;extra&quot;: {},</span>
+<span class="go">         &quot;features&quot;: {</span>
+<span class="go">             &quot;Col1&quot;: 6.09809669,</span>
+<span class="go">             &quot;Col2&quot;: 8.36434181,</span>
+<span class="go">             &quot;Col3&quot;: 6.70940915,</span>
+<span class="go">             &quot;Col4&quot;: -7.91491768</span>
+<span class="go">         },</span>
+<span class="go">         &quot;last_updated&quot;: &quot;2020-01-12T22:51:15Z&quot;,</span>
+<span class="go">         &quot;prediction&quot;: {</span>
+<span class="go">             &quot;confidence&quot;: 0.6365141682948129,</span>
+<span class="go">             &quot;value&quot;: 2</span>
+<span class="go">         },</span>
+<span class="go">         &quot;key&quot;: &quot;0&quot;</span>
+<span class="go">     }</span>
+<span class="go"> ]</span>
+</pre></div>
+</div>
+<p>Example usage of KMeans Clustering Model using python API:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">CSVSource</span><span class="p">,</span> <span class="n">Features</span><span class="p">,</span> <span class="n">Feature</span>
+<span class="kn">from</span> <span class="nn">dffml.noasync</span> <span class="kn">import</span> <span class="n">train</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">,</span> <span class="n">predict</span>
+<span class="kn">from</span> <span class="nn">dffml_model_scikit</span> <span class="kn">import</span> <span class="n">KMeansModel</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">KMeansModel</span><span class="p">(</span>
+    <span class="n">features</span><span class="o">=</span><span class="n">Features</span><span class="p">(</span>
+        <span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;Col1&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+        <span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;Col2&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+        <span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;Col3&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+        <span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;Col4&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+    <span class="p">),</span>
+    <span class="n">predict</span><span class="o">=</span><span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;cluster&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+    <span class="n">location</span><span class="o">=</span><span class="s2">&quot;tempdir&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># Train the model</span>
+<span class="n">train</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="s2">&quot;train.csv&quot;</span><span class="p">)</span>
+
+<span class="c1"># Assess accuracy (alternate way of specifying data source)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Accuracy:&quot;</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">CSVSource</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;test.csv&quot;</span><span class="p">)))</span>
+
+<span class="c1"># Make prediction</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">features</span><span class="p">,</span> <span class="n">prediction</span> <span class="ow">in</span> <span class="n">predict</span><span class="p">(</span>
+    <span class="n">model</span><span class="p">,</span>
+    <span class="p">{</span><span class="s2">&quot;Col1&quot;</span><span class="p">:</span> <span class="mf">6.09809669</span><span class="p">,</span> <span class="s2">&quot;Col2&quot;</span><span class="p">:</span> <span class="mf">8.36434181</span><span class="p">,</span> <span class="s2">&quot;Col3&quot;</span><span class="p">:</span> <span class="mf">6.70940915</span><span class="p">,</span> <span class="s2">&quot;Col4&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mf">7.91491768</span><span class="p">},</span>
+<span class="p">):</span>
+    <span class="n">features</span><span class="p">[</span><span class="s2">&quot;cluster&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">prediction</span><span class="p">[</span><span class="s2">&quot;cluster&quot;</span><span class="p">][</span><span class="s2">&quot;value&quot;</span><span class="p">]</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">features</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>NOTE</strong>: <a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-transductive/">Transductive</a> Clusterers(scikitsc, scikitac, scikitoptics) cannot handle unseen data.
+Ensure that <cite>predict</cite> and <cite>accuracy</cite> for these algorithms uses training data.</p>
+<p><strong>Args</strong></p>
+<ul class="simple">
+<li><p>predict: Feature</p>
+<ul>
+<li><p>Label or the value to be predicted</p></li>
+<li><p>Only used by classification and regression models</p></li>
+</ul>
+</li>
+<li><p>features: List of features</p>
+<ul>
+<li><p>Features to train on</p></li>
+</ul>
+</li>
+<li><p>location: Path</p>
+<ul>
+<li><p>Location where state should be saved</p></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="dffml-model-pytorch">
+<span id="plugin-accuracy-dffml-model-pytorch"></span><h2>dffml_model_pytorch<a class="headerlink" href="#dffml-model-pytorch" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install dffml-model-pytorch</span>
+</pre></div>
+</div>
+<p>Machine Learning models implemented with <a class="reference external" href="https://pytorch.org/">PyTorch</a>.
+Models are saved under the directory in <cite>model.pt</cite>.</p>
+<p><strong>General Usage:</strong></p>
+<p>Training:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml train <span class="se">\</span>
+<span class="go">    -model PYTORCH_MODEL_ENTRYPOINT \</span>
+<span class="go">    -model-features FEATURE_DEFINITION \</span>
+<span class="go">    -model-predict TO_PREDICT \</span>
+<span class="go">    -model-location MODEL_LOCATION \</span>
+<span class="go">    -model-CONFIGS CONFIG_VALUES \</span>
+<span class="go">    -sources f=TRAINING_DATA_SOURCE_TYPE \</span>
+<span class="go">    -source-CONFIGS TRAINING_DATA \</span>
+<span class="go">    -log debug</span>
+</pre></div>
+</div>
+<p>Testing and Accuracy:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml accuracy <span class="se">\</span>
+<span class="go">    -model PYTORCH_MODEL_ENTRYPOINT \</span>
+<span class="go">    -model-features FEATURE_DEFINITION \</span>
+<span class="go">    -model-predict TO_PREDICT \</span>
+<span class="go">    -model-location MODEL_LOCATION \</span>
+<span class="go">    -model-CONFIGS CONFIG_VALUES \</span>
+<span class="go">    -sources f=TESTING_DATA_SOURCE_TYPE \</span>
+<span class="go">    -source-CONFIGS TESTING_DATA \</span>
+<span class="go">    -log debug</span>
+</pre></div>
+</div>
+<p>Predicting with trained model:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml predict all <span class="se">\</span>
+<span class="go">    -model PYTORCH_MODEL_ENTRYPOINT \</span>
+<span class="go">    -model-features FEATURE_DEFINITION \</span>
+<span class="go">    -model-predict TO_PREDICT \</span>
+<span class="go">    -model-location MODEL_LOCATION \</span>
+<span class="go">    -model-CONFIGS CONFIG_VALUES \</span>
+<span class="go">    -sources f=PREDICT_DATA_SOURCE_TYPE \</span>
+<span class="go">    -source-CONFIGS PREDICTION_DATA \</span>
+<span class="go">    -log debug</span>
+</pre></div>
+</div>
+<p><strong>Pre-Trained Models Available:</strong></p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 11%" />
+<col style="width: 22%" />
+<col style="width: 13%" />
+<col style="width: 54%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Type</p></th>
+<th class="head"><p>Model</p></th>
+<th class="head"><p>Entrypoint</p></th>
+<th class="head"><p>Architecture</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td rowspan="29"><p>Classification</p></td>
+<td><p>AlexNet</p></td>
+<td><p>alexnet</p></td>
+<td><p><a class="reference external" href="https://arxiv.org/abs/1404.5997">AlexNet architecture</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>DenseNet-121</p></td>
+<td><p>densenet121</p></td>
+<td><p><a class="reference external" href="https://arxiv.org/pdf/1608.06993.pdf">DenseNet architecture</a></p></td>
+</tr>
+<tr class="row-even"><td><p>DenseNet-161</p></td>
+<td><p>densenet161</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>DenseNet-169</p></td>
+<td><p>densenet169</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>DenseNet-201</p></td>
+<td><p>densenet201</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>MnasNet 0.5</p></td>
+<td><p>mnasnet0_5</p></td>
+<td><p><a class="reference external" href="https://arxiv.org/pdf/1807.11626.pdf">MnasNet architecture</a></p></td>
+</tr>
+<tr class="row-even"><td><p>MnasNet 1.0</p></td>
+<td><p>mnasnet1_0</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>MobileNet V2</p></td>
+<td><p>mobilenet_v2</p></td>
+<td><p><a class="reference external" href="https://arxiv.org/abs/1801.04381">MobileNet V2 architecture</a></p></td>
+</tr>
+<tr class="row-even"><td><p>VGG-11</p></td>
+<td><p>vgg11</p></td>
+<td><p><a class="reference external" href="https://arxiv.org/pdf/1409.1556.pdf">VGG-11 architecture Configuration “A”</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>VGG-11 with batch normalization</p></td>
+<td><p>vgg11_bn</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>VGG-13</p></td>
+<td><p>vgg13</p></td>
+<td><p><a class="reference external" href="https://arxiv.org/pdf/1409.1556.pdf">VGG-13 architecture Configuration “B”</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>VGG-13 with batch normalization</p></td>
+<td><p>vgg13_bn</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>VGG-16</p></td>
+<td><p>vgg16</p></td>
+<td><p><a class="reference external" href="https://arxiv.org/pdf/1409.1556.pdf">VGG-16 architecture Configuration “D”</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>VGG-16 with batch normalization</p></td>
+<td><p>vgg16_bn</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>VGG-19</p></td>
+<td><p>vgg19</p></td>
+<td><p><a class="reference external" href="https://arxiv.org/pdf/1409.1556.pdf">VGG-19 architecture Configuration “E”</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>VGG-19 with batch normalization</p></td>
+<td><p>vgg19_bn</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>GoogleNet</p></td>
+<td><p>googlenet</p></td>
+<td><p><a class="reference external" href="http://arxiv.org/abs/1409.4842">GoogleNet architecture</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Inception V3</p></td>
+<td><p>inception_v3</p></td>
+<td><p><a class="reference external" href="http://arxiv.org/abs/1512.00567">Inception V3 architecture</a></p></td>
+</tr>
+<tr class="row-even"><td><p>ResNet-18</p></td>
+<td><p>resnet18</p></td>
+<td><p><a class="reference external" href="https://arxiv.org/pdf/1512.03385.pdf">ResNet architecture</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>ResNet-34</p></td>
+<td><p>resnet34</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>ResNet-50</p></td>
+<td><p>resnet50</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>ResNet-101</p></td>
+<td><p>resnet101</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>ResNet-152</p></td>
+<td><p>resnet152</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>Wide ResNet-101-2</p></td>
+<td><p>wide_resnet101_2</p></td>
+<td><p><a class="reference external" href="https://arxiv.org/pdf/1605.07146.pdf">Wide Resnet architecture</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Wide ResNet-50-2</p></td>
+<td><p>wide_resnet50_2</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>ShuffleNet V2 0.5</p></td>
+<td><p>shufflenet_v2_x0_5</p></td>
+<td><p><a class="reference external" href="https://arxiv.org/abs/1807.11164">Shuffle Net V2 architecture</a></p></td>
+</tr>
+<tr class="row-even"><td><p>ShuffleNet V2 1.0</p></td>
+<td><p>shufflenet_v2_x1_0</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>ResNext-101-32x8D</p></td>
+<td><p>resnext101_32x8d</p></td>
+<td><p><a class="reference external" href="https://arxiv.org/pdf/1611.05431.pdf">ResNext architecture</a></p></td>
+</tr>
+<tr class="row-even"><td><p>ResNext-50-32x4D</p></td>
+<td><p>resnext50_32x4d</p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Usage Example:</strong></p>
+<p>Example below uses ResNet-18 Model using the command line.</p>
+<p>Let us take a simple example: <strong>Classifying Ants and Bees Images</strong></p>
+<p>First, we download the dataset and verify with <code class="docutils literal notranslate"><span class="pre">sha384sum</span></code></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="o">-</span><span class="n">LO</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">download</span><span class="o">.</span><span class="n">pytorch</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">tutorial</span><span class="o">/</span><span class="n">hymenoptera_data</span><span class="o">.</span><span class="n">zip</span>
+<span class="n">sha384sum</span> <span class="o">-</span><span class="n">c</span> <span class="o">-</span> <span class="o">&lt;&lt;</span> <span class="n">EOF</span>
+<span class="mi">491</span><span class="n">db45cfcab02d99843fbdcf0574ecf99aa4f056d52c660a39248b5524f9e6e8f896d9faabd27ffcfc2eaca0cec6f39</span>  <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">tron</span><span class="o">/</span><span class="n">Desktop</span><span class="o">/</span><span class="n">Development</span><span class="o">/</span><span class="n">hymenoptera_data</span><span class="o">.</span><span class="n">zip</span>
+<span class="n">EOF</span>
+<span class="n">hymenoptera_data</span><span class="o">.</span><span class="n">zip</span><span class="p">:</span> <span class="n">OK</span>
+</pre></div>
+</div>
+<p>Unzip the file</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">unzip</span> <span class="n">hymenoptera_data</span><span class="o">.</span><span class="n">zip</span>
+</pre></div>
+</div>
+<p>We first create a YAML file to define the last layer(s) to replace from the network architecture</p>
+<p><strong>layers.yaml</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">linear1</span><span class="p">:</span>
+  <span class="n">layer_type</span><span class="p">:</span> <span class="n">Linear</span>
+  <span class="n">in_features</span><span class="p">:</span> <span class="mi">512</span>
+  <span class="n">out_features</span><span class="p">:</span> <span class="mi">256</span>
+<span class="n">relu</span><span class="p">:</span>
+  <span class="n">layer_type</span><span class="p">:</span> <span class="n">ReLU</span>
+<span class="n">dropout</span><span class="p">:</span>
+  <span class="n">layer_type</span><span class="p">:</span> <span class="n">Dropout</span>
+  <span class="n">p</span><span class="p">:</span> <span class="mf">0.2</span>
+<span class="n">linear2</span><span class="p">:</span>
+  <span class="n">layer_type</span><span class="p">:</span> <span class="n">Linear</span>
+  <span class="n">in_features</span><span class="p">:</span> <span class="mi">256</span>
+  <span class="n">out_features</span><span class="p">:</span> <span class="mi">2</span>
+<span class="n">logsoftmax</span><span class="p">:</span>
+  <span class="n">layer_type</span><span class="p">:</span> <span class="n">LogSoftmax</span>
+  <span class="n">dim</span><span class="p">:</span> <span class="mi">1</span>
+</pre></div>
+</div>
+<p>Train the model</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>dffml train \
+  -model resnet18 \
+  -model-add_layers \
+  -model-layers @layers.yaml \
+  -model-clstype str \
+  -model-classifications ants bees \
+  -model-location resnet18_model \
+  -model-imageSize 224 \
+  -model-epochs 5 \
+  -model-batch_size 32 \
+  -model-enableGPU \
+  -model-features image:int:$((500*500)) \
+  -model-predict label:str:1 \
+  -sources f=dir \
+    -source-foldername hymenoptera_data/train \
+    -source-feature image \
+    -source-labels ants bees \
+  -log critical
+</pre></div>
+</div>
+<p>Assess accuracy</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>dffml accuracy \
+  -model resnet18 \
+  -model-add_layers \
+  -model-layers @layers.yaml \
+  -model-clstype str \
+  -model-classifications ants bees \
+  -model-location resnet18_model \
+  -model-imageSize 224 \
+  -model-batch_size 32 \
+  -model-enableGPU \
+  -model-features image:int:$((500*500)) \
+  -model-predict label:str:1 \
+  -sources f=dir \
+    -source-foldername hymenoptera_data/val \
+    -source-feature image \
+    -source-labels ants bees \
+  -scorer pytorchscore \
+  -log critical
+</pre></div>
+</div>
+<p>Output:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mf">0.9215686274509803</span>
+</pre></div>
+</div>
+<p>Create a csv file with the names of the images to predict, whether they are ants or bees.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cat</span> <span class="o">&gt;</span> <span class="n">unknown_images</span><span class="o">.</span><span class="n">csv</span> <span class="o">&lt;&lt;</span> <span class="n">EOF</span>
+<span class="n">key</span><span class="p">,</span><span class="n">image</span>
+<span class="n">ants1</span><span class="p">,</span><span class="n">hymenoptera_data</span><span class="o">/</span><span class="n">val</span><span class="o">/</span><span class="n">ants</span><span class="o">/</span><span class="n">Ant</span><span class="o">-</span><span class="mf">1818.</span><span class="n">jpg</span>
+<span class="n">bee1</span><span class="p">,</span><span class="n">hymenoptera_data</span><span class="o">/</span><span class="n">val</span><span class="o">//</span><span class="n">bees</span><span class="o">/</span><span class="mi">10870992</span><span class="n">_eebeeb3a12</span><span class="o">.</span><span class="n">jpg</span>
+<span class="n">bee2</span><span class="p">,</span><span class="n">hymenoptera_data</span><span class="o">/</span><span class="n">val</span><span class="o">/</span><span class="n">bees</span><span class="o">/</span><span class="n">abeja</span><span class="o">.</span><span class="n">jpg</span>
+<span class="n">ants2</span><span class="p">,</span><span class="n">hymenoptera_data</span><span class="o">/</span><span class="n">val</span><span class="o">/</span><span class="n">ants</span><span class="o">/</span><span class="n">desert_ant</span><span class="o">.</span><span class="n">jpg</span>
+<span class="n">EOF</span>
+</pre></div>
+</div>
+<p>Make the predictions</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>dffml predict all \
+  -model resnet18 \
+  -model-add_layers \
+  -model-layers @layers.yaml \
+  -model-clstype str \
+  -model-classifications ants bees \
+  -model-location resnet18_model \
+  -model-imageSize 224 \
+  -model-enableGPU \
+  -model-features image:int:$((500*500)) \
+  -model-predict label:str:1 \
+  -sources f=csv \
+    -source-filename unknown_images.csv \
+    -source-loadfiles image \
+  -log critical \
+  -pretty
+</pre></div>
+</div>
+<p>Output:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>
+	<span class="n">Key</span><span class="p">:</span>	<span class="n">ants1</span>
+                                                               <span class="n">Record</span> <span class="n">Features</span>
+<span class="o">+----------------------------------------------------------------------------------------------------------------------------------------------+</span>
+<span class="o">|</span>               <span class="n">image</span>               <span class="o">|</span>                    <span class="mi">59</span><span class="p">,</span> <span class="mi">66</span><span class="p">,</span> <span class="mi">83</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="mi">70</span><span class="p">,</span> <span class="mi">87</span><span class="p">,</span> <span class="mi">57</span><span class="p">,</span> <span class="mi">72</span><span class="p">,</span> <span class="mi">88</span><span class="p">,</span> <span class="mi">53</span><span class="p">,</span> <span class="mi">74</span><span class="p">,</span> <span class="mi">89</span> <span class="o">...</span> <span class="p">(</span><span class="n">length</span><span class="p">:</span><span class="mi">263250</span><span class="p">)</span>                    <span class="o">|</span>
+<span class="o">+----------------------------------------------------------------------------------------------------------------------------------------------+</span>
+
+                                                                  <span class="n">Prediction</span>
+<span class="o">+----------------------------------------------------------------------------------------------------------------------------------------------+</span>
+<span class="o">|</span>                                                                    <span class="n">label</span>                                                                     <span class="o">|</span>
+<span class="o">+----------------------------------------------------------------------------------------------------------------------------------------------+</span>
+<span class="o">|</span>            <span class="n">Value</span><span class="p">:</span>  <span class="n">ants</span>           <span class="o">|</span>                                     <span class="n">Confidence</span><span class="p">:</span>   <span class="mf">0.9920881390571594</span>                                     <span class="o">|</span>
+<span class="o">+----------------------------------------------------------------------------------------------------------------------------------------------+</span>
+
+	<span class="n">Key</span><span class="p">:</span>	<span class="n">bee1</span>
+                                                               <span class="n">Record</span> <span class="n">Features</span>
+<span class="o">+----------------------------------------------------------------------------------------------------------------------------------------------+</span>
+<span class="o">|</span>               <span class="n">image</span>               <span class="o">|</span>                    <span class="mi">63</span><span class="p">,</span> <span class="mi">114</span><span class="p">,</span> <span class="mi">146</span><span class="p">,</span> <span class="mi">63</span><span class="p">,</span> <span class="mi">114</span><span class="p">,</span> <span class="mi">146</span><span class="p">,</span> <span class="mi">63</span><span class="p">,</span> <span class="mi">114</span><span class="p">,</span> <span class="mi">146</span><span class="p">,</span> <span class="mi">63</span><span class="p">,</span>  <span class="o">...</span> <span class="p">(</span><span class="n">length</span><span class="p">:</span><span class="mi">696000</span><span class="p">)</span>                    <span class="o">|</span>
+<span class="o">+----------------------------------------------------------------------------------------------------------------------------------------------+</span>
+
+                                                                  <span class="n">Prediction</span>
+<span class="o">+----------------------------------------------------------------------------------------------------------------------------------------------+</span>
+<span class="o">|</span>                                                                    <span class="n">label</span>                                                                     <span class="o">|</span>
+<span class="o">+----------------------------------------------------------------------------------------------------------------------------------------------+</span>
+<span class="o">|</span>            <span class="n">Value</span><span class="p">:</span>  <span class="n">bees</span>           <span class="o">|</span>                                     <span class="n">Confidence</span><span class="p">:</span>   <span class="mf">0.6108130216598511</span>                                     <span class="o">|</span>
+<span class="o">+----------------------------------------------------------------------------------------------------------------------------------------------+</span>
+
+	<span class="n">Key</span><span class="p">:</span>	<span class="n">bee2</span>
+                                                               <span class="n">Record</span> <span class="n">Features</span>
+<span class="o">+----------------------------------------------------------------------------------------------------------------------------------------------+</span>
+<span class="o">|</span>               <span class="n">image</span>               <span class="o">|</span>                    <span class="mi">103</span><span class="p">,</span> <span class="mi">253</span><span class="p">,</span> <span class="mi">254</span><span class="p">,</span> <span class="mi">98</span><span class="p">,</span> <span class="mi">254</span><span class="p">,</span> <span class="mi">254</span><span class="p">,</span> <span class="mi">91</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">254</span><span class="p">,</span> <span class="mi">89</span><span class="p">,</span> <span class="o">...</span> <span class="p">(</span><span class="n">length</span><span class="p">:</span><span class="mi">359100</span><span class="p">)</span>                    <span class="o">|</span>
+<span class="o">+----------------------------------------------------------------------------------------------------------------------------------------------+</span>
+
+                                                                  <span class="n">Prediction</span>
+<span class="o">+----------------------------------------------------------------------------------------------------------------------------------------------+</span>
+<span class="o">|</span>                                                                    <span class="n">label</span>                                                                     <span class="o">|</span>
+<span class="o">+----------------------------------------------------------------------------------------------------------------------------------------------+</span>
+<span class="o">|</span>            <span class="n">Value</span><span class="p">:</span>  <span class="n">bees</span>           <span class="o">|</span>                                     <span class="n">Confidence</span><span class="p">:</span>   <span class="mf">0.9162276387214661</span>                                     <span class="o">|</span>
+<span class="o">+----------------------------------------------------------------------------------------------------------------------------------------------+</span>
+
+	<span class="n">Key</span><span class="p">:</span>	<span class="n">ants2</span>
+                                                               <span class="n">Record</span> <span class="n">Features</span>
+<span class="o">+----------------------------------------------------------------------------------------------------------------------------------------------+</span>
+<span class="o">|</span>               <span class="n">image</span>               <span class="o">|</span>                   <span class="mi">69</span><span class="p">,</span> <span class="mi">121</span><span class="p">,</span> <span class="mi">162</span><span class="p">,</span> <span class="mi">44</span><span class="p">,</span> <span class="mi">96</span><span class="p">,</span> <span class="mi">137</span><span class="p">,</span> <span class="mi">41</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="mi">130</span><span class="p">,</span> <span class="mi">68</span><span class="p">,</span> <span class="mi">11</span> <span class="o">...</span> <span class="p">(</span><span class="n">length</span><span class="p">:</span><span class="mi">1563912</span><span class="p">)</span>                    <span class="o">|</span>
+<span class="o">+----------------------------------------------------------------------------------------------------------------------------------------------+</span>
+
+                                                                  <span class="n">Prediction</span>
+<span class="o">+----------------------------------------------------------------------------------------------------------------------------------------------+</span>
+<span class="o">|</span>                                                                    <span class="n">label</span>                                                                     <span class="o">|</span>
+<span class="o">+----------------------------------------------------------------------------------------------------------------------------------------------+</span>
+<span class="o">|</span>            <span class="n">Value</span><span class="p">:</span>  <span class="n">ants</span>           <span class="o">|</span>                                     <span class="n">Confidence</span><span class="p">:</span>   <span class="mf">0.9368477463722229</span>                                     <span class="o">|</span>
+<span class="o">+----------------------------------------------------------------------------------------------------------------------------------------------+</span>
+</pre></div>
+</div>
+<div class="section" id="pytorchscore">
+<span id="plugin-accuracy-dffml-model-pytorch-pytorchscore"></span><h3>pytorchscore<a class="headerlink" href="#pytorchscore" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<p>No description</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="dffml_operation.html" class="btn btn-neutral float-right" title="Operations" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="dffml_model.html" class="btn btn-neutral float-left" title="Models" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2017 - 2021, Intel.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

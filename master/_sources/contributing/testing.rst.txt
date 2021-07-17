@@ -101,7 +101,7 @@ Each pull request is expected to maintain or increase test coverage
 
 .. code-block:: console
 
-    $ python3 -m coverage run setup.py test
+    $ python3 -m coverage run -m unittest discover -v
     $ python3 -m coverage report -m
     $ python3 -m coverage html
 

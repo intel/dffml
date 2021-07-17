@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Command Line &mdash; DFFML 5c1d437ea documentation</title>
+  <title>Command Line &mdash; DFFML cab834974 documentation</title>
   
 
   
@@ -70,7 +70,7 @@
             
             
               <div class="version">
-                5c1d437ea
+                cab834974
               </div>
             
           
@@ -160,6 +160,7 @@
 <li class="toctree-l1"><a class="reference internal" href="api/source/index.html">Source</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api/operation/index.html">Operation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api/feature/index.html">Feature</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/accuracy/index.html">Accuracy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api/cli/index.html">Cli</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api/secret/index.html">Secret</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api/df/index.html">Df</a></li>
@@ -362,6 +363,7 @@ more details on this.</p>
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">location</span> <span class="n">tempdir</span> \
   <span class="o">-</span><span class="n">sources</span> <span class="n">f</span><span class="o">=</span><span class="n">csv</span> \
   <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">filename</span> <span class="n">dataset</span><span class="o">.</span><span class="n">csv</span> \
+  <span class="o">-</span><span class="n">scorer</span> <span class="n">mse</span> \
   <span class="o">-</span><span class="n">log</span> <span class="n">debug</span>
 </pre></div>
 </div>
@@ -782,7 +784,7 @@ also do over an HTTP interface. See the
 DFFML right away with the <code class="docutils literal notranslate"><span class="pre">create</span></code> command of <code class="docutils literal notranslate"><span class="pre">dev</span></code>.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml service dev create model dffml-model-mycoolmodel
 <span class="gp">$ </span><span class="nb">cd</span> dffml-model-mycoolmodel
-<span class="gp">$ </span>python setup.py <span class="nb">test</span>
+<span class="gp">$ </span>python -m unittest discover -v
 </pre></div>
 </div>
 <p>When you’re done you can upload it to PyPi and it’ll be <code class="docutils literal notranslate"><span class="pre">pip</span></code> installable so

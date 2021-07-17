@@ -1,0 +1,358 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Accuracy Mse &mdash; DFFML cab834974 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/tabs.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/copybutton.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="author" title="About these documents" href="../../about.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Accuracy Accuracy" href="accuracy.html" />
+    <link rel="prev" title="Accuracy Clf" href="clf.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> DFFML
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                cab834974
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Introduction</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../concepts/index.html">Concepts</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Usage</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../quickstart/model.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples/index.html">Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../plugins/index.html">Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cli.html">Command Line</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../plugins/service/http/index.html">HTTP API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../plugins.html">Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../noasync.html">Noasync</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../base.html">Base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../record.html">Record</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../log.html">Log</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../high_level.html">High_Level</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../version.html">Version</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../source/index.html">Source</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../operation/index.html">Operation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../feature/index.html">Feature</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Accuracy</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="clf.html">Accuracy Clf</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Accuracy Mse</a></li>
+<li class="toctree-l2"><a class="reference internal" href="accuracy.html">Accuracy Accuracy</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../cli/index.html">Cli</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../secret/index.html">Secret</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../df/index.html">Df</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../db/index.html">Db</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../service/index.html">Service</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../configloader/index.html">Configloader</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../model/index.html">Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../util/index.html">Util</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../port/index.html">Port</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../arch/index.html">Architecture</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Subprojects</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../shouldi.html">shouldi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../swportal.html">Software Portal</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Community</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/intel/dffml">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://intel.github.io/dffml/master/">Master Branch Docs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../publications.html">Publications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contact.html">Contact Us</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing/index.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../news/index.html">News</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../changelog.html">Changelog</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">DFFML</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">&lt;no title&gt;</a> &raquo;</li>
+        
+          <li><a href="index.html">Accuracy</a> &raquo;</li>
+        
+      <li>Accuracy Mse</li>
+    
+    
+
+
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            
+              <a href="https://github.com/intel/dffml/blob/master/docs/api/accuracy/mse.rst" class="fa fa-github"> Edit on GitHub</a>
+            
+          
+        
+      </li>
+    
+
+
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="module-dffml.accuracy.mse">
+<span id="accuracy-mse"></span><h1>Accuracy Mse<a class="headerlink" href="#module-dffml.accuracy.mse" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="dffml.accuracy.mse.MeanSquaredErrorAccuracy">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">dffml.accuracy.mse.</span></span><span class="sig-name descname"><span class="pre">MeanSquaredErrorAccuracy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Type</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../base.html#dffml.base.BaseConfig" title="dffml.base.BaseConfig"><span class="pre">dffml.base.BaseConfig</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/accuracy/mse.html#MeanSquaredErrorAccuracy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.accuracy.mse.MeanSquaredErrorAccuracy" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py attribute">
+<dt class="sig sig-object py" id="dffml.accuracy.mse.MeanSquaredErrorAccuracy.CONFIG">
+<span class="sig-name descname"><span class="pre">CONFIG</span></span><a class="headerlink" href="#dffml.accuracy.mse.MeanSquaredErrorAccuracy.CONFIG" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#dffml.accuracy.mse.MeanSquaredErrorAccuracyConfig" title="dffml.accuracy.mse.MeanSquaredErrorAccuracyConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">dffml.accuracy.mse.MeanSquaredErrorAccuracyConfig</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dffml.accuracy.mse.MeanSquaredErrorAccuracy.CONTEXT">
+<span class="sig-name descname"><span class="pre">CONTEXT</span></span><a class="headerlink" href="#dffml.accuracy.mse.MeanSquaredErrorAccuracy.CONTEXT" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#dffml.accuracy.mse.MeanSquaredErrorAccuracyContext" title="dffml.accuracy.mse.MeanSquaredErrorAccuracyContext"><code class="xref py py-class docutils literal notranslate"><span class="pre">dffml.accuracy.mse.MeanSquaredErrorAccuracyContext</span></code></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dffml.accuracy.mse.MeanSquaredErrorAccuracyConfig">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">dffml.accuracy.mse.</span></span><span class="sig-name descname"><span class="pre">MeanSquaredErrorAccuracyConfig</span></span><a class="reference internal" href="../../_modules/dffml/accuracy/mse.html#MeanSquaredErrorAccuracyConfig"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.accuracy.mse.MeanSquaredErrorAccuracyConfig" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dffml.accuracy.mse.MeanSquaredErrorAccuracyContext">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">dffml.accuracy.mse.</span></span><span class="sig-name descname"><span class="pre">MeanSquaredErrorAccuracyContext</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Accuracy</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/accuracy/mse.html#MeanSquaredErrorAccuracyContext"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.accuracy.mse.MeanSquaredErrorAccuracyContext" title="Permalink to this definition">¶</a></dt>
+<dd><p>Mean Squared Error</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="dffml.accuracy.mse.MeanSquaredErrorAccuracyContext.score">
+<em class="property"><span class="pre">async</span> </em><span class="sig-name descname"><span class="pre">score</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mctx</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="../model/model.html#dffml.model.model.ModelContext" title="dffml.model.model.ModelContext"><span class="pre">dffml.model.model.ModelContext</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">sources</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="../source/source.html#dffml.source.source.SourcesContext" title="dffml.source.source.SourcesContext"><span class="pre">dffml.source.source.SourcesContext</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/accuracy/mse.html#MeanSquaredErrorAccuracyContext.score"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.accuracy.mse.MeanSquaredErrorAccuracyContext.score" title="Permalink to this definition">¶</a></dt>
+<dd><p>Abstract method to get the score</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mctx</strong> (<a class="reference internal" href="../model/model.html#dffml.model.model.ModelContext" title="dffml.model.model.ModelContext"><em>ModelContext</em></a>) – The Model which needs to be used.</p></li>
+<li><p><strong>sources</strong> (<a class="reference internal" href="../source/source.html#dffml.source.source.SourcesContext" title="dffml.source.source.SourcesContext"><em>SourcesContext</em></a>) – The sources to use to get the accuracy</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The score value</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)">float</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="accuracy.html" class="btn btn-neutral float-right" title="Accuracy Accuracy" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="clf.html" class="btn btn-neutral float-left" title="Accuracy Clf" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2017 - 2021, Intel.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

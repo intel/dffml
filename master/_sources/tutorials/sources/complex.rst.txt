@@ -96,7 +96,7 @@ The following command installs your new source.
 
 .. code-block:: console
 
-    $ python -m pip install -e .
+    $ python -m pip install -e .[dev]
 
 Write the tests
 ---------------
@@ -113,4 +113,4 @@ Run the tests
 .. code-block:: console
     :test:
 
-    $ python setup.py test
+    $ python -m unittest discover -v
