@@ -318,4 +318,5 @@ Ensure that `predict` and `accuracy` for these algorithms uses training data.
 
 """
 from .scikit_models import *
+from .scikit_scorers import *
 from .scikit_model_scorer import SklearnModelAccuracy, ScorerWillNotWork
