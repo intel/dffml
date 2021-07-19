@@ -83,6 +83,14 @@ What industry challenges do DataFlows address / solve?
   experts in different domains can be used together without integration
   overhead.
 
+- We make it easy for domain experts to share their work.
+
+- We make it easy for users to reuse the work of domain experts which reduces
+  duplication of effort across the industry.
+
+- In this ecosystem, where work is easily shared and integrated, software
+  development becomes more efficient and produces software of higher quality.
+
 Why DFFML
 ---------
 
