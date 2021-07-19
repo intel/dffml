@@ -64,7 +64,7 @@ class TestDevelopCreate(AsyncTestCase):
         for filename in [
             ("setup.py",),
             ("LICENSE",),
-            ("README.md",),
+            ("README.rst",),
             ("MANIFEST.in",),
             (import_name, "__init__.py"),
             (import_name, "version.py"),
