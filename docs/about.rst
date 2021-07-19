@@ -45,6 +45,44 @@ DFFML aims to be the easiest and most convenient way to use Machine Learning.
 - DataFlows make it easy to generate datasets or modify existing datasets for
   rapid iteration on feature engineering.
 
+What is key objective of DataFlows
+----------------------------------
+
+- Our objective is to provide an environment where users can describe what they
+  want done, without needing to know how it gets done.
+
+- By separating the what from the how, each implementation of how a piece of
+  work gets done doesn’t need to know anything about the implementations of how
+  other pieces of work get done.
+
+- This approach allows domain experts to implement the work within their
+  domain, without needing to know anything about how the work of other domain
+  experts is done.
+
+- In such an environment, individual pieces of work implemented by respective
+  domain experts can be knit together to accomplish arbitrary tasks.
+
+- By taking this approach of separating the what from the how, we’ve created an
+  environment where anyone can describe what they want to get done. How it gets
+  done is handled by executing implementations provided by domain experts.
+
+Why is this objective important?
+--------------------------------
+
+- Our existing software development model requires that experts in various
+  domains maintain implementations of software which must be actively kept
+  compatible with each other.
+
+- By adopting this new model, we maximize workplace efficiency by compatibility
+  between domain expert work being done at an orchestration level.
+
+What industry challenges do DataFlows address / solve?
+------------------------------------------------------
+
+- We address and provide a solution for the challenge of how software written by
+  experts in different domains can be used together without integration
+  overhead.
+
 Why DFFML
 ---------
 
