@@ -91,6 +91,13 @@ What industry challenges do DataFlows address / solve?
 - In this ecosystem, where work is easily shared and integrated, software
   development becomes more efficient and produces software of higher quality.
 
+Key Takeaways
+-------------
+
+- Flow-based programming makes it easy to share and integrate existing work.
+
+- The software development lifecycle is streamlined by implementing this model.
+
 Why DFFML
 ---------
 
