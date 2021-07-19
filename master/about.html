@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>About &mdash; DFFML 1ef5a1693 documentation</title>
+  <title>About &mdash; DFFML cda3e8076 documentation</title>
   
 
   
@@ -70,7 +70,7 @@
             
             
               <div class="version">
-                1ef5a1693
+                cda3e8076
               </div>
             
           
@@ -99,6 +99,9 @@
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">About</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#mission-statement">Mission Statement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#what-is-key-objective-of-dataflows">What is key objective of DataFlows</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#why-is-this-objective-important">Why is this objective important?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#what-industry-challenges-do-dataflows-address-solve">What industry challenges do DataFlows address / solve?</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#why-dffml">Why DFFML</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#architecture">Architecture</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#machine-learning">Machine Learning</a></li>
@@ -293,6 +296,42 @@ implementing your own model plugin.</p></li>
 locking which we call DataFlows.</p></li>
 <li><p>DataFlows make it easy to generate datasets or modify existing datasets for
 rapid iteration on feature engineering.</p></li>
+</ul>
+</div>
+<div class="section" id="what-is-key-objective-of-dataflows">
+<h2>What is key objective of DataFlows<a class="headerlink" href="#what-is-key-objective-of-dataflows" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Our objective is to provide an environment where users can describe what they
+want done, without needing to know how it gets done.</p></li>
+<li><p>By separating the what from the how, each implementation of how a piece of
+work gets done doesn’t need to know anything about the implementations of how
+other pieces of work get done.</p></li>
+<li><p>This approach allows domain experts to implement the work within their
+domain, without needing to know anything about how the work of other domain
+experts is done.</p></li>
+<li><p>In such an environment, individual pieces of work implemented by respective
+domain experts can be knit together to accomplish arbitrary tasks.</p></li>
+<li><p>By taking this approach of separating the what from the how, we’ve created an
+environment where anyone can describe what they want to get done. How it gets
+done is handled by executing implementations provided by domain experts.</p></li>
+</ul>
+</div>
+<div class="section" id="why-is-this-objective-important">
+<h2>Why is this objective important?<a class="headerlink" href="#why-is-this-objective-important" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Our existing software development model requires that experts in various
+domains maintain implementations of software which must be actively kept
+compatible with each other.</p></li>
+<li><p>By adopting this new model, we maximize workplace efficiency by compatibility
+between domain expert work being done at an orchestration level.</p></li>
+</ul>
+</div>
+<div class="section" id="what-industry-challenges-do-dataflows-address-solve">
+<h2>What industry challenges do DataFlows address / solve?<a class="headerlink" href="#what-industry-challenges-do-dataflows-address-solve" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>We address and provide a solution for the challenge of how software written by
+experts in different domains can be used together without integration
+overhead.</p></li>
 </ul>
 </div>
 <div class="section" id="why-dffml">
