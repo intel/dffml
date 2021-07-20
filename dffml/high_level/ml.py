@@ -104,6 +104,13 @@ async def accuracy(
     ... )
     >>>
     >>> async def main():
+    ...     await train(
+    ...         model,
+    ...         {"Years": 0, "Salary": 10},
+    ...         {"Years": 1, "Salary": 20},
+    ...         {"Years": 2, "Salary": 30},
+    ...         {"Years": 3, "Salary": 40},
+    ...     )
     ...     print(
     ...         "Accuracy:",
     ...         await accuracy(
@@ -183,6 +190,13 @@ async def predict(
     ... )
     >>>
     >>> async def main():
+    ...     await train(
+    ...         model,
+    ...         {"Years": 0, "Salary": 10},
+    ...         {"Years": 1, "Salary": 20},
+    ...         {"Years": 2, "Salary": 30},
+    ...         {"Years": 3, "Salary": 40},
+    ...     )
     ...     async for i, features, prediction in predict(
     ...         model,
     ...         {"Years": 6},
