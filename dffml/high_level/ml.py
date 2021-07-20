@@ -29,7 +29,6 @@ async def train(model, *args: Union[BaseSource, Record, Dict[str, Any]]):
     --------
 
     >>> import asyncio
-    >>> from dffml.high_level.ml import train
     >>> from dffml import *
     >>>
     >>> model = SLRModel(
