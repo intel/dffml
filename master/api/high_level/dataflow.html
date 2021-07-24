@@ -1,0 +1,439 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>High_Level Dataflow &mdash; DFFML dcc64122a documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/tabs.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/copybutton.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="author" title="About these documents" href="../../about.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Accuracy" href="../accuracy/index.html" />
+    <link rel="prev" title="High_Level Ml" href="ml.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> DFFML
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                dcc64122a
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Introduction</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../concepts/index.html">Concepts</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Usage</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../quickstart/model.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples/index.html">Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../plugins/index.html">Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cli.html">Command Line</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../plugins/service/http/index.html">HTTP API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../plugins.html">Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../noasync.html">Noasync</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../base.html">Base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../record.html">Record</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../log.html">Log</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../version.html">Version</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../source/index.html">Source</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../operation/index.html">Operation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../feature/index.html">Feature</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">High_Level</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="source.html">High_Level Source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ml.html">High_Level Ml</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">High_Level Dataflow</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../accuracy/index.html">Accuracy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cli/index.html">Cli</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../secret/index.html">Secret</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../df/index.html">Df</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../db/index.html">Db</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../service/index.html">Service</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../configloader/index.html">Configloader</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../model/index.html">Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../util/index.html">Util</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../port/index.html">Port</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../arch/index.html">Architecture</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Subprojects</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../shouldi.html">shouldi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../swportal.html">Software Portal</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Community</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/intel/dffml">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://intel.github.io/dffml/master/">Master Branch Docs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../publications.html">Publications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contact.html">Contact Us</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing/index.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../news/index.html">News</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../changelog.html">Changelog</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">DFFML</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">&lt;no title&gt;</a> &raquo;</li>
+        
+          <li><a href="index.html">High_Level</a> &raquo;</li>
+        
+      <li>High_Level Dataflow</li>
+    
+    
+
+
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            
+              <a href="https://github.com/intel/dffml/blob/master/docs/api/high_level/dataflow.rst" class="fa fa-github"> Edit on GitHub</a>
+            
+          
+        
+      </li>
+    
+
+
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="module-dffml.high_level.dataflow">
+<span id="high-level-dataflow"></span><h1>High_Level Dataflow<a class="headerlink" href="#module-dffml.high_level.dataflow" title="Permalink to this headline">¶</a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="dffml.high_level.dataflow.run">
+<span class="sig-prename descclassname"><span class="pre">dffml.high_level.dataflow.</span></span><span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataflow</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">dffml.df.types.DataFlow</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">input_sets</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../df/types.html#dffml.df.types.Input" title="dffml.df.types.Input"><span class="pre">dffml.df.types.Input</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span> </span><a class="reference internal" href="../df/base.html#dffml.df.base.BaseInputSet" title="dffml.df.base.BaseInputSet"><span class="pre">dffml.df.base.BaseInputSet</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">orchestrator</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../df/base.html#dffml.df.base.BaseOrchestrator" title="dffml.df.base.BaseOrchestrator"><span class="pre">dffml.df.base.BaseOrchestrator</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strict</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><span class="pre">bool</span></a></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ctx</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../df/base.html#dffml.df.base.BaseInputSetContext" title="dffml.df.base.BaseInputSetContext"><span class="pre">dffml.df.base.BaseInputSetContext</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">halt</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">asyncio.locks.Event</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">AsyncIterator</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../df/base.html#dffml.df.base.BaseInputSetContext" title="dffml.df.base.BaseInputSetContext"><span class="pre">dffml.df.base.BaseInputSetContext</span></a><span class="p"><span class="pre">,</span> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/dffml/high_level/dataflow.html#run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.high_level.dataflow.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run a DataFlow</p>
+<p>Run a DataFlow using the the default orchestrator
+(<a class="reference internal" href="../df/memory.html#dffml.df.memory.MemoryOrchestrator" title="dffml.df.memory.MemoryOrchestrator"><code class="xref py py-class docutils literal notranslate"><span class="pre">MemoryOrchestrator</span></code></a>),
+or the specified one.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dataflow</strong> (<em>DataFlow</em>) – <code class="xref py py-class docutils literal notranslate"><span class="pre">DataFlow</span></code> to run.</p></li>
+<li><p><strong>input_sets</strong> (<em>InputSet</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><em>list</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><em>dict</em></a><em>, </em><em>optional</em>) – <p><a class="reference internal" href="../df/types.html#dffml.df.types.Input" title="dffml.df.types.Input"><code class="xref py py-class docutils literal notranslate"><span class="pre">Inputs</span></code></a> to give to the
+<code class="xref py py-class docutils literal notranslate"><span class="pre">DataFlow</span></code> when it starts. Can be in
+multiple formats.</p>
+<p>If each element is a <code class="docutils literal notranslate"><span class="pre">list</span></code> then it’s expected that each element of
+that list be an <a class="reference internal" href="../df/types.html#dffml.df.types.Input" title="dffml.df.types.Input"><code class="xref py py-class docutils literal notranslate"><span class="pre">Input</span></code></a>, in this case
+an <a class="reference internal" href="../df/base.html#dffml.df.base.BaseInputSet" title="dffml.df.base.BaseInputSet"><code class="xref py py-class docutils literal notranslate"><span class="pre">InputSet</span></code></a> will be created
+with a random string used as the
+<a class="reference internal" href="../df/base.html#dffml.df.base.StringInputSetContext" title="dffml.df.base.StringInputSetContext"><code class="xref py py-class docutils literal notranslate"><span class="pre">StringInputSetContext</span></code></a>.</p>
+<p>If a <code class="docutils literal notranslate"><span class="pre">dict</span></code> is given then each key will become a
+<a class="reference internal" href="../df/base.html#dffml.df.base.StringInputSetContext" title="dffml.df.base.StringInputSetContext"><code class="xref py py-class docutils literal notranslate"><span class="pre">StringInputSetContext</span></code></a>.
+The value for each key should be a <code class="docutils literal notranslate"><span class="pre">list</span></code> of
+<a class="reference internal" href="../df/types.html#dffml.df.types.Input" title="dffml.df.types.Input"><code class="xref py py-class docutils literal notranslate"><span class="pre">Input</span></code></a> objects.</p>
+<p>If each element is a <a class="reference internal" href="../df/base.html#dffml.df.base.BaseInputSet" title="dffml.df.base.BaseInputSet"><code class="xref py py-class docutils literal notranslate"><span class="pre">InputSet</span></code></a>
+then each context
+<a class="reference internal" href="../df/base.html#dffml.df.base.BaseInputSetContext" title="dffml.df.base.BaseInputSetContext"><code class="xref py py-class docutils literal notranslate"><span class="pre">InputSetContext</span></code></a>
+will have its respective <a class="reference internal" href="../df/types.html#dffml.df.types.Input" title="dffml.df.types.Input"><code class="xref py py-class docutils literal notranslate"><span class="pre">Inputs</span></code></a> added
+to it.</p>
+</p></li>
+<li><p><strong>orchestrator</strong> (<a class="reference internal" href="../df/base.html#dffml.df.base.BaseOrchestrator" title="dffml.df.base.BaseOrchestrator"><em>BaseOrchestrator</em></a><em>, </em><em>optional</em>) – Orchestrator to use, defaults to
+<a class="reference internal" href="../df/memory.html#dffml.df.memory.MemoryOrchestrator" title="dffml.df.memory.MemoryOrchestrator"><code class="xref py py-class docutils literal notranslate"><span class="pre">MemoryOrchestrator</span></code></a>
+if <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
+<li><p><strong>strict</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a><em>, </em><em>optional</em>) – If true (default), raise exceptions when they occur in operations. If
+false, log exceptions without raising.</p></li>
+<li><p><strong>ctx</strong> (<a class="reference internal" href="../df/base.html#dffml.df.base.BaseInputSetContext" title="dffml.df.base.BaseInputSetContext"><em>BaseInputSetContext</em></a><em>, </em><em>optional</em>) – If given and input_sets is a <code class="docutils literal notranslate"><span class="pre">list</span></code> then add inputs under the given
+context. Otherwise they are added under randomly generated contexts.</p></li>
+<li><p><strong>halt</strong> (<em>Event</em><em>, </em><em>optional</em>) – If given, keep the dataflow running until this <a class="reference external" href="https://docs.python.org/3/library/asyncio-sync.html#asyncio.Event" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">asyncio.Event</span></code></a>
+is set.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">tuple</span></code> of
+<a class="reference internal" href="../df/base.html#dffml.df.base.BaseInputSetContext" title="dffml.df.base.BaseInputSetContext"><code class="xref py py-class docutils literal notranslate"><span class="pre">InputSetContext</span></code></a>
+and <code class="docutils literal notranslate"><span class="pre">dict</span></code> where contents are determined by output operations.
+If multiple output operations are used, then the top level keys will be
+the names of the output operations. If only one is used, then the
+<code class="docutils literal notranslate"><span class="pre">dict</span></code> will be whatever the return value of that output operation was.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>asynciterator</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<p>The following creates a TCP echo server. We write an operation which using a
+DataFlow to open a connection and send a message to the server.</p>
+<p>For the inputs to the DataFlow, we create 2 Input objects whose values are
+the message to be sent to the TCP server. We also create Input objects for
+the host and port. When running a DataFlow, operations will be run with each
+possible permutation of their inputs.</p>
+<img alt="Flow chart showing how both echo messages create a parameter set including that echo message and the host and port" src="../../_images/high_level_run_echo_server_input_combination.svg" /><p>Because there is a different Input object for each of the 2 “echo” messages,
+one will get combined with the host and port to make an argument list for
+the <code class="docutils literal notranslate"><span class="pre">send_to_server</span></code> operation. The other also combines with the host and
+port to make another argument list. Both argument lists are used to call the
+<code class="docutils literal notranslate"><span class="pre">send_to_server</span></code> operation.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Socket server derived from</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># https://docs.python.org/3/library/socketserver.html#asynchronous-mixins</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">threading</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">socketserver</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">ThreadedTCPRequestHandler</span><span class="p">(</span><span class="n">socketserver</span><span class="o">.</span><span class="n">BaseRequestHandler</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">def</span> <span class="nf">handle</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">sendall</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">1024</span><span class="p">))</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">ThreadedTCPServer</span><span class="p">(</span><span class="n">socketserver</span><span class="o">.</span><span class="n">ThreadingMixIn</span><span class="p">,</span> <span class="n">socketserver</span><span class="o">.</span><span class="n">TCPServer</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">pass</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nd">@op</span>
+<span class="gp">... </span><span class="k">async</span> <span class="k">def</span> <span class="nf">send_to_server</span><span class="p">(</span><span class="n">host</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">port</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">reader</span><span class="p">,</span> <span class="n">writer</span> <span class="o">=</span> <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">open_connection</span><span class="p">(</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">... </span>    <span class="n">writer</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">message</span><span class="o">.</span><span class="n">encode</span><span class="p">())</span>
+<span class="gp">... </span>    <span class="k">await</span> <span class="n">writer</span><span class="o">.</span><span class="n">drain</span><span class="p">()</span>
+<span class="gp">...</span>
+<span class="gp">... </span>    <span class="n">data</span> <span class="o">=</span> <span class="k">await</span> <span class="n">reader</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Client sent </span><span class="si">{</span><span class="n">message</span><span class="si">!r}</span><span class="s2">, got: </span><span class="si">{</span><span class="n">data</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">... </span>    <span class="n">writer</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="gp">... </span>    <span class="k">await</span> <span class="n">writer</span><span class="o">.</span><span class="n">wait_closed</span><span class="p">()</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># List of messages to send to the server, 2 long, each value is &quot;echo&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">messages</span> <span class="o">=</span> <span class="p">[</span><span class="n">Input</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="s2">&quot;echo&quot;</span><span class="p">,</span> <span class="n">definition</span><span class="o">=</span><span class="n">send_to_server</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;message&quot;</span><span class="p">])</span>
+<span class="gp">... </span>            <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">)]</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># DataFlow consisting of the single operation</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dataflow</span> <span class="o">=</span> <span class="n">DataFlow</span><span class="o">.</span><span class="n">auto</span><span class="p">(</span><span class="n">send_to_server</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="c1"># Create a server with and pass 0 to get a random port assigned</span>
+<span class="gp">... </span>    <span class="n">server</span> <span class="o">=</span> <span class="n">ThreadedTCPServer</span><span class="p">((</span><span class="s2">&quot;127.0.0.1&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">ThreadedTCPRequestHandler</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="k">with</span> <span class="n">server</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="n">host</span><span class="p">,</span> <span class="n">port</span> <span class="o">=</span> <span class="n">server</span><span class="o">.</span><span class="n">server_address</span>
+<span class="gp">...</span>
+<span class="gp">... </span>        <span class="c1"># Start a thread to run the server in the background</span>
+<span class="gp">... </span>        <span class="n">server_thread</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">server</span><span class="o">.</span><span class="n">serve_forever</span><span class="p">)</span>
+<span class="gp">... </span>        <span class="c1"># Exit the server thread when the main thread terminates</span>
+<span class="gp">... </span>        <span class="n">server_thread</span><span class="o">.</span><span class="n">daemon</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="gp">... </span>        <span class="n">server_thread</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="gp">...</span>
+<span class="gp">... </span>        <span class="c1"># Add the host and port to the list of Inputs for the DataFlow</span>
+<span class="gp">... </span>        <span class="n">inputs</span> <span class="o">=</span> <span class="n">messages</span> <span class="o">+</span> <span class="p">[</span>
+<span class="gp">... </span>            <span class="n">Input</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="n">host</span><span class="p">,</span> <span class="n">definition</span><span class="o">=</span><span class="n">send_to_server</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;host&quot;</span><span class="p">]),</span>
+<span class="gp">... </span>            <span class="n">Input</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="n">port</span><span class="p">,</span> <span class="n">definition</span><span class="o">=</span><span class="n">send_to_server</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;port&quot;</span><span class="p">])</span>
+<span class="gp">... </span>        <span class="p">]</span>
+<span class="gp">...</span>
+<span class="gp">... </span>        <span class="k">try</span><span class="p">:</span>
+<span class="gp">... </span>            <span class="k">async</span> <span class="k">for</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">results</span> <span class="ow">in</span> <span class="n">run</span><span class="p">(</span><span class="n">dataflow</span><span class="p">,</span> <span class="n">inputs</span><span class="p">):</span>
+<span class="gp">... </span>                <span class="k">pass</span>
+<span class="gp">... </span>        <span class="k">finally</span><span class="p">:</span>
+<span class="gp">... </span>            <span class="n">server</span><span class="o">.</span><span class="n">shutdown</span><span class="p">()</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+<span class="go">Client sent &#39;echo&#39;, got: &#39;echo&#39;</span>
+<span class="go">Client sent &#39;echo&#39;, got: &#39;echo&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="../accuracy/index.html" class="btn btn-neutral float-right" title="Accuracy" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="ml.html" class="btn btn-neutral float-left" title="High_Level Ml" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2017 - 2021, Intel.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

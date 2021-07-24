@@ -1,0 +1,5 @@
+Util Internal
+=============
+
+.. automodule:: dffml.util.internal
+   :members:

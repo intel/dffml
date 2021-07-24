@@ -1,0 +1,334 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Util Internal &mdash; DFFML dcc64122a documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/tabs.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/copybutton.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="author" title="About these documents" href="../../about.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Util File" href="file.html" />
+    <link rel="prev" title="Util Asynchelper" href="asynchelper.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> DFFML
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                dcc64122a
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Introduction</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../concepts/index.html">Concepts</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Usage</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../quickstart/model.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples/index.html">Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../plugins/index.html">Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cli.html">Command Line</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../plugins/service/http/index.html">HTTP API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../plugins.html">Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../noasync.html">Noasync</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../base.html">Base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../record.html">Record</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../log.html">Log</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../version.html">Version</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../source/index.html">Source</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../operation/index.html">Operation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../feature/index.html">Feature</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../high_level/index.html">High_Level</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../accuracy/index.html">Accuracy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cli/index.html">Cli</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../secret/index.html">Secret</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../df/index.html">Df</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../db/index.html">Db</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../service/index.html">Service</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../configloader/index.html">Configloader</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../model/index.html">Model</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Util</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="os.html">Util Os</a></li>
+<li class="toctree-l2"><a class="reference internal" href="python.html">Util Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="asynctestcase.html">Util Asynctestcase</a></li>
+<li class="toctree-l2"><a class="reference internal" href="display.html">Util Display</a></li>
+<li class="toctree-l2"><a class="reference internal" href="crypto.html">Util Crypto</a></li>
+<li class="toctree-l2"><a class="reference internal" href="skel.html">Util Skel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packaging.html">Util Packaging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="data.html">Util Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tempdir.html">Util Tempdir</a></li>
+<li class="toctree-l2"><a class="reference internal" href="net.html">Util Net</a></li>
+<li class="toctree-l2"><a class="reference internal" href="log.html">Util Log</a></li>
+<li class="toctree-l2"><a class="reference internal" href="asynchelper.html">Util Asynchelper</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Util Internal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="file.html">Util File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="entrypoint.html">Util Entrypoint</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli/index.html">Util Cli</a></li>
+<li class="toctree-l2"><a class="reference internal" href="testing/index.html">Util Testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="config/index.html">Util Config</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../port/index.html">Port</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../arch/index.html">Architecture</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Subprojects</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../shouldi.html">shouldi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../swportal.html">Software Portal</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Community</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/intel/dffml">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://intel.github.io/dffml/master/">Master Branch Docs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../publications.html">Publications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contact.html">Contact Us</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing/index.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../news/index.html">News</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../changelog.html">Changelog</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">DFFML</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">&lt;no title&gt;</a> &raquo;</li>
+        
+          <li><a href="index.html">Util</a> &raquo;</li>
+        
+      <li>Util Internal</li>
+    
+    
+
+
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            
+              <a href="https://github.com/intel/dffml/blob/master/docs/api/util/internal.rst" class="fa fa-github"> Edit on GitHub</a>
+            
+          
+        
+      </li>
+    
+
+
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="module-dffml.util.internal">
+<span id="util-internal"></span><h1>Util Internal<a class="headerlink" href="#module-dffml.util.internal" title="Permalink to this headline">¶</a></h1>
+<p>Helper functions for dealing with internal data types</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="dffml.util.internal.records_to_sources">
+<span class="sig-prename descclassname"><span class="pre">dffml.util.internal.</span></span><span class="sig-name descname"><span class="pre">records_to_sources</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/util/internal.html#records_to_sources"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.util.internal.records_to_sources" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a memory source out of any records passed as a variable length list.
+Add all sources found in the variable length list to a list of sources, and
+the created source containing records, and return that list of sources.</p>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="file.html" class="btn btn-neutral float-right" title="Util File" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="asynchelper.html" class="btn btn-neutral float-left" title="Util Asynchelper" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2017 - 2021, Intel.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

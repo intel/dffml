@@ -1,5 +1,0 @@
-High_Level
-==========
-
-.. automodule:: dffml.high_level
-   :members:

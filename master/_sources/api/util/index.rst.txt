@@ -17,6 +17,7 @@ Util
     net
     log
     asynchelper
+    internal
     file
     entrypoint
     cli/index
