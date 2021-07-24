@@ -18,7 +18,7 @@ Welcome to DFFML!
     :alt: PyPI version
 
 You can use DFFML from the :doc:`Command Line <cli>`, :doc:`Python
-<api/high_level>`, or the :doc:`HTTP API <plugins/service/http/index>`, see the
+<api/high_level/index>`, or the :doc:`HTTP API <plugins/service/http/index>`, see the
 :doc:`quickstart/model` to get started right away.
 
 It makes training and using machine learning models as simple as

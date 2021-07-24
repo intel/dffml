@@ -25,6 +25,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Build docs using `dffml service dev docs`
 - `cached_download/unpack_archive()` are now functions
 - Model `directory` property to `location`
+- `high_level` split into `ml`, `dataflow` & `source` submodules
 ### Fixed
 - Record object key properties are now always strings
 

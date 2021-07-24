@@ -1,8 +1,7 @@
 from typing import List
 
 from ..record import Record
-from ..high_level import run
-from .source import BaseSource
+from ..high_level.dataflow import run
 from ..base import config, field
 from ..df.types import DataFlow, Input
 from ..util.entrypoint import entrypoint

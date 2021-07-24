@@ -213,7 +213,7 @@ The ouput should be as follows
     {'Years': 7, 'Expertise': 15, 'Trust': 0.8, 'Salary': 80.0}
 
 Check out the plugin docs for :doc:`/plugins/dffml_model` for usage of other
-models. The :doc:`API </api/high_level>` docs may also be useful.
+models. The :doc:`API </api/high_level/index>` docs may also be useful.
 
 Data Sources
 ------------

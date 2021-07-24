@@ -28,7 +28,7 @@ from ..util.cli.cmds import (
 from ..util.cli.parser import ParseInputsAction
 from ..util.crypto import insecure_hash
 from ..base import config, field
-from ..high_level import run as run_dataflow
+from ..high_level.dataflow import run as run_dataflow
 
 
 @config
