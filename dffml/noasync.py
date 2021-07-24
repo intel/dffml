@@ -1,30 +1,36 @@
 import asyncio
 
-from . import high_level
+from .high_level.dataflow import run as high_level_run
+from .high_level.source import save as high_level_save, load as high_level_load
+from .high_level.ml import (
+    train as high_level_train,
+    accuracy as high_level_accuracy,
+    predict as high_level_predict,
+)
 
 
 def train(*args, **kwargs):
-    return asyncio.run(high_level.train(*args, **kwargs))
+    return asyncio.run(high_level_train(*args, **kwargs))
 
 
 train.__doc__ = (
-    high_level.train.__doc__.replace("await ", "")
+    high_level_train.__doc__.replace("await ", "")
     .replace("async ", "")
     .replace("asyncio.run(main())", "main()")
     .replace("    >>> import asyncio\n", "")
     .replace(
         "    >>> from dffml import *\n",
-        "    >>> from dffml import *\n    >>> from dffml.noasync import *\n",
+        "    >>> from dffml import *\n    >>> from dffml.noasync import train\n",
     )
 )
 
 
 def accuracy(*args, **kwargs):
-    return asyncio.run(high_level.accuracy(*args, **kwargs))
+    return asyncio.run(high_level_accuracy(*args, **kwargs))
 
 
 accuracy.__doc__ = (
-    high_level.accuracy.__doc__.replace("await ", "")
+    high_level_accuracy.__doc__.replace("await ", "")
     .replace("async ", "")
     .replace("asyncio.run(main())", "main()")
     .replace("    >>> import asyncio\n", "")
@@ -36,7 +42,7 @@ accuracy.__doc__ = (
 
 
 def predict(*args, **kwargs):
-    async_gen = high_level.predict(*args, **kwargs).__aiter__()
+    async_gen = high_level_predict(*args, **kwargs).__aiter__()
 
     loop = asyncio.new_event_loop()
 
@@ -56,7 +62,7 @@ def predict(*args, **kwargs):
 
 
 predict.__doc__ = (
-    high_level.predict.__doc__.replace("await ", "")
+    high_level_predict.__doc__.replace("await ", "")
     .replace("asynciterator", "iterator")
     .replace("async ", "")
     .replace("asyncio.run(main())", "main()")
@@ -69,11 +75,11 @@ predict.__doc__ = (
 
 
 def save(*args, **kwargs):
-    return asyncio.run(high_level.save(*args, **kwargs))
+    return asyncio.run(high_level_save(*args, **kwargs))
 
 
 save.__doc__ = (
-    high_level.save.__doc__.replace("await ", "")
+    high_level_save.__doc__.replace("await ", "")
     .replace("async ", "")
     .replace("asyncio.run(main())", "main()")
     .replace("    >>> import asyncio\n", "")
@@ -85,7 +91,7 @@ save.__doc__ = (
 
 
 def load(*args, **kwargs):
-    async_gen = high_level.load(*args, **kwargs).__aiter__()
+    async_gen = high_level_load(*args, **kwargs).__aiter__()
 
     loop = asyncio.new_event_loop()
 
@@ -105,7 +111,7 @@ def load(*args, **kwargs):
 
 
 load.__doc__ = (
-    high_level.load.__doc__.replace("await ", "")
+    high_level_load.__doc__.replace("await ", "")
     .replace("async ", "")
     .replace("asyncio.run(main())", "main()")
     .replace("    >>> import asyncio\n", "")
@@ -183,7 +189,7 @@ def run(*args, **kwargs):
     Received: Hello World!
     Received: Hello World!
     """
-    async_gen = high_level.run(*args, **kwargs).__aiter__()
+    async_gen = high_level_run(*args, **kwargs).__aiter__()
 
     loop = asyncio.new_event_loop()
 

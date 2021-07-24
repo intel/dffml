@@ -3,7 +3,7 @@ from tempfile import TemporaryDirectory
 
 from dffml.record import Record
 from dffml.source.ini import INISource
-from dffml.high_level import load, save
+from dffml.high_level.source import load, save
 from dffml.util.asynctestcase import AsyncTestCase
 
 

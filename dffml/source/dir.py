@@ -12,7 +12,7 @@ from .memory import MemorySource
 from ..util.entrypoint import entrypoint
 from ..source.source import BaseSource
 from ..configloader.configloader import ConfigLoaders
-from ..high_level import save
+from ..high_level.source import save
 
 
 class FolderNotFoundError(Exception):

@@ -3,7 +3,7 @@ import inspect
 from ..model.model import Model
 from ..source.source import Sources, SubsetSources
 from ..util.cli.cmd import CMD, CMDOutputOverride
-from ..high_level import train, predict, accuracy
+from ..high_level.ml import train, predict, accuracy
 from ..util.config.fields import FIELD_SOURCES
 from ..util.cli.cmds import (
     SourcesCMD,
