@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Util Log &mdash; DFFML 899649cdc documentation</title>
+  <title>Util Log &mdash; DFFML d2978854d documentation</title>
   
 
   
@@ -70,7 +70,7 @@
             
             
               <div class="version">
-                899649cdc
+                d2978854d
               </div>
             
           
@@ -283,6 +283,46 @@
 <dt class="sig sig-object py" id="dffml.util.log.get_download_logger">
 <span class="sig-prename descclassname"><span class="pre">dffml.util.log.</span></span><span class="sig-name descname"><span class="pre">get_download_logger</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root_logger</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/util/log.html#get_download_logger"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.util.log.get_download_logger" title="Permalink to this definition">¶</a></dt>
 <dd><p>Helper function to create a child logger for displaying download progress</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dffml.util.log.log_time">
+<span class="sig-prename descclassname"><span class="pre">dffml.util.log.</span></span><span class="sig-name descname"><span class="pre">log_time</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/util/log.html#log_time"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.util.log.log_time" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decorator that can take either coroutine or normal function
+and log its runtime.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">time</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">logging</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">log_time</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nd">@log_time</span>
+<span class="gp">... </span><span class="k">def</span> <span class="nf">simple_function</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="kc">True</span>
+<span class="gp">...</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nd">@log_time</span>
+<span class="gp">... </span><span class="k">async</span> <span class="k">def</span> <span class="nf">coroutine</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="kc">True</span>
+<span class="gp">...</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">simple_function</span><span class="p">()</span>
+<span class="go">True</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">coroutine</span><span class="p">())</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<p>You should see</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">DEBUG</span><span class="p">:</span><span class="n">dffml</span><span class="o">.</span><span class="n">util</span><span class="o">.</span><span class="n">duration_logger</span><span class="p">:</span> <span class="n">coroutine</span> <span class="n">took</span> <span class="mf">1.0</span> <span class="n">seconds</span>
+</pre></div>
+</div>
+<p>Since logging was enabled using <code class="docutils literal notranslate"><span class="pre">basicConfig</span></code>.</p>
 </dd></dl>
 
 </div>

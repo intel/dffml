@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>dffml.service.dev &mdash; DFFML 899649cdc documentation</title>
+  <title>dffml.service.dev &mdash; DFFML d2978854d documentation</title>
   
 
   
@@ -69,7 +69,7 @@
             
             
               <div class="version">
-                899649cdc
+                d2978854d
               </div>
             
           
@@ -219,6 +219,7 @@
             
   <h1>Source code for dffml.service.dev</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">io</span>
 <span class="kn">import</span> <span class="nn">re</span>
 <span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">import</span> <span class="nn">ast</span>
@@ -976,10 +977,183 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Updated version file </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">version_file</span><span class="p">)</span></div>
 
 
+<div class="viewcode-block" id="CommitLintError"><a class="viewcode-back" href="../../../api/service/dev.html#dffml.service.dev.CommitLintError">[docs]</a><span class="k">class</span> <span class="nc">CommitLintError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="LintCommits"><a class="viewcode-back" href="../../../api/service/dev.html#dffml.service.dev.LintCommits">[docs]</a><span class="k">class</span> <span class="nc">LintCommits</span><span class="p">(</span><span class="n">CMD</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Enforce commit message style </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">substitutions</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;shouldi&quot;</span><span class="p">:</span> <span class="s2">&quot;examples/shouldi/&quot;</span><span class="p">}</span>
+
+    <span class="k">def</span> <span class="nf">_get_ignore_filter</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="ow">not</span> <span class="n">x</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_execute_func_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">param</span><span class="p">,</span> <span class="n">func_list</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">func</span> <span class="ow">in</span> <span class="n">func_list</span><span class="p">:</span>
+            <span class="n">param</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="n">param</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">param</span>
+
+    <span class="k">def</span> <span class="nf">_make_composite_function</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">func</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">compose</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">g</span><span class="p">):</span>
+            <span class="k">return</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">f</span><span class="p">(</span><span class="n">g</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">functools</span><span class="o">.</span><span class="n">reduce</span><span class="p">(</span><span class="n">compose</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_test_mutation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="c1"># Conditional mutations like this should</span>
+        <span class="c1"># behave like no_mutation if condition is</span>
+        <span class="c1"># not met</span>
+        <span class="n">blocks</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
+        <span class="n">first_block</span> <span class="o">=</span> <span class="n">blocks</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="n">second_block</span> <span class="o">=</span> <span class="n">blocks</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">blocks</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">3</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="nb">any</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="n">first_block</span> <span class="ow">in</span> <span class="s2">&quot;tests&quot;</span><span class="p">,</span>
+                <span class="n">second_block</span> <span class="ow">in</span> <span class="s2">&quot;tests&quot;</span> <span class="k">if</span> <span class="n">second_block</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">False</span><span class="p">,</span>
+            <span class="p">]</span>
+        <span class="p">):</span>
+            <span class="n">blocks</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;test_&quot;</span> <span class="o">+</span> <span class="n">blocks</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">mutated_msg</span> <span class="o">=</span> <span class="s2">&quot;/&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">blocks</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">mutated_msg</span>
+        <span class="k">return</span> <span class="n">x</span>
+
+    <span class="k">def</span> <span class="nf">_substitution_mutation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;/&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">substitutions</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">x</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)])</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">_get_file_mutations</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">no_mutation</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span>
+        <span class="n">mutation_func_factory</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">ext</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">+</span> <span class="n">ext</span>
+        <span class="n">extensions</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_all_exts</span><span class="p">()</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;extensions&quot;</span><span class="p">)</span>
+            <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">extensions</span>
+        <span class="p">)</span>
+        <span class="n">mutations</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;prefix_mutations&quot;</span><span class="p">:</span> <span class="p">[</span>
+                <span class="n">no_mutation</span><span class="p">,</span>
+                <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="s2">&quot;.&quot;</span> <span class="o">+</span> <span class="n">x</span><span class="p">,</span>
+                <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="s2">&quot;dffml/&quot;</span> <span class="o">+</span> <span class="n">x</span><span class="p">,</span>
+            <span class="p">],</span>
+            <span class="s2">&quot;body_mutations&quot;</span><span class="p">:</span> <span class="p">[</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_make_composite_function</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_substitution_mutation</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_test_mutation</span>
+                <span class="p">)</span>
+            <span class="p">],</span>
+            <span class="s2">&quot;suffix_mutations&quot;</span><span class="p">:</span> <span class="p">[</span>
+                <span class="n">no_mutation</span><span class="p">,</span>
+                <span class="o">*</span><span class="p">[</span><span class="n">mutation_func_factory</span><span class="p">(</span><span class="n">ext</span><span class="p">)</span> <span class="k">for</span> <span class="n">ext</span> <span class="ow">in</span> <span class="n">extensions</span><span class="p">],</span>
+                <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">+</span> <span class="s2">&quot;/shouldi&quot;</span><span class="p">,</span>
+            <span class="p">],</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">mutations</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">_get_cmd_output</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cmd</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;$ </span><span class="si">{</span><span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="n">proc</span> <span class="o">=</span> <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">create_subprocess_shell</span><span class="p">(</span>
+            <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cmd</span><span class="p">),</span>
+            <span class="n">stdout</span><span class="o">=</span><span class="n">asyncio</span><span class="o">.</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span>
+            <span class="n">stderr</span><span class="o">=</span><span class="n">asyncio</span><span class="o">.</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span>
+            <span class="n">cwd</span><span class="o">=</span><span class="n">REPO_ROOT</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">await</span> <span class="n">proc</span><span class="o">.</span><span class="n">wait</span><span class="p">()</span>
+        <span class="n">stdout</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="k">await</span> <span class="n">proc</span><span class="o">.</span><span class="n">communicate</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">proc</span><span class="o">.</span><span class="n">returncode</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="n">stderr</span><span class="p">)</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="n">stdout</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">output</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">_get_relevant_commits</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1">#! This needs to change when master is renamed to main.</span>
+        <span class="n">cmd</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;git&quot;</span><span class="p">,</span> <span class="s2">&quot;cherry&quot;</span><span class="p">,</span> <span class="s2">&quot;-v&quot;</span><span class="p">,</span> <span class="s2">&quot;origin/master&quot;</span><span class="p">]</span>
+        <span class="n">commits</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_cmd_output</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span>
+        <span class="n">commits_list</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">2</span><span class="p">:])</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">commits</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="p">]</span>
+        <span class="k">return</span> <span class="n">commits_list</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">_get_commmit_details</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="p">):</span>
+        <span class="n">cmd</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;git&quot;</span><span class="p">,</span> <span class="s2">&quot;log&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;--grep=&#39;</span><span class="si">{</span><span class="n">msg</span><span class="si">}</span><span class="s2">&#39;&quot;&quot;&quot;</span><span class="p">]</span>
+        <span class="n">commit_details</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_cmd_output</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">commit_details</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">_get_all_exts</span><span class="p">(</span><span class="bp">self</span><span class="p">,):</span>
+        <span class="n">cmd</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s2">&quot;git&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;ls-tree&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;-r&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;HEAD&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;--name-only&quot;</span><span class="p">,</span>
+        <span class="p">]</span>
+        <span class="n">tracked_files</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_cmd_output</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span>
+        <span class="n">tracked_files</span> <span class="o">=</span> <span class="n">tracked_files</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">extentions</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">tracked_files</span><span class="p">:</span>
+            <span class="n">_</span><span class="p">,</span> <span class="n">file_extension</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+            <span class="n">extentions</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">file_extension</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">extentions</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">validate_commit_msg</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="p">):</span>
+        <span class="n">root</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parents</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+        <span class="n">test_path</span> <span class="o">=</span> <span class="s2">&quot;/&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+            <span class="nb">filter</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_get_ignore_filter</span><span class="p">(),</span> <span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="o">.</span><span class="n">strip</span><span class="p">,</span> <span class="n">msg</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">)[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">mutations_dict</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_file_mutations</span><span class="p">()</span>
+        <span class="n">mutation_pipelines</span> <span class="o">=</span> <span class="n">itertools</span><span class="o">.</span><span class="n">product</span><span class="p">(</span>
+            <span class="o">*</span><span class="p">[</span>
+                <span class="p">[</span><span class="n">mutation</span> <span class="k">for</span> <span class="n">mutation</span> <span class="ow">in</span> <span class="n">mutations_list</span><span class="p">]</span>
+                <span class="k">for</span> <span class="n">mutations_list</span> <span class="ow">in</span> <span class="n">mutations_dict</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
+            <span class="p">]</span>
+        <span class="p">)</span>
+        <span class="n">mutated_paths</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">root</span> <span class="o">/</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_execute_func_list</span><span class="p">(</span><span class="n">test_path</span><span class="p">,</span> <span class="n">pipeline</span><span class="p">))</span>
+            <span class="k">for</span> <span class="n">pipeline</span> <span class="ow">in</span> <span class="n">mutation_pipelines</span>
+        <span class="p">]</span>
+        <span class="n">is_valid</span> <span class="o">=</span> <span class="nb">any</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="nb">all</span><span class="p">(</span>
+                    <span class="p">[</span>
+                        <span class="n">mutated_path</span><span class="o">.</span><span class="n">exists</span><span class="p">(),</span>
+                        <span class="n">mutated_path</span> <span class="o">!=</span> <span class="n">root</span><span class="p">,</span>
+                        <span class="n">test_path</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+                    <span class="p">]</span>
+                <span class="p">)</span>
+                <span class="k">for</span> <span class="n">mutated_path</span> <span class="ow">in</span> <span class="n">mutated_paths</span>
+            <span class="p">]</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">is_valid</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">extensions</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_all_exts</span><span class="p">()</span>
+        <span class="n">commits_list</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_relevant_commits</span><span class="p">()</span>
+        <span class="n">is_valid_lst</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">validate_commit_msg</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span> <span class="k">for</span> <span class="n">msg</span> <span class="ow">in</span> <span class="n">commits_list</span>
+        <span class="p">]</span>
+        <span class="n">raise_error</span> <span class="o">=</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="n">is_valid_lst</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">raise_error</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">commit</span><span class="p">,</span> <span class="n">is_valid</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">commits_list</span><span class="p">,</span> <span class="n">is_valid_lst</span><span class="p">):</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">is_valid</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_commmit_details</span><span class="p">(</span><span class="n">commit</span><span class="p">))</span>
+            <span class="k">raise</span> <span class="n">CommitLintError</span></div>
+
+
 <div class="viewcode-block" id="CI"><a class="viewcode-back" href="../../../api/service/dev.html#dffml.service.dev.CI">[docs]</a><span class="k">class</span> <span class="nc">CI</span><span class="p">(</span><span class="n">CMD</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    CI related commands</span>
 <span class="sd">    &quot;&quot;&quot;</span></div>
+
+
+<div class="viewcode-block" id="Lint"><a class="viewcode-back" href="../../../api/service/dev.html#dffml.service.dev.Lint">[docs]</a><span class="k">class</span> <span class="nc">Lint</span><span class="p">(</span><span class="n">CMD</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Linting related commands</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">commits</span> <span class="o">=</span> <span class="n">LintCommits</span></div>
 
 
 <div class="viewcode-block" id="Bump"><a class="viewcode-back" href="../../../api/service/dev.html#dffml.service.dev.Bump">[docs]</a><span class="k">class</span> <span class="nc">Bump</span><span class="p">(</span><span class="n">CMD</span><span class="p">):</span>
@@ -1129,6 +1303,7 @@
     <span class="n">setuppy</span> <span class="o">=</span> <span class="n">SetupPy</span>
     <span class="n">bump</span> <span class="o">=</span> <span class="n">Bump</span>
     <span class="n">ci</span> <span class="o">=</span> <span class="n">CI</span>
+    <span class="n">lint</span> <span class="o">=</span> <span class="n">Lint</span>
     <span class="n">docs</span> <span class="o">=</span> <span class="n">MakeDocs</span></div>
 </pre></div>
 

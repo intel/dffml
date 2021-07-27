@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Service Dev &mdash; DFFML 899649cdc documentation</title>
+  <title>Service Dev &mdash; DFFML d2978854d documentation</title>
   
 
   
@@ -70,7 +70,7 @@
             
             
               <div class="version">
-                899649cdc
+                d2978854d
               </div>
             
           
@@ -304,6 +304,11 @@ given.</p>
 <dd><p>CI related commands</p>
 </dd></dl>
 
+<dl class="py exception">
+<dt class="sig sig-object py" id="dffml.service.dev.CommitLintError">
+<em class="property"><span class="pre">exception</span> </em><span class="sig-prename descclassname"><span class="pre">dffml.service.dev.</span></span><span class="sig-name descname"><span class="pre">CommitLintError</span></span><a class="reference internal" href="../../_modules/dffml/service/dev.html#CommitLintError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.service.dev.CommitLintError" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="py class">
 <dt class="sig sig-object py" id="dffml.service.dev.Create">
 <em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">dffml.service.dev.</span></span><span class="sig-name descname"><span class="pre">Create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">extra_config</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/service/dev.html#Create"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.service.dev.Create" title="Permalink to this definition">¶</a></dt>
@@ -342,6 +347,12 @@ given.</p>
 <dt class="sig sig-object py" id="dffml.service.dev.Develop.install">
 <span class="sig-name descname"><span class="pre">install</span></span><a class="headerlink" href="#dffml.service.dev.Develop.install" title="Permalink to this definition">¶</a></dt>
 <dd><p>alias of <a class="reference internal" href="#dffml.service.dev.Install" title="dffml.service.dev.Install"><code class="xref py py-class docutils literal notranslate"><span class="pre">dffml.service.dev.Install</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dffml.service.dev.Develop.lint">
+<span class="sig-name descname"><span class="pre">lint</span></span><a class="headerlink" href="#dffml.service.dev.Develop.lint" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#dffml.service.dev.Lint" title="dffml.service.dev.Lint"><code class="xref py py-class docutils literal notranslate"><span class="pre">dffml.service.dev.Lint</span></code></a></p>
 </dd></dl>
 
 <dl class="py attribute">
@@ -403,6 +414,24 @@ installs of plugins</p>
 <dt class="sig sig-object py" id="dffml.service.dev.Link">
 <em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">dffml.service.dev.</span></span><span class="sig-name descname"><span class="pre">Link</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">extra_config</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/service/dev.html#Link"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.service.dev.Link" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create required symlinks from skel/common to the other template directories</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dffml.service.dev.Lint">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">dffml.service.dev.</span></span><span class="sig-name descname"><span class="pre">Lint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">extra_config</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/service/dev.html#Lint"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.service.dev.Lint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Linting related commands</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dffml.service.dev.Lint.commits">
+<span class="sig-name descname"><span class="pre">commits</span></span><a class="headerlink" href="#dffml.service.dev.Lint.commits" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#dffml.service.dev.LintCommits" title="dffml.service.dev.LintCommits"><code class="xref py py-class docutils literal notranslate"><span class="pre">dffml.service.dev.LintCommits</span></code></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dffml.service.dev.LintCommits">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">dffml.service.dev.</span></span><span class="sig-name descname"><span class="pre">LintCommits</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">extra_config</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/service/dev.html#LintCommits"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.service.dev.LintCommits" title="Permalink to this definition">¶</a></dt>
+<dd><p>Enforce commit message style</p>
 </dd></dl>
 
 <dl class="py class">

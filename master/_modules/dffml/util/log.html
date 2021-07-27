@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>dffml.util.log &mdash; DFFML 899649cdc documentation</title>
+  <title>dffml.util.log &mdash; DFFML d2978854d documentation</title>
   
 
   
@@ -69,7 +69,7 @@
             
             
               <div class="version">
-                899649cdc
+                d2978854d
               </div>
             
           
@@ -221,7 +221,11 @@
 <span></span><span class="c1"># SPDX-License-Identifier: MIT</span>
 <span class="c1"># Copyright (c) 2019 Intel Corporation</span>
 <span class="sd">&quot;&quot;&quot;Logging&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">time</span>
 <span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">inspect</span>
+<span class="kn">import</span> <span class="nn">functools</span>
+<span class="kn">from</span> <span class="nn">contextlib</span> <span class="kn">import</span> <span class="n">contextmanager</span>
 
 <span class="n">LOGGER</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">__package__</span><span class="p">)</span>
 
@@ -248,6 +252,75 @@
     <span class="n">duplicate_filter</span> <span class="o">=</span> <span class="n">DuplicateFilter</span><span class="p">()</span>
     <span class="n">logger</span><span class="o">.</span><span class="n">addFilter</span><span class="p">(</span><span class="n">duplicate_filter</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">logger</span></div>
+
+
+<div class="viewcode-block" id="log_time"><a class="viewcode-back" href="../../../api/util/log.html#dffml.util.log.log_time">[docs]</a><span class="k">def</span> <span class="nf">log_time</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Decorator that can take either coroutine or normal function</span>
+<span class="sd">    and log its runtime.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+
+<span class="sd">    &gt;&gt;&gt; import time</span>
+<span class="sd">    &gt;&gt;&gt; import asyncio</span>
+<span class="sd">    &gt;&gt;&gt; import logging</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; logging.basicConfig(level=logging.DEBUG)</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; from dffml import log_time</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; @log_time</span>
+<span class="sd">    ... def simple_function():</span>
+<span class="sd">    ...     time.sleep(1)</span>
+<span class="sd">    ...     return True</span>
+<span class="sd">    ...</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; @log_time</span>
+<span class="sd">    ... async def coroutine():</span>
+<span class="sd">    ...     time.sleep(1)</span>
+<span class="sd">    ...     return True</span>
+<span class="sd">    ...</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; simple_function()</span>
+<span class="sd">    True</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; asyncio.run(coroutine())</span>
+<span class="sd">    True</span>
+
+<span class="sd">    You should see</span>
+
+<span class="sd">    .. code-block::</span>
+
+<span class="sd">        DEBUG:dffml.util.duration_logger: coroutine took 1.0 seconds</span>
+
+<span class="sd">    Since logging was enabled using ``basicConfig``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">logger</span> <span class="o">=</span> <span class="n">LOGGER</span><span class="o">.</span><span class="n">getChild</span><span class="p">(</span><span class="s2">&quot;duration_logger&quot;</span><span class="p">)</span>
+
+    <span class="nd">@contextmanager</span>
+    <span class="k">def</span> <span class="nf">time_it</span><span class="p">():</span>
+        <span class="n">start_ts</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">monotonic</span><span class="p">()</span>
+        <span class="k">yield</span>
+        <span class="n">dur</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">monotonic</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_ts</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot; </span><span class="si">{}</span><span class="s2"> took </span><span class="si">{:.2}</span><span class="s2"> seconds&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">func</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">dur</span><span class="p">))</span>
+
+    <span class="nd">@functools</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">inspect</span><span class="o">.</span><span class="n">iscoroutinefunction</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+
+            <span class="k">async</span> <span class="k">def</span> <span class="nf">tmp</span><span class="p">():</span>
+                <span class="k">with</span> <span class="n">time_it</span><span class="p">():</span>
+                    <span class="k">return</span> <span class="k">await</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+            <span class="k">return</span> <span class="n">tmp</span><span class="p">()</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">with</span> <span class="n">time_it</span><span class="p">():</span>
+                <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">wrapper</span></div>
 </pre></div>
 
            </div>
