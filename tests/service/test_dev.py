@@ -27,7 +27,8 @@ from dffml.service.dev import (
     Install,
     VersionNotFoundError,
     RCMissingHyphen,
-    SphinxBuildError,
+    LintCommits,
+    CommitLintError,
 )
 from dffml.util.os import chdir
 from dffml.util.skel import Skel
@@ -440,3 +441,82 @@ class TestMakeDocs(AsyncTestCase):
                 """
             ),
         )
+
+
+class TestLintCommits(AsyncTestCase):
+    LintCommitsObj = LintCommits()
+    valid_commits = [
+        "docs: contributing: editors: vscode: Shorten title",
+        "df: memory: Log on instance creation with given config",
+        "source: file: Change label to tag",
+        "model: scikit: Use make_config_numpy",
+        "cli: dataflow: Merge seed arrays",
+        "tests : service : dev : updated test for LintCommits",
+        "shouldi: Use high level run",
+        "shouldi: tests: cli: Include node",
+    ]
+    invalid_commits = [
+        "service: http: routes: Default to setting no-cache on all respones",
+        "docs: contributing: consoletest: README: Add documentation",
+        "style: Fixed JS API newline",
+        "cleanup: Fix importing by using importlib.import_module",
+        "tests : service : test_dev : updated test for LintCommits",
+    ]
+
+    async def fake_get_all_exts(self):
+        return {
+            "",
+            ".py",
+            ".mp4",
+            ".js",
+            ".toml",
+            ".ini",
+            ".csv",
+            ".md",
+            ".json",
+            ".in",
+            ".txt",
+            ".yaml",
+            ".cfg",
+            ".css",
+            ".svg",
+            ".html",
+            ".jpg",
+            ".yml",
+            ".gif",
+            ".ipynb",
+            ".rst",
+            ".sh",
+            ".nblink",
+            ".png",
+            ".Dockerfile",
+            ".pdf",
+        }
+
+    async def test_should_validate(self):
+        with unittest.mock.patch(
+            "dffml.service.dev.LintCommits._get_all_exts",
+            self.fake_get_all_exts,
+        ):
+            self.assertTrue(
+                all(
+                    [
+                        await self.LintCommitsObj.validate_commit_msg(msg)
+                        for msg in self.valid_commits
+                    ]
+                )
+            )
+
+    async def test_shouldnot_validate(self):
+        with unittest.mock.patch(
+            "dffml.service.dev.LintCommits._get_all_exts",
+            self.fake_get_all_exts,
+        ):
+            self.assertTrue(
+                not any(
+                    [
+                        await self.LintCommitsObj.validate_commit_msg(msg)
+                        for msg in self.invalid_commits
+                    ]
+                )
+            )

@@ -1,4 +1,5 @@
 import os
+import io
 import re
 import sys
 import ast
@@ -756,10 +757,183 @@ class BumpPackages(CMD):
             self.logger.debug("Updated version file %s", version_file)
 
 
+class CommitLintError(Exception):
+    pass
+
+
+class LintCommits(CMD):
+    """
+    Enforce commit message style 
+    """
+
+    substitutions = {"shouldi": "examples/shouldi/"}
+
+    def _get_ignore_filter(self):
+        return lambda x: not x.endswith("_")
+
+    def _execute_func_list(self, param, func_list):
+        for func in func_list:
+            param = func(param)
+        return param
+
+    def _make_composite_function(self, *func):
+        def compose(f, g):
+            return lambda x: f(g(x))
+
+        return functools.reduce(compose, func, lambda x: x)
+
+    def _test_mutation(self, x):
+        # Conditional mutations like this should
+        # behave like no_mutation if condition is
+        # not met
+        blocks = x.split("/")
+        first_block = blocks[0].lower()
+        second_block = blocks[1] if len(blocks) >= 3 else None
+        if any(
+            [
+                first_block in "tests",
+                second_block in "tests" if second_block is not None else False,
+            ]
+        ):
+            blocks[-1] = "test_" + blocks[-1]
+            mutated_msg = "/".join(blocks)
+            return mutated_msg
+        return x
+
+    def _substitution_mutation(self, x):
+        return "/".join([self.substitutions.get(i, i) for i in x.split("/")])
+
+    async def _get_file_mutations(self):
+        no_mutation = lambda x: x
+        mutation_func_factory = lambda ext: lambda x: x + ext
+        extensions = (
+            await self._get_all_exts()
+            if not hasattr(self, "extensions")
+            else self.extensions
+        )
+        mutations = {
+            "prefix_mutations": [
+                no_mutation,
+                lambda x: "." + x,
+                lambda x: "dffml/" + x,
+            ],
+            "body_mutations": [
+                self._make_composite_function(
+                    self._substitution_mutation, self._test_mutation
+                )
+            ],
+            "suffix_mutations": [
+                no_mutation,
+                *[mutation_func_factory(ext) for ext in extensions],
+                lambda x: x + "/shouldi",
+            ],
+        }
+        return mutations
+
+    async def _get_cmd_output(self, cmd: List[str]):
+        print(f"$ {' '.join(cmd)}")
+
+        proc = await asyncio.create_subprocess_shell(
+            " ".join(cmd),
+            stdout=asyncio.subprocess.PIPE,
+            stderr=asyncio.subprocess.PIPE,
+            cwd=REPO_ROOT,
+        )
+        await proc.wait()
+        stdout, stderr = await proc.communicate()
+        if proc.returncode != 0:
+            raise RuntimeError(stderr)
+        output = stdout.decode().strip()
+        return output
+
+    async def _get_relevant_commits(self):
+        #! This needs to change when master is renamed to main.
+        cmd = ["git", "cherry", "-v", "origin/master"]
+        commits = await self._get_cmd_output(cmd)
+        commits_list = [
+            " ".join(line.split()[2:]) for line in commits.split("\n")
+        ]
+        return commits_list
+
+    async def _get_commmit_details(self, msg):
+        cmd = ["git", "log", f"""--grep='{msg}'"""]
+        commit_details = await self._get_cmd_output(cmd)
+        return commit_details
+
+    async def _get_all_exts(self,):
+        cmd = [
+            "git",
+            "ls-tree",
+            "-r",
+            "HEAD",
+            "--name-only",
+        ]
+        tracked_files = await self._get_cmd_output(cmd)
+        tracked_files = tracked_files.split("\n")
+        extentions = set()
+        for file in tracked_files:
+            _, file_extension = os.path.splitext(file)
+            extentions.add(file_extension)
+        return extentions
+
+    async def validate_commit_msg(self, msg):
+        root = Path(__file__).parents[2]
+        test_path = "/".join(
+            filter(
+                self._get_ignore_filter(), map(str.strip, msg.split(":")[:-1])
+            )
+        )
+        mutations_dict = await self._get_file_mutations()
+        mutation_pipelines = itertools.product(
+            *[
+                [mutation for mutation in mutations_list]
+                for mutations_list in mutations_dict.values()
+            ]
+        )
+        mutated_paths = [
+            root / pathlib.Path(self._execute_func_list(test_path, pipeline))
+            for pipeline in mutation_pipelines
+        ]
+        is_valid = any(
+            [
+                all(
+                    [
+                        mutated_path.exists(),
+                        mutated_path != root,
+                        test_path != "",
+                    ]
+                )
+                for mutated_path in mutated_paths
+            ]
+        )
+        return is_valid
+
+    async def run(self):
+        self.extensions = await self._get_all_exts()
+        commits_list = await self._get_relevant_commits()
+        is_valid_lst = [
+            await self.validate_commit_msg(msg) for msg in commits_list
+        ]
+        raise_error = not all(is_valid_lst)
+        if raise_error:
+            for commit, is_valid in zip(commits_list, is_valid_lst):
+                if not is_valid:
+                    print(await self._get_commmit_details(commit))
+            raise CommitLintError
+
+
 class CI(CMD):
     """
     CI related commands
     """
+
+
+class Lint(CMD):
+    """
+    Linting related commands
+    """
+
+    commits = LintCommits
 
 
 class Bump(CMD):
@@ -909,4 +1083,5 @@ class Develop(CMD):
     setuppy = SetupPy
     bump = Bump
     ci = CI
+    lint = Lint
     docs = MakeDocs
