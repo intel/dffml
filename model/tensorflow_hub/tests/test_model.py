@@ -2,7 +2,7 @@ import random
 import tempfile
 
 from dffml.record import Record
-from dffml.high_level import accuracy
+from dffml.high_level.ml import accuracy
 from dffml.source.source import Sources
 from dffml.util.asynctestcase import AsyncTestCase
 from dffml.feature import Features, Feature
