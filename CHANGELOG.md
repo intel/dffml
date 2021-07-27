@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Consolidate test case classes
 - Tutorial on how to load models dynamically
   https://intel.github.io/dffml/tutorials/models/load.html
+- `log_time` decorator for logging running time of functions/coroutines.
 - Download progressbar in `util/net.py`
 - Usecase example notebook for "Moving between models"
 - Documentation and testing support for notebooks
