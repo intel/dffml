@@ -12,9 +12,19 @@ from typing import AsyncIterator, Tuple, Any, NamedTuple
 
 # https://intelpython.github.io/daal4py/sklearn.html
 try:
+    # HACK Fix for daal4py not maintaining docstring of roc_auc_score
+    import sklearn.metrics.ranking
+
+    correct_doc = sklearn.metrics.ranking.roc_auc_score.__doc__
+
     import daal4py.sklearn
 
     daal4py.sklearn.patch_sklearn()
+
+    # HACK Fix for daal4py not maintaining docstring of roc_auc_score
+    import daal4py.sklearn.metrics._ranking
+
+    daal4py.sklearn.metrics._ranking._daal_roc_auc_score.__doc__ = correct_doc
 except ImportError:
     # Ignore import errors, package is not installed
     pass
