@@ -99,7 +99,12 @@ for entrypoint_name, name, method in (
     # classification.
     # References:
     # - https://scikit-learn.org/stable/modules/generated/sklearn.metrics.average_precision_score.html#sklearn.metrics.average_precision_score
-    properties = numpy_docstring_args(method)
+    # NOTE Fix for daal4py wrapping not preseveing docstring. This can happen
+    # when a decorator is used to wrap a function
+    if hasattr(method, "__dict__") and "__wrapped__" in method.__dict__:
+        properties = numpy_docstring_args(method.__dict__["__wrapped__"])
+    else:
+        properties = numpy_docstring_args(method)
     if name in (
         "RecallScore",
         "PrecisionScore",
