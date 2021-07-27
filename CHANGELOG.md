@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Download progressbar in `util/net.py`
 - Usecase example notebook for "Moving between models"
 - Documentation and testing support for notebooks
+- Commit message linting in CI tests
 - Example on how to create operations and use data preprocessing source to train models
   https://intel.github.io/dffml/examples/ice_cream.html
 - Operations for zip and tar file creation and extraction
