@@ -1,0 +1,873 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Transfer Learning &mdash; DFFML 0cb7bf98b documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/tabs.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/copybutton.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "document", "processHtmlClass": "math|output_area"}}</script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="author" title="About these documents" href="../../about.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Automating Classification" href="../integration.html" />
+    <link rel="prev" title="Saving and loading models" href="saving_and_loading_models.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> DFFML
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0cb7bf98b
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Introduction</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../concepts/index.html">Concepts</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Usage</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../quickstart/model.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Examples</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Notebooks</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="moving_between_models.html">Moving Between Models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="evaluating_model_performance.html">Evaluating Model Performance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="saving_and_loading_models.html">Saving and loading models</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Transfer Learning</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#Setting-up">Setting-up</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Feature-Extraction:">Feature Extraction:</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../integration.html">Automating Classification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../shouldi.html">Meta Static Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dataflows.html">DataFlow HTTP Deployment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mnist.html">MNIST Handwriten Digits</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../flower17/flower17.html">Flower17 Species Classification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../or_covid_data_by_county.html">COVID Forecasting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../webhook/index.html">Continuous Deployment of DataFlows</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../icecream_sales.html">Ice Cream Sales</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../plugins/index.html">Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cli.html">Command Line</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../plugins/service/http/index.html">HTTP API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/plugins.html">Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/noasync.html">Noasync</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/base.html">Base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/record.html">Record</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/log.html">Log</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/version.html">Version</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/source/index.html">Source</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/operation/index.html">Operation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/feature/index.html">Feature</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/high_level/index.html">High_Level</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/accuracy/index.html">Accuracy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/cli/index.html">Cli</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/secret/index.html">Secret</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/df/index.html">Df</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/db/index.html">Db</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/service/index.html">Service</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/configloader/index.html">Configloader</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/model/index.html">Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/util/index.html">Util</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/port/index.html">Port</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../arch/index.html">Architecture</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Subprojects</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../shouldi.html">shouldi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../swportal.html">Software Portal</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Community</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/intel/dffml">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://intel.github.io/dffml/master/">Master Branch Docs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../publications.html">Publications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contact.html">Contact Us</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing/index.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../news/index.html">News</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../changelog.html">Changelog</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">DFFML</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Examples</a> &raquo;</li>
+        
+          <li><a href="index.html">Notebooks</a> &raquo;</li>
+        
+      <li>Transfer Learning</li>
+    
+    
+
+
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            
+              <a href="https://github.com/intel/dffml/blob/master/docs/examples/notebooks/transferlearning.nblink" class="fa fa-github"> Edit on GitHub</a>
+            
+          
+        
+      </li>
+    
+
+
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS for nbsphinx extension */
+
+/* remove conflicting styling from Sphinx themes */
+div.nbinput.container div.prompt *,
+div.nboutput.container div.prompt *,
+div.nbinput.container div.input_area pre,
+div.nboutput.container div.output_area pre,
+div.nbinput.container div.input_area .highlight,
+div.nboutput.container div.output_area .highlight {
+    border: none;
+    padding: 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+div.nbinput.container > div[class*=highlight],
+div.nboutput.container > div[class*=highlight] {
+    margin: 0;
+}
+
+div.nbinput.container div.prompt *,
+div.nboutput.container div.prompt * {
+    background: none;
+}
+
+div.nboutput.container div.output_area .highlight,
+div.nboutput.container div.output_area pre {
+    background: unset;
+}
+
+div.nboutput.container div.output_area div.highlight {
+    color: unset;  /* override Pygments text color */
+}
+
+/* avoid gaps between output lines */
+div.nboutput.container div[class*=highlight] pre {
+    line-height: normal;
+}
+
+/* input/output containers */
+div.nbinput.container,
+div.nboutput.container {
+    display: -webkit-flex;
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput.container,
+    div.nboutput.container {
+        flex-direction: column;
+    }
+}
+
+/* input container */
+div.nbinput.container {
+    padding-top: 5px;
+}
+
+/* last container */
+div.nblast.container {
+    padding-bottom: 5px;
+}
+
+/* input prompt */
+div.nbinput.container div.prompt pre {
+    color: #307FC1;
+}
+
+/* output prompt */
+div.nboutput.container div.prompt pre {
+    color: #BF5B3D;
+}
+
+/* all prompts */
+div.nbinput.container div.prompt,
+div.nboutput.container div.prompt {
+    width: 4.5ex;
+    padding-top: 5px;
+    position: relative;
+    user-select: none;
+}
+
+div.nbinput.container div.prompt > div,
+div.nboutput.container div.prompt > div {
+    position: absolute;
+    right: 0;
+    margin-right: 0.3ex;
+}
+
+@media (max-width: 540px) {
+    div.nbinput.container div.prompt,
+    div.nboutput.container div.prompt {
+        width: unset;
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput.container div.prompt.empty {
+        padding: 0;
+    }
+
+    div.nbinput.container div.prompt > div,
+    div.nboutput.container div.prompt > div {
+        position: unset;
+    }
+}
+
+/* disable scrollbars on prompts */
+div.nbinput.container div.prompt pre,
+div.nboutput.container div.prompt pre {
+    overflow: hidden;
+}
+
+/* input/output area */
+div.nbinput.container div.input_area,
+div.nboutput.container div.output_area {
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: auto;
+}
+@media (max-width: 540px) {
+    div.nbinput.container div.input_area,
+    div.nboutput.container div.output_area {
+        width: 100%;
+    }
+}
+
+/* input area */
+div.nbinput.container div.input_area {
+    border: 1px solid #e0e0e0;
+    border-radius: 2px;
+    /*background: #f5f5f5;*/
+}
+
+/* override MathJax center alignment in output cells */
+div.nboutput.container div[class*=MathJax] {
+    text-align: left !important;
+}
+
+/* override sphinx.ext.imgmath center alignment in output cells */
+div.nboutput.container div.math p {
+    text-align: left;
+}
+
+/* standard error */
+div.nboutput.container div.output_area.stderr {
+    background: #fdd;
+}
+
+/* ANSI colors */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
+.ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
+
+
+div.nbinput.container div.input_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight].math,
+div.nboutput.container div.output_area.rendered_html,
+div.nboutput.container div.output_area > div.output_javascript,
+div.nboutput.container div.output_area:not(.rendered_html) > img{
+    padding: 5px;
+    margin: 0;
+}
+
+/* fix copybtn overflow problem in chromium (needed for 'sphinx_copybutton') */
+div.nbinput.container div.input_area > div[class^='highlight'],
+div.nboutput.container div.output_area > div[class^='highlight']{
+    overflow-y: hidden;
+}
+
+/* hide copybtn icon on prompts (needed for 'sphinx_copybutton') */
+.prompt a.copybtn {
+    display: none;
+}
+
+/* Some additional styling taken form the Jupyter notebook CSS */
+div.rendered_html table {
+  border: none;
+  border-collapse: collapse;
+  border-spacing: 0;
+  color: black;
+  font-size: 12px;
+  table-layout: fixed;
+}
+div.rendered_html thead {
+  border-bottom: 1px solid black;
+  vertical-align: bottom;
+}
+div.rendered_html tr,
+div.rendered_html th,
+div.rendered_html td {
+  text-align: right;
+  vertical-align: middle;
+  padding: 0.5em 0.5em;
+  line-height: normal;
+  white-space: normal;
+  max-width: none;
+  border: none;
+}
+div.rendered_html th {
+  font-weight: bold;
+}
+div.rendered_html tbody tr:nth-child(odd) {
+  background: #f5f5f5;
+}
+div.rendered_html tbody tr:hover {
+  background: rgba(66, 165, 245, 0.2);
+}
+
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<a class="reference external image-reference" href="https://intel.github.io/dffml/master/examples/notebooks/transferlearning.ipynb"><img alt="Notebook download button" src="../../_images/Download-.ipynb-button.svg" /></a>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<div class="section" id="Transfer-Learning">
+<h1>Transfer Learning<a class="headerlink" href="#Transfer-Learning" title="Permalink to this headline">¶</a></h1>
+<p>In this demo, we’ll be using the Rock, Paper and Scissors image classification dataset. The purpose of this notebook is to perform Transfer Learning using the Pytorch pre-trained models through DFFML Python API.</p>
+<p>The most used types of Transfer Learning are <code class="docutils literal notranslate"><span class="pre">Fine-Tuning</span></code> and <code class="docutils literal notranslate"><span class="pre">Feature</span> <span class="pre">Extraction</span></code>.</p>
+<ol class="arabic simple">
+<li><p><strong>Use CNN for Feature Extraction</strong>: Using the representations learned by a previous network to extract meaningful features from new samples. You simply add a new classifier, which will be trained from scratch, on top of the pretrained model. In this approach, we generally freeze all the weights of layers except the final layers. In DFFML, the weights of other layers are frozen by setting <code class="docutils literal notranslate"><span class="pre">trainable</span> <span class="pre">=</span> <span class="pre">False</span></code>, which is also set by default.</p></li>
+<li><p><strong>Fine-Tuning the CNN</strong>: Unfreezing the weights of the top layers of a frozen model base and jointly training both the newly-added classifier layers and the last layers of the base model. This is done by setting the parameter <code class="docutils literal notranslate"><span class="pre">trainable</span> <span class="pre">=</span> <span class="pre">True</span></code>. This part of the tutorial will also focus on showing how to add custom layers to the model to perform fine-tuning of the CNN.</p></li>
+</ol>
+<p>We will be applying the first approach in this tutorial, ie. <strong>Use CNN for Feature Extraction</strong>. In this approach the only difference from <strong>Fine-Tuning the CNN</strong> is essentially setting <code class="docutils literal notranslate"><span class="pre">trainable</span> <span class="pre">=</span> <span class="pre">False</span></code> rather than <code class="docutils literal notranslate"><span class="pre">True</span></code>. Feel free to try and change the bool value as you please.</p>
+<div class="section" id="Setting-up">
+<h2>Setting-up<a class="headerlink" href="#Setting-up" title="Permalink to this headline">¶</a></h2>
+<p><strong>Import Packages</strong></p>
+<p>Let us import dffml and other packages that we might need.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">torch.nn</span> <span class="k">as</span> <span class="nn">nn</span>
+
+<span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">dffml_model_pytorch</span> <span class="kn">import</span> <span class="n">CrossEntropyLossFunction</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="kn">import</span> <span class="nn">nest_asyncio</span>
+</pre></div>
+</div>
+</div>
+<p>To use asyncio in a notebook, we need to use nest_asycio.apply()</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">nest_asyncio</span><span class="o">.</span><span class="n">apply</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<p><strong>Build our Dataset</strong></p>
+<p>Dffml has a very convinient function <code class="docutils literal notranslate"><span class="pre">cached_download()</span></code> that can be used to download datasets and make sure you don’t download them if you have already. We’ll be using <a class="reference internal" href="../../api/util/net.html#dffml.util.net.cached_download_unpack_archive"><span class="std std-ref">cached_download_unpack_archive()</span></a> which also unpacks the file in case its an archived package.</p>
+<p>The function has the following parameters:</p>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">url</span> <span class="pre">(str)</span></code>– The URL to download from.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">file_path</span> <span class="pre">(str,</span> <span class="pre">pathlib.Path)</span></code> – Path on disk to store the downloaded archive.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">directory_path</span> <span class="pre">(str,</span> <span class="pre">pathlib.Path)</span></code> – Path on disk to store extracted contents of downloaded archive.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">expected_hash</span> <span class="pre">(str)</span></code> – SHA384 hash of the contents to verify our download.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">protocol_allowlist</span> <span class="pre">(list,</span> <span class="pre">optional)</span></code> – List of strings, one of which the URL must start with. We won’t be using this one.</p></li>
+</ol>
+<p>Don’t forget to calculate the <code class="docutils literal notranslate"><span class="pre">expected_hash</span></code>, you can find out how at <a class="reference internal" href="../../api/util/net.html#dffml.util.net.cached_download_unpack_archive"><span class="std std-ref">cached_download_unpack_archive()</span></a>!</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">train_path</span> <span class="o">=</span> <span class="k">await</span> <span class="n">cached_download_unpack_archive</span><span class="p">(</span>
+    <span class="s2">&quot;https://storage.googleapis.com/laurencemoroney-blog.appspot.com/rps.zip&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;train_rps.zip&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;train_rps&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;c6a9119b0c6a0907b782bd99e04ce09a0924c0895df6a26bc6fb06baca4526f55e51f7156cceb4791cc65632d66085e8&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">val_path</span> <span class="o">=</span> <span class="k">await</span> <span class="n">cached_download_unpack_archive</span><span class="p">(</span>
+    <span class="s2">&quot;https://storage.googleapis.com/laurencemoroney-blog.appspot.com/rps-validation.zip&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;predict_rps.zip&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;predict_rps&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;375457bb95771ffeace2beedab877292d232f31e76502618d25e0d92a3e029d386429f52c771b05ae1c7229d2f5ecc29&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">test_path</span> <span class="o">=</span> <span class="k">await</span> <span class="n">cached_download_unpack_archive</span><span class="p">(</span>
+    <span class="s2">&quot;https://storage.googleapis.com/laurencemoroney-blog.appspot.com/rps-test-set.zip&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;test_rps.zip&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;test_rps&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;fc45a0ebe58b9aafc3cd5a60020fa042d3a19c26b0f820aee630b9602c8f53dd52fd40f35d44432dd031dea8f30a5f66&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>Since we are dealing with image data, we’ll be utilizing the <a class="reference internal" href="../../api/source/dir.html"><span class="doc">DirectorySource</span></a> to read and use our data.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">train_source</span> <span class="o">=</span> <span class="n">DirectorySource</span><span class="p">(</span>
+    <span class="n">foldername</span><span class="o">=</span><span class="s2">&quot;train_rps/rps&quot;</span><span class="p">,</span>
+    <span class="n">feature</span><span class="o">=</span><span class="s2">&quot;image&quot;</span><span class="p">,</span>
+    <span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;rock&quot;</span><span class="p">,</span> <span class="s2">&quot;paper&quot;</span><span class="p">,</span> <span class="s2">&quot;scissors&quot;</span><span class="p">],</span>
+<span class="p">)</span>
+<span class="n">test_source</span> <span class="o">=</span> <span class="n">DirectorySource</span><span class="p">(</span>
+    <span class="n">foldername</span><span class="o">=</span><span class="s2">&quot;test_rps/rps-test-set&quot;</span><span class="p">,</span>
+    <span class="n">feature</span><span class="o">=</span><span class="s2">&quot;image&quot;</span><span class="p">,</span>
+    <span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;rock&quot;</span><span class="p">,</span> <span class="s2">&quot;paper&quot;</span><span class="p">,</span> <span class="s2">&quot;scissors&quot;</span><span class="p">],</span>
+<span class="p">)</span>
+<span class="n">predict_source</span> <span class="o">=</span> <span class="n">DirectorySource</span><span class="p">(</span>
+    <span class="n">foldername</span><span class="o">=</span><span class="s2">&quot;predict_rps&quot;</span><span class="p">,</span>
+    <span class="n">feature</span><span class="o">=</span><span class="s2">&quot;image&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="Feature-Extraction:">
+<h2>Feature Extraction:<a class="headerlink" href="#Feature-Extraction:" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="Define-our-Additional-layers">
+<h3>Define our Additional layers<a class="headerlink" href="#Define-our-Additional-layers" title="Permalink to this headline">¶</a></h3>
+<p>We can do this by using the <code class="docutils literal notranslate"><span class="pre">torch.nn</span></code> module that we imported. First we define our layers in <code class="docutils literal notranslate"><span class="pre">__init__</span></code> and then we define the <code class="docutils literal notranslate"><span class="pre">forward</span></code> function to carry out the forward propagation.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="k">class</span> <span class="nc">ConvNet</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">ConvNet</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">linear1</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">in_features</span><span class="o">=</span><span class="mi">4096</span><span class="p">,</span> <span class="n">out_features</span><span class="o">=</span><span class="mi">256</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">relu</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">dropout</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Dropout</span><span class="p">(</span><span class="n">p</span> <span class="o">=</span> <span class="mf">0.2</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">linear2</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">in_features</span><span class="o">=</span><span class="mi">256</span><span class="p">,</span> <span class="n">out_features</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">logsoftmax</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">LogSoftmax</span><span class="p">(</span><span class="n">dim</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">linear1</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dropout</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">logsoftmax</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">linear2</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">x</span>
+
+<span class="n">last_layers</span> <span class="o">=</span> <span class="n">ConvNet</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="Instantiate-our-Model-with-parameters">
+<h3>Instantiate our Model with parameters<a class="headerlink" href="#Instantiate-our-Model-with-parameters" title="Permalink to this headline">¶</a></h3>
+<p>Dffml makes it quite easy to load models dynamically using the <code class="docutils literal notranslate"><span class="pre">Model.load()</span></code> function. All the entrypoints for models available in DFFML can be found at the <a class="reference internal" href="../../plugins/dffml_model.html"><span class="doc">Model Plugins Page</span></a>. After that, you just have to parameterize the loaded models and they are ready to train!</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">Loss</span> <span class="o">=</span> <span class="n">CrossEntropyLossFunction</span><span class="p">()</span>
+<span class="n">AlexnetModel</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;alexnet&quot;</span><span class="p">)</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">AlexnetModel</span><span class="p">(</span>
+    <span class="n">classifications</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;rock&quot;</span><span class="p">,</span> <span class="s2">&quot;paper&quot;</span><span class="p">,</span> <span class="s2">&quot;scissors&quot;</span><span class="p">],</span>
+    <span class="n">features</span><span class="o">=</span><span class="n">Features</span><span class="p">(</span><span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;image&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">300</span> <span class="o">*</span> <span class="mi">300</span><span class="p">)),</span>
+    <span class="n">predict</span><span class="o">=</span><span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;label&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+    <span class="n">location</span><span class="o">=</span><span class="s2">&quot;alexnet&quot;</span><span class="p">,</span>
+    <span class="n">pretrained</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">trainable</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">add_layers</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">layers</span> <span class="o">=</span> <span class="n">last_layers</span><span class="p">,</span>
+    <span class="n">epochs</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>
+    <span class="n">batch_size</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span>
+    <span class="n">imageSize</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span>
+    <span class="n">validation_split</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span>
+    <span class="n">loss</span><span class="o">=</span><span class="n">Loss</span><span class="p">,</span>
+    <span class="n">optimizer</span><span class="o">=</span><span class="s2">&quot;Adam&quot;</span><span class="p">,</span>
+    <span class="n">enableGPU</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span>
+
+</pre></div>
+</div>
+</div>
+<p>Note that you can leave out the <code class="docutils literal notranslate"><span class="pre">trainable</span></code> parameter which is essentially setting it to <code class="docutils literal notranslate"><span class="pre">trainable</span> <span class="pre">=</span> <span class="pre">False</span></code> since that is the default value. Similarly, you can also leave out the <code class="docutils literal notranslate"><span class="pre">pre-trained</span></code> parameter which is essentially setting it to <code class="docutils literal notranslate"><span class="pre">pre-trained</span> <span class="pre">=</span> <span class="pre">True</span></code> since that is the default value.</p>
+</div>
+<div class="section" id="Train-the-Model">
+<h3>Train the Model<a class="headerlink" href="#Train-the-Model" title="Permalink to this headline">¶</a></h3>
+<p>Finally, our models are ready to be trained using the <code class="docutils literal notranslate"><span class="pre">high-level</span></code> API. Let’s make sure to pass each record as a parameter by simply using the unpacking operator(*).</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="k">await</span> <span class="n">train</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">train_source</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+INFO:dffml.AlexNetModelContext:Using saved model from /home/dffml/examples/notebooks/alexnet/model.pt
+INFO:dffml.AlexNetModelContext:------ Record Data ------
+INFO:dffml.AlexNetModelContext:x_cols:    2520
+INFO:dffml.AlexNetModelContext:y_cols:    2520
+INFO:dffml.AlexNetModelContext:-----------------------
+INFO:dffml.AlexNetModelContext:Data split into Training samples: 2016 and Validation samples: 504
+INFO:dffml.AlexNetModelContext:Epoch 1/20
+INFO:dffml.AlexNetModelContext:----------
+INFO:dffml.AlexNetModelContext:Training Loss: 0.3729 Acc: 0.9688
+INFO:dffml.AlexNetModelContext:Validation Loss: 0.0000 Acc: 1.0000
+INFO:dffml.AlexNetModelContext:
+INFO:dffml.AlexNetModelContext:Early stopping: Validation Loss didn&#39;t improve for 5 consecutive epochs OR maximum accuracy attained.
+INFO:dffml.AlexNetModelContext:Training complete in 3m 5s
+INFO:dffml.AlexNetModelContext:Best Validation Accuracy: 1.000000
+</pre></div></div>
+</div>
+</div>
+<div class="section" id="Test-the-Model">
+<h3>Test the Model<a class="headerlink" href="#Test-the-Model" title="Permalink to this headline">¶</a></h3>
+<p>To test our model, we’ll use the <code class="docutils literal notranslate"><span class="pre">accuracy()</span></code> function in the <code class="docutils literal notranslate"><span class="pre">high-level</span></code> API.</p>
+<p>We ask for the accuracy to be assessed using the Classification Accuracy method by passing “clf” to <code class="docutils literal notranslate"><span class="pre">AccuracyScorer.load()</span></code>.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">ClassificationAccuracy</span> <span class="o">=</span> <span class="n">AccuracyScorer</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;clf&quot;</span><span class="p">)</span>
+
+<span class="n">scorer</span> <span class="o">=</span> <span class="n">ClassificationAccuracy</span><span class="p">()</span>
+
+<span class="n">Accuracy</span> <span class="o">=</span> <span class="k">await</span> <span class="n">accuracy</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">scorer</span><span class="p">,</span> <span class="n">test_source</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Accuracy = &quot;</span><span class="p">,</span> <span class="n">Accuracy</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+INFO:dffml.AlexNetModelContext:Using saved model from /home/dffml/examples/notebooks/alexnet/model.pt
+Accuracy =  0.9327956989247311
+</pre></div></div>
+</div>
+</div>
+<div class="section" id="Make-predictions-using-our-Model.">
+<h3>Make predictions using our Model.<a class="headerlink" href="#Make-predictions-using-our-Model." title="Permalink to this headline">¶</a></h3>
+<p>Let’s make predictions and see what they look like for each model using the <code class="docutils literal notranslate"><span class="pre">predict</span></code> function in the <code class="docutils literal notranslate"><span class="pre">high-level</span></code> API. Note that the <code class="docutils literal notranslate"><span class="pre">predict</span></code> function returns an asynciterator of a <code class="docutils literal notranslate"><span class="pre">Record</span></code> Object that contains a tuple of record.key, features and predictions. For the sake of visualizing data, we’ll keep the predictions to a few records.</p>
+<p>Since we will have more predictions to visualize later on, we’ll be creating a helper function to predict on our models and visualize 12 images and their predictions interating through the records.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="k">async</span> <span class="k">def</span> <span class="nf">display_image_predictions</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">prediction_source</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Display 12 images and their predictions.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">20</span><span class="p">))</span>
+    <span class="n">k</span><span class="o">=</span><span class="mi">1</span>
+    <span class="k">async</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">features</span><span class="p">,</span> <span class="n">prediction</span> <span class="ow">in</span> <span class="n">predict</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">prediction_source</span><span class="p">):</span>
+        <span class="n">prediction_label</span> <span class="o">=</span> <span class="n">prediction</span><span class="p">[</span><span class="s2">&quot;label&quot;</span><span class="p">][</span><span class="s2">&quot;value&quot;</span><span class="p">]</span>
+        <span class="n">prediction_confidence</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">prediction</span><span class="p">[</span><span class="s2">&quot;label&quot;</span><span class="p">][</span><span class="s2">&quot;confidence&quot;</span><span class="p">],</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="n">k</span><span class="p">)</span>
+        <span class="n">k</span><span class="o">+=</span><span class="mi">1</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">features</span><span class="p">[</span><span class="s1">&#39;image&#39;</span><span class="p">])</span>
+        <span class="n">title_str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">prediction_label</span><span class="si">}</span><span class="s2"> (confidence:</span><span class="si">{</span><span class="n">prediction_confidence</span><span class="si">}</span><span class="s2">)&quot;</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="n">title_str</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">k</span> <span class="o">&gt;</span> <span class="mi">12</span><span class="p">:</span>
+            <span class="k">break</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<p>Lets call the helper function <code class="docutils literal notranslate"><span class="pre">display_image_predictions</span></code> using <code class="docutils literal notranslate"><span class="pre">asyncio.run()</span></code> to view our predicitons.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">display_image_predictions</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">predict_source</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+INFO:dffml.AlexNetModelContext:Using saved model from /home/dffml/examples/notebooks/alexnet/model.pt
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/examples_notebooks_transferlearning_22_1.png" src="../../_images/examples_notebooks_transferlearning_22_1.png" />
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="../integration.html" class="btn btn-neutral float-right" title="Automating Classification" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="saving_and_loading_models.html" class="btn btn-neutral float-left" title="Saving and loading models" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2017 - 2021, Intel.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
