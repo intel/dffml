@@ -54,12 +54,12 @@ class DuplicateName(Exception):
 
 # If a duplicate name is found, we specify which one to prefer here
 DUPLICATE_PREFER = {
-    "train": "high_level",
-    "predict": "high_level",
-    "accuracy": "high_level",
-    "load": "high_level",
-    "save": "high_level",
-    "run": "high_level",
+    "train": "high_level.ml",
+    "predict": "high_level.ml",
+    "accuracy": "high_level.ml",
+    "load": "high_level.source",
+    "save": "high_level.source",
+    "run": "high_level.dataflow",
     "list_action": "base",
 }
 # List of modules not to expose

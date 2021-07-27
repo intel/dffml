@@ -108,7 +108,7 @@ We have several major things on deck that we want to get before we declare beta.
 
   - The :doc:`HTTP service </plugins/service/http/index>` already allows users
     to access all the DFFML command line and Python APIs over HTTP. We are going
-    to integrate the :doc:`/api/high_level` API with the HTTP service. A remote
+    to integrate the :doc:`/api/high_level/index` API with the HTTP service. A remote
     execution plugin type will allow users to install only the base package,
     and whatever remote execution plugin they want on a machine. Users will then
     be able to run the HTTP service on a machine with all needed ML packages

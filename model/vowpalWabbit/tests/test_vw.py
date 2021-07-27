@@ -6,7 +6,7 @@ import numpy as np
 from sklearn.datasets import make_friedman1
 
 from dffml.record import Record
-from dffml.high_level import accuracy
+from dffml.high_level.ml import accuracy
 from dffml.source.source import Sources
 from dffml.source.memory import MemorySource, MemorySourceConfig
 from dffml.feature import Feature, Features
