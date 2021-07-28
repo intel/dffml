@@ -1,2 +1,3 @@
 include README.rst
 include LICENSE
+recursive-include REPLACE_IMPORT_PACKAGE_NAME *
