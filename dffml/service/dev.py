@@ -33,6 +33,7 @@ from ..base import MissingConfig, config as configdataclass, field
 from ..util.packaging import is_develop
 from ..util.net import cached_download
 from ..util.data import traverse_config_get, export
+from ..util.subprocess import run_command
 from ..df.types import Input, DataFlow
 from ..df.memory import MemoryOrchestrator
 from ..configloader.configloader import BaseConfigLoader
@@ -125,6 +126,15 @@ def create_from_skel(plugin_type):
                     dffml_version=VERSION,
                 ),
             )
+            # Create git repo. Required for setuptools_scm version
+            for cmd in [
+                ["git", "init"],
+                ["git", "add", "-A"],
+                ["git", "commit", "-snm", "housekeeping: Initial Commit"],
+            ]:
+                await run_command(
+                    cmd, logger=self.logger, cwd=str(self.target)
+                )
 
     return CreateCMD
 
