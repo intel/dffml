@@ -1,5 +1,6 @@
 import copy
 import asyncio
+import pathlib
 import itertools
 import traceback
 from typing import (
@@ -27,13 +28,11 @@ from ..util.asynchelper import concurrently
 
 
 @config
-class StackStormActionOperationConfig:
-    operations: Dict[str, OperationImplementation] = field(
-        "Operations to load on initialization", default_factory=lambda: {},
-    )
+class StackStormPythonScriptActionOperationConfig:
+    entry_point: pathlib.Path = field("Python action to run")
 
 
-class StackStormActionOperationImplementationContext(
+class StackStormPythonScriptActionOperationImplementationContext(
     OperationImplementationContext
 ):
     async def run(self, inputs: Dict[str, Any]) -> Dict[str, Any]:
@@ -186,9 +185,91 @@ async def github_download_and_extract_archive(
 
 async def stackstorm_actions_to_entry_points(path):
     return {
-        action_path.stem: f"actions/{action_path.name}"
+        action_path.stem: action_path.name
         for action_path in path.joinpath("actions").rglob("*.y*ml")
     }
+
+
+def stackstorm_operation_name_words(import_package_name, name):
+    """
+    Name of the operation split into words. Returns package_name + operation
+    name as list of strings which can be joined to create the name of an
+    operation.
+    """
+    return import_package_name.replace("stackstorm_", "", 1).split(
+        "_"
+    ) + name.split("_")
+
+
+def stackstorm_operation_name(import_package_name, action_name):
+    """
+    Lowercase underscore joined string of ``name_words``.
+    """
+    return "_".join(
+        stackstorm_operation_name_words(import_package_name, action_name)
+    )
+
+
+def stackstorm_opimp_name(import_package_name, action_name):
+    return (
+        " ".join(
+            stackstorm_operation_name_words(import_package_name, action_name)
+        )
+        .lower()
+        .title()
+        .replace(" ", "")
+    )
+
+
+async def stackstorm_operations_py(actions_to_entry_points):
+    """
+    Return Python code for the operations.py file of a StackStorm pack.
+    """
+    # Create the code for the operations.py file
+    return "\n".join(
+        [
+            "import importlib.resources",
+            "",
+            "from dffml import stackstorm_create_opimp",
+            "",
+            "",
+        ]
+        + [
+            f'{stackstorm_operation_name(import_package_name, name)} = stackstorm_create_opimp(importlib.resources.read_text(__package__ + ".actions", "{filename}"))'
+            for name, filename in actions_to_entry_points.items()
+        ]
+    )
+
+
+async def stackstorm_entry_points_txt(actions_to_entry_points):
+    """
+    Return INI for the entry_points.txt of a StackStorm pack.
+    """
+    # Create entry_points.txt file containing operations
+    config = configparser.ConfigParser()
+    config["dffml.operation"] = {}
+    for name, filename in actions_to_entry_points.items():
+        # Create entry point for opimp
+        config["dffml.operation"][
+            stackstorm_operation_name(import_package_name, name)
+        ] = f"{import_package_name}.operations:{stackstorm_opimp_name(import_package_name, name)}"
+    # Write out entry_points.txt
+    with io.StringIO() as fileobj:
+        config.write(fileobj)
+        return fileobj.getvalue()
+
+
+import configparser
+import sys
+import subprocess
+
+
+def stackstorm_create_opimp(yaml_contents):
+    import yaml
+
+    from pprint import pprint
+
+    pprint(yaml.safe_load(yaml_contents))
 
 
 async def stackstorm_test():
@@ -202,27 +283,61 @@ async def stackstorm_test():
             await Create.operations._main(package_name)
         # Name of package in importable form ("-" replaced with "_")
         import_package_name = package_name.replace("-", "_")
+        # Directory where the package is stored
+        package_path = pathlib.Path(tempdir, package_name)
         # Directory where the Python module code is stored
-        module_dir = pathlib.Path(tempdir, package_name, import_package_name)
+        module_path = pathlib.Path(tempdir, package_name, import_package_name)
         # Remove skel Python module contents
-        shutil.rmtree(module_dir)
+        shutil.rmtree(module_path)
         # await github_download_and_extract_archive(version_archive_url, target_path)
-        await github_download_and_extract_archive("", module_dir)
+        await github_download_and_extract_archive("", module_path)
         # Touch an __init__.py file in the root of the Python module
-        module_dir.joinpath("__init__.py").write_text("")
-        # Parse out actions and make entry points
+        module_path.joinpath("__init__.py").write_text("")
+        module_path.joinpath("actions", "__init__.py").write_text("")
+        # Discover actions and make entry points
         actions_to_entry_points = await stackstorm_actions_to_entry_points(
-            module_dir
+            module_path
         )
-        for name, extras in actions_to_entry_points.items():
-            print(f"{import_package_name.replace('stackstorm_', '', 1)}_{name} ="
-                   " dffml.operation.stackstorm:StackStormActionOperationImplementation"
-                   f" [{extras}]")
+        # Create entry_points.txt file containing operations
+        config = configparser.ConfigParser()
+        config["dffml.operation"] = {}
+        # Create the code for the operations.py file
+        opimp_code = [
+            "import importlib.resources",
+            "",
+            "from dffml import stackstorm_create_opimp",
+            "",
+            "",
+        ]
+        for name, filename in actions_to_entry_points.items():
+            # Name of the operations split into words
+            name_words = import_package_name.replace(
+                "stackstorm_", "", 1
+            ).split("_") + name.split("_")
+            # Create an opimp
+            opimp_name = " ".join(name_words).lower().title().replace(" ", "")
+            opimp_code.append(
+                f'{opimp_name} = stackstorm_create_opimp(importlib.resources.read_text(__package__ + ".actions", "{filename}"))'
+            )
+            # Create entry point for opimp
+            config["dffml.operation"][
+                "_".join(name_words)
+            ] = f"{import_package_name}.operations:{opimp_name}"
 
-    release = ""
+        # Write out entry_points.txt
+        with open(package_path.joinpath("entry_points.txt"), "w") as fileobj:
+            config.write(fileobj)
+        # Write out operations.py
+        module_path.joinpath("operations.py").write_text("\n".join(opimp_code))
+
+        subprocess.check_call(
+            [sys.executable, "-m", "pip", "install", str(package_path),]
+        )
 
 
-class StackStormActionOperationImplementation(OperationImplementation):
+class StackStormPythonScriptActionOperationImplementation(
+    OperationImplementation
+):
     r"""
     Examples
     --------
@@ -276,5 +391,5 @@ class StackStormActionOperationImplementation(OperationImplementation):
     >>> asyncio.run(stackstorm_test())
     """
 
-    CONTEXT = StackStormActionOperationImplementationContext
-    CONFIG = StackStormActionOperationConfig
+    CONTEXT = StackStormPythonScriptActionOperationImplementationContext
+    CONFIG = StackStormPythonScriptActionOperationConfig
