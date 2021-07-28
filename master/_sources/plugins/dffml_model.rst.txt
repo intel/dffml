@@ -1499,6 +1499,7 @@ Testing and Accuracy:
         -model-location MODEL_DIRECTORY \
         -sources f=TESTING_DATA_SOURCE_TYPE \
         -source-filename TESTING_DATA_FILE_NAME \
+        -scorer ACCURACY_SCORER \
         -log debug
 
 Predicting with trained model:
@@ -1592,6 +1593,75 @@ Predicting with trained model:
 |                +-------------------------------+----------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 |                | OPTICS                        | scikitoptics   | `scikitoptics <https://scikit-learn.org/stable/modules/generated/sklearn.cluster.OPTICS.html#sklearn.cluster.OPTICS/>`_                                                                       |
 +----------------+-------------------------------+----------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+
+
+**Scorers Available:**
+
++----------------+------------------------------------+--------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Type           | Scorer                             | Entrypoint         | Parameters                                                                                                                                                                           |
++================+====================================+====================+======================================================================================================================================================================================+
+| Regression     | Explained Variance Score           | exvscore           | `exvscore <https://scikit-learn.org/stable/modules/generated/sklearn.metrics.explained_variance_score.html#sklearn.metrics.explained_variance_score/>`_                              |
+|                +------------------------------------+--------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|                | Max Error                          | maxerr             | `maxerr <https://scikit-learn.org/stable/modules/generated/sklearn.metrics.max_error.html#sklearn.metrics.max_error/>`_                                                              |
+|                +------------------------------------+--------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|                | Mean Absolute Error                | meanabserr         | `meanabserr <https://scikit-learn.org/stable/modules/generated/sklearn.metrics.mean_absolute_error.html#sklearn.metrics.mean_absolute_error/>`_                                      |
+|                +------------------------------------+--------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|                | Mean Squared Error                 | meansqrerr         | `meansqrerr <https://scikit-learn.org/stable/modules/generated/sklearn.metrics.mean_squared_error.html#sklearn.metrics.mean_squared_error/>`_                                        |
+|                +------------------------------------+--------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|                | Mean Squared Log Error             | meansqrlogerr      | `meansqrlogerr <https://scikit-learn.org/stable/modules/generated/sklearn.metrics.mean_squared_log_error.html#sklearn.metrics.mean_squared_log_error/>`_                             |
+|                +------------------------------------+--------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|                | Median Absolute Error              | medabserr          | `medabserr <https://scikit-learn.org/stable/modules/generated/sklearn.metrics.median_absolute_error.html#sklearn.metrics.median_absolute_error/>`_                                   |
+|                +------------------------------------+--------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|                | R2 Score                           | r2score            | `r2score <https://scikit-learn.org/stable/modules/generated/sklearn.metrics.r2_score.html#sklearn.metrics.r2_score/>`_                                                               |
+|                +------------------------------------+--------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|                | Mean Poisson Deviance              | meanpoidev         | `meanpoidev <https://scikit-learn.org/stable/modules/generated/sklearn.metrics.mean_poisson_deviance.html#sklearn.metrics.mean_poisson_deviance/>`_                                  |
+|                +------------------------------------+--------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|                | Mean Gamma Deviance                | meangammadev       | `meangammadev <https://scikit-learn.org/stable/modules/generated/sklearn.metrics.mean_gamma_deviance.html#sklearn.metrics.mean_gamma_deviance/>`_                                    |
+|                +------------------------------------+--------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|                | Mean Absolute Percentage Error     | meanabspererr      | `meanabspererr <https://scikit-learn.org/stable/modules/generated/sklearn.metrics.mean_absolute_percentage_error.html#sklearn.metrics.mean_absolute_percentage_error/>`_             |
++----------------+------------------------------------+--------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Classification | Accuracy Score                     | acscore            | `acscore <https://scikit-learn.org/stable/modules/generated/sklearn.metrics.accuracy_score.html#sklearn.metrics.accuracy_score/>`_                                                   |
+|                +------------------------------------+--------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|                | Balanced Accuracy Score            | bacscore           | `bacscore <https://scikit-learn.org/stable/modules/generated/sklearn.metrics.balanced_accuracy_score.html#sklearn.metrics.balanced_accuracy_score/>`_                                |
+|                +------------------------------------+--------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|                | Top K Accuracy Score               | topkscore          | `topkscore <https://scikit-learn.org/stable/modules/generated/sklearn.metrics.top_k_accuracy_score.html#sklearn.metrics.top_k_accuracy_score/>`_                                     |
+|                +------------------------------------+--------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|                | Average Precision Score            | avgprescore        | `avgprescore <https://scikit-learn.org/stable/modules/generated/sklearn.metrics.average_precision_score.html#sklearn.metrics.average_precision_score/>`_                             |
+|                +------------------------------------+--------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|                | Brier Score Loss                   | brierscore         | `brierscore <https://scikit-learn.org/stable/modules/generated/sklearn.metrics.brier_score_loss.html#sklearn.metrics.brier_score_loss/>`_                                            |
+|                +------------------------------------+--------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|                | F1 Score                           | f1score            | `f1score <https://scikit-learn.org/stable/modules/generated/sklearn.metrics.f1_score.html#sklearn.metrics.f1_score/>`_                                                               |
+|                +------------------------------------+--------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|                | Log Loss                           | logloss            | `logloss <https://scikit-learn.org/stable/modules/generated/sklearn.metrics.log_loss.html#sklearn.metrics.log_loss/>`_                                                               |
+|                +------------------------------------+--------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|                | Precision Score                    | prescore           | `prescore <https://scikit-learn.org/stable/modules/generated/sklearn.metrics.precision_score.html#sklearn.metrics.precision_score/>`_                                                |
+|                +------------------------------------+--------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|                | Recall Score                       | recallscore        | `recallscore <https://scikit-learn.org/stable/modules/generated/sklearn.metrics.recall_score.html#sklearn.metrics.recall_score/>`_                                                   |
+|                +------------------------------------+--------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|                | Jaccard Score                      | jacscore           | `jacscore <https://scikit-learn.org/stable/modules/generated/sklearn.metrics.jaccard_score.html#sklearn.metrics.jaccard_score/>`_                                                    |
+|                +------------------------------------+--------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|                | Roc Auc Score                      | rocaucscore        | `rocaucscore <https://scikit-learn.org/stable/modules/generated/sklearn.metrics.roc_auc_score.html#sklearn.metrics.roc_auc_score/>`_                                                 |
++----------------+------------------------------------+--------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Clustering     | Adjusted Mutual Info Score         | adjmutinfoscore    | `adjmutinfoscore <https://scikit-learn.org/stable/modules/generated/sklearn.metrics.adjusted_mutual_info_score.html#sklearn.metrics.adjusted_mutual_info_score/>`_                   |
+|                +------------------------------------+--------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|                | Adjusted Rand Score                | adjrandscore       | `adjrandscore <https://scikit-learn.org/stable/modules/generated/sklearn.metrics.adjusted_rand_score.html#sklearn.metrics.adjusted_rand_score/>`_                                    |
+|                +------------------------------------+--------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|                | Completeness Score                 | complscore         | `complscore <https://scikit-learn.org/stable/modules/generated/sklearn.metrics.completeness_score.html#sklearn.metrics.completeness_score/>`_                                        |
+|                +------------------------------------+--------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|                | Fowlkes Mallows Score              | fowlmalscore       | `fowlmalscore <https://scikit-learn.org/stable/modules/generated/sklearn.metrics.fowlkes_mallows_score.html#sklearn.metrics.fowlkes_mallows_score/>`_                                |
+|                +------------------------------------+--------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|                | Homogeneity Score                  | homoscore          | `homoscore <https://scikit-learn.org/stable/modules/generated/sklearn.metrics.homogeneity_score.html#sklearn.metrics.homogeneity_score/>`_                                           |
+|                +------------------------------------+--------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|                | Mutual Info Score                  | mutinfoscore       | `mutinfoscore <https://scikit-learn.org/stable/modules/generated/sklearn.metrics.mutual_info_score.html#sklearn.metrics.mutual_info_score/>`_                                        |
+|                +------------------------------------+--------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|                | Normalized Mutual Info Score       | normmutinfoscore   | `normmutinfoscore <https://scikit-learn.org/stable/modules/generated/sklearn.metrics.normalized_mutual_info_score.html#sklearn.metrics.normalized_mutual_info_score/>`_              |
+|                +------------------------------------+--------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|                | Rand Score                         | randscore          | `randscore <https://scikit-learn.org/stable/modules/generated/sklearn.metrics.rand_score.html#sklearn.metrics.rand_score/>`_                                                         |
+|                +------------------------------------+--------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|                | V Measure Score                    | vmscore            | `vmscore <https://scikit-learn.org/stable/modules/generated/sklearn.metrics.v_measure_score.html#sklearn.metrics.v_measure_score/>`_                                                 |
++----------------+------------------------------------+--------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Supervised     | Model's Default Score              | skmodelscore       | `skmodelscore <https://scikit-learn.org/stable/modules/model_evaluation.html/>`_                                                                                                     |
++----------------+------------------------------------+--------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 
 
 **Usage Example:**
@@ -1705,6 +1775,7 @@ Example below uses KMeans Clustering Model on a small randomly generated dataset
         -sources f=csv \
         -source-filename test.csv \
         -source-readonly \
+        -scorer skmodelscore \
         -log debug
     0.6365141682948129
     $ echo -e 'Col1,Col2,Col3,Col4\n6.09809669,8.36434181,6.70940915,-7.91491768\n' | \
@@ -1741,6 +1812,7 @@ Example usage of KMeans Clustering Model using python API:
     from dffml import CSVSource, Features, Feature
     from dffml.noasync import train, accuracy, predict
     from dffml_model_scikit import KMeansModel
+    from dffml_model_scikit import MutualInfoScoreScorer
 
     model = KMeansModel(
         features=Features(
@@ -1757,7 +1829,8 @@ Example usage of KMeans Clustering Model using python API:
     train(model, "train.csv")
 
     # Assess accuracy (alternate way of specifying data source)
-    print("Accuracy:", accuracy(model, CSVSource(filename="test.csv")))
+    scorer = MutualInfoScoreScorer()
+    print("Accuracy:", accuracy(model, scorer, CSVSource(filename="test.csv")))
 
     # Make prediction
     for i, features, prediction in predict(

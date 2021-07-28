@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Models &mdash; DFFML 0d042378c documentation</title>
+  <title>Models &mdash; DFFML bbf491064 documentation</title>
   
 
   
@@ -70,7 +70,7 @@
             
             
               <div class="version">
-                0d042378c
+                bbf491064
               </div>
             
           
@@ -2192,6 +2192,7 @@ their feature names.</p>
 <span class="go">    -model-location MODEL_DIRECTORY \</span>
 <span class="go">    -sources f=TESTING_DATA_SOURCE_TYPE \</span>
 <span class="go">    -source-filename TESTING_DATA_FILE_NAME \</span>
+<span class="go">    -scorer ACCURACY_SCORER \</span>
 <span class="go">    -log debug</span>
 </pre></div>
 </div>
@@ -2368,6 +2369,152 @@ their feature names.</p>
 <tr class="row-odd"><td><p>OPTICS</p></td>
 <td><p>scikitoptics</p></td>
 <td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.cluster.OPTICS.html#sklearn.cluster.OPTICS/">scikitoptics</a></p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Scorers Available:</strong></p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 6%" />
+<col style="width: 14%" />
+<col style="width: 8%" />
+<col style="width: 72%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Type</p></th>
+<th class="head"><p>Scorer</p></th>
+<th class="head"><p>Entrypoint</p></th>
+<th class="head"><p>Parameters</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td rowspan="10"><p>Regression</p></td>
+<td><p>Explained Variance Score</p></td>
+<td><p>exvscore</p></td>
+<td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.metrics.explained_variance_score.html#sklearn.metrics.explained_variance_score/">exvscore</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Max Error</p></td>
+<td><p>maxerr</p></td>
+<td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.metrics.max_error.html#sklearn.metrics.max_error/">maxerr</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Mean Absolute Error</p></td>
+<td><p>meanabserr</p></td>
+<td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.metrics.mean_absolute_error.html#sklearn.metrics.mean_absolute_error/">meanabserr</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Mean Squared Error</p></td>
+<td><p>meansqrerr</p></td>
+<td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.metrics.mean_squared_error.html#sklearn.metrics.mean_squared_error/">meansqrerr</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Mean Squared Log Error</p></td>
+<td><p>meansqrlogerr</p></td>
+<td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.metrics.mean_squared_log_error.html#sklearn.metrics.mean_squared_log_error/">meansqrlogerr</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Median Absolute Error</p></td>
+<td><p>medabserr</p></td>
+<td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.metrics.median_absolute_error.html#sklearn.metrics.median_absolute_error/">medabserr</a></p></td>
+</tr>
+<tr class="row-even"><td><p>R2 Score</p></td>
+<td><p>r2score</p></td>
+<td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.metrics.r2_score.html#sklearn.metrics.r2_score/">r2score</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Mean Poisson Deviance</p></td>
+<td><p>meanpoidev</p></td>
+<td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.metrics.mean_poisson_deviance.html#sklearn.metrics.mean_poisson_deviance/">meanpoidev</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Mean Gamma Deviance</p></td>
+<td><p>meangammadev</p></td>
+<td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.metrics.mean_gamma_deviance.html#sklearn.metrics.mean_gamma_deviance/">meangammadev</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Mean Absolute Percentage Error</p></td>
+<td><p>meanabspererr</p></td>
+<td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.metrics.mean_absolute_percentage_error.html#sklearn.metrics.mean_absolute_percentage_error/">meanabspererr</a></p></td>
+</tr>
+<tr class="row-even"><td rowspan="11"><p>Classification</p></td>
+<td><p>Accuracy Score</p></td>
+<td><p>acscore</p></td>
+<td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.metrics.accuracy_score.html#sklearn.metrics.accuracy_score/">acscore</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Balanced Accuracy Score</p></td>
+<td><p>bacscore</p></td>
+<td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.metrics.balanced_accuracy_score.html#sklearn.metrics.balanced_accuracy_score/">bacscore</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Top K Accuracy Score</p></td>
+<td><p>topkscore</p></td>
+<td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.metrics.top_k_accuracy_score.html#sklearn.metrics.top_k_accuracy_score/">topkscore</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Average Precision Score</p></td>
+<td><p>avgprescore</p></td>
+<td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.metrics.average_precision_score.html#sklearn.metrics.average_precision_score/">avgprescore</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Brier Score Loss</p></td>
+<td><p>brierscore</p></td>
+<td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.metrics.brier_score_loss.html#sklearn.metrics.brier_score_loss/">brierscore</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>F1 Score</p></td>
+<td><p>f1score</p></td>
+<td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.metrics.f1_score.html#sklearn.metrics.f1_score/">f1score</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Log Loss</p></td>
+<td><p>logloss</p></td>
+<td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.metrics.log_loss.html#sklearn.metrics.log_loss/">logloss</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Precision Score</p></td>
+<td><p>prescore</p></td>
+<td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.metrics.precision_score.html#sklearn.metrics.precision_score/">prescore</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Recall Score</p></td>
+<td><p>recallscore</p></td>
+<td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.metrics.recall_score.html#sklearn.metrics.recall_score/">recallscore</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Jaccard Score</p></td>
+<td><p>jacscore</p></td>
+<td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.metrics.jaccard_score.html#sklearn.metrics.jaccard_score/">jacscore</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Roc Auc Score</p></td>
+<td><p>rocaucscore</p></td>
+<td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.metrics.roc_auc_score.html#sklearn.metrics.roc_auc_score/">rocaucscore</a></p></td>
+</tr>
+<tr class="row-odd"><td rowspan="9"><p>Clustering</p></td>
+<td><p>Adjusted Mutual Info Score</p></td>
+<td><p>adjmutinfoscore</p></td>
+<td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.metrics.adjusted_mutual_info_score.html#sklearn.metrics.adjusted_mutual_info_score/">adjmutinfoscore</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Adjusted Rand Score</p></td>
+<td><p>adjrandscore</p></td>
+<td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.metrics.adjusted_rand_score.html#sklearn.metrics.adjusted_rand_score/">adjrandscore</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Completeness Score</p></td>
+<td><p>complscore</p></td>
+<td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.metrics.completeness_score.html#sklearn.metrics.completeness_score/">complscore</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Fowlkes Mallows Score</p></td>
+<td><p>fowlmalscore</p></td>
+<td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.metrics.fowlkes_mallows_score.html#sklearn.metrics.fowlkes_mallows_score/">fowlmalscore</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Homogeneity Score</p></td>
+<td><p>homoscore</p></td>
+<td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.metrics.homogeneity_score.html#sklearn.metrics.homogeneity_score/">homoscore</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Mutual Info Score</p></td>
+<td><p>mutinfoscore</p></td>
+<td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.metrics.mutual_info_score.html#sklearn.metrics.mutual_info_score/">mutinfoscore</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Normalized Mutual Info Score</p></td>
+<td><p>normmutinfoscore</p></td>
+<td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.metrics.normalized_mutual_info_score.html#sklearn.metrics.normalized_mutual_info_score/">normmutinfoscore</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Rand Score</p></td>
+<td><p>randscore</p></td>
+<td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.metrics.rand_score.html#sklearn.metrics.rand_score/">randscore</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>V Measure Score</p></td>
+<td><p>vmscore</p></td>
+<td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.metrics.v_measure_score.html#sklearn.metrics.v_measure_score/">vmscore</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Supervised</p></td>
+<td><p>Model’s Default Score</p></td>
+<td><p>skmodelscore</p></td>
+<td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/model_evaluation.html/">skmodelscore</a></p></td>
 </tr>
 </tbody>
 </table>
@@ -2562,6 +2709,7 @@ their feature names.</p>
 <span class="go">     -sources f=csv \</span>
 <span class="go">     -source-filename test.csv \</span>
 <span class="go">     -source-readonly \</span>
+<span class="go">     -scorer skmodelscore \</span>
 <span class="go">     -log debug</span>
 <span class="go"> 0.6365141682948129</span>
 <span class="gp"> $ </span><span class="nb">echo</span> -e <span class="s1">&#39;Col1,Col2,Col3,Col4\n6.09809669,8.36434181,6.70940915,-7.91491768\n&#39;</span> <span class="p">|</span> <span class="se">\</span>
@@ -2596,6 +2744,7 @@ their feature names.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">CSVSource</span><span class="p">,</span> <span class="n">Features</span><span class="p">,</span> <span class="n">Feature</span>
 <span class="kn">from</span> <span class="nn">dffml.noasync</span> <span class="kn">import</span> <span class="n">train</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">,</span> <span class="n">predict</span>
 <span class="kn">from</span> <span class="nn">dffml_model_scikit</span> <span class="kn">import</span> <span class="n">KMeansModel</span>
+<span class="kn">from</span> <span class="nn">dffml_model_scikit</span> <span class="kn">import</span> <span class="n">MutualInfoScoreScorer</span>
 
 <span class="n">model</span> <span class="o">=</span> <span class="n">KMeansModel</span><span class="p">(</span>
     <span class="n">features</span><span class="o">=</span><span class="n">Features</span><span class="p">(</span>
@@ -2612,7 +2761,8 @@ their feature names.</p>
 <span class="n">train</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="s2">&quot;train.csv&quot;</span><span class="p">)</span>
 
 <span class="c1"># Assess accuracy (alternate way of specifying data source)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Accuracy:&quot;</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">CSVSource</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;test.csv&quot;</span><span class="p">)))</span>
+<span class="n">scorer</span> <span class="o">=</span> <span class="n">MutualInfoScoreScorer</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Accuracy:&quot;</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">scorer</span><span class="p">,</span> <span class="n">CSVSource</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;test.csv&quot;</span><span class="p">)))</span>
 
 <span class="c1"># Make prediction</span>
 <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">features</span><span class="p">,</span> <span class="n">prediction</span> <span class="ow">in</span> <span class="n">predict</span><span class="p">(</span>
