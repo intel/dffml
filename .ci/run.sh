@@ -189,7 +189,11 @@ function run_style() {
 }
 
 function run_commit(){
-  dffml service dev lint commits
+  BRANCH="$(echo $GITHUB_REF | cut -d'/' -f 3)"
+  echo "On Branch: ${BRANCH}"
+  if [[ "$BRANCH" != "master" ]]; then
+    dffml service dev lint commits
+  fi
 }
 
 function run_docs() {
