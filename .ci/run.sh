@@ -189,7 +189,11 @@ function run_style() {
 }
 
 function run_commit(){
-  dffml service dev lint commits
+  BRANCH="$(git rev-parse --abbrev-ref HEAD)"
+  echo "On Branch: ${BRANCH}"
+  if [[ "$BRANCH" != "master" ]]; then
+    dffml service dev lint commits
+  fi
 }
 
 function run_docs() {
