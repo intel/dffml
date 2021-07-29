@@ -9,6 +9,7 @@ from typing import (
 )
 
 from ..df.types import (
+    Definition,
     Operation,
     DataFlow,
 )
@@ -36,80 +37,49 @@ class StackStormPythonScriptActionOperationImplementationContext(
     OperationImplementationContext
 ):
     async def run(self, inputs: Dict[str, Any]) -> Dict[str, Any]:
-        # TODO Support for daemons? How might we do that? Need to think on this.
-        cmd = [
-            # Operation name is the command to run
-            self.parent.op.name,
-        ] + list(
-            # Create arguments based on inputs in standard format (standard is
-            # debatable, - vs. --, but this is what we'll go with for now)
-            itertools.chain(
-                *[[f"--{key}", value] for key, value in inputs.items()]
+        # Load the Python file as a module
+        entry_point = self.parent.config.entry_point
+        with chdir(entry_point.parent):
+            spec = importlib.util.spec_from_file_location(
+                entry_point.stem, entry_point.name
             )
-        )
-        # TODO Implement configurable cwd
-        kwargs = {
-            "stdin": None,
-            "stdout": asyncio.stackstorm.PIPE,
-            "stderr": asyncio.stackstorm.PIPE,
-            # TODO Configurability of start_new_session
-            "start_new_session": True,
-        }
-        # Run command
-        self.logger.debug(f"Running {cmd}, {kwargs}")
-        proc = await asyncio.create_stackstorm_exec(*cmd, **kwargs)
-        # Capture stdout and stderr
-        output = {
-            "stdout": b"",
-            "stderr": b"",
-        }
-        # Read output and watch for process return
-        # TODO Configurability of readline vs. reading some number of bytes for
-        # commands with binary outputs
-        work = {
-            asyncio.create_task(proc.stdout.readline()): "stdout.readline",
-            asyncio.create_task(proc.stderr.readline()): "stderr.readline",
-            asyncio.create_task(proc.wait()): "wait",
-        }
-        async for event, result in concurrently(work):
-            if event.endswith("readline"):
-                # Log line read on stderr output
-                # TODO Make this configurable
-                if event == "stderr.readline":
-                    self.logger.debug(
-                        f"{event}: {result.decode(errors='ignore').rstrip()}"
-                    )
-                # Split the event on ., index 0 will be "stdout" or "stderr".
-                # See work dict values for event names.
-                stdout_or_stderr = event.split(".")[0]
-                # Append to output
-                output[stdout_or_stderr] += result
-                # If the child closes an fd, then output will empty. Do not
-                # attempt to read if this is the case
-                if result:
-                    # Read another line if fd is not closed
-                    coro = getattr(proc, stdout_or_stderr).readline()
-                    task = asyncio.create_task(coro)
-                    work[task] = event
-            else:
-                # When wait() returns process has exited
-                break
-        # TODO Add ability to treat non-zero return code as okay, i.e. don't
-        # raise. An example of this is cve-bin-tool, which returns non-zero when
-        # issues are found (as of 2.0 release). We should return the
-        # proc.returncode when we do this too
-        # Raise if the process exited with an error code (non-zero return code).
-        self.logger.debug("proc.returncode: %s", proc.returncode)
-        if proc.returncode != 0:
-            raise stackstorm.CalledProcessError(
-                proc.returncode,
-                cmd,
-                output=output["stdout"],
-                stderr=output["stderr"],
-            )
+            module = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(module)
+            # Find the action to run within the module
+
+            # Run the action
+            breakpoint()
         # Return stdout of called process. Inspect the operation output to
         # determine what it should be called.
-        return {list(self.parent.op.outputs.keys())[0]: output["stdout"]}
+        # TODO Handle multiple outputs
+        return {list(self.parent.op.outputs.keys())[0]: result}
+
+
+@config
+class StackStormLocalShellActionOperationConfig:
+    entry_point: pathlib.Path = field("Python action to run")
+
+
+class StackStormLocalShellActionOperationImplementationContext(
+    OperationImplementationContext
+):
+    async def run(self, inputs: Dict[str, Any]) -> Dict[str, Any]:
+        # TODO Implement grab stdout and log stderr in run_command()
+        # Return stdout of called process. Inspect the operation output to
+        # determine what it should be called.
+        return {list(self.parent.op.outputs.keys())[0]: output}
+
+
+class StackStormLocalShellActionOperationImplementation(
+    OperationImplementation
+):
+    r"""
+    Examples
+    --------
+    """
+
+    CONTEXT = StackStormLocalShellActionOperationImplementationContext
+    CONFIG = StackStormLocalShellActionOperationConfig
 
 
 import io
@@ -221,7 +191,9 @@ def stackstorm_opimp_name(import_package_name, action_name):
     )
 
 
-async def stackstorm_operations_py(actions_to_entry_points):
+async def stackstorm_operations_py(
+    import_package_name, actions_to_entry_points
+):
     """
     Return Python code for the operations.py file of a StackStorm pack.
     """
@@ -235,13 +207,15 @@ async def stackstorm_operations_py(actions_to_entry_points):
             "",
         ]
         + [
-            f'{stackstorm_operation_name(import_package_name, name)} = stackstorm_create_opimp(importlib.resources.read_text(__package__ + ".actions", "{filename}"))'
+            f'{stackstorm_opimp_name(import_package_name, name)} = stackstorm_create_opimp("{stackstorm_operation_name(import_package_name, name)}", "{stackstorm_opimp_name(import_package_name, name)}", importlib.resources.read_text(__package__ + ".actions", "{filename}"))'
             for name, filename in actions_to_entry_points.items()
         ]
     )
 
 
-async def stackstorm_entry_points_txt(actions_to_entry_points):
+async def stackstorm_entry_points_txt(
+    import_package_name, actions_to_entry_points
+):
     """
     Return INI for the entry_points.txt of a StackStorm pack.
     """
@@ -262,18 +236,75 @@ async def stackstorm_entry_points_txt(actions_to_entry_points):
 import configparser
 import sys
 import subprocess
+import dataclasses
 
 
-def stackstorm_create_opimp(yaml_contents):
+@dataclasses.dataclass
+class StackStormAction:
+    description: str
+    enabled: bool
+    name: str
+    pack: str
+    parameters: dict
+    runner_type: str
+
+    def op(self, operation_name):
+        return Operation(
+            name=operation_name,
+            inputs={
+                name: Definition(name=name, primitive=parameter["type"])
+                for name, parameter in self.parameters.items()
+            },
+            outputs={
+                # TODO Corretly define result
+                "result": Definition(
+                    name=f"{self.name}.result", primitive="string"
+                )
+            },
+        )
+
+
+@dataclasses.dataclass
+class StackStormPythonScriptAction(StackStormAction):
+    entry_point: pathlib.Path
+
+
+@dataclasses.dataclass
+class StackStormLocalShellAction(StackStormAction):
+    pass
+
+
+def stackstorm_create_opimp(operation_name, opimp_name, yaml_contents):
     import yaml
 
-    from pprint import pprint
+    errors = []
 
-    pprint(yaml.safe_load(yaml_contents))
+    for ActionClass, OpImp in [
+        (
+            StackStormPythonScriptAction,
+            StackStormPythonScriptActionOperationImplementation,
+        ),
+        (
+            StackStormLocalShellAction,
+            StackStormLocalShellActionOperationImplementation,
+        ),
+    ]:
+        try:
+            action = ActionClass(**yaml.safe_load(yaml_contents))
+            return type(
+                opimp_name, (OpImp,), {"op": action.op(operation_name)}
+            )
+        except Exception as error:
+            errors.append(error)
+
+    raise Exception(yaml_contents) from errors[-1]
 
 
-async def stackstorm_test():
-    package_name = "stackstorm-networking_utils"
+import contextlib
+
+
+@contextlib.asynccontextmanager
+async def stackstorm_pack_to_operations_package(package_name):
     # version_archive_url = await github_latest_tag_archive_url("StackStorm-Exchange", package_name)
 
     # Create a temporary directory to create the package in
@@ -298,41 +329,47 @@ async def stackstorm_test():
         actions_to_entry_points = await stackstorm_actions_to_entry_points(
             module_path
         )
-        # Create entry_points.txt file containing operations
-        config = configparser.ConfigParser()
-        config["dffml.operation"] = {}
-        # Create the code for the operations.py file
-        opimp_code = [
-            "import importlib.resources",
-            "",
-            "from dffml import stackstorm_create_opimp",
-            "",
-            "",
-        ]
-        for name, filename in actions_to_entry_points.items():
-            # Name of the operations split into words
-            name_words = import_package_name.replace(
-                "stackstorm_", "", 1
-            ).split("_") + name.split("_")
-            # Create an opimp
-            opimp_name = " ".join(name_words).lower().title().replace(" ", "")
-            opimp_code.append(
-                f'{opimp_name} = stackstorm_create_opimp(importlib.resources.read_text(__package__ + ".actions", "{filename}"))'
-            )
-            # Create entry point for opimp
-            config["dffml.operation"][
-                "_".join(name_words)
-            ] = f"{import_package_name}.operations:{opimp_name}"
-
-        # Write out entry_points.txt
-        with open(package_path.joinpath("entry_points.txt"), "w") as fileobj:
-            config.write(fileobj)
         # Write out operations.py
-        module_path.joinpath("operations.py").write_text("\n".join(opimp_code))
-
-        subprocess.check_call(
-            [sys.executable, "-m", "pip", "install", str(package_path),]
+        module_path.joinpath("operations.py").write_text(
+            await stackstorm_operations_py(
+                import_package_name, actions_to_entry_points
+            )
         )
+        # Write out entry_points.txt
+        package_path.joinpath("entry_points.txt").write_text(
+            await stackstorm_entry_points_txt(
+                import_package_name, actions_to_entry_points
+            )
+        )
+
+        # Requirements
+        # "https://github.com/StackStorm/st2/archive/master.zip#egg=st2common&subdirectory=st2common"
+        # "https://github.com/StackStorm/st2-rbac-backend/archive/master.zip"
+
+        yield package_path
+
+
+async def stackstorm_install_pack(pack_name):
+    # Create package from pack
+    async with stackstorm_pack_to_operations_package(
+        pack_name
+    ) as package_path:
+        # Install pack
+        subprocess.check_call(
+            [sys.executable, "-m", "pip", "install", str(package_path)]
+        )
+        # Check that operations work
+        subprocess.check_call(
+            [
+                sys.executable,
+                "-c",
+                f'import {pack_name.replace("-", "_")}.operations',
+            ],
+        )
+
+
+async def stackstorm_test():
+    await stackstorm_install_pack("stackstorm-networking_utils")
 
 
 class StackStormPythonScriptActionOperationImplementation(
