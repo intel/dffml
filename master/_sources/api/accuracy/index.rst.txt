@@ -5,6 +5,6 @@ Accuracy
     :maxdepth: 2
     :caption: Contents:
 
+    accuracy
     clf
     mse
-    accuracy

@@ -6,8 +6,8 @@ Df
     :caption: Contents:
 
     multicomm
-    exceptions
     base
-    log
     memory
+    exceptions
     types
+    log
