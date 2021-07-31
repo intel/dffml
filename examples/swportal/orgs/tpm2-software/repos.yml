@@ -1,0 +1,8 @@
+---
+name: tpm2-pkcs11
+owners:
+- william.c.roberts@intel.com
+---
+name: tpm2-tools
+owners:
+- imran.desai@intel.com
