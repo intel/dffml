@@ -9,9 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Consolidate test case classes
 - Tutorial on how to load models dynamically
   https://intel.github.io/dffml/tutorials/models/load.html
+- `log_time` decorator for logging running time of functions/coroutines.
 - Download progressbar in `util/net.py`
 - Usecase example notebook for "Moving between models"
 - Documentation and testing support for notebooks
+- Commit message linting in CI tests
 - Example on how to create operations and use data preprocessing source to train models
   https://intel.github.io/dffml/examples/ice_cream.html
 - Operations for zip and tar file creation and extraction
@@ -20,6 +22,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Tests for all notebooks auto created and run via ``test_notebooks.py``
 - Support for additional layers in pytorch pretrained models via Python API
 - Pandas DataFrame can now be passed directly to high level APIs
+- Usecase example notebook for "Saving and loading models"
+- Usecase example notebook for "Transfer Learning"
+- Usecase example notebook for "Ensemble by stacking"
 ### Changed
 - Calls to hashlib now go through helper functions
 - Build docs using `dffml service dev docs`
