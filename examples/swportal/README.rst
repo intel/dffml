@@ -37,9 +37,6 @@ before you can run the following commands.
 .. image:: https://github.com/SAP/project-portal-for-innersource/raw/main/docs/overview.png
     :alt: Screenshot of SAP InnerSource portal showing grid of projects
 
-Do this in a new terminal, as you'll be leaving a HTTP server running for the
-rest of the example.
-
 We need to download the code first for the portal first. We'll be working from a
 snapshot so you'll see a long string of hex which is the git commit. We download
 the code and rename the downloaded directory to ``html-client``.
@@ -50,7 +47,8 @@ the code and rename the downloaded directory to ``html-client``.
     $ curl -sfL 'https://github.com/SAP/project-portal-for-innersource/archive/8a328cf30f5626b3658577b223d990af6285c272.tar.gz' | tar -xvz
     $ mv project-portal-for-innersource-8a328cf30f5626b3658577b223d990af6285c272 html-client
 
-Now we go into the
+Now we go into the html-client directory, install the depenedencies, and start
+the server.
 
 .. code-block:: console
     :test:
@@ -66,12 +64,22 @@ Now we go into the
     [4/4] Building fresh packages...
     success Saved lockfile.
     Done in 2.38s.
-    $ BROWSER=none REACT_EDITOR=none yarn start
+    $ yarn start
     yarn run v1.22.5
     Starting up http-server, serving.
     Available on:
       http://127.0.0.1:8080
     Hit CTRL-C to stop the server
+
+Now open a new terminal, make sure you're in the directory we started in, so
+that ``html-client`` is a subdirectory. You may need to change directory to the
+parent directory.
+
+.. code-block:: console
+    :test:
+
+    $ cd ..
+    $ ls -l
 
 Crawler
 -------
@@ -176,13 +184,13 @@ and the repo owners.
 
 **orgs/intel/repos.yml**
 
-.. literalinclue:: orgs/intel/repos.yml
+.. literalinclude:: /../examples/swportal/orgs/intel/repos.yml
     :test:
     :filepath: orgs/intel/repos.yml
 
 **orgs/tpm2-software/repos.yml**
 
-.. literalinclue:: orgs/tpm2-software/repos.yml
+.. literalinclude:: /../examples/swportal/orgs/tpm2-software/repos.yml
     :test:
     :filepath: orgs/tpm2-software/repos.yml
 
@@ -215,7 +223,7 @@ this section gets further writing.
 
 **sources/orgs_repos_yml.py**
 
-.. literalinclue:: sources/orgs_repos_yml.py
+.. literalinclude:: /../examples/swportal/sources/orgs_repos_yml.py
     :test:
     :filepath: sources/orgs_repos_yml.py
 
@@ -293,7 +301,7 @@ this section gets further writing.
 
 **sources/sap_portal_repos_json.py**
 
-.. literalinclue:: sources/sap_portal_repos_json.py
+.. literalinclude:: /../examples/swportal/sources/sap_portal_repos_json.py
     :test:
     :filepath: sources/sap_portal_repos_json.py
 
@@ -445,7 +453,7 @@ environment variable we just set.
 
 **operations/gh.py**
 
-.. literalinclue:: operations/gh.py
+.. literalinclude:: /../examples/swportal/operations/gh.py
     :test:
     :filepath: operations/gh.py
 
@@ -473,77 +481,96 @@ and more.
      <... output clipped ...>
      'watchers_count': 135}
 
-Usage
------
+DataFlow
+--------
 
-Run the http service and navigate to http://localhost:8080/
-
-.. warning::
-
-    The ``-insecure`` flag is only being used here to speed up this
-    tutorial. See documentation on HTTP API
-    :doc:`/plugins/service/http/security` for more information.
-
-.. code-block:: console
-    :test:
-    :daemon: 8080
-
-    $ dffml service http server \
-        -port 8080 \
-        -mc-atomic \
-        -mc-config projects \
-        -static html-client \
-        -redirect GET / /index.html \
-        -log debug \
-        -insecure
-
-Query all projects
-
-.. code-block:: console
-    :test:
-    :replace: cmds[0][-1] = cmds[0][-1].replace("8080", str(ctx["HTTP_SERVER"]["8080"]))
-
-    $ curl -sf http://localhost:8080/projects
-
-Get a specific project. This triggers a project's DataFlow to run.
-
-.. code-block:: console
-    :test:
-    :replace: cmds[0][-1] = cmds[0][-1].replace("8080", str(ctx["HTTP_SERVER"]["8080"]))
-
-    $ curl -sf http://localhost:8080/projects/72b4720a-a547-4ef7-9729-dbbe3265ddaa
-
-Structure
----------
-
-- The codebase for the client is in `html-client/`
-
-- The DataFlows for each project are in `projects/`
-
-  - Custom operations reside in the `operations/` directory
-
-  - Dependencies are listed in the top level `requirements.txt` file.
-
-HTML Client
-+++++++++++
-
-The website displayed to clients is all vanila HTML, CSS, and JavaScript.
-
-Projects
-++++++++
-
-Each project has a DataFlow which describes how data for the project should be
-collected. Static data can be added directly to the dataflow file. When
-gernating data dynamically is required, code can be added to `operations/`.
-
-Notes
------
-
-Run a single project's DataFlow from the command line
+Let's create a backup of the ``repos.json`` file, since we'll be overwriting it
+with our own.
 
 .. code-block:: console
     :test:
 
-    $ dffml dataflow run single \
-        -dataflow projects/df/b7cf5596-d427-4ae3-9e95-44be879eae73.yaml \
-        -log debug
+    $ cp html-client/repos.json repos.json.bak
+
+We're going to create a Python script which will use all the operations we've
+written, and the sources.
+
+**dataflow.py**
+
+.. literalinclude:: /../examples/swportal/dataflow.py
+    :test:
+    :filepath: dataflow.py
+
+We can run the file the run the dataflow on all the input repos and save the
+results to ``repos.json``.
+
+.. code-block:: console
+    :test:
+
+    $ python dataflow.py
+
+If you go to http://127.0.0.1:8080
+
+.. image:: https://user-images.githubusercontent.com/5950433/128045522-54b3193c-826b-48aa-b82e-96306831d595.png
+    :alt: Screenshot of SAP InnerSource portal showing new projects
+
+We can also export the dataflow for use with the CLI, HTTP service, etc.
+
+**TODO** Add link to webui when complete. It will be used for editing dataflows.
+ETA Oct 2021.
+
+.. code-block:: console
+    :test:
+
+    $ dffml service dev export dataflow:dataflow | tee dataflow.json
+
+We can run the dataflow using the DFFML command line interface rather than
+running the Python file.
+
+The following command replicates loading from the ``orgs/`` source and updating
+the ``repos.json`` source. Just as we did in Python, we add the record key to
+each dataflow run as an input with the definition being ``github.repo.url``.
+You can add ``-log debug`` to see verbose output.
+
+.. code-block:: console
+    :test:
+
+    $ dffml dataflow run records all \
+        -dataflow dataflow.json \
+        -record-def "github.repo.url" \
+        -sources \
+          orgs=sources.orgs_repos_yml:OrgsReposYAMLSource \
+          portal=sources.sap_portal_repos_json:SAPPortalReposJSONSource \
+        -source-orgs-directory orgs/ \
+        -source-portal-filename html-client/repos.json \
+        -source-portal-readwrite \
+        -update
+
+If you want to run the dataflow on a single repo and add the data to the
+repos.json file, you can do it as follows.
+
+.. code-block:: console
+    :test:
+
+    $ dffml dataflow run records set \
+        -dataflow dataflow.json \
+        -record-def "github.repo.url" \
+        -sources \
+          portal=sources.sap_portal_repos_json:SAPPortalReposJSONSource \
+        -source-portal-filename html-client/repos.json \
+        -source-portal-readwrite \
+        -update \
+        -keys \
+          https://github.com/intel/dffml
+
+If you want to run the dataflow on a single repo, without updating the source,
+you can do it as follows, by omiting the source related arguments.
+
+.. code-block:: console
+    :test:
+
+    $ dffml dataflow run records set \
+        -dataflow dataflow.json \
+        -record-def "github.repo.url" \
+        -keys \
+          https://github.com/intel/dffml
