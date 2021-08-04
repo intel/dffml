@@ -964,6 +964,9 @@ class MakeDocsConfig:
         "If set a SimpleHTTP server would be started to show generated docs",
         default=False,
     )
+    no_strict: bool = field(
+        "If set do not fail on Sphinx warnings", default=False,
+    )
 
 
 class MakeDocs(CMD):
@@ -1028,12 +1031,14 @@ class MakeDocs(CMD):
                 for e in pkg_resources.iter_entry_points("console_scripts")
                 if e.name.startswith("sphinx-build")
             ][0],
-            "-W",
             "-b",
             "html",
             "docs",
             str(pages_path),
         ]
+        # Fail on warnings unless -no-strict is given
+        if not self.no_strict:
+            cmd.insert(1, "-W")
         returncode = await self._exec_cmd(cmd)
         if returncode != 0:
             raise SphinxBuildError
