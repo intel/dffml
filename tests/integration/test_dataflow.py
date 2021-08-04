@@ -1,6 +1,6 @@
 """
 WARNING Adding too many testcases to this file starts causing weird errors where
-pkgresources will try to __import__ a package and then that pacakge won't be
+pkgresources will try to __import__ a package and then that package won't be
 found. It only happens when there's too many testcases in one file, which is why
 test_integration_cli.py was split into a directory. Also, it will only happen
 when all the testcases in the file are run at once. Not when running only the

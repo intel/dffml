@@ -74,7 +74,7 @@ class MySQLSourceContext(BaseSourceContext):
                         feature_name
                     ]["confidence"]
         # Bindings should be the values for each column, where the value for the
-        # key is not repeated for the UPDATE. If useing REPLACE INTO, don't
+        # key is not repeated for the UPDATE. If using REPLACE INTO, don't
         # repeat values
         values = list(bindings.values())
         if not "REPLACE" in self.parent.config.update.upper():

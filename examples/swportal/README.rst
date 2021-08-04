@@ -69,7 +69,7 @@ Structure
 
   - Custom operations reside in the `operations/` directory
 
-  - Depdendencies are listed in the top level `requirements.txt` file.
+  - Dependencies are listed in the top level `requirements.txt` file.
 
 HTML Client
 +++++++++++
@@ -81,7 +81,7 @@ Projects
 
 Each project has a DataFlow which describes how data for the project should be
 collected. Static data can be added directly to the dataflow file. When
-gernating data dynamiclly is required, code can be added to `operations/`.
+gernating data dynamically is required, code can be added to `operations/`.
 
 Notes
 -----

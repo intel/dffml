@@ -51,7 +51,7 @@ HttpChannelConfig
 
         - ``bytes:content_type:OUTPUT_KEYS``
 
-            - OUTPUT_KEYS are ``.`` seperated string which is used as keys to traverse the ouput of the flow.
+            - OUTPUT_KEYS are ``.`` separated string which is used as keys to traverse the ouput of the flow.
               eg:
 
               .. code-block:: python
@@ -72,7 +72,7 @@ HttpChannelConfig
 
 - ``immediate_response: Dict[str,Any]``
 
-    - If provided with a reponse, server responds immediatly with
+    - If provided with a response, server responds immediately with
       it, whilst scheduling to run the dataflow.
       Expected keys:
 

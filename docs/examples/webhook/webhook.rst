@@ -1,6 +1,6 @@
 .. _usage_webhook:
 
-Redeploying on receving GitHub webhook
+Redeploying on receiving GitHub webhook
 ======================================
 
 We'll move ``ffmpeg`` to a GitHub repo, and set up a webhook DataFlow such that whenever

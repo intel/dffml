@@ -18,7 +18,7 @@ A *Official* plugin is any plugin maintained within the main Git repo.
 
 This means users only have to install what they need. TensorFlow is several
 hundred megabytes, not everyone wants that, or needs that to get machine
-learning models that preform accurately on their problem.
+learning models that perform accurately on their problem.
 
 All plugins have their base class that they derive from in the main package,
 which is located in the ``dffml`` directory at the root of the git repo.

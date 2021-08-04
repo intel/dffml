@@ -127,8 +127,8 @@ async def concurrently(
             if not task.done() and (nocancel is None or task not in nocancel):
                 task.cancel()
             else:
-                # For tasks which are done but have expections which we didn't
-                # raise, collect their execptions
+                # For tasks which are done but have exceptions which we didn't
+                # raise, collect their exceptions
                 task.exception()
 
 
