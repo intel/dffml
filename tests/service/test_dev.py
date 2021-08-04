@@ -386,7 +386,6 @@ class TestMakeDocs(AsyncTestCase):
     symlinks_to_chk = [
         (("changelog.md",), ("CHANGELOG.md",)),
         (("shouldi.md",), ("examples", "shouldi", "README.md",)),
-        (("swportal.rst",), ("examples", "swportal", "README.rst",)),
         (
             ("contributing", "consoletest.md",),
             ("dffml", "util", "testing", "consoletest", "README.md",),

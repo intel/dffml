@@ -154,7 +154,7 @@ def mktestcase(filepath: pathlib.Path, relative: pathlib.Path, builder: bool):
     return testcase
 
 
-SKIP_DOCS = ["swportal", "plugins/dffml_model"]
+SKIP_DOCS = ["plugins/dffml_model"]
 # Quick examples with no install commands, no venv needed
 NO_SETUP = [
     "tutorials/doublecontextentry",
