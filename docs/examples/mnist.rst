@@ -38,7 +38,7 @@ and the seed to have the input of the associate_definition operation come from t
 
 .. literalinclude:: /../examples/MNIST/create_dataflow.sh
 
-.. TODO genreate this automaticlly
+.. TODO genereate this automaticlly
     graph TD
     0fbe41b549bb236aabadebd7924379fd[multiply]
     24e79f7035a289834b34967054b338f5(seed.image)
@@ -78,7 +78,7 @@ and to have the input of the associate_definition operation come from the output
 
 .. literalinclude:: /../examples/MNIST/create_dataflow_1.sh
 
-.. TODO genreate this automaticlly
+.. TODO genreate this automatically
     graph TD
     4b0696d0a16f6124e7f9edd38a1c1505[flatten]
     0fbe41b549bb236aabadebd7924379fd[multiply]

@@ -50,7 +50,7 @@ class AccuracyContext(abc.ABC, BaseDataFlowFacilitatorObjectContext):
 class AccuracyScorer(BaseDataFlowFacilitatorObject):
     """
     Abstract base class which should be derived from
-    and implmented using various accuracy scorer.
+    and implemented using various accuracy scorer.
     """
 
     CONFIG = AccuracyConfig

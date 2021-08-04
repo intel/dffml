@@ -118,7 +118,7 @@ async def parse_docker_commands(repo, image_tag):
     # parses lines starting with "# docker run" to line ending with "# "
     x = re.findall("(?:#[ ]*docker run )(?:.|\n)*(?:#[ ]*\n)", s)
     if not x:
-        # handles case were `FROM` starts immediatly after `usage` comments,
+        # handles case were `FROM` starts immediately after `usage` comments,
         # without blank comment in between
         x = re.findall("((?:#[ ]*docker run )(?:.|\n)*)FROM", s)
     if not x:

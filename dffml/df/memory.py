@@ -344,7 +344,7 @@ class MemoryInputNetworkContext(BaseInputNetworkContext):
                     in self.ctxhd[handle_string].definitions
                 ):
                     self.ctxhd[handle_string].definitions[item.definition] = []
-                # Add input to by defintion set
+                # Add input to by definition set
                 self.ctxhd[handle_string].definitions[item.definition].append(
                     item
                 )
@@ -609,11 +609,11 @@ class MemoryInputNetworkContext(BaseInputNetworkContext):
                             # Generate parameters from inputs
                             for item in by_origin[origin]:
                                 # TODO(p2) We favored comparing names to
-                                # defintions because sometimes we create
-                                # defintions which have specs which create new
+                                # definitions because sometimes we create
+                                # definitions which have specs which create new
                                 # types which will not equal each other. We
                                 # maybe want to consider switching to comparing
-                                # exported Defintions
+                                # exported Definitions
                                 if alternate_definitions:
                                     if (
                                         item.definition.name
@@ -738,7 +738,7 @@ class MemoryInputNetworkContext(BaseInputNetworkContext):
                                 )
                                 break
                         # If there is no default value, we don't have a complete
-                        # paremeter set, so we bail out
+                        # parameter set, so we bail out
                         else:
                             return
         # Generate all possible permutations of applicable inputs
@@ -1110,7 +1110,7 @@ class MemoryOperationImplementationNetworkContext(
         """
         # Check that our network contains the operation
         await self.ensure_contains(operation)
-        # Create an opimp context and run the opertion
+        # Create an opimp context and run the operation
         async with self.operations[operation.instance_name](
             ctx, octx
         ) as opctx:
@@ -1357,7 +1357,7 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
                 self.logger.debug("Reusing %s: %s", name, ctx)
                 del enter[name]
                 setattr(self, name, ctx)
-        # Creat the exit stack and enter all the contexts we won't be reusing
+        # Create the exit stack and enter all the contexts we won't be reusing
         self._stack = AsyncExitStack()
         self._stack = await aenter_stack(self, enter)
         # Ensure that we can run the dataflow
@@ -1387,7 +1387,7 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
                 # We may have been provided with the implemenation. Attempt to
                 # look it up from within the dataflow.
                 opimp = dataflow.implementations.get(operation.name, None)
-                # There is a possiblity the operation implemenation network will
+                # There is a possibility the operation implementation network will
                 # be able to instantiate from the given operation implementation
                 # if present. But we can't count on it.
                 if not await self.nctx.instantiable(operation, opimp=opimp):

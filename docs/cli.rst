@@ -119,13 +119,13 @@ Create, modify, run, and visualize DataFlows.
 Create
 ~~~~~~
 
-Ouput the dataflow description to standard output using the specified
+Output the dataflow description to standard output using the specified
 configloader format.
 
 In the following example we create a DataFlow consisting of 2 operations,
 ``dffml.mapping.create``, and ``print_output``. We use ``-flow`` to edit the
 DataFlow and have the input of the ``print_output`` operation come from the
-ouput of the ``dffml.mapping.create`` operation. If you want to see the
+output of the ``dffml.mapping.create`` operation. If you want to see the
 difference create a diagram of the DataFlow with and without using the ``-flow``
 flag during generation.
 

@@ -364,7 +364,7 @@ class AssociateDefinition(OperationImplementationContext):
     """
 
     async def run(self, inputs: Dict[str, Any]) -> Dict[str, Any]:
-        # Look up the definiton for each definition name given
+        # Look up the definition for each definition name given
         try:
             spec = {
                 await self.octx.ictx.definition(

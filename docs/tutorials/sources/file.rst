@@ -58,7 +58,7 @@ Add configuration
     :filepath: dffml_source_ini/misc.py
     :lines: 11-15
 
-Here we will be writing the configuration options which will be avaliable for our
+Here we will be writing the configuration options which will be available for our
 INISource. The INISourceConfig will be decorated by config. Here we have provided
 three configuration options.
 

@@ -179,7 +179,7 @@ for filepath in DOCS_PATH.rglob("*.rst"):
             "RUN_CONSOLETESTS environment variable not set",
         )(testcase)
         # Do not add the tests if we are running with GitHub Actions for the main
-        # package. This is because there are seperate jobs for each tutorial test
+        # package. This is because there are separate jobs for each tutorial test
         # and the TestDocs.test__all_docs_being_tested ensures that we are running a
         # job for each tutorial
         if (

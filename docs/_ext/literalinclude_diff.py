@@ -30,7 +30,7 @@ def LiteralIncludeReader_show_diff(func):
             else:
                 new_path = old_path[0]
             old_path = old_path[0]
-            # Preform the replacement
+            # Perform the replacement
             lines[0] = f"--- {old_path}\n"
             lines[1] = f"+++ {new_path}\n"
 

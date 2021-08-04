@@ -66,7 +66,7 @@ Our model has three configurable properties.
 
 - ``features``. A list of :py:class:`Feature <dffml.feature.Feature>` objects
   who's names will be present within each :py:class:`Record
-  <dffml.record.Record>`. Our model only supports a single feature. It willl use
+  <dffml.record.Record>`. Our model only supports a single feature. It will use
   the first feature in the features list as the X value for the regression line.
 
 - ``predict``. The name of the feature we want to predict. Within each

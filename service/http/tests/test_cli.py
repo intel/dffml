@@ -145,7 +145,7 @@ class TestServer(AsyncTestCase):
             pathlib.Path(tempdir, "mc").mkdir()
             pathlib.Path(tempdir, "mc", "http").mkdir()
             pathlib.Path(tempdir, "df").mkdir()
-            # TODO split config part of dataflow into seperate directory
+            # TODO split config part of dataflow into separate directory
             pathlib.Path(tempdir, "config").mkdir()
             # Write out multicomm configs
             pathlib.Path(tempdir, "mc", "http", "hello_world.json").write_text(
@@ -194,7 +194,7 @@ class TestServer(AsyncTestCase):
                     )
                 )
                 self.assertEqual(cli.mc_config, tempdir)
-                # Verify routes were registered and preform as expected
+                # Verify routes were registered and perform as expected
                 message: str = "Hello World"
                 with self.subTest(test=message):
                     # Check that hello world works

@@ -23,7 +23,7 @@ Run the `black <https://github.com/psf/black>`_ formatter on all Python files.
 
     $ black .
 
-In VSCode open command pallete by Ctrl+Shift+p, open Settings(JSON) and add the properties.
+In VSCode open command pallette by Ctrl+Shift+p, open Settings(JSON) and add the properties.
 
 .. code-block:: json
 

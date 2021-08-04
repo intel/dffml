@@ -204,7 +204,7 @@ If we wanted to do everything within Python our file might look like this
 
 .. literalinclude:: /../examples/quickstart.py
 
-The ouput should be as follows
+The output should be as follows
 
 .. code-block::
 

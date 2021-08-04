@@ -13,7 +13,7 @@ This tutorial is meant to go after the :ref:`model_tutorial_package` tutorial.
 
 It's okay if you skipped to here though you can get up to speed by running the
 following commands. These commands create the model package containing starter
-code, change directory into the pacakge, install the package, and run the
+code, change directory into the package, install the package, and run the
 setuptools ``egg_info`` hook to register the model with the ``entry_points``
 system.
 
