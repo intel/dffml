@@ -31,7 +31,6 @@ docs/plugins/dffml_*.rst
 docs/api/**
 docs/changelog.md
 docs/shouldi.md
-docs/swportal.rst
 docs/contributing/consoletest.md
 /consoletest/
 tests/service/logs/

@@ -994,7 +994,6 @@ class MakeDocs(CMD):
         files_to_check = [
             (("changelog.md",), ("CHANGELOG.md",)),
             (("shouldi.md",), ("examples", "shouldi", "README.md",)),
-            (("swportal.rst",), ("examples", "swportal", "README.rst",)),
             (
                 ("contributing", "consoletest.md",),
                 ("dffml", "util", "testing", "consoletest", "README.md",),
