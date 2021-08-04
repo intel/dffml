@@ -217,7 +217,7 @@ running a DataFlow. The following sequence of events take place.
 .. image:: /images/dataflow_diagram.svg
     :alt: Flow chart showing how DataFlow Orchestrator works
 
-Benifits of DataFlows
+Benefits of DataFlows
 ---------------------
 
 - Modularity

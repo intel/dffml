@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>dffml.df.memory &mdash; DFFML bbf491064 documentation</title>
+  <title>dffml.df.memory &mdash; DFFML c61efb414 documentation</title>
   
 
   
@@ -69,7 +69,7 @@
             
             
               <div class="version">
-                bbf491064
+                c61efb414
               </div>
             
           
@@ -564,7 +564,7 @@
                     <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctxhd</span><span class="p">[</span><span class="n">handle_string</span><span class="p">]</span><span class="o">.</span><span class="n">definitions</span>
                 <span class="p">):</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">ctxhd</span><span class="p">[</span><span class="n">handle_string</span><span class="p">]</span><span class="o">.</span><span class="n">definitions</span><span class="p">[</span><span class="n">item</span><span class="o">.</span><span class="n">definition</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
-                <span class="c1"># Add input to by defintion set</span>
+                <span class="c1"># Add input to by definition set</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">ctxhd</span><span class="p">[</span><span class="n">handle_string</span><span class="p">]</span><span class="o">.</span><span class="n">definitions</span><span class="p">[</span><span class="n">item</span><span class="o">.</span><span class="n">definition</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
                     <span class="n">item</span>
                 <span class="p">)</span>
@@ -829,11 +829,11 @@
                             <span class="c1"># Generate parameters from inputs</span>
                             <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">by_origin</span><span class="p">[</span><span class="n">origin</span><span class="p">]:</span>
                                 <span class="c1"># TODO(p2) We favored comparing names to</span>
-                                <span class="c1"># defintions because sometimes we create</span>
-                                <span class="c1"># defintions which have specs which create new</span>
+                                <span class="c1"># definitions because sometimes we create</span>
+                                <span class="c1"># definitions which have specs which create new</span>
                                 <span class="c1"># types which will not equal each other. We</span>
                                 <span class="c1"># maybe want to consider switching to comparing</span>
-                                <span class="c1"># exported Defintions</span>
+                                <span class="c1"># exported Definitions</span>
                                 <span class="k">if</span> <span class="n">alternate_definitions</span><span class="p">:</span>
                                     <span class="k">if</span> <span class="p">(</span>
                                         <span class="n">item</span><span class="o">.</span><span class="n">definition</span><span class="o">.</span><span class="n">name</span>
@@ -958,7 +958,7 @@
                                 <span class="p">)</span>
                                 <span class="k">break</span>
                         <span class="c1"># If there is no default value, we don&#39;t have a complete</span>
-                        <span class="c1"># paremeter set, so we bail out</span>
+                        <span class="c1"># parameter set, so we bail out</span>
                         <span class="k">else</span><span class="p">:</span>
                             <span class="k">return</span>
         <span class="c1"># Generate all possible permutations of applicable inputs</span>
@@ -1330,7 +1330,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Check that our network contains the operation</span>
         <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">ensure_contains</span><span class="p">(</span><span class="n">operation</span><span class="p">)</span>
-        <span class="c1"># Create an opimp context and run the opertion</span>
+        <span class="c1"># Create an opimp context and run the operation</span>
         <span class="k">async</span> <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">operations</span><span class="p">[</span><span class="n">operation</span><span class="o">.</span><span class="n">instance_name</span><span class="p">](</span>
             <span class="n">ctx</span><span class="p">,</span> <span class="n">octx</span>
         <span class="p">)</span> <span class="k">as</span> <span class="n">opctx</span><span class="p">:</span>
@@ -1577,7 +1577,7 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Reusing </span><span class="si">%s</span><span class="s2">: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">ctx</span><span class="p">)</span>
                 <span class="k">del</span> <span class="n">enter</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
                 <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">ctx</span><span class="p">)</span>
-        <span class="c1"># Creat the exit stack and enter all the contexts we won&#39;t be reusing</span>
+        <span class="c1"># Create the exit stack and enter all the contexts we won&#39;t be reusing</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_stack</span> <span class="o">=</span> <span class="n">AsyncExitStack</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_stack</span> <span class="o">=</span> <span class="k">await</span> <span class="n">aenter_stack</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">enter</span><span class="p">)</span>
         <span class="c1"># Ensure that we can run the dataflow</span>
@@ -1607,7 +1607,7 @@
                 <span class="c1"># We may have been provided with the implemenation. Attempt to</span>
                 <span class="c1"># look it up from within the dataflow.</span>
                 <span class="n">opimp</span> <span class="o">=</span> <span class="n">dataflow</span><span class="o">.</span><span class="n">implementations</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">operation</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-                <span class="c1"># There is a possiblity the operation implemenation network will</span>
+                <span class="c1"># There is a possibility the operation implementation network will</span>
                 <span class="c1"># be able to instantiate from the given operation implementation</span>
                 <span class="c1"># if present. But we can&#39;t count on it.</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">nctx</span><span class="o">.</span><span class="n">instantiable</span><span class="p">(</span><span class="n">operation</span><span class="p">,</span> <span class="n">opimp</span><span class="o">=</span><span class="n">opimp</span><span class="p">):</span>

@@ -27,7 +27,7 @@ present in the same directory to the documentation. To overcome this,
 ``nbsphinx-link`` is used, which allows you to create a symblic link to
 notebooks in other directories.
 
-You can create the link to a notebook in a file with extention ``.nblink`` as follows
+You can create the link to a notebook in a file with extension ``.nblink`` as follows
 
 .. literalinclude:: /examples/notebooks/moving_between_models.nblink
 

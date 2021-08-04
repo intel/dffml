@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>dffml.util.asynchelper &mdash; DFFML bbf491064 documentation</title>
+  <title>dffml.util.asynchelper &mdash; DFFML c61efb414 documentation</title>
   
 
   
@@ -69,7 +69,7 @@
             
             
               <div class="version">
-                bbf491064
+                c61efb414
               </div>
             
           
@@ -347,8 +347,8 @@
             <span class="k">if</span> <span class="ow">not</span> <span class="n">task</span><span class="o">.</span><span class="n">done</span><span class="p">()</span> <span class="ow">and</span> <span class="p">(</span><span class="n">nocancel</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">task</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">nocancel</span><span class="p">):</span>
                 <span class="n">task</span><span class="o">.</span><span class="n">cancel</span><span class="p">()</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="c1"># For tasks which are done but have expections which we didn&#39;t</span>
-                <span class="c1"># raise, collect their execptions</span>
+                <span class="c1"># For tasks which are done but have exceptions which we didn&#39;t</span>
+                <span class="c1"># raise, collect their exceptions</span>
                 <span class="n">task</span><span class="o">.</span><span class="n">exception</span><span class="p">()</span>
 
 

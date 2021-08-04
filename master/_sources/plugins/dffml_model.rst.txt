@@ -830,7 +830,7 @@ Output
 - class_cost: List of features
 
   - default: None
-  - Features with name `Cost_{class}` contaning cost of `class` for each input example, used when `csoaa` is used
+  - Features with name `Cost_{class}` containing cost of `class` for each input example, used when `csoaa` is used
 
 - task: String
 
@@ -845,7 +845,7 @@ Output
 - vwcmd: List of strings
 
   - default: []
-  - Command Line Arguements as per vowpal wabbit convention
+  - Command Line Arguments as per vowpal wabbit convention
 
 - namespace: List of strings
 

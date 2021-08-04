@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Gitter ML Inference Chatbot &mdash; DFFML bbf491064 documentation</title>
+  <title>Gitter ML Inference Chatbot &mdash; DFFML c61efb414 documentation</title>
   
 
   
@@ -70,7 +70,7 @@
             
             
               <div class="version">
-                bbf491064
+                c61efb414
               </div>
             
           
@@ -484,7 +484,7 @@ that you can parse unstructered data.</p>
         <span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;model-data&quot;</span><span class="p">:</span> <span class="n">raw_data</span><span class="p">[</span><span class="mi">1</span><span class="p">]}</span>
         <span class="n">raw_data</span> <span class="o">=</span> <span class="n">raw_data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span>
             <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
-        <span class="p">)</span>  <span class="c1"># splits feautre details to seprate lines</span>
+        <span class="p">)</span>  <span class="c1"># splits feature details to separate lines</span>
         <span class="c1"># Iterate and add to to dictionary `data`</span>
         <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">raw_data</span><span class="p">:</span>
             <span class="n">k</span><span class="p">,</span> <span class="o">*</span><span class="n">v</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">)</span>
@@ -507,7 +507,7 @@ that you can parse unstructered data.</p>
         <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;Gimme more info!!&quot;</span><span class="p">}</span>
 
     <span class="k">elif</span> <span class="n">message</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;predict:&quot;</span><span class="p">):</span>
-        <span class="c1"># Only replace first occurence of predict</span>
+        <span class="c1"># Only replace first occurrence of predict</span>
         <span class="c1"># because the feature to predict will be labeled predict</span>
         <span class="n">raw_data</span> <span class="o">=</span> <span class="n">message</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;predict:&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
         <span class="n">cmds</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;predict&quot;</span><span class="p">,</span> <span class="s2">&quot;all&quot;</span><span class="p">]</span>

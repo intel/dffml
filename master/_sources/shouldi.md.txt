@@ -27,7 +27,7 @@ There are several different subcommands of `shoudli`
   - Point this command at any Git URL or directory and it will run appropriate
     static analysis tools for that language
 - [project](#project-command)
-  - Auto discover projects and depedencies of those projects within a directory
+  - Auto discover projects and dependencies of those projects within a directory
 
 ### Install Command
 
@@ -170,5 +170,5 @@ shouldi is distributed under the [MIT License](https://spdx.org/licenses/MIT.htm
 #### What's This Really Called
 
 The real name of this package is "DFFML Evaluator for PyPi Packages". `shouldi`
-is mearly the command line invokation, and we claim `shouldi`, the package name
+is merely the command line invocation, and we claim `shouldi`, the package name
 on PyPi, to avoid a supply chain attack.

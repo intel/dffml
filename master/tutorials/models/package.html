@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Packaging a Model &mdash; DFFML bbf491064 documentation</title>
+  <title>Packaging a Model &mdash; DFFML c61efb414 documentation</title>
   
 
   
@@ -70,7 +70,7 @@
             
             
               <div class="version">
-                bbf491064
+                c61efb414
               </div>
             
           
@@ -275,7 +275,7 @@
 </style>
 <div class="section" id="packaging-a-model">
 <span id="model-tutorial-package"></span><h1>Packaging a Model<a class="headerlink" href="#packaging-a-model" title="Permalink to this headline">¶</a></h1>
-<p>In the pervious tutorial we created a DFFML style model, which we could use from
+<p>In the previous tutorial we created a DFFML style model, which we could use from
 the command line, HTTP service, etc. We’re now going to take that model and
 package it so that it can be published to PyPi for others to download via
 <code class="docutils literal notranslate"><span class="pre">pip</span></code> and use as they do the rest of the <a class="reference internal" href="../../plugins/dffml_model.html#plugin-models"><span class="std std-ref">Models</span></a> plugins.</p>
@@ -403,7 +403,7 @@ data to the <code class="xref py py-func docutils literal notranslate"><span cla
 should be run in, ensuring that accuracy and predict tests always have a trained
 model to work with.</p>
 <p>We’re using the <code class="docutils literal notranslate"><span class="pre">*</span></code> operator here to expand the list of X, Y pair <code class="docutils literal notranslate"><span class="pre">dict</span></code>’s.
-See the offical Python documentation about
+See the official Python documentation about
 <a class="reference external" href="https://docs.python.org/3/tutorial/controlflow.html#unpacking-argument-lists">Unpacking Argument Lists</a>
 for more information on how the <code class="docutils literal notranslate"><span class="pre">*</span></code>-operator works.</p>
 <p><strong>tests/test_model.py</strong></p>
@@ -478,7 +478,7 @@ now (<code class="docutils literal notranslate"><span class="pre">tests.test_mod
 </div>
 <div class="section" id="entrypoint-registration">
 <h2>Entrypoint Registration<a class="headerlink" href="#entrypoint-registration" title="Permalink to this headline">¶</a></h2>
-<p>In the <a class="reference internal" href="slr.html#model-tutorial-slr"><span class="std std-ref">Writing a Model</span></a> tutorial we refrenced the new model on the
+<p>In the <a class="reference internal" href="slr.html#model-tutorial-slr"><span class="std std-ref">Writing a Model</span></a> tutorial we referenced the new model on the
 command line via it’s entrypoint style path. This is in the format of
 <code class="docutils literal notranslate"><span class="pre">file:ClassWithinFile</span></code>, so for that tutorial it was <code class="docutils literal notranslate"><span class="pre">myslr:MySLRModel</span></code>.</p>
 <p>That requires that the <code class="docutils literal notranslate"><span class="pre">file</span></code> be in a directory in current working directory,

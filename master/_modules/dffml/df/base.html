@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>dffml.df.base &mdash; DFFML bbf491064 documentation</title>
+  <title>dffml.df.base &mdash; DFFML c61efb414 documentation</title>
   
 
   
@@ -69,7 +69,7 @@
             
             
               <div class="version">
-                bbf491064
+                c61efb414
               </div>
             
           
@@ -371,9 +371,9 @@
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">_imp</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">loaded</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns the operation implemention from a loaded entrypoint object, or</span>
-<span class="sd">        None if its not an operation implemention or doesn&#39;t have the imp</span>
-<span class="sd">        parameter which is an operation implemention.</span>
+<span class="sd">        Returns the operation implementation from a loaded entrypoint object, or</span>
+<span class="sd">        None if its not an operation implementation or doesn&#39;t have the imp</span>
+<span class="sd">        parameter which is an operation implementation.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">getattr</span><span class="p">(</span><span class="n">loaded</span><span class="p">,</span> <span class="s2">&quot;imp&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="n">loaded</span><span class="p">]:</span>
             <span class="k">if</span> <span class="n">inspect</span><span class="o">.</span><span class="n">isclass</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">issubclass</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="bp">cls</span><span class="p">):</span>
@@ -1193,7 +1193,7 @@
 
 <span class="c1"># TODO We should be able to specify multiple operation implementation  networks.</span>
 <span class="c1"># This would enable operations to live in different place, accessed via the</span>
-<span class="c1"># orchestrator transparently. This will probably invlove</span>
+<span class="c1"># orchestrator transparently. This will probably involve</span>
 <span class="c1"># dffml.util.asynchelper.AsyncContextManagerList</span>
 <div class="viewcode-block" id="BaseOperationImplementationNetwork"><a class="viewcode-back" href="../../../api/df/base.html#dffml.df.base.BaseOperationImplementationNetwork">[docs]</a><span class="nd">@base_entry_point</span><span class="p">(</span><span class="s2">&quot;dffml.operation.implementation.network&quot;</span><span class="p">,</span> <span class="s2">&quot;opimp&quot;</span><span class="p">,</span> <span class="s2">&quot;network&quot;</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">BaseOperationImplementationNetwork</span><span class="p">(</span><span class="n">BaseDataFlowObject</span><span class="p">):</span>
