@@ -37,7 +37,7 @@ class VWConfig:
     predict: Feature = field("Feature to predict")
     location: Path = field("Location where state should be saved")
     class_cost: Features = field(
-        "Features with name `Cost_{class}` contaning cost of `class` for each input example, used when `csoaa` is used",
+        "Features with name `Cost_{class}` containing cost of `class` for each input example, used when `csoaa` is used",
         default=None,
     )
     task: str = field(
@@ -49,7 +49,7 @@ class VWConfig:
         default=False,
     )
     vwcmd: List[str] = field(
-        "Command Line Arguements as per vowpal wabbit convention",
+        "Command Line Arguments as per vowpal wabbit convention",
         default_factory=lambda: [],
     )
 

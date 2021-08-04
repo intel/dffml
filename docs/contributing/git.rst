@@ -134,7 +134,7 @@ is okay.
 +--------------+---------------------------------------------------------------+
 | whitespace   | https://softwareengineering.stackexchange.com/q/121555        |
 +--------------+---------------------------------------------------------------+
-| style        | You need to run the ``black`` formater                        |
+| style        | You need to run the ``black`` formatter                       |
 +--------------+---------------------------------------------------------------+
 | docs         | There was an issue when running the ./scripts/docs.sh script  |
 +--------------+---------------------------------------------------------------+

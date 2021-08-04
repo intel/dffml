@@ -329,7 +329,7 @@ class InstallConfig:
         default_factory=lambda: [],
     )
     nocheck: bool = field(
-        "Do not preform pre-install dependency checks", default=False
+        "Do not perform pre-install dependency checks", default=False
     )
     user: bool = field(
         "Perform user install", default=False, action="store_true"
@@ -388,7 +388,7 @@ class Install(CMD):
         main_package = is_develop("dffml")
         if not main_package:
             raise NotImplementedError(
-                "Currenty you need to have at least the main package already installed in development mode."
+                "Currently you need to have at least the main package already installed in development mode."
             )
         # Check if plugins not in skip list have unmet dependencies
         if not self.nocheck:
@@ -511,7 +511,7 @@ class SetupPy(CMD):
 
 class RepoDirtyError(Exception):
     """
-    Raised when a release was attempted but there are uncommited changes
+    Raised when a release was attempted but there are uncommitted changes
     """
 
 
@@ -542,7 +542,7 @@ class Release(CMD):
         if stderr or proc.returncode != 0:
             raise RuntimeError(stderr.decode())
         if stdout:
-            raise RepoDirtyError("Uncommited changes")
+            raise RepoDirtyError("Uncommitted changes")
         # cd to directory
         with chdir(str(self.package)):
             # Get name

@@ -71,12 +71,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Source for parsing `.ini` file formats
 - Tests for noasync high level API.
 - Tests for load and save functions in high level API.
-- `Operation` inputs and ouputs default to empty `dict` if not given.
+- `Operation` inputs and outputs default to empty `dict` if not given.
 - Ability to export any object with `dffml service dev export`
 - Complete example for dataflow run cli command
 - Tests for default configs instantiation.
 - Example ffmpeg operation.
-- Operations to deploy docker container on receving github webhook.
+- Operations to deploy docker container on receiving github webhook.
 - New use case `Redeploying dataflow on webhook` in docs.
 - Documentation for creating Source for new File types taking `.ini` as an example.
 - New input modes, output modes for HTTP API dataflow registration.
@@ -151,7 +151,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - CSV source overwriting configloaded data to every row
 - Race condition in `MemoryRedundancyChecker` when more than 4 possible
   parameter sets for an operation.
-- Typing of config vlaues for numpy parsed docstrings where type should be tuple
+- Typing of config values for numpy parsed docstrings where type should be tuple
   or list
 - Model predict methods now use `SourcesContext.with_features`
 ### Removed
@@ -240,7 +240,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Create a fresh archive of the git repo for release instead of cleaning
   existing repo with `git clean` for development service release command.
 - Simplified SLR tests for scratch model
-- Test tensorflow DNNClassifier documentation exaples in CI
+- Test tensorflow DNNClassifier documentation examples in CI
 - config directories and files associated with ConfigLoaders have been renamed
   to configloader.
 - Model config directory parameters are now `pathlib.Path` objects
@@ -257,7 +257,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Directions on how to read the CI under the Git and GitHub page of the
   contributing documentation.
 - HTTP API
-  - Static file serving from a dirctory with `-static`
+  - Static file serving from a directory with `-static`
   - `api.js` file serving with the `-js` flag
   - Docs page for JavaScript example
 - shouldi got an operation to run golangci-lint on Golang code
@@ -295,7 +295,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   documentation for the master branch (on GitHub pages).
 - Virtual environment, GitPod, and Docker development environment setup notes to
   the CONTRIBUTING.md file.
-- Changelog now included in documenation website.
+- Changelog now included in documentation website.
 - Database abstraction `dffml.db`
   - SQLite connector
   - MySQL connector
@@ -307,7 +307,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - File listing endpoint to HTTP service.
 - When an operation throws an exception the name of the instance and the
   parameters it was executed with will be thrown via an `OperationException`.
-- Network utilities to preformed cached downloads with hash validation.
+- Network utilities to peformed cached downloads with hash validation.
 - Development service got a new command, which can retrieve an argument passed
   to setuptools `setup` function within a `setup.py` file.
 ### Changed
@@ -419,7 +419,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Repo.feature method to select a single piece of feature data within a repo.
 - Dev service to help with hacking on DFFML and to create models from templates
   in the skel/ directory.
-- Classification type parameter to DNNClassifierModelConfig to specifiy data
+- Classification type parameter to DNNClassifierModelConfig to specify data
   type of given classification options.
 - util.cli CMD classes have their argparse description set to their docstring.
 - util.cli CMD classes can specify the formatter class used in

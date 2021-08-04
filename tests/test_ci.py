@@ -155,7 +155,7 @@ class TestCI(unittest.TestCase):
         dffml/plugins.py
         """
         ignorefile = IgnoreFile(REPO_ROOT)
-        # A list of directory tupples, relative to the root of the repo, which
+        # A list of directory tuples, relative to the root of the repo, which
         # contain setup.py files. Directories who have setup.py files listed in
         # SKIP_SETUP_PY_FILES will not be in this list
         setup_py_directories = sorted(

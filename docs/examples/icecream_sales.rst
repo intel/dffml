@@ -174,7 +174,7 @@ Prediction
 For the prediction we will using the `test_dataset.csv` this data
 was not present in the training dataset.
 
-Here insted of creating and intermediary file we are directly
+Here instead of creating and intermediary file we are directly
 providing the output of the dataflow (temperature and population)
 for the prediction of sales.
 

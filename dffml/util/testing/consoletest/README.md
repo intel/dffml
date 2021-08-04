@@ -311,7 +311,7 @@ directives.
 
   - Do not fail the whole test if the command exits with a non-zero exit code.
 
-- `compare-output-imports`: Comma seperated list of Python modules
+- `compare-output-imports`: Comma separated list of Python modules
 
   - Python modules to import before running `compare-output`
 

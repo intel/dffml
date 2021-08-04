@@ -154,7 +154,7 @@ and replace ``-`` with ``/``.
 There's an online IDE based on Theia (similar to VS Code) called GitPod that
 gives you a setup development environment to get started working with/on DFFML
 right away. However, it comes with the master branch installed, you'll need to
-run the above commands to get the lastest released version.
+run the above commands to get the latest released version.
 
 .. image:: https://gitpod.io/button/open-in-gitpod.svg
    :target: https://gitpod.io/#https://github.com/intel/dffml

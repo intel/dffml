@@ -245,7 +245,7 @@ async def work(author_lines: dict):
 def git_repo_release_valid_version(tag):
     # Remove v from v1 to make isnumeric return True
     tag = tag.replace("v", "")
-    # Make the only seperator . instead of - or _
+    # Make the only separator . instead of - or _
     for replace in ["-", "_"]:
         tag = tag.replace(replace, ".")
     # Make sure there is at least one number in the tag when split by .

@@ -151,9 +151,9 @@ class OperationImplementation(BaseDataFlowObject):
     @classmethod
     def _imp(cls, loaded):
         """
-        Returns the operation implemention from a loaded entrypoint object, or
-        None if its not an operation implemention or doesn't have the imp
-        parameter which is an operation implemention.
+        Returns the operation implementation from a loaded entrypoint object, or
+        None if its not an operation implementation or doesn't have the imp
+        parameter which is an operation implementation.
         """
         for obj in [getattr(loaded, "imp", None), loaded]:
             if inspect.isclass(obj) and issubclass(obj, cls):
@@ -973,7 +973,7 @@ class BaseOperationImplementationNetworkContext(BaseDataFlowObjectContext):
 
 # TODO We should be able to specify multiple operation implementation  networks.
 # This would enable operations to live in different place, accessed via the
-# orchestrator transparently. This will probably invlove
+# orchestrator transparently. This will probably involve
 # dffml.util.asynchelper.AsyncContextManagerList
 @base_entry_point("dffml.operation.implementation.network", "opimp", "network")
 class BaseOperationImplementationNetwork(BaseDataFlowObject):

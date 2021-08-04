@@ -54,9 +54,9 @@ for the full details. We'll cover some highlights here.
     added. We now have over 115 models! Check out the model plugins page to see
     them all.
 
-- :doc:`Documentation Testing with Sphinx consoletest extention </contributing/consoletest>`
+- :doc:`Documentation Testing with Sphinx consoletest extension </contributing/consoletest>`
 
-  - We developed a Sphinx extention which has allowed us to test the
+  - We developed a Sphinx extension which has allowed us to test the
     ``code-block:: console`` directives and others in our documentation. This
     serves as integration testing / documentation validation. The
     :doc:`/tutorials/models/docs` tutorial was written to explain how this can
@@ -79,7 +79,7 @@ We have several major things on deck that we want to get before we declare beta.
 
   - We now have a lot of models to choose from and are at the stage where we
     need models to help us choose our models! We're going to have AutoML in the
-    Beta release. This will pick the best model with the best hyper paramters
+    Beta release. This will pick the best model with the best hyper parameters
     for the job.
 
 - Accuracy Scorers
@@ -119,7 +119,7 @@ We have several major things on deck that we want to get before we declare beta.
 - Config files in place of command line parameters
 
   - To stop users from having to copy paste so many command line parameters
-    across command invocations, we'll be implementating support for config
+    across command invocations, we'll be implementing support for config
     files. YAML, JSON, etc. will all be able to be used to store what could also
     be command line arguments.
 

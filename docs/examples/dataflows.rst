@@ -70,7 +70,7 @@ Then change directory into the ``shouldi`` source code you would have written in
 the :doc:`/examples/shouldi` example.
 
 .. We have to install dffml-feature-git with the shouldi install command or else
-   it will downlaod the latest production release from PyPi
+   it will download the latest production release from PyPi
 
 .. code-block:: console
     :test:

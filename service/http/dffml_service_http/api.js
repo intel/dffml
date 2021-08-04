@@ -199,7 +199,7 @@ class DFFMLHTTPAPI {
       throw new Error(message.error);
     }
 
-    throw new Error("Unknown error occured");
+    throw new Error("Unknown error occurred");
   }
 
   /* upload

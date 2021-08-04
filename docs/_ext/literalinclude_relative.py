@@ -45,7 +45,7 @@ class LiteralIncludeReader(sphinx.directives.code.LiteralIncludeReader):
     def __init__(self, filename: str, options: Dict, config: Config) -> None:
         super().__init__(filename, options, config)
         # HACK Reach into caller's (LiteralInclude.run()) local variables and
-        # access the self variable, which will have the arguements to
+        # access the self variable, which will have the arguments to
         # literalinclude, which is the unresolved relative path. Caller is the
         # first index in the list of FrameInfo objects returned by
         # inspect.stack()

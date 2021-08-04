@@ -63,7 +63,7 @@ dffml operations repo \
 ## TODO
 
 - Transforms
-  - Take data of one defintion and label it as another definition.
+  - Take data of one definition and label it as another definition.
 ```json
 {
   "defintions": {},

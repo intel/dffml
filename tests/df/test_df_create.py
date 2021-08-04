@@ -42,7 +42,7 @@ class TestDataflowCreate(AsyncTestCase):
             with chdir(tmpdirname):
                 # Write out op to op.py
                 pathlib.Path(tmpdirname, "ops.py").write_text(ops)
-                # Reload conents
+                # Reload contents
                 sys.path.insert(0, tmpdirname)
                 module = importlib.import_module("ops")
                 importlib.reload(module)

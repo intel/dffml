@@ -18,7 +18,7 @@ CORS list.
 
     $ dffml service http server -cors 'https://dffml.example-api.com'
 
-You may just want to throw all of this CORS buisness out the window when
+You may just want to throw all of this CORS business out the window when
 developing (we don't blame you). In which case you could enable connections from
 all origins via ``*``.
 

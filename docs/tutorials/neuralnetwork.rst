@@ -73,7 +73,7 @@ To learn more about Tensor Views, visit `Tensor Views PyTorch Docs <https://pyto
 
 .. seealso::
     Sequential layers can also be created by indenting the layers under a key!
-    The layers definied inside the Sequential layer can be used again while defining the forward method in the
+    The layers defined inside the Sequential layer can be used again while defining the forward method in the
     following syntax: `- block1.conv1`
     More info about PyTorch's Sequential Layers and other layers used can be found at the
     `Official PyTorch Documentation - torch.nn module <https://pytorch.org/docs/stable/nn.html>`_
