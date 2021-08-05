@@ -43,6 +43,8 @@ class TestSLR(AsyncTestCase):
             *model_args,
             "-scorer",
             "mse",
+            "-features",
+            "Salary:int:1",
             "-sources",
             "test_data=csv",
             "-source-filename",

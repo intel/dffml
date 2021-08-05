@@ -128,6 +128,8 @@ class TestSpacyNERModel(AsyncTestCase):
             "False",
             "-log",
             "debug",
+            "-features",
+            "Tag:str:1",
             "-model-model_name_or_path",
             "en_core_web_sm",
             "-model-location",

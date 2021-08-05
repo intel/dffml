@@ -120,6 +120,7 @@ class MySLRModel(SimpleModel):
             -model-features x:float:1 \
             -model-predict y:int:1 \
             -model-location tempdir \
+            -features y:int:1 \
             -sources f=csv \
             -source-filename test.csv
         1.0

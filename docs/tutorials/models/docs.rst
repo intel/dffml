@@ -137,7 +137,7 @@ in the console should be highlighted. There is no proper way to highlight a
 
 .. literalinclude:: /../dffml/skel/model/REPLACE_IMPORT_PACKAGE_NAME/myslr.py
     :language: rst
-    :lines: 99-163
+    :lines: 99-164
     :linenos:
     :lineno-start: 99
 
@@ -154,9 +154,9 @@ format Python files. It can't format examples within rST within a docstring.
 
 .. literalinclude:: /../dffml/skel/model/REPLACE_IMPORT_PACKAGE_NAME/myslr.py
     :language: rst
-    :lines: 164-171
+    :lines: 165-172
     :linenos:
-    :lineno-start: 164
+    :lineno-start: 165
 
 By specifying the ``:filepath:`` we copied the contents of the Python example
 to the test environment's directory. The last thing we need to do is run the
@@ -167,9 +167,9 @@ another ``"""```.
 
 .. literalinclude:: /../dffml/skel/model/REPLACE_IMPORT_PACKAGE_NAME/myslr.py
     :language: rst
-    :lines: 173-178
+    :lines: 174-179
     :linenos:
-    :lineno-start: 172
+    :lineno-start: 173
 
 .. _model_tutorial_docs_testing_examples:
 

@@ -3,6 +3,7 @@ from typing import Union, Dict, Any
 
 from ..model import Model
 from ..record import Record
+from ..feature import Feature, Features
 from ..source.source import BaseSource
 from ..accuracy.accuracy import AccuracyScorer, AccuracyContext
 from ..util.internal import records_to_sources
@@ -64,6 +65,7 @@ async def train(model, *args: Union[BaseSource, Record, Dict[str, Any]]):
 async def accuracy(
     model,
     accuracy_scorer: Union[AccuracyScorer, AccuracyContext],
+    features: Union[Feature, Features],
     *args: Union[BaseSource, Record, Dict[str, Any]],
 ) -> float:
     """
@@ -116,6 +118,7 @@ async def accuracy(
     ...         await accuracy(
     ...             model,
     ...             MeanSquaredErrorAccuracy(),
+    ...             Feature("Salary", int, 1),
     ...             {"Years": 4, "Salary": 50},
     ...             {"Years": 5, "Salary": 60},
     ...         ),
@@ -124,6 +127,16 @@ async def accuracy(
     >>> asyncio.run(main())
     Accuracy: 0.0
     """
+    # TODO Use this to ensure that we're always passing features before records
+    # We can remove it eventually once we know we've updated everywhere
+    # appropriately
+    if not isinstance(features, (Feature, Features)):
+        raise TypeError(
+            f"features was {type(features)}: {features!r}. Should have been Feature or Features"
+        )
+    if isinstance(features, Feature):
+        features = Features(features)
+
     async with contextlib.AsyncExitStack() as astack:
         # Open sources
         sctx = await astack.enter_async_context(records_to_sources(*args))
@@ -139,8 +152,8 @@ async def accuracy(
             # TODO Replace this with static type checking and maybe dynamic
             # through something like pydantic. See issue #36
             raise TypeError(f"{accuracy_scorer} is not an AccuracyScorer")
-        # Run accuracy method
-        return float(await actx.score(mctx, sctx))
+
+        return float(await actx.score(mctx, sctx, *features))
 
 
 async def predict(

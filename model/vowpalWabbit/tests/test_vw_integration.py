@@ -74,6 +74,8 @@ class TestVWModel(AsyncTestCase):
             model_dir,
             "-scorer",
             "mse",
+            "-features",
+            "true_class:int:1",
             "-sources",
             "test_data=csv",
             "-source-filename",

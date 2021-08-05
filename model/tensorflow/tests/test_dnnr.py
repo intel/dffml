@@ -103,7 +103,9 @@ class TestDNN(AsyncTestCase):
         scorer = MeanSquaredErrorAccuracy()
         for i in range(0, 7):
             await train(self.model, self.sources)
-            res = await accuracy(self.model, scorer, self.sources)
+            res = await accuracy(
+                self.model, scorer, Feature("TARGET", float, 1), self.sources
+            )
             # Retry because of tensorflow intermitant low accuracy
             if res <= 0.8 and i < 5:
                 print("Retry i:", i, "accuracy:", res)

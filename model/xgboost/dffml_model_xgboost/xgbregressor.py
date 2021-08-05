@@ -125,6 +125,7 @@ class XGBRegressorModel(SimpleModel):
               PetalWidth:float:1 \
             -model-predict classification \
             -model-location model \
+            -features classification \
             -scorer mse
         
     Output

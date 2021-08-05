@@ -67,7 +67,7 @@ class TestML(AsyncTestCase):
         train(model, training_data)
         # Assess accuracy
         scorer = MeanSquaredErrorAccuracy()
-        accuracy(model, scorer, test_data)
+        accuracy(model, scorer, Feature("Salary", int, 1), test_data)
         # Make prediction
         predictions = [
             prediction for prediction in predict(model, predict_data)

@@ -60,7 +60,10 @@ class TestMySLRModel(AsyncTestCase):
     async def test_01_accuracy(self):
         # Use the test data to assess the model's accuracy
         res = await accuracy(
-            self.model, self.scorer, *[{"X": x, "Y": y} for x, y in TEST_DATA]
+            self.model,
+            self.scorer,
+            Feature("Y", float, 1),
+            *[{"X": x, "Y": y} for x, y in TEST_DATA],
         )
         # Ensure the accuracy is above 80%
         self.assertTrue(0.0 <= res < 0.1)

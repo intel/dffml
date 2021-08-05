@@ -75,6 +75,8 @@ class TestCSV(AsyncTestCase):
             "test_data=csv",
             "-source-filename",
             test_filename,
+            "-features",
+            "Salary:float:1",
             "-scorer",
             "mse",
         )

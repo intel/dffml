@@ -20,7 +20,13 @@ train(model, "trainex.csv")
 
 # Assess accuracy for test set
 scorer = AnomalyDetectionAccuracy()
-print("Test set F1 score :", accuracy(model, scorer, "testex.csv"))
+print(
+    "Test set F1 score :",
+    accuracy(model, scorer, Feature("Y", int, 1), "testex.csv"),
+)
 
 # Assess accuracy for training set
-print("Training set F1 score :", accuracy(model, scorer, "trainex.csv"))
+print(
+    "Training set F1 score :",
+    accuracy(model, scorer, Feature("Y", int, 1), "trainex.csv"),
+)

@@ -40,7 +40,6 @@ from dffml.source.source import Sources, SourcesContext
 from dffml.model.model import ModelConfig, ModelContext, Model, ModelNotTrained
 from dffml.feature.feature import Features, Feature
 from dffml.util.crypto import secure_hash
-from dffml.util.python import no_inplace_append
 
 
 class NoMultiOutputSupport(Exception):
@@ -110,14 +109,9 @@ class ScikitContext(ModelContext):
     async def train(self, sources: Sources):
         xdata = []
         ydata = []
-        ### using no_inplace_append to append lists and str without changing the original features.
         ### np.hstack helps flatten the lists wihtout splitting strings.
         async for record in sources.with_features(
-            list(
-                self.np.hstack(
-                    no_inplace_append(self.features, self.predictions)
-                )
-            )
+            list(self.np.hstack(self.features + [self.predictions]))
         ):
             feature_data = []
             predict_data = []

@@ -86,7 +86,9 @@ class TestVWModel(AsyncTestCase):
                 await mctx.train(sctx)
 
     async def test_01_accuracy(self):
-        res = await accuracy(self.model, self.scorer, self.sources)
+        res = await accuracy(
+            self.model, self.scorer, Feature("X", float, 1), self.sources
+        )
         self.assertTrue(isinstance(res, float))
 
     async def test_02_predict(self):

@@ -28,6 +28,7 @@ Testing and Accuracy:
         -model-predict TO_PREDICT \\
         -model-location MODEL_LOCATION \\
         -model-CONFIGS CONFIG_VALUES \\
+        -features TO_PREDICT \\
         -sources f=TESTING_DATA_SOURCE_TYPE \\
         -source-CONFIGS TESTING_DATA \\
         -log debug

@@ -89,6 +89,8 @@ class TestTextClassifier(AsyncTestCase):
             "1",
             "-model-clstype",
             "int",
+            "-features",
+            "sentiment:int:1",
             "-sources",
             "test_data=csv",
             "-source-filename",
