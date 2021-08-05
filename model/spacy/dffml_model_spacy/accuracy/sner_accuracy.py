@@ -1,3 +1,4 @@
+from dffml.feature.feature import Features
 import os
 
 import spacy
@@ -24,7 +25,9 @@ class SpacyNerAccuracyContext(AccuracyContext):
     Accuracy Scorer for Spacy Ner Model
     """
 
-    async def score(self, mctx: ModelContext, sources: SourcesContext):
+    async def score(
+        self, mctx: ModelContext, sources: SourcesContext, *features: Features
+    ):
         if not os.path.isdir(os.path.join(mctx.parent.config.location, "ner")):
             raise ModelNotTrained("Train model before assessing for accuracy.")
 

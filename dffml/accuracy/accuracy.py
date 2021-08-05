@@ -1,5 +1,6 @@
 import abc
 
+from ..feature import Feature
 from ..model import ModelContext
 from ..source.source import SourcesContext
 from ..util.entrypoint import base_entry_point
@@ -25,7 +26,7 @@ class AccuracyContext(abc.ABC, BaseDataFlowFacilitatorObjectContext):
 
     @abc.abstractmethod
     async def score(
-        self, mctx: ModelContext, sources: SourcesContext,
+        self, mctx: ModelContext, sources: SourcesContext, *args: Feature
     ) -> float:
         """
         Abstract method to get the score

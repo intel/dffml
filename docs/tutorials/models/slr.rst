@@ -101,7 +101,7 @@ We must set the ``CONFIG`` attribute to the respective ``Config`` class.
 
 .. literalinclude:: /../dffml/skel/model/REPLACE_IMPORT_PACKAGE_NAME/myslr.py
     :test:
-    :lines: 180-181
+    :lines: 181-182
 
 We can override the ``__init__()`` method to do validation on the ``features``
 config property. Simple linear regression only supports one input feature, so we
@@ -109,7 +109,7 @@ will raise a ``ValueError`` if the user supplys more than one feature.
 
 .. literalinclude:: /../dffml/skel/model/REPLACE_IMPORT_PACKAGE_NAME/myslr.py
     :test:
-    :lines: 183-187
+    :lines: 184-188
 
 Train
 -----
@@ -125,7 +125,7 @@ is saved and loaded from a JSON file on disk.
 
 .. literalinclude:: /../dffml/skel/model/REPLACE_IMPORT_PACKAGE_NAME/myslr.py
     :test:
-    :lines: 188-202
+    :lines: 190-204
 
 Predict
 -------
@@ -140,7 +140,7 @@ confidence in our prediction.
 
 .. literalinclude:: /../dffml/skel/model/REPLACE_IMPORT_PACKAGE_NAME/myslr.py
     :test:
-    :lines: 205-224
+    :lines: 206-225
 
 Python Usage
 ------------

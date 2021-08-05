@@ -122,6 +122,7 @@ class TestPyTorchNeuralNetwork(AsyncTestCase):
         acc = await accuracy(
             self.model,
             self.scorer,
+            Feature("label", str, 1),
             DirectorySource(
                 foldername=str(self.testdir) + "/rps-test-set",
                 feature="image",

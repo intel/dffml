@@ -67,7 +67,9 @@ class TestDAAL4PyLRModel(AsyncTestCase):
     async def test_01_accuracy(self):
         # Use the test data to assess the model's accuracy
         scorer = MeanSquaredErrorAccuracy()
-        res = await accuracy(self.model, scorer, *self.test_data)
+        res = await accuracy(
+            self.model, scorer, Feature("Y", float, 1), *self.test_data
+        )
         self.assertGreater(res, 0)
 
     async def test_02_predict(self):

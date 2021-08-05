@@ -25,6 +25,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Usecase example notebook for "Saving and loading models"
 - Usecase example notebook for "Transfer Learning"
 - Usecase example notebook for "Ensemble by stacking"
+- Support for Multi-Output models.
+- Usecase example notebook for "Working with Multi-Output models"
 ### Changed
 - Calls to hashlib now go through helper functions
 - Build docs using `dffml service dev docs`
@@ -33,6 +35,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `high_level` split into `ml`, `dataflow` & `source` submodules
 - Config objects now support mutability/immutability at the property scope.
   See `docs/arch/0003-Config-Property-Mutable-vs-Immutable` for details.
+- high_level `accuracy()` now takes predict features as parameter.
 ### Fixed
 - Record object key properties are now always strings
 

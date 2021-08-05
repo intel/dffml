@@ -2,6 +2,7 @@ dffml accuracy \
   -model autoclassifier \
   -model-location tempdir \
   -model-predict classification:int:1 \
+  -features classification:int:1 \
   -sources iris=csv \
   -source-filename iris_test.csv \
   -model-features \

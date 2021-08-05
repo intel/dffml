@@ -39,21 +39,19 @@ class ScikitScorerContext(AccuracyContext):
         pass
 
     async def score(
-        self,
-        mctx: ModelContext,
-        predict_features: Union[Features, Feature],
-        sctx: SourcesContext,
+        self, mctx: ModelContext, sctx: SourcesContext, *features: Feature,
     ):
-        is_multi = isinstance(predict_features, Features)
+        is_multi = len(features) > 1
         if is_multi:
             for scorer in MULTIOUTPUT_EXCEPTIONS:
                 if scorer in str(self.__class__.__qualname__):
                     raise NoMultiOutputSupport(
                         "Scorer does not support Multi-Output. Please refer the docs to find a suitable scorer entrypoint."
                     )
-        predictions = (
-            predict_features.names() if is_multi else predict_features.name
-        )
+            predictions = [feature.name for feature in features]
+        elif len(features) == 1:
+            (features,) = features
+            predictions = features.name
         y_true = []
         y_pred = []
         async for record in mctx.predict(sctx):

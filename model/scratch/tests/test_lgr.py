@@ -71,7 +71,9 @@ class TestLogisticRegression(AsyncTestCase):
     async def test_01_accuracy(self):
         # Use the test data to assess the model's accuracy
         scorer = MeanSquaredErrorAccuracy()
-        res = await accuracy(self.model, scorer, *self.test_data)
+        res = await accuracy(
+            self.model, scorer, Feature("Y", float, 1), *self.test_data
+        )
         # Ensure the accuracy is above 80%
         self.assertTrue(0.0 <= res <= 1.0)
 

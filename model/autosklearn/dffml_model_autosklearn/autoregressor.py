@@ -106,6 +106,7 @@ class AutoSklearnRegressorModel(Model):
             -model autoregressor \
             -model-predict TARGET:float:1 \
             -model-location tempdir \
+            -features TARGET:float:1 \
             -sources f=csv \
             -source-filename test.csv \
             -model-features \

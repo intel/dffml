@@ -127,6 +127,7 @@ class XGBClassifierModel(SimpleModel):
               PetalWidth:float:1 \
             -model-predict classification \
             -model-location model \
+            -features classification \
             -scorer clf
 
 

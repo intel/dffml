@@ -77,17 +77,30 @@ class TestXGBClassifier(AsyncTestCase):
 
     async def test_01_accuracy(self):
         # Use the test data to assess the model's accuracy
-        res = await accuracy(self.model, self.scorer, self.testsource)
+        res = await accuracy(
+            self.model,
+            self.scorer,
+            Feature("Target", float, 1),
+            self.testsource,
+        )
         # Ensure the accuracy is above 80%
         self.assertTrue(0.8 <= res)
 
     async def test_02_predict(self):
         # reduce overfitting
         res_train = await accuracy(
-            self.model, self.scorer, self.trainingsource
+            self.model,
+            self.scorer,
+            Feature("Target", float, 1),
+            self.trainingsource,
         )
 
-        res_test = await accuracy(self.model, self.scorer, self.testsource)
+        res_test = await accuracy(
+            self.model,
+            self.scorer,
+            Feature("Target", float, 1),
+            self.testsource,
+        )
         # Test fails if the difference between training and testing is more that 5%
         self.assertLess(res_train - res_test, 0.05)
 

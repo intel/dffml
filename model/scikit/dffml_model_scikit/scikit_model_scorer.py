@@ -1,7 +1,6 @@
 from typing import Union
 from dffml.base import config
 from dffml.util.entrypoint import entrypoint
-from dffml.util.python import no_inplace_append
 from dffml.source.source import SourcesContext
 from dffml.model import ModelContext, ModelNotTrained
 from dffml.feature import Feature, Features
@@ -26,10 +25,7 @@ class SklearnModelAccuracyContext(AccuracyContext):
     """
 
     async def score(
-        self,
-        mctx: ModelContext,
-        predict_features: Union[Features, Feature],
-        sctx: SourcesContext,
+        self, mctx: ModelContext, sctx: SourcesContext, *features: Feature,
     ):
         if not mctx._filepath.is_file():
             raise ModelNotTrained("Train model before assessing for accuracy.")
@@ -38,16 +34,18 @@ class SklearnModelAccuracyContext(AccuracyContext):
             raise ScorerWillNotWork(
                 "SklearnModelAccuracy will not work with Clustering Models"
             )
-        is_multi = isinstance(predict_features, Features)
-        predictions = (
-            predict_features.names() if is_multi else predict_features.name
-        )
+        is_multi = len(features) > 1
+        if is_multi:
+            predictions = [feature.name for feature in features]
+        elif len(features) == 1:
+            (features,) = features
+            predictions = features.name
 
         xdata = []
         ydata = []
 
         async for record in sctx.with_features(
-            list(mctx.np.hstack(no_inplace_append(mctx.features, predictions)))
+            list(mctx.np.hstack(mctx.features + [predictions]))
         ):
             feature_data = []
             predict_data = []
