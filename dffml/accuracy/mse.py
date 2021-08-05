@@ -1,6 +1,6 @@
 from ..base import config
 from ..record import Record
-from ..feature import Feature
+from ..feature import Feature, Features
 from ..model import ModelContext
 from ..util.entrypoint import entrypoint
 from ..source.source import SourcesContext

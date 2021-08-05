@@ -4,6 +4,7 @@ from dffml.base import config
 from dffml.source.source import Sources
 from dffml.util.entrypoint import entrypoint
 from dffml.model import ModelNotTrained, ModelContext
+from dffml.feature.feature import Feature
 from dffml.accuracy import (
     AccuracyScorer,
     AccuracyContext,
