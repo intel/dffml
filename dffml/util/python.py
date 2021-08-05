@@ -5,7 +5,7 @@ import types
 import pathlib
 import inspect
 import importlib
-from typing import Optional, Callable, Union, Tuple, Iterator
+from typing import List, Optional, Callable, Union, Tuple, Iterator
 
 
 def modules(
@@ -175,3 +175,27 @@ def within_method(obj: object, method_name: str, max_depth: int = -1) -> bool:
         ):
             return True
     return False
+
+
+def no_inplace_append(list_a: list, arg_b: Union[str, list]) -> list:
+    """
+    Append method that acts as inplace = False. Takes a list and another argument 
+    list or string. Creates a duplicate of the first list and appends the second argument 
+    to the duplicate. Returns the duplicate list.
+
+    Parameters
+    ----------
+    list_a : list
+        The list to append the argument to.
+    arg_b : str, list
+        The argument to append to the list.
+
+    Returns
+    ------
+    list_dup : list
+        Duplicate list of list_a with arg_b appended.
+    """
+
+    lista_dup = list_a.copy()
+    lista_dup.append(arg_b)
+    return lista_dup
