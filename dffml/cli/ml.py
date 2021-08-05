@@ -1,4 +1,5 @@
 import inspect
+from typing import Union
 
 from ..model.model import Model
 from ..source.source import Sources, SubsetSources
@@ -15,6 +16,7 @@ from ..util.cli.cmds import (
 )
 from ..base import config, field
 from ..accuracy import AccuracyScorer
+from ..feature import Feature, Features
 
 
 @config
@@ -28,6 +30,7 @@ class AccuracyCMDConfig:
     scorer: AccuracyScorer = field(
         "Method to use to score accuracy", required=True
     )
+    features: Features = field("Predict Feature(s)", default=Features())
     sources: Sources = FIELD_SOURCES
 
 
@@ -64,7 +67,9 @@ class Accuracy(MLCMD):
         # at this point rather than an instance.
         if inspect.isclass(self.scorer):
             self.scorer = self.scorer.withconfig(self.extra_config)
-        return await accuracy(self.model, self.scorer, self.sources)
+        return await accuracy(
+            self.model, self.scorer, self.features, self.sources
+        )
 
 
 @config

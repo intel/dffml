@@ -28,6 +28,7 @@ Testing and Accuracy:
         -model-features FEATURE_DEFINITION \\
         -model-predict TO_PREDICT \\
         -model-location MODEL_DIRECTORY \\
+        -features TO_PREDICT \\
         -sources f=TESTING_DATA_SOURCE_TYPE \\
         -source-filename TESTING_DATA_FILE_NAME \\
         -scorer ACCURACY_SCORER \\
@@ -303,6 +304,7 @@ Example below uses KMeans Clustering Model on a small randomly generated dataset
         -model-features Col1:float:1 Col2:float:1 Col3:float:1 Col4:float:1\\
         -model-predict cluster:int:1 \\
         -model-location tempdir \\
+        -features cluster:int:1 \\
         -sources f=csv \\
         -source-filename test.csv \\
         -source-readonly \\
@@ -361,7 +363,7 @@ Example usage of KMeans Clustering Model using python API:
 
     # Assess accuracy (alternate way of specifying data source)
     scorer = MutualInfoScoreScorer()
-    print("Accuracy:", accuracy(model, scorer, CSVSource(filename="test.csv")))
+    print("Accuracy:", accuracy(model, scorer, Feature("cluster", int, 1), CSVSource(filename="test.csv")))
 
     # Make prediction
     for i, features, prediction in predict(

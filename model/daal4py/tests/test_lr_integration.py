@@ -54,6 +54,8 @@ class TestDAAL4PyLRModel(AsyncTestCase):
             *model_args,
             "-scorer",
             "mse",
+            "-features",
+            "ans:int:1",
             "-sources",
             "test_data=csv",
             "-source-filename",

@@ -29,6 +29,7 @@ print(
     accuracy(
         model,
         scorer,
+        Feature("Salary", int, 1),
         {"Years": 4, "Expertise": 9, "Trust": 0.5, "Salary": 50},
         {"Years": 5, "Expertise": 11, "Trust": 0.6, "Salary": 60},
     ),

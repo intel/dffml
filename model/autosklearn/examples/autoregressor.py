@@ -19,7 +19,10 @@ def main():
 
     # Assess accuracy
     scorer = MeanSquaredErrorAccuracy()
-    print("Accuracy:", accuracy(model, scorer, "test.csv"))
+    print(
+        "Accuracy:",
+        accuracy(model, scorer, Feature("TARGET", float, 1), "test.csv"),
+    )
 
     # Make prediction
     for i, features, prediction in predict(model, "predict.csv"):

@@ -911,7 +911,13 @@ class Routes(BaseMultiCommContext):
     async def scorer_accuracy(self, request, mctx, actx):
         sctx_label_list = await request.json()
         sources = await self.get_source_contexts(request, sctx_label_list)
-        return web.json_response({"accuracy": await actx.score(mctx, sources)})
+        return web.json_response(
+            {
+                "accuracy": await actx.score(
+                    mctx, sources, mctx.parent.config.predict
+                )
+            }
+        )
 
     async def api_js(self, request):
         return web.Response(

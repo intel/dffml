@@ -43,6 +43,7 @@ print(
     accuracy(
         model,
         scorer,
+        Feature("target", float, 1),
         *[{"data": x, "target": y} for x, y in zip(testX, testy)],
     ),
 )
@@ -51,6 +52,7 @@ print(
     accuracy(
         model,
         scorer,
+        Feature("target", float, 1),
         *[{"data": x, "target": y} for x, y in zip(trainX, trainy)],
     ),
 )

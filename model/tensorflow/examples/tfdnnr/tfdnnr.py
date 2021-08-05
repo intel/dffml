@@ -19,7 +19,15 @@ train(model, "train.csv")
 
 # Assess accuracy (alternate way of specifying data source)
 scorer = MeanSquaredErrorAccuracy()
-print("Accuracy:", accuracy(model, scorer, CSVSource(filename="test.csv")))
+print(
+    "Accuracy:",
+    accuracy(
+        model,
+        scorer,
+        Feature("TARGET", float, 1),
+        CSVSource(filename="test.csv"),
+    ),
+)
 
 # Make prediction
 for i, features, prediction in predict(

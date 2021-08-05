@@ -246,6 +246,7 @@ class TestServer(AsyncTestCase):
             await accuracy(
                 model,
                 MeanSquaredErrorAccuracy(),
+                Feature("ans", int, 1),
                 *[{"f1": x, "ans": m * x + b} for x in range(10, 20)],
             )
 
@@ -359,6 +360,8 @@ class TestServer(AsyncTestCase):
                         "-model-mymodel-features",
                         "f1:float:1",
                         "-model-mymodel-predict",
+                        "ans:int:1",
+                        "-features",
                         "ans:int:1",
                         "-sources",
                         "mysource=json",

@@ -7,6 +7,7 @@ dffml accuracy \
     -model-classifications 0 1 \
     -model-location tempdir \
     -model-features embedding:float:[1,10,96] \
+    -features sentiment:int:1 \
     -sources text=df \
     -source-text-dataflow nlp_ops_dataflow.json \
     -source-text-features sentence:str:1 \
