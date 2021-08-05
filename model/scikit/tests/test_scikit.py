@@ -20,9 +20,13 @@ from model.scikit.dffml_model_scikit import (
 class TestScikitModel:
     @classmethod
     def setUpClass(cls):
+        cls.is_multi = "MULTI_" in cls.MODEL_TYPE
         cls.model_dir = tempfile.TemporaryDirectory()
         cls.features = Features()
-        if cls.MODEL_TYPE == "CLASSIFICATION":
+        if cls.MODEL_TYPE in classifier_types:
+            A, B, C, D, E, F, G, H, X, Y = list(
+                zip(*FEATURE_DATA_CLASSIFICATION)
+            )
             cls.features.append(Feature("A", float, 1))
             cls.features.append(Feature("B", float, 1))
             cls.features.append(Feature("C", float, 1))
@@ -31,10 +35,8 @@ class TestScikitModel:
             cls.features.append(Feature("F", float, 1))
             cls.features.append(Feature("G", float, 1))
             cls.features.append(Feature("H", float, 1))
-            cls.features.append(Feature("I", float, 1))
-            A, B, C, D, E, F, G, H, I, X = list(
-                zip(*FEATURE_DATA_CLASSIFICATION)
-            )
+            if cls.MODEL_TYPE == "CLASSIFICATION":
+                cls.features.append(Feature("X", float, 1))
             cls.records = [
                 Record(
                     str(i),
@@ -48,18 +50,22 @@ class TestScikitModel:
                             "F": F[i],
                             "G": G[i],
                             "H": H[i],
-                            "I": I[i],
                             "X": X[i],
+                            "Y": Y[i],
                         }
                     },
                 )
                 for i in range(0, len(A))
             ]
-        elif cls.MODEL_TYPE == "REGRESSION":
+
+        elif cls.MODEL_TYPE in regeressor_types:
             cls.features.append(Feature("A", float, 1))
             cls.features.append(Feature("B", float, 1))
             cls.features.append(Feature("C", float, 1))
-            A, B, C, X = list(zip(*FEATURE_DATA_REGRESSION))
+            cls.features.append(Feature("D", float, 1))
+            if cls.MODEL_TYPE == "REGRESSION":
+                cls.features.append(Feature("X", float, 1))
+            A, B, C, D, X, Y = list(zip(*FEATURE_DATA_REGRESSION))
             cls.records = [
                 Record(
                     str(i),
@@ -68,7 +74,9 @@ class TestScikitModel:
                             "A": A[i],
                             "B": B[i],
                             "C": C[i],
+                            "D": D[i],
                             "X": X[i],
+                            "Y": Y[i],
                         }
                     },
                 )
@@ -106,7 +114,12 @@ class TestScikitModel:
         config_fields = dict()
         estimator_type = cls.MODEL.SCIKIT_MODEL._estimator_type
         if estimator_type in supervised_estimators:
-            config_fields["predict"] = Feature("X", float, 1)
+            if cls.is_multi:
+                config_fields["predict"] = Features(
+                    Feature("X", float, 1), Feature("Y", float, 1)
+                )
+            else:
+                config_fields["predict"] = Feature("X", float, 1)
         elif estimator_type in unsupervised_estimators:
             # TODO If cls.TRUE_CLSTR_PRESENT then we want to use the
             # mutual_info_score scikit accuracy scorer. In this case we might
@@ -130,20 +143,45 @@ class TestScikitModel:
     async def test_01_accuracy(self):
         if self.MODEL_TYPE == "CLUSTERING":
             with self.assertRaises(ScorerWillNotWork):
-                await accuracy(self.model, self.scorer, self.sources)
-        elif self.MODEL_TYPE == "REGRESSION":
-            res = await accuracy(self.model, self.scorer, self.sources)
+                await accuracy(
+                    self.model,
+                    self.scorer,
+                    self.model.config.predict,
+                    self.sources,
+                )
+        elif self.MODEL_TYPE in regeressor_types:
+            res = await accuracy(
+                self.model,
+                self.scorer,
+                self.model.config.predict,
+                self.sources,
+            )
             self.assertTrue(0 <= res <= float("inf"))
         else:
-            res = await accuracy(self.model, self.scorer, self.sources)
+            res = await accuracy(
+                self.model,
+                self.scorer,
+                self.model.config.predict,
+                self.sources,
+            )
             self.assertTrue(0 <= res <= 1)
 
     async def test_02_predict(self):
         async with self.sources as sources, self.model as model:
-            target = model.config.predict.name
             async with sources() as sctx, model() as mctx:
                 async for record in mctx.predict(sctx):
-                    prediction = record.prediction(target).value
+                    target = (
+                        model.config.predict.names()
+                        if self.is_multi
+                        else model.config.predict.name
+                    )
+                    if self.is_multi:
+                        prediction = [
+                            v["value"]
+                            for v in record.predictions(target).values()
+                        ]
+                    else:
+                        prediction = record.prediction(target).value
                     if self.MODEL_TYPE == "CLASSIFICATION":
                         self.assertIn(prediction, [2, 4])
                     elif self.MODEL_TYPE == "REGRESSION":
@@ -165,19 +203,19 @@ FEATURE_DATA_CLASSIFICATION = [
     [8, 10, 10, 8, 7, 10, 9, 7, 1, 4],
     [1, 1, 1, 1, 2, 10, 3, 1, 1, 2],
     [2, 1, 2, 1, 2, 1, 3, 1, 1, 2],
-    [2, 1, 1, 1, 2, 1, 1, 1, 5, 2],
+    [2, 1, 1, 1, 2, 1, 1, 1, 2, 2],
     [4, 2, 1, 1, 2, 1, 2, 1, 1, 2],
     [1, 1, 1, 1, 1, 1, 3, 1, 1, 2],
     [2, 1, 1, 1, 2, 1, 2, 1, 1, 2],
     [5, 3, 3, 3, 2, 3, 4, 4, 1, 4],
     [1, 1, 1, 1, 2, 3, 3, 1, 1, 2],
-    [8, 7, 5, 10, 7, 9, 5, 5, 4, 4],
+    [8, 7, 5, 10, 7, 9, 5, 5, 2, 4],
     [7, 4, 6, 4, 6, 1, 4, 3, 1, 4],
     [4, 1, 1, 1, 2, 1, 2, 1, 1, 2],
     [4, 1, 1, 1, 2, 1, 3, 1, 1, 2],
     [10, 7, 7, 6, 4, 10, 4, 1, 2, 4],
     [6, 1, 1, 1, 2, 1, 3, 1, 1, 2],
-    [7, 3, 2, 10, 5, 10, 5, 4, 4, 4],
+    [7, 3, 2, 10, 5, 10, 5, 4, 2, 4],
     [10, 5, 5, 3, 6, 7, 7, 10, 1, 4],
     [2, 3, 1, 1, 2, 1, 2, 1, 1, 2],
     [2, 1, 1, 1, 1, 1, 2, 1, 1, 2],
@@ -191,39 +229,36 @@ FEATURE_DATA_CLASSIFICATION = [
     [1, 1, 1, 1, 2, 1, 1, 1, 1, 2],
     [5, 1, 1, 2, 1, 1, 2, 1, 1, 2],
     [3, 1, 3, 1, 3, 4, 1, 1, 1, 2],
-    [4, 6, 6, 5, 7, 6, 7, 7, 3, 4],
+    [4, 6, 6, 5, 7, 6, 7, 7, 2, 4],
     [2, 1, 1, 1, 2, 5, 1, 1, 1, 2],
     [2, 1, 1, 1, 2, 1, 1, 1, 1, 2],
-    [4, 1, 1, 1, 2, 1, 1, 1, 1, 2],
+    [4, 1, 1, 1, 2, 1, 1, 1, 2, 2],
     [6, 2, 3, 1, 2, 1, 1, 1, 1, 2],
     [5, 1, 1, 1, 2, 1, 2, 1, 1, 2],
-    [1, 1, 1, 1, 2, 1, 1, 1, 1, 2],
+    [1, 1, 1, 1, 2, 1, 1, 1, 2, 2],
 ]
 
 FEATURE_DATA_REGRESSION = [
-    [12.39999962, 11.19999981, 1.1, 42393.0],
-    [14.30000019, 12.5, 1.3, 49255.0],
-    [14.5, 12.69999981, 1.5, 40781.0],
-    [14.89999962, 13.10000038, 2.0, 46575.0],
-    [16.10000038, 14.10000038, 2.2, 42941.0],
-    [16.89999962, 14.80000019, 2.9, 59692.0],
-    [16.5, 14.39999962, 3.0, 63200.0],
-    [15.39999962, 13.39999962, 3.2, 57495.0],
-    [17, 14.89999962, 3.7, 60239.0],
-    [17.89999962, 15.60000038, 3.9, 66268.0],
-    [18.79999924, 16.39999962, 4.0, 58844.0],
-    [20.29999924, 17.70000076, 4.1, 60131.0],
-    [22.39999962, 19.60000038, 4.5, 64161.0],
-    [19.39999962, 16.89999962, 4.9, 70988.0],
-    [15.5, 14, 5.1, 69079.0],
-    [16.70000076, 14.60000038, 5.3, 86138.0],
-    [17.29999924, 15.10000038, 5.9, 84413.0],
-    [18.39999962, 16.10000038, 6.0, 96990.0],
-    [19.20000076, 16.79999924, 6.8, 94788.0],
-    [17.39999962, 15.19999981, 7.1, 101323.0],
-    [19.5, 17, 7.9, 104352.0],
-    [19.70000076, 17.20000076, 8.2, 116862.0],
-    [21.20000076, 18.60000038, 8.7, 112481.0],
+    [5.0, 162.0, 60.0, 191.0, 36.0, 50.0],
+    [2.0, 110.0, 60.0, 189.0, 37.0, 52.0],
+    [12.0, 101.0, 101.0, 193.0, 38.0, 58.0],
+    [12.0, 105.0, 37.0, 162.0, 35.0, 62.0],
+    [13.0, 155.0, 58.0, 189.0, 35.0, 46.0],
+    [4.0, 101.0, 42.0, 182.0, 36.0, 56.0],
+    [8.0, 101.0, 38.0, 211.0, 38.0, 56.0],
+    [6.0, 125.0, 40.0, 167.0, 34.0, 60.0],
+    [15.0, 200.0, 40.0, 176.0, 31.0, 74.0],
+    [17.0, 251.0, 250.0, 154.0, 33.0, 56.0],
+    [17.0, 120.0, 38.0, 169.0, 34.0, 50.0],
+    [13.0, 210.0, 115.0, 166.0, 33.0, 52.0],
+    [14.0, 215.0, 105.0, 154.0, 34.0, 64.0],
+    [1.0, 50.0, 50.0, 247.0, 46.0, 50.0],
+    [6.0, 70.0, 31.0, 193.0, 36.0, 46.0],
+    [12.0, 210.0, 120.0, 202.0, 37.0, 62.0],
+    [4.0, 60.0, 25.0, 176.0, 37.0, 54.0],
+    [11.0, 230.0, 80.0, 157.0, 32.0, 52.0],
+    [15.0, 225.0, 73.0, 156.0, 33.0, 54.0],
+    [2.0, 110.0, 43.0, 138.0, 33.0, 68.0],
 ]
 
 """
@@ -283,35 +318,44 @@ CLUSTERERS = [
 
 supervised_estimators = ["classifier", "regressor"]
 unsupervised_estimators = ["clusterer"]
+classifier_types = ["CLASSIFICATION", "MULTI_CLASSIFICATION"]
+regeressor_types = ["REGRESSION", "MULTI_REGRESSION"]
 valid_estimators = supervised_estimators + unsupervised_estimators
+
 for clf in CLASSIFIERS:
-    test_cls = type(
-        f"Test{clf}Model",
-        (TestScikitModel, AsyncTestCase),
-        {
-            "MODEL_TYPE": "CLASSIFICATION",
-            "MODEL": getattr(dffml_model_scikit.scikit_models, clf + "Model"),
-            "MODEL_CONFIG": getattr(
-                dffml_model_scikit.scikit_models, clf + "ModelConfig"
-            ),
-            "SCORER": SklearnModelAccuracy,
-        },
-    )
-    setattr(sys.modules[__name__], test_cls.__qualname__, test_cls)
+    for model_type in classifier_types:
+        test_cls = type(
+            f"Test{clf}Model",
+            (TestScikitModel, AsyncTestCase),
+            {
+                "MODEL_TYPE": model_type,
+                "MODEL": getattr(
+                    dffml_model_scikit.scikit_models, clf + "Model"
+                ),
+                "MODEL_CONFIG": getattr(
+                    dffml_model_scikit.scikit_models, clf + "ModelConfig"
+                ),
+                "SCORER": SklearnModelAccuracy,
+            },
+        )
+        setattr(sys.modules[__name__], test_cls.__qualname__, test_cls)
 
 for reg in REGRESSORS:
-    test_cls = type(
-        f"Test{reg}Model",
-        (TestScikitModel, AsyncTestCase),
-        {
-            "MODEL_TYPE": "REGRESSION",
-            "MODEL": getattr(dffml_model_scikit.scikit_models, reg + "Model"),
-            "MODEL_CONFIG": getattr(
-                dffml_model_scikit.scikit_models, reg + "ModelConfig"
-            ),
-            "SCORER": SklearnModelAccuracy,
-        },
-    )
+    for model_type in regeressor_types:
+        test_cls = type(
+            f"Test{reg}Model",
+            (TestScikitModel, AsyncTestCase),
+            {
+                "MODEL_TYPE": model_type,
+                "MODEL": getattr(
+                    dffml_model_scikit.scikit_models, reg + "Model"
+                ),
+                "MODEL_CONFIG": getattr(
+                    dffml_model_scikit.scikit_models, reg + "ModelConfig"
+                ),
+                "SCORER": SklearnModelAccuracy,
+            },
+        )
     setattr(sys.modules[__name__], test_cls.__qualname__, test_cls)
 
 

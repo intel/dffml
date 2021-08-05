@@ -3,8 +3,7 @@
 """
 Base class for Scikit scorers
 """
-import importlib
-import functools
+from typing import Union
 
 import numpy as np
 
@@ -12,6 +11,14 @@ from dffml.base import config
 from dffml.model.model import ModelContext
 from dffml.source.source import SourcesContext
 from dffml.accuracy import AccuracyScorer, AccuracyContext
+from dffml.feature import Features, Feature
+from .scikit_base import NoMultiOutputSupport
+
+MULTIOUTPUT_EXCEPTIONS = [
+    "MaxError",
+    "MeanGammaDeviance",
+    "MeanPoissonDeviance",
+]
 
 
 @config
@@ -31,14 +38,36 @@ class ScikitScorerContext(AccuracyContext):
     async def __aexit__(self, exc_type, exc_value, traceback):
         pass
 
-    async def score(self, mctx: ModelContext, sctx: SourcesContext):
+    async def score(
+        self,
+        mctx: ModelContext,
+        predict_features: Union[Features, Feature],
+        sctx: SourcesContext,
+    ):
+        is_multi = isinstance(predict_features, Features)
+        if is_multi:
+            for scorer in MULTIOUTPUT_EXCEPTIONS:
+                if scorer in str(self.__class__.__qualname__):
+                    raise NoMultiOutputSupport(
+                        "Scorer does not support Multi-Output. Please refer the docs to find a suitable scorer entrypoint."
+                    )
+        predictions = (
+            predict_features.names() if is_multi else predict_features.name
+        )
         y_true = []
         y_pred = []
         async for record in mctx.predict(sctx):
-            y_true.append(record.feature(mctx.parent.config.predict.name))
-            y_pred.append(
-                record.prediction(mctx.parent.config.predict.name).value
-            )
+            if is_multi:
+                y_true.append(list(record.features(predictions).values()))
+                y_pred.append(
+                    [
+                        pred["value"]
+                        for pred in record.predictions(predictions).values()
+                    ]
+                )
+            else:
+                y_true.append(record.feature(predictions))
+                y_pred.append(record.prediction(predictions).value)
         y_true = np.asarray(y_true)
         y_pred = np.asarray(y_pred)
         return self.scorer(y_true, y_pred, **self.parent.config._asdict())
