@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>dffml.base &mdash; DFFML c61efb414 documentation</title>
+  <title>dffml.base &mdash; DFFML 7a91f3b1a documentation</title>
   
 
   
@@ -69,7 +69,7 @@
             
             
               <div class="version">
-                c61efb414
+                7a91f3b1a
               </div>
             
           
@@ -234,6 +234,7 @@
 <span class="kn">from</span> <span class="nn">argparse</span> <span class="kn">import</span> <span class="n">ArgumentParser</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Type</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
 
+<span class="kn">from</span> <span class="nn">.util.python</span> <span class="kn">import</span> <span class="n">within_method</span>
 <span class="kn">from</span> <span class="nn">.util.data</span> <span class="kn">import</span> <span class="n">get_args</span><span class="p">,</span> <span class="n">get_origin</span>
 <span class="kn">from</span> <span class="nn">.util.cli.arg</span> <span class="kn">import</span> <span class="n">Arg</span>
 <span class="kn">from</span> <span class="nn">.util.data</span> <span class="kn">import</span> <span class="p">(</span>
@@ -511,6 +512,7 @@
     <span class="n">action</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">required</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="n">labeled</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">mutable</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="n">metadata</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
 <span class="p">):</span>
@@ -525,6 +527,7 @@
     <span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;required&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">required</span>
     <span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;labeled&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">labeled</span>
     <span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;action&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">action</span>
+    <span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;mutable&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mutable</span>
     <span class="k">return</span> <span class="n">dataclasses</span><span class="o">.</span><span class="n">field</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
 
@@ -532,17 +535,147 @@
     <span class="k">return</span> <span class="n">export_dict</span><span class="p">(</span><span class="o">**</span><span class="n">dataclasses</span><span class="o">.</span><span class="n">asdict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">))</span>
 
 
-<div class="viewcode-block" id="config"><a class="viewcode-back" href="../../api/base.html#dffml.base.config">[docs]</a><span class="k">def</span> <span class="nf">config</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+<div class="viewcode-block" id="config_ensure_immutable_init"><a class="viewcode-back" href="../../api/base.html#dffml.base.config_ensure_immutable_init">[docs]</a><span class="k">def</span> <span class="nf">config_ensure_immutable_init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Decorator to create a dataclass</span>
+<span class="sd">    Initialize immutable support config instance local variables.</span>
+
+<span class="sd">    We can&#39;t call this on ``__init__`` so we call it whenever we are about to</span>
+<span class="sd">    use it.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">datacls</span> <span class="o">=</span> <span class="n">dataclasses</span><span class="o">.</span><span class="n">dataclass</span><span class="p">(</span><span class="n">eq</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="kc">True</span><span class="p">)(</span><span class="bp">cls</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_mutable_callbacks&quot;</span><span class="p">):</span>
+        <span class="k">return</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_mutable_callbacks</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="c1"># Only enforce mutable/immutable checks if _enforce_immutable == True</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_enforce_immutable</span> <span class="o">=</span> <span class="kc">True</span></div>
+
+
+<span class="k">def</span> <span class="nf">config_add_mutable_callback</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
+    <span class="n">config_ensure_immutable_init</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_mutable_callbacks</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="config_no_enforce_immutable"><a class="viewcode-back" href="../../api/base.html#dffml.base.config_no_enforce_immutable">[docs]</a><span class="nd">@contextlib</span><span class="o">.</span><span class="n">contextmanager</span>
+<span class="k">def</span> <span class="nf">config_no_enforce_immutable</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    By default, all properties of a config object are immutable. If you would</span>
+<span class="sd">    like to mutate immutable properties, you must explicitly call this method</span>
+<span class="sd">    using it as a context manager.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+
+<span class="sd">    &gt;&gt;&gt; from dffml import config</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; @config</span>
+<span class="sd">    ... class MyConfig:</span>
+<span class="sd">    ...     C: int</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; config = MyConfig(C=2)</span>
+<span class="sd">    &gt;&gt;&gt; with config.no_enforce_immutable():</span>
+<span class="sd">    ...     config.C = 1</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">config_ensure_immutable_init</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_enforce_immutable</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">yield</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_enforce_immutable</span> <span class="o">=</span> <span class="kc">True</span></div>
+
+
+<div class="viewcode-block" id="config_make_getter"><a class="viewcode-back" href="../../api/base.html#dffml.base.config_make_getter">[docs]</a><span class="k">def</span> <span class="nf">config_make_getter</span><span class="p">(</span><span class="n">key</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Create a getter function for use with :py:func:`property` on config objects.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">getter_mutable</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">getter_mutable</span></div>
+
+
+<div class="viewcode-block" id="ImmutableConfigPropertyError"><a class="viewcode-back" href="../../api/base.html#dffml.base.ImmutableConfigPropertyError">[docs]</a><span class="k">class</span> <span class="nc">ImmutableConfigPropertyError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Raised when config property was changed but was not marked as mutable.</span>
+<span class="sd">    &quot;&quot;&quot;</span></div>
+
+
+<div class="viewcode-block" id="NoMutableCallbacksError"><a class="viewcode-back" href="../../api/base.html#dffml.base.NoMutableCallbacksError">[docs]</a><span class="k">class</span> <span class="nc">NoMutableCallbacksError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Raised when a config property is mutated but there are not mutable callbacks</span>
+<span class="sd">    present to handle it&#39;s update.</span>
+<span class="sd">    &quot;&quot;&quot;</span></div>
+
+
+<div class="viewcode-block" id="config_make_setter"><a class="viewcode-back" href="../../api/base.html#dffml.base.config_make_setter">[docs]</a><span class="k">def</span> <span class="nf">config_make_setter</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">immutable</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Create a setter function for use with :py:func:`property` on config objects.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">setter_immutable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="n">config_ensure_immutable_init</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="c1"># Reach into caller&#39;s stack frame to check if we are in the</span>
+        <span class="c1"># __init__ function of the dataclass. If we are in the __init__</span>
+        <span class="c1"># method we should not enforce immutability. Set max_depth to 4 in</span>
+        <span class="c1"># case of __post_init__. No point in searching farther.</span>
+        <span class="k">if</span> <span class="n">within_method</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;__init__&quot;</span><span class="p">,</span> <span class="n">max_depth</span><span class="o">=</span><span class="mi">4</span><span class="p">):</span>
+            <span class="c1"># Mutate without checks if we are within the __init__ code of</span>
+            <span class="c1"># the class. Then bail out, we&#39;re done here.</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+            <span class="k">return</span>
+        <span class="c1"># Raise if the property is immutable and we&#39;re in enforcing mode</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_enforce_immutable</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">immutable</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">ImmutableConfigPropertyError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;Attempted to mutate immutable property </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__qualname__</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="p">)</span>
+            <span class="c1"># Ensure we have callbacks if we&#39;re mutating</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mutable_callbacks</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">NoMutableCallbacksError</span><span class="p">(</span>
+                    <span class="s2">&quot;Config instance has no mutable_callbacks registered but a mutable property was updated&quot;</span>
+                <span class="p">)</span>
+        <span class="c1"># Call callbacks to notify we&#39;ve mutated</span>
+        <span class="k">for</span> <span class="n">func</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mutable_callbacks</span><span class="p">:</span>
+            <span class="n">func</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+        <span class="c1"># Mutate property</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="k">return</span> <span class="n">setter_immutable</span></div>
+
+
+<span class="k">def</span> <span class="nf">_config</span><span class="p">(</span><span class="n">datacls</span><span class="p">):</span>
     <span class="n">datacls</span><span class="o">.</span><span class="n">_fromdict</span> <span class="o">=</span> <span class="nb">classmethod</span><span class="p">(</span><span class="n">_fromdict</span><span class="p">)</span>
     <span class="n">datacls</span><span class="o">.</span><span class="n">_replace</span> <span class="o">=</span> <span class="k">lambda</span> <span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">dataclasses</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
     <span class="p">)</span>
     <span class="n">datacls</span><span class="o">.</span><span class="n">_asdict</span> <span class="o">=</span> <span class="n">config_asdict</span>
-    <span class="k">return</span> <span class="n">datacls</span></div>
+    <span class="n">datacls</span><span class="o">.</span><span class="n">add_mutable_callback</span> <span class="o">=</span> <span class="n">config_add_mutable_callback</span>
+    <span class="n">datacls</span><span class="o">.</span><span class="n">no_enforce_immutable</span> <span class="o">=</span> <span class="n">config_no_enforce_immutable</span>
+
+    <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">dataclasses</span><span class="o">.</span><span class="n">fields</span><span class="p">(</span><span class="n">datacls</span><span class="p">):</span>
+        <span class="c1"># Make deleter None so it raises AttributeError: can&#39;t delete attribute</span>
+        <span class="nb">setattr</span><span class="p">(</span>
+            <span class="n">datacls</span><span class="p">,</span>
+            <span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+            <span class="nb">property</span><span class="p">(</span>
+                <span class="n">config_make_getter</span><span class="p">(</span><span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">),</span>
+                <span class="n">config_make_setter</span><span class="p">(</span>
+                    <span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">field</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;mutable&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+                <span class="p">),</span>
+                <span class="kc">None</span><span class="p">,</span>
+            <span class="p">),</span>
+        <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">datacls</span>
+
+
+<div class="viewcode-block" id="config"><a class="viewcode-back" href="../../api/base.html#dffml.base.config">[docs]</a><span class="k">def</span> <span class="nf">config</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Decorator to create a dataclass</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">_config</span><span class="p">(</span><span class="n">dataclasses</span><span class="o">.</span><span class="n">dataclass</span><span class="p">(</span><span class="n">eq</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="kc">True</span><span class="p">)(</span><span class="bp">cls</span><span class="p">))</span></div>
 
 
 <div class="viewcode-block" id="make_config"><a class="viewcode-back" href="../../api/base.html#dffml.base.make_config">[docs]</a><span class="k">def</span> <span class="nf">make_config</span><span class="p">(</span><span class="n">cls_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">fields</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">namespace</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
@@ -574,8 +707,10 @@
             <span class="n">fields_non_default</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">name</span><span class="p">,</span> <span class="bp">cls</span><span class="p">,</span> <span class="n">field</span><span class="p">))</span>
     <span class="n">fields</span> <span class="o">=</span> <span class="n">fields_non_default</span> <span class="o">+</span> <span class="n">fields_default</span>
     <span class="c1"># Create dataclass</span>
-    <span class="k">return</span> <span class="n">dataclasses</span><span class="o">.</span><span class="n">make_dataclass</span><span class="p">(</span>
-        <span class="n">cls_name</span><span class="p">,</span> <span class="n">fields</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">namespace</span><span class="o">=</span><span class="n">namespace</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+    <span class="k">return</span> <span class="n">_config</span><span class="p">(</span>
+        <span class="n">dataclasses</span><span class="o">.</span><span class="n">make_dataclass</span><span class="p">(</span>
+            <span class="n">cls_name</span><span class="p">,</span> <span class="n">fields</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">namespace</span><span class="o">=</span><span class="n">namespace</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+        <span class="p">)</span>
     <span class="p">)</span></div>
 
 

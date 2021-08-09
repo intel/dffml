@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Source Op &mdash; DFFML c61efb414 documentation</title>
+  <title>Source Op &mdash; DFFML 7a91f3b1a documentation</title>
   
 
   
@@ -70,7 +70,7 @@
             
             
               <div class="version">
-                c61efb414
+                7a91f3b1a
               </div>
             
           
@@ -308,7 +308,27 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="dffml.source.op.OpSourceConfig">
 <em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">dffml.source.op.</span></span><span class="sig-name descname"><span class="pre">OpSourceConfig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">opimp:</span> <span class="pre">dffml.df.base.OperationImplementation</span></em>, <em class="sig-param"><span class="pre">args:</span> <span class="pre">List[str]</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;</span></em>, <em class="sig-param"><span class="pre">allowempty:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/op.html#OpSourceConfig"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.source.op.OpSourceConfig" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="dffml.source.op.OpSourceConfig.no_enforce_immutable">
+<span class="sig-name descname"><span class="pre">no_enforce_immutable</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#dffml.source.op.OpSourceConfig.no_enforce_immutable" title="Permalink to this definition">¶</a></dt>
+<dd><p>By default, all properties of a config object are immutable. If you would
+like to mutate immutable properties, you must explicitly call this method
+using it as a context manager.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">config</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nd">@config</span>
+<span class="gp">... </span><span class="k">class</span> <span class="nc">MyConfig</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">C</span><span class="p">:</span> <span class="nb">int</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">config</span> <span class="o">=</span> <span class="n">MyConfig</span><span class="p">(</span><span class="n">C</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">config</span><span class="o">.</span><span class="n">no_enforce_immutable</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="n">config</span><span class="o">.</span><span class="n">C</span> <span class="o">=</span> <span class="mi">1</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
 
 </div>
 

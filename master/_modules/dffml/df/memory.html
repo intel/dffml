@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>dffml.df.memory &mdash; DFFML c61efb414 documentation</title>
+  <title>dffml.df.memory &mdash; DFFML 7a91f3b1a documentation</title>
   
 
   
@@ -69,7 +69,7 @@
             
             
               <div class="version">
-                c61efb414
+                7a91f3b1a
               </div>
             
           
@@ -1769,7 +1769,8 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">max_ctxs</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">max_ctxs</span> <span class="o">&gt;</span> <span class="nb">len</span><span class="p">(</span>
             <span class="n">ctxs</span>
         <span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">max_ctxs</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">no_enforce_immutable</span><span class="p">():</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">max_ctxs</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="c1"># Create tasks to wait on the results of each of the contexts submitted</span>
         <span class="k">for</span> <span class="n">ctxs_index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">ctxs</span><span class="p">)):</span>
             <span class="k">if</span> <span class="p">(</span>

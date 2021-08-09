@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>dffml.util.python &mdash; DFFML c61efb414 documentation</title>
+  <title>dffml.util.python &mdash; DFFML 7a91f3b1a documentation</title>
   
 
   
@@ -69,7 +69,7 @@
             
             
               <div class="version">
-                c61efb414
+                7a91f3b1a
               </div>
             
           
@@ -223,6 +223,7 @@
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">types</span>
 <span class="kn">import</span> <span class="nn">pathlib</span>
+<span class="kn">import</span> <span class="nn">inspect</span>
 <span class="kn">import</span> <span class="nn">importlib</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Iterator</span>
 
@@ -300,6 +301,100 @@
             <span class="k">continue</span>
         <span class="c1"># Import module</span>
         <span class="k">yield</span> <span class="n">import_name</span><span class="p">,</span> <span class="n">importlib</span><span class="o">.</span><span class="n">import_module</span><span class="p">(</span><span class="n">import_name</span><span class="p">)</span></div>
+
+
+<span class="c1"># See comment at beginning of within_method()</span>
+<span class="n">IN_IPYTHON</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="n">CHECKED_IN_IPYTHON</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="n">IPYTHON_INSPECT_PATCHED</span> <span class="o">=</span> <span class="kc">False</span>
+
+
+<div class="viewcode-block" id="within_method"><a class="viewcode-back" href="../../../api/util/python.html#dffml.util.python.within_method">[docs]</a><span class="k">def</span> <span class="nf">within_method</span><span class="p">(</span><span class="n">obj</span><span class="p">:</span> <span class="nb">object</span><span class="p">,</span> <span class="n">method_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">max_depth</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Return True if a caller is being called from a given method of a given</span>
+<span class="sd">    object.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    obj : object</span>
+<span class="sd">        Check if we are within a method of this object.</span>
+<span class="sd">    method_name : str</span>
+<span class="sd">        Check if we are within a method by this name.</span>
+<span class="sd">    max_depth : int, optional (-1)</span>
+<span class="sd">        Stop checking stack frames after we have checked this many.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    within : boolean</span>
+<span class="sd">        True if the calling function is being called from within the method</span>
+<span class="sd">        given bound to the object given.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+
+<span class="sd">    &gt;&gt;&gt; from dffml import within_method</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; class FirstClass:</span>
+<span class="sd">    ...     def feedface(self):</span>
+<span class="sd">    ...         print(within_method(self, &quot;__init__&quot;, max_depth=3))</span>
+<span class="sd">    ...</span>
+<span class="sd">    &gt;&gt;&gt; first = FirstClass()</span>
+<span class="sd">    &gt;&gt;&gt; first .feedface()</span>
+<span class="sd">    False</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; class SecondClass(FirstClass):</span>
+<span class="sd">    ...     def __init__(self):</span>
+<span class="sd">    ...         self.feedface()</span>
+<span class="sd">    ...</span>
+<span class="sd">    &gt;&gt;&gt; second = SecondClass()</span>
+<span class="sd">    True</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; class ThirdClass(SecondClass):</span>
+<span class="sd">    ...     def __init__(self):</span>
+<span class="sd">    ...         self.deadbeef()</span>
+<span class="sd">    ...</span>
+<span class="sd">    ...     def deadbeef(self):</span>
+<span class="sd">    ...         self.feedface()</span>
+<span class="sd">    ...</span>
+<span class="sd">    &gt;&gt;&gt; third = ThirdClass()</span>
+<span class="sd">    False</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># HACK Fix for if we are running in IPython notebook. Sometimes it doesn&#39;t</span>
+    <span class="c1"># patch inspect.findsource as is intended</span>
+    <span class="c1"># References:</span>
+    <span class="c1"># - https://github.com/ipython/ipython/issues/1456</span>
+    <span class="c1"># - https://github.com/ipython/ipython/commit/298fdab5025745cd25f7f48147d8bc4c65be9d4a#diff-3a77d00d5690f670e9ac680f06b8ffe7ca902c6d325673f32e719d8e55b11ae3R209</span>
+    <span class="k">global</span> <span class="n">IN_IPYTHON</span>
+    <span class="k">global</span> <span class="n">CHECKED_IN_IPYTHON</span>
+    <span class="k">global</span> <span class="n">IPYTHON_INSPECT_PATCHED</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">CHECKED_IN_IPYTHON</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">get_ipython</span><span class="p">()</span>
+            <span class="n">IN_IPYTHON</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="n">CHECKED_IN_IPYTHON</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">if</span> <span class="n">IN_IPYTHON</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">IPYTHON_INSPECT_PATCHED</span><span class="p">:</span>
+            <span class="kn">import</span> <span class="nn">IPython.core.ultratb</span>
+
+            <span class="n">inspect</span><span class="o">.</span><span class="n">findsource</span> <span class="o">=</span> <span class="n">IPython</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">ultratb</span><span class="o">.</span><span class="n">findsource</span>
+            <span class="n">IPYTHON_INSPECT_PATCHED</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="c1"># Grab stack frames</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">frames</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">stack</span><span class="p">()</span>
+    <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+        <span class="c1"># HACK ImportError Fix for lazy_import rasing on autosklearn/smac: emcee</span>
+        <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">frame_info</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">frames</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">max_depth</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span> <span class="ow">and</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="n">max_depth</span><span class="p">:</span>
+            <span class="k">break</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="n">frame_info</span><span class="o">.</span><span class="n">function</span> <span class="o">==</span> <span class="n">method_name</span>
+            <span class="ow">and</span> <span class="s2">&quot;self&quot;</span> <span class="ow">in</span> <span class="n">frame_info</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">f_locals</span>
+            <span class="ow">and</span> <span class="n">frame_info</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">f_locals</span><span class="p">[</span><span class="s2">&quot;self&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="n">obj</span>
+        <span class="p">):</span>
+            <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">return</span> <span class="kc">False</span></div>
 </pre></div>
 
            </div>

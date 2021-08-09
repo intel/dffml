@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Service Dev &mdash; DFFML c61efb414 documentation</title>
+  <title>Service Dev &mdash; DFFML 7a91f3b1a documentation</title>
   
 
   
@@ -70,7 +70,7 @@
             
             
               <div class="version">
-                c61efb414
+                7a91f3b1a
               </div>
             
           
@@ -296,7 +296,27 @@ given.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="dffml.service.dev.BumpPackagesConfig">
 <em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">dffml.service.dev.</span></span><span class="sig-name descname"><span class="pre">BumpPackagesConfig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">version:</span> <span class="pre">str</span></em>, <em class="sig-param"><span class="pre">skip:</span> <span class="pre">List[str]</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;</span></em>, <em class="sig-param"><span class="pre">only:</span> <span class="pre">List[str]</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/service/dev.html#BumpPackagesConfig"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.service.dev.BumpPackagesConfig" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="dffml.service.dev.BumpPackagesConfig.no_enforce_immutable">
+<span class="sig-name descname"><span class="pre">no_enforce_immutable</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#dffml.service.dev.BumpPackagesConfig.no_enforce_immutable" title="Permalink to this definition">¶</a></dt>
+<dd><p>By default, all properties of a config object are immutable. If you would
+like to mutate immutable properties, you must explicitly call this method
+using it as a context manager.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">config</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nd">@config</span>
+<span class="gp">... </span><span class="k">class</span> <span class="nc">MyConfig</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">C</span><span class="p">:</span> <span class="nb">int</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">config</span> <span class="o">=</span> <span class="n">MyConfig</span><span class="p">(</span><span class="n">C</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">config</span><span class="o">.</span><span class="n">no_enforce_immutable</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="n">config</span><span class="o">.</span><span class="n">C</span> <span class="o">=</span> <span class="mi">1</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="dffml.service.dev.CI">
@@ -378,10 +398,24 @@ given.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="dffml.service.dev.ExportConfig">
 <em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">dffml.service.dev.</span></span><span class="sig-name descname"><span class="pre">ExportConfig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">export:</span> <span class="pre">str</span></em>, <em class="sig-param"><span class="pre">configloader:</span> <span class="pre">dffml.configloader.configloader.BaseConfigLoader</span> <span class="pre">=</span> <span class="pre">&lt;class</span> <span class="pre">'dffml.configloader.json.JSONConfigLoader'&gt;</span></em>, <em class="sig-param"><span class="pre">not_linked:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/service/dev.html#ExportConfig"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.service.dev.ExportConfig" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="py attribute">
-<dt class="sig sig-object py" id="dffml.service.dev.ExportConfig.configloader">
-<span class="sig-name descname"><span class="pre">configloader</span></span><a class="headerlink" href="#dffml.service.dev.ExportConfig.configloader" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <a class="reference internal" href="../configloader/json.html#dffml.configloader.json.JSONConfigLoader" title="dffml.configloader.json.JSONConfigLoader"><code class="xref py py-class docutils literal notranslate"><span class="pre">dffml.configloader.json.JSONConfigLoader</span></code></a></p>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="dffml.service.dev.ExportConfig.no_enforce_immutable">
+<span class="sig-name descname"><span class="pre">no_enforce_immutable</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#dffml.service.dev.ExportConfig.no_enforce_immutable" title="Permalink to this definition">¶</a></dt>
+<dd><p>By default, all properties of a config object are immutable. If you would
+like to mutate immutable properties, you must explicitly call this method
+using it as a context manager.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">config</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nd">@config</span>
+<span class="gp">... </span><span class="k">class</span> <span class="nc">MyConfig</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">C</span><span class="p">:</span> <span class="nb">int</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">config</span> <span class="o">=</span> <span class="n">MyConfig</span><span class="p">(</span><span class="n">C</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">config</span><span class="o">.</span><span class="n">no_enforce_immutable</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="n">config</span><span class="o">.</span><span class="n">C</span> <span class="o">=</span> <span class="mi">1</span>
+</pre></div>
+</div>
 </dd></dl>
 
 </dd></dl>
@@ -408,7 +442,27 @@ installs of plugins</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="dffml.service.dev.InstallConfig">
 <em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">dffml.service.dev.</span></span><span class="sig-name descname"><span class="pre">InstallConfig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">skip:</span> <span class="pre">List[str]</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;</span></em>, <em class="sig-param"><span class="pre">nocheck:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False</span></em>, <em class="sig-param"><span class="pre">user:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/service/dev.html#InstallConfig"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.service.dev.InstallConfig" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="dffml.service.dev.InstallConfig.no_enforce_immutable">
+<span class="sig-name descname"><span class="pre">no_enforce_immutable</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#dffml.service.dev.InstallConfig.no_enforce_immutable" title="Permalink to this definition">¶</a></dt>
+<dd><p>By default, all properties of a config object are immutable. If you would
+like to mutate immutable properties, you must explicitly call this method
+using it as a context manager.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">config</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nd">@config</span>
+<span class="gp">... </span><span class="k">class</span> <span class="nc">MyConfig</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">C</span><span class="p">:</span> <span class="nb">int</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">config</span> <span class="o">=</span> <span class="n">MyConfig</span><span class="p">(</span><span class="n">C</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">config</span><span class="o">.</span><span class="n">no_enforce_immutable</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="n">config</span><span class="o">.</span><span class="n">C</span> <span class="o">=</span> <span class="mi">1</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="dffml.service.dev.Link">
@@ -437,7 +491,27 @@ installs of plugins</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="dffml.service.dev.ListEntrypointsConfig">
 <em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">dffml.service.dev.</span></span><span class="sig-name descname"><span class="pre">ListEntrypointsConfig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">entrypoint</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/service/dev.html#ListEntrypointsConfig"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.service.dev.ListEntrypointsConfig" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="dffml.service.dev.ListEntrypointsConfig.no_enforce_immutable">
+<span class="sig-name descname"><span class="pre">no_enforce_immutable</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#dffml.service.dev.ListEntrypointsConfig.no_enforce_immutable" title="Permalink to this definition">¶</a></dt>
+<dd><p>By default, all properties of a config object are immutable. If you would
+like to mutate immutable properties, you must explicitly call this method
+using it as a context manager.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">config</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nd">@config</span>
+<span class="gp">... </span><span class="k">class</span> <span class="nc">MyConfig</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">C</span><span class="p">:</span> <span class="nb">int</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">config</span> <span class="o">=</span> <span class="n">MyConfig</span><span class="p">(</span><span class="n">C</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">config</span><span class="o">.</span><span class="n">no_enforce_immutable</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="n">config</span><span class="o">.</span><span class="n">C</span> <span class="o">=</span> <span class="mi">1</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="dffml.service.dev.MakeDocs">
@@ -453,8 +527,28 @@ installs of plugins</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="dffml.service.dev.MakeDocsConfig">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">dffml.service.dev.</span></span><span class="sig-name descname"><span class="pre">MakeDocsConfig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><span class="pre">pathlib.Path</span></a></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">port</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">8080</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">http</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><span class="pre">bool</span></a></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/service/dev.html#MakeDocsConfig"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.service.dev.MakeDocsConfig" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">dffml.service.dev.</span></span><span class="sig-name descname"><span class="pre">MakeDocsConfig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><span class="pre">pathlib.Path</span></a></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">port</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">8080</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">http</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><span class="pre">bool</span></a></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">no_strict</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><span class="pre">bool</span></a></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/service/dev.html#MakeDocsConfig"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.service.dev.MakeDocsConfig" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="dffml.service.dev.MakeDocsConfig.no_enforce_immutable">
+<span class="sig-name descname"><span class="pre">no_enforce_immutable</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#dffml.service.dev.MakeDocsConfig.no_enforce_immutable" title="Permalink to this definition">¶</a></dt>
+<dd><p>By default, all properties of a config object are immutable. If you would
+like to mutate immutable properties, you must explicitly call this method
+using it as a context manager.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">config</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nd">@config</span>
+<span class="gp">... </span><span class="k">class</span> <span class="nc">MyConfig</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">C</span><span class="p">:</span> <span class="nb">int</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">config</span> <span class="o">=</span> <span class="n">MyConfig</span><span class="p">(</span><span class="n">C</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">config</span><span class="o">.</span><span class="n">no_enforce_immutable</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="n">config</span><span class="o">.</span><span class="n">C</span> <span class="o">=</span> <span class="mi">1</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="py exception">
 <dt class="sig sig-object py" id="dffml.service.dev.MissingDependenciesError">
@@ -483,7 +577,27 @@ installable dependencies that must be installed before running the setup.py</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="dffml.service.dev.ReleaseConfig">
 <em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">dffml.service.dev.</span></span><span class="sig-name descname"><span class="pre">ReleaseConfig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">package</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><span class="pre">pathlib.Path</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/service/dev.html#ReleaseConfig"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.service.dev.ReleaseConfig" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="dffml.service.dev.ReleaseConfig.no_enforce_immutable">
+<span class="sig-name descname"><span class="pre">no_enforce_immutable</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#dffml.service.dev.ReleaseConfig.no_enforce_immutable" title="Permalink to this definition">¶</a></dt>
+<dd><p>By default, all properties of a config object are immutable. If you would
+like to mutate immutable properties, you must explicitly call this method
+using it as a context manager.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">config</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nd">@config</span>
+<span class="gp">... </span><span class="k">class</span> <span class="nc">MyConfig</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">C</span><span class="p">:</span> <span class="nb">int</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">config</span> <span class="o">=</span> <span class="n">MyConfig</span><span class="p">(</span><span class="n">C</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">config</span><span class="o">.</span><span class="n">no_enforce_immutable</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="n">config</span><span class="o">.</span><span class="n">C</span> <span class="o">=</span> <span class="mi">1</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="py exception">
 <dt class="sig sig-object py" id="dffml.service.dev.RepoDirtyError">
@@ -506,7 +620,27 @@ installable dependencies that must be installed before running the setup.py</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="dffml.service.dev.RunConfig">
 <em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">dffml.service.dev.</span></span><span class="sig-name descname"><span class="pre">RunConfig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">operation</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/service/dev.html#RunConfig"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.service.dev.RunConfig" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="dffml.service.dev.RunConfig.no_enforce_immutable">
+<span class="sig-name descname"><span class="pre">no_enforce_immutable</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#dffml.service.dev.RunConfig.no_enforce_immutable" title="Permalink to this definition">¶</a></dt>
+<dd><p>By default, all properties of a config object are immutable. If you would
+like to mutate immutable properties, you must explicitly call this method
+using it as a context manager.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">config</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nd">@config</span>
+<span class="gp">... </span><span class="k">class</span> <span class="nc">MyConfig</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">C</span><span class="p">:</span> <span class="nb">int</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">config</span> <span class="o">=</span> <span class="n">MyConfig</span><span class="p">(</span><span class="n">C</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">config</span><span class="o">.</span><span class="n">no_enforce_immutable</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="n">config</span><span class="o">.</span><span class="n">C</span> <span class="o">=</span> <span class="mi">1</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="dffml.service.dev.SetupPyKWArg">
@@ -523,7 +657,27 @@ installable dependencies that must be installed before running the setup.py</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="dffml.service.dev.SetupPyKWArgConfig">
 <em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">dffml.service.dev.</span></span><span class="sig-name descname"><span class="pre">SetupPyKWArgConfig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">kwarg</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">setupfilepath</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/service/dev.html#SetupPyKWArgConfig"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.service.dev.SetupPyKWArgConfig" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="dffml.service.dev.SetupPyKWArgConfig.no_enforce_immutable">
+<span class="sig-name descname"><span class="pre">no_enforce_immutable</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#dffml.service.dev.SetupPyKWArgConfig.no_enforce_immutable" title="Permalink to this definition">¶</a></dt>
+<dd><p>By default, all properties of a config object are immutable. If you would
+like to mutate immutable properties, you must explicitly call this method
+using it as a context manager.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">config</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nd">@config</span>
+<span class="gp">... </span><span class="k">class</span> <span class="nc">MyConfig</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">C</span><span class="p">:</span> <span class="nb">int</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">config</span> <span class="o">=</span> <span class="n">MyConfig</span><span class="p">(</span><span class="n">C</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">config</span><span class="o">.</span><span class="n">no_enforce_immutable</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="n">config</span><span class="o">.</span><span class="n">C</span> <span class="o">=</span> <span class="mi">1</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="dffml.service.dev.SetupPyVersion">
@@ -542,7 +696,27 @@ variable.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="dffml.service.dev.SetupPyVersionConfig">
 <em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">dffml.service.dev.</span></span><span class="sig-name descname"><span class="pre">SetupPyVersionConfig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">versionfilepath</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/service/dev.html#SetupPyVersionConfig"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.service.dev.SetupPyVersionConfig" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="dffml.service.dev.SetupPyVersionConfig.no_enforce_immutable">
+<span class="sig-name descname"><span class="pre">no_enforce_immutable</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#dffml.service.dev.SetupPyVersionConfig.no_enforce_immutable" title="Permalink to this definition">¶</a></dt>
+<dd><p>By default, all properties of a config object are immutable. If you would
+like to mutate immutable properties, you must explicitly call this method
+using it as a context manager.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">config</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nd">@config</span>
+<span class="gp">... </span><span class="k">class</span> <span class="nc">MyConfig</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">C</span><span class="p">:</span> <span class="nb">int</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">config</span> <span class="o">=</span> <span class="n">MyConfig</span><span class="p">(</span><span class="n">C</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">config</span><span class="o">.</span><span class="n">no_enforce_immutable</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="n">config</span><span class="o">.</span><span class="n">C</span> <span class="o">=</span> <span class="mi">1</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="dffml.service.dev.Skeleton">

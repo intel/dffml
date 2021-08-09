@@ -31,6 +31,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `cached_download/unpack_archive()` are now functions
 - Model `directory` property to `location`
 - `high_level` split into `ml`, `dataflow` & `source` submodules
+- Config objects now support mutability/immutability at the property scope.
+  See `docs/arch/0003-Config-Property-Mutable-vs-Immutable` for details.
 ### Fixed
 - Record object key properties are now always strings
 

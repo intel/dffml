@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Cli Ml &mdash; DFFML c61efb414 documentation</title>
+  <title>Cli Ml &mdash; DFFML 7a91f3b1a documentation</title>
   
 
   
@@ -70,7 +70,7 @@
             
             
               <div class="version">
-                c61efb414
+                7a91f3b1a
               </div>
             
           
@@ -275,7 +275,27 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="dffml.cli.ml.AccuracyCMDConfig">
 <em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">dffml.cli.ml.</span></span><span class="sig-name descname"><span class="pre">AccuracyCMDConfig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model:</span> <span class="pre">dffml.model.model.Model</span></em>, <em class="sig-param"><span class="pre">scorer:</span> <span class="pre">dffml.accuracy.accuracy.AccuracyScorer</span></em>, <em class="sig-param"><span class="pre">sources:</span> <span class="pre">dffml.source.source.Sources</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/cli/ml.html#AccuracyCMDConfig"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.cli.ml.AccuracyCMDConfig" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="dffml.cli.ml.AccuracyCMDConfig.no_enforce_immutable">
+<span class="sig-name descname"><span class="pre">no_enforce_immutable</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#dffml.cli.ml.AccuracyCMDConfig.no_enforce_immutable" title="Permalink to this definition">¶</a></dt>
+<dd><p>By default, all properties of a config object are immutable. If you would
+like to mutate immutable properties, you must explicitly call this method
+using it as a context manager.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">config</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nd">@config</span>
+<span class="gp">... </span><span class="k">class</span> <span class="nc">MyConfig</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">C</span><span class="p">:</span> <span class="nb">int</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">config</span> <span class="o">=</span> <span class="n">MyConfig</span><span class="p">(</span><span class="n">C</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">config</span><span class="o">.</span><span class="n">no_enforce_immutable</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="n">config</span><span class="o">.</span><span class="n">C</span> <span class="o">=</span> <span class="mi">1</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="dffml.cli.ml.MLCMD">
@@ -286,7 +306,27 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="dffml.cli.ml.MLCMDConfig">
 <em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">dffml.cli.ml.</span></span><span class="sig-name descname"><span class="pre">MLCMDConfig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model:</span> <span class="pre">dffml.model.model.Model</span></em>, <em class="sig-param"><span class="pre">sources:</span> <span class="pre">dffml.source.source.Sources</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/cli/ml.html#MLCMDConfig"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.cli.ml.MLCMDConfig" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="dffml.cli.ml.MLCMDConfig.no_enforce_immutable">
+<span class="sig-name descname"><span class="pre">no_enforce_immutable</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#dffml.cli.ml.MLCMDConfig.no_enforce_immutable" title="Permalink to this definition">¶</a></dt>
+<dd><p>By default, all properties of a config object are immutable. If you would
+like to mutate immutable properties, you must explicitly call this method
+using it as a context manager.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">config</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nd">@config</span>
+<span class="gp">... </span><span class="k">class</span> <span class="nc">MyConfig</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">C</span><span class="p">:</span> <span class="nb">int</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">config</span> <span class="o">=</span> <span class="n">MyConfig</span><span class="p">(</span><span class="n">C</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">config</span><span class="o">.</span><span class="n">no_enforce_immutable</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="n">config</span><span class="o">.</span><span class="n">C</span> <span class="o">=</span> <span class="mi">1</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="dffml.cli.ml.Predict">
@@ -315,7 +355,27 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="dffml.cli.ml.PredictAllConfig">
 <em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">dffml.cli.ml.</span></span><span class="sig-name descname"><span class="pre">PredictAllConfig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model:</span> <span class="pre">dffml.model.model.Model</span></em>, <em class="sig-param"><span class="pre">sources:</span> <span class="pre">dffml.source.source.Sources</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;</span></em>, <em class="sig-param"><span class="pre">update:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False</span></em>, <em class="sig-param"><span class="pre">pretty:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/cli/ml.html#PredictAllConfig"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.cli.ml.PredictAllConfig" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="dffml.cli.ml.PredictAllConfig.no_enforce_immutable">
+<span class="sig-name descname"><span class="pre">no_enforce_immutable</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#dffml.cli.ml.PredictAllConfig.no_enforce_immutable" title="Permalink to this definition">¶</a></dt>
+<dd><p>By default, all properties of a config object are immutable. If you would
+like to mutate immutable properties, you must explicitly call this method
+using it as a context manager.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">config</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nd">@config</span>
+<span class="gp">... </span><span class="k">class</span> <span class="nc">MyConfig</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">C</span><span class="p">:</span> <span class="nb">int</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">config</span> <span class="o">=</span> <span class="n">MyConfig</span><span class="p">(</span><span class="n">C</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">config</span><span class="o">.</span><span class="n">no_enforce_immutable</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="n">config</span><span class="o">.</span><span class="n">C</span> <span class="o">=</span> <span class="mi">1</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="dffml.cli.ml.PredictRecord">
@@ -332,7 +392,27 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="dffml.cli.ml.PredictRecordConfig">
 <em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">dffml.cli.ml.</span></span><span class="sig-name descname"><span class="pre">PredictRecordConfig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">keys:</span> <span class="pre">List[str],</span> <span class="pre">model:</span> <span class="pre">dffml.model.model.Model,</span> <span class="pre">sources:</span> <span class="pre">dffml.source.source.Sources</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;,</span> <span class="pre">update:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False,</span> <span class="pre">pretty:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/cli/ml.html#PredictRecordConfig"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.cli.ml.PredictRecordConfig" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="dffml.cli.ml.PredictRecordConfig.no_enforce_immutable">
+<span class="sig-name descname"><span class="pre">no_enforce_immutable</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#dffml.cli.ml.PredictRecordConfig.no_enforce_immutable" title="Permalink to this definition">¶</a></dt>
+<dd><p>By default, all properties of a config object are immutable. If you would
+like to mutate immutable properties, you must explicitly call this method
+using it as a context manager.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">config</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nd">@config</span>
+<span class="gp">... </span><span class="k">class</span> <span class="nc">MyConfig</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">C</span><span class="p">:</span> <span class="nb">int</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">config</span> <span class="o">=</span> <span class="n">MyConfig</span><span class="p">(</span><span class="n">C</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">config</span><span class="o">.</span><span class="n">no_enforce_immutable</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="n">config</span><span class="o">.</span><span class="n">C</span> <span class="o">=</span> <span class="mi">1</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="dffml.cli.ml.Train">

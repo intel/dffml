@@ -1,0 +1,404 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>3. Config Property Mutable vs Immutable &mdash; DFFML 7a91f3b1a documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/tabs.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/copybutton.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="shouldi" href="../shouldi.html" />
+    <link rel="prev" title="2. Object Loading and Instantiation in Examples" href="0002-Object-Loading-and-Instantiation-in-Examples.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> DFFML
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                7a91f3b1a
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Introduction</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../concepts/index.html">Concepts</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Usage</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart/model.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../plugins/index.html">Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cli.html">Command Line</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../plugins/service/http/index.html">HTTP API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/record.html">Record</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/version.html">Version</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/base.html">Base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/plugins.html">Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/noasync.html">Noasync</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/log.html">Log</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/port/index.html">Port</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/util/index.html">Util</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/db/index.html">Db</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/df/index.html">Df</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/secret/index.html">Secret</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/accuracy/index.html">Accuracy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/feature/index.html">Feature</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/service/index.html">Service</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/high_level/index.html">High_Level</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/cli/index.html">Cli</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/configloader/index.html">Configloader</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/operation/index.html">Operation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/model/index.html">Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/source/index.html">Source</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Architecture</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="0002-Object-Loading-and-Instantiation-in-Examples.html">2. Object Loading and Instantiation in Examples</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">3. Config Property Mutable vs Immutable</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#status">Status</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#context">Context</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#decision">Decision</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#consequences">Consequences</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Subprojects</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../shouldi.html">shouldi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../swportal.html">Software Portal</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Community</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/intel/dffml">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://intel.github.io/dffml/master/">Master Branch Docs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../publications.html">Publications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contact.html">Contact Us</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../news/index.html">News</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">DFFML</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Architecture</a> &raquo;</li>
+        
+      <li>3. Config Property Mutable vs Immutable</li>
+    
+    
+
+
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            
+              <a href="https://github.com/intel/dffml/blob/master/docs/arch/0003-Config-Property-Mutable-vs-Immutable.rst" class="fa fa-github"> Edit on GitHub</a>
+            
+          
+        
+      </li>
+    
+
+
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="config-property-mutable-vs-immutable">
+<h1>3. Config Property Mutable vs Immutable<a class="headerlink" href="#config-property-mutable-vs-immutable" title="Permalink to this headline">¶</a></h1>
+<p>Date: 2021-08-04</p>
+<div class="section" id="status">
+<h2>Status<a class="headerlink" href="#status" title="Permalink to this headline">¶</a></h2>
+<p>Accepted</p>
+</div>
+<div class="section" id="context">
+<h2>Context<a class="headerlink" href="#context" title="Permalink to this headline">¶</a></h2>
+<p>This document and 0004-Model-Saving-and-Loading were drafted at the same
+time. See the 2021-05-25 Weekly Sync Meeting recording for more details.</p>
+<p>Through discussion about model config properties in relation to modification of
+hyperparameters we found that there are two kinds of config properties in
+general (as it relates to this document).</p>
+<ul>
+<li><p>Immutable</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Properties whose values are fundamentally tied to the object the config is
+used for. For the lifetime of the object.</p></li>
+<li><p>If these config properties change, a new instance of the object using the
+config should be instantiated.</p></li>
+<li><p>Think of these like the concious or the soul of the object. You cannot
+modify them, because then that would be a new object.</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p>Mutable</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Properties whose values may could change over the lifetime of the
+object, yet the object is still fundamentally the same thing.</p></li>
+<li><p>Think of these like the organs of the object. You could transplant an
+organ from one person into another, but you didn’t change who that person
+is.</p></li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</div>
+<div class="section" id="decision">
+<h2>Decision<a class="headerlink" href="#decision" title="Permalink to this headline">¶</a></h2>
+<p>Similar to the way <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.NamedTuple" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">typing.NamedTuple</span></code></a> works, config properties will
+default to immutable. This way implementers of classes can assume they don’t
+need to deal with state changes to config properties unless they’ve explicitly
+opted in.</p>
+<p>We will require that a callback function be registered with the config class.
+This way we ensure that modification of mutable values is handled somewhere.
+To combat class authors from declaring properties as mutable, without
+registering the callback. We’ll raise an exception if the callback hasn’t been
+registered and any property is set or retrieved, or the instance is exported.</p>
+<p>In the following example we have a hyperparameter, C. Out model wants to support
+changes to it at runtime, so we mark it as mutable.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@config</span>
+<span class="k">class</span> <span class="nc">MyModelConfig</span><span class="p">:</span>
+    <span class="n">C</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="s2">&quot;C hyperparameter&quot;</span><span class="p">,</span> <span class="n">mutable</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Since we’ve marked C as mutable, we must add a callback which deals with
+mutations to the config object.</p>
+<p>The callback we add accepts the key being modified within the config structure
+and the value it was set to. For demonstration purposes we will use the value of
+C in the model object. The callback’s use of <a class="reference external" href="https://docs.python.org/3/library/functions.html#setattr" title="(in Python v3.9)"><code class="xref py py-func docutils literal notranslate"><span class="pre">setattr()</span></code></a> when the value
+of C is updated in the config structure results in the value of C in the model
+object also changing.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">MyModel</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">CONFIG</span> <span class="o">=</span> <span class="n">MyModelConfig</span>
+    <span class="n">CONTEXT</span> <span class="o">=</span> <span class="n">ModelConfig</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
+        <span class="c1"># Callback which will change self.C when self.config.C is changed</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">add_mutable_callback</span><span class="p">(</span><span class="k">lambda</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">))</span>
+        <span class="c1"># Use the value of C</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">C</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">C</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">MyModel</span><span class="p">(</span><span class="n">C</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="k">assert</span> <span class="n">model</span><span class="o">.</span><span class="n">C</span> <span class="o">==</span> <span class="mi">0</span>
+<span class="n">model</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">C</span> <span class="o">=</span> <span class="mi">42</span>
+<span class="k">assert</span> <span class="n">model</span><span class="o">.</span><span class="n">C</span> <span class="o">==</span> <span class="mi">42</span>
+</pre></div>
+</div>
+<p>If a user wants to modify an immutable property, they must create a new instance
+of the object/config.</p>
+</div>
+<div class="section" id="consequences">
+<h2>Consequences<a class="headerlink" href="#consequences" title="Permalink to this headline">¶</a></h2>
+<p>The <a class="reference internal" href="../api/base.html#dffml.base.field" title="dffml.base.field"><code class="xref py py-func docutils literal notranslate"><span class="pre">field</span></code></a> function will need to be modified to add
+a <code class="docutils literal notranslate"><span class="pre">mutable</span></code> keyword argument.</p>
+<p>We need to figure out how we’ll support modifying sub-objects of configs. This
+is something we’ll consider for the future. For example PyTorch has optimizers
+and loss functions which are objects which reside in the config of the main
+PyTorchModelConfig.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="../shouldi.html" class="btn btn-neutral float-right" title="shouldi" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="0002-Object-Loading-and-Instantiation-in-Examples.html" class="btn btn-neutral float-left" title="2. Object Loading and Instantiation in Examples" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2017 - 2021, Intel.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>dffml.model.model &mdash; DFFML c61efb414 documentation</title>
+  <title>dffml.model.model &mdash; DFFML 7a91f3b1a documentation</title>
   
 
   
@@ -69,7 +69,7 @@
             
             
               <div class="version">
-                c61efb414
+                7a91f3b1a
               </div>
             
           
@@ -298,7 +298,10 @@
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">location</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">):</span>
             <span class="c1"># to treat &quot;~&quot; as the the home location rather than a literal</span>
             <span class="n">location</span> <span class="o">=</span> <span class="n">location</span><span class="o">.</span><span class="n">expanduser</span><span class="p">()</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">location</span> <span class="o">=</span> <span class="n">location</span>
+            <span class="c1"># TODO Change all model configs to make them support mutable</span>
+            <span class="c1"># location config properties</span>
+            <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">no_enforce_immutable</span><span class="p">():</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">location</span> <span class="o">=</span> <span class="n">location</span>
 
     <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ModelContext</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_make_config_location</span><span class="p">()</span>

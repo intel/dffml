@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Cli Dataflow &mdash; DFFML c61efb414 documentation</title>
+  <title>Cli Dataflow &mdash; DFFML 7a91f3b1a documentation</title>
   
 
   
@@ -70,7 +70,7 @@
             
             
               <div class="version">
-                c61efb414
+                7a91f3b1a
               </div>
             
           
@@ -263,10 +263,24 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="dffml.cli.dataflow.CreateConfig">
 <em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">dffml.cli.dataflow.</span></span><span class="sig-name descname"><span class="pre">CreateConfig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">operations:</span> <span class="pre">List[str],</span> <span class="pre">configloader:</span> <span class="pre">dffml.configloader.configloader.BaseConfigLoader</span> <span class="pre">=</span> <span class="pre">&lt;class</span> <span class="pre">'dffml.configloader.json.JSONConfigLoader'&gt;,</span> <span class="pre">not_linked:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False,</span> <span class="pre">inputs:</span> <span class="pre">List[str]</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;,</span> <span class="pre">flow:</span> <span class="pre">List[str]</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;,</span> <span class="pre">config:</span> <span class="pre">List[str]</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/cli/dataflow.html#CreateConfig"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.cli.dataflow.CreateConfig" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="py attribute">
-<dt class="sig sig-object py" id="dffml.cli.dataflow.CreateConfig.configloader">
-<span class="sig-name descname"><span class="pre">configloader</span></span><a class="headerlink" href="#dffml.cli.dataflow.CreateConfig.configloader" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <a class="reference internal" href="../configloader/json.html#dffml.configloader.json.JSONConfigLoader" title="dffml.configloader.json.JSONConfigLoader"><code class="xref py py-class docutils literal notranslate"><span class="pre">dffml.configloader.json.JSONConfigLoader</span></code></a></p>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="dffml.cli.dataflow.CreateConfig.no_enforce_immutable">
+<span class="sig-name descname"><span class="pre">no_enforce_immutable</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#dffml.cli.dataflow.CreateConfig.no_enforce_immutable" title="Permalink to this definition">¶</a></dt>
+<dd><p>By default, all properties of a config object are immutable. If you would
+like to mutate immutable properties, you must explicitly call this method
+using it as a context manager.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">config</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nd">@config</span>
+<span class="gp">... </span><span class="k">class</span> <span class="nc">MyConfig</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">C</span><span class="p">:</span> <span class="nb">int</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">config</span> <span class="o">=</span> <span class="n">MyConfig</span><span class="p">(</span><span class="n">C</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">config</span><span class="o">.</span><span class="n">no_enforce_immutable</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="n">config</span><span class="o">.</span><span class="n">C</span> <span class="o">=</span> <span class="mi">1</span>
+</pre></div>
+</div>
 </dd></dl>
 
 </dd></dl>
@@ -274,15 +288,49 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="dffml.cli.dataflow.DiagramConfig">
 <em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">dffml.cli.dataflow.</span></span><span class="sig-name descname"><span class="pre">DiagramConfig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">dataflow:</span> <span class="pre">str</span></em>, <em class="sig-param"><span class="pre">configloader:</span> <span class="pre">dffml.configloader.configloader.BaseConfigLoader</span> <span class="pre">=</span> <span class="pre">None</span></em>, <em class="sig-param"><span class="pre">stages:</span> <span class="pre">List[str]</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;</span></em>, <em class="sig-param"><span class="pre">simple:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False</span></em>, <em class="sig-param"><span class="pre">display:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'TD'</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/cli/dataflow.html#DiagramConfig"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.cli.dataflow.DiagramConfig" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="dffml.cli.dataflow.DiagramConfig.no_enforce_immutable">
+<span class="sig-name descname"><span class="pre">no_enforce_immutable</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#dffml.cli.dataflow.DiagramConfig.no_enforce_immutable" title="Permalink to this definition">¶</a></dt>
+<dd><p>By default, all properties of a config object are immutable. If you would
+like to mutate immutable properties, you must explicitly call this method
+using it as a context manager.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">config</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nd">@config</span>
+<span class="gp">... </span><span class="k">class</span> <span class="nc">MyConfig</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">C</span><span class="p">:</span> <span class="nb">int</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">config</span> <span class="o">=</span> <span class="n">MyConfig</span><span class="p">(</span><span class="n">C</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">config</span><span class="o">.</span><span class="n">no_enforce_immutable</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="n">config</span><span class="o">.</span><span class="n">C</span> <span class="o">=</span> <span class="mi">1</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="dffml.cli.dataflow.MergeConfig">
 <em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">dffml.cli.dataflow.</span></span><span class="sig-name descname"><span class="pre">MergeConfig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">dataflows:</span> <span class="pre">List[pathlib.Path],</span> <span class="pre">configloader:</span> <span class="pre">dffml.configloader.configloader.BaseConfigLoader</span> <span class="pre">=</span> <span class="pre">&lt;class</span> <span class="pre">'dffml.configloader.json.JSONConfigLoader'&gt;,</span> <span class="pre">not_linked:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/cli/dataflow.html#MergeConfig"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.cli.dataflow.MergeConfig" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="py attribute">
-<dt class="sig sig-object py" id="dffml.cli.dataflow.MergeConfig.configloader">
-<span class="sig-name descname"><span class="pre">configloader</span></span><a class="headerlink" href="#dffml.cli.dataflow.MergeConfig.configloader" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <a class="reference internal" href="../configloader/json.html#dffml.configloader.json.JSONConfigLoader" title="dffml.configloader.json.JSONConfigLoader"><code class="xref py py-class docutils literal notranslate"><span class="pre">dffml.configloader.json.JSONConfigLoader</span></code></a></p>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="dffml.cli.dataflow.MergeConfig.no_enforce_immutable">
+<span class="sig-name descname"><span class="pre">no_enforce_immutable</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#dffml.cli.dataflow.MergeConfig.no_enforce_immutable" title="Permalink to this definition">¶</a></dt>
+<dd><p>By default, all properties of a config object are immutable. If you would
+like to mutate immutable properties, you must explicitly call this method
+using it as a context manager.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">config</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nd">@config</span>
+<span class="gp">... </span><span class="k">class</span> <span class="nc">MyConfig</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">C</span><span class="p">:</span> <span class="nb">int</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">config</span> <span class="o">=</span> <span class="n">MyConfig</span><span class="p">(</span><span class="n">C</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">config</span><span class="o">.</span><span class="n">no_enforce_immutable</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="n">config</span><span class="o">.</span><span class="n">C</span> <span class="o">=</span> <span class="mi">1</span>
+</pre></div>
+</div>
 </dd></dl>
 
 </dd></dl>
@@ -320,15 +368,49 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="dffml.cli.dataflow.RunAllRecordsConfig">
 <em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">dffml.cli.dataflow.</span></span><span class="sig-name descname"><span class="pre">RunAllRecordsConfig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">dataflow:</span> <span class="pre">str</span></em>, <em class="sig-param"><span class="pre">configloader:</span> <span class="pre">dffml.configloader.configloader.BaseConfigLoader</span> <span class="pre">=</span> <span class="pre">None</span></em>, <em class="sig-param"><span class="pre">sources:</span> <span class="pre">dffml.source.source.Sources</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;</span></em>, <em class="sig-param"><span class="pre">caching:</span> <span class="pre">List[str]</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;</span></em>, <em class="sig-param"><span class="pre">no_update:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False</span></em>, <em class="sig-param"><span class="pre">no_echo:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False</span></em>, <em class="sig-param"><span class="pre">no_strict:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False</span></em>, <em class="sig-param"><span class="pre">orchestrator:</span> <span class="pre">dffml.df.base.BaseOrchestrator</span> <span class="pre">=</span> <span class="pre">&lt;class</span> <span class="pre">'dffml.df.memory.MemoryOrchestrator'&gt;</span></em>, <em class="sig-param"><span class="pre">inputs:</span> <span class="pre">List[str]</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;</span></em>, <em class="sig-param"><span class="pre">record_def:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/cli/dataflow.html#RunAllRecordsConfig"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.cli.dataflow.RunAllRecordsConfig" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="dffml.cli.dataflow.RunAllRecordsConfig.no_enforce_immutable">
+<span class="sig-name descname"><span class="pre">no_enforce_immutable</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#dffml.cli.dataflow.RunAllRecordsConfig.no_enforce_immutable" title="Permalink to this definition">¶</a></dt>
+<dd><p>By default, all properties of a config object are immutable. If you would
+like to mutate immutable properties, you must explicitly call this method
+using it as a context manager.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">config</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nd">@config</span>
+<span class="gp">... </span><span class="k">class</span> <span class="nc">MyConfig</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">C</span><span class="p">:</span> <span class="nb">int</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">config</span> <span class="o">=</span> <span class="n">MyConfig</span><span class="p">(</span><span class="n">C</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">config</span><span class="o">.</span><span class="n">no_enforce_immutable</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="n">config</span><span class="o">.</span><span class="n">C</span> <span class="o">=</span> <span class="mi">1</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="dffml.cli.dataflow.RunCMDConfig">
 <em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">dffml.cli.dataflow.</span></span><span class="sig-name descname"><span class="pre">RunCMDConfig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">dataflow:</span> <span class="pre">str</span></em>, <em class="sig-param"><span class="pre">configloader:</span> <span class="pre">dffml.configloader.configloader.BaseConfigLoader</span> <span class="pre">=</span> <span class="pre">None</span></em>, <em class="sig-param"><span class="pre">sources:</span> <span class="pre">dffml.source.source.Sources</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;</span></em>, <em class="sig-param"><span class="pre">caching:</span> <span class="pre">List[str]</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;</span></em>, <em class="sig-param"><span class="pre">no_update:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False</span></em>, <em class="sig-param"><span class="pre">no_echo:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False</span></em>, <em class="sig-param"><span class="pre">no_strict:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False</span></em>, <em class="sig-param"><span class="pre">orchestrator:</span> <span class="pre">dffml.df.base.BaseOrchestrator</span> <span class="pre">=</span> <span class="pre">&lt;class</span> <span class="pre">'dffml.df.memory.MemoryOrchestrator'&gt;</span></em>, <em class="sig-param"><span class="pre">inputs:</span> <span class="pre">List[str]</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;</span></em>, <em class="sig-param"><span class="pre">record_def:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/cli/dataflow.html#RunCMDConfig"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.cli.dataflow.RunCMDConfig" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="py attribute">
-<dt class="sig sig-object py" id="dffml.cli.dataflow.RunCMDConfig.orchestrator">
-<span class="sig-name descname"><span class="pre">orchestrator</span></span><a class="headerlink" href="#dffml.cli.dataflow.RunCMDConfig.orchestrator" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <a class="reference internal" href="../df/memory.html#dffml.df.memory.MemoryOrchestrator" title="dffml.df.memory.MemoryOrchestrator"><code class="xref py py-class docutils literal notranslate"><span class="pre">dffml.df.memory.MemoryOrchestrator</span></code></a></p>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="dffml.cli.dataflow.RunCMDConfig.no_enforce_immutable">
+<span class="sig-name descname"><span class="pre">no_enforce_immutable</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#dffml.cli.dataflow.RunCMDConfig.no_enforce_immutable" title="Permalink to this definition">¶</a></dt>
+<dd><p>By default, all properties of a config object are immutable. If you would
+like to mutate immutable properties, you must explicitly call this method
+using it as a context manager.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">config</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nd">@config</span>
+<span class="gp">... </span><span class="k">class</span> <span class="nc">MyConfig</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">C</span><span class="p">:</span> <span class="nb">int</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">config</span> <span class="o">=</span> <span class="n">MyConfig</span><span class="p">(</span><span class="n">C</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">config</span><span class="o">.</span><span class="n">no_enforce_immutable</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="n">config</span><span class="o">.</span><span class="n">C</span> <span class="o">=</span> <span class="mi">1</span>
+</pre></div>
+</div>
 </dd></dl>
 
 </dd></dl>
@@ -336,7 +418,27 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="dffml.cli.dataflow.RunContextsConfig">
 <em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">dffml.cli.dataflow.</span></span><span class="sig-name descname"><span class="pre">RunContextsConfig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">dataflow:</span> <span class="pre">str</span></em>, <em class="sig-param"><span class="pre">no_echo:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False</span></em>, <em class="sig-param"><span class="pre">configloader:</span> <span class="pre">dffml.configloader.configloader.BaseConfigLoader</span> <span class="pre">=</span> <span class="pre">None</span></em>, <em class="sig-param"><span class="pre">orchestrator:</span> <span class="pre">dffml.df.base.BaseOrchestrator</span> <span class="pre">=</span> <span class="pre">&lt;class</span> <span class="pre">'dffml.df.memory.MemoryOrchestrator'&gt;</span></em>, <em class="sig-param"><span class="pre">inputs:</span> <span class="pre">List[str]</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;</span></em>, <em class="sig-param"><span class="pre">no_strict:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False</span></em>, <em class="sig-param"><span class="pre">context_def:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">False</span></em>, <em class="sig-param"><span class="pre">contexts:</span> <span class="pre">List[str]</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/cli/dataflow.html#RunContextsConfig"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.cli.dataflow.RunContextsConfig" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="dffml.cli.dataflow.RunContextsConfig.no_enforce_immutable">
+<span class="sig-name descname"><span class="pre">no_enforce_immutable</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#dffml.cli.dataflow.RunContextsConfig.no_enforce_immutable" title="Permalink to this definition">¶</a></dt>
+<dd><p>By default, all properties of a config object are immutable. If you would
+like to mutate immutable properties, you must explicitly call this method
+using it as a context manager.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">config</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nd">@config</span>
+<span class="gp">... </span><span class="k">class</span> <span class="nc">MyConfig</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">C</span><span class="p">:</span> <span class="nb">int</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">config</span> <span class="o">=</span> <span class="n">MyConfig</span><span class="p">(</span><span class="n">C</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">config</span><span class="o">.</span><span class="n">no_enforce_immutable</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="n">config</span><span class="o">.</span><span class="n">C</span> <span class="o">=</span> <span class="mi">1</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="dffml.cli.dataflow.RunRecordSet">
@@ -359,7 +461,27 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="dffml.cli.dataflow.RunRecordSetConfig">
 <em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">dffml.cli.dataflow.</span></span><span class="sig-name descname"><span class="pre">RunRecordSetConfig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">keys:</span> <span class="pre">List[str],</span> <span class="pre">dataflow:</span> <span class="pre">str,</span> <span class="pre">configloader:</span> <span class="pre">dffml.configloader.configloader.BaseConfigLoader</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">sources:</span> <span class="pre">dffml.source.source.Sources</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;,</span> <span class="pre">caching:</span> <span class="pre">List[str]</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;,</span> <span class="pre">no_update:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False,</span> <span class="pre">no_echo:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False,</span> <span class="pre">no_strict:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False,</span> <span class="pre">orchestrator:</span> <span class="pre">dffml.df.base.BaseOrchestrator</span> <span class="pre">=</span> <span class="pre">&lt;class</span> <span class="pre">'dffml.df.memory.MemoryOrchestrator'&gt;,</span> <span class="pre">inputs:</span> <span class="pre">List[str]</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;,</span> <span class="pre">record_def:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/cli/dataflow.html#RunRecordSetConfig"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.cli.dataflow.RunRecordSetConfig" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="dffml.cli.dataflow.RunRecordSetConfig.no_enforce_immutable">
+<span class="sig-name descname"><span class="pre">no_enforce_immutable</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#dffml.cli.dataflow.RunRecordSetConfig.no_enforce_immutable" title="Permalink to this definition">¶</a></dt>
+<dd><p>By default, all properties of a config object are immutable. If you would
+like to mutate immutable properties, you must explicitly call this method
+using it as a context manager.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">config</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nd">@config</span>
+<span class="gp">... </span><span class="k">class</span> <span class="nc">MyConfig</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">C</span><span class="p">:</span> <span class="nb">int</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">config</span> <span class="o">=</span> <span class="n">MyConfig</span><span class="p">(</span><span class="n">C</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">config</span><span class="o">.</span><span class="n">no_enforce_immutable</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="n">config</span><span class="o">.</span><span class="n">C</span> <span class="o">=</span> <span class="mi">1</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="dffml.cli.dataflow.RunRecords">
@@ -370,10 +492,24 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="dffml.cli.dataflow.RunSingleConfig">
 <em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">dffml.cli.dataflow.</span></span><span class="sig-name descname"><span class="pre">RunSingleConfig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">dataflow:</span> <span class="pre">str</span></em>, <em class="sig-param"><span class="pre">no_echo:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False</span></em>, <em class="sig-param"><span class="pre">configloader:</span> <span class="pre">dffml.configloader.configloader.BaseConfigLoader</span> <span class="pre">=</span> <span class="pre">None</span></em>, <em class="sig-param"><span class="pre">orchestrator:</span> <span class="pre">dffml.df.base.BaseOrchestrator</span> <span class="pre">=</span> <span class="pre">&lt;class</span> <span class="pre">'dffml.df.memory.MemoryOrchestrator'&gt;</span></em>, <em class="sig-param"><span class="pre">inputs:</span> <span class="pre">List[str]</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;</span></em>, <em class="sig-param"><span class="pre">no_strict:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/cli/dataflow.html#RunSingleConfig"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.cli.dataflow.RunSingleConfig" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="py attribute">
-<dt class="sig sig-object py" id="dffml.cli.dataflow.RunSingleConfig.orchestrator">
-<span class="sig-name descname"><span class="pre">orchestrator</span></span><a class="headerlink" href="#dffml.cli.dataflow.RunSingleConfig.orchestrator" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <a class="reference internal" href="../df/memory.html#dffml.df.memory.MemoryOrchestrator" title="dffml.df.memory.MemoryOrchestrator"><code class="xref py py-class docutils literal notranslate"><span class="pre">dffml.df.memory.MemoryOrchestrator</span></code></a></p>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="dffml.cli.dataflow.RunSingleConfig.no_enforce_immutable">
+<span class="sig-name descname"><span class="pre">no_enforce_immutable</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#dffml.cli.dataflow.RunSingleConfig.no_enforce_immutable" title="Permalink to this definition">¶</a></dt>
+<dd><p>By default, all properties of a config object are immutable. If you would
+like to mutate immutable properties, you must explicitly call this method
+using it as a context manager.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">config</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nd">@config</span>
+<span class="gp">... </span><span class="k">class</span> <span class="nc">MyConfig</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">C</span><span class="p">:</span> <span class="nb">int</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">config</span> <span class="o">=</span> <span class="n">MyConfig</span><span class="p">(</span><span class="n">C</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">config</span><span class="o">.</span><span class="n">no_enforce_immutable</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="n">config</span><span class="o">.</span><span class="n">C</span> <span class="o">=</span> <span class="mi">1</span>
+</pre></div>
+</div>
 </dd></dl>
 
 </dd></dl>

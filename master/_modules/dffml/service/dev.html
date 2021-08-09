@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>dffml.service.dev &mdash; DFFML c61efb414 documentation</title>
+  <title>dffml.service.dev &mdash; DFFML 7a91f3b1a documentation</title>
   
 
   
@@ -69,7 +69,7 @@
             
             
               <div class="version">
-                c61efb414
+                7a91f3b1a
               </div>
             
           
@@ -1183,6 +1183,9 @@
     <span class="n">http</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
         <span class="s2">&quot;If set a SimpleHTTP server would be started to show generated docs&quot;</span><span class="p">,</span>
         <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">no_strict</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
+        <span class="s2">&quot;If set do not fail on Sphinx warnings&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="p">)</span></div>
 
 
@@ -1248,12 +1251,14 @@
                 <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">pkg_resources</span><span class="o">.</span><span class="n">iter_entry_points</span><span class="p">(</span><span class="s2">&quot;console_scripts&quot;</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">e</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;sphinx-build&quot;</span><span class="p">)</span>
             <span class="p">][</span><span class="mi">0</span><span class="p">],</span>
-            <span class="s2">&quot;-W&quot;</span><span class="p">,</span>
             <span class="s2">&quot;-b&quot;</span><span class="p">,</span>
             <span class="s2">&quot;html&quot;</span><span class="p">,</span>
             <span class="s2">&quot;docs&quot;</span><span class="p">,</span>
             <span class="nb">str</span><span class="p">(</span><span class="n">pages_path</span><span class="p">),</span>
         <span class="p">]</span>
+        <span class="c1"># Fail on warnings unless -no-strict is given</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">no_strict</span><span class="p">:</span>
+            <span class="n">cmd</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;-W&quot;</span><span class="p">)</span>
         <span class="n">returncode</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_exec_cmd</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">returncode</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">SphinxBuildError</span>

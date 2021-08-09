@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Base &mdash; DFFML c61efb414 documentation</title>
+  <title>Base &mdash; DFFML 7a91f3b1a documentation</title>
   
 
   
@@ -70,7 +70,7 @@
             
             
               <div class="version">
-                c61efb414
+                7a91f3b1a
               </div>
             
           
@@ -257,6 +257,26 @@ they follow a similar API for instantiation and usage.</p>
 <em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">dffml.base.</span></span><span class="sig-name descname"><span class="pre">BaseConfig</span></span><a class="reference internal" href="../_modules/dffml/base.html#BaseConfig"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.base.BaseConfig" title="Permalink to this definition">¶</a></dt>
 <dd><p>All DFFML Base Objects should take an object (likely a typing.NamedTuple) as
 as their config.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="dffml.base.BaseConfig.no_enforce_immutable">
+<span class="sig-name descname"><span class="pre">no_enforce_immutable</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#dffml.base.BaseConfig.no_enforce_immutable" title="Permalink to this definition">¶</a></dt>
+<dd><p>By default, all properties of a config object are immutable. If you would
+like to mutate immutable properties, you must explicitly call this method
+using it as a context manager.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">config</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nd">@config</span>
+<span class="gp">... </span><span class="k">class</span> <span class="nc">MyConfig</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">C</span><span class="p">:</span> <span class="nb">int</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">config</span> <span class="o">=</span> <span class="n">MyConfig</span><span class="p">(</span><span class="n">C</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">config</span><span class="o">.</span><span class="n">no_enforce_immutable</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="n">config</span><span class="o">.</span><span class="n">C</span> <span class="o">=</span> <span class="mi">1</span>
+</pre></div>
+</div>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="py class">
@@ -354,6 +374,12 @@ classes which support async context management. Classes ending with
 <dd><p>Raised when both kwargs and config are specified.</p>
 </dd></dl>
 
+<dl class="py exception">
+<dt class="sig sig-object py" id="dffml.base.ImmutableConfigPropertyError">
+<em class="property"><span class="pre">exception</span> </em><span class="sig-prename descclassname"><span class="pre">dffml.base.</span></span><span class="sig-name descname"><span class="pre">ImmutableConfigPropertyError</span></span><a class="reference internal" href="../_modules/dffml/base.html#ImmutableConfigPropertyError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.base.ImmutableConfigPropertyError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Raised when config property was changed but was not marked as mutable.</p>
+</dd></dl>
+
 <dl class="py class">
 <dt class="sig sig-object py" id="dffml.base.LoggingLogger">
 <em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">dffml.base.</span></span><span class="sig-name descname"><span class="pre">LoggingLogger</span></span><a class="reference internal" href="../_modules/dffml/base.html#LoggingLogger"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.base.LoggingLogger" title="Permalink to this definition">¶</a></dt>
@@ -382,6 +408,13 @@ Also raised if there was no default value set and the argument is missing.</p>
 should have been defined in the class.</p>
 </dd></dl>
 
+<dl class="py exception">
+<dt class="sig sig-object py" id="dffml.base.NoMutableCallbacksError">
+<em class="property"><span class="pre">exception</span> </em><span class="sig-prename descclassname"><span class="pre">dffml.base.</span></span><span class="sig-name descname"><span class="pre">NoMutableCallbacksError</span></span><a class="reference internal" href="../_modules/dffml/base.html#NoMutableCallbacksError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.base.NoMutableCallbacksError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Raised when a config property is mutated but there are not mutable callbacks
+present to handle it’s update.</p>
+</dd></dl>
+
 <dl class="py class">
 <dt class="sig sig-object py" id="dffml.base.ParseExpandAction">
 <em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">dffml.base.</span></span><span class="sig-name descname"><span class="pre">ParseExpandAction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">option_strings</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dest</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nargs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">const</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">choices</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">required</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">help</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metavar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dffml/base.html#ParseExpandAction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.base.ParseExpandAction" title="Permalink to this definition">¶</a></dt>
@@ -394,8 +427,48 @@ should have been defined in the class.</p>
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="dffml.base.config_ensure_immutable_init">
+<span class="sig-prename descclassname"><span class="pre">dffml.base.</span></span><span class="sig-name descname"><span class="pre">config_ensure_immutable_init</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dffml/base.html#config_ensure_immutable_init"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.base.config_ensure_immutable_init" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize immutable support config instance local variables.</p>
+<p>We can’t call this on <code class="docutils literal notranslate"><span class="pre">__init__</span></code> so we call it whenever we are about to
+use it.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dffml.base.config_make_getter">
+<span class="sig-prename descclassname"><span class="pre">dffml.base.</span></span><span class="sig-name descname"><span class="pre">config_make_getter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dffml/base.html#config_make_getter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.base.config_make_getter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a getter function for use with <code class="xref py py-func docutils literal notranslate"><span class="pre">property()</span></code> on config objects.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dffml.base.config_make_setter">
+<span class="sig-prename descclassname"><span class="pre">dffml.base.</span></span><span class="sig-name descname"><span class="pre">config_make_setter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">immutable</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dffml/base.html#config_make_setter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.base.config_make_setter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a setter function for use with <code class="xref py py-func docutils literal notranslate"><span class="pre">property()</span></code> on config objects.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dffml.base.config_no_enforce_immutable">
+<span class="sig-prename descclassname"><span class="pre">dffml.base.</span></span><span class="sig-name descname"><span class="pre">config_no_enforce_immutable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dffml/base.html#config_no_enforce_immutable"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.base.config_no_enforce_immutable" title="Permalink to this definition">¶</a></dt>
+<dd><p>By default, all properties of a config object are immutable. If you would
+like to mutate immutable properties, you must explicitly call this method
+using it as a context manager.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">config</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nd">@config</span>
+<span class="gp">... </span><span class="k">class</span> <span class="nc">MyConfig</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">C</span><span class="p">:</span> <span class="nb">int</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">config</span> <span class="o">=</span> <span class="n">MyConfig</span><span class="p">(</span><span class="n">C</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">config</span><span class="o">.</span><span class="n">no_enforce_immutable</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="n">config</span><span class="o">.</span><span class="n">C</span> <span class="o">=</span> <span class="mi">1</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="dffml.base.field">
-<span class="sig-prename descclassname"><span class="pre">dffml.base.</span></span><span class="sig-name descname"><span class="pre">field</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">description</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">action</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">required</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><span class="pre">bool</span></a></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labeled</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><span class="pre">bool</span></a></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metadata</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><span class="pre">dict</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dffml/base.html#field"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.base.field" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">dffml.base.</span></span><span class="sig-name descname"><span class="pre">field</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">description</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">action</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">required</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><span class="pre">bool</span></a></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labeled</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><span class="pre">bool</span></a></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mutable</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><span class="pre">bool</span></a></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metadata</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><span class="pre">dict</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dffml/base.html#field"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.base.field" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates an instance of <a class="reference external" href="https://docs.python.org/3/library/dataclasses.html#dataclasses.field" title="(in Python v3.9)"><code class="xref py py-func docutils literal notranslate"><span class="pre">dataclasses.field()</span></code></a>. The first argument,
 <code class="docutils literal notranslate"><span class="pre">description</span></code> is the description of the field, and will be set as the
 <code class="docutils literal notranslate"><span class="pre">&quot;description&quot;</span></code> key in the metadata <code class="docutils literal notranslate"><span class="pre">dict</span></code>.</p>

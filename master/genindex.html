@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Index &mdash; DFFML c61efb414 documentation</title>
+  <title>Index &mdash; DFFML 7a91f3b1a documentation</title>
   
 
   
@@ -69,7 +69,7 @@
             
             
               <div class="version">
-                c61efb414
+                7a91f3b1a
               </div>
             
           
@@ -602,18 +602,16 @@
         <li><a href="api/base.html#dffml.base.config">(in module dffml.base)</a>
 </li>
       </ul></li>
-      <li><a href="api/cli/config.html#dffml.cli.config.ConvertConfig.config_out">config_out (dffml.cli.config.ConvertConfig attribute)</a>
+      <li><a href="api/base.html#dffml.base.config_ensure_immutable_init">config_ensure_immutable_init() (in module dffml.base)</a>
+</li>
+      <li><a href="api/base.html#dffml.base.config_make_getter">config_make_getter() (in module dffml.base)</a>
+</li>
+      <li><a href="api/base.html#dffml.base.config_make_setter">config_make_setter() (in module dffml.base)</a>
+</li>
+      <li><a href="api/base.html#dffml.base.config_no_enforce_immutable">config_no_enforce_immutable() (in module dffml.base)</a>
 </li>
       <li><a href="api/base.html#dffml.base.ConfigAndKWArgsMutuallyExclusive">ConfigAndKWArgsMutuallyExclusive</a>
 </li>
-      <li><a href="api/cli/dataflow.html#dffml.cli.dataflow.CreateConfig.configloader">configloader (dffml.cli.dataflow.CreateConfig attribute)</a>
-
-      <ul>
-        <li><a href="api/cli/dataflow.html#dffml.cli.dataflow.MergeConfig.configloader">(dffml.cli.dataflow.MergeConfig attribute)</a>
-</li>
-        <li><a href="api/service/dev.html#dffml.service.dev.ExportConfig.configloader">(dffml.service.dev.ExportConfig attribute)</a>
-</li>
-      </ul></li>
       <li><a href="api/configloader/configloader.html#dffml.configloader.configloader.ConfigLoaders">ConfigLoaders (class in dffml.configloader.configloader)</a>
 </li>
       <li><a href="api/util/testing/consoletest/commands.html#dffml.util.testing.consoletest.commands.ConsoleCommand">ConsoleCommand (class in dffml.util.testing.consoletest.commands)</a>
@@ -1740,6 +1738,8 @@
 </li>
       <li><a href="api/util/data.html#dffml.util.data.ignore_args">ignore_args() (in module dffml.util.data)</a>
 </li>
+      <li><a href="api/base.html#dffml.base.ImmutableConfigPropertyError">ImmutableConfigPropertyError</a>
+</li>
       <li><a href="api/operation/dataflow.html#dffml.operation.dataflow.run_dataflow.imp">imp (dffml.operation.dataflow.run_dataflow attribute)</a>
 
       <ul>
@@ -1778,10 +1778,10 @@
 </li>
       <li><a href="api/df/memory.html#dffml.df.memory.MemoryOrchestratorContext.initialize_dataflow">initialize_dataflow() (dffml.df.memory.MemoryOrchestratorContext method)</a>
 </li>
-      <li><a href="api/df/types.html#dffml.df.types.Input">Input (class in dffml.df.types)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/df/types.html#dffml.df.types.Input">Input (class in dffml.df.types)</a>
+</li>
       <li><a href="api/df/types.html#dffml.df.types.InputFlow">InputFlow (class in dffml.df.types)</a>
 </li>
       <li><a href="api/df/base.html#dffml.df.base.BaseDefinitionSetContext.inputs">inputs() (dffml.df.base.BaseDefinitionSetContext method)</a>
@@ -2333,6 +2333,140 @@
       </ul></li>
       <li><a href="api/util/data.html#dffml.util.data.nested_apply">nested_apply() (in module dffml.util.data)</a>
 </li>
+      <li><a href="api/accuracy/accuracy.html#dffml.accuracy.accuracy.AccuracyConfig.no_enforce_immutable">no_enforce_immutable() (dffml.accuracy.accuracy.AccuracyConfig method)</a>
+
+      <ul>
+        <li><a href="api/accuracy/clf.html#dffml.accuracy.clf.ClassificationAccuracyConfig.no_enforce_immutable">(dffml.accuracy.clf.ClassificationAccuracyConfig method)</a>
+</li>
+        <li><a href="api/accuracy/mse.html#dffml.accuracy.mse.MeanSquaredErrorAccuracyConfig.no_enforce_immutable">(dffml.accuracy.mse.MeanSquaredErrorAccuracyConfig method)</a>
+</li>
+        <li><a href="api/base.html#dffml.base.BaseConfig.no_enforce_immutable">(dffml.base.BaseConfig method)</a>
+</li>
+        <li><a href="api/cli/cli.html#dffml.cli.cli.EditCMDConfig.no_enforce_immutable">(dffml.cli.cli.EditCMDConfig method)</a>
+</li>
+        <li><a href="api/cli/cli.html#dffml.cli.cli.EditRecordConfig.no_enforce_immutable">(dffml.cli.cli.EditRecordConfig method)</a>
+</li>
+        <li><a href="api/cli/cli.html#dffml.cli.cli.MergeConfig.no_enforce_immutable">(dffml.cli.cli.MergeConfig method)</a>
+</li>
+        <li><a href="api/cli/cli.html#dffml.cli.cli.VersionConfig.no_enforce_immutable">(dffml.cli.cli.VersionConfig method)</a>
+</li>
+        <li><a href="api/cli/config.html#dffml.cli.config.ConvertConfig.no_enforce_immutable">(dffml.cli.config.ConvertConfig method)</a>
+</li>
+        <li><a href="api/cli/dataflow.html#dffml.cli.dataflow.CreateConfig.no_enforce_immutable">(dffml.cli.dataflow.CreateConfig method)</a>
+</li>
+        <li><a href="api/cli/dataflow.html#dffml.cli.dataflow.DiagramConfig.no_enforce_immutable">(dffml.cli.dataflow.DiagramConfig method)</a>
+</li>
+        <li><a href="api/cli/dataflow.html#dffml.cli.dataflow.MergeConfig.no_enforce_immutable">(dffml.cli.dataflow.MergeConfig method)</a>
+</li>
+        <li><a href="api/cli/dataflow.html#dffml.cli.dataflow.RunAllRecordsConfig.no_enforce_immutable">(dffml.cli.dataflow.RunAllRecordsConfig method)</a>
+</li>
+        <li><a href="api/cli/dataflow.html#dffml.cli.dataflow.RunCMDConfig.no_enforce_immutable">(dffml.cli.dataflow.RunCMDConfig method)</a>
+</li>
+        <li><a href="api/cli/dataflow.html#dffml.cli.dataflow.RunContextsConfig.no_enforce_immutable">(dffml.cli.dataflow.RunContextsConfig method)</a>
+</li>
+        <li><a href="api/cli/dataflow.html#dffml.cli.dataflow.RunRecordSetConfig.no_enforce_immutable">(dffml.cli.dataflow.RunRecordSetConfig method)</a>
+</li>
+        <li><a href="api/cli/dataflow.html#dffml.cli.dataflow.RunSingleConfig.no_enforce_immutable">(dffml.cli.dataflow.RunSingleConfig method)</a>
+</li>
+        <li><a href="api/cli/list.html#dffml.cli.list.ListRecordsConfig.no_enforce_immutable">(dffml.cli.list.ListRecordsConfig method)</a>
+</li>
+        <li><a href="api/cli/ml.html#dffml.cli.ml.AccuracyCMDConfig.no_enforce_immutable">(dffml.cli.ml.AccuracyCMDConfig method)</a>
+</li>
+        <li><a href="api/cli/ml.html#dffml.cli.ml.MLCMDConfig.no_enforce_immutable">(dffml.cli.ml.MLCMDConfig method)</a>
+</li>
+        <li><a href="api/cli/ml.html#dffml.cli.ml.PredictAllConfig.no_enforce_immutable">(dffml.cli.ml.PredictAllConfig method)</a>
+</li>
+        <li><a href="api/cli/ml.html#dffml.cli.ml.PredictRecordConfig.no_enforce_immutable">(dffml.cli.ml.PredictRecordConfig method)</a>
+</li>
+        <li><a href="api/db/sqlite.html#dffml.db.sqlite.SqliteDatabaseConfig.no_enforce_immutable">(dffml.db.sqlite.SqliteDatabaseConfig method)</a>
+</li>
+        <li><a href="api/df/memory.html#dffml.df.memory.MemoryDataFlowObjectContextConfig.no_enforce_immutable">(dffml.df.memory.MemoryDataFlowObjectContextConfig method)</a>
+</li>
+        <li><a href="api/df/memory.html#dffml.df.memory.MemoryInputNetworkConfig.no_enforce_immutable">(dffml.df.memory.MemoryInputNetworkConfig method)</a>
+</li>
+        <li><a href="api/df/memory.html#dffml.df.memory.MemoryInputSetConfig.no_enforce_immutable">(dffml.df.memory.MemoryInputSetConfig method)</a>
+</li>
+        <li><a href="api/df/memory.html#dffml.df.memory.MemoryKeyValueStoreConfig.no_enforce_immutable">(dffml.df.memory.MemoryKeyValueStoreConfig method)</a>
+</li>
+        <li><a href="api/df/memory.html#dffml.df.memory.MemoryLockNetworkConfig.no_enforce_immutable">(dffml.df.memory.MemoryLockNetworkConfig method)</a>
+</li>
+        <li><a href="api/df/memory.html#dffml.df.memory.MemoryOperationImplementationNetworkConfig.no_enforce_immutable">(dffml.df.memory.MemoryOperationImplementationNetworkConfig method)</a>
+</li>
+        <li><a href="api/df/memory.html#dffml.df.memory.MemoryOperationNetworkConfig.no_enforce_immutable">(dffml.df.memory.MemoryOperationNetworkConfig method)</a>
+</li>
+        <li><a href="api/df/memory.html#dffml.df.memory.MemoryOrchestratorConfig.no_enforce_immutable">(dffml.df.memory.MemoryOrchestratorConfig method)</a>
+</li>
+        <li><a href="api/df/memory.html#dffml.df.memory.MemoryOrchestratorContextConfig.no_enforce_immutable">(dffml.df.memory.MemoryOrchestratorContextConfig method)</a>
+</li>
+        <li><a href="api/df/memory.html#dffml.df.memory.MemoryParameterSetConfig.no_enforce_immutable">(dffml.df.memory.MemoryParameterSetConfig method)</a>
+</li>
+        <li><a href="api/df/memory.html#dffml.df.memory.MemoryRedundancyCheckerConfig.no_enforce_immutable">(dffml.df.memory.MemoryRedundancyCheckerConfig method)</a>
+</li>
+        <li><a href="api/model/model.html#dffml.model.model.ModelConfig.no_enforce_immutable">(dffml.model.model.ModelConfig method)</a>
+</li>
+        <li><a href="api/model/slr.html#dffml.model.slr.SLRModelConfig.no_enforce_immutable">(dffml.model.slr.SLRModelConfig method)</a>
+</li>
+        <li><a href="api/operation/dataflow.html#dffml.operation.dataflow.RunDataFlowConfig.no_enforce_immutable">(dffml.operation.dataflow.RunDataFlowConfig method)</a>
+</li>
+        <li><a href="api/operation/db.html#dffml.operation.db.DatabaseQueryConfig.no_enforce_immutable">(dffml.operation.db.DatabaseQueryConfig method)</a>
+</li>
+        <li><a href="api/operation/model.html#dffml.operation.model.ModelPredictConfig.no_enforce_immutable">(dffml.operation.model.ModelPredictConfig method)</a>
+</li>
+        <li><a href="api/secret/ini.html#dffml.secret.ini.INISecretConfig.no_enforce_immutable">(dffml.secret.ini.INISecretConfig method)</a>
+</li>
+        <li><a href="api/service/dev.html#dffml.service.dev.BumpPackagesConfig.no_enforce_immutable">(dffml.service.dev.BumpPackagesConfig method)</a>
+</li>
+        <li><a href="api/service/dev.html#dffml.service.dev.ExportConfig.no_enforce_immutable">(dffml.service.dev.ExportConfig method)</a>
+</li>
+        <li><a href="api/service/dev.html#dffml.service.dev.InstallConfig.no_enforce_immutable">(dffml.service.dev.InstallConfig method)</a>
+</li>
+        <li><a href="api/service/dev.html#dffml.service.dev.ListEntrypointsConfig.no_enforce_immutable">(dffml.service.dev.ListEntrypointsConfig method)</a>
+</li>
+        <li><a href="api/service/dev.html#dffml.service.dev.MakeDocsConfig.no_enforce_immutable">(dffml.service.dev.MakeDocsConfig method)</a>
+</li>
+        <li><a href="api/service/dev.html#dffml.service.dev.ReleaseConfig.no_enforce_immutable">(dffml.service.dev.ReleaseConfig method)</a>
+</li>
+        <li><a href="api/service/dev.html#dffml.service.dev.RunConfig.no_enforce_immutable">(dffml.service.dev.RunConfig method)</a>
+</li>
+        <li><a href="api/service/dev.html#dffml.service.dev.SetupPyKWArgConfig.no_enforce_immutable">(dffml.service.dev.SetupPyKWArgConfig method)</a>
+</li>
+        <li><a href="api/service/dev.html#dffml.service.dev.SetupPyVersionConfig.no_enforce_immutable">(dffml.service.dev.SetupPyVersionConfig method)</a>
+</li>
+        <li><a href="api/source/csv.html#dffml.source.csv.CSVSourceConfig.no_enforce_immutable">(dffml.source.csv.CSVSourceConfig method)</a>
+</li>
+        <li><a href="api/source/dataframe.html#dffml.source.dataframe.DataFrameSourceConfig.no_enforce_immutable">(dffml.source.dataframe.DataFrameSourceConfig method)</a>
+</li>
+        <li><a href="api/source/db.html#dffml.source.db.DbSourceConfig.no_enforce_immutable">(dffml.source.db.DbSourceConfig method)</a>
+</li>
+        <li><a href="api/source/df.html#dffml.source.df.DataFlowSourceConfig.no_enforce_immutable">(dffml.source.df.DataFlowSourceConfig method)</a>
+</li>
+        <li><a href="api/source/dir.html#dffml.source.dir.DirectorySourceConfig.no_enforce_immutable">(dffml.source.dir.DirectorySourceConfig method)</a>
+</li>
+        <li><a href="api/source/file.html#dffml.source.file.BinaryFileSourceConfig.no_enforce_immutable">(dffml.source.file.BinaryFileSourceConfig method)</a>
+</li>
+        <li><a href="api/source/file.html#dffml.source.file.FileSourceConfig.no_enforce_immutable">(dffml.source.file.FileSourceConfig method)</a>
+</li>
+        <li><a href="api/source/idx1.html#dffml.source.idx1.IDXSourceConfig.no_enforce_immutable">(dffml.source.idx1.IDXSourceConfig method)</a>
+</li>
+        <li><a href="api/source/ini.html#dffml.source.ini.INISourceConfig.no_enforce_immutable">(dffml.source.ini.INISourceConfig method)</a>
+</li>
+        <li><a href="api/source/memory.html#dffml.source.memory.MemorySourceConfig.no_enforce_immutable">(dffml.source.memory.MemorySourceConfig method)</a>
+</li>
+        <li><a href="api/source/op.html#dffml.source.op.OpSourceConfig.no_enforce_immutable">(dffml.source.op.OpSourceConfig method)</a>
+</li>
+        <li><a href="api/util/cli/cmd.html#dffml.util.cli.cmd.CMDConfig.no_enforce_immutable">(dffml.util.cli.cmd.CMDConfig method)</a>
+</li>
+        <li><a href="api/util/cli/cmds.html#dffml.util.cli.cmds.KeysCMDConfig.no_enforce_immutable">(dffml.util.cli.cmds.KeysCMDConfig method)</a>
+</li>
+        <li><a href="api/util/cli/cmds.html#dffml.util.cli.cmds.ModelCMDConfig.no_enforce_immutable">(dffml.util.cli.cmds.ModelCMDConfig method)</a>
+</li>
+        <li><a href="api/util/cli/cmds.html#dffml.util.cli.cmds.PortCMDConfig.no_enforce_immutable">(dffml.util.cli.cmds.PortCMDConfig method)</a>
+</li>
+        <li><a href="api/util/cli/cmds.html#dffml.util.cli.cmds.SourcesCMDConfig.no_enforce_immutable">(dffml.util.cli.cmds.SourcesCMDConfig method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/df/multicomm.html#dffml.df.multicomm.NoConfigsForMultiComm">NoConfigsForMultiComm</a>
 </li>
       <li><a href="api/df/multicomm.html#dffml.df.multicomm.NoDataFlows">NoDataFlows</a>
@@ -2341,11 +2475,11 @@
 </li>
       <li><a href="api/util/testing/consoletest/parser.html#dffml.util.testing.consoletest.parser.Node">Node (class in dffml.util.testing.consoletest.parser)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/util/testing/consoletest/util.html#dffml.util.testing.consoletest.util.nodes_to_test">nodes_to_test() (in module dffml.util.testing.consoletest.util)</a>
 </li>
       <li><a href="api/util/file.html#dffml.util.file.NoHashToUseForValidationSuppliedError">NoHashToUseForValidationSuppliedError</a>
+</li>
+      <li><a href="api/base.html#dffml.base.NoMutableCallbacksError">NoMutableCallbacksError</a>
 </li>
       <li><a href="api/util/asynctestcase.html#dffml.util.asynctestcase.non_existant_tempfile">non_existant_tempfile() (in module dffml.util.asynctestcase)</a>
 </li>
@@ -2393,10 +2527,10 @@
 </li>
       <li><a href="api/df/base.html#dffml.df.base.OperationException">OperationException</a>
 </li>
-      <li><a href="api/df/base.html#dffml.df.base.OperationImplementation">OperationImplementation (class in dffml.df.base)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/df/base.html#dffml.df.base.OperationImplementation">OperationImplementation (class in dffml.df.base)</a>
+</li>
       <li><a href="api/df/base.html#dffml.df.base.OperationImplementationContext">OperationImplementationContext (class in dffml.df.base)</a>
 </li>
       <li><a href="api/df/base.html#dffml.df.base.OperationImplementationNotInstantiable">OperationImplementationNotInstantiable</a>
@@ -2419,12 +2553,6 @@
 </li>
       <li><a href="api/source/op.html#dffml.source.op.OpSourceConfig">OpSourceConfig (class in dffml.source.op)</a>
 </li>
-      <li><a href="api/cli/dataflow.html#dffml.cli.dataflow.RunCMDConfig.orchestrator">orchestrator (dffml.cli.dataflow.RunCMDConfig attribute)</a>
-
-      <ul>
-        <li><a href="api/cli/dataflow.html#dffml.cli.dataflow.RunSingleConfig.orchestrator">(dffml.cli.dataflow.RunSingleConfig attribute)</a>
-</li>
-      </ul></li>
       <li><a href="api/util/skel.html#dffml.util.skel.SkelTemplateConfig.org">org (dffml.util.skel.SkelTemplateConfig property)</a>
 </li>
       <li><a href="api/df/types.html#dffml.df.types.Output">Output (class in dffml.df.types)</a>
@@ -2937,10 +3065,12 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/source/source.html#dffml.source.source.SourcesContext.with_features">with_features() (dffml.source.source.SourcesContext method)</a>
 </li>
-      <li><a href="api/base.html#dffml.base.BaseConfigurableMetaClass.wrap">wrap() (dffml.base.BaseConfigurableMetaClass class method)</a>
+      <li><a href="api/util/python.html#dffml.util.python.within_method">within_method() (in module dffml.util.python)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/base.html#dffml.base.BaseConfigurableMetaClass.wrap">wrap() (dffml.base.BaseConfigurableMetaClass class method)</a>
+</li>
       <li><a href="api/source/wrapper.html#dffml.source.wrapper.WrapperSource">WrapperSource (class in dffml.source.wrapper)</a>
 </li>
       <li><a href="api/source/wrapper.html#dffml.source.wrapper.WrapperSourceContext">WrapperSourceContext (class in dffml.source.wrapper)</a>
