@@ -5,17 +5,13 @@ Model subclasses are responsible for training themselves on records, making
 predictions about the value of a feature in the record, and assessing their
 prediction accuracy.
 """
+import os
 import abc
-from bz2 import compress
 import json
 import shutil
-import zipfile
-import tarfile
 import pathlib
-import mimetypes
 from tempfile import mkdtemp
 from typing import AsyncIterator, Optional
-
 from ..base import (
     config,
     BaseDataFlowFacilitatorObjectContext,
@@ -24,25 +20,12 @@ from ..base import (
 from ..record import Record
 from ..util.data import export
 from ..feature import Features
+from ..df.types import DataFlow
 from ..high_level.dataflow import run
-from ..df.types import DataFlow, Input, InputFlow
 from ..util.os import MODE_BITS_SECURE
 from ..util.entrypoint import base_entry_point
+from ..df.archive import get_archive_path_info, create_archive_dataflow
 from ..source.source import Sources, SourcesContext
-from ..operation.archive import (
-    make_zip_archive,
-    extract_zip_archive,
-    make_tar_archive,
-    extract_tar_archive,
-)
-from ..operation.compression import (
-    gz_compress,
-    gz_decompress,
-    bz2_compress,
-    bz2_decompress,
-    xz_compress,
-    xz_decompress,
-)
 
 
 class ModelNotTrained(Exception):
@@ -53,6 +36,8 @@ class ModelNotTrained(Exception):
 class ModelConfig:
     location: str
     features: Features
+    location_save: DataFlow
+    location_load: DataFlow
 
 
 class ModelContext(abc.ABC, BaseDataFlowFacilitatorObjectContext):
@@ -107,201 +92,52 @@ class Model(BaseDataFlowFacilitatorObject):
         return self.CONTEXT(self)
 
     async def __aenter__(self):
-        if self.config.location.is_file():
+        if any(
+            [
+                self.config.location.is_file(),
+                get_archive_path_info(self.config.location)[0]
+                in ["zip", "tar"],
+            ]
+        ):
+            # TODO: Config can be read from a file named config.json
+            # if it exists and self.config.location can be overridden
+            # with the loaded config [depends on PR intel/dffml#1122]
             temp_dir = self._get_directory()
-            await self._run_operation(
-                "extract", self.config.location, temp_dir
-            )
             self.location = temp_dir
+
+        if self.config.location.is_file():
+            load_flow = getattr(self.config, "location_load", None)
+            await self._run_operation(
+                self.config.location, temp_dir, load_flow
+            )
 
     async def __aexit__(self, exc_type, exc_value, traceback):
         if self.config.location.is_file():
+            os.remove(self.config.location)
+        if any(
+            [
+                self.config.location.is_file(),
+                get_archive_path_info(self.config.location)[0]
+                in ["zip", "tar"],
+            ]
+        ):
             config_path = self.location / "config.json"
             config_path.write_text(json.dumps(export(self.config)))
+            save_flow = getattr(self.config, "location_save", None)
             await self._run_operation(
-                "archive", self.temp_dir, self.config.location
+                self.temp_dir, self.config.location, save_flow
             )
+        if hasattr(self, "temp_dir"):
             shutil.rmtree(self.temp_dir)
 
-    async def _run_operation(self, action, input_path, output_path):
-
-        dataflow = self._create_dataflow(
-            action, {"input_path": input_path, "output_path": output_path}
-        )
+    async def _run_operation(self, input_path, output_path, dataflow):
+        if dataflow is None:
+            dataflow = create_archive_dataflow(
+                {"input_path": input_path, "output_path": output_path}
+            )
 
         async for _, _ in run(dataflow):
             pass
-
-    def _create_dataflow(self, action, seed):
-        archive_op, compression_op = self._get_operations(action, seed)
-        if action == "extract":
-            if compression_op:
-                dataflow = DataFlow(
-                    operations={
-                        compression_op.op.name: compression_op,
-                        archive_op.op.name: archive_op,
-                    },
-                    seed={
-                        Input(
-                            value=seed["input_path"],
-                            definition=compression_op.op.inputs[
-                                "input_file_path"
-                            ],
-                        ),
-                        Input(
-                            value=self.temp_dir / "temp.tar",
-                            definition=compression_op.op.inputs[
-                                "output_file_path"
-                            ],
-                        ),
-                        Input(
-                            value=seed["output_path"],
-                            definition=archive_op.op.inputs[
-                                "output_directory_path"
-                            ],
-                            origin="seed.output_directory_path",
-                        ),
-                    },
-                )
-                dataflow.flow.update(
-                    {
-                        archive_op.op.name: InputFlow(
-                            inputs={
-                                "input_file_path": [
-                                    {
-                                        compression_op.op.name: "output_file_path"
-                                    }
-                                ],
-                                "output_directory_path": [
-                                    "seed.output_directory_path"
-                                ],
-                            }
-                        )
-                    }
-                )
-                dataflow.update()
-            else:
-                dataflow = DataFlow(
-                    operations={archive_op.op.name: archive_op},
-                    seed={
-                        Input(
-                            value=seed["input_path"],
-                            definition=archive_op.op.inputs["input_file_path"],
-                        ),
-                        Input(
-                            value=seed["output_path"],
-                            definition=archive_op.op.inputs[
-                                "output_directory_path"
-                            ],
-                        ),
-                    },
-                )
-        else:
-            if compression_op:
-                dataflow = DataFlow(
-                    operations={
-                        archive_op.op.name: archive_op,
-                        compression_op.op.name: compression_op,
-                    },
-                    seed={
-                        Input(
-                            value=seed["input_path"],
-                            definition=archive_op.op.inputs[
-                                "input_directory_path"
-                            ],
-                        ),
-                        Input(
-                            value=self.temp_dir / "temp.tar",
-                            definition=archive_op.op.inputs[
-                                "output_file_path"
-                            ],
-                        ),
-                        Input(
-                            value=seed["output_path"],
-                            definition=compression_op.op.inputs[
-                                "output_file_path"
-                            ],
-                            origin="seed.output_file_path",
-                        ),
-                    },
-                )
-
-                dataflow.flow.update(
-                    {
-                        compression_op.op.name: InputFlow(
-                            inputs={
-                                "input_file_path": [
-                                    {archive_op.op.name: "output_path"}
-                                ],
-                                "output_file_path": ["seed.output_file_path"],
-                            }
-                        )
-                    }
-                )
-
-                dataflow.update()
-            else:
-                dataflow = DataFlow(
-                    operations={archive_op.op.name: archive_op},
-                    seed={
-                        Input(
-                            value=seed["input_path"],
-                            definition=archive_op.op.inputs[
-                                "input_directory_path"
-                            ],
-                        ),
-                        Input(
-                            value=seed["output_path"],
-                            definition=archive_op.op.inputs[
-                                "output_file_path"
-                            ],
-                        ),
-                    },
-                )
-
-        return dataflow
-
-    def _get_operations(self, action, seed):
-        operations = {
-            "archive_ops": {
-                "zip": {
-                    "extract": extract_zip_archive,
-                    "archive": make_zip_archive,
-                },
-                "tar": {
-                    "extract": extract_tar_archive,
-                    "archive": make_tar_archive,
-                },
-            },
-            "compression_ops": {
-                "gzip": {"compress": gz_compress, "decompress": gz_decompress},
-                "xz": {"compress": xz_compress, "decompress": xz_decompress},
-                "bzip2": {
-                    "compress": bz2_compress,
-                    "decompress": bz2_decompress,
-                },
-            },
-        }
-        file_path = (
-            seed["input_path"] if action == "extract" else seed["output_path"]
-        )
-        if zipfile.is_zipfile(file_path):
-            archive_type = "zip"
-        if tarfile.is_tarfile(file_path):
-            archive_type = "tar"
-            compression_type = mimetypes.guess_type(file_path)[1]
-            compression_action = (
-                "decompress" if action == "extract" else "compress"
-            )
-
-        archive_op = operations["archive_ops"][archive_type][action]
-        compression_op = (
-            operations["compression_ops"][compression_type][compression_action]
-            if compression_type is not None
-            else None
-        )
-
-        return archive_op, compression_op
 
     def _get_directory(self) -> pathlib.Path:
         if not getattr(self, "temp_dir", None):
