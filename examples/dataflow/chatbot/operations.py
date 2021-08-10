@@ -172,7 +172,7 @@ async def interpret_message(self, message):
         data = {"model-data": raw_data[1]}
         raw_data = raw_data[0].split(
             "\n"
-        )  # splits feautre details to seprate lines
+        )  # splits feature details to separate lines
         # Iterate and add to to dictionary `data`
         for x in raw_data:
             k, *v = x.split(":")
@@ -195,7 +195,7 @@ async def interpret_message(self, message):
         return {"message": "Gimme more info!!"}
 
     elif message.lower().startswith("predict:"):
-        # Only replace first occurence of predict
+        # Only replace first occurrence of predict
         # because the feature to predict will be labeled predict
         raw_data = message.replace("predict:", "", 1).strip()
         cmds = ["predict", "all"]

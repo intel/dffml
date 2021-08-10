@@ -329,7 +329,7 @@ class InstallConfig:
         default_factory=lambda: [],
     )
     nocheck: bool = field(
-        "Do not preform pre-install dependency checks", default=False
+        "Do not perform pre-install dependency checks", default=False
     )
     user: bool = field(
         "Perform user install", default=False, action="store_true"
@@ -388,7 +388,7 @@ class Install(CMD):
         main_package = is_develop("dffml")
         if not main_package:
             raise NotImplementedError(
-                "Currenty you need to have at least the main package already installed in development mode."
+                "Currently you need to have at least the main package already installed in development mode."
             )
         # Check if plugins not in skip list have unmet dependencies
         if not self.nocheck:
@@ -511,7 +511,7 @@ class SetupPy(CMD):
 
 class RepoDirtyError(Exception):
     """
-    Raised when a release was attempted but there are uncommited changes
+    Raised when a release was attempted but there are uncommitted changes
     """
 
 
@@ -542,7 +542,7 @@ class Release(CMD):
         if stderr or proc.returncode != 0:
             raise RuntimeError(stderr.decode())
         if stdout:
-            raise RepoDirtyError("Uncommited changes")
+            raise RepoDirtyError("Uncommitted changes")
         # cd to directory
         with chdir(str(self.package)):
             # Get name
@@ -964,6 +964,9 @@ class MakeDocsConfig:
         "If set a SimpleHTTP server would be started to show generated docs",
         default=False,
     )
+    no_strict: bool = field(
+        "If set do not fail on Sphinx warnings", default=False,
+    )
 
 
 class MakeDocs(CMD):
@@ -1028,12 +1031,14 @@ class MakeDocs(CMD):
                 for e in pkg_resources.iter_entry_points("console_scripts")
                 if e.name.startswith("sphinx-build")
             ][0],
-            "-W",
             "-b",
             "html",
             "docs",
             str(pages_path),
         ]
+        # Fail on warnings unless -no-strict is given
+        if not self.no_strict:
+            cmd.insert(1, "-W")
         returncode = await self._exec_cmd(cmd)
         if returncode != 0:
             raise SphinxBuildError

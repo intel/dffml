@@ -200,8 +200,8 @@ class HTTPChannelConfig(NamedTuple):
         output_mode : str
             Mode according to which output from dataflow is treated.
                 - bytes:content_type:OUTPUT_KEYS :
-                    OUTPUT_KEYS are . seperated string which is used as keys to traverse the
-                    ouput of the flow.
+                    OUTPUT_KEYS are . separated string which is used as keys to traverse the
+                    output of the flow.
                     eg:
                         `results = {
                             "post_input":
@@ -214,7 +214,7 @@ class HTTPChannelConfig(NamedTuple):
                 - json
                     - output of dataflow (Dict) is passes as json
         immediate_response: Dict[str,Any]
-            If provided with a reponse, server responds immediatly with
+            If provided with a response, server responds immediately with
             it, whilst scheduling to run the dataflow.
             Expected keys:
                 - status: HTTP status code for the response

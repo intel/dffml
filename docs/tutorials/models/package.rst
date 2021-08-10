@@ -3,7 +3,7 @@
 Packaging a Model
 =================
 
-In the pervious tutorial we created a DFFML style model, which we could use from
+In the previous tutorial we created a DFFML style model, which we could use from
 the command line, HTTP service, etc. We're now going to take that model and
 package it so that it can be published to PyPi for others to download via
 ``pip`` and use as they do the rest of the :ref:`plugin_models` plugins.
@@ -124,7 +124,7 @@ should be run in, ensuring that accuracy and predict tests always have a trained
 model to work with.
 
 We're using the ``*`` operator here to expand the list of X, Y pair ``dict``'s.
-See the offical Python documentation about
+See the official Python documentation about
 `Unpacking Argument Lists <https://docs.python.org/3/tutorial/controlflow.html#unpacking-argument-lists>`_
 for more information on how the ``*``-operator works.
 
@@ -196,7 +196,7 @@ If you want to see the output of the call to ``self.logger.debug``, just set the
 Entrypoint Registration
 -----------------------
 
-In the :ref:`model_tutorial_slr` tutorial we refrenced the new model on the
+In the :ref:`model_tutorial_slr` tutorial we referenced the new model on the
 command line via it's entrypoint style path. This is in the format of
 ``file:ClassWithinFile``, so for that tutorial it was ``myslr:MySLRModel``.
 

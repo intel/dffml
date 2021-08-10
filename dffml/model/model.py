@@ -89,7 +89,10 @@ class Model(BaseDataFlowFacilitatorObject):
         if isinstance(location, pathlib.Path):
             # to treat "~" as the the home location rather than a literal
             location = location.expanduser().resolve()
-            self.config.location = location
+            # TODO Change all model configs to make them support mutable
+            # location config properties
+            with self.config.no_enforce_immutable():
+                self.config.location = location
 
     def __call__(self) -> ModelContext:
         self._make_config_location()

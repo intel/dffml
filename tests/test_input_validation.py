@@ -95,7 +95,7 @@ class TestDefintion(AsyncTestCase):
                     Input(value=1, definition=Radius),
                     Input(
                         value=4, definition=Pie
-                    ),  # this should raise validation eror
+                    ),  # this should raise validation erorr
                 ]
             }
             pass

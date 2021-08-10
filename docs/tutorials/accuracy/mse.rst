@@ -19,7 +19,7 @@ First we need to import few modules from the standard library
   scorer that we will be implementing.
 
 - ``AccuracyScorer`` and ``AccuracyContext`` provides the base
-  scorer that we need to inherit and overide the ``score`` method.
+  scorer that we need to inherit and override the ``score`` method.
 
 Few other modules will also be required which needs to be imported.
 
