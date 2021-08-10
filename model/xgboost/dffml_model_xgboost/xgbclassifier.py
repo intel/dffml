@@ -23,12 +23,17 @@ class XGBClassifierModelConfig:
     location: pathlib.Path = field("Location where model should be saved")
     features: Features = field("Features on which we train the model")
     predict: Feature = field("Value to be predicted")
-    learning_rate: float = field("Learning rate to train with", default=0.3)
+    learning_rate: float = field(
+        "Learning rate to train with", mutable=True, default=0.3
+    )
     n_estimators: int = field(
         "Number of gradient boosted trees. Equivalent to the number of boosting rounds",
         default=100,
+        mutable=True,
     )
-    max_depth: int = field("Maximium tree depth for base learners", default=6)
+    max_depth: int = field(
+        "Maximium tree depth for base learners", default=6, mutable=True
+    )
     objective: str = field("Objective in training", default="multi:softmax")
     subsample: float = field(
         "Subsample ratio of the training instance", default=1
