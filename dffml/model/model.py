@@ -117,6 +117,15 @@ class Model(BaseDataFlowFacilitatorObject):
             await self._run_operation(
                 self.config.location, temp_dir, load_flow
             )
+            # Load values from config if it exists
+            config_path = self.temp_dir / "config.json"
+            if config_path.exists():
+                with open(config_path) as config_handle:
+                    loaded_config = json.load(config_handle)
+                    for prop, value in loaded_config.items():
+                        # TODO: Need to figure out how loading of
+                        # properties should be done.
+                        pass
 
     async def __aexit__(self, exc_type, exc_value, traceback):
         if self.config.location.is_file():
