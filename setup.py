@@ -165,5 +165,9 @@ setup(
             "mse = dffml.accuracy.mse:MeanSquaredErrorAccuracy",
             "clf = dffml.accuracy.clf:ClassificationAccuracy",
         ],
+        # Optimizer
+        "dffml.optimizer": [
+            "parameter_grid = dffml.optimizer.parameter_grid:ParameterGrid",
+        ],
     },
 )
