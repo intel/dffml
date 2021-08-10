@@ -1,3 +1,4 @@
+import pathlib
 import zipfile
 import tarfile
 import tempfile
@@ -48,7 +49,7 @@ def get_archive_path_info(path: str) -> Tuple[str]:
     """
     archive_type, compression_type = None, None
     file_type, compression_type = mimetypes.guess_type(path)
-    file_subtype = file_type.split("/")[-1]
+    file_subtype = file_type.split("/")[-1] if file_type is not None else None
     if file_subtype == "zip":
         archive_type = "zip"
     if file_subtype == "x-tar":
@@ -164,11 +165,12 @@ def create_chained_archive_dataflow(
     return dataflow
 
 
-def create_archive_dataflow(seed: Dict) -> DataFlow:
+def create_archive_dataflow(seed: set) -> DataFlow:
     """
     A function to create appropriate dataflow to extract/create an archive
     if it is supported.
     """
+    seed = {input_.origin: pathlib.Path(input_.value) for input_ in seed}
     action, archive_type, compression_type = deduce_archive_action(seed)
     archive_op, compression_op = get_operations(
         action, archive_type, compression_type

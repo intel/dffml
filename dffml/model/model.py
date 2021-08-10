@@ -20,12 +20,16 @@ from ..base import (
 from ..record import Record
 from ..util.data import export
 from ..feature import Features
-from ..df.types import DataFlow
+from ..df.types import DataFlow, Definition, Input
 from ..high_level.dataflow import run
 from ..util.os import MODE_BITS_SECURE
 from ..util.entrypoint import base_entry_point
 from ..df.archive import get_archive_path_info, create_archive_dataflow
 from ..source.source import Sources, SourcesContext
+
+# Definitions for Model saving and loading flows.
+MODEL_LOCATION = Definition(name="model_location", primitive="str")
+MODEL_TEMPDIR = Definition(name="model_tempdir", primitive="str")
 
 
 class ModelNotTrained(Exception):
@@ -131,10 +135,27 @@ class Model(BaseDataFlowFacilitatorObject):
             shutil.rmtree(self.temp_dir)
 
     async def _run_operation(self, input_path, output_path, dataflow):
+        get_definition = (
+            lambda path: MODEL_TEMPDIR
+            if path == self.tempdir
+            else MODEL_LOCATION
+        )
+        seed = {
+            Input(
+                value=input_path,
+                definition=get_definition(input_path),
+                origin="input_path",
+            ),
+            Input(
+                value=output_path,
+                definition=get_definition(output_path),
+                origin="output_path",
+            ),
+        }
         if dataflow is None:
-            dataflow = create_archive_dataflow(
-                {"input_path": input_path, "output_path": output_path}
-            )
+            dataflow = create_archive_dataflow(seed)
+        else:
+            dataflow.seed.append(seed)
 
         async for _, _ in run(dataflow):
             pass
@@ -179,6 +200,7 @@ class SimpleModel(Model):
         return self
 
     async def __aenter__(self) -> Model:
+        await super().__aenter__()
         self._in_context += 1
         # If we've already entered the model's context once, don't reload
         if self._in_context > 1:
@@ -188,6 +210,7 @@ class SimpleModel(Model):
         return self
 
     async def __aexit__(self, exc_type, exc_value, traceback):
+        await super().__aexit__(exc_type, exc_value, traceback)
         self._in_context -= 1
         if not self._in_context:
             self.close()
@@ -204,7 +227,7 @@ class SimpleModel(Model):
         """
         Load saved model from disk if it exists.
         """
-        # Load saved data if this is the first time we've entred the model
+        # Load saved data if this is the first time we've entered the model
         filepath = self.disk_path(extention=".json")
         if filepath.is_file():
             self.storage = json.loads(filepath.read_text())
