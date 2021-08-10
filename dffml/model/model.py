@@ -126,6 +126,7 @@ class Model(BaseDataFlowFacilitatorObject):
                         # TODO: Need to figure out how loading of
                         # properties should be done.
                         pass
+        return self
 
     async def __aexit__(self, exc_type, exc_value, traceback):
         if self.config.location.is_file():
