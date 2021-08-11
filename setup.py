@@ -90,6 +90,7 @@ setup(
             "ini = dffml.source.ini:INISource",
             "df = dffml.source.df:DataFlowSource",
             "op = dffml.source.op:OpSource",
+            "dfpreprocess = dffml.source.dfpreprocess:DataFlowPreprocessSource",
             "dir = dffml.source.dir:DirectorySource",
             "dataframe = dffml.source.dataframe:DataFrameSource",
             "iris.training = dffml.source.dataset.iris:iris_training.source",
