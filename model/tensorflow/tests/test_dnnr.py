@@ -110,7 +110,7 @@ class TestDNN(AsyncTestCase):
                 self.model_dir.cleanup()
                 self.model_dir = tempfile.TemporaryDirectory()
                 self.model.config = self.model.config._replace(
-                    location=self.model_dir.name
+                    location=pathlib.Path(self.model_dir.name)
                 )
                 continue
             self.assertGreater(res, 0.0)
