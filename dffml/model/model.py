@@ -89,10 +89,10 @@ class Model(BaseDataFlowFacilitatorObject):
         if isinstance(location, pathlib.Path):
             # to treat "~" as the the home location rather than a literal
             location = location.expanduser().resolve()
-            # TODO Change all model configs to make them support mutable
-            # location config properties
-            with self.config.no_enforce_immutable():
-                self.config.location = location
+        # TODO Change all model configs to make them support mutable
+        # location config properties
+        with self.config.no_enforce_immutable():
+            self.config.location = location
 
     def __call__(self) -> ModelContext:
         self._make_config_location()
@@ -106,9 +106,6 @@ class Model(BaseDataFlowFacilitatorObject):
                 in ["zip", "tar"],
             ]
         ):
-            # TODO: Config can be read from a file named config.json
-            # if it exists and self.config.location can be overridden
-            # with the loaded config [depends on PR intel/dffml#1122]
             temp_dir = self._get_directory()
             self.location = temp_dir
 
@@ -123,9 +120,10 @@ class Model(BaseDataFlowFacilitatorObject):
                 with open(config_path) as config_handle:
                     loaded_config = json.load(config_handle)
                     for prop, value in loaded_config.items():
-                        # TODO: Need to figure out how loading of
-                        # properties should be done.
+                        # TODO: Need to change this as per
+                        # drafts PR#1189 and PR#1186
                         pass
+
         return self
 
     async def __aexit__(self, exc_type, exc_value, traceback):
