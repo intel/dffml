@@ -202,7 +202,7 @@ class DNNRegressionModel(Model):
 
     .. literalinclude:: /../model/tensorflow/examples/tfdnnr/tfdnnr.py
 
-    The ``null`` in ``confidence`` is the expected behaviour. (See TODO in
+    The ``null`` in ``confidence`` is the expected behavior. (See TODO in
     predict).
 
     """
