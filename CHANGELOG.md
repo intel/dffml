@@ -25,6 +25,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Usecase example notebook for "Saving and loading models"
 - Usecase example notebook for "Transfer Learning"
 - Usecase example notebook for "Ensemble by stacking"
+- Support for Archive Storage of Models
 ### Changed
 - Calls to hashlib now go through helper functions
 - Build docs using `dffml service dev docs`
