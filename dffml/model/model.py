@@ -99,49 +99,51 @@ class Model(BaseDataFlowFacilitatorObject):
         return self.CONTEXT(self)
 
     async def __aenter__(self):
-        if any(
-            [
-                self.config.location.is_file(),
-                get_archive_path_info(self.config.location)[0]
-                in ["zip", "tar"],
-            ]
-        ):
-            temp_dir = self._get_directory()
-            self.location = temp_dir
+        if getattr(self.config, "location", False):
+            if any(
+                [
+                    self.config.location.is_file(),
+                    get_archive_path_info(self.config.location)[0]
+                    in ["zip", "tar"],
+                ]
+            ):
+                temp_dir = self._get_directory()
+                self.location = temp_dir
 
-        if self.config.location.is_file():
-            load_flow = getattr(self.config, "location_load", None)
-            await self._run_operation(
-                self.config.location, temp_dir, load_flow
-            )
-            # Load values from config if it exists
-            config_path = self.temp_dir / "config.json"
-            if config_path.exists():
-                with open(config_path) as config_handle:
-                    loaded_config = json.load(config_handle)
-                    for prop, value in loaded_config.items():
-                        # TODO: Need to change this as per
-                        # drafts PR#1189 and PR#1186
-                        pass
+            if self.config.location.is_file():
+                load_flow = getattr(self.config, "location_load", None)
+                await self._run_operation(
+                    self.config.location, temp_dir, load_flow
+                )
+                # Load values from config if it exists
+                config_path = self.temp_dir / "config.json"
+                if config_path.exists():
+                    with open(config_path) as config_handle:
+                        loaded_config = json.load(config_handle)
+                        for prop, value in loaded_config.items():
+                            # TODO: Need to change this as per
+                            # drafts PR#1189 and PR#1186
+                            pass
 
         return self
 
     async def __aexit__(self, exc_type, exc_value, traceback):
-        if self.config.location.is_file():
-            os.remove(self.config.location)
-        if any(
-            [
-                self.config.location.is_file(),
-                get_archive_path_info(self.config.location)[0]
-                in ["zip", "tar"],
-            ]
-        ):
-            config_path = self.location / "config.json"
-            config_path.write_text(json.dumps(export(self.config)))
-            save_flow = getattr(self.config, "location_save", None)
-            await self._run_operation(
-                self.temp_dir, self.config.location, save_flow
-            )
+        if getattr(self.config, "location", False):
+            if self.config.location.is_file():
+                os.remove(self.config.location)
+            if any(
+                [
+                    self.config.location.is_file(),
+                    get_archive_path_info(self.config.location)[0]
+                    in ["zip", "tar"],
+                ]
+            ):
+                config_path = self.location / "config.json"
+                config_path.write_text(json.dumps(export(self.config)))
+                save_flow = getattr(self.config, "location_save", None)
+                await self._run_operation(
+                    self.temp_dir, self.config.location, save_flow
+                )
         if hasattr(self, "temp_dir"):
             shutil.rmtree(self.temp_dir)
 

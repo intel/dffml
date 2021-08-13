@@ -1,15 +1,15 @@
 import asyncio
 import contextlib
 from http import HTTPStatus
+import pathlib
 from unittest.mock import patch
-from typing import AsyncIterator
+from typing import AsyncIterator, Dict
 
 import aiohttp
 
 from dffml import (
     Record,
     config,
-    Accuracy,
     Features,
     Feature,
     ModelContext,
@@ -28,7 +28,7 @@ from dffml_service_http.routes import DISALLOW_CACHING
 
 @config
 class FakeModelConfig:
-    location: str
+    location: pathlib.Path
     features: Features
     predict: Feature
 
