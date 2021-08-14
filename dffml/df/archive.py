@@ -1,7 +1,7 @@
+import uuid
 import pathlib
 import zipfile
 import tarfile
-import tempfile
 import mimetypes
 
 from typing import Dict, Tuple, Any
@@ -87,7 +87,7 @@ def get_operations(
         compression_action = (
             "compress" if archive_action == "archive" else "decompress"
         )
-        compression_op = operations["compression_op"][compression_type][
+        compression_op = operations["compression_ops"][compression_type][
             compression_action
         ]
     return archive_op, compression_op
@@ -137,7 +137,7 @@ def create_chained_archive_dataflow(
                 definition=get_key_substr("input", first_op.op.inputs),
             ),
             Input(
-                value=temp_dir / "temp.tar",
+                value=temp_dir / f"{str(uuid.uuid4())}.tar",
                 definition=get_key_substr("output", first_op.op.inputs),
             ),
             Input(
@@ -190,14 +190,11 @@ def create_archive_dataflow(seed: set) -> DataFlow:
             },
         )
     else:
-        with tempfile.TemporaryDirectory() as tempdir:
-            first_op = compression_op if action == "extract" else archive_op
-            second_op = (
-                compression_op
-                if first_op is not compression_op
-                else archive_op
-            )
-            dataflow = create_chained_archive_dataflow(
-                action, first_op, second_op, seed, tempdir
-            )
+        first_op = compression_op if action == "extract" else archive_op
+        second_op = (
+            compression_op if first_op is not compression_op else archive_op
+        )
+        dataflow = create_chained_archive_dataflow(
+            action, first_op, second_op, seed, seed["input_path"].parent
+        )
     return dataflow
