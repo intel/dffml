@@ -22,11 +22,15 @@ from ..operation.compression import (
 )
 
 
-def get_key_substr(string: str, dict: dict) -> Any:
+def get_key_substr(string: str, dict: dict, return_="value") -> Any:
     """ 
     A function to find dictionary items whose key matches a substring.
     """
-    return [value for key, value in dict.items() if string in key.lower()][0]
+    return [
+        value if return_ == "value" else key
+        for key, value in dict.items()
+        if string in key.lower()
+    ][0]
 
 
 def get_archive_type(file_path: str) -> Tuple[str]:
@@ -151,9 +155,7 @@ def create_chained_archive_dataflow(
         {
             second_op.op.name: InputFlow(
                 inputs={
-                    "input_file_path": [
-                        {first_op.op.name: f"output_file_path"}
-                    ],
+                    "input_file_path": [{first_op.op.name: "output_path"}],
                     f"output_{second_op_output_typ}_path": [
                         "seed.final_output"
                     ],
@@ -172,9 +174,18 @@ def create_archive_dataflow(seed: set) -> DataFlow:
     """
     seed = {input_.origin: pathlib.Path(input_.value) for input_ in seed}
     action, archive_type, compression_type = deduce_archive_action(seed)
+    print("action:", action)
+    print("archive_type:", archive_type)
+    print("compression_type:", compression_type)
     archive_op, compression_op = get_operations(
         action, archive_type, compression_type
     )
+    print("archive_op:", archive_op.op.name)
+    print(
+        "compression_op:",
+        compression_op.op.name if compression_op is not None else None,
+    )
+
     if compression_op is None:
         dataflow = DataFlow(
             operations={archive_op.op.name: archive_op},
@@ -194,7 +205,12 @@ def create_archive_dataflow(seed: set) -> DataFlow:
         second_op = (
             compression_op if first_op is not compression_op else archive_op
         )
+        print("first_op:", first_op.op.name)
+        print("second_op:", second_op.op.name)
         dataflow = create_chained_archive_dataflow(
             action, first_op, second_op, seed, seed["input_path"].parent
         )
+    print("+" * 80)
+    print(dataflow.flow)
+    print("+" * 80)
     return dataflow
