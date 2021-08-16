@@ -473,7 +473,7 @@ started.</p></li>
 </li>
 </ul>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo docker run --rm -ti -u <span class="k">$(</span>id -u<span class="k">)</span>:<span class="k">$(</span>id -g<span class="k">)</span> <span class="se">\</span>
-<span class="go">  -v $PWD:/usr/src/dffml -w /usr/src/dffml --entrypoint /bin/bash python:3.7</span>
+  -v <span class="nv">$PWD</span>:/usr/src/dffml -w /usr/src/dffml --entrypoint /bin/bash python:3.7
 <span class="go">I have no name!@33ba998c91b3:/usr/src/dffml$ `# You are now in the container, your prompt will look something like this`</span>
 </pre></div>
 </div>

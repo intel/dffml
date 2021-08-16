@@ -336,37 +336,37 @@ their feature names.</p>
 <p><strong>General Usage:</strong></p>
 <p>Training:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml train <span class="se">\</span>
-<span class="go">    -model SCIKIT_MODEL_ENTRYPOINT \</span>
-<span class="go">    -model-features FEATURE_DEFINITION \</span>
-<span class="go">    -model-predict TO_PREDICT \</span>
-<span class="go">    -model-location MODEL_DIRECTORY \</span>
-<span class="go">    -model-SCIKIT_PARAMETER_NAME SCIKIT_PARAMETER_VALUE \</span>
-<span class="go">    -sources f=TRAINING_DATA_SOURCE_TYPE \</span>
-<span class="go">    -source-filename TRAINING_DATA_FILE_NAME \</span>
-<span class="go">    -log debug</span>
+    -model SCIKIT_MODEL_ENTRYPOINT <span class="se">\</span>
+    -model-features FEATURE_DEFINITION <span class="se">\</span>
+    -model-predict TO_PREDICT <span class="se">\</span>
+    -model-location MODEL_DIRECTORY <span class="se">\</span>
+    -model-SCIKIT_PARAMETER_NAME SCIKIT_PARAMETER_VALUE <span class="se">\</span>
+    -sources <span class="nv">f</span><span class="o">=</span>TRAINING_DATA_SOURCE_TYPE <span class="se">\</span>
+    -source-filename TRAINING_DATA_FILE_NAME <span class="se">\</span>
+    -log debug
 </pre></div>
 </div>
 <p>Testing and Accuracy:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml accuracy <span class="se">\</span>
-<span class="go">    -model SCIKIT_MODEL_ENTRYPOINT \</span>
-<span class="go">    -model-features FEATURE_DEFINITION \</span>
-<span class="go">    -model-predict TO_PREDICT \</span>
-<span class="go">    -model-location MODEL_DIRECTORY \</span>
-<span class="go">    -sources f=TESTING_DATA_SOURCE_TYPE \</span>
-<span class="go">    -source-filename TESTING_DATA_FILE_NAME \</span>
-<span class="go">    -scorer ACCURACY_SCORER \</span>
-<span class="go">    -log debug</span>
+    -model SCIKIT_MODEL_ENTRYPOINT <span class="se">\</span>
+    -model-features FEATURE_DEFINITION <span class="se">\</span>
+    -model-predict TO_PREDICT <span class="se">\</span>
+    -model-location MODEL_DIRECTORY <span class="se">\</span>
+    -sources <span class="nv">f</span><span class="o">=</span>TESTING_DATA_SOURCE_TYPE <span class="se">\</span>
+    -source-filename TESTING_DATA_FILE_NAME <span class="se">\</span>
+    -scorer ACCURACY_SCORER <span class="se">\</span>
+    -log debug
 </pre></div>
 </div>
 <p>Predicting with trained model:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml predict all <span class="se">\</span>
-<span class="go">    -model SCIKIT_MODEL_ENTRYPOINT \</span>
-<span class="go">    -model-features FEATURE_DEFINITION \</span>
-<span class="go">    -model-predict TO_PREDICT \</span>
-<span class="go">    -model-location MODEL_DIRECTORY \</span>
-<span class="go">    -sources f=PREDICT_DATA_SOURCE_TYPE \</span>
-<span class="go">    -source-filename PREDICT_DATA_FILE_NAME \</span>
-<span class="go">    -log debug</span>
+    -model SCIKIT_MODEL_ENTRYPOINT <span class="se">\</span>
+    -model-features FEATURE_DEFINITION <span class="se">\</span>
+    -model-predict TO_PREDICT <span class="se">\</span>
+    -model-location MODEL_DIRECTORY <span class="se">\</span>
+    -sources <span class="nv">f</span><span class="o">=</span>PREDICT_DATA_SOURCE_TYPE <span class="se">\</span>
+    -source-filename PREDICT_DATA_FILE_NAME <span class="se">\</span>
+    -log debug
 </pre></div>
 </div>
 <p><strong>Models Available:</strong></p>
@@ -856,33 +856,33 @@ their feature names.</p>
 <span class="go">4.01612313,  -4.641852  ,  -4.77333308,   5.87551683,     0</span>
 <span class="go">EOF</span>
 <span class="gp"> $ </span>dffml train <span class="se">\</span>
-<span class="go">     -model scikitkmeans \</span>
-<span class="go">     -model-features Col1:float:1 Col2:float:1 Col3:float:1 Col4:float:1 \</span>
-<span class="go">     -model-location tempdir \</span>
-<span class="go">     -sources f=csv \</span>
-<span class="go">     -source-filename train.csv \</span>
-<span class="go">     -source-readonly \</span>
-<span class="go">     -log debug</span>
+     -model scikitkmeans <span class="se">\</span>
+     -model-features Col1:float:1 Col2:float:1 Col3:float:1 Col4:float:1 <span class="se">\</span>
+     -model-location tempdir <span class="se">\</span>
+     -sources <span class="nv">f</span><span class="o">=</span>csv <span class="se">\</span>
+     -source-filename train.csv <span class="se">\</span>
+     -source-readonly <span class="se">\</span>
+     -log debug
 <span class="gp"> $ </span>dffml accuracy <span class="se">\</span>
-<span class="go">     -model scikitkmeans \</span>
-<span class="go">     -model-features Col1:float:1 Col2:float:1 Col3:float:1 Col4:float:1\</span>
-<span class="go">     -model-predict cluster:int:1 \</span>
-<span class="go">     -model-location tempdir \</span>
-<span class="go">     -sources f=csv \</span>
-<span class="go">     -source-filename test.csv \</span>
-<span class="go">     -source-readonly \</span>
-<span class="go">     -scorer skmodelscore \</span>
-<span class="go">     -log debug</span>
+     -model scikitkmeans <span class="se">\</span>
+     -model-features Col1:float:1 Col2:float:1 Col3:float:1 Col4:float:1<span class="se">\</span>
+     -model-predict cluster:int:1 <span class="se">\</span>
+     -model-location tempdir <span class="se">\</span>
+     -sources <span class="nv">f</span><span class="o">=</span>csv <span class="se">\</span>
+     -source-filename test.csv <span class="se">\</span>
+     -source-readonly <span class="se">\</span>
+     -scorer skmodelscore <span class="se">\</span>
+     -log debug
 <span class="go"> 0.6365141682948129</span>
 <span class="gp"> $ </span><span class="nb">echo</span> -e <span class="s1">&#39;Col1,Col2,Col3,Col4\n6.09809669,8.36434181,6.70940915,-7.91491768\n&#39;</span> <span class="p">|</span> <span class="se">\</span>
-<span class="go">   dffml predict all \</span>
-<span class="go">     -model scikitkmeans \</span>
-<span class="go">     -model-features Col1:float:1 Col2:float:1 Col3:float:1 Col4:float:1 \</span>
-<span class="go">     -model-location tempdir \</span>
-<span class="go">     -sources f=csv \</span>
-<span class="go">     -source-filename /dev/stdin \</span>
-<span class="go">     -source-readonly \</span>
-<span class="go">     -log debug</span>
+   dffml predict all <span class="se">\</span>
+     -model scikitkmeans <span class="se">\</span>
+     -model-features Col1:float:1 Col2:float:1 Col3:float:1 Col4:float:1 <span class="se">\</span>
+     -model-location tempdir <span class="se">\</span>
+     -sources <span class="nv">f</span><span class="o">=</span>csv <span class="se">\</span>
+     -source-filename /dev/stdin <span class="se">\</span>
+     -source-readonly <span class="se">\</span>
+     -log debug
 <span class="go"> [</span>
 <span class="go">     {</span>
 <span class="go">         &quot;extra&quot;: {},</span>
@@ -967,38 +967,38 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <p><strong>General Usage:</strong></p>
 <p>Training:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml train <span class="se">\</span>
-<span class="go">    -model PYTORCH_MODEL_ENTRYPOINT \</span>
-<span class="go">    -model-features FEATURE_DEFINITION \</span>
-<span class="go">    -model-predict TO_PREDICT \</span>
-<span class="go">    -model-location MODEL_LOCATION \</span>
-<span class="go">    -model-CONFIGS CONFIG_VALUES \</span>
-<span class="go">    -sources f=TRAINING_DATA_SOURCE_TYPE \</span>
-<span class="go">    -source-CONFIGS TRAINING_DATA \</span>
-<span class="go">    -log debug</span>
+    -model PYTORCH_MODEL_ENTRYPOINT <span class="se">\</span>
+    -model-features FEATURE_DEFINITION <span class="se">\</span>
+    -model-predict TO_PREDICT <span class="se">\</span>
+    -model-location MODEL_LOCATION <span class="se">\</span>
+    -model-CONFIGS CONFIG_VALUES <span class="se">\</span>
+    -sources <span class="nv">f</span><span class="o">=</span>TRAINING_DATA_SOURCE_TYPE <span class="se">\</span>
+    -source-CONFIGS TRAINING_DATA <span class="se">\</span>
+    -log debug
 </pre></div>
 </div>
 <p>Testing and Accuracy:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml accuracy <span class="se">\</span>
-<span class="go">    -model PYTORCH_MODEL_ENTRYPOINT \</span>
-<span class="go">    -model-features FEATURE_DEFINITION \</span>
-<span class="go">    -model-predict TO_PREDICT \</span>
-<span class="go">    -model-location MODEL_LOCATION \</span>
-<span class="go">    -model-CONFIGS CONFIG_VALUES \</span>
-<span class="go">    -sources f=TESTING_DATA_SOURCE_TYPE \</span>
-<span class="go">    -source-CONFIGS TESTING_DATA \</span>
-<span class="go">    -log debug</span>
+    -model PYTORCH_MODEL_ENTRYPOINT <span class="se">\</span>
+    -model-features FEATURE_DEFINITION <span class="se">\</span>
+    -model-predict TO_PREDICT <span class="se">\</span>
+    -model-location MODEL_LOCATION <span class="se">\</span>
+    -model-CONFIGS CONFIG_VALUES <span class="se">\</span>
+    -sources <span class="nv">f</span><span class="o">=</span>TESTING_DATA_SOURCE_TYPE <span class="se">\</span>
+    -source-CONFIGS TESTING_DATA <span class="se">\</span>
+    -log debug
 </pre></div>
 </div>
 <p>Predicting with trained model:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml predict all <span class="se">\</span>
-<span class="go">    -model PYTORCH_MODEL_ENTRYPOINT \</span>
-<span class="go">    -model-features FEATURE_DEFINITION \</span>
-<span class="go">    -model-predict TO_PREDICT \</span>
-<span class="go">    -model-location MODEL_LOCATION \</span>
-<span class="go">    -model-CONFIGS CONFIG_VALUES \</span>
-<span class="go">    -sources f=PREDICT_DATA_SOURCE_TYPE \</span>
-<span class="go">    -source-CONFIGS PREDICTION_DATA \</span>
-<span class="go">    -log debug</span>
+    -model PYTORCH_MODEL_ENTRYPOINT <span class="se">\</span>
+    -model-features FEATURE_DEFINITION <span class="se">\</span>
+    -model-predict TO_PREDICT <span class="se">\</span>
+    -model-location MODEL_LOCATION <span class="se">\</span>
+    -model-CONFIGS CONFIG_VALUES <span class="se">\</span>
+    -sources <span class="nv">f</span><span class="o">=</span>PREDICT_DATA_SOURCE_TYPE <span class="se">\</span>
+    -source-CONFIGS PREDICTION_DATA <span class="se">\</span>
+    -log debug
 </pre></div>
 </div>
 <p><strong>Pre-Trained Models Available:</strong></p>

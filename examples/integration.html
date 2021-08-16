@@ -299,7 +299,7 @@ should create these files and populate them with the code your about to see.</p>
   <span class="nx">col</span><span class="p">.</span><span class="nx">innerText</span> <span class="o">=</span> <span class="s1">&#39;Maintained?&#39;</span><span class="p">;</span>
   <span class="nx">row</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">col</span><span class="p">)</span>
   <span class="c1">// Create body</span>
-  <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">URL</span> <span class="k">in</span> <span class="nx">URLs</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">URL</span> <span class="ow">in</span> <span class="nx">URLs</span><span class="p">)</span> <span class="p">{</span>
     <span class="c1">// Convert from int to string</span>
     <span class="k">if</span> <span class="p">(</span><span class="nx">URLs</span><span class="p">[</span><span class="nx">URL</span><span class="p">])</span> <span class="p">{</span>
       <span class="nx">URLs</span><span class="p">[</span><span class="nx">URL</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;Yes&#39;</span><span class="p">;</span>
@@ -452,17 +452,17 @@ Make sure to update <code class="docutils literal notranslate"><span class="pre"
 </div>
 <p>Download the Python client libraries for MySQL.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python -m pip install -U <span class="se">\</span>
-<span class="go">    https://dev.mysql.com/get/Downloads/Connector-Python/mysql-connector-python-8.0.21.tar.gz</span>
+    https://dev.mysql.com/get/Downloads/Connector-Python/mysql-connector-python-8.0.21.tar.gz
 </pre></div>
 </div>
 <p>Start MariaDB (functionally very similar to MySQL which its a fork of).</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>docker run --rm -d --name maintained_db <span class="se">\</span>
-<span class="go">    -e MYSQL_RANDOM_ROOT_PASSWORD=yes \</span>
-<span class="go">    -e MYSQL_USER=user \</span>
-<span class="go">    -e MYSQL_PASSWORD=pass \</span>
-<span class="go">    -e MYSQL_DATABASE=db \</span>
-<span class="go">    -p 3306:3306 \</span>
-<span class="go">    mariadb:10</span>
+    -e <span class="nv">MYSQL_RANDOM_ROOT_PASSWORD</span><span class="o">=</span>yes <span class="se">\</span>
+    -e <span class="nv">MYSQL_USER</span><span class="o">=</span>user <span class="se">\</span>
+    -e <span class="nv">MYSQL_PASSWORD</span><span class="o">=</span>pass <span class="se">\</span>
+    -e <span class="nv">MYSQL_DATABASE</span><span class="o">=</span>db <span class="se">\</span>
+    -p <span class="m">3306</span>:3306 <span class="se">\</span>
+    mariadb:10
 </pre></div>
 </div>
 <p>Wait for the database to start. Run the following command until you see <code class="docutils literal notranslate"><span class="pre">ready</span>
@@ -592,7 +592,7 @@ have something running on that port.</p>
 <p>You can see all the records and their statuses that we imported into the
 database by calling the API.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>curl -v <span class="s1">&#39;http://127.0.0.1:8000/cgi-bin/api.py?action=dump&#39;</span> <span class="p">|</span> <span class="se">\</span>
-<span class="go">    python3 -m json.tool</span>
+    python3 -m json.tool
 </pre></div>
 </div>
 </div>
@@ -625,11 +625,11 @@ configs than <code class="docutils literal notranslate"><span class="pre">json</
 it first.</p>
 <div class="sphinx-tabs docutils container">
 <div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-0-TGludXg=" aria-selected="true" class="sphinx-tabs-tab group-tab" id="tab-0-TGludXg=" name="TGludXg=" role="tab" tabindex="0">Linux</button><button aria-controls="panel-0-TWFjT1M=" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-0-TWFjT1M=" name="TWFjT1M=" role="tab" tabindex="-1">MacOS</button></div><div aria-labelledby="tab-0-TGludXg=" class="sphinx-tabs-panel group-tab" id="panel-0-TGludXg=" name="TGludXg=" role="tabpanel" tabindex="0"><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>curl -sSL <span class="s1">&#39;https://github.com/XAMPPRocky/tokei/releases/download/v10.1.1/tokei-v10.1.1-x86_64-unknown-linux-gnu.tar.gz&#39;</span> <span class="se">\</span>
-<span class="go">    | tar -xvz -C .venv/bin/</span>
+    <span class="p">|</span> tar -xvz -C .venv/bin/
 </pre></div>
 </div>
 </div><div aria-labelledby="tab-0-TWFjT1M=" class="sphinx-tabs-panel group-tab" hidden="true" id="panel-0-TWFjT1M=" name="TWFjT1M=" role="tabpanel" tabindex="0"><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>curl -sSL <span class="s1">&#39;https://github.com/XAMPPRocky/tokei/releases/download/v10.1.1/tokei-v10.1.1-x86_64-apple-darwin.tar.gz&#39;</span> <span class="se">\</span>
-<span class="go">    | tar -xvz -C .venv/bin/</span>
+    <span class="p">|</span> tar -xvz -C .venv/bin/
 </pre></div>
 </div>
 </div></div>
@@ -946,7 +946,7 @@ database.</p>
 </div>
 <p>Test the new prediction capabilities from the command line with <code class="docutils literal notranslate"><span class="pre">curl</span></code></p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>curl -v <span class="s1">&#39;http://127.0.0.1:8000/cgi-bin/api.py?action=predict&amp;URL=https://github.com/intel/dffml&#39;</span> <span class="p">|</span> <span class="se">\</span>
-<span class="go">    python -m json.tool</span>
+    python -m json.tool
 </pre></div>
 </div>
 <p>Hook up the predict button to call our new API by adding an event listener when

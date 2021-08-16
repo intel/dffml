@@ -284,10 +284,10 @@ operations tutorial, we registered our operations with Python’s <code class="d
 system. This allows other Python packages and DFFML plugins to access them
 without the need to hardcode in <code class="docutils literal notranslate"><span class="pre">import</span></code> statements.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>curl -s <span class="se">\</span>
-<span class="go">  --header &quot;Content-Type: application/json&quot; \</span>
-<span class="go">  --request POST \</span>
-<span class="go">  --data &#39;{&quot;insecure-package&quot;: [{&quot;value&quot;:&quot;insecure-package&quot;,&quot;definition&quot;:&quot;safety_check.inputs.package&quot;}]}&#39; \</span>
-<span class="go">  http://localhost:8080/shouldi | python3 -m json.tool</span>
+  --header <span class="s2">&quot;Content-Type: application/json&quot;</span> <span class="se">\</span>
+  --request POST <span class="se">\</span>
+  --data <span class="s1">&#39;{&quot;insecure-package&quot;: [{&quot;value&quot;:&quot;insecure-package&quot;,&quot;definition&quot;:&quot;safety_check.inputs.package&quot;}]}&#39;</span> <span class="se">\</span>
+  http://localhost:8080/shouldi <span class="p">|</span> python3 -m json.tool
 <span class="go">{</span>
 <span class="go">    &quot;insecure-package&quot;: {</span>
 <span class="go">        &quot;safety_check.outputs.result&quot;: 1,</span>
@@ -401,10 +401,10 @@ directory can be found in <code class="docutils literal notranslate"><span class
 <p>In another terminal, you can send a <code class="docutils literal notranslate"><span class="pre">POST</span></code> request containing the <code class="docutils literal notranslate"><span class="pre">Input</span></code>
 items that you want evaluated.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>curl -sf <span class="se">\</span>
-<span class="go">  --header &quot;Content-Type: application/json&quot; \</span>
-<span class="go">  --request POST \</span>
-<span class="go">  --data &#39;{&quot;insecure-package&quot;: [{&quot;value&quot;:&quot;insecure-package&quot;,&quot;definition&quot;:&quot;safety_check.inputs.package&quot;}]}&#39; \</span>
-<span class="go">  http://localhost:8080/shouldi | python -m json.tool</span>
+  --header <span class="s2">&quot;Content-Type: application/json&quot;</span> <span class="se">\</span>
+  --request POST <span class="se">\</span>
+  --data <span class="s1">&#39;{&quot;insecure-package&quot;: [{&quot;value&quot;:&quot;insecure-package&quot;,&quot;definition&quot;:&quot;safety_check.inputs.package&quot;}]}&#39;</span> <span class="se">\</span>
+  http://localhost:8080/shouldi <span class="p">|</span> python -m json.tool
 <span class="go">{</span>
 <span class="go">    &quot;insecure-package&quot;: {</span>
 <span class="go">        &quot;safety_check.outputs.result&quot;: 1,</span>
@@ -486,18 +486,18 @@ operations with the existing ones.</p>
 <p>Use the <code class="docutils literal notranslate"><span class="pre">dataflow</span> <span class="pre">create</span></code> command to make a new dataflow that will be combined
 with the existing flow.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml dataflow create <span class="se">\</span>
-<span class="go">    -configloader yaml \</span>
-<span class="go">    -inputs \</span>
-<span class="go">      directory=key \</span>
-<span class="go">      safety_check.outputs.result,run_bandit.outputs.result,language_to_comment_ratio=get_single_spec \</span>
-<span class="go">    -flow \</span>
-<span class="go">      &#39;[{&quot;dffml.mapping.create&quot;: &quot;mapping&quot;}]=lines_of_code_by_language.inputs.repo&#39; \</span>
-<span class="go">      &#39;[{&quot;pypi_package_contents&quot;: &quot;directory&quot;}]=&quot;dffml.mapping.create&quot;.inputs.value&#39; \</span>
-<span class="go">    -- \</span>
-<span class="go">      dffml.mapping.create \</span>
-<span class="go">      lines_of_code_by_language \</span>
-<span class="go">      lines_of_code_to_comments \</span>
-<span class="go">    | tee shouldi/deploy/override/shouldi.yaml</span>
+    -configloader yaml <span class="se">\</span>
+    -inputs <span class="se">\</span>
+      <span class="nv">directory</span><span class="o">=</span>key <span class="se">\</span>
+      safety_check.outputs.result,run_bandit.outputs.result,language_to_comment_ratio<span class="o">=</span>get_single_spec <span class="se">\</span>
+    -flow <span class="se">\</span>
+      <span class="s1">&#39;[{&quot;dffml.mapping.create&quot;: &quot;mapping&quot;}]=lines_of_code_by_language.inputs.repo&#39;</span> <span class="se">\</span>
+      <span class="s1">&#39;[{&quot;pypi_package_contents&quot;: &quot;directory&quot;}]=&quot;dffml.mapping.create&quot;.inputs.value&#39;</span> <span class="se">\</span>
+    -- <span class="se">\</span>
+      dffml.mapping.create <span class="se">\</span>
+      lines_of_code_by_language <span class="se">\</span>
+      lines_of_code_to_comments <span class="se">\</span>
+    <span class="p">|</span> tee shouldi/deploy/override/shouldi.yaml
 </pre></div>
 </div>
 <p>The final directory structure should look like this</p>
@@ -535,10 +535,10 @@ with the existing flow.</p>
 <p>We’ve modified the flow to create the following dataflow</p>
 <img alt="Diagram showing DataFlow with use of comment to code ratio" src="../_images/shouldi-dataflow-extended.svg" /><p>The diagram above can be re-generated with the following commands</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml dataflow merge <span class="se">\</span>
-<span class="go">    shouldi/deploy/df/shouldi.json \</span>
-<span class="go">    shouldi/deploy/override/shouldi.yaml | \</span>
-<span class="go">  dffml dataflow diagram \</span>
-<span class="go">    -stages processing -simple -configloader json /dev/stdin</span>
+    shouldi/deploy/df/shouldi.json <span class="se">\</span>
+    shouldi/deploy/override/shouldi.yaml <span class="p">|</span> <span class="se">\</span>
+  dffml dataflow diagram <span class="se">\</span>
+    -stages processing -simple -configloader json /dev/stdin
 </pre></div>
 </div>
 <p>Copy and pasting the graph into the
@@ -554,10 +554,10 @@ configs.</p>
 </div>
 <p>Here’s an example of evaluating two packages using the new DataFlow.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>curl -sf <span class="se">\</span>
-<span class="go">  --header &quot;Content-Type: application/json&quot; \</span>
-<span class="go">  --request POST \</span>
-<span class="go">  --data &#39;{&quot;insecure-package&quot;: [{&quot;value&quot;:&quot;insecure-package&quot;,&quot;definition&quot;:&quot;safety_check.inputs.package&quot;}], &quot;dffml&quot;: [{&quot;value&quot;:&quot;dffml&quot;,&quot;definition&quot;:&quot;safety_check.inputs.package&quot;}]}&#39; \</span>
-<span class="go">  http://localhost:8080/shouldi | python -m json.tool</span>
+  --header <span class="s2">&quot;Content-Type: application/json&quot;</span> <span class="se">\</span>
+  --request POST <span class="se">\</span>
+  --data <span class="s1">&#39;{&quot;insecure-package&quot;: [{&quot;value&quot;:&quot;insecure-package&quot;,&quot;definition&quot;:&quot;safety_check.inputs.package&quot;}], &quot;dffml&quot;: [{&quot;value&quot;:&quot;dffml&quot;,&quot;definition&quot;:&quot;safety_check.inputs.package&quot;}]}&#39;</span> <span class="se">\</span>
+  http://localhost:8080/shouldi <span class="p">|</span> python -m json.tool
 <span class="go">{</span>
 <span class="go">    &quot;insecure-package&quot;: {</span>
 <span class="go">        &quot;safety_check.outputs.result&quot;: 1,</span>

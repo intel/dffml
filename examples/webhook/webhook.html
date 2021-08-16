@@ -235,25 +235,25 @@ we push to the default branch, the new version is pulled and its docker containe
 <p>Setup a http server in <code class="docutils literal notranslate"><span class="pre">ffmpeg/deploy/webhook</span></code>, to receive webhook and redploy ffmpeg</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>mkdir -p deploy/webhook/df deploy/webhook/mc/http
 <span class="gp">$ </span>dffml dataflow create <span class="se">\</span>
-<span class="go">    -configloader yaml \</span>
-<span class="go">    -inputs \</span>
-<span class="go">      true=valid_git_repository_URL \</span>
-<span class="go">    -config \</span>
-<span class="go">      ini=check_secret_match.secret.plugin \</span>
-<span class="go">      &quot;./deploy/webhook/secret.ini&quot;=check_secret_match.secret.config.filename \</span>
-<span class="go">    -- \</span>
-<span class="go">      check_secret_match \</span>
-<span class="go">      get_url_from_payload \</span>
-<span class="go">      clone_git_repo \</span>
-<span class="go">      check_if_default_branch \</span>
-<span class="go">      get_image_tag \</span>
-<span class="go">      get_running_containers \</span>
-<span class="go">      get_status_running_containers \</span>
-<span class="go">      parse_docker_commands \</span>
-<span class="go">      docker_build_image \</span>
-<span class="go">      restart_running_containers \</span>
-<span class="go">      cleanup_git_repo \</span>
-<span class="go">    | tee deploy/webhook/df/webhook.yaml</span>
+    -configloader yaml <span class="se">\</span>
+    -inputs <span class="se">\</span>
+      <span class="nv">true</span><span class="o">=</span>valid_git_repository_URL <span class="se">\</span>
+    -config <span class="se">\</span>
+      <span class="nv">ini</span><span class="o">=</span>check_secret_match.secret.plugin <span class="se">\</span>
+      <span class="s2">&quot;./deploy/webhook/secret.ini&quot;</span><span class="o">=</span>check_secret_match.secret.config.filename <span class="se">\</span>
+    -- <span class="se">\</span>
+      check_secret_match <span class="se">\</span>
+      get_url_from_payload <span class="se">\</span>
+      clone_git_repo <span class="se">\</span>
+      check_if_default_branch <span class="se">\</span>
+      get_image_tag <span class="se">\</span>
+      get_running_containers <span class="se">\</span>
+      get_status_running_containers <span class="se">\</span>
+      parse_docker_commands <span class="se">\</span>
+      docker_build_image <span class="se">\</span>
+      restart_running_containers <span class="se">\</span>
+      cleanup_git_repo <span class="se">\</span>
+    <span class="p">|</span> tee deploy/webhook/df/webhook.yaml
 </pre></div>
 </div>
 <p>Through config we specify the dataflow to use ini file plugin and use the ini file

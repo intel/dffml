@@ -552,24 +552,24 @@ style path. This is in the format of <code class="docutils literal notranslate">
 be <code class="docutils literal notranslate"><span class="pre">myslr:MySLRModel</span></code>.</p>
 <p>We do the same steps we did with Python, only using the command line interface.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml train <span class="se">\</span>
-<span class="go">    -log debug \</span>
-<span class="go">    -model myslr:MySLRModel \</span>
-<span class="go">    -model-features Years:int:1 \</span>
-<span class="go">    -model-predict Salary:float:1 \</span>
-<span class="go">    -model-location modeldir \</span>
-<span class="go">    -sources f=csv \</span>
-<span class="go">    -source-filename train.csv</span>
+    -log debug <span class="se">\</span>
+    -model myslr:MySLRModel <span class="se">\</span>
+    -model-features Years:int:1 <span class="se">\</span>
+    -model-predict Salary:float:1 <span class="se">\</span>
+    -model-location modeldir <span class="se">\</span>
+    -sources <span class="nv">f</span><span class="o">=</span>csv <span class="se">\</span>
+    -source-filename train.csv
 </pre></div>
 </div>
 <p>There’s no output from the training command if everything went well</p>
 <p>Now let’s make predictions</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml predict all <span class="se">\</span>
-<span class="go">    -model myslr:MySLRModel \</span>
-<span class="go">    -model-features Years:int:1 \</span>
-<span class="go">    -model-predict Salary:float:1 \</span>
-<span class="go">    -model-location modeldir \</span>
-<span class="go">    -sources f=csv \</span>
-<span class="go">    -source-filename predict.csv</span>
+    -model myslr:MySLRModel <span class="se">\</span>
+    -model-features Years:int:1 <span class="se">\</span>
+    -model-predict Salary:float:1 <span class="se">\</span>
+    -model-location modeldir <span class="se">\</span>
+    -sources <span class="nv">f</span><span class="o">=</span>csv <span class="se">\</span>
+    -source-filename predict.csv
 <span class="go">[</span>
 <span class="go">    {</span>
 <span class="go">        &quot;extra&quot;: {},</span>
@@ -607,17 +607,17 @@ This example of running the HTTP API is insecure and is only used to help
 you get up and running.</p>
 </div>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml service http server -insecure -cors <span class="s1">&#39;*&#39;</span> -addr <span class="m">0</span>.0.0.0 -port <span class="m">8080</span> <span class="se">\</span>
-<span class="go">    -models mymodel=myslr:MySLRModel \</span>
-<span class="go">    -model-features Years:int:1 \</span>
-<span class="go">    -model-predict Salary:float:1 \</span>
-<span class="go">    -model-location modeldir</span>
+    -models <span class="nv">mymodel</span><span class="o">=</span>myslr:MySLRModel <span class="se">\</span>
+    -model-features Years:int:1 <span class="se">\</span>
+    -model-predict Salary:float:1 <span class="se">\</span>
+    -model-location modeldir
 </pre></div>
 </div>
 <p>We can then ask the HTTP service to make predictions, or do training or accuracy
 assessment.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>curl -f http://localhost:8080/model/mymodel/predict/0 <span class="se">\</span>
-<span class="go">    --header &quot;Content-Type: application/json&quot; \</span>
-<span class="go">    --data &#39;{&quot;0&quot;: {&quot;features&quot;: {&quot;Years&quot;: 8}}}&#39;</span>
+    --header <span class="s2">&quot;Content-Type: application/json&quot;</span> <span class="se">\</span>
+    --data <span class="s1">&#39;{&quot;0&quot;: {&quot;features&quot;: {&quot;Years&quot;: 8}}}&#39;</span>
 <span class="go">{</span>
 <span class="go">    &quot;iterkey&quot;: null,</span>
 <span class="go">    &quot;records&quot;: {</span>

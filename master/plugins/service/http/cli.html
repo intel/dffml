@@ -295,9 +295,9 @@ insecure, but easy for you to access for development purposes.</p>
 <p>To have the server start with models already configured and ready to be used for
 training and prediction, use the <code class="docutils literal notranslate"><span class="pre">-models</span></code> flag.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml service http server <span class="se">\</span>
-<span class="go">    -models mymodel=slr \</span>
-<span class="go">    -model-mymodel-features X:float:1 \</span>
-<span class="go">    -model-mymodel-predict Y:float:1</span>
+    -models <span class="nv">mymodel</span><span class="o">=</span>slr <span class="se">\</span>
+    -model-mymodel-features X:float:1 <span class="se">\</span>
+    -model-mymodel-predict Y:float:1
 </pre></div>
 </div>
 </div>
@@ -306,8 +306,8 @@ training and prediction, use the <code class="docutils literal notranslate"><spa
 <p>To have the server start with sources already configured and ready to be used
 for record retrieval or updating, use the <code class="docutils literal notranslate"><span class="pre">-sources</span></code> flag.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml service http server <span class="se">\</span>
-<span class="go">    -sources mysource=csv \</span>
-<span class="go">    -source-mysource-filename training.csv</span>
+    -sources <span class="nv">mysource</span><span class="o">=</span>csv <span class="se">\</span>
+    -source-mysource-filename training.csv
 </pre></div>
 </div>
 </div>
@@ -316,7 +316,7 @@ for record retrieval or updating, use the <code class="docutils literal notransl
 <p>To have the server start with scorer already configured and ready to be used
 for getting the accuracy, use the <code class="docutils literal notranslate"><span class="pre">-scorer</span></code> flag.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml service http server <span class="se">\</span>
-<span class="go">    -scorers myscorer=mse</span>
+    -scorers <span class="nv">myscorer</span><span class="o">=</span>mse
 </pre></div>
 </div>
 </div>

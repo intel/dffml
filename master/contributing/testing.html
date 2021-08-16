@@ -307,10 +307,10 @@ names can be listed in the <code class="docutils literal notranslate"><span clas
 <span id="id1"></span><h2>Running CI Tests Locally<a class="headerlink" href="#running-ci-tests-locally" title="Permalink to this headline">¶</a></h2>
 <p>You can run any of the CI tests with the following docker / podman command.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo docker run --rm -ti -u <span class="k">$(</span>id -u<span class="k">)</span>:<span class="k">$(</span>id -g<span class="k">)</span> <span class="se">\</span>
-<span class="go">    -e USER=$USER \</span>
-<span class="go">    -v $HOME/.cache/pip:/home/$USER/.cache/pip -w /usr/src/dffml \</span>
-<span class="go">    -v $PWD:/usr/src/dffml -w /usr/src/dffml \</span>
-<span class="go">    --entrypoint .ci/docker-entrypoint.sh python:3.7 .</span>
+    -e <span class="nv">USER</span><span class="o">=</span><span class="nv">$USER</span> <span class="se">\</span>
+    -v <span class="nv">$HOME</span>/.cache/pip:/home/<span class="nv">$USER</span>/.cache/pip -w /usr/src/dffml <span class="se">\</span>
+    -v <span class="nv">$PWD</span>:/usr/src/dffml -w /usr/src/dffml <span class="se">\</span>
+    --entrypoint .ci/docker-entrypoint.sh python:3.7 .
 </pre></div>
 </div>
 <p>The final argument tells the script which CI test to run. If you give a path,

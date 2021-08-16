@@ -274,24 +274,24 @@
 </div>
 <p>Train the model</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml train <span class="se">\</span>
-<span class="go">    -model slr \</span>
-<span class="go">    -model-features f1:float:1 \</span>
-<span class="go">    -model-predict ans:int:1 \</span>
-<span class="go">    -model-location tempdir \</span>
-<span class="go">    -sources f=csv \</span>
-<span class="go">    -source-filename dataset.csv</span>
+    -model slr <span class="se">\</span>
+    -model-features f1:float:1 <span class="se">\</span>
+    -model-predict ans:int:1 <span class="se">\</span>
+    -model-location tempdir <span class="se">\</span>
+    -sources <span class="nv">f</span><span class="o">=</span>csv <span class="se">\</span>
+    -source-filename dataset.csv
 </pre></div>
 </div>
 <p>Assess the accuracy</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml accuracy <span class="se">\</span>
-<span class="go">    -model slr \</span>
-<span class="go">    -model-features f1:float:1 \</span>
-<span class="go">    -model-predict ans:int:1 \</span>
-<span class="go">    -model-location tempdir \</span>
-<span class="go">    -sources f=csv \</span>
-<span class="go">    -source-filename dataset.csv \</span>
-<span class="go">    -scorer mse \</span>
-<span class="go">1.0</span>
+    -model slr <span class="se">\</span>
+    -model-features f1:float:1 <span class="se">\</span>
+    -model-predict ans:int:1 <span class="se">\</span>
+    -model-location tempdir <span class="se">\</span>
+    -sources <span class="nv">f</span><span class="o">=</span>csv <span class="se">\</span>
+    -source-filename dataset.csv <span class="se">\</span>
+    -scorer mse <span class="se">\</span>
+<span class="m">1</span>.0
 </pre></div>
 </div>
 <p>Make a prediction</p>
@@ -301,12 +301,12 @@
 </pre></div>
 </div>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml predict all <span class="se">\</span>
-<span class="go">    -model slr \</span>
-<span class="go">    -model-features f1:float:1 \</span>
-<span class="go">    -model-predict ans:int:1 \</span>
-<span class="go">    -model-location tempdir \</span>
-<span class="go">    -sources f=csv \</span>
-<span class="go">    -source-filename predict.csv</span>
+    -model slr <span class="se">\</span>
+    -model-features f1:float:1 <span class="se">\</span>
+    -model-predict ans:int:1 <span class="se">\</span>
+    -model-location tempdir <span class="se">\</span>
+    -sources <span class="nv">f</span><span class="o">=</span>csv <span class="se">\</span>
+    -source-filename predict.csv
 <span class="go">[</span>
 <span class="go">    {</span>
 <span class="go">        &quot;extra&quot;: {},</span>

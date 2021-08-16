@@ -267,18 +267,18 @@ download, since <code class="docutils literal notranslate"><span class="pre">spa
 </div>
 <p>Now we will create a dataflow to describe how the text feature (<cite>sentence</cite>) will be processed.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml dataflow create get_single remove_stopwords get_embedding <span class="se">\</span>
-<span class="go">    -inputs \</span>
-<span class="go">      &#39;[&quot;embedding&quot;]&#39;=get_single_spec \</span>
-<span class="go">      &quot;en_core_web_sm&quot;=spacy_model_name_def \</span>
-<span class="go">      &quot;&lt;PAD&gt;&quot;=pad_token_def 10=max_len_def \</span>
-<span class="go">    -flow \</span>
-<span class="go">      &#39;[{&quot;seed&quot;: [&quot;sentence&quot;]}]&#39;=remove_stopwords.inputs.text \</span>
-<span class="go">      &#39;[{&quot;seed&quot;: [&quot;spacy_model_name_def&quot;]}]&#39;=get_embedding.inputs.spacy_model \</span>
-<span class="go">      &#39;[{&quot;seed&quot;: [&quot;pad_token_def&quot;]}]&#39;=get_embedding.inputs.pad_token \</span>
-<span class="go">      &#39;[{&quot;seed&quot;: [&quot;max_len_def&quot;]}]&#39;=get_embedding.inputs.max_len \</span>
-<span class="go">      &#39;[{&quot;remove_stopwords&quot;: &quot;result&quot;}]&#39;=get_embedding.inputs.text \</span>
-<span class="go">      &#39;[{&quot;remove_stopwords&quot;: &quot;result&quot;}]&#39;=get_embedding.inputs.text | \</span>
-<span class="go">    tee nlp_ops_dataflow.json</span>
+    -inputs <span class="se">\</span>
+      <span class="s1">&#39;[&quot;embedding&quot;]&#39;</span><span class="o">=</span>get_single_spec <span class="se">\</span>
+      <span class="s2">&quot;en_core_web_sm&quot;</span><span class="o">=</span>spacy_model_name_def <span class="se">\</span>
+      <span class="s2">&quot;&lt;PAD&gt;&quot;</span><span class="o">=</span>pad_token_def <span class="nv">10</span><span class="o">=</span>max_len_def <span class="se">\</span>
+    -flow <span class="se">\</span>
+      <span class="s1">&#39;[{&quot;seed&quot;: [&quot;sentence&quot;]}]&#39;</span><span class="o">=</span>remove_stopwords.inputs.text <span class="se">\</span>
+      <span class="s1">&#39;[{&quot;seed&quot;: [&quot;spacy_model_name_def&quot;]}]&#39;</span><span class="o">=</span>get_embedding.inputs.spacy_model <span class="se">\</span>
+      <span class="s1">&#39;[{&quot;seed&quot;: [&quot;pad_token_def&quot;]}]&#39;</span><span class="o">=</span>get_embedding.inputs.pad_token <span class="se">\</span>
+      <span class="s1">&#39;[{&quot;seed&quot;: [&quot;max_len_def&quot;]}]&#39;</span><span class="o">=</span>get_embedding.inputs.max_len <span class="se">\</span>
+      <span class="s1">&#39;[{&quot;remove_stopwords&quot;: &quot;result&quot;}]&#39;</span><span class="o">=</span>get_embedding.inputs.text <span class="se">\</span>
+      <span class="s1">&#39;[{&quot;remove_stopwords&quot;: &quot;result&quot;}]&#39;</span><span class="o">=</span>get_embedding.inputs.text <span class="p">|</span> <span class="se">\</span>
+    tee nlp_ops_dataflow.json
 </pre></div>
 </div>
 <p>Operation <cite>get_embedding</cite> takes <cite>pad_token</cite> as input (here <cite>&lt;PAD&gt;</cite>) to append to sentences of length smaller
@@ -292,20 +292,20 @@ than <cite>max_len</cite> (here 10). A sentence which has length greater than <c
 results in the graph.</p>
 <img alt="../../_images/dataflow_diagram3.svg" src="../../_images/dataflow_diagram3.svg" /><p>We can now use this dataflow to preprocess the data and make it ready to be fed into model:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml train <span class="se">\</span>
-<span class="go">    -model tfdnnc \</span>
-<span class="go">    -model-batchsize 100 \</span>
-<span class="go">    -model-hidden 5 2 \</span>
-<span class="go">    -model-clstype int \</span>
-<span class="go">    -model-predict sentiment:int:1 \</span>
-<span class="go">    -model-classifications 0 1 \</span>
-<span class="go">    -model-directory tempdir \</span>
-<span class="go">    -model-features embedding:float:[1,10,96] \</span>
-<span class="go">    -sources text=df \</span>
-<span class="go">    -source-text-dataflow nlp_ops_dataflow.json \</span>
-<span class="go">    -source-text-features sentence:str:1 \</span>
-<span class="go">    -source-text-source csv \</span>
-<span class="go">    -source-text-source-filename train_data.csv \</span>
-<span class="go">    -log debug</span>
+    -model tfdnnc <span class="se">\</span>
+    -model-batchsize <span class="m">100</span> <span class="se">\</span>
+    -model-hidden <span class="m">5</span> <span class="m">2</span> <span class="se">\</span>
+    -model-clstype int <span class="se">\</span>
+    -model-predict sentiment:int:1 <span class="se">\</span>
+    -model-classifications <span class="m">0</span> <span class="m">1</span> <span class="se">\</span>
+    -model-directory tempdir <span class="se">\</span>
+    -model-features embedding:float:<span class="o">[</span><span class="m">1</span>,10,96<span class="o">]</span> <span class="se">\</span>
+    -sources <span class="nv">text</span><span class="o">=</span>df <span class="se">\</span>
+    -source-text-dataflow nlp_ops_dataflow.json <span class="se">\</span>
+    -source-text-features sentence:str:1 <span class="se">\</span>
+    -source-text-source csv <span class="se">\</span>
+    -source-text-source-filename train_data.csv <span class="se">\</span>
+    -log debug
 </pre></div>
 </div>
 <p>As shown in the above command, a single input feature to model (here embedding) is of shape <cite>(1, max_len, size_of_embedding)</cite>.
@@ -313,20 +313,20 @@ Here we have taken <cite>max_len</cite> as 10 and the embedding size of <cite>en
 is (1,10,96).</p>
 <p>Assess accuracy:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml accuracy <span class="se">\</span>
-<span class="go">    -model tfdnnc \</span>
-<span class="go">    -model-batchsize 100 \</span>
-<span class="go">    -model-hidden 5 2 \</span>
-<span class="go">    -model-clstype int \</span>
-<span class="go">    -model-predict sentiment:int:1 \</span>
-<span class="go">    -model-classifications 0 1 \</span>
-<span class="go">    -model-directory tempdir \</span>
-<span class="go">    -model-features embedding:float:[1,10,96] \</span>
-<span class="go">    -sources text=df \</span>
-<span class="go">    -source-text-dataflow nlp_ops_dataflow.json \</span>
-<span class="go">    -source-text-features sentence:str:1 \</span>
-<span class="go">    -source-text-source csv \</span>
-<span class="go">    -source-text-source-filename train_data.csv \</span>
-<span class="go">    -log debug</span>
+    -model tfdnnc <span class="se">\</span>
+    -model-batchsize <span class="m">100</span> <span class="se">\</span>
+    -model-hidden <span class="m">5</span> <span class="m">2</span> <span class="se">\</span>
+    -model-clstype int <span class="se">\</span>
+    -model-predict sentiment:int:1 <span class="se">\</span>
+    -model-classifications <span class="m">0</span> <span class="m">1</span> <span class="se">\</span>
+    -model-directory tempdir <span class="se">\</span>
+    -model-features embedding:float:<span class="o">[</span><span class="m">1</span>,10,96<span class="o">]</span> <span class="se">\</span>
+    -sources <span class="nv">text</span><span class="o">=</span>df <span class="se">\</span>
+    -source-text-dataflow nlp_ops_dataflow.json <span class="se">\</span>
+    -source-text-features sentence:str:1 <span class="se">\</span>
+    -source-text-source csv <span class="se">\</span>
+    -source-text-source-filename train_data.csv <span class="se">\</span>
+    -log debug
 <span class="go">0.5</span>
 </pre></div>
 </div>
@@ -338,20 +338,20 @@ is (1,10,96).</p>
 </div>
 <p>Make prediction on test data:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml predict all <span class="se">\</span>
-<span class="go">    -model tfdnnc \</span>
-<span class="go">    -model-batchsize 100 \</span>
-<span class="go">    -model-hidden 5 2 \</span>
-<span class="go">    -model-clstype int \</span>
-<span class="go">    -model-predict sentiment:int:1 \</span>
-<span class="go">    -model-classifications 0 1 \</span>
-<span class="go">    -model-directory tempdir \</span>
-<span class="go">    -model-features embedding:float:[1,10,96] \</span>
-<span class="go">    -sources text=df \</span>
-<span class="go">    -source-text-dataflow nlp_ops_dataflow.json \</span>
-<span class="go">    -source-text-features sentence:str:1 \</span>
-<span class="go">    -source-text-source csv \</span>
-<span class="go">    -source-text-source-filename test_data.csv \</span>
-<span class="go">    -pretty</span>
+    -model tfdnnc <span class="se">\</span>
+    -model-batchsize <span class="m">100</span> <span class="se">\</span>
+    -model-hidden <span class="m">5</span> <span class="m">2</span> <span class="se">\</span>
+    -model-clstype int <span class="se">\</span>
+    -model-predict sentiment:int:1 <span class="se">\</span>
+    -model-classifications <span class="m">0</span> <span class="m">1</span> <span class="se">\</span>
+    -model-directory tempdir <span class="se">\</span>
+    -model-features embedding:float:<span class="o">[</span><span class="m">1</span>,10,96<span class="o">]</span> <span class="se">\</span>
+    -sources <span class="nv">text</span><span class="o">=</span>df <span class="se">\</span>
+    -source-text-dataflow nlp_ops_dataflow.json <span class="se">\</span>
+    -source-text-features sentence:str:1 <span class="se">\</span>
+    -source-text-source csv <span class="se">\</span>
+    -source-text-source-filename test_data.csv <span class="se">\</span>
+    -pretty
 
 <span class="go">        Key:    0</span>
 <span class="go">                                                   Record Features</span>
@@ -398,24 +398,24 @@ The matrix returned by <cite>tfidf_vectorizer</cite> will be passed to <code cla
 which will return the array corresponding to each sentence.</p>
 <p>So, Let’s modify the dataflow to use our new operations.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml dataflow create <span class="se">\</span>
-<span class="go">    -inputs \</span>
-<span class="go">      &#39;[&quot;extract_array_from_matrix.outputs.result&quot;]&#39;=get_single_spec \</span>
-<span class="go">      4=source_length \</span>
-<span class="go">    -flow \</span>
-<span class="go">      &#39;[{&quot;seed&quot;: [&quot;sentence&quot;]}]&#39;=remove_stopwords.inputs.text \</span>
-<span class="go">      &#39;[{&quot;seed&quot;: [&quot;source_length&quot;]}]&#39;=collect_output.inputs.length \</span>
-<span class="go">      &#39;[{&quot;remove_stopwords&quot;: &quot;result&quot;}]&#39;=collect_output.inputs.sentence \</span>
-<span class="go">      &#39;[{&quot;collect_output&quot;: &quot;all&quot;}]&#39;=tfidf_vectorizer.inputs.text \</span>
-<span class="go">      &#39;[{&quot;remove_stopwords&quot;: &quot;result&quot;}]&#39;=extract_array_from_matrix.inputs.single_text_example \</span>
-<span class="go">      &#39;[{&quot;collect_output&quot;: &quot;all&quot;}]&#39;=extract_array_from_matrix.inputs.collected_text \</span>
-<span class="go">      &#39;[{&quot;tfidf_vectorizer&quot;: &quot;result&quot;}]&#39;=extract_array_from_matrix.inputs.input_matrix \</span>
-<span class="go">    -- \</span>
-<span class="go">      get_single \</span>
-<span class="go">      remove_stopwords \</span>
-<span class="go">      collect_output \</span>
-<span class="go">      extract_array_from_matrix \</span>
-<span class="go">      tfidf_vectorizer | \</span>
-<span class="go">    tee nlp_ops_dataflow.json</span>
+    -inputs <span class="se">\</span>
+      <span class="s1">&#39;[&quot;extract_array_from_matrix.outputs.result&quot;]&#39;</span><span class="o">=</span>get_single_spec <span class="se">\</span>
+      <span class="nv">4</span><span class="o">=</span>source_length <span class="se">\</span>
+    -flow <span class="se">\</span>
+      <span class="s1">&#39;[{&quot;seed&quot;: [&quot;sentence&quot;]}]&#39;</span><span class="o">=</span>remove_stopwords.inputs.text <span class="se">\</span>
+      <span class="s1">&#39;[{&quot;seed&quot;: [&quot;source_length&quot;]}]&#39;</span><span class="o">=</span>collect_output.inputs.length <span class="se">\</span>
+      <span class="s1">&#39;[{&quot;remove_stopwords&quot;: &quot;result&quot;}]&#39;</span><span class="o">=</span>collect_output.inputs.sentence <span class="se">\</span>
+      <span class="s1">&#39;[{&quot;collect_output&quot;: &quot;all&quot;}]&#39;</span><span class="o">=</span>tfidf_vectorizer.inputs.text <span class="se">\</span>
+      <span class="s1">&#39;[{&quot;remove_stopwords&quot;: &quot;result&quot;}]&#39;</span><span class="o">=</span>extract_array_from_matrix.inputs.single_text_example <span class="se">\</span>
+      <span class="s1">&#39;[{&quot;collect_output&quot;: &quot;all&quot;}]&#39;</span><span class="o">=</span>extract_array_from_matrix.inputs.collected_text <span class="se">\</span>
+      <span class="s1">&#39;[{&quot;tfidf_vectorizer&quot;: &quot;result&quot;}]&#39;</span><span class="o">=</span>extract_array_from_matrix.inputs.input_matrix <span class="se">\</span>
+    -- <span class="se">\</span>
+      get_single <span class="se">\</span>
+      remove_stopwords <span class="se">\</span>
+      collect_output <span class="se">\</span>
+      extract_array_from_matrix <span class="se">\</span>
+      tfidf_vectorizer <span class="p">|</span> <span class="se">\</span>
+    tee nlp_ops_dataflow.json
 </pre></div>
 </div>
 <p>To visualize the dataflow run:</p>
@@ -424,30 +424,30 @@ which will return the array corresponding to each sentence.</p>
 </div>
 <p>We can now use this dataflow to preprocess the data and make it ready to be fed into model:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml train <span class="se">\</span>
-<span class="go">    -model scikitgnb \</span>
-<span class="go">    -model-features extract_array_from_matrix.outputs.result:float:1 \</span>
-<span class="go">    -model-predict sentiment:int:1 \</span>
-<span class="go">    -model-directory tempdir \</span>
-<span class="go">    -sources text=df \</span>
-<span class="go">    -source-text-dataflow nlp_ops_dataflow.json \</span>
-<span class="go">    -source-text-features sentence:str:1 \</span>
-<span class="go">    -source-text-source csv \</span>
-<span class="go">    -source-text-source-filename train_data.csv \</span>
-<span class="go">    -log debug</span>
+    -model scikitgnb <span class="se">\</span>
+    -model-features extract_array_from_matrix.outputs.result:float:1 <span class="se">\</span>
+    -model-predict sentiment:int:1 <span class="se">\</span>
+    -model-directory tempdir <span class="se">\</span>
+    -sources <span class="nv">text</span><span class="o">=</span>df <span class="se">\</span>
+    -source-text-dataflow nlp_ops_dataflow.json <span class="se">\</span>
+    -source-text-features sentence:str:1 <span class="se">\</span>
+    -source-text-source csv <span class="se">\</span>
+    -source-text-source-filename train_data.csv <span class="se">\</span>
+    -log debug
 </pre></div>
 </div>
 <p>Assess accuracy:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml accuracy <span class="se">\</span>
-<span class="go">    -model scikitgnb \</span>
-<span class="go">    -model-features extract_array_from_matrix.outputs.result:float:1 \</span>
-<span class="go">    -model-predict sentiment:int:1 \</span>
-<span class="go">    -model-directory tempdir \</span>
-<span class="go">    -sources text=df \</span>
-<span class="go">    -source-text-dataflow nlp_ops_dataflow.json \</span>
-<span class="go">    -source-text-features sentence:str:1 \</span>
-<span class="go">    -source-text-source csv \</span>
-<span class="go">    -source-text-source-filename train_data.csv \</span>
-<span class="go">    -log debug</span>
+    -model scikitgnb <span class="se">\</span>
+    -model-features extract_array_from_matrix.outputs.result:float:1 <span class="se">\</span>
+    -model-predict sentiment:int:1 <span class="se">\</span>
+    -model-directory tempdir <span class="se">\</span>
+    -sources <span class="nv">text</span><span class="o">=</span>df <span class="se">\</span>
+    -source-text-dataflow nlp_ops_dataflow.json <span class="se">\</span>
+    -source-text-features sentence:str:1 <span class="se">\</span>
+    -source-text-source csv <span class="se">\</span>
+    -source-text-source-filename train_data.csv <span class="se">\</span>
+    -log debug
 <span class="go">1.0</span>
 </pre></div>
 </div>
@@ -470,26 +470,26 @@ and put them in the JSON source as an intermediary format.</p>
 randomized output order.</p>
 </div>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml merge <span class="nv">text</span><span class="o">=</span>df <span class="nv">temp</span><span class="o">=</span>json <span class="se">\</span>
-<span class="go">    -source-text-dataflow nlp_ops_dataflow.json \</span>
-<span class="go">    -source-text-features sentence:str:1 \</span>
-<span class="go">    -source-text-source csv \</span>
-<span class="go">    -source-text-source-filename test_data.csv \</span>
-<span class="go">    -source-temp-filename test_data_preprocessed.json \</span>
-<span class="go">    -source-temp-allowempty \</span>
-<span class="go">    -source-temp-readwrite \</span>
-<span class="go">    -log debug</span>
+    -source-text-dataflow nlp_ops_dataflow.json <span class="se">\</span>
+    -source-text-features sentence:str:1 <span class="se">\</span>
+    -source-text-source csv <span class="se">\</span>
+    -source-text-source-filename test_data.csv <span class="se">\</span>
+    -source-temp-filename test_data_preprocessed.json <span class="se">\</span>
+    -source-temp-allowempty <span class="se">\</span>
+    -source-temp-readwrite <span class="se">\</span>
+    -log debug
 <span class="gp">$ </span>cat test_data_preprocessed.json <span class="p">|</span> python -m json.tool
 </pre></div>
 </div>
 <p>Now we can make prediction on test data:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml predict all <span class="se">\</span>
-<span class="go">    -model scikitgnb \</span>
-<span class="go">    -model-features extract_array_from_matrix.outputs.result:float:1 \</span>
-<span class="go">    -model-predict sentiment:int:1 \</span>
-<span class="go">    -model-directory tempdir \</span>
-<span class="go">    -sources temp=json \</span>
-<span class="go">    -source-temp-filename test_data_preprocessed.json \</span>
-<span class="go">    -pretty</span>
+    -model scikitgnb <span class="se">\</span>
+    -model-features extract_array_from_matrix.outputs.result:float:1 <span class="se">\</span>
+    -model-predict sentiment:int:1 <span class="se">\</span>
+    -model-directory tempdir <span class="se">\</span>
+    -sources <span class="nv">temp</span><span class="o">=</span>json <span class="se">\</span>
+    -source-temp-filename test_data_preprocessed.json <span class="se">\</span>
+    -pretty
 
 <span class="go">        Key:        1</span>
 <span class="go">                                        Record Features</span>

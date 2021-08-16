@@ -352,24 +352,24 @@ See the <a class="reference internal" href="../tutorials/models/load.html"><span
 </div>
 <p>Train the model</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml train <span class="se">\</span>
-<span class="go">    -model slr \</span>
-<span class="go">    -model-features f1:float:1 \</span>
-<span class="go">    -model-predict ans:int:1 \</span>
-<span class="go">    -model-location tempdir \</span>
-<span class="go">    -sources f=csv \</span>
-<span class="go">    -source-filename dataset.csv</span>
+    -model slr <span class="se">\</span>
+    -model-features f1:float:1 <span class="se">\</span>
+    -model-predict ans:int:1 <span class="se">\</span>
+    -model-location tempdir <span class="se">\</span>
+    -sources <span class="nv">f</span><span class="o">=</span>csv <span class="se">\</span>
+    -source-filename dataset.csv
 </pre></div>
 </div>
 <p>Assess the accuracy</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml accuracy <span class="se">\</span>
-<span class="go">    -model slr \</span>
-<span class="go">    -model-features f1:float:1 \</span>
-<span class="go">    -model-predict ans:int:1 \</span>
-<span class="go">    -model-location tempdir \</span>
-<span class="go">    -sources f=csv \</span>
-<span class="go">    -source-filename dataset.csv \</span>
-<span class="go">    -scorer mse \</span>
-<span class="go">1.0</span>
+    -model slr <span class="se">\</span>
+    -model-features f1:float:1 <span class="se">\</span>
+    -model-predict ans:int:1 <span class="se">\</span>
+    -model-location tempdir <span class="se">\</span>
+    -sources <span class="nv">f</span><span class="o">=</span>csv <span class="se">\</span>
+    -source-filename dataset.csv <span class="se">\</span>
+    -scorer mse <span class="se">\</span>
+<span class="m">1</span>.0
 </pre></div>
 </div>
 <p>Make a prediction</p>
@@ -379,12 +379,12 @@ See the <a class="reference internal" href="../tutorials/models/load.html"><span
 </pre></div>
 </div>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml predict all <span class="se">\</span>
-<span class="go">    -model slr \</span>
-<span class="go">    -model-features f1:float:1 \</span>
-<span class="go">    -model-predict ans:int:1 \</span>
-<span class="go">    -model-location tempdir \</span>
-<span class="go">    -sources f=csv \</span>
-<span class="go">    -source-filename predict.csv</span>
+    -model slr <span class="se">\</span>
+    -model-features f1:float:1 <span class="se">\</span>
+    -model-predict ans:int:1 <span class="se">\</span>
+    -model-location tempdir <span class="se">\</span>
+    -sources <span class="nv">f</span><span class="o">=</span>csv <span class="se">\</span>
+    -source-filename predict.csv
 <span class="go">[</span>
 <span class="go">    {</span>
 <span class="go">        &quot;extra&quot;: {},</span>
@@ -880,54 +880,54 @@ $ sed -i &#39;s/.*setosa,versicolor,virginica/SepalLength,SepalWidth,PetalLength
 </div>
 <p>Run the train command</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml train <span class="se">\</span>
-<span class="go">    -sources train=csv \</span>
-<span class="go">    -source-filename iris_training.csv \</span>
-<span class="go">    -model xgbclassifier \</span>
-<span class="go">    -model-features \</span>
-<span class="go">      SepalLength:float:1 \</span>
-<span class="go">      SepalWidth:float:1 \</span>
-<span class="go">      PetalLength:float:1 \</span>
-<span class="go">      PetalWidth:float:1 \</span>
-<span class="go">    -model-predict classification \</span>
-<span class="go">    -model-location model \</span>
-<span class="go">    -model-max_depth 3 \</span>
-<span class="go">    -model-learning_rate 0.01 \</span>
-<span class="go">    -model-learning_rate 0.01 \</span>
-<span class="go">    -model-n_estimators 200 \</span>
-<span class="go">    -model-reg_lambda 1 \</span>
-<span class="go">    -model-reg_alpha 0 \</span>
-<span class="go">    -model-gamma 0 \</span>
-<span class="go">    -model-colsample_bytree 0 \</span>
-<span class="go">    -model-subsample 1</span>
+    -sources <span class="nv">train</span><span class="o">=</span>csv <span class="se">\</span>
+    -source-filename iris_training.csv <span class="se">\</span>
+    -model xgbclassifier <span class="se">\</span>
+    -model-features <span class="se">\</span>
+      SepalLength:float:1 <span class="se">\</span>
+      SepalWidth:float:1 <span class="se">\</span>
+      PetalLength:float:1 <span class="se">\</span>
+      PetalWidth:float:1 <span class="se">\</span>
+    -model-predict classification <span class="se">\</span>
+    -model-location model <span class="se">\</span>
+    -model-max_depth <span class="m">3</span> <span class="se">\</span>
+    -model-learning_rate <span class="m">0</span>.01 <span class="se">\</span>
+    -model-learning_rate <span class="m">0</span>.01 <span class="se">\</span>
+    -model-n_estimators <span class="m">200</span> <span class="se">\</span>
+    -model-reg_lambda <span class="m">1</span> <span class="se">\</span>
+    -model-reg_alpha <span class="m">0</span> <span class="se">\</span>
+    -model-gamma <span class="m">0</span> <span class="se">\</span>
+    -model-colsample_bytree <span class="m">0</span> <span class="se">\</span>
+    -model-subsample <span class="m">1</span>
 </pre></div>
 </div>
 <p>Assess the accuracy</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml accuracy <span class="se">\</span>
-<span class="go">    -sources train=csv \</span>
-<span class="go">    -source-filename iris_test.csv \</span>
-<span class="go">    -model xgbclassifier \</span>
-<span class="go">    -model-features \</span>
-<span class="go">      SepalLength:float:1 \</span>
-<span class="go">      SepalWidth:float:1 \</span>
-<span class="go">      PetalLength:float:1 \</span>
-<span class="go">      PetalWidth:float:1 \</span>
-<span class="go">    -model-predict classification \</span>
-<span class="go">    -model-location model \</span>
-<span class="go">    -scorer clf</span>
+    -sources <span class="nv">train</span><span class="o">=</span>csv <span class="se">\</span>
+    -source-filename iris_test.csv <span class="se">\</span>
+    -model xgbclassifier <span class="se">\</span>
+    -model-features <span class="se">\</span>
+      SepalLength:float:1 <span class="se">\</span>
+      SepalWidth:float:1 <span class="se">\</span>
+      PetalLength:float:1 <span class="se">\</span>
+      PetalWidth:float:1 <span class="se">\</span>
+    -model-predict classification <span class="se">\</span>
+    -model-location model <span class="se">\</span>
+    -scorer clf
 </pre></div>
 </div>
 <p>Make predictions</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml predict all <span class="se">\</span>
-<span class="go">    -sources train=csv \</span>
-<span class="go">    -source-filename iris_test.csv \</span>
-<span class="go">    -model xgbclassifier \</span>
-<span class="go">    -model-features \</span>
-<span class="go">      SepalLength:float:1 \</span>
-<span class="go">      SepalWidth:float:1 \</span>
-<span class="go">      PetalLength:float:1 \</span>
-<span class="go">      PetalWidth:float:1 \</span>
-<span class="go">    -model-predict classification \</span>
-<span class="go">    -model-location model</span>
+    -sources <span class="nv">train</span><span class="o">=</span>csv <span class="se">\</span>
+    -source-filename iris_test.csv <span class="se">\</span>
+    -model xgbclassifier <span class="se">\</span>
+    -model-features <span class="se">\</span>
+      SepalLength:float:1 <span class="se">\</span>
+      SepalWidth:float:1 <span class="se">\</span>
+      PetalLength:float:1 <span class="se">\</span>
+      PetalWidth:float:1 <span class="se">\</span>
+    -model-predict classification <span class="se">\</span>
+    -model-location model
 </pre></div>
 </div>
 <p>Python usage</p>
@@ -1104,39 +1104,39 @@ $ sed -i &#39;s/.*setosa,versicolor,virginica/SepalLength,SepalWidth,PetalLength
 </div>
 <p>Run the train command</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml train <span class="se">\</span>
-<span class="go">    -sources train=csv \</span>
-<span class="go">    -source-filename iris_training.csv \</span>
-<span class="go">    -model xgbregressor \</span>
-<span class="go">    -model-features \</span>
-<span class="go">      SepalLength:float:1 \</span>
-<span class="go">      SepalWidth:float:1 \</span>
-<span class="go">      PetalLength:float:1 \</span>
-<span class="go">      PetalWidth:float:1 \</span>
-<span class="go">    -model-predict classification \</span>
-<span class="go">    -model-location model \</span>
-<span class="go">    -model-max_depth 3 \</span>
-<span class="go">    -model-learning_rate 0.01 \</span>
-<span class="go">    -model-n_estimators 200 \</span>
-<span class="go">    -model-reg_lambda 1 \</span>
-<span class="go">    -model-reg_alpha 0 \</span>
-<span class="go">    -model-gamma 0 \</span>
-<span class="go">    -model-colsample_bytree 0 \</span>
-<span class="go">    -model-subsample 1</span>
+    -sources <span class="nv">train</span><span class="o">=</span>csv <span class="se">\</span>
+    -source-filename iris_training.csv <span class="se">\</span>
+    -model xgbregressor <span class="se">\</span>
+    -model-features <span class="se">\</span>
+      SepalLength:float:1 <span class="se">\</span>
+      SepalWidth:float:1 <span class="se">\</span>
+      PetalLength:float:1 <span class="se">\</span>
+      PetalWidth:float:1 <span class="se">\</span>
+    -model-predict classification <span class="se">\</span>
+    -model-location model <span class="se">\</span>
+    -model-max_depth <span class="m">3</span> <span class="se">\</span>
+    -model-learning_rate <span class="m">0</span>.01 <span class="se">\</span>
+    -model-n_estimators <span class="m">200</span> <span class="se">\</span>
+    -model-reg_lambda <span class="m">1</span> <span class="se">\</span>
+    -model-reg_alpha <span class="m">0</span> <span class="se">\</span>
+    -model-gamma <span class="m">0</span> <span class="se">\</span>
+    -model-colsample_bytree <span class="m">0</span> <span class="se">\</span>
+    -model-subsample <span class="m">1</span>
 </pre></div>
 </div>
 <p>Assess the accuracy</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml accuracy <span class="se">\</span>
-<span class="go">    -sources train=csv \</span>
-<span class="go">    -source-filename iris_test.csv \</span>
-<span class="go">    -model xgbregressor \</span>
-<span class="go">    -model-features \</span>
-<span class="go">      SepalLength:float:1 \</span>
-<span class="go">      SepalWidth:float:1 \</span>
-<span class="go">      PetalLength:float:1 \</span>
-<span class="go">      PetalWidth:float:1 \</span>
-<span class="go">    -model-predict classification \</span>
-<span class="go">    -model-location model \</span>
-<span class="go">    -scorer mse</span>
+    -sources <span class="nv">train</span><span class="o">=</span>csv <span class="se">\</span>
+    -source-filename iris_test.csv <span class="se">\</span>
+    -model xgbregressor <span class="se">\</span>
+    -model-features <span class="se">\</span>
+      SepalLength:float:1 <span class="se">\</span>
+      SepalWidth:float:1 <span class="se">\</span>
+      PetalLength:float:1 <span class="se">\</span>
+      PetalWidth:float:1 <span class="se">\</span>
+    -model-predict classification <span class="se">\</span>
+    -model-location model <span class="se">\</span>
+    -scorer mse
 </pre></div>
 </div>
 <p>Output</p>
@@ -1145,16 +1145,16 @@ $ sed -i &#39;s/.*setosa,versicolor,virginica/SepalLength,SepalWidth,PetalLength
 </div>
 <p>Make predictions</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml predict all <span class="se">\</span>
-<span class="go">    -sources train=csv \</span>
-<span class="go">    -source-filename iris_test.csv \</span>
-<span class="go">    -model xgbregressor \</span>
-<span class="go">    -model-features \</span>
-<span class="go">      SepalLength:float:1 \</span>
-<span class="go">      SepalWidth:float:1 \</span>
-<span class="go">      PetalLength:float:1 \</span>
-<span class="go">      PetalWidth:float:1 \</span>
-<span class="go">    -model-predict classification \</span>
-<span class="go">    -model-location model</span>
+    -sources <span class="nv">train</span><span class="o">=</span>csv <span class="se">\</span>
+    -source-filename iris_test.csv <span class="se">\</span>
+    -model xgbregressor <span class="se">\</span>
+    -model-features <span class="se">\</span>
+      SepalLength:float:1 <span class="se">\</span>
+      SepalWidth:float:1 <span class="se">\</span>
+      PetalLength:float:1 <span class="se">\</span>
+      PetalWidth:float:1 <span class="se">\</span>
+    -model-predict classification <span class="se">\</span>
+    -model-location model
 </pre></div>
 </div>
 <p>Python usage</p>
@@ -1767,40 +1767,40 @@ EOF
 </div>
 <p>Train the model</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml train <span class="se">\</span>
-<span class="go">    -model spacyner \</span>
-<span class="go">    -sources s=op \</span>
-<span class="go">    -source-opimp dffml_model_spacy.ner.utils:parser \</span>
-<span class="go">    -source-args train.json False \</span>
-<span class="go">    -model-model_name_or_path en_core_web_sm \</span>
-<span class="go">    -model-location temp \</span>
-<span class="go">    -model-n_iter 5 \</span>
-<span class="go">    -log debug</span>
+    -model spacyner <span class="se">\</span>
+    -sources <span class="nv">s</span><span class="o">=</span>op <span class="se">\</span>
+    -source-opimp dffml_model_spacy.ner.utils:parser <span class="se">\</span>
+    -source-args train.json False <span class="se">\</span>
+    -model-model_name_or_path en_core_web_sm <span class="se">\</span>
+    -model-location temp <span class="se">\</span>
+    -model-n_iter <span class="m">5</span> <span class="se">\</span>
+    -log debug
 </pre></div>
 </div>
 <p>Assess the accuracy</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml accuracy <span class="se">\</span>
-<span class="go">    -model spacyner \</span>
-<span class="go">    -sources s=op \</span>
-<span class="go">    -source-opimp dffml_model_spacy.ner.utils:parser \</span>
-<span class="go">    -source-args train.json False \</span>
-<span class="go">    -model-model_name_or_path en_core_web_sm \</span>
-<span class="go">    -model-location temp \</span>
-<span class="go">    -model-n_iter 5 \</span>
-<span class="go">    -scorer sner \</span>
-<span class="go">    -log debug</span>
+    -model spacyner <span class="se">\</span>
+    -sources <span class="nv">s</span><span class="o">=</span>op <span class="se">\</span>
+    -source-opimp dffml_model_spacy.ner.utils:parser <span class="se">\</span>
+    -source-args train.json False <span class="se">\</span>
+    -model-model_name_or_path en_core_web_sm <span class="se">\</span>
+    -model-location temp <span class="se">\</span>
+    -model-n_iter <span class="m">5</span> <span class="se">\</span>
+    -scorer sner <span class="se">\</span>
+    -log debug
 <span class="go">0.0</span>
 </pre></div>
 </div>
 <p>Make a prediction</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml predict all <span class="se">\</span>
-<span class="go">    -model spacyner \</span>
-<span class="go">    -sources s=op \</span>
-<span class="go">    -source-opimp dffml_model_spacy.ner.utils:parser \</span>
-<span class="go">    -source-args test.json True \</span>
-<span class="go">    -model-model_name_or_path en_core_web_sm \</span>
-<span class="go">    -model-location temp \</span>
-<span class="go">    -model-n_iter 5 \</span>
-<span class="go">    -log debug</span>
+    -model spacyner <span class="se">\</span>
+    -sources <span class="nv">s</span><span class="o">=</span>op <span class="se">\</span>
+    -source-opimp dffml_model_spacy.ner.utils:parser <span class="se">\</span>
+    -source-args test.json True <span class="se">\</span>
+    -model-model_name_or_path en_core_web_sm <span class="se">\</span>
+    -model-location temp <span class="se">\</span>
+    -model-n_iter <span class="m">5</span> <span class="se">\</span>
+    -log debug
 <span class="go">[</span>
 <span class="go">    {</span>
 <span class="go">        &quot;extra&quot;: {},</span>
@@ -1954,33 +1954,33 @@ across various features, and works particularly well if the features have a Gaus
 </div>
 <p>Train the model</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml train <span class="se">\</span>
-<span class="go">    -sources f=csv \</span>
-<span class="go">    -source-filename trainex.csv \</span>
-<span class="go">    -model anomalydetection \</span>
-<span class="go">    -model-features A:float:2 \</span>
-<span class="go">    -model-predict Y:int:1  \</span>
-<span class="go">    -model-location tempdir</span>
+    -sources <span class="nv">f</span><span class="o">=</span>csv <span class="se">\</span>
+    -source-filename trainex.csv <span class="se">\</span>
+    -model anomalydetection <span class="se">\</span>
+    -model-features A:float:2 <span class="se">\</span>
+    -model-predict Y:int:1  <span class="se">\</span>
+    -model-location tempdir
 </pre></div>
 </div>
 <p>Assess the accuracy</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml accuracy <span class="se">\</span>
-<span class="go">    -sources f=csv \</span>
-<span class="go">    -source-filename testex.csv \</span>
-<span class="go">    -model anomalydetection \</span>
-<span class="go">    -model-features A:float:2 \</span>
-<span class="go">    -model-predict Y:int:1 \</span>
-<span class="go">    -model-location tempdir \</span>
-<span class="go">    -scorer anomalyscore</span>
+    -sources <span class="nv">f</span><span class="o">=</span>csv <span class="se">\</span>
+    -source-filename testex.csv <span class="se">\</span>
+    -model anomalydetection <span class="se">\</span>
+    -model-features A:float:2 <span class="se">\</span>
+    -model-predict Y:int:1 <span class="se">\</span>
+    -model-location tempdir <span class="se">\</span>
+    -scorer anomalyscore
 </pre></div>
 </div>
 <p>Make predictions</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml predict all <span class="se">\</span>
-<span class="go">    -sources f=csv \</span>
-<span class="go">    -source-filename testex.csv \</span>
-<span class="go">    -model anomalydetection \</span>
-<span class="go">    -model-features A:float:2 \</span>
-<span class="go">    -model-predict Y:int:1 \</span>
-<span class="go">    -model-location tempdir</span>
+    -sources <span class="nv">f</span><span class="o">=</span>csv <span class="se">\</span>
+    -source-filename testex.csv <span class="se">\</span>
+    -model anomalydetection <span class="se">\</span>
+    -model-features A:float:2 <span class="se">\</span>
+    -model-predict Y:int:1 <span class="se">\</span>
+    -model-location tempdir
 </pre></div>
 </div>
 <p>Python usage</p>
@@ -2174,37 +2174,37 @@ their feature names.</p>
 <p><strong>General Usage:</strong></p>
 <p>Training:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml train <span class="se">\</span>
-<span class="go">    -model SCIKIT_MODEL_ENTRYPOINT \</span>
-<span class="go">    -model-features FEATURE_DEFINITION \</span>
-<span class="go">    -model-predict TO_PREDICT \</span>
-<span class="go">    -model-location MODEL_DIRECTORY \</span>
-<span class="go">    -model-SCIKIT_PARAMETER_NAME SCIKIT_PARAMETER_VALUE \</span>
-<span class="go">    -sources f=TRAINING_DATA_SOURCE_TYPE \</span>
-<span class="go">    -source-filename TRAINING_DATA_FILE_NAME \</span>
-<span class="go">    -log debug</span>
+    -model SCIKIT_MODEL_ENTRYPOINT <span class="se">\</span>
+    -model-features FEATURE_DEFINITION <span class="se">\</span>
+    -model-predict TO_PREDICT <span class="se">\</span>
+    -model-location MODEL_DIRECTORY <span class="se">\</span>
+    -model-SCIKIT_PARAMETER_NAME SCIKIT_PARAMETER_VALUE <span class="se">\</span>
+    -sources <span class="nv">f</span><span class="o">=</span>TRAINING_DATA_SOURCE_TYPE <span class="se">\</span>
+    -source-filename TRAINING_DATA_FILE_NAME <span class="se">\</span>
+    -log debug
 </pre></div>
 </div>
 <p>Testing and Accuracy:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml accuracy <span class="se">\</span>
-<span class="go">    -model SCIKIT_MODEL_ENTRYPOINT \</span>
-<span class="go">    -model-features FEATURE_DEFINITION \</span>
-<span class="go">    -model-predict TO_PREDICT \</span>
-<span class="go">    -model-location MODEL_DIRECTORY \</span>
-<span class="go">    -sources f=TESTING_DATA_SOURCE_TYPE \</span>
-<span class="go">    -source-filename TESTING_DATA_FILE_NAME \</span>
-<span class="go">    -scorer ACCURACY_SCORER \</span>
-<span class="go">    -log debug</span>
+    -model SCIKIT_MODEL_ENTRYPOINT <span class="se">\</span>
+    -model-features FEATURE_DEFINITION <span class="se">\</span>
+    -model-predict TO_PREDICT <span class="se">\</span>
+    -model-location MODEL_DIRECTORY <span class="se">\</span>
+    -sources <span class="nv">f</span><span class="o">=</span>TESTING_DATA_SOURCE_TYPE <span class="se">\</span>
+    -source-filename TESTING_DATA_FILE_NAME <span class="se">\</span>
+    -scorer ACCURACY_SCORER <span class="se">\</span>
+    -log debug
 </pre></div>
 </div>
 <p>Predicting with trained model:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml predict all <span class="se">\</span>
-<span class="go">    -model SCIKIT_MODEL_ENTRYPOINT \</span>
-<span class="go">    -model-features FEATURE_DEFINITION \</span>
-<span class="go">    -model-predict TO_PREDICT \</span>
-<span class="go">    -model-location MODEL_DIRECTORY \</span>
-<span class="go">    -sources f=PREDICT_DATA_SOURCE_TYPE \</span>
-<span class="go">    -source-filename PREDICT_DATA_FILE_NAME \</span>
-<span class="go">    -log debug</span>
+    -model SCIKIT_MODEL_ENTRYPOINT <span class="se">\</span>
+    -model-features FEATURE_DEFINITION <span class="se">\</span>
+    -model-predict TO_PREDICT <span class="se">\</span>
+    -model-location MODEL_DIRECTORY <span class="se">\</span>
+    -sources <span class="nv">f</span><span class="o">=</span>PREDICT_DATA_SOURCE_TYPE <span class="se">\</span>
+    -source-filename PREDICT_DATA_FILE_NAME <span class="se">\</span>
+    -log debug
 </pre></div>
 </div>
 <p><strong>Models Available:</strong></p>
@@ -2694,33 +2694,33 @@ their feature names.</p>
 <span class="go">4.01612313,  -4.641852  ,  -4.77333308,   5.87551683,     0</span>
 <span class="go">EOF</span>
 <span class="gp"> $ </span>dffml train <span class="se">\</span>
-<span class="go">     -model scikitkmeans \</span>
-<span class="go">     -model-features Col1:float:1 Col2:float:1 Col3:float:1 Col4:float:1 \</span>
-<span class="go">     -model-location tempdir \</span>
-<span class="go">     -sources f=csv \</span>
-<span class="go">     -source-filename train.csv \</span>
-<span class="go">     -source-readonly \</span>
-<span class="go">     -log debug</span>
+     -model scikitkmeans <span class="se">\</span>
+     -model-features Col1:float:1 Col2:float:1 Col3:float:1 Col4:float:1 <span class="se">\</span>
+     -model-location tempdir <span class="se">\</span>
+     -sources <span class="nv">f</span><span class="o">=</span>csv <span class="se">\</span>
+     -source-filename train.csv <span class="se">\</span>
+     -source-readonly <span class="se">\</span>
+     -log debug
 <span class="gp"> $ </span>dffml accuracy <span class="se">\</span>
-<span class="go">     -model scikitkmeans \</span>
-<span class="go">     -model-features Col1:float:1 Col2:float:1 Col3:float:1 Col4:float:1\</span>
-<span class="go">     -model-predict cluster:int:1 \</span>
-<span class="go">     -model-location tempdir \</span>
-<span class="go">     -sources f=csv \</span>
-<span class="go">     -source-filename test.csv \</span>
-<span class="go">     -source-readonly \</span>
-<span class="go">     -scorer skmodelscore \</span>
-<span class="go">     -log debug</span>
+     -model scikitkmeans <span class="se">\</span>
+     -model-features Col1:float:1 Col2:float:1 Col3:float:1 Col4:float:1<span class="se">\</span>
+     -model-predict cluster:int:1 <span class="se">\</span>
+     -model-location tempdir <span class="se">\</span>
+     -sources <span class="nv">f</span><span class="o">=</span>csv <span class="se">\</span>
+     -source-filename test.csv <span class="se">\</span>
+     -source-readonly <span class="se">\</span>
+     -scorer skmodelscore <span class="se">\</span>
+     -log debug
 <span class="go"> 0.6365141682948129</span>
 <span class="gp"> $ </span><span class="nb">echo</span> -e <span class="s1">&#39;Col1,Col2,Col3,Col4\n6.09809669,8.36434181,6.70940915,-7.91491768\n&#39;</span> <span class="p">|</span> <span class="se">\</span>
-<span class="go">   dffml predict all \</span>
-<span class="go">     -model scikitkmeans \</span>
-<span class="go">     -model-features Col1:float:1 Col2:float:1 Col3:float:1 Col4:float:1 \</span>
-<span class="go">     -model-location tempdir \</span>
-<span class="go">     -sources f=csv \</span>
-<span class="go">     -source-filename /dev/stdin \</span>
-<span class="go">     -source-readonly \</span>
-<span class="go">     -log debug</span>
+   dffml predict all <span class="se">\</span>
+     -model scikitkmeans <span class="se">\</span>
+     -model-features Col1:float:1 Col2:float:1 Col3:float:1 Col4:float:1 <span class="se">\</span>
+     -model-location tempdir <span class="se">\</span>
+     -sources <span class="nv">f</span><span class="o">=</span>csv <span class="se">\</span>
+     -source-filename /dev/stdin <span class="se">\</span>
+     -source-readonly <span class="se">\</span>
+     -log debug
 <span class="go"> [</span>
 <span class="go">     {</span>
 <span class="go">         &quot;extra&quot;: {},</span>
@@ -2805,38 +2805,38 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <p><strong>General Usage:</strong></p>
 <p>Training:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml train <span class="se">\</span>
-<span class="go">    -model PYTORCH_MODEL_ENTRYPOINT \</span>
-<span class="go">    -model-features FEATURE_DEFINITION \</span>
-<span class="go">    -model-predict TO_PREDICT \</span>
-<span class="go">    -model-location MODEL_LOCATION \</span>
-<span class="go">    -model-CONFIGS CONFIG_VALUES \</span>
-<span class="go">    -sources f=TRAINING_DATA_SOURCE_TYPE \</span>
-<span class="go">    -source-CONFIGS TRAINING_DATA \</span>
-<span class="go">    -log debug</span>
+    -model PYTORCH_MODEL_ENTRYPOINT <span class="se">\</span>
+    -model-features FEATURE_DEFINITION <span class="se">\</span>
+    -model-predict TO_PREDICT <span class="se">\</span>
+    -model-location MODEL_LOCATION <span class="se">\</span>
+    -model-CONFIGS CONFIG_VALUES <span class="se">\</span>
+    -sources <span class="nv">f</span><span class="o">=</span>TRAINING_DATA_SOURCE_TYPE <span class="se">\</span>
+    -source-CONFIGS TRAINING_DATA <span class="se">\</span>
+    -log debug
 </pre></div>
 </div>
 <p>Testing and Accuracy:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml accuracy <span class="se">\</span>
-<span class="go">    -model PYTORCH_MODEL_ENTRYPOINT \</span>
-<span class="go">    -model-features FEATURE_DEFINITION \</span>
-<span class="go">    -model-predict TO_PREDICT \</span>
-<span class="go">    -model-location MODEL_LOCATION \</span>
-<span class="go">    -model-CONFIGS CONFIG_VALUES \</span>
-<span class="go">    -sources f=TESTING_DATA_SOURCE_TYPE \</span>
-<span class="go">    -source-CONFIGS TESTING_DATA \</span>
-<span class="go">    -log debug</span>
+    -model PYTORCH_MODEL_ENTRYPOINT <span class="se">\</span>
+    -model-features FEATURE_DEFINITION <span class="se">\</span>
+    -model-predict TO_PREDICT <span class="se">\</span>
+    -model-location MODEL_LOCATION <span class="se">\</span>
+    -model-CONFIGS CONFIG_VALUES <span class="se">\</span>
+    -sources <span class="nv">f</span><span class="o">=</span>TESTING_DATA_SOURCE_TYPE <span class="se">\</span>
+    -source-CONFIGS TESTING_DATA <span class="se">\</span>
+    -log debug
 </pre></div>
 </div>
 <p>Predicting with trained model:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml predict all <span class="se">\</span>
-<span class="go">    -model PYTORCH_MODEL_ENTRYPOINT \</span>
-<span class="go">    -model-features FEATURE_DEFINITION \</span>
-<span class="go">    -model-predict TO_PREDICT \</span>
-<span class="go">    -model-location MODEL_LOCATION \</span>
-<span class="go">    -model-CONFIGS CONFIG_VALUES \</span>
-<span class="go">    -sources f=PREDICT_DATA_SOURCE_TYPE \</span>
-<span class="go">    -source-CONFIGS PREDICTION_DATA \</span>
-<span class="go">    -log debug</span>
+    -model PYTORCH_MODEL_ENTRYPOINT <span class="se">\</span>
+    -model-features FEATURE_DEFINITION <span class="se">\</span>
+    -model-predict TO_PREDICT <span class="se">\</span>
+    -model-location MODEL_LOCATION <span class="se">\</span>
+    -model-CONFIGS CONFIG_VALUES <span class="se">\</span>
+    -sources <span class="nv">f</span><span class="o">=</span>PREDICT_DATA_SOURCE_TYPE <span class="se">\</span>
+    -source-CONFIGS PREDICTION_DATA <span class="se">\</span>
+    -log debug
 </pre></div>
 </div>
 <p><strong>Pre-Trained Models Available:</strong></p>
@@ -6734,35 +6734,35 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 </div>
 <p>Train the model</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml train <span class="se">\</span>
-<span class="go">    -model daal4pylr \</span>
-<span class="go">    -model-features f1:float:1 \</span>
-<span class="go">    -model-predict ans:int:1 \</span>
-<span class="go">    -model-location tempdir \</span>
-<span class="go">    -sources f=csv \</span>
-<span class="go">    -source-filename train.csv</span>
+    -model daal4pylr <span class="se">\</span>
+    -model-features f1:float:1 <span class="se">\</span>
+    -model-predict ans:int:1 <span class="se">\</span>
+    -model-location tempdir <span class="se">\</span>
+    -sources <span class="nv">f</span><span class="o">=</span>csv <span class="se">\</span>
+    -source-filename train.csv
 </pre></div>
 </div>
 <p>Assess the accuracy</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml accuracy <span class="se">\</span>
-<span class="go">    -model daal4pylr \</span>
-<span class="go">    -model-features f1:float:1 \</span>
-<span class="go">    -model-predict ans:int:1 \</span>
-<span class="go">    -model-location tempdir \</span>
-<span class="go">    -sources f=csv \</span>
-<span class="go">    -source-filename test.csv \</span>
-<span class="go">    -scorer mse \</span>
-<span class="go">0.6666666666666666</span>
+    -model daal4pylr <span class="se">\</span>
+    -model-features f1:float:1 <span class="se">\</span>
+    -model-predict ans:int:1 <span class="se">\</span>
+    -model-location tempdir <span class="se">\</span>
+    -sources <span class="nv">f</span><span class="o">=</span>csv <span class="se">\</span>
+    -source-filename test.csv <span class="se">\</span>
+    -scorer mse <span class="se">\</span>
+<span class="m">0</span>.6666666666666666
 </pre></div>
 </div>
 <p>Make a prediction</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">echo</span> -e <span class="s1">&#39;f1,ans\n0.8,1\n&#39;</span> <span class="p">|</span> <span class="se">\</span>
-<span class="go">  dffml predict all \</span>
-<span class="go">    -model daal4pylr \</span>
-<span class="go">    -model-features f1:float:1 \</span>
-<span class="go">    -model-predict ans:int:1 \</span>
-<span class="go">    -model-location tempdir \</span>
-<span class="go">    -sources f=csv \</span>
-<span class="go">    -source-filename /dev/stdin</span>
+  dffml predict all <span class="se">\</span>
+    -model daal4pylr <span class="se">\</span>
+    -model-features f1:float:1 <span class="se">\</span>
+    -model-predict ans:int:1 <span class="se">\</span>
+    -model-location tempdir <span class="se">\</span>
+    -sources <span class="nv">f</span><span class="o">=</span>csv <span class="se">\</span>
+    -source-filename /dev/stdin
 <span class="go">[</span>
 <span class="go">    {</span>
 <span class="go">        &quot;extra&quot;: {},</span>
@@ -7071,34 +7071,34 @@ to train the a scikit model for you.</p>
 </div>
 <p>Train the model</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml train <span class="se">\</span>
-<span class="go">    -model autoregressor \</span>
-<span class="go">    -model-predict TARGET:float:1 \</span>
-<span class="go">    -model-clstype int \</span>
-<span class="go">    -sources f=csv \</span>
-<span class="go">    -source-filename train.csv \</span>
-<span class="go">    -model-features \</span>
-<span class="go">      Feature1:float:1 \</span>
-<span class="go">      Feature2:float:1 \</span>
-<span class="go">    -model-time_left_for_this_task 120 \</span>
-<span class="go">    -model-per_run_time_limit 30 \</span>
-<span class="go">    -model-ensemble_size 50 \</span>
-<span class="go">    -model-delete_tmp_folder_after_terminate False \</span>
-<span class="go">    -model-location tempdir \</span>
-<span class="go">    -log debug</span>
+    -model autoregressor <span class="se">\</span>
+    -model-predict TARGET:float:1 <span class="se">\</span>
+    -model-clstype int <span class="se">\</span>
+    -sources <span class="nv">f</span><span class="o">=</span>csv <span class="se">\</span>
+    -source-filename train.csv <span class="se">\</span>
+    -model-features <span class="se">\</span>
+      Feature1:float:1 <span class="se">\</span>
+      Feature2:float:1 <span class="se">\</span>
+    -model-time_left_for_this_task <span class="m">120</span> <span class="se">\</span>
+    -model-per_run_time_limit <span class="m">30</span> <span class="se">\</span>
+    -model-ensemble_size <span class="m">50</span> <span class="se">\</span>
+    -model-delete_tmp_folder_after_terminate False <span class="se">\</span>
+    -model-location tempdir <span class="se">\</span>
+    -log debug
 </pre></div>
 </div>
 <p>Assess the accuracy</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml accuracy <span class="se">\</span>
-<span class="go">    -model autoregressor \</span>
-<span class="go">    -model-predict TARGET:float:1 \</span>
-<span class="go">    -model-location tempdir \</span>
-<span class="go">    -sources f=csv \</span>
-<span class="go">    -source-filename test.csv \</span>
-<span class="go">    -model-features \</span>
-<span class="go">      Feature1:float:1 \</span>
-<span class="go">      Feature2:float:1 \</span>
-<span class="go">    -scorer mse \</span>
-<span class="go">    -log critical</span>
+    -model autoregressor <span class="se">\</span>
+    -model-predict TARGET:float:1 <span class="se">\</span>
+    -model-location tempdir <span class="se">\</span>
+    -sources <span class="nv">f</span><span class="o">=</span>csv <span class="se">\</span>
+    -source-filename test.csv <span class="se">\</span>
+    -model-features <span class="se">\</span>
+      Feature1:float:1 <span class="se">\</span>
+      Feature2:float:1 <span class="se">\</span>
+    -scorer mse <span class="se">\</span>
+    -log critical
 <span class="go">0.9961211434899032</span>
 </pre></div>
 </div>
@@ -7110,14 +7110,14 @@ to train the a scikit model for you.</p>
 </div>
 <p>Make a prediction</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml predict all <span class="se">\</span>
-<span class="go">    -model autoregressor \</span>
-<span class="go">    -model-location tempdir \</span>
-<span class="go">    -model-predict TARGET:float:1 \</span>
-<span class="go">    -sources iris=csv \</span>
-<span class="go">    -model-features \</span>
-<span class="go">      Feature1:float:1 \</span>
-<span class="go">      Feature2:float:1 \</span>
-<span class="go">    -source-filename predict.csv</span>
+    -model autoregressor <span class="se">\</span>
+    -model-location tempdir <span class="se">\</span>
+    -model-predict TARGET:float:1 <span class="se">\</span>
+    -sources <span class="nv">iris</span><span class="o">=</span>csv <span class="se">\</span>
+    -model-features <span class="se">\</span>
+      Feature1:float:1 <span class="se">\</span>
+      Feature2:float:1 <span class="se">\</span>
+    -source-filename predict.csv
 <span class="go">[</span>
 <span class="go">    {</span>
 <span class="go">        &quot;extra&quot;: {},</span>

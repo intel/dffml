@@ -329,9 +329,9 @@ bytes.</p>
 <h2>Dataflow and Config files<a class="headerlink" href="#dataflow-and-config-files" title="Permalink to this headline">¶</a></h2>
 <p>DFFML can create a dataflow out of our python function.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml dataflow create -config yaml operations:convert_to_gif get_single <span class="se">\</span>
-<span class="go">    -inputs 480=operations.convert_to_gif.inputs.resolution \</span>
-<span class="go">    &quot;[&#39;operations.convert_to_gif.outputs.result&#39;]=get_single_spec&quot; \</span>
-<span class="go">     &gt; deploy/df/ffmpeg.yaml</span>
+    -inputs <span class="nv">480</span><span class="o">=</span>operations.convert_to_gif.inputs.resolution <span class="se">\</span>
+    <span class="s2">&quot;[&#39;operations.convert_to_gif.outputs.result&#39;]=get_single_spec&quot;</span> <span class="se">\</span>
+     &gt; deploy/df/ffmpeg.yaml
 </pre></div>
 </div>
 <p>Here through the inputs argument, we set the default resolution to 480 and output

@@ -279,7 +279,7 @@ following files.</p>
 <div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kd">var</span> <span class="nx">runit</span> <span class="o">=</span> <span class="k">async</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
   <span class="c1">// Create an instance of the API class, use the same URL we are on as the</span>
   <span class="c1">// endpoint</span>
-  <span class="kd">var</span> <span class="nx">api</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">DFFMLHTTPAPI</span><span class="p">(</span><span class="nb">window</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">origin</span><span class="p">);</span>
+  <span class="kd">var</span> <span class="nx">api</span> <span class="o">=</span> <span class="ow">new</span> <span class="nx">DFFMLHTTPAPI</span><span class="p">(</span><span class="nb">window</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">origin</span><span class="p">);</span>
 
   <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;Created api&quot;</span><span class="p">,</span> <span class="nb">window</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">origin</span><span class="p">,</span> <span class="nx">api</span><span class="p">);</span>
 
@@ -424,7 +424,7 @@ following files.</p>
 
   <span class="k">if</span> <span class="p">(</span><span class="nx">prediction</span><span class="p">.</span><span class="nx">mish_the_smish</span><span class="p">.</span><span class="nx">prediction</span><span class="p">.</span><span class="nx">Salary</span><span class="p">.</span><span class="nx">value</span> <span class="o">!==</span> <span class="mf">70</span><span class="p">)</span> <span class="p">{</span>
     <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="nx">prediction</span><span class="p">)</span>
-    <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s2">&quot;prediction.mish_the_smish.prediction.value was not 70!&quot;</span><span class="p">);</span>
+    <span class="k">throw</span> <span class="ow">new</span> <span class="ne">Error</span><span class="p">(</span><span class="s2">&quot;prediction.mish_the_smish.prediction.value was not 70!&quot;</span><span class="p">);</span>
   <span class="p">}</span>
 
   <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;Success!&quot;</span><span class="p">);</span>
