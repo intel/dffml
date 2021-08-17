@@ -565,6 +565,7 @@ DFFML right away with the ``create`` command of ``dev``.
 
     $ dffml service dev create model dffml-model-mycoolmodel
     $ cd dffml-model-mycoolmodel
+    $ python -m pip install -e .[dev]
     $ python -m unittest discover -v
 
 When you're done you can upload it to PyPi and it'll be ``pip`` installable so
