@@ -14,6 +14,7 @@ dffml accuracy \
   -model-normalize_std 0.229 0.224 0.225 \
   -model-features image:int:$((500*500)) \
   -model-predict label:str:1 \
+  -features label:str:1 \
   -sources f=dir \
     -source-foldername flower_dataset/test \
     -source-feature image \

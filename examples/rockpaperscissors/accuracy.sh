@@ -8,6 +8,7 @@ dffml accuracy \
   -model-location rps_model \
   -model-imageSize 150 \
   -model-enableGPU \
+  -features label:int:1 \
   -sources f=dir \
     -source-foldername rps-test-set \
     -source-feature image \

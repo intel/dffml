@@ -24,7 +24,13 @@ train(model, "iris_training.csv")
 # Assess accuracy (alternate way of specifying data source)
 scorer = ClassificationAccuracy()
 print(
-    "Accuracy:", accuracy(model, scorer, CSVSource(filename="iris_test.csv"))
+    "Accuracy:",
+    accuracy(
+        model,
+        scorer,
+        Feature("classification", int, 1),
+        CSVSource(filename="iris_test.csv"),
+    ),
 )
 
 # Make prediction

@@ -1,4 +1,5 @@
 import asyncio
+import tempfile
 import contextlib
 from http import HTTPStatus
 import pathlib
@@ -63,7 +64,9 @@ class FakeScorerConfig:
 
 
 class FakeScorerContext(AccuracyContext):
-    async def score(self, mctx: ModelContext, sources: SourcesContext):
+    async def score(
+        self, mctx: ModelContext, sources: SourcesContext, feature: Feature
+    ):
         accuracy: int = 0
         async for record in sources.records():
             accuracy += int(record.key)
@@ -178,11 +181,20 @@ class TestRoutesRunning:
 
     @contextlib.asynccontextmanager
     async def _add_fake_model(self):
-        async with FakeModel(BaseConfig()) as model:
-            self.model = self.cli.app["models"][self.mlabel] = model
-            async with model() as mctx:
-                self.mctx = self.cli.app["model_contexts"][self.mlabel] = mctx
-                yield
+        with tempfile.TemporaryDirectory() as tempdir:
+            async with FakeModel(
+                FakeModelConfig(
+                    location=tempdir,
+                    features=Features(Feature("by_ten")),
+                    predict=Feature("by_ten"),
+                )
+            ) as model:
+                self.model = self.cli.app["models"][self.mlabel] = model
+                async with model() as mctx:
+                    self.mctx = self.cli.app["model_contexts"][
+                        self.mlabel
+                    ] = mctx
+                    yield
 
     @contextlib.asynccontextmanager
     async def _add_fake_scorer(self):

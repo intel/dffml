@@ -17,7 +17,10 @@ async def main():
     await train(model, "train.csv")
 
     # Assess accuracy
-    print("Accuracy:", await accuracy(model, "test.csv"))
+    print(
+        "Accuracy:",
+        await accuracy(model, Feature("Salary", int, 1), "test.csv"),
+    )
 
     # Make predictions
     async for i, features, prediction in predict(model, "predict.csv"):

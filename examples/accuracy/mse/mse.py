@@ -15,4 +15,7 @@ train(model, "dataset.csv")
 mse_accuracy = MeanSquaredErrorAccuracy()
 
 # Assess accuracy (alternate way of specifying data source)
-print("Accuracy:", accuracy(model, mse_accuracy, "dataset.csv"))
+print(
+    "Accuracy:",
+    accuracy(model, mse_accuracy, Feature("ans", int, 1), "dataset.csv"),
+)
