@@ -37,8 +37,15 @@ test_no_skips() {
   check_skips="$(mktemp)"
   TEMP_DIRS+=("${check_skips}")
 
+  # Run all if nothing given
+  if [ "x$@" == "x" ]; then
+    UNITTEST_ARGS="discover -v"
+  else
+    UNITTEST_ARGS=$@
+  fi
+
   # Run with coverage
-  TEST_DOCS=1 "${PYTHON}" -u -m coverage run -m unittest discover -v 2>&1 | tee "${check_skips}"
+  TEST_DOCS=1 "${PYTHON}" -u -m coverage run -m unittest $UNITTEST_ARGS 2>&1 | tee "${check_skips}"
   "${PYTHON}" -m coverage report -m
 
   # Fail if any coroutines were not awaited
@@ -136,14 +143,7 @@ function run_consoletest() {
   # Install base package with testing and development utilities
   "${PYTHON}" -m pip install -U -e ".[dev]"
 
-  TEST_DOCS=1 "${PYTHON}" -u -m unittest "tests.docs.test_consoletest.TestDocs.test_${PLUGIN}" 2>&1 | tee "${test_log}"
-
-  # Fail if any coroutines were not awaited
-  unawaited=$(grep -nE 'coroutine .* was never awaited' "${test_log}" | wc -l)
-  if [ "$unawaited" -ne 0 ]; then
-    echo "Found un-awaited coroutines" >&2
-    exit 1
-  fi
+  test_no_skips -v "tests.docs.test_consoletest.TestDocs.test_${PLUGIN}"
 
   cd "${SRC_ROOT}"
 
