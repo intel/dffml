@@ -6,6 +6,7 @@ Description of what this model does
 import os
 import sys
 import pathlib
+from typing import Union
 
 from sklearn.neural_network import MLPClassifier
 from sklearn.neighbors import KNeighborsClassifier
@@ -114,7 +115,7 @@ for entry_point_name, name, cls in [
         parentContext = ScikitContext
         parentModel = Scikit
         config_fields["predict"] = (
-            Feature,
+            Union[Feature, Features],
             field("Label or the value to be predicted"),
         )
     elif estimator_type in unsupervised_estimators:

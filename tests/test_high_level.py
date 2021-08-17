@@ -127,7 +127,7 @@ class TestML(AsyncTestCase):
         await train(model, training_data)
         # Assess accuracy
         scorer = MeanSquaredErrorAccuracy()
-        await accuracy(model, scorer, test_data)
+        await accuracy(model, scorer, Feature("Salary", int, 1), test_data)
         # Make prediction
         predictions = [
             prediction async for prediction in predict(model, predict_data)

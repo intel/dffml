@@ -88,7 +88,9 @@ class TestDNN(AsyncTestCase):
         scorer = ClassificationAccuracy()
         for i in range(0, 7):
             await train(self.model, self.sources)
-            res = await accuracy(self.model, scorer, self.sources)
+            res = await accuracy(
+                self.model, scorer, Feature("string", str, 1), self.sources
+            )
             # Retry because of tensorflow intermitant low accuracy
             if res <= 0.9 and i < 5:
                 print("Retry i:", i, "accuracy:", res)

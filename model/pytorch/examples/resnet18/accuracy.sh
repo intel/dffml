@@ -10,6 +10,7 @@ dffml accuracy \
   -model-enableGPU \
   -model-features image:int:$((500*500)) \
   -model-predict label:str:1 \
+  -features label:str:1
   -sources f=dir \
     -source-foldername hymenoptera_data/val \
     -source-feature image \

@@ -3,6 +3,7 @@ dffml accuracy \
   -model-predict TARGET:float:1 \
   -model-location tempdir \
   -model-hidden 8 16 8 \
+  -features TARGET:float:1 \
   -sources s=csv \
   -source-filename test.csv \
   -model-features \

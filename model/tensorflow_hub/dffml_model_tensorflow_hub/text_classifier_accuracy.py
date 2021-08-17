@@ -2,6 +2,7 @@ import os
 from typing import AsyncIterator, List
 
 from dffml.base import config
+from dffml.feature.feature import Features
 from dffml.source.source import Sources
 from dffml.util.entrypoint import entrypoint
 from dffml.model import ModelNotTrained, ModelContext
@@ -23,7 +24,9 @@ class TextClassifierAccuracyContext(AccuracyContext):
     as test data.
     """
 
-    async def score(self, modelcontext: ModelContext, sources: Sources):
+    async def score(
+        self, modelcontext: ModelContext, sources: Sources, *features: Features
+    ):
         if not os.path.isfile(
             os.path.join(modelcontext.model_dir_path, "saved_model.pb")
         ):

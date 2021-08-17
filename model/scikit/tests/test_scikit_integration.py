@@ -3,6 +3,7 @@ This file contains integration tests. We use the CLI to exercise functionality o
 various DFFML classes and constructs.
 """
 import csv
+from dffml.feature.feature import Feature
 import json
 import inspect
 import pathlib
@@ -82,6 +83,8 @@ class TestScikitClassification(AsyncTestCase):
             "true_label:int:1",
             "-model-location",
             model_dir,
+            "-features",
+            "true_label:float:1",
             "-sources",
             "test_data=csv",
             "-source-filename",
@@ -158,6 +161,7 @@ class TestScikitRegression(AsyncTestCase):
             "-model-features A:float:1 B:float:1 C:float:1 D:float:1".split()
         )
         model_dir = self.mktempdir()
+        # pred_features = Feature("true_label", float, 1)
         # Train the model
         await CLI.cli(
             "train",
@@ -185,6 +189,8 @@ class TestScikitRegression(AsyncTestCase):
             "true_label:float:1",
             "-model-location",
             model_dir,
+            "-features",
+            "true_label:float:1",
             "-sources",
             "test_data=csv",
             "-source-filename",
@@ -337,6 +343,8 @@ class TestScikitClustering(AsyncTestCase):
                         "-source-filename",
                         test_file,
                         "-model-predict",
+                        true_clstr,
+                        "-features",
                         true_clstr,
                     ]
                 )

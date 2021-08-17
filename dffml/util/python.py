@@ -5,7 +5,7 @@ import types
 import pathlib
 import inspect
 import importlib
-from typing import Optional, Callable, Union, Tuple, Iterator
+from typing import List, Optional, Callable, Union, Tuple, Iterator
 
 
 def modules(

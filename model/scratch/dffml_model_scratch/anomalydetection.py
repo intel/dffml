@@ -197,6 +197,7 @@ class AnomalyModel(SimpleModel):
             -model-features A:float:2 \
             -model-predict Y:int:1 \
             -model-location tempdir \
+            -features Y:int:1 \
             -scorer anomalyscore
 
 

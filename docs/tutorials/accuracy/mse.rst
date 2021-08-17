@@ -49,7 +49,7 @@ have access the model's config and the sources records.
 
 .. literalinclude:: /../dffml/accuracy/mse.py
     :test:
-    :lines: 19-39
+    :lines: 19-35
 
 Scorer
 ------
@@ -61,4 +61,4 @@ scorer in the cli.
 
 .. literalinclude:: /../dffml/accuracy/mse.py
     :test:
-    :lines: 42-45
+    :lines: 38-41

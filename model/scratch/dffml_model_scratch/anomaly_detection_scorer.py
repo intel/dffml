@@ -1,9 +1,11 @@
+from dffml.feature.feature import Feature
 import numpy as np
 
 from dffml.base import config
 from dffml.source.source import Sources
 from dffml.util.entrypoint import entrypoint
 from dffml.model import ModelNotTrained, ModelContext
+from dffml.feature.feature import Feature
 from dffml.accuracy import (
     AccuracyScorer,
     AccuracyContext,
@@ -26,7 +28,9 @@ class AnomalyDetectionAccuracyContext(AccuracyContext):
     Scorer for getting the accuracy of the Anomaly Detection model
     """
 
-    async def score(self, mctx: ModelContext, sctx: Sources):
+    async def score(
+        self, mctx: ModelContext, sctx: Sources, features: Feature
+    ):
         # Load saved anomalies
         anomalies = mctx.storage.get("anomalies", None)
         # Ensure the model has been trained before we try to make a prediction
@@ -40,7 +44,7 @@ class AnomalyDetectionAccuracyContext(AccuracyContext):
         # Go through all records that have the feature we're training on and the
         # feature we want to predict.
         async for record in sctx.with_features(
-            mctx.features + [mctx.parent.config.predict.name]
+            mctx.features + [features.name]
         ):
             record_data = []
             for feature in record.features(mctx.features).values():
@@ -49,7 +53,7 @@ class AnomalyDetectionAccuracyContext(AccuracyContext):
                 )
 
             X.append(record_data)
-            Y.append(record.feature(mctx.parent.config.predict.name))
+            Y.append(record.feature(features.name))
 
         mctx.logger.debug("Number of test records: %d", len(X))
 

@@ -1,3 +1,4 @@
+from dffml.feature.feature import Features
 import os
 
 import torch
@@ -22,7 +23,9 @@ class PytorchAccuracyContext(AccuracyContext):
     Accuracy Scorer for Pytorch Network Models
     """
 
-    async def score(self, mctx: ModelContext, sctx: Sources):
+    async def score(
+        self, mctx: ModelContext, sctx: Sources, *features: Features
+    ):
         if not os.path.isfile(os.path.join(mctx.model_path)):
             raise ModelNotTrained("Train model before assessing for accuracy.")
 

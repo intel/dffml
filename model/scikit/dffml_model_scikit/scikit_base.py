@@ -8,7 +8,9 @@ import pathlib
 import logging
 import importlib
 
-from typing import AsyncIterator, Tuple, Any, NamedTuple
+from typing import AsyncIterator, Tuple, Any, NamedTuple, Union
+
+from sklearn.multioutput import MultiOutputClassifier, MultiOutputRegressor
 
 # https://intelpython.github.io/daal4py/sklearn.html
 try:
@@ -40,9 +42,13 @@ from dffml.feature.feature import Features, Feature
 from dffml.util.crypto import secure_hash
 
 
+class NoMultiOutputSupport(Exception):
+    pass
+
+
 class ScikitConfig(ModelConfig, NamedTuple):
     location: pathlib.Path
-    predict: Feature
+    predict: Union[Feature, Features]
     features: Features
 
 
@@ -52,6 +58,12 @@ class ScikitContext(ModelContext):
         self.np = importlib.import_module("numpy")
         self.joblib = importlib.import_module("joblib")
         self.features = self.parent.config.features.names()
+        self.is_multi = isinstance(self.parent.config.predict, Features)
+        self.predictions = (
+            self.parent.config.predict.names()
+            if self.is_multi
+            else self.parent.config.predict.name
+        )
         self._features_hash = self._feature_predict_hash()
         self.clf = None
 
@@ -88,6 +100,7 @@ class ScikitContext(ModelContext):
             del config["predict"]
             del config["features"]
             self.clf = self.parent.SCIKIT_MODEL(**config)
+        self.estimator_type = self.clf._estimator_type
         return self
 
     async def __aexit__(self, exc_type, exc_value, traceback):
@@ -96,19 +109,37 @@ class ScikitContext(ModelContext):
     async def train(self, sources: Sources):
         xdata = []
         ydata = []
+        ### np.hstack helps flatten the lists wihtout splitting strings.
         async for record in sources.with_features(
-            self.features + [self.parent.config.predict.name]
+            list(self.np.hstack(self.features + [self.predictions]))
         ):
-            record_data = []
+            feature_data = []
+            predict_data = []
             for feature in record.features(self.features).values():
-                record_data.extend(
+                feature_data.extend(
                     [feature] if self.np.isscalar(feature) else feature
                 )
-            xdata.append(record_data)
-            ydata.append(record.feature(self.parent.config.predict.name))
+            xdata.append(feature_data)
+            if self.is_multi:
+                for feature in record.features(self.predictions).values():
+                    predict_data.extend(
+                        [feature] if self.np.isscalar(feature) else feature
+                    )
+            else:
+                predict_data = record.feature(self.predictions)
+            ydata.append(predict_data)
         xdata = self.np.array(xdata)
         ydata = self.np.array(ydata)
         self.logger.info("Number of input records: {}".format(len(xdata)))
+        if self.is_multi and "MultiOutput" not in self.clf.__class__.__name__:
+            if self.estimator_type == "regressor":
+                self.clf = MultiOutputRegressor(self.clf)
+            elif self.estimator_type == "classifier":
+                self.clf = MultiOutputClassifier(self.clf)
+            else:
+                raise NoMultiOutputSupport(
+                    "Model does not support multi-output. Please refer the docs to find a suitable model entrypoint."
+                )
         self.clf.fit(xdata, ydata)
         self.joblib.dump(self.clf, str(self._filepath))
 
@@ -123,22 +154,32 @@ class ScikitContext(ModelContext):
                 record_data.extend(
                     [feature] if self.np.isscalar(feature) else feature
                 )
-            predict = self.np.array([record_data])
+            to_predict = self.np.array([record_data])
             self.logger.debug(
                 "Predicted Value of {} for {}: {}".format(
                     self.parent.config.predict,
-                    predict,
-                    self.clf.predict(predict),
+                    to_predict,
+                    self.clf.predict(to_predict),
                 )
             )
-            target = self.parent.config.predict.name
-            record.predicted(
-                target,
-                self.parent.config.predict.dtype(self.clf.predict(predict)[0])
-                if self.parent.config.predict.dtype is not str
-                else self.clf.predict(predict)[0],
-                self.confidence,
-            )
+            target = self.predictions
+            if self.is_multi:
+                for t in range(len(target)):
+                    record.predicted(
+                        target[t],
+                        self.clf.predict(to_predict)[0][t],
+                        self.confidence,
+                    )
+            else:
+                record.predicted(
+                    target,
+                    self.parent.config.predict.dtype(
+                        self.clf.predict(to_predict)[0]
+                    )
+                    if self.parent.config.predict.dtype is not str
+                    else self.clf.predict(to_predict)[0],
+                    self.confidence,
+                )
             yield record
 
 

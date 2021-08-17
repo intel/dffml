@@ -34,6 +34,7 @@ dffml accuracy \
   -model-location tempdir \
   -sources csv=iris_training.csv \
   -classifications 0 1 2 \
+  -features label:int:1 \
   -model-features \
     SepalLength:float:1 \
     SepalWidth:float:1 \

@@ -98,7 +98,7 @@ we're just going to hard code in some data.
 .. literalinclude:: /../dffml/skel/model/tests/test_model.py
     :test:
     :filepath: tests/test_model.py
-    :lines: 7-34
+    :lines: 8-35
 
 TestCase Class
 ~~~~~~~~~~~~~~
@@ -111,7 +111,7 @@ they're done.
 .. literalinclude:: /../dffml/skel/model/tests/test_model.py
     :test:
     :filepath: tests/test_model.py
-    :lines: 37-52
+    :lines: 38-54
 
 Testing Train
 ~~~~~~~~~~~~~
@@ -133,7 +133,7 @@ for more information on how the ``*``-operator works.
 .. literalinclude:: /../dffml/skel/model/tests/test_model.py
     :test:
     :filepath: tests/test_model.py
-    :lines: 54-56
+    :lines: 56-58
 
 Testing Accuracy
 ~~~~~~~~~~~~~~~~
@@ -149,7 +149,7 @@ acceptable range.
 .. literalinclude:: /../dffml/skel/model/tests/test_model.py
     :test:
     :filepath: tests/test_model.py
-    :lines: 58-64
+    :lines: 60-69
 
 Testing Prediction
 ~~~~~~~~~~~~~~~~~~
@@ -163,7 +163,7 @@ value is within 10% of what it should be.
 .. literalinclude:: /../dffml/skel/model/tests/test_model.py
     :test:
     :filepath: tests/test_model.py
-    :lines: 66-78
+    :lines: 71-83
 
 Run the tests
 ~~~~~~~~~~~~~
