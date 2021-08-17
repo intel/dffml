@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Writing a Model &mdash; DFFML 051577bfb documentation</title>
+  <title>Writing a Model &mdash; DFFML 659186d7a documentation</title>
   
 
   
@@ -70,7 +70,7 @@
             
             
               <div class="version">
-                051577bfb
+                659186d7a
               </div>
             
           
@@ -510,7 +510,14 @@ confidence in our prediction.</p>
 <p><strong>run.py</strong></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">asyncio</span>
 
-<span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">Features</span><span class="p">,</span> <span class="n">Feature</span><span class="p">,</span> <span class="n">train</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">,</span> <span class="n">predict</span>
+<span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">MeanSquaredErrorAccuracy</span><span class="p">,</span>
+    <span class="n">Features</span><span class="p">,</span>
+    <span class="n">Feature</span><span class="p">,</span>
+    <span class="n">train</span><span class="p">,</span>
+    <span class="n">accuracy</span><span class="p">,</span>
+    <span class="n">predict</span><span class="p">,</span>
+<span class="p">)</span>
 
 <span class="kn">from</span> <span class="nn">myslr</span> <span class="kn">import</span> <span class="n">MySLRModel</span>
 
@@ -527,9 +534,10 @@ confidence in our prediction.</p>
     <span class="k">await</span> <span class="n">train</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="s2">&quot;train.csv&quot;</span><span class="p">)</span>
 
     <span class="c1"># Assess accuracy</span>
+    <span class="n">scorer</span> <span class="o">=</span> <span class="n">MeanSquaredErrorAccuracy</span><span class="p">()</span>
     <span class="nb">print</span><span class="p">(</span>
         <span class="s2">&quot;Accuracy:&quot;</span><span class="p">,</span>
-        <span class="k">await</span> <span class="n">accuracy</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;Salary&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="s2">&quot;test.csv&quot;</span><span class="p">),</span>
+        <span class="k">await</span> <span class="n">accuracy</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">scorer</span><span class="p">,</span> <span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;Salary&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="s2">&quot;test.csv&quot;</span><span class="p">),</span>
     <span class="p">)</span>
 
     <span class="c1"># Make predictions</span>

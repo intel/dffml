@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Testing &mdash; DFFML 051577bfb documentation</title>
+  <title>Testing &mdash; DFFML 659186d7a documentation</title>
   
 
   
@@ -70,7 +70,7 @@
             
             
               <div class="version">
-                051577bfb
+                659186d7a
               </div>
             
           
@@ -290,6 +290,12 @@ tests.</p>
 </div>
 <p>You can run all documentation related testcases with the following command</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nv">TEST_DOCS</span><span class="o">=</span><span class="m">1</span> python3 -m unittest discover -v tests/docs/
+</pre></div>
+</div>
+<p>You can run a single documentation test by providing it’s path in docs where
+<code class="docutils literal notranslate"><span class="pre">/</span></code> is converted to <code class="docutils literal notranslate"><span class="pre">_</span></code>. Here’s how you would run the
+<code class="docutils literal notranslate"><span class="pre">docs/tutorials/sources/complex.rst</span></code> test.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nv">TEST_DOCS</span><span class="o">=</span><span class="m">1</span> python3 -m unittest -v tests.docs.test_consoletest.TestDocs.test_tutorials_sources_complex
 </pre></div>
 </div>
 <div class="section" id="writing-tests">

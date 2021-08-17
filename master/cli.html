@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Command Line &mdash; DFFML 051577bfb documentation</title>
+  <title>Command Line &mdash; DFFML 659186d7a documentation</title>
   
 
   
@@ -70,7 +70,7 @@
             
             
               <div class="version">
-                051577bfb
+                659186d7a
               </div>
             
           
@@ -786,6 +786,7 @@ also do over an HTTP interface. See the
 DFFML right away with the <code class="docutils literal notranslate"><span class="pre">create</span></code> command of <code class="docutils literal notranslate"><span class="pre">dev</span></code>.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml service dev create model dffml-model-mycoolmodel
 <span class="gp">$ </span><span class="nb">cd</span> dffml-model-mycoolmodel
+<span class="gp">$ </span>python -m pip install -e .<span class="o">[</span>dev<span class="o">]</span>
 <span class="gp">$ </span>python -m unittest discover -v
 </pre></div>
 </div>
