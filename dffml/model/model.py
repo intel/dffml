@@ -95,10 +95,11 @@ class Model(BaseDataFlowFacilitatorObject):
             self.config.location = location
 
     def __call__(self) -> ModelContext:
-        self._make_config_location()
+        # self._make_config_location()
         return self.CONTEXT(self)
 
     async def __aenter__(self):
+        # print("Inside __aenter__")
         if getattr(self.config, "location", False):
             if any(
                 [
@@ -107,27 +108,32 @@ class Model(BaseDataFlowFacilitatorObject):
                     in ["zip", "tar"],
                 ]
             ):
+                # print("hit temp_dir creation")
                 temp_dir = self._get_directory()
                 self.location = temp_dir
+            else:
+                # print("hit make config location")
+                self._make_config_location()
 
-            if self.config.location.is_file():
-                load_flow = getattr(self.config, "location_load", None)
-                await self._run_operation(
-                    self.config.location, temp_dir, load_flow
-                )
-                # Load values from config if it exists
-                config_path = self.temp_dir / "config.json"
-                if config_path.exists():
-                    with open(config_path) as config_handle:
-                        loaded_config = json.load(config_handle)
-                        for prop, value in loaded_config.items():
-                            # TODO: Need to change this as per
-                            # drafts PR#1189 and PR#1186
-                            pass
-
+        if self.config.location.is_file():
+            load_flow = getattr(self.config, "location_load", None)
+            await self._run_operation(
+                self.config.location, self.temp_dir, load_flow
+            )
+            # Load values from config if it exists
+            config_path = self.temp_dir / "config.json"
+            if config_path.exists():
+                with open(config_path) as config_handle:
+                    loaded_config = json.load(config_handle)
+                    for prop, value in loaded_config.items():
+                        # TODO: Need to change this as per
+                        # drafts PR#1189 and PR#1186
+                        pass
+        # print("ended __aenter__")
         return self
 
     async def __aexit__(self, exc_type, exc_value, traceback):
+        # print("Inside __aexit__")
         if getattr(self.config, "location", False):
             if self.config.location.is_file():
                 os.remove(self.config.location)
@@ -146,11 +152,13 @@ class Model(BaseDataFlowFacilitatorObject):
                 )
         if hasattr(self, "temp_dir"):
             shutil.rmtree(self.temp_dir)
+            delattr(self, "temp_dir")
+        # print("ended __aexit__")
 
     async def _run_operation(self, input_path, output_path, dataflow):
         get_definition = (
             lambda path: MODEL_TEMPDIR
-            if path == self.tempdir
+            if path == self.temp_dir
             else MODEL_LOCATION
         )
         seed = {
@@ -174,7 +182,7 @@ class Model(BaseDataFlowFacilitatorObject):
             pass
 
     def _get_directory(self) -> pathlib.Path:
-        if not getattr(self, "temp_dir", None):
+        if not hasattr(self, "temp_dir"):
             self.temp_dir = pathlib.Path(mkdtemp())
         return self.temp_dir
 
@@ -183,10 +191,12 @@ class Model(BaseDataFlowFacilitatorObject):
         If the config object for this model contains the location property
         then create it if it does not exist.
         """
+        # print("Making location dir")
         location = getattr(self.config, "location", None)
         if location is not None:
             location = pathlib.Path(location)
             if not location.is_dir():
+                # print("Making location dir")
                 location.mkdir(mode=MODE_BITS_SECURE, parents=True)
 
 
@@ -213,20 +223,22 @@ class SimpleModel(Model):
         return self
 
     async def __aenter__(self) -> Model:
-        await super().__aenter__()
+
         self._in_context += 1
         # If we've already entered the model's context once, don't reload
         if self._in_context > 1:
             return self
-        self._make_config_location()
+        # self._make_config_location()
+        await super().__aenter__()
         self.open()
         return self
 
     async def __aexit__(self, exc_type, exc_value, traceback):
-        await super().__aexit__(exc_type, exc_value, traceback)
+
         self._in_context -= 1
         if not self._in_context:
             self.close()
+            await super().__aexit__(exc_type, exc_value, traceback)
 
     @property
     def parent(self):
@@ -272,7 +284,12 @@ class SimpleModel(Model):
         if "features" in exported:
             exported["features"] = dict(sorted(exported["features"].items()))
         # Hash the exported config
-        return pathlib.Path(self.config.location, "Model")
+        return pathlib.Path(
+            self.config.location
+            if not hasattr(self, "temp_dir")
+            else self.temp_dir,
+            "Model",
+        )
 
     def applicable_features(self, features):
         usable = []
