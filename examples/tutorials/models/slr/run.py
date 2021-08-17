@@ -1,6 +1,13 @@
 import asyncio
 
-from dffml import Features, Feature, train, accuracy, predict
+from dffml import (
+    MeanSquaredErrorAccuracy,
+    Features,
+    Feature,
+    train,
+    accuracy,
+    predict,
+)
 
 from myslr import MySLRModel
 
@@ -17,9 +24,10 @@ async def main():
     await train(model, "train.csv")
 
     # Assess accuracy
+    scorer = MeanSquaredErrorAccuracy()
     print(
         "Accuracy:",
-        await accuracy(model, Feature("Salary", int, 1), "test.csv"),
+        await accuracy(model, scorer, Feature("Salary", int, 1), "test.csv"),
     )
 
     # Make predictions
