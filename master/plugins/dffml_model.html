@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Models &mdash; DFFML c8b8a9a90 documentation</title>
+  <title>Models &mdash; DFFML a520483b4 documentation</title>
   
 
   
@@ -70,7 +70,7 @@
             
             
               <div class="version">
-                c8b8a9a90
+                a520483b4
               </div>
             
           
@@ -366,6 +366,7 @@ See the <a class="reference internal" href="../tutorials/models/load.html"><span
     -model-features f1:float:1 <span class="se">\</span>
     -model-predict ans:int:1 <span class="se">\</span>
     -model-location tempdir <span class="se">\</span>
+    -features ans:int:1 <span class="se">\</span>
     -sources <span class="nv">f</span><span class="o">=</span>csv <span class="se">\</span>
     -source-filename dataset.csv <span class="se">\</span>
     -scorer mse <span class="se">\</span>
@@ -420,7 +421,9 @@ See the <a class="reference internal" href="../tutorials/models/load.html"><span
 
 <span class="c1"># Assess accuracy (alternate way of specifying data source)</span>
 <span class="n">scorer</span> <span class="o">=</span> <span class="n">MeanSquaredErrorAccuracy</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Accuracy:&quot;</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">scorer</span><span class="p">,</span> <span class="s2">&quot;dataset.csv&quot;</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span>
+    <span class="s2">&quot;Accuracy:&quot;</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">scorer</span><span class="p">,</span> <span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;ans&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="s2">&quot;dataset.csv&quot;</span><span class="p">)</span>
+<span class="p">)</span>
 
 <span class="c1"># Make prediction</span>
 <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">features</span><span class="p">,</span> <span class="n">prediction</span> <span class="ow">in</span> <span class="n">predict</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;f1&quot;</span><span class="p">:</span> <span class="mf">0.8</span><span class="p">,</span> <span class="s2">&quot;ans&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">}):</span>
@@ -508,6 +511,7 @@ look for a different saved model.</p>
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">location</span> <span class="n">tempdir</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">classifications</span> <span class="mi">0</span> <span class="mi">1</span> <span class="mi">2</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">clstype</span> <span class="nb">int</span> \
+  <span class="o">-</span><span class="n">features</span> <span class="n">classification</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">1</span> \
   <span class="o">-</span><span class="n">scorer</span> <span class="n">clf</span> \
   <span class="o">-</span><span class="n">sources</span> <span class="n">iris</span><span class="o">=</span><span class="n">csv</span> \
   <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">filename</span> <span class="n">iris_test</span><span class="o">.</span><span class="n">csv</span> \
@@ -591,7 +595,13 @@ look for a different saved model.</p>
 <span class="c1"># Assess accuracy (alternate way of specifying data source)</span>
 <span class="n">scorer</span> <span class="o">=</span> <span class="n">ClassificationAccuracy</span><span class="p">()</span>
 <span class="nb">print</span><span class="p">(</span>
-    <span class="s2">&quot;Accuracy:&quot;</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">scorer</span><span class="p">,</span> <span class="n">CSVSource</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;iris_test.csv&quot;</span><span class="p">))</span>
+    <span class="s2">&quot;Accuracy:&quot;</span><span class="p">,</span>
+    <span class="n">accuracy</span><span class="p">(</span>
+        <span class="n">model</span><span class="p">,</span>
+        <span class="n">scorer</span><span class="p">,</span>
+        <span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;classification&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+        <span class="n">CSVSource</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;iris_test.csv&quot;</span><span class="p">),</span>
+    <span class="p">),</span>
 <span class="p">)</span>
 
 <span class="c1"># Make prediction</span>
@@ -730,6 +740,7 @@ from where this command is run as it overwrites any existing files.</p></li>
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">predict</span> <span class="n">TARGET</span><span class="p">:</span><span class="nb">float</span><span class="p">:</span><span class="mi">1</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">location</span> <span class="n">tempdir</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">hidden</span> <span class="mi">8</span> <span class="mi">16</span> <span class="mi">8</span> \
+  <span class="o">-</span><span class="n">features</span> <span class="n">TARGET</span><span class="p">:</span><span class="nb">float</span><span class="p">:</span><span class="mi">1</span> \
   <span class="o">-</span><span class="n">sources</span> <span class="n">s</span><span class="o">=</span><span class="n">csv</span> \
   <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">filename</span> <span class="n">test</span><span class="o">.</span><span class="n">csv</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">features</span> \
@@ -801,7 +812,15 @@ from where this command is run as it overwrites any existing files.</p></li>
 
 <span class="c1"># Assess accuracy (alternate way of specifying data source)</span>
 <span class="n">scorer</span> <span class="o">=</span> <span class="n">MeanSquaredErrorAccuracy</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Accuracy:&quot;</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">scorer</span><span class="p">,</span> <span class="n">CSVSource</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;test.csv&quot;</span><span class="p">)))</span>
+<span class="nb">print</span><span class="p">(</span>
+    <span class="s2">&quot;Accuracy:&quot;</span><span class="p">,</span>
+    <span class="n">accuracy</span><span class="p">(</span>
+        <span class="n">model</span><span class="p">,</span>
+        <span class="n">scorer</span><span class="p">,</span>
+        <span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;TARGET&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+        <span class="n">CSVSource</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;test.csv&quot;</span><span class="p">),</span>
+    <span class="p">),</span>
+<span class="p">)</span>
 
 <span class="c1"># Make prediction</span>
 <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">features</span><span class="p">,</span> <span class="n">prediction</span> <span class="ow">in</span> <span class="n">predict</span><span class="p">(</span>
@@ -913,6 +932,7 @@ $ sed -i &#39;s/.*setosa,versicolor,virginica/SepalLength,SepalWidth,PetalLength
       PetalWidth:float:1 <span class="se">\</span>
     -model-predict classification <span class="se">\</span>
     -model-location model <span class="se">\</span>
+    -features classification <span class="se">\</span>
     -scorer clf
 </pre></div>
 </div>
@@ -976,6 +996,7 @@ $ sed -i &#39;s/.*setosa,versicolor,virginica/SepalLength,SepalWidth,PetalLength
     <span class="n">accuracy</span><span class="p">(</span>
         <span class="n">model</span><span class="p">,</span>
         <span class="n">scorer</span><span class="p">,</span>
+        <span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;target&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
         <span class="o">*</span><span class="p">[{</span><span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="n">x</span><span class="p">,</span> <span class="s2">&quot;target&quot;</span><span class="p">:</span> <span class="n">y</span><span class="p">}</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">testX</span><span class="p">,</span> <span class="n">testy</span><span class="p">)],</span>
     <span class="p">),</span>
 <span class="p">)</span>
@@ -984,6 +1005,7 @@ $ sed -i &#39;s/.*setosa,versicolor,virginica/SepalLength,SepalWidth,PetalLength
     <span class="n">accuracy</span><span class="p">(</span>
         <span class="n">model</span><span class="p">,</span>
         <span class="n">scorer</span><span class="p">,</span>
+        <span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;target&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
         <span class="o">*</span><span class="p">[{</span><span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="n">x</span><span class="p">,</span> <span class="s2">&quot;target&quot;</span><span class="p">:</span> <span class="n">y</span><span class="p">}</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">trainX</span><span class="p">,</span> <span class="n">trainy</span><span class="p">)],</span>
     <span class="p">),</span>
 <span class="p">)</span>
@@ -1136,6 +1158,7 @@ $ sed -i &#39;s/.*setosa,versicolor,virginica/SepalLength,SepalWidth,PetalLength
       PetalWidth:float:1 <span class="se">\</span>
     -model-predict classification <span class="se">\</span>
     -model-location model <span class="se">\</span>
+    -features classification <span class="se">\</span>
     -scorer mse
 </pre></div>
 </div>
@@ -1205,6 +1228,7 @@ $ sed -i &#39;s/.*setosa,versicolor,virginica/SepalLength,SepalWidth,PetalLength
     <span class="n">accuracy</span><span class="p">(</span>
         <span class="n">model</span><span class="p">,</span>
         <span class="n">scorer</span><span class="p">,</span>
+        <span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;target&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
         <span class="o">*</span><span class="p">[{</span><span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="n">x</span><span class="p">,</span> <span class="s2">&quot;target&quot;</span><span class="p">:</span> <span class="n">y</span><span class="p">}</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">testX</span><span class="p">,</span> <span class="n">testy</span><span class="p">)],</span>
     <span class="p">),</span>
 <span class="p">)</span>
@@ -1214,6 +1238,7 @@ $ sed -i &#39;s/.*setosa,versicolor,virginica/SepalLength,SepalWidth,PetalLength
     <span class="n">accuracy</span><span class="p">(</span>
         <span class="n">model</span><span class="p">,</span>
         <span class="n">scorer</span><span class="p">,</span>
+        <span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;target&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
         <span class="o">*</span><span class="p">[{</span><span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="n">x</span><span class="p">,</span> <span class="s2">&quot;target&quot;</span><span class="p">:</span> <span class="n">y</span><span class="p">}</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">trainX</span><span class="p">,</span> <span class="n">trainy</span><span class="p">)],</span>
     <span class="p">),</span>
 <span class="p">)</span>
@@ -1356,6 +1381,7 @@ Training accuracy: 0.819782501866115
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">predict</span> \
     <span class="n">B</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">1</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">noconvert</span> \
+  <span class="o">-</span><span class="n">features</span> <span class="n">B</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">1</span> \
   <span class="o">-</span><span class="n">scorer</span> <span class="n">mse</span> \
   <span class="o">-</span><span class="n">sources</span> <span class="n">f</span><span class="o">=</span><span class="n">csv</span> \
   <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">filename</span> <span class="n">train</span><span class="o">.</span><span class="n">csv</span>
@@ -1520,6 +1546,7 @@ EOF
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">classifications</span> <span class="mi">0</span> <span class="mi">1</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">model_path</span> <span class="s2">&quot;https://tfhub.dev/google/tf2-preview/gnews-swivel-20dim-with-oov/1&quot;</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">clstype</span> <span class="nb">int</span> \
+  <span class="o">-</span><span class="n">features</span> <span class="n">sentiment</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">1</span> \
   <span class="o">-</span><span class="n">sources</span> <span class="n">f</span><span class="o">=</span><span class="n">csv</span> \
   <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">filename</span> <span class="n">test</span><span class="o">.</span><span class="n">csv</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">features</span> \
@@ -1603,7 +1630,15 @@ EOF
 
 <span class="c1"># Assess accuracy (alternate way of specifying data source)</span>
 <span class="n">scorer</span> <span class="o">=</span> <span class="n">TextClassifierAccuracy</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Accuracy:&quot;</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">scorer</span><span class="p">,</span> <span class="n">CSVSource</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;test.csv&quot;</span><span class="p">)))</span>
+<span class="nb">print</span><span class="p">(</span>
+    <span class="s2">&quot;Accuracy:&quot;</span><span class="p">,</span>
+    <span class="n">accuracy</span><span class="p">(</span>
+        <span class="n">model</span><span class="p">,</span>
+        <span class="n">scorer</span><span class="p">,</span>
+        <span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;sentiment&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+        <span class="n">CSVSource</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;test.csv&quot;</span><span class="p">),</span>
+    <span class="p">),</span>
+<span class="p">)</span>
 
 <span class="c1"># Make prediction</span>
 <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">features</span><span class="p">,</span> <span class="n">prediction</span> <span class="ow">in</span> <span class="n">predict</span><span class="p">(</span>
@@ -1786,6 +1821,7 @@ EOF
     -model-model_name_or_path en_core_web_sm <span class="se">\</span>
     -model-location temp <span class="se">\</span>
     -model-n_iter <span class="m">5</span> <span class="se">\</span>
+    -features tag:str:1 <span class="se">\</span>
     -scorer sner <span class="se">\</span>
     -log debug
 <span class="go">0.0</span>
@@ -1970,6 +2006,7 @@ across various features, and works particularly well if the features have a Gaus
     -model-features A:float:2 <span class="se">\</span>
     -model-predict Y:int:1 <span class="se">\</span>
     -model-location tempdir <span class="se">\</span>
+    -features Y:int:1 <span class="se">\</span>
     -scorer anomalyscore
 </pre></div>
 </div>
@@ -2006,10 +2043,16 @@ across various features, and works particularly well if the features have a Gaus
 
 <span class="c1"># Assess accuracy for test set</span>
 <span class="n">scorer</span> <span class="o">=</span> <span class="n">AnomalyDetectionAccuracy</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Test set F1 score :&quot;</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">scorer</span><span class="p">,</span> <span class="s2">&quot;testex.csv&quot;</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span>
+    <span class="s2">&quot;Test set F1 score :&quot;</span><span class="p">,</span>
+    <span class="n">accuracy</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">scorer</span><span class="p">,</span> <span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;Y&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="s2">&quot;testex.csv&quot;</span><span class="p">),</span>
+<span class="p">)</span>
 
 <span class="c1"># Assess accuracy for training set</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Training set F1 score :&quot;</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">scorer</span><span class="p">,</span> <span class="s2">&quot;trainex.csv&quot;</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span>
+    <span class="s2">&quot;Training set F1 score :&quot;</span><span class="p">,</span>
+    <span class="n">accuracy</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">scorer</span><span class="p">,</span> <span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;Y&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="s2">&quot;trainex.csv&quot;</span><span class="p">),</span>
+<span class="p">)</span>
 </pre></div>
 </div>
 <p>Output</p>
@@ -2076,6 +2119,7 @@ across various features, and works particularly well if the features have a Gaus
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">features</span> <span class="n">f1</span><span class="p">:</span><span class="nb">float</span><span class="p">:</span><span class="mi">1</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">predict</span> <span class="n">ans</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">1</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">location</span> <span class="n">tempdir</span> \
+  <span class="o">-</span><span class="n">features</span> <span class="n">ans</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">1</span> \
   <span class="o">-</span><span class="n">sources</span> <span class="n">f</span><span class="o">=</span><span class="n">csv</span> \
   <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">filename</span> <span class="n">dataset</span><span class="o">.</span><span class="n">csv</span> \
   <span class="o">-</span><span class="n">scorer</span> <span class="n">mse</span> \
@@ -2135,7 +2179,15 @@ across various features, and works particularly well if the features have a Gaus
 
 <span class="c1"># Assess accuracy (alternate way of specifying data source)</span>
 <span class="n">scorer</span> <span class="o">=</span> <span class="n">MeanSquaredErrorAccuracy</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Accuracy:&quot;</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">scorer</span><span class="p">,</span> <span class="n">CSVSource</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;dataset.csv&quot;</span><span class="p">)))</span>
+<span class="nb">print</span><span class="p">(</span>
+    <span class="s2">&quot;Accuracy:&quot;</span><span class="p">,</span>
+    <span class="n">accuracy</span><span class="p">(</span>
+        <span class="n">model</span><span class="p">,</span>
+        <span class="n">scorer</span><span class="p">,</span>
+        <span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;ans&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+        <span class="n">CSVSource</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;dataset.csv&quot;</span><span class="p">),</span>
+    <span class="p">),</span>
+<span class="p">)</span>
 
 <span class="c1"># Make prediction</span>
 <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">features</span><span class="p">,</span> <span class="n">prediction</span> <span class="ow">in</span> <span class="n">predict</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;f1&quot;</span><span class="p">:</span> <span class="mf">0.8</span><span class="p">,</span> <span class="s2">&quot;ans&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">}):</span>
@@ -2190,6 +2242,7 @@ their feature names.</p>
     -model-features FEATURE_DEFINITION <span class="se">\</span>
     -model-predict TO_PREDICT <span class="se">\</span>
     -model-location MODEL_DIRECTORY <span class="se">\</span>
+    -features TO_PREDICT <span class="se">\</span>
     -sources <span class="nv">f</span><span class="o">=</span>TESTING_DATA_SOURCE_TYPE <span class="se">\</span>
     -source-filename TESTING_DATA_FILE_NAME <span class="se">\</span>
     -scorer ACCURACY_SCORER <span class="se">\</span>
@@ -2211,15 +2264,17 @@ their feature names.</p>
 <table class="docutils align-default">
 <colgroup>
 <col style="width: 6%" />
-<col style="width: 12%" />
+<col style="width: 11%" />
 <col style="width: 6%" />
-<col style="width: 75%" />
+<col style="width: 68%" />
+<col style="width: 9%" />
 </colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Type</p></th>
 <th class="head"><p>Model</p></th>
 <th class="head"><p>Entrypoint</p></th>
 <th class="head"><p>Parameters</p></th>
+<th class="head"><p>Multi-Output</p></th>
 </tr>
 </thead>
 <tbody>
@@ -2227,148 +2282,184 @@ their feature names.</p>
 <td><p>LinearRegression</p></td>
 <td><p>scikitlr</p></td>
 <td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LinearRegression.html#sklearn.linear_model.LinearRegression/">scikitlr</a></p></td>
+<td><p>Yes</p></td>
 </tr>
 <tr class="row-odd"><td><p>ElasticNet</p></td>
 <td><p>scikiteln</p></td>
 <td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.ElasticNet.html#sklearn.linear_model.ElasticNet/">scikiteln</a></p></td>
+<td><p>Yes</p></td>
 </tr>
 <tr class="row-even"><td><p>RandomForestRegressor</p></td>
 <td><p>scikitrfr</p></td>
 <td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestRegressor.html">scikitrfr</a></p></td>
+<td><p>Yes</p></td>
 </tr>
 <tr class="row-odd"><td><p>BayesianRidge</p></td>
 <td><p>scikitbyr</p></td>
 <td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.BayesianRidge.html#sklearn.linear_model.BayesianRidge/">scikitbyr</a></p></td>
+<td><p>Yes</p></td>
 </tr>
 <tr class="row-even"><td><p>Lasso</p></td>
 <td><p>scikitlas</p></td>
 <td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.Lasso.html#sklearn.linear_model.Lasso/">scikitlas</a></p></td>
+<td><p>Yes</p></td>
 </tr>
 <tr class="row-odd"><td><p>ARDRegression</p></td>
 <td><p>scikitard</p></td>
 <td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.ARDRegression.html#sklearn.linear_model.ARDRegression/">scikitard</a></p></td>
+<td><p>Yes</p></td>
 </tr>
 <tr class="row-even"><td><p>RANSACRegressor</p></td>
 <td><p>scikitrsc</p></td>
 <td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.RANSACRegressor.html#sklearn.linear_model.RANSACRegressor/">scikitrsc</a></p></td>
+<td><p>Yes</p></td>
 </tr>
 <tr class="row-odd"><td><p>DecisionTreeRegressor</p></td>
 <td><p>scikitdtr</p></td>
 <td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.tree.DecisionTreeRegressor.html#sklearn.tree.DecisionTreeRegressor/">scikitdtr</a></p></td>
+<td><p>Yes</p></td>
 </tr>
 <tr class="row-even"><td><p>GaussianProcessRegressor</p></td>
 <td><p>scikitgpr</p></td>
 <td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.gaussian_process.GaussianProcessRegressor.html#sklearn.gaussian_process.GaussianProcessRegressor/">scikitgpr</a></p></td>
+<td><p>Yes</p></td>
 </tr>
 <tr class="row-odd"><td><p>OrthogonalMatchingPursuit</p></td>
 <td><p>scikitomp</p></td>
 <td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.OrthogonalMatchingPursuit.html#sklearn.linear_model.OrthogonalMatchingPursuit/">scikitomp</a></p></td>
+<td><p>Yes</p></td>
 </tr>
 <tr class="row-even"><td><p>Lars</p></td>
 <td><p>scikitlars</p></td>
 <td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.Lars.html#sklearn.linear_model.Lars/">scikitlars</a></p></td>
+<td><p>Yes</p></td>
 </tr>
 <tr class="row-odd"><td><p>Ridge</p></td>
 <td><p>scikitridge</p></td>
 <td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.Ridge.html#sklearn.linear_model.Ridge/">scikitridge</a></p></td>
+<td><p>Yes</p></td>
 </tr>
 <tr class="row-even"><td rowspan="16"><p>Classification</p></td>
 <td><p>KNeighborsClassifier</p></td>
 <td><p>scikitknn</p></td>
 <td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.neighbors.KNeighborsClassifier.html#sklearn.neighbors.KNeighborsClassifier/">scikitknn</a></p></td>
+<td><p>Yes</p></td>
 </tr>
 <tr class="row-odd"><td><p>AdaBoostClassifier</p></td>
 <td><p>scikitadaboost</p></td>
 <td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.AdaBoostClassifier.html#sklearn.ensemble.AdaBoostClassifier/">scikitadaboost</a></p></td>
+<td><p>Yes</p></td>
 </tr>
 <tr class="row-even"><td><p>GaussianProcessClassifier</p></td>
 <td><p>scikitgpc</p></td>
 <td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.gaussian_process.GaussianProcessClassifier.html#sklearn.gaussian_process.GaussianProcessClassifier/">scikitgpc</a></p></td>
+<td><p>Yes</p></td>
 </tr>
 <tr class="row-odd"><td><p>DecisionTreeClassifier</p></td>
 <td><p>scikitdtc</p></td>
 <td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.tree.DecisionTreeClassifier.html#sklearn.tree.DecisionTreeClassifier/">scikitdtc</a></p></td>
+<td><p>Yes</p></td>
 </tr>
 <tr class="row-even"><td><p>RandomForestClassifier</p></td>
 <td><p>scikitrfc</p></td>
 <td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html#sklearn.ensemble.RandomForestClassifier/">scikitrfc</a></p></td>
+<td><p>Yes</p></td>
 </tr>
 <tr class="row-odd"><td><p>QuadraticDiscriminantAnalysis</p></td>
 <td><p>scikitqda</p></td>
 <td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.discriminant_analysis.QuadraticDiscriminantAnalysis.html#sklearn.discriminant_analysis.QuadraticDiscriminantAnalysis/">scikitqda</a></p></td>
+<td><p>Yes</p></td>
 </tr>
 <tr class="row-even"><td><p>MLPClassifier</p></td>
 <td><p>scikitmlp</p></td>
 <td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.neural_network.MLPClassifier.html#sklearn.neural_network.MLPClassifier/">scikitmlp</a></p></td>
+<td><p>Yes</p></td>
 </tr>
 <tr class="row-odd"><td><p>GaussianNB</p></td>
 <td><p>scikitgnb</p></td>
 <td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.naive_bayes.GaussianNB.html#sklearn.naive_bayes.GaussianNB/">scikitgnb</a></p></td>
+<td><p>Yes</p></td>
 </tr>
 <tr class="row-even"><td><p>SVC</p></td>
 <td><p>scikitsvc</p></td>
 <td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html#sklearn.svm.SVC/">scikitsvc</a></p></td>
+<td><p>Yes</p></td>
 </tr>
 <tr class="row-odd"><td><p>LogisticRegression</p></td>
 <td><p>scikitlor</p></td>
 <td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html#sklearn.linear_model.LogisticRegression/">scikitlor</a></p></td>
+<td><p>Yes</p></td>
 </tr>
 <tr class="row-even"><td><p>GradientBoostingClassifier</p></td>
 <td><p>scikitgbc</p></td>
 <td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.GradientBoostingClassifier.html#sklearn.ensemble.GradientBoostingClassifier/">scikitgbc</a></p></td>
+<td><p>Yes</p></td>
 </tr>
 <tr class="row-odd"><td><p>BernoulliNB</p></td>
 <td><p>scikitbnb</p></td>
 <td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.naive_bayes.BernoulliNB.html#sklearn.naive_bayes.BernoulliNB/">scikitbnb</a></p></td>
+<td><p>Yes</p></td>
 </tr>
 <tr class="row-even"><td><p>ExtraTreesClassifier</p></td>
 <td><p>scikitetc</p></td>
 <td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.ExtraTreesClassifier.html#sklearn.ensemble.ExtraTreesClassifier/">scikitetc</a></p></td>
+<td><p>Yes</p></td>
 </tr>
 <tr class="row-odd"><td><p>BaggingClassifier</p></td>
 <td><p>scikitbgc</p></td>
 <td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.BaggingClassifier.html#sklearn.ensemble.BaggingClassifier/">scikitbgc</a></p></td>
+<td><p>Yes</p></td>
 </tr>
 <tr class="row-even"><td><p>LinearDiscriminantAnalysis</p></td>
 <td><p>scikitlda</p></td>
 <td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.discriminant_analysis.LinearDiscriminantAnalysis.html#sklearn.discriminant_analysis.LinearDiscriminantAnalysis/">scikitlda</a></p></td>
+<td><p>Yes</p></td>
 </tr>
 <tr class="row-odd"><td><p>MultinomialNB</p></td>
 <td><p>scikitmnb</p></td>
 <td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.naive_bayes.MultinomialNB.html#sklearn.naive_bayes.MultinomialNB/">scikitmnb</a></p></td>
+<td><p>Yes</p></td>
 </tr>
 <tr class="row-even"><td rowspan="8"><p>Clustering</p></td>
 <td><p>KMeans</p></td>
 <td><p>scikitkmeans</p></td>
 <td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.cluster.KMeans.html#sklearn.cluster.KMeans/">scikitkmeans</a></p></td>
+<td><p>No</p></td>
 </tr>
 <tr class="row-odd"><td><p>Birch</p></td>
 <td><p>scikitbirch</p></td>
 <td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.cluster.Birch.html#sklearn.cluster.Birch/">scikitbirch</a></p></td>
+<td><p>No</p></td>
 </tr>
 <tr class="row-even"><td><p>MiniBatchKMeans</p></td>
 <td><p>scikitmbkmeans</p></td>
 <td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.cluster.MiniBatchKMeans.html#sklearn.cluster.MiniBatchKMeans/">scikitmbkmeans</a></p></td>
+<td><p>No</p></td>
 </tr>
 <tr class="row-odd"><td><p>AffinityPropagation</p></td>
 <td><p>scikitap</p></td>
 <td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.cluster.AffinityPropagation.html#sklearn.cluster.AffinityPropagation/">scikitap</a></p></td>
+<td><p>No</p></td>
 </tr>
 <tr class="row-even"><td><p>MeanShift</p></td>
 <td><p>scikitms</p></td>
 <td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.cluster.MeanShift.html#sklearn.cluster.MeanShift/">scikitms</a></p></td>
+<td><p>No</p></td>
 </tr>
 <tr class="row-odd"><td><p>SpectralClustering</p></td>
 <td><p>scikitsc</p></td>
 <td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.cluster.SpectralClustering.html#sklearn.cluster.SpectralClustering/">scikitsc</a></p></td>
+<td><p>No</p></td>
 </tr>
 <tr class="row-even"><td><p>AgglomerativeClustering</p></td>
 <td><p>scikitac</p></td>
 <td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.cluster.AgglomerativeClustering.html#sklearn.cluster.AgglomerativeClustering/">scikitac</a></p></td>
+<td><p>No</p></td>
 </tr>
 <tr class="row-odd"><td><p>OPTICS</p></td>
 <td><p>scikitoptics</p></td>
 <td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.cluster.OPTICS.html#sklearn.cluster.OPTICS/">scikitoptics</a></p></td>
+<td><p>No</p></td>
 </tr>
 </tbody>
 </table>
@@ -2376,15 +2467,17 @@ their feature names.</p>
 <table class="docutils align-default">
 <colgroup>
 <col style="width: 6%" />
-<col style="width: 14%" />
-<col style="width: 8%" />
-<col style="width: 72%" />
+<col style="width: 13%" />
+<col style="width: 7%" />
+<col style="width: 65%" />
+<col style="width: 9%" />
 </colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Type</p></th>
 <th class="head"><p>Scorer</p></th>
 <th class="head"><p>Entrypoint</p></th>
 <th class="head"><p>Parameters</p></th>
+<th class="head"><p>Multi-Output</p></th>
 </tr>
 </thead>
 <tbody>
@@ -2392,129 +2485,160 @@ their feature names.</p>
 <td><p>Explained Variance Score</p></td>
 <td><p>exvscore</p></td>
 <td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.metrics.explained_variance_score.html#sklearn.metrics.explained_variance_score/">exvscore</a></p></td>
+<td><p>Yes</p></td>
 </tr>
 <tr class="row-odd"><td><p>Max Error</p></td>
 <td><p>maxerr</p></td>
 <td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.metrics.max_error.html#sklearn.metrics.max_error/">maxerr</a></p></td>
+<td><p>No</p></td>
 </tr>
 <tr class="row-even"><td><p>Mean Absolute Error</p></td>
 <td><p>meanabserr</p></td>
 <td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.metrics.mean_absolute_error.html#sklearn.metrics.mean_absolute_error/">meanabserr</a></p></td>
+<td><p>Yes</p></td>
 </tr>
 <tr class="row-odd"><td><p>Mean Squared Error</p></td>
 <td><p>meansqrerr</p></td>
 <td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.metrics.mean_squared_error.html#sklearn.metrics.mean_squared_error/">meansqrerr</a></p></td>
+<td><p>Yes</p></td>
 </tr>
 <tr class="row-even"><td><p>Mean Squared Log Error</p></td>
 <td><p>meansqrlogerr</p></td>
 <td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.metrics.mean_squared_log_error.html#sklearn.metrics.mean_squared_log_error/">meansqrlogerr</a></p></td>
+<td><p>Yes</p></td>
 </tr>
 <tr class="row-odd"><td><p>Median Absolute Error</p></td>
 <td><p>medabserr</p></td>
 <td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.metrics.median_absolute_error.html#sklearn.metrics.median_absolute_error/">medabserr</a></p></td>
+<td><p>Yes</p></td>
 </tr>
 <tr class="row-even"><td><p>R2 Score</p></td>
 <td><p>r2score</p></td>
 <td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.metrics.r2_score.html#sklearn.metrics.r2_score/">r2score</a></p></td>
+<td><p>Yes</p></td>
 </tr>
 <tr class="row-odd"><td><p>Mean Poisson Deviance</p></td>
 <td><p>meanpoidev</p></td>
 <td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.metrics.mean_poisson_deviance.html#sklearn.metrics.mean_poisson_deviance/">meanpoidev</a></p></td>
+<td><p>No</p></td>
 </tr>
 <tr class="row-even"><td><p>Mean Gamma Deviance</p></td>
 <td><p>meangammadev</p></td>
 <td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.metrics.mean_gamma_deviance.html#sklearn.metrics.mean_gamma_deviance/">meangammadev</a></p></td>
+<td><p>No</p></td>
 </tr>
 <tr class="row-odd"><td><p>Mean Absolute Percentage Error</p></td>
 <td><p>meanabspererr</p></td>
 <td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.metrics.mean_absolute_percentage_error.html#sklearn.metrics.mean_absolute_percentage_error/">meanabspererr</a></p></td>
+<td><p>Yes</p></td>
 </tr>
 <tr class="row-even"><td rowspan="11"><p>Classification</p></td>
 <td><p>Accuracy Score</p></td>
 <td><p>acscore</p></td>
 <td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.metrics.accuracy_score.html#sklearn.metrics.accuracy_score/">acscore</a></p></td>
+<td><p>Yes</p></td>
 </tr>
 <tr class="row-odd"><td><p>Balanced Accuracy Score</p></td>
 <td><p>bacscore</p></td>
 <td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.metrics.balanced_accuracy_score.html#sklearn.metrics.balanced_accuracy_score/">bacscore</a></p></td>
+<td><p>Yes</p></td>
 </tr>
 <tr class="row-even"><td><p>Top K Accuracy Score</p></td>
 <td><p>topkscore</p></td>
 <td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.metrics.top_k_accuracy_score.html#sklearn.metrics.top_k_accuracy_score/">topkscore</a></p></td>
+<td><p>Yes</p></td>
 </tr>
 <tr class="row-odd"><td><p>Average Precision Score</p></td>
 <td><p>avgprescore</p></td>
 <td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.metrics.average_precision_score.html#sklearn.metrics.average_precision_score/">avgprescore</a></p></td>
+<td><p>Yes</p></td>
 </tr>
 <tr class="row-even"><td><p>Brier Score Loss</p></td>
 <td><p>brierscore</p></td>
 <td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.metrics.brier_score_loss.html#sklearn.metrics.brier_score_loss/">brierscore</a></p></td>
+<td><p>Yes</p></td>
 </tr>
 <tr class="row-odd"><td><p>F1 Score</p></td>
 <td><p>f1score</p></td>
 <td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.metrics.f1_score.html#sklearn.metrics.f1_score/">f1score</a></p></td>
+<td><p>Yes</p></td>
 </tr>
 <tr class="row-even"><td><p>Log Loss</p></td>
 <td><p>logloss</p></td>
 <td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.metrics.log_loss.html#sklearn.metrics.log_loss/">logloss</a></p></td>
+<td><p>Yes</p></td>
 </tr>
 <tr class="row-odd"><td><p>Precision Score</p></td>
 <td><p>prescore</p></td>
 <td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.metrics.precision_score.html#sklearn.metrics.precision_score/">prescore</a></p></td>
+<td><p>Yes</p></td>
 </tr>
 <tr class="row-even"><td><p>Recall Score</p></td>
 <td><p>recallscore</p></td>
 <td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.metrics.recall_score.html#sklearn.metrics.recall_score/">recallscore</a></p></td>
+<td><p>Yes</p></td>
 </tr>
 <tr class="row-odd"><td><p>Jaccard Score</p></td>
 <td><p>jacscore</p></td>
 <td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.metrics.jaccard_score.html#sklearn.metrics.jaccard_score/">jacscore</a></p></td>
+<td><p>Yes</p></td>
 </tr>
 <tr class="row-even"><td><p>Roc Auc Score</p></td>
 <td><p>rocaucscore</p></td>
 <td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.metrics.roc_auc_score.html#sklearn.metrics.roc_auc_score/">rocaucscore</a></p></td>
+<td><p>Yes</p></td>
 </tr>
 <tr class="row-odd"><td rowspan="9"><p>Clustering</p></td>
 <td><p>Adjusted Mutual Info Score</p></td>
 <td><p>adjmutinfoscore</p></td>
 <td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.metrics.adjusted_mutual_info_score.html#sklearn.metrics.adjusted_mutual_info_score/">adjmutinfoscore</a></p></td>
+<td><p>No</p></td>
 </tr>
 <tr class="row-even"><td><p>Adjusted Rand Score</p></td>
 <td><p>adjrandscore</p></td>
 <td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.metrics.adjusted_rand_score.html#sklearn.metrics.adjusted_rand_score/">adjrandscore</a></p></td>
+<td><p>No</p></td>
 </tr>
 <tr class="row-odd"><td><p>Completeness Score</p></td>
 <td><p>complscore</p></td>
 <td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.metrics.completeness_score.html#sklearn.metrics.completeness_score/">complscore</a></p></td>
+<td><p>No</p></td>
 </tr>
 <tr class="row-even"><td><p>Fowlkes Mallows Score</p></td>
 <td><p>fowlmalscore</p></td>
 <td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.metrics.fowlkes_mallows_score.html#sklearn.metrics.fowlkes_mallows_score/">fowlmalscore</a></p></td>
+<td><p>No</p></td>
 </tr>
 <tr class="row-odd"><td><p>Homogeneity Score</p></td>
 <td><p>homoscore</p></td>
 <td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.metrics.homogeneity_score.html#sklearn.metrics.homogeneity_score/">homoscore</a></p></td>
+<td><p>No</p></td>
 </tr>
 <tr class="row-even"><td><p>Mutual Info Score</p></td>
 <td><p>mutinfoscore</p></td>
 <td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.metrics.mutual_info_score.html#sklearn.metrics.mutual_info_score/">mutinfoscore</a></p></td>
+<td><p>No</p></td>
 </tr>
 <tr class="row-odd"><td><p>Normalized Mutual Info Score</p></td>
 <td><p>normmutinfoscore</p></td>
 <td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.metrics.normalized_mutual_info_score.html#sklearn.metrics.normalized_mutual_info_score/">normmutinfoscore</a></p></td>
+<td><p>No</p></td>
 </tr>
 <tr class="row-even"><td><p>Rand Score</p></td>
 <td><p>randscore</p></td>
 <td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.metrics.rand_score.html#sklearn.metrics.rand_score/">randscore</a></p></td>
+<td><p>No</p></td>
 </tr>
 <tr class="row-odd"><td><p>V Measure Score</p></td>
 <td><p>vmscore</p></td>
 <td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.metrics.v_measure_score.html#sklearn.metrics.v_measure_score/">vmscore</a></p></td>
+<td><p>No</p></td>
 </tr>
 <tr class="row-even"><td><p>Supervised</p></td>
 <td><p>Model’s Default Score</p></td>
 <td><p>skmodelscore</p></td>
 <td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/model_evaluation.html/">skmodelscore</a></p></td>
+<td><p>Yes</p></td>
 </tr>
 </tbody>
 </table>
@@ -2601,6 +2725,7 @@ their feature names.</p>
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">features</span> <span class="n">Years</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">1</span> <span class="n">Expertise</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">1</span> <span class="n">Trust</span><span class="p">:</span><span class="nb">float</span><span class="p">:</span><span class="mi">1</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">predict</span> <span class="n">Salary</span><span class="p">:</span><span class="nb">float</span><span class="p">:</span><span class="mi">1</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">location</span> <span class="n">tempdir</span> \
+  <span class="o">-</span><span class="n">features</span> <span class="n">Salary</span><span class="p">:</span><span class="nb">float</span><span class="p">:</span><span class="mi">1</span> \
   <span class="o">-</span><span class="n">scorer</span> <span class="n">mse</span> \
   <span class="o">-</span><span class="n">sources</span> <span class="n">f</span><span class="o">=</span><span class="n">csv</span> \
   <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">filename</span> <span class="n">test</span><span class="o">.</span><span class="n">csv</span>
@@ -2663,7 +2788,15 @@ their feature names.</p>
 
 <span class="c1"># Assess accuracy (alternate way of specifying data source)</span>
 <span class="n">scorer</span> <span class="o">=</span> <span class="n">MeanSquaredErrorAccuracy</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Accuracy:&quot;</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">scorer</span><span class="p">,</span> <span class="n">CSVSource</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;test.csv&quot;</span><span class="p">)))</span>
+<span class="nb">print</span><span class="p">(</span>
+    <span class="s2">&quot;Accuracy:&quot;</span><span class="p">,</span>
+    <span class="n">accuracy</span><span class="p">(</span>
+        <span class="n">model</span><span class="p">,</span>
+        <span class="n">scorer</span><span class="p">,</span>
+        <span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;Salary&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+        <span class="n">CSVSource</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;test.csv&quot;</span><span class="p">),</span>
+    <span class="p">),</span>
+<span class="p">)</span>
 
 <span class="c1"># Make prediction</span>
 <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">features</span><span class="p">,</span> <span class="n">prediction</span> <span class="ow">in</span> <span class="n">predict</span><span class="p">(</span>
@@ -2706,6 +2839,7 @@ their feature names.</p>
      -model-features Col1:float:1 Col2:float:1 Col3:float:1 Col4:float:1<span class="se">\</span>
      -model-predict cluster:int:1 <span class="se">\</span>
      -model-location tempdir <span class="se">\</span>
+     -features cluster:int:1 <span class="se">\</span>
      -sources <span class="nv">f</span><span class="o">=</span>csv <span class="se">\</span>
      -source-filename test.csv <span class="se">\</span>
      -source-readonly <span class="se">\</span>
@@ -2762,7 +2896,7 @@ their feature names.</p>
 
 <span class="c1"># Assess accuracy (alternate way of specifying data source)</span>
 <span class="n">scorer</span> <span class="o">=</span> <span class="n">MutualInfoScoreScorer</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Accuracy:&quot;</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">scorer</span><span class="p">,</span> <span class="n">CSVSource</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;test.csv&quot;</span><span class="p">)))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Accuracy:&quot;</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">scorer</span><span class="p">,</span> <span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;cluster&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">CSVSource</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;test.csv&quot;</span><span class="p">)))</span>
 
 <span class="c1"># Make prediction</span>
 <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">features</span><span class="p">,</span> <span class="n">prediction</span> <span class="ow">in</span> <span class="n">predict</span><span class="p">(</span>
@@ -2822,6 +2956,7 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
     -model-predict TO_PREDICT <span class="se">\</span>
     -model-location MODEL_LOCATION <span class="se">\</span>
     -model-CONFIGS CONFIG_VALUES <span class="se">\</span>
+    -features TO_PREDICT <span class="se">\</span>
     -sources <span class="nv">f</span><span class="o">=</span>TESTING_DATA_SOURCE_TYPE <span class="se">\</span>
     -source-CONFIGS TESTING_DATA <span class="se">\</span>
     -log debug
@@ -3043,6 +3178,7 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
   -model-enableGPU \
   -model-features image:int:$((500*500)) \
   -model-predict label:str:1 \
+  -features label:str:1
   -sources f=dir \
     -source-foldername hymenoptera_data/val \
     -source-feature image \
@@ -6748,6 +6884,7 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
     -model-features f1:float:1 <span class="se">\</span>
     -model-predict ans:int:1 <span class="se">\</span>
     -model-location tempdir <span class="se">\</span>
+    -features ans:int:1 <span class="se">\</span>
     -sources <span class="nv">f</span><span class="o">=</span>csv <span class="se">\</span>
     -source-filename test.csv <span class="se">\</span>
     -scorer mse <span class="se">\</span>
@@ -6800,7 +6937,12 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 
 <span class="c1"># Assess accuracy (alternate way of specifying data source)</span>
 <span class="n">scorer</span> <span class="o">=</span> <span class="n">MeanSquaredErrorAccuracy</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Accuracy:&quot;</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">scorer</span><span class="p">,</span> <span class="n">CSVSource</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;test.csv&quot;</span><span class="p">)))</span>
+<span class="nb">print</span><span class="p">(</span>
+    <span class="s2">&quot;Accuracy:&quot;</span><span class="p">,</span>
+    <span class="n">accuracy</span><span class="p">(</span>
+        <span class="n">model</span><span class="p">,</span> <span class="n">scorer</span><span class="p">,</span> <span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;ans&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">CSVSource</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;test.csv&quot;</span><span class="p">)</span>
+    <span class="p">),</span>
+<span class="p">)</span>
 
 <span class="c1"># Make prediction</span>
 <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">features</span><span class="p">,</span> <span class="n">prediction</span> <span class="ow">in</span> <span class="n">predict</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;f1&quot;</span><span class="p">:</span> <span class="mf">0.8</span><span class="p">,</span> <span class="s2">&quot;ans&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">}):</span>
@@ -7092,6 +7234,7 @@ to train the a scikit model for you.</p>
     -model autoregressor <span class="se">\</span>
     -model-predict TARGET:float:1 <span class="se">\</span>
     -model-location tempdir <span class="se">\</span>
+    -features TARGET:float:1 <span class="se">\</span>
     -sources <span class="nv">f</span><span class="o">=</span>csv <span class="se">\</span>
     -source-filename test.csv <span class="se">\</span>
     -model-features <span class="se">\</span>
@@ -7163,7 +7306,10 @@ of the model.</p>
 
     <span class="c1"># Assess accuracy</span>
     <span class="n">scorer</span> <span class="o">=</span> <span class="n">MeanSquaredErrorAccuracy</span><span class="p">()</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Accuracy:&quot;</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">scorer</span><span class="p">,</span> <span class="s2">&quot;test.csv&quot;</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span>
+        <span class="s2">&quot;Accuracy:&quot;</span><span class="p">,</span>
+        <span class="n">accuracy</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">scorer</span><span class="p">,</span> <span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;TARGET&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="s2">&quot;test.csv&quot;</span><span class="p">),</span>
+    <span class="p">)</span>
 
     <span class="c1"># Make prediction</span>
     <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">features</span><span class="p">,</span> <span class="n">prediction</span> <span class="ow">in</span> <span class="n">predict</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="s2">&quot;predict.csv&quot;</span><span class="p">):</span>

@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>FLOWER17 Species classification using Transfer Learning &mdash; DFFML c8b8a9a90 documentation</title>
+  <title>FLOWER17 Species classification using Transfer Learning &mdash; DFFML a520483b4 documentation</title>
   
 
   
@@ -70,7 +70,7 @@
             
             
               <div class="version">
-                c8b8a9a90
+                a520483b4
               </div>
             
           
@@ -359,6 +359,7 @@ gradients for any other layer except the last layer are not computed in back-pro
   -model-normalize_std 0.229 0.224 0.225 \
   -model-features image:int:$((500*500)) \
   -model-predict label:str:1 \
+  -features label:str:1 \
   -sources f=dir \
     -source-foldername flower_dataset/test \
     -source-feature image \

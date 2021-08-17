@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Quickstart &mdash; DFFML c8b8a9a90 documentation</title>
+  <title>Quickstart &mdash; DFFML a520483b4 documentation</title>
   
 
   
@@ -70,7 +70,7 @@
             
             
               <div class="version">
-                c8b8a9a90
+                a520483b4
               </div>
             
           
@@ -391,6 +391,7 @@ sources are. A detailed explanation of all the command line flags follows.</p>
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">features</span> <span class="n">Years</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">1</span> <span class="n">Expertise</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">1</span> <span class="n">Trust</span><span class="p">:</span><span class="nb">float</span><span class="p">:</span><span class="mi">1</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">predict</span> <span class="n">Salary</span><span class="p">:</span><span class="nb">float</span><span class="p">:</span><span class="mi">1</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">location</span> <span class="n">tempdir</span> \
+  <span class="o">-</span><span class="n">features</span> <span class="n">Salary</span><span class="p">:</span><span class="nb">float</span><span class="p">:</span><span class="mi">1</span> \
   <span class="o">-</span><span class="n">sources</span> <span class="n">f</span><span class="o">=</span><span class="n">csv</span> \
   <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">filename</span> <span class="n">test</span><span class="o">.</span><span class="n">csv</span> \
   <span class="o">-</span><span class="n">scorer</span> <span class="n">mse</span>
@@ -568,6 +569,7 @@ each this way.</p></li>
     <span class="n">accuracy</span><span class="p">(</span>
         <span class="n">model</span><span class="p">,</span>
         <span class="n">scorer</span><span class="p">,</span>
+        <span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;Salary&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
         <span class="p">{</span><span class="s2">&quot;Years&quot;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="s2">&quot;Expertise&quot;</span><span class="p">:</span> <span class="mi">9</span><span class="p">,</span> <span class="s2">&quot;Trust&quot;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span> <span class="s2">&quot;Salary&quot;</span><span class="p">:</span> <span class="mi">50</span><span class="p">},</span>
         <span class="p">{</span><span class="s2">&quot;Years&quot;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="s2">&quot;Expertise&quot;</span><span class="p">:</span> <span class="mi">11</span><span class="p">,</span> <span class="s2">&quot;Trust&quot;</span><span class="p">:</span> <span class="mf">0.6</span><span class="p">,</span> <span class="s2">&quot;Salary&quot;</span><span class="p">:</span> <span class="mi">60</span><span class="p">},</span>
     <span class="p">),</span>
@@ -616,7 +618,15 @@ supply the filenames in place of the data.</p>
 
 <span class="c1"># Assess accuracy (alternate way of specifying data source)</span>
 <span class="n">scorer</span> <span class="o">=</span> <span class="n">MeanSquaredErrorAccuracy</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Accuracy:&quot;</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">scorer</span><span class="p">,</span> <span class="n">CSVSource</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;test.csv&quot;</span><span class="p">)))</span>
+<span class="nb">print</span><span class="p">(</span>
+    <span class="s2">&quot;Accuracy:&quot;</span><span class="p">,</span>
+    <span class="n">accuracy</span><span class="p">(</span>
+        <span class="n">model</span><span class="p">,</span>
+        <span class="n">scorer</span><span class="p">,</span>
+        <span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;Salary&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+        <span class="n">CSVSource</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;test.csv&quot;</span><span class="p">),</span>
+    <span class="p">),</span>
+<span class="p">)</span>
 
 <span class="c1"># Make prediction</span>
 <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">features</span><span class="p">,</span> <span class="n">prediction</span> <span class="ow">in</span> <span class="n">predict</span><span class="p">(</span>
@@ -667,6 +677,7 @@ supply the filenames in place of the data.</p>
         <span class="k">await</span> <span class="n">accuracy</span><span class="p">(</span>
             <span class="n">model</span><span class="p">,</span>
             <span class="n">scorer</span><span class="p">,</span>
+            <span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;Salary&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
             <span class="p">{</span><span class="s2">&quot;Years&quot;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="s2">&quot;Expertise&quot;</span><span class="p">:</span> <span class="mi">9</span><span class="p">,</span> <span class="s2">&quot;Trust&quot;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span> <span class="s2">&quot;Salary&quot;</span><span class="p">:</span> <span class="mi">50</span><span class="p">},</span>
             <span class="p">{</span><span class="s2">&quot;Years&quot;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="s2">&quot;Expertise&quot;</span><span class="p">:</span> <span class="mi">11</span><span class="p">,</span> <span class="s2">&quot;Trust&quot;</span><span class="p">:</span> <span class="mf">0.6</span><span class="p">,</span> <span class="s2">&quot;Salary&quot;</span><span class="p">:</span> <span class="mi">60</span><span class="p">},</span>
         <span class="p">),</span>

@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Evaluating Model Performance &mdash; DFFML c8b8a9a90 documentation</title>
+  <title>Evaluating Model Performance &mdash; DFFML a520483b4 documentation</title>
   
 
   
@@ -47,7 +47,7 @@
     <link rel="author" title="About these documents" href="../../about.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Ensemble by stacking" href="ensemble_by_stacking.html" />
+    <link rel="next" title="Saving and loading models" href="saving_and_loading_models.html" />
     <link rel="prev" title="Moving Between Models" href="moving_between_models.html" /> 
 </head>
 
@@ -72,7 +72,7 @@
             
             
               <div class="version">
-                c8b8a9a90
+                a520483b4
               </div>
             
           
@@ -118,9 +118,10 @@
 <li class="toctree-l4"><a class="reference internal" href="#Test-our-Models">Test our Models</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="ensemble_by_stacking.html">Ensemble by stacking</a></li>
 <li class="toctree-l3"><a class="reference internal" href="saving_and_loading_models.html">Saving and loading models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ensemble_by_stacking.html">Ensemble by stacking</a></li>
 <li class="toctree-l3"><a class="reference internal" href="transferlearning.html">Transfer Learning</a></li>
+<li class="toctree-l3"><a class="reference internal" href="multioutput_models.html">Working with Multi-Output models</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../integration.html">Automating Classification</a></li>
@@ -687,17 +688,19 @@ div.rendered_html tbody tr:hover {
     <span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;alcohol&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
 <span class="p">)</span>
 
+<span class="n">predict_feature</span> <span class="o">=</span> <span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;quality&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
 <span class="n">model1</span> <span class="o">=</span> <span class="n">XGBCModel</span><span class="p">(</span>
-    <span class="n">features</span><span class="o">=</span><span class="n">features</span><span class="p">,</span> <span class="n">predict</span><span class="o">=</span><span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;quality&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">location</span><span class="o">=</span><span class="s2">&quot;xgbc&quot;</span><span class="p">,</span>
+    <span class="n">features</span><span class="o">=</span><span class="n">features</span><span class="p">,</span> <span class="n">predict</span><span class="o">=</span><span class="n">predict_feature</span><span class="p">,</span> <span class="n">location</span><span class="o">=</span><span class="s2">&quot;xgbc&quot;</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="n">model2</span> <span class="o">=</span> <span class="n">ScikitETCModel</span><span class="p">(</span>
-    <span class="n">features</span><span class="o">=</span><span class="n">features</span><span class="p">,</span> <span class="n">predict</span><span class="o">=</span><span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;quality&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">location</span><span class="o">=</span><span class="s2">&quot;scikitetc&quot;</span><span class="p">,</span>
+    <span class="n">features</span><span class="o">=</span><span class="n">features</span><span class="p">,</span> <span class="n">predict</span><span class="o">=</span><span class="n">predict_feature</span><span class="p">,</span> <span class="n">location</span><span class="o">=</span><span class="s2">&quot;scikitetc&quot;</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="n">model3</span> <span class="o">=</span> <span class="n">XGBRModel</span><span class="p">(</span>
-    <span class="n">features</span><span class="o">=</span><span class="n">features</span><span class="p">,</span> <span class="n">predict</span><span class="o">=</span><span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;quality&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">location</span><span class="o">=</span><span class="s2">&quot;xgbr&quot;</span><span class="p">,</span>
+    <span class="n">features</span><span class="o">=</span><span class="n">features</span><span class="p">,</span> <span class="n">predict</span><span class="o">=</span><span class="n">predict_feature</span><span class="p">,</span> <span class="n">location</span><span class="o">=</span><span class="s2">&quot;xgbr&quot;</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="n">model4</span> <span class="o">=</span> <span class="n">ScikitLRModel</span><span class="p">(</span>
-    <span class="n">features</span><span class="o">=</span><span class="n">features</span><span class="p">,</span> <span class="n">predict</span><span class="o">=</span><span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;quality&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">location</span><span class="o">=</span><span class="s2">&quot;scikitlr&quot;</span><span class="p">,</span>
+    <span class="n">features</span><span class="o">=</span><span class="n">features</span><span class="p">,</span> <span class="n">predict</span><span class="o">=</span><span class="n">predict_feature</span><span class="p">,</span> <span class="n">location</span><span class="o">=</span><span class="s2">&quot;scikitlr&quot;</span><span class="p">,</span>
 <span class="p">)</span>
 </pre></div>
 </div>
@@ -732,16 +735,16 @@ div.rendered_html tbody tr:hover {
 
 <span class="n">scorer</span> <span class="o">=</span> <span class="n">MeanSquaredErrorAccuracy</span><span class="p">()</span>
 
-<span class="n">Accuracy</span> <span class="o">=</span> <span class="k">await</span> <span class="n">accuracy</span><span class="p">(</span><span class="n">model1</span><span class="p">,</span> <span class="n">scorer</span><span class="p">,</span> <span class="o">*</span><span class="n">test_data</span><span class="p">)</span>
+<span class="n">Accuracy</span> <span class="o">=</span> <span class="k">await</span> <span class="n">accuracy</span><span class="p">(</span><span class="n">model1</span><span class="p">,</span> <span class="n">scorer</span><span class="p">,</span> <span class="n">predict_feature</span><span class="p">,</span> <span class="o">*</span><span class="n">test_data</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Accuracy1:&quot;</span><span class="p">,</span> <span class="n">Accuracy</span><span class="p">)</span>
 
-<span class="n">Accuracy2</span> <span class="o">=</span> <span class="k">await</span> <span class="n">accuracy</span><span class="p">(</span><span class="n">model2</span><span class="p">,</span> <span class="n">scorer</span><span class="p">,</span> <span class="o">*</span><span class="n">test_data</span><span class="p">)</span>
+<span class="n">Accuracy2</span> <span class="o">=</span> <span class="k">await</span> <span class="n">accuracy</span><span class="p">(</span><span class="n">model2</span><span class="p">,</span> <span class="n">scorer</span><span class="p">,</span> <span class="n">predict_feature</span><span class="p">,</span> <span class="o">*</span><span class="n">test_data</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Accuracy2:&quot;</span><span class="p">,</span> <span class="n">Accuracy2</span><span class="p">)</span>
 
-<span class="n">Accuracy3</span> <span class="o">=</span> <span class="k">await</span> <span class="n">accuracy</span><span class="p">(</span><span class="n">model3</span><span class="p">,</span> <span class="n">scorer</span><span class="p">,</span> <span class="o">*</span><span class="n">test_data</span><span class="p">)</span>
+<span class="n">Accuracy3</span> <span class="o">=</span> <span class="k">await</span> <span class="n">accuracy</span><span class="p">(</span><span class="n">model3</span><span class="p">,</span> <span class="n">scorer</span><span class="p">,</span> <span class="n">predict_feature</span><span class="p">,</span> <span class="o">*</span><span class="n">test_data</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Accuracy3:&quot;</span><span class="p">,</span> <span class="n">Accuracy3</span><span class="p">)</span>
 
-<span class="n">Accuracy4</span> <span class="o">=</span> <span class="k">await</span> <span class="n">accuracy</span><span class="p">(</span><span class="n">model4</span><span class="p">,</span> <span class="n">scorer</span><span class="p">,</span> <span class="o">*</span><span class="n">test_data</span><span class="p">)</span>
+<span class="n">Accuracy4</span> <span class="o">=</span> <span class="k">await</span> <span class="n">accuracy</span><span class="p">(</span><span class="n">model4</span><span class="p">,</span> <span class="n">scorer</span><span class="p">,</span> <span class="n">predict_feature</span><span class="p">,</span> <span class="o">*</span><span class="n">test_data</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Accuracy4:&quot;</span><span class="p">,</span> <span class="n">Accuracy4</span><span class="p">)</span>
 
 <span class="n">Accuracy</span> <span class="o">=</span> <span class="p">[</span><span class="n">Accuracy</span><span class="p">,</span> <span class="n">Accuracy2</span><span class="p">,</span> <span class="n">Accuracy3</span><span class="p">,</span> <span class="n">Accuracy4</span><span class="p">]</span>
@@ -754,8 +757,8 @@ div.rendered_html tbody tr:hover {
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 Accuracy1: 0.5
-Accuracy2: 0.49375
-Accuracy3: 0.4432109525782657
+Accuracy2: 0.4875
+Accuracy3: 0.4432111132327899
 Accuracy4: 0.734375
 </pre></div></div>
 </div>
@@ -788,7 +791,7 @@ Accuracy4: 0.734375
 <img alt="../../_images/examples_notebooks_evaluating_model_performance_19_1.png" src="../../_images/examples_notebooks_evaluating_model_performance_19_1.png" />
 </div>
 </div>
-<p>From the accuracies and the above plot, it is quite obvious that the classifiers we built perform better on the Red wine quality dataset than our regressors.</p>
+<p>From the accuracies and the above plot, it is quite obvious that the Linear Regression performs best on the dataset without any tuning of the hyperparameters.</p>
 </div>
 </div>
 
@@ -798,7 +801,7 @@ Accuracy4: 0.734375
           </div>
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="ensemble_by_stacking.html" class="btn btn-neutral float-right" title="Ensemble by stacking" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="saving_and_loading_models.html" class="btn btn-neutral float-right" title="Saving and loading models" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
         <a href="moving_between_models.html" class="btn btn-neutral float-left" title="Moving Between Models" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 

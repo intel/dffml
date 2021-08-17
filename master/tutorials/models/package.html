@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Packaging a Model &mdash; DFFML c8b8a9a90 documentation</title>
+  <title>Packaging a Model &mdash; DFFML a520483b4 documentation</title>
   
 
   
@@ -70,7 +70,7 @@
             
             
               <div class="version">
-                c8b8a9a90
+                a520483b4
               </div>
             
           
@@ -340,8 +340,7 @@ than <a class="reference external" href="https://docs.python.org/3/library/unitt
 <p>We usually try to randomly generate training and test data, but for this example
 we’re just going to hard code in some data.</p>
 <p><strong>tests/test_model.py</strong></p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>
-<span class="n">TRAIN_DATA</span> <span class="o">=</span> <span class="p">[</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">TRAIN_DATA</span> <span class="o">=</span> <span class="p">[</span>
     <span class="p">[</span><span class="mf">12.4</span><span class="p">,</span> <span class="mf">11.2</span><span class="p">],</span>
     <span class="p">[</span><span class="mf">14.3</span><span class="p">,</span> <span class="mf">12.5</span><span class="p">],</span>
     <span class="p">[</span><span class="mf">14.5</span><span class="p">,</span> <span class="mf">12.7</span><span class="p">],</span>
@@ -368,6 +367,7 @@ we’re just going to hard code in some data.</p>
     <span class="p">[</span><span class="mf">19.5</span><span class="p">,</span> <span class="mf">17.0</span><span class="p">],</span>
     <span class="p">[</span><span class="mf">19.7</span><span class="p">,</span> <span class="mf">17.2</span><span class="p">],</span>
     <span class="p">[</span><span class="mf">21.2</span><span class="p">,</span> <span class="mf">18.6</span><span class="p">],</span>
+<span class="p">]</span>
 </pre></div>
 </div>
 </div>
@@ -376,8 +376,7 @@ we’re just going to hard code in some data.</p>
 <p>We create a temporary directory for our tests to use, and clean it up when
 they’re done.</p>
 <p><strong>tests/test_model.py</strong></p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>
-<span class="k">class</span> <span class="nc">TestMySLRModel</span><span class="p">(</span><span class="n">AsyncTestCase</span><span class="p">):</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">TestMySLRModel</span><span class="p">(</span><span class="n">AsyncTestCase</span><span class="p">):</span>
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">setUpClass</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
         <span class="c1"># Create a temporary directory to store the trained model</span>
@@ -392,6 +391,8 @@ they’re done.</p>
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">tearDownClass</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="c1"># Remove the temporary directory where the model was stored to cleanup</span>
+        <span class="bp">cls</span><span class="o">.</span><span class="n">model_dir</span><span class="o">.</span><span class="n">cleanup</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -407,9 +408,9 @@ See the official Python documentation about
 <a class="reference external" href="https://docs.python.org/3/tutorial/controlflow.html#unpacking-argument-lists">Unpacking Argument Lists</a>
 for more information on how the <code class="docutils literal notranslate"><span class="pre">*</span></code>-operator works.</p>
 <p><strong>tests/test_model.py</strong></p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>        <span class="bp">cls</span><span class="o">.</span><span class="n">model_dir</span><span class="o">.</span><span class="n">cleanup</span><span class="p">()</span>
-
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">test_00_train</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="k">async</span> <span class="k">def</span> <span class="nf">test_00_train</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Train the model on the training data</span>
+        <span class="k">await</span> <span class="n">train</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <span class="o">*</span><span class="p">[{</span><span class="s2">&quot;X&quot;</span><span class="p">:</span> <span class="n">x</span><span class="p">,</span> <span class="s2">&quot;Y&quot;</span><span class="p">:</span> <span class="n">y</span><span class="p">}</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">TRAIN_DATA</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>
@@ -421,13 +422,16 @@ acceptable range. This test is helpful to make sure you never make any horribly
 wrong changes to your model, since it will check that the accuracy is within an
 acceptable range.</p>
 <p><strong>tests/test_model.py</strong></p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>        <span class="k">await</span> <span class="n">train</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <span class="o">*</span><span class="p">[{</span><span class="s2">&quot;X&quot;</span><span class="p">:</span> <span class="n">x</span><span class="p">,</span> <span class="s2">&quot;Y&quot;</span><span class="p">:</span> <span class="n">y</span><span class="p">}</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">TRAIN_DATA</span><span class="p">])</span>
-
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">test_01_accuracy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="k">async</span> <span class="k">def</span> <span class="nf">test_01_accuracy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># Use the test data to assess the model&#39;s accuracy</span>
         <span class="n">res</span> <span class="o">=</span> <span class="k">await</span> <span class="n">accuracy</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">scorer</span><span class="p">,</span> <span class="o">*</span><span class="p">[{</span><span class="s2">&quot;X&quot;</span><span class="p">:</span> <span class="n">x</span><span class="p">,</span> <span class="s2">&quot;Y&quot;</span><span class="p">:</span> <span class="n">y</span><span class="p">}</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">TEST_DATA</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">scorer</span><span class="p">,</span>
+            <span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;Y&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+            <span class="o">*</span><span class="p">[{</span><span class="s2">&quot;X&quot;</span><span class="p">:</span> <span class="n">x</span><span class="p">,</span> <span class="s2">&quot;Y&quot;</span><span class="p">:</span> <span class="n">y</span><span class="p">}</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">TEST_DATA</span><span class="p">],</span>
         <span class="p">)</span>
+        <span class="c1"># Ensure the accuracy is above 80%</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="mf">0.0</span> <span class="o">&lt;=</span> <span class="n">res</span> <span class="o">&lt;</span> <span class="mf">0.1</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -437,9 +441,7 @@ acceptable range.</p>
 <code class="xref py py-func docutils literal notranslate"><span class="pre">predict</span></code> function. Then we check if each predicted Y
 value is within 10% of what it should be.</p>
 <p><strong>tests/test_model.py</strong></p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="mf">0.0</span> <span class="o">&lt;=</span> <span class="n">res</span> <span class="o">&lt;</span> <span class="mf">0.1</span><span class="p">)</span>
-
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">test_02_predict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="k">async</span> <span class="k">def</span> <span class="nf">test_02_predict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># Get the prediction for each piece of test data</span>
         <span class="k">async</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">features</span><span class="p">,</span> <span class="n">prediction</span> <span class="ow">in</span> <span class="n">predict</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <span class="o">*</span><span class="p">[{</span><span class="s2">&quot;X&quot;</span><span class="p">:</span> <span class="n">x</span><span class="p">,</span> <span class="s2">&quot;Y&quot;</span><span class="p">:</span> <span class="n">y</span><span class="p">}</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">TEST_DATA</span><span class="p">]</span>
@@ -450,6 +452,8 @@ value is within 10% of what it should be.</p>
             <span class="n">prediction</span> <span class="o">=</span> <span class="n">prediction</span><span class="p">[</span><span class="s2">&quot;Y&quot;</span><span class="p">][</span><span class="s2">&quot;value&quot;</span><span class="p">]</span>
             <span class="c1"># Check that the prediction is within 10% error of the actual value</span>
             <span class="n">acceptable</span> <span class="o">=</span> <span class="mf">0.1</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">assertLess</span><span class="p">(</span><span class="n">prediction</span><span class="p">,</span> <span class="n">correct</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">+</span> <span class="n">acceptable</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">assertGreater</span><span class="p">(</span><span class="n">prediction</span><span class="p">,</span> <span class="n">correct</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">acceptable</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>

@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>dffml.accuracy.mse &mdash; DFFML c8b8a9a90 documentation</title>
+  <title>dffml.accuracy.mse &mdash; DFFML a520483b4 documentation</title>
   
 
   
@@ -69,7 +69,7 @@
             
             
               <div class="version">
-                c8b8a9a90
+                a520483b4
               </div>
             
           
@@ -220,7 +220,7 @@
   <h1>Source code for dffml.accuracy.mse</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">..base</span> <span class="kn">import</span> <span class="n">config</span>
 <span class="kn">from</span> <span class="nn">..record</span> <span class="kn">import</span> <span class="n">Record</span>
-<span class="kn">from</span> <span class="nn">..feature</span> <span class="kn">import</span> <span class="n">Feature</span>
+<span class="kn">from</span> <span class="nn">..feature</span> <span class="kn">import</span> <span class="n">Feature</span><span class="p">,</span> <span class="n">Features</span>
 <span class="kn">from</span> <span class="nn">..model</span> <span class="kn">import</span> <span class="n">ModelContext</span>
 <span class="kn">from</span> <span class="nn">..util.entrypoint</span> <span class="kn">import</span> <span class="n">entrypoint</span>
 <span class="kn">from</span> <span class="nn">..source.source</span> <span class="kn">import</span> <span class="n">SourcesContext</span>
@@ -241,18 +241,14 @@
 <span class="sd">    Mean Squared Error</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="MeanSquaredErrorAccuracyContext.score"><a class="viewcode-back" href="../../../api/accuracy/mse.html#dffml.accuracy.mse.MeanSquaredErrorAccuracyContext.score">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">score</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mctx</span><span class="p">:</span> <span class="n">ModelContext</span><span class="p">,</span> <span class="n">sources</span><span class="p">:</span> <span class="n">SourcesContext</span><span class="p">):</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">([</span><span class="n">mctx</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">predict</span><span class="p">])</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">InvalidNumberOfFeaturesError</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__qualname__</span><span class="si">}</span><span class="s2"> can only assess accuracy of one feature. features: </span><span class="si">{</span><span class="n">features</span><span class="si">}</span><span class="s2">&quot;</span>
-            <span class="p">)</span>
+<div class="viewcode-block" id="MeanSquaredErrorAccuracyContext.score"><a class="viewcode-back" href="../../../api/accuracy/mse.html#dffml.accuracy.mse.MeanSquaredErrorAccuracyContext.score">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">score</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">mctx</span><span class="p">:</span> <span class="n">ModelContext</span><span class="p">,</span> <span class="n">sources</span><span class="p">:</span> <span class="n">SourcesContext</span><span class="p">,</span> <span class="n">feature</span><span class="p">:</span> <span class="n">Feature</span><span class="p">,</span>
+    <span class="p">):</span>
         <span class="n">y</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">y_predict</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">async</span> <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">mctx</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">sources</span><span class="p">):</span>
-            <span class="n">y</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">feature</span><span class="p">(</span><span class="n">mctx</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">predict</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
-            <span class="n">y_predict</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                <span class="n">record</span><span class="o">.</span><span class="n">prediction</span><span class="p">(</span><span class="n">mctx</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">predict</span><span class="o">.</span><span class="n">name</span><span class="p">)</span><span class="o">.</span><span class="n">value</span>
-            <span class="p">)</span>
+            <span class="n">y</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">feature</span><span class="p">(</span><span class="n">feature</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
+            <span class="n">y_predict</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">prediction</span><span class="p">(</span><span class="n">feature</span><span class="o">.</span><span class="n">name</span><span class="p">)</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
         <span class="n">accuracy</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span>
             <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="nb">abs</span><span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">y</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">y_predict</span><span class="p">))</span>
         <span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>

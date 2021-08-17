@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Saving and loading models &mdash; DFFML c8b8a9a90 documentation</title>
+  <title>Saving and loading models &mdash; DFFML a520483b4 documentation</title>
   
 
   
@@ -47,8 +47,8 @@
     <link rel="author" title="About these documents" href="../../about.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Transfer Learning" href="transferlearning.html" />
-    <link rel="prev" title="Ensemble by stacking" href="ensemble_by_stacking.html" /> 
+    <link rel="next" title="Ensemble by stacking" href="ensemble_by_stacking.html" />
+    <link rel="prev" title="Evaluating Model Performance" href="evaluating_model_performance.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -72,7 +72,7 @@
             
             
               <div class="version">
-                c8b8a9a90
+                a520483b4
               </div>
             
           
@@ -111,7 +111,6 @@
 <li class="toctree-l2 current"><a class="reference internal" href="index.html">Notebooks</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="moving_between_models.html">Moving Between Models</a></li>
 <li class="toctree-l3"><a class="reference internal" href="evaluating_model_performance.html">Evaluating Model Performance</a></li>
-<li class="toctree-l3"><a class="reference internal" href="ensemble_by_stacking.html">Ensemble by stacking</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Saving and loading models</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#Import-Packages">Import Packages</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#Build-our-Dataset">Build our Dataset</a></li>
@@ -124,7 +123,9 @@
 <li class="toctree-l4"><a class="reference internal" href="#Load-our-saved-model">Load our saved model</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="ensemble_by_stacking.html">Ensemble by stacking</a></li>
 <li class="toctree-l3"><a class="reference internal" href="transferlearning.html">Transfer Learning</a></li>
+<li class="toctree-l3"><a class="reference internal" href="multioutput_models.html">Working with Multi-Output models</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../integration.html">Automating Classification</a></li>
@@ -687,7 +688,7 @@ We won&#39;t be using this in our case.
 <h2>Instantiate our Models with parameters<a class="headerlink" href="#Instantiate-our-Models-with-parameters" title="Permalink to this headline">¶</a></h2>
 <p>Dffml makes it quite easy to load multiple models dynamically using the <code class="docutils literal notranslate"><span class="pre">Model.load()</span></code> function. After that, you just have to parameterize the loaded models and they are ready to train interchangably!</p>
 <p>For this example, we’ll be demonstrating 2 models but you can feel free to try more than 2 models in a similar fashion.</p>
-<div class="nbinput docutils container">
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
@@ -708,22 +709,16 @@ We won&#39;t be using this in our case.
     <span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;alcohol&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
 <span class="p">)</span>
 
+<span class="n">predict_feature</span> <span class="o">=</span> <span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;quality&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
 <span class="n">model</span> <span class="o">=</span> <span class="n">ScikitETCModel</span><span class="p">(</span>
     <span class="n">features</span><span class="o">=</span><span class="n">features</span><span class="p">,</span>
-    <span class="n">predict</span><span class="o">=</span><span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;quality&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+    <span class="n">predict</span><span class="o">=</span><span class="n">predict_feature</span><span class="p">,</span>
     <span class="n">location</span><span class="o">=</span><span class="s2">&quot;scikitetc&quot;</span><span class="p">,</span>
     <span class="n">n_estimators</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span>
 <span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-Intel(R) oneAPI Data Analytics Library solvers for sklearn enabled: https://intelpython.github.io/daal4py/sklearn.html
-</pre></div></div>
 </div>
 </div>
 <div class="section" id="Train-our-Models">
@@ -754,7 +749,7 @@ Intel(R) oneAPI Data Analytics Library solvers for sklearn enabled: https://inte
 
 <span class="n">scorer</span> <span class="o">=</span> <span class="n">MeanSquaredErrorAccuracy</span><span class="p">()</span>
 
-<span class="n">Accuracy</span> <span class="o">=</span> <span class="k">await</span> <span class="n">accuracy</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">scorer</span><span class="p">,</span> <span class="o">*</span><span class="n">test_data</span><span class="p">)</span>
+<span class="n">Accuracy</span> <span class="o">=</span> <span class="k">await</span> <span class="n">accuracy</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">scorer</span><span class="p">,</span> <span class="n">predict_feature</span><span class="p">,</span> <span class="o">*</span><span class="n">test_data</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Accuracy:&quot;</span><span class="p">,</span> <span class="n">Accuracy</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -764,7 +759,7 @@ Intel(R) oneAPI Data Analytics Library solvers for sklearn enabled: https://inte
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Accuracy: 0.525
+Accuracy: 0.46875
 </pre></div></div>
 </div>
 </div>
@@ -893,7 +888,7 @@ Accuracy: 0.525
 <div class="section" id="Load-our-saved-model">
 <h2>Load our saved model<a class="headerlink" href="#Load-our-saved-model" title="Permalink to this headline">¶</a></h2>
 <p>In DFFML, we can load our previously trained model by instantiating it in the same location.</p>
-<div class="nbinput docutils container">
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
@@ -914,22 +909,16 @@ Accuracy: 0.525
     <span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;alcohol&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
 <span class="p">)</span>
 
+<span class="n">predict_feature</span> <span class="o">=</span> <span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;quality&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
 <span class="n">model</span> <span class="o">=</span> <span class="n">ScikitETCModel</span><span class="p">(</span>
     <span class="n">features</span><span class="o">=</span><span class="n">features</span><span class="p">,</span>
-    <span class="n">predict</span><span class="o">=</span><span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;quality&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+    <span class="n">predict</span><span class="o">=</span><span class="n">predict_feature</span><span class="p">,</span>
     <span class="n">location</span><span class="o">=</span><span class="s2">&quot;scikitetc&quot;</span><span class="p">,</span>
     <span class="n">n_estimators</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span>
 <span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-Intel(R) oneAPI Data Analytics Library solvers for sklearn enabled: https://intelpython.github.io/daal4py/sklearn.html
-</pre></div></div>
 </div>
 <p>Lets check if the model is already trained.</p>
 <div class="nbinput docutils container">
@@ -941,7 +930,7 @@ Intel(R) oneAPI Data Analytics Library solvers for sklearn enabled: https://inte
 
 <span class="n">scorer</span> <span class="o">=</span> <span class="n">MeanSquaredErrorAccuracy</span><span class="p">()</span>
 
-<span class="n">Accuracy</span> <span class="o">=</span> <span class="k">await</span> <span class="n">accuracy</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">scorer</span><span class="p">,</span> <span class="o">*</span><span class="n">test_data</span><span class="p">)</span>
+<span class="n">Accuracy</span> <span class="o">=</span> <span class="k">await</span> <span class="n">accuracy</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">scorer</span><span class="p">,</span> <span class="n">predict_feature</span><span class="p">,</span> <span class="o">*</span><span class="n">test_data</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Accuracy:&quot;</span><span class="p">,</span> <span class="n">Accuracy</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -951,7 +940,7 @@ Intel(R) oneAPI Data Analytics Library solvers for sklearn enabled: https://inte
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Accuracy: 0.525
+Accuracy: 0.46875
 </pre></div></div>
 </div>
 <p>We can see that DFFML loaded the previously trained model which has the exact same accuracy.</p>
@@ -964,8 +953,8 @@ Accuracy: 0.525
           </div>
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="transferlearning.html" class="btn btn-neutral float-right" title="Transfer Learning" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-        <a href="ensemble_by_stacking.html" class="btn btn-neutral float-left" title="Ensemble by stacking" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="ensemble_by_stacking.html" class="btn btn-neutral float-right" title="Ensemble by stacking" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="evaluating_model_performance.html" class="btn btn-neutral float-left" title="Evaluating Model Performance" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
   <hr/>

@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Model Slr &mdash; DFFML c8b8a9a90 documentation</title>
+  <title>Model Slr &mdash; DFFML a520483b4 documentation</title>
   
 
   
@@ -70,7 +70,7 @@
             
             
               <div class="version">
-                c8b8a9a90
+                a520483b4
               </div>
             
           
@@ -288,6 +288,7 @@
     -model-features f1:float:1 <span class="se">\</span>
     -model-predict ans:int:1 <span class="se">\</span>
     -model-location tempdir <span class="se">\</span>
+    -features ans:int:1 <span class="se">\</span>
     -sources <span class="nv">f</span><span class="o">=</span>csv <span class="se">\</span>
     -source-filename dataset.csv <span class="se">\</span>
     -scorer mse <span class="se">\</span>
@@ -342,7 +343,9 @@
 
 <span class="c1"># Assess accuracy (alternate way of specifying data source)</span>
 <span class="n">scorer</span> <span class="o">=</span> <span class="n">MeanSquaredErrorAccuracy</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Accuracy:&quot;</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">scorer</span><span class="p">,</span> <span class="s2">&quot;dataset.csv&quot;</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span>
+    <span class="s2">&quot;Accuracy:&quot;</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">scorer</span><span class="p">,</span> <span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;ans&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="s2">&quot;dataset.csv&quot;</span><span class="p">)</span>
+<span class="p">)</span>
 
 <span class="c1"># Make prediction</span>
 <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">features</span><span class="p">,</span> <span class="n">prediction</span> <span class="ow">in</span> <span class="n">predict</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;f1&quot;</span><span class="p">:</span> <span class="mf">0.8</span><span class="p">,</span> <span class="s2">&quot;ans&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">}):</span>

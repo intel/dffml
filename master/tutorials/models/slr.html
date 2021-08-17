@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Writing a Model &mdash; DFFML c8b8a9a90 documentation</title>
+  <title>Writing a Model &mdash; DFFML a520483b4 documentation</title>
   
 
   
@@ -70,7 +70,7 @@
             
             
               <div class="version">
-                c8b8a9a90
+                a520483b4
               </div>
             
           
@@ -430,8 +430,7 @@ let’s us avoid records that are not applicable to our model.</p>
 <p>Models should save their state to disk after training. Classes derived from
 <code class="docutils literal notranslate"><span class="pre">SimpleModel</span></code> can put anything they want saved into <code class="docutils literal notranslate"><span class="pre">self.storage</span></code>, which
 is saved and loaded from a JSON file on disk.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">train</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sources</span><span class="p">:</span> <span class="n">SourcesContext</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="k">async</span> <span class="k">def</span> <span class="nf">train</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sources</span><span class="p">:</span> <span class="n">SourcesContext</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="c1"># X and Y data</span>
         <span class="n">x</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">y</span> <span class="o">=</span> <span class="p">[]</span>
@@ -445,6 +444,7 @@ is saved and loaded from a JSON file on disk.</p>
         <span class="c1"># Use self.logger to report how many records are being used for training</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Number of training records: </span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
         <span class="c1"># Save m, b, and accuracy</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">storage</span><span class="p">[</span><span class="s2">&quot;regression_line&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">best_fit_line</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -526,7 +526,10 @@ confidence in our prediction.</p>
     <span class="k">await</span> <span class="n">train</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="s2">&quot;train.csv&quot;</span><span class="p">)</span>
 
     <span class="c1"># Assess accuracy</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Accuracy:&quot;</span><span class="p">,</span> <span class="k">await</span> <span class="n">accuracy</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="s2">&quot;test.csv&quot;</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span>
+        <span class="s2">&quot;Accuracy:&quot;</span><span class="p">,</span>
+        <span class="k">await</span> <span class="n">accuracy</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;Salary&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="s2">&quot;test.csv&quot;</span><span class="p">),</span>
+    <span class="p">)</span>
 
     <span class="c1"># Make predictions</span>
     <span class="k">async</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">features</span><span class="p">,</span> <span class="n">prediction</span> <span class="ow">in</span> <span class="n">predict</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="s2">&quot;predict.csv&quot;</span><span class="p">):</span>

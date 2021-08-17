@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Notebooks &mdash; DFFML c8b8a9a90 documentation</title>
+  <title>Notebooks &mdash; DFFML a520483b4 documentation</title>
   
 
   
@@ -70,7 +70,7 @@
             
             
               <div class="version">
-                c8b8a9a90
+                a520483b4
               </div>
             
           
@@ -109,9 +109,10 @@
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Notebooks</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="moving_between_models.html">Moving Between Models</a></li>
 <li class="toctree-l3"><a class="reference internal" href="evaluating_model_performance.html">Evaluating Model Performance</a></li>
-<li class="toctree-l3"><a class="reference internal" href="ensemble_by_stacking.html">Ensemble by stacking</a></li>
 <li class="toctree-l3"><a class="reference internal" href="saving_and_loading_models.html">Saving and loading models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ensemble_by_stacking.html">Ensemble by stacking</a></li>
 <li class="toctree-l3"><a class="reference internal" href="transferlearning.html">Transfer Learning</a></li>
+<li class="toctree-l3"><a class="reference internal" href="multioutput_models.html">Working with Multi-Output models</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../integration.html">Automating Classification</a></li>
@@ -287,12 +288,6 @@
 <li class="toctree-l2"><a class="reference internal" href="evaluating_model_performance.html#Test-our-Models">Test our Models</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="ensemble_by_stacking.html">Ensemble by stacking</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="ensemble_by_stacking.html#Import-Packages">Import Packages</a></li>
-<li class="toctree-l2"><a class="reference internal" href="ensemble_by_stacking.html#Build-our-Dataset">Build our Dataset</a></li>
-<li class="toctree-l2"><a class="reference internal" href="ensemble_by_stacking.html#Split-our-data">Split our data</a></li>
-</ul>
-</li>
 <li class="toctree-l1"><a class="reference internal" href="saving_and_loading_models.html">Saving and loading models</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="saving_and_loading_models.html#Import-Packages">Import Packages</a></li>
 <li class="toctree-l2"><a class="reference internal" href="saving_and_loading_models.html#Build-our-Dataset">Build our Dataset</a></li>
@@ -305,9 +300,45 @@
 <li class="toctree-l2"><a class="reference internal" href="saving_and_loading_models.html#Load-our-saved-model">Load our saved model</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="ensemble_by_stacking.html">Ensemble by stacking</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ensemble_by_stacking.html#Import-Packages">Import Packages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ensemble_by_stacking.html#Build-our-Dataset">Build our Dataset</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ensemble_by_stacking.html#Split-our-data">Split our data</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="ensemble_by_stacking.html#Let-the-Ensemble-begin!">Let the Ensemble begin!</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ensemble_by_stacking.html#1.-Training-First-Level-Base-Models-on-train-data.">1. Training First-Level Base Models on train data.</a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="transferlearning.html">Transfer Learning</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="transferlearning.html#Setting-up">Setting-up</a></li>
-<li class="toctree-l2"><a class="reference internal" href="transferlearning.html#Feature-Extraction:">Feature Extraction:</a></li>
+<li class="toctree-l2"><a class="reference internal" href="transferlearning.html#Feature-Extraction:">Feature Extraction:</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="transferlearning.html#Define-our-Additional-layers">Define our Additional layers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="transferlearning.html#Instantiate-our-Model-with-parameters">Instantiate our Model with parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="transferlearning.html#Train-the-Model">Train the Model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="transferlearning.html#Test-the-Model">Test the Model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="transferlearning.html#Make-predictions-using-our-Model.">Make predictions using our Model.</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="multioutput_models.html">Working with Multi-Output models</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="multioutput_models.html#Multi-Output-Regression">Multi-Output Regression</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="multioutput_models.html#Build-our-Dataset">Build our Dataset</a></li>
+<li class="toctree-l3"><a class="reference internal" href="multioutput_models.html#Instantiate-our-Model-with-parameters">Instantiate our Model with parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="multioutput_models.html#Train-our-Model">Train our Model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="multioutput_models.html#Test-our-Models">Test our Models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="multioutput_models.html#Make-predictions-using-our-Model.">Make predictions using our Model.</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="multioutput_models.html#Multi-Output-Classifier">Multi-Output Classifier</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="multioutput_models.html#id1">Build our Dataset</a></li>
+<li class="toctree-l3"><a class="reference internal" href="multioutput_models.html#id2">Instantiate our Model with parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="multioutput_models.html#id3">Train our Model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="multioutput_models.html#id4">Test our Models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="multioutput_models.html#id5">Make predictions using our Model.</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>

@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>dffml.high_level.ml &mdash; DFFML c8b8a9a90 documentation</title>
+  <title>dffml.high_level.ml &mdash; DFFML a520483b4 documentation</title>
   
 
   
@@ -69,7 +69,7 @@
             
             
               <div class="version">
-                c8b8a9a90
+                a520483b4
               </div>
             
           
@@ -223,6 +223,7 @@
 
 <span class="kn">from</span> <span class="nn">..model</span> <span class="kn">import</span> <span class="n">Model</span>
 <span class="kn">from</span> <span class="nn">..record</span> <span class="kn">import</span> <span class="n">Record</span>
+<span class="kn">from</span> <span class="nn">..feature</span> <span class="kn">import</span> <span class="n">Feature</span><span class="p">,</span> <span class="n">Features</span>
 <span class="kn">from</span> <span class="nn">..source.source</span> <span class="kn">import</span> <span class="n">BaseSource</span>
 <span class="kn">from</span> <span class="nn">..accuracy.accuracy</span> <span class="kn">import</span> <span class="n">AccuracyScorer</span><span class="p">,</span> <span class="n">AccuracyContext</span>
 <span class="kn">from</span> <span class="nn">..util.internal</span> <span class="kn">import</span> <span class="n">records_to_sources</span>
@@ -284,6 +285,7 @@
 <div class="viewcode-block" id="accuracy"><a class="viewcode-back" href="../../../api/high_level/ml.html#dffml.high_level.ml.accuracy">[docs]</a><span class="k">async</span> <span class="k">def</span> <span class="nf">accuracy</span><span class="p">(</span>
     <span class="n">model</span><span class="p">,</span>
     <span class="n">accuracy_scorer</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">AccuracyScorer</span><span class="p">,</span> <span class="n">AccuracyContext</span><span class="p">],</span>
+    <span class="n">features</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Feature</span><span class="p">,</span> <span class="n">Features</span><span class="p">],</span>
     <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">BaseSource</span><span class="p">,</span> <span class="n">Record</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
@@ -336,6 +338,7 @@
 <span class="sd">    ...         await accuracy(</span>
 <span class="sd">    ...             model,</span>
 <span class="sd">    ...             MeanSquaredErrorAccuracy(),</span>
+<span class="sd">    ...             Feature(&quot;Salary&quot;, int, 1),</span>
 <span class="sd">    ...             {&quot;Years&quot;: 4, &quot;Salary&quot;: 50},</span>
 <span class="sd">    ...             {&quot;Years&quot;: 5, &quot;Salary&quot;: 60},</span>
 <span class="sd">    ...         ),</span>
@@ -344,6 +347,16 @@
 <span class="sd">    &gt;&gt;&gt; asyncio.run(main())</span>
 <span class="sd">    Accuracy: 0.0</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># TODO Use this to ensure that we&#39;re always passing features before records</span>
+    <span class="c1"># We can remove it eventually once we know we&#39;ve updated everywhere</span>
+    <span class="c1"># appropriately</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="p">(</span><span class="n">Feature</span><span class="p">,</span> <span class="n">Features</span><span class="p">)):</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;features was </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">features</span><span class="p">)</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">features</span><span class="si">!r}</span><span class="s2">. Should have been Feature or Features&quot;</span>
+        <span class="p">)</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="n">Feature</span><span class="p">):</span>
+        <span class="n">features</span> <span class="o">=</span> <span class="n">Features</span><span class="p">(</span><span class="n">features</span><span class="p">)</span>
+
     <span class="k">async</span> <span class="k">with</span> <span class="n">contextlib</span><span class="o">.</span><span class="n">AsyncExitStack</span><span class="p">()</span> <span class="k">as</span> <span class="n">astack</span><span class="p">:</span>
         <span class="c1"># Open sources</span>
         <span class="n">sctx</span> <span class="o">=</span> <span class="k">await</span> <span class="n">astack</span><span class="o">.</span><span class="n">enter_async_context</span><span class="p">(</span><span class="n">records_to_sources</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">))</span>
@@ -359,8 +372,8 @@
             <span class="c1"># TODO Replace this with static type checking and maybe dynamic</span>
             <span class="c1"># through something like pydantic. See issue #36</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">accuracy_scorer</span><span class="si">}</span><span class="s2"> is not an AccuracyScorer&quot;</span><span class="p">)</span>
-        <span class="c1"># Run accuracy method</span>
-        <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="k">await</span> <span class="n">actx</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">mctx</span><span class="p">,</span> <span class="n">sctx</span><span class="p">))</span></div>
+
+        <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="k">await</span> <span class="n">actx</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">mctx</span><span class="p">,</span> <span class="n">sctx</span><span class="p">,</span> <span class="o">*</span><span class="n">features</span><span class="p">))</span></div>
 
 
 <div class="viewcode-block" id="predict"><a class="viewcode-back" href="../../../api/high_level/ml.html#dffml.high_level.ml.predict">[docs]</a><span class="k">async</span> <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span>

@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>MNIST Handwriten Digits &mdash; DFFML c8b8a9a90 documentation</title>
+  <title>MNIST Handwriten Digits &mdash; DFFML a520483b4 documentation</title>
   
 
   
@@ -70,7 +70,7 @@
             
             
               <div class="version">
-                c8b8a9a90
+                a520483b4
               </div>
             
           
@@ -334,6 +334,7 @@ and the seed to have the input of the associate_definition operation come from t
     -model-location tempdir \
     -model-classifications $(seq 0 9) \
     -model-features image:int:$((28 * 28)) \
+    -features label:int:1 \
     -sources images=df label=idx1 \
     -source-images-dataflow normalize.yaml \
     -source-images-features image:int:$((28 * 28)) \
