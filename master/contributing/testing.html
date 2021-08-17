@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Testing &mdash; DFFML 27757f6eb documentation</title>
+  <title>Testing &mdash; DFFML 051577bfb documentation</title>
   
 
   
@@ -70,7 +70,7 @@
             
             
               <div class="version">
-                27757f6eb
+                051577bfb
               </div>
             
           
@@ -286,6 +286,10 @@ tests.</p>
 </div>
 <p>You can also run all tests which have a given string in their name.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python3 -m unittest discover -v -k unpack_
+</pre></div>
+</div>
+<p>You can run all documentation related testcases with the following command</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nv">TEST_DOCS</span><span class="o">=</span><span class="m">1</span> python3 -m unittest discover -v tests/docs/
 </pre></div>
 </div>
 <div class="section" id="writing-tests">
