@@ -1,0 +1,9 @@
+Optimizer
+=========
+.. toctree::
+    :glob:
+    :maxdepth: 2
+    :caption: Contents:
+
+    optimizer
+    parameter_grid

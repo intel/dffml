@@ -1,0 +1,30 @@
+Optimizers
+==========
+
+Optimizers are implementations of :class:`dffml.optimizer.Optimizer`,
+they abstract the usage of optimizing methods.
+
+.. _plugin_optimizer_dffml:
+
+dffml
++++++
+
+.. code-block:: console
+
+    pip install dffml
+
+
+.. _plugin_optimizer_dffml_parameter_grid:
+
+parameter_grid
+~~~~~~~~~~~~~~
+
+*Official*
+
+No description
+
+**Args**
+
+- parameters: dict
+
+  - Parameters to be optimized

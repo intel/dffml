@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Ensemble by stacking &mdash; DFFML a520483b4 documentation</title>
+  <title>Ensemble by stacking &mdash; DFFML 27757f6eb documentation</title>
   
 
   
@@ -72,7 +72,7 @@
             
             
               <div class="version">
-                a520483b4
+                27757f6eb
               </div>
             
           
@@ -111,6 +111,7 @@
 <li class="toctree-l2 current"><a class="reference internal" href="index.html">Notebooks</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="moving_between_models.html">Moving Between Models</a></li>
 <li class="toctree-l3"><a class="reference internal" href="evaluating_model_performance.html">Evaluating Model Performance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tuning_models.html">Tuning Models</a></li>
 <li class="toctree-l3"><a class="reference internal" href="saving_and_loading_models.html">Saving and loading models</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Ensemble by stacking</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#Import-Packages">Import Packages</a></li>
@@ -144,6 +145,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../api/plugins.html">Plugins</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api/noasync.html">Noasync</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api/log.html">Log</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/optimizer/index.html">Optimizer</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api/port/index.html">Port</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api/util/index.html">Util</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api/db/index.html">Db</a></li>
@@ -566,10 +568,6 @@ div.rendered_html tbody tr:hover {
 <li><p><code class="docutils literal notranslate"><span class="pre">protocol_allowlist</span></code> (list, optional) – List of strings, one of which the URL must start with. We won’t be using this in our case.</p></li>
 </ol>
 <p>Don’t forget to calculate the <code class="docutils literal notranslate"><span class="pre">expected_hash</span></code>, you can find out how at <a class="reference internal" href="../../api/util/net.html#dffml.util.net.cached_download"><span class="std std-ref">cached_download()</span></a>!</p>
-<p>In Dffml, we try to use asynchronicity where we can, to get that extra bit of performance. Let’s use the async version of load() to load the dataset that we just downloaded into a source. We can easily achieve this by declaring a <a class="reference internal" href="../../api/source/csv.html"><span class="doc">CSVSource</span></a> with the <code class="docutils literal notranslate"><span class="pre">data_path</span></code> and the <code class="docutils literal notranslate"><span class="pre">delimiter</span></code> value since the data we downloaded seems to have a non-comma delimiter.</p>
-<p>After that, we can just create an array of records by loading each one through the load() function.</p>
-<p>Feel free to also try out the no async version of load().</p>
-<p>Dffml makes it quite easy to load multiple models dynamically using the <code class="docutils literal notranslate"><span class="pre">Model.load()</span></code> function. All the entrypoints for models available in DFFML can be found at the <a class="reference internal" href="../../plugins/dffml_model.html"><span class="doc">Model Plugins Page</span></a>. After that, you just have to parameterize the loaded models and they are ready to train interchangably!</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>

@@ -10,6 +10,7 @@
     plugins
     noasync
     log
+    optimizer/index
     port/index
     util/index
     db/index
