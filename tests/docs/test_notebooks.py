@@ -9,7 +9,7 @@ from testbook import testbook
 from dffml.util.asynctestcase import AsyncTestCase
 from dffml.util.os import chdir
 
-TESTS_PATH = pathlib.Path(__file__).parent
+TESTS_PATH = pathlib.Path(__file__).parents[1]
 NOTEBOOK_DATA_PATH = TESTS_PATH.joinpath("notebooks", "data")
 NB_PATH = TESTS_PATH.parent / "examples" / "notebooks"
 
@@ -31,6 +31,11 @@ def mk_notebook_test(path: pathlib.Path):
         with chdir(NOTEBOOK_DATA_PATH):
             with testbook(path, timeout=-1, execute=True) as tb:
                 pass
+
+    testcase = unittest.skipIf(
+        "TEST_DOCS" not in os.environ,
+        "TEST_DOCS environment variable not set",
+    )(testcase)
 
     return testcase
 

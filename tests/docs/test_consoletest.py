@@ -173,10 +173,10 @@ for filepath in DOCS_PATH.rglob("*.rst"):
     if str(relative) not in NO_SETUP:
         # Don't check for a long test entry in the workflow if doc in NO_SETUP
         TestDocs.TESTABLE_DOCS.append(str(relative))
-        # Skip if not in NO_SETUP and RUN_CONSOLETESTS not set
+        # Skip if not in NO_SETUP and TEST_DOCS not set
         testcase = unittest.skipIf(
-            "RUN_CONSOLETESTS" not in os.environ,
-            "RUN_CONSOLETESTS environment variable not set",
+            "TEST_DOCS" not in os.environ,
+            "TEST_DOCS environment variable not set",
         )(testcase)
         # Do not add the tests if we are running with GitHub Actions for the main
         # package. This is because there are separate jobs for each tutorial test
