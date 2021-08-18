@@ -22,12 +22,12 @@ from ..operation.compression import (
 )
 
 
-def get_key_substr(string: str, dict: dict, return_="value") -> Any:
+def get_key_substr(string: str, dict: dict, return_value: bool = True) -> Any:
     """ 
     A function to find dictionary items whose key matches a substring.
     """
     return [
-        value if return_ == "value" else key
+        value if return_value else key
         for key, value in dict.items()
         if string in key.lower()
     ][0]
