@@ -271,5 +271,4 @@ class Scikit(Model):
 class ScikitUnsprvised(Scikit):
     @property
     def _filepath(self):
-        model_name = self.SCIKIT_MODEL.__name__
         return self.config.location / "ScikitUnsupervised.json"
