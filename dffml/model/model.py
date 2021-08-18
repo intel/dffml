@@ -123,12 +123,22 @@ class Model(BaseDataFlowFacilitatorObject):
             # Load values from config if it exists
             config_path = self.temp_dir / "config.json"
             if config_path.exists():
+                config_dict = self.config._asdict()
                 with open(config_path) as config_handle:
                     loaded_config = json.load(config_handle)
                     for prop, value in loaded_config.items():
                         # TODO: Need to change this as per
                         # drafts PR#1189 and PR#1186
-                        pass
+                        if all(
+                            [
+                                prop in config_dict.keys(),
+                                value != config_dict.get(prop, None),
+                            ]
+                        ):
+                            self.logger.warning(
+                                f"Config-Mismatch: {prop} saved on disk is {value} which is\
+                                different from value in memory {config_dict[prop]}"
+                            )
         # print("ended __aenter__")
         return self
 
