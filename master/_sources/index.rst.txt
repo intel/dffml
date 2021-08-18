@@ -72,7 +72,6 @@ branch can be found `here <master/index.html>`_.
     :caption: Subprojects
 
     shouldi
-    swportal
 
 .. toctree::
     :glob:
