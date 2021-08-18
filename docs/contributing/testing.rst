@@ -23,6 +23,20 @@ You can also run all tests which have a given string in their name.
 
     $ python3 -m unittest discover -v -k unpack_
 
+You can run all documentation related testcases with the following command
+
+.. code-block:: console
+
+    $ TEST_DOCS=1 python3 -m unittest discover -v tests/docs/
+
+You can run a single documentation test by providing it's path in docs where
+``/`` is converted to ``_``. Here's how you would run the
+``docs/tutorials/sources/complex.rst`` test.
+
+.. code-block:: console
+
+    $ TEST_DOCS=1 python3 -m unittest -v tests.docs.test_consoletest.TestDocs.test_tutorials_sources_complex
+
 Writing Tests
 -------------
 

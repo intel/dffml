@@ -28,6 +28,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Support for Archive Storage of Models
 - Support for Multi-Output models.
 - Usecase example notebook for "Working with Multi-Output models"
+- Optimizer `parameter_grid` for tuning models.
+- Usecase example notebook for "Tuning Models"
 
 ### Changed
 - Calls to hashlib now go through helper functions
