@@ -35,7 +35,6 @@ except Exception as error:
     LOGGER.error(error)
 
 from dffml.record import Record
-from dffml.model.accuracy import Accuracy
 from dffml.source.source import Sources, SourcesContext
 from dffml.model.model import ModelConfig, ModelContext, Model, ModelNotTrained
 from dffml.feature.feature import Features, Feature
@@ -85,7 +84,7 @@ class Scikit(Model):
 
 
 class ScikitUnsprvised(Scikit):
-    async def __aenter__(self) -> "Scikit":
+    async def __aenter__(self) -> "ScikitUnsprvised":
         await super().__aenter__()
         self.saved_filepath = self._filepath / "Scikit.json"
         if self.saved_filepath.is_file():
