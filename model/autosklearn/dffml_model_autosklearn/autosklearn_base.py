@@ -1,7 +1,6 @@
-import abc
 from typing import AsyncIterator
 
-import pickle
+import joblib
 import pandas as pd
 
 from dffml.model.model import Model
@@ -32,8 +31,7 @@ class AutoSklearnModel(Model):
 
     async def __aexit__(self, exc_type, exc_value, traceback):
         if self.model:
-            with open(self.path, "wb") as model_handle:
-                pickle.dump(self.model, model_handle)
+            joblib.dump(self.model, self.path)
         await super().__aexit__(exc_type, exc_value, traceback)
 
     def filepath(self, location, file):
@@ -41,8 +39,7 @@ class AutoSklearnModel(Model):
 
     def load_model(self):
         if self.path.is_file():
-            with open(self.path, "rb") as loaded_model_handle:
-                self.model = pickle.load(loaded_model_handle)
+            self.model = joblib.load(self.path)
 
 
 class AutoSklearnModelContext(ModelContext):
