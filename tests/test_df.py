@@ -1,5 +1,10 @@
+import os
 import sys
+import zipfile
+import tarfile
+import tempfile
 import contextlib
+from unittest.case import TestCase
 from unittest.mock import patch, MagicMock
 from typing import List
 
@@ -9,6 +14,7 @@ from dffml.df.types import (
     Input,
     DefinitionMissing,
     DataFlow,
+    InputFlow,
 )
 from dffml.df.base import (
     op,
@@ -28,7 +34,8 @@ from dffml.df.memory import (
     MemoryInputSet,
     MemoryInputSetConfig,
 )
-
+from dffml.df.archive import create_archive_dataflow
+from dffml.operation.archive import ZIP_FILE
 from dffml.operation.output import GetSingle
 from dffml.util.asynctestcase import AsyncTestCase
 
@@ -381,3 +388,173 @@ class TestOperationImplementation(MockIterEntryPoints):
     async def test_load_failure(self):
         with self.assertRaises(FailedToLoadOperationImplementation):
             OperationImplementation.load("parse_line")
+
+
+class TestCreateArchiveDataflow(TestCase):
+    @property
+    def formats_list(self):
+        return [
+            "tar",
+            "tar.gz",
+            "tar.bz2",
+            "tar.xz",
+        ]
+
+    def _create_dataflow(self, input_, output):
+        dataflow = create_archive_dataflow(
+            {
+                Input(
+                    value=input_,
+                    definition=Definition("test_inp", primitive="str"),
+                    origin="input_path",
+                ),
+                Input(
+                    value=output,
+                    definition=Definition("test_out", primitive="str"),
+                    origin="output_path",
+                ),
+            }
+        )
+        return dataflow
+
+    def test_zip_creation_flow(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            dataflow = self._create_dataflow(temp_dir, "test_zip.zip")
+            self.assertTrue("make_zip_archive" in dataflow.operations.keys())
+            self.assertEqual(
+                dataflow.flow,
+                {
+                    "make_zip_archive": InputFlow(
+                        inputs={
+                            "input_directory_path": ["seed"],
+                            "output_file_path": ["seed"],
+                        },
+                        conditions=[],
+                    )
+                },
+            )
+
+    def test_zip_extraction_flow(self):
+        with tempfile.TemporaryDirectory() as output_dir:
+            with tempfile.TemporaryDirectory() as input_dir:
+                zip_path = os.path.join(output_dir, "test_zip.zip")
+                with zipfile.ZipFile(zip_path, "w") as zip:
+                    zip.write(input_dir)
+            dataflow = self._create_dataflow(zip_path, output_dir)
+            self.assertTrue(
+                "extract_zip_archive" in dataflow.operations.keys()
+            )
+            self.assertEqual(
+                dataflow.flow,
+                {
+                    "extract_zip_archive": InputFlow(
+                        inputs={
+                            "input_file_path": ["seed"],
+                            "output_directory_path": ["seed"],
+                        },
+                        conditions=[],
+                    )
+                },
+            )
+
+    def test_tar_creation_flows(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            for format_ in self.formats_list:
+                dataflow = self._create_dataflow(
+                    temp_dir, f"test_tar.{format_}"
+                )
+                self.assertTrue(
+                    "make_tar_archive" in dataflow.operations.keys()
+                )
+                if format_ != "tar":
+                    compression_type = format_.split(".")[1]
+                    self.assertTrue(
+                        f"{compression_type}_compress"
+                        in dataflow.operations.keys()
+                    )
+                    self.assertEqual(
+                        dataflow.flow,
+                        {
+                            "make_tar_archive": InputFlow(
+                                inputs={
+                                    "input_directory_path": ["seed"],
+                                    "output_file_path": ["seed"],
+                                },
+                                conditions=[],
+                            ),
+                            f"{compression_type}_compress": InputFlow(
+                                inputs={
+                                    "input_file_path": [
+                                        {"make_tar_archive": "output_path"}
+                                    ],
+                                    "output_file_path": ["seed.final_output"],
+                                },
+                                conditions=[],
+                            ),
+                        },
+                    )
+                else:
+                    self.assertEqual(
+                        dataflow.flow,
+                        {
+                            "make_tar_archive": InputFlow(
+                                inputs={
+                                    "input_directory_path": ["seed"],
+                                    "output_file_path": ["seed"],
+                                },
+                                conditions=[],
+                            )
+                        },
+                    )
+
+    def test_tar_extraction_flows(self):
+        with tempfile.TemporaryDirectory() as output_dir:
+            with tempfile.TemporaryDirectory() as input_dir:
+                for format_ in self.formats_list:
+                    tar_path = os.path.join(output_dir, f"test_tar.{format_}")
+                    with tarfile.open(tar_path, mode="x") as tar:
+                        tar.add(input_dir)
+                    dataflow = self._create_dataflow(tar_path, output_dir)
+                    self.assertTrue(
+                        "extract_tar_archive" in dataflow.operations.keys()
+                    )
+                    if format_ != "tar":
+                        compression_type = format_.split(".")[1]
+                        self.assertEqual(
+                            dataflow.flow,
+                            {
+                                f"{compression_type}_decompress": InputFlow(
+                                    inputs={
+                                        "input_file_path": ["seed"],
+                                        "output_file_path": ["seed"],
+                                    },
+                                    conditions=[],
+                                ),
+                                "extract_tar_archive": InputFlow(
+                                    inputs={
+                                        "input_file_path": [
+                                            {
+                                                f"{compression_type}_decompress": "output_path"
+                                            }
+                                        ],
+                                        "output_directory_path": [
+                                            "seed.final_output"
+                                        ],
+                                    },
+                                    conditions=[],
+                                ),
+                            },
+                        )
+                    else:
+                        self.assertEqual(
+                            dataflow.flow,
+                            {
+                                "extract_tar_archive": InputFlow(
+                                    inputs={
+                                        "input_file_path": ["seed"],
+                                        "output_directory_path": ["seed"],
+                                    },
+                                    conditions=[],
+                                )
+                            },
+                        )
