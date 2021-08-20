@@ -159,6 +159,7 @@ SKIP_DOCS = ["plugins/dffml_model"]
 NO_SETUP = [
     "tutorials/doublecontextentry",
     "tutorials/models/load",
+    "tutorials/models/archive",
 ]
 
 
