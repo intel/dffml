@@ -1,7 +1,8 @@
-from os import name
+import os
 import tarfile
 import zipfile
 import pathlib
+
 
 from ..df.base import op
 from ..df.types import Definition
@@ -41,8 +42,16 @@ async def make_zip_archive(
         Path to the output zip file
     """
     with zipfile.ZipFile(output_file_path, "w") as zip:
-        for file in pathlib.Path(input_directory_path).rglob("*"):
-            zip.write(file, file.name)
+        # TODO: Make a clean implementation of this with pathlib
+        for root, _, files in os.walk(input_directory_path):
+            for file in files:
+                zip.write(
+                    os.path.join(root, file),
+                    os.path.relpath(
+                        os.path.join(root, file),
+                        os.path.join(input_directory_path),
+                    ),
+                )
     return {"output_path": output_file_path}
 
 
@@ -96,8 +105,16 @@ async def make_tar_archive(
         Path to the created tar file.
     """
     with tarfile.open(output_file_path, mode="x") as tar:
-        for file in pathlib.Path(input_directory_path).rglob("*"):
-            tar.add(file, file.name)
+        # TODO: Make a clean implementation of this with pathlib
+        for root, _, files in os.walk(input_directory_path):
+            for file in files:
+                tar.add(
+                    os.path.join(root, file),
+                    os.path.relpath(
+                        os.path.join(root, file),
+                        os.path.join(input_directory_path),
+                    ),
+                )
     return {"output_path": output_file_path}
 
 
