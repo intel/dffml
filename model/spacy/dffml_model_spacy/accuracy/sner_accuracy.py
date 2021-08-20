@@ -1,9 +1,9 @@
 from dffml.feature.feature import Features
-import os
 
 import spacy
 from spacy.scorer import Scorer
 from spacy.training import Example
+
 
 from dffml import (
     config,
@@ -11,6 +11,7 @@ from dffml import (
     entrypoint,
     AccuracyScorer,
     ModelContext,
+    ModelNotTrained,
     SourcesContext,
 )
 
