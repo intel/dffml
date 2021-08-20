@@ -5,7 +5,6 @@ import warnings
 from typing import AsyncIterator, Tuple, Any
 
 import spacy
-from spacy.scorer import Scorer
 from spacy.training import Example
 from spacy.util import minibatch, compounding
 
@@ -15,21 +14,21 @@ from dffml import (
     field,
     entrypoint,
     ModelNotTrained,
-    Accuracy,
     SourcesContext,
     Record,
 )
 from dffml.model.model import Model
-from dffml.accuracy import AccuracyContext
 from dffml.source.source import Sources, SourcesContext
 from dffml.model.model import ModelContext, ModelNotTrained
 
 
 @config
 class SpacyNERModelConfig:
-    location: str = field("Output location")
-    model_name_or_path: str = field(
-        "Model name or path to saved model. Defaults to blank 'en' model.",
+    location: str = field("Output location.")
+    model_name: str = field(
+        "Name of one of the trained pipelines provided by spaCy.\
+        You can find complete list at: https://spacy.io/models\
+        Defaults to blank 'en' model.",
         default=None,
     )
     n_iter: int = field("Number of training iterations", default=10)
@@ -44,23 +43,12 @@ class SpacyNERModelConfig:
 class SpacyNERModelContext(ModelContext):
     def __init__(self, parent):
         super().__init__(parent)
-        if self.parent.config.model_name_or_path is not None:
-            # load existing model
-            self.nlp = spacy.load(self.parent.config.model_name_or_path)
-            self.logger.debug(
-                "Loaded model '%s'" % self.parent.config.model_name_or_path
-            )
-        else:
-            # create blank Language class
-            self.nlp = spacy.blank("en")
-            self.logger.debug("Created blank 'en' model")
-
-        if "ner" not in self.nlp.pipe_names:
-            self.ner = self.nlp.create_pipe("ner")
-            self.nlp.add_pipe(self.ner, last=True)
+        if "ner" not in self.parent.nlp.pipe_names:
+            self.ner = self.parent.nlp.create_pipe("ner")
+            self.parent.nlp.add_pipe("ner", last=True)
         else:
             # get it to add labels
-            self.ner = self.nlp.get_pipe("ner")
+            self.ner = self.parent.nlp.get_pipe("ner")
 
     async def _preprocess_data(self, sources: Sources):
         all_examples = []
@@ -83,17 +71,21 @@ class SpacyNERModelContext(ModelContext):
         # get names of other pipes to disable them during training
         pipe_exceptions = ["ner", "trf_wordpiecer", "trf_tok2vec"]
         other_pipes = [
-            pipe for pipe in self.nlp.pipe_names if pipe not in pipe_exceptions
+            pipe
+            for pipe in self.parent.nlp.pipe_names
+            if pipe not in pipe_exceptions
         ]
         # only train NER
-        with self.nlp.disable_pipes(*other_pipes), warnings.catch_warnings():
+        with self.parent.nlp.disable_pipes(
+            *other_pipes
+        ), warnings.catch_warnings():
             # show warnings for misaligned entity spans once
             warnings.filterwarnings(
                 "once", category=UserWarning, module="spacy"
             )
-            if self.parent.config.model_name_or_path is None:
-                self.nlp.begin_training()
-            for itn in range(self.parent.config.n_iter):
+            if self.parent.config.model_name is None:
+                self.parent.nlp.begin_training()
+            for _ in range(self.parent.config.n_iter):
                 random.shuffle(train_examples)
                 losses = {}
                 batches = minibatch(
@@ -102,32 +94,23 @@ class SpacyNERModelContext(ModelContext):
                 for batch in batches:
                     examples = []
                     for doc, gold_dict in batch:
-                        doc = self.nlp.make_doc(doc)
+                        doc = self.parent.nlp.make_doc(doc)
                         examples.append(Example.from_dict(doc, gold_dict))
-                    self.nlp.update(
+                    self.parent.nlp.update(
                         examples,
                         drop=self.parent.config.dropout,
                         losses=losses,
                     )
                 self.logger.debug(f"Losses: {losses}")
 
-        if self.parent.config.location is not None:
-            if not self.parent.config.location.exists():
-                self.parent.config.location.mkdir(parents=True)
-            self.nlp.to_disk(self.parent.config.location)
-            self.logger.debug(
-                f"Saved model to {self.parent.config.location.name}"
-            )
-
     async def predict(
         self, sources: SourcesContext
     ) -> AsyncIterator[Tuple[Record, Any, float]]:
-        if not os.path.isdir(os.path.join(self.parent.config.location, "ner")):
+        if not self.parent.model_path.exists():
             raise ModelNotTrained("Train model before prediction.")
-        self.nlp = spacy.load(self.parent.config.location)
 
         async for record in sources.records():
-            doc = self.nlp(record.feature("sentence"))
+            doc = self.parent.nlp(record.feature("sentence"))
             prediction = [(ent.text, ent.label_) for ent in doc.ents]
             record.predicted("Tag", prediction, "Nan")
             yield record
@@ -213,7 +196,7 @@ class SpacyNERModel(Model):
             -sources s=op \
             -source-opimp dffml_model_spacy.ner.utils:parser \
             -source-args train.json False \
-            -model-model_name_or_path en_core_web_sm \
+            -model-model_name en_core_web_sm \
             -model-location temp \
             -model-n_iter 5 \
             -log debug
@@ -228,7 +211,7 @@ class SpacyNERModel(Model):
             -sources s=op \
             -source-opimp dffml_model_spacy.ner.utils:parser \
             -source-args train.json False \
-            -model-model_name_or_path en_core_web_sm \
+            -model-model_name en_core_web_sm \
             -model-location temp \
             -model-n_iter 5 \
             -features tag:str:1 \
@@ -246,7 +229,7 @@ class SpacyNERModel(Model):
             -sources s=op \
             -source-opimp dffml_model_spacy.ner.utils:parser \
             -source-args test.json True \
-            -model-model_name_or_path en_core_web_sm \
+            -model-model_name en_core_web_sm \
             -model-location temp \
             -model-n_iter 5 \
             -log debug
@@ -305,3 +288,38 @@ class SpacyNERModel(Model):
 
     CONFIG = SpacyNERModelConfig
     CONTEXT = SpacyNERModelContext
+
+    def __init__(self, config):
+        super().__init__(config)
+        self.nlp = None
+
+    async def __aenter__(self):
+        await super().__aenter__()
+        self.path = (
+            self.config.location
+            if not hasattr(self, "temp_dir")
+            else self.temp_dir
+        )
+        self.model_path = self.path / "ner"
+        if any(
+            [
+                all([self.config.model_name, not self.model_path.exists()]),
+                all([self.config.model_name, self.model_path.exists()]),
+            ]
+        ):
+            self.nlp = spacy.load(self.config.model_name)
+            self.logger.debug(f"Loaded model {self.config.model_name}")
+        elif all([not self.config.model_name, self.model_path.exists()]):
+            self.nlp = self.nlp = spacy.load(self.model_path)
+            self.logger.debug("Loaded model from disk.")
+        else:
+            self.nlp = spacy.blank("en")
+            self.logger.debug("Created blank 'en' model")
+
+        return self
+
+    async def __aexit__(self, exc_type, exc_value, traceback):
+        if self.nlp:
+            self.nlp.to_disk(self.model_path)
+            self.logger.debug(f"Saved model to {self.model_path}")
+        return await super().__aexit__(exc_type, exc_value, traceback)

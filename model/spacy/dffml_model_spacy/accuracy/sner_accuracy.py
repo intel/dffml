@@ -28,11 +28,11 @@ class SpacyNerAccuracyContext(AccuracyContext):
     async def score(
         self, mctx: ModelContext, sources: SourcesContext, *features: Features
     ):
-        if not os.path.isdir(os.path.join(mctx.parent.config.location, "ner")):
+        if not mctx.parent.model_path.exists():
             raise ModelNotTrained("Train model before assessing for accuracy.")
 
         test_examples = await mctx._preprocess_data(sources)
-        mctx.nlp = spacy.load(mctx.parent.config.location)
+        mctx.nlp = spacy.load(mctx.parent.model_path)
 
         scorer = Scorer()
         examples = []
