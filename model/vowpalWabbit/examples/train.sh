@@ -6,4 +6,5 @@ dffml train \
     B:int:1 \
   -model-noconvert \
   -sources f=csv \
-  -source-filename train.csv
+  -source-filename train.csv \
+  -model-location tempdir
