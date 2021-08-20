@@ -5,7 +5,7 @@ import tarfile
 import mimetypes
 
 from typing import Dict, Tuple, Any
-from .types import DataFlow, Input, InputFlow, Definition, Operation
+from .types import DataFlow, Input, InputFlow, Operation
 from ..operation.archive import (
     make_tar_archive,
     make_zip_archive,
@@ -113,16 +113,6 @@ def deduce_archive_action(seed: Dict) -> Tuple[str]:
         output_path.is_file(),
         output_path.is_dir(),
     )
-    # print("=" * 80)
-    # print("input:", input_path)
-    # print("input_exists:", input_exists)
-    # print("input_is_file:", input_is_file)
-    # print("input_is_dir:", input_is_dir)
-    # print("output:", output_path)
-    # print("output_exists:", output_exists)
-    # print("output_is_file:", output_is_file)
-    # print("output_is_dir:", output_is_dir)
-    # print("=" * 80)
 
     if all([input_exists, output_exists, output_is_dir, input_is_file]):
         action = "extract"
