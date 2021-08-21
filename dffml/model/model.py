@@ -95,11 +95,9 @@ class Model(BaseDataFlowFacilitatorObject):
             self.config.location = location
 
     def __call__(self) -> ModelContext:
-        # self._make_config_location()
         return self.CONTEXT(self)
 
     async def __aenter__(self):
-        # print("Inside __aenter__")
         if getattr(self.config, "location", False):
             if any(
                 [
@@ -108,11 +106,9 @@ class Model(BaseDataFlowFacilitatorObject):
                     in ["zip", "tar"],
                 ]
             ):
-                # print("hit temp_dir creation")
                 temp_dir = self._get_directory()
                 self.location = temp_dir
             else:
-                # print("hit make config location")
                 self._make_config_location()
 
         if self.config.location.is_file():
@@ -139,11 +135,9 @@ class Model(BaseDataFlowFacilitatorObject):
                                 f"Config-Mismatch: {prop} saved on disk is {value} which is\
                                 different from value in memory {config_dict[prop]}"
                             )
-        # print("ended __aenter__")
         return self
 
     async def __aexit__(self, exc_type, exc_value, traceback):
-        # print("Inside __aexit__")
         if getattr(self.config, "location", False):
             if self.config.location.is_file():
                 os.remove(self.config.location)
@@ -163,7 +157,6 @@ class Model(BaseDataFlowFacilitatorObject):
         if hasattr(self, "temp_dir"):
             shutil.rmtree(self.temp_dir)
             delattr(self, "temp_dir")
-        # print("ended __aexit__")
 
     async def _run_operation(self, input_path, output_path, dataflow):
         get_definition = (
@@ -201,12 +194,10 @@ class Model(BaseDataFlowFacilitatorObject):
         If the config object for this model contains the location property
         then create it if it does not exist.
         """
-        # print("Making location dir")
         location = getattr(self.config, "location", None)
         if location is not None:
             location = pathlib.Path(location)
             if not location.is_dir():
-                # print("Making location dir")
                 location.mkdir(mode=MODE_BITS_SECURE, parents=True)
 
 
@@ -238,7 +229,6 @@ class SimpleModel(Model):
         # If we've already entered the model's context once, don't reload
         if self._in_context > 1:
             return self
-        # self._make_config_location()
         await super().__aenter__()
         self.open()
         return self
