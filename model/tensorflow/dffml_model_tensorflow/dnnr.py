@@ -10,12 +10,14 @@ os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
 
 from dffml.base import config
 from dffml.record import Record
-from dffml.model.model import Model
-from dffml.model.accuracy import Accuracy
 from dffml.util.entrypoint import entrypoint
 from dffml.source.source import Sources, SourcesContext
 
-from .dnnc import TensorflowModelContext, TensorflowBaseConfig
+from .tf_base import (
+    TensorflowModelContext,
+    TensorflowBaseConfig,
+    TensorflowModel,
+)
 
 
 @config
@@ -33,28 +35,10 @@ class DNNRegressionModelContext(TensorflowModelContext):
         super().__init__(parent)
         self.tf = importlib.import_module("tensorflow")
         self.np = importlib.import_module("numpy")
-        self.model_dir_path = self._model_dir_path()
         self.all_features = self.parent.config.features.names() + [
             self.parent.config.predict.name
         ]
-        self.features = self._applicable_features()
-
-    @property
-    def model(self):
-        """
-        Generates or loads a model
-        """
-        if self._model is not None:
-            return self._model
-        self.logger.debug("Loading model ")
-
-        self._model = self.tf.compat.v1.estimator.DNNRegressor(
-            feature_columns=list(self.feature_columns.values()),
-            hidden_units=self.parent.config.hidden,
-            model_dir=self.model_dir_path,
-        )
-
-        return self._model
+        self.features = self.parent._applicable_features()
 
     async def sources_to_array(self, sources: Sources):
         x_cols: Dict[str, Any] = {feature: [] for feature in self.features}
@@ -139,7 +123,7 @@ class DNNRegressionModelContext(TensorflowModelContext):
 
 
 @entrypoint("tfdnnr")
-class DNNRegressionModel(Model):
+class DNNRegressionModel(TensorflowModel):
     """
     Implemented using Tensorflow's DNNEstimator.
 
@@ -209,3 +193,23 @@ class DNNRegressionModel(Model):
 
     CONTEXT = DNNRegressionModelContext
     CONFIG = DNNRegressionModelConfig
+
+    def __init__(self, config):
+        super().__init__(config)
+
+    @property
+    def model(self):
+        """
+        Generates or loads a model
+        """
+        if self._model is not None:
+            return self._model
+        self.logger.debug("Loading model ")
+
+        self._model = self.tf.compat.v1.estimator.DNNRegressor(
+            feature_columns=list(self.feature_columns.values()),
+            hidden_units=self.config.hidden,
+            model_dir=self.model_path,
+        )
+
+        return self._model
