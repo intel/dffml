@@ -1,7 +1,7 @@
-from os import name
 import tarfile
 import zipfile
 import pathlib
+
 
 from ..df.base import op
 from ..df.types import Definition
@@ -16,6 +16,22 @@ OUTPUT_TARFILE_PATH = Definition(name="output_tarfile_path", primitive="str")
 OUTPUT_DIRECTORY_PATH = Definition(
     name="output_directory_path", primitive="str"
 )
+
+
+def recursive_add_to_archive(archive_handle, path, archive_path):
+    if not isinstance(path, pathlib.Path):
+        path = pathlib.Path(path)
+    if path.is_file():
+        archive_handle(path, archive_path)
+    elif path.is_dir():
+        if archive_path:
+            archive_handle(path, archive_path)
+        path_names = [pth.name for pth in path.iterdir()]
+        for name in sorted(path_names):
+            name = pathlib.Path(name)
+            recursive_add_to_archive(
+                archive_handle, path / name, archive_path / name
+            )
 
 
 @op(
@@ -41,8 +57,7 @@ async def make_zip_archive(
         Path to the output zip file
     """
     with zipfile.ZipFile(output_file_path, "w") as zip:
-        for file in pathlib.Path(input_directory_path).rglob("*"):
-            zip.write(file, file.name)
+        recursive_add_to_archive(zip.write, input_directory_path, "")
     return {"output_path": output_file_path}
 
 
@@ -96,8 +111,7 @@ async def make_tar_archive(
         Path to the created tar file.
     """
     with tarfile.open(output_file_path, mode="x") as tar:
-        for file in pathlib.Path(input_directory_path).rglob("*"):
-            tar.add(file, file.name)
+        recursive_add_to_archive(tar.add, input_directory_path, "")
     return {"output_path": output_file_path}
 
 
