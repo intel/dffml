@@ -7,4 +7,4 @@ from dffml.model.accuracy import Accuracy
 
 class TestAccuracry(unittest.TestCase):
     def test_str(self):
-        self.assertEqual(str(Accuracy(0.04242)), "4.24")
+        self.assertEqual(str(score(0.04242)), "4.24")
