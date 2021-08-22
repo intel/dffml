@@ -1,3 +1,6 @@
+import os
+import pathlib
+import tempfile
 from unittest.mock import patch, mock_open
 
 from dffml import run
@@ -91,3 +94,56 @@ class TestTarOperations(AsyncTestCase):
         ), patch("tarfile.TarInfo.fromtarfile", m_open):
             async for _, _ in run(dataflow):
                 m_open.assert_any_call("test/path/to/tar_file.tar", "rb")
+
+
+class TestArchiveCreation(AsyncTestCase):
+    async def preseve_directory_structure(self, extension, make, extract):
+        # Temporary directory to work in
+        with tempfile.TemporaryDirectory() as tempdir:
+            # Variables for inputs and outputs
+            output_file_path = pathlib.Path(
+                tempdir, f"output_file.{extension}"
+            )
+            output_directory_path = pathlib.Path(tempdir, "output_directory")
+            input_directory_path = pathlib.Path(tempdir, "input_directory")
+            input_directory_path.joinpath(
+                "top_level_dir", "child_dir_1"
+            ).mkdir(parents=True)
+            input_directory_path.joinpath(
+                "top_level_dir", "child_dir_1", "file1"
+            ).write_text("")
+            # Create our directory tree
+            await make(
+                input_directory_path, output_file_path,
+            )
+            # Create our directory tree
+            await extract(
+                output_file_path, output_directory_path,
+            )
+            # Test that the directory structure in the created tar file are the same
+            # as the input directory.
+            self.assertEqual(
+                sorted(
+                    [
+                        "top_level_dir",
+                        os.path.join("top_level_dir", "child_dir_1"),
+                        os.path.join("top_level_dir", "child_dir_1", "file1"),
+                    ]
+                ),
+                sorted(
+                    [
+                        str(path.relative_to(output_directory_path))
+                        for path in output_directory_path.rglob("*")
+                    ]
+                ),
+            )
+
+    async def test_preseve_directory_structure_tar(self):
+        await self.preseve_directory_structure(
+            "tar", make_tar_archive, extract_tar_archive
+        )
+
+    async def test_preseve_directory_structure_zip(self):
+        await self.preseve_directory_structure(
+            "zip", make_zip_archive, extract_zip_archive
+        )
