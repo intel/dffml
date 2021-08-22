@@ -35,4 +35,3 @@ docs/contributing/consoletest.md
 /consoletest/
 tests/service/logs/
 tests/notebooks/data/
-debug_data
