@@ -35,7 +35,6 @@ except Exception as error:
     LOGGER.error(error)
 
 from dffml.record import Record
-from dffml.model.accuracy import Accuracy
 from dffml.source.source import Sources, SourcesContext
 from dffml.model.model import ModelConfig, ModelContext, Model, ModelNotTrained
 from dffml.feature.feature import Features, Feature
@@ -52,11 +51,55 @@ class ScikitConfig(ModelConfig, NamedTuple):
     features: Features
 
 
+class Scikit(Model):
+    def __init__(self, config) -> None:
+        super().__init__(config)
+        self.saved = {}
+        self.clf = None
+        self.joblib = importlib.import_module("joblib")
+
+    @property
+    def _filepath(self):
+        return (
+            self.config.location
+            if not hasattr(self, "temp_dir")
+            else self.temp_dir
+        )
+
+    async def __aenter__(self) -> "Scikit":
+        await super().__aenter__()
+        self.saved_filepath = self._filepath / "Scikit.json"
+        if self.saved_filepath.is_file():
+            self.saved = json.loads(self.saved_filepath.read_text())
+        self.clf_path = self._filepath / "ScikitFeatures.joblib"
+        if self.clf_path.is_file():
+            self.clf = self.joblib.load(str(self.clf_path))
+        return self
+
+    async def __aexit__(self, exc_type, exc_value, traceback):
+        self.saved_filepath.write_text(json.dumps(self.saved))
+        if self.clf:
+            self.joblib.dump(self.clf, str(self.clf_path))
+        await super().__aexit__(exc_type, exc_value, traceback)
+
+
+class ScikitUnsprvised(Scikit):
+    async def __aenter__(self) -> "ScikitUnsprvised":
+        await super().__aenter__()
+        self.saved_filepath = self._filepath / "Scikit.json"
+        if self.saved_filepath.is_file():
+            self.saved = json.loads(self.saved_filepath.read_text())
+        self.clf_path = self._filepath / "ScikitUnsupervised.json"
+        if self.clf_path.is_file():
+            self.clf = self.joblib.load(str(self.clf_path))
+
+        return self
+
+
 class ScikitContext(ModelContext):
     def __init__(self, parent):
         super().__init__(parent)
         self.np = importlib.import_module("numpy")
-        self.joblib = importlib.import_module("joblib")
         self.features = self.parent.config.features.names()
         self.is_multi = isinstance(self.parent.config.predict, Features)
         self.predictions = (
@@ -65,7 +108,6 @@ class ScikitContext(ModelContext):
             else self.parent.config.predict.name
         )
         self._features_hash = self._feature_predict_hash()
-        self.clf = None
 
     @property
     def confidence(self):
@@ -87,20 +129,14 @@ class ScikitContext(ModelContext):
             "".join([params] + self.features), algorithm="sha384"
         )
 
-    @property
-    def _filepath(self):
-        return self.parent.config.location / "ScikitFeatures.joblib"
-
     async def __aenter__(self):
-        if self._filepath.is_file():
-            self.clf = self.joblib.load(str(self._filepath))
-        else:
+        if self.parent.clf is None:
             config = self.parent.config._asdict()
             del config["location"]
             del config["predict"]
             del config["features"]
-            self.clf = self.parent.SCIKIT_MODEL(**config)
-        self.estimator_type = self.clf._estimator_type
+            self.parent.clf = self.parent.SCIKIT_MODEL(**config)
+        self.estimator_type = self.parent.clf._estimator_type
         return self
 
     async def __aexit__(self, exc_type, exc_value, traceback):
@@ -131,22 +167,24 @@ class ScikitContext(ModelContext):
         xdata = self.np.array(xdata)
         ydata = self.np.array(ydata)
         self.logger.info("Number of input records: {}".format(len(xdata)))
-        if self.is_multi and "MultiOutput" not in self.clf.__class__.__name__:
+        if (
+            self.is_multi
+            and "MultiOutput" not in self.parent.clf.__class__.__name__
+        ):
             if self.estimator_type == "regressor":
-                self.clf = MultiOutputRegressor(self.clf)
+                self.parent.clf = MultiOutputRegressor(self.parent.clf)
             elif self.estimator_type == "classifier":
-                self.clf = MultiOutputClassifier(self.clf)
+                self.parent.clf = MultiOutputClassifier(self.parent.clf)
             else:
                 raise NoMultiOutputSupport(
                     "Model does not support multi-output. Please refer the docs to find a suitable model entrypoint."
                 )
-        self.clf.fit(xdata, ydata)
-        self.joblib.dump(self.clf, str(self._filepath))
+        self.parent.clf.fit(xdata, ydata)
 
     async def predict(
         self, sources: SourcesContext
     ) -> AsyncIterator[Tuple[Record, Any, float]]:
-        if not self._filepath.is_file():
+        if not self.parent.clf_path.is_file():
             raise ModelNotTrained("Train model before prediction.")
         async for record in sources.with_features(self.features):
             record_data = []
@@ -159,7 +197,7 @@ class ScikitContext(ModelContext):
                 "Predicted Value of {} for {}: {}".format(
                     self.parent.config.predict,
                     to_predict,
-                    self.clf.predict(to_predict),
+                    self.parent.clf.predict(to_predict),
                 )
             )
             target = self.predictions
@@ -167,17 +205,17 @@ class ScikitContext(ModelContext):
                 for t in range(len(target)):
                     record.predicted(
                         target[t],
-                        self.clf.predict(to_predict)[0][t],
+                        self.parent.clf.predict(to_predict)[0][t],
                         self.confidence,
                     )
             else:
                 record.predicted(
                     target,
                     self.parent.config.predict.dtype(
-                        self.clf.predict(to_predict)[0]
+                        self.parent.clf.predict(to_predict)[0]
                     )
                     if self.parent.config.predict.dtype is not str
-                    else self.clf.predict(to_predict)[0],
+                    else self.parent.clf.predict(to_predict)[0],
                     self.confidence,
                 )
             yield record
@@ -185,14 +223,12 @@ class ScikitContext(ModelContext):
 
 class ScikitContextUnsprvised(ScikitContext):
     async def __aenter__(self):
-        if self._filepath.is_file():
-            self.clf = self.joblib.load(str(self._filepath))
-        else:
+        if self.parent.clf is None:
             config = self.parent.config._asdict()
             del config["location"]
             del config["features"]
             del config["predict"]
-            self.clf = self.parent.SCIKIT_MODEL(**config)
+            self.parent.clf = self.parent.SCIKIT_MODEL(**config)
         return self
 
     async def train(self, sources: Sources):
@@ -202,19 +238,18 @@ class ScikitContextUnsprvised(ScikitContext):
             xdata.append(list(feature_data.values()))
         xdata = self.np.array(xdata)
         self.logger.info("Number of input records: {}".format(len(xdata)))
-        self.clf.fit(xdata)
-        self.joblib.dump(self.clf, str(self._filepath))
+        self.parent.clf.fit(xdata)
 
     async def predict(
         self, sources: SourcesContext
     ) -> AsyncIterator[Tuple[Record, Any, float]]:
-        if not self._filepath.is_file():
+        if not self.parent.clf_path.is_file():
             raise ModelNotTrained("Train model before prediction.")
-        estimator_type = self.clf._estimator_type
+        estimator_type = self.parent.clf._estimator_type
         if estimator_type == "clusterer":
-            if hasattr(self.clf, "predict"):
+            if hasattr(self.parent.clf, "predict"):
                 # inductive clusterer
-                predictor = self.clf.predict
+                predictor = self.parent.clf.predict
             else:
                 # transductive clusterer
                 self.logger.critical(
@@ -222,14 +257,14 @@ class ScikitContextUnsprvised(ScikitContext):
                 )
 
                 def yield_labels():
-                    for label in self.clf.labels_.astype(self.np.int):
+                    for label in self.parent.clf.labels_.astype(self.np.int):
                         yield label
 
                 labels = yield_labels()
                 predictor = lambda predict: [next(labels)]
         else:
             raise NotImplementedError(
-                f"Model is not a clusterer: {self.clf._estimator_type}"
+                f"Model is not a clusterer: {self.parent.clf._estimator_type}"
             )
 
         async for record in sources.with_features(self.features):
@@ -248,28 +283,3 @@ class ScikitContextUnsprvised(ScikitContext):
                 self.confidence,
             )
             yield record
-
-
-class Scikit(Model):
-    def __init__(self, config) -> None:
-        super().__init__(config)
-        self.saved = {}
-
-    @property
-    def _filepath(self):
-        return self.config.location / "Scikit.json"
-
-    async def __aenter__(self) -> "Scikit":
-        if self._filepath.is_file():
-            self.saved = json.loads(self._filepath.read_text())
-        return self
-
-    async def __aexit__(self, exc_type, exc_value, traceback):
-        self._filepath.write_text(json.dumps(self.saved))
-
-
-class ScikitUnsprvised(Scikit):
-    @property
-    def _filepath(self):
-        model_name = self.SCIKIT_MODEL.__name__
-        return self.config.location / "ScikitUnsupervised.json"

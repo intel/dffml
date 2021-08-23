@@ -48,7 +48,7 @@ class TestSpacyNERModel(AsyncTestCase):
         cls.model_dir = tempfile.TemporaryDirectory()
         cls.model = SpacyNERModel(
             SpacyNERModelConfig(
-                model_name_or_path="en_core_web_sm",
+                model_name="en_core_web_sm",
                 location=cls.model_dir.name,
                 n_iter=10,
                 dropout=0.4,

@@ -27,10 +27,10 @@ class SklearnModelAccuracyContext(AccuracyContext):
     async def score(
         self, mctx: ModelContext, sctx: SourcesContext, *features: Feature,
     ):
-        if not mctx._filepath.is_file():
+        if not mctx.parent.clf_path.is_file():
             raise ModelNotTrained("Train model before assessing for accuracy.")
 
-        if mctx.clf._estimator_type not in ("classifier", "regressor"):
+        if mctx.parent.clf._estimator_type not in ("classifier", "regressor"):
             raise ScorerWillNotWork(
                 "SklearnModelAccuracy will not work with Clustering Models"
             )
@@ -65,7 +65,7 @@ class SklearnModelAccuracyContext(AccuracyContext):
         xdata = mctx.np.array(xdata)
         ydata = mctx.np.array(ydata)
         mctx.logger.debug("Number of input records: {}".format(len(xdata)))
-        mctx.confidence = mctx.clf.score(xdata, ydata)
+        mctx.confidence = mctx.parent.clf.score(xdata, ydata)
         return mctx.confidence
 
 

@@ -1,24 +1,24 @@
 """
 Base class for PyTorch models
 """
+from abc import abstractmethod
 import os
-import pathlib
-from typing import Any, Tuple, AsyncIterator, List, Type, Dict
 import copy
 import time
-
 import torch
+import pathlib
+import numpy as np
 import torch.optim as optim
 from torch.optim import lr_scheduler
+from typing import Any, Tuple, AsyncIterator, List, Type, Dict
 
-import numpy as np
 
 from dffml.record import Record
-from dffml.model.accuracy import Accuracy
 from dffml.base import config, field
 from dffml.feature.feature import Feature, Features
 from dffml.source.source import Sources, SourcesContext
-from dffml.model.model import ModelContext, ModelNotTrained
+from dffml.model.model import ModelContext, ModelNotTrained, Model
+
 from .utils import NumpyToTensor, PyTorchLoss, CrossEntropyLossFunction
 
 
@@ -70,28 +70,11 @@ class PyTorchModelConfig:
 class PyTorchModelContext(ModelContext):
     def __init__(self, parent):
         super().__init__(parent)
-        if self.parent.config.classifications:
-            self.cids = self._mkcids(self.parent.config.classifications)
-            self.classifications = self._classifications(self.cids)
-        else:
-            self.classifications = None
+
         self.features = self._applicable_features()
-        self.model_path = self._model_path()
-        self._model = None
         self.counter = 0
 
-        if self.parent.config.enableGPU and torch.cuda.is_available():
-            self.device = torch.device("cuda:0")
-            self.logger.info("Using CUDA")
-        else:
-            self.device = torch.device("cpu")
-
     async def __aenter__(self):
-        if os.path.isfile(self.model_path):
-            self.logger.info(f"Using saved model from {self.model_path}")
-            self._model = torch.load(self.model_path)
-        else:
-            self._model = self.createModel()
 
         self.set_model_parameters()
 
@@ -112,42 +95,10 @@ class PyTorchModelContext(ModelContext):
         """
         Set model parameters to optimize according to the network
         """
-        self.model_parameters = self._model.parameters()
-
-    def _classifications(self, cids):
-        """
-        Map classifications to numeric values
-        """
-        classifications = {value: key for key, value in cids.items()}
-        self.logger.debug(
-            "classifications(%d): %r", len(classifications), classifications
-        )
-        return classifications
+        self.model_parameters = self.parent.model.parameters()
 
     def _applicable_features(self):
         return [name for name in self.parent.config.features.names()]
-
-    def _model_path(self):
-        if self.parent.config.location is None:
-            return None
-        if not os.path.isdir(self.parent.config.location):
-            raise NotADirectoryError(
-                "%s is not a directory" % (self.parent.config.location)
-            )
-        os.makedirs(self.parent.config.location, exist_ok=True)
-
-        return os.path.join(self.parent.config.location, "model.pt")
-
-    def _mkcids(self, classifications):
-        """
-        Create an index, possible classification mapping and sort the list of
-        classifications first.
-        """
-        cids = dict(
-            zip(range(0, len(classifications)), sorted(classifications))
-        )
-        self.logger.debug("cids(%d): %r", len(cids), cids)
-        return cids
 
     async def dataset_generator(self, sources: Sources):
         """
@@ -156,7 +107,6 @@ class PyTorchModelContext(ModelContext):
         self.logger.debug("Training on features: %r", self.features)
         x_cols: Dict[str, Any] = {feature: [] for feature in self.features}
         y_cols = []
-        all_records = []
         all_sources = sources.with_features(
             self.features + [self.parent.config.predict.name]
         )
@@ -165,10 +115,10 @@ class PyTorchModelContext(ModelContext):
             for feature, results in record.features(self.features).items():
                 x_cols[feature].append(np.array(results))
             y_cols.append(
-                self.classifications[
+                self.parent.classifications[
                     record.feature(self.parent.config.predict.name)
                 ]
-                if self.classifications
+                if self.parent.classifications
                 else record.feature(self.parent.config.predict.name)
             )
         if (len(self.features)) > 1:
@@ -257,7 +207,7 @@ class PyTorchModelContext(ModelContext):
         since = time.time()
 
         # Store initial weights of the network
-        best_model_wts = copy.deepcopy(self._model.state_dict())
+        best_model_wts = copy.deepcopy(self.parent.model.state_dict())
         best_acc = 0.0
 
         for epoch in range(self.parent.config.epochs):
@@ -268,22 +218,22 @@ class PyTorchModelContext(ModelContext):
 
             for phase in dataloaders.keys():
                 if phase == "Training":
-                    self._model.train()  # Set model to training phase
+                    self.parent.model.train()  # Set model to training phase
                 else:
-                    self._model.eval()  # Set model to evaluation phase for validation
+                    self.parent.model.eval()  # Set model to evaluation phase for validation
 
                 running_loss = 0.0
                 running_corrects = 0
 
                 for inputs, labels in dataloaders[phase]:
-                    inputs = inputs.to(self.device)
-                    labels = labels.to(self.device)
+                    inputs = inputs.to(self.parent.device)
+                    labels = labels.to(self.parent.device)
                     self.optimizer.zero_grad()
 
                     # Track gradients for computing loss in the network only if the model is in training phase
                     with torch.set_grad_enabled(phase == "Training"):
-                        outputs = self._model(inputs)
-                        if self.classifications:
+                        outputs = self.parent.model(inputs)
+                        if self.parent.classifications:
                             _, preds = torch.max(outputs, 1)
                         loss = self.criterion(outputs, labels)
 
@@ -294,7 +244,7 @@ class PyTorchModelContext(ModelContext):
 
                     running_loss += loss.item() * inputs.size(0)
                     # If classification labels are specified, add up the the correct predictions
-                    if self.classifications:
+                    if self.parent.classifications:
                         running_corrects += torch.sum(preds == labels.data)
 
                 if phase == "Training":
@@ -304,7 +254,7 @@ class PyTorchModelContext(ModelContext):
                 epoch_loss = running_loss / size[phase]
                 epoch_acc = (
                     running_corrects.double() / size[phase]
-                    if self.classifications
+                    if self.parent.classifications
                     else 1.0 - epoch_loss
                 )
 
@@ -319,7 +269,7 @@ class PyTorchModelContext(ModelContext):
                     if epoch_acc >= best_acc:
                         best_acc = epoch_acc
                         best_model_wts = copy.deepcopy(
-                            self._model.state_dict()
+                            self.parent.model.state_dict()
                         )
                         self.counter = 0
                     else:
@@ -348,10 +298,7 @@ class PyTorchModelContext(ModelContext):
             self.logger.info(
                 "Best Validation Accuracy: {:4f}".format(best_acc)
             )
-            self._model.load_state_dict(best_model_wts)
-
-        # Save the model at the specified path
-        torch.save(self._model, self.model_path)
+            self.parent.model.load_state_dict(best_model_wts)
 
     async def predict(
         self, sources: SourcesContext
@@ -359,10 +306,10 @@ class PyTorchModelContext(ModelContext):
         """
         Uses trained data to make a prediction about the quality of a record.
         """
-        if not os.path.isfile(os.path.join(self.model_path)):
+        if not self.parent.model_path.exists():
             raise ModelNotTrained("Train model before prediction.")
 
-        self._model.eval()
+        self.parent.model.eval()
         async for record in sources.with_features(self.features):
             feature_data = record.features(self.features)[self.features[0]]
             predict = await self.prediction_data_generator(feature_data)
@@ -371,15 +318,15 @@ class PyTorchModelContext(ModelContext):
             # Disable gradient calculation for prediction
             with torch.no_grad():
                 for val in predict:
-                    val = val.to(self.device)
-                    output = self._model(val)
+                    val = val.to(self.parent.device)
+                    output = self.parent.model(val)
 
-                    if self.classifications:
+                    if self.parent.classifications:
                         prob = torch.nn.functional.softmax(output, dim=1)
                         confidence, prediction_value = prob.topk(1, dim=1)
                         record.predicted(
                             target,
-                            self.cids[prediction_value.item()],
+                            self.parent.cids[prediction_value.item()],
                             confidence,
                         )
                     else:
@@ -387,3 +334,78 @@ class PyTorchModelContext(ModelContext):
                         record.predicted(target, output, confidence)
 
             yield record
+
+
+class PyTorchModel(Model):
+    def __init__(self, config) -> None:
+        super().__init__(config)
+        self.model = None
+        if self.config.classifications:
+            self.cids = self._mkcids(self.config.classifications)
+            self.classifications = self._classifications(self.cids)
+        else:
+            self.classifications = None
+
+        if all([self.config.enableGPU, torch.cuda.is_available()]):
+            self.device = torch.device("cuda:0")
+            self.logger.info("Using CUDA")
+        else:
+            self.device = torch.device("cpu")
+
+    @abstractmethod
+    def createModel(self):
+        """
+        This should be implemented by the child class inheriting from
+        this class.
+        """
+        raise NotImplementedError(
+            "Can't use createModel method from PyTorchModel"
+        )
+
+    @property
+    def base_path(self):
+        return (
+            self.config.location
+            if not hasattr(self, "temp_dir")
+            else self.temp_dir
+        )
+
+    @property
+    def model_path(self):
+        return self.base_path / "model.pt"
+
+    def _classifications(self, cids):
+        """
+        Map classifications to numeric values
+        """
+        classifications = {value: key for key, value in cids.items()}
+        self.logger.debug(
+            "classifications(%d): %r", len(classifications), classifications
+        )
+        return classifications
+
+    def _mkcids(self, classifications):
+        """
+        Create an index, possible classification mapping and sort the list of
+        classifications first.
+        """
+        cids = dict(
+            zip(range(0, len(classifications)), sorted(classifications))
+        )
+        self.logger.debug("cids(%d): %r", len(cids), cids)
+        return cids
+
+    async def __aenter__(self) -> "PyTorchModel":
+        await super().__aenter__()
+        if self.model_path.exists():
+            self.logger.info(f"Using saved model from {self.model_path}")
+            self.model = torch.load(self.model_path)
+        else:
+            self.model = self.createModel()
+        return self
+
+    async def __aexit__(self, exc_type, exc_value, traceback):
+        if self.model:
+            # Save the model at the specified path
+            torch.save(self.model, self.model_path)
+        await super().__aexit__(exc_type, exc_value, traceback)

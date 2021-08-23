@@ -6,4 +6,5 @@ dffml predict all \
     B:int:1 \
   -model-noconvert \
   -sources f=csv \
-  -source-filename test.csv
+  -source-filename test.csv \
+  -model-location tempdir

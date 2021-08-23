@@ -8,5 +8,6 @@ dffml accuracy  \
   -features B:int:1 \
   -scorer mse \
   -sources f=csv \
-  -source-filename train.csv
+  -source-filename train.csv \
+  -model-location tempdir
 

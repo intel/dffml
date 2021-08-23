@@ -1,12 +1,12 @@
 import operator
-from typing import Union
 import torch.nn as nn
+from typing import Union
 
 from dffml.base import config, field
 from dffml.util.entrypoint import entrypoint
-from dffml.model.model import Model
-from .pytorch_base import PyTorchModelConfig, PyTorchModelContext
+
 from .utils import create_layer
+from .pytorch_base import PyTorchModelConfig, PyTorchModelContext, PyTorchModel
 
 
 class Network(nn.Module):
@@ -62,12 +62,18 @@ class PyTorchNeuralNetworkContext(PyTorchModelContext):
     def __init__(self, parent):
         super().__init__(parent)
 
+
+@entrypoint("pytorchnet")
+class PyTorchNeuralNetwork(PyTorchModel):
+    CONFIG = PyTorchNeuralNetworkConfig
+    CONTEXT = PyTorchNeuralNetworkContext
+
     def createModel(self):
         """
         Generates a model
         """
-        if self._model is not None:
-            return self._model
+        if self.model is not None:
+            return self.model
 
         if self.classifications:
             self.logger.debug(
@@ -76,14 +82,8 @@ class PyTorchNeuralNetworkContext(PyTorchModelContext):
                 self.classifications,
             )
 
-        model = self.parent.config.network
+        model = self.config.network
         self.logger.debug("Model Summary\n%r", model)
 
-        self._model = model.to(self.device)
-        return self._model
-
-
-@entrypoint("pytorchnet")
-class PyTorchNeuralNetwork(Model):
-    CONFIG = PyTorchNeuralNetworkConfig
-    CONTEXT = PyTorchNeuralNetworkContext
+        self.model = model.to(self.device)
+        return self.model

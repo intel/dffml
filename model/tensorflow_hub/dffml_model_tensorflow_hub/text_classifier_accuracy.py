@@ -1,5 +1,4 @@
 import os
-from typing import AsyncIterator, List
 
 from dffml.base import config
 from dffml.feature.feature import Features
@@ -9,7 +8,6 @@ from dffml.model import ModelNotTrained, ModelContext
 from dffml.accuracy import (
     AccuracyScorer,
     AccuracyContext,
-    InvalidNumberOfFeaturesError,
 )
 
 
@@ -27,12 +25,10 @@ class TextClassifierAccuracyContext(AccuracyContext):
     async def score(
         self, modelcontext: ModelContext, sources: Sources, *features: Features
     ):
-        if not os.path.isfile(
-            os.path.join(modelcontext.model_dir_path, "saved_model.pb")
-        ):
+        if not modelcontext.parent.model_path.exists():
             raise ModelNotTrained("Train model before assessing for accuracy.")
         x, y = await modelcontext.train_data_generator(sources)
-        accuracy_score = modelcontext._model.evaluate(x, y)
+        accuracy_score = modelcontext.parent._model.evaluate(x, y)
         return accuracy_score[1]
 
 

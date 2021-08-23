@@ -5,22 +5,31 @@ Model subclasses are responsible for training themselves on records, making
 predictions about the value of a feature in the record, and assessing their
 prediction accuracy.
 """
+import os
 import abc
 import json
+import shutil
 import pathlib
+from tempfile import mkdtemp
 from typing import AsyncIterator, Optional
-
 from ..base import (
     config,
     BaseDataFlowFacilitatorObjectContext,
     BaseDataFlowFacilitatorObject,
 )
 from ..record import Record
+from ..util.data import export
 from ..feature import Features
-from .accuracy import Accuracy
-from ..util.entrypoint import base_entry_point
+from ..df.types import DataFlow, Definition, Input
+from ..high_level.dataflow import run
 from ..util.os import MODE_BITS_SECURE
+from ..util.entrypoint import base_entry_point
+from ..df.archive import get_archive_path_info, create_archive_dataflow
 from ..source.source import Sources, SourcesContext
+
+# Definitions for Model saving and loading flows.
+MODEL_LOCATION = Definition(name="model_location", primitive="str")
+MODEL_TEMPDIR = Definition(name="model_tempdir", primitive="str")
 
 
 class ModelNotTrained(Exception):
@@ -31,6 +40,8 @@ class ModelNotTrained(Exception):
 class ModelConfig:
     location: str
     features: Features
+    location_save: DataFlow
+    location_load: DataFlow
 
 
 class ModelContext(abc.ABC, BaseDataFlowFacilitatorObjectContext):
@@ -78,14 +89,105 @@ class Model(BaseDataFlowFacilitatorObject):
         if isinstance(location, pathlib.Path):
             # to treat "~" as the the home location rather than a literal
             location = location.expanduser().resolve()
-            # TODO Change all model configs to make them support mutable
-            # location config properties
-            with self.config.no_enforce_immutable():
-                self.config.location = location
+        # TODO Change all model configs to make them support mutable
+        # location config properties
+        with self.config.no_enforce_immutable():
+            self.config.location = location
 
     def __call__(self) -> ModelContext:
-        self._make_config_location()
         return self.CONTEXT(self)
+
+    async def __aenter__(self):
+        if getattr(self.config, "location", False):
+            if any(
+                [
+                    self.config.location.is_file(),
+                    get_archive_path_info(self.config.location)[0]
+                    in ["zip", "tar"],
+                ]
+            ):
+                temp_dir = self._get_directory()
+                self.location = temp_dir
+            else:
+                self._make_config_location()
+
+        if self.config.location.is_file():
+            load_flow = getattr(self.config, "location_load", None)
+            await self._run_operation(
+                self.config.location, self.temp_dir, load_flow
+            )
+            # Load values from config if it exists
+            config_path = self.temp_dir / "config.json"
+            if config_path.exists():
+                config_dict = self.config._asdict()
+                with open(config_path) as config_handle:
+                    loaded_config = json.load(config_handle)
+                    for prop, value in loaded_config.items():
+                        # TODO: Need to change this as per
+                        # drafts PR#1189 and PR#1186
+                        if all(
+                            [
+                                prop in config_dict.keys(),
+                                value != config_dict.get(prop, None),
+                            ]
+                        ):
+                            self.logger.warning(
+                                f"Config-Mismatch: {prop} saved on disk is {value} which is\
+                                different from value in memory {config_dict[prop]}"
+                            )
+        return self
+
+    async def __aexit__(self, exc_type, exc_value, traceback):
+        if getattr(self.config, "location", False):
+            if self.config.location.is_file():
+                os.remove(self.config.location)
+            if any(
+                [
+                    self.config.location.is_file(),
+                    get_archive_path_info(self.config.location)[0]
+                    in ["zip", "tar"],
+                ]
+            ):
+                config_path = self.location / "config.json"
+                config_path.write_text(json.dumps(export(self.config)))
+                save_flow = getattr(self.config, "location_save", None)
+                await self._run_operation(
+                    self.temp_dir, self.config.location, save_flow
+                )
+        if hasattr(self, "temp_dir"):
+            shutil.rmtree(self.temp_dir)
+            delattr(self, "temp_dir")
+
+    async def _run_operation(self, input_path, output_path, dataflow):
+        get_definition = (
+            lambda path: MODEL_TEMPDIR
+            if path == self.temp_dir
+            else MODEL_LOCATION
+        )
+        seed = {
+            Input(
+                value=input_path,
+                definition=get_definition(input_path),
+                origin="input_path",
+            ),
+            Input(
+                value=output_path,
+                definition=get_definition(output_path),
+                origin="output_path",
+            ),
+        }
+        if dataflow is None:
+            dataflow = create_archive_dataflow(seed)
+        else:
+            dataflow.seed.append(seed)
+
+        async for _, _ in run(dataflow):
+            pass
+
+    def _get_directory(self) -> pathlib.Path:
+        if not hasattr(self, "temp_dir"):
+            self.temp_dir = pathlib.Path(mkdtemp())
+        return self.temp_dir
 
     def _make_config_location(self):
         """
@@ -122,18 +224,21 @@ class SimpleModel(Model):
         return self
 
     async def __aenter__(self) -> Model:
+
         self._in_context += 1
         # If we've already entered the model's context once, don't reload
         if self._in_context > 1:
             return self
-        self._make_config_location()
+        await super().__aenter__()
         self.open()
         return self
 
     async def __aexit__(self, exc_type, exc_value, traceback):
+
         self._in_context -= 1
         if not self._in_context:
             self.close()
+            await super().__aexit__(exc_type, exc_value, traceback)
 
     @property
     def parent(self):
@@ -147,7 +252,7 @@ class SimpleModel(Model):
         """
         Load saved model from disk if it exists.
         """
-        # Load saved data if this is the first time we've entred the model
+        # Load saved data if this is the first time we've entered the model
         filepath = self.disk_path(extention=".json")
         if filepath.is_file():
             self.storage = json.loads(filepath.read_text())
@@ -179,7 +284,12 @@ class SimpleModel(Model):
         if "features" in exported:
             exported["features"] = dict(sorted(exported["features"].items()))
         # Hash the exported config
-        return pathlib.Path(self.config.location, "Model")
+        return pathlib.Path(
+            self.config.location
+            if not hasattr(self, "temp_dir")
+            else self.temp_dir,
+            "Model",
+        )
 
     def applicable_features(self, features):
         usable = []

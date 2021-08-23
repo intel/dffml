@@ -160,11 +160,23 @@ class DAAL4PyLRModel(SimpleModel):
         )
         self.lm_predictor = self.d4p.linear_regression_prediction()
         self.ac_predictor = self.d4p.linear_regression_prediction()
-        self.path = self.filepath(
-            self.parent.config.location, "trained_model.sav"
-        )
         self.lm_trained = None
+
+    async def __aenter__(self):
+        await super().__aenter__()
+        self.path = self.filepath(
+            self.parent.config.location
+            if not hasattr(self.parent, "temp_dir")
+            else self.parent.temp_dir,
+            "trained_model.sav",
+        )
         self.load_model()
+        return self
+
+    async def __aexit__(self, exc_type, exc_value, traceback):
+        if self.lm_trained:
+            self.joblib.dump(self.lm_trained, self.path)
+        await super().__aexit__(exc_type, exc_value, traceback)
 
     def compare(self, alist, bfloat):
         result = []
@@ -196,7 +208,6 @@ class DAAL4PyLRModel(SimpleModel):
             ydata = df[self.parent.config.predict.name]
             self.lm.compute(xdata, ydata)
         self.lm_trained = self.lm.finalize().model
-        self.joblib.dump(self.lm_trained, self.path)
 
     async def predict(
         self, sources: SourcesContext

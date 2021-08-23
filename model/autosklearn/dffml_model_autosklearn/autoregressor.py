@@ -1,36 +1,23 @@
 import sklearn.metrics
 import autosklearn.regression
 
-from dffml.model.model import Model
 from dffml.util.entrypoint import entrypoint
 
-from .config import AutoSklearnConfig, AutoSklearnModelContext
+from .config import AutoSklearnConfig
+from .autosklearn_base import AutoSklearnModelContext, AutoSklearnModel
 
 
 class AutoSklearnRegressorModelContext(AutoSklearnModelContext):
     def __init__(self, parent):
         super().__init__(parent)
-
-    @property
-    def model(self):
-        """
-        Generates or loads a model
-        """
-        if self._model is not None:
-            return self._model
-        config = self.parent.config._asdict()
-        del config["predict"]
-        del config["features"]
-        del config["location"]
-        self._model = autosklearn.regression.AutoSklearnRegressor(**config)
-        return self._model
-
-    @model.setter
-    def model(self, model):
-        """
-        Loads a model if already trained previously
-        """
-        self._model = model
+        if self.parent.model is None:
+            config = self.parent.config._asdict()
+            del config["predict"]
+            del config["features"]
+            del config["location"]
+            self.parent.model = autosklearn.regression.AutoSklearnRegressor(
+                **config
+            )
 
     async def accuracy_score(self, y_test, predictions):
         return sklearn.metrics.r2_score(y_test, predictions)
@@ -40,7 +27,7 @@ class AutoSklearnRegressorModelContext(AutoSklearnModelContext):
 
 
 @entrypoint("autoregressor")
-class AutoSklearnRegressorModel(Model):
+class AutoSklearnRegressorModel(AutoSklearnModel):
     r"""
     ``autoregressor`` / ``AutoSklearnRegressorModel`` will use ``auto-sklearn``
     to train the a scikit model for you.
