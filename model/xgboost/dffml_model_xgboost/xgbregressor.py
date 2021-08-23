@@ -176,12 +176,25 @@ class XGBRegressorModel(SimpleModel):
         super().__init__(config)
         # The saved model
         self.saved = None
+
+    async def __aenter__(self):
+        await super().__aenter__()
         self.saved_filepath = pathlib.Path(
-            self.config.location, "model.joblib"
+            self.parent.config.location
+            if not hasattr(self.parent, "temp_dir")
+            else self.parent.temp_dir,
+            "model.joblib",
         )
         # Load saved model if it exists
         if self.saved_filepath.is_file():
             self.saved = joblib.load(str(self.saved_filepath))
+        return self
+
+    async def __aexit__(self, exc_type, exc_value, traceback):
+        if self.saved:
+            # Save the trained model
+            joblib.dump(self.saved, str(self.saved_filepath))
+        await super().__aexit__(exc_type, exc_value, traceback)
 
     async def train(self, sources: Sources) -> None:
         """
@@ -218,9 +231,6 @@ class XGBRegressorModel(SimpleModel):
         )
 
         self.saved.fit(x_data, y_data)
-
-        # Save the trained model
-        joblib.dump(self.saved, str(self.saved_filepath))
 
     async def predict(self, sources: Sources) -> AsyncIterator[Record]:
         """

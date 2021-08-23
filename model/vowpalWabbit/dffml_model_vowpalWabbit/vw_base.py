@@ -12,10 +12,8 @@ import numpy as np
 import pandas as pd
 from vowpalwabbit import pyvw
 from sklearn.utils import shuffle
-from sklearn.metrics import accuracy_score, r2_score
 
 from dffml.record import Record
-from dffml.model.accuracy import Accuracy
 from dffml.source.source import Sources, SourcesContext
 from dffml.util.entrypoint import entrypoint
 from dffml.util.crypto import secure_hash
@@ -110,46 +108,14 @@ class VWConfig:
 class VWContext(ModelContext):
     def __init__(self, parent):
         super().__init__(parent)
-        self.features = self.applicable_features(self.parent.config.features)
-        self._features_hash = self._feature_predict_hash()
-        self.clf = None
 
     @property
     def confidence(self):
-        return self.parent.saved.get(self._features_hash, float("nan"))
+        return self.parent.saved.get(self.parent._features_hash, float("nan"))
 
     @confidence.setter
     def confidence(self, confidence):
-        self.parent.saved[self._features_hash] = confidence
-
-    # TODO decide what to hash
-    def _feature_predict_hash(self):
-        params = sorted(
-            [
-                "{}{}".format(k, v)
-                for k, v in self.parent.config._asdict().items()
-                if k
-                not in [
-                    "features",
-                    "predict",
-                    "vwcmd",
-                    "class_cost",
-                    "importance",
-                    "tag",
-                    "base",
-                ]
-            ]
-        )
-        params = "".join(params)
-        return secure_hash(
-            "".join([params] + self.features), algorithm="sha384"
-        )
-
-    def applicable_features(self, features):
-        usable = []
-        for feature in features:
-            usable.append(feature.name)
-        return sorted(usable)
+        self.parent.saved[self.parent._features_hash] = confidence
 
     def modify_config(self):
         vwcmd = self.parent.config.vwcmd
@@ -177,44 +143,9 @@ class VWContext(ModelContext):
                     vwcmd[arg] = os.path.join(direc, tail)
         return vwcmd
 
-    def _filename(self):
-        return os.path.join(
-            self.parent.config.location, self._features_hash + ".vw"
-        )
-
-    def _load_model(self):
-        formatted_args = ""
-        for key, value in self.parent.config.vwcmd.items():
-            formatted_args = (
-                formatted_args + " " + create_input_pair(key, value)
-            )
-        for arg in ["initial_regressor", "i"]:
-            if arg in self.parent.config.vwcmd:
-                self.logger.info(
-                    f"Using model weights from {self.parent.config.vwcmd[arg]}"
-                )
-                return pyvw.vw(formatted_args)
-        if os.path.isfile(self._filename()):
-            self.parent.config.vwcmd["initial_regressor"] = self._filename()
-            formatted_args += f" --initial_regressor {self._filename()}"
-            self.logger.info(f"Using model weights from {self._filename()}")
-        return pyvw.vw(formatted_args)
-
-    def _save_model(self):
-        for arg in ["final_regressor", "f"]:
-            if arg in self.parent.config.vwcmd:
-                self.logger.info(
-                    f"Saving model weights to {self.parent.config.vwcmd[arg]}"
-                )
-                return
-        self.logger.info(f"Saving model weights to {self._filename()}")
-        self.clf.save(self._filename())
-        return
-
     async def __aenter__(self):
         with self.parent.config.no_enforce_immutable():
             self.parent.config.vwcmd = self.modify_config()
-        self.clf = self._load_model()
         return self
 
     async def __aexit__(self, exc_type, exc_value, traceback):
@@ -236,12 +167,12 @@ class VWContext(ModelContext):
                 feature.name for feature in self.parent.config.class_cost
             ]
         async for record in sources.with_features(
-            self.features
+            self.parent.features
             + [self.parent.config.predict.name]
             + self.parent.config.extra_cols
         ):
             feature_data = record.features(
-                self.features
+                self.parent.features
                 + [self.parent.config.predict.name]
                 + self.parent.config.extra_cols
             )
@@ -263,14 +194,14 @@ class VWContext(ModelContext):
         # support data already in vw format
         # append `predict` to `features`
         else:
-            if len(self.features) > 1:
+            if len(self.parent.features) > 1:
                 raise InputError(
                     "Training features should be in vw format or `noconvert` should be false."
                 )
             vw_data = (
                 vw_data[self.parent.config.predict.name].map(str)
                 + " "
-                + vw_data[self.features[0]].map(str)
+                + vw_data[self.parent.features[0]].map(str)
             )
         self.logger.info("Number of input records: {}".format(len(vw_data)))
         for n in range(self.parent.config.passes):
@@ -279,15 +210,14 @@ class VWContext(ModelContext):
             else:
                 X = vw_data
             for x in X:
-                self.clf.learn(x)
-        self._save_model()
+                self.parent.clf.learn(x)
 
     async def predict(
         self, sources: SourcesContext
     ) -> AsyncIterator[Tuple[Record, Any, float]]:
-        if not os.path.isfile(self._filename()):
+        if not os.path.isfile(self.parent.model_filename):
             raise ModelNotTrained("Train model before prediction.")
-        importance, tag, base, class_cost = None, None, None, None
+        importance, tag, base = None, None, None
         if self.parent.config.importance:
             importance = self.parent.config.importance.name
 
@@ -296,9 +226,9 @@ class VWContext(ModelContext):
 
         if self.parent.config.base:
             base = self.parent.config.base.name
-        async for record in sources.with_features(self.features):
+        async for record in sources.with_features(self.parent.features):
             feature_data = record.features(
-                self.features + self.parent.config.extra_cols
+                self.parent.features + self.parent.config.extra_cols
             )
             data = pd.DataFrame(feature_data, index=[0])
             if not self.parent.config.noconvert:
@@ -319,7 +249,7 @@ class VWContext(ModelContext):
                     .to_numpy()
                     .flatten()
                 )
-            prediction = self.clf.predict(data[0])
+            prediction = self.parent.clf.predict(data[0])
             self.logger.debug(
                 "Predicted Value of {} for {}: {}".format(
                     self.parent.config.predict.name, data, prediction,
@@ -389,19 +319,95 @@ class VWModel(Model):
     def __init__(self, config) -> None:
         super().__init__(config)
         self.saved = {}
+        self.features = self.applicable_features(self.config.features)
+        self._features_hash = self._feature_predict_hash()
+        self.clf = None
 
-    def _filename(self):
-        return os.path.join(
-            self.config.location,
-            secure_hash(self.config.predict.name, algorithm="sha384")
-            + ".json",
+    @property
+    def _base_path(self):
+        return (
+            self.config.location
+            if not hasattr(self, "temp_dir")
+            else self.temp_dir
         )
 
+    def applicable_features(self, features):
+        usable = []
+        for feature in features:
+            usable.append(feature.name)
+        return sorted(usable)
+
+    # TODO decide what to hash
+    def _feature_predict_hash(self):
+        params = sorted(
+            [
+                "{}{}".format(k, v)
+                for k, v in self.config._asdict().items()
+                if k
+                not in [
+                    "features",
+                    "predict",
+                    "vwcmd",
+                    "class_cost",
+                    "importance",
+                    "tag",
+                    "base",
+                ]
+            ]
+        )
+        params = "".join(params)
+        return secure_hash(
+            "".join([params] + self.features), algorithm="sha384"
+        )
+
+    @property
+    def model_filename(self):
+        model_name = self._features_hash + ".vw"
+        return self._base_path / model_name
+
+    def _load_model(self):
+        formatted_args = ""
+        for key, value in self.config.vwcmd.items():
+            formatted_args = (
+                formatted_args + " " + create_input_pair(key, value)
+            )
+        for arg in ["initial_regressor", "i"]:
+            if arg in self.config.vwcmd:
+                self.logger.info(
+                    f"Using model weights from {self.config.vwcmd[arg]}"
+                )
+                return pyvw.vw(formatted_args)
+        if os.path.isfile(self.model_filename):
+            self.config.vwcmd["initial_regressor"] = self.model_filename
+            formatted_args += f" --initial_regressor {self.model_filename}"
+            self.logger.info(f"Using model weights from {self.model_filename}")
+        return pyvw.vw(formatted_args)
+
+    def _save_model(self):
+        for arg in ["final_regressor", "f"]:
+            if arg in self.config.vwcmd:
+                self.logger.info(
+                    f"Saving model weights to {self.config.vwcmd[arg]}"
+                )
+                return
+        self.logger.info(f"Saving model weights to {self.model_filename}")
+        self.clf.save(str(self.model_filename))
+
+    @property
+    def _saved_file_path(self):
+        saved_file_name = (
+            secure_hash(self.config.predict.name, algorithm="sha384") + ".json"
+        )
+        return self._base_path / saved_file_name
+
     async def __aenter__(self) -> "VWModel":
-        path = Path(self._filename())
-        if path.is_file():
-            self.saved = json.loads(path.read_text())
+        await super().__aenter__()
+        if self._saved_file_path.is_file():
+            self.saved = json.loads(self._saved_file_path.read_text())
+        self.clf = self._load_model()
         return self
 
     async def __aexit__(self, exc_type, exc_value, traceback):
-        Path(self._filename()).write_text(json.dumps(self.saved))
+        self._saved_file_path.write_text(json.dumps(self.saved))
+        self._save_model()
+        await super().__aexit__(exc_type, exc_value, traceback)

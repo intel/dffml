@@ -1,10 +1,8 @@
-from dffml.feature.feature import Features
-import os
-
 import torch
 
 from dffml.base import config
 from dffml.source.source import Sources
+from dffml.feature.feature import Features
 from dffml.util.entrypoint import entrypoint
 from dffml.model import ModelNotTrained, ModelContext
 from dffml.accuracy import (
@@ -26,7 +24,7 @@ class PytorchAccuracyContext(AccuracyContext):
     async def score(
         self, mctx: ModelContext, sctx: Sources, *features: Features
     ):
-        if not os.path.isfile(os.path.join(mctx.model_path)):
+        if not mctx.parent.model_path.exists():
             raise ModelNotTrained("Train model before assessing for accuracy.")
 
         dataset, size = await mctx.dataset_generator(sctx)
@@ -37,17 +35,17 @@ class PytorchAccuracyContext(AccuracyContext):
             num_workers=4,
         )
 
-        mctx._model.eval()
+        mctx.parent.model.eval()
 
-        if mctx.classifications:
+        if mctx.parent.classifications:
             running_corrects = 0
 
             for inputs, labels in dataloader:
-                inputs = inputs.to(mctx.device)
-                labels = labels.to(mctx.device)
+                inputs = inputs.to(mctx.parent.device)
+                labels = labels.to(mctx.parent.device)
 
                 with torch.set_grad_enabled(False):
-                    outputs = mctx._model(inputs)
+                    outputs = mctx.parent.model(inputs)
                     _, preds = torch.max(outputs, 1)
 
                 running_corrects += torch.sum(preds == labels.data)
@@ -60,7 +58,7 @@ class PytorchAccuracyContext(AccuracyContext):
                 labels = labels.to(inputs)
 
                 with torch.set_grad_enabled(False):
-                    outputs = mctx._model(inputs)
+                    outputs = mctx.parent.model(inputs)
                     loss = mctx.criterion(inputs, outputs)
 
                 running_loss += loss.item() * inputs.size(0)

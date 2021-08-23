@@ -85,19 +85,11 @@ class TextClassifierContext(ModelContext):
         self.tf = importlib.import_module("tensorflow")
         self.np = importlib.import_module("numpy")
         self.pd = importlib.import_module("pandas")
-        self.cids = self._mkcids(self.parent.config.classifications)
-        self.classifications = self._classifications(self.cids)
-        self.features = self._applicable_features()
-        self.model_dir_path = self._model_dir_path()
-        self._model = None
+        self.classifications = self._classifications(self.parent.cids)
 
     async def __aenter__(self):
-        path = self._model_dir_path()
-        if os.path.isfile(os.path.join(path, "saved_model.pb")):
-            self.logger.info(f"Using saved model from {path}")
-            self._model = self.tf.keras.models.load_model(os.path.join(path))
-        else:
-            self._model = self.createModel()
+        if not self.parent._model:
+            self.parent._model = self.createModel()
         return self
 
     async def __aexit__(self, exc_type, exc_value, traceback):
@@ -106,39 +98,6 @@ class TextClassifierContext(ModelContext):
     @property
     def classification(self):
         return self.parent.config.predict.name
-
-    def _applicable_features(self):
-        return [name for name in self.parent.config.features.names()]
-
-    def _model_dir_path(self):
-        if self.parent.config.location is None:
-            return None
-        _to_hash = self.features + [
-            self.classification,
-            str(len(self.cids)),
-            self.parent.config.model_path,
-        ]
-        model = secure_hash("".join(_to_hash), algorithm="sha384")
-        # Needed to save updated model
-        if not os.path.isdir(self.parent.config.location):
-            raise NotADirectoryError(
-                "%s is not a directory" % (self.parent.config.location)
-            )
-        os.makedirs(
-            os.path.join(self.parent.config.location, model), exist_ok=True
-        )
-        return os.path.join(self.parent.config.location, model)
-
-    def _mkcids(self, classifications):
-        """
-        Create an index, possible classification mapping and sort the list of
-        classifications first.
-        """
-        cids = dict(
-            zip(range(0, len(classifications)), sorted(classifications))
-        )
-        self.logger.debug("cids(%d): %r", len(cids), cids)
-        return cids
 
     def _classifications(self, cids):
         """
@@ -150,53 +109,55 @@ class TextClassifierContext(ModelContext):
         )
         return classifications
 
-    @property
-    def model(self):
-        return self._model
-
     def createModel(self):
         """
         Generates a model
         """
-        if self._model is not None:
-            return self._model
+        if self.parent._model is not None:
+            return self.parent._model
         self.logger.debug(
             "Loading model with classifications(%d): %r",
             len(self.classifications),
             self.classifications,
         )
-        self._model = ClassificationModel(self.parent.config).load_model()
-        self._model.compile(
+        self.parent._model = ClassificationModel(
+            self.parent.config
+        ).load_model()
+        self.parent._model.compile(
             optimizer=self.parent.config.optimizer,
             loss="sparse_categorical_crossentropy",
             metrics=[self.parent.config.metrics],
         )
 
-        if not list(self._model.layers[-1].output_shape) == [
+        if not list(self.parent._model.layers[-1].output_shape) == [
             None,
-            len(self.cids),
+            len(self.parent.cids),
         ]:
             raise OutputShapeError(
                 "Output shape of last layer should be:{}".format(
-                    (None, len(self.cids))
+                    (None, len(self.parent.cids))
                 )
             )
-        return self._model
+        return self.parent._model
 
     async def train_data_generator(self, sources: Sources):
 
-        self.logger.debug("Training on features: %r", self.features)
-        x_cols: Dict[str, Any] = {feature: [] for feature in self.features}
+        self.logger.debug("Training on features: %r", self.parent.features)
+        x_cols: Dict[str, Any] = {
+            feature: [] for feature in self.parent.features
+        }
         y_cols = []
         all_records = []
         all_sources = sources.with_features(
-            self.features + [self.classification]
+            self.parent.features + [self.classification]
         )
         async for record in all_sources:
             if record.feature(self.classification) in self.classifications:
                 all_records.append(record)
         for record in all_records:
-            for feature, results in record.features(self.features).items():
+            for feature, results in record.features(
+                self.parent.features
+            ).items():
                 x_cols[feature].append(self.np.array(results))
             y_cols.append(
                 self.classifications[record.feature(self.classification)]
@@ -211,7 +172,7 @@ class TextClassifierContext(ModelContext):
         self.logger.info("y_cols:    %d", len(y_cols))
         self.logger.info("-----------------------")
 
-        if (len(self.features)) > 1:
+        if (len(self.parent.features)) > 1:
             self.logger.critical(
                 "Found more than one feature to train on. Only first feature will be used"
             )
@@ -219,10 +180,10 @@ class TextClassifierContext(ModelContext):
         # so far only model available on tensorflow hub which requires special input preprocessing is `bert`
         if self.parent.config.embedType in ["bert"]:
             x_cols = bert_tokenizer(
-                x_cols[self.features[0]],
+                x_cols[self.parent.features[0]],
                 self.parent.config.max_seq_length,
-                self._model.vocab_file.asset_path.numpy(),
-                self._model.do_lower_case.numpy(),
+                self.parent._model.vocab_file.asset_path.numpy(),
+                self.parent._model.do_lower_case.numpy(),
             )
             x_cols = dict(
                 input_word_ids=x_cols[0],
@@ -232,11 +193,11 @@ class TextClassifierContext(ModelContext):
         else:
             # Universal Sentence Encoder, Neural Network Language Model, Swivel Embeddings
             # No preprocessing needed
-            x_cols = x_cols[self.features[0]]
+            x_cols = x_cols[self.parent.features[0]]
         return x_cols, y_cols
 
     async def prediction_data_generator(self, x_cols):
-        if (len(self.features)) > 1:
+        if (len(self.parent.features)) > 1:
             self.logger.critical(
                 "Found more than one feature. Only first feature will be used for prediction"
             )
@@ -244,8 +205,8 @@ class TextClassifierContext(ModelContext):
             x_cols = bert_tokenizer(
                 x_cols,
                 self.parent.config.max_seq_length,
-                self._model.vocab_file.asset_path.numpy(),
-                self._model.do_lower_case.numpy(),
+                self.parent._model.vocab_file.asset_path.numpy(),
+                self.parent._model.do_lower_case.numpy(),
             )
             x_cols = dict(
                 input_word_ids=x_cols[0],
@@ -259,15 +220,14 @@ class TextClassifierContext(ModelContext):
         Train using records as the data to learn from.
         """
         x, y = await self.train_data_generator(sources)
-        self._model.summary()
-        self._model.fit(
+        self.parent._model.summary()
+        self.parent._model.fit(
             x,
             y,
             epochs=self.parent.config.epochs,
             batch_size=self.parent.config.batch_size,
             verbose=1,
         )
-        self.tf.keras.models.save_model(self._model, self._model_dir_path())
 
     async def predict(
         self, sources: SourcesContext
@@ -275,18 +235,16 @@ class TextClassifierContext(ModelContext):
         """
         Uses trained data to make a prediction about the quality of a record.
         """
-        if not os.path.isfile(
-            os.path.join(self.model_dir_path, "saved_model.pb")
-        ):
+        if not self.parent.model_path.exists():
             raise ModelNotTrained("Train model before assessing for accuracy.")
 
-        async for record in sources.with_features(self.features):
-            feature_data = record.features(self.features)
+        async for record in sources.with_features(self.parent.features):
+            feature_data = record.features(self.parent.features)
             df = self.pd.DataFrame(feature_data, index=[0])
             predict = await self.prediction_data_generator(
                 self.np.array(df)[0]
             )
-            all_prob = self._model.predict(predict)
+            all_prob = self.parent._model.predict(predict)
             max_prob_idx = all_prob.argmax(axis=-1)
             target = self.parent.config.predict.name
             self.logger.debug(
@@ -299,7 +257,7 @@ class TextClassifierContext(ModelContext):
 
             record.predicted(
                 target,
-                self.cids[max_prob_idx[0]],
+                self.parent.cids[max_prob_idx[0]],
                 all_prob[0][max_prob_idx[0]],
             )
             yield record
@@ -379,3 +337,69 @@ class TextClassificationModel(Model):
 
     CONTEXT = TextClassifierContext
     CONFIG = TextClassifierConfig
+
+    def __init__(self, config):
+        super().__init__(config)
+        self._model = None
+        self.cids = self._mkcids(self.config.classifications)
+        self.features = self._applicable_features()
+        self.tf = importlib.import_module("tensorflow")
+
+    @property
+    def model(self):
+        return self._model
+
+    @property
+    def base_path(self):
+        return (
+            self.config.location
+            if not hasattr(self, "temp_dir")
+            else self.temp_dir
+        )
+
+    @property
+    def model_folder_path(self):
+        _to_hash = self.features + [
+            self.config.predict.name,
+            str(len(self.cids)),
+            self.config.model_path,
+        ]
+        model_name = secure_hash("".join(_to_hash), algorithm="sha384")
+        model_folder_path = self.base_path / model_name
+        if not model_folder_path.exists():
+            model_folder_path.mkdir(parents=True, exist_ok=True)
+        return model_folder_path
+
+    @property
+    def model_path(self):
+        return self.model_folder_path / "saved_model.pb"
+
+    async def __aenter__(self):
+        await super().__aenter__()
+        if self.model_path.exists():
+            self.logger.info(f"Using saved model from {self.model_path}")
+            self._model = self.tf.keras.models.load_model(
+                self.model_folder_path
+            )
+        return self
+
+    async def __aexit__(self, exc_type, exc_value, traceback):
+        if self._model:
+            self.tf.keras.models.save_model(
+                self._model, self.model_folder_path
+            )
+        await super().__aexit__(exc_type, exc_value, traceback)
+
+    def _applicable_features(self):
+        return [name for name in self.config.features.names()]
+
+    def _mkcids(self, classifications):
+        """
+        Create an index, possible classification mapping and sort the list of
+        classifications first.
+        """
+        cids = dict(
+            zip(range(0, len(classifications)), sorted(classifications))
+        )
+        self.logger.debug("cids(%d): %r", len(cids), cids)
+        return cids
