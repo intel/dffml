@@ -31,6 +31,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Optimizer `parameter_grid` for tuning models.
 - Usecase example notebook for "Tuning Models"
 - Operations for data cleanup
+- Examples of using data cleanup operations
+  https://intel.github.io/dffml/examples/data_cleanup/index.html
 ### Changed
 - Calls to hashlib now go through helper functions
 - Build docs using `dffml service dev docs`
