@@ -17,3 +17,4 @@ The following are some example use cases of DFFML.
     or_covid_data_by_county
     webhook/index
     icecream_sales
+    data_cleanup/index
