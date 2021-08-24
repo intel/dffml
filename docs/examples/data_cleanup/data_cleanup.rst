@@ -13,6 +13,13 @@ In this example we will perform the following steps
 - Checking the accuracy of the model without cleanup
   of the data
 
+First install the data cleanup operations and scikit models
+
+.. code-block:: console
+    :test:
+
+    $ python -m pip install dffml-operations-data dffml-model-scikit
+
 Dataset
 -------
 
@@ -20,6 +27,11 @@ The dataset we will be using is available on
 kaggle https://www.kaggle.com/harlfoxem/housesalesprediction
 
 you may go ahead and download the dataset
+
+.. code-block:: console
+    :test:
+
+    $ curl -fLO https://github.com/intel/dffml/files/7040979/kc_house_data.csv
 
 Data Cleanup Operations
 -----------------------
@@ -30,12 +42,10 @@ unit variance and standard deviation of 0
 - `principal_component_analysis` will convert the data
 into (number of samples, number of components)
 
-** cleanup_ops.sh **
-
 .. code-block:: console
     :test:
 
-    dffml dataflow create \
+    $ dffml dataflow create \
         -config \
             "kc_house_data.csv"=convert_records_to_list.source.config.filename \
             csv=convert_records_to_list.source.plugin \
@@ -65,12 +75,10 @@ Now we will run the dataflow on our dataset, with
 the help of merge command we can see what our preprocessed
 data looks like.
 
-** merge.sh **
-
 .. code-block:: console
     :test:
 
-    dffml merge text=dfpreprocess temp=csv \
+    $ dffml merge text=dfpreprocess temp=csv \
         -source-text-dataflow clean_ops.json \
         -source-text-features price:float:1 bedrooms:float:1 bathrooms:float:1 sqft_living:float:1 sqft_lot:float:1 floors:str:1 waterfront:float:1 view:float:1 condition:float:1 grade:float:1 sqft_above:float:1 sqft_basement:float:1 yr_built:float:1 yr_renovated:float:1 zipcode:str:1 lat:float:1 long:float:1 sqft_living15:float:1 sqft_lot15:float:1 \
         -source-text-source csv \
@@ -79,7 +87,7 @@ data looks like.
         -source-temp-allowempty \
         -source-temp-readwrite \
         -log debug
-    
+
     $ cat preprocessed.csv
 
 Training
@@ -88,12 +96,10 @@ Training
 Now we will train our model on the preprocessed
 dataset that we just got using the merge command.
 
-** train.sh **
-
 .. code-block:: console
     :test:
 
-    dffml train \
+    $ dffml train \
         -model scikiteln \
         -model-features bedrooms:float:1 bathrooms:float:1 sqft_living:float:1 sqft_lot:float:1 floors:str:1 waterfront:float:1 view:float:1 condition:float:1 grade:float:1 sqft_above:float:1 sqft_basement:float:1 yr_built:float:1 yr_renovated:float:1 zipcode:str:1 lat:float:1 long:float:1 sqft_living15:float:1 sqft_lot15:float:1 \
         -model-predict price:float:1 \
@@ -108,12 +114,10 @@ Accuracy
 After training of the dataset we can check the
 accuracy of the model.
 
-** accuracy.sh **
-
 .. code-block:: console
     :test:
 
-    dffml accuracy \
+    $ dffml accuracy \
         -model scikiteln \
         -scorer exvscore \
         -model-features price:float:1 bedrooms:float:1 bathrooms:float:1 sqft_living:float:1 sqft_lot:float:1 floors:str:1 waterfront:float:1 view:float:1 condition:float:1 grade:float:1 sqft_above:float:1 sqft_basement:float:1 yr_built:float:1 yr_renovated:float:1 zipcode:str:1 lat:float:1 long:float:1 sqft_living15:float:1 sqft_lot15:float:1 \
@@ -129,12 +133,10 @@ Without Cleanup Operations
 Here we will be checking what is the accuracy
 of the model without performing cleanup operations.
 
-** train.sh **
-
 .. code-block:: console
     :test:
 
-    dffml train \
+    $ dffml train \
         -model scikiteln \
         -model-features bedrooms:float:1 bathrooms:float:1 sqft_living:float:1 sqft_lot:float:1 floors:str:1 waterfront:float:1 view:float:1 condition:float:1 grade:float:1 sqft_above:float:1 sqft_basement:float:1 yr_built:float:1 yr_renovated:float:1 zipcode:str:1 lat:float:1 long:float:1 sqft_living15:float:1 sqft_lot15:float:1 \
         -model-predict price:float:1 \
@@ -143,12 +145,10 @@ of the model without performing cleanup operations.
         -source-filename kc_house_data.csv \
         -log debug
 
-** accuracy.sh **
-
 .. code-block:: console
     :test:
 
-    dffml accuracy \
+    $ dffml accuracy \
         -model scikiteln \
         -scorer exvscore \
         -model-features bedrooms:float:1 bathrooms:float:1 sqft_living:float:1 sqft_lot:float:1 floors:str:1 waterfront:float:1 view:float:1 condition:float:1 grade:float:1 sqft_above:float:1 sqft_basement:float:1 yr_built:float:1 yr_renovated:float:1 zipcode:str:1 lat:float:1 long:float:1 sqft_living15:float:1 sqft_lot15:float:1 \
