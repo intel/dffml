@@ -7,6 +7,7 @@ Df
 
     multicomm
     base
+    archive
     memory
     exceptions
     types

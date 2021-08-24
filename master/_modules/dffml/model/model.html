@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>dffml.model.model &mdash; DFFML 413bf3ee4 documentation</title>
+  <title>dffml.model.model &mdash; DFFML 38390a45e documentation</title>
   
 
   
@@ -69,7 +69,7 @@
             
             
               <div class="version">
-                413bf3ee4
+                38390a45e
               </div>
             
           
@@ -225,22 +225,31 @@
 <span class="sd">predictions about the value of a feature in the record, and assessing their</span>
 <span class="sd">prediction accuracy.</span>
 <span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">abc</span>
 <span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">shutil</span>
 <span class="kn">import</span> <span class="nn">pathlib</span>
+<span class="kn">from</span> <span class="nn">tempfile</span> <span class="kn">import</span> <span class="n">mkdtemp</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">AsyncIterator</span><span class="p">,</span> <span class="n">Optional</span>
-
 <span class="kn">from</span> <span class="nn">..base</span> <span class="kn">import</span> <span class="p">(</span>
     <span class="n">config</span><span class="p">,</span>
     <span class="n">BaseDataFlowFacilitatorObjectContext</span><span class="p">,</span>
     <span class="n">BaseDataFlowFacilitatorObject</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="kn">from</span> <span class="nn">..record</span> <span class="kn">import</span> <span class="n">Record</span>
+<span class="kn">from</span> <span class="nn">..util.data</span> <span class="kn">import</span> <span class="n">export</span>
 <span class="kn">from</span> <span class="nn">..feature</span> <span class="kn">import</span> <span class="n">Features</span>
-<span class="kn">from</span> <span class="nn">.accuracy</span> <span class="kn">import</span> <span class="n">Accuracy</span>
-<span class="kn">from</span> <span class="nn">..util.entrypoint</span> <span class="kn">import</span> <span class="n">base_entry_point</span>
+<span class="kn">from</span> <span class="nn">..df.types</span> <span class="kn">import</span> <span class="n">DataFlow</span><span class="p">,</span> <span class="n">Definition</span><span class="p">,</span> <span class="n">Input</span>
+<span class="kn">from</span> <span class="nn">..high_level.dataflow</span> <span class="kn">import</span> <span class="n">run</span>
 <span class="kn">from</span> <span class="nn">..util.os</span> <span class="kn">import</span> <span class="n">MODE_BITS_SECURE</span>
+<span class="kn">from</span> <span class="nn">..util.entrypoint</span> <span class="kn">import</span> <span class="n">base_entry_point</span>
+<span class="kn">from</span> <span class="nn">..df.archive</span> <span class="kn">import</span> <span class="n">get_archive_path_info</span><span class="p">,</span> <span class="n">create_archive_dataflow</span>
 <span class="kn">from</span> <span class="nn">..source.source</span> <span class="kn">import</span> <span class="n">Sources</span><span class="p">,</span> <span class="n">SourcesContext</span>
+
+<span class="c1"># Definitions for Model saving and loading flows.</span>
+<span class="n">MODEL_LOCATION</span> <span class="o">=</span> <span class="n">Definition</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;model_location&quot;</span><span class="p">,</span> <span class="n">primitive</span><span class="o">=</span><span class="s2">&quot;str&quot;</span><span class="p">)</span>
+<span class="n">MODEL_TEMPDIR</span> <span class="o">=</span> <span class="n">Definition</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;model_tempdir&quot;</span><span class="p">,</span> <span class="n">primitive</span><span class="o">=</span><span class="s2">&quot;str&quot;</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="ModelNotTrained"><a class="viewcode-back" href="../../../api/model/model.html#dffml.model.model.ModelNotTrained">[docs]</a><span class="k">class</span> <span class="nc">ModelNotTrained</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
@@ -250,7 +259,9 @@
 <div class="viewcode-block" id="ModelConfig"><a class="viewcode-back" href="../../../api/model/model.html#dffml.model.model.ModelConfig">[docs]</a><span class="nd">@config</span>
 <span class="k">class</span> <span class="nc">ModelConfig</span><span class="p">:</span>
     <span class="n">location</span><span class="p">:</span> <span class="nb">str</span>
-    <span class="n">features</span><span class="p">:</span> <span class="n">Features</span></div>
+    <span class="n">features</span><span class="p">:</span> <span class="n">Features</span>
+    <span class="n">location_save</span><span class="p">:</span> <span class="n">DataFlow</span>
+    <span class="n">location_load</span><span class="p">:</span> <span class="n">DataFlow</span></div>
 
 
 <div class="viewcode-block" id="ModelContext"><a class="viewcode-back" href="../../../api/model/model.html#dffml.model.model.ModelContext">[docs]</a><span class="k">class</span> <span class="nc">ModelContext</span><span class="p">(</span><span class="n">abc</span><span class="o">.</span><span class="n">ABC</span><span class="p">,</span> <span class="n">BaseDataFlowFacilitatorObjectContext</span><span class="p">):</span>
@@ -298,14 +309,105 @@
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">location</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">):</span>
             <span class="c1"># to treat &quot;~&quot; as the the home location rather than a literal</span>
             <span class="n">location</span> <span class="o">=</span> <span class="n">location</span><span class="o">.</span><span class="n">expanduser</span><span class="p">()</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
-            <span class="c1"># TODO Change all model configs to make them support mutable</span>
-            <span class="c1"># location config properties</span>
-            <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">no_enforce_immutable</span><span class="p">():</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">location</span> <span class="o">=</span> <span class="n">location</span>
+        <span class="c1"># TODO Change all model configs to make them support mutable</span>
+        <span class="c1"># location config properties</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">no_enforce_immutable</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">location</span> <span class="o">=</span> <span class="n">location</span>
 
     <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ModelContext</span><span class="p">:</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_make_config_location</span><span class="p">()</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">CONTEXT</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="fm">__aenter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">,</span> <span class="s2">&quot;location&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">any</span><span class="p">(</span>
+                <span class="p">[</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">location</span><span class="o">.</span><span class="n">is_file</span><span class="p">(),</span>
+                    <span class="n">get_archive_path_info</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">location</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+                    <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;zip&quot;</span><span class="p">,</span> <span class="s2">&quot;tar&quot;</span><span class="p">],</span>
+                <span class="p">]</span>
+            <span class="p">):</span>
+                <span class="n">temp_dir</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_directory</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">location</span> <span class="o">=</span> <span class="n">temp_dir</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_make_config_location</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">location</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
+            <span class="n">load_flow</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">,</span> <span class="s2">&quot;location_load&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_run_operation</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">location</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">temp_dir</span><span class="p">,</span> <span class="n">load_flow</span>
+            <span class="p">)</span>
+            <span class="c1"># Load values from config if it exists</span>
+            <span class="n">config_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">temp_dir</span> <span class="o">/</span> <span class="s2">&quot;config.json&quot;</span>
+            <span class="k">if</span> <span class="n">config_path</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+                <span class="n">config_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">_asdict</span><span class="p">()</span>
+                <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">config_path</span><span class="p">)</span> <span class="k">as</span> <span class="n">config_handle</span><span class="p">:</span>
+                    <span class="n">loaded_config</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">config_handle</span><span class="p">)</span>
+                    <span class="k">for</span> <span class="n">prop</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">loaded_config</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                        <span class="c1"># TODO: Need to change this as per</span>
+                        <span class="c1"># drafts PR#1189 and PR#1186</span>
+                        <span class="k">if</span> <span class="nb">all</span><span class="p">(</span>
+                            <span class="p">[</span>
+                                <span class="n">prop</span> <span class="ow">in</span> <span class="n">config_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span>
+                                <span class="n">value</span> <span class="o">!=</span> <span class="n">config_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">prop</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+                            <span class="p">]</span>
+                        <span class="p">):</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                                <span class="sa">f</span><span class="s2">&quot;Config-Mismatch: </span><span class="si">{</span><span class="n">prop</span><span class="si">}</span><span class="s2"> saved on disk is </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2"> which is</span><span class="se">\</span>
+<span class="s2">                                different from value in memory </span><span class="si">{</span><span class="n">config_dict</span><span class="p">[</span><span class="n">prop</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+                            <span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="fm">__aexit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_value</span><span class="p">,</span> <span class="n">traceback</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">,</span> <span class="s2">&quot;location&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">location</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">location</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">any</span><span class="p">(</span>
+                <span class="p">[</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">location</span><span class="o">.</span><span class="n">is_file</span><span class="p">(),</span>
+                    <span class="n">get_archive_path_info</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">location</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+                    <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;zip&quot;</span><span class="p">,</span> <span class="s2">&quot;tar&quot;</span><span class="p">],</span>
+                <span class="p">]</span>
+            <span class="p">):</span>
+                <span class="n">config_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">location</span> <span class="o">/</span> <span class="s2">&quot;config.json&quot;</span>
+                <span class="n">config_path</span><span class="o">.</span><span class="n">write_text</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">export</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">)))</span>
+                <span class="n">save_flow</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">,</span> <span class="s2">&quot;location_save&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+                <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_run_operation</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">temp_dir</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">location</span><span class="p">,</span> <span class="n">save_flow</span>
+                <span class="p">)</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;temp_dir&quot;</span><span class="p">):</span>
+            <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">temp_dir</span><span class="p">)</span>
+            <span class="nb">delattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;temp_dir&quot;</span><span class="p">)</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">_run_operation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_path</span><span class="p">,</span> <span class="n">output_path</span><span class="p">,</span> <span class="n">dataflow</span><span class="p">):</span>
+        <span class="n">get_definition</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="k">lambda</span> <span class="n">path</span><span class="p">:</span> <span class="n">MODEL_TEMPDIR</span>
+            <span class="k">if</span> <span class="n">path</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">temp_dir</span>
+            <span class="k">else</span> <span class="n">MODEL_LOCATION</span>
+        <span class="p">)</span>
+        <span class="n">seed</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="n">Input</span><span class="p">(</span>
+                <span class="n">value</span><span class="o">=</span><span class="n">input_path</span><span class="p">,</span>
+                <span class="n">definition</span><span class="o">=</span><span class="n">get_definition</span><span class="p">(</span><span class="n">input_path</span><span class="p">),</span>
+                <span class="n">origin</span><span class="o">=</span><span class="s2">&quot;input_path&quot;</span><span class="p">,</span>
+            <span class="p">),</span>
+            <span class="n">Input</span><span class="p">(</span>
+                <span class="n">value</span><span class="o">=</span><span class="n">output_path</span><span class="p">,</span>
+                <span class="n">definition</span><span class="o">=</span><span class="n">get_definition</span><span class="p">(</span><span class="n">output_path</span><span class="p">),</span>
+                <span class="n">origin</span><span class="o">=</span><span class="s2">&quot;output_path&quot;</span><span class="p">,</span>
+            <span class="p">),</span>
+        <span class="p">}</span>
+        <span class="k">if</span> <span class="n">dataflow</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">dataflow</span> <span class="o">=</span> <span class="n">create_archive_dataflow</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">dataflow</span><span class="o">.</span><span class="n">seed</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
+
+        <span class="k">async</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">run</span><span class="p">(</span><span class="n">dataflow</span><span class="p">):</span>
+            <span class="k">pass</span>
+
+    <span class="k">def</span> <span class="nf">_get_directory</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;temp_dir&quot;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">temp_dir</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">mkdtemp</span><span class="p">())</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">temp_dir</span>
 
     <span class="k">def</span> <span class="nf">_make_config_location</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -342,18 +444,21 @@
         <span class="k">return</span> <span class="bp">self</span>
 
     <span class="k">async</span> <span class="k">def</span> <span class="fm">__aenter__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Model</span><span class="p">:</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">_in_context</span> <span class="o">+=</span> <span class="mi">1</span>
         <span class="c1"># If we&#39;ve already entered the model&#39;s context once, don&#39;t reload</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_in_context</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_make_config_location</span><span class="p">()</span>
+        <span class="k">await</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__aenter__</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">open</span><span class="p">()</span>
         <span class="k">return</span> <span class="bp">self</span>
 
     <span class="k">async</span> <span class="k">def</span> <span class="fm">__aexit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_value</span><span class="p">,</span> <span class="n">traceback</span><span class="p">):</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">_in_context</span> <span class="o">-=</span> <span class="mi">1</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_in_context</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+            <span class="k">await</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__aexit__</span><span class="p">(</span><span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_value</span><span class="p">,</span> <span class="n">traceback</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">parent</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -367,7 +472,7 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Load saved model from disk if it exists.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># Load saved data if this is the first time we&#39;ve entred the model</span>
+        <span class="c1"># Load saved data if this is the first time we&#39;ve entered the model</span>
         <span class="n">filepath</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">disk_path</span><span class="p">(</span><span class="n">extention</span><span class="o">=</span><span class="s2">&quot;.json&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">filepath</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">storage</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">filepath</span><span class="o">.</span><span class="n">read_text</span><span class="p">())</span>
@@ -399,7 +504,12 @@
         <span class="k">if</span> <span class="s2">&quot;features&quot;</span> <span class="ow">in</span> <span class="n">exported</span><span class="p">:</span>
             <span class="n">exported</span><span class="p">[</span><span class="s2">&quot;features&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">exported</span><span class="p">[</span><span class="s2">&quot;features&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">()))</span>
         <span class="c1"># Hash the exported config</span>
-        <span class="k">return</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">location</span><span class="p">,</span> <span class="s2">&quot;Model&quot;</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">location</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;temp_dir&quot;</span><span class="p">)</span>
+            <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">temp_dir</span><span class="p">,</span>
+            <span class="s2">&quot;Model&quot;</span><span class="p">,</span>
+        <span class="p">)</span></div>
 
     <span class="k">def</span> <span class="nf">applicable_features</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">features</span><span class="p">):</span>
         <span class="n">usable</span> <span class="o">=</span> <span class="p">[]</span>

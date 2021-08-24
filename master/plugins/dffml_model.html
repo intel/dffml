@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Models &mdash; DFFML 413bf3ee4 documentation</title>
+  <title>Models &mdash; DFFML 38390a45e documentation</title>
   
 
   
@@ -70,7 +70,7 @@
             
             
               <div class="version">
-                413bf3ee4
+                38390a45e
               </div>
             
           
@@ -831,7 +831,7 @@ from where this command is run as it overwrites any existing files.</p></li>
     <span class="nb">print</span><span class="p">(</span><span class="n">features</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>The <code class="docutils literal notranslate"><span class="pre">null</span></code> in <code class="docutils literal notranslate"><span class="pre">confidence</span></code> is the expected behaviour. (See TODO in
+<p>The <code class="docutils literal notranslate"><span class="pre">null</span></code> in <code class="docutils literal notranslate"><span class="pre">confidence</span></code> is the expected behavior. (See TODO in
 predict).</p>
 <p><strong>Args</strong></p>
 <ul class="simple">
@@ -1371,7 +1371,8 @@ Training accuracy: 0.819782501866115
     <span class="n">B</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">1</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">noconvert</span> \
   <span class="o">-</span><span class="n">sources</span> <span class="n">f</span><span class="o">=</span><span class="n">csv</span> \
-  <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">filename</span> <span class="n">train</span><span class="o">.</span><span class="n">csv</span>
+  <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">filename</span> <span class="n">train</span><span class="o">.</span><span class="n">csv</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">location</span> <span class="n">tempdir</span>
 </pre></div>
 </div>
 <p>Assess the accuracy</p>
@@ -1385,7 +1386,8 @@ Training accuracy: 0.819782501866115
   <span class="o">-</span><span class="n">features</span> <span class="n">B</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">1</span> \
   <span class="o">-</span><span class="n">scorer</span> <span class="n">mse</span> \
   <span class="o">-</span><span class="n">sources</span> <span class="n">f</span><span class="o">=</span><span class="n">csv</span> \
-  <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">filename</span> <span class="n">train</span><span class="o">.</span><span class="n">csv</span>
+  <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">filename</span> <span class="n">train</span><span class="o">.</span><span class="n">csv</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">location</span> <span class="n">tempdir</span>
 
 </pre></div>
 </div>
@@ -1402,7 +1404,8 @@ Training accuracy: 0.819782501866115
     <span class="n">B</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">1</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">noconvert</span> \
   <span class="o">-</span><span class="n">sources</span> <span class="n">f</span><span class="o">=</span><span class="n">csv</span> \
-  <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">filename</span> <span class="n">test</span><span class="o">.</span><span class="n">csv</span>
+  <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">filename</span> <span class="n">test</span><span class="o">.</span><span class="n">csv</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">location</span> <span class="n">tempdir</span>
 </pre></div>
 </div>
 <p>Output</p>
@@ -1807,7 +1810,7 @@ EOF
     -sources <span class="nv">s</span><span class="o">=</span>op <span class="se">\</span>
     -source-opimp dffml_model_spacy.ner.utils:parser <span class="se">\</span>
     -source-args train.json False <span class="se">\</span>
-    -model-model_name_or_path en_core_web_sm <span class="se">\</span>
+    -model-model_name en_core_web_sm <span class="se">\</span>
     -model-location temp <span class="se">\</span>
     -model-n_iter <span class="m">5</span> <span class="se">\</span>
     -log debug
@@ -1819,7 +1822,7 @@ EOF
     -sources <span class="nv">s</span><span class="o">=</span>op <span class="se">\</span>
     -source-opimp dffml_model_spacy.ner.utils:parser <span class="se">\</span>
     -source-args train.json False <span class="se">\</span>
-    -model-model_name_or_path en_core_web_sm <span class="se">\</span>
+    -model-model_name en_core_web_sm <span class="se">\</span>
     -model-location temp <span class="se">\</span>
     -model-n_iter <span class="m">5</span> <span class="se">\</span>
     -features tag:str:1 <span class="se">\</span>
@@ -1834,7 +1837,7 @@ EOF
     -sources <span class="nv">s</span><span class="o">=</span>op <span class="se">\</span>
     -source-opimp dffml_model_spacy.ner.utils:parser <span class="se">\</span>
     -source-args test.json True <span class="se">\</span>
-    -model-model_name_or_path en_core_web_sm <span class="se">\</span>
+    -model-model_name en_core_web_sm <span class="se">\</span>
     -model-location temp <span class="se">\</span>
     -model-n_iter <span class="m">5</span> <span class="se">\</span>
     -log debug
@@ -1909,13 +1912,13 @@ is value of the flag <cite>is_predicting</cite>.</p>
 <ul class="simple">
 <li><p>location: String</p>
 <ul>
-<li><p>Output location</p></li>
+<li><p>Output location.</p></li>
 </ul>
 </li>
-<li><p>model_name_or_path: String</p>
+<li><p>model_name: String</p>
 <ul>
 <li><p>default: None</p></li>
-<li><p>Model name or path to saved model. Defaults to blank ‘en’ model.</p></li>
+<li><p>Name of one of the trained pipelines provided by spaCy.        You can find complete list at: <a class="reference external" href="https://spacy.io/models">https://spacy.io/models</a>        Defaults to blank ‘en’ model.</p></li>
 </ul>
 </li>
 <li><p>n_iter: Integer</p>
@@ -3179,7 +3182,7 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
   -model-enableGPU \
   -model-features image:int:$((500*500)) \
   -model-predict label:str:1 \
-  -features label:str:1
+  -features label:str:1 \
   -sources f=dir \
     -source-foldername hymenoptera_data/val \
     -source-feature image \

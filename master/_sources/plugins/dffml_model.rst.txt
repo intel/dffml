@@ -343,7 +343,7 @@ Example usage of Tensorflow DNNEstimator model using python API
 
 .. literalinclude:: /../model/tensorflow/examples/tfdnnr/tfdnnr.py
 
-The ``null`` in ``confidence`` is the expected behaviour. (See TODO in
+The ``null`` in ``confidence`` is the expected behavior. (See TODO in
 predict).
 
 **Args**
@@ -1127,7 +1127,7 @@ Train the model
         -sources s=op \
         -source-opimp dffml_model_spacy.ner.utils:parser \
         -source-args train.json False \
-        -model-model_name_or_path en_core_web_sm \
+        -model-model_name en_core_web_sm \
         -model-location temp \
         -model-n_iter 5 \
         -log debug
@@ -1142,7 +1142,7 @@ Assess the accuracy
         -sources s=op \
         -source-opimp dffml_model_spacy.ner.utils:parser \
         -source-args train.json False \
-        -model-model_name_or_path en_core_web_sm \
+        -model-model_name en_core_web_sm \
         -model-location temp \
         -model-n_iter 5 \
         -features tag:str:1 \
@@ -1160,7 +1160,7 @@ Make a prediction
         -sources s=op \
         -source-opimp dffml_model_spacy.ner.utils:parser \
         -source-args test.json True \
-        -model-model_name_or_path en_core_web_sm \
+        -model-model_name en_core_web_sm \
         -model-location temp \
         -model-n_iter 5 \
         -log debug
@@ -1220,12 +1220,12 @@ is value of the flag `is_predicting`.
 
 - location: String
 
-  - Output location
+  - Output location.
 
-- model_name_or_path: String
+- model_name: String
 
   - default: None
-  - Model name or path to saved model. Defaults to blank 'en' model.
+  - Name of one of the trained pipelines provided by spaCy.        You can find complete list at: https://spacy.io/models        Defaults to blank 'en' model.
 
 - n_iter: Integer
 

@@ -1,0 +1,470 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>dffml.df.archive &mdash; DFFML 38390a45e documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/tabs.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/copybutton.js"></script>
+        <script src="../../../_static/tabs.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="author" title="About these documents" href="../../../about.html" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> DFFML
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                38390a45e
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Introduction</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../concepts/index.html">Concepts</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Usage</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../quickstart/model.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/index.html">Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../plugins/index.html">Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../cli.html">Command Line</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../plugins/service/http/index.html">HTTP API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/record.html">Record</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/version.html">Version</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/base.html">Base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/plugins.html">Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/noasync.html">Noasync</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/log.html">Log</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/optimizer/index.html">Optimizer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/port/index.html">Port</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/util/index.html">Util</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/db/index.html">Db</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/df/index.html">Df</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/secret/index.html">Secret</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/accuracy/index.html">Accuracy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/feature/index.html">Feature</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/service/index.html">Service</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/high_level/index.html">High_Level</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/cli/index.html">Cli</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/configloader/index.html">Configloader</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/operation/index.html">Operation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/model/index.html">Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/source/index.html">Source</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../arch/index.html">Architecture</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Subprojects</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../shouldi.html">shouldi</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Community</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/intel/dffml">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://intel.github.io/dffml/master/">Master Branch Docs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../publications.html">Publications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contact.html">Contact Us</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributing/index.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../news/index.html">News</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../changelog.html">Changelog</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">DFFML</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>dffml.df.archive</li>
+    
+    
+
+
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+
+
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for dffml.df.archive</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">uuid</span>
+<span class="kn">import</span> <span class="nn">pathlib</span>
+<span class="kn">import</span> <span class="nn">zipfile</span>
+<span class="kn">import</span> <span class="nn">tarfile</span>
+<span class="kn">import</span> <span class="nn">mimetypes</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Any</span>
+
+<span class="kn">from</span> <span class="nn">.types</span> <span class="kn">import</span> <span class="n">DataFlow</span><span class="p">,</span> <span class="n">Input</span><span class="p">,</span> <span class="n">InputFlow</span><span class="p">,</span> <span class="n">Operation</span>
+<span class="kn">from</span> <span class="nn">..operation.archive</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">make_tar_archive</span><span class="p">,</span>
+    <span class="n">make_zip_archive</span><span class="p">,</span>
+    <span class="n">extract_tar_archive</span><span class="p">,</span>
+    <span class="n">extract_zip_archive</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">..operation.compression</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">gz_compress</span><span class="p">,</span>
+    <span class="n">gz_decompress</span><span class="p">,</span>
+    <span class="n">bz2_compress</span><span class="p">,</span>
+    <span class="n">bz2_decompress</span><span class="p">,</span>
+    <span class="n">xz_compress</span><span class="p">,</span>
+    <span class="n">xz_decompress</span><span class="p">,</span>
+<span class="p">)</span>
+
+
+<div class="viewcode-block" id="get_key_substr"><a class="viewcode-back" href="../../../api/df/archive.html#dffml.df.archive.get_key_substr">[docs]</a><span class="k">def</span> <span class="nf">get_key_substr</span><span class="p">(</span><span class="n">string</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">return_value</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A function to find dictionary items whose key matches a substring.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">[</span>
+        <span class="n">value</span> <span class="k">if</span> <span class="n">return_value</span> <span class="k">else</span> <span class="n">key</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">dict</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">string</span> <span class="ow">in</span> <span class="n">key</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+    <span class="p">][</span><span class="mi">0</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="get_archive_type"><a class="viewcode-back" href="../../../api/df/archive.html#dffml.df.archive.get_archive_type">[docs]</a><span class="k">def</span> <span class="nf">get_archive_type</span><span class="p">(</span><span class="n">file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A function to get archive type if the file exists.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">archive_type</span><span class="p">,</span> <span class="n">compression_type</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">zipfile</span><span class="o">.</span><span class="n">is_zipfile</span><span class="p">(</span><span class="n">file_path</span><span class="p">):</span>
+        <span class="n">archive_type</span> <span class="o">=</span> <span class="s2">&quot;zip&quot;</span>
+    <span class="k">if</span> <span class="n">tarfile</span><span class="o">.</span><span class="n">is_tarfile</span><span class="p">(</span><span class="n">file_path</span><span class="p">):</span>
+        <span class="n">archive_type</span> <span class="o">=</span> <span class="s2">&quot;tar&quot;</span>
+        <span class="n">compression_type</span> <span class="o">=</span> <span class="n">mimetypes</span><span class="o">.</span><span class="n">guess_type</span><span class="p">(</span><span class="n">file_path</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">archive_type</span><span class="p">,</span> <span class="n">compression_type</span></div>
+
+
+<div class="viewcode-block" id="get_archive_path_info"><a class="viewcode-back" href="../../../api/df/archive.html#dffml.df.archive.get_archive_path_info">[docs]</a><span class="k">def</span> <span class="nf">get_archive_path_info</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A function to find type of archive from the given path</span>
+<span class="sd">    if the file does not exists.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">archive_type</span><span class="p">,</span> <span class="n">compression_type</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
+    <span class="n">file_type</span><span class="p">,</span> <span class="n">compression_type</span> <span class="o">=</span> <span class="n">mimetypes</span><span class="o">.</span><span class="n">guess_type</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+    <span class="n">file_subtype</span> <span class="o">=</span> <span class="n">file_type</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="n">file_type</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">file_subtype</span> <span class="o">==</span> <span class="s2">&quot;zip&quot;</span><span class="p">:</span>
+        <span class="n">archive_type</span> <span class="o">=</span> <span class="s2">&quot;zip&quot;</span>
+    <span class="k">if</span> <span class="n">file_subtype</span> <span class="o">==</span> <span class="s2">&quot;x-tar&quot;</span><span class="p">:</span>
+        <span class="n">archive_type</span> <span class="o">=</span> <span class="s2">&quot;tar&quot;</span>
+    <span class="k">return</span> <span class="n">archive_type</span><span class="p">,</span> <span class="n">compression_type</span></div>
+
+
+<div class="viewcode-block" id="get_operations"><a class="viewcode-back" href="../../../api/df/archive.html#dffml.df.archive.get_operations">[docs]</a><span class="k">def</span> <span class="nf">get_operations</span><span class="p">(</span>
+    <span class="n">archive_action</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">archive_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">compression_type</span><span class="p">:</span> <span class="nb">str</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Operation</span><span class="p">]:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A function to fetch relevant operations based on type of archive</span>
+<span class="sd">    and compression if any.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">operations</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;archive_ops&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;zip&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;extract&quot;</span><span class="p">:</span> <span class="n">extract_zip_archive</span><span class="p">,</span>
+                <span class="s2">&quot;archive&quot;</span><span class="p">:</span> <span class="n">make_zip_archive</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;tar&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;extract&quot;</span><span class="p">:</span> <span class="n">extract_tar_archive</span><span class="p">,</span>
+                <span class="s2">&quot;archive&quot;</span><span class="p">:</span> <span class="n">make_tar_archive</span><span class="p">,</span>
+            <span class="p">},</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;compression_ops&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;gzip&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;compress&quot;</span><span class="p">:</span> <span class="n">gz_compress</span><span class="p">,</span> <span class="s2">&quot;decompress&quot;</span><span class="p">:</span> <span class="n">gz_decompress</span><span class="p">},</span>
+            <span class="s2">&quot;xz&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;compress&quot;</span><span class="p">:</span> <span class="n">xz_compress</span><span class="p">,</span> <span class="s2">&quot;decompress&quot;</span><span class="p">:</span> <span class="n">xz_decompress</span><span class="p">},</span>
+            <span class="s2">&quot;bzip2&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;compress&quot;</span><span class="p">:</span> <span class="n">bz2_compress</span><span class="p">,</span> <span class="s2">&quot;decompress&quot;</span><span class="p">:</span> <span class="n">bz2_decompress</span><span class="p">,},</span>
+        <span class="p">},</span>
+    <span class="p">}</span>
+    <span class="n">archive_op</span> <span class="o">=</span> <span class="n">operations</span><span class="p">[</span><span class="s2">&quot;archive_ops&quot;</span><span class="p">][</span><span class="n">archive_type</span><span class="p">][</span><span class="n">archive_action</span><span class="p">]</span>
+    <span class="n">compression_op</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">compression_type</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">compression_action</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="s2">&quot;compress&quot;</span> <span class="k">if</span> <span class="n">archive_action</span> <span class="o">==</span> <span class="s2">&quot;archive&quot;</span> <span class="k">else</span> <span class="s2">&quot;decompress&quot;</span>
+        <span class="p">)</span>
+        <span class="n">compression_op</span> <span class="o">=</span> <span class="n">operations</span><span class="p">[</span><span class="s2">&quot;compression_ops&quot;</span><span class="p">][</span><span class="n">compression_type</span><span class="p">][</span>
+            <span class="n">compression_action</span>
+        <span class="p">]</span>
+    <span class="k">return</span> <span class="n">archive_op</span><span class="p">,</span> <span class="n">compression_op</span></div>
+
+
+<div class="viewcode-block" id="deduce_archive_action"><a class="viewcode-back" href="../../../api/df/archive.html#dffml.df.archive.deduce_archive_action">[docs]</a><span class="k">def</span> <span class="nf">deduce_archive_action</span><span class="p">(</span><span class="n">seed</span><span class="p">:</span> <span class="n">Dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A function to deduce archive action as &#39;extract&#39; or &#39;archive&#39;</span>
+<span class="sd">    based on the seed and find type and compression of the archive.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">input_path</span><span class="p">,</span> <span class="n">output_path</span> <span class="o">=</span> <span class="n">seed</span><span class="p">[</span><span class="s2">&quot;input_path&quot;</span><span class="p">],</span> <span class="n">seed</span><span class="p">[</span><span class="s2">&quot;output_path&quot;</span><span class="p">]</span>
+    <span class="n">input_exists</span><span class="p">,</span> <span class="n">input_is_file</span><span class="p">,</span> <span class="n">input_is_dir</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">input_path</span><span class="o">.</span><span class="n">exists</span><span class="p">(),</span>
+        <span class="n">input_path</span><span class="o">.</span><span class="n">is_file</span><span class="p">(),</span>
+        <span class="n">input_path</span><span class="o">.</span><span class="n">is_dir</span><span class="p">(),</span>
+    <span class="p">)</span>
+    <span class="n">output_exists</span><span class="p">,</span> <span class="n">output_is_file</span><span class="p">,</span> <span class="n">output_is_dir</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">output_path</span><span class="o">.</span><span class="n">exists</span><span class="p">(),</span>
+        <span class="n">output_path</span><span class="o">.</span><span class="n">is_file</span><span class="p">(),</span>
+        <span class="n">output_path</span><span class="o">.</span><span class="n">is_dir</span><span class="p">(),</span>
+    <span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">all</span><span class="p">([</span><span class="n">input_exists</span><span class="p">,</span> <span class="n">output_exists</span><span class="p">,</span> <span class="n">output_is_dir</span><span class="p">,</span> <span class="n">input_is_file</span><span class="p">]):</span>
+        <span class="n">action</span> <span class="o">=</span> <span class="s2">&quot;extract&quot;</span>
+        <span class="n">archive_type</span><span class="p">,</span> <span class="n">compression_type</span> <span class="o">=</span> <span class="n">get_archive_type</span><span class="p">(</span><span class="n">input_path</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="nb">all</span><span class="p">([</span><span class="n">input_exists</span><span class="p">,</span> <span class="n">output_exists</span><span class="p">,</span> <span class="n">input_is_dir</span><span class="p">,</span> <span class="n">output_is_file</span><span class="p">]):</span>
+        <span class="n">action</span> <span class="o">=</span> <span class="s2">&quot;archive&quot;</span>
+        <span class="n">archive_type</span><span class="p">,</span> <span class="n">compression_type</span> <span class="o">=</span> <span class="n">get_archive_type</span><span class="p">(</span><span class="n">output_path</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="nb">all</span><span class="p">([</span><span class="n">input_exists</span><span class="p">,</span> <span class="ow">not</span> <span class="n">output_exists</span><span class="p">,</span> <span class="n">input_is_dir</span><span class="p">]):</span>
+        <span class="c1"># Triggered on first time use</span>
+        <span class="n">action</span> <span class="o">=</span> <span class="s2">&quot;archive&quot;</span>
+        <span class="n">archive_type</span><span class="p">,</span> <span class="n">compression_type</span> <span class="o">=</span> <span class="n">get_archive_path_info</span><span class="p">(</span><span class="n">output_path</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">action</span><span class="p">,</span> <span class="n">archive_type</span><span class="p">,</span> <span class="n">compression_type</span></div>
+
+
+<div class="viewcode-block" id="create_chained_archive_dataflow"><a class="viewcode-back" href="../../../api/df/archive.html#dffml.df.archive.create_chained_archive_dataflow">[docs]</a><span class="k">def</span> <span class="nf">create_chained_archive_dataflow</span><span class="p">(</span>
+    <span class="n">action</span><span class="p">,</span> <span class="n">first_op</span><span class="p">,</span> <span class="n">second_op</span><span class="p">,</span> <span class="n">seed</span><span class="p">,</span> <span class="n">temp_dir</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DataFlow</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A function to create chained dataflows for archive extraction/creation.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">second_op_output_typ</span> <span class="o">=</span> <span class="s2">&quot;directory&quot;</span> <span class="k">if</span> <span class="n">action</span> <span class="o">==</span> <span class="s2">&quot;extract&quot;</span> <span class="k">else</span> <span class="s2">&quot;file&quot;</span>
+    <span class="n">dataflow</span> <span class="o">=</span> <span class="n">DataFlow</span><span class="p">(</span>
+        <span class="n">operations</span><span class="o">=</span><span class="p">{</span><span class="n">first_op</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="n">first_op</span><span class="p">,</span> <span class="n">second_op</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="n">second_op</span><span class="p">,},</span>
+        <span class="n">seed</span><span class="o">=</span><span class="p">{</span>
+            <span class="n">Input</span><span class="p">(</span>
+                <span class="n">value</span><span class="o">=</span><span class="n">seed</span><span class="p">[</span><span class="s2">&quot;input_path&quot;</span><span class="p">],</span>
+                <span class="n">definition</span><span class="o">=</span><span class="n">get_key_substr</span><span class="p">(</span><span class="s2">&quot;input&quot;</span><span class="p">,</span> <span class="n">first_op</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">),</span>
+            <span class="p">),</span>
+            <span class="n">Input</span><span class="p">(</span>
+                <span class="n">value</span><span class="o">=</span><span class="n">temp_dir</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">uuid</span><span class="o">.</span><span class="n">uuid4</span><span class="p">())</span><span class="si">}</span><span class="s2">.tar&quot;</span><span class="p">,</span>
+                <span class="n">definition</span><span class="o">=</span><span class="n">get_key_substr</span><span class="p">(</span><span class="s2">&quot;output&quot;</span><span class="p">,</span> <span class="n">first_op</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">),</span>
+            <span class="p">),</span>
+            <span class="n">Input</span><span class="p">(</span>
+                <span class="n">value</span><span class="o">=</span><span class="n">seed</span><span class="p">[</span><span class="s2">&quot;output_path&quot;</span><span class="p">],</span>
+                <span class="n">definition</span><span class="o">=</span><span class="n">get_key_substr</span><span class="p">(</span><span class="s2">&quot;output&quot;</span><span class="p">,</span> <span class="n">second_op</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">),</span>
+                <span class="n">origin</span><span class="o">=</span><span class="s2">&quot;seed.final_output&quot;</span><span class="p">,</span>
+            <span class="p">),</span>
+        <span class="p">},</span>
+    <span class="p">)</span>
+    <span class="n">dataflow</span><span class="o">.</span><span class="n">flow</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
+        <span class="p">{</span>
+            <span class="n">second_op</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="n">InputFlow</span><span class="p">(</span>
+                <span class="n">inputs</span><span class="o">=</span><span class="p">{</span>
+                    <span class="s2">&quot;input_file_path&quot;</span><span class="p">:</span> <span class="p">[{</span><span class="n">first_op</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="s2">&quot;output_path&quot;</span><span class="p">}],</span>
+                    <span class="sa">f</span><span class="s2">&quot;output_</span><span class="si">{</span><span class="n">second_op_output_typ</span><span class="si">}</span><span class="s2">_path&quot;</span><span class="p">:</span> <span class="p">[</span>
+                        <span class="s2">&quot;seed.final_output&quot;</span>
+                    <span class="p">],</span>
+                <span class="p">}</span>
+            <span class="p">)</span>
+        <span class="p">}</span>
+    <span class="p">)</span>
+    <span class="n">dataflow</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">dataflow</span></div>
+
+
+<div class="viewcode-block" id="create_archive_dataflow"><a class="viewcode-back" href="../../../api/df/archive.html#dffml.df.archive.create_archive_dataflow">[docs]</a><span class="k">def</span> <span class="nf">create_archive_dataflow</span><span class="p">(</span><span class="n">seed</span><span class="p">:</span> <span class="nb">set</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DataFlow</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A function to create appropriate dataflow to extract/create an archive</span>
+<span class="sd">    if it is supported.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">seed</span> <span class="o">=</span> <span class="p">{</span><span class="n">input_</span><span class="o">.</span><span class="n">origin</span><span class="p">:</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">input_</span><span class="o">.</span><span class="n">value</span><span class="p">)</span> <span class="k">for</span> <span class="n">input_</span> <span class="ow">in</span> <span class="n">seed</span><span class="p">}</span>
+    <span class="n">action</span><span class="p">,</span> <span class="n">archive_type</span><span class="p">,</span> <span class="n">compression_type</span> <span class="o">=</span> <span class="n">deduce_archive_action</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
+    <span class="n">archive_op</span><span class="p">,</span> <span class="n">compression_op</span> <span class="o">=</span> <span class="n">get_operations</span><span class="p">(</span>
+        <span class="n">action</span><span class="p">,</span> <span class="n">archive_type</span><span class="p">,</span> <span class="n">compression_type</span>
+    <span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">compression_op</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">dataflow</span> <span class="o">=</span> <span class="n">DataFlow</span><span class="p">(</span>
+            <span class="n">operations</span><span class="o">=</span><span class="p">{</span><span class="n">archive_op</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="n">archive_op</span><span class="p">},</span>
+            <span class="n">seed</span><span class="o">=</span><span class="p">{</span>
+                <span class="n">Input</span><span class="p">(</span>
+                    <span class="n">value</span><span class="o">=</span><span class="n">seed</span><span class="p">[</span><span class="s2">&quot;input_path&quot;</span><span class="p">],</span>
+                    <span class="n">definition</span><span class="o">=</span><span class="n">get_key_substr</span><span class="p">(</span><span class="s2">&quot;input&quot;</span><span class="p">,</span> <span class="n">archive_op</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">),</span>
+                <span class="p">),</span>
+                <span class="n">Input</span><span class="p">(</span>
+                    <span class="n">value</span><span class="o">=</span><span class="n">seed</span><span class="p">[</span><span class="s2">&quot;output_path&quot;</span><span class="p">],</span>
+                    <span class="n">definition</span><span class="o">=</span><span class="n">get_key_substr</span><span class="p">(</span><span class="s2">&quot;output&quot;</span><span class="p">,</span> <span class="n">archive_op</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">),</span>
+                <span class="p">),</span>
+            <span class="p">},</span>
+        <span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">first_op</span> <span class="o">=</span> <span class="n">compression_op</span> <span class="k">if</span> <span class="n">action</span> <span class="o">==</span> <span class="s2">&quot;extract&quot;</span> <span class="k">else</span> <span class="n">archive_op</span>
+        <span class="n">second_op</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">compression_op</span> <span class="k">if</span> <span class="n">first_op</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">compression_op</span> <span class="k">else</span> <span class="n">archive_op</span>
+        <span class="p">)</span>
+        <span class="n">dataflow</span> <span class="o">=</span> <span class="n">create_chained_archive_dataflow</span><span class="p">(</span>
+            <span class="n">action</span><span class="p">,</span> <span class="n">first_op</span><span class="p">,</span> <span class="n">second_op</span><span class="p">,</span> <span class="n">seed</span><span class="p">,</span> <span class="n">seed</span><span class="p">[</span><span class="s2">&quot;input_path&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">parent</span>
+        <span class="p">)</span>
+    <span class="k">return</span> <span class="n">dataflow</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2017 - 2021, Intel.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -25,6 +25,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Usecase example notebook for "Saving and loading models"
 - Usecase example notebook for "Transfer Learning"
 - Usecase example notebook for "Ensemble by stacking"
+- Support for Archive Storage of Models
 - Support for Multi-Output models.
 - Usecase example notebook for "Working with Multi-Output models"
 - Optimizer `parameter_grid` for tuning models.
@@ -38,6 +39,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Config objects now support mutability/immutability at the property scope.
   See `docs/arch/0003-Config-Property-Mutable-vs-Immutable` for details.
 - high_level `accuracy()` now takes predict features as parameter.
+- Spacy `model_name_or_path` was changed to `model_name`. Functionality is the
+  same, it still accepts a name or a path.
 ### Fixed
 - Record object key properties are now always strings
 

@@ -22,6 +22,7 @@ package it so others can use it easily.
 
     iris
     load
+    archive
     slr
     package
     docs
