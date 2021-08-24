@@ -197,6 +197,8 @@ jobs:
         - docs/examples/shouldi.rst
         - docs/examples/swportal.rst
         - docs/examples/icecream_sales.rst
+        - docs/examples/data_cleanup/data_cleanup.rst
+        - docs/examples/data_cleanup/data_cleanup_classfication.rst
         - docs/installation.rst
         - docs/troubleshooting.rst
         - docs/tutorials/accuracy/mse.rst
