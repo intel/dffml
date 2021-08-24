@@ -19,6 +19,11 @@ kaggle https://www.kaggle.com/uciml/mushroom-classification
 
 you may go ahead and download the dataset
 
+.. code-block:: console
+    :test:
+
+    $ curl -fLO https://github.com/intel/dffml/files/7040983/mushrooms.csv
+
 Data Cleanup Operations
 -----------------------
 
