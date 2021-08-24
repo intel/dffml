@@ -50,6 +50,7 @@ CORE_PLUGINS += [
     ("feature", "git"),
     ("feature", "auth"),
     ("operations", "binsec"),
+    ("operations", "data"),
     ("operations", "deploy"),
     ("operations", "image"),
     ("operations", "nlp"),
