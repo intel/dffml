@@ -32,7 +32,8 @@ RUN apt-get update && \
 # Install and upgrade
 # pip and setuptools, which are used to install other packages
 # twine, which is used to upload released packages to PyPi
-RUN python -m pip install --upgrade pip setuptools twine
+RUN python -m pip install --upgrade pip setuptools wheel
+RUN python -m pip install --upgrade twine
 
 # ==========================  END  GLOBAL DEPENDENCIES =========================
 
