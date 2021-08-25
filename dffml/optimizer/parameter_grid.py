@@ -1,7 +1,6 @@
 from typing import Union, Dict, Any
 import itertools
 import logging
-import sys
 
 from ..base import (
     config,

@@ -3,7 +3,6 @@ import json
 import asyncio
 
 from dffml import op
-from dffml import Definition
 
 
 @op

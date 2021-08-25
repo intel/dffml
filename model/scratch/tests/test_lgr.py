@@ -1,13 +1,9 @@
 import tempfile
-import unittest
 
 from dffml.accuracy import MeanSquaredErrorAccuracy
 from dffml import train, accuracy, predict, Feature, Features, AsyncTestCase
 
-from dffml_model_scratch.logisticregression import (
-    LogisticRegressionConfig,
-    LogisticRegression,
-)
+from dffml_model_scratch.logisticregression import LogisticRegression
 
 TRAIN_DATA = [
     [0.90, 0],

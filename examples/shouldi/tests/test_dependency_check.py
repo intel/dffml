@@ -1,5 +1,3 @@
-import pathlib
-
 from dffml import (
     prepend_to_path,
     AsyncTestCase,

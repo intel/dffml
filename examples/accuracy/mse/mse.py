@@ -1,5 +1,5 @@
 from dffml import Features, Feature, SLRModel
-from dffml.noasync import train, accuracy, predict
+from dffml.noasync import accuracy, train
 from dffml.accuracy import MeanSquaredErrorAccuracy
 
 model = SLRModel(

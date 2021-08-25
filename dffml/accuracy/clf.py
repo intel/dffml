@@ -1,13 +1,11 @@
 from ..base import config
-from ..record import Record
-from ..feature import Feature, Features
+from ..feature import Feature
 from ..model import ModelContext
 from ..util.entrypoint import entrypoint
 from ..source.source import SourcesContext
 from .accuracy import (
     AccuracyScorer,
     AccuracyContext,
-    InvalidNumberOfFeaturesError,
 )
 
 

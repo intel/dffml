@@ -1,26 +1,18 @@
 import os
 import io
-import aiohttp
 import asyncio
 import pathlib
 import tempfile
 from unittest.mock import patch
-from contextlib import asynccontextmanager, ExitStack, AsyncExitStack
-from typing import AsyncIterator, Dict
+from typing import Dict
 
 from dffml import DataFlow
-from dffml.base import config
 from dffml.record import Record
-from dffml.df.base import BaseConfig, op
-from dffml.operation.output import GetSingle
-from dffml.util.entrypoint import EntrypointNotFound
-from dffml.model.model import ModelContext, Model
-from dffml.model.accuracy import Accuracy
+from dffml.df.base import op
+from dffml.model.model import Model
 from dffml.feature import Feature
-from dffml.source.source import Sources
 from dffml.source.csv import CSVSourceConfig
 from dffml.util.cli.arg import parse_unknown
-from dffml.util.entrypoint import entrypoint
 from dffml.util.asynctestcase import AsyncTestCase
 from dffml.feature.feature import Feature, Features
 from dffml.accuracy.mse import MeanSquaredErrorAccuracyConfig
@@ -34,19 +26,16 @@ from dffml_service_http.routes import (
     DISALLOW_CACHING,
 )
 from dffml_service_http.util.testing import (
-    ServerRunner,
     ServerException,
     TestRoutesRunning,
     FakeModel,
     FakeModelConfig,
-    FakeScorer,
 )
 
 from .dataflow import (
     HELLO_BLANK_DATAFLOW,
     HELLO_WORLD_DATAFLOW,
     formatter,
-    remap,
 )
 
 

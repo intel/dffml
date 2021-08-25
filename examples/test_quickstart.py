@@ -3,13 +3,11 @@ import ast
 import sys
 import json
 import shlex
-import shutil
 import asyncio
 import pathlib
 import tempfile
 import contextlib
 import subprocess
-import unittest.mock
 
 from dffml import chdir, AsyncTestCase
 

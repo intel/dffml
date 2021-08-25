@@ -1,7 +1,7 @@
 """
 Expose Pandas DataFrame as DFFML Source
 """
-from typing import Dict, List, AsyncIterator
+from typing import AsyncIterator, List
 
 
 from ..record import Record

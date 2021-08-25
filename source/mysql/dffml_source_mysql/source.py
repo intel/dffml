@@ -1,15 +1,11 @@
 import ssl
-import itertools
-import collections
-from typing import AsyncIterator, NamedTuple, Dict, List, Tuple
+from typing import AsyncIterator, Dict, Tuple
 
 import aiomysql
 
 from dffml import config, field
-from dffml.base import BaseConfig
 from dffml.record import Record
 from dffml.source.source import BaseSourceContext, BaseSource
-from dffml.util.cli.arg import Arg
 from dffml.util.entrypoint import entrypoint
 
 

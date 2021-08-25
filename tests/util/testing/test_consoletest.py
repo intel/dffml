@@ -1,5 +1,4 @@
 import os
-import sys
 import inspect
 import pathlib
 import tempfile
@@ -7,7 +6,6 @@ import unittest
 import platform
 import contextlib
 import unittest.mock
-import importlib.util
 
 from dffml.util.asynctestcase import AsyncTestCase
 

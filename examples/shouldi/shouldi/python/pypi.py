@@ -3,7 +3,7 @@ import tempfile
 
 import aiohttp
 
-from dffml import op, Definition, Stage
+from dffml import Stage, op
 
 from .safety import safety_check
 from .bandit import run_bandit

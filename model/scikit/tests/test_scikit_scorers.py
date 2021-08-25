@@ -11,13 +11,8 @@ from .test_scikit import (
     CLUSTERERS,
     CLASSIFIERS,
     TestScikitModel,
-    supervised_estimators,
-    unsupervised_estimators,
     regeressor_types,
     classifier_types,
-    FEATURE_DATA_REGRESSION,
-    FEATURE_DATA_CLUSTERING,
-    FEATURE_DATA_CLASSIFICATION,
 )
 
 

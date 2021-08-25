@@ -19,9 +19,8 @@ from dffml import (
     SourcesContext,
     entrypoint,
 )
-from dffml.base import BaseConfig
 from dffml.accuracy import AccuracyContext, AccuracyScorer
-from dffml.source.memory import MemorySource, MemorySourceConfig
+from dffml.source.memory import MemorySource
 
 from dffml_service_http.cli import Server
 from dffml_service_http.routes import DISALLOW_CACHING

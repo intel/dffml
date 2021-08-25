@@ -1,6 +1,6 @@
 import re
 import pathlib
-from typing import Union, Tuple
+from typing import Union
 
 from .crypto import SECURE_HASH_ALGORITHM
 

@@ -3,7 +3,6 @@ import sys
 import ast
 import site
 from io import open
-from pathlib import Path
 
 from setuptools import find_packages, setup
 

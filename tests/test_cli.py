@@ -9,7 +9,7 @@ import tempfile
 import contextlib
 from pathlib import Path
 from unittest.mock import patch
-from typing import List, AsyncIterator, Dict
+from typing import AsyncIterator, List
 
 from dffml.record import Record
 from dffml.feature import Feature, Features
@@ -18,7 +18,6 @@ from dffml.source.file import FileSourceConfig
 from dffml.source.json import JSONSource
 from dffml.source.csv import CSVSource, CSVSourceConfig
 from dffml.model.model import ModelContext, Model
-from dffml.model.accuracy import Accuracy as AccuracyType
 from dffml.util.entrypoint import entrypoint
 from dffml.util.asynctestcase import (
     AsyncTestCase,
@@ -26,15 +25,12 @@ from dffml.util.asynctestcase import (
     non_existant_tempfile,
 )
 from dffml.base import config
-from dffml.df.base import op
 from dffml.cli.cli import Merge
-from dffml.cli.ml import Train, Accuracy, Predict
+from dffml.cli.ml import Predict, Train
 from dffml.cli.list import List
 from dffml.cli.dataflow import Dataflow
 
 from .test_df import OPERATIONS, OPIMPS
-
-from dffml import op, DataFlow, Definition
 
 
 class RecordsTestCase(AsyncTestCase):

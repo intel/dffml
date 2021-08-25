@@ -3,7 +3,6 @@ from dffml.df.base import op
 from dffml.df.memory import MemoryOrchestrator
 from dffml.operation.output import GetMulti
 from dffml.util.asynctestcase import AsyncTestCase
-from dffml.operation.mapping import MAPPING
 
 
 CountStart = Definition(name="count_start", primitive="int")

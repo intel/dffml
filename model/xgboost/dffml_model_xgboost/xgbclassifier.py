@@ -7,12 +7,10 @@ import joblib
 import numpy as np
 import pandas as pd
 from xgboost import XGBClassifier
-from sklearn.metrics import accuracy_score
 
 from dffml.record import Record
 from dffml.base import config, field
 from dffml.source.source import Sources
-from dffml.model.accuracy import Accuracy
 from dffml.util.entrypoint import entrypoint
 from dffml.feature.feature import Feature, Features
 from dffml.model.model import SimpleModel, ModelNotTrained

@@ -1,11 +1,9 @@
-import os
 import random
 import pathlib
 import tempfile
-from typing import Type
 
 from dffml import train, predict, accuracy
-from dffml.record import Record, RecordData
+from dffml.record import Record
 from dffml.source.source import Sources
 from dffml.source.memory import MemorySource, MemorySourceConfig
 from dffml.feature import Feature, Features
