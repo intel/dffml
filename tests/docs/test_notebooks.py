@@ -1,8 +1,6 @@
 import os
 import pathlib
 import unittest
-import logging
-import contextlib
 
 from testbook import testbook
 

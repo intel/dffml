@@ -8,7 +8,6 @@ import json
 from pathlib import Path
 from typing import AsyncIterator, Tuple, Any, List
 
-import numpy as np
 import pandas as pd
 from vowpalwabbit import pyvw
 from sklearn.utils import shuffle

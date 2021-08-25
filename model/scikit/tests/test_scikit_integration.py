@@ -3,9 +3,7 @@ This file contains integration tests. We use the CLI to exercise functionality o
 various DFFML classes and constructs.
 """
 import csv
-from dffml.feature.feature import Feature
 import json
-import inspect
 import pathlib
 import contextlib
 

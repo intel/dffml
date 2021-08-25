@@ -10,8 +10,6 @@ from dffml.util.asynctestcase import AsyncTestCase
 from dffml import (
     DataFlow,
     run,
-    opimp_in,
-    INISecretConfig,
     INISecret,
     Input,
     BaseDataFlowFacilitatorObjectContext,

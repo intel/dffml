@@ -1,22 +1,15 @@
-import os
-import sys
 import random
 import pathlib
 import tempfile
-import subprocess
 
 import numpy as np
 
 from dffml.record import Record
-from dffml.base import config, field
 from dffml.source.source import Sources
-from dffml.model.accuracy import Accuracy
 from dffml import train, accuracy, predict, run_consoletest
-from dffml.util.entrypoint import entrypoint
 from dffml.util.asynctestcase import AsyncTestCase
 from dffml.feature.feature import Feature, Features
 from dffml.accuracy import MeanSquaredErrorAccuracy
-from dffml.model.model import SimpleModel, ModelNotTrained
 from dffml.source.memory import MemorySource, MemorySourceConfig
 
 

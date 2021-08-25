@@ -1,8 +1,7 @@
 import pathlib
 import importlib
 
-from operator import sub
-from typing import AsyncIterator, Tuple, Any, Type, List
+from typing import Any, AsyncIterator, Tuple
 
 from dffml import (
     config,
@@ -10,7 +9,6 @@ from dffml import (
     entrypoint,
     SimpleModel,
     ModelNotTrained,
-    Accuracy,
     Feature,
     Features,
     Sources,

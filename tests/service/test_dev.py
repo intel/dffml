@@ -3,7 +3,6 @@ import os
 import sys
 import json
 import glob
-import shutil
 import inspect
 import pathlib
 import tarfile
@@ -28,7 +27,6 @@ from dffml.service.dev import (
     VersionNotFoundError,
     RCMissingHyphen,
     LintCommits,
-    CommitLintError,
 )
 from dffml.util.os import chdir
 from dffml.util.skel import Skel

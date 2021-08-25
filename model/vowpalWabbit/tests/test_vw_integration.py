@@ -4,7 +4,6 @@ various DFFML classes and constructs.
 """
 import csv
 import json
-import inspect
 import pathlib
 import contextlib
 

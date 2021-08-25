@@ -1,9 +1,8 @@
-from typing import Union
 from dffml.base import config
 from dffml.util.entrypoint import entrypoint
 from dffml.source.source import SourcesContext
 from dffml.model import ModelContext, ModelNotTrained
-from dffml.feature import Feature, Features
+from dffml.feature import Feature
 from dffml.accuracy import (
     AccuracyScorer,
     AccuracyContext,

@@ -1,5 +1,4 @@
 import io
-import os
 import sys
 import shutil
 import tarfile
@@ -11,7 +10,6 @@ import unittest.mock
 
 import httptest
 
-from dffml.util.os import chdir
 from dffml.util.net import cached_download, cached_download_unpack_archive
 from dffml.util.asynctestcase import AsyncTestCase
 from dffml.util.net import DirectoryNotExtractedError

@@ -4,7 +4,6 @@ various DFFML classes and constructs.
 """
 import inspect
 import pathlib
-import contextlib
 
 from dffml.cli.cli import CLI
 from dffml.util.asynctestcase import AsyncTestCase

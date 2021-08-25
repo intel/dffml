@@ -1,5 +1,4 @@
 import pathlib
-import unittest
 
 from dffml import SLRModel, run_consoletest, AsyncTestCase
 

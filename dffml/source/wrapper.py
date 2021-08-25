@@ -2,7 +2,7 @@ import inspect
 import functools
 import contextlib
 import dataclasses
-from typing import Dict, List, AsyncIterator
+from typing import AsyncIterator
 
 from ..record import Record
 from ..util.entrypoint import entrypoint

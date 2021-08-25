@@ -1,5 +1,5 @@
 from dffml import Feature, Features
-from dffml.noasync import accuracy, predict, train
+from dffml.noasync import accuracy, train
 
 from dffml_model_scratch.anomalydetection import AnomalyModel
 from dffml_model_scratch.anomaly_detection_scorer import (

@@ -1,5 +1,3 @@
-import os
-
 from dffml.base import config
 from dffml.feature.feature import Features
 from dffml.source.source import Sources

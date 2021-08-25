@@ -1,4 +1,3 @@
-from pathlib import PosixPath
 from unittest.mock import patch, mock_open, call
 
 from .test_archive import create_dataflow

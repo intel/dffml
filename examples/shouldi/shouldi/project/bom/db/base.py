@@ -1,5 +1,4 @@
 import abc
-import dataclasses
 import pkg_resources
 from typing import Union
 
@@ -41,7 +40,6 @@ class DependencyDB(abc.ABC):
         """
         Update the dependency in the database
         """
-        pass
 
     def load(config: str):
         try:

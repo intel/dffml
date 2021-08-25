@@ -1,6 +1,5 @@
 # SPDX-License-Identifier: MIT
 # Copyright (c) 2019 Intel Corporation
-import os
 import pwd
 import pathlib
 import inspect
@@ -9,7 +8,7 @@ import importlib
 import configparser
 import pkg_resources
 import unittest.mock
-from typing import List, Type
+from typing import Type
 
 
 def traverse_get_config(target, *args):

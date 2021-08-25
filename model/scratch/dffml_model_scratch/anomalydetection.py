@@ -5,7 +5,6 @@ from typing import AsyncIterator, Type
 import numpy as np
 
 from dffml import (
-    Accuracy,
     Feature,
     Features,
     ModelNotTrained,

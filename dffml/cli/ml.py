@@ -1,5 +1,4 @@
 import inspect
-from typing import Union
 
 from ..model.model import Model
 from ..source.source import Sources, SubsetSources
@@ -16,7 +15,7 @@ from ..util.cli.cmds import (
 )
 from ..base import config, field
 from ..accuracy import AccuracyScorer
-from ..feature import Feature, Features
+from ..feature import Features
 
 
 @config

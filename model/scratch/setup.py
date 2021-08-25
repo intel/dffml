@@ -2,10 +2,9 @@ import os
 import sys
 import ast
 import site
-from pathlib import Path
 from io import open
 
-from setuptools import find_packages, setup
+from setuptools import setup
 
 # See https://github.com/pypa/pip/issues/7953
 site.ENABLE_USER_SITE = "--user" in sys.argv[1:]

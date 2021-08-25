@@ -1,17 +1,13 @@
 import os
 import sys
-import inspect
 import pathlib
 import tempfile
 import unittest
-import contextlib
-import dataclasses
 import unittest.mock
 import importlib.util
 
 from dffml.util.asynctestcase import AsyncTestCase
 
-from dffml.util.testing.consoletest.commands import *
 from dffml.util.testing.consoletest.cli import main as consoletest_doc
 
 
@@ -83,9 +79,6 @@ def mktestcase(filepath: pathlib.Path, relative: pathlib.Path, builder: bool):
 
     def builder_testcase(self):
         from sphinx.cmd.build import (
-            get_parser,
-            Tee,
-            color_terminal,
             patch_docutils,
             docutils_namespace,
             Sphinx,

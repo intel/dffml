@@ -1,10 +1,9 @@
 import tempfile
-import unittest
 
 from dffml.accuracy import MeanSquaredErrorAccuracy
 from dffml import train, accuracy, predict, Feature, Features, AsyncTestCase
 
-from dffml.model.slr import SLRModel, SLRModelConfig
+from dffml.model.slr import SLRModel
 
 TRAIN_DATA = [
     [12.4, 11.2],

@@ -1,4 +1,3 @@
-import sys
 import pathlib
 import argparse
 import contextlib
