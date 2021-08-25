@@ -31,7 +31,7 @@ you may go ahead and download the dataset
 .. code-block:: console
     :test:
 
-    $ curl -fLO https://github.com/intel/dffml/files/7040979/kc_house_data.csv
+    $ curl -fLO https://github.com/intel/dffml/files/7046671/kc_house_data.csv
 
 Data Cleanup Operations
 -----------------------
@@ -120,7 +120,8 @@ accuracy of the model.
     $ dffml accuracy \
         -model scikiteln \
         -scorer exvscore \
-        -model-features price:float:1 bedrooms:float:1 bathrooms:float:1 sqft_living:float:1 sqft_lot:float:1 floors:str:1 waterfront:float:1 view:float:1 condition:float:1 grade:float:1 sqft_above:float:1 sqft_basement:float:1 yr_built:float:1 yr_renovated:float:1 zipcode:str:1 lat:float:1 long:float:1 sqft_living15:float:1 sqft_lot15:float:1 \
+        -features price:float:1 \
+        -model-features bedrooms:float:1 bathrooms:float:1 sqft_living:float:1 sqft_lot:float:1 floors:str:1 waterfront:float:1 view:float:1 condition:float:1 grade:float:1 sqft_above:float:1 sqft_basement:float:1 yr_built:float:1 yr_renovated:float:1 zipcode:str:1 lat:float:1 long:float:1 sqft_living15:float:1 sqft_lot15:float:1 \
         -model-predict price:float:1 \
         -model-location tempdir \
         -sources f=csv \
@@ -151,6 +152,7 @@ of the model without performing cleanup operations.
     $ dffml accuracy \
         -model scikiteln \
         -scorer exvscore \
+        -features price:float:1 \
         -model-features bedrooms:float:1 bathrooms:float:1 sqft_living:float:1 sqft_lot:float:1 floors:str:1 waterfront:float:1 view:float:1 condition:float:1 grade:float:1 sqft_above:float:1 sqft_basement:float:1 yr_built:float:1 yr_renovated:float:1 zipcode:str:1 lat:float:1 long:float:1 sqft_living15:float:1 sqft_lot15:float:1 \
         -model-predict price:float:1 \
         -model-location tempdir \
