@@ -11,6 +11,13 @@ In this example we will perform the following steps
 - Training our model on the preprocessed data
 - Getting the accuracy of the model
 
+First install the data cleanup operations and scikit models
+
+.. code-block:: console
+    :test:
+
+    $ python -m pip install dffml-operations-data dffml-model-scikit
+
 Dataset
 -------
 
@@ -41,7 +48,7 @@ Data Cleanup
 .. code-block:: console
     :test:
 
-    dffml dataflow create \
+    $ dffml dataflow create \
         -config \
             "mushrooms.csv"=convert_records_to_list.source.config.filename \
             csv=convert_records_to_list.source.plugin \
@@ -71,7 +78,7 @@ the merge command.
 .. code-block:: console
     :test:
 
-    dffml merge text=dfpreprocess temp=csv \
+    $ dffml merge text=dfpreprocess temp=csv \
         -source-text-dataflow clean_ops.json \
         -source-text-features class:float:1 cap-shape:float:1 cap-surface:float:1 cap-color:float:1 bruises:float:1 odor:float:1 gill-attachment:float:1 gill-spacing:float:1 gill-size:float:1 gill-color:float:1 stalk-shape:float:1 stalk-root:float:1 stalk-surface-above-ring:float:1 stalk-surface-below-ring:float:1 stalk-color-above-ring:float:1 stalk-color-below-ring:float:1 veil-type:float:1 veil-color:float:1 ring-number:float:1 ring-type:float:1 spore-print-color:float:1 population:float:1 habitat:float:1 \
         -source-text-source csv \
@@ -94,7 +101,7 @@ dataset
 .. code-block:: console
     :test:
 
-    dffml train \
+    $ dffml train \
         -model scikitmnb \
         -model-features cap-shape:float:1 cap-surface:float:1 cap-color:float:1 bruises:float:1 odor:float:1 gill-attachment:float:1 gill-spacing:float:1 gill-size:float:1 gill-color:float:1 stalk-shape:float:1 stalk-root:float:1 stalk-surface-above-ring:float:1 stalk-surface-below-ring:float:1 stalk-color-above-ring:float:1 stalk-color-below-ring:float:1 veil-type:float:1 veil-color:float:1 ring-number:float:1 ring-type:float:1 spore-print-color:float:1 population:float:1 habitat:float:1 \
         -model-predict class:str:1 \
@@ -114,9 +121,10 @@ of the trained model
 .. code-block:: console
     :test:
 
-    dffml accuracy \
+    $ dffml accuracy \
         -model scikitmnb \
         -scorer logloss \
+        -features class:str:1 \
         -model-features cap-shape:float:1 cap-surface:float:1 cap-color:float:1 bruises:float:1 odor:float:1 gill-attachment:float:1 gill-spacing:float:1 gill-size:float:1 gill-color:float:1 stalk-shape:float:1 stalk-root:float:1 stalk-surface-above-ring:float:1 stalk-surface-below-ring:float:1 stalk-color-above-ring:float:1 stalk-color-below-ring:float:1 veil-type:float:1 veil-color:float:1 ring-number:float:1 ring-type:float:1 spore-print-color:float:1 population:float:1 habitat:float:1 \
         -model-predict class:str:1 \
         -model-location tempdir \
