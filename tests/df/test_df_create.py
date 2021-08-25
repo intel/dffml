@@ -9,11 +9,8 @@ import contextlib
 from dffml.cli.cli import CLI
 from dffml import (
     DataFlow,
-    Definition,
     Input,
-    op,
     run,
-    GetSingle,
     chdir,
     AsyncTestCase,
 )

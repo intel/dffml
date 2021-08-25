@@ -2,7 +2,7 @@ import json
 import uuid
 import dataclasses
 import urllib.request
-from typing import Dict, Union
+from typing import Union
 
 from .base import DependencyDB
 from ..base import Dependency, DependencyExtra, URL, License

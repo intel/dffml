@@ -1,8 +1,6 @@
 import os
 import io
 import sys
-import copy
-import shutil
 import doctest
 import inspect
 import pathlib

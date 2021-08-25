@@ -10,7 +10,7 @@ from aiohttp import web
 
 from dffml.util.cli.cmd import CMD
 from dffml.accuracy import AccuracyScorer
-from dffml import Model, Sources, BaseSource
+from dffml import Model, Sources
 from dffml.util.cli.parser import list_action
 from dffml.util.entrypoint import entrypoint
 from dffml.util.asynchelper import AsyncContextManagerList

@@ -14,7 +14,6 @@ from typing import AsyncIterator, Tuple, Any, List, Type
 os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
 
 from dffml.record import Record
-from dffml.model.accuracy import Accuracy
 from dffml.util.entrypoint import entrypoint
 from dffml.util.crypto import secure_hash
 from dffml.base import config, field

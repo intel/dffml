@@ -5,7 +5,6 @@ import yaml
 from typing import Dict
 
 from dffml.util.entrypoint import entrypoint
-from dffml.util.cli.arg import Arg
 from dffml.base import BaseConfig
 from dffml.configloader.configloader import (
     BaseConfigLoaderContext,

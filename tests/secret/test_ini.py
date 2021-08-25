@@ -1,10 +1,7 @@
-import io
 import os
 import shutil
 import pathlib
-import inspect
 import tempfile
-import contextlib
 
 from dffml.secret.ini import INISecret
 from dffml.util.asynctestcase import AsyncTestCase

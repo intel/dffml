@@ -1,8 +1,6 @@
 # The following code ensures everything has a page under docs/api/
-import sys
 import inspect
 import pathlib
-import importlib
 from typing import Optional, Callable
 
 

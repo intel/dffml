@@ -3,7 +3,6 @@
 """
 Base class for Scikit scorers
 """
-from typing import Union
 
 import numpy as np
 
@@ -11,7 +10,7 @@ from dffml.base import config
 from dffml.model.model import ModelContext
 from dffml.source.source import SourcesContext
 from dffml.accuracy import AccuracyScorer, AccuracyContext
-from dffml.feature import Features, Feature
+from dffml.feature import Feature
 from .scikit_base import NoMultiOutputSupport
 
 MULTIOUTPUT_EXCEPTIONS = [

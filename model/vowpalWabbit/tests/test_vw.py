@@ -1,5 +1,3 @@
-import sys
-import random
 import tempfile
 
 import numpy as np

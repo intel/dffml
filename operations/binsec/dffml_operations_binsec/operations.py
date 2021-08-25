@@ -23,7 +23,6 @@ from .definitions import (
     URLBytes,
     RPMObject,
     rpm_filename,
-    binary,
     binary_is_PIE,
 )
 

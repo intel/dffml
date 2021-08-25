@@ -3,7 +3,6 @@
 """
 Description of what this model does
 """
-import os
 import sys
 import pathlib
 from typing import Union

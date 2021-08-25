@@ -1,25 +1,19 @@
 import os
-import io
 import re
 import sys
 import ast
 import json
 import pydoc
-import runpy
 import shutil
-import string
 import asyncio
 import pathlib
 import getpass
 import tempfile
 import platform
-import textwrap
 import functools
 import importlib
 import itertools
-import subprocess
 import contextlib
-import dataclasses
 import http.server
 import configparser
 import socketserver
@@ -28,9 +22,8 @@ import unittest.mock
 import urllib.request
 import importlib.util
 from pathlib import Path
-from typing import Any, List, Dict, Tuple, Callable, Optional
+from typing import Callable, Dict, List, Optional, Tuple
 
-from ..base import BaseConfig
 from ..util.os import chdir, MODE_BITS_SECURE
 from ..version import VERSION
 from ..util.skel import Skel, SkelTemplateConfig

@@ -1,5 +1,4 @@
 import os
-from typing import Dict, Any
 
 import dffml
 import github

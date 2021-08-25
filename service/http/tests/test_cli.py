@@ -4,7 +4,6 @@ import pathlib
 import tempfile
 import contextlib
 from http import HTTPStatus
-from unittest.mock import patch
 
 import aiohttp
 
@@ -17,7 +16,6 @@ from dffml.util.asynctestcase import AsyncTestCase
 from dffml_service_http.cli import HTTPService, RedirectFormatError
 from dffml_service_http.util.testing import ServerRunner, ServerException
 
-from .test_routes import TestRoutesMultiComm
 from .dataflow import formatter, HELLO_BLANK_DATAFLOW, HELLO_WORLD_DATAFLOW
 
 

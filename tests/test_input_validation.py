@@ -98,7 +98,6 @@ class TestDefintion(AsyncTestCase):
                     ),  # this should raise validation erorr
                 ]
             }
-            pass
 
     async def test_vaildation_by_op(self):
         test_dataflow = DataFlow(

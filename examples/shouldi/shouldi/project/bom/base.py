@@ -1,6 +1,6 @@
 import uuid
 import dataclasses
-from typing import NewType, List, Dict, Optional
+from typing import Dict, List, NewType
 
 
 URL = NewType("URL", str)

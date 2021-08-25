@@ -4,7 +4,6 @@ from typing import List, Dict, Any
 import spacy
 import numpy as np
 from spacy.lang.en import English
-from spacy.lang.en.stop_words import STOP_WORDS
 from sklearn.feature_extraction.text import (
     CountVectorizer,
     TfidfVectorizer,

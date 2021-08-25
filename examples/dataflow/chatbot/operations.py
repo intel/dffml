@@ -1,6 +1,5 @@
 import io
 import re
-import sys
 import json
 import tempfile
 import contextlib

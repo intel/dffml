@@ -35,7 +35,6 @@ from dffml.df.memory import (
     MemoryInputSetConfig,
 )
 from dffml.df.archive import create_archive_dataflow
-from dffml.operation.archive import ZIP_FILE
 from dffml.operation.output import GetSingle
 from dffml.util.asynctestcase import AsyncTestCase
 

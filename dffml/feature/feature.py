@@ -6,15 +6,13 @@ feature project's feature URL.
 """
 import abc
 import pydoc
-import asyncio
 import functools
 import collections
 from contextlib import AsyncExitStack
-from typing import List, Dict, Type, Any
+from typing import Any, List, Type
 
 from .log import LOGGER
 from ..util.data import parser_helper
-from ..util.entrypoint import Entrypoint
 
 
 class Feature(abc.ABC):

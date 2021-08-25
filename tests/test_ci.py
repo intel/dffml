@@ -8,7 +8,7 @@ import unittest
 import platform
 import itertools
 import subprocess
-from typing import List, Optional, Union, Callable
+from typing import Callable, List, Union
 
 from dffml.plugins import PACKAGE_DIRECTORY_TO_NAME
 
