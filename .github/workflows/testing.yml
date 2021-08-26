@@ -91,6 +91,7 @@ jobs:
         - model/pytorch
         - model/xgboost
         - operations/binsec
+        - operations/data
         - operations/deploy
         - operations/image
         - operations/nlp
@@ -163,6 +164,7 @@ jobs:
         feature/git=${{ secrets.PYPI_FEATURE_GIT }}
         feature/auth=${{ secrets.PYPI_FEATURE_AUTH }}
         operations/binsec=${{ secrets.PYPI_OPERATIONS_BINSEC }}
+        operations/data=${{ secrets.PYPI_OPERATIONS_DATA }}
         operations/deploy=${{ secrets.PYPI_OPERATIONS_DEPLOY }}
         operations/image=${{ secrets.PYPI_OPERATIONS_IMAGE }}
         operations/nlp=${{ secrets.PYPI_OPERATIONS_NLP }}
