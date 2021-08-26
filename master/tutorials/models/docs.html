@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Documenting a Model &mdash; DFFML 82455794a documentation</title>
+  <title>Documenting a Model &mdash; DFFML b4845d015 documentation</title>
   
 
   
@@ -70,7 +70,7 @@
             
             
               <div class="version">
-                82455794a
+                b4845d015
               </div>
             
           
@@ -316,9 +316,9 @@ will be treated as a “raw literal”. For more information on raw literals see
 In our case it essentially means that when we have a backslash it will be
 treated as a backslash and not an escape character.</p>
 <p><strong>dffml_model_myslr/myslr.py</strong></p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">66</span><span class="nd">@entrypoint</span><span class="p">(</span><span class="s2">&quot;myslr&quot;</span><span class="p">)</span>
-<span class="linenos">67</span><span class="k">class</span> <span class="nc">MySLRModel</span><span class="p">(</span><span class="n">SimpleModel</span><span class="p">):</span>
-<span class="linenos">68</span>    <span class="sa">r</span><span class="s2">&quot;&quot;&quot;</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">65</span><span class="nd">@entrypoint</span><span class="p">(</span><span class="s2">&quot;myslr&quot;</span><span class="p">)</span>
+<span class="linenos">66</span><span class="k">class</span> <span class="nc">MySLRModel</span><span class="p">(</span><span class="n">SimpleModel</span><span class="p">):</span>
+<span class="linenos">67</span>    <span class="sa">r</span><span class="s2">&quot;&quot;&quot;</span>
 </pre></div>
 </div>
 </div>
@@ -367,33 +367,33 @@ good way to do that.</p>
 We always try to make it clear to the user what file they should be writing it
 by putting the filename in bold above the file contents.</p>
 <p><strong>dffml_model_myslr/myslr.py</strong></p>
-<div class="highlight-rst notranslate"><div class="highlight"><pre><span></span><span class="linenos">71</span>    The dataset used for training
-<span class="linenos">72</span>
-<span class="linenos">73</span>    <span class="gs">**train.csv**</span>
-<span class="linenos">74</span>
-<span class="linenos">75</span><span class="p">    ..</span> <span class="ow">code-block</span><span class="p">::</span>
-<span class="linenos">76</span>        <span class="nc">:test:</span>
-<span class="linenos">77</span>        <span class="nc">:filepath:</span> train.csv
-<span class="linenos">78</span>
-<span class="linenos">79</span>        x,y
-<span class="linenos">80</span>        0.0,0
-<span class="linenos">81</span>        0.1,1
-<span class="linenos">82</span>        0.2,2
-<span class="linenos">83</span>        0.3,3
-<span class="linenos">84</span>        0.4,4
-<span class="linenos">85</span>        0.5,5
-<span class="linenos">86</span>
-<span class="linenos">87</span>    The dataset used for testing
-<span class="linenos">88</span>
-<span class="linenos">89</span>    <span class="gs">**test.csv**</span>
-<span class="linenos">90</span>
-<span class="linenos">91</span><span class="p">    ..</span> <span class="ow">code-block</span><span class="p">::</span>
-<span class="linenos">92</span>        <span class="nc">:test:</span>
-<span class="linenos">93</span>        <span class="nc">:filepath:</span> test.csv
-<span class="linenos">94</span>
-<span class="linenos">95</span>        x,y
-<span class="linenos">96</span>        0.6,6
-<span class="linenos">97</span>        0.7,7
+<div class="highlight-rst notranslate"><div class="highlight"><pre><span></span><span class="linenos">70</span>    The dataset used for training
+<span class="linenos">71</span>
+<span class="linenos">72</span>    <span class="gs">**train.csv**</span>
+<span class="linenos">73</span>
+<span class="linenos">74</span><span class="p">    ..</span> <span class="ow">code-block</span><span class="p">::</span>
+<span class="linenos">75</span>        <span class="nc">:test:</span>
+<span class="linenos">76</span>        <span class="nc">:filepath:</span> train.csv
+<span class="linenos">77</span>
+<span class="linenos">78</span>        x,y
+<span class="linenos">79</span>        0.0,0
+<span class="linenos">80</span>        0.1,1
+<span class="linenos">81</span>        0.2,2
+<span class="linenos">82</span>        0.3,3
+<span class="linenos">83</span>        0.4,4
+<span class="linenos">84</span>        0.5,5
+<span class="linenos">85</span>
+<span class="linenos">86</span>    The dataset used for testing
+<span class="linenos">87</span>
+<span class="linenos">88</span>    <span class="gs">**test.csv**</span>
+<span class="linenos">89</span>
+<span class="linenos">90</span><span class="p">    ..</span> <span class="ow">code-block</span><span class="p">::</span>
+<span class="linenos">91</span>        <span class="nc">:test:</span>
+<span class="linenos">92</span>        <span class="nc">:filepath:</span> test.csv
+<span class="linenos">93</span>
+<span class="linenos">94</span>        x,y
+<span class="linenos">95</span>        0.6,6
+<span class="linenos">96</span>        0.7,7
 </pre></div>
 </div>
 </div>
@@ -408,72 +408,72 @@ in the console should be highlighted. There is no proper way to highlight a
 <code class="docutils literal notranslate"><span class="pre">.csv</span></code> file, which is why we didn’t talk about highlighting in the
 <a class="reference internal" href="#model-tutorial-docs-example-datasets"><span class="std std-ref">Example Datasets</span></a> section.</p>
 <p><strong>dffml_model_myslr/myslr.py</strong></p>
-<div class="highlight-rst notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 99</span>    Train the model
-<span class="linenos">100</span>
-<span class="linenos">101</span><span class="p">    ..</span> <span class="ow">code-block</span><span class="p">::</span> console
-<span class="linenos">102</span>        <span class="nc">:test:</span>
-<span class="linenos">103</span>
-<span class="linenos">104</span>        $ dffml train \
-<span class="linenos">105</span>            -model myslr \
-<span class="linenos">106</span>            -model-features x:float:1 \
-<span class="linenos">107</span>            -model-predict y:int:1 \
-<span class="linenos">108</span>            -model-location tempdir \
-<span class="linenos">109</span>            -sources f=csv \
-<span class="linenos">110</span>            -source-filename train.csv
-<span class="linenos">111</span>
-<span class="linenos">112</span>    Assess the accuracy
-<span class="linenos">113</span>
-<span class="linenos">114</span><span class="p">    ..</span> <span class="ow">code-block</span><span class="p">::</span> console
-<span class="linenos">115</span>        <span class="nc">:test:</span>
-<span class="linenos">116</span>
-<span class="linenos">117</span>        $ dffml accuracy \
-<span class="linenos">118</span>            -model myslr \
-<span class="linenos">119</span>            -scorer mse \
-<span class="linenos">120</span>            -model-features x:float:1 \
-<span class="linenos">121</span>            -model-predict y:int:1 \
-<span class="linenos">122</span>            -model-location tempdir \
-<span class="linenos">123</span>            -features y:int:1 \
-<span class="linenos">124</span>            -sources f=csv \
-<span class="linenos">125</span>            -source-filename test.csv
-<span class="linenos">126</span>        1.0
-<span class="linenos">127</span>
-<span class="linenos">128</span>    Make a prediction
-<span class="linenos">129</span>
-<span class="linenos">130</span>    <span class="gs">**predict.csv**</span>
-<span class="linenos">131</span>
-<span class="linenos">132</span><span class="p">    ..</span> <span class="ow">code-block</span><span class="p">::</span>
-<span class="linenos">133</span>        <span class="nc">:test:</span>
-<span class="linenos">134</span>        <span class="nc">:filepath:</span> predict.csv
-<span class="linenos">135</span>
-<span class="linenos">136</span>        x
-<span class="linenos">137</span>        0.8
-<span class="linenos">138</span>
-<span class="linenos">139</span><span class="p">    ..</span> <span class="ow">code-block</span><span class="p">::</span> console
-<span class="linenos">140</span>        <span class="nc">:test:</span>
-<span class="linenos">141</span>
-<span class="linenos">142</span>        $ dffml predict all \
-<span class="linenos">143</span>            -model myslr \
-<span class="linenos">144</span>            -model-features x:float:1 \
-<span class="linenos">145</span>            -model-predict y:int:1 \
-<span class="linenos">146</span>            -model-location tempdir \
-<span class="linenos">147</span>            -sources f=csv \
-<span class="linenos">148</span>            -source-filename predict.csv
-<span class="linenos">149</span>        [
-<span class="linenos">150</span>            {
-<span class="linenos">151</span>                &quot;extra&quot;: {},
-<span class="linenos">152</span>                &quot;features&quot;: {
-<span class="linenos">153</span>                    &quot;x&quot;: 0.8
-<span class="linenos">154</span>                },
-<span class="linenos">155</span>                &quot;key&quot;: &quot;0&quot;,
-<span class="linenos">156</span>                &quot;last_updated&quot;: &quot;2020-11-15T16:22:25Z&quot;,
-<span class="linenos">157</span>                &quot;prediction&quot;: {
-<span class="linenos">158</span>                    &quot;y&quot;: {
-<span class="linenos">159</span>                        &quot;confidence&quot;: 1.0,
-<span class="linenos">160</span>                        &quot;value&quot;: 7.999999999999998
-<span class="linenos">161</span>                    }
-<span class="linenos">162</span>                }
-<span class="linenos">163</span>            }
-<span class="linenos">164</span>        ]
+<div class="highlight-rst notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 98</span>    Train the model
+<span class="linenos"> 99</span>
+<span class="linenos">100</span><span class="p">    ..</span> <span class="ow">code-block</span><span class="p">::</span> console
+<span class="linenos">101</span>        <span class="nc">:test:</span>
+<span class="linenos">102</span>
+<span class="linenos">103</span>        $ dffml train \
+<span class="linenos">104</span>            -model myslr \
+<span class="linenos">105</span>            -model-features x:float:1 \
+<span class="linenos">106</span>            -model-predict y:int:1 \
+<span class="linenos">107</span>            -model-location tempdir \
+<span class="linenos">108</span>            -sources f=csv \
+<span class="linenos">109</span>            -source-filename train.csv
+<span class="linenos">110</span>
+<span class="linenos">111</span>    Assess the accuracy
+<span class="linenos">112</span>
+<span class="linenos">113</span><span class="p">    ..</span> <span class="ow">code-block</span><span class="p">::</span> console
+<span class="linenos">114</span>        <span class="nc">:test:</span>
+<span class="linenos">115</span>
+<span class="linenos">116</span>        $ dffml accuracy \
+<span class="linenos">117</span>            -model myslr \
+<span class="linenos">118</span>            -scorer mse \
+<span class="linenos">119</span>            -model-features x:float:1 \
+<span class="linenos">120</span>            -model-predict y:int:1 \
+<span class="linenos">121</span>            -model-location tempdir \
+<span class="linenos">122</span>            -features y:int:1 \
+<span class="linenos">123</span>            -sources f=csv \
+<span class="linenos">124</span>            -source-filename test.csv
+<span class="linenos">125</span>        1.0
+<span class="linenos">126</span>
+<span class="linenos">127</span>    Make a prediction
+<span class="linenos">128</span>
+<span class="linenos">129</span>    <span class="gs">**predict.csv**</span>
+<span class="linenos">130</span>
+<span class="linenos">131</span><span class="p">    ..</span> <span class="ow">code-block</span><span class="p">::</span>
+<span class="linenos">132</span>        <span class="nc">:test:</span>
+<span class="linenos">133</span>        <span class="nc">:filepath:</span> predict.csv
+<span class="linenos">134</span>
+<span class="linenos">135</span>        x
+<span class="linenos">136</span>        0.8
+<span class="linenos">137</span>
+<span class="linenos">138</span><span class="p">    ..</span> <span class="ow">code-block</span><span class="p">::</span> console
+<span class="linenos">139</span>        <span class="nc">:test:</span>
+<span class="linenos">140</span>
+<span class="linenos">141</span>        $ dffml predict all \
+<span class="linenos">142</span>            -model myslr \
+<span class="linenos">143</span>            -model-features x:float:1 \
+<span class="linenos">144</span>            -model-predict y:int:1 \
+<span class="linenos">145</span>            -model-location tempdir \
+<span class="linenos">146</span>            -sources f=csv \
+<span class="linenos">147</span>            -source-filename predict.csv
+<span class="linenos">148</span>        [
+<span class="linenos">149</span>            {
+<span class="linenos">150</span>                &quot;extra&quot;: {},
+<span class="linenos">151</span>                &quot;features&quot;: {
+<span class="linenos">152</span>                    &quot;x&quot;: 0.8
+<span class="linenos">153</span>                },
+<span class="linenos">154</span>                &quot;key&quot;: &quot;0&quot;,
+<span class="linenos">155</span>                &quot;last_updated&quot;: &quot;2020-11-15T16:22:25Z&quot;,
+<span class="linenos">156</span>                &quot;prediction&quot;: {
+<span class="linenos">157</span>                    &quot;y&quot;: {
+<span class="linenos">158</span>                        &quot;confidence&quot;: 1.0,
+<span class="linenos">159</span>                        &quot;value&quot;: 7.999999999999998
+<span class="linenos">160</span>                    }
+<span class="linenos">161</span>                }
+<span class="linenos">162</span>            }
+<span class="linenos">163</span>        ]
 </pre></div>
 </div>
 </div>

@@ -54,9 +54,9 @@ treated as a backslash and not an escape character.
 **dffml_model_myslr/myslr.py**
 
 .. literalinclude:: /../dffml/skel/model/REPLACE_IMPORT_PACKAGE_NAME/myslr.py
-    :lines: 66-68
+    :lines: 65-67
     :linenos:
-    :lineno-start: 66
+    :lineno-start: 65
 
 Quick rST background
 --------------------
@@ -116,9 +116,9 @@ by putting the filename in bold above the file contents.
 
 .. literalinclude:: /../dffml/skel/model/REPLACE_IMPORT_PACKAGE_NAME/myslr.py
     :language: rst
-    :lines: 71-97
+    :lines: 70-96
     :linenos:
-    :lineno-start: 71
+    :lineno-start: 70
 
 Example CLI Commands
 --------------------
@@ -137,9 +137,9 @@ in the console should be highlighted. There is no proper way to highlight a
 
 .. literalinclude:: /../dffml/skel/model/REPLACE_IMPORT_PACKAGE_NAME/myslr.py
     :language: rst
-    :lines: 99-164
+    :lines: 98-163
     :linenos:
-    :lineno-start: 99
+    :lineno-start: 98
 
 Example Python Usage
 --------------------
@@ -167,7 +167,7 @@ another ``"""```.
 
 .. literalinclude:: /../dffml/skel/model/REPLACE_IMPORT_PACKAGE_NAME/myslr.py
     :language: rst
-    :lines: 174-179
+    :lines: 173-178
     :linenos:
     :lineno-start: 173
 

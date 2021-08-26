@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Gitter ML Inference Chatbot &mdash; DFFML 82455794a documentation</title>
+  <title>Gitter ML Inference Chatbot &mdash; DFFML b4845d015 documentation</title>
   
 
   
@@ -70,7 +70,7 @@
             
             
               <div class="version">
-                82455794a
+                b4845d015
               </div>
             
           
@@ -298,7 +298,6 @@ inputs.</p>
 <p><strong>operations.py</strong></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">io</span>
 <span class="kn">import</span> <span class="nn">re</span>
-<span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">tempfile</span>
 <span class="kn">import</span> <span class="nn">contextlib</span>
@@ -600,16 +599,12 @@ return value to <code class="docutils literal notranslate"><span class="pre">sct
 <div class="section" id="running-the-dataflow">
 <h2>Running the dataflow<a class="headerlink" href="#running-the-dataflow" title="Permalink to this headline">¶</a></h2>
 <p><strong>run.py</strong></p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span>
-<span class="kn">import</span> <span class="nn">asyncio</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">asyncio</span>
 
 <span class="kn">from</span> <span class="nn">operations</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="p">(</span>
     <span class="n">DataFlow</span><span class="p">,</span>
     <span class="n">run</span><span class="p">,</span>
-    <span class="n">operation_in</span><span class="p">,</span>
-    <span class="n">opimp_in</span><span class="p">,</span>
-    <span class="n">INISecretConfig</span><span class="p">,</span>
     <span class="n">INISecret</span><span class="p">,</span>
     <span class="n">Input</span><span class="p">,</span>
 <span class="p">)</span>

@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Meta Static Analysis &mdash; DFFML 82455794a documentation</title>
+  <title>Meta Static Analysis &mdash; DFFML b4845d015 documentation</title>
   
 
   
@@ -70,7 +70,7 @@
             
             
               <div class="version">
-                82455794a
+                b4845d015
               </div>
             
           
@@ -465,7 +465,6 @@ dependencies listed in <strong>requirements.txt</strong> as well.</p>
 <span class="kn">import</span> <span class="nn">asyncio</span>
 
 <span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">op</span>
-<span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">Definition</span>
 
 
 <span class="nd">@op</span>
@@ -572,7 +571,6 @@ dependencies listed in <strong>requirements.txt</strong> as well.</p>
 <span class="kn">import</span> <span class="nn">asyncio</span>
 
 <span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">op</span>
-<span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">Definition</span>
 
 
 <span class="nd">@op</span>
@@ -715,7 +713,7 @@ temporary directory.</p>
 
 <span class="kn">import</span> <span class="nn">aiohttp</span>
 
-<span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">op</span><span class="p">,</span> <span class="n">Definition</span><span class="p">,</span> <span class="n">Stage</span>
+<span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">Stage</span><span class="p">,</span> <span class="n">op</span>
 
 <span class="kn">from</span> <span class="nn">.safety</span> <span class="kn">import</span> <span class="n">safety_check</span>
 <span class="kn">from</span> <span class="nn">.bandit</span> <span class="kn">import</span> <span class="n">run_bandit</span>
@@ -853,7 +851,7 @@ based on <a class="reference external" href="https://docs.python.org/3/library/a
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
 
 <span class="c1"># Command line utility helpers and DataFlow specific classes</span>
-<span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">CMD</span><span class="p">,</span> <span class="n">Arg</span><span class="p">,</span> <span class="n">DataFlow</span><span class="p">,</span> <span class="n">Input</span><span class="p">,</span> <span class="n">GetSingle</span><span class="p">,</span> <span class="n">run</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">field</span>
+<span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">CMD</span><span class="p">,</span> <span class="n">DataFlow</span><span class="p">,</span> <span class="n">GetSingle</span><span class="p">,</span> <span class="n">Input</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">field</span><span class="p">,</span> <span class="n">run</span>
 
 <span class="c1"># Import all the operations we wrote</span>
 <span class="kn">from</span> <span class="nn">.python.bandit</span> <span class="kn">import</span> <span class="n">run_bandit</span>

@@ -37,14 +37,14 @@ inputs.
 **operations.py**
 
 .. literalinclude:: /../examples/dataflow/chatbot/operations.py
-    :lines: 1-16
+    :lines: 1-15
 
 Defining config for our operations
 
 **operations.py**
 
 .. literalinclude:: /../examples/dataflow/chatbot/operations.py
-    :lines: 19-21
+    :lines: 18-20
 
 All requests to Gitter's API requires the room id of our room.
 ``get_room_id`` gets the ``room id`` from room name (The input to
@@ -53,21 +53,21 @@ our dataflow).
 **operations.py**
 
 .. literalinclude:: /../examples/dataflow/chatbot/operations.py
-    :lines: 24-49
+    :lines: 23-48
 
 We listen to new messages directed to our bot.
 
 **operations.py**
 
 .. literalinclude:: /../examples/dataflow/chatbot/operations.py
-    :lines: 52-86
+    :lines: 51-85
 
 We'll use this op to send replies back to the chatroom
 
 **operations.py**
 
 .. literalinclude:: /../examples/dataflow/chatbot/operations.py
-    :lines: 89-121
+    :lines: 88-120
 
 This is the operation where all the logic for interpreting the messages
 go. If you have a Natural Language Understanding module It'd go here, so
@@ -76,7 +76,7 @@ that you can parse unstructered data.
 **operations.py**
 
 .. literalinclude:: /../examples/dataflow/chatbot/operations.py
-    :lines: 124-248
+    :lines: 123-247
 
 Our operations are ``get_room_id, stream_chat, send_message and interpret_message``.
 All of them use at least one config. The common config being INISecretConfig which

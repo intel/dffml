@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>dffml.df.memory &mdash; DFFML 82455794a documentation</title>
+  <title>dffml.df.memory &mdash; DFFML b4845d015 documentation</title>
   
 
   
@@ -69,7 +69,7 @@
             
             
               <div class="version">
-                82455794a
+                b4845d015
               </div>
             
           
@@ -219,7 +219,6 @@
             
   <h1>Source code for dffml.df.memory</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">io</span>
-<span class="kn">import</span> <span class="nn">abc</span>
 <span class="kn">import</span> <span class="nn">copy</span>
 <span class="kn">import</span> <span class="nn">asyncio</span>
 <span class="kn">import</span> <span class="nn">secrets</span>
@@ -255,7 +254,6 @@
     <span class="n">Operation</span><span class="p">,</span>
     <span class="n">Stage</span><span class="p">,</span>
     <span class="n">DataFlow</span><span class="p">,</span>
-    <span class="n">NO_DEFAULT</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="kn">from</span> <span class="nn">.base</span> <span class="kn">import</span> <span class="p">(</span>
     <span class="n">OperationException</span><span class="p">,</span>
@@ -276,7 +274,6 @@
     <span class="n">BaseInputNetwork</span><span class="p">,</span>
     <span class="n">BaseOperationNetworkContext</span><span class="p">,</span>
     <span class="n">BaseOperationNetwork</span><span class="p">,</span>
-    <span class="n">BaseRedundancyCheckerConfig</span><span class="p">,</span>
     <span class="n">BaseRedundancyCheckerContext</span><span class="p">,</span>
     <span class="n">BaseRedundancyChecker</span><span class="p">,</span>
     <span class="n">BaseLockNetworkContext</span><span class="p">,</span>
@@ -285,14 +282,12 @@
     <span class="n">OperationImplementationNotInstantiable</span><span class="p">,</span>
     <span class="n">BaseOperationImplementationNetworkContext</span><span class="p">,</span>
     <span class="n">BaseOperationImplementationNetwork</span><span class="p">,</span>
-    <span class="n">BaseOrchestratorConfig</span><span class="p">,</span>
     <span class="n">BaseOrchestratorContext</span><span class="p">,</span>
     <span class="n">BaseOrchestrator</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="kn">from</span> <span class="nn">..base</span> <span class="kn">import</span> <span class="n">config</span><span class="p">,</span> <span class="n">field</span>
 <span class="kn">from</span> <span class="nn">..util.entrypoint</span> <span class="kn">import</span> <span class="n">entrypoint</span>
-<span class="kn">from</span> <span class="nn">..util.cli.arg</span> <span class="kn">import</span> <span class="n">Arg</span>
 <span class="kn">from</span> <span class="nn">..util.data</span> <span class="kn">import</span> <span class="n">ignore_args</span>
 <span class="kn">from</span> <span class="nn">..util.asynchelper</span> <span class="kn">import</span> <span class="n">aenter_stack</span><span class="p">,</span> <span class="n">concurrently</span>
 <span class="kn">from</span> <span class="nn">..util.crypto</span> <span class="kn">import</span> <span class="n">secure_hash</span>
