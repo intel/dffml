@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Sources &mdash; DFFML b4845d015 documentation</title>
+  <title>Sources &mdash; DFFML eac9df420 documentation</title>
   
 
   
@@ -70,7 +70,7 @@
             
             
               <div class="version">
-                b4845d015
+                eac9df420
               </div>
             
           
@@ -116,6 +116,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#dataframe">dataframe</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#db">db</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#df">df</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#dfpreprocess">dfpreprocess</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#dir">dir</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#plugin-source-dffml-idx1">idx1</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#plugin-source-dffml-idx3">idx3</a></li>
@@ -506,6 +507,66 @@ the command line.</p>
 <span class="go">{&#39;Years&#39;: 10, &#39;Expertise&#39;: 30, &#39;Trust&#39;: 2.0, &#39;Salary&#39;: 200}</span>
 </pre></div>
 </div>
+<p><strong>Args</strong></p>
+<ul class="simple">
+<li><p>source: Entrypoint</p>
+<ul>
+<li><p>Source to wrap</p></li>
+</ul>
+</li>
+<li><p>dataflow: DataFlow</p>
+<ul>
+<li><p>DataFlow to use for preprocessing</p></li>
+</ul>
+</li>
+<li><p>features: List of features</p>
+<ul>
+<li><p>default: []</p></li>
+<li><p>Features to pass as definitions to each context from each record to be preprocessed</p></li>
+</ul>
+</li>
+<li><p>inputs: List of strings</p>
+<ul>
+<li><p>default: []</p></li>
+<li><p>Other inputs to add under each ctx (record’s key will be used as the context)</p></li>
+</ul>
+</li>
+<li><p>record_def: String</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Definition to be used for record.key.If set, record.key will be added to the set of inputs under each context (which is also the record’s key)</p></li>
+</ul>
+</li>
+<li><p>length: String</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Definition name to add as source length</p></li>
+</ul>
+</li>
+<li><p>all_for_single: String</p>
+<ul>
+<li><p>default: False</p></li>
+<li><p>Run all records through dataflow before grabing results of desired record on a call to record()</p></li>
+</ul>
+</li>
+<li><p>no_strict: String</p>
+<ul>
+<li><p>default: False</p></li>
+<li><p>Do not exit on operation exceptions, just log errors</p></li>
+</ul>
+</li>
+<li><p>orchestrator: Entrypoint</p>
+<ul>
+<li><p>default: MemoryOrchestrator(MemoryOrchestratorConfig(input_network=MemoryInputNetwork(MemoryInputNetworkConfig()), operation_network=MemoryOperationNetwork(MemoryOperationNetworkConfig(operations=[])), lock_network=MemoryLockNetwork(MemoryLockNetworkConfig()), opimp_network=MemoryOperationImplementationNetwork(MemoryOperationImplementationNetworkConfig(operations={})), rchecker=MemoryRedundancyChecker(MemoryRedundancyCheckerConfig(kvstore=MemoryKeyValueStore(MemoryKeyValueStoreConfig()))), max_ctxs=None))</p></li>
+<li><p>Orchestrator</p></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="dfpreprocess">
+<span id="plugin-source-dffml-dfpreprocess"></span><h3>dfpreprocess<a class="headerlink" href="#dfpreprocess" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<p>No description</p>
 <p><strong>Args</strong></p>
 <ul class="simple">
 <li><p>source: Entrypoint</p>

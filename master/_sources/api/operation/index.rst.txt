@@ -9,6 +9,7 @@ Operation
     preprocess
     model
     compression
+    source
     db
     archive
     mapping

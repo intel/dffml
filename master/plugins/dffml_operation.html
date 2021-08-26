@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Operations &mdash; DFFML b4845d015 documentation</title>
+  <title>Operations &mdash; DFFML eac9df420 documentation</title>
   
 
   
@@ -70,7 +70,7 @@
             
             
               <div class="version">
-                b4845d015
+                eac9df420
               </div>
             
           
@@ -121,6 +121,8 @@
 <li class="toctree-l4"><a class="reference internal" href="#associate-definition">associate_definition</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#bz2-compress">bz2_compress</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#bz2-decompress">bz2_decompress</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#convert-list-to-records">convert_list_to_records</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#convert-records-to-list">convert_records_to_list</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#db-query-create-table">db_query_create_table</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#db-query-insert">db_query_insert</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#db-query-insert-or-update">db_query_insert_or_update</a></li>
@@ -207,6 +209,16 @@
 <li class="toctree-l4"><a class="reference internal" href="#get-url-from-payload">get_url_from_payload</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#parse-docker-commands">parse_docker_commands</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#restart-running-containers">restart_running_containers</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#dffml-operations-data">dffml_operations_data</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#principal-component-analysis">principal_component_analysis</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#singular-value-decomposition">singular_value_decomposition</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#simple-imputer">simple_imputer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#one-hot-encoder">one_hot_encoder</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#standard-scaler">standard_scaler</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#remove-whitespaces">remove_whitespaces</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ordinal-encoder">ordinal_encoder</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#dffml-operations-binsec">dffml_operations_binsec</a><ul>
@@ -508,6 +520,45 @@ the roadmap.</p>
 <p><strong>Outputs</strong></p>
 <ul class="simple">
 <li><p>output_path: decompressed_output_bz2_file_path(type: str)</p></li>
+</ul>
+</div>
+<div class="section" id="convert-list-to-records">
+<span id="plugin-operation-dffml-convert-list-to-records"></span><h3>convert_list_to_records<a class="headerlink" href="#convert-list-to-records" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<p>No description</p>
+<p><strong>Stage: processing</strong></p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>matrix: matrix(type: List[List[Any]])</p></li>
+<li><p>features: features(type: List[str])</p></li>
+<li><p>keys: keys(type: List[str])</p></li>
+<li><p>predict_features: predict_features(type: List[str])</p></li>
+<li><p>unprocessed_matrix: unprocessed_matrix(type: List[List[Any]])</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>records: records(type: Dict[str, Any])</p></li>
+</ul>
+</div>
+<div class="section" id="convert-records-to-list">
+<span id="plugin-operation-dffml-convert-records-to-list"></span><h3>convert_records_to_list<a class="headerlink" href="#convert-records-to-list" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<p>No description</p>
+<p><strong>Stage: processing</strong></p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>features: features(type: List[str])</p></li>
+<li><p>predict_features: predict_features(type: List[str])</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>matrix: matrix(type: List[List[Any]])</p></li>
+<li><p>keys: keys(type: List[str])</p></li>
+<li><p>unprocessed_matrix: unprocessed_matrix(type: List[List[Any]])</p></li>
+</ul>
+<p><strong>Args</strong></p>
+<ul class="simple">
+<li><p>source: Entrypoint</p></li>
 </ul>
 </div>
 <div class="section" id="db-query-create-table">
@@ -2851,6 +2902,209 @@ Parameters specific to this operation are described below.</p>
 <ul class="simple">
 <li><p>is_image_built: bool</p></li>
 </ul>
+</div>
+</div>
+<div class="section" id="dffml-operations-data">
+<span id="plugin-operation-dffml-operations-data"></span><h2>dffml_operations_data<a class="headerlink" href="#dffml-operations-data" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install dffml-operations-data</span>
+</pre></div>
+</div>
+<div class="section" id="principal-component-analysis">
+<span id="plugin-operation-dffml-operations-data-principal-component-analysis"></span><h3>principal_component_analysis<a class="headerlink" href="#principal-component-analysis" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<p>Decomposes the data into (n_samples, n_components)
+using PCA method</p>
+<div class="section" id="id67">
+<h4>Parameters<a class="headerlink" href="#id67" title="Permalink to this headline">¶</a></h4>
+<dl class="simple">
+<dt>data<span class="classifier">List[List[int]]</span></dt><dd><p>data to be decomposed.</p>
+</dd>
+<dt>n_components<span class="classifier">int</span></dt><dd><p>number of colums the data should have after decomposition.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="id68">
+<h4>Returns<a class="headerlink" href="#id68" title="Permalink to this headline">¶</a></h4>
+<p>result: Data having dimensions (n_samples, n_components)</p>
+<p><strong>Stage: processing</strong></p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>data: input_data(type: List[List[int]])</p></li>
+<li><p>n_components: n_components(type: int)</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>result: output_data(type: List[List[int]])</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="singular-value-decomposition">
+<span id="plugin-operation-dffml-operations-data-singular-value-decomposition"></span><h3>singular_value_decomposition<a class="headerlink" href="#singular-value-decomposition" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<p>Decomposes the data into (n_samples, n_components)
+using SVD method.</p>
+<div class="section" id="id69">
+<h4>Parameters<a class="headerlink" href="#id69" title="Permalink to this headline">¶</a></h4>
+<dl class="simple">
+<dt>data<span class="classifier">List[List[int]]</span></dt><dd><p>data to be decomposed.</p>
+</dd>
+<dt>n_components<span class="classifier">int</span></dt><dd><p>number of colums the data should have after decomposition.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="id70">
+<h4>Returns<a class="headerlink" href="#id70" title="Permalink to this headline">¶</a></h4>
+<p>result: Data having dimensions (n_samples, n_components)</p>
+<p><strong>Stage: processing</strong></p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>data: input_data(type: List[List[int]])</p></li>
+<li><p>n_components: n_components(type: int)</p></li>
+<li><p>n_iter: n_iter(type: int)</p></li>
+<li><p>random_state: random_state(type: int)</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>result: output_data(type: List[List[int]])</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="simple-imputer">
+<span id="plugin-operation-dffml-operations-data-simple-imputer"></span><h3>simple_imputer<a class="headerlink" href="#simple-imputer" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<p>Imputation method for missing values</p>
+<div class="section" id="id71">
+<h4>Parameters<a class="headerlink" href="#id71" title="Permalink to this headline">¶</a></h4>
+<dl class="simple">
+<dt>data<span class="classifier">List[List[int]]</span></dt><dd><p>data in which missing values are present</p>
+</dd>
+<dt>missing_values<span class="classifier">Any str, int, float, None default = np.nan</span></dt><dd><p>The value present in place of missing value</p>
+</dd>
+<dt>strategy<span class="classifier">str “mean”, “median”, “constant”, “most_frequent” default = “mean”</span></dt><dd><p>The value present in place of missing value</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="id72">
+<h4>Returns<a class="headerlink" href="#id72" title="Permalink to this headline">¶</a></h4>
+<p>result: Dataset having missing values imputed with the strategy</p>
+<p><strong>Stage: processing</strong></p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>data: input_data(type: List[List[int]])</p></li>
+<li><p>missing_values: missing_values(type: Any)</p></li>
+<li><p>strategy: strategy(type: str)</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>result: output_data(type: List[List[int]])</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="one-hot-encoder">
+<span id="plugin-operation-dffml-operations-data-one-hot-encoder"></span><h3>one_hot_encoder<a class="headerlink" href="#one-hot-encoder" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<p>One hot encoding for categorical data columns</p>
+<div class="section" id="id73">
+<h4>Parameters<a class="headerlink" href="#id73" title="Permalink to this headline">¶</a></h4>
+<dl class="simple">
+<dt>data<span class="classifier">List[List[int]]</span></dt><dd><p>data to be encoded.</p>
+</dd>
+<dt>categories<span class="classifier">List[List[str]]</span></dt><dd><p>Categorical values which needs to be encoded</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="id74">
+<h4>Returns<a class="headerlink" href="#id74" title="Permalink to this headline">¶</a></h4>
+<p>result: Encoded data for categorical values</p>
+<p><strong>Stage: processing</strong></p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>data: input_data(type: List[List[int]])</p></li>
+<li><p>categories: categories(type: List[List[Any]])</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>result: output_data(type: List[List[int]])</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="standard-scaler">
+<span id="plugin-operation-dffml-operations-data-standard-scaler"></span><h3>standard_scaler<a class="headerlink" href="#standard-scaler" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<p>Standardize features by removing the mean and
+scaling to unit variance.</p>
+<div class="section" id="id75">
+<h4>Parameters<a class="headerlink" href="#id75" title="Permalink to this headline">¶</a></h4>
+<dl class="simple">
+<dt>data: List[List[int]]</dt><dd><p>data that needs to be standardized</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="id76">
+<h4>Returns<a class="headerlink" href="#id76" title="Permalink to this headline">¶</a></h4>
+<p>result: Standardized data</p>
+<p><strong>Stage: processing</strong></p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>data: input_data(type: List[List[int]])</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>result: output_data(type: List[List[int]])</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="remove-whitespaces">
+<span id="plugin-operation-dffml-operations-data-remove-whitespaces"></span><h3>remove_whitespaces<a class="headerlink" href="#remove-whitespaces" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<p>Removes white-spaces from the dataset</p>
+<div class="section" id="id77">
+<h4>Parameters<a class="headerlink" href="#id77" title="Permalink to this headline">¶</a></h4>
+<dl class="simple">
+<dt>data<span class="classifier">List[List[int]]</span></dt><dd><p>dataset.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="id78">
+<h4>Returns<a class="headerlink" href="#id78" title="Permalink to this headline">¶</a></h4>
+<p>result: dataset having whitespaces removed</p>
+<p><strong>Stage: processing</strong></p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>data: input_data(type: List[List[int]])</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>result: output_data(type: List[List[int]])</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="ordinal-encoder">
+<span id="plugin-operation-dffml-operations-data-ordinal-encoder"></span><h3>ordinal_encoder<a class="headerlink" href="#ordinal-encoder" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<p>One hot encoding for categorical data columns</p>
+<div class="section" id="id79">
+<h4>Parameters<a class="headerlink" href="#id79" title="Permalink to this headline">¶</a></h4>
+<dl class="simple">
+<dt>data<span class="classifier">List[List[int]]</span></dt><dd><p>data to be encoded.</p>
+</dd>
+<dt>categories<span class="classifier">List[List[str]]</span></dt><dd><p>Categorical values which needs to be encoded</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="id80">
+<h4>Returns<a class="headerlink" href="#id80" title="Permalink to this headline">¶</a></h4>
+<p>result: Encoded data for categorical values</p>
+<p><strong>Stage: processing</strong></p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>data: input_data(type: List[List[int]])</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>result: output_data(type: List[List[int]])</p></li>
+</ul>
+</div>
 </div>
 </div>
 <div class="section" id="dffml-operations-binsec">

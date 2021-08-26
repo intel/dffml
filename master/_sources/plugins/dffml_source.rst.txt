@@ -312,6 +312,60 @@ df
   - default: MemoryOrchestrator(MemoryOrchestratorConfig(input_network=MemoryInputNetwork(MemoryInputNetworkConfig()), operation_network=MemoryOperationNetwork(MemoryOperationNetworkConfig(operations=[])), lock_network=MemoryLockNetwork(MemoryLockNetworkConfig()), opimp_network=MemoryOperationImplementationNetwork(MemoryOperationImplementationNetworkConfig(operations={})), rchecker=MemoryRedundancyChecker(MemoryRedundancyCheckerConfig(kvstore=MemoryKeyValueStore(MemoryKeyValueStoreConfig()))), max_ctxs=None))
   - Orchestrator
 
+.. _plugin_source_dffml_dfpreprocess:
+
+dfpreprocess
+~~~~~~~~~~~~
+
+*Official*
+
+No description
+
+**Args**
+
+- source: Entrypoint
+
+  - Source to wrap
+
+- dataflow: DataFlow
+
+  - DataFlow to use for preprocessing
+
+- features: List of features
+
+  - default: []
+  - Features to pass as definitions to each context from each record to be preprocessed
+
+- inputs: List of strings
+
+  - default: []
+  - Other inputs to add under each ctx (record's key will be used as the context)
+
+- record_def: String
+
+  - default: None
+  - Definition to be used for record.key.If set, record.key will be added to the set of inputs under each context (which is also the record's key)
+
+- length: String
+
+  - default: None
+  - Definition name to add as source length
+
+- all_for_single: String
+
+  - default: False
+  - Run all records through dataflow before grabing results of desired record on a call to record()
+
+- no_strict: String
+
+  - default: False
+  - Do not exit on operation exceptions, just log errors
+
+- orchestrator: Entrypoint
+
+  - default: MemoryOrchestrator(MemoryOrchestratorConfig(input_network=MemoryInputNetwork(MemoryInputNetworkConfig()), operation_network=MemoryOperationNetwork(MemoryOperationNetworkConfig(operations=[])), lock_network=MemoryLockNetwork(MemoryLockNetworkConfig()), opimp_network=MemoryOperationImplementationNetwork(MemoryOperationImplementationNetworkConfig(operations={})), rchecker=MemoryRedundancyChecker(MemoryRedundancyCheckerConfig(kvstore=MemoryKeyValueStore(MemoryKeyValueStoreConfig()))), max_ctxs=None))
+  - Orchestrator
+
 .. _plugin_source_dffml_dir:
 
 dir

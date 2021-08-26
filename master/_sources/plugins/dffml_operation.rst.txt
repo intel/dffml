@@ -194,6 +194,59 @@ No description
 
 - output_path: decompressed_output_bz2_file_path(type: str)
 
+.. _plugin_operation_dffml_convert_list_to_records:
+
+convert_list_to_records
+~~~~~~~~~~~~~~~~~~~~~~~
+
+*Official*
+
+No description
+
+**Stage: processing**
+
+
+
+**Inputs**
+
+- matrix: matrix(type: List[List[Any]])
+- features: features(type: List[str])
+- keys: keys(type: List[str])
+- predict_features: predict_features(type: List[str])
+- unprocessed_matrix: unprocessed_matrix(type: List[List[Any]])
+
+**Outputs**
+
+- records: records(type: Dict[str, Any])
+
+.. _plugin_operation_dffml_convert_records_to_list:
+
+convert_records_to_list
+~~~~~~~~~~~~~~~~~~~~~~~
+
+*Official*
+
+No description
+
+**Stage: processing**
+
+
+
+**Inputs**
+
+- features: features(type: List[str])
+- predict_features: predict_features(type: List[str])
+
+**Outputs**
+
+- matrix: matrix(type: List[List[Any]])
+- keys: keys(type: List[str])
+- unprocessed_matrix: unprocessed_matrix(type: List[List[Any]])
+
+**Args**
+
+- source: Entrypoint
+
 .. _plugin_operation_dffml_db_query_create_table:
 
 db_query_create_table
@@ -2939,6 +2992,254 @@ No description
 **Conditions**
 
 - is_image_built: bool
+
+.. _plugin_operation_dffml_operations_data:
+
+dffml_operations_data
++++++++++++++++++++++
+
+.. code-block:: console
+
+    pip install dffml-operations-data
+
+
+.. _plugin_operation_dffml_operations_data_principal_component_analysis:
+
+principal_component_analysis
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+*Official*
+
+Decomposes the data into (n_samples, n_components)
+using PCA method
+
+Parameters
+----------
+data : List[List[int]]
+    data to be decomposed.
+
+n_components : int
+    number of colums the data should have after decomposition.
+
+Returns
+-------
+result: Data having dimensions (n_samples, n_components)
+
+**Stage: processing**
+
+
+
+**Inputs**
+
+- data: input_data(type: List[List[int]])
+- n_components: n_components(type: int)
+
+**Outputs**
+
+- result: output_data(type: List[List[int]])
+
+.. _plugin_operation_dffml_operations_data_singular_value_decomposition:
+
+singular_value_decomposition
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+*Official*
+
+Decomposes the data into (n_samples, n_components)
+using SVD method.
+
+Parameters
+----------
+data : List[List[int]]
+    data to be decomposed.
+
+n_components : int
+    number of colums the data should have after decomposition.
+
+Returns
+-------
+result: Data having dimensions (n_samples, n_components)
+
+**Stage: processing**
+
+
+
+**Inputs**
+
+- data: input_data(type: List[List[int]])
+- n_components: n_components(type: int)
+- n_iter: n_iter(type: int)
+- random_state: random_state(type: int)
+
+**Outputs**
+
+- result: output_data(type: List[List[int]])
+
+.. _plugin_operation_dffml_operations_data_simple_imputer:
+
+simple_imputer
+~~~~~~~~~~~~~~
+
+*Official*
+
+Imputation method for missing values
+
+Parameters
+----------
+data : List[List[int]]
+    data in which missing values are present
+
+missing_values : Any str, int, float, None default = np.nan
+    The value present in place of missing value
+
+strategy : str "mean", "median", "constant", "most_frequent" default = "mean"
+    The value present in place of missing value
+
+Returns
+-------
+result: Dataset having missing values imputed with the strategy
+
+**Stage: processing**
+
+
+
+**Inputs**
+
+- data: input_data(type: List[List[int]])
+- missing_values: missing_values(type: Any)
+- strategy: strategy(type: str)
+
+**Outputs**
+
+- result: output_data(type: List[List[int]])
+
+.. _plugin_operation_dffml_operations_data_one_hot_encoder:
+
+one_hot_encoder
+~~~~~~~~~~~~~~~
+
+*Official*
+
+One hot encoding for categorical data columns
+
+Parameters
+----------
+data : List[List[int]]
+    data to be encoded.
+
+categories : List[List[str]]
+    Categorical values which needs to be encoded
+
+Returns
+-------
+result: Encoded data for categorical values
+
+**Stage: processing**
+
+
+
+**Inputs**
+
+- data: input_data(type: List[List[int]])
+- categories: categories(type: List[List[Any]])
+
+**Outputs**
+
+- result: output_data(type: List[List[int]])
+
+.. _plugin_operation_dffml_operations_data_standard_scaler:
+
+standard_scaler
+~~~~~~~~~~~~~~~
+
+*Official*
+
+Standardize features by removing the mean and
+scaling to unit variance.
+
+Parameters
+----------
+data: List[List[int]]
+    data that needs to be standardized
+
+Returns
+-------
+result: Standardized data
+
+**Stage: processing**
+
+
+
+**Inputs**
+
+- data: input_data(type: List[List[int]])
+
+**Outputs**
+
+- result: output_data(type: List[List[int]])
+
+.. _plugin_operation_dffml_operations_data_remove_whitespaces:
+
+remove_whitespaces
+~~~~~~~~~~~~~~~~~~
+
+*Official*
+
+Removes white-spaces from the dataset
+
+Parameters
+----------
+data : List[List[int]]
+    dataset.
+
+Returns
+-------
+result: dataset having whitespaces removed
+
+**Stage: processing**
+
+
+
+**Inputs**
+
+- data: input_data(type: List[List[int]])
+
+**Outputs**
+
+- result: output_data(type: List[List[int]])
+
+.. _plugin_operation_dffml_operations_data_ordinal_encoder:
+
+ordinal_encoder
+~~~~~~~~~~~~~~~
+
+*Official*
+
+One hot encoding for categorical data columns
+
+Parameters
+----------
+data : List[List[int]]
+    data to be encoded.
+
+categories : List[List[str]]
+    Categorical values which needs to be encoded
+
+Returns
+-------
+result: Encoded data for categorical values
+
+**Stage: processing**
+
+
+
+**Inputs**
+
+- data: input_data(type: List[List[int]])
+
+**Outputs**
+
+- result: output_data(type: List[List[int]])
 
 .. _plugin_operation_dffml_operations_binsec:
 
