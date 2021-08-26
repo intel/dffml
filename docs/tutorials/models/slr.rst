@@ -36,7 +36,7 @@ We'll also need a few things from DFFML.
 
 .. literalinclude:: /../dffml/skel/model/REPLACE_IMPORT_PACKAGE_NAME/myslr.py
     :test:
-    :lines: 5-16
+    :lines: 5-15
 
 Math
 ----
@@ -49,7 +49,7 @@ you can copy these.
 
 .. literalinclude:: /../dffml/skel/model/REPLACE_IMPORT_PACKAGE_NAME/myslr.py
     :test:
-    :lines: 19-54
+    :lines: 18-53
 
 Config
 ------
@@ -77,7 +77,7 @@ Our model has three configurable properties.
 
 .. literalinclude:: /../dffml/skel/model/REPLACE_IMPORT_PACKAGE_NAME/myslr.py
     :test:
-    :lines: 57-63
+    :lines: 56-62
 
 Class
 -----
@@ -95,13 +95,13 @@ provided here.
 
 .. literalinclude:: /../dffml/skel/model/REPLACE_IMPORT_PACKAGE_NAME/myslr.py
     :test:
-    :lines: 66-67
+    :lines: 65-66
 
 We must set the ``CONFIG`` attribute to the respective ``Config`` class.
 
 .. literalinclude:: /../dffml/skel/model/REPLACE_IMPORT_PACKAGE_NAME/myslr.py
     :test:
-    :lines: 181-182
+    :lines: 180-181
 
 We can override the ``__init__()`` method to do validation on the ``features``
 config property. Simple linear regression only supports one input feature, so we
@@ -109,7 +109,7 @@ will raise a ``ValueError`` if the user supplys more than one feature.
 
 .. literalinclude:: /../dffml/skel/model/REPLACE_IMPORT_PACKAGE_NAME/myslr.py
     :test:
-    :lines: 184-188
+    :lines: 183-187
 
 Train
 -----
@@ -125,7 +125,7 @@ is saved and loaded from a JSON file on disk.
 
 .. literalinclude:: /../dffml/skel/model/REPLACE_IMPORT_PACKAGE_NAME/myslr.py
     :test:
-    :lines: 190-204
+    :lines: 189-203
 
 Predict
 -------
@@ -140,7 +140,7 @@ confidence in our prediction.
 
 .. literalinclude:: /../dffml/skel/model/REPLACE_IMPORT_PACKAGE_NAME/myslr.py
     :test:
-    :lines: 206-225
+    :lines: 205-224
 
 Python Usage
 ------------
