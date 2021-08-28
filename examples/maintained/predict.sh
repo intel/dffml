@@ -17,7 +17,7 @@ dffml predict record \
     authors:int:10 \
     commits:int:10 \
     work:int:10 \
-  -sources preprocess=df \
+  -sources preprocess=dfold \
   -source-preprocess-dataflow dataflow.yaml \
   -source-preprocess-record_def URL \
   -source-preprocess-inputs "$(date +'%Y-%m-%d %H:%M')=quarter_start_date" \

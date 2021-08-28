@@ -88,7 +88,7 @@ setup(
             "idx3 = dffml.source.idx3:IDX3Source",
             "db = dffml.source.db:DbSource",
             "ini = dffml.source.ini:INISource",
-            "df = dffml.source.df:DataFlowSource",
+            "dfold = dffml.source.dfold:DataFlowOldSource",
             "op = dffml.source.op:OpSource",
             "dfpreprocess = dffml.source.dfpreprocess:DataFlowPreprocessSource",
             "dir = dffml.source.dir:DirectorySource",
