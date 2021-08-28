@@ -3,8 +3,8 @@ from typing import Dict, Any
 from ..record import Record
 from ..base import config
 from ..model import Model
-from ..df.types import Definition
-from ..df.base import op
+from ..dfold.types import Definition
+from ..dfold.base import op
 from ..source.source import Sources
 from ..source.memory import MemorySource, MemorySourceConfig
 

@@ -14,17 +14,17 @@ from .source import BaseSourceContext, BaseSource
 class DataFrameSourceContext(BaseSourceContext):
     async def update(self, record: Record):
         # Shorthand for DataFrame
-        df = self.parent.config.dataframe
+        dfold = self.parent.config.dataframe
         # Store feature data
         features = record.features()
-        for col in df.columns:
+        for col in dfold.columns:
             if col in features:
-                df.loc[record.key, col] = features[col]
+                dfold.loc[record.key, col] = features[col]
         # Store prediction
         predictions = record.predictions()
         for col in self.parent.config.predictions:
             if col in predictions:
-                df.loc[record.key, col] = predictions[col]["value"]
+                dfold.loc[record.key, col] = predictions[col]["value"]
 
     async def records(self) -> AsyncIterator[Record]:
         for row in self.parent.config.dataframe.itertuples():

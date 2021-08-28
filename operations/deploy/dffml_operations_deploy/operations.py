@@ -7,7 +7,7 @@ import pathlib
 from typing import Dict, Any
 
 from dffml.base import config
-from dffml.df.base import op
+from dffml.dfold.base import op
 from .definitions import *
 from .exceptions import *
 from .log import LOGGER

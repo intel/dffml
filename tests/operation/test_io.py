@@ -3,11 +3,11 @@ import builtins
 import contextlib
 from unittest import mock
 
-from dffml.df.base import op
+from dffml.dfold.base import op
 from dffml.operation.output import GetSingle
-from dffml.df.memory import MemoryOrchestrator
+from dffml.dfold.memory import MemoryOrchestrator
 from dffml.util.asynctestcase import AsyncTestCase
-from dffml.df.types import DataFlow, Input, Definition
+from dffml.dfold.types import DataFlow, Input, Definition
 from dffml.operation.io import AcceptUserInput, print_output
 
 

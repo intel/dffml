@@ -1,5 +1,5 @@
 import sys
-from dffml.df.types import Definition
+from dffml.dfold.types import Definition
 
 definitions = [
     Definition(name="webhook_headers", primitive="Dict[str,Any]"),

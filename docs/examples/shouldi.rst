@@ -530,9 +530,9 @@ We first export the DataFlow to a config file on disk.
 .. code-block:: console
     :test:
 
-    $ mkdir -p shouldi/deploy/df
+    $ mkdir -p shouldi/deploy/dfold
     $ dffml service dev export -configloader json shouldi.cli:DATAFLOW \
-        | tee shouldi/deploy/df/shouldi.json
+        | tee shouldi/deploy/dfold/shouldi.json
 
 We then create the mermaidjs digarm from the DataFlow. The ``-simple`` flag says
 to only show connections between operations, don't show which inputs and outputs
@@ -541,7 +541,7 @@ are connected.
 .. code-block:: console
     :test:
 
-    $ dffml dataflow diagram -simple shouldi/deploy/df/shouldi.json
+    $ dffml dataflow diagram -simple shouldi/deploy/dfold/shouldi.json
     graph TD
     subgraph a759a07029077edc5c37fea0326fa281[Processing Stage]
     style a759a07029077edc5c37fea0326fa281 fill:#afd388b5,stroke:#a4ca7a

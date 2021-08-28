@@ -19,7 +19,7 @@ Setup a http server in ``ffmpeg/deploy/webhook``, to receive webhook and redploy
 
 .. code-block:: console
 
-    $ mkdir -p deploy/webhook/df deploy/webhook/mc/http
+    $ mkdir -p deploy/webhook/dfold deploy/webhook/mc/http
     $ dffml dataflow create \
         -configloader yaml \
         -inputs \
@@ -39,7 +39,7 @@ Setup a http server in ``ffmpeg/deploy/webhook``, to receive webhook and redploy
           docker_build_image \
           restart_running_containers \
           cleanup_git_repo \
-        | tee deploy/webhook/df/webhook.yaml
+        | tee deploy/webhook/dfold/webhook.yaml
 
 Through config we specify the dataflow to use ini file plugin and use the ini file
 located at deploy/webhook/secret.ini that contains the secret token, which we’ll

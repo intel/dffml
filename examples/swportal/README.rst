@@ -92,5 +92,5 @@ Run a single project's DataFlow from the command line
     :test:
 
     $ dffml dataflow run single \
-        -dataflow projects/df/b7cf5596-d427-4ae3-9e95-44be879eae73.yaml \
+        -dataflow projects/dfold/b7cf5596-d427-4ae3-9e95-44be879eae73.yaml \
         -log debug

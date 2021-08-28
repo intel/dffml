@@ -3,7 +3,7 @@ import cv2
 import mahotas
 import numpy as np
 
-from dffml.df.base import op
+from dffml.dfold.base import op
 
 
 @op

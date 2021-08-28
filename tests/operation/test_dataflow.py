@@ -1,7 +1,7 @@
 import copy
 
-from dffml.df.types import DataFlow, Input
-from dffml.df.memory import MemoryOrchestrator
+from dffml.dfold.types import DataFlow, Input
+from dffml.dfold.memory import MemoryOrchestrator
 from dffml.operation.dataflow import run_dataflow, RunDataFlowConfig
 from dffml.operation.output import GetSingle
 from dffml.util.asynctestcase import AsyncTestCase

@@ -3,10 +3,10 @@ import sys
 import glob
 from datetime import datetime
 
-from dffml.df.types import Input, DataFlow
+from dffml.dfold.types import Input, DataFlow
 from dffml.operation.output import GroupBy  # skipcq: PYL-W0611
-from dffml.df.memory import MemoryOrchestrator
-from dffml.df.base import operation_in, opimp_in
+from dffml.dfold.memory import MemoryOrchestrator
+from dffml.dfold.base import operation_in, opimp_in
 from dffml.operation.output import GroupBy  # skipcq: PYL-W0611
 from dffml.util.asynctestcase import AsyncTestCase
 

@@ -282,9 +282,9 @@ class TextClassifierContext(ModelContext):
 
         async for record in sources.with_features(self.features):
             feature_data = record.features(self.features)
-            df = self.pd.DataFrame(feature_data, index=[0])
+            dfold = self.pd.DataFrame(feature_data, index=[0])
             predict = await self.prediction_data_generator(
-                self.np.array(df)[0]
+                self.np.array(dfold)[0]
             )
             all_prob = self._model.predict(predict)
             max_prob_idx = all_prob.argmax(axis=-1)
@@ -292,7 +292,7 @@ class TextClassifierContext(ModelContext):
             self.logger.debug(
                 "Predicted probability of {} for {}: {}".format(
                     self.parent.config.predict.name,
-                    self.np.array(df)[0],
+                    self.np.array(dfold)[0],
                     all_prob[0],
                 )
             )

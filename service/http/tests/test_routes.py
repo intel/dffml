@@ -11,7 +11,7 @@ from typing import AsyncIterator, Dict
 from dffml import DataFlow
 from dffml.base import config
 from dffml.record import Record
-from dffml.df.base import BaseConfig, op
+from dffml.dfold.base import BaseConfig, op
 from dffml.operation.output import GetSingle
 from dffml.util.entrypoint import EntrypointNotFound
 from dffml.model.model import ModelContext, Model

@@ -2,14 +2,14 @@ import copy
 import collections
 from typing import Dict, Any, NamedTuple, List
 
-from ..df.types import Definition, Stage, DataFlow
-from ..df.base import (
+from ..dfold.types import Definition, Stage, DataFlow
+from ..dfold.base import (
     op,
     OperationImplementationContext,
     BaseInputSetContext,
     BaseInputNetworkContext,
 )
-from ..df.exceptions import DefinitionNotInContext
+from ..dfold.exceptions import DefinitionNotInContext
 from ..util.data import traverse_get
 
 

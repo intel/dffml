@@ -4,8 +4,8 @@ import gzip
 import lzma
 import shutil
 
-from ..df.base import op
-from ..df.types import Definition
+from ..dfold.base import op
+from ..dfold.types import Definition
 
 
 def make_compress(extension, compression_cls):

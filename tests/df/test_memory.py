@@ -13,9 +13,9 @@ from dffml import (
 )
 from dffml.util.cli.arg import Arg, parse_unknown
 from dffml.util.entrypoint import entrypoint
-from dffml.df.types import Definition, DataFlow, Input
-from dffml.df.base import op, BaseKeyValueStore
-from dffml.df.memory import (
+from dffml.dfold.types import Definition, DataFlow, Input
+from dffml.dfold.base import op, BaseKeyValueStore
+from dffml.dfold.memory import (
     MemoryKeyValueStore,
     MemoryRedundancyChecker,
     MemoryRedundancyCheckerConfig,

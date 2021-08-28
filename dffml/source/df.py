@@ -3,9 +3,9 @@ from typing import Type, AsyncIterator, Dict, List, Any
 
 from dffml.base import config, BaseConfig, field
 from dffml.configloader.configloader import BaseConfigLoader
-from dffml.df.types import Definition, DataFlow, Input, Operation
-from dffml.df.base import BaseInputSetContext, BaseContextHandle
-from dffml.df.base import (
+from dffml.dfold.types import Definition, DataFlow, Input, Operation
+from dffml.dfold.base import BaseInputSetContext, BaseContextHandle
+from dffml.dfold.base import (
     BaseOrchestrator,
     OperationImplementationContext,
     OperationImplementation,
@@ -15,11 +15,11 @@ from dffml.record import Record
 from dffml.source.source import BaseSource, BaseSourceContext
 from dffml.util.entrypoint import entrypoint
 from dffml.util.cli.parser import ParseInputsAction
-from dffml.df.memory import MemoryOrchestrator
+from dffml.dfold.memory import MemoryOrchestrator
 
 
 @config
-class DataFlowSourceConfig:
+class DataFlowOldSourceConfig:
     source: BaseSource = field("Source to wrap")
     dataflow: DataFlow = field("DataFlow to use for preprocessing")
     features: Features = field(
@@ -74,7 +74,7 @@ class RecordInputSetContext(BaseInputSetContext):
         return repr(self)
 
 
-class DataFlowSourceContext(BaseSourceContext):
+class DataFlowOldSourceContext(BaseSourceContext):
     async def input_set(self, record: Record) -> List[Input]:
         return (
             [
@@ -124,7 +124,7 @@ class DataFlowSourceContext(BaseSourceContext):
         await self.sctx.update(record)
 
     # TODO Implement this method. We forgot to implement it when we initially
-    # added the DataFlowSourceContext
+    # added the DataFlowOldSourceContext
     async def record(self, key: str) -> AsyncIterator[Record]:
         if self.parent.config.all_for_single:
             async for ctx, result in self.records():
@@ -154,7 +154,7 @@ class DataFlowSourceContext(BaseSourceContext):
                 ctx.record.evaluated(result)
             yield ctx.record
 
-    async def __aenter__(self) -> "DataFlowSourceContext":
+    async def __aenter__(self) -> "DataFlowOldSourceContext":
         self.sctx = await self.parent.source().__aenter__()
 
         if isinstance(self.parent.config.dataflow, str):
@@ -177,7 +177,7 @@ class DataFlowSourceContext(BaseSourceContext):
         await self.sctx.__aexit__(exc_type, exc_value, traceback)
 
 
-@entrypoint("df")
+@entrypoint("dfold")
 class DataFlowSource(BaseSource):
     """
     >>> import asyncio
@@ -223,7 +223,7 @@ class DataFlowSource(BaseSource):
     >>> memory_source = Sources(MemorySource(MemorySourceConfig(records=records)))
     >>>
     >>> source = DataFlowSource(
-    ...     DataFlowSourceConfig(
+    ...     DataFlowOldSourceConfig(
     ...         source=memory_source, dataflow=dataflow, features=features,
     ...     )
     ... )
@@ -240,8 +240,8 @@ class DataFlowSource(BaseSource):
     {'Years': 10, 'Expertise': 30, 'Trust': 2.0, 'Salary': 200}
     """
 
-    CONFIG = DataFlowSourceConfig
-    CONTEXT = DataFlowSourceContext
+    CONFIG = DataFlowOldSourceConfig
+    CONTEXT = DataFlowOldSourceContext
 
     async def __aenter__(self) -> "DataFlowSource":
         self.source = await self.config.source.__aenter__()

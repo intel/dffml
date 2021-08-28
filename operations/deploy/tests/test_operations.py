@@ -4,9 +4,9 @@ import uuid
 import tempfile
 from unittest import mock
 
-from dffml.df.base import opimp_in
-from dffml.df.types import Input, DataFlow
-from dffml.df.memory import MemoryOrchestrator
+from dffml.dfold.base import opimp_in
+from dffml.dfold.types import Input, DataFlow
+from dffml.dfold.memory import MemoryOrchestrator
 from dffml.util.asynctestcase import AsyncTestCase
 from dffml.base import BaseDataFlowFacilitatorObjectContext
 

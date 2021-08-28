@@ -7,7 +7,7 @@ import json
 import inspect
 import pathlib
 import unittest.mock
-from dffml.df.types import DataFlow
+from dffml.dfold.types import DataFlow
 from dffml.cli.cli import CLI
 from dffml.service.dev import Develop
 from dffml.util.asynctestcase import AsyncTestCase, relative_chdir

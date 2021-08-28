@@ -75,9 +75,9 @@ class AutoSklearnModelContext(ModelContext):
             self.features + [self.parent.config.predict.name]
         ):
             all_data.append(record.features())
-        df = pd.DataFrame(all_data)
-        y_train = df[[self.parent.config.predict.name]]
-        x_train = df.drop(columns=[self.parent.config.predict.name])
+        dfold = pd.DataFrame(all_data)
+        y_train = dfold[[self.parent.config.predict.name]]
+        x_train = dfold.drop(columns=[self.parent.config.predict.name])
         self.model.fit(x_train, y_train)
         self.model.fit_ensemble(
             y_train, ensemble_size=self.parent.config.ensemble_size

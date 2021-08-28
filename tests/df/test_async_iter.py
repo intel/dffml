@@ -1,6 +1,6 @@
-from dffml.df.types import DataFlow, Input, Definition
-from dffml.df.base import op
-from dffml.df.memory import MemoryOrchestrator
+from dffml.dfold.types import DataFlow, Input, Definition
+from dffml.dfold.base import op
+from dffml.dfold.memory import MemoryOrchestrator
 from dffml.operation.output import GetMulti
 from dffml.util.asynctestcase import AsyncTestCase
 from dffml.operation.mapping import MAPPING

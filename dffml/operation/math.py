@@ -1,5 +1,5 @@
-from ..df.types import Definition
-from ..df.base import op
+from ..dfold.types import Definition
+from ..dfold.base import op
 
 # Definitions
 multiplicand_def = Definition(name="multiplicand_def", primitive="generic")

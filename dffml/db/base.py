@@ -4,7 +4,7 @@ import functools
 import collections
 from typing import Any, List, Optional, Dict, Tuple, Union, AsyncIterator
 
-from ..df.base import BaseDataFlowObject, BaseDataFlowObjectContext
+from ..dfold.base import BaseDataFlowObject, BaseDataFlowObjectContext
 from ..util.entrypoint import base_entry_point
 
 

@@ -1,7 +1,7 @@
 import abc
 from typing import Union
 
-from ..df.base import BaseDataFlowObjectContext, BaseDataFlowObject
+from ..dfold.base import BaseDataFlowObjectContext, BaseDataFlowObject
 from ..util.entrypoint import base_entry_point
 
 

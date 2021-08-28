@@ -15,10 +15,10 @@ class TestDataFrameSource(AsyncTestCase):
     async def test_dataframe(self):
 
         mydict = [{"A": 1, "B": 2, "C": 3}]
-        df = pd.DataFrame(mydict)
+        dfold = pd.DataFrame(mydict)
 
         source = DataFrameSource(
-            DataFrameSourceConfig(dataframe=df, predictions=["C"],)
+            DataFrameSourceConfig(dataframe=dfold, predictions=["C"],)
         )
         # Save some data in the source
         await save(
@@ -60,10 +60,10 @@ class TestDataFrameSource(AsyncTestCase):
     async def test_update(self):
 
         mydict = [{"A": 1, "B": 2, "C": 3}]
-        df = pd.DataFrame(mydict)
+        dfold = pd.DataFrame(mydict)
 
         source = DataFrameSource(
-            DataFrameSourceConfig(dataframe=df, predictions=["C", "B"])
+            DataFrameSourceConfig(dataframe=dfold, predictions=["C", "B"])
         )
         # Save some data in the source
         await save(

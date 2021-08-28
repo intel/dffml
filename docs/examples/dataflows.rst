@@ -84,15 +84,15 @@ the :doc:`/examples/shouldi` example.
 Config files are named after the dataflow they are associated with. In the
 :ref:`examples_shouldi_visualizing_the_dataflow` section of the
 :doc:`/examples/shouldi`, we serialized the ``shouldi`` dataflow to the
-``shouldi/deploy/df`` directory.
+``shouldi/deploy/dfold`` directory.
 
-The ``df`` directory is contains the main dataflows to be deployed.
+The ``dfold`` directory is contains the main dataflows to be deployed.
 
 .. code-block:: console
 
     $ tree shouldi/deploy/
     shouldi/deploy/
-    └── df
+    └── dfold
         └── shouldi.json
 
     1 directory, 1 file
@@ -297,7 +297,7 @@ The final directory structure should look like this
 
     $ tree shouldi/deploy
     shouldi/deploy
-    ├── df
+    ├── dfold
     │   └── shouldi.json
     ├── mc
     │   └── http
@@ -309,7 +309,7 @@ The final directory structure should look like this
 
 It contains the following files.
 
-- ``df/shouldi.json``
+- ``dfold/shouldi.json``
 
   - The ``shouldi`` dataflow
 
@@ -332,7 +332,7 @@ The diagram above can be re-generated with the following commands
     :test:
 
     $ dffml dataflow merge \
-        shouldi/deploy/df/shouldi.json \
+        shouldi/deploy/dfold/shouldi.json \
         shouldi/deploy/override/shouldi.yaml | \
       dffml dataflow diagram \
         -stages processing -simple -configloader json /dev/stdin

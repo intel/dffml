@@ -13,7 +13,7 @@ def create_input_pair(key, val):
 
 # TODO this is dirty! break it into small functions and add numpy style docstring.
 def df_to_vw_format(
-    df,
+    dfold,
     vwcmd,
     target=None,
     tag=None,
@@ -32,7 +32,7 @@ def df_to_vw_format(
     as per https://github.com/VowpalWabbit/vowpal_wabbit/wiki/Cost-Sensitive-One-Against-All-(csoaa)-multi-class-example#difference-from-other-vw-formats
 
     """
-    all_cols = df.columns.tolist()
+    all_cols = dfold.columns.tolist()
     formatted_data = []
     cols_with_ns = []
     cols_without_ns = []
@@ -43,7 +43,7 @@ def df_to_vw_format(
     multiclass_map = {}
     target_label = ""
     if target:
-        unique_targets = sorted(df[target].unique())
+        unique_targets = sorted(dfold[target].unique())
         if use_binary_label:
             if not len(unique_targets) == 2:
                 raise InputError(
@@ -96,7 +96,7 @@ def df_to_vw_format(
         )
     )
 
-    for _, row in df.iterrows():
+    for _, row in dfold.iterrows():
         ns_part = ""
         feature_part = ""
         all_features_part = ""

@@ -11,7 +11,7 @@ import json
 import pathlib
 import contextlib
 
-from dffml.df.types import Operation, DataFlow, Input
+from dffml.dfold.types import Operation, DataFlow, Input
 from dffml.cli.cli import CLI
 from dffml.util.entrypoint import load
 from dffml.configloader.configloader import BaseConfigLoader, ConfigLoaders

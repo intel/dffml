@@ -144,7 +144,7 @@ class TestServer(AsyncTestCase):
             # Create directories for multicomm, dataflow, and dataflow overrides
             pathlib.Path(tempdir, "mc").mkdir()
             pathlib.Path(tempdir, "mc", "http").mkdir()
-            pathlib.Path(tempdir, "df").mkdir()
+            pathlib.Path(tempdir, "dfold").mkdir()
             # TODO split config part of dataflow into seperate directory
             pathlib.Path(tempdir, "config").mkdir()
             # Write out multicomm configs
@@ -171,12 +171,12 @@ class TestServer(AsyncTestCase):
                 )
             )
             # Write out dataflow configs
-            pathlib.Path(tempdir, "df", "hello_world.json").write_text(
+            pathlib.Path(tempdir, "dfold", "hello_world.json").write_text(
                 json.dumps(
                     HELLO_WORLD_DATAFLOW.export(), sort_keys=True, indent=4
                 )
             )
-            pathlib.Path(tempdir, "df", "hello_blank.json").write_text(
+            pathlib.Path(tempdir, "dfold", "hello_blank.json").write_text(
                 json.dumps(
                     HELLO_BLANK_DATAFLOW.export(), sort_keys=True, indent=4
                 )

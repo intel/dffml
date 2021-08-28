@@ -1,6 +1,6 @@
 import sys
 
-from dffml.df.base import Definition
+from dffml.dfold.base import Definition
 
 definitions = [
     Definition(name="URL", primitive="string"),

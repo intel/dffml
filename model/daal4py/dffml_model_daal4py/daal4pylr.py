@@ -190,9 +190,9 @@ class DAAL4PyLRModel(SimpleModel):
             )
             # NOTE Duplicate feature data due to regression in oneDAL
             # See https://github.com/intel/dffml/issues/801
-            df = self.pd.DataFrame([feature_data] * 2, index=[0, 1])
-            xdata = df.drop([self.parent.config.predict.name], 1)
-            ydata = df[self.parent.config.predict.name]
+            dfold = self.pd.DataFrame([feature_data] * 2, index=[0, 1])
+            xdata = dfold.drop([self.parent.config.predict.name], 1)
+            ydata = dfold[self.parent.config.predict.name]
             self.lm.compute(xdata, ydata)
         self.lm_trained = self.lm.finalize().model
         self.joblib.dump(self.lm_trained, self.path)

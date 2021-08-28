@@ -15,7 +15,7 @@ import unittest.mock
 from typing import Type, List, BinaryIO
 
 from dffml.version import VERSION
-from dffml.df.types import DataFlow
+from dffml.dfold.types import DataFlow
 from dffml.service.dev import (
     REPO_ROOT,
     Develop,

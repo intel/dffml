@@ -39,8 +39,8 @@ from ..base import MissingConfig, config as configdataclass, field
 from ..util.packaging import is_develop
 from ..util.net import cached_download
 from ..util.data import traverse_config_get, export
-from ..df.types import Input, DataFlow
-from ..df.memory import MemoryOrchestrator
+from ..dfold.types import Input, DataFlow
+from ..dfold.memory import MemoryOrchestrator
 from ..configloader.configloader import BaseConfigLoader
 from ..configloader.json import JSONConfigLoader
 from ..operation.output import GetSingle

@@ -20,9 +20,9 @@ from aiohttp import web
 
 from dffml import Sources, MemorySource
 from dffml.record import Record
-from dffml.df.types import DataFlow, Input
-from dffml.df.multicomm import MultiCommInAtomicMode, BaseMultiCommContext
-from dffml.df.memory import (
+from dffml.dfold.types import DataFlow, Input
+from dffml.dfold.multicomm import MultiCommInAtomicMode, BaseMultiCommContext
+from dffml.dfold.memory import (
     MemoryOrchestrator,
     MemoryInputSet,
     MemoryInputSetConfig,

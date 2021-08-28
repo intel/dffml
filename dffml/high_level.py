@@ -9,8 +9,8 @@ from typing import Optional, Tuple, List, Union, Dict, Any, AsyncIterator
 
 from .record import Record
 from .model.model import Model
-from .df.types import DataFlow, Input
-from .df.memory import MemoryOrchestrator
+from .dfold.types import DataFlow, Input
+from .dfold.memory import MemoryOrchestrator
 from .model.accuracy import Accuracy
 from .accuracy.accuracy import AccuracyScorer, AccuracyContext
 from .source.source import (
@@ -20,7 +20,7 @@ from .source.source import (
     BaseSourceContext,
 )
 from .source.memory import MemorySource, MemorySourceConfig
-from .df.base import BaseInputSetContext, BaseOrchestrator, BaseInputSet
+from .dfold.base import BaseInputSetContext, BaseOrchestrator, BaseInputSet
 
 
 @contextlib.asynccontextmanager
@@ -78,37 +78,37 @@ async def run(
     Run a DataFlow
 
     Run a DataFlow using the the default orchestrator
-    (:py:class:`MemoryOrchestrator <dffml.df.memory.MemoryOrchestrator>`),
+    (:py:class:`MemoryOrchestrator <dffml.dfold.memory.MemoryOrchestrator>`),
     or the specified one.
 
     Parameters
     ----------
     dataflow : DataFlow
-        :py:class:`DataFlow <dffml.df.types.DataFlow>` to run.
+        :py:class:`DataFlow <dffml.dfold.types.DataFlow>` to run.
     input_sets : InputSet, list, dict, optional
-        :py:class:`Inputs <dffml.df.types.Input>` to give to the
-        :py:class:`DataFlow <dffml.df.types.DataFlow>` when it starts. Can be in
+        :py:class:`Inputs <dffml.dfold.types.Input>` to give to the
+        :py:class:`DataFlow <dffml.dfold.types.DataFlow>` when it starts. Can be in
         multiple formats.
 
         If each element is a ``list`` then it's expected that each element of
-        that list be an :py:class:`Input <dffml.df.types.Input>`, in this case
-        an :py:class:`InputSet <dffml.df.base.BaseInputSet>` will be created
+        that list be an :py:class:`Input <dffml.dfold.types.Input>`, in this case
+        an :py:class:`InputSet <dffml.dfold.base.BaseInputSet>` will be created
         with a random string used as the
-        :py:class:`StringInputSetContext <dffml.df.base.StringInputSetContext>`.
+        :py:class:`StringInputSetContext <dffml.dfold.base.StringInputSetContext>`.
 
         If a ``dict`` is given then each key will become a
-        :py:class:`StringInputSetContext <dffml.df.base.StringInputSetContext>`.
+        :py:class:`StringInputSetContext <dffml.dfold.base.StringInputSetContext>`.
         The value for each key should be a ``list`` of
-        :py:class:`Input <dffml.df.types.Input>` objects.
+        :py:class:`Input <dffml.dfold.types.Input>` objects.
 
-        If each element is a :py:class:`InputSet <dffml.df.base.BaseInputSet>`
+        If each element is a :py:class:`InputSet <dffml.dfold.base.BaseInputSet>`
         then each context
-        :py:class:`InputSetContext <dffml.df.base.BaseInputSetContext>`
-        will have its respective :py:class:`Inputs <dffml.df.types.Input>` added
+        :py:class:`InputSetContext <dffml.dfold.base.BaseInputSetContext>`
+        will have its respective :py:class:`Inputs <dffml.dfold.types.Input>` added
         to it.
     orchestrator : BaseOrchestrator, optional
         Orchestrator to use, defaults to
-        :py:class:`MemoryOrchestrator <dffml.df.memory.MemoryOrchestrator>`
+        :py:class:`MemoryOrchestrator <dffml.dfold.memory.MemoryOrchestrator>`
         if ``None``.
     strict : bool, optional
         If true (default), raise exceptions when they occur in operations. If
@@ -124,7 +124,7 @@ async def run(
     -------
     asynciterator
         ``tuple`` of
-        :py:class:`InputSetContext <dffml.df.base.BaseInputSetContext>`
+        :py:class:`InputSetContext <dffml.dfold.base.BaseInputSetContext>`
         and ``dict`` where contents are determined by output operations.
         If multiple output operations are used, then the top level keys will be
         the names of the output operations. If only one is used, then the

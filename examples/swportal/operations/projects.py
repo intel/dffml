@@ -3,7 +3,9 @@ import pathlib
 import yaml
 from dffml import op, DataFlow
 
-DATAFLOW_DIRECTORY = pathlib.Path(__file__).parent.parent / "projects" / "df"
+DATAFLOW_DIRECTORY = (
+    pathlib.Path(__file__).parent.parent / "projects" / "dfold"
+)
 EXPORT_SEED_DEFINITIONS = ("uuid", "name")
 NON_PROJECT_DATAFLOWS = ("projects",)
 

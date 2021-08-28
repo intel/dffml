@@ -26,7 +26,7 @@ from dffml.util.asynctestcase import (
     non_existant_tempfile,
 )
 from dffml.base import config
-from dffml.df.base import op
+from dffml.dfold.base import op
 from dffml.cli.cli import Merge
 from dffml.cli.ml import Train, Accuracy, Predict
 from dffml.cli.list import List
@@ -64,10 +64,12 @@ class RecordsTestCase(AsyncTestCase):
             patch("dffml.model.model.Model.load", new=model_load)
         )
         self._stack.enter_context(
-            patch("dffml.df.base.OperationImplementation.load", new=opimp_load)
+            patch(
+                "dffml.dfold.base.OperationImplementation.load", new=opimp_load
+            )
         )
         self._stack.enter_context(
-            patch("dffml.df.types.Operation.load", new=op_load)
+            patch("dffml.dfold.types.Operation.load", new=op_load)
         )
 
 

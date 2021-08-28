@@ -69,7 +69,7 @@ dataflow.update()
 mem_source = Sources(MemorySource(MemorySourceConfig(records=records)))
 
 source = DataFlowSource(
-    DataFlowSourceConfig(
+    DataFlowOldSourceConfig(
         source=mem_source, dataflow=dataflow, features=features,
     )
 )

@@ -262,13 +262,13 @@ def op(
 ):
     """
     The ``op`` decorator creates a subclass of
-    :py:class:`dffml.df.OperationImplementation` and assigns that
+    :py:class:`dffml.dfold.OperationImplementation` and assigns that
     ``OperationImplementation`` to the ``.imp`` parameter of the
     function it decorates.
 
     If the decorated object is not already a class which is a subclass of
     ``OperationImplementationContext``, it creates an
-    :py:class:`dffml.df.OperationImplementationContext`
+    :py:class:`dffml.dfold.OperationImplementationContext`
     and assigns it to the ``CONTEXT`` class parameter of the
     ``OperationImplementation`` which was created.
 

@@ -1,8 +1,8 @@
-from dffml.df.base import op
-from dffml.df.types import DataFlow, Input, Definition
+from dffml.dfold.base import op
+from dffml.dfold.types import DataFlow, Input, Definition
 from dffml.operation.output import GetSingle
 from dffml.util.asynctestcase import AsyncTestCase
-from dffml.df.memory import MemoryOrchestrator
+from dffml.dfold.memory import MemoryOrchestrator
 
 STRING = Definition(name="string", primitive="str")
 

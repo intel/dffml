@@ -2,8 +2,8 @@ import asyncio
 import concurrent.futures
 from typing import Dict, Any
 
-from ..df.types import Operation, Definition
-from ..df.base import (
+from ..dfold.types import Operation, Definition
+from ..dfold.base import (
     op,
     OperationImplementationContext,
     OperationImplementation,

@@ -9,8 +9,8 @@ from elftools.elf.elffile import ELFFile
 from elftools.elf.descriptions import describe_e_type
 
 
-from dffml.df.types import Stage, Operation
-from dffml.df.base import (
+from dffml.dfold.types import Stage, Operation
+from dffml.dfold.base import (
     op,
     OperationImplementationContext,
     OperationImplementation,

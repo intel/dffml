@@ -10,13 +10,13 @@ from sklearn.feature_extraction.text import (
     TfidfVectorizer,
 )
 
-from dffml.df.base import (
+from dffml.dfold.base import (
     op,
     Operation,
     OperationImplementation,
     OperationImplementationContext,
 )
-from dffml.df.types import Definition
+from dffml.dfold.types import Definition
 
 
 def _load_model(spacy_model: str):

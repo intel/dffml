@@ -3,14 +3,14 @@ import contextlib
 from unittest.mock import patch, MagicMock
 from typing import List
 
-from dffml.df.types import (
+from dffml.dfold.types import (
     Operation,
     Definition,
     Input,
     DefinitionMissing,
     DataFlow,
 )
-from dffml.df.base import (
+from dffml.dfold.base import (
     op,
     operation_in,
     opimp_in,
@@ -21,7 +21,7 @@ from dffml.df.base import (
     OperationImplementationNotInstantiable,
     OperationImplementationNotInstantiated,
 )
-from dffml.df.memory import (
+from dffml.dfold.memory import (
     MemoryKeyValueStore,
     MemoryOperationImplementationNetwork,
     MemoryOrchestrator,

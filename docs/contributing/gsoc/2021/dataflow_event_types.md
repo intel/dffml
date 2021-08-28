@@ -72,9 +72,9 @@ Intermediate/Hard
   network.
   - Make it simple and include a few operations.
   - Get the DataFlow running.
-- Look at the code in `dffml/df/memory.py` and understand how it relates to the
+- Look at the code in `dffml/dfold/memory.py` and understand how it relates to the
   docs covering DataFlows conceptually.
-- Plan out what all needs to change within `dffml/df/memory.py` and the other
+- Plan out what all needs to change within `dffml/dfold/memory.py` and the other
   code and examples that would change as a result.
 
 ## Potential Mentors

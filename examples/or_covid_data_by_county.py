@@ -37,7 +37,7 @@ class FBProphetModel(SimpleModel):
         # Create a pandas DataFrame from the records with the features we care
         # about. Prophet wants each row in the DataFrame to have two features,
         # ds for the date, and y for the label (the value to predict).
-        df = pandas.DataFrame.from_records(
+        dfold = pandas.DataFrame.from_records(
             [
                 {
                     "ds": record.feature(self.config.date.name),
@@ -49,11 +49,11 @@ class FBProphetModel(SimpleModel):
             ]
         )
         # Use self.logger to report how many records are being used for training
-        self.logger.debug("Number of training records: %d", len(df))
+        self.logger.debug("Number of training records: %d", len(dfold))
         # Create an instance of the Prophet model class
         self.saved = Prophet()
         # Train the model
-        self.saved.fit(df)
+        self.saved.fit(dfold)
         # Save the model
         joblib.dump(self.saved, str(self.saved_filepath))
 

@@ -5,7 +5,7 @@ from http import HTTPStatus
 from urllib.parse import urlparse
 from contextlib import asynccontextmanager, ExitStack
 
-from dffml.df.base import BaseConfig
+from dffml.dfold.base import BaseConfig
 
 from aiohttp import web
 from aiohttp import client
@@ -13,7 +13,7 @@ from aiohttp.test_utils import AioHTTPTestCase, unittest_run_loop
 import aiohttp.client_exceptions
 import aiohttp
 
-from dffml.df.base import BaseConfig
+from dffml.dfold.base import BaseConfig
 from dffml.log import LOGGER
 
 import logging

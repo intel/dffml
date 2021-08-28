@@ -8,170 +8,170 @@ running of a DataFlow. Lastly we'll go over the benefits of using DataFlows.
 Terminology
 -----------
 
-- :py:class:`Operation <dffml.df.types.Operation>`
+- :py:class:`Operation <dffml.dfold.types.Operation>`
 
   - Things that will happen when the DataFlow is running. They define inputs and
     outputs. Inputs are the data they require to run, and outputs are the data
     they produce as a result.
 
   - Similar to a function prototype in C, an
-    :py:class:`Operation <dffml.df.types.Operation>` only contains metadata.
+    :py:class:`Operation <dffml.dfold.types.Operation>` only contains metadata.
 
-- :py:class:`OperationImplementation <dffml.df.base.OperationImplementation>`
+- :py:class:`OperationImplementation <dffml.dfold.base.OperationImplementation>`
 
-  - The implementation of an :py:class:`Operation <dffml.df.types.Operation>`.
+  - The implementation of an :py:class:`Operation <dffml.dfold.types.Operation>`.
     This is the code that gets run when we talk about "running an operation".
 
   - A Python function can be an
-    :py:class:`OperationImplementation <dffml.df.base.OperationImplementation>`
+    :py:class:`OperationImplementation <dffml.dfold.base.OperationImplementation>`
 
-- :py:class:`Input <dffml.df.types.Input>`
+- :py:class:`Input <dffml.dfold.types.Input>`
 
   - Data that will be given to an
-    :py:class:`Operation <dffml.df.types.Operation>` when it runs.
+    :py:class:`Operation <dffml.dfold.types.Operation>` when it runs.
 
-- :py:class:`DataFlow <dffml.df.types.DataFlow>`
+- :py:class:`DataFlow <dffml.dfold.types.DataFlow>`
 
-  - Description of how :py:class:`Operations <dffml.df.types.Operation>` are
+  - Description of how :py:class:`Operations <dffml.dfold.types.Operation>` are
     connected.
 
-  - Defines where :py:class:`Operations <dffml.df.types.Operation>` should get
+  - Defines where :py:class:`Operations <dffml.dfold.types.Operation>` should get
     their inputs from.
 
   - Inputs can be received from the outputs of other operations, predefined
     ``seed`` values, or anywhere else.
 
-- :py:class:`Orchestrator <dffml.df.base.BaseOrchestrator>`
+- :py:class:`Orchestrator <dffml.dfold.base.BaseOrchestrator>`
 
   - The runner of the DataFlow. Facilitates running of operations and manages
     input data.
 
-  - The :py:class:`Orchestrator <dffml.df.base.BaseOrchestrator>` makes use of
+  - The :py:class:`Orchestrator <dffml.dfold.base.BaseOrchestrator>` makes use of
     four different "Networks" and a
-    :py:class:`RedundancyChecker <dffml.df.base.BaseRedundancyChecker>`.
+    :py:class:`RedundancyChecker <dffml.dfold.base.BaseRedundancyChecker>`.
 
-    - The :py:class:`InputNetwork <dffml.df.base.BaseInputNetwork>` stores all
-      the (:py:class:`Input <dffml.df.types.Input>`) data. It accepts incoming
+    - The :py:class:`InputNetwork <dffml.dfold.base.BaseInputNetwork>` stores all
+      the (:py:class:`Input <dffml.dfold.types.Input>`) data. It accepts incoming
       data and notifies the
-      :py:class:`Orchestrator <dffml.df.base.BaseOrchestrator>` when there is
+      :py:class:`Orchestrator <dffml.dfold.base.BaseOrchestrator>` when there is
       new data.
 
-    - The :py:class:`OperationNetwork <dffml.df.base.BaseOperationNetwork>`
-      stores all :py:class:`Operations <dffml.df.types.Operation>` the
-      :py:class:`Orchestrator <dffml.df.base.BaseOrchestrator>` knows about.
+    - The :py:class:`OperationNetwork <dffml.dfold.base.BaseOperationNetwork>`
+      stores all :py:class:`Operations <dffml.dfold.types.Operation>` the
+      :py:class:`Orchestrator <dffml.dfold.base.BaseOrchestrator>` knows about.
 
-    - The :py:class:`OperationImplementationNetwork <dffml.df.base.BaseOperationImplementationNetwork>`
+    - The :py:class:`OperationImplementationNetwork <dffml.dfold.base.BaseOperationImplementationNetwork>`
       is responsible for running an
-      :py:class:`Operation <dffml.df.types.Operation>` with a set of
-      :py:class:`Inputs <dffml.df.types.Input>`. A unique set of
-      :py:class:`Inputs <dffml.df.types.Input>` for an
-      :py:class:`Operation <dffml.df.types.Operation>` is known as a
-      :py:class:`ParameterSet <dffml.df.base.BaseParameterSet>`.
+      :py:class:`Operation <dffml.dfold.types.Operation>` with a set of
+      :py:class:`Inputs <dffml.dfold.types.Input>`. A unique set of
+      :py:class:`Inputs <dffml.dfold.types.Input>` for an
+      :py:class:`Operation <dffml.dfold.types.Operation>` is known as a
+      :py:class:`ParameterSet <dffml.dfold.base.BaseParameterSet>`.
 
-    - The :py:class:`LockNetwork <dffml.df.base.BaseLockNetwork>`
-      manages locking of :py:class:`Inputs <dffml.df.types.Input>`. This is used
-      when the :py:class:`Definition <dffml.df.types.Definition>` of the data
-      type of an :py:class:`Input <dffml.df.types.Input>` declares that it may
+    - The :py:class:`LockNetwork <dffml.dfold.base.BaseLockNetwork>`
+      manages locking of :py:class:`Inputs <dffml.dfold.types.Input>`. This is used
+      when the :py:class:`Definition <dffml.dfold.types.Definition>` of the data
+      type of an :py:class:`Input <dffml.dfold.types.Input>` declares that it may
       only be used when locked.
 
-    - The :py:class:`RedundancyChecker <dffml.df.base.BaseRedundancyChecker>`
-      ensures that :py:class:`Operations <dffml.df.types.Operation>` don't get
+    - The :py:class:`RedundancyChecker <dffml.dfold.base.BaseRedundancyChecker>`
+      ensures that :py:class:`Operations <dffml.dfold.types.Operation>` don't get
       run with the same
-      :py:class:`ParameterSet <dffml.df.base.BaseParameterSet>` more than once.
+      :py:class:`ParameterSet <dffml.dfold.base.BaseParameterSet>` more than once.
 
-  - :py:class:`Operations <dffml.df.types.Operation>` get their inputs from
-    the outputs of other :py:class:`Operations <dffml.df.types.Operation>`
+  - :py:class:`Operations <dffml.dfold.types.Operation>` get their inputs from
+    the outputs of other :py:class:`Operations <dffml.dfold.types.Operation>`
     within the same
-    :py:class:`InputSetContext <dffml.df.base.BaseInputSetContext>`.
-    :py:class:`InputSetContexts <dffml.df.base.BaseInputSetContext>` create
+    :py:class:`InputSetContext <dffml.dfold.base.BaseInputSetContext>`.
+    :py:class:`InputSetContexts <dffml.dfold.base.BaseInputSetContext>` create
     barriers which prevent
-    :py:class:`Inputs <dffml.df.types.Input>` within one context from being
-    combined with :py:class:`Inputs <dffml.df.types.Input>` within another
+    :py:class:`Inputs <dffml.dfold.types.Input>` within one context from being
+    combined with :py:class:`Inputs <dffml.dfold.types.Input>` within another
     context.
 
 .. Not sure if we want this example here, no other bullet points have examples.
 
   In the :doc:`/examples/integration` example use case. There is a DataFlow
   which collects information on a Git repo. Each URL is used as a context,
-  as well as an :py:class:`Input <dffml.df.types.Input>`. By using the URL
+  as well as an :py:class:`Input <dffml.dfold.types.Input>`. By using the URL
   as a context we ensure all
-  :py:class:`ParameterSets <dffml.df.base.BaseParameterSet>` created
+  :py:class:`ParameterSets <dffml.dfold.base.BaseParameterSet>` created
   only contain inputs associated with their URL. For example, this prevents
   commit hashes extracted from a downloaded repository from being used as
-  as an :py:class:`Input <dffml.df.types.Input>` in a
-  :py:class:`ParameterSet <dffml.df.base.BaseParameterSet>` where the
+  as an :py:class:`Input <dffml.dfold.types.Input>` in a
+  :py:class:`ParameterSet <dffml.dfold.base.BaseParameterSet>` where the
   directory of downloaded source code contains the code downloaded from a
   different URL.
 
 What Happens When A DataFlow Runs
 ---------------------------------
 
-When the :py:class:`Orchestrator <dffml.df.base.BaseOrchestrator>` starts
+When the :py:class:`Orchestrator <dffml.dfold.base.BaseOrchestrator>` starts
 running a DataFlow. The following sequence of events take place.
 
-- :py:class:`OperationImplementationNetwork <dffml.df.base.BaseOperationImplementationNetwork>`
+- :py:class:`OperationImplementationNetwork <dffml.dfold.base.BaseOperationImplementationNetwork>`
   instantiates all of the
-  :py:class:`OperationImplementations <dffml.df.base.OperationImplementation>`
+  :py:class:`OperationImplementations <dffml.dfold.base.OperationImplementation>`
   that are needed by the DataFlow.
 
 - Our first stage is the ``Processing Stage``,  where data will be generated.
 
-- The :py:class:`Orchestrator <dffml.df.base.BaseOrchestrator>` kicks off any
+- The :py:class:`Orchestrator <dffml.dfold.base.BaseOrchestrator>` kicks off any
   contexts that were given to the
-  :py:class:`run <dffml.df.base.BaseOrchestratorContext.run>` method along with
+  :py:class:`run <dffml.dfold.base.BaseOrchestratorContext.run>` method along with
   the inputs for each context.
 
-  - All ``seed`` :py:class:`Inputs <dffml.df.types.Input>` are added to each
+  - All ``seed`` :py:class:`Inputs <dffml.dfold.types.Input>` are added to each
     context.
 
   - All inputs for each context are added to the
-    :py:class:`InputNetwork <dffml.df.base.BaseInputNetwork>`. This is the ``New
+    :py:class:`InputNetwork <dffml.dfold.base.BaseInputNetwork>`. This is the ``New
     Inputs`` step in the flow chart below.
 
-- The :py:class:`OperationNetwork <dffml.df.base.BaseOperationNetwork>` looks at
+- The :py:class:`OperationNetwork <dffml.dfold.base.BaseOperationNetwork>` looks at
   what inputs just arrived. It ``determines which Operations may have new
-  parameter sets``. If an :py:class:`Operation <dffml.df.types.Operation>`
+  parameter sets``. If an :py:class:`Operation <dffml.dfold.types.Operation>`
   has inputs whose possible origins include the origin of one of the inputs
   which just arrived, then it may have a new
-  :py:class:`ParameterSet <dffml.df.base.BaseParameterSet>`.
+  :py:class:`ParameterSet <dffml.dfold.base.BaseParameterSet>`.
 
 - We ``generate Operation parameter set pairs`` by checking if there are any new
-  permutations of :py:class:`Inputs <dffml.df.types.Input>` for an
-  :py:class:`Operation <dffml.df.types.Operation>`. If the
-  :py:class:`RedundancyChecker <dffml.df.base.BaseRedundancyChecker>`
+  permutations of :py:class:`Inputs <dffml.dfold.types.Input>` for an
+  :py:class:`Operation <dffml.dfold.types.Operation>`. If the
+  :py:class:`RedundancyChecker <dffml.dfold.base.BaseRedundancyChecker>`
   has no record of that permutation being run we create a new
-  :py:class:`ParameterSet <dffml.df.base.BaseParameterSet>` composed of
-  those :py:class:`Inputs <dffml.df.types.Input>`.
+  :py:class:`ParameterSet <dffml.dfold.base.BaseParameterSet>` composed of
+  those :py:class:`Inputs <dffml.dfold.types.Input>`.
 
 - We ``dispatch operations for running`` which have new
-  :py:class:`ParameterSets <dffml.df.base.BaseParameterSet>`.
+  :py:class:`ParameterSets <dffml.dfold.base.BaseParameterSet>`.
 
-- The :py:class:`LockNetwork <dffml.df.base.BaseLockNetwork>` locks any
-  of :py:class:`Inputs <dffml.df.types.Input>` which can't have multiple
+- The :py:class:`LockNetwork <dffml.dfold.base.BaseLockNetwork>` locks any
+  of :py:class:`Inputs <dffml.dfold.types.Input>` which can't have multiple
   operations use them at the same time.
 
-- The :py:class:`OperationImplementationNetwork <dffml.df.base.BaseOperationImplementationNetwork>`
+- The :py:class:`OperationImplementationNetwork <dffml.dfold.base.BaseOperationImplementationNetwork>`
   ``runs each operation using given parameter set as inputs``.
 
 - The outputs of the
-  :py:class:`Operation <dffml.df.types.Operation>` are added to the
-  :py:class:`InputNetwork <dffml.df.base.BaseInputNetwork>` and the loop
+  :py:class:`Operation <dffml.dfold.types.Operation>` are added to the
+  :py:class:`InputNetwork <dffml.dfold.base.BaseInputNetwork>` and the loop
   repeats.
 
 - Once there are no more
-  :py:class:`Operation <dffml.df.types.Operation>`
-  :py:class:`ParameterSet <dffml.df.base.BaseParameterSet>` pairs
+  :py:class:`Operation <dffml.dfold.types.Operation>`
+  :py:class:`ParameterSet <dffml.dfold.base.BaseParameterSet>` pairs
   which the
-  :py:class:`RedundancyChecker <dffml.df.base.BaseRedundancyChecker>` knows to
+  :py:class:`RedundancyChecker <dffml.dfold.base.BaseRedundancyChecker>` knows to
   be unique, the ``Cleanup Stage`` begins.
 
 - The ``Cleanup Stage`` contains operations which will release any underlying
-  resources allocated for :py:class:`Inputs <dffml.df.types.Input>` generated
+  resources allocated for :py:class:`Inputs <dffml.dfold.types.Input>` generated
   during the ``Processing Stage``.
 
 - Finally the ``Output Stage`` runs.
-  :py:class:`Operations <dffml.df.types.Operation>` running in this stage query
-  the :py:class:`InputNetwork <dffml.df.base.BaseInputNetwork>` to organize the
+  :py:class:`Operations <dffml.dfold.types.Operation>` running in this stage query
+  the :py:class:`InputNetwork <dffml.dfold.base.BaseInputNetwork>` to organize the
   data within it into the users desired output format.
 
 .. TODO Auto generate this
@@ -243,13 +243,13 @@ Benifits of DataFlows
 - Ease of use
 
   - Execute code concurrently with managed locking of
-    :py:class:`Inputs <dffml.df.types.Input>` which require locks to be used
+    :py:class:`Inputs <dffml.dfold.types.Input>` which require locks to be used
     safely in a concurrent environment.
 
     - If a resource can only be used by one operation at a time, the writer of
       the operation doesn't need concern themselves of how to prevent against
       unknown user defined operations clobbering it. The
-      :py:class:`Orchestrator <dffml.df.base.BaseOrchestrator>` manages locking.
+      :py:class:`Orchestrator <dffml.dfold.base.BaseOrchestrator>` manages locking.
 
     - As DFFML is plugin based, this enables developers to easily write and
       publish operations without users having to worry about how various
@@ -262,7 +262,7 @@ Benifits of DataFlows
 
 - Security
 
-  - Clear trust boundaries via :py:class:`Input <dffml.df.types.Input>` origins
+  - Clear trust boundaries via :py:class:`Input <dffml.dfold.types.Input>` origins
     and built in input validation enable developers to ensure that untrusted
     inputs are properly validated.
 

@@ -109,7 +109,7 @@ and temperature in a new file.
 .. code-block:: console
     :test:
 
-    $ dffml merge text=df temp=csv \
+    $ dffml merge text=dfold temp=csv \
         -source-text-dataflow preprocess_ops.json \
         -source-text-features city:str:1 state:str:1 month:int:1 \
         -source-text-source csv \
@@ -189,7 +189,7 @@ for the prediction of sales.
         -model-features population:int:1 temperature:float:1 \
         -model-predict sales:int:1 \
         -model-location tempdir \
-        -sources preprocess=df \
+        -sources preprocess=dfold \
         -source-preprocess-dataflow preprocess_ops.json \
         -source-preprocess-features city:str:1 state:str:1 month:int:1 \
         -source-preprocess-source csv \

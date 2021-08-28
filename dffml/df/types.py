@@ -90,7 +90,7 @@ class Definition(NamedTuple):
 
     def export(self):
         exported = dict(self._asdict())
-        if "dffml.df.types._NO_DEFAULT" in repr(self.default):
+        if "dffml.dfold.types._NO_DEFAULT" in repr(self.default):
             del exported["default"]
         if not self.lock:
             del exported["lock"]

@@ -1,7 +1,7 @@
 import sys
 from typing import NamedTuple
 
-from dffml.df.types import Definition
+from dffml.dfold.types import Definition
 
 
 class GitRepoSpec(NamedTuple):

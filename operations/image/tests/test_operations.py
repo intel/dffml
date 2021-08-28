@@ -1,8 +1,8 @@
 import cv2
 import numpy as np
 
-from dffml.df.types import Input, DataFlow
-from dffml.df.memory import MemoryOrchestrator
+from dffml.dfold.types import Input, DataFlow
+from dffml.dfold.memory import MemoryOrchestrator
 from dffml.operation.output import GetSingle
 from dffml.util.asynctestcase import AsyncTestCase
 

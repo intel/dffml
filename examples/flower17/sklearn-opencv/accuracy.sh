@@ -7,7 +7,7 @@ dffml accuracy \
     Haralick:int:13 \
   -model-predict label:str:1 \
   -model-location tempdir \
-  -sources images=df \
+  -sources images=dfold \
     -source-images-source dir \
     -source-images-source-foldername flower_dataset/test \
     -source-images-source-labels \

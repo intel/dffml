@@ -2,9 +2,9 @@ from random import randint
 
 import numpy as np
 
-from dffml.df.types import Input, DataFlow
+from dffml.dfold.types import Input, DataFlow
 from dffml.operation.output import GetSingle
-from dffml.df.memory import MemoryOrchestrator
+from dffml.dfold.memory import MemoryOrchestrator
 from dffml.util.asynctestcase import AsyncTestCase
 
 from dffml_operations_nlp.operations import (

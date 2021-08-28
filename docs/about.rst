@@ -69,12 +69,12 @@ This is a high level overview of how DFFML works.
     graph TD
 
     subgraph DataFlow[Dataset Generation]
-      df[Directed Graph Execution]
+      dfold[Directed Graph Execution]
       generate_features[Generate Feature Data]
       single[Single Record]
       all[Whole DataSet]
 
-      df --> generate_features
+      dfold --> generate_features
       generate_features --> single
       generate_features --> all
     end

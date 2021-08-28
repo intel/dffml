@@ -104,7 +104,7 @@ class BaseMultiCommContext(BaseDataFlowObjectContext, abc.ABC):
                 )
                 mc_configs[config_path] = config
             # Grab all files containing DataFlows
-            df_dir = pathlib.Path(directory, "df")
+            df_dir = pathlib.Path(directory, "dfold")
             if not df_dir.is_dir():
                 raise NoDataFlows(f"In {df_dir!s}")
             # Load all the DataFlows

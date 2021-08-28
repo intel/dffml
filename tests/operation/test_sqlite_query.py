@@ -9,9 +9,9 @@ from dffml.operation.db import (
     db_query_insert,
     db_query_lookup,
 )
-from dffml.df.types import DataFlow, Input
+from dffml.dfold.types import DataFlow, Input
 from dffml.operation.output import GetSingle
-from dffml.df.memory import MemoryOrchestrator
+from dffml.dfold.memory import MemoryOrchestrator
 
 
 class TestSqliteQuery(AsyncTestCase):
@@ -57,13 +57,13 @@ class TestSqliteQuery(AsyncTestCase):
 
     async def test_0_create(self):
 
-        df = self._create_dataflow_with_op(db_query_create_table)
+        dfold = self._create_dataflow_with_op(db_query_create_table)
         test_inputs = {
             "create": {"table_name": self.table_name, "cols": self.cols}
         }
 
         async with MemoryOrchestrator.withconfig({}) as orchestrator:
-            async with orchestrator(df) as octx:
+            async with orchestrator(dfold) as octx:
                 async for _ctx, results in octx.run(
                     {
                         test_ctx: [
@@ -92,14 +92,14 @@ class TestSqliteQuery(AsyncTestCase):
 
     async def test_1_insert(self):
 
-        df = self._create_dataflow_with_op(db_query_insert)
+        dfold = self._create_dataflow_with_op(db_query_insert)
         for _data in self.data_dicts:
             test_inputs = {
                 "insert": {"table_name": self.table_name, "data": _data}
             }
 
             async with MemoryOrchestrator.withconfig({}) as orchestrator:
-                async with orchestrator(df) as octx:
+                async with orchestrator(dfold) as octx:
                     async for _ctx, results in octx.run(
                         {
                             test_ctx: [
@@ -128,7 +128,7 @@ class TestSqliteQuery(AsyncTestCase):
                 definition=GetSingle.op.inputs["spec"],
             )
         ]
-        df = self._create_dataflow_with_op(db_query_lookup, seed=seed)
+        dfold = self._create_dataflow_with_op(db_query_lookup, seed=seed)
         test_inputs = {
             "lookup": {
                 "table_name": self.table_name,
@@ -138,7 +138,7 @@ class TestSqliteQuery(AsyncTestCase):
         }
 
         async with MemoryOrchestrator.withconfig({}) as orchestrator:
-            async with orchestrator(df) as octx:
+            async with orchestrator(dfold) as octx:
                 async for _ctx, results in octx.run(
                     {
                         test_ctx: [

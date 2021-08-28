@@ -5,8 +5,8 @@ import warnings
 import concurrent.futures
 from typing import Dict, Any
 
-from dffml.df.types import Operation
-from dffml.df.base import (
+from dffml.dfold.types import Operation
+from dffml.dfold.base import (
     OperationImplementationContext,
     OperationImplementation,
 )

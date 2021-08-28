@@ -1,7 +1,7 @@
 from typing import Dict, List, Any
 
-from ..df.types import Definition
-from ..df.base import op
+from ..dfold.types import Definition
+from ..dfold.base import op
 from ..util.data import traverse_get
 
 MAPPING = Definition(name="mapping", primitive="map")

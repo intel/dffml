@@ -3,8 +3,8 @@ import tarfile
 import zipfile
 import pathlib
 
-from ..df.base import op
-from ..df.types import Definition
+from ..dfold.base import op
+from ..dfold.types import Definition
 
 
 # definitions

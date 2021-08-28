@@ -88,7 +88,7 @@ setup(
             "idx3 = dffml.source.idx3:IDX3Source",
             "db = dffml.source.db:DbSource",
             "ini = dffml.source.ini:INISource",
-            "df = dffml.source.df:DataFlowSource",
+            "dfold = dffml.source.dfold:DataFlowSource",
             "op = dffml.source.op:OpSource",
             "dir = dffml.source.dir:DirectorySource",
             "dataframe = dffml.source.dataframe:DataFrameSource",
@@ -141,19 +141,25 @@ setup(
             "xz_compress = dffml.operation.compression:xz_compress",
             "xz_decompress = dffml.operation.compression:xz_decompress",
         ],
-        "dffml.kvstore": ["memory = dffml.df.memory:MemoryKeyValueStore"],
-        "dffml.input.network": ["memory = dffml.df.memory:MemoryInputNetwork"],
+        "dffml.kvstore": ["memory = dffml.dfold.memory:MemoryKeyValueStore"],
+        "dffml.input.network": [
+            "memory = dffml.dfold.memory:MemoryInputNetwork"
+        ],
         "dffml.operation.network": [
-            "memory = dffml.df.memory:MemoryOperationNetwork"
+            "memory = dffml.dfold.memory:MemoryOperationNetwork"
         ],
         "dffml.redundancy.checker": [
-            "memory = dffml.df.memory:MemoryRedundancyChecker"
+            "memory = dffml.dfold.memory:MemoryRedundancyChecker"
         ],
-        "dffml.lock.network": ["memory = dffml.df.memory:MemoryLockNetwork"],
+        "dffml.lock.network": [
+            "memory = dffml.dfold.memory:MemoryLockNetwork"
+        ],
         "dffml.operation.implementation.network": [
-            "memory = dffml.df.memory:MemoryOperationImplementationNetwork"
+            "memory = dffml.dfold.memory:MemoryOperationImplementationNetwork"
         ],
-        "dffml.orchestrator": ["memory = dffml.df.memory:MemoryOrchestrator"],
+        "dffml.orchestrator": [
+            "memory = dffml.dfold.memory:MemoryOrchestrator"
+        ],
         # Databases
         "dffml.db": ["sqlite = dffml.db.sqlite:SqliteDatabase"],
         # Models

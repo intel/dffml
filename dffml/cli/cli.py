@@ -17,9 +17,9 @@ from .log import LOGGER
 from ..version import VERSION
 from ..record import Record
 from ..feature.feature import Features
-from ..df.types import DataFlow
+from ..dfold.types import DataFlow
 from ..plugins import PACKAGE_NAMES_BY_PLUGIN, PACKAGE_NAMES_TO_DIRECTORY
-from ..source.df import DataFlowSource, DataFlowSourceConfig
+from ..source.dfold import DataFlowSource, DataFlowOldSourceConfig
 from ..source.source import Sources, BaseSource, SubsetSources
 from ..configloader.configloader import BaseConfigLoader
 from ..util.packaging import is_develop
@@ -204,7 +204,7 @@ class BaseEditCMD(SourcesCMD):
                 self.dataflow = DataFlow._fromdict(**exported)
 
             self.sources = DataFlowSource(
-                DataFlowSourceConfig(
+                DataFlowOldSourceConfig(
                     source=self.sources,
                     dataflow=self.dataflow,
                     features=self.features,

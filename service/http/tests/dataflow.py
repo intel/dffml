@@ -1,8 +1,8 @@
 import copy
 from typing import NamedTuple
 
-from dffml.df.base import op
-from dffml.df.types import Input, Definition, DataFlow
+from dffml.dfold.base import op
+from dffml.dfold.types import Input, Definition, DataFlow
 from dffml.operation.output import GetSingle, remap
 
 

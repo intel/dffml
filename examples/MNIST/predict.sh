@@ -7,7 +7,7 @@ dffml predict all \
     -model-location tempdir \
     -model-classifications $(seq 0 9) \
     -model-features image:int:$((28 * 28)) \
-    -sources images=df \
+    -sources images=dfold \
     -source-images-source csv \
     -source-images-source-filename image.csv \
     -source-images-source-loadfiles image \

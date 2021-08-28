@@ -16,8 +16,8 @@ import contextlib
 from typing import Optional, Callable
 
 from dffml import Features, Feature
-from dffml.df.types import DataFlow, Input
-from dffml.df.memory import MemoryOrchestrator
+from dffml.dfold.types import DataFlow, Input
+from dffml.dfold.memory import MemoryOrchestrator
 from dffml.noasync import train
 from dffml.model.slr import SLRModel
 from dffml.util.asynctestcase import AsyncTestCase

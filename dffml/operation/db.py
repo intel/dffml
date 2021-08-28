@@ -2,9 +2,9 @@ import inspect
 from typing import Dict, Any, Optional, List
 
 from ..base import config
-from ..df.base import op
+from ..dfold.base import op
 from ..db.base import Conditions, BaseDatabase
-from ..df.types import Definition
+from ..dfold.types import Definition
 
 
 # definitions

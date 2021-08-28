@@ -8,8 +8,8 @@ from typing import Dict, List
 
 from dateutil.relativedelta import relativedelta
 
-from dffml.df.types import Stage
-from dffml.df.base import op
+from dffml.dfold.types import Stage
+from dffml.dfold.base import op
 
 from .definitions import *
 

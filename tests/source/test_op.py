@@ -5,7 +5,7 @@ import inspect
 import pathlib
 import tempfile
 
-from dffml.source.df import DataFlowSource, DataFlowSourceConfig
+from dffml.source.dfold import DataFlowSource, DataFlowOldSourceConfig
 from dffml.util.asynctestcase import AsyncTestCase
 from dffml.util.os import chdir
 from dffml.cli.cli import CLI
@@ -13,8 +13,8 @@ from dffml.feature import Features, Feature
 from dffml.source.source import Sources
 from dffml.source.memory import MemorySource, MemorySourceConfig
 from dffml.record import Record
-from dffml.df.base import op
-from dffml.df.types import Input, DataFlow, Definition, InputFlow
+from dffml.dfold.base import op
+from dffml.dfold.types import Input, DataFlow, Definition, InputFlow
 from dffml.operation.output import AssociateDefinition
 
 

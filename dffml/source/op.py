@@ -4,10 +4,10 @@ from ..record import Record
 from ..high_level import run
 from .source import BaseSource
 from ..base import config, field
-from ..df.types import DataFlow, Input
+from ..dfold.types import DataFlow, Input
 from ..util.entrypoint import entrypoint
 from ..operation.output import GetSingle
-from ..df.base import OperationImplementation
+from ..dfold.base import OperationImplementation
 from .memory import MemorySource, MemorySourceContext
 
 

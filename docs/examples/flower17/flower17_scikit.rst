@@ -13,7 +13,7 @@ We can install them with ``pip``.
     $ pip install -U dffml-model-scikit dffml-operations-image dffml-config-yaml dffml-config-image
 
 Create a dataflow config file which will be used by the
-:py:class:`DataFlowSource <dffml.source.df.DataFlowSource>` to preprocess
+:py:class:`DataFlowSource <dffml.source.dfold.DataFlowSource>` to preprocess
 the data before feeding it to the model.
 
 Our dataflow extracts features from the data which will then be used by the machine learning

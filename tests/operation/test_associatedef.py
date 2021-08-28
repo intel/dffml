@@ -1,6 +1,6 @@
-from dffml.df.memory import MemoryOrchestrator
+from dffml.dfold.memory import MemoryOrchestrator
 from dffml.util.asynctestcase import AsyncTestCase
-from dffml.df.types import DataFlow, Input, Definition
+from dffml.dfold.types import DataFlow, Input, Definition
 from dffml.operation.output import AssociateDefinition
 
 

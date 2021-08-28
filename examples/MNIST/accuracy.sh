@@ -8,7 +8,7 @@ dffml accuracy \
     -model-location tempdir \
     -model-classifications $(seq 0 9) \
     -model-features image:int:$((28 * 28)) \
-    -sources images=df label=idx1 \
+    -sources images=dfold label=idx1 \
     -source-images-dataflow normalize.yaml \
     -source-images-features image:int:$((28 * 28)) \
     -source-images-source idx3 \

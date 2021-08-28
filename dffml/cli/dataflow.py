@@ -3,10 +3,10 @@ import contextlib
 from typing import List, Dict, Any
 
 from ..base import BaseConfig
-from ..df.base import BaseOrchestrator, OperationImplementation
-from ..df.types import DataFlow, Stage, Operation, Input, InputFlow
-from ..df.exceptions import DefinitionNotFoundInDataFlow
-from ..df.memory import (
+from ..dfold.base import BaseOrchestrator, OperationImplementation
+from ..dfold.types import DataFlow, Stage, Operation, Input, InputFlow
+from ..dfold.exceptions import DefinitionNotFoundInDataFlow
+from ..dfold.memory import (
     MemoryOrchestrator,
     MemoryInputSet,
     MemoryInputSetConfig,

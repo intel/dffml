@@ -1,7 +1,7 @@
 from unittest.mock import patch, mock_open
 
 from dffml import run
-from dffml.df.types import DataFlow, Input
+from dffml.dfold.types import DataFlow, Input
 from dffml.util.asynctestcase import AsyncTestCase
 from dffml.operation.archive import (
     make_zip_archive,
