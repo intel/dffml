@@ -78,7 +78,7 @@ the merge command.
 .. code-block:: console
     :test:
 
-    $ dffml merge text=dfpreprocess temp=csv \
+    $ dffml merge text=df temp=csv \
         -source-text-dataflow clean_ops.json \
         -source-text-features class:float:1 cap-shape:float:1 cap-surface:float:1 cap-color:float:1 bruises:float:1 odor:float:1 gill-attachment:float:1 gill-spacing:float:1 gill-size:float:1 gill-color:float:1 stalk-shape:float:1 stalk-root:float:1 stalk-surface-above-ring:float:1 stalk-surface-below-ring:float:1 stalk-color-above-ring:float:1 stalk-color-below-ring:float:1 veil-type:float:1 veil-color:float:1 ring-number:float:1 ring-type:float:1 spore-print-color:float:1 population:float:1 habitat:float:1 \
         -source-text-source csv \

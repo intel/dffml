@@ -78,7 +78,7 @@ data looks like.
 .. code-block:: console
     :test:
 
-    $ dffml merge text=dfpreprocess temp=csv \
+    $ dffml merge text=df temp=csv \
         -source-text-dataflow clean_ops.json \
         -source-text-features price:float:1 bedrooms:float:1 bathrooms:float:1 sqft_living:float:1 sqft_lot:float:1 floors:str:1 waterfront:float:1 view:float:1 condition:float:1 grade:float:1 sqft_above:float:1 sqft_basement:float:1 yr_built:float:1 yr_renovated:float:1 zipcode:str:1 lat:float:1 long:float:1 sqft_living15:float:1 sqft_lot15:float:1 \
         -source-text-source csv \
