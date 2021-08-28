@@ -4,7 +4,7 @@ dffml accuracy \
     -model-predict sentiment:int:1 \
     -model-location tempdir \
     -features sentiment:int:1 \
-    -sources text=df \
+    -sources text=dfold \
     -source-text-dataflow nlp_ops_dataflow.json \
     -source-text-features sentence:str:1 \
     -source-text-source csv \

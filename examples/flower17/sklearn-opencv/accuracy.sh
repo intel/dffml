@@ -8,7 +8,7 @@ dffml accuracy \
   -model-predict label:str:1 \
   -model-location tempdir \
   -features label:str:1 \
-  -sources images=df \
+  -sources images=dfold \
     -source-images-source dir \
     -source-images-source-foldername flower_dataset/test \
     -source-images-source-labels \
