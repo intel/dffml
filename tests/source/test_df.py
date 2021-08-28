@@ -1,4 +1,7 @@
-from dffml.source.dfold import DataFlowOldSource, DataFlowOldSourceConfig
+from dffml.source.dfpreprocess import (
+    DataFlowPreprocessSource,
+    DataFlowPreprocessSourceConfig,
+)
 from dffml.util.asynctestcase import AsyncTestCase
 from dffml.feature import Features, Feature
 from dffml.source.source import Sources
@@ -101,12 +104,12 @@ class TestDataFlowSource(AsyncTestCase):
         )
 
     def config(self, source, dataflow, features):
-        return DataFlowOldSourceConfig(
+        return DataFlowPreprocessSourceConfig(
             source=source, dataflow=dataflow, features=features,
         )
 
     def setUpSource(self):
-        return DataFlowOldSource(
+        return DataFlowPreprocessSource(
             self.config(
                 source=self.source,
                 dataflow=TEST_DATAFLOW1,

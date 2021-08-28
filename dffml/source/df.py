@@ -75,7 +75,7 @@ class DataFlowSourceContext(BaseSourceContext):
                         key=key, data=data,
                     )
 
-    async def __aenter__(self) -> "DataFlowOldSourceContext":
+    async def __aenter__(self) -> "DataFlowPreprocessSourceContext":
         self.sctx = await self.parent.source().__aenter__()
 
         if isinstance(self.parent.config.dataflow, str):
