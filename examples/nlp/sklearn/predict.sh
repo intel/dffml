@@ -3,7 +3,7 @@ dffml predict all \
     -model-features extract_array_from_matrix.outputs.result:float:1 \
     -model-predict sentiment:int:1 \
     -model-location tempdir \
-    -sources text=dfold \
+    -sources text=dfpreprocess \
     -source-text-dataflow nlp_ops_dataflow.json \
     -source-text-features sentence:str:1 \
     -source-text-source csv \

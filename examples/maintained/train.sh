@@ -13,7 +13,7 @@ dffml train all \
     authors:int:10 \
     commits:int:10 \
     work:int:10 \
-  -sources preprocess=dfold \
+  -sources preprocess=dfpreprocess \
   -source-preprocess-dataflow dataflow.yaml \
   -source-preprocess-no_strict \
   -source-preprocess-record_def URL \

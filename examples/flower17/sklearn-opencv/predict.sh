@@ -6,7 +6,7 @@ dffml predict all \
     Haralick:int:13 \
   -model-predict label:str:1 \
   -model-location tempdir \
-  -sources images=dfold \
+  -sources images=dfpreprocess \
     -source-images-source csv \
     -source-images-source-filename unknown_images.csv \
     -source-images-source-loadfiles image \
