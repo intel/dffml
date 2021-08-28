@@ -9,7 +9,7 @@ dffml accuracy \
     -model-classifications $(seq 0 9) \
     -model-features image:int:$((28 * 28)) \
     -features label:int:1 \
-    -sources images=dfold label=idx1 \
+    -sources images=dfpreprocess label=idx1 \
     -source-images-dataflow normalize.yaml \
     -source-images-features image:int:$((28 * 28)) \
     -source-images-source idx3 \

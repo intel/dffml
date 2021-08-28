@@ -15,7 +15,7 @@ from dffml.df.memory import MemoryOrchestrator
 
 
 @config
-class DataFlowOldSourceConfig:
+class DataFlowPreprocessSourceConfig:
     source: BaseSource = field("Source to wrap")
     dataflow: DataFlow = field("DataFlow to use for preprocessing")
     features: Features = field(
@@ -70,7 +70,7 @@ class RecordInputSetContext(BaseInputSetContext):
         return repr(self)
 
 
-class DataFlowOldSourceContext(BaseSourceContext):
+class DataFlowPreprocessSourceContext(BaseSourceContext):
     async def input_set(self, record: Record) -> List[Input]:
         return (
             [
@@ -120,7 +120,7 @@ class DataFlowOldSourceContext(BaseSourceContext):
         await self.sctx.update(record)
 
     # TODO Implement this method. We forgot to implement it when we initially
-    # added the DataFlowOldSourceContext
+    # added the DataFlowPreprocessSourceContext
     async def record(self, key: str) -> AsyncIterator[Record]:
         if self.parent.config.all_for_single:
             async for ctx, result in self.records():
@@ -150,7 +150,7 @@ class DataFlowOldSourceContext(BaseSourceContext):
                 ctx.record.evaluated(result)
             yield ctx.record
 
-    async def __aenter__(self) -> "DataFlowOldSourceContext":
+    async def __aenter__(self) -> "DataFlowPreprocessSourceContext":
         self.sctx = await self.parent.source().__aenter__()
 
         if isinstance(self.parent.config.dataflow, str):
@@ -176,8 +176,8 @@ class DataFlowOldSourceContext(BaseSourceContext):
         await self.sctx.__aexit__(exc_type, exc_value, traceback)
 
 
-@entrypoint("dfold")
-class DataFlowOldSource(BaseSource):
+@entrypoint("dfpreprocess")
+class DataFlowPreprocessSource(BaseSource):
     """
     >>> import asyncio
     >>> from dffml import *
@@ -221,8 +221,8 @@ class DataFlowOldSource(BaseSource):
     >>>
     >>> memory_source = Sources(MemorySource(MemorySourceConfig(records=records)))
     >>>
-    >>> source = DataFlowOldSource(
-    ...     DataFlowOldSourceConfig(
+    >>> source = DataFlowPreprocessSource(
+    ...     DataFlowPreprocessSourceConfig(
     ...         source=memory_source, dataflow=dataflow, features=features,
     ...     )
     ... )
@@ -239,10 +239,10 @@ class DataFlowOldSource(BaseSource):
     {'Years': 10, 'Expertise': 30, 'Trust': 2.0, 'Salary': 200}
     """
 
-    CONFIG = DataFlowOldSourceConfig
-    CONTEXT = DataFlowOldSourceContext
+    CONFIG = DataFlowPreprocessSourceConfig
+    CONTEXT = DataFlowPreprocessSourceContext
 
-    async def __aenter__(self) -> "DataFlowOldSource":
+    async def __aenter__(self) -> "DataFlowPreprocessSource":
         self.source = await self.config.source.__aenter__()
         self.orchestrator = await self.config.orchestrator.__aenter__()
         return self

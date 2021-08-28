@@ -6,7 +6,7 @@ dffml train \
     Haralick:int:13 \
   -model-predict label:str:1 \
   -model-location tempdir \
-  -sources images=dfold \
+  -sources images=dfpreprocess \
     -source-images-source dir \
     -source-images-source-foldername flower_dataset/train \
     -source-images-source-labels \
