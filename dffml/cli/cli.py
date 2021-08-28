@@ -19,7 +19,7 @@ from ..record import Record
 from ..feature.feature import Features
 from ..df.types import DataFlow
 from ..plugins import PACKAGE_NAMES_BY_PLUGIN, PACKAGE_NAMES_TO_DIRECTORY
-from ..source.df import DataFlowSource, DataFlowSourceConfig
+from ..source.dfold import DataFlowOldSource, DataFlowOldSourceConfig
 from ..source.source import Sources, BaseSource, SubsetSources
 from ..configloader.configloader import BaseConfigLoader
 from ..util.cli.cmd import CMD
@@ -202,8 +202,8 @@ class BaseEditCMD(SourcesCMD):
                     exported = await loader.loadb(dataflow_path.read_bytes())
                 self.dataflow = DataFlow._fromdict(**exported)
 
-            self.sources = DataFlowSource(
-                DataFlowSourceConfig(
+            self.sources = DataFlowOldSource(
+                DataFlowOldSourceConfig(
                     source=self.sources,
                     dataflow=self.dataflow,
                     features=self.features,
