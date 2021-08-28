@@ -14,7 +14,7 @@ from ..df.memory import MemoryOrchestrator
 
 
 @config
-class DataFlowPreprocessSourceConfig:
+class DataFlowSourceConfig:
     source: BaseSource = field("Source to wrap")
     dataflow: DataFlow = field("DataFlow to use for preprocessing")
     features: Features = field(
@@ -50,7 +50,7 @@ class DataFlowPreprocessSourceConfig:
     )
 
 
-class DataFlowPreprocessSourceContext(BaseSourceContext):
+class DataFlowSourceContext(BaseSourceContext):
     async def update(self):
         raise NotImplementedError
 
@@ -98,13 +98,13 @@ class DataFlowPreprocessSourceContext(BaseSourceContext):
         await self.sctx.__aexit__(exc_type, exc_value, traceback)
 
 
-@entrypoint("dfpreprocess")
-class DataFlowPreprocessSource(BaseSource):
+@entrypoint("df")
+class DataFlowSource(BaseSource):
 
-    CONFIG = DataFlowPreprocessSourceConfig
-    CONTEXT = DataFlowPreprocessSourceContext
+    CONFIG = DataFlowSourceConfig
+    CONTEXT = DataFlowSourceContext
 
-    async def __aenter__(self) -> "DataFlowPreprocessSource":
+    async def __aenter__(self) -> "DataFlowSource":
         self.source = await self.config.source.__aenter__()
         self.orchestrator = await self.config.orchestrator.__aenter__()
         return self
