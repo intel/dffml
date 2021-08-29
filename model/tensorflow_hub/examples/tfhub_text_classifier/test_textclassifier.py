@@ -7,7 +7,6 @@ import contextlib
 import subprocess
 import unittest.mock
 
-from dffml.model.model import ModelContext, Model, ModelNotTrained
 from dffml.util.os import chdir
 
 

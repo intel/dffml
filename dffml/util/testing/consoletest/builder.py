@@ -142,10 +142,7 @@ class BaseConsoleTestBuilder:
 
 with contextlib.suppress(ModuleNotFoundError):
     from docutils import nodes
-    from docutils.nodes import Node
-    from docutils.parsers.rst import directives
 
-    import sphinx
     from sphinx.locale import __
     from sphinx.ext.doctest import DocTestBuilder
 

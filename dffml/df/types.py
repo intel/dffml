@@ -18,7 +18,6 @@ from typing import (
 
 from ..base import BaseConfig
 from ..util.data import export_dict, type_lookup
-from ..util.entrypoint import load as load_entrypoint
 from ..util.entrypoint import Entrypoint, base_entry_point
 
 

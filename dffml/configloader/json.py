@@ -2,7 +2,6 @@ import json
 from typing import Dict
 
 from ..util.entrypoint import entrypoint
-from ..util.cli.arg import Arg
 from ..base import BaseConfig
 from .configloader import BaseConfigLoaderContext, BaseConfigLoader
 

@@ -2,15 +2,10 @@ import os
 import stat
 import shutil
 import pathlib
-import inspect
-import functools
-import contextlib
-import dataclasses
 import email.message
 import urllib.request
 from typing import List, Union, Tuple
 
-from .os import chdir
 from .file import validate_file_hash
 from .log import LOGGER, get_download_logger
 

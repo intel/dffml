@@ -12,10 +12,7 @@ from dffml.base import BaseDataFlowFacilitatorObjectContext
 
 from dffml.operation.output import GetSingle
 from dffml_operations_deploy.operations import *
-from dffml_feature_git.feature.operations import (
-    clone_git_repo,
-    cleanup_git_repo,
-)
+from dffml_feature_git.feature.operations import clone_git_repo
 from dffml_feature_git.util.proc import check_output
 from dffml_operations_deploy.operations import check_secret_match
 

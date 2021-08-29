@@ -22,7 +22,6 @@ from ..plugins import PACKAGE_NAMES_BY_PLUGIN, PACKAGE_NAMES_TO_DIRECTORY
 from ..source.df import DataFlowSource, DataFlowSourceConfig
 from ..source.source import Sources, BaseSource, SubsetSources
 from ..configloader.configloader import BaseConfigLoader
-from ..util.packaging import is_develop
 from ..util.cli.cmd import CMD
 from ..util.cli.cmds import (
     SourcesCMD,
@@ -334,8 +333,6 @@ def services():
         """
         Expose various functionalities of dffml
         """
-
-        pass
 
     try:
         for i in pkg_resources.iter_entry_points("dffml.service.cli"):

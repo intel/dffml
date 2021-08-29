@@ -4,7 +4,7 @@ from typing import List, Dict, Any
 
 from ..base import BaseConfig
 from ..df.base import BaseOrchestrator, OperationImplementation
-from ..df.types import DataFlow, Stage, Operation, Input, InputFlow
+from ..df.types import DataFlow, Input, Operation, Stage
 from ..df.exceptions import DefinitionNotFoundInDataFlow
 from ..df.memory import (
     MemoryOrchestrator,

@@ -6,7 +6,6 @@ import random
 import tempfile
 
 from ...record import Record, RecordPrediction
-from ..asynctestcase import AsyncTestCase
 
 
 class SourceTest(abc.ABC):

@@ -1,8 +1,6 @@
-import os
 import random
 import pathlib
 import tempfile
-from typing import Type
 
 import numpy as np
 

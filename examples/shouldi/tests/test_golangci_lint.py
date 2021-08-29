@@ -1,6 +1,5 @@
 import os
 import copy
-import pathlib
 
 from dffml import (
     prepend_to_path,

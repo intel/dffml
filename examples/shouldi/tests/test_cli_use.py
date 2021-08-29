@@ -1,9 +1,7 @@
 import io
 import json
 import shutil
-import asyncio
 import pathlib
-import subprocess
 from unittest.mock import patch
 
 from dffml import (

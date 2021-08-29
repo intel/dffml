@@ -1,6 +1,5 @@
 import socket
 import inspect
-import unittest
 import contextlib
 from unittest.mock import patch
 

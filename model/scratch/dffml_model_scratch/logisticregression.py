@@ -8,7 +8,6 @@ from dffml import (
     entrypoint,
     SimpleModel,
     ModelNotTrained,
-    Accuracy,
     Feature,
     Features,
     Sources,

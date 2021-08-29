@@ -2,7 +2,6 @@
 Base class for PyTorch models
 """
 from abc import abstractmethod
-import os
 import copy
 import time
 import torch

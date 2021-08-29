@@ -1,7 +1,4 @@
-import os
-import sys
 import pathlib
-import tempfile
 
 from dffml import (
     op,

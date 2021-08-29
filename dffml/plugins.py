@@ -3,13 +3,8 @@ This file is imported by the top level setup.py and therefore must remain as
 independent as possible (no relative imports)
 """
 import os
-import sys
-import pathlib
-import inspect
 import platform
-import tempfile
 import contextlib
-import subprocess
 import importlib.util
 
 
@@ -50,6 +45,7 @@ CORE_PLUGINS += [
     ("feature", "git"),
     ("feature", "auth"),
     ("operations", "binsec"),
+    ("operations", "data"),
     ("operations", "deploy"),
     ("operations", "image"),
     ("operations", "nlp"),

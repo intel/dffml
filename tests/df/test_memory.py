@@ -1,5 +1,4 @@
 from unittest.mock import patch
-from typing import NamedTuple
 
 from dffml import (
     run,

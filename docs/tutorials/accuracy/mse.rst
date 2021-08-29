@@ -25,7 +25,7 @@ Few other modules will also be required which needs to be imported.
 
 .. literalinclude:: /../dffml/accuracy/mse.py
     :test:
-    :lines: 1-11
+    :lines: 1-9
 
 Config
 ------
@@ -35,7 +35,7 @@ a config class for the scorer that we will be implementing.
 
 .. literalinclude:: /../dffml/accuracy/mse.py
     :test:
-    :lines: 14-16
+    :lines: 12-14
 
 Context
 -------
@@ -49,7 +49,7 @@ have access the model's config and the sources records.
 
 .. literalinclude:: /../dffml/accuracy/mse.py
     :test:
-    :lines: 19-35
+    :lines: 17-33
 
 Scorer
 ------
@@ -61,4 +61,4 @@ scorer in the cli.
 
 .. literalinclude:: /../dffml/accuracy/mse.py
     :test:
-    :lines: 38-41
+    :lines: 36-39

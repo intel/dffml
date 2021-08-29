@@ -7,7 +7,6 @@ import pkg_resources
 from unittest.mock import patch
 from typing import Type
 
-from dffml.util.os import chdir
 from dffml.util.entrypoint import Entrypoint, EntrypointNotFound
 
 

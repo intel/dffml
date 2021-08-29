@@ -705,7 +705,6 @@ class BaseInputSet(abc.ABC):
         """
         Removes item from input set
         """
-        pass
 
     @abc.abstractmethod
     async def remove_unvalidated_inputs(self) -> "BaseInputSet":

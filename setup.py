@@ -90,6 +90,7 @@ setup(
             "ini = dffml.source.ini:INISource",
             "df = dffml.source.df:DataFlowSource",
             "op = dffml.source.op:OpSource",
+            "dfpreprocess = dffml.source.dfpreprocess:DataFlowPreprocessSource",
             "dir = dffml.source.dir:DirectorySource",
             "dataframe = dffml.source.dataframe:DataFrameSource",
             "iris.training = dffml.source.dataset.iris:iris_training.source",
@@ -140,6 +141,9 @@ setup(
             "bz2_decompress = dffml.operation.compression:bz2_decompress",
             "xz_compress = dffml.operation.compression:xz_compress",
             "xz_decompress = dffml.operation.compression:xz_decompress",
+            # Source
+            "convert_list_to_records = dffml.operation.source:convert_list_to_records",
+            "convert_records_to_list = dffml.operation.source:convert_records_to_list",
         ],
         "dffml.kvstore": ["memory = dffml.df.memory:MemoryKeyValueStore"],
         "dffml.input.network": ["memory = dffml.df.memory:MemoryInputNetwork"],

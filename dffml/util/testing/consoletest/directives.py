@@ -40,7 +40,6 @@ with contextlib.suppress(ModuleNotFoundError):
     from docutils.nodes import Node
     from docutils.parsers.rst import directives
 
-    import sphinx
     from sphinx.directives.code import LiteralInclude, CodeBlock
 
     LiteralInclude.run = LiteralInclude_run(LiteralInclude.run)
