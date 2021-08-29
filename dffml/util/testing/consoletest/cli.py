@@ -19,6 +19,7 @@ async def main(argv: List[str]) -> None:
     parser.add_argument("--root", type=pathlib.Path, default=pathlib.Path(""))
     parser.add_argument("--docs", type=pathlib.Path, default=pathlib.Path(""))
     parser.add_argument("--setup", type=pathlib.Path, default=pathlib.Path(""))
+    parser.add_argument("--code_block_content", type=bool, default=False)
     args = parser.parse_args(argv)
 
     if args.root == pathlib.Path(""):
@@ -43,17 +44,24 @@ async def main(argv: List[str]) -> None:
 
     nodes = []
 
-    for node in parse_nodes(args.infile.read()):
-        if not node.options.get("test", False):
-            continue
-        if node.directive == "code-block":
+    if args.code_block_content :
+
+        for node in parse_nodes(args.infile.read()):
+            if not node.options.get("test", False):
+                continue
+            if node.directive == "code-block":
+                nodes.append(
+                    code_block_to_dict(node.content, node.options, node=node.node)
+                )
+            elif node.directive == "literalinclude":
+                nodes.append(
+                    literalinclude_to_dict(node.content, node.options, node.node)
+                )
+    else :
+        for node in parse_nodes(args.infile.read()):
             nodes.append(
-                code_block_to_dict(node.content, node.options, node=node.node)
-            )
-        elif node.directive == "literalinclude":
-            nodes.append(
-                literalinclude_to_dict(node.content, node.options, node.node)
-            )
+                    code_block_to_dict(node.content, node.options, node=node.node)
+                )
 
     with contextlib.ExitStack() as stack:
         await run_nodes(args.root, args.docs, stack, nodes, setup=args.setup)
