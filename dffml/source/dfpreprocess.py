@@ -1,17 +1,17 @@
 import pathlib
 from typing import AsyncIterator, List
 
-from dffml.base import config, field
-from dffml.configloader.configloader import BaseConfigLoader
-from dffml.df.types import DataFlow, Definition, Input
-from dffml.df.base import BaseInputSetContext, BaseContextHandle
-from dffml.df.base import BaseOrchestrator
-from dffml.feature import Features
-from dffml.record import Record
-from dffml.source.source import BaseSource, BaseSourceContext
-from dffml.util.entrypoint import entrypoint
-from dffml.util.cli.parser import ParseInputsAction
-from dffml.df.memory import MemoryOrchestrator
+from ..base import config, field
+from ..configloader.configloader import BaseConfigLoader
+from ..df.types import DataFlow, Definition, Input
+from ..df.base import BaseInputSetContext, BaseContextHandle
+from ..df.base import BaseOrchestrator
+from ..feature import Features
+from ..record import Record
+from ..source.source import BaseSource, BaseSourceContext
+from ..util.entrypoint import entrypoint
+from ..util.cli.parser import ParseInputsAction
+from ..df.memory import MemoryOrchestrator
 
 
 @config
