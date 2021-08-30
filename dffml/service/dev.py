@@ -58,6 +58,23 @@ EMAIL = config.get("user", "email", fallback="unknown@example.com")
 REPO_ROOT = pathlib.Path(__file__).parents[2]
 
 
+async def get_cmd_output(cmd: List[str]):
+    print(f"$ {' '.join(cmd)}")
+
+    proc = await asyncio.create_subprocess_shell(
+        " ".join(cmd),
+        stdout=asyncio.subprocess.PIPE,
+        stderr=asyncio.subprocess.PIPE,
+        cwd=REPO_ROOT,
+    )
+    await proc.wait()
+    stdout, stderr = await proc.communicate()
+    if proc.returncode != 0:
+        raise RuntimeError(stderr)
+    output = stdout.decode().strip()
+    return output
+
+
 def create_from_skel(plugin_type):
     """
     Copies samples out of skel/ and does re-naming.
@@ -750,6 +767,39 @@ class BumpPackages(CMD):
             self.logger.debug("Updated version file %s", version_file)
 
 
+class RemoveUnusedImports(CMD):
+    async def _run_autoflake(self, branch_name):
+        cmd = [
+            "git",
+            "ls-tree",
+            "-r",
+            f"{branch_name}",
+            "--full-name",
+            "|",
+            "awk",
+            "'{print$4}'",
+            "|",
+            "grep",
+            "'\.py'",
+            "|",
+            "xargs",
+            "autoflake",
+            "--in-place",
+            "--remove-all-unused-imports",
+            "--ignore-init-module-imports",
+        ]
+        await get_cmd_output(cmd)
+
+    async def _get_current_branch_name(self):
+        cmd = ["git", "branch", "--show-current"]
+        current_branch = await get_cmd_output(cmd)
+        return current_branch
+
+    async def run(self):
+        current_branch = await self._get_current_branch_name()
+        await self._run_autoflake(current_branch)
+
+
 class CommitLintError(Exception):
     pass
 
@@ -823,26 +873,10 @@ class LintCommits(CMD):
         }
         return mutations
 
-    async def _get_cmd_output(self, cmd: List[str]):
-        print(f"$ {' '.join(cmd)}")
-
-        proc = await asyncio.create_subprocess_shell(
-            " ".join(cmd),
-            stdout=asyncio.subprocess.PIPE,
-            stderr=asyncio.subprocess.PIPE,
-            cwd=REPO_ROOT,
-        )
-        await proc.wait()
-        stdout, stderr = await proc.communicate()
-        if proc.returncode != 0:
-            raise RuntimeError(stderr)
-        output = stdout.decode().strip()
-        return output
-
     async def _get_relevant_commits(self):
         #! This needs to change when master is renamed to main.
         cmd = ["git", "cherry", "-v", "origin/master"]
-        commits = await self._get_cmd_output(cmd)
+        commits = await get_cmd_output(cmd)
         commits_list = [
             " ".join(line.split()[2:]) for line in commits.split("\n")
         ]
@@ -850,7 +884,7 @@ class LintCommits(CMD):
 
     async def _get_commmit_details(self, msg):
         cmd = ["git", "log", f"""--grep='{msg}'"""]
-        commit_details = await self._get_cmd_output(cmd)
+        commit_details = await get_cmd_output(cmd)
         return commit_details
 
     async def _get_all_exts(self,):
@@ -861,7 +895,7 @@ class LintCommits(CMD):
             "HEAD",
             "--name-only",
         ]
-        tracked_files = await self._get_cmd_output(cmd)
+        tracked_files = await get_cmd_output(cmd)
         tracked_files = tracked_files.split("\n")
         extentions = set()
         for file in tracked_files:
@@ -927,6 +961,7 @@ class Lint(CMD):
     """
 
     commits = LintCommits
+    imports = RemoveUnusedImports
 
 
 class Bump(CMD):
