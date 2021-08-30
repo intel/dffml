@@ -197,6 +197,7 @@ function run_commit(){
 }
 
 function run_imports(){
+  dffml service dev lint imports
   if [[ -z $(git status -s) ]]
   then
     echo "Yay ! No unused imports found"
