@@ -768,7 +768,7 @@ class BumpPackages(CMD):
 
 
 class RemoveUnusedImports(CMD):
-    async def _run_autoflake(self, branch_name):
+    async def _run_autoflake(self):
         cmd = [
             "git",
             "ls-files",
@@ -782,14 +782,8 @@ class RemoveUnusedImports(CMD):
         ]
         await get_cmd_output(cmd)
 
-    async def _get_current_branch_name(self):
-        cmd = ["git", "branch", "--show-current"]
-        current_branch = await get_cmd_output(cmd)
-        return current_branch
-
     async def run(self):
-        current_branch = await self._get_current_branch_name()
-        await self._run_autoflake(current_branch)
+        await self._run_autoflake()
 
 
 class CommitLintError(Exception):
