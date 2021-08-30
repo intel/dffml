@@ -771,16 +771,8 @@ class RemoveUnusedImports(CMD):
     async def _run_autoflake(self, branch_name):
         cmd = [
             "git",
-            "ls-tree",
-            "-r",
-            f"{branch_name}",
-            "--full-name",
-            "|",
-            "awk",
-            "'{print$4}'",
-            "|",
-            "grep",
-            "'\.py'",
+            "ls-files",
+            "'*.py'",
             "|",
             "xargs",
             "autoflake",
