@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>dffml.service.dev &mdash; DFFML eac9df420 documentation</title>
+  <title>dffml.service.dev &mdash; DFFML 68c82a901 documentation</title>
   
 
   
@@ -69,7 +69,7 @@
             
             
               <div class="version">
-                eac9df420
+                68c82a901
               </div>
             
           
@@ -276,6 +276,23 @@
 <span class="n">EMAIL</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;email&quot;</span><span class="p">,</span> <span class="n">fallback</span><span class="o">=</span><span class="s2">&quot;unknown@example.com&quot;</span><span class="p">)</span>
 
 <span class="n">REPO_ROOT</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parents</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+
+
+<span class="k">async</span> <span class="k">def</span> <span class="nf">get_cmd_output</span><span class="p">(</span><span class="n">cmd</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;$ </span><span class="si">{</span><span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="n">proc</span> <span class="o">=</span> <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">create_subprocess_shell</span><span class="p">(</span>
+        <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cmd</span><span class="p">),</span>
+        <span class="n">stdout</span><span class="o">=</span><span class="n">asyncio</span><span class="o">.</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span>
+        <span class="n">stderr</span><span class="o">=</span><span class="n">asyncio</span><span class="o">.</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span>
+        <span class="n">cwd</span><span class="o">=</span><span class="n">REPO_ROOT</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="k">await</span> <span class="n">proc</span><span class="o">.</span><span class="n">wait</span><span class="p">()</span>
+    <span class="n">stdout</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="k">await</span> <span class="n">proc</span><span class="o">.</span><span class="n">communicate</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">proc</span><span class="o">.</span><span class="n">returncode</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="n">stderr</span><span class="p">)</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="n">stdout</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">output</span>
 
 
 <div class="viewcode-block" id="create_from_skel"><a class="viewcode-back" href="../../../api/service/dev.html#dffml.service.dev.create_from_skel">[docs]</a><span class="k">def</span> <span class="nf">create_from_skel</span><span class="p">(</span><span class="n">plugin_type</span><span class="p">):</span>
@@ -970,6 +987,25 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Updated version file </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">version_file</span><span class="p">)</span></div>
 
 
+<span class="k">class</span> <span class="nc">RemoveUnusedImports</span><span class="p">(</span><span class="n">CMD</span><span class="p">):</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">_run_autoflake</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">cmd</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s2">&quot;git&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;ls-files&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;&#39;*.py&#39;&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;|&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;xargs&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;autoflake&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;--in-place&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;--remove-all-unused-imports&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;--ignore-init-module-imports&quot;</span><span class="p">,</span>
+        <span class="p">]</span>
+        <span class="k">await</span> <span class="n">get_cmd_output</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_run_autoflake</span><span class="p">()</span>
+
+
 <div class="viewcode-block" id="CommitLintError"><a class="viewcode-back" href="../../../api/service/dev.html#dffml.service.dev.CommitLintError">[docs]</a><span class="k">class</span> <span class="nc">CommitLintError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
     <span class="k">pass</span></div>
 
@@ -1043,26 +1079,10 @@
         <span class="p">}</span>
         <span class="k">return</span> <span class="n">mutations</span>
 
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">_get_cmd_output</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cmd</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]):</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;$ </span><span class="si">{</span><span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-
-        <span class="n">proc</span> <span class="o">=</span> <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">create_subprocess_shell</span><span class="p">(</span>
-            <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cmd</span><span class="p">),</span>
-            <span class="n">stdout</span><span class="o">=</span><span class="n">asyncio</span><span class="o">.</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span>
-            <span class="n">stderr</span><span class="o">=</span><span class="n">asyncio</span><span class="o">.</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span>
-            <span class="n">cwd</span><span class="o">=</span><span class="n">REPO_ROOT</span><span class="p">,</span>
-        <span class="p">)</span>
-        <span class="k">await</span> <span class="n">proc</span><span class="o">.</span><span class="n">wait</span><span class="p">()</span>
-        <span class="n">stdout</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="k">await</span> <span class="n">proc</span><span class="o">.</span><span class="n">communicate</span><span class="p">()</span>
-        <span class="k">if</span> <span class="n">proc</span><span class="o">.</span><span class="n">returncode</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="n">stderr</span><span class="p">)</span>
-        <span class="n">output</span> <span class="o">=</span> <span class="n">stdout</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-        <span class="k">return</span> <span class="n">output</span>
-
     <span class="k">async</span> <span class="k">def</span> <span class="nf">_get_relevant_commits</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1">#! This needs to change when master is renamed to main.</span>
         <span class="n">cmd</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;git&quot;</span><span class="p">,</span> <span class="s2">&quot;cherry&quot;</span><span class="p">,</span> <span class="s2">&quot;-v&quot;</span><span class="p">,</span> <span class="s2">&quot;origin/master&quot;</span><span class="p">]</span>
-        <span class="n">commits</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_cmd_output</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span>
+        <span class="n">commits</span> <span class="o">=</span> <span class="k">await</span> <span class="n">get_cmd_output</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span>
         <span class="n">commits_list</span> <span class="o">=</span> <span class="p">[</span>
             <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">2</span><span class="p">:])</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">commits</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="p">]</span>
@@ -1070,7 +1090,7 @@
 
     <span class="k">async</span> <span class="k">def</span> <span class="nf">_get_commmit_details</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="p">):</span>
         <span class="n">cmd</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;git&quot;</span><span class="p">,</span> <span class="s2">&quot;log&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;--grep=&#39;</span><span class="si">{</span><span class="n">msg</span><span class="si">}</span><span class="s2">&#39;&quot;&quot;&quot;</span><span class="p">]</span>
-        <span class="n">commit_details</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_cmd_output</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span>
+        <span class="n">commit_details</span> <span class="o">=</span> <span class="k">await</span> <span class="n">get_cmd_output</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">commit_details</span>
 
     <span class="k">async</span> <span class="k">def</span> <span class="nf">_get_all_exts</span><span class="p">(</span><span class="bp">self</span><span class="p">,):</span>
@@ -1081,7 +1101,7 @@
             <span class="s2">&quot;HEAD&quot;</span><span class="p">,</span>
             <span class="s2">&quot;--name-only&quot;</span><span class="p">,</span>
         <span class="p">]</span>
-        <span class="n">tracked_files</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_cmd_output</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span>
+        <span class="n">tracked_files</span> <span class="o">=</span> <span class="k">await</span> <span class="n">get_cmd_output</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span>
         <span class="n">tracked_files</span> <span class="o">=</span> <span class="n">tracked_files</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="n">extentions</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">tracked_files</span><span class="p">:</span>
@@ -1146,7 +1166,8 @@
 <span class="sd">    Linting related commands</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">commits</span> <span class="o">=</span> <span class="n">LintCommits</span></div>
+    <span class="n">commits</span> <span class="o">=</span> <span class="n">LintCommits</span>
+    <span class="n">imports</span> <span class="o">=</span> <span class="n">RemoveUnusedImports</span></div>
 
 
 <div class="viewcode-block" id="Bump"><a class="viewcode-back" href="../../../api/service/dev.html#dffml.service.dev.Bump">[docs]</a><span class="k">class</span> <span class="nc">Bump</span><span class="p">(</span><span class="n">CMD</span><span class="p">):</span>
