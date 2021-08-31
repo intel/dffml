@@ -517,3 +517,25 @@ class TestLintCommits(AsyncTestCase):
                     ]
                 )
             )
+
+
+class TestRemoveUnusedImports(AsyncTestCase):
+    async def test_cmd_execution(self):
+        if not is_develop("dffml"):
+            self.skipTest("dffml not installed in development mode")
+
+        stdout = io.StringIO()
+
+        with unittest.mock.patch(
+            "asyncio.create_subprocess_exec", new=mkexec()
+        ), contextlib.redirect_stdout(stdout):
+            await Develop.cli("lint", "imports")
+
+        self.assertEqual(
+            stdout.getvalue().strip(),
+            inspect.cleandoc(
+                """
+                $ git ls-files '*.py' | xargs autoflake --in-place --remove-all-unused-imports --ignore-init-module-imports
+                """
+            ),
+        )
