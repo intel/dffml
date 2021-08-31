@@ -3,7 +3,7 @@ from typing import AsyncIterator, List
 
 from ..base import config, field
 from ..configloader.configloader import BaseConfigLoader
-from ..df.types import Definition, DataFlow, Input
+from ..df.types import DataFlow, Input
 from ..df.base import BaseOrchestrator
 from ..feature import Features
 from ..record import Record

@@ -196,6 +196,19 @@ function run_commit(){
   fi
 }
 
+function run_imports(){
+  dffml service dev lint imports
+  if [[ -z $(git status -s) ]]
+  then
+    echo "Yay ! No unused imports found"
+  else
+    echo "There maybe unused imports in the following files:"
+    git status -s  | grep "M" | awk '{print $2}'
+    exit 1
+  fi
+
+}
+
 function run_docs() {
   export GIT_SSH_COMMAND='ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no'
 
@@ -317,6 +330,8 @@ elif [ "x${1}" == "xstyle" ]; then
   run_style
 elif [ "x${1}" == "xcommit" ]; then
   run_commit
+elif [ "x${1}" == "ximport" ]; then
+  run_imports
 elif [ "x${1}" == "xdocs" ]; then
   run_docs
 elif [ "x${1}" == "xlines" ]; then

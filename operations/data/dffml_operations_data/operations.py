@@ -1,8 +1,6 @@
-from typing import List
-
 import numpy as np
 from sklearn.decomposition import PCA, TruncatedSVD
-from sklearn.preprocessing import OneHotEncoder, StandardScaler, OrdinalEncoder
+from sklearn.preprocessing import OneHotEncoder, StandardScaler
 from sklearn.impute import SimpleImputer
 
 from dffml.df.base import op
