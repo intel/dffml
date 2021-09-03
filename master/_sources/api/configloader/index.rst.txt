@@ -5,5 +5,5 @@ Configloader
     :maxdepth: 2
     :caption: Contents:
 
-    json
     configloader
+    json

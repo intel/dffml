@@ -5,6 +5,6 @@ Db
     :maxdepth: 2
     :caption: Contents:
 
-    sqlite
     base
+    sqlite
     sql

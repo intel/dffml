@@ -5,6 +5,6 @@ Util Testing
     :maxdepth: 2
     :caption: Contents:
 
-    source
     docs
+    source
     consoletest/index
