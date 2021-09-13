@@ -246,19 +246,6 @@
 <em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">dffml.df.base.</span></span><span class="sig-name descname"><span class="pre">BaseDataFlowObject</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Type</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../base.html#dffml.base.BaseConfig" title="dffml.base.BaseConfig"><span class="pre">dffml.base.BaseConfig</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/base.html#BaseDataFlowObject"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.df.base.BaseDataFlowObject" title="Permalink to this definition">¶</a></dt>
 <dd><p>Data Flow Objects create their child contexts’ by passing only itself as an
 argument to the child’s __init__ (of type BaseDataFlowObjectContext).</p>
-<dl class="py method">
-<dt class="sig sig-object py" id="dffml.df.base.BaseDataFlowObject.args">
-<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">args</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">above</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span> </span><a class="reference internal" href="../util/cli/arg.html#dffml.util.cli.arg.Arg" title="dffml.util.cli.arg.Arg"><span class="pre">dffml.util.cli.arg.Arg</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/dffml/df/base.html#BaseDataFlowObject.args"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.df.base.BaseDataFlowObject.args" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return a dict containing arguments required for this class</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="dffml.df.base.BaseDataFlowObject.config">
-<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">above</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../base.html#dffml.base.BaseConfig" title="dffml.base.BaseConfig"><span class="pre">dffml.base.BaseConfig</span></a></span></span><a class="reference internal" href="../../_modules/dffml/df/base.html#BaseDataFlowObject.config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.df.base.BaseDataFlowObject.config" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create the BaseConfig required to instantiate this class by parsing the
-config dict.</p>
-</dd></dl>
-
 </dd></dl>
 
 <dl class="py class">
@@ -613,14 +600,7 @@ the dffml.operation entrypoint.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="dffml.df.base.OperationImplementation">
 <em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">dffml.df.base.</span></span><span class="sig-name descname"><span class="pre">OperationImplementation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../base.html#dffml.base.BaseConfig" title="dffml.base.BaseConfig"><span class="pre">dffml.base.BaseConfig</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/base.html#OperationImplementation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.df.base.OperationImplementation" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="py method">
-<dt class="sig sig-object py" id="dffml.df.base.OperationImplementation.load">
-<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">loading</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/base.html#OperationImplementation.load"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.df.base.OperationImplementation.load" title="Permalink to this definition">¶</a></dt>
-<dd><p>Loads all installed loading and returns them as a list. Sources to be
-loaded should be registered to ENTRYPOINT via setuptools.</p>
-</dd></dl>
-
-</dd></dl>
+<dd></dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="dffml.df.base.OperationImplementationContext">

@@ -258,17 +258,17 @@
 <span class="sd">    argument to the child&#39;s __init__ (of type BaseDataFlowObjectContext).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="BaseDataFlowObject.args"><a class="viewcode-back" href="../../../api/df/base.html#dffml.df.base.BaseDataFlowObject.args">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">args</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="o">*</span><span class="n">above</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Arg</span><span class="p">]:</span>
         <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="s2">&quot;CONFIG&quot;</span><span class="p">):</span>
             <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">BaseDataFlowObject</span><span class="p">,</span> <span class="bp">cls</span><span class="p">)</span><span class="o">.</span><span class="n">args</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="o">*</span><span class="n">above</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">args</span></div>
+        <span class="k">return</span> <span class="n">args</span>
 
-<div class="viewcode-block" id="BaseDataFlowObject.config"><a class="viewcode-back" href="../../../api/df/base.html#dffml.df.base.BaseDataFlowObject.config">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">config</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="o">*</span><span class="n">above</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BaseConfig</span><span class="p">:</span>
         <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="s2">&quot;CONFIG&quot;</span><span class="p">):</span>
             <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">BaseDataFlowObject</span><span class="p">,</span> <span class="bp">cls</span><span class="p">)</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="o">*</span><span class="n">above</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">BaseConfig</span><span class="p">()</span></div></div>
+        <span class="k">return</span> <span class="n">BaseConfig</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="OperationImplementationContext"><a class="viewcode-back" href="../../../api/df/base.html#dffml.df.base.OperationImplementationContext">[docs]</a><span class="k">class</span> <span class="nc">OperationImplementationContext</span><span class="p">(</span><span class="n">BaseDataFlowObjectContext</span><span class="p">):</span>
@@ -366,7 +366,7 @@
             <span class="k">return</span> <span class="n">op</span><span class="p">(</span><span class="n">loaded</span><span class="p">)</span><span class="o">.</span><span class="n">imp</span>
         <span class="k">return</span> <span class="kc">None</span>
 
-<div class="viewcode-block" id="OperationImplementation.load"><a class="viewcode-back" href="../../../api/df/base.html#dffml.df.base.OperationImplementation.load">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">loading</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
         <span class="n">loading_classes</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="c1"># Load operations</span>
@@ -392,7 +392,7 @@
                     <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">op</span><span class="p">:</span> <span class="n">op</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">loading_classes</span><span class="p">))),</span>
                 <span class="p">)</span>
             <span class="p">)</span>
-        <span class="k">return</span> <span class="n">loading_classes</span></div></div>
+        <span class="k">return</span> <span class="n">loading_classes</span></div>
 
 
 <span class="k">def</span> <span class="nf">create_definition</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">param_annotation</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">NO_DEFAULT</span><span class="p">):</span>
