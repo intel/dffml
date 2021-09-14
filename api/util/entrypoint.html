@@ -1,46 +1,22 @@
-
-
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  
   <title>Util Entrypoint &mdash; DFFML 0.4.0 documentation</title>
-  
-
-  
-  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/tabs.css" type="text/css" />
-
-  
-  
-
-  
-  
-
-  
-
-  
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/tabs.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
         <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
         <script src="../../_static/doctools.js"></script>
         <script src="../../_static/copybutton.js"></script>
-    
-    <script type="text/javascript" src="../../_static/js/theme.js"></script>
-
-    
+    <script src="../../_static/js/theme.js"></script>
     <link rel="author" title="About these documents" href="../../about.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -48,33 +24,16 @@
     <link rel="prev" title="Asyncio Helpers" href="asynchelper.html" /> 
 </head>
 
-<body class="wy-body-for-nav">
-
-   
+<body class="wy-body-for-nav"> 
   <div class="wy-grid-for-nav">
-    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-          
-
-          
             <a href="../../index.html" class="icon icon-home"> DFFML
-          
-
-          
           </a>
-
-          
-            
-            
               <div class="version">
                 0.4.0
               </div>
-            
-          
-
-          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -82,18 +41,7 @@
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-
-          
-        </div>
-
-        
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Introduction</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../about.html">About</a></li>
@@ -167,106 +115,61 @@
 <li class="toctree-l1"><a class="reference internal" href="../../changelog.html">Changelog</a></li>
 </ul>
 
-            
-          
         </div>
-        
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../../index.html">DFFML</a>
-        
       </nav>
 
-
       <div class="wy-nav-content">
-        
         <div class="rst-content">
-        
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
+          <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-    
       <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
-        
           <li><a href="../index.html">API Reference</a> &raquo;</li>
-        
           <li><a href="index.html">Utilities</a> &raquo;</li>
-        
       <li>Util Entrypoint</li>
-    
-    
 
 
       <li class="wy-breadcrumbs-aside">
-        
-          
-            
               <a href="https://github.com/intel/dffml/blob/master/docs/api/util/entrypoint.rst" class="fa fa-github"> Edit on GitHub</a>
-            
-          
-        
       </li>
-    
 
 
   </ul>
-
-  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
-            
+             
   <div class="section" id="module-dffml.util.entrypoint">
-<span id="util-entrypoint"></span><h1>Util Entrypoint<a class="headerlink" href="#module-dffml.util.entrypoint" title="Permalink to this headline">¶</a></h1>
+<span id="util-entrypoint"></span><h1>Util Entrypoint<a class="headerlink" href="#module-dffml.util.entrypoint" title="Permalink to this headline"></a></h1>
 <p>Loader subclasses know how to load classes under their entry point which conform
 to their subclasses.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="dffml.util.entrypoint.Entrypoint">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">dffml.util.entrypoint.</span></span><span class="sig-name descname"><span class="pre">Entrypoint</span></span><a class="reference internal" href="../../_modules/dffml/util/entrypoint.html#Entrypoint"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.util.entrypoint.Entrypoint" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">dffml.util.entrypoint.</span></span><span class="sig-name descname"><span class="pre">Entrypoint</span></span><a class="reference internal" href="../../_modules/dffml/util/entrypoint.html#Entrypoint"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.util.entrypoint.Entrypoint" title="Permalink to this definition"></a></dt>
 <dd><p>Uses the pkg_resources.iter_entry_points on the ENTRYPOINT of the class</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="dffml.util.entrypoint.Entrypoint.load">
-<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">loading</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/util/entrypoint.html#Entrypoint.load"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.util.entrypoint.Entrypoint.load" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">loading</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/util/entrypoint.html#Entrypoint.load"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.util.entrypoint.Entrypoint.load" title="Permalink to this definition"></a></dt>
 <dd><p>Loads all installed loading and returns them as a list. Sources to be
 loaded should be registered to ENTRYPOINT via setuptools.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="dffml.util.entrypoint.Entrypoint.load_dict">
-<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">load_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">to_load</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/util/entrypoint.html#Entrypoint.load_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.util.entrypoint.Entrypoint.load_dict" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">load_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">to_load</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/util/entrypoint.html#Entrypoint.load_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.util.entrypoint.Entrypoint.load_dict" title="Permalink to this definition"></a></dt>
 <dd><p>Loads each class tagged with the key it should be accessed by without
 instantiating it.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="dffml.util.entrypoint.Entrypoint.load_multiple">
-<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">load_multiple</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">to_load</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/util/entrypoint.html#Entrypoint.load_multiple"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.util.entrypoint.Entrypoint.load_multiple" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">load_multiple</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">to_load</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/util/entrypoint.html#Entrypoint.load_multiple"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.util.entrypoint.Entrypoint.load_multiple" title="Permalink to this definition"></a></dt>
 <dd><p>Loads each class requested without instantiating it.</p>
 </dd></dl>
 
@@ -274,17 +177,17 @@ instantiating it.</p>
 
 <dl class="py exception">
 <dt class="sig sig-object py" id="dffml.util.entrypoint.EntrypointNotFound">
-<em class="property"><span class="pre">exception</span> </em><span class="sig-prename descclassname"><span class="pre">dffml.util.entrypoint.</span></span><span class="sig-name descname"><span class="pre">EntrypointNotFound</span></span><a class="reference internal" href="../../_modules/dffml/util/entrypoint.html#EntrypointNotFound"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.util.entrypoint.EntrypointNotFound" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">exception</span> </em><span class="sig-prename descclassname"><span class="pre">dffml.util.entrypoint.</span></span><span class="sig-name descname"><span class="pre">EntrypointNotFound</span></span><a class="reference internal" href="../../_modules/dffml/util/entrypoint.html#EntrypointNotFound"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.util.entrypoint.EntrypointNotFound" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py exception">
 <dt class="sig sig-object py" id="dffml.util.entrypoint.MissingLabel">
-<em class="property"><span class="pre">exception</span> </em><span class="sig-prename descclassname"><span class="pre">dffml.util.entrypoint.</span></span><span class="sig-name descname"><span class="pre">MissingLabel</span></span><a class="reference internal" href="../../_modules/dffml/util/entrypoint.html#MissingLabel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.util.entrypoint.MissingLabel" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">exception</span> </em><span class="sig-prename descclassname"><span class="pre">dffml.util.entrypoint.</span></span><span class="sig-name descname"><span class="pre">MissingLabel</span></span><a class="reference internal" href="../../_modules/dffml/util/entrypoint.html#MissingLabel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.util.entrypoint.MissingLabel" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="dffml.util.entrypoint.base_entry_point">
-<span class="sig-prename descclassname"><span class="pre">dffml.util.entrypoint.</span></span><span class="sig-name descname"><span class="pre">base_entry_point</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">entrypoint</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/util/entrypoint.html#base_entry_point"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.util.entrypoint.base_entry_point" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">dffml.util.entrypoint.</span></span><span class="sig-name descname"><span class="pre">base_entry_point</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">entrypoint</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/util/entrypoint.html#base_entry_point"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.util.entrypoint.base_entry_point" title="Permalink to this definition"></a></dt>
 <dd><p>Any class which subclasses from Entrypoint needs this decorator applied to
 it. The decorator sets the ENTRYPOINT and ENTRY_POINT_NAME properties on
 the class.</p>
@@ -314,7 +217,7 @@ argument if it were joined with hyphens.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="dffml.util.entrypoint.entrypoint">
-<span class="sig-prename descclassname"><span class="pre">dffml.util.entrypoint.</span></span><span class="sig-name descname"><span class="pre">entrypoint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">label</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/util/entrypoint.html#entrypoint"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.util.entrypoint.entrypoint" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">dffml.util.entrypoint.</span></span><span class="sig-name descname"><span class="pre">entrypoint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">label</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/util/entrypoint.html#entrypoint"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.util.entrypoint.entrypoint" title="Permalink to this definition"></a></dt>
 <dd><p>If a class if going to be registered with setuptools as an entrypoint it
 must have the label it will be registered under associated with it via this
 decorator.</p>
@@ -340,7 +243,7 @@ it with label set to mylabel.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="dffml.util.entrypoint.load">
-<span class="sig-prename descclassname"><span class="pre">dffml.util.entrypoint.</span></span><span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">relative</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span> </span><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><span class="pre">pathlib.Path</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Iterator</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/dffml/util/entrypoint.html#load"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.util.entrypoint.load" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">dffml.util.entrypoint.</span></span><span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">relative</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span> </span><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><span class="pre">pathlib.Path</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Iterator</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/dffml/util/entrypoint.html#load"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.util.entrypoint.load" title="Permalink to this definition"></a></dt>
 <dd><p>Load objects given the entrypoint formatted path to the object. Roughly how
 the python stdlib docs say entrypoint loading works.</p>
 </dd></dl>
@@ -349,50 +252,33 @@ the python stdlib docs say entrypoint loading works.</p>
 
 
            </div>
-           
           </div>
-          <footer>
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="skel.html" class="btn btn-neutral float-right" title="Util Skel" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="asynchelper.html" class="btn btn-neutral float-left" title="Asyncio Helpers" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="skel.html" class="btn btn-neutral float-right" title="Util Skel" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>
-        &#169; Copyright 2017 - 2021, Intel.
-
-    </p>
+    <p>&#169; Copyright 2017 - 2021, Intel.</p>
   </div>
-    
-    
-    
-    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
 
 </footer>
         </div>
       </div>
-
     </section>
-
   </div>
-  
-
-  <script type="text/javascript">
+  <script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-
-  
-  
-    
-   
+  </script> 
 
 </body>
 </html>

@@ -1,46 +1,22 @@
-
-
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  
   <title>Software Portal &mdash; DFFML 0.4.0 documentation</title>
-  
-
-  
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/tabs.css" type="text/css" />
-
-  
-  
-
-  
-  
-
-  
-
-  
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/tabs.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
         <script src="_static/copybutton.js"></script>
-    
-    <script type="text/javascript" src="_static/js/theme.js"></script>
-
-    
+    <script src="_static/js/theme.js"></script>
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -48,33 +24,16 @@
     <link rel="prev" title="shouldi" href="shouldi.html" /> 
 </head>
 
-<body class="wy-body-for-nav">
-
-   
+<body class="wy-body-for-nav"> 
   <div class="wy-grid-for-nav">
-    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-          
-
-          
             <a href="index.html" class="icon icon-home"> DFFML
-          
-
-          
           </a>
-
-          
-            
-            
               <div class="version">
                 0.4.0
               </div>
-            
-          
-
-          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -82,18 +41,7 @@
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-
-          
-        </div>
-
-        
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Introduction</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="about.html">About</a></li>
@@ -140,86 +88,43 @@
 <li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
 </ul>
 
-            
-          
         </div>
-        
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="index.html">DFFML</a>
-        
       </nav>
 
-
       <div class="wy-nav-content">
-        
         <div class="rst-content">
-        
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
+          <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-    
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-        
       <li>Software Portal</li>
-    
-    
 
 
       <li class="wy-breadcrumbs-aside">
-        
-          
-            
               <a href="https://github.com/intel/dffml/blob/master/docs/swportal.rst" class="fa fa-github"> Edit on GitHub</a>
-            
-          
-        
       </li>
-    
 
 
   </ul>
-
-  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
-            
+             
   <div class="section" id="software-portal">
-<h1>Software Portal<a class="headerlink" href="#software-portal" title="Permalink to this headline">¶</a></h1>
+<h1>Software Portal<a class="headerlink" href="#software-portal" title="Permalink to this headline"></a></h1>
 <p>Example of using DFFML to create a web app to discover information about
 software.</p>
 <p>All the code for this example project is located under the
 <a class="reference external" href="https://github.com/intel/dffml/blob/master/examples/swportal/">examples/swportal</a>
 directory of the DFFML source code.</p>
 <div class="section" id="setup">
-<h2>Setup<a class="headerlink" href="#setup" title="Permalink to this headline">¶</a></h2>
+<h2>Setup<a class="headerlink" href="#setup" title="Permalink to this headline"></a></h2>
 <p>Install dependencies</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python -m pip install -U pip setuptools wheel
 <span class="gp">$ </span>python -m pip install -U dffml dffml-service-http dffml-config-yaml
@@ -228,7 +133,7 @@ directory of the DFFML source code.</p>
 </div>
 </div>
 <div class="section" id="usage">
-<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h2>
+<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline"></a></h2>
 <p>Run the http service and navigate to <a class="reference external" href="http://localhost:8080/">http://localhost:8080/</a></p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
@@ -256,7 +161,7 @@ tutorial. See documentation on HTTP API
 </div>
 </div>
 <div class="section" id="structure">
-<h2>Structure<a class="headerlink" href="#structure" title="Permalink to this headline">¶</a></h2>
+<h2>Structure<a class="headerlink" href="#structure" title="Permalink to this headline"></a></h2>
 <ul class="simple">
 <li><p>The codebase for the client is in <cite>html-client/</cite></p></li>
 <li><p>The DataFlows for each project are in <cite>projects/</cite></p>
@@ -267,18 +172,18 @@ tutorial. See documentation on HTTP API
 </li>
 </ul>
 <div class="section" id="html-client">
-<h3>HTML Client<a class="headerlink" href="#html-client" title="Permalink to this headline">¶</a></h3>
+<h3>HTML Client<a class="headerlink" href="#html-client" title="Permalink to this headline"></a></h3>
 <p>The website displayed to clients is all vanila HTML, CSS, and JavaScript.</p>
 </div>
 <div class="section" id="projects">
-<h3>Projects<a class="headerlink" href="#projects" title="Permalink to this headline">¶</a></h3>
+<h3>Projects<a class="headerlink" href="#projects" title="Permalink to this headline"></a></h3>
 <p>Each project has a DataFlow which describes how data for the project should be
 collected. Static data can be added directly to the dataflow file. When
 gernating data dynamiclly is required, code can be added to <cite>operations/</cite>.</p>
 </div>
 </div>
 <div class="section" id="notes">
-<h2>Notes<a class="headerlink" href="#notes" title="Permalink to this headline">¶</a></h2>
+<h2>Notes<a class="headerlink" href="#notes" title="Permalink to this headline"></a></h2>
 <p>Run a single project’s DataFlow from the command line</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml dataflow run single <span class="se">\</span>
     -dataflow projects/df/b7cf5596-d427-4ae3-9e95-44be879eae73.yaml <span class="se">\</span>
@@ -290,50 +195,33 @@ gernating data dynamiclly is required, code can be added to <cite>operations/</c
 
 
            </div>
-           
           </div>
-          <footer>
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="publications.html" class="btn btn-neutral float-right" title="Publications" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="shouldi.html" class="btn btn-neutral float-left" title="shouldi" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="publications.html" class="btn btn-neutral float-right" title="Publications" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>
-        &#169; Copyright 2017 - 2021, Intel.
-
-    </p>
+    <p>&#169; Copyright 2017 - 2021, Intel.</p>
   </div>
-    
-    
-    
-    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
 
 </footer>
         </div>
       </div>
-
     </section>
-
   </div>
-  
-
-  <script type="text/javascript">
+  <script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-
-  
-  
-    
-   
+  </script> 
 
 </body>
 </html>

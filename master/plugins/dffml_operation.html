@@ -1,47 +1,23 @@
-
-
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  
   <title>Operations &mdash; DFFML 68c82a901 documentation</title>
-  
-
-  
-  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/tabs.css" type="text/css" />
-
-  
-  
-
-  
-  
-
-  
-
-  
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/tabs.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/copybutton.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    
-    <script type="text/javascript" src="../_static/js/theme.js"></script>
-
-    
+    <script src="../_static/js/theme.js"></script>
     <link rel="author" title="About these documents" href="../about.html" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -49,33 +25,16 @@
     <link rel="prev" title="Optimizers" href="dffml_optimizer.html" /> 
 </head>
 
-<body class="wy-body-for-nav">
-
-   
+<body class="wy-body-for-nav"> 
   <div class="wy-grid-for-nav">
-    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-          
-
-          
             <a href="../index.html" class="icon icon-home"> DFFML
-          
-
-          
           </a>
-
-          
-            
-            
               <div class="version">
                 68c82a901
               </div>
-            
-          
-
-          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -83,18 +42,7 @@
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-
-          
-        </div>
-
-        
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Introduction</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../about.html">About</a></li>
@@ -280,69 +228,30 @@
 <li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
 </ul>
 
-            
-          
         </div>
-        
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../index.html">DFFML</a>
-        
       </nav>
 
-
       <div class="wy-nav-content">
-        
         <div class="rst-content">
-        
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
+          <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-    
       <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
-        
           <li><a href="index.html">Plugins</a> &raquo;</li>
-        
       <li>Operations</li>
-    
-    
 
 
   </ul>
-
-  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
-            
+             
   
 <style>
 /* CSS overrides for sphinx_rtd_theme */
@@ -368,7 +277,7 @@
 }
 </style>
 <div class="section" id="operations">
-<h1>Operations<a class="headerlink" href="#operations" title="Permalink to this headline">¶</a></h1>
+<h1>Operations<a class="headerlink" href="#operations" title="Permalink to this headline"></a></h1>
 <p>Operations Implementations are subclasses of
 <a class="reference internal" href="../api/df/base.html#dffml.df.base.OperationImplementation" title="dffml.df.base.OperationImplementation"><code class="xref py py-class docutils literal notranslate"><span class="pre">dffml.df.base.OperationImplementation</span></code></a>, they are functions or classes
 which could do anything, make HTTP requests, do inference, etc.</p>
@@ -376,23 +285,23 @@ which could do anything, make HTTP requests, do inference, etc.</p>
 to the point where it can use operations written in other languages yet, it’s on
 the roadmap.</p>
 <div class="section" id="dffml">
-<span id="plugin-operation-dffml"></span><h2>dffml<a class="headerlink" href="#dffml" title="Permalink to this headline">¶</a></h2>
+<span id="plugin-operation-dffml"></span><h2>dffml<a class="headerlink" href="#dffml" title="Permalink to this headline"></a></h2>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install dffml</span>
 </pre></div>
 </div>
 <div class="section" id="acceptuserinput">
-<span id="plugin-operation-dffml-acceptuserinput"></span><h3>AcceptUserInput<a class="headerlink" href="#acceptuserinput" title="Permalink to this headline">¶</a></h3>
+<span id="plugin-operation-dffml-acceptuserinput"></span><h3>AcceptUserInput<a class="headerlink" href="#acceptuserinput" title="Permalink to this headline"></a></h3>
 <p><em>Official</em></p>
 <p>Accept input from stdin using python input()</p>
 <div class="section" id="returns">
-<h4>Returns<a class="headerlink" href="#returns" title="Permalink to this headline">¶</a></h4>
+<h4>Returns<a class="headerlink" href="#returns" title="Permalink to this headline"></a></h4>
 <dl class="simple">
 <dt>dict</dt><dd><p>A dictionary containing user input.</p>
 </dd>
 </dl>
 </div>
 <div class="section" id="examples">
-<h4>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h4>
+<h4>Examples<a class="headerlink" href="#examples" title="Permalink to this headline"></a></h4>
 <p>The following example shows how to use AcceptUserInput.
 (Assumes that the input from stdio is “Data flow is awesome”!)</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">asyncio</span>
@@ -422,7 +331,7 @@ the roadmap.</p>
 </div>
 </div>
 <div class="section" id="associate">
-<span id="plugin-operation-dffml-associate"></span><h3>associate<a class="headerlink" href="#associate" title="Permalink to this headline">¶</a></h3>
+<span id="plugin-operation-dffml-associate"></span><h3>associate<a class="headerlink" href="#associate" title="Permalink to this headline"></a></h3>
 <p><em>Official</em></p>
 <p>No description</p>
 <p><strong>Stage: output</strong></p>
@@ -436,10 +345,10 @@ the roadmap.</p>
 </ul>
 </div>
 <div class="section" id="associate-definition">
-<span id="plugin-operation-dffml-associate-definition"></span><h3>associate_definition<a class="headerlink" href="#associate-definition" title="Permalink to this headline">¶</a></h3>
+<span id="plugin-operation-dffml-associate-definition"></span><h3>associate_definition<a class="headerlink" href="#associate-definition" title="Permalink to this headline"></a></h3>
 <p><em>Official</em></p>
 <div class="section" id="id1">
-<h4>Examples<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h4>
+<h4>Examples<a class="headerlink" href="#id1" title="Permalink to this headline"></a></h4>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">asyncio</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -493,7 +402,7 @@ the roadmap.</p>
 </div>
 </div>
 <div class="section" id="bz2-compress">
-<span id="plugin-operation-dffml-bz2-compress"></span><h3>bz2_compress<a class="headerlink" href="#bz2-compress" title="Permalink to this headline">¶</a></h3>
+<span id="plugin-operation-dffml-bz2-compress"></span><h3>bz2_compress<a class="headerlink" href="#bz2-compress" title="Permalink to this headline"></a></h3>
 <p><em>Official</em></p>
 <p>No description</p>
 <p><strong>Stage: processing</strong></p>
@@ -508,7 +417,7 @@ the roadmap.</p>
 </ul>
 </div>
 <div class="section" id="bz2-decompress">
-<span id="plugin-operation-dffml-bz2-decompress"></span><h3>bz2_decompress<a class="headerlink" href="#bz2-decompress" title="Permalink to this headline">¶</a></h3>
+<span id="plugin-operation-dffml-bz2-decompress"></span><h3>bz2_decompress<a class="headerlink" href="#bz2-decompress" title="Permalink to this headline"></a></h3>
 <p><em>Official</em></p>
 <p>No description</p>
 <p><strong>Stage: processing</strong></p>
@@ -523,7 +432,7 @@ the roadmap.</p>
 </ul>
 </div>
 <div class="section" id="convert-list-to-records">
-<span id="plugin-operation-dffml-convert-list-to-records"></span><h3>convert_list_to_records<a class="headerlink" href="#convert-list-to-records" title="Permalink to this headline">¶</a></h3>
+<span id="plugin-operation-dffml-convert-list-to-records"></span><h3>convert_list_to_records<a class="headerlink" href="#convert-list-to-records" title="Permalink to this headline"></a></h3>
 <p><em>Official</em></p>
 <p>No description</p>
 <p><strong>Stage: processing</strong></p>
@@ -541,7 +450,7 @@ the roadmap.</p>
 </ul>
 </div>
 <div class="section" id="convert-records-to-list">
-<span id="plugin-operation-dffml-convert-records-to-list"></span><h3>convert_records_to_list<a class="headerlink" href="#convert-records-to-list" title="Permalink to this headline">¶</a></h3>
+<span id="plugin-operation-dffml-convert-records-to-list"></span><h3>convert_records_to_list<a class="headerlink" href="#convert-records-to-list" title="Permalink to this headline"></a></h3>
 <p><em>Official</em></p>
 <p>No description</p>
 <p><strong>Stage: processing</strong></p>
@@ -562,11 +471,11 @@ the roadmap.</p>
 </ul>
 </div>
 <div class="section" id="db-query-create-table">
-<span id="plugin-operation-dffml-db-query-create-table"></span><h3>db_query_create_table<a class="headerlink" href="#db-query-create-table" title="Permalink to this headline">¶</a></h3>
+<span id="plugin-operation-dffml-db-query-create-table"></span><h3>db_query_create_table<a class="headerlink" href="#db-query-create-table" title="Permalink to this headline"></a></h3>
 <p><em>Official</em></p>
 <p>Generates a create table query in the database.</p>
 <div class="section" id="parameters">
-<h4>Parameters<a class="headerlink" href="#parameters" title="Permalink to this headline">¶</a></h4>
+<h4>Parameters<a class="headerlink" href="#parameters" title="Permalink to this headline"></a></h4>
 <dl class="simple">
 <dt>table_name<span class="classifier">str</span></dt><dd><p>The name of the table to be created.</p>
 </dd>
@@ -575,7 +484,7 @@ the roadmap.</p>
 </dl>
 </div>
 <div class="section" id="id2">
-<h4>Examples<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h4>
+<h4>Examples<a class="headerlink" href="#id2" title="Permalink to this headline"></a></h4>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">asyncio</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -623,11 +532,11 @@ the roadmap.</p>
 </div>
 </div>
 <div class="section" id="db-query-insert">
-<span id="plugin-operation-dffml-db-query-insert"></span><h3>db_query_insert<a class="headerlink" href="#db-query-insert" title="Permalink to this headline">¶</a></h3>
+<span id="plugin-operation-dffml-db-query-insert"></span><h3>db_query_insert<a class="headerlink" href="#db-query-insert" title="Permalink to this headline"></a></h3>
 <p><em>Official</em></p>
 <p>Generates an insert query in the database.</p>
 <div class="section" id="id3">
-<h4>Parameters<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h4>
+<h4>Parameters<a class="headerlink" href="#id3" title="Permalink to this headline"></a></h4>
 <dl class="simple">
 <dt>table_name<span class="classifier">str</span></dt><dd><p>The name of the table to insert data in to.</p>
 </dd>
@@ -636,7 +545,7 @@ the roadmap.</p>
 </dl>
 </div>
 <div class="section" id="id4">
-<h4>Examples<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h4>
+<h4>Examples<a class="headerlink" href="#id4" title="Permalink to this headline"></a></h4>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">asyncio</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -703,11 +612,11 @@ the roadmap.</p>
 </div>
 </div>
 <div class="section" id="db-query-insert-or-update">
-<span id="plugin-operation-dffml-db-query-insert-or-update"></span><h3>db_query_insert_or_update<a class="headerlink" href="#db-query-insert-or-update" title="Permalink to this headline">¶</a></h3>
+<span id="plugin-operation-dffml-db-query-insert-or-update"></span><h3>db_query_insert_or_update<a class="headerlink" href="#db-query-insert-or-update" title="Permalink to this headline"></a></h3>
 <p><em>Official</em></p>
 <p>Automatically uses the better suited operation, insert query or update query.</p>
 <div class="section" id="id5">
-<h4>Parameters<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h4>
+<h4>Parameters<a class="headerlink" href="#id5" title="Permalink to this headline"></a></h4>
 <dl class="simple">
 <dt>table_name<span class="classifier">str</span></dt><dd><p>The name of the table to insert data in to.</p>
 </dd>
@@ -716,7 +625,7 @@ the roadmap.</p>
 </dl>
 </div>
 <div class="section" id="id6">
-<h4>Examples<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h4>
+<h4>Examples<a class="headerlink" href="#id6" title="Permalink to this headline"></a></h4>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">asyncio</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -791,11 +700,11 @@ the roadmap.</p>
 </div>
 </div>
 <div class="section" id="db-query-lookup">
-<span id="plugin-operation-dffml-db-query-lookup"></span><h3>db_query_lookup<a class="headerlink" href="#db-query-lookup" title="Permalink to this headline">¶</a></h3>
+<span id="plugin-operation-dffml-db-query-lookup"></span><h3>db_query_lookup<a class="headerlink" href="#db-query-lookup" title="Permalink to this headline"></a></h3>
 <p><em>Official</em></p>
 <p>Generates a lookup query in the database.</p>
 <div class="section" id="id7">
-<h4>Parameters<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h4>
+<h4>Parameters<a class="headerlink" href="#id7" title="Permalink to this headline"></a></h4>
 <dl class="simple">
 <dt>table_name<span class="classifier">str</span></dt><dd><p>The name of the table.</p>
 </dd>
@@ -806,7 +715,7 @@ the roadmap.</p>
 </dl>
 </div>
 <div class="section" id="id8">
-<h4>Examples<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h4>
+<h4>Examples<a class="headerlink" href="#id8" title="Permalink to this headline"></a></h4>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">asyncio</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -866,11 +775,11 @@ the roadmap.</p>
 </div>
 </div>
 <div class="section" id="db-query-remove">
-<span id="plugin-operation-dffml-db-query-remove"></span><h3>db_query_remove<a class="headerlink" href="#db-query-remove" title="Permalink to this headline">¶</a></h3>
+<span id="plugin-operation-dffml-db-query-remove"></span><h3>db_query_remove<a class="headerlink" href="#db-query-remove" title="Permalink to this headline"></a></h3>
 <p><em>Official</em></p>
 <p>Generates a remove table query in the database.</p>
 <div class="section" id="id9">
-<h4>Parameters<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h4>
+<h4>Parameters<a class="headerlink" href="#id9" title="Permalink to this headline"></a></h4>
 <dl class="simple">
 <dt>table_name<span class="classifier">str</span></dt><dd><p>The name of the table to insert data in to.</p>
 </dd>
@@ -879,7 +788,7 @@ the roadmap.</p>
 </dl>
 </div>
 <div class="section" id="id10">
-<h4>Examples<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h4>
+<h4>Examples<a class="headerlink" href="#id10" title="Permalink to this headline"></a></h4>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">asyncio</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -946,11 +855,11 @@ the roadmap.</p>
 </div>
 </div>
 <div class="section" id="db-query-update">
-<span id="plugin-operation-dffml-db-query-update"></span><h3>db_query_update<a class="headerlink" href="#db-query-update" title="Permalink to this headline">¶</a></h3>
+<span id="plugin-operation-dffml-db-query-update"></span><h3>db_query_update<a class="headerlink" href="#db-query-update" title="Permalink to this headline"></a></h3>
 <p><em>Official</em></p>
 <p>Generates an Update table query in the database.</p>
 <div class="section" id="id11">
-<h4>Parameters<a class="headerlink" href="#id11" title="Permalink to this headline">¶</a></h4>
+<h4>Parameters<a class="headerlink" href="#id11" title="Permalink to this headline"></a></h4>
 <dl class="simple">
 <dt>table_name<span class="classifier">str</span></dt><dd><p>The name of the table to insert data in to.</p>
 </dd>
@@ -961,7 +870,7 @@ the roadmap.</p>
 </dl>
 </div>
 <div class="section" id="id12">
-<h4>Examples<a class="headerlink" href="#id12" title="Permalink to this headline">¶</a></h4>
+<h4>Examples<a class="headerlink" href="#id12" title="Permalink to this headline"></a></h4>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">asyncio</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -1037,11 +946,11 @@ the roadmap.</p>
 </div>
 </div>
 <div class="section" id="dffml-dataflow-run">
-<span id="plugin-operation-dffml-dffml-dataflow-run"></span><h3>dffml.dataflow.run<a class="headerlink" href="#dffml-dataflow-run" title="Permalink to this headline">¶</a></h3>
+<span id="plugin-operation-dffml-dffml-dataflow-run"></span><h3>dffml.dataflow.run<a class="headerlink" href="#dffml-dataflow-run" title="Permalink to this headline"></a></h3>
 <p><em>Official</em></p>
 <p>Starts a subflow <code class="docutils literal notranslate"><span class="pre">self.config.dataflow</span></code> and adds <code class="docutils literal notranslate"><span class="pre">inputs</span></code> in it.</p>
 <div class="section" id="id13">
-<h4>Parameters<a class="headerlink" href="#id13" title="Permalink to this headline">¶</a></h4>
+<h4>Parameters<a class="headerlink" href="#id13" title="Permalink to this headline"></a></h4>
 <dl class="simple">
 <dt>inputs<span class="classifier">dict</span></dt><dd><p>The inputs to add to the subflow. These should be a key value mapping of
 the context string to the inputs which should be seeded for that context
@@ -1050,14 +959,14 @@ string.</p>
 </dl>
 </div>
 <div class="section" id="id14">
-<h4>Returns<a class="headerlink" href="#id14" title="Permalink to this headline">¶</a></h4>
+<h4>Returns<a class="headerlink" href="#id14" title="Permalink to this headline"></a></h4>
 <dl class="simple">
 <dt>dict</dt><dd><p>Maps context strings in inputs to output after running through dataflow.</p>
 </dd>
 </dl>
 </div>
 <div class="section" id="id15">
-<h4>Examples<a class="headerlink" href="#id15" title="Permalink to this headline">¶</a></h4>
+<h4>Examples<a class="headerlink" href="#id15" title="Permalink to this headline"></a></h4>
 <p>The following shows how to use run dataflow in its default behavior.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">asyncio</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="o">*</span>
@@ -1172,11 +1081,11 @@ This allows you to run a subflow as if it were an operation.</p>
 </div>
 </div>
 <div class="section" id="dffml-mapping-create">
-<span id="plugin-operation-dffml-dffml-mapping-create"></span><h3>dffml.mapping.create<a class="headerlink" href="#dffml-mapping-create" title="Permalink to this headline">¶</a></h3>
+<span id="plugin-operation-dffml-dffml-mapping-create"></span><h3>dffml.mapping.create<a class="headerlink" href="#dffml-mapping-create" title="Permalink to this headline"></a></h3>
 <p><em>Official</em></p>
 <p>Creates a mapping of a given key and value.</p>
 <div class="section" id="id16">
-<h4>Parameters<a class="headerlink" href="#id16" title="Permalink to this headline">¶</a></h4>
+<h4>Parameters<a class="headerlink" href="#id16" title="Permalink to this headline"></a></h4>
 <dl class="simple">
 <dt>key<span class="classifier">str</span></dt><dd><p>The key for the mapping.</p>
 </dd>
@@ -1185,14 +1094,14 @@ This allows you to run a subflow as if it were an operation.</p>
 </dl>
 </div>
 <div class="section" id="id17">
-<h4>Returns<a class="headerlink" href="#id17" title="Permalink to this headline">¶</a></h4>
+<h4>Returns<a class="headerlink" href="#id17" title="Permalink to this headline"></a></h4>
 <dl class="simple">
 <dt>dict</dt><dd><p>A dictionary containing the mapping created.</p>
 </dd>
 </dl>
 </div>
 <div class="section" id="id18">
-<h4>Examples<a class="headerlink" href="#id18" title="Permalink to this headline">¶</a></h4>
+<h4>Examples<a class="headerlink" href="#id18" title="Permalink to this headline"></a></h4>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">asyncio</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -1233,11 +1142,11 @@ This allows you to run a subflow as if it were an operation.</p>
 </div>
 </div>
 <div class="section" id="dffml-mapping-extract">
-<span id="plugin-operation-dffml-dffml-mapping-extract"></span><h3>dffml.mapping.extract<a class="headerlink" href="#dffml-mapping-extract" title="Permalink to this headline">¶</a></h3>
+<span id="plugin-operation-dffml-dffml-mapping-extract"></span><h3>dffml.mapping.extract<a class="headerlink" href="#dffml-mapping-extract" title="Permalink to this headline"></a></h3>
 <p><em>Official</em></p>
 <p>Extracts value from a given mapping.</p>
 <div class="section" id="id19">
-<h4>Parameters<a class="headerlink" href="#id19" title="Permalink to this headline">¶</a></h4>
+<h4>Parameters<a class="headerlink" href="#id19" title="Permalink to this headline"></a></h4>
 <dl class="simple">
 <dt>mapping<span class="classifier">dict</span></dt><dd><p>The mapping to extract the value from.</p>
 </dd>
@@ -1246,14 +1155,14 @@ This allows you to run a subflow as if it were an operation.</p>
 </dl>
 </div>
 <div class="section" id="id20">
-<h4>Returns<a class="headerlink" href="#id20" title="Permalink to this headline">¶</a></h4>
+<h4>Returns<a class="headerlink" href="#id20" title="Permalink to this headline"></a></h4>
 <dl class="simple">
 <dt>dict</dt><dd><p>A dictionary containing the value of the keys.</p>
 </dd>
 </dl>
 </div>
 <div class="section" id="id21">
-<h4>Examples<a class="headerlink" href="#id21" title="Permalink to this headline">¶</a></h4>
+<h4>Examples<a class="headerlink" href="#id21" title="Permalink to this headline"></a></h4>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">asyncio</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -1297,25 +1206,25 @@ This allows you to run a subflow as if it were an operation.</p>
 </div>
 </div>
 <div class="section" id="dffml-model-predict">
-<span id="plugin-operation-dffml-dffml-model-predict"></span><h3>dffml.model.predict<a class="headerlink" href="#dffml-model-predict" title="Permalink to this headline">¶</a></h3>
+<span id="plugin-operation-dffml-dffml-model-predict"></span><h3>dffml.model.predict<a class="headerlink" href="#dffml-model-predict" title="Permalink to this headline"></a></h3>
 <p><em>Official</em></p>
 <p>Predict using dffml models.</p>
 <div class="section" id="id22">
-<h4>Parameters<a class="headerlink" href="#id22" title="Permalink to this headline">¶</a></h4>
+<h4>Parameters<a class="headerlink" href="#id22" title="Permalink to this headline"></a></h4>
 <dl class="simple">
 <dt>features<span class="classifier">dict</span></dt><dd><p>A dictionary contaning feature name and feature value.</p>
 </dd>
 </dl>
 </div>
 <div class="section" id="id23">
-<h4>Returns<a class="headerlink" href="#id23" title="Permalink to this headline">¶</a></h4>
+<h4>Returns<a class="headerlink" href="#id23" title="Permalink to this headline"></a></h4>
 <dl class="simple">
 <dt>dict</dt><dd><p>A dictionary containing prediction.</p>
 </dd>
 </dl>
 </div>
 <div class="section" id="id24">
-<h4>Examples<a class="headerlink" href="#id24" title="Permalink to this headline">¶</a></h4>
+<h4>Examples<a class="headerlink" href="#id24" title="Permalink to this headline"></a></h4>
 <p>The following example shows how to use model_predict.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">asyncio</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="o">*</span>
@@ -1375,11 +1284,11 @@ This allows you to run a subflow as if it were an operation.</p>
 </div>
 </div>
 <div class="section" id="extract-tar-archive">
-<span id="plugin-operation-dffml-extract-tar-archive"></span><h3>extract_tar_archive<a class="headerlink" href="#extract-tar-archive" title="Permalink to this headline">¶</a></h3>
+<span id="plugin-operation-dffml-extract-tar-archive"></span><h3>extract_tar_archive<a class="headerlink" href="#extract-tar-archive" title="Permalink to this headline"></a></h3>
 <p><em>Official</em></p>
 <p>Extracts a given tar file.</p>
 <div class="section" id="id25">
-<h4>Parameters<a class="headerlink" href="#id25" title="Permalink to this headline">¶</a></h4>
+<h4>Parameters<a class="headerlink" href="#id25" title="Permalink to this headline"></a></h4>
 <dl class="simple">
 <dt>input_file_path<span class="classifier">str</span></dt><dd><p>Path to the tar file</p>
 </dd>
@@ -1388,7 +1297,7 @@ This allows you to run a subflow as if it were an operation.</p>
 </dl>
 </div>
 <div class="section" id="id26">
-<h4>Returns<a class="headerlink" href="#id26" title="Permalink to this headline">¶</a></h4>
+<h4>Returns<a class="headerlink" href="#id26" title="Permalink to this headline"></a></h4>
 <dl class="simple">
 <dt>dict</dt><dd><p>Path to the directory where the archive has been extracted</p>
 </dd>
@@ -1406,11 +1315,11 @@ This allows you to run a subflow as if it were an operation.</p>
 </div>
 </div>
 <div class="section" id="extract-zip-archive">
-<span id="plugin-operation-dffml-extract-zip-archive"></span><h3>extract_zip_archive<a class="headerlink" href="#extract-zip-archive" title="Permalink to this headline">¶</a></h3>
+<span id="plugin-operation-dffml-extract-zip-archive"></span><h3>extract_zip_archive<a class="headerlink" href="#extract-zip-archive" title="Permalink to this headline"></a></h3>
 <p><em>Official</em></p>
 <p>Extracts a given zip file.</p>
 <div class="section" id="id27">
-<h4>Parameters<a class="headerlink" href="#id27" title="Permalink to this headline">¶</a></h4>
+<h4>Parameters<a class="headerlink" href="#id27" title="Permalink to this headline"></a></h4>
 <dl class="simple">
 <dt>input_file_path<span class="classifier">str</span></dt><dd><p>Path to the zip file</p>
 </dd>
@@ -1419,7 +1328,7 @@ This allows you to run a subflow as if it were an operation.</p>
 </dl>
 </div>
 <div class="section" id="id28">
-<h4>Returns<a class="headerlink" href="#id28" title="Permalink to this headline">¶</a></h4>
+<h4>Returns<a class="headerlink" href="#id28" title="Permalink to this headline"></a></h4>
 <dl class="simple">
 <dt>dict</dt><dd><p>Path to the directory where the archive has been extracted</p>
 </dd>
@@ -1437,11 +1346,11 @@ This allows you to run a subflow as if it were an operation.</p>
 </div>
 </div>
 <div class="section" id="get-multi">
-<span id="plugin-operation-dffml-get-multi"></span><h3>get_multi<a class="headerlink" href="#get-multi" title="Permalink to this headline">¶</a></h3>
+<span id="plugin-operation-dffml-get-multi"></span><h3>get_multi<a class="headerlink" href="#get-multi" title="Permalink to this headline"></a></h3>
 <p><em>Official</em></p>
 <p>Output operation to get all Inputs matching given definitions.</p>
 <div class="section" id="id29">
-<h4>Parameters<a class="headerlink" href="#id29" title="Permalink to this headline">¶</a></h4>
+<h4>Parameters<a class="headerlink" href="#id29" title="Permalink to this headline"></a></h4>
 <dl class="simple">
 <dt>spec<span class="classifier">list</span></dt><dd><p>List of definition names. Any Inputs with matching definition will be
 returned.</p>
@@ -1449,14 +1358,14 @@ returned.</p>
 </dl>
 </div>
 <div class="section" id="id30">
-<h4>Returns<a class="headerlink" href="#id30" title="Permalink to this headline">¶</a></h4>
+<h4>Returns<a class="headerlink" href="#id30" title="Permalink to this headline"></a></h4>
 <dl class="simple">
 <dt>dict</dt><dd><p>Maps definition names to all the Inputs of that definition</p>
 </dd>
 </dl>
 </div>
 <div class="section" id="id31">
-<h4>Examples<a class="headerlink" href="#id31" title="Permalink to this headline">¶</a></h4>
+<h4>Examples<a class="headerlink" href="#id31" title="Permalink to this headline"></a></h4>
 <p>The following shows how to grab all Inputs with the URL definition. If we
 had we run an operation which output a URL, that output URL would have also
 been returned to us.</p>
@@ -1502,11 +1411,11 @@ been returned to us.</p>
 </div>
 </div>
 <div class="section" id="get-single">
-<span id="plugin-operation-dffml-get-single"></span><h3>get_single<a class="headerlink" href="#get-single" title="Permalink to this headline">¶</a></h3>
+<span id="plugin-operation-dffml-get-single"></span><h3>get_single<a class="headerlink" href="#get-single" title="Permalink to this headline"></a></h3>
 <p><em>Official</em></p>
 <p>Output operation to get a single Input for each definition given.</p>
 <div class="section" id="id32">
-<h4>Parameters<a class="headerlink" href="#id32" title="Permalink to this headline">¶</a></h4>
+<h4>Parameters<a class="headerlink" href="#id32" title="Permalink to this headline"></a></h4>
 <dl class="simple">
 <dt>spec<span class="classifier">list</span></dt><dd><p>List of definition names. An Input with matching definition will be
 returned.</p>
@@ -1514,14 +1423,14 @@ returned.</p>
 </dl>
 </div>
 <div class="section" id="id33">
-<h4>Returns<a class="headerlink" href="#id33" title="Permalink to this headline">¶</a></h4>
+<h4>Returns<a class="headerlink" href="#id33" title="Permalink to this headline"></a></h4>
 <dl class="simple">
 <dt>dict</dt><dd><p>Maps definition names to an Input of that definition</p>
 </dd>
 </dl>
 </div>
 <div class="section" id="id34">
-<h4>Examples<a class="headerlink" href="#id34" title="Permalink to this headline">¶</a></h4>
+<h4>Examples<a class="headerlink" href="#id34" title="Permalink to this headline"></a></h4>
 <p>The following shows how to grab an Inputs with the URL definition. If we
 had we run an operation which output a URL, that output URL could have also
 been returned to us.</p>
@@ -1568,7 +1477,7 @@ been returned to us.</p>
 </div>
 </div>
 <div class="section" id="group-by">
-<span id="plugin-operation-dffml-group-by"></span><h3>group_by<a class="headerlink" href="#group-by" title="Permalink to this headline">¶</a></h3>
+<span id="plugin-operation-dffml-group-by"></span><h3>group_by<a class="headerlink" href="#group-by" title="Permalink to this headline"></a></h3>
 <p><em>Official</em></p>
 <p>No description</p>
 <p><strong>Stage: output</strong></p>
@@ -1582,7 +1491,7 @@ been returned to us.</p>
 </ul>
 </div>
 <div class="section" id="gz-compress">
-<span id="plugin-operation-dffml-gz-compress"></span><h3>gz_compress<a class="headerlink" href="#gz-compress" title="Permalink to this headline">¶</a></h3>
+<span id="plugin-operation-dffml-gz-compress"></span><h3>gz_compress<a class="headerlink" href="#gz-compress" title="Permalink to this headline"></a></h3>
 <p><em>Official</em></p>
 <p>No description</p>
 <p><strong>Stage: processing</strong></p>
@@ -1597,7 +1506,7 @@ been returned to us.</p>
 </ul>
 </div>
 <div class="section" id="gz-decompress">
-<span id="plugin-operation-dffml-gz-decompress"></span><h3>gz_decompress<a class="headerlink" href="#gz-decompress" title="Permalink to this headline">¶</a></h3>
+<span id="plugin-operation-dffml-gz-decompress"></span><h3>gz_decompress<a class="headerlink" href="#gz-decompress" title="Permalink to this headline"></a></h3>
 <p><em>Official</em></p>
 <p>No description</p>
 <p><strong>Stage: processing</strong></p>
@@ -1612,25 +1521,25 @@ been returned to us.</p>
 </ul>
 </div>
 <div class="section" id="literal-eval">
-<span id="plugin-operation-dffml-literal-eval"></span><h3>literal_eval<a class="headerlink" href="#literal-eval" title="Permalink to this headline">¶</a></h3>
+<span id="plugin-operation-dffml-literal-eval"></span><h3>literal_eval<a class="headerlink" href="#literal-eval" title="Permalink to this headline"></a></h3>
 <p><em>Official</em></p>
 <p>Evaluate the input using ast.literal_eval()</p>
 <div class="section" id="id35">
-<h4>Parameters<a class="headerlink" href="#id35" title="Permalink to this headline">¶</a></h4>
+<h4>Parameters<a class="headerlink" href="#id35" title="Permalink to this headline"></a></h4>
 <dl class="simple">
 <dt>str_to_eval<span class="classifier">str</span></dt><dd><p>A string to be evaluated.</p>
 </dd>
 </dl>
 </div>
 <div class="section" id="id36">
-<h4>Returns<a class="headerlink" href="#id36" title="Permalink to this headline">¶</a></h4>
+<h4>Returns<a class="headerlink" href="#id36" title="Permalink to this headline"></a></h4>
 <dl class="simple">
 <dt>dict</dt><dd><p>A dict containing python literal.</p>
 </dd>
 </dl>
 </div>
 <div class="section" id="id37">
-<h4>Examples<a class="headerlink" href="#id37" title="Permalink to this headline">¶</a></h4>
+<h4>Examples<a class="headerlink" href="#id37" title="Permalink to this headline"></a></h4>
 <p>The following example shows how to use literal_eval.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">asyncio</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="o">*</span>
@@ -1670,11 +1579,11 @@ been returned to us.</p>
 </div>
 </div>
 <div class="section" id="make-tar-archive">
-<span id="plugin-operation-dffml-make-tar-archive"></span><h3>make_tar_archive<a class="headerlink" href="#make-tar-archive" title="Permalink to this headline">¶</a></h3>
+<span id="plugin-operation-dffml-make-tar-archive"></span><h3>make_tar_archive<a class="headerlink" href="#make-tar-archive" title="Permalink to this headline"></a></h3>
 <p><em>Official</em></p>
 <p>Creates tar file of a directory.</p>
 <div class="section" id="id38">
-<h4>Parameters<a class="headerlink" href="#id38" title="Permalink to this headline">¶</a></h4>
+<h4>Parameters<a class="headerlink" href="#id38" title="Permalink to this headline"></a></h4>
 <dl class="simple">
 <dt>input_directory_path<span class="classifier">str</span></dt><dd><p>Path to directory to be archived as a tarfile.</p>
 </dd>
@@ -1683,7 +1592,7 @@ been returned to us.</p>
 </dl>
 </div>
 <div class="section" id="id39">
-<h4>Returns<a class="headerlink" href="#id39" title="Permalink to this headline">¶</a></h4>
+<h4>Returns<a class="headerlink" href="#id39" title="Permalink to this headline"></a></h4>
 <dl class="simple">
 <dt>dict</dt><dd><p>Path to the created tar file.</p>
 </dd>
@@ -1701,11 +1610,11 @@ been returned to us.</p>
 </div>
 </div>
 <div class="section" id="make-zip-archive">
-<span id="plugin-operation-dffml-make-zip-archive"></span><h3>make_zip_archive<a class="headerlink" href="#make-zip-archive" title="Permalink to this headline">¶</a></h3>
+<span id="plugin-operation-dffml-make-zip-archive"></span><h3>make_zip_archive<a class="headerlink" href="#make-zip-archive" title="Permalink to this headline"></a></h3>
 <p><em>Official</em></p>
 <p>Creates zip file of a directory.</p>
 <div class="section" id="id40">
-<h4>Parameters<a class="headerlink" href="#id40" title="Permalink to this headline">¶</a></h4>
+<h4>Parameters<a class="headerlink" href="#id40" title="Permalink to this headline"></a></h4>
 <dl class="simple">
 <dt>input_directory_path<span class="classifier">str</span></dt><dd><p>Path to directory to be archived</p>
 </dd>
@@ -1714,7 +1623,7 @@ been returned to us.</p>
 </dl>
 </div>
 <div class="section" id="id41">
-<h4>Returns<a class="headerlink" href="#id41" title="Permalink to this headline">¶</a></h4>
+<h4>Returns<a class="headerlink" href="#id41" title="Permalink to this headline"></a></h4>
 <dl class="simple">
 <dt>dict</dt><dd><p>Path to the output zip file</p>
 </dd>
@@ -1732,11 +1641,11 @@ been returned to us.</p>
 </div>
 </div>
 <div class="section" id="multiply">
-<span id="plugin-operation-dffml-multiply"></span><h3>multiply<a class="headerlink" href="#multiply" title="Permalink to this headline">¶</a></h3>
+<span id="plugin-operation-dffml-multiply"></span><h3>multiply<a class="headerlink" href="#multiply" title="Permalink to this headline"></a></h3>
 <p><em>Official</em></p>
 <p>Multiply record values</p>
 <div class="section" id="id42">
-<h4>Parameters<a class="headerlink" href="#id42" title="Permalink to this headline">¶</a></h4>
+<h4>Parameters<a class="headerlink" href="#id42" title="Permalink to this headline"></a></h4>
 <dl class="simple">
 <dt>multiplicand<span class="classifier">generic</span></dt><dd><p>An arithmetic type value.</p>
 </dd>
@@ -1745,14 +1654,14 @@ been returned to us.</p>
 </dl>
 </div>
 <div class="section" id="id43">
-<h4>Returns<a class="headerlink" href="#id43" title="Permalink to this headline">¶</a></h4>
+<h4>Returns<a class="headerlink" href="#id43" title="Permalink to this headline"></a></h4>
 <dl class="simple">
 <dt>dict</dt><dd><p>A dict containing the product.</p>
 </dd>
 </dl>
 </div>
 <div class="section" id="id44">
-<h4>Examples<a class="headerlink" href="#id44" title="Permalink to this headline">¶</a></h4>
+<h4>Examples<a class="headerlink" href="#id44" title="Permalink to this headline"></a></h4>
 <p>The following example shows how to use multiply.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">asyncio</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="o">*</span>
@@ -1796,18 +1705,18 @@ been returned to us.</p>
 </div>
 </div>
 <div class="section" id="print-output">
-<span id="plugin-operation-dffml-print-output"></span><h3>print_output<a class="headerlink" href="#print-output" title="Permalink to this headline">¶</a></h3>
+<span id="plugin-operation-dffml-print-output"></span><h3>print_output<a class="headerlink" href="#print-output" title="Permalink to this headline"></a></h3>
 <p><em>Official</em></p>
 <p>Print the output on stdout using python print()</p>
 <div class="section" id="id45">
-<h4>Parameters<a class="headerlink" href="#id45" title="Permalink to this headline">¶</a></h4>
+<h4>Parameters<a class="headerlink" href="#id45" title="Permalink to this headline"></a></h4>
 <dl class="simple">
 <dt>data<span class="classifier">Any</span></dt><dd><p>A python literal to be printed.</p>
 </dd>
 </dl>
 </div>
 <div class="section" id="id46">
-<h4>Examples<a class="headerlink" href="#id46" title="Permalink to this headline">¶</a></h4>
+<h4>Examples<a class="headerlink" href="#id46" title="Permalink to this headline"></a></h4>
 <p>The following example shows how to use print_output.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">asyncio</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="o">*</span>
@@ -1835,7 +1744,7 @@ been returned to us.</p>
 </div>
 </div>
 <div class="section" id="xz-compress">
-<span id="plugin-operation-dffml-xz-compress"></span><h3>xz_compress<a class="headerlink" href="#xz-compress" title="Permalink to this headline">¶</a></h3>
+<span id="plugin-operation-dffml-xz-compress"></span><h3>xz_compress<a class="headerlink" href="#xz-compress" title="Permalink to this headline"></a></h3>
 <p><em>Official</em></p>
 <p>No description</p>
 <p><strong>Stage: processing</strong></p>
@@ -1850,7 +1759,7 @@ been returned to us.</p>
 </ul>
 </div>
 <div class="section" id="xz-decompress">
-<span id="plugin-operation-dffml-xz-decompress"></span><h3>xz_decompress<a class="headerlink" href="#xz-decompress" title="Permalink to this headline">¶</a></h3>
+<span id="plugin-operation-dffml-xz-decompress"></span><h3>xz_decompress<a class="headerlink" href="#xz-decompress" title="Permalink to this headline"></a></h3>
 <p><em>Official</em></p>
 <p>No description</p>
 <p><strong>Stage: processing</strong></p>
@@ -1866,12 +1775,12 @@ been returned to us.</p>
 </div>
 </div>
 <div class="section" id="dffml-feature-git">
-<span id="plugin-operation-dffml-feature-git"></span><h2>dffml_feature_git<a class="headerlink" href="#dffml-feature-git" title="Permalink to this headline">¶</a></h2>
+<span id="plugin-operation-dffml-feature-git"></span><h2>dffml_feature_git<a class="headerlink" href="#dffml-feature-git" title="Permalink to this headline"></a></h2>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install dffml-feature-git</span>
 </pre></div>
 </div>
 <div class="section" id="check-if-valid-git-repository-url">
-<span id="plugin-operation-dffml-feature-git-check-if-valid-git-repository-url"></span><h3>check_if_valid_git_repository_URL<a class="headerlink" href="#check-if-valid-git-repository-url" title="Permalink to this headline">¶</a></h3>
+<span id="plugin-operation-dffml-feature-git-check-if-valid-git-repository-url"></span><h3>check_if_valid_git_repository_URL<a class="headerlink" href="#check-if-valid-git-repository-url" title="Permalink to this headline"></a></h3>
 <p><em>Official</em></p>
 <p>No description</p>
 <p><strong>Stage: processing</strong></p>
@@ -1885,7 +1794,7 @@ been returned to us.</p>
 </ul>
 </div>
 <div class="section" id="cleanup-git-repo">
-<span id="plugin-operation-dffml-feature-git-cleanup-git-repo"></span><h3>cleanup_git_repo<a class="headerlink" href="#cleanup-git-repo" title="Permalink to this headline">¶</a></h3>
+<span id="plugin-operation-dffml-feature-git-cleanup-git-repo"></span><h3>cleanup_git_repo<a class="headerlink" href="#cleanup-git-repo" title="Permalink to this headline"></a></h3>
 <p><em>Official</em></p>
 <p>No description</p>
 <p><strong>Stage: cleanup</strong></p>
@@ -1900,7 +1809,7 @@ been returned to us.</p>
 </ul>
 </div>
 <div class="section" id="clone-git-repo">
-<span id="plugin-operation-dffml-feature-git-clone-git-repo"></span><h3>clone_git_repo<a class="headerlink" href="#clone-git-repo" title="Permalink to this headline">¶</a></h3>
+<span id="plugin-operation-dffml-feature-git-clone-git-repo"></span><h3>clone_git_repo<a class="headerlink" href="#clone-git-repo" title="Permalink to this headline"></a></h3>
 <p><em>Official</em></p>
 <p>No description</p>
 <p><strong>Stage: processing</strong></p>
@@ -1923,7 +1832,7 @@ been returned to us.</p>
 </ul>
 </div>
 <div class="section" id="count-authors">
-<span id="plugin-operation-dffml-feature-git-count-authors"></span><h3>count_authors<a class="headerlink" href="#count-authors" title="Permalink to this headline">¶</a></h3>
+<span id="plugin-operation-dffml-feature-git-count-authors"></span><h3>count_authors<a class="headerlink" href="#count-authors" title="Permalink to this headline"></a></h3>
 <p><em>Official</em></p>
 <p>No description</p>
 <p><strong>Stage: processing</strong></p>
@@ -1937,7 +1846,7 @@ been returned to us.</p>
 </ul>
 </div>
 <div class="section" id="git-commits">
-<span id="plugin-operation-dffml-feature-git-git-commits"></span><h3>git_commits<a class="headerlink" href="#git-commits" title="Permalink to this headline">¶</a></h3>
+<span id="plugin-operation-dffml-feature-git-git-commits"></span><h3>git_commits<a class="headerlink" href="#git-commits" title="Permalink to this headline"></a></h3>
 <p><em>Official</em></p>
 <p>No description</p>
 <p><strong>Stage: processing</strong></p>
@@ -1958,7 +1867,7 @@ been returned to us.</p>
 </ul>
 </div>
 <div class="section" id="git-repo-author-lines-for-dates">
-<span id="plugin-operation-dffml-feature-git-git-repo-author-lines-for-dates"></span><h3>git_repo_author_lines_for_dates<a class="headerlink" href="#git-repo-author-lines-for-dates" title="Permalink to this headline">¶</a></h3>
+<span id="plugin-operation-dffml-feature-git-git-repo-author-lines-for-dates"></span><h3>git_repo_author_lines_for_dates<a class="headerlink" href="#git-repo-author-lines-for-dates" title="Permalink to this headline"></a></h3>
 <p><em>Official</em></p>
 <p>No description</p>
 <p><strong>Stage: processing</strong></p>
@@ -1979,7 +1888,7 @@ been returned to us.</p>
 </ul>
 </div>
 <div class="section" id="git-repo-checkout">
-<span id="plugin-operation-dffml-feature-git-git-repo-checkout"></span><h3>git_repo_checkout<a class="headerlink" href="#git-repo-checkout" title="Permalink to this headline">¶</a></h3>
+<span id="plugin-operation-dffml-feature-git-git-repo-checkout"></span><h3>git_repo_checkout<a class="headerlink" href="#git-repo-checkout" title="Permalink to this headline"></a></h3>
 <p><em>Official</em></p>
 <p>No description</p>
 <p><strong>Stage: processing</strong></p>
@@ -2005,7 +1914,7 @@ been returned to us.</p>
 </ul>
 </div>
 <div class="section" id="git-repo-commit-from-date">
-<span id="plugin-operation-dffml-feature-git-git-repo-commit-from-date"></span><h3>git_repo_commit_from_date<a class="headerlink" href="#git-repo-commit-from-date" title="Permalink to this headline">¶</a></h3>
+<span id="plugin-operation-dffml-feature-git-git-repo-commit-from-date"></span><h3>git_repo_commit_from_date<a class="headerlink" href="#git-repo-commit-from-date" title="Permalink to this headline"></a></h3>
 <p><em>Official</em></p>
 <p>No description</p>
 <p><strong>Stage: processing</strong></p>
@@ -2026,7 +1935,7 @@ been returned to us.</p>
 </ul>
 </div>
 <div class="section" id="git-repo-default-branch">
-<span id="plugin-operation-dffml-feature-git-git-repo-default-branch"></span><h3>git_repo_default_branch<a class="headerlink" href="#git-repo-default-branch" title="Permalink to this headline">¶</a></h3>
+<span id="plugin-operation-dffml-feature-git-git-repo-default-branch"></span><h3>git_repo_default_branch<a class="headerlink" href="#git-repo-default-branch" title="Permalink to this headline"></a></h3>
 <p><em>Official</em></p>
 <p>No description</p>
 <p><strong>Stage: processing</strong></p>
@@ -2049,7 +1958,7 @@ been returned to us.</p>
 </ul>
 </div>
 <div class="section" id="git-repo-release">
-<span id="plugin-operation-dffml-feature-git-git-repo-release"></span><h3>git_repo_release<a class="headerlink" href="#git-repo-release" title="Permalink to this headline">¶</a></h3>
+<span id="plugin-operation-dffml-feature-git-git-repo-release"></span><h3>git_repo_release<a class="headerlink" href="#git-repo-release" title="Permalink to this headline"></a></h3>
 <p><em>Official</em></p>
 <p>Was there a release within this date range</p>
 <p><strong>Stage: processing</strong></p>
@@ -2070,7 +1979,7 @@ been returned to us.</p>
 </ul>
 </div>
 <div class="section" id="lines-of-code-by-language">
-<span id="plugin-operation-dffml-feature-git-lines-of-code-by-language"></span><h3>lines_of_code_by_language<a class="headerlink" href="#lines-of-code-by-language" title="Permalink to this headline">¶</a></h3>
+<span id="plugin-operation-dffml-feature-git-lines-of-code-by-language"></span><h3>lines_of_code_by_language<a class="headerlink" href="#lines-of-code-by-language" title="Permalink to this headline"></a></h3>
 <p><em>Official</em></p>
 <p>This operation relys on <code class="docutils literal notranslate"><span class="pre">tokei</span></code>. Here’s how to install version 10.1.1,
 check it’s releases page to make sure you’re installing the latest version.</p>
@@ -2105,7 +2014,7 @@ check it’s releases page to make sure you’re installing the latest version.<
 </ul>
 </div>
 <div class="section" id="lines-of-code-to-comments">
-<span id="plugin-operation-dffml-feature-git-lines-of-code-to-comments"></span><h3>lines_of_code_to_comments<a class="headerlink" href="#lines-of-code-to-comments" title="Permalink to this headline">¶</a></h3>
+<span id="plugin-operation-dffml-feature-git-lines-of-code-to-comments"></span><h3>lines_of_code_to_comments<a class="headerlink" href="#lines-of-code-to-comments" title="Permalink to this headline"></a></h3>
 <p><em>Official</em></p>
 <p>No description</p>
 <p><strong>Stage: processing</strong></p>
@@ -2119,7 +2028,7 @@ check it’s releases page to make sure you’re installing the latest version.<
 </ul>
 </div>
 <div class="section" id="make-quarters">
-<span id="plugin-operation-dffml-feature-git-make-quarters"></span><h3>make_quarters<a class="headerlink" href="#make-quarters" title="Permalink to this headline">¶</a></h3>
+<span id="plugin-operation-dffml-feature-git-make-quarters"></span><h3>make_quarters<a class="headerlink" href="#make-quarters" title="Permalink to this headline"></a></h3>
 <p><em>Official</em></p>
 <p>No description</p>
 <p><strong>Stage: processing</strong></p>
@@ -2133,7 +2042,7 @@ check it’s releases page to make sure you’re installing the latest version.<
 </ul>
 </div>
 <div class="section" id="quarters-back-to-date">
-<span id="plugin-operation-dffml-feature-git-quarters-back-to-date"></span><h3>quarters_back_to_date<a class="headerlink" href="#quarters-back-to-date" title="Permalink to this headline">¶</a></h3>
+<span id="plugin-operation-dffml-feature-git-quarters-back-to-date"></span><h3>quarters_back_to_date<a class="headerlink" href="#quarters-back-to-date" title="Permalink to this headline"></a></h3>
 <p><em>Official</em></p>
 <p>No description</p>
 <p><strong>Stage: processing</strong></p>
@@ -2149,7 +2058,7 @@ check it’s releases page to make sure you’re installing the latest version.<
 </ul>
 </div>
 <div class="section" id="work">
-<span id="plugin-operation-dffml-feature-git-work"></span><h3>work<a class="headerlink" href="#work" title="Permalink to this headline">¶</a></h3>
+<span id="plugin-operation-dffml-feature-git-work"></span><h3>work<a class="headerlink" href="#work" title="Permalink to this headline"></a></h3>
 <p><em>Official</em></p>
 <p>No description</p>
 <p><strong>Stage: processing</strong></p>
@@ -2164,12 +2073,12 @@ check it’s releases page to make sure you’re installing the latest version.<
 </div>
 </div>
 <div class="section" id="shouldi">
-<span id="plugin-operation-shouldi"></span><h2>shouldi<a class="headerlink" href="#shouldi" title="Permalink to this headline">¶</a></h2>
+<span id="plugin-operation-shouldi"></span><h2>shouldi<a class="headerlink" href="#shouldi" title="Permalink to this headline"></a></h2>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install shouldi</span>
 </pre></div>
 </div>
 <div class="section" id="cleanup-pypi-package">
-<span id="plugin-operation-shouldi-cleanup-pypi-package"></span><h3>cleanup_pypi_package<a class="headerlink" href="#cleanup-pypi-package" title="Permalink to this headline">¶</a></h3>
+<span id="plugin-operation-shouldi-cleanup-pypi-package"></span><h3>cleanup_pypi_package<a class="headerlink" href="#cleanup-pypi-package" title="Permalink to this headline"></a></h3>
 <p><em>Official</em></p>
 <p>Remove the directory containing the source code release.</p>
 <p><strong>Stage: cleanup</strong></p>
@@ -2179,7 +2088,7 @@ check it’s releases page to make sure you’re installing the latest version.<
 </ul>
 </div>
 <div class="section" id="pypi-package-contents">
-<span id="plugin-operation-shouldi-pypi-package-contents"></span><h3>pypi_package_contents<a class="headerlink" href="#pypi-package-contents" title="Permalink to this headline">¶</a></h3>
+<span id="plugin-operation-shouldi-pypi-package-contents"></span><h3>pypi_package_contents<a class="headerlink" href="#pypi-package-contents" title="Permalink to this headline"></a></h3>
 <p><em>Official</em></p>
 <p>Download a source code release and extract it to a temporary directory.</p>
 <p><strong>Stage: processing</strong></p>
@@ -2193,7 +2102,7 @@ check it’s releases page to make sure you’re installing the latest version.<
 </ul>
 </div>
 <div class="section" id="pypi-package-json">
-<span id="plugin-operation-shouldi-pypi-package-json"></span><h3>pypi_package_json<a class="headerlink" href="#pypi-package-json" title="Permalink to this headline">¶</a></h3>
+<span id="plugin-operation-shouldi-pypi-package-json"></span><h3>pypi_package_json<a class="headerlink" href="#pypi-package-json" title="Permalink to this headline"></a></h3>
 <p><em>Official</em></p>
 <p>Download the information on the package in JSON format.</p>
 <p><strong>Stage: processing</strong></p>
@@ -2208,7 +2117,7 @@ check it’s releases page to make sure you’re installing the latest version.<
 </ul>
 </div>
 <div class="section" id="run-bandit">
-<span id="plugin-operation-shouldi-run-bandit"></span><h3>run_bandit<a class="headerlink" href="#run-bandit" title="Permalink to this headline">¶</a></h3>
+<span id="plugin-operation-shouldi-run-bandit"></span><h3>run_bandit<a class="headerlink" href="#run-bandit" title="Permalink to this headline"></a></h3>
 <p><em>Official</em></p>
 <p>CLI usage: dffml service dev run -log debug shouldi.bandit:run_bandit -pkg .</p>
 <p><strong>Stage: processing</strong></p>
@@ -2222,7 +2131,7 @@ check it’s releases page to make sure you’re installing the latest version.<
 </ul>
 </div>
 <div class="section" id="safety-check">
-<span id="plugin-operation-shouldi-safety-check"></span><h3>safety_check<a class="headerlink" href="#safety-check" title="Permalink to this headline">¶</a></h3>
+<span id="plugin-operation-shouldi-safety-check"></span><h3>safety_check<a class="headerlink" href="#safety-check" title="Permalink to this headline"></a></h3>
 <p><em>Official</em></p>
 <p>No description</p>
 <p><strong>Stage: processing</strong></p>
@@ -2238,12 +2147,12 @@ check it’s releases page to make sure you’re installing the latest version.<
 </div>
 </div>
 <div class="section" id="dffml-operations-nlp">
-<span id="plugin-operation-dffml-operations-nlp"></span><h2>dffml_operations_nlp<a class="headerlink" href="#dffml-operations-nlp" title="Permalink to this headline">¶</a></h2>
+<span id="plugin-operation-dffml-operations-nlp"></span><h2>dffml_operations_nlp<a class="headerlink" href="#dffml-operations-nlp" title="Permalink to this headline"></a></h2>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install dffml-operations-nlp</span>
 </pre></div>
 </div>
 <div class="section" id="collect-output">
-<span id="plugin-operation-dffml-operations-nlp-collect-output"></span><h3>collect_output<a class="headerlink" href="#collect-output" title="Permalink to this headline">¶</a></h3>
+<span id="plugin-operation-dffml-operations-nlp-collect-output"></span><h3>collect_output<a class="headerlink" href="#collect-output" title="Permalink to this headline"></a></h3>
 <p><em>Official</em></p>
 <p>No description</p>
 <p><strong>Stage: processing</strong></p>
@@ -2258,13 +2167,13 @@ check it’s releases page to make sure you’re installing the latest version.<
 </ul>
 </div>
 <div class="section" id="count-vectorizer">
-<span id="plugin-operation-dffml-operations-nlp-count-vectorizer"></span><h3>count_vectorizer<a class="headerlink" href="#count-vectorizer" title="Permalink to this headline">¶</a></h3>
+<span id="plugin-operation-dffml-operations-nlp-count-vectorizer"></span><h3>count_vectorizer<a class="headerlink" href="#count-vectorizer" title="Permalink to this headline"></a></h3>
 <p><em>Official</em></p>
 <p>Converts a collection of text documents to a matrix of token counts using sklearn CountVectorizer’s <cite>fit_transform</cite> method.
 For details on parameters check <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.CountVectorizer.html">https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.CountVectorizer.html</a>
 Parameters specific to this operation are described below.</p>
 <div class="section" id="id47">
-<h4>Parameters<a class="headerlink" href="#id47" title="Permalink to this headline">¶</a></h4>
+<h4>Parameters<a class="headerlink" href="#id47" title="Permalink to this headline"></a></h4>
 <dl class="simple">
 <dt>text<span class="classifier">list</span></dt><dd><p>A list of strings.</p>
 </dd>
@@ -2273,7 +2182,7 @@ Parameters specific to this operation are described below.</p>
 </dl>
 </div>
 <div class="section" id="id48">
-<h4>Returns<a class="headerlink" href="#id48" title="Permalink to this headline">¶</a></h4>
+<h4>Returns<a class="headerlink" href="#id48" title="Permalink to this headline"></a></h4>
 <dl class="simple">
 <dt>result: list</dt><dd><p>A list containing token counts and feature names if <cite>get_feature_names</cite> is <cite>True</cite>.</p>
 </dd>
@@ -2304,12 +2213,12 @@ Parameters specific to this operation are described below.</p>
 </div>
 </div>
 <div class="section" id="extract-array-from-matrix">
-<span id="plugin-operation-dffml-operations-nlp-extract-array-from-matrix"></span><h3>extract_array_from_matrix<a class="headerlink" href="#extract-array-from-matrix" title="Permalink to this headline">¶</a></h3>
+<span id="plugin-operation-dffml-operations-nlp-extract-array-from-matrix"></span><h3>extract_array_from_matrix<a class="headerlink" href="#extract-array-from-matrix" title="Permalink to this headline"></a></h3>
 <p><em>Official</em></p>
 <p>Returns row from <cite>input_matrix</cite> based on index of <cite>single_text_example</cite>
 in <cite>collected_text</cite>.</p>
 <div class="section" id="id49">
-<h4>Parameters<a class="headerlink" href="#id49" title="Permalink to this headline">¶</a></h4>
+<h4>Parameters<a class="headerlink" href="#id49" title="Permalink to this headline"></a></h4>
 <dl class="simple">
 <dt>single_text_example<span class="classifier">str</span></dt><dd><p>String to be used for indexing into <cite>collected_text</cite>.</p>
 </dd>
@@ -2321,7 +2230,7 @@ to <cite>single_text_example</cite>.</p>
 </dl>
 </div>
 <div class="section" id="id50">
-<h4>Returns<a class="headerlink" href="#id50" title="Permalink to this headline">¶</a></h4>
+<h4>Returns<a class="headerlink" href="#id50" title="Permalink to this headline"></a></h4>
 <p>result: A 1-d array.</p>
 <p><strong>Stage: processing</strong></p>
 <p><strong>Inputs</strong></p>
@@ -2337,11 +2246,11 @@ to <cite>single_text_example</cite>.</p>
 </div>
 </div>
 <div class="section" id="get-embedding">
-<span id="plugin-operation-dffml-operations-nlp-get-embedding"></span><h3>get_embedding<a class="headerlink" href="#get-embedding" title="Permalink to this headline">¶</a></h3>
+<span id="plugin-operation-dffml-operations-nlp-get-embedding"></span><h3>get_embedding<a class="headerlink" href="#get-embedding" title="Permalink to this headline"></a></h3>
 <p><em>Official</em></p>
 <p>Maps words of text data to their corresponding word vectors.</p>
 <div class="section" id="id51">
-<h4>Parameters<a class="headerlink" href="#id51" title="Permalink to this headline">¶</a></h4>
+<h4>Parameters<a class="headerlink" href="#id51" title="Permalink to this headline"></a></h4>
 <dl class="simple">
 <dt>text<span class="classifier">str</span></dt><dd><p>String to be converted to word vectors.</p>
 </dd>
@@ -2358,7 +2267,7 @@ If the length of <cite>text</cite> &lt; <cite>max_len</cite>, <cite>text</cite> 
 </dl>
 </div>
 <div class="section" id="id52">
-<h4>Returns<a class="headerlink" href="#id52" title="Permalink to this headline">¶</a></h4>
+<h4>Returns<a class="headerlink" href="#id52" title="Permalink to this headline"></a></h4>
 <p>result: A 2-d array of shape (max_len, embedding_size of vectors).</p>
 <p><strong>Stage: processing</strong></p>
 <p><strong>Inputs</strong></p>
@@ -2375,11 +2284,11 @@ If the length of <cite>text</cite> &lt; <cite>max_len</cite>, <cite>text</cite> 
 </div>
 </div>
 <div class="section" id="get-noun-chunks">
-<span id="plugin-operation-dffml-operations-nlp-get-noun-chunks"></span><h3>get_noun_chunks<a class="headerlink" href="#get-noun-chunks" title="Permalink to this headline">¶</a></h3>
+<span id="plugin-operation-dffml-operations-nlp-get-noun-chunks"></span><h3>get_noun_chunks<a class="headerlink" href="#get-noun-chunks" title="Permalink to this headline"></a></h3>
 <p><em>Official</em></p>
 <p>Extracts the noun chunks from text.</p>
 <div class="section" id="id53">
-<h4>Parameters<a class="headerlink" href="#id53" title="Permalink to this headline">¶</a></h4>
+<h4>Parameters<a class="headerlink" href="#id53" title="Permalink to this headline"></a></h4>
 <dl class="simple">
 <dt>text<span class="classifier">str</span></dt><dd><p>String to extract noun chunks from.</p>
 </dd>
@@ -2388,7 +2297,7 @@ If the length of <cite>text</cite> &lt; <cite>max_len</cite>, <cite>text</cite> 
 </dl>
 </div>
 <div class="section" id="id54">
-<h4>Returns<a class="headerlink" href="#id54" title="Permalink to this headline">¶</a></h4>
+<h4>Returns<a class="headerlink" href="#id54" title="Permalink to this headline"></a></h4>
 <dl class="simple">
 <dt>result: list</dt><dd><p>A list containing noun chunks.</p>
 </dd>
@@ -2406,11 +2315,11 @@ If the length of <cite>text</cite> &lt; <cite>max_len</cite>, <cite>text</cite> 
 </div>
 </div>
 <div class="section" id="get-sentences">
-<span id="plugin-operation-dffml-operations-nlp-get-sentences"></span><h3>get_sentences<a class="headerlink" href="#get-sentences" title="Permalink to this headline">¶</a></h3>
+<span id="plugin-operation-dffml-operations-nlp-get-sentences"></span><h3>get_sentences<a class="headerlink" href="#get-sentences" title="Permalink to this headline"></a></h3>
 <p><em>Official</em></p>
 <p>Extracts the sentences from text.</p>
 <div class="section" id="id55">
-<h4>Parameters<a class="headerlink" href="#id55" title="Permalink to this headline">¶</a></h4>
+<h4>Parameters<a class="headerlink" href="#id55" title="Permalink to this headline"></a></h4>
 <dl class="simple">
 <dt>text<span class="classifier">str</span></dt><dd><p>String to extract sentences from.</p>
 </dd>
@@ -2420,7 +2329,7 @@ boundaries are calculated from the syntactic dependency parse.</p>
 </dl>
 </div>
 <div class="section" id="id56">
-<h4>Returns<a class="headerlink" href="#id56" title="Permalink to this headline">¶</a></h4>
+<h4>Returns<a class="headerlink" href="#id56" title="Permalink to this headline"></a></h4>
 <dl class="simple">
 <dt>result: list</dt><dd><p>A list containing sentences.</p>
 </dd>
@@ -2438,11 +2347,11 @@ boundaries are calculated from the syntactic dependency parse.</p>
 </div>
 </div>
 <div class="section" id="get-similarity">
-<span id="plugin-operation-dffml-operations-nlp-get-similarity"></span><h3>get_similarity<a class="headerlink" href="#get-similarity" title="Permalink to this headline">¶</a></h3>
+<span id="plugin-operation-dffml-operations-nlp-get-similarity"></span><h3>get_similarity<a class="headerlink" href="#get-similarity" title="Permalink to this headline"></a></h3>
 <p><em>Official</em></p>
 <p>Calculates similarity between two text strings as a score between 0 and 1.</p>
 <div class="section" id="id57">
-<h4>Parameters<a class="headerlink" href="#id57" title="Permalink to this headline">¶</a></h4>
+<h4>Parameters<a class="headerlink" href="#id57" title="Permalink to this headline"></a></h4>
 <dl class="simple">
 <dt>text_1<span class="classifier">str</span></dt><dd><p>First string to compare.</p>
 </dd>
@@ -2453,7 +2362,7 @@ boundaries are calculated from the syntactic dependency parse.</p>
 </dl>
 </div>
 <div class="section" id="id58">
-<h4>Returns<a class="headerlink" href="#id58" title="Permalink to this headline">¶</a></h4>
+<h4>Returns<a class="headerlink" href="#id58" title="Permalink to this headline"></a></h4>
 <dl class="simple">
 <dt>result: float</dt><dd><p>A similarity score between 0 and 1.</p>
 </dd>
@@ -2472,11 +2381,11 @@ boundaries are calculated from the syntactic dependency parse.</p>
 </div>
 </div>
 <div class="section" id="lemmatizer">
-<span id="plugin-operation-dffml-operations-nlp-lemmatizer"></span><h3>lemmatizer<a class="headerlink" href="#lemmatizer" title="Permalink to this headline">¶</a></h3>
+<span id="plugin-operation-dffml-operations-nlp-lemmatizer"></span><h3>lemmatizer<a class="headerlink" href="#lemmatizer" title="Permalink to this headline"></a></h3>
 <p><em>Official</em></p>
 <p>Reduce words in the text to their dictionary form (lemma)</p>
 <div class="section" id="id59">
-<h4>Parameters<a class="headerlink" href="#id59" title="Permalink to this headline">¶</a></h4>
+<h4>Parameters<a class="headerlink" href="#id59" title="Permalink to this headline"></a></h4>
 <dl class="simple">
 <dt>text<span class="classifier">str</span></dt><dd><p>String to lemmatize.</p>
 </dd>
@@ -2485,7 +2394,7 @@ boundaries are calculated from the syntactic dependency parse.</p>
 </dl>
 </div>
 <div class="section" id="id60">
-<h4>Returns<a class="headerlink" href="#id60" title="Permalink to this headline">¶</a></h4>
+<h4>Returns<a class="headerlink" href="#id60" title="Permalink to this headline"></a></h4>
 <dl class="simple">
 <dt>result: list</dt><dd><p>A list containing base form of the words.</p>
 </dd>
@@ -2503,11 +2412,11 @@ boundaries are calculated from the syntactic dependency parse.</p>
 </div>
 </div>
 <div class="section" id="pos-tagger">
-<span id="plugin-operation-dffml-operations-nlp-pos-tagger"></span><h3>pos_tagger<a class="headerlink" href="#pos-tagger" title="Permalink to this headline">¶</a></h3>
+<span id="plugin-operation-dffml-operations-nlp-pos-tagger"></span><h3>pos_tagger<a class="headerlink" href="#pos-tagger" title="Permalink to this headline"></a></h3>
 <p><em>Official</em></p>
 <p>Assigns part-of-speech tags to text.</p>
 <div class="section" id="id61">
-<h4>Parameters<a class="headerlink" href="#id61" title="Permalink to this headline">¶</a></h4>
+<h4>Parameters<a class="headerlink" href="#id61" title="Permalink to this headline"></a></h4>
 <dl class="simple">
 <dt>text<span class="classifier">str</span></dt><dd><p>Text to be tagged.</p>
 </dd>
@@ -2516,7 +2425,7 @@ boundaries are calculated from the syntactic dependency parse.</p>
 </dl>
 </div>
 <div class="section" id="id62">
-<h4>Returns<a class="headerlink" href="#id62" title="Permalink to this headline">¶</a></h4>
+<h4>Returns<a class="headerlink" href="#id62" title="Permalink to this headline"></a></h4>
 <dl class="simple">
 <dt>result: list</dt><dd><p>A list containing tuples of word and their respective pos tag.</p>
 </dd>
@@ -2535,11 +2444,11 @@ boundaries are calculated from the syntactic dependency parse.</p>
 </div>
 </div>
 <div class="section" id="remove-stopwords">
-<span id="plugin-operation-dffml-operations-nlp-remove-stopwords"></span><h3>remove_stopwords<a class="headerlink" href="#remove-stopwords" title="Permalink to this headline">¶</a></h3>
+<span id="plugin-operation-dffml-operations-nlp-remove-stopwords"></span><h3>remove_stopwords<a class="headerlink" href="#remove-stopwords" title="Permalink to this headline"></a></h3>
 <p><em>Official</em></p>
 <p>Removes stopword from text data.</p>
 <div class="section" id="id63">
-<h4>Parameters<a class="headerlink" href="#id63" title="Permalink to this headline">¶</a></h4>
+<h4>Parameters<a class="headerlink" href="#id63" title="Permalink to this headline"></a></h4>
 <dl class="simple">
 <dt>text<span class="classifier">str</span></dt><dd><p>String to be cleaned.</p>
 </dd>
@@ -2548,7 +2457,7 @@ boundaries are calculated from the syntactic dependency parse.</p>
 </dl>
 </div>
 <div class="section" id="id64">
-<h4>Returns<a class="headerlink" href="#id64" title="Permalink to this headline">¶</a></h4>
+<h4>Returns<a class="headerlink" href="#id64" title="Permalink to this headline"></a></h4>
 <p>result: A string without stop words.</p>
 <p><strong>Stage: processing</strong></p>
 <p><strong>Inputs</strong></p>
@@ -2563,13 +2472,13 @@ boundaries are calculated from the syntactic dependency parse.</p>
 </div>
 </div>
 <div class="section" id="tfidf-vectorizer">
-<span id="plugin-operation-dffml-operations-nlp-tfidf-vectorizer"></span><h3>tfidf_vectorizer<a class="headerlink" href="#tfidf-vectorizer" title="Permalink to this headline">¶</a></h3>
+<span id="plugin-operation-dffml-operations-nlp-tfidf-vectorizer"></span><h3>tfidf_vectorizer<a class="headerlink" href="#tfidf-vectorizer" title="Permalink to this headline"></a></h3>
 <p><em>Official</em></p>
 <p>Convert a collection of raw documents to a matrix of TF-IDF features using sklearn TfidfVectorizer’s <cite>fit_transform</cite> method.
 For details on parameters check <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.TfidfVectorizer.html">https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.TfidfVectorizer.html</a>
 Parameters specific to this operation are described below.</p>
 <div class="section" id="id65">
-<h4>Parameters<a class="headerlink" href="#id65" title="Permalink to this headline">¶</a></h4>
+<h4>Parameters<a class="headerlink" href="#id65" title="Permalink to this headline"></a></h4>
 <dl class="simple">
 <dt>text<span class="classifier">list</span></dt><dd><p>A list of strings.</p>
 </dd>
@@ -2578,7 +2487,7 @@ Parameters specific to this operation are described below.</p>
 </dl>
 </div>
 <div class="section" id="id66">
-<h4>Returns<a class="headerlink" href="#id66" title="Permalink to this headline">¶</a></h4>
+<h4>Returns<a class="headerlink" href="#id66" title="Permalink to this headline"></a></h4>
 <dl class="simple">
 <dt>result: list</dt><dd><p>A list containing token counts and feature names if <cite>get_feature_names</cite> is <cite>True</cite>.</p>
 </dd>
@@ -2614,12 +2523,12 @@ Parameters specific to this operation are described below.</p>
 </div>
 </div>
 <div class="section" id="dffml-operations-image">
-<span id="plugin-operation-dffml-operations-image"></span><h2>dffml_operations_image<a class="headerlink" href="#dffml-operations-image" title="Permalink to this headline">¶</a></h2>
+<span id="plugin-operation-dffml-operations-image"></span><h2>dffml_operations_image<a class="headerlink" href="#dffml-operations-image" title="Permalink to this headline"></a></h2>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install dffml-operations-image</span>
 </pre></div>
 </div>
 <div class="section" id="haralick">
-<span id="plugin-operation-dffml-operations-image-haralick"></span><h3>Haralick<a class="headerlink" href="#haralick" title="Permalink to this headline">¶</a></h3>
+<span id="plugin-operation-dffml-operations-image-haralick"></span><h3>Haralick<a class="headerlink" href="#haralick" title="Permalink to this headline"></a></h3>
 <p><em>Official</em></p>
 <p>Computes Haralick texture features</p>
 <p><strong>Stage: processing</strong></p>
@@ -2640,7 +2549,7 @@ Parameters specific to this operation are described below.</p>
 </ul>
 </div>
 <div class="section" id="humoments">
-<span id="plugin-operation-dffml-operations-image-humoments"></span><h3>HuMoments<a class="headerlink" href="#humoments" title="Permalink to this headline">¶</a></h3>
+<span id="plugin-operation-dffml-operations-image-humoments"></span><h3>HuMoments<a class="headerlink" href="#humoments" title="Permalink to this headline"></a></h3>
 <p><em>Official</em></p>
 <p>Calculates seven Hu invariants</p>
 <p><strong>Stage: processing</strong></p>
@@ -2654,7 +2563,7 @@ Parameters specific to this operation are described below.</p>
 </ul>
 </div>
 <div class="section" id="calchist">
-<span id="plugin-operation-dffml-operations-image-calchist"></span><h3>calcHist<a class="headerlink" href="#calchist" title="Permalink to this headline">¶</a></h3>
+<span id="plugin-operation-dffml-operations-image-calchist"></span><h3>calcHist<a class="headerlink" href="#calchist" title="Permalink to this headline"></a></h3>
 <p><em>Official</em></p>
 <p>Calculates a histogram</p>
 <p><strong>Stage: processing</strong></p>
@@ -2672,7 +2581,7 @@ Parameters specific to this operation are described below.</p>
 </ul>
 </div>
 <div class="section" id="convert-color">
-<span id="plugin-operation-dffml-operations-image-convert-color"></span><h3>convert_color<a class="headerlink" href="#convert-color" title="Permalink to this headline">¶</a></h3>
+<span id="plugin-operation-dffml-operations-image-convert-color"></span><h3>convert_color<a class="headerlink" href="#convert-color" title="Permalink to this headline"></a></h3>
 <p><em>Official</em></p>
 <p>Converts images from one color space to another</p>
 <p><strong>Stage: processing</strong></p>
@@ -2687,7 +2596,7 @@ Parameters specific to this operation are described below.</p>
 </ul>
 </div>
 <div class="section" id="flatten">
-<span id="plugin-operation-dffml-operations-image-flatten"></span><h3>flatten<a class="headerlink" href="#flatten" title="Permalink to this headline">¶</a></h3>
+<span id="plugin-operation-dffml-operations-image-flatten"></span><h3>flatten<a class="headerlink" href="#flatten" title="Permalink to this headline"></a></h3>
 <p><em>Official</em></p>
 <p>No description</p>
 <p><strong>Stage: processing</strong></p>
@@ -2701,7 +2610,7 @@ Parameters specific to this operation are described below.</p>
 </ul>
 </div>
 <div class="section" id="normalize">
-<span id="plugin-operation-dffml-operations-image-normalize"></span><h3>normalize<a class="headerlink" href="#normalize" title="Permalink to this headline">¶</a></h3>
+<span id="plugin-operation-dffml-operations-image-normalize"></span><h3>normalize<a class="headerlink" href="#normalize" title="Permalink to this headline"></a></h3>
 <p><em>Official</em></p>
 <p>Normalizes arrays</p>
 <p><strong>Stage: processing</strong></p>
@@ -2720,7 +2629,7 @@ Parameters specific to this operation are described below.</p>
 </ul>
 </div>
 <div class="section" id="resize">
-<span id="plugin-operation-dffml-operations-image-resize"></span><h3>resize<a class="headerlink" href="#resize" title="Permalink to this headline">¶</a></h3>
+<span id="plugin-operation-dffml-operations-image-resize"></span><h3>resize<a class="headerlink" href="#resize" title="Permalink to this headline"></a></h3>
 <p><em>Official</em></p>
 <p>Resizes image array to the specified new dimensions</p>
 <ul class="simple">
@@ -2752,12 +2661,12 @@ Parameters specific to this operation are described below.</p>
 </div>
 </div>
 <div class="section" id="dffml-operations-deploy">
-<span id="plugin-operation-dffml-operations-deploy"></span><h2>dffml_operations_deploy<a class="headerlink" href="#dffml-operations-deploy" title="Permalink to this headline">¶</a></h2>
+<span id="plugin-operation-dffml-operations-deploy"></span><h2>dffml_operations_deploy<a class="headerlink" href="#dffml-operations-deploy" title="Permalink to this headline"></a></h2>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install dffml-operations-deploy</span>
 </pre></div>
 </div>
 <div class="section" id="check-if-default-branch">
-<span id="plugin-operation-dffml-operations-deploy-check-if-default-branch"></span><h3>check_if_default_branch<a class="headerlink" href="#check-if-default-branch" title="Permalink to this headline">¶</a></h3>
+<span id="plugin-operation-dffml-operations-deploy-check-if-default-branch"></span><h3>check_if_default_branch<a class="headerlink" href="#check-if-default-branch" title="Permalink to this headline"></a></h3>
 <p><em>Official</em></p>
 <p>No description</p>
 <p><strong>Stage: processing</strong></p>
@@ -2771,7 +2680,7 @@ Parameters specific to this operation are described below.</p>
 </ul>
 </div>
 <div class="section" id="check-secret-match">
-<span id="plugin-operation-dffml-operations-deploy-check-secret-match"></span><h3>check_secret_match<a class="headerlink" href="#check-secret-match" title="Permalink to this headline">¶</a></h3>
+<span id="plugin-operation-dffml-operations-deploy-check-secret-match"></span><h3>check_secret_match<a class="headerlink" href="#check-secret-match" title="Permalink to this headline"></a></h3>
 <p><em>Official</em></p>
 <p>No description</p>
 <p><strong>Stage: processing</strong></p>
@@ -2790,7 +2699,7 @@ Parameters specific to this operation are described below.</p>
 </ul>
 </div>
 <div class="section" id="docker-build-image">
-<span id="plugin-operation-dffml-operations-deploy-docker-build-image"></span><h3>docker_build_image<a class="headerlink" href="#docker-build-image" title="Permalink to this headline">¶</a></h3>
+<span id="plugin-operation-dffml-operations-deploy-docker-build-image"></span><h3>docker_build_image<a class="headerlink" href="#docker-build-image" title="Permalink to this headline"></a></h3>
 <p><em>Official</em></p>
 <p>No description</p>
 <p><strong>Stage: processing</strong></p>
@@ -2809,7 +2718,7 @@ Parameters specific to this operation are described below.</p>
 </ul>
 </div>
 <div class="section" id="get-image-tag">
-<span id="plugin-operation-dffml-operations-deploy-get-image-tag"></span><h3>get_image_tag<a class="headerlink" href="#get-image-tag" title="Permalink to this headline">¶</a></h3>
+<span id="plugin-operation-dffml-operations-deploy-get-image-tag"></span><h3>get_image_tag<a class="headerlink" href="#get-image-tag" title="Permalink to this headline"></a></h3>
 <p><em>Official</em></p>
 <p>No description</p>
 <p><strong>Stage: processing</strong></p>
@@ -2823,7 +2732,7 @@ Parameters specific to this operation are described below.</p>
 </ul>
 </div>
 <div class="section" id="get-running-containers">
-<span id="plugin-operation-dffml-operations-deploy-get-running-containers"></span><h3>get_running_containers<a class="headerlink" href="#get-running-containers" title="Permalink to this headline">¶</a></h3>
+<span id="plugin-operation-dffml-operations-deploy-get-running-containers"></span><h3>get_running_containers<a class="headerlink" href="#get-running-containers" title="Permalink to this headline"></a></h3>
 <p><em>Official</em></p>
 <p>No description</p>
 <p><strong>Stage: processing</strong></p>
@@ -2837,7 +2746,7 @@ Parameters specific to this operation are described below.</p>
 </ul>
 </div>
 <div class="section" id="get-status-running-containers">
-<span id="plugin-operation-dffml-operations-deploy-get-status-running-containers"></span><h3>get_status_running_containers<a class="headerlink" href="#get-status-running-containers" title="Permalink to this headline">¶</a></h3>
+<span id="plugin-operation-dffml-operations-deploy-get-status-running-containers"></span><h3>get_status_running_containers<a class="headerlink" href="#get-status-running-containers" title="Permalink to this headline"></a></h3>
 <p><em>Official</em></p>
 <p>No description</p>
 <p><strong>Stage: processing</strong></p>
@@ -2851,7 +2760,7 @@ Parameters specific to this operation are described below.</p>
 </ul>
 </div>
 <div class="section" id="get-url-from-payload">
-<span id="plugin-operation-dffml-operations-deploy-get-url-from-payload"></span><h3>get_url_from_payload<a class="headerlink" href="#get-url-from-payload" title="Permalink to this headline">¶</a></h3>
+<span id="plugin-operation-dffml-operations-deploy-get-url-from-payload"></span><h3>get_url_from_payload<a class="headerlink" href="#get-url-from-payload" title="Permalink to this headline"></a></h3>
 <p><em>Official</em></p>
 <p>No description</p>
 <p><strong>Stage: processing</strong></p>
@@ -2865,7 +2774,7 @@ Parameters specific to this operation are described below.</p>
 </ul>
 </div>
 <div class="section" id="parse-docker-commands">
-<span id="plugin-operation-dffml-operations-deploy-parse-docker-commands"></span><h3>parse_docker_commands<a class="headerlink" href="#parse-docker-commands" title="Permalink to this headline">¶</a></h3>
+<span id="plugin-operation-dffml-operations-deploy-parse-docker-commands"></span><h3>parse_docker_commands<a class="headerlink" href="#parse-docker-commands" title="Permalink to this headline"></a></h3>
 <p><em>Official</em></p>
 <p>No description</p>
 <p><strong>Stage: processing</strong></p>
@@ -2885,7 +2794,7 @@ Parameters specific to this operation are described below.</p>
 </ul>
 </div>
 <div class="section" id="restart-running-containers">
-<span id="plugin-operation-dffml-operations-deploy-restart-running-containers"></span><h3>restart_running_containers<a class="headerlink" href="#restart-running-containers" title="Permalink to this headline">¶</a></h3>
+<span id="plugin-operation-dffml-operations-deploy-restart-running-containers"></span><h3>restart_running_containers<a class="headerlink" href="#restart-running-containers" title="Permalink to this headline"></a></h3>
 <p><em>Official</em></p>
 <p>No description</p>
 <p><strong>Stage: processing</strong></p>
@@ -2905,17 +2814,17 @@ Parameters specific to this operation are described below.</p>
 </div>
 </div>
 <div class="section" id="dffml-operations-data">
-<span id="plugin-operation-dffml-operations-data"></span><h2>dffml_operations_data<a class="headerlink" href="#dffml-operations-data" title="Permalink to this headline">¶</a></h2>
+<span id="plugin-operation-dffml-operations-data"></span><h2>dffml_operations_data<a class="headerlink" href="#dffml-operations-data" title="Permalink to this headline"></a></h2>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install dffml-operations-data</span>
 </pre></div>
 </div>
 <div class="section" id="principal-component-analysis">
-<span id="plugin-operation-dffml-operations-data-principal-component-analysis"></span><h3>principal_component_analysis<a class="headerlink" href="#principal-component-analysis" title="Permalink to this headline">¶</a></h3>
+<span id="plugin-operation-dffml-operations-data-principal-component-analysis"></span><h3>principal_component_analysis<a class="headerlink" href="#principal-component-analysis" title="Permalink to this headline"></a></h3>
 <p><em>Official</em></p>
 <p>Decomposes the data into (n_samples, n_components)
 using PCA method</p>
 <div class="section" id="id67">
-<h4>Parameters<a class="headerlink" href="#id67" title="Permalink to this headline">¶</a></h4>
+<h4>Parameters<a class="headerlink" href="#id67" title="Permalink to this headline"></a></h4>
 <dl class="simple">
 <dt>data<span class="classifier">List[List[int]]</span></dt><dd><p>data to be decomposed.</p>
 </dd>
@@ -2924,7 +2833,7 @@ using PCA method</p>
 </dl>
 </div>
 <div class="section" id="id68">
-<h4>Returns<a class="headerlink" href="#id68" title="Permalink to this headline">¶</a></h4>
+<h4>Returns<a class="headerlink" href="#id68" title="Permalink to this headline"></a></h4>
 <p>result: Data having dimensions (n_samples, n_components)</p>
 <p><strong>Stage: processing</strong></p>
 <p><strong>Inputs</strong></p>
@@ -2939,12 +2848,12 @@ using PCA method</p>
 </div>
 </div>
 <div class="section" id="singular-value-decomposition">
-<span id="plugin-operation-dffml-operations-data-singular-value-decomposition"></span><h3>singular_value_decomposition<a class="headerlink" href="#singular-value-decomposition" title="Permalink to this headline">¶</a></h3>
+<span id="plugin-operation-dffml-operations-data-singular-value-decomposition"></span><h3>singular_value_decomposition<a class="headerlink" href="#singular-value-decomposition" title="Permalink to this headline"></a></h3>
 <p><em>Official</em></p>
 <p>Decomposes the data into (n_samples, n_components)
 using SVD method.</p>
 <div class="section" id="id69">
-<h4>Parameters<a class="headerlink" href="#id69" title="Permalink to this headline">¶</a></h4>
+<h4>Parameters<a class="headerlink" href="#id69" title="Permalink to this headline"></a></h4>
 <dl class="simple">
 <dt>data<span class="classifier">List[List[int]]</span></dt><dd><p>data to be decomposed.</p>
 </dd>
@@ -2953,7 +2862,7 @@ using SVD method.</p>
 </dl>
 </div>
 <div class="section" id="id70">
-<h4>Returns<a class="headerlink" href="#id70" title="Permalink to this headline">¶</a></h4>
+<h4>Returns<a class="headerlink" href="#id70" title="Permalink to this headline"></a></h4>
 <p>result: Data having dimensions (n_samples, n_components)</p>
 <p><strong>Stage: processing</strong></p>
 <p><strong>Inputs</strong></p>
@@ -2970,11 +2879,11 @@ using SVD method.</p>
 </div>
 </div>
 <div class="section" id="simple-imputer">
-<span id="plugin-operation-dffml-operations-data-simple-imputer"></span><h3>simple_imputer<a class="headerlink" href="#simple-imputer" title="Permalink to this headline">¶</a></h3>
+<span id="plugin-operation-dffml-operations-data-simple-imputer"></span><h3>simple_imputer<a class="headerlink" href="#simple-imputer" title="Permalink to this headline"></a></h3>
 <p><em>Official</em></p>
 <p>Imputation method for missing values</p>
 <div class="section" id="id71">
-<h4>Parameters<a class="headerlink" href="#id71" title="Permalink to this headline">¶</a></h4>
+<h4>Parameters<a class="headerlink" href="#id71" title="Permalink to this headline"></a></h4>
 <dl class="simple">
 <dt>data<span class="classifier">List[List[int]]</span></dt><dd><p>data in which missing values are present</p>
 </dd>
@@ -2985,7 +2894,7 @@ using SVD method.</p>
 </dl>
 </div>
 <div class="section" id="id72">
-<h4>Returns<a class="headerlink" href="#id72" title="Permalink to this headline">¶</a></h4>
+<h4>Returns<a class="headerlink" href="#id72" title="Permalink to this headline"></a></h4>
 <p>result: Dataset having missing values imputed with the strategy</p>
 <p><strong>Stage: processing</strong></p>
 <p><strong>Inputs</strong></p>
@@ -3001,11 +2910,11 @@ using SVD method.</p>
 </div>
 </div>
 <div class="section" id="one-hot-encoder">
-<span id="plugin-operation-dffml-operations-data-one-hot-encoder"></span><h3>one_hot_encoder<a class="headerlink" href="#one-hot-encoder" title="Permalink to this headline">¶</a></h3>
+<span id="plugin-operation-dffml-operations-data-one-hot-encoder"></span><h3>one_hot_encoder<a class="headerlink" href="#one-hot-encoder" title="Permalink to this headline"></a></h3>
 <p><em>Official</em></p>
 <p>One hot encoding for categorical data columns</p>
 <div class="section" id="id73">
-<h4>Parameters<a class="headerlink" href="#id73" title="Permalink to this headline">¶</a></h4>
+<h4>Parameters<a class="headerlink" href="#id73" title="Permalink to this headline"></a></h4>
 <dl class="simple">
 <dt>data<span class="classifier">List[List[int]]</span></dt><dd><p>data to be encoded.</p>
 </dd>
@@ -3014,7 +2923,7 @@ using SVD method.</p>
 </dl>
 </div>
 <div class="section" id="id74">
-<h4>Returns<a class="headerlink" href="#id74" title="Permalink to this headline">¶</a></h4>
+<h4>Returns<a class="headerlink" href="#id74" title="Permalink to this headline"></a></h4>
 <p>result: Encoded data for categorical values</p>
 <p><strong>Stage: processing</strong></p>
 <p><strong>Inputs</strong></p>
@@ -3029,19 +2938,19 @@ using SVD method.</p>
 </div>
 </div>
 <div class="section" id="standard-scaler">
-<span id="plugin-operation-dffml-operations-data-standard-scaler"></span><h3>standard_scaler<a class="headerlink" href="#standard-scaler" title="Permalink to this headline">¶</a></h3>
+<span id="plugin-operation-dffml-operations-data-standard-scaler"></span><h3>standard_scaler<a class="headerlink" href="#standard-scaler" title="Permalink to this headline"></a></h3>
 <p><em>Official</em></p>
 <p>Standardize features by removing the mean and
 scaling to unit variance.</p>
 <div class="section" id="id75">
-<h4>Parameters<a class="headerlink" href="#id75" title="Permalink to this headline">¶</a></h4>
+<h4>Parameters<a class="headerlink" href="#id75" title="Permalink to this headline"></a></h4>
 <dl class="simple">
 <dt>data: List[List[int]]</dt><dd><p>data that needs to be standardized</p>
 </dd>
 </dl>
 </div>
 <div class="section" id="id76">
-<h4>Returns<a class="headerlink" href="#id76" title="Permalink to this headline">¶</a></h4>
+<h4>Returns<a class="headerlink" href="#id76" title="Permalink to this headline"></a></h4>
 <p>result: Standardized data</p>
 <p><strong>Stage: processing</strong></p>
 <p><strong>Inputs</strong></p>
@@ -3055,18 +2964,18 @@ scaling to unit variance.</p>
 </div>
 </div>
 <div class="section" id="remove-whitespaces">
-<span id="plugin-operation-dffml-operations-data-remove-whitespaces"></span><h3>remove_whitespaces<a class="headerlink" href="#remove-whitespaces" title="Permalink to this headline">¶</a></h3>
+<span id="plugin-operation-dffml-operations-data-remove-whitespaces"></span><h3>remove_whitespaces<a class="headerlink" href="#remove-whitespaces" title="Permalink to this headline"></a></h3>
 <p><em>Official</em></p>
 <p>Removes white-spaces from the dataset</p>
 <div class="section" id="id77">
-<h4>Parameters<a class="headerlink" href="#id77" title="Permalink to this headline">¶</a></h4>
+<h4>Parameters<a class="headerlink" href="#id77" title="Permalink to this headline"></a></h4>
 <dl class="simple">
 <dt>data<span class="classifier">List[List[int]]</span></dt><dd><p>dataset.</p>
 </dd>
 </dl>
 </div>
 <div class="section" id="id78">
-<h4>Returns<a class="headerlink" href="#id78" title="Permalink to this headline">¶</a></h4>
+<h4>Returns<a class="headerlink" href="#id78" title="Permalink to this headline"></a></h4>
 <p>result: dataset having whitespaces removed</p>
 <p><strong>Stage: processing</strong></p>
 <p><strong>Inputs</strong></p>
@@ -3080,11 +2989,11 @@ scaling to unit variance.</p>
 </div>
 </div>
 <div class="section" id="ordinal-encoder">
-<span id="plugin-operation-dffml-operations-data-ordinal-encoder"></span><h3>ordinal_encoder<a class="headerlink" href="#ordinal-encoder" title="Permalink to this headline">¶</a></h3>
+<span id="plugin-operation-dffml-operations-data-ordinal-encoder"></span><h3>ordinal_encoder<a class="headerlink" href="#ordinal-encoder" title="Permalink to this headline"></a></h3>
 <p><em>Official</em></p>
 <p>One hot encoding for categorical data columns</p>
 <div class="section" id="id79">
-<h4>Parameters<a class="headerlink" href="#id79" title="Permalink to this headline">¶</a></h4>
+<h4>Parameters<a class="headerlink" href="#id79" title="Permalink to this headline"></a></h4>
 <dl class="simple">
 <dt>data<span class="classifier">List[List[int]]</span></dt><dd><p>data to be encoded.</p>
 </dd>
@@ -3093,7 +3002,7 @@ scaling to unit variance.</p>
 </dl>
 </div>
 <div class="section" id="id80">
-<h4>Returns<a class="headerlink" href="#id80" title="Permalink to this headline">¶</a></h4>
+<h4>Returns<a class="headerlink" href="#id80" title="Permalink to this headline"></a></h4>
 <p>result: Encoded data for categorical values</p>
 <p><strong>Stage: processing</strong></p>
 <p><strong>Inputs</strong></p>
@@ -3108,12 +3017,12 @@ scaling to unit variance.</p>
 </div>
 </div>
 <div class="section" id="dffml-operations-binsec">
-<span id="plugin-operation-dffml-operations-binsec"></span><h2>dffml_operations_binsec<a class="headerlink" href="#dffml-operations-binsec" title="Permalink to this headline">¶</a></h2>
+<span id="plugin-operation-dffml-operations-binsec"></span><h2>dffml_operations_binsec<a class="headerlink" href="#dffml-operations-binsec" title="Permalink to this headline"></a></h2>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install dffml-operations-binsec</span>
 </pre></div>
 </div>
 <div class="section" id="cleanup-rpm">
-<span id="plugin-operation-dffml-operations-binsec-cleanup-rpm"></span><h3>cleanup_rpm<a class="headerlink" href="#cleanup-rpm" title="Permalink to this headline">¶</a></h3>
+<span id="plugin-operation-dffml-operations-binsec-cleanup-rpm"></span><h3>cleanup_rpm<a class="headerlink" href="#cleanup-rpm" title="Permalink to this headline"></a></h3>
 <p><em>Official</em></p>
 <p>No description</p>
 <p><strong>Stage: cleanup</strong></p>
@@ -3123,7 +3032,7 @@ scaling to unit variance.</p>
 </ul>
 </div>
 <div class="section" id="files-in-rpm">
-<span id="plugin-operation-dffml-operations-binsec-files-in-rpm"></span><h3>files_in_rpm<a class="headerlink" href="#files-in-rpm" title="Permalink to this headline">¶</a></h3>
+<span id="plugin-operation-dffml-operations-binsec-files-in-rpm"></span><h3>files_in_rpm<a class="headerlink" href="#files-in-rpm" title="Permalink to this headline"></a></h3>
 <p><em>Official</em></p>
 <p>No description</p>
 <p><strong>Stage: processing</strong></p>
@@ -3137,7 +3046,7 @@ scaling to unit variance.</p>
 </ul>
 </div>
 <div class="section" id="is-binary-pie">
-<span id="plugin-operation-dffml-operations-binsec-is-binary-pie"></span><h3>is_binary_pie<a class="headerlink" href="#is-binary-pie" title="Permalink to this headline">¶</a></h3>
+<span id="plugin-operation-dffml-operations-binsec-is-binary-pie"></span><h3>is_binary_pie<a class="headerlink" href="#is-binary-pie" title="Permalink to this headline"></a></h3>
 <p><em>Official</em></p>
 <p>No description</p>
 <p><strong>Stage: processing</strong></p>
@@ -3152,7 +3061,7 @@ scaling to unit variance.</p>
 </ul>
 </div>
 <div class="section" id="url-to-urlbytes">
-<span id="plugin-operation-dffml-operations-binsec-url-to-urlbytes"></span><h3>url_to_urlbytes<a class="headerlink" href="#url-to-urlbytes" title="Permalink to this headline">¶</a></h3>
+<span id="plugin-operation-dffml-operations-binsec-url-to-urlbytes"></span><h3>url_to_urlbytes<a class="headerlink" href="#url-to-urlbytes" title="Permalink to this headline"></a></h3>
 <p><em>Official</em></p>
 <p>No description</p>
 <p><strong>Stage: processing</strong></p>
@@ -3166,7 +3075,7 @@ scaling to unit variance.</p>
 </ul>
 </div>
 <div class="section" id="urlbytes-to-rpmfile">
-<span id="plugin-operation-dffml-operations-binsec-urlbytes-to-rpmfile"></span><h3>urlbytes_to_rpmfile<a class="headerlink" href="#urlbytes-to-rpmfile" title="Permalink to this headline">¶</a></h3>
+<span id="plugin-operation-dffml-operations-binsec-urlbytes-to-rpmfile"></span><h3>urlbytes_to_rpmfile<a class="headerlink" href="#urlbytes-to-rpmfile" title="Permalink to this headline"></a></h3>
 <p><em>Official</em></p>
 <p>No description</p>
 <p><strong>Stage: processing</strong></p>
@@ -3180,7 +3089,7 @@ scaling to unit variance.</p>
 </ul>
 </div>
 <div class="section" id="urlbytes-to-tarfile">
-<span id="plugin-operation-dffml-operations-binsec-urlbytes-to-tarfile"></span><h3>urlbytes_to_tarfile<a class="headerlink" href="#urlbytes-to-tarfile" title="Permalink to this headline">¶</a></h3>
+<span id="plugin-operation-dffml-operations-binsec-urlbytes-to-tarfile"></span><h3>urlbytes_to_tarfile<a class="headerlink" href="#urlbytes-to-tarfile" title="Permalink to this headline"></a></h3>
 <p><em>Official</em></p>
 <p>No description</p>
 <p><strong>Stage: processing</strong></p>
@@ -3195,12 +3104,12 @@ scaling to unit variance.</p>
 </div>
 </div>
 <div class="section" id="dffml-feature-auth">
-<span id="plugin-operation-dffml-feature-auth"></span><h2>dffml_feature_auth<a class="headerlink" href="#dffml-feature-auth" title="Permalink to this headline">¶</a></h2>
+<span id="plugin-operation-dffml-feature-auth"></span><h2>dffml_feature_auth<a class="headerlink" href="#dffml-feature-auth" title="Permalink to this headline"></a></h2>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install dffml-feature-auth</span>
 </pre></div>
 </div>
 <div class="section" id="scrypt">
-<span id="plugin-operation-dffml-feature-auth-scrypt"></span><h3>scrypt<a class="headerlink" href="#scrypt" title="Permalink to this headline">¶</a></h3>
+<span id="plugin-operation-dffml-feature-auth-scrypt"></span><h3>scrypt<a class="headerlink" href="#scrypt" title="Permalink to this headline"></a></h3>
 <p><em>Official</em></p>
 <p>No description</p>
 <p><strong>Stage: processing</strong></p>
@@ -3218,50 +3127,33 @@ scaling to unit variance.</p>
 
 
            </div>
-           
           </div>
-          <footer>
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="dffml_service_cli.html" class="btn btn-neutral float-right" title="Services" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="dffml_optimizer.html" class="btn btn-neutral float-left" title="Optimizers" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="dffml_service_cli.html" class="btn btn-neutral float-right" title="Services" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>
-        &#169; Copyright 2017 - 2021, Intel.
-
-    </p>
+    <p>&#169; Copyright 2017 - 2021, Intel.</p>
   </div>
-    
-    
-    
-    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
 
 </footer>
         </div>
       </div>
-
     </section>
-
   </div>
-  
-
-  <script type="text/javascript">
+  <script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-
-  
-  
-    
-   
+  </script> 
 
 </body>
 </html>

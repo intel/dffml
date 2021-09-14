@@ -1,46 +1,22 @@
-
-
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  
   <title>Simple source for new file types &mdash; DFFML 0.4.0 documentation</title>
-  
-
-  
-  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/tabs.css" type="text/css" />
-
-  
-  
-
-  
-  
-
-  
-
-  
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/tabs.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
         <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
         <script src="../../_static/doctools.js"></script>
         <script src="../../_static/copybutton.js"></script>
-    
-    <script type="text/javascript" src="../../_static/js/theme.js"></script>
-
-    
+    <script src="../../_static/js/theme.js"></script>
     <link rel="author" title="About these documents" href="../../about.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -48,33 +24,16 @@
     <link rel="prev" title="Sources" href="index.html" /> 
 </head>
 
-<body class="wy-body-for-nav">
-
-   
+<body class="wy-body-for-nav"> 
   <div class="wy-grid-for-nav">
-    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-          
-
-          
             <a href="../../index.html" class="icon icon-home"> DFFML
-          
-
-          
           </a>
-
-          
-            
-            
               <div class="version">
                 0.4.0
               </div>
-            
-          
-
-          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -82,18 +41,7 @@
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-
-          
-        </div>
-
-        
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Introduction</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../about.html">About</a></li>
@@ -155,89 +103,44 @@
 <li class="toctree-l1"><a class="reference internal" href="../../changelog.html">Changelog</a></li>
 </ul>
 
-            
-          
         </div>
-        
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../../index.html">DFFML</a>
-        
       </nav>
 
-
       <div class="wy-nav-content">
-        
         <div class="rst-content">
-        
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
+          <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-    
       <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
-        
           <li><a href="../index.html">Tutorials</a> &raquo;</li>
-        
           <li><a href="index.html">Sources</a> &raquo;</li>
-        
       <li>Simple source for new file types</li>
-    
-    
 
 
       <li class="wy-breadcrumbs-aside">
-        
-          
-            
               <a href="https://github.com/intel/dffml/blob/master/docs/tutorials/sources/file.rst" class="fa fa-github"> Edit on GitHub</a>
-            
-          
-        
       </li>
-    
 
 
   </ul>
-
-  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
-            
+             
   <div class="section" id="simple-source-for-new-file-types">
-<h1>Simple source for new file types<a class="headerlink" href="#simple-source-for-new-file-types" title="Permalink to this headline">¶</a></h1>
+<h1>Simple source for new file types<a class="headerlink" href="#simple-source-for-new-file-types" title="Permalink to this headline"></a></h1>
 <p>This tutorial will help you with implementing your own <code class="docutils literal notranslate"><span class="pre">Source</span></code> for new file
 types. You may want to do this if you have some specific file formats from which
 you want to load and save data from.</p>
 <p>Here we will go through implementing a source for <code class="docutils literal notranslate"><span class="pre">.ini</span></code> file formats.</p>
 <div class="section" id="create-the-package">
-<h2>Create the Package<a class="headerlink" href="#create-the-package" title="Permalink to this headline">¶</a></h2>
+<h2>Create the Package<a class="headerlink" href="#create-the-package" title="Permalink to this headline"></a></h2>
 <p>To create a new source we first create a new Python package. DFFML has a script
 to do it for you.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml service dev create <span class="nb">source</span> dffml-source-ini
@@ -247,14 +150,14 @@ to do it for you.</p>
 <p>We will start writing our source in ./dffml_source_ini/misc.py</p>
 </div>
 <div class="section" id="about-ini-files">
-<h2>About INI files<a class="headerlink" href="#about-ini-files" title="Permalink to this headline">¶</a></h2>
+<h2>About INI files<a class="headerlink" href="#about-ini-files" title="Permalink to this headline"></a></h2>
 <p>An INI file is a configuration file used by Operating Systems and programs
 to initialize program settings. It contains sections for settings and preferences
 (delimited by a string in square brackets) with each section containing one
 or more name and value parameters.</p>
 </div>
 <div class="section" id="import-modules">
-<h2>Import modules<a class="headerlink" href="#import-modules" title="Permalink to this headline">¶</a></h2>
+<h2>Import modules<a class="headerlink" href="#import-modules" title="Permalink to this headline"></a></h2>
 <p><strong>dffml_source_ini/misc.py</strong></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">configparser</span> <span class="kn">import</span> <span class="n">ConfigParser</span>
 
@@ -268,7 +171,7 @@ configuration options for our new INISource. The entrypoint will be used to add 
 entrypoint to our INISource. A <code class="docutils literal notranslate"><span class="pre">Record</span></code> is a unique entry in a source.</p>
 </div>
 <div class="section" id="add-configuration">
-<h2>Add configuration<a class="headerlink" href="#add-configuration" title="Permalink to this headline">¶</a></h2>
+<h2>Add configuration<a class="headerlink" href="#add-configuration" title="Permalink to this headline"></a></h2>
 <p><strong>dffml_source_ini/misc.py</strong></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@config</span>
 <span class="k">class</span> <span class="nc">INISourceConfig</span><span class="p">:</span>
@@ -282,7 +185,7 @@ INISource. The INISourceConfig will be decorated by config. Here we have provide
 three configuration options.</p>
 </div>
 <div class="section" id="create-source">
-<h2>Create Source<a class="headerlink" href="#create-source" title="Permalink to this headline">¶</a></h2>
+<h2>Create Source<a class="headerlink" href="#create-source" title="Permalink to this headline"></a></h2>
 <p><strong>dffml_source_ini/misc.py</strong></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@entrypoint</span><span class="p">(</span><span class="s2">&quot;ini&quot;</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">INISource</span><span class="p">(</span><span class="n">FileSource</span><span class="p">,</span> <span class="n">MemorySource</span><span class="p">):</span>
@@ -307,7 +210,7 @@ as self.config.</p>
 <p>Next we will writing the load and dump methods for INISource.</p>
 </div>
 <div class="section" id="add-load-method">
-<h2>Add load method<a class="headerlink" href="#add-load-method" title="Permalink to this headline">¶</a></h2>
+<h2>Add load method<a class="headerlink" href="#add-load-method" title="Permalink to this headline"></a></h2>
 <p><strong>dffml_source_ini/misc.py</strong></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="k">async</span> <span class="k">def</span> <span class="nf">load_fd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fileobj</span><span class="p">):</span>
         <span class="c1"># Creating an instance of configparser</span>
@@ -347,7 +250,7 @@ the value for the <code class="docutils literal notranslate"><span class="pre">f
 creating a new Record.</p>
 </div>
 <div class="section" id="add-dump-method">
-<h2>Add dump method<a class="headerlink" href="#add-dump-method" title="Permalink to this headline">¶</a></h2>
+<h2>Add dump method<a class="headerlink" href="#add-dump-method" title="Permalink to this headline"></a></h2>
 <p><strong>dffml_source_ini/misc.py</strong></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="k">async</span> <span class="k">def</span> <span class="nf">dump_fd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fileobj</span><span class="p">):</span>
         <span class="c1"># Create an instance of configparser</span>
@@ -377,7 +280,7 @@ We are reading all the data from the memory (self.mem) and writing that data to 
 object (fileobj). Hence dumping all our data into file.</p>
 </div>
 <div class="section" id="add-tests">
-<h2>Add Tests<a class="headerlink" href="#add-tests" title="Permalink to this headline">¶</a></h2>
+<h2>Add Tests<a class="headerlink" href="#add-tests" title="Permalink to this headline"></a></h2>
 <p><strong>tests/test_source.py</strong></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">from</span> <span class="nn">tempfile</span> <span class="kn">import</span> <span class="n">TemporaryDirectory</span>
@@ -427,7 +330,7 @@ load method will return AsyncIterator[Record] type object. Lastly, We need to ch
 the records we saved is the same record which gets loaded.</p>
 </div>
 <div class="section" id="run-the-tests">
-<h2>Run the tests<a class="headerlink" href="#run-the-tests" title="Permalink to this headline">¶</a></h2>
+<h2>Run the tests<a class="headerlink" href="#run-the-tests" title="Permalink to this headline"></a></h2>
 <p>To run the tests</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python setup.py <span class="nb">test</span>
 </pre></div>
@@ -435,7 +338,7 @@ the records we saved is the same record which gets loaded.</p>
 <p>This will look into the file test_source.py and run all the tests.</p>
 </div>
 <div class="section" id="add-the-entrypoint">
-<h2>Add the entrypoint<a class="headerlink" href="#add-the-entrypoint" title="Permalink to this headline">¶</a></h2>
+<h2>Add the entrypoint<a class="headerlink" href="#add-the-entrypoint" title="Permalink to this headline"></a></h2>
 <p>To register your source under dffml entrypoint you need to make sure you have a
 <code class="docutils literal notranslate"><span class="pre">shorthand</span></code> equals <code class="docutils literal notranslate"><span class="pre">python.path.to:Class</span></code> line in the <code class="docutils literal notranslate"><span class="pre">entry_points.txt</span></code>
 file.</p>
@@ -448,14 +351,14 @@ file.</p>
 also be used in CLI.</p>
 </div>
 <div class="section" id="install-your-package">
-<h2>Install your package<a class="headerlink" href="#install-your-package" title="Permalink to this headline">¶</a></h2>
+<h2>Install your package<a class="headerlink" href="#install-your-package" title="Permalink to this headline"></a></h2>
 <p>To install your new source run</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python -m pip install -e .
 </pre></div>
 </div>
 </div>
 <div class="section" id="cli-usage">
-<h2>CLI Usage<a class="headerlink" href="#cli-usage" title="Permalink to this headline">¶</a></h2>
+<h2>CLI Usage<a class="headerlink" href="#cli-usage" title="Permalink to this headline"></a></h2>
 <p>Create a <code class="docutils literal notranslate"><span class="pre">.ini</span></code> file with some record data in it.</p>
 <p><strong>data.ini</strong></p>
 <div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[dffml]</span>
@@ -494,50 +397,33 @@ also be used in CLI.</p>
 
 
            </div>
-           
           </div>
-          <footer>
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="complex.html" class="btn btn-neutral float-right" title="Example SQLite source" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="index.html" class="btn btn-neutral float-left" title="Sources" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="complex.html" class="btn btn-neutral float-right" title="Example SQLite source" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>
-        &#169; Copyright 2017 - 2021, Intel.
-
-    </p>
+    <p>&#169; Copyright 2017 - 2021, Intel.</p>
   </div>
-    
-    
-    
-    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
 
 </footer>
         </div>
       </div>
-
     </section>
-
   </div>
-  
-
-  <script type="text/javascript">
+  <script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-
-  
-  
-    
-   
+  </script> 
 
 </body>
 </html>

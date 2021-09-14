@@ -1,46 +1,22 @@
-
-
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  
   <title>Meta Static Analysis &mdash; DFFML 0.4.0 documentation</title>
-  
-
-  
-  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/tabs.css" type="text/css" />
-
-  
-  
-
-  
-  
-
-  
-
-  
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/tabs.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/copybutton.js"></script>
-    
-    <script type="text/javascript" src="../_static/js/theme.js"></script>
-
-    
+    <script src="../_static/js/theme.js"></script>
     <link rel="author" title="About these documents" href="../about.html" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -48,33 +24,16 @@
     <link rel="prev" title="Automating Classification" href="integration.html" /> 
 </head>
 
-<body class="wy-body-for-nav">
-
-   
+<body class="wy-body-for-nav"> 
   <div class="wy-grid-for-nav">
-    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-          
-
-          
             <a href="../index.html" class="icon icon-home"> DFFML
-          
-
-          
           </a>
-
-          
-            
-            
               <div class="version">
                 0.4.0
               </div>
-            
-          
-
-          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -82,18 +41,7 @@
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-
-          
-        </div>
-
-        
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Introduction</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../about.html">About</a></li>
@@ -152,81 +100,37 @@
 <li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
 </ul>
 
-            
-          
         </div>
-        
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../index.html">DFFML</a>
-        
       </nav>
 
-
       <div class="wy-nav-content">
-        
         <div class="rst-content">
-        
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
+          <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-    
       <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
-        
           <li><a href="index.html">Examples</a> &raquo;</li>
-        
       <li>Meta Static Analysis</li>
-    
-    
 
 
       <li class="wy-breadcrumbs-aside">
-        
-          
-            
               <a href="https://github.com/intel/dffml/blob/master/docs/examples/shouldi.rst" class="fa fa-github"> Edit on GitHub</a>
-            
-          
-        
       </li>
-    
 
 
   </ul>
-
-  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
-            
+             
   <div class="section" id="meta-static-analysis">
-<h1>Meta Static Analysis<a class="headerlink" href="#meta-static-analysis" title="Permalink to this headline">¶</a></h1>
+<h1>Meta Static Analysis<a class="headerlink" href="#meta-static-analysis" title="Permalink to this headline"></a></h1>
 <p>This tutorial will explain what operations are and how you can use them. In the
 process we’ll create a meta static analysis tool, <code class="docutils literal notranslate"><span class="pre">shouldi</span></code>.</p>
 <p>Operations are the core of DFFML, they have inputs and outputs, are configurable
@@ -275,7 +179,7 @@ endpoint rather than a command line application.</p>
 </pre></div>
 </div>
 <div class="section" id="tools">
-<h2>Tools<a class="headerlink" href="#tools" title="Permalink to this headline">¶</a></h2>
+<h2>Tools<a class="headerlink" href="#tools" title="Permalink to this headline"></a></h2>
 <p>We’ll write this meta static analysis tool by collecting and interpreting the
 output of static analysis tools. The two tools we’ll use are <code class="docutils literal notranslate"><span class="pre">safety</span></code> and
 <code class="docutils literal notranslate"><span class="pre">bandit</span></code>.</p>
@@ -344,7 +248,7 @@ on the command line works, we supply the path to the source directory to scan.</
 </div>
 </div>
 <div class="section" id="plan">
-<h2>Plan<a class="headerlink" href="#plan" title="Permalink to this headline">¶</a></h2>
+<h2>Plan<a class="headerlink" href="#plan" title="Permalink to this headline"></a></h2>
 <p>Our plan is to run these tools and make a decision as to if we should install
 the package or not based on their reports.</p>
 <p>The first step will be to write an <code class="docutils literal notranslate"><span class="pre">Operation</span></code> which wraps each tool.</p>
@@ -354,7 +258,7 @@ inputs, and outputs. The <code class="docutils literal notranslate"><span class=
 prototype in C.</p>
 </div>
 <div class="section" id="creating-our-package">
-<h2>Creating our Package<a class="headerlink" href="#creating-our-package" title="Permalink to this headline">¶</a></h2>
+<h2>Creating our Package<a class="headerlink" href="#creating-our-package" title="Permalink to this headline"></a></h2>
 <p>Create a new package using the create script.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml service dev create operations shouldi
 <span class="gp">$ </span><span class="nb">cd</span> shouldi
@@ -372,7 +276,7 @@ directory of the DFFML source code.</p>
 </div>
 </div>
 <div class="section" id="installing-static-analysis-tools">
-<h2>Installing Static Analysis Tools<a class="headerlink" href="#installing-static-analysis-tools" title="Permalink to this headline">¶</a></h2>
+<h2>Installing Static Analysis Tools<a class="headerlink" href="#installing-static-analysis-tools" title="Permalink to this headline"></a></h2>
 <p>The tools we’ll be using are <code class="docutils literal notranslate"><span class="pre">bandit</span></code> and <code class="docutils literal notranslate"><span class="pre">safety</span></code>. We’ll also need to make
 http requests so let’s install <code class="docutils literal notranslate"><span class="pre">aiohttp</span></code> too.</p>
 <p>Add the dependencies to the list of packages seen in <code class="docutils literal notranslate"><span class="pre">install_requires</span></code>,
@@ -396,7 +300,7 @@ dependencies listed in <strong>requirements.txt</strong> as well.</p>
 </div>
 </div>
 <div class="section" id="safety-operation">
-<h2>Safety Operation<a class="headerlink" href="#safety-operation" title="Permalink to this headline">¶</a></h2>
+<h2>Safety Operation<a class="headerlink" href="#safety-operation" title="Permalink to this headline"></a></h2>
 <p>To get parsable output, we’ll run <code class="docutils literal notranslate"><span class="pre">safety</span></code> with the <code class="docutils literal notranslate"><span class="pre">--json</span></code> flag.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">echo</span> insecure-package<span class="o">==</span><span class="m">0</span>.1.0 <span class="p">|</span> safety check --stdin --json
 <span class="go">[</span>
@@ -462,7 +366,7 @@ dependencies listed in <strong>requirements.txt</strong> as well.</p>
 </div>
 </div>
 <div class="section" id="bandit-operation">
-<h2>Bandit Operation<a class="headerlink" href="#bandit-operation" title="Permalink to this headline">¶</a></h2>
+<h2>Bandit Operation<a class="headerlink" href="#bandit-operation" title="Permalink to this headline"></a></h2>
 <p>To get parsable output, we’ll run with the <code class="docutils literal notranslate"><span class="pre">-f</span> <span class="pre">json</span></code> flag.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>bandit -r -f json distributed-android-testing/
 <span class="go">{</span>
@@ -594,7 +498,7 @@ dependencies listed in <strong>requirements.txt</strong> as well.</p>
 </div>
 </div>
 <div class="section" id="what-s-the-data-flow">
-<h2>What’s the Data Flow?<a class="headerlink" href="#what-s-the-data-flow" title="Permalink to this headline">¶</a></h2>
+<h2>What’s the Data Flow?<a class="headerlink" href="#what-s-the-data-flow" title="Permalink to this headline"></a></h2>
 <p>So far <code class="docutils literal notranslate"><span class="pre">shouldi</span></code> uses two tools.</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">bandit</span></code></p>
@@ -658,7 +562,7 @@ we care about.</p></li>
 </ul>
 </div>
 <div class="section" id="pypi-operations">
-<h2>PyPi Operations<a class="headerlink" href="#pypi-operations" title="Permalink to this headline">¶</a></h2>
+<h2>PyPi Operations<a class="headerlink" href="#pypi-operations" title="Permalink to this headline"></a></h2>
 <p>This operation will take the URL, download the package source and extract it to a
 temporary directory.</p>
 <p><strong>shouldi/python/pypi.py</strong></p>
@@ -797,7 +701,7 @@ with it.</p>
 </div>
 </div>
 <div class="section" id="cli">
-<h2>CLI<a class="headerlink" href="#cli" title="Permalink to this headline">¶</a></h2>
+<h2>CLI<a class="headerlink" href="#cli" title="Permalink to this headline"></a></h2>
 <p>Writing the CLI is as simple as importing our operations and having the memory
 orchestrator run them. DFFML also provides a quick and dirty CLI abstraction
 based on <a class="reference external" href="https://docs.python.org/3/library/argparse.html#module-argparse" title="(in Python v3.9)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">argparse</span></code></a> which will speed things up.</p>
@@ -947,7 +851,7 @@ is set up correctly).</p>
 </div>
 </div>
 <div class="section" id="visualizing-the-dataflow">
-<span id="examples-shouldi-visualizing-the-dataflow"></span><h2>Visualizing the DataFlow<a class="headerlink" href="#visualizing-the-dataflow" title="Permalink to this headline">¶</a></h2>
+<span id="examples-shouldi-visualizing-the-dataflow"></span><h2>Visualizing the DataFlow<a class="headerlink" href="#visualizing-the-dataflow" title="Permalink to this headline"></a></h2>
 <p>DataFlows can be visualized using <a class="reference external" href="https://mermaidjs.github.io/">mermaidjs</a>.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -1007,7 +911,7 @@ are connected.</p>
 sphinx plugin, and a command line utility.</p>
 </div>
 <div class="section" id="registering-operations">
-<span id="examples-shouldi-registering-opreations"></span><h2>Registering Operations<a class="headerlink" href="#registering-operations" title="Permalink to this headline">¶</a></h2>
+<span id="examples-shouldi-registering-opreations"></span><h2>Registering Operations<a class="headerlink" href="#registering-operations" title="Permalink to this headline"></a></h2>
 <p>In order to make our operations visible to other plugins and packages using
 DFFML, we need to register them with Python’s <code class="docutils literal notranslate"><span class="pre">entry_points</span></code> system.
 Add the following in the <code class="docutils literal notranslate"><span class="pre">entry_points.txt</span></code> file you edited earlier. Last time
@@ -1075,50 +979,33 @@ new meta static analysis tool over an HTTP interface.</p>
 
 
            </div>
-           
           </div>
-          <footer>
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="dataflows.html" class="btn btn-neutral float-right" title="DataFlow HTTP Deployment" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="integration.html" class="btn btn-neutral float-left" title="Automating Classification" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="dataflows.html" class="btn btn-neutral float-right" title="DataFlow HTTP Deployment" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>
-        &#169; Copyright 2017 - 2021, Intel.
-
-    </p>
+    <p>&#169; Copyright 2017 - 2021, Intel.</p>
   </div>
-    
-    
-    
-    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
 
 </footer>
         </div>
       </div>
-
     </section>
-
   </div>
-  
-
-  <script type="text/javascript">
+  <script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-
-  
-  
-    
-   
+  </script> 
 
 </body>
 </html>

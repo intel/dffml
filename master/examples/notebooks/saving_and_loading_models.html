@@ -1,37 +1,16 @@
-
-
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  
   <title>Saving and loading models &mdash; DFFML 68c82a901 documentation</title>
-  
-
-  
-  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/tabs.css" type="text/css" />
-
-  
-  
-
-  
-  
-
-  
-
-  
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/tabs.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
         <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
@@ -40,10 +19,7 @@
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
         <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
         <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-    
-    <script type="text/javascript" src="../../_static/js/theme.js"></script>
-
-    
+    <script src="../../_static/js/theme.js"></script>
     <link rel="author" title="About these documents" href="../../about.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -51,33 +27,16 @@
     <link rel="prev" title="Tuning Models" href="tuning_models.html" /> 
 </head>
 
-<body class="wy-body-for-nav">
-
-   
+<body class="wy-body-for-nav"> 
   <div class="wy-grid-for-nav">
-    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-          
-
-          
             <a href="../../index.html" class="icon icon-home"> DFFML
-          
-
-          
           </a>
-
-          
-            
-            
               <div class="version">
                 68c82a901
               </div>
-            
-          
-
-          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -85,18 +44,7 @@
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-
-          
-        </div>
-
-        
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Introduction</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../about.html">About</a></li>
@@ -186,81 +134,36 @@
 <li class="toctree-l1"><a class="reference internal" href="../../changelog.html">Changelog</a></li>
 </ul>
 
-            
-          
         </div>
-        
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../../index.html">DFFML</a>
-        
       </nav>
 
-
       <div class="wy-nav-content">
-        
         <div class="rst-content">
-        
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
+          <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-    
       <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
-        
           <li><a href="../index.html">Examples</a> &raquo;</li>
-        
           <li><a href="index.html">Notebooks</a> &raquo;</li>
-        
       <li>Saving and loading models</li>
-    
-    
 
 
       <li class="wy-breadcrumbs-aside">
-        
-          
-            
               <a href="https://github.com/intel/dffml/blob/master/docs/examples/notebooks/saving_and_loading_models.nblink" class="fa fa-github"> Edit on GitHub</a>
-            
-          
-        
       </li>
-    
 
 
   </ul>
-
-  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
-            
+             
   
 <style>
 /* CSS for nbsphinx extension */
@@ -536,10 +439,10 @@ div.rendered_html tbody tr:hover {
 <div class="line"><br /></div>
 </div>
 <div class="section" id="Saving-and-loading-models">
-<h1>Saving and loading models<a class="headerlink" href="#Saving-and-loading-models" title="Permalink to this headline">¶</a></h1>
+<h1>Saving and loading models<a class="headerlink" href="#Saving-and-loading-models" title="Permalink to this headline"></a></h1>
 <p>In this notebook, we’ll be using the red wine quality data set. The purpose of this notebook is to show how to save a trained model and load it again in a fresh session.</p>
 <div class="section" id="Import-Packages">
-<h2>Import Packages<a class="headerlink" href="#Import-Packages" title="Permalink to this headline">¶</a></h2>
+<h2>Import Packages<a class="headerlink" href="#Import-Packages" title="Permalink to this headline"></a></h2>
 <p>Let us import dffml and other packages that we might need.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
@@ -564,7 +467,7 @@ div.rendered_html tbody tr:hover {
 </div>
 </div>
 <div class="section" id="Build-our-Dataset">
-<h2>Build our Dataset<a class="headerlink" href="#Build-our-Dataset" title="Permalink to this headline">¶</a></h2>
+<h2>Build our Dataset<a class="headerlink" href="#Build-our-Dataset" title="Permalink to this headline"></a></h2>
 <p>Dffml has a very convinient function <code class="docutils literal notranslate"><span class="pre">cached_download()</span></code> that can be used to download datasets and make sure you don’t download them if you have already.</p>
 <p>The cached_download() has the following parameters:</p>
 <ol class="arabic">
@@ -688,7 +591,7 @@ We won&#39;t be using this in our case.
 </div>
 </div>
 <div class="section" id="Instantiate-our-Models-with-parameters">
-<h2>Instantiate our Models with parameters<a class="headerlink" href="#Instantiate-our-Models-with-parameters" title="Permalink to this headline">¶</a></h2>
+<h2>Instantiate our Models with parameters<a class="headerlink" href="#Instantiate-our-Models-with-parameters" title="Permalink to this headline"></a></h2>
 <p>Dffml makes it quite easy to load multiple models dynamically using the <code class="docutils literal notranslate"><span class="pre">Model.load()</span></code> function. After that, you just have to parameterize the loaded models and they are ready to train interchangably!</p>
 <p>For this example, we’ll be demonstrating 2 models but you can feel free to try more than 2 models in a similar fashion.</p>
 <div class="nbinput nblast docutils container">
@@ -725,7 +628,7 @@ We won&#39;t be using this in our case.
 </div>
 </div>
 <div class="section" id="Train-our-Models">
-<h2>Train our Models<a class="headerlink" href="#Train-our-Models" title="Permalink to this headline">¶</a></h2>
+<h2>Train our Models<a class="headerlink" href="#Train-our-Models" title="Permalink to this headline"></a></h2>
 <p>Finally, our models are ready to be trained using the <code class="docutils literal notranslate"><span class="pre">high-level</span></code> API. Let’s make sure to pass each record as a parameter by simply using the unpacking operator(*).</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
@@ -740,7 +643,7 @@ We won&#39;t be using this in our case.
 <p>When we train a model in DFFML, it is automatically saved on the location provided while instantiating the model.</p>
 </div>
 <div class="section" id="Test-our-Models">
-<h2>Test our Models<a class="headerlink" href="#Test-our-Models" title="Permalink to this headline">¶</a></h2>
+<h2>Test our Models<a class="headerlink" href="#Test-our-Models" title="Permalink to this headline"></a></h2>
 <p>To test our model, we’ll use the <code class="docutils literal notranslate"><span class="pre">accuracy()</span></code> function in the <code class="docutils literal notranslate"><span class="pre">high-level</span></code> API.</p>
 <p>We ask for the accuracy to be assessed using the Mean Squared Error method by passing “mse” to <code class="docutils literal notranslate"><span class="pre">AccuracyScorer.load()</span></code>.</p>
 <div class="nbinput docutils container">
@@ -767,7 +670,7 @@ Accuracy: 0.46875
 </div>
 </div>
 <div class="section" id="Restart-kernel-and-load-the-model">
-<h2>Restart kernel and load the model<a class="headerlink" href="#Restart-kernel-and-load-the-model" title="Permalink to this headline">¶</a></h2>
+<h2>Restart kernel and load the model<a class="headerlink" href="#Restart-kernel-and-load-the-model" title="Permalink to this headline"></a></h2>
 <p>Restart kernel and execute cells below to demonstrate loading a saved model.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
@@ -814,7 +717,7 @@ Accuracy: 0.46875
 </div>
 </div>
 <div class="section" id="id1">
-<h2>Import Packages<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<h2>Import Packages<a class="headerlink" href="#id1" title="Permalink to this headline"></a></h2>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
@@ -838,7 +741,7 @@ Accuracy: 0.46875
 </div>
 </div>
 <div class="section" id="id2">
-<h2>Build our Dataset<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<h2>Build our Dataset<a class="headerlink" href="#id2" title="Permalink to this headline"></a></h2>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
@@ -889,7 +792,7 @@ Accuracy: 0.46875
 </div>
 </div>
 <div class="section" id="Load-our-saved-model">
-<h2>Load our saved model<a class="headerlink" href="#Load-our-saved-model" title="Permalink to this headline">¶</a></h2>
+<h2>Load our saved model<a class="headerlink" href="#Load-our-saved-model" title="Permalink to this headline"></a></h2>
 <p>In DFFML, we can load our previously trained model by instantiating it in the same location.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
@@ -952,50 +855,33 @@ Accuracy: 0.46875
 
 
            </div>
-           
           </div>
-          <footer>
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="ensemble_by_stacking.html" class="btn btn-neutral float-right" title="Ensemble by stacking" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="tuning_models.html" class="btn btn-neutral float-left" title="Tuning Models" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="ensemble_by_stacking.html" class="btn btn-neutral float-right" title="Ensemble by stacking" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>
-        &#169; Copyright 2017 - 2021, Intel.
-
-    </p>
+    <p>&#169; Copyright 2017 - 2021, Intel.</p>
   </div>
-    
-    
-    
-    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
 
 </footer>
         </div>
       </div>
-
     </section>
-
   </div>
-  
-
-  <script type="text/javascript">
+  <script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-
-  
-  
-    
-   
+  </script> 
 
 </body>
 </html>
