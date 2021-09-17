@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>InnerSource Microservice &mdash; DFFML 6f7d34993 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/tabs.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/copybutton.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="author" title="About these documents" href="../../about.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="MNIST Handwriten Digits" href="../mnist.html" />
+    <link rel="prev" title="InnerSource Portal" href="swportal.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> DFFML
+          </a>
+              <div class="version">
+                6f7d34993
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Introduction</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../concepts/index.html">Concepts</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Usage</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../quickstart/model.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Examples</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../notebooks/index.html">Notebooks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../integration.html">Automating Classification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../shouldi.html">Meta Static Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dataflows.html">DataFlow HTTP Deployment</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">InnerSource</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="swportal.html">InnerSource Portal</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">InnerSource Microservice</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#config-files">Config Files</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#http-service">HTTP Service</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#querying-github">Querying GitHub</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#dataflow">DataFlow</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#serving-the-dataflow">Serving the DataFlow</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../mnist.html">MNIST Handwriten Digits</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../flower17/flower17.html">Flower17 Species Classification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../or_covid_data_by_county.html">COVID Forecasting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../webhook/index.html">Continuous Deployment of DataFlows</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../icecream_sales.html">Ice Cream Sales</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../data_cleanup/index.html">Data Cleanup</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../plugins/index.html">Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cli.html">Command Line</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../plugins/service/http/index.html">HTTP API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/noasync.html">Noasync</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/record.html">Record</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/base.html">Base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/plugins.html">Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/log.html">Log</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/version.html">Version</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/port/index.html">Port</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/service/index.html">Service</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/accuracy/index.html">Accuracy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/secret/index.html">Secret</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/util/index.html">Util</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/cli/index.html">Cli</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/high_level/index.html">High_Level</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/operation/index.html">Operation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/df/index.html">Df</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/optimizer/index.html">Optimizer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/model/index.html">Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/db/index.html">Db</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/feature/index.html">Feature</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/source/index.html">Source</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/configloader/index.html">Configloader</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../arch/index.html">Architecture</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Subprojects</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../shouldi.html">shouldi</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Community</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/intel/dffml">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://intel.github.io/dffml/master/">Master Branch Docs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../publications.html">Publications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contact.html">Contact Us</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing/index.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../news/index.html">News</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../changelog.html">Changelog</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">DFFML</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../index.html">Examples</a> &raquo;</li>
+          <li><a href="index.html">InnerSource</a> &raquo;</li>
+      <li>InnerSource Microservice</li>
+
+
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/intel/dffml/blob/master/docs/examples/innersource/microservice.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+
+
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="innersource-microservice">
+<h1>InnerSource Microservice<a class="headerlink" href="#innersource-microservice" title="Permalink to this headline"></a></h1>
+<p>We created a crawler in the previous tutorial
+<a class="reference internal" href="swportal.html"><span class="doc">InnerSource Portal</span></a>. Now we are going to deploy a micro
+service which evaluates a single repo at a time using the same DataFlow we used
+for the crawler.</p>
+<p>Our end result will be a container which serves a JSON API endpoint. We can
+send a request to the endpoint to evaluate metrics for an InnerSource repo.</p>
+<div class="section" id="config-files">
+<h2>Config Files<a class="headerlink" href="#config-files" title="Permalink to this headline"></a></h2>
+<p>As we’ve seen before, DataFlows can be serialized to config files. JSON
+representations of DataFlows are not fun to hand edit. YAML looks a lot cleaner.</p>
+<p>We’re going to install the <code class="docutils literal notranslate"><span class="pre">dffml-config-yaml</span></code> package so that we don’t have
+to look at JSON.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python -m pip install dffml-config-yaml
+</pre></div>
+</div>
+</div>
+<div class="section" id="http-service">
+<h2>HTTP Service<a class="headerlink" href="#http-service" title="Permalink to this headline"></a></h2>
+<p>We’re going to install the <code class="docutils literal notranslate"><span class="pre">dffml-service-http</span></code> package which will be the
+server process of our microservice.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python -m pip install dffml-service-http
+</pre></div>
+</div>
+<p>To deploy our previous InnerSource crawler dataflow via the HTTP API, we need to
+register a communication channel, which is the association of a URL path to the
+dataflow.</p>
+<p>We create a config file for the <code class="docutils literal notranslate"><span class="pre">MultiComm</span></code> we’ll be using. <code class="docutils literal notranslate"><span class="pre">MultiComm</span></code>
+config files go under the <code class="docutils literal notranslate"><span class="pre">mc</span></code> directory of the directory being
+used to deploy. Then config file itself then goes under the name of the
+<code class="docutils literal notranslate"><span class="pre">MultiComm</span></code> its associated with, <code class="docutils literal notranslate"><span class="pre">http</span></code> in this instance.</p>
+<p>The HTTP service provides multiple channels of communication which we can attach
+DataFlows to. These end up being URL paths in the case of the HTTP server.</p>
+<p>We need to create a directory for the URL to DataFlow configuration mappings to
+live in.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>mkdir -p mc/http
+</pre></div>
+</div>
+<p>The file is populated with the URL path that should trigger the dataflow, how to
+present the output data, and if the dataflow should return when all outputs
+exist, or if it should continue waiting for more inputs (<code class="docutils literal notranslate"><span class="pre">asynchronous</span></code>, used
+for websockets / http2).</p>
+<p><strong>mc/http/metrics.yaml</strong></p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">path</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">/metrics</span>
+<span class="nt">output_mode</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">json</span>
+<span class="nt">asynchronous</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">false</span>
+</pre></div>
+</div>
+<p>We also need to create a directory for the DataFlow to live in.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>mkdir df/
+</pre></div>
+</div>
+</div>
+<div class="section" id="querying-github">
+<h2>Querying GitHub<a class="headerlink" href="#querying-github" title="Permalink to this headline"></a></h2>
+<p>Create a directory where we’ll store all of the operations (Python functions)
+we’ll use to gather project data / metrics.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>mkdir operations/
+</pre></div>
+</div>
+<p>Make it a Python module by creating a blank <code class="docutils literal notranslate"><span class="pre">__init__.py</span></code> file in it.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>touch operations/__init__.py
+</pre></div>
+</div>
+<p>Install the PyGithub library, which we’ll use to access the GitHub API.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python -m pip install PyGithub
+</pre></div>
+</div>
+<p>You’ll need a Personal Access Token to be able to make calls to GitHub’s API.
+You can create one by following their documentation.</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://docs.github.com/en/github/authenticating-to-github/creating-a-personal-access-token">https://docs.github.com/en/github/authenticating-to-github/creating-a-personal-access-token</a></p></li>
+</ul>
+<p>When it presents you with a bunch of checkboxes for difference “scopes” you
+don’t have to check any of them, unless you want to access your own private
+repos, then check the repos box.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">export</span> <span class="nv">GITHUB_TOKEN</span><span class="o">=</span>&lt;paste your personal access token here&gt;
+</pre></div>
+</div>
+<p>You’ve just pasted your token into your terminal so it will likely show up in
+your shell’s history. You might want to either remove it from your history, or
+just delete the token on GitHub’s settings page after you’re done with this
+tutorial.</p>
+<p>Write a Python function which returns an object representing a GitHub repo. For
+simplicity of this tutorial, the function will take the token from the
+environment variable we just set.</p>
+<p><strong>operations/gh.py</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+
+<span class="kn">import</span> <span class="nn">dffml</span>
+<span class="kn">import</span> <span class="nn">github</span>
+
+
+<span class="nd">@dffml</span><span class="o">.</span><span class="n">op</span><span class="p">(</span>
+    <span class="n">inputs</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="n">dffml</span><span class="o">.</span><span class="n">Definition</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;github.repo.url&quot;</span><span class="p">,</span> <span class="n">primitive</span><span class="o">=</span><span class="s2">&quot;string&quot;</span><span class="p">),</span>
+    <span class="p">},</span>
+    <span class="n">outputs</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;owner&quot;</span><span class="p">:</span> <span class="n">dffml</span><span class="o">.</span><span class="n">Definition</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;github.org.owner_name&quot;</span><span class="p">,</span> <span class="n">primitive</span><span class="o">=</span><span class="s2">&quot;string&quot;</span>
+        <span class="p">),</span>
+        <span class="s2">&quot;project&quot;</span><span class="p">:</span> <span class="n">dffml</span><span class="o">.</span><span class="n">Definition</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;github.repo.project_name&quot;</span><span class="p">,</span> <span class="n">primitive</span><span class="o">=</span><span class="s2">&quot;string&quot;</span>
+        <span class="p">),</span>
+    <span class="p">},</span>
+<span class="p">)</span>
+<span class="k">def</span> <span class="nf">github_split_owner_project</span><span class="p">(</span><span class="n">url</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Parses the owner and project name out of a GitHub URL</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+
+<span class="sd">    &gt;&gt;&gt; github_split_owner_project(&quot;https://github.com/intel/dffml&quot;)</span>
+<span class="sd">    (&#39;intel&#39;, &#39;dffml&#39;)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span>
+        <span class="nb">zip</span><span class="p">(</span>
+            <span class="p">(</span><span class="s2">&quot;owner&quot;</span><span class="p">,</span> <span class="s2">&quot;project&quot;</span><span class="p">),</span>
+            <span class="nb">tuple</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">url</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">2</span><span class="p">:])</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)),</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
+
+
+<span class="nd">@dffml</span><span class="o">.</span><span class="n">op</span><span class="p">(</span>
+    <span class="n">inputs</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;org&quot;</span><span class="p">:</span> <span class="n">github_split_owner_project</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s2">&quot;owner&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;project&quot;</span><span class="p">:</span> <span class="n">github_split_owner_project</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s2">&quot;project&quot;</span><span class="p">],</span>
+    <span class="p">},</span>
+    <span class="n">outputs</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;repo&quot;</span><span class="p">:</span> <span class="n">dffml</span><span class="o">.</span><span class="n">Definition</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;PyGithub.Repository&quot;</span><span class="p">,</span> <span class="n">primitive</span><span class="o">=</span><span class="s2">&quot;object&quot;</span><span class="p">,</span>
+        <span class="p">),</span>
+    <span class="p">},</span>
+<span class="p">)</span>
+<span class="k">def</span> <span class="nf">github_get_repo</span><span class="p">(</span><span class="n">org</span><span class="p">,</span> <span class="n">project</span><span class="p">):</span>
+    <span class="c1"># Instantiate a GitHub API object</span>
+    <span class="n">g</span> <span class="o">=</span> <span class="n">github</span><span class="o">.</span><span class="n">Github</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;GITHUB_TOKEN&quot;</span><span class="p">])</span>
+    <span class="c1"># Make the request for the repo</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;repo&quot;</span><span class="p">:</span> <span class="n">g</span><span class="o">.</span><span class="n">get_repo</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">org</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">project</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)}</span>
+
+
+<span class="nd">@dffml</span><span class="o">.</span><span class="n">op</span><span class="p">(</span>
+    <span class="n">inputs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;repo&quot;</span><span class="p">:</span> <span class="n">github_get_repo</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s2">&quot;repo&quot;</span><span class="p">],},</span>
+    <span class="n">outputs</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;raw_repo&quot;</span><span class="p">:</span> <span class="n">dffml</span><span class="o">.</span><span class="n">Definition</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;PyGithub.Repository.Raw&quot;</span><span class="p">,</span> <span class="n">primitive</span><span class="o">=</span><span class="s2">&quot;object&quot;</span>
+        <span class="p">),</span>
+    <span class="p">},</span>
+<span class="p">)</span>
+<span class="k">def</span> <span class="nf">github_repo_raw</span><span class="p">(</span><span class="n">repo</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;raw_repo&quot;</span><span class="p">:</span> <span class="n">repo</span><span class="o">.</span><span class="n">_rawData</span><span class="p">}</span>
+
+
+<span class="c1"># If this script is run via `python gh.py intel dffml`, it will print out the</span>
+<span class="c1"># repo data using the pprint module.</span>
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">sys</span>
+    <span class="kn">import</span> <span class="nn">pprint</span>
+
+    <span class="n">pprint</span><span class="o">.</span><span class="n">pprint</span><span class="p">(</span>
+        <span class="n">github_repo_raw</span><span class="p">(</span><span class="n">github_get_repo</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">],</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])[</span><span class="s2">&quot;repo&quot;</span><span class="p">])</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+<p>You’ll notice that we wrote a function, and then put an <code class="docutils literal notranslate"><span class="pre">if</span></code> statement. The
+<code class="docutils literal notranslate"><span class="pre">if</span></code> block let’s us only run the code within the block when the script is run
+directly (rather than when included via <code class="docutils literal notranslate"><span class="pre">import</span></code>).</p>
+<p>If we run Python on the script, and pass an org name followed by a repo name,
+our <code class="docutils literal notranslate"><span class="pre">if</span></code> block will run the function and print the raw data of the repsonse
+received from GitHub, containing a bunch of information about the repo.</p>
+<p>You’ll notice that the data being output here is a superset of the data we’d see
+for the repo in the <code class="docutils literal notranslate"><span class="pre">repos.json</span></code> file. Meaning we have all the required data
+and more.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python operations/gh.py intel dffml
+<span class="go">{&#39;allow_auto_merge&#39;: False,</span>
+<span class="go"> &lt;... output clipped ...&gt;</span>
+<span class="go"> &#39;full_name&#39;: &#39;intel/dffml&#39;,</span>
+<span class="go"> &lt;... output clipped ...&gt;</span>
+<span class="go"> &#39;html_url&#39;: &#39;https://github.com/intel/dffml&#39;,</span>
+<span class="go"> &lt;... output clipped ...&gt;</span>
+<span class="go"> &#39;watchers_count&#39;: 135}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="dataflow">
+<h2>DataFlow<a class="headerlink" href="#dataflow" title="Permalink to this headline"></a></h2>
+<p>We’re going to create a Python script which will use all the operations we’ve
+written.</p>
+<p>We need to download the <code class="docutils literal notranslate"><span class="pre">repos.json</span></code> file from the previous example so that we
+know what fields our DataFlow should output.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>curl -fLo repos.json.bak https://github.com/SAP/project-portal-for-innersource/raw/main/repos.json
+</pre></div>
+</div>
+<p>First we declare imports of other packages.</p>
+<p><strong>dataflow.py</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="kn">import</span> <span class="nn">pathlib</span>
+
+<span class="kn">import</span> <span class="nn">dffml</span>
+</pre></div>
+</div>
+<p>Then we import our operations.</p>
+<p><strong>dataflow.py</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import all the operations we implemented into this file&#39;s global namespace</span>
+<span class="kn">from</span> <span class="nn">operations.gh</span> <span class="kn">import</span> <span class="o">*</span>
+</pre></div>
+</div>
+<p>Finally we define our dataflow.</p>
+<p><strong>dataflow.py</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Read in the repos.json backup to learn it&#39;s format. It&#39;s in the same directory</span>
+<span class="c1"># as this file (dataflow.py) so we can reference it by looking in the parent</span>
+<span class="c1"># directory of this file and then down (via .joinpath()) into repos.json.bak</span>
+<span class="n">repos_json_bak_path</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s2">&quot;repos.json.bak&quot;</span><span class="p">)</span>
+<span class="c1"># Read in the contents</span>
+<span class="n">repos_json_bak_text</span> <span class="o">=</span> <span class="n">repos_json_bak_path</span><span class="o">.</span><span class="n">read_text</span><span class="p">()</span>
+<span class="c1"># Parse the contents</span>
+<span class="n">repos_json_bak</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">repos_json_bak_text</span><span class="p">)</span>
+<span class="c1"># We&#39;ll inspect the first element in the list to find out what keys must be</span>
+<span class="c1"># present in the object</span>
+<span class="n">required_data_top_level</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">repos_json_bak</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+<span class="c1"># It should look like this:</span>
+<span class="c1">#   required_data_top_level = [</span>
+<span class="c1">#       &#39;id&#39;, &#39;name&#39;, &#39;full_name&#39;, &#39;html_url&#39;, &#39;description&#39;, &#39;created_at&#39;,</span>
+<span class="c1">#       &#39;updated_at&#39;, &#39;pushed_at&#39;, &#39;stargazers_count&#39;, &#39;watchers_count&#39;,</span>
+<span class="c1">#       &#39;language&#39;, &#39;forks_count&#39;, &#39;open_issues_count&#39;, &#39;license&#39;,</span>
+<span class="c1">#       &#39;default_branch&#39;, &#39;owner&#39;, &#39;_InnerSourceMetadata&#39;</span>
+<span class="c1">#   ]</span>
+<span class="c1"># We&#39;re first going to create output operations to grab each of the keys</span>
+<span class="c1"># We know that _InnerSourceMetadata is not a single value, so we&#39;ll handle that</span>
+<span class="c1"># separately and remove it from our list</span>
+<span class="n">required_data_top_level</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s2">&quot;_InnerSourceMetadata&quot;</span><span class="p">)</span>
+
+<span class="c1"># Make a list of any imported OpeartionImplementations (functions decorated with</span>
+<span class="c1"># @op()) from any that are in the global namespace of this file</span>
+<span class="n">operation_implementations</span> <span class="o">=</span> <span class="n">dffml</span><span class="o">.</span><span class="n">opimp_in</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="vm">__name__</span><span class="p">])</span>
+
+<span class="c1"># Create a DataFlow using every operation in all the modules we imported. Also</span>
+<span class="c1"># use the remap operation</span>
+<span class="n">dataflow</span> <span class="o">=</span> <span class="n">dffml</span><span class="o">.</span><span class="n">DataFlow</span><span class="p">(</span>
+    <span class="n">dffml</span><span class="o">.</span><span class="n">remap</span><span class="p">,</span>
+    <span class="o">*</span><span class="n">operation_implementations</span><span class="p">,</span>
+    <span class="c1"># The remap operation allows us to specify which keys should appear in the</span>
+    <span class="c1"># outputs of each dataflow run. We do that by configuring it to use a</span>
+    <span class="c1"># subflow, which is a dataflow run within a dataflow.</span>
+    <span class="c1"># TODO(pdxjohnny) Remove .export() after unifying config code.</span>
+    <span class="n">configs</span><span class="o">=</span><span class="p">{</span>
+        <span class="n">dffml</span><span class="o">.</span><span class="n">remap</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="p">{</span>
+            <span class="c1"># Our subflow will run the get_single operation, which grabs one</span>
+            <span class="c1"># Input object matching the given definition name. The one Input we</span>
+            <span class="c1"># grab at first is the raw ouput of the PyGithub Repository object.</span>
+            <span class="s2">&quot;dataflow&quot;</span><span class="p">:</span> <span class="n">dffml</span><span class="o">.</span><span class="n">DataFlow</span><span class="p">(</span>
+                <span class="n">dffml</span><span class="o">.</span><span class="n">GetSingle</span><span class="p">,</span>
+                <span class="n">seed</span><span class="o">=</span><span class="p">[</span>
+                    <span class="n">dffml</span><span class="o">.</span><span class="n">Input</span><span class="p">(</span>
+                        <span class="n">value</span><span class="o">=</span><span class="p">[</span><span class="n">github_repo_raw</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s2">&quot;raw_repo&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">],</span>
+                        <span class="n">definition</span><span class="o">=</span><span class="n">dffml</span><span class="o">.</span><span class="n">GetSingle</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;spec&quot;</span><span class="p">],</span>
+                    <span class="p">)</span>
+                <span class="p">],</span>
+            <span class="p">)</span><span class="o">.</span><span class="n">export</span><span class="p">()</span>
+        <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="n">seed</span><span class="o">=</span><span class="p">[</span>
+        <span class="n">dffml</span><span class="o">.</span><span class="n">Input</span><span class="p">(</span>
+            <span class="c1"># The output of the top level dataflow will be a dict where the keys</span>
+            <span class="c1"># are what we give here, and the values are the output of a call to</span>
+            <span class="c1"># traverse_get(), where the keys to traverse are the values we give</span>
+            <span class="c1"># here, and the dict being traversed the results from the subflow.</span>
+            <span class="c1"># {key: traverse_get(subflow_results, *value)}</span>
+            <span class="n">value</span><span class="o">=</span><span class="p">{</span>
+                <span class="n">key</span><span class="p">:</span> <span class="p">[</span><span class="n">github_repo_raw</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s2">&quot;raw_repo&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">key</span><span class="p">]</span>
+                <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">required_data_top_level</span>
+            <span class="p">},</span>
+            <span class="n">definition</span><span class="o">=</span><span class="n">dffml</span><span class="o">.</span><span class="n">remap</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;spec&quot;</span><span class="p">],</span>
+        <span class="p">)</span>
+    <span class="p">],</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>We export the dataflow for use with the CLI, HTTP service, etc.</p>
+<p><strong>TODO</strong> Add link to webui when complete. It will be used for editing dataflows.
+ETA Oct 2021.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml service dev <span class="nb">export</span> dataflow:dataflow <span class="p">|</span> tee df/metrics.json
+</pre></div>
+</div>
+<p>We can run the dataflow using the DFFML command line interface rather than
+running the Python file.</p>
+<p>If you want to run the dataflow on a single repo, you can do it as follows.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml dataflow run records <span class="nb">set</span> <span class="se">\</span>
+    -dataflow df/metrics.json <span class="se">\</span>
+    -record-def <span class="s2">&quot;github.repo.url&quot;</span> <span class="se">\</span>
+    -keys <span class="se">\</span>
+      https://github.com/intel/dffml
+</pre></div>
+</div>
+</div>
+<div class="section" id="serving-the-dataflow">
+<h2>Serving the DataFlow<a class="headerlink" href="#serving-the-dataflow" title="Permalink to this headline"></a></h2>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">-insecure</span></code> flag is only being used here to speed up this
+tutorial. See documentation on HTTP API
+<a class="reference internal" href="../../plugins/service/http/security.html"><span class="doc">Security</span></a> for more information.</p>
+</div>
+<p>We now start the http server and tell it that the <code class="docutils literal notranslate"><span class="pre">MultiComm</span></code> configuration
+directory (<code class="docutils literal notranslate"><span class="pre">mc/</span></code>) can be found in the current directory, <code class="docutils literal notranslate"><span class="pre">.</span></code>.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml service http server -port <span class="m">8080</span> -insecure -mc-config .
+</pre></div>
+</div>
+<p>In another terminal, you can send a <code class="docutils literal notranslate"><span class="pre">POST</span></code> request containing the <code class="docutils literal notranslate"><span class="pre">Input</span></code>
+items that you want evaluated.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>curl -sf <span class="se">\</span>
+  --header <span class="s2">&quot;Content-Type: application/json&quot;</span> <span class="se">\</span>
+  --request POST <span class="se">\</span>
+  --data <span class="s1">&#39;{&quot;https://github.com/intel/dffml&quot;: [{&quot;value&quot;:&quot;https://github.com/intel/dffml&quot;,&quot;definition&quot;:&quot;github.repo.url&quot;}]}&#39;</span> <span class="se">\</span>
+  http://localhost:8080/metrics <span class="p">|</span> python -m json.tool
+<span class="go">            [</span>
+<span class="go">    {</span>
+<span class="go">        &quot;extra&quot;: {},</span>
+<span class="go">        &quot;features&quot;: {</span>
+<span class="go">            &quot;created_at&quot;: &quot;2018-09-19T21:06:34Z&quot;,</span>
+<span class="go">            &quot;default_branch&quot;: &quot;master&quot;,</span>
+<span class="go">            &quot;description&quot;: &quot;The easiest way to use Machine Learning. Mix and match underlying ML libraries and data set sources. Generate new datasets or modify existing ones with ease.&quot;,</span>
+<span class="go">            &quot;forks_count&quot;: 118,</span>
+<span class="go">            &quot;full_name&quot;: &quot;intel/dffml&quot;,</span>
+<span class="go">            &quot;html_url&quot;: &quot;https://github.com/intel/dffml&quot;,</span>
+<span class="go">            &quot;id&quot;: 149512216,</span>
+<span class="go">            &quot;language&quot;: &quot;Python&quot;,</span>
+<span class="go">            &quot;license&quot;: {</span>
+<span class="go">                &quot;key&quot;: &quot;mit&quot;,</span>
+<span class="go">                &quot;name&quot;: &quot;MIT License&quot;,</span>
+<span class="go">                &quot;node_id&quot;: &quot;MDc6TGljZW5zZTEz&quot;,</span>
+<span class="go">                &quot;spdx_id&quot;: &quot;MIT&quot;,</span>
+<span class="go">                &quot;url&quot;: &quot;https://api.github.com/licenses/mit&quot;</span>
+<span class="go">            },</span>
+<span class="go">            &quot;name&quot;: &quot;dffml&quot;,</span>
+<span class="go">            &quot;open_issues_count&quot;: 296,</span>
+<span class="go">            &quot;owner&quot;: {</span>
+<span class="go">                &quot;avatar_url&quot;: &quot;https://avatars.githubusercontent.com/u/17888862?v=4&quot;,</span>
+<span class="go">                &quot;events_url&quot;: &quot;https://api.github.com/users/intel/events{/privacy}&quot;,</span>
+<span class="go">                &quot;followers_url&quot;: &quot;https://api.github.com/users/intel/followers&quot;,</span>
+<span class="go">                &quot;following_url&quot;: &quot;https://api.github.com/users/intel/following{/other_user}&quot;,</span>
+<span class="go">                &quot;gists_url&quot;: &quot;https://api.github.com/users/intel/gists{/gist_id}&quot;,</span>
+<span class="go">                &quot;gravatar_id&quot;: &quot;&quot;,</span>
+<span class="go">                &quot;html_url&quot;: &quot;https://github.com/intel&quot;,</span>
+<span class="go">                &quot;id&quot;: 17888862,</span>
+<span class="go">                &quot;login&quot;: &quot;intel&quot;,</span>
+<span class="go">                &quot;node_id&quot;: &quot;MDEyOk9yZ2FuaXphdGlvbjE3ODg4ODYy&quot;,</span>
+<span class="go">                &quot;organizations_url&quot;: &quot;https://api.github.com/users/intel/orgs&quot;,</span>
+<span class="go">                &quot;received_events_url&quot;: &quot;https://api.github.com/users/intel/received_events&quot;,</span>
+<span class="go">                &quot;repos_url&quot;: &quot;https://api.github.com/users/intel/repos&quot;,</span>
+<span class="go">                &quot;site_admin&quot;: false,</span>
+<span class="go">                &quot;starred_url&quot;: &quot;https://api.github.com/users/intel/starred{/owner}{/repo}&quot;,</span>
+<span class="go">                &quot;subscriptions_url&quot;: &quot;https://api.github.com/users/intel/subscriptions&quot;,</span>
+<span class="go">                &quot;type&quot;: &quot;Organization&quot;,</span>
+<span class="go">                &quot;url&quot;: &quot;https://api.github.com/users/intel&quot;</span>
+<span class="go">            },</span>
+<span class="go">            &quot;pushed_at&quot;: &quot;2021-09-17T03:31:18Z&quot;,</span>
+<span class="go">            &quot;stargazers_count&quot;: 143,</span>
+<span class="go">            &quot;updated_at&quot;: &quot;2021-08-31T16:20:16Z&quot;,</span>
+<span class="go">            &quot;watchers_count&quot;: 143</span>
+<span class="go">        },</span>
+<span class="go">        &quot;key&quot;: &quot;https://github.com/intel/dffml&quot;,</span>
+<span class="go">        &quot;last_updated&quot;: &quot;2021-09-17T09:39:30Z&quot;</span>
+<span class="go">    }</span>
+<span class="go">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="swportal.html" class="btn btn-neutral float-left" title="InnerSource Portal" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../mnist.html" class="btn btn-neutral float-right" title="MNIST Handwriten Digits" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2017 - 2021, Intel.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
