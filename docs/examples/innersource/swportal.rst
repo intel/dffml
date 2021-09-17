@@ -8,7 +8,7 @@ software development workflow that makes is easy for a large group of developers
 to collaborate quickly and effectively.
 
 All the code for this example project is located under the
-`examples/swportal <https://github.com/intel/dffml/blob/master/examples/swportal/>`_
+`examples/innersource/swportal <https://github.com/intel/dffml/blob/master/examples/innersource/swportal/>`_
 directory of the DFFML source code.
 
 History
@@ -103,7 +103,7 @@ We have a number of constraints for this example.
 
 - The repos we are interested in displaying are all hosted in GitHub. We can
   find the information we need stored on the file system. (See the
-  `orgs <https://github.com/intel/dffml/blob/master/examples/swportal/orgs/>`_
+  `orgs <https://github.com/intel/dffml/blob/master/examples/innersource/swportal/orgs/>`_
   directory to see what this looks like).
 
  - The structure is such that GitHub orgs are directories. Each directory
@@ -136,7 +136,7 @@ satisfies our constraints.
         repos_yml_source -->|for each repo| dataflow
         dataflow -->|write| repos_json_source
 
-.. image:: /images/swportal-high-level-architecture.svg
+.. image:: /images/innersource/swportal-high-level-architecture.svg
     :alt: Flow chart showing high level architechture where we read the repos.yml files run the dataflow on each repo, then save to the repos.json source.
 
 Implementation Plan
@@ -184,13 +184,13 @@ and the repo owners.
 
 **orgs/intel/repos.yml**
 
-.. literalinclude:: /../examples/swportal/orgs/intel/repos.yml
+.. literalinclude:: /../examples/innersource/swportal/orgs/intel/repos.yml
     :test:
     :filepath: orgs/intel/repos.yml
 
 **orgs/tpm2-software/repos.yml**
 
-.. literalinclude:: /../examples/swportal/orgs/tpm2-software/repos.yml
+.. literalinclude:: /../examples/innersource/swportal/orgs/tpm2-software/repos.yml
     :test:
     :filepath: orgs/tpm2-software/repos.yml
 
@@ -223,7 +223,7 @@ this section gets further writing.
 
 **sources/orgs_repos_yml.py**
 
-.. literalinclude:: /../examples/swportal/sources/orgs_repos_yml.py
+.. literalinclude:: /../examples/innersource/swportal/sources/orgs_repos_yml.py
     :test:
     :filepath: sources/orgs_repos_yml.py
 
@@ -301,7 +301,7 @@ this section gets further writing.
 
 **sources/sap_portal_repos_json.py**
 
-.. literalinclude:: /../examples/swportal/sources/sap_portal_repos_json.py
+.. literalinclude:: /../examples/innersource/swportal/sources/sap_portal_repos_json.py
     :test:
     :filepath: sources/sap_portal_repos_json.py
 
@@ -453,7 +453,7 @@ environment variable we just set.
 
 **operations/gh.py**
 
-.. literalinclude:: /../examples/swportal/operations/gh.py
+.. literalinclude:: /../examples/innersource/swportal/operations/gh.py
     :test:
     :filepath: operations/gh.py
 
@@ -497,7 +497,7 @@ written, and the sources.
 
 **dataflow.py**
 
-.. literalinclude:: /../examples/swportal/dataflow.py
+.. literalinclude:: /../examples/innersource/swportal/dataflow.py
     :test:
     :filepath: dataflow.py
 

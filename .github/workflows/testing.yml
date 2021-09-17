@@ -197,7 +197,7 @@ jobs:
         - docs/examples/integration.rst
         - docs/examples/or_covid_data_by_county.rst
         - docs/examples/shouldi.rst
-        - docs/examples/swportal.rst
+        - docs/examples/innersource/swportal.rst
         - docs/examples/icecream_sales.rst
         - docs/examples/data_cleanup/data_cleanup.rst
         - docs/examples/data_cleanup/data_cleanup_classfication.rst
