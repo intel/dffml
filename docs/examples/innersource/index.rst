@@ -8,3 +8,4 @@ The following are InnerSource related usages of DFFML.
     :caption: Contents:
 
     swportal
+    microservice
