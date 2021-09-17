@@ -136,7 +136,7 @@ satisfies our constraints.
         repos_yml_source -->|for each repo| dataflow
         dataflow -->|write| repos_json_source
 
-.. image:: /images/innersource/swportal-high-level-architecture.svg
+.. image:: /images/swportal-high-level-architecture.svg
     :alt: Flow chart showing high level architechture where we read the repos.yml files run the dataflow on each repo, then save to the repos.json source.
 
 Implementation Plan
