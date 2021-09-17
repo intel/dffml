@@ -5,5 +5,5 @@ Optimizer
     :maxdepth: 2
     :caption: Contents:
 
-    optimizer
     parameter_grid
+    optimizer

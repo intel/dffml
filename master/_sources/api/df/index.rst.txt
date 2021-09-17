@@ -5,10 +5,10 @@ Df
     :maxdepth: 2
     :caption: Contents:
 
-    memory
-    types
     base
-    archive
     exceptions
     log
+    types
+    memory
+    archive
     multicomm

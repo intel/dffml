@@ -6,5 +6,5 @@ Accuracy
     :caption: Contents:
 
     accuracy
-    clf
     mse
+    clf
