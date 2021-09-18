@@ -115,7 +115,7 @@ async def score(
     ...     )
     ...     print(
     ...         "Accuracy:",
-    ...         await accuracy(
+    ...         await score(
     ...             model,
     ...             MeanSquaredErrorAccuracy(),
     ...             Feature("Salary", int, 1),
