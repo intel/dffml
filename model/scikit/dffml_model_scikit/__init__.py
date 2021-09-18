@@ -343,7 +343,7 @@ Example usage of KMeans Clustering Model using python API:
 .. code-block:: python
 
     from dffml import CSVSource, Features, Feature
-    from dffml.noasync import train, accuracy, predict
+    from dffml.noasync import train, score, predict
     from dffml_model_scikit import KMeansModel
     from dffml_model_scikit import MutualInfoScoreScorer
 
@@ -363,7 +363,7 @@ Example usage of KMeans Clustering Model using python API:
 
     # Assess accuracy (alternate way of specifying data source)
     scorer = MutualInfoScoreScorer()
-    print("Accuracy:", accuracy(model, scorer, Feature("cluster", int, 1), CSVSource(filename="test.csv")))
+    print("Accuracy:", score(model, scorer, Feature("cluster", int, 1), CSVSource(filename="test.csv")))
 
     # Make prediction
     for i, features, prediction in predict(

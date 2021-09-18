@@ -1,5 +1,5 @@
 from dffml import Feature, Features
-from dffml.noasync import accuracy, train
+from dffml.noasync import score, train
 
 from dffml_model_scratch.anomalydetection import AnomalyModel
 from dffml_model_scratch.anomaly_detection_scorer import (
@@ -22,11 +22,11 @@ train(model, "trainex.csv")
 scorer = AnomalyDetectionAccuracy()
 print(
     "Test set F1 score :",
-    accuracy(model, scorer, Feature("Y", int, 1), "testex.csv"),
+    score(model, scorer, Feature("Y", int, 1), "testex.csv"),
 )
 
 # Assess accuracy for training set
 print(
     "Training set F1 score :",
-    accuracy(model, scorer, Feature("Y", int, 1), "trainex.csv"),
+    score(model, scorer, Feature("Y", int, 1), "trainex.csv"),
 )
