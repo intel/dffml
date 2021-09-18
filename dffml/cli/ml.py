@@ -3,7 +3,7 @@ import inspect
 from ..model.model import Model
 from ..source.source import Sources, SubsetSources
 from ..util.cli.cmd import CMD, CMDOutputOverride
-from ..high_level.ml import train, predict, accuracy
+from ..high_level.ml import train, predict, score
 from ..util.config.fields import FIELD_SOURCES
 from ..util.cli.cmds import (
     SourcesCMD,
@@ -66,7 +66,7 @@ class Accuracy(MLCMD):
         # at this point rather than an instance.
         if inspect.isclass(self.scorer):
             self.scorer = self.scorer.withconfig(self.extra_config)
-        return await accuracy(
+        return await score(
             self.model, self.scorer, self.features, self.sources
         )
 
