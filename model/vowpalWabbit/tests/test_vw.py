@@ -4,7 +4,7 @@ import numpy as np
 from sklearn.datasets import make_friedman1
 
 from dffml.record import Record
-from dffml.high_level.ml import accuracy
+from dffml.high_level.ml import score
 from dffml.source.source import Sources
 from dffml.source.memory import MemorySource, MemorySourceConfig
 from dffml.feature import Feature, Features
@@ -84,7 +84,7 @@ class TestVWModel(AsyncTestCase):
                 await mctx.train(sctx)
 
     async def test_01_accuracy(self):
-        res = await accuracy(
+        res = await score(
             self.model, self.scorer, Feature("X", float, 1), self.sources
         )
         self.assertTrue(isinstance(res, float))
