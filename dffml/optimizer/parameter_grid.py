@@ -6,7 +6,7 @@ from ..base import (
     config,
     field,
 )
-from ..high_level.ml import train, accuracy
+from ..high_level.ml import train, score
 from .optimizer import Optimizer, OptimizerContext
 from ..util.entrypoint import entrypoint
 from ..source.source import BaseSource, Record
@@ -77,9 +77,7 @@ class ParameterGridContext(OptimizerContext):
                     param = names[i]
                     setattr(model.config, names[i], combination[i])
                 await train(model, *train_data)
-                acc = await accuracy(
-                    model, accuracy_scorer, feature, *test_data
-                )
+                acc = await score(model, accuracy_scorer, feature, *test_data)
                 logging.info(f"Accuracy of the tuned model: {acc}")
                 if acc > highest_acc:
                     highest_acc = acc
