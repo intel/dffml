@@ -4,7 +4,7 @@ from .high_level.dataflow import run as high_level_run
 from .high_level.source import save as high_level_save, load as high_level_load
 from .high_level.ml import (
     train as high_level_train,
-    accuracy as high_level_accuracy,
+    score as high_level_score,
     predict as high_level_predict,
 )
 
@@ -26,11 +26,11 @@ train.__doc__ = (
 
 
 def accuracy(*args, **kwargs):
-    return asyncio.run(high_level_accuracy(*args, **kwargs))
+    return asyncio.run(high_level_score(*args, **kwargs))
 
 
 accuracy.__doc__ = (
-    high_level_accuracy.__doc__.replace("await ", "")
+    high_level_score.__doc__.replace("await ", "")
     .replace("async ", "")
     .replace("asyncio.run(main())", "main()")
     .replace("    >>> import asyncio\n", "")
