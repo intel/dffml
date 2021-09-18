@@ -62,7 +62,7 @@ async def train(model, *args: Union[BaseSource, Record, Dict[str, Any]]):
         return await mctx.train(sctx)
 
 
-async def accuracy(
+async def score(
     model,
     accuracy_scorer: Union[AccuracyScorer, AccuracyContext],
     features: Union[Feature, Features],
