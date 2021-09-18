@@ -160,7 +160,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - IntegrationCLITestCase creates a new directory and chdir into it for each test
 - Automated testing of Automating Classification tutorial
 - `dffml version` command now prints git repo hash and if the repo is dirty
-- `dffml.high_level.ml.accuracy` to `dffml.high_level.ml.score`. 
+- `dffml.high_level.ml.accuracy` to `dffml.high_level.ml.score`
 ### Fixed
 - `export_value` now converts numpy array to JSON serializable datatype
 - CSV source overwriting configloaded data to every row
