@@ -25,11 +25,11 @@ train.__doc__ = (
 )
 
 
-def accuracy(*args, **kwargs):
+def score(*args, **kwargs):
     return asyncio.run(high_level_score(*args, **kwargs))
 
 
-accuracy.__doc__ = (
+score.__doc__ = (
     high_level_score.__doc__.replace("await ", "")
     .replace("async ", "")
     .replace("asyncio.run(main())", "main()")
