@@ -5,7 +5,7 @@ from dffml import (
     Features,
     Feature,
     train,
-    accuracy,
+    score,
     predict,
 )
 
@@ -27,7 +27,7 @@ async def main():
     scorer = MeanSquaredErrorAccuracy()
     print(
         "Accuracy:",
-        await accuracy(model, scorer, Feature("Salary", int, 1), "test.csv"),
+        await score(model, scorer, Feature("Salary", int, 1), "test.csv"),
     )
 
     # Make predictions
