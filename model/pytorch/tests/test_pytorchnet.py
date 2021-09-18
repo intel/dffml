@@ -7,7 +7,7 @@ import asyncio
 from dffml.cli.cli import CLI
 from dffml.util.net import cached_download_unpack_archive
 from dffml.util.asynctestcase import AsyncTestCase
-from dffml.high_level.ml import train, accuracy, predict
+from dffml.high_level.ml import train, score, predict
 from dffml import Features, Feature, DirectorySource
 from dffml_model_pytorch import PyTorchNeuralNetwork
 from dffml_model_pytorch.utils import CrossEntropyLossFunction
@@ -119,7 +119,7 @@ class TestPyTorchNeuralNetwork(AsyncTestCase):
         )
 
     async def test_01_accuracy(self):
-        acc = await accuracy(
+        acc = await score(
             self.model,
             self.scorer,
             Feature("label", str, 1),
