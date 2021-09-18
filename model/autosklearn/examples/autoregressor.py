@@ -1,5 +1,5 @@
 from dffml import Features, Feature
-from dffml.noasync import train, accuracy, predict
+from dffml.noasync import train, score, predict
 from dffml_model_autosklearn import AutoSklearnRegressorModel
 from dffml.accuracy import MeanSquaredErrorAccuracy
 
@@ -21,7 +21,7 @@ def main():
     scorer = MeanSquaredErrorAccuracy()
     print(
         "Accuracy:",
-        accuracy(model, scorer, Feature("TARGET", float, 1), "test.csv"),
+        score(model, scorer, Feature("TARGET", float, 1), "test.csv"),
     )
 
     # Make prediction
