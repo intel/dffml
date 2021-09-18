@@ -1,6 +1,6 @@
 import sys
 
-from dffml.high_level.ml import accuracy
+from dffml.high_level.ml import score
 from dffml.util.asynctestcase import AsyncTestCase
 
 from dffml_model_scikit.scikit_scorer_base import MULTIOUTPUT_EXCEPTIONS
@@ -18,13 +18,10 @@ from .test_scikit import (
 
 class TestScikitScorer(TestScikitModel):
     async def test_01_accuracy(self):
-        res = await accuracy(
+        res = await score(
             self.model, self.scorer, self.model.config.predict, self.sources
         )
         self.assertTrue(float("-inf") < res < float("inf"))
-
-    async def test_02_predict(self):
-        pass
 
 
 REGRESSION_SCORERS = [
