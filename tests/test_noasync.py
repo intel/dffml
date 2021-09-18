@@ -4,7 +4,7 @@ This file contains integration tests for the high level (very abstract) APIs.
 import importlib
 
 from dffml.record import Record
-from dffml.noasync import train, accuracy, predict
+from dffml.noasync import train, score, predict
 from dffml.source.csv import CSVSource
 from dffml.feature.feature import Features, Feature
 from dffml.util.asynctestcase import AsyncTestCase
@@ -67,7 +67,7 @@ class TestML(AsyncTestCase):
         train(model, training_data)
         # Assess accuracy
         scorer = MeanSquaredErrorAccuracy()
-        accuracy(model, scorer, Feature("Salary", int, 1), test_data)
+        score(model, scorer, Feature("Salary", int, 1), test_data)
         # Make prediction
         predictions = [
             prediction for prediction in predict(model, predict_data)

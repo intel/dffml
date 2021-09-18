@@ -5,7 +5,7 @@ import importlib
 import contextlib
 
 from dffml.record import Record
-from dffml import run, train, accuracy, predict, save, load
+from dffml import run, train, score, predict, save, load
 from dffml.source.csv import CSVSource
 from dffml.feature.feature import Features, Feature
 from dffml.util.asynctestcase import AsyncTestCase
@@ -127,7 +127,7 @@ class TestML(AsyncTestCase):
         await train(model, training_data)
         # Assess accuracy
         scorer = MeanSquaredErrorAccuracy()
-        await accuracy(model, scorer, Feature("Salary", int, 1), test_data)
+        await score(model, scorer, Feature("Salary", int, 1), test_data)
         # Make prediction
         predictions = [
             prediction async for prediction in predict(model, predict_data)
