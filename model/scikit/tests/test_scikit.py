@@ -3,7 +3,7 @@ import tempfile
 import numpy as np
 
 from dffml.record import Record
-from dffml.high_level.ml import accuracy
+from dffml.high_level.ml import score
 from dffml.source.source import Sources
 from dffml.source.memory import MemorySource, MemorySourceConfig
 from dffml.feature import Feature, Features
@@ -143,14 +143,14 @@ class TestScikitModel:
     async def test_01_accuracy(self):
         if self.MODEL_TYPE == "CLUSTERING":
             with self.assertRaises(ScorerWillNotWork):
-                await accuracy(
+                await score(
                     self.model,
                     self.scorer,
                     self.model.config.predict,
                     self.sources,
                 )
         elif self.MODEL_TYPE in regeressor_types:
-            res = await accuracy(
+            res = await score(
                 self.model,
                 self.scorer,
                 self.model.config.predict,
@@ -158,7 +158,7 @@ class TestScikitModel:
             )
             self.assertTrue(0 <= res <= float("inf"))
         else:
-            res = await accuracy(
+            res = await score(
                 self.model,
                 self.scorer,
                 self.model.config.predict,
