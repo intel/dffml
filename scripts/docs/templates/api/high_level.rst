@@ -7,7 +7,7 @@ Example usage can be found in the :doc:`/quickstart/model`.
 
 .. autofunction:: dffml.high_level.ml.accuracy
 
-.. autofunction:: dffml.high_level.ml.predict
+.. autofunction:: dffml.high_level.ml.score
 
 .. autofunction:: dffml.high_level.source.save
 
