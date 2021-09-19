@@ -1,10 +1,11 @@
 import random
 import tempfile
 
+
 from dffml.record import Record
 from dffml.source.source import Sources
 from dffml.feature.feature import Feature
-from dffml import train, accuracy, predict, run_consoletest
+from dffml import train, score, predict, run_consoletest
 from dffml.util.asynctestcase import AsyncTestCase
 from dffml.source.memory import MemorySource, MemorySourceConfig
 from dffml_model_spacy.accuracy import SpacyNerAccuracy
@@ -64,7 +65,7 @@ class TestSpacyNERModel(AsyncTestCase):
         await train(self.model, self.train_sources)
 
     async def test_01_accuracy(self):
-        res = await accuracy(
+        res = await score(
             self.model, self.scorer, Feature("Tag", str, 1), self.train_sources
         )
         self.assertGreaterEqual(res, 0)

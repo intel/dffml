@@ -1,7 +1,7 @@
 import tempfile
 
 from dffml.accuracy import MeanSquaredErrorAccuracy
-from dffml import train, accuracy, predict, Feature, Features, AsyncTestCase
+from dffml import train, score, predict, Feature, Features, AsyncTestCase
 
 from REPLACE_IMPORT_PACKAGE_NAME.myslr import MySLRModel
 
@@ -59,7 +59,7 @@ class TestMySLRModel(AsyncTestCase):
 
     async def test_01_accuracy(self):
         # Use the test data to assess the model's accuracy
-        res = await accuracy(
+        res = await score(
             self.model,
             self.scorer,
             Feature("Y", float, 1),
