@@ -1,5 +1,5 @@
 from dffml import CSVSource, Features, Feature
-from dffml.noasync import train, accuracy, predict
+from dffml.noasync import train, score, predict
 from dffml_model_tensorflow_hub.text_classifier import TextClassificationModel
 from dffml_model_tensorflow_hub.text_classifier_accuracy import (
     TextClassifierAccuracy,
@@ -20,7 +20,7 @@ train(model, "train.csv")
 scorer = TextClassifierAccuracy()
 print(
     "Accuracy:",
-    accuracy(
+    score(
         model,
         scorer,
         Feature("sentiment", int, 1),
