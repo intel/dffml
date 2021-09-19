@@ -83,7 +83,7 @@ than :py:class:`unittest.TestCase`.
 
     import tempfile
 
-    from dffml import train, accuracy, predict, Feature, Features, AsyncTestCase
+    from dffml import train, score, predict, Feature, Features, AsyncTestCase
 
     from dffml_model_myslr.myslr import MySLRModel
 
@@ -139,7 +139,7 @@ Testing Accuracy
 ~~~~~~~~~~~~~~~~
 
 Once again, all we need to to is pass the model and test data to the
-:py:func:`accuracy <dffml.accuracy>` function. Then we check if it's in an
+:py:func:`score <dffml.score>` function. Then we check if it's in an
 acceptable range. This test is helpful to make sure you never make any horribly
 wrong changes to your model, since it will check that the accuracy is within an
 acceptable range.
