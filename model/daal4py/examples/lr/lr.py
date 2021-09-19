@@ -1,5 +1,5 @@
 from dffml import CSVSource, Features, Feature
-from dffml.noasync import train, accuracy, predict
+from dffml.noasync import train, score, predict
 from dffml_model_daal4py.daal4pylr import DAAL4PyLRModel
 from dffml.accuracy import MeanSquaredErrorAccuracy
 
@@ -16,7 +16,7 @@ train(model, "train.csv")
 scorer = MeanSquaredErrorAccuracy()
 print(
     "Accuracy:",
-    accuracy(
+    score(
         model, scorer, Feature("ans", int, 1), CSVSource(filename="test.csv")
     ),
 )
