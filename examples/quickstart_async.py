@@ -1,6 +1,6 @@
 import asyncio
 
-from dffml import train, accuracy, predict, Features, Feature
+from dffml import train, score, predict, Features, Feature
 from dffml.accuracy import MeanSquaredErrorAccuracy
 from dffml_model_scikit import LinearRegressionModel
 
@@ -29,7 +29,7 @@ async def main():
     scorer = MeanSquaredErrorAccuracy()
     print(
         "Accuracy:",
-        await accuracy(
+        await score(
             model,
             scorer,
             Feature("Salary", int, 1),

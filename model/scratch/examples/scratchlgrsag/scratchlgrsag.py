@@ -1,5 +1,5 @@
 from dffml import CSVSource, Features, Feature
-from dffml.noasync import train, accuracy, predict
+from dffml.noasync import train, score, predict
 from dffml.accuracy import MeanSquaredErrorAccuracy
 from dffml_model_scratch.logisticregression import LogisticRegression
 
@@ -16,7 +16,7 @@ train(model, "dataset.csv")
 scorer = MeanSquaredErrorAccuracy()
 print(
     "Accuracy:",
-    accuracy(
+    score(
         model,
         scorer,
         Feature("ans", int, 1),
