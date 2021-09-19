@@ -6,7 +6,7 @@ import numpy as np
 
 from dffml.record import Record
 from dffml.source.source import Sources
-from dffml import train, accuracy, predict, run_consoletest
+from dffml import train, score, predict, run_consoletest
 from dffml.util.asynctestcase import AsyncTestCase
 from dffml.feature.feature import Feature, Features
 from dffml.accuracy import MeanSquaredErrorAccuracy
@@ -70,7 +70,7 @@ class TestXGBRegressor(AsyncTestCase):
     async def test_01_accuracy(self):
         scorer = MeanSquaredErrorAccuracy()
         # Use the test data to assess the model's accuracy
-        res = await accuracy(
+        res = await score(
             self.model, scorer, Feature("Target", float, 1), self.testsource
         )
         # Ensure the accuracy is above 80%

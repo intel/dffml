@@ -12,7 +12,7 @@ from dffml import (
     AsyncTestCase,
     Feature,
     Features,
-    accuracy,
+    score,
     predict,
     train,
     run_consoletest,
@@ -75,7 +75,7 @@ class TestAnomalyModel(AsyncTestCase):
 
     async def test_01_accuracy(self):
         # Use the test data to assess the model's accuracy
-        res = await accuracy(
+        res = await score(
             self.model, self.scorer, Feature("Y", int, 1), self.testsource
         )
         # Ensure the accuracy is above 80%

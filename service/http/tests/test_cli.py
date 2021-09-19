@@ -10,7 +10,7 @@ import aiohttp
 from dffml.model.slr import SLRModel
 from dffml.source.json import JSONSource
 from dffml.accuracy import MeanSquaredErrorAccuracy
-from dffml import Record, Features, Feature, save, train, accuracy
+from dffml import Record, Features, Feature, save, train, score
 from dffml.util.asynctestcase import AsyncTestCase
 
 from dffml_service_http.cli import HTTPService, RedirectFormatError
@@ -241,7 +241,7 @@ class TestServer(AsyncTestCase):
                 model, *[{"f1": x, "ans": m * x + b} for x in range(0, 10)]
             )
 
-            await accuracy(
+            await score(
                 model,
                 MeanSquaredErrorAccuracy(),
                 Feature("ans", int, 1),
