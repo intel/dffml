@@ -4,7 +4,7 @@ import tempfile
 
 import numpy as np
 
-from dffml import train, accuracy, predict
+from dffml import train, score, predict
 from dffml.record import Record
 from dffml.source.source import Sources
 from dffml.accuracy import MeanSquaredErrorAccuracy
@@ -101,7 +101,7 @@ class TestDNN(AsyncTestCase):
         scorer = MeanSquaredErrorAccuracy()
         for i in range(0, 7):
             await train(self.model, self.sources)
-            res = await accuracy(
+            res = await score(
                 self.model, scorer, Feature("TARGET", float, 1), self.sources
             )
             # Retry because of tensorflow intermitant low accuracy
