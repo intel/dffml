@@ -2,7 +2,7 @@ from sklearn.datasets import load_iris
 from sklearn.model_selection import train_test_split
 
 from dffml import Feature, Features
-from dffml.noasync import train, accuracy
+from dffml.noasync import train, score
 from dffml.accuracy import ClassificationAccuracy
 from dffml_model_xgboost.xgbclassifier import (
     XGBClassifierModel,
@@ -40,7 +40,7 @@ train(model, *[{"data": x, "target": y} for x, y in zip(trainX, trainy)])
 scorer = ClassificationAccuracy()
 print(
     "Test accuracy:",
-    accuracy(
+    score(
         model,
         scorer,
         Feature("target", float, 1),
@@ -49,7 +49,7 @@ print(
 )
 print(
     "Training accuracy:",
-    accuracy(
+    score(
         model,
         scorer,
         Feature("target", float, 1),

@@ -2,7 +2,7 @@ from sklearn.datasets import load_diabetes
 from sklearn.model_selection import train_test_split
 
 from dffml import Feature, Features
-from dffml.noasync import train, accuracy
+from dffml.noasync import train, score
 from dffml_model_xgboost.xgbregressor import (
     XGBRegressorModel,
     XGBRegressorModelConfig,
@@ -41,7 +41,7 @@ train(model, *[{"data": x, "target": y} for x, y in zip(trainX, trainy)])
 scorer = MeanSquaredErrorAccuracy()
 print(
     "Test accuracy:",
-    accuracy(
+    score(
         model,
         scorer,
         Feature("target", float, 1),
@@ -51,7 +51,7 @@ print(
 
 print(
     "Training accuracy:",
-    accuracy(
+    score(
         model,
         scorer,
         Feature("target", float, 1),
