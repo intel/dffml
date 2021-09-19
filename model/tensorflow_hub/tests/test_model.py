@@ -2,7 +2,7 @@ import random
 import tempfile
 
 from dffml.record import Record
-from dffml.high_level.ml import accuracy
+from dffml.high_level.ml import score
 from dffml.source.source import Sources
 from dffml.util.asynctestcase import AsyncTestCase
 from dffml.feature import Features, Feature
@@ -58,7 +58,7 @@ class TestTextClassificationModel(AsyncTestCase):
                 await mctx.train(sctx)
 
     async def test_01_accuracy(self):
-        res = await accuracy(
+        res = await score(
             self.model, self.scorer, Feature("X", int, 1), self.sources
         )
         self.assertGreater(res, 0)
