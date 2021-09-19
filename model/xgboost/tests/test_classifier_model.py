@@ -9,7 +9,7 @@ from sklearn.metrics import f1_score
 
 from dffml.record import Record
 from dffml.source.source import Sources
-from dffml import train, accuracy, predict, run_consoletest
+from dffml import train, score, predict, run_consoletest
 from dffml.util.asynctestcase import AsyncTestCase
 from dffml.feature.feature import Feature, Features
 from dffml.source.memory import MemorySource, MemorySourceConfig
@@ -73,7 +73,7 @@ class TestXGBClassifier(AsyncTestCase):
 
     async def test_01_accuracy(self):
         # Use the test data to assess the model's accuracy
-        res = await accuracy(
+        res = await score(
             self.model,
             self.scorer,
             Feature("Target", float, 1),
@@ -84,14 +84,14 @@ class TestXGBClassifier(AsyncTestCase):
 
     async def test_02_predict(self):
         # reduce overfitting
-        res_train = await accuracy(
+        res_train = await score(
             self.model,
             self.scorer,
             Feature("Target", float, 1),
             self.trainingsource,
         )
 
-        res_test = await accuracy(
+        res_test = await score(
             self.model,
             self.scorer,
             Feature("Target", float, 1),
