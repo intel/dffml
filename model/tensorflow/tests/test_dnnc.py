@@ -2,7 +2,7 @@ import random
 import pathlib
 import tempfile
 
-from dffml import train, predict, accuracy
+from dffml import train, predict, score
 from dffml.record import Record
 from dffml.source.source import Sources
 from dffml.source.memory import MemorySource, MemorySourceConfig
@@ -86,7 +86,7 @@ class TestDNN(AsyncTestCase):
         scorer = ClassificationAccuracy()
         for i in range(0, 7):
             await train(self.model, self.sources)
-            res = await accuracy(
+            res = await score(
                 self.model, scorer, Feature("string", str, 1), self.sources
             )
             # Retry because of tensorflow intermitant low accuracy

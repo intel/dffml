@@ -1,5 +1,5 @@
 from dffml import CSVSource, Features, Feature
-from dffml.noasync import train, accuracy, predict
+from dffml.noasync import train, score, predict
 from dffml_model_tensorflow.dnnr import DNNRegressionModel
 from dffml.accuracy import MeanSquaredErrorAccuracy
 
@@ -21,7 +21,7 @@ train(model, "train.csv")
 scorer = MeanSquaredErrorAccuracy()
 print(
     "Accuracy:",
-    accuracy(
+    score(
         model,
         scorer,
         Feature("TARGET", float, 1),

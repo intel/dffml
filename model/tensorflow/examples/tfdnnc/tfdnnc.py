@@ -1,5 +1,5 @@
 from dffml import CSVSource, Features, Feature
-from dffml.noasync import train, accuracy, predict
+from dffml.noasync import train, score, predict
 from dffml_model_tensorflow.dnnc import DNNClassifierModel
 from dffml.accuracy import ClassificationAccuracy
 
@@ -25,7 +25,7 @@ train(model, "iris_training.csv")
 scorer = ClassificationAccuracy()
 print(
     "Accuracy:",
-    accuracy(
+    score(
         model,
         scorer,
         Feature("classification", int, 1),
