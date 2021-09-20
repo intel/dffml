@@ -45,6 +45,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - high_level `accuracy()` now takes predict features as parameter.
 - Spacy `model_name_or_path` was changed to `model_name`. Functionality is the
   same, it still accepts a name or a path.
+- Renamed `accuracy()` to `score()`.
 ### Fixed
 - Record object key properties are now always strings
 
@@ -160,7 +161,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - IntegrationCLITestCase creates a new directory and chdir into it for each test
 - Automated testing of Automating Classification tutorial
 - `dffml version` command now prints git repo hash and if the repo is dirty
-- `dffml.high_level.ml.accuracy` to `dffml.high_level.ml.score`
 ### Fixed
 - `export_value` now converts numpy array to JSON serializable datatype
 - CSV source overwriting configloaded data to every row
