@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>dffml.high_level.ml &mdash; DFFML 6f7d34993 documentation</title>
+  <title>dffml.high_level.ml &mdash; DFFML 4fff2d6c8 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/tabs.css" type="text/css" />
@@ -32,7 +32,7 @@
             <a href="../../../index.html" class="icon icon-home"> DFFML
           </a>
               <div class="version">
-                6f7d34993
+                4fff2d6c8
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -191,7 +191,7 @@
         <span class="k">return</span> <span class="k">await</span> <span class="n">mctx</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="n">sctx</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="accuracy"><a class="viewcode-back" href="../../../api/high_level/ml.html#dffml.high_level.ml.accuracy">[docs]</a><span class="k">async</span> <span class="k">def</span> <span class="nf">accuracy</span><span class="p">(</span>
+<div class="viewcode-block" id="score"><a class="viewcode-back" href="../../../api/high_level/ml.html#dffml.high_level.ml.score">[docs]</a><span class="k">async</span> <span class="k">def</span> <span class="nf">score</span><span class="p">(</span>
     <span class="n">model</span><span class="p">,</span>
     <span class="n">accuracy_scorer</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">AccuracyScorer</span><span class="p">,</span> <span class="n">AccuracyContext</span><span class="p">],</span>
     <span class="n">features</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Feature</span><span class="p">,</span> <span class="n">Features</span><span class="p">],</span>
@@ -244,7 +244,7 @@
 <span class="sd">    ...     )</span>
 <span class="sd">    ...     print(</span>
 <span class="sd">    ...         &quot;Accuracy:&quot;,</span>
-<span class="sd">    ...         await accuracy(</span>
+<span class="sd">    ...         await score(</span>
 <span class="sd">    ...             model,</span>
 <span class="sd">    ...             MeanSquaredErrorAccuracy(),</span>
 <span class="sd">    ...             Feature(&quot;Salary&quot;, int, 1),</span>

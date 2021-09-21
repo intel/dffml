@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>dffml.cli.ml &mdash; DFFML 6f7d34993 documentation</title>
+  <title>dffml.cli.ml &mdash; DFFML 4fff2d6c8 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/tabs.css" type="text/css" />
@@ -32,7 +32,7 @@
             <a href="../../../index.html" class="icon icon-home"> DFFML
           </a>
               <div class="version">
-                6f7d34993
+                4fff2d6c8
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -132,7 +132,7 @@
 <span class="kn">from</span> <span class="nn">..model.model</span> <span class="kn">import</span> <span class="n">Model</span>
 <span class="kn">from</span> <span class="nn">..source.source</span> <span class="kn">import</span> <span class="n">Sources</span><span class="p">,</span> <span class="n">SubsetSources</span>
 <span class="kn">from</span> <span class="nn">..util.cli.cmd</span> <span class="kn">import</span> <span class="n">CMD</span><span class="p">,</span> <span class="n">CMDOutputOverride</span>
-<span class="kn">from</span> <span class="nn">..high_level.ml</span> <span class="kn">import</span> <span class="n">train</span><span class="p">,</span> <span class="n">predict</span><span class="p">,</span> <span class="n">accuracy</span>
+<span class="kn">from</span> <span class="nn">..high_level.ml</span> <span class="kn">import</span> <span class="n">train</span><span class="p">,</span> <span class="n">predict</span><span class="p">,</span> <span class="n">score</span>
 <span class="kn">from</span> <span class="nn">..util.config.fields</span> <span class="kn">import</span> <span class="n">FIELD_SOURCES</span>
 <span class="kn">from</span> <span class="nn">..util.cli.cmds</span> <span class="kn">import</span> <span class="p">(</span>
     <span class="n">SourcesCMD</span><span class="p">,</span>
@@ -195,7 +195,7 @@
         <span class="c1"># at this point rather than an instance.</span>
         <span class="k">if</span> <span class="n">inspect</span><span class="o">.</span><span class="n">isclass</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scorer</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">scorer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scorer</span><span class="o">.</span><span class="n">withconfig</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">extra_config</span><span class="p">)</span>
-        <span class="k">return</span> <span class="k">await</span> <span class="n">accuracy</span><span class="p">(</span>
+        <span class="k">return</span> <span class="k">await</span> <span class="n">score</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">scorer</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">features</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sources</span>
         <span class="p">)</span></div>
 

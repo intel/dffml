@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Ensemble by stacking &mdash; DFFML 6f7d34993 documentation</title>
+  <title>Ensemble by stacking &mdash; DFFML 4fff2d6c8 documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/tabs.css" type="text/css" />
@@ -35,7 +35,7 @@
             <a href="../../index.html" class="icon icon-home"> DFFML
           </a>
               <div class="version">
-                6f7d34993
+                4fff2d6c8
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -668,9 +668,9 @@ div.rendered_html tbody tr:hover {
 
 <span class="n">scorer</span> <span class="o">=</span> <span class="n">ClassificationAccuracy</span><span class="p">()</span>
 
-<span class="n">Accuracy1</span> <span class="o">=</span> <span class="k">await</span> <span class="n">accuracy</span><span class="p">(</span><span class="n">model1</span><span class="p">,</span> <span class="n">scorer</span><span class="p">,</span> <span class="n">predict_feature</span><span class="p">,</span> <span class="o">*</span><span class="n">test_data</span><span class="p">)</span>
+<span class="n">Accuracy1</span> <span class="o">=</span> <span class="k">await</span> <span class="n">score</span><span class="p">(</span><span class="n">model1</span><span class="p">,</span> <span class="n">scorer</span><span class="p">,</span> <span class="n">predict_feature</span><span class="p">,</span> <span class="o">*</span><span class="n">test_data</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Accuracy of Model1:&quot;</span><span class="p">,</span> <span class="n">Accuracy1</span><span class="p">)</span>
-<span class="n">Accuracy2</span> <span class="o">=</span> <span class="k">await</span> <span class="n">accuracy</span><span class="p">(</span><span class="n">model2</span><span class="p">,</span> <span class="n">scorer</span><span class="p">,</span> <span class="n">predict_feature</span><span class="p">,</span> <span class="o">*</span><span class="n">test_data</span><span class="p">)</span>
+<span class="n">Accuracy2</span> <span class="o">=</span> <span class="k">await</span> <span class="n">score</span><span class="p">(</span><span class="n">model2</span><span class="p">,</span> <span class="n">scorer</span><span class="p">,</span> <span class="n">predict_feature</span><span class="p">,</span> <span class="o">*</span><span class="n">test_data</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Accuracy of Model2:&quot;</span><span class="p">,</span> <span class="n">Accuracy2</span><span class="p">)</span>
 <span class="n">Accuracy</span> <span class="o">=</span> <span class="p">[</span><span class="n">Accuracy1</span><span class="p">,</span> <span class="n">Accuracy2</span><span class="p">]</span>
 </pre></div>
@@ -891,7 +891,7 @@ First 5 Test Predictions:  [4, 6, 5, 5, 5]
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">EnsembleAcc</span> <span class="o">=</span> <span class="k">await</span> <span class="n">accuracy</span><span class="p">(</span><span class="n">metaModel</span><span class="p">,</span> <span class="n">scorer</span><span class="p">,</span> <span class="n">predict_feature</span><span class="p">,</span> <span class="o">*</span><span class="n">stacked_test_predictions</span><span class="p">)</span>
+<span></span><span class="n">EnsembleAcc</span> <span class="o">=</span> <span class="k">await</span> <span class="n">score</span><span class="p">(</span><span class="n">metaModel</span><span class="p">,</span> <span class="n">scorer</span><span class="p">,</span> <span class="n">predict_feature</span><span class="p">,</span> <span class="o">*</span><span class="n">stacked_test_predictions</span><span class="p">)</span>
 <span class="n">Accuracy</span> <span class="o">=</span> <span class="p">[</span><span class="n">Accuracy1</span><span class="p">,</span> <span class="n">Accuracy2</span><span class="p">,</span> <span class="n">EnsembleAcc</span><span class="p">]</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Accuracy of Ensemble Model:&quot;</span><span class="p">,</span> <span class="n">EnsembleAcc</span><span class="p">)</span>
 </pre></div>

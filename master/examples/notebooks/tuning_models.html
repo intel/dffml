@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Tuning Models &mdash; DFFML 6f7d34993 documentation</title>
+  <title>Tuning Models &mdash; DFFML 4fff2d6c8 documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/tabs.css" type="text/css" />
@@ -35,7 +35,7 @@
             <a href="../../index.html" class="icon icon-home"> DFFML
           </a>
               <div class="version">
-                6f7d34993
+                4fff2d6c8
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -636,7 +636,7 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="section" id="Test-our-Models">
 <h2>Test our Models<a class="headerlink" href="#Test-our-Models" title="Permalink to this headline"></a></h2>
-<p>To test our model, we’ll use the <code class="docutils literal notranslate"><span class="pre">accuracy()</span></code> function in the <code class="docutils literal notranslate"><span class="pre">high-level</span></code> API.</p>
+<p>To test our model, we’ll use the <code class="docutils literal notranslate"><span class="pre">score()</span></code> function in the <code class="docutils literal notranslate"><span class="pre">high-level</span></code> API.</p>
 <p>We ask for the accuracy to be assessed using the classification accuracy by passing “acscore” to <code class="docutils literal notranslate"><span class="pre">AccuracyScorer.load()</span></code>. You can find all the scorer entrypoints at the <a class="reference internal" href="../../plugins/dffml_accuracy.html"><span class="doc">Scorers page</span></a>.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
@@ -645,7 +645,7 @@ div.rendered_html tbody tr:hover {
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span><span class="n">AccScore</span> <span class="o">=</span> <span class="n">AccuracyScorer</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;acscore&quot;</span><span class="p">)</span>
 <span class="n">scorer</span> <span class="o">=</span> <span class="n">AccScore</span><span class="p">()</span>
-<span class="n">accuracy1</span> <span class="o">=</span> <span class="k">await</span> <span class="n">accuracy</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">scorer</span><span class="p">,</span> <span class="n">predict_feature</span><span class="p">,</span> <span class="o">*</span><span class="n">test_data</span><span class="p">)</span>
+<span class="n">accuracy1</span> <span class="o">=</span> <span class="k">await</span> <span class="n">score</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">scorer</span><span class="p">,</span> <span class="n">predict_feature</span><span class="p">,</span> <span class="o">*</span><span class="n">test_data</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Accuracy:&quot;</span><span class="p">,</span> <span class="n">accuracy1</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -672,7 +672,7 @@ Accuracy: 0.575
     <span class="n">model</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">n_estimators</span> <span class="o">=</span> <span class="mi">200</span>
     <span class="n">model</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">max_depth</span> <span class="o">=</span> <span class="mi">3</span>
 <span class="k">await</span> <span class="n">train</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="o">*</span><span class="n">train_data</span><span class="p">)</span>
-<span class="n">accuracy1</span> <span class="o">=</span> <span class="k">await</span> <span class="n">accuracy</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">scorer</span><span class="p">,</span> <span class="n">predict_feature</span><span class="p">,</span> <span class="o">*</span><span class="n">test_data</span><span class="p">)</span>
+<span class="n">accuracy1</span> <span class="o">=</span> <span class="k">await</span> <span class="n">score</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">scorer</span><span class="p">,</span> <span class="n">predict_feature</span><span class="p">,</span> <span class="o">*</span><span class="n">test_data</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Accuracy:&quot;</span><span class="p">,</span> <span class="n">accuracy1</span><span class="p">)</span>
 </pre></div>
 </div>

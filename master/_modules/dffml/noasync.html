@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>dffml.noasync &mdash; DFFML 6f7d34993 documentation</title>
+  <title>dffml.noasync &mdash; DFFML 4fff2d6c8 documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/tabs.css" type="text/css" />
@@ -32,7 +32,7 @@
             <a href="../../index.html" class="icon icon-home"> DFFML
           </a>
               <div class="version">
-                6f7d34993
+                4fff2d6c8
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -133,7 +133,7 @@
 <span class="kn">from</span> <span class="nn">.high_level.source</span> <span class="kn">import</span> <span class="n">save</span> <span class="k">as</span> <span class="n">high_level_save</span><span class="p">,</span> <span class="n">load</span> <span class="k">as</span> <span class="n">high_level_load</span>
 <span class="kn">from</span> <span class="nn">.high_level.ml</span> <span class="kn">import</span> <span class="p">(</span>
     <span class="n">train</span> <span class="k">as</span> <span class="n">high_level_train</span><span class="p">,</span>
-    <span class="n">accuracy</span> <span class="k">as</span> <span class="n">high_level_accuracy</span><span class="p">,</span>
+    <span class="n">score</span> <span class="k">as</span> <span class="n">high_level_score</span><span class="p">,</span>
     <span class="n">predict</span> <span class="k">as</span> <span class="n">high_level_predict</span><span class="p">,</span>
 <span class="p">)</span>
 
@@ -154,12 +154,12 @@
 <span class="p">)</span>
 
 
-<div class="viewcode-block" id="accuracy"><a class="viewcode-back" href="../../api/noasync.html#dffml.noasync.accuracy">[docs]</a><span class="k">def</span> <span class="nf">accuracy</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">high_level_accuracy</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">))</span></div>
+<div class="viewcode-block" id="score"><a class="viewcode-back" href="../../api/noasync.html#dffml.noasync.score">[docs]</a><span class="k">def</span> <span class="nf">score</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">high_level_score</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">))</span></div>
 
 
-<span class="n">accuracy</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="p">(</span>
-    <span class="n">high_level_accuracy</span><span class="o">.</span><span class="vm">__doc__</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;await &quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+<span class="n">score</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">high_level_score</span><span class="o">.</span><span class="vm">__doc__</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;await &quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
     <span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;async &quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
     <span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;asyncio.run(main())&quot;</span><span class="p">,</span> <span class="s2">&quot;main()&quot;</span><span class="p">)</span>
     <span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;    &gt;&gt;&gt; import asyncio</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>

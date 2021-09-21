@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Packaging a Model &mdash; DFFML 6f7d34993 documentation</title>
+  <title>Packaging a Model &mdash; DFFML 4fff2d6c8 documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/tabs.css" type="text/css" />
@@ -33,7 +33,7 @@
             <a href="../../index.html" class="icon icon-home"> DFFML
           </a>
               <div class="version">
-                6f7d34993
+                4fff2d6c8
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -233,7 +233,7 @@ than <a class="reference external" href="https://docs.python.org/3/library/unitt
 <p><strong>tests/test_model.py</strong></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">tempfile</span>
 
-<span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">train</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">,</span> <span class="n">predict</span><span class="p">,</span> <span class="n">Feature</span><span class="p">,</span> <span class="n">Features</span><span class="p">,</span> <span class="n">AsyncTestCase</span>
+<span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">train</span><span class="p">,</span> <span class="n">score</span><span class="p">,</span> <span class="n">predict</span><span class="p">,</span> <span class="n">Feature</span><span class="p">,</span> <span class="n">Features</span><span class="p">,</span> <span class="n">AsyncTestCase</span>
 
 <span class="kn">from</span> <span class="nn">dffml_model_myslr.myslr</span> <span class="kn">import</span> <span class="n">MySLRModel</span>
 </pre></div>
@@ -321,14 +321,14 @@ for more information on how the <code class="docutils literal notranslate"><span
 <div class="section" id="testing-accuracy">
 <h3>Testing Accuracy<a class="headerlink" href="#testing-accuracy" title="Permalink to this headline"></a></h3>
 <p>Once again, all we need to to is pass the model and test data to the
-<code class="xref py py-func docutils literal notranslate"><span class="pre">accuracy</span></code> function. Then we check if it’s in an
+<code class="xref py py-func docutils literal notranslate"><span class="pre">score</span></code> function. Then we check if it’s in an
 acceptable range. This test is helpful to make sure you never make any horribly
 wrong changes to your model, since it will check that the accuracy is within an
 acceptable range.</p>
 <p><strong>tests/test_model.py</strong></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="k">async</span> <span class="k">def</span> <span class="nf">test_01_accuracy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># Use the test data to assess the model&#39;s accuracy</span>
-        <span class="n">res</span> <span class="o">=</span> <span class="k">await</span> <span class="n">accuracy</span><span class="p">(</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="k">await</span> <span class="n">score</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">,</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">scorer</span><span class="p">,</span>
             <span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;Y&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>

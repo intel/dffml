@@ -45,6 +45,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - high_level `accuracy()` now takes predict features as parameter.
 - Spacy `model_name_or_path` was changed to `model_name`. Functionality is the
   same, it still accepts a name or a path.
+- Renamed `accuracy()` to `score()`.
 ### Fixed
 - Record object key properties are now always strings
 

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Neural Networks &mdash; DFFML 6f7d34993 documentation</title>
+  <title>Neural Networks &mdash; DFFML 4fff2d6c8 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../_static/tabs.css" type="text/css" />
@@ -34,7 +34,7 @@
             <a href="../index.html" class="icon icon-home"> DFFML
           </a>
               <div class="version">
-                6f7d34993
+                4fff2d6c8
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -491,7 +491,7 @@ the top level layers (Sequential or Single) sequentially in the order they were 
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">torch.nn</span> <span class="k">as</span> <span class="nn">nn</span>
 <span class="kn">import</span> <span class="nn">asyncio</span>
 
-<span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">train</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">,</span> <span class="n">predict</span><span class="p">,</span> <span class="n">DirectorySource</span><span class="p">,</span> <span class="n">Features</span><span class="p">,</span> <span class="n">Feature</span>
+<span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">train</span><span class="p">,</span> <span class="n">score</span><span class="p">,</span> <span class="n">predict</span><span class="p">,</span> <span class="n">DirectorySource</span><span class="p">,</span> <span class="n">Features</span><span class="p">,</span> <span class="n">Feature</span>
 <span class="kn">from</span> <span class="nn">dffml_model_pytorch</span> <span class="kn">import</span> <span class="n">PyTorchNeuralNetwork</span><span class="p">,</span> <span class="n">CrossEntropyLossFunction</span>
 <span class="kn">from</span> <span class="nn">dffml_model_pytorch.pytorch_accuracy_scorer</span> <span class="kn">import</span> <span class="n">PytorchAccuracy</span>
 
@@ -580,7 +580,7 @@ the top level layers (Sequential or Single) sequentially in the order they were 
 
     <span class="c1"># Assess the accuracy</span>
     <span class="n">scorer</span> <span class="o">=</span> <span class="n">PytorchAccuracy</span><span class="p">()</span>
-    <span class="n">acc</span> <span class="o">=</span> <span class="k">await</span> <span class="n">accuracy</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">scorer</span><span class="p">,</span> <span class="n">test_source</span><span class="p">)</span>
+    <span class="n">acc</span> <span class="o">=</span> <span class="k">await</span> <span class="n">score</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">scorer</span><span class="p">,</span> <span class="n">test_source</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Testing Accuracy: &quot;</span><span class="p">,</span> <span class="n">acc</span><span class="p">)</span>
 
     <span class="c1"># Make Predictions</span>

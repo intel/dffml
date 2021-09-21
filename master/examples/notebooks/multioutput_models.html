@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Working with Multi-Output models &mdash; DFFML 6f7d34993 documentation</title>
+  <title>Working with Multi-Output models &mdash; DFFML 4fff2d6c8 documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/tabs.css" type="text/css" />
@@ -35,7 +35,7 @@
             <a href="../../index.html" class="icon icon-home"> DFFML
           </a>
               <div class="version">
-                6f7d34993
+                4fff2d6c8
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -603,7 +603,7 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="section" id="Test-our-Models">
 <h3>Test our Models<a class="headerlink" href="#Test-our-Models" title="Permalink to this headline"></a></h3>
-<p>To test our model, we’ll use the <code class="docutils literal notranslate"><span class="pre">accuracy()</span></code> function in the <code class="docutils literal notranslate"><span class="pre">high-level</span></code> API.</p>
+<p>To test our model, we’ll use the <code class="docutils literal notranslate"><span class="pre">score()</span></code> function in the <code class="docutils literal notranslate"><span class="pre">high-level</span></code> API.</p>
 <p>Just like models, the scorers can be dynamically loaded in a similar fashion.</p>
 <p>We will evaluate our model using the Mean Squared Error Scorer by passing <code class="docutils literal notranslate"><span class="pre">&quot;meansqrerr&quot;</span></code> to <code class="docutils literal notranslate"><span class="pre">AccuracyScorer.load()</span></code>, which is an entrypoint for a scikit scorer.</p>
 <p>All the available entrypoints for scorers can be found at the <a class="reference internal" href="../../plugins/dffml_accuracy.html"><span class="doc">Scorers Plugin Page</span></a>.</p>
@@ -616,7 +616,7 @@ div.rendered_html tbody tr:hover {
 
 <span class="n">scorer</span> <span class="o">=</span> <span class="n">MeanSquaredError</span><span class="p">()</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Score:&quot;</span><span class="p">,</span> <span class="k">await</span> <span class="n">accuracy</span><span class="p">(</span><span class="n">multi_reg_model</span><span class="p">,</span> <span class="n">scorer</span><span class="p">,</span> <span class="n">predict_features</span><span class="p">,</span> <span class="o">*</span><span class="n">data</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Score:&quot;</span><span class="p">,</span> <span class="k">await</span> <span class="n">score</span><span class="p">(</span><span class="n">multi_reg_model</span><span class="p">,</span> <span class="n">scorer</span><span class="p">,</span> <span class="n">predict_features</span><span class="p">,</span> <span class="o">*</span><span class="n">data</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -746,7 +746,7 @@ Score: 158.02450547009664
 </div>
 <div class="section" id="id4">
 <h3>Test our Models<a class="headerlink" href="#id4" title="Permalink to this headline"></a></h3>
-<p>To test our model, we’ll again use the <code class="docutils literal notranslate"><span class="pre">accuracy()</span></code> function in the <code class="docutils literal notranslate"><span class="pre">high-level</span></code> API.</p>
+<p>To test our model, we’ll again use the <code class="docutils literal notranslate"><span class="pre">score()</span></code> function in the <code class="docutils literal notranslate"><span class="pre">high-level</span></code> API.</p>
 <p>This time, we evaluate our model using the Accuracy Scorer by passing <code class="docutils literal notranslate"><span class="pre">&quot;acscore&quot;</span></code> to <code class="docutils literal notranslate"><span class="pre">AccuracyScorer.load()</span></code>, which is also an entrypoint for a scikit scorer.</p>
 <p>All the available entrypoints for scorers can be found at the <a class="reference internal" href="../../plugins/dffml_accuracy.html"><span class="doc">Scorers Plugin Page</span></a>.</p>
 <div class="nbinput docutils container">
@@ -758,7 +758,7 @@ Score: 158.02450547009664
 
 <span class="n">scorer</span> <span class="o">=</span> <span class="n">Accuracy</span><span class="p">()</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Accuracy:&quot;</span><span class="p">,</span> <span class="k">await</span> <span class="n">accuracy</span><span class="p">(</span><span class="n">multi_classif_model</span><span class="p">,</span> <span class="n">scorer</span><span class="p">,</span> <span class="n">predict_features</span><span class="p">,</span> <span class="o">*</span><span class="n">data</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Accuracy:&quot;</span><span class="p">,</span> <span class="k">await</span> <span class="n">score</span><span class="p">(</span><span class="n">multi_classif_model</span><span class="p">,</span> <span class="n">scorer</span><span class="p">,</span> <span class="n">predict_features</span><span class="p">,</span> <span class="o">*</span><span class="n">data</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
