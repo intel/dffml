@@ -13,12 +13,12 @@ from ..base import (
 
 
 @config
-class OptimizerConfig:
+class TunerConfig:
     pass
 
 
-class OptimizerContext(abc.ABC, BaseDataFlowFacilitatorObjectContext):
-    def __init__(self, parent: "Optimizer") -> None:
+class TunerContext(abc.ABC, BaseDataFlowFacilitatorObjectContext):
+    def __init__(self, parent: "Tuner") -> None:
         self.parent = parent
 
     @abc.abstractmethod
@@ -58,15 +58,15 @@ class OptimizerContext(abc.ABC, BaseDataFlowFacilitatorObjectContext):
         raise NotImplementedError()
 
 
-@base_entry_point("dffml.optimizer", "optimizer")
-class Optimizer(BaseDataFlowFacilitatorObject):
+@base_entry_point("dffml.tuner", "tuner")
+class Tuner(BaseDataFlowFacilitatorObject):
     """
     Abstract base class which should be derived from
-    and implemented using various optimizers.
+    and implemented using various tuners.
     """
 
-    CONFIG = OptimizerConfig
-    CONTEXT = OptimizerContext
+    CONFIG = TunerConfig
+    CONTEXT = TunerContext
 
-    def __call__(self) -> OptimizerContext:
+    def __call__(self) -> TunerContext:
         return self.CONTEXT(self)

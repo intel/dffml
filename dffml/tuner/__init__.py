@@ -1,11 +1,11 @@
 # SPDX-License-Identifier: MIT
 # Copyright (c) 2020 Intel Corporation
 """
-This is the Optimizer plugin
+This is the Tuner plugin
 """
-from .optimizer import (
-    OptimizerConfig,
-    OptimizerContext,
-    Optimizer,
+from .tuner import (
+    TunerConfig,
+    TunerContext,
+    Tuner,
 )
 from .parameter_grid import ParameterGrid
