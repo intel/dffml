@@ -18,3 +18,4 @@ wheelhouse/
 *.modeldir
 *.db
 htmlcov/
+built_html_docs/
