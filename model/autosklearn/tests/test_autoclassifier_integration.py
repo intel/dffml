@@ -1,5 +1,4 @@
 import os
-import json
 import tempfile
 import contextlib
 import subprocess
@@ -96,12 +95,10 @@ class TestAutoClassifierModel(AsyncTestCase):
                 "r",
             ) as f:
                 predict_cmnd = clean_args(f, tempdir)
-            with contextlib.redirect_stdout(self.stdout):
-                await CLI._main(*predict_cmnd[1:])
-                results = json.loads(self.stdout.getvalue())
+                results = await CLI._main(*predict_cmnd[1:])
                 self.assertTrue(isinstance(results, list))
                 self.assertTrue(results)
-                results = results[0]
+                results = results[0].export()
                 self.assertIn("prediction", results)
                 results = results["prediction"]
                 self.assertIn("classification", results)

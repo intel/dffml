@@ -1,8 +1,5 @@
-import io
-import json
 import shutil
 import pathlib
-from unittest.mock import patch
 
 from dffml import (
     prepend_to_path,
@@ -25,18 +22,15 @@ from .binaries import (
 class TestCLIUse(AsyncTestCase):
     async def test_use_python(self):
         dffml_source_root = list(pathlib.Path(__file__).parents)[3]
-        with patch("sys.stdout", new_callable=io.StringIO) as stdout:
-            await ShouldI._main("use", str(dffml_source_root))
-            output = stdout.getvalue()
-        results = json.loads(output)
+        results = await ShouldI._main("use", str(dffml_source_root))
         # The use of input() triggers B322, which is a false positive since we
         # don't support Python 2
         self.assertLess(
-            list(results.values())[0]["static_analysis"][0]["high"], 2
+            list(results.values())[0]["static_analysis"][0].high, 2
         )
-        if list(results.values())[0]["static_analysis"][0]["high"] > 0:
+        if list(results.values())[0]["static_analysis"][0].high > 0:
             self.assertEqual(
-                list(results.values())[0]["static_analysis"][0]["report"][
+                list(results.values())[0]["static_analysis"][0].report[
                     "run_bandit.outputs.result"
                 ]["CONFIDENCE.HIGH_AND_SEVERITY.HIGH.issues"][0]["test_id"],
                 "B322",
@@ -48,18 +42,15 @@ class TestCLIUse(AsyncTestCase):
             *CACHED_TARGET_JAVASCRIPT_ALGORITHMS
         )
         with prepend_to_path(node / "node-v14.2.0-linux-x64" / "bin",):
-            with patch("sys.stdout", new_callable=io.StringIO) as stdout:
-                await ShouldI._main(
-                    "use",
-                    str(
-                        javascript_algo
-                        / "javascript-algorithms-ba2d8dc4a8e27659c1420fe52390cb7981df4a94"
-                    ),
-                )
-                output = stdout.getvalue()
-        results = json.loads(output)
+            results = await ShouldI._main(
+                "use",
+                str(
+                    javascript_algo
+                    / "javascript-algorithms-ba2d8dc4a8e27659c1420fe52390cb7981df4a94"
+                ),
+            )
         self.assertGreater(
-            list(results.values())[0]["static_analysis"][0]["high"], 2940
+            list(results.values())[0]["static_analysis"][0].high, 2940
         )
 
     async def test_use_rust(self):
@@ -89,17 +80,13 @@ class TestCLIUse(AsyncTestCase):
             rust / "rust-1.52.0-x86_64-unknown-linux-gnu" / "cargo" / "bin",
             cargo_audit / "rustsec-cargo-audit-v0.15.0" / "target" / "release",
         ):
-            with patch("sys.stdout", new_callable=io.StringIO) as stdout:
-                await ShouldI._main(
-                    "use",
-                    str(
-                        rust_clippy
-                        / "rust-clippy-52c25e9136f533c350fa1916b5bf5103f69c0f4d"
-                    ),
-                )
-            output = stdout.getvalue()
-            print(output)
-            results = json.loads(output)
+            results = await ShouldI._main(
+                "use",
+                str(
+                    rust_clippy
+                    / "rust-clippy-52c25e9136f533c350fa1916b5bf5103f69c0f4d"
+                ),
+            )
 
             from pprint import pprint
 
@@ -111,8 +98,6 @@ class TestCLIUse(AsyncTestCase):
                 contexts += 1
                 for report in context["static_analysis"]:
                     reports += 1
-                    self.assertGreater(
-                        report["report"]["qualitative"]["low"], -1
-                    )
+                    self.assertGreater(report.report["qualitative"]["low"], -1)
             self.assertEqual(contexts, 1, "One project context expected")
             self.assertEqual(reports, 1, "One reports expected")

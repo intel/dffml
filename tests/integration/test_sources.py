@@ -2,7 +2,6 @@
 This file contains integration tests. We use the CLI to exercise functionality of
 various DFFML classes and constructs.
 """
-import json
 import contextlib
 
 from dffml.cli.cli import CLI
@@ -81,9 +80,9 @@ class TestCSV(AsyncTestCase):
             "mse",
         )
         # Ensure JSON output works as expected (#261)
-        with contextlib.redirect_stdout(self.stdout):
+        with contextlib.null_context():
             # Make prediction
-            await CLI._main(
+            results = await CLI._main(
                 "predict",
                 "all",
                 "-model",
@@ -98,10 +97,9 @@ class TestCSV(AsyncTestCase):
                 "-source-filename",
                 predict_filename,
             )
-        results = json.loads(self.stdout.getvalue())
         self.assertTrue(isinstance(results, list))
         self.assertTrue(results)
-        results = results[0]
+        results = results[0].export()
         self.assertIn("key", results)
         self.assertEqual("0", results["key"])
         self.assertIn("prediction", results)
