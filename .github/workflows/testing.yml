@@ -28,6 +28,8 @@ jobs:
         git remote set-url origin https://github.com/intel/dffml
         git fetch --prune --unshallow
         git fetch --depth=1 origin +refs/tags/*:refs/tags/*
+        git config --global user.email "dffml@intel.com"
+        git config --global user.name "DFFML CI/CD"
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v2
       with:
@@ -110,6 +112,8 @@ jobs:
         git remote set-url origin https://github.com/intel/dffml
         git fetch --prune --unshallow
         git fetch --depth=1 origin +refs/tags/*:refs/tags/*
+        git config --global user.email "dffml@intel.com"
+        git config --global user.name "DFFML CI/CD"
     - name: Remove unused software
       run: |
         sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc
@@ -221,6 +225,8 @@ jobs:
         git remote set-url origin https://github.com/intel/dffml
         git fetch --prune --unshallow
         git fetch --depth=1 origin +refs/tags/*:refs/tags/*
+        git config --global user.email "dffml@intel.com"
+        git config --global user.name "DFFML CI/CD"
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v2
       with:
@@ -262,6 +268,8 @@ jobs:
       run: |
         git remote set-url origin https://github.com/intel/dffml
         git fetch --prune --unshallow
+        git config --global user.email "dffml@intel.com"
+        git config --global user.name "DFFML CI/CD"
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v2
       with:
