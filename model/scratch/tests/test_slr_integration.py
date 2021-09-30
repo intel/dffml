@@ -1,5 +1,4 @@
 import csv
-import json
 import pathlib
 import contextlib
 
@@ -50,9 +49,9 @@ class TestSLR(AsyncTestCase):
             "-source-filename",
             data_filename,
         )
-        with contextlib.redirect_stdout(self.stdout):
+        with contextlib.null_context():
             # Make prediction
-            await CLI._main(
+            results = await CLI._main(
                 "predict",
                 "all",
                 *model_args,
@@ -61,10 +60,10 @@ class TestSLR(AsyncTestCase):
                 "-source-filename",
                 data_filename,
             )
-            results = json.loads(self.stdout.getvalue())
             self.assertTrue(isinstance(results, list))
             self.assertEqual(len(results), 6)
             for i, result in enumerate(results):
+                result = result.export()
                 self.assertIn("prediction", result)
                 result = result["prediction"]
                 self.assertIn("Salary", result)

@@ -3,7 +3,6 @@ This file contains integration tests. We use the CLI to exercise functionality o
 various DFFML classes and constructs.
 """
 import csv
-import json
 import pathlib
 import contextlib
 
@@ -81,9 +80,9 @@ class TestVWModel(AsyncTestCase):
             data_filename,
         )
         # Ensure JSON output works as expected (#261)
-        with contextlib.redirect_stdout(self.stdout):
+        with contextlib.null_context():
             # Make prediction
-            await CLI._main(
+            results = await CLI._main(
                 "predict",
                 "all",
                 "-model",
@@ -102,10 +101,9 @@ class TestVWModel(AsyncTestCase):
                 "-source-filename",
                 data_filename,
             )
-        results = json.loads(self.stdout.getvalue())
         self.assertTrue(isinstance(results, list))
         self.assertTrue(results)
-        results = results[0]
+        results = results[0].export()
         self.assertIn("prediction", results)
         results = results["prediction"]
         self.assertIn("true_class", results)

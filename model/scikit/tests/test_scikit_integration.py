@@ -3,7 +3,6 @@ This file contains integration tests. We use the CLI to exercise functionality o
 various DFFML classes and constructs.
 """
 import csv
-import json
 import pathlib
 import contextlib
 
@@ -88,10 +87,9 @@ class TestScikitClassification(AsyncTestCase):
             "-source-filename",
             test_filename,
         )
-        # Ensure JSON output works as expected (#261)
-        with contextlib.redirect_stdout(self.stdout):
+        with contextlib.null_context():
             # Make prediction
-            await CLI._main(
+            results = await CLI._main(
                 "predict",
                 "all",
                 "-model",
@@ -106,10 +104,9 @@ class TestScikitClassification(AsyncTestCase):
                 "-source-filename",
                 predict_filename,
             )
-        results = json.loads(self.stdout.getvalue())
         self.assertTrue(isinstance(results, list))
         self.assertTrue(results)
-        results = results[0]
+        results = results[0].export()
         self.assertIn("prediction", results)
         results = results["prediction"]
         self.assertIn("true_label", results)
@@ -194,10 +191,9 @@ class TestScikitRegression(AsyncTestCase):
             "-source-filename",
             test_filename,
         )
-        # Ensure JSON output works as expected (#261)
-        with contextlib.redirect_stdout(self.stdout):
+        with contextlib.null_context():
             # Make prediction
-            await CLI._main(
+            results = await CLI._main(
                 "predict",
                 "all",
                 "-model",
@@ -212,7 +208,6 @@ class TestScikitRegression(AsyncTestCase):
                 "-source-filename",
                 predict_filename,
             )
-        results = json.loads(self.stdout.getvalue())
         self.assertTrue(isinstance(results, list))
         self.assertTrue(results)
         results = results[0]
@@ -347,9 +342,9 @@ class TestScikitClustering(AsyncTestCase):
                     ]
                 )
             )
-            with contextlib.redirect_stdout(self.stdout):
+            with contextlib.null_context():
                 # Make prediction
-                await CLI._main(
+                results = await CLI._main(
                     "predict",
                     "all",
                     "-model",
@@ -362,7 +357,6 @@ class TestScikitClustering(AsyncTestCase):
                     "-source-filename",
                     predict_file,
                 )
-            results = json.loads(self.stdout.getvalue())
             self.stdout.truncate(0)
             self.stdout.seek(0)
             self.assertTrue(isinstance(results, list))

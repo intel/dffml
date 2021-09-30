@@ -235,23 +235,7 @@ class CMD(object):
 
     @classmethod
     async def _main(cls, *args):
-        result = await cls.cli(*args)
-        if (
-            result is not None
-            and result is not DisplayHelp
-            and result is not CMDOutputOverride
-            and result != [CMDOutputOverride]
-        ):
-            json.dump(
-                export_dict(result=result)["result"],
-                sys.stdout,
-                sort_keys=True,
-                indent=4,
-                separators=(",", ": "),
-                cls=cls.JSONEncoder,
-            )
-            print()
-        return result
+        return await cls.cli(*args)
 
     @classmethod
     def main(cls, loop=None, argv=sys.argv):
@@ -286,6 +270,22 @@ class CMD(object):
         result = None
         try:
             result = loop.run_until_complete(cls._main(*argv[1:]))
+
+            if (
+                result is not None
+                and result is not DisplayHelp
+                and result is not CMDOutputOverride
+                and result != [CMDOutputOverride]
+            ):
+                json.dump(
+                    export_dict(result=result)["result"],
+                    sys.stdout,
+                    sort_keys=True,
+                    indent=4,
+                    separators=(",", ": "),
+                    cls=cls.JSONEncoder,
+                )
+                print()
         except KeyboardInterrupt:  # pragma: no cover
             pass  # pragma: no cover
         loop.run_until_complete(loop.shutdown_asyncgens())

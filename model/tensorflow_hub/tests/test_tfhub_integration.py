@@ -97,9 +97,9 @@ class TestTextClassifier(AsyncTestCase):
             "-scorer",
             "textclf",
         )
-        with contextlib.redirect_stdout(self.stdout):
+        with contextlib.null_context():
             # Make prediction
-            await CLI._main(
+            results = await CLI._main(
                 "predict",
                 "all",
                 "-model",
@@ -119,10 +119,9 @@ class TestTextClassifier(AsyncTestCase):
                 "-source-filename",
                 data_filename,
             )
-            results = json.loads(self.stdout.getvalue())
             self.assertTrue(isinstance(results, list))
             self.assertTrue(results)
-            results = results[0]
+            results = results[0].export()
             self.assertIn("prediction", results)
             results = results["prediction"]
             self.assertIn("sentiment", results)

@@ -137,9 +137,9 @@ class TestSpacyNERModel(AsyncTestCase):
             "-scorer",
             "sner",
         )
-        with contextlib.redirect_stdout(self.stdout):
+        with contextlib.null_context():
             # Make prediction
-            await CLI._main(
+            results = await CLI._main(
                 "predict",
                 "all",
                 "-model",
@@ -160,12 +160,9 @@ class TestSpacyNERModel(AsyncTestCase):
                 "-model-n_iter",
                 "5",
             )
-            results = json.loads(self.stdout.getvalue())
-            self.stdout.truncate(0)
-            self.stdout.seek(0)
             self.assertTrue(isinstance(results, list))
             self.assertTrue(results)
-            results = results[0]
+            results = results[0].export()
             self.assertIn("prediction", results)
             results = results["prediction"]
             self.assertIn("Tag", results)
@@ -246,9 +243,8 @@ class TestSpacyNERModel(AsyncTestCase):
                 "r",
             ) as f:
                 predict_cmnd = clean_args(f, tempdir)
-            with contextlib.redirect_stdout(self.stdout):
-                await CLI._main(*predict_cmnd[1:])
-                results = json.loads(self.stdout.getvalue())
+            with contextlib.null_context():
+                results = await CLI._main(*predict_cmnd[1:])
                 self.assertTrue(isinstance(results, list))
                 self.assertTrue(results)
                 results = results[0]
