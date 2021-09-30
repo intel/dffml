@@ -15,8 +15,6 @@ from ..df.memory import (
 from ..configloader.configloader import BaseConfigLoader
 from ..configloader.json import JSONConfigLoader
 from ..source.source import SubsetSources, Sources
-from ..source.json import JSONSource
-from ..source.file import FileSourceConfig
 from ..util.data import merge, split_dot_seperated, traverse_set
 from ..util.entrypoint import load
 from ..util.cli.cmd import CMD, CMDOutputOverride
@@ -26,6 +24,7 @@ from ..util.cli.cmds import (
     KeysCMDConfig,
 )
 from ..util.cli.parser import ParseInputsAction
+from ..util.config.fields import FIELD_SOURCES
 from ..util.crypto import insecure_hash
 from ..base import config, field
 from ..high_level.dataflow import run as run_dataflow
@@ -158,17 +157,7 @@ class RunCMDConfig:
     configloader: BaseConfigLoader = field(
         "ConfigLoader to use for importing DataFlow", default=None,
     )
-    sources: Sources = field(
-        "Sources for loading and saving",
-        default_factory=lambda: Sources(
-            JSONSource(
-                FileSourceConfig(
-                    filename=pathlib.Path("~", ".cache", "dffml.json")
-                )
-            )
-        ),
-        labeled=True,
-    )
+    sources: Sources = FIELD_SOURCES
     caching: List[str] = field(
         "Skip running DataFlow if a record already contains these features",
         default_factory=lambda: [],
