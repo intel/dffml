@@ -4,7 +4,6 @@ various DFFML classes and constructs.
 """
 import csv
 import pathlib
-import contextlib
 
 import numpy as np
 from sklearn.datasets import make_blobs, make_regression
@@ -87,23 +86,22 @@ class TestScikitClassification(AsyncTestCase):
             "-source-filename",
             test_filename,
         )
-        with contextlib.null_context():
-            # Make prediction
-            results = await CLI._main(
-                "predict",
-                "all",
-                "-model",
-                "scikitsvc",
-                *features,
-                "-model-predict",
-                "true_label:int:1",
-                "-model-location",
-                model_dir,
-                "-sources",
-                "predict_data=csv",
-                "-source-filename",
-                predict_filename,
-            )
+        # Make prediction
+        results = await CLI._main(
+            "predict",
+            "all",
+            "-model",
+            "scikitsvc",
+            *features,
+            "-model-predict",
+            "true_label:int:1",
+            "-model-location",
+            model_dir,
+            "-sources",
+            "predict_data=csv",
+            "-source-filename",
+            predict_filename,
+        )
         self.assertTrue(isinstance(results, list))
         self.assertTrue(results)
         results = results[0].export()
@@ -191,23 +189,22 @@ class TestScikitRegression(AsyncTestCase):
             "-source-filename",
             test_filename,
         )
-        with contextlib.null_context():
-            # Make prediction
-            results = await CLI._main(
-                "predict",
-                "all",
-                "-model",
-                "scikitridge",
-                *features,
-                "-model-predict",
-                "true_label:float:1",
-                "-model-location",
-                model_dir,
-                "-sources",
-                "predict_data=csv",
-                "-source-filename",
-                predict_filename,
-            )
+        # Make prediction
+        results = await CLI._main(
+            "predict",
+            "all",
+            "-model",
+            "scikitridge",
+            *features,
+            "-model-predict",
+            "true_label:float:1",
+            "-model-location",
+            model_dir,
+            "-sources",
+            "predict_data=csv",
+            "-source-filename",
+            predict_filename,
+        )
         self.assertTrue(isinstance(results, list))
         self.assertTrue(results)
         results = results[0]
@@ -342,21 +339,20 @@ class TestScikitClustering(AsyncTestCase):
                     ]
                 )
             )
-            with contextlib.null_context():
-                # Make prediction
-                results = await CLI._main(
-                    "predict",
-                    "all",
-                    "-model",
-                    model,
-                    "-model-location",
-                    model_dir,
-                    *features,
-                    "-sources",
-                    "predict_data=csv",
-                    "-source-filename",
-                    predict_file,
-                )
+            # Make prediction
+            results = await CLI._main(
+                "predict",
+                "all",
+                "-model",
+                model,
+                "-model-location",
+                model_dir,
+                *features,
+                "-sources",
+                "predict_data=csv",
+                "-source-filename",
+                predict_file,
+            )
             self.stdout.truncate(0)
             self.stdout.seek(0)
             self.assertTrue(isinstance(results, list))

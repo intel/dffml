@@ -4,7 +4,6 @@ various DFFML classes and constructs.
 """
 import csv
 import pathlib
-import contextlib
 
 import numpy as np
 from sklearn.datasets import make_classification
@@ -80,27 +79,26 @@ class TestVWModel(AsyncTestCase):
             data_filename,
         )
         # Ensure JSON output works as expected (#261)
-        with contextlib.null_context():
-            # Make prediction
-            results = await CLI._main(
-                "predict",
-                "all",
-                "-model",
-                "vwmodel",
-                *features,
-                "-model-predict",
-                "true_class:int:1",
-                "-model-vwcmd",
-                "binary",
-                "True",
-                "-model-use_binary_label",
-                "-model-location",
-                model_dir,
-                "-sources",
-                "predict_data=csv",
-                "-source-filename",
-                data_filename,
-            )
+        # Make prediction
+        results = await CLI._main(
+            "predict",
+            "all",
+            "-model",
+            "vwmodel",
+            *features,
+            "-model-predict",
+            "true_class:int:1",
+            "-model-vwcmd",
+            "binary",
+            "True",
+            "-model-use_binary_label",
+            "-model-location",
+            model_dir,
+            "-sources",
+            "predict_data=csv",
+            "-source-filename",
+            data_filename,
+        )
         self.assertTrue(isinstance(results, list))
         self.assertTrue(results)
         results = results[0].export()
