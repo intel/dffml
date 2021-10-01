@@ -120,6 +120,17 @@ and temperature in a new file.
         -log debug
     $ cat preprocessed.csv
 
+Model Install
+-------------
+
+We need to install the tensorflow models since we'll be using the
+:ref:`TensorFlow DNN Regressor <plugin_model_dffml_model_tensorflow_tfdnnr>`
+
+.. code-block:: console
+    :test:
+
+    $ python -m pip install -U dffml-model-tensorflow
+
 Model Training
 --------------
 
