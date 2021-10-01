@@ -557,7 +557,7 @@ class Diagram(CMD):
                                 origin + "." + definition_name
                             )
                             seed_input_node = insecure_hash(
-                                origin_definition_name.encode
+                                origin_definition_name
                             )
                             print(
                                 f"{seed_input_node}({source}<br>{origin_definition_name})"
