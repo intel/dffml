@@ -11,6 +11,7 @@ Util
     asynchelper
     packaging
     tempdir
+    subprocess
     data
     skel
     os

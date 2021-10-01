@@ -53,7 +53,7 @@ more details
 .. code-block:: console
     :test:
 
-    $ python -m pip install joblib pandas pystan
+    $ python -m pip install joblib pandas "pystan==2.19.1.1"
     $ python -m pip install fbprophet
 
 Code

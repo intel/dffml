@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Ice Cream Sales &mdash; DFFML 4fff2d6c8 documentation</title>
+  <title>Ice Cream Sales &mdash; DFFML a434df7ad documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../_static/tabs.css" type="text/css" />
@@ -33,7 +33,7 @@
             <a href="../index.html" class="icon icon-home"> DFFML
           </a>
               <div class="version">
-                4fff2d6c8
+                a434df7ad
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -68,6 +68,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#operations">Operations</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#dataflow">Dataflow</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#merge-command">Merge Command</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#model-install">Model Install</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#model-training">Model Training</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#model-accuracy">Model Accuracy</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#prediction">Prediction</a></li>
@@ -517,6 +518,14 @@ and temperature in a new file.</p>
     -source-temp-readwrite <span class="se">\</span>
     -log debug
 <span class="gp">$ </span>cat preprocessed.csv
+</pre></div>
+</div>
+</div>
+<div class="section" id="model-install">
+<h2>Model Install<a class="headerlink" href="#model-install" title="Permalink to this headline"></a></h2>
+<p>We need to install the tensorflow models since we’ll be using the
+<a class="reference internal" href="../plugins/dffml_model.html#plugin-model-dffml-model-tensorflow-tfdnnr"><span class="std std-ref">TensorFlow DNN Regressor</span></a></p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python -m pip install -U dffml-model-tensorflow
 </pre></div>
 </div>
 </div>

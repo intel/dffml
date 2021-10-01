@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>dffml.service.dev &mdash; DFFML 4fff2d6c8 documentation</title>
+  <title>dffml.service.dev &mdash; DFFML a434df7ad documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/tabs.css" type="text/css" />
@@ -32,7 +32,7 @@
             <a href="../../../index.html" class="icon icon-home"> DFFML
           </a>
               <div class="version">
-                4fff2d6c8
+                a434df7ad
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -162,6 +162,7 @@
 <span class="kn">from</span> <span class="nn">..util.packaging</span> <span class="kn">import</span> <span class="n">is_develop</span>
 <span class="kn">from</span> <span class="nn">..util.net</span> <span class="kn">import</span> <span class="n">cached_download</span>
 <span class="kn">from</span> <span class="nn">..util.data</span> <span class="kn">import</span> <span class="n">traverse_config_get</span><span class="p">,</span> <span class="n">export</span>
+<span class="kn">from</span> <span class="nn">..util.subprocess</span> <span class="kn">import</span> <span class="n">run_command</span>
 <span class="kn">from</span> <span class="nn">..df.types</span> <span class="kn">import</span> <span class="n">Input</span><span class="p">,</span> <span class="n">DataFlow</span>
 <span class="kn">from</span> <span class="nn">..df.memory</span> <span class="kn">import</span> <span class="n">MemoryOrchestrator</span>
 <span class="kn">from</span> <span class="nn">..configloader.configloader</span> <span class="kn">import</span> <span class="n">BaseConfigLoader</span>
@@ -254,6 +255,15 @@
                     <span class="n">dffml_version</span><span class="o">=</span><span class="n">VERSION</span><span class="p">,</span>
                 <span class="p">),</span>
             <span class="p">)</span>
+            <span class="c1"># Create git repo. Required for setuptools_scm version</span>
+            <span class="k">for</span> <span class="n">cmd</span> <span class="ow">in</span> <span class="p">[</span>
+                <span class="p">[</span><span class="s2">&quot;git&quot;</span><span class="p">,</span> <span class="s2">&quot;init&quot;</span><span class="p">],</span>
+                <span class="p">[</span><span class="s2">&quot;git&quot;</span><span class="p">,</span> <span class="s2">&quot;add&quot;</span><span class="p">,</span> <span class="s2">&quot;-A&quot;</span><span class="p">],</span>
+                <span class="p">[</span><span class="s2">&quot;git&quot;</span><span class="p">,</span> <span class="s2">&quot;commit&quot;</span><span class="p">,</span> <span class="s2">&quot;-snm&quot;</span><span class="p">,</span> <span class="s2">&quot;housekeeping: Initial Commit&quot;</span><span class="p">],</span>
+            <span class="p">]:</span>
+                <span class="k">await</span> <span class="n">run_command</span><span class="p">(</span>
+                    <span class="n">cmd</span><span class="p">,</span> <span class="n">logger</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="p">,</span> <span class="n">cwd</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">target</span><span class="p">)</span>
+                <span class="p">)</span>
 
     <span class="k">return</span> <span class="n">CreateCMD</span></div>
 

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>COVID Forecasting &mdash; DFFML 4fff2d6c8 documentation</title>
+  <title>COVID Forecasting &mdash; DFFML a434df7ad documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../_static/tabs.css" type="text/css" />
@@ -33,7 +33,7 @@
             <a href="../index.html" class="icon icon-home"> DFFML
           </a>
               <div class="version">
-                4fff2d6c8
+                a434df7ad
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -210,7 +210,7 @@ we’re going to wrap it using a model class (for more explanation first read th
 <p>We need to install dependencies we’ll be importing.</p>
 <p>See the <a class="reference external" href="https://facebook.github.io/prophet/docs/installation.html#python">https://facebook.github.io/prophet/docs/installation.html#python</a> for
 more details</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python -m pip install joblib pandas pystan
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python -m pip install joblib pandas <span class="s2">&quot;pystan==2.19.1.1&quot;</span>
 <span class="gp">$ </span>python -m pip install fbprophet
 </pre></div>
 </div>
@@ -323,7 +323,7 @@ there is anything that is unclear or you think could be changed / improved.</p>
         <span class="s2">&quot;training.csv.gz&quot;</span><span class="p">,</span>
         <span class="s2">&quot;af9536ab41580e04dd72b1285f6b2b703977aee5b95b80422bbe7cc11262297da265e6c0e333bfc1faa7b4f263f5496e&quot;</span><span class="p">,</span>
     <span class="p">)</span>
-    <span class="n">testing_file</span> <span class="o">=</span> <span class="k">await</span> <span class="n">cached_download</span><span class="p">(</span>
+    <span class="n">test_file</span> <span class="o">=</span> <span class="k">await</span> <span class="n">cached_download</span><span class="p">(</span>
         <span class="s2">&quot;https://github.com/intel/dffml/files/5773998/COVID.Oregon.Counties.Test.Clean.2020-10-25.to.2020-10-31.csv.gz&quot;</span><span class="p">,</span>
         <span class="s2">&quot;test.csv.gz&quot;</span><span class="p">,</span>
         <span class="s2">&quot;10ee8bcf06a511019f98c3e0e40f315585b2ed84d4a736f743567861d72438afcb7914f117e16640800959324f0f518d&quot;</span><span class="p">,</span>

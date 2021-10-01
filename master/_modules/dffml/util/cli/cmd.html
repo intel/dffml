@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>dffml.util.cli.cmd &mdash; DFFML 4fff2d6c8 documentation</title>
+  <title>dffml.util.cli.cmd &mdash; DFFML a434df7ad documentation</title>
       <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../../_static/tabs.css" type="text/css" />
@@ -32,7 +32,7 @@
             <a href="../../../../index.html" class="icon icon-home"> DFFML
           </a>
               <div class="version">
-                4fff2d6c8
+                a434df7ad
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
@@ -364,23 +364,7 @@
 
     <span class="nd">@classmethod</span>
     <span class="k">async</span> <span class="k">def</span> <span class="nf">_main</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
-        <span class="n">result</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">cls</span><span class="o">.</span><span class="n">cli</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
-        <span class="k">if</span> <span class="p">(</span>
-            <span class="n">result</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-            <span class="ow">and</span> <span class="n">result</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">DisplayHelp</span>
-            <span class="ow">and</span> <span class="n">result</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">CMDOutputOverride</span>
-            <span class="ow">and</span> <span class="n">result</span> <span class="o">!=</span> <span class="p">[</span><span class="n">CMDOutputOverride</span><span class="p">]</span>
-        <span class="p">):</span>
-            <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span>
-                <span class="n">export_dict</span><span class="p">(</span><span class="n">result</span><span class="o">=</span><span class="n">result</span><span class="p">)[</span><span class="s2">&quot;result&quot;</span><span class="p">],</span>
-                <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">,</span>
-                <span class="n">sort_keys</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
-                <span class="n">separators</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">,</span> <span class="s2">&quot;: &quot;</span><span class="p">),</span>
-                <span class="bp">cls</span><span class="o">=</span><span class="bp">cls</span><span class="o">.</span><span class="n">JSONEncoder</span><span class="p">,</span>
-            <span class="p">)</span>
-            <span class="nb">print</span><span class="p">()</span>
-        <span class="k">return</span> <span class="n">result</span>
+        <span class="k">return</span> <span class="k">await</span> <span class="bp">cls</span><span class="o">.</span><span class="n">cli</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">loop</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">argv</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">):</span>
@@ -415,6 +399,22 @@
         <span class="n">result</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">result</span> <span class="o">=</span> <span class="n">loop</span><span class="o">.</span><span class="n">run_until_complete</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">_main</span><span class="p">(</span><span class="o">*</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">:]))</span>
+
+            <span class="k">if</span> <span class="p">(</span>
+                <span class="n">result</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="ow">and</span> <span class="n">result</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">DisplayHelp</span>
+                <span class="ow">and</span> <span class="n">result</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">CMDOutputOverride</span>
+                <span class="ow">and</span> <span class="n">result</span> <span class="o">!=</span> <span class="p">[</span><span class="n">CMDOutputOverride</span><span class="p">]</span>
+            <span class="p">):</span>
+                <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span>
+                    <span class="n">export_dict</span><span class="p">(</span><span class="n">result</span><span class="o">=</span><span class="n">result</span><span class="p">)[</span><span class="s2">&quot;result&quot;</span><span class="p">],</span>
+                    <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">,</span>
+                    <span class="n">sort_keys</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                    <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+                    <span class="n">separators</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">,</span> <span class="s2">&quot;: &quot;</span><span class="p">),</span>
+                    <span class="bp">cls</span><span class="o">=</span><span class="bp">cls</span><span class="o">.</span><span class="n">JSONEncoder</span><span class="p">,</span>
+                <span class="p">)</span>
+                <span class="nb">print</span><span class="p">()</span>
         <span class="k">except</span> <span class="ne">KeyboardInterrupt</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
             <span class="k">pass</span>  <span class="c1"># pragma: no cover</span>
         <span class="n">loop</span><span class="o">.</span><span class="n">run_until_complete</span><span class="p">(</span><span class="n">loop</span><span class="o">.</span><span class="n">shutdown_asyncgens</span><span class="p">())</span>

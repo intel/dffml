@@ -1,0 +1,5 @@
+Util Subprocess
+===============
+
+.. automodule:: dffml.util.subprocess
+   :members:
