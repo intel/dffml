@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Index &mdash; DFFML a434df7ad documentation</title>
+  <title>Index &mdash; DFFML 002d7f530 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/tabs.css" type="text/css" />
@@ -32,7 +32,7 @@
             <a href="index.html" class="icon icon-home"> DFFML
           </a>
               <div class="version">
-                a434df7ad
+                002d7f530
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -72,9 +72,9 @@
 <li class="toctree-l1"><a class="reference internal" href="api/util/index.html">Util</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api/cli/index.html">Cli</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api/high_level/index.html">High_Level</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/tuner/index.html">Tuner</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api/operation/index.html">Operation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api/df/index.html">Df</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api/optimizer/index.html">Optimizer</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api/model/index.html">Model</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api/db/index.html">Db</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api/feature/index.html">Feature</a></li>
@@ -442,10 +442,6 @@
 </li>
         <li><a href="api/model/slr.html#dffml.model.slr.SLRModel.CONFIG">(dffml.model.slr.SLRModel attribute)</a>
 </li>
-        <li><a href="api/optimizer/optimizer.html#dffml.optimizer.optimizer.Optimizer.CONFIG">(dffml.optimizer.optimizer.Optimizer attribute)</a>
-</li>
-        <li><a href="api/optimizer/parameter_grid.html#dffml.optimizer.parameter_grid.ParameterGrid.CONFIG">(dffml.optimizer.parameter_grid.ParameterGrid attribute)</a>
-</li>
         <li><a href="api/secret/ini.html#dffml.secret.ini.INISecret.CONFIG">(dffml.secret.ini.INISecret attribute)</a>
 </li>
         <li><a href="api/service/dev.html#dffml.service.dev.BumpPackages.CONFIG">(dffml.service.dev.BumpPackages attribute)</a>
@@ -489,6 +485,10 @@
         <li><a href="api/source/memory.html#dffml.source.memory.MemorySource.CONFIG">(dffml.source.memory.MemorySource attribute)</a>
 </li>
         <li><a href="api/source/op.html#dffml.source.op.OpSource.CONFIG">(dffml.source.op.OpSource attribute)</a>
+</li>
+        <li><a href="api/tuner/parameter_grid.html#dffml.tuner.parameter_grid.ParameterGrid.CONFIG">(dffml.tuner.parameter_grid.ParameterGrid attribute)</a>
+</li>
+        <li><a href="api/tuner/tuner.html#dffml.tuner.tuner.Tuner.CONFIG">(dffml.tuner.tuner.Tuner attribute)</a>
 </li>
         <li><a href="api/util/cli/cmds.html#dffml.util.cli.cmds.ModelCMD.CONFIG">(dffml.util.cli.cmds.ModelCMD attribute)</a>
 </li>
@@ -554,10 +554,6 @@
 </li>
         <li><a href="api/operation/io.html#dffml.operation.io.AcceptUserInput.CONTEXT">(dffml.operation.io.AcceptUserInput attribute)</a>
 </li>
-        <li><a href="api/optimizer/optimizer.html#dffml.optimizer.optimizer.Optimizer.CONTEXT">(dffml.optimizer.optimizer.Optimizer attribute)</a>
-</li>
-        <li><a href="api/optimizer/parameter_grid.html#dffml.optimizer.parameter_grid.ParameterGrid.CONTEXT">(dffml.optimizer.parameter_grid.ParameterGrid attribute)</a>
-</li>
         <li><a href="api/secret/ini.html#dffml.secret.ini.INISecret.CONTEXT">(dffml.secret.ini.INISecret attribute)</a>
 </li>
         <li><a href="api/source/dataframe.html#dffml.source.dataframe.DataFrameSource.CONTEXT">(dffml.source.dataframe.DataFrameSource attribute)</a>
@@ -579,6 +575,10 @@
         <li><a href="api/source/source.html#dffml.source.source.ValidationSources.CONTEXT">(dffml.source.source.ValidationSources attribute)</a>
 </li>
         <li><a href="api/source/wrapper.html#dffml.source.wrapper.WrapperSource.CONTEXT">(dffml.source.wrapper.WrapperSource attribute)</a>
+</li>
+        <li><a href="api/tuner/parameter_grid.html#dffml.tuner.parameter_grid.ParameterGrid.CONTEXT">(dffml.tuner.parameter_grid.ParameterGrid attribute)</a>
+</li>
+        <li><a href="api/tuner/tuner.html#dffml.tuner.tuner.Tuner.CONTEXT">(dffml.tuner.tuner.Tuner attribute)</a>
 </li>
         <li><a href="api/util/asynchelper.html#dffml.util.asynchelper.AsyncContextManagerList.CONTEXT">(dffml.util.asynchelper.AsyncContextManagerList attribute)</a>
 </li>
@@ -1037,20 +1037,6 @@
 </li>
       </ul></li>
       <li>
-    dffml.optimizer.optimizer
-
-      <ul>
-        <li><a href="api/optimizer/optimizer.html#module-dffml.optimizer.optimizer">module</a>
-</li>
-      </ul></li>
-      <li>
-    dffml.optimizer.parameter_grid
-
-      <ul>
-        <li><a href="api/optimizer/parameter_grid.html#module-dffml.optimizer.parameter_grid">module</a>
-</li>
-      </ul></li>
-      <li>
     dffml.plugins
 
       <ul>
@@ -1064,8 +1050,6 @@
         <li><a href="api/port/json.html#module-dffml.port.json">module</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     dffml.port.log
 
@@ -1080,6 +1064,8 @@
         <li><a href="api/port/port.html#module-dffml.port.port">module</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     dffml.record
 
@@ -1232,6 +1218,20 @@
 
       <ul>
         <li><a href="api/source/wrapper.html#module-dffml.source.wrapper">module</a>
+</li>
+      </ul></li>
+      <li>
+    dffml.tuner.parameter_grid
+
+      <ul>
+        <li><a href="api/tuner/parameter_grid.html#module-dffml.tuner.parameter_grid">module</a>
+</li>
+      </ul></li>
+      <li>
+    dffml.tuner.tuner
+
+      <ul>
+        <li><a href="api/tuner/tuner.html#module-dffml.tuner.tuner">module</a>
 </li>
       </ul></li>
       <li>
@@ -2155,10 +2155,6 @@
 </li>
         <li><a href="api/operation/source.html#module-dffml.operation.source">dffml.operation.source</a>
 </li>
-        <li><a href="api/optimizer/optimizer.html#module-dffml.optimizer.optimizer">dffml.optimizer.optimizer</a>
-</li>
-        <li><a href="api/optimizer/parameter_grid.html#module-dffml.optimizer.parameter_grid">dffml.optimizer.parameter_grid</a>
-</li>
         <li><a href="api/plugins.html#module-dffml.plugins">dffml.plugins</a>
 </li>
         <li><a href="api/port/json.html#module-dffml.port.json">dffml.port.json</a>
@@ -2210,6 +2206,10 @@
         <li><a href="api/source/source.html#module-dffml.source.source">dffml.source.source</a>
 </li>
         <li><a href="api/source/wrapper.html#module-dffml.source.wrapper">dffml.source.wrapper</a>
+</li>
+        <li><a href="api/tuner/parameter_grid.html#module-dffml.tuner.parameter_grid">dffml.tuner.parameter_grid</a>
+</li>
+        <li><a href="api/tuner/tuner.html#module-dffml.tuner.tuner">dffml.tuner.tuner</a>
 </li>
         <li><a href="api/util/asynchelper.html#module-dffml.util.asynchelper">dffml.util.asynchelper</a>
 </li>
@@ -2389,10 +2389,6 @@
 </li>
         <li><a href="api/operation/source.html#dffml.operation.source.SourceOperationConfig.no_enforce_immutable">(dffml.operation.source.SourceOperationConfig method)</a>
 </li>
-        <li><a href="api/optimizer/optimizer.html#dffml.optimizer.optimizer.OptimizerConfig.no_enforce_immutable">(dffml.optimizer.optimizer.OptimizerConfig method)</a>
-</li>
-        <li><a href="api/optimizer/parameter_grid.html#dffml.optimizer.parameter_grid.ParameterGridConfig.no_enforce_immutable">(dffml.optimizer.parameter_grid.ParameterGridConfig method)</a>
-</li>
         <li><a href="api/secret/ini.html#dffml.secret.ini.INISecretConfig.no_enforce_immutable">(dffml.secret.ini.INISecretConfig method)</a>
 </li>
         <li><a href="api/service/dev.html#dffml.service.dev.BumpPackagesConfig.no_enforce_immutable">(dffml.service.dev.BumpPackagesConfig method)</a>
@@ -2436,6 +2432,10 @@
         <li><a href="api/source/memory.html#dffml.source.memory.MemorySourceConfig.no_enforce_immutable">(dffml.source.memory.MemorySourceConfig method)</a>
 </li>
         <li><a href="api/source/op.html#dffml.source.op.OpSourceConfig.no_enforce_immutable">(dffml.source.op.OpSourceConfig method)</a>
+</li>
+        <li><a href="api/tuner/parameter_grid.html#dffml.tuner.parameter_grid.ParameterGridConfig.no_enforce_immutable">(dffml.tuner.parameter_grid.ParameterGridConfig method)</a>
+</li>
+        <li><a href="api/tuner/tuner.html#dffml.tuner.tuner.TunerConfig.no_enforce_immutable">(dffml.tuner.tuner.TunerConfig method)</a>
 </li>
         <li><a href="api/util/cli/cmd.html#dffml.util.cli.cmd.CMDConfig.no_enforce_immutable">(dffml.util.cli.cmd.CMDConfig method)</a>
 </li>
@@ -2512,12 +2512,12 @@
 </li>
       <li><a href="api/df/base.html#dffml.df.base.OperationImplementation">OperationImplementation (class in dffml.df.base)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/df/base.html#dffml.df.base.OperationImplementationContext">OperationImplementationContext (class in dffml.df.base)</a>
 </li>
       <li><a href="api/df/base.html#dffml.df.base.OperationImplementationNotInstantiable">OperationImplementationNotInstantiable</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/df/base.html#dffml.df.base.OperationImplementationNotInstantiated">OperationImplementationNotInstantiated</a>
 </li>
       <li><a href="api/df/base.html#dffml.df.base.BaseOperationNetworkContext.operations">operations() (dffml.df.base.BaseOperationNetworkContext method)</a>
@@ -2536,18 +2536,12 @@
 </li>
       <li><a href="api/source/op.html#dffml.source.op.OpSourceConfig">OpSourceConfig (class in dffml.source.op)</a>
 </li>
-      <li><a href="api/optimizer/optimizer.html#dffml.optimizer.optimizer.OptimizerContext.optimize">optimize() (dffml.optimizer.optimizer.OptimizerContext method)</a>
+      <li><a href="api/tuner/parameter_grid.html#dffml.tuner.parameter_grid.ParameterGridContext.optimize">optimize() (dffml.tuner.parameter_grid.ParameterGridContext method)</a>
 
       <ul>
-        <li><a href="api/optimizer/parameter_grid.html#dffml.optimizer.parameter_grid.ParameterGridContext.optimize">(dffml.optimizer.parameter_grid.ParameterGridContext method)</a>
+        <li><a href="api/tuner/tuner.html#dffml.tuner.tuner.TunerContext.optimize">(dffml.tuner.tuner.TunerContext method)</a>
 </li>
       </ul></li>
-      <li><a href="api/optimizer/optimizer.html#dffml.optimizer.optimizer.Optimizer">Optimizer (class in dffml.optimizer.optimizer)</a>
-</li>
-      <li><a href="api/optimizer/optimizer.html#dffml.optimizer.optimizer.OptimizerConfig">OptimizerConfig (class in dffml.optimizer.optimizer)</a>
-</li>
-      <li><a href="api/optimizer/optimizer.html#dffml.optimizer.optimizer.OptimizerContext">OptimizerContext (class in dffml.optimizer.optimizer)</a>
-</li>
       <li><a href="api/util/skel.html#dffml.util.skel.SkelTemplateConfig.org">org (dffml.util.skel.SkelTemplateConfig property)</a>
 </li>
       <li><a href="api/df/types.html#dffml.df.types.Output">Output (class in dffml.df.types)</a>
@@ -2566,11 +2560,11 @@
 </li>
       <li><a href="api/df/types.html#dffml.df.types.Parameter">Parameter (class in dffml.df.types)</a>
 </li>
-      <li><a href="api/optimizer/parameter_grid.html#dffml.optimizer.parameter_grid.ParameterGrid">ParameterGrid (class in dffml.optimizer.parameter_grid)</a>
+      <li><a href="api/tuner/parameter_grid.html#dffml.tuner.parameter_grid.ParameterGrid">ParameterGrid (class in dffml.tuner.parameter_grid)</a>
 </li>
-      <li><a href="api/optimizer/parameter_grid.html#dffml.optimizer.parameter_grid.ParameterGridConfig">ParameterGridConfig (class in dffml.optimizer.parameter_grid)</a>
+      <li><a href="api/tuner/parameter_grid.html#dffml.tuner.parameter_grid.ParameterGridConfig">ParameterGridConfig (class in dffml.tuner.parameter_grid)</a>
 </li>
-      <li><a href="api/optimizer/parameter_grid.html#dffml.optimizer.parameter_grid.ParameterGridContext">ParameterGridContext (class in dffml.optimizer.parameter_grid)</a>
+      <li><a href="api/tuner/parameter_grid.html#dffml.tuner.parameter_grid.ParameterGridContext">ParameterGridContext (class in dffml.tuner.parameter_grid)</a>
 </li>
       <li><a href="api/util/config/exceptions.html#dffml.util.config.exceptions.ParameterNotInDocString">ParameterNotInDocString</a>
 </li>
@@ -3003,6 +2997,12 @@
       <li><a href="api/util/data.html#dffml.util.data.traverse_get">traverse_get() (in module dffml.util.data)</a>
 </li>
       <li><a href="api/util/data.html#dffml.util.data.traverse_set">traverse_set() (in module dffml.util.data)</a>
+</li>
+      <li><a href="api/tuner/tuner.html#dffml.tuner.tuner.Tuner">Tuner (class in dffml.tuner.tuner)</a>
+</li>
+      <li><a href="api/tuner/tuner.html#dffml.tuner.tuner.TunerConfig">TunerConfig (class in dffml.tuner.tuner)</a>
+</li>
+      <li><a href="api/tuner/tuner.html#dffml.tuner.tuner.TunerContext">TunerContext (class in dffml.tuner.tuner)</a>
 </li>
       <li><a href="api/base.html#dffml.base.BaseConfigurable.type_for">type_for() (dffml.base.BaseConfigurable class method)</a>
 </li>

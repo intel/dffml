@@ -46,6 +46,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Spacy `model_name_or_path` was changed to `model_name`. Functionality is the
   same, it still accepts a name or a path.
 - Renamed `accuracy()` to `score()`.
+- Renamed `Optimizer` to `Tuner`.
 ### Fixed
 - Record object key properties are now always strings
 

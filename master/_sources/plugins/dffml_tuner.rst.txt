@@ -1,0 +1,30 @@
+Tuner
+=====
+
+Tuners are implementations of :class:`dffml.tuner.Tuner`,
+they abstract the usage of tuning methods.
+
+.. _plugin_tuner_dffml:
+
+dffml
++++++
+
+.. code-block:: console
+
+    pip install dffml
+
+
+.. _plugin_tuner_dffml_parameter_grid:
+
+parameter_grid
+~~~~~~~~~~~~~~
+
+*Official*
+
+No description
+
+**Args**
+
+- parameters: dict
+
+  - Parameters to be optimized

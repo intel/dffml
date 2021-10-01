@@ -17,9 +17,9 @@
     util/index
     cli/index
     high_level/index
+    tuner/index
     operation/index
     df/index
-    optimizer/index
     model/index
     db/index
     feature/index

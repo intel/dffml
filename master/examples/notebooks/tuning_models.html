@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Tuning Models &mdash; DFFML a434df7ad documentation</title>
+  <title>Tuning Models &mdash; DFFML 002d7f530 documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/tabs.css" type="text/css" />
@@ -35,7 +35,7 @@
             <a href="../../index.html" class="icon icon-home"> DFFML
           </a>
               <div class="version">
-                a434df7ad
+                002d7f530
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -105,9 +105,9 @@
 <li class="toctree-l1"><a class="reference internal" href="../../api/util/index.html">Util</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api/cli/index.html">Cli</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api/high_level/index.html">High_Level</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/tuner/index.html">Tuner</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api/operation/index.html">Operation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api/df/index.html">Df</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../api/optimizer/index.html">Optimizer</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api/model/index.html">Model</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api/db/index.html">Db</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api/feature/index.html">Feature</a></li>
@@ -703,7 +703,7 @@ Accuracy: 0.55
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">dffml.accuracy</span> <span class="kn">import</span> <span class="n">MeanSquaredErrorAccuracy</span>
-<span class="kn">from</span> <span class="nn">dffml.optimizer</span> <span class="kn">import</span> <span class="n">ParameterGrid</span>
+<span class="kn">from</span> <span class="nn">dffml.tuner</span> <span class="kn">import</span> <span class="n">ParameterGrid</span>
 
 <span class="n">parameter_optim</span> <span class="o">=</span> <span class="n">ParameterGrid</span><span class="p">(</span>
     <span class="n">parameters</span> <span class="o">=</span> <span class="p">{</span>
@@ -713,8 +713,8 @@ Accuracy: 0.55
     <span class="p">}</span>
 <span class="p">)</span>
 <span class="k">async</span> <span class="k">with</span> <span class="n">contextlib</span><span class="o">.</span><span class="n">AsyncExitStack</span><span class="p">()</span> <span class="k">as</span> <span class="n">astack</span><span class="p">:</span>
-    <span class="n">optimizer</span> <span class="o">=</span> <span class="k">await</span> <span class="n">astack</span><span class="o">.</span><span class="n">enter_async_context</span><span class="p">(</span><span class="n">parameter_optim</span><span class="p">)</span>
-    <span class="n">octx</span> <span class="o">=</span> <span class="k">await</span> <span class="n">astack</span><span class="o">.</span><span class="n">enter_async_context</span><span class="p">(</span><span class="n">optimizer</span><span class="p">())</span>
+    <span class="n">tuner</span> <span class="o">=</span> <span class="k">await</span> <span class="n">astack</span><span class="o">.</span><span class="n">enter_async_context</span><span class="p">(</span><span class="n">parameter_optim</span><span class="p">)</span>
+    <span class="n">octx</span> <span class="o">=</span> <span class="k">await</span> <span class="n">astack</span><span class="o">.</span><span class="n">enter_async_context</span><span class="p">(</span><span class="n">tuner</span><span class="p">())</span>
 
 <span class="n">tuned_accuracy1</span> <span class="o">=</span> <span class="k">await</span> <span class="n">octx</span><span class="o">.</span><span class="n">optimize</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">predict_feature</span><span class="p">,</span> <span class="n">scorer</span><span class="p">,</span> <span class="n">train_data</span><span class="p">,</span> <span class="n">test_data</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Tuned Accuracy:&quot;</span><span class="p">,</span> <span class="n">tuned_accuracy1</span><span class="p">)</span>
