@@ -9,3 +9,4 @@ The following are InnerSource related usages of DFFML.
 
     swportal
     microservice
+    kubernetes

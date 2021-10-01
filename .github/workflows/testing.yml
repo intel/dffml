@@ -200,6 +200,7 @@ jobs:
         - docs/examples/shouldi.rst
         - docs/examples/innersource/swportal.rst
         - docs/examples/innersource/microservice.rst
+        - docs/examples/innersource/kubernetes.rst
         - docs/examples/icecream_sales.rst
         - docs/examples/data_cleanup/data_cleanup.rst
         - docs/examples/data_cleanup/data_cleanup_classfication.rst
