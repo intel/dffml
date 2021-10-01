@@ -67,6 +67,12 @@ test_no_skips() {
     echo "Tests errored" >&2
     exit 1
   fi
+
+  failures=$(grep -E '(failures=[0-9]+)' "${check_skips}" | wc -l)
+  if [ "$failures" -ne 0 ]; then
+    echo "Tests failed" >&2
+    exit 1
+  fi
 }
 
 function run_plugin() {
