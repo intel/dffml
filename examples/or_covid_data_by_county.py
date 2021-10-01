@@ -100,7 +100,7 @@ async def main():
         "training.csv.gz",
         "af9536ab41580e04dd72b1285f6b2b703977aee5b95b80422bbe7cc11262297da265e6c0e333bfc1faa7b4f263f5496e",
     )
-    testing_file = await cached_download(
+    test_file = await cached_download(
         "https://github.com/intel/dffml/files/5773998/COVID.Oregon.Counties.Test.Clean.2020-10-25.to.2020-10-31.csv.gz",
         "test.csv.gz",
         "10ee8bcf06a511019f98c3e0e40f315585b2ed84d4a736f743567861d72438afcb7914f117e16640800959324f0f518d",
