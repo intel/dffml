@@ -157,7 +157,10 @@ setup(
         "dffml.operation.implementation.network": [
             "memory = dffml.df.memory:MemoryOperationImplementationNetwork"
         ],
-        "dffml.orchestrator": ["memory = dffml.df.memory:MemoryOrchestrator"],
+        "dffml.orchestrator": [
+            "memory = dffml.df.memory:MemoryOrchestrator",
+            "kubernetes.job = dffml.df.kubernetes:JobKubernetesOrchestrator",
+        ],
         # Databases
         "dffml.db": ["sqlite = dffml.db.sqlite:SqliteDatabase"],
         # Models
