@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Ice Cream Sales &mdash; DFFML 002d7f530 documentation</title>
+  <title>Ice Cream Sales &mdash; DFFML 475dabe3a documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../_static/tabs.css" type="text/css" />
@@ -33,7 +33,7 @@
             <a href="../index.html" class="icon icon-home"> DFFML
           </a>
               <div class="version">
-                002d7f530
+                475dabe3a
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -508,7 +508,7 @@ would go over the dataset.csv file run it through the dataflow
 that we have created earlier and dump the values of population
 and temperature in a new file.</p>
 <p><strong>processing.sh</strong></p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml merge <span class="nv">text</span><span class="o">=</span>df <span class="nv">temp</span><span class="o">=</span>csv <span class="se">\</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml merge <span class="nv">text</span><span class="o">=</span>dfpreprocess <span class="nv">temp</span><span class="o">=</span>csv <span class="se">\</span>
     -source-text-dataflow preprocess_ops.json <span class="se">\</span>
     -source-text-features city:str:1 state:str:1 month:int:1 <span class="se">\</span>
     -source-text-source csv <span class="se">\</span>
@@ -582,7 +582,7 @@ for the prediction of sales.</p>
     -model-features population:int:1 temperature:float:1 <span class="se">\</span>
     -model-predict sales:int:1 <span class="se">\</span>
     -model-location tempdir <span class="se">\</span>
-    -sources <span class="nv">preprocess</span><span class="o">=</span>df <span class="se">\</span>
+    -sources <span class="nv">preprocess</span><span class="o">=</span>dfpreprocess <span class="se">\</span>
     -source-preprocess-dataflow preprocess_ops.json <span class="se">\</span>
     -source-preprocess-features city:str:1 state:str:1 month:int:1 <span class="se">\</span>
     -source-preprocess-source csv <span class="se">\</span>

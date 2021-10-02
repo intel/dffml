@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>MNIST Handwriten Digits &mdash; DFFML 002d7f530 documentation</title>
+  <title>MNIST Handwriten Digits &mdash; DFFML 475dabe3a documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../_static/tabs.css" type="text/css" />
@@ -33,7 +33,7 @@
             <a href="../index.html" class="icon icon-home"> DFFML
           </a>
               <div class="version">
-                002d7f530
+                475dabe3a
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -194,7 +194,7 @@ We can install them with <code class="docutils literal notranslate"><span class=
 </pre></div>
 </div>
 <p>Create a dataflow config file which will be used by the
-<a class="reference internal" href="../api/source/df.html#dffml.source.df.DataFlowSource" title="dffml.source.df.DataFlowSource"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataFlowSource</span></code></a> to normalize the
+<a class="reference internal" href="../api/source/dfpreprocess.html#dffml.source.dfpreprocess.DataFlowPreprocessSource" title="dffml.source.dfpreprocess.DataFlowPreprocessSource"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataFlowPreprocessSource</span></code></a> to normalize the
 data just before feeding it to the model.</p>
 <p>In the config file, using the <code class="docutils literal notranslate"><span class="pre">dataflow</span> <span class="pre">create</span></code> command we create a DataFlow
 consisting of 2 operations: multiply and associate_definition. We
@@ -218,7 +218,7 @@ and the seed to have the input of the associate_definition operation come from t
     -model-classifications $(seq 0 9) \
     -model-location tempdir \
     -model-features image:int:$((28 * 28)) \
-    -sources images=df label=idx1 \
+    -sources images=dfpreprocess label=idx1 \
     -source-images-dataflow normalize.yaml \
     -source-images-features image:int:$((28 * 28)) \
     -source-images-source idx3 \
@@ -241,7 +241,7 @@ and the seed to have the input of the associate_definition operation come from t
     -model-classifications $(seq 0 9) \
     -model-features image:int:$((28 * 28)) \
     -features label:int:1 \
-    -sources images=df label=idx1 \
+    -sources images=dfpreprocess label=idx1 \
     -source-images-dataflow normalize.yaml \
     -source-images-features image:int:$((28 * 28)) \
     -source-images-source idx3 \
@@ -300,7 +300,7 @@ and to have the input of the associate_definition operation come from the output
     -model-location tempdir \
     -model-classifications $(seq 0 9) \
     -model-features image:int:$((28 * 28)) \
-    -sources images=df \
+    -sources images=dfpreprocess \
     -source-images-source csv \
     -source-images-source-filename image.csv \
     -source-images-source-loadfiles image \

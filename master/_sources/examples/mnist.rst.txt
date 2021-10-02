@@ -26,7 +26,7 @@ We can install them with ``pip``.
     $ pip install -U dffml-model-tensorflow dffml-operations-image
 
 Create a dataflow config file which will be used by the
-:py:class:`DataFlowSource <dffml.source.df.DataFlowSource>` to normalize the
+:py:class:`DataFlowPreprocessSource <dffml.source.dfpreprocess.DataFlowPreprocessSource>` to normalize the
 data just before feeding it to the model.
 
 In the config file, using the ``dataflow create`` command we create a DataFlow

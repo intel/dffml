@@ -208,64 +208,7 @@ df
 
 *Official*
 
->>> import asyncio
->>> from dffml import *
->>>
->>> records = [
-...     Record(
-...         "0",
-...         data={
-...             "features": {
-...                 "Years": 1,
-...                 "Expertise": 3,
-...                 "Trust": 0.2,
-...                 "Salary": 20,
-...             }
-...         },
-...     ),
-... ]
->>>
->>> features = Features(
-...     Feature("Years", int, 1),
-...     Feature("Expertise", int, 1),
-...     Feature("Trust", float, 1),
-...     Feature("Salary", int, 1),
-... )
->>>
->>> dataflow = DataFlow(multiply, AssociateDefinition)
->>> dataflow.flow["multiply"].inputs["multiplicand"] = [
-...     {"seed": ["Years", "Expertise", "Trust", "Salary"]}
-... ]
->>> dataflow.seed = [
-...     Input(
-...         value={
-...             feature.name: multiply.op.outputs["product"].name
-...             for feature in features
-...         },
-...         definition=AssociateDefinition.op.inputs["spec"],
-...     ),
-...     Input(value=10, definition=multiply.op.inputs["multiplier"],),
-... ]
->>>
->>>
->>> memory_source = Sources(MemorySource(MemorySourceConfig(records=records)))
->>>
->>> source = DataFlowSource(
-...     DataFlowSourceConfig(
-...         source=memory_source, dataflow=dataflow, features=features,
-...     )
-... )
->>>
->>>
->>> async def main():
-...     async with source as src:
-...         async with src() as sctx:
-...             async for record in sctx.records():
-...                 print(record.features())
-...
->>>
->>> asyncio.run(main())
-{'Years': 10, 'Expertise': 30, 'Trust': 2.0, 'Salary': 200}
+No description
 
 **Args**
 
@@ -319,7 +262,64 @@ dfpreprocess
 
 *Official*
 
-No description
+>>> import asyncio
+>>> from dffml import *
+>>>
+>>> records = [
+...     Record(
+...         "0",
+...         data={
+...             "features": {
+...                 "Years": 1,
+...                 "Expertise": 3,
+...                 "Trust": 0.2,
+...                 "Salary": 20,
+...             }
+...         },
+...     ),
+... ]
+>>>
+>>> features = Features(
+...     Feature("Years", int, 1),
+...     Feature("Expertise", int, 1),
+...     Feature("Trust", float, 1),
+...     Feature("Salary", int, 1),
+... )
+>>>
+>>> dataflow = DataFlow(multiply, AssociateDefinition)
+>>> dataflow.flow["multiply"].inputs["multiplicand"] = [
+...     {"seed": ["Years", "Expertise", "Trust", "Salary"]}
+... ]
+>>> dataflow.seed = [
+...     Input(
+...         value={
+...             feature.name: multiply.op.outputs["product"].name
+...             for feature in features
+...         },
+...         definition=AssociateDefinition.op.inputs["spec"],
+...     ),
+...     Input(value=10, definition=multiply.op.inputs["multiplier"],),
+... ]
+>>>
+>>>
+>>> memory_source = Sources(MemorySource(MemorySourceConfig(records=records)))
+>>>
+>>> source = DataFlowPreprocessSource(
+...     DataFlowPreprocessSourceConfig(
+...         source=memory_source, dataflow=dataflow, features=features,
+...     )
+... )
+>>>
+>>>
+>>> async def main():
+...     async with source as src:
+...         async with src() as sctx:
+...             async for record in sctx.records():
+...                 print(record.features())
+...
+>>>
+>>> asyncio.run(main())
+{'Years': 10, 'Expertise': 30, 'Trust': 2.0, 'Salary': 200}
 
 **Args**
 

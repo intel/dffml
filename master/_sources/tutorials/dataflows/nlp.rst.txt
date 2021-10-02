@@ -109,7 +109,7 @@ We can now use this dataflow to preprocess the data and make it ready to be fed 
         -model-classifications 0 1 \
         -model-location tempdir \
         -model-features embedding:float:[1,10,96] \
-        -sources text=df \
+        -sources text=dfpreprocess \
         -source-text-dataflow nlp_ops_dataflow.json \
         -source-text-features sentence:str:1 \
         -source-text-source csv \
@@ -135,7 +135,7 @@ Assess accuracy:
         -model-classifications 0 1 \
         -model-location tempdir \
         -model-features embedding:float:[1,10,96] \
-        -sources text=df \
+        -sources text=dfpreprocess \
         -source-text-dataflow nlp_ops_dataflow.json \
         -source-text-features sentence:str:1 \
         -source-text-source csv \
@@ -168,7 +168,7 @@ Make prediction on test data:
         -model-classifications 0 1 \
         -model-location tempdir \
         -model-features embedding:float:[1,10,96] \
-        -sources text=df \
+        -sources text=dfpreprocess \
         -source-text-dataflow nlp_ops_dataflow.json \
         -source-text-features sentence:str:1 \
         -source-text-source csv \
@@ -275,7 +275,7 @@ We can now use this dataflow to preprocess the data and make it ready to be fed 
         -model-features extract_array_from_matrix.outputs.result:float:1 \
         -model-predict sentiment:int:1 \
         -model-location tempdir \
-        -sources text=df \
+        -sources text=old \
         -source-text-dataflow nlp_ops_dataflow.json \
         -source-text-features sentence:str:1 \
         -source-text-source csv \
@@ -293,7 +293,7 @@ Assess accuracy:
         -model-features extract_array_from_matrix.outputs.result:float:1 \
         -model-predict sentiment:int:1 \
         -model-location tempdir \
-        -sources text=df \
+        -sources text=dfpreprocess \
         -source-text-dataflow nlp_ops_dataflow.json \
         -source-text-features sentence:str:1 \
         -source-text-source csv \
@@ -330,7 +330,7 @@ and put them in the JSON source as an intermediary format.
 .. code-block:: console
     :test:
 
-    $ dffml merge text=df temp=json \
+    $ dffml merge text=dfpreprocess temp=json \
         -source-text-dataflow nlp_ops_dataflow.json \
         -source-text-features sentence:str:1 \
         -source-text-source csv \

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Data Cleanup Operations &mdash; DFFML 002d7f530 documentation</title>
+  <title>Data Cleanup Operations &mdash; DFFML 475dabe3a documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/tabs.css" type="text/css" />
@@ -33,7 +33,7 @@
             <a href="../../index.html" class="icon icon-home"> DFFML
           </a>
               <div class="version">
-                002d7f530
+                475dabe3a
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -240,7 +240,7 @@ values into numerical values.</p>
 <p>To have a look at the preprocessed data, we can use
 the merge command.</p>
 <p>** merge.sh **</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml merge <span class="nv">text</span><span class="o">=</span>dfpreprocess <span class="nv">temp</span><span class="o">=</span>csv <span class="se">\</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml merge <span class="nv">text</span><span class="o">=</span>df <span class="nv">temp</span><span class="o">=</span>csv <span class="se">\</span>
     -source-text-dataflow clean_ops.json <span class="se">\</span>
     -source-text-features class:float:1 cap-shape:float:1 cap-surface:float:1 cap-color:float:1 bruises:float:1 odor:float:1 gill-attachment:float:1 gill-spacing:float:1 gill-size:float:1 gill-color:float:1 stalk-shape:float:1 stalk-root:float:1 stalk-surface-above-ring:float:1 stalk-surface-below-ring:float:1 stalk-color-above-ring:float:1 stalk-color-below-ring:float:1 veil-type:float:1 veil-color:float:1 ring-number:float:1 ring-type:float:1 spore-print-color:float:1 population:float:1 habitat:float:1 <span class="se">\</span>
     -source-text-source csv <span class="se">\</span>

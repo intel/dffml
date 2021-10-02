@@ -365,7 +365,7 @@ List the records in the file to verify the edit was successful.
 All
 ~~~
 
-Update all the records in any source using the :py:class:`DataFlowSource <dffml.source.df.DataFlowSource>`.
+Update all the records in any source using the :py:class:`DataFlowPreprocessSource <dffml.source.dfpreprocess.DataFlowPreprocessSource>`.
 
 For this example, we are using the `multiply` operation which multiplies every value in a record by a
 factor which is 10 in this case. The example dataflow file looks like this:

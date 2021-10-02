@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sources &mdash; DFFML 002d7f530 documentation</title>
+  <title>Sources &mdash; DFFML 475dabe3a documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../_static/tabs.css" type="text/css" />
@@ -33,7 +33,7 @@
             <a href="../index.html" class="icon icon-home"> DFFML
           </a>
               <div class="version">
-                002d7f530
+                475dabe3a
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -356,66 +356,7 @@ the command line.</p>
 <div class="section" id="df">
 <span id="plugin-source-dffml-df"></span><h3>df<a class="headerlink" href="#df" title="Permalink to this headline"></a></h3>
 <p><em>Official</em></p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">asyncio</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">records</span> <span class="o">=</span> <span class="p">[</span>
-<span class="gp">... </span>    <span class="n">Record</span><span class="p">(</span>
-<span class="gp">... </span>        <span class="s2">&quot;0&quot;</span><span class="p">,</span>
-<span class="gp">... </span>        <span class="n">data</span><span class="o">=</span><span class="p">{</span>
-<span class="gp">... </span>            <span class="s2">&quot;features&quot;</span><span class="p">:</span> <span class="p">{</span>
-<span class="gp">... </span>                <span class="s2">&quot;Years&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
-<span class="gp">... </span>                <span class="s2">&quot;Expertise&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
-<span class="gp">... </span>                <span class="s2">&quot;Trust&quot;</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span>
-<span class="gp">... </span>                <span class="s2">&quot;Salary&quot;</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span>
-<span class="gp">... </span>            <span class="p">}</span>
-<span class="gp">... </span>        <span class="p">},</span>
-<span class="gp">... </span>    <span class="p">),</span>
-<span class="gp">... </span><span class="p">]</span>
-<span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">features</span> <span class="o">=</span> <span class="n">Features</span><span class="p">(</span>
-<span class="gp">... </span>    <span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;Years&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
-<span class="gp">... </span>    <span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;Expertise&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
-<span class="gp">... </span>    <span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;Trust&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
-<span class="gp">... </span>    <span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;Salary&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
-<span class="gp">... </span><span class="p">)</span>
-<span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">dataflow</span> <span class="o">=</span> <span class="n">DataFlow</span><span class="p">(</span><span class="n">multiply</span><span class="p">,</span> <span class="n">AssociateDefinition</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">dataflow</span><span class="o">.</span><span class="n">flow</span><span class="p">[</span><span class="s2">&quot;multiply&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;multiplicand&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
-<span class="gp">... </span>    <span class="p">{</span><span class="s2">&quot;seed&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;Years&quot;</span><span class="p">,</span> <span class="s2">&quot;Expertise&quot;</span><span class="p">,</span> <span class="s2">&quot;Trust&quot;</span><span class="p">,</span> <span class="s2">&quot;Salary&quot;</span><span class="p">]}</span>
-<span class="gp">... </span><span class="p">]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">dataflow</span><span class="o">.</span><span class="n">seed</span> <span class="o">=</span> <span class="p">[</span>
-<span class="gp">... </span>    <span class="n">Input</span><span class="p">(</span>
-<span class="gp">... </span>        <span class="n">value</span><span class="o">=</span><span class="p">{</span>
-<span class="gp">... </span>            <span class="n">feature</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="n">multiply</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s2">&quot;product&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">name</span>
-<span class="gp">... </span>            <span class="k">for</span> <span class="n">feature</span> <span class="ow">in</span> <span class="n">features</span>
-<span class="gp">... </span>        <span class="p">},</span>
-<span class="gp">... </span>        <span class="n">definition</span><span class="o">=</span><span class="n">AssociateDefinition</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;spec&quot;</span><span class="p">],</span>
-<span class="gp">... </span>    <span class="p">),</span>
-<span class="gp">... </span>    <span class="n">Input</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">definition</span><span class="o">=</span><span class="n">multiply</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;multiplier&quot;</span><span class="p">],),</span>
-<span class="gp">... </span><span class="p">]</span>
-<span class="go">&gt;&gt;&gt;</span>
-<span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">memory_source</span> <span class="o">=</span> <span class="n">Sources</span><span class="p">(</span><span class="n">MemorySource</span><span class="p">(</span><span class="n">MemorySourceConfig</span><span class="p">(</span><span class="n">records</span><span class="o">=</span><span class="n">records</span><span class="p">)))</span>
-<span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">source</span> <span class="o">=</span> <span class="n">DataFlowSource</span><span class="p">(</span>
-<span class="gp">... </span>    <span class="n">DataFlowSourceConfig</span><span class="p">(</span>
-<span class="gp">... </span>        <span class="n">source</span><span class="o">=</span><span class="n">memory_source</span><span class="p">,</span> <span class="n">dataflow</span><span class="o">=</span><span class="n">dataflow</span><span class="p">,</span> <span class="n">features</span><span class="o">=</span><span class="n">features</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="p">)</span>
-<span class="gp">... </span><span class="p">)</span>
-<span class="go">&gt;&gt;&gt;</span>
-<span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
-<span class="gp">... </span>    <span class="k">async</span> <span class="k">with</span> <span class="n">source</span> <span class="k">as</span> <span class="n">src</span><span class="p">:</span>
-<span class="gp">... </span>        <span class="k">async</span> <span class="k">with</span> <span class="n">src</span><span class="p">()</span> <span class="k">as</span> <span class="n">sctx</span><span class="p">:</span>
-<span class="gp">... </span>            <span class="k">async</span> <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">sctx</span><span class="o">.</span><span class="n">records</span><span class="p">():</span>
-<span class="gp">... </span>                <span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">features</span><span class="p">())</span>
-<span class="gp">...</span>
-<span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
-<span class="go">{&#39;Years&#39;: 10, &#39;Expertise&#39;: 30, &#39;Trust&#39;: 2.0, &#39;Salary&#39;: 200}</span>
-</pre></div>
-</div>
+<p>No description</p>
 <p><strong>Args</strong></p>
 <ul class="simple">
 <li><p>source: Entrypoint</p>
@@ -475,7 +416,66 @@ the command line.</p>
 <div class="section" id="dfpreprocess">
 <span id="plugin-source-dffml-dfpreprocess"></span><h3>dfpreprocess<a class="headerlink" href="#dfpreprocess" title="Permalink to this headline"></a></h3>
 <p><em>Official</em></p>
-<p>No description</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">records</span> <span class="o">=</span> <span class="p">[</span>
+<span class="gp">... </span>    <span class="n">Record</span><span class="p">(</span>
+<span class="gp">... </span>        <span class="s2">&quot;0&quot;</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="n">data</span><span class="o">=</span><span class="p">{</span>
+<span class="gp">... </span>            <span class="s2">&quot;features&quot;</span><span class="p">:</span> <span class="p">{</span>
+<span class="gp">... </span>                <span class="s2">&quot;Years&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+<span class="gp">... </span>                <span class="s2">&quot;Expertise&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+<span class="gp">... </span>                <span class="s2">&quot;Trust&quot;</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span>
+<span class="gp">... </span>                <span class="s2">&quot;Salary&quot;</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span>
+<span class="gp">... </span>            <span class="p">}</span>
+<span class="gp">... </span>        <span class="p">},</span>
+<span class="gp">... </span>    <span class="p">),</span>
+<span class="gp">... </span><span class="p">]</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">features</span> <span class="o">=</span> <span class="n">Features</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;Years&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+<span class="gp">... </span>    <span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;Expertise&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+<span class="gp">... </span>    <span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;Trust&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+<span class="gp">... </span>    <span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;Salary&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dataflow</span> <span class="o">=</span> <span class="n">DataFlow</span><span class="p">(</span><span class="n">multiply</span><span class="p">,</span> <span class="n">AssociateDefinition</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dataflow</span><span class="o">.</span><span class="n">flow</span><span class="p">[</span><span class="s2">&quot;multiply&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;multiplicand&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+<span class="gp">... </span>    <span class="p">{</span><span class="s2">&quot;seed&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;Years&quot;</span><span class="p">,</span> <span class="s2">&quot;Expertise&quot;</span><span class="p">,</span> <span class="s2">&quot;Trust&quot;</span><span class="p">,</span> <span class="s2">&quot;Salary&quot;</span><span class="p">]}</span>
+<span class="gp">... </span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dataflow</span><span class="o">.</span><span class="n">seed</span> <span class="o">=</span> <span class="p">[</span>
+<span class="gp">... </span>    <span class="n">Input</span><span class="p">(</span>
+<span class="gp">... </span>        <span class="n">value</span><span class="o">=</span><span class="p">{</span>
+<span class="gp">... </span>            <span class="n">feature</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="n">multiply</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s2">&quot;product&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">name</span>
+<span class="gp">... </span>            <span class="k">for</span> <span class="n">feature</span> <span class="ow">in</span> <span class="n">features</span>
+<span class="gp">... </span>        <span class="p">},</span>
+<span class="gp">... </span>        <span class="n">definition</span><span class="o">=</span><span class="n">AssociateDefinition</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;spec&quot;</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="p">),</span>
+<span class="gp">... </span>    <span class="n">Input</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">definition</span><span class="o">=</span><span class="n">multiply</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;multiplier&quot;</span><span class="p">],),</span>
+<span class="gp">... </span><span class="p">]</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">memory_source</span> <span class="o">=</span> <span class="n">Sources</span><span class="p">(</span><span class="n">MemorySource</span><span class="p">(</span><span class="n">MemorySourceConfig</span><span class="p">(</span><span class="n">records</span><span class="o">=</span><span class="n">records</span><span class="p">)))</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">source</span> <span class="o">=</span> <span class="n">DataFlowPreprocessSource</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">DataFlowPreprocessSourceConfig</span><span class="p">(</span>
+<span class="gp">... </span>        <span class="n">source</span><span class="o">=</span><span class="n">memory_source</span><span class="p">,</span> <span class="n">dataflow</span><span class="o">=</span><span class="n">dataflow</span><span class="p">,</span> <span class="n">features</span><span class="o">=</span><span class="n">features</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="p">)</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="k">async</span> <span class="k">with</span> <span class="n">source</span> <span class="k">as</span> <span class="n">src</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="k">async</span> <span class="k">with</span> <span class="n">src</span><span class="p">()</span> <span class="k">as</span> <span class="n">sctx</span><span class="p">:</span>
+<span class="gp">... </span>            <span class="k">async</span> <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">sctx</span><span class="o">.</span><span class="n">records</span><span class="p">():</span>
+<span class="gp">... </span>                <span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">features</span><span class="p">())</span>
+<span class="gp">...</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+<span class="go">{&#39;Years&#39;: 10, &#39;Expertise&#39;: 30, &#39;Trust&#39;: 2.0, &#39;Salary&#39;: 200}</span>
+</pre></div>
+</div>
 <p><strong>Args</strong></p>
 <ul class="simple">
 <li><p>source: Entrypoint</p>

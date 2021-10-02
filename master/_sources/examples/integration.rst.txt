@@ -419,7 +419,7 @@ to train on our dataset.
 
 We're going to put the training command in it's own file, since it's very long
 
-We use the :py:class:`DataFlowSource <dffml.source.df.DataFlowSource>` to run
+We use the :py:class:`DataFlowPreprocessSource <dffml.source.dfpreprocess.DataFlowPreprocessSource>` to run
 the DataFlow we created using the above ``dffml dataflow create`` command on
 each repo. When we run the DataFlow we pass it the current date and tell it to
 use the record's key as the repo URL (since that's what the key is).

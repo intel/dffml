@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Automating Classification &mdash; DFFML 002d7f530 documentation</title>
+  <title>Automating Classification &mdash; DFFML 475dabe3a documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../_static/tabs.css" type="text/css" />
@@ -34,7 +34,7 @@
             <a href="../index.html" class="icon icon-home"> DFFML
           </a>
               <div class="version">
-                002d7f530
+                475dabe3a
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -703,7 +703,7 @@ another separate Python package from DFFML which we can install via <code class=
 <p>The model is a generic wrapper around Tensorflow’s DNN estimator. We can use it
 to train on our dataset.</p>
 <p>We’re going to put the training command in it’s own file, since it’s very long</p>
-<p>We use the <a class="reference internal" href="../api/source/df.html#dffml.source.df.DataFlowSource" title="dffml.source.df.DataFlowSource"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataFlowSource</span></code></a> to run
+<p>We use the <a class="reference internal" href="../api/source/dfpreprocess.html#dffml.source.dfpreprocess.DataFlowPreprocessSource" title="dffml.source.dfpreprocess.DataFlowPreprocessSource"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataFlowPreprocessSource</span></code></a> to run
 the DataFlow we created using the above <code class="docutils literal notranslate"><span class="pre">dffml</span> <span class="pre">dataflow</span> <span class="pre">create</span></code> command on
 each repo. When we run the DataFlow we pass it the current date and tell it to
 use the record’s key as the repo URL (since that’s what the key is).</p>
@@ -723,7 +723,7 @@ use the record’s key as the repo URL (since that’s what the key is).</p>
     <span class="n">authors</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">10</span> \
     <span class="n">commits</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">10</span> \
     <span class="n">work</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">10</span> \
-  <span class="o">-</span><span class="n">sources</span> <span class="n">preprocess</span><span class="o">=</span><span class="n">df</span> \
+  <span class="o">-</span><span class="n">sources</span> <span class="n">preprocess</span><span class="o">=</span><span class="n">dfpreprocess</span> \
   <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">preprocess</span><span class="o">-</span><span class="n">dataflow</span> <span class="n">dataflow</span><span class="o">.</span><span class="n">yaml</span> \
   <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">preprocess</span><span class="o">-</span><span class="n">no_strict</span> \
   <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">preprocess</span><span class="o">-</span><span class="n">record_def</span> <span class="n">URL</span> \
@@ -780,7 +780,7 @@ have the model make a prediction</p>
     <span class="n">authors</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">10</span> \
     <span class="n">commits</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">10</span> \
     <span class="n">work</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">10</span> \
-  <span class="o">-</span><span class="n">sources</span> <span class="n">preprocess</span><span class="o">=</span><span class="n">df</span> \
+  <span class="o">-</span><span class="n">sources</span> <span class="n">preprocess</span><span class="o">=</span><span class="n">dfpreprocess</span> \
   <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">preprocess</span><span class="o">-</span><span class="n">dataflow</span> <span class="n">dataflow</span><span class="o">.</span><span class="n">yaml</span> \
   <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">preprocess</span><span class="o">-</span><span class="n">record_def</span> <span class="n">URL</span> \
   <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">preprocess</span><span class="o">-</span><span class="n">inputs</span> <span class="s2">&quot;$(date +&#39;%Y-%m-</span><span class="si">%d</span><span class="s2"> %H:%M&#39;)=quarter_start_date&quot;</span> \

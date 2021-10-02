@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>dffml.source.dfpreprocess &mdash; DFFML 002d7f530 documentation</title>
+  <title>dffml.source.dfpreprocess &mdash; DFFML 475dabe3a documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/tabs.css" type="text/css" />
@@ -32,7 +32,7 @@
             <a href="../../../index.html" class="icon icon-home"> DFFML
           </a>
               <div class="version">
-                002d7f530
+                475dabe3a
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -132,7 +132,8 @@
 
 <span class="kn">from</span> <span class="nn">..base</span> <span class="kn">import</span> <span class="n">config</span><span class="p">,</span> <span class="n">field</span>
 <span class="kn">from</span> <span class="nn">..configloader.configloader</span> <span class="kn">import</span> <span class="n">BaseConfigLoader</span>
-<span class="kn">from</span> <span class="nn">..df.types</span> <span class="kn">import</span> <span class="n">DataFlow</span><span class="p">,</span> <span class="n">Input</span>
+<span class="kn">from</span> <span class="nn">..df.types</span> <span class="kn">import</span> <span class="n">DataFlow</span><span class="p">,</span> <span class="n">Definition</span><span class="p">,</span> <span class="n">Input</span>
+<span class="kn">from</span> <span class="nn">..df.base</span> <span class="kn">import</span> <span class="n">BaseInputSetContext</span><span class="p">,</span> <span class="n">BaseContextHandle</span>
 <span class="kn">from</span> <span class="nn">..df.base</span> <span class="kn">import</span> <span class="n">BaseOrchestrator</span>
 <span class="kn">from</span> <span class="nn">..feature</span> <span class="kn">import</span> <span class="n">Features</span>
 <span class="kn">from</span> <span class="nn">..record</span> <span class="kn">import</span> <span class="n">Record</span>
@@ -179,32 +180,106 @@
     <span class="p">)</span></div>
 
 
+<div class="viewcode-block" id="RecordContextHandle"><a class="viewcode-back" href="../../../api/source/dfpreprocess.html#dffml.source.dfpreprocess.RecordContextHandle">[docs]</a><span class="k">class</span> <span class="nc">RecordContextHandle</span><span class="p">(</span><span class="n">BaseContextHandle</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">as_string</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">record</span><span class="o">.</span><span class="n">key</span></div>
+
+
+<div class="viewcode-block" id="RecordInputSetContext"><a class="viewcode-back" href="../../../api/source/dfpreprocess.html#dffml.source.dfpreprocess.RecordInputSetContext">[docs]</a><span class="k">class</span> <span class="nc">RecordInputSetContext</span><span class="p">(</span><span class="n">BaseInputSetContext</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">record</span><span class="p">:</span> <span class="n">Record</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">record</span> <span class="o">=</span> <span class="n">record</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">handle</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BaseContextHandle</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">RecordContextHandle</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">record</span><span class="o">.</span><span class="n">key</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+
+
 <div class="viewcode-block" id="DataFlowPreprocessSourceContext"><a class="viewcode-back" href="../../../api/source/dfpreprocess.html#dffml.source.dfpreprocess.DataFlowPreprocessSourceContext">[docs]</a><span class="k">class</span> <span class="nc">DataFlowPreprocessSourceContext</span><span class="p">(</span><span class="n">BaseSourceContext</span><span class="p">):</span>
-<div class="viewcode-block" id="DataFlowPreprocessSourceContext.update"><a class="viewcode-back" href="../../../api/source/dfpreprocess.html#dffml.source.dfpreprocess.DataFlowPreprocessSourceContext.update">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
-
-<div class="viewcode-block" id="DataFlowPreprocessSourceContext.record"><a class="viewcode-back" href="../../../api/source/dfpreprocess.html#dffml.source.dfpreprocess.DataFlowPreprocessSourceContext.record">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">record</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AsyncIterator</span><span class="p">[</span><span class="n">Record</span><span class="p">]:</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
-
-<div class="viewcode-block" id="DataFlowPreprocessSourceContext.records"><a class="viewcode-back" href="../../../api/source/dfpreprocess.html#dffml.source.dfpreprocess.DataFlowPreprocessSourceContext.records">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">records</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AsyncIterator</span><span class="p">[</span><span class="n">Record</span><span class="p">]:</span>
-        <span class="k">async</span> <span class="k">for</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">result</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">octx</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">input_set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">record</span><span class="p">:</span> <span class="n">Record</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Input</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="p">(</span>
             <span class="p">[</span>
+                <span class="n">Input</span><span class="p">(</span>
+                    <span class="n">value</span><span class="o">=</span><span class="n">record</span><span class="o">.</span><span class="n">feature</span><span class="p">(</span><span class="n">feature</span><span class="o">.</span><span class="n">name</span><span class="p">),</span>
+                    <span class="n">definition</span><span class="o">=</span><span class="n">Definition</span><span class="p">(</span>
+                        <span class="n">name</span><span class="o">=</span><span class="n">feature</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">primitive</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">feature</span><span class="o">.</span><span class="n">dtype</span><span class="p">()),</span>
+                    <span class="p">),</span>
+                <span class="p">)</span>
+                <span class="k">for</span> <span class="n">feature</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">features</span>
+            <span class="p">]</span>
+            <span class="o">+</span> <span class="p">[</span>
                 <span class="n">Input</span><span class="p">(</span>
                     <span class="n">value</span><span class="o">=</span><span class="n">value</span><span class="p">,</span>
                     <span class="n">definition</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">dataflow</span><span class="o">.</span><span class="n">definitions</span><span class="p">[</span><span class="n">name</span><span class="p">],</span>
                 <span class="p">)</span>
                 <span class="k">for</span> <span class="n">value</span><span class="p">,</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">inputs</span>
-            <span class="p">],</span>
+            <span class="p">]</span>
+            <span class="o">+</span> <span class="p">(</span>
+                <span class="p">[]</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">length</span>
+                <span class="k">else</span> <span class="p">[</span>
+                    <span class="n">Input</span><span class="p">(</span>
+                        <span class="n">value</span><span class="o">=</span><span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">sctx</span><span class="o">.</span><span class="n">length</span><span class="p">(),</span>
+                        <span class="n">definition</span><span class="o">=</span><span class="n">Definition</span><span class="p">(</span>
+                            <span class="n">name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">length</span><span class="p">,</span> <span class="n">primitive</span><span class="o">=</span><span class="s2">&quot;int&quot;</span><span class="p">,</span>
+                        <span class="p">),</span>
+                    <span class="p">)</span>
+                <span class="p">]</span>
+            <span class="p">)</span>
+            <span class="o">+</span> <span class="p">(</span>
+                <span class="p">[]</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">record_def</span>
+                <span class="k">else</span> <span class="p">[</span>
+                    <span class="n">Input</span><span class="p">(</span>
+                        <span class="n">value</span><span class="o">=</span><span class="n">record</span><span class="o">.</span><span class="n">key</span><span class="p">,</span>
+                        <span class="n">definition</span><span class="o">=</span><span class="n">Definition</span><span class="p">(</span>
+                            <span class="n">name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">record_def</span><span class="p">,</span>
+                            <span class="n">primitive</span><span class="o">=</span><span class="s2">&quot;string&quot;</span><span class="p">,</span>
+                        <span class="p">),</span>
+                    <span class="p">)</span>
+                <span class="p">]</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+
+<div class="viewcode-block" id="DataFlowPreprocessSourceContext.update"><a class="viewcode-back" href="../../../api/source/dfpreprocess.html#dffml.source.dfpreprocess.DataFlowPreprocessSourceContext.update">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">record</span><span class="p">:</span> <span class="n">Record</span><span class="p">):</span>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">sctx</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">record</span><span class="p">)</span></div>
+
+    <span class="c1"># TODO Implement this method. We forgot to implement it when we initially</span>
+    <span class="c1"># added the DataFlowPreprocessSourceContext</span>
+<div class="viewcode-block" id="DataFlowPreprocessSourceContext.record"><a class="viewcode-back" href="../../../api/source/dfpreprocess.html#dffml.source.dfpreprocess.DataFlowPreprocessSourceContext.record">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">record</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AsyncIterator</span><span class="p">[</span><span class="n">Record</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">all_for_single</span><span class="p">:</span>
+            <span class="k">async</span> <span class="k">for</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">result</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">records</span><span class="p">():</span>
+                <span class="k">if</span> <span class="p">(</span><span class="k">await</span> <span class="n">ctx</span><span class="o">.</span><span class="n">handle</span><span class="p">())</span><span class="o">.</span><span class="n">as_string</span><span class="p">()</span> <span class="o">==</span> <span class="n">key</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">record</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">async</span> <span class="k">for</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">result</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">octx</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+                <span class="p">{</span>
+                    <span class="n">RecordInputSetContext</span><span class="p">(</span><span class="n">record</span><span class="p">):</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_set</span><span class="p">(</span><span class="n">record</span><span class="p">)</span>
+                    <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="p">[</span><span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">sctx</span><span class="o">.</span><span class="n">record</span><span class="p">(</span><span class="n">key</span><span class="p">)]</span>
+                <span class="p">},</span>
+                <span class="n">strict</span><span class="o">=</span><span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">no_strict</span><span class="p">,</span>
+            <span class="p">):</span>
+                <span class="k">if</span> <span class="n">result</span><span class="p">:</span>
+                    <span class="n">ctx</span><span class="o">.</span><span class="n">record</span><span class="o">.</span><span class="n">evaluated</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">ctx</span><span class="o">.</span><span class="n">record</span></div>
+
+<div class="viewcode-block" id="DataFlowPreprocessSourceContext.records"><a class="viewcode-back" href="../../../api/source/dfpreprocess.html#dffml.source.dfpreprocess.DataFlowPreprocessSourceContext.records">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">records</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AsyncIterator</span><span class="p">[</span><span class="n">Record</span><span class="p">]:</span>
+        <span class="k">async</span> <span class="k">for</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">result</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">octx</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+            <span class="p">{</span>
+                <span class="n">RecordInputSetContext</span><span class="p">(</span><span class="n">record</span><span class="p">):</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_set</span><span class="p">(</span><span class="n">record</span><span class="p">)</span>
+                <span class="k">async</span> <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sctx</span><span class="o">.</span><span class="n">records</span><span class="p">()</span>
+            <span class="p">},</span>
             <span class="n">strict</span><span class="o">=</span><span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">no_strict</span><span class="p">,</span>
         <span class="p">):</span>
             <span class="k">if</span> <span class="n">result</span><span class="p">:</span>
-                <span class="c1"># result is a dict having single key, value as the row data</span>
-                <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;records&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-                    <span class="k">yield</span> <span class="n">Record</span><span class="p">(</span>
-                        <span class="n">key</span><span class="o">=</span><span class="n">key</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span>
-                    <span class="p">)</span></div>
+                <span class="n">ctx</span><span class="o">.</span><span class="n">record</span><span class="o">.</span><span class="n">evaluated</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+            <span class="k">yield</span> <span class="n">ctx</span><span class="o">.</span><span class="n">record</span></div>
 
-    <span class="k">async</span> <span class="k">def</span> <span class="fm">__aenter__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;DataFlowSourceContext&quot;</span><span class="p">:</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="fm">__aenter__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;DataFlowPreprocessSourceContext&quot;</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sctx</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">source</span><span class="p">()</span><span class="o">.</span><span class="fm">__aenter__</span><span class="p">()</span>
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">dataflow</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
@@ -214,7 +289,10 @@
             <span class="k">async</span> <span class="k">with</span> <span class="n">config_cls</span><span class="o">.</span><span class="n">withconfig</span><span class="p">({})</span> <span class="k">as</span> <span class="n">configloader</span><span class="p">:</span>
                 <span class="k">async</span> <span class="k">with</span> <span class="n">configloader</span><span class="p">()</span> <span class="k">as</span> <span class="n">loader</span><span class="p">:</span>
                     <span class="n">exported</span> <span class="o">=</span> <span class="k">await</span> <span class="n">loader</span><span class="o">.</span><span class="n">loadb</span><span class="p">(</span><span class="n">dataflow_path</span><span class="o">.</span><span class="n">read_bytes</span><span class="p">())</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">dataflow</span> <span class="o">=</span> <span class="n">DataFlow</span><span class="o">.</span><span class="n">_fromdict</span><span class="p">(</span><span class="o">**</span><span class="n">exported</span><span class="p">)</span>
+                <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">no_enforce_immutable</span><span class="p">():</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">dataflow</span> <span class="o">=</span> <span class="n">DataFlow</span><span class="o">.</span><span class="n">_fromdict</span><span class="p">(</span>
+                        <span class="o">**</span><span class="n">exported</span>
+                    <span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">octx</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">orchestrator</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">dataflow</span>
@@ -229,6 +307,66 @@
 
 <div class="viewcode-block" id="DataFlowPreprocessSource"><a class="viewcode-back" href="../../../api/source/dfpreprocess.html#dffml.source.dfpreprocess.DataFlowPreprocessSource">[docs]</a><span class="nd">@entrypoint</span><span class="p">(</span><span class="s2">&quot;dfpreprocess&quot;</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">DataFlowPreprocessSource</span><span class="p">(</span><span class="n">BaseSource</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    &gt;&gt;&gt; import asyncio</span>
+<span class="sd">    &gt;&gt;&gt; from dffml import *</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; records = [</span>
+<span class="sd">    ...     Record(</span>
+<span class="sd">    ...         &quot;0&quot;,</span>
+<span class="sd">    ...         data={</span>
+<span class="sd">    ...             &quot;features&quot;: {</span>
+<span class="sd">    ...                 &quot;Years&quot;: 1,</span>
+<span class="sd">    ...                 &quot;Expertise&quot;: 3,</span>
+<span class="sd">    ...                 &quot;Trust&quot;: 0.2,</span>
+<span class="sd">    ...                 &quot;Salary&quot;: 20,</span>
+<span class="sd">    ...             }</span>
+<span class="sd">    ...         },</span>
+<span class="sd">    ...     ),</span>
+<span class="sd">    ... ]</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; features = Features(</span>
+<span class="sd">    ...     Feature(&quot;Years&quot;, int, 1),</span>
+<span class="sd">    ...     Feature(&quot;Expertise&quot;, int, 1),</span>
+<span class="sd">    ...     Feature(&quot;Trust&quot;, float, 1),</span>
+<span class="sd">    ...     Feature(&quot;Salary&quot;, int, 1),</span>
+<span class="sd">    ... )</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; dataflow = DataFlow(multiply, AssociateDefinition)</span>
+<span class="sd">    &gt;&gt;&gt; dataflow.flow[&quot;multiply&quot;].inputs[&quot;multiplicand&quot;] = [</span>
+<span class="sd">    ...     {&quot;seed&quot;: [&quot;Years&quot;, &quot;Expertise&quot;, &quot;Trust&quot;, &quot;Salary&quot;]}</span>
+<span class="sd">    ... ]</span>
+<span class="sd">    &gt;&gt;&gt; dataflow.seed = [</span>
+<span class="sd">    ...     Input(</span>
+<span class="sd">    ...         value={</span>
+<span class="sd">    ...             feature.name: multiply.op.outputs[&quot;product&quot;].name</span>
+<span class="sd">    ...             for feature in features</span>
+<span class="sd">    ...         },</span>
+<span class="sd">    ...         definition=AssociateDefinition.op.inputs[&quot;spec&quot;],</span>
+<span class="sd">    ...     ),</span>
+<span class="sd">    ...     Input(value=10, definition=multiply.op.inputs[&quot;multiplier&quot;],),</span>
+<span class="sd">    ... ]</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; memory_source = Sources(MemorySource(MemorySourceConfig(records=records)))</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; source = DataFlowPreprocessSource(</span>
+<span class="sd">    ...     DataFlowPreprocessSourceConfig(</span>
+<span class="sd">    ...         source=memory_source, dataflow=dataflow, features=features,</span>
+<span class="sd">    ...     )</span>
+<span class="sd">    ... )</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; async def main():</span>
+<span class="sd">    ...     async with source as src:</span>
+<span class="sd">    ...         async with src() as sctx:</span>
+<span class="sd">    ...             async for record in sctx.records():</span>
+<span class="sd">    ...                 print(record.features())</span>
+<span class="sd">    ...</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; asyncio.run(main())</span>
+<span class="sd">    {&#39;Years&#39;: 10, &#39;Expertise&#39;: 30, &#39;Trust&#39;: 2.0, &#39;Salary&#39;: 200}</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">CONFIG</span> <span class="o">=</span> <span class="n">DataFlowPreprocessSourceConfig</span>
     <span class="n">CONTEXT</span> <span class="o">=</span> <span class="n">DataFlowPreprocessSourceContext</span>

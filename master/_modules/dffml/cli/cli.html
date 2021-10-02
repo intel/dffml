@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>dffml.cli.cli &mdash; DFFML 002d7f530 documentation</title>
+  <title>dffml.cli.cli &mdash; DFFML 475dabe3a documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/tabs.css" type="text/css" />
@@ -32,7 +32,7 @@
             <a href="../../../index.html" class="icon icon-home"> DFFML
           </a>
               <div class="version">
-                002d7f530
+                475dabe3a
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -148,7 +148,10 @@
 <span class="kn">from</span> <span class="nn">..feature.feature</span> <span class="kn">import</span> <span class="n">Features</span>
 <span class="kn">from</span> <span class="nn">..df.types</span> <span class="kn">import</span> <span class="n">DataFlow</span>
 <span class="kn">from</span> <span class="nn">..plugins</span> <span class="kn">import</span> <span class="n">PACKAGE_NAMES_BY_PLUGIN</span><span class="p">,</span> <span class="n">PACKAGE_NAMES_TO_DIRECTORY</span>
-<span class="kn">from</span> <span class="nn">..source.df</span> <span class="kn">import</span> <span class="n">DataFlowSource</span><span class="p">,</span> <span class="n">DataFlowSourceConfig</span>
+<span class="kn">from</span> <span class="nn">..source.dfpreprocess</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">DataFlowPreprocessSource</span><span class="p">,</span>
+    <span class="n">DataFlowPreprocessSourceConfig</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="kn">from</span> <span class="nn">..source.source</span> <span class="kn">import</span> <span class="n">Sources</span><span class="p">,</span> <span class="n">BaseSource</span><span class="p">,</span> <span class="n">SubsetSources</span>
 <span class="kn">from</span> <span class="nn">..configloader.configloader</span> <span class="kn">import</span> <span class="n">BaseConfigLoader</span>
 <span class="kn">from</span> <span class="nn">..util.cli.cmd</span> <span class="kn">import</span> <span class="n">CMD</span>
@@ -331,8 +334,8 @@
                     <span class="n">exported</span> <span class="o">=</span> <span class="k">await</span> <span class="n">loader</span><span class="o">.</span><span class="n">loadb</span><span class="p">(</span><span class="n">dataflow_path</span><span class="o">.</span><span class="n">read_bytes</span><span class="p">())</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">dataflow</span> <span class="o">=</span> <span class="n">DataFlow</span><span class="o">.</span><span class="n">_fromdict</span><span class="p">(</span><span class="o">**</span><span class="n">exported</span><span class="p">)</span>
 
-            <span class="bp">self</span><span class="o">.</span><span class="n">sources</span> <span class="o">=</span> <span class="n">DataFlowSource</span><span class="p">(</span>
-                <span class="n">DataFlowSourceConfig</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sources</span> <span class="o">=</span> <span class="n">DataFlowPreprocessSource</span><span class="p">(</span>
+                <span class="n">DataFlowPreprocessSourceConfig</span><span class="p">(</span>
                     <span class="n">source</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sources</span><span class="p">,</span>
                     <span class="n">dataflow</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dataflow</span><span class="p">,</span>
                     <span class="n">features</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">features</span><span class="p">,</span>

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Using NLP Operations &mdash; DFFML 002d7f530 documentation</title>
+  <title>Using NLP Operations &mdash; DFFML 475dabe3a documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/tabs.css" type="text/css" />
@@ -33,7 +33,7 @@
             <a href="../../index.html" class="icon icon-home"> DFFML
           </a>
               <div class="version">
-                002d7f530
+                475dabe3a
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -249,7 +249,7 @@ results in the graph.</p>
     -model-classifications <span class="m">0</span> <span class="m">1</span> <span class="se">\</span>
     -model-location tempdir <span class="se">\</span>
     -model-features embedding:float:<span class="o">[</span><span class="m">1</span>,10,96<span class="o">]</span> <span class="se">\</span>
-    -sources <span class="nv">text</span><span class="o">=</span>df <span class="se">\</span>
+    -sources <span class="nv">text</span><span class="o">=</span>dfpreprocess <span class="se">\</span>
     -source-text-dataflow nlp_ops_dataflow.json <span class="se">\</span>
     -source-text-features sentence:str:1 <span class="se">\</span>
     -source-text-source csv <span class="se">\</span>
@@ -271,7 +271,7 @@ is (1,10,96).</p>
     -model-classifications <span class="m">0</span> <span class="m">1</span> <span class="se">\</span>
     -model-location tempdir <span class="se">\</span>
     -model-features embedding:float:<span class="o">[</span><span class="m">1</span>,10,96<span class="o">]</span> <span class="se">\</span>
-    -sources <span class="nv">text</span><span class="o">=</span>df <span class="se">\</span>
+    -sources <span class="nv">text</span><span class="o">=</span>dfpreprocess <span class="se">\</span>
     -source-text-dataflow nlp_ops_dataflow.json <span class="se">\</span>
     -source-text-features sentence:str:1 <span class="se">\</span>
     -source-text-source csv <span class="se">\</span>
@@ -296,7 +296,7 @@ is (1,10,96).</p>
     -model-classifications <span class="m">0</span> <span class="m">1</span> <span class="se">\</span>
     -model-location tempdir <span class="se">\</span>
     -model-features embedding:float:<span class="o">[</span><span class="m">1</span>,10,96<span class="o">]</span> <span class="se">\</span>
-    -sources <span class="nv">text</span><span class="o">=</span>df <span class="se">\</span>
+    -sources <span class="nv">text</span><span class="o">=</span>dfpreprocess <span class="se">\</span>
     -source-text-dataflow nlp_ops_dataflow.json <span class="se">\</span>
     -source-text-features sentence:str:1 <span class="se">\</span>
     -source-text-source csv <span class="se">\</span>
@@ -378,7 +378,7 @@ which will return the array corresponding to each sentence.</p>
     -model-features extract_array_from_matrix.outputs.result:float:1 <span class="se">\</span>
     -model-predict sentiment:int:1 <span class="se">\</span>
     -model-location tempdir <span class="se">\</span>
-    -sources <span class="nv">text</span><span class="o">=</span>df <span class="se">\</span>
+    -sources <span class="nv">text</span><span class="o">=</span>old <span class="se">\</span>
     -source-text-dataflow nlp_ops_dataflow.json <span class="se">\</span>
     -source-text-features sentence:str:1 <span class="se">\</span>
     -source-text-source csv <span class="se">\</span>
@@ -393,7 +393,7 @@ which will return the array corresponding to each sentence.</p>
     -model-features extract_array_from_matrix.outputs.result:float:1 <span class="se">\</span>
     -model-predict sentiment:int:1 <span class="se">\</span>
     -model-location tempdir <span class="se">\</span>
-    -sources <span class="nv">text</span><span class="o">=</span>df <span class="se">\</span>
+    -sources <span class="nv">text</span><span class="o">=</span>dfpreprocess <span class="se">\</span>
     -source-text-dataflow nlp_ops_dataflow.json <span class="se">\</span>
     -source-text-features sentence:str:1 <span class="se">\</span>
     -source-text-source csv <span class="se">\</span>
@@ -420,7 +420,7 @@ and put them in the JSON source as an intermediary format.</p>
 <p>Processing of sentences occurs concurrently, resulting in seemingly
 randomized output order.</p>
 </div>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml merge <span class="nv">text</span><span class="o">=</span>df <span class="nv">temp</span><span class="o">=</span>json <span class="se">\</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml merge <span class="nv">text</span><span class="o">=</span>dfpreprocess <span class="nv">temp</span><span class="o">=</span>json <span class="se">\</span>
     -source-text-dataflow nlp_ops_dataflow.json <span class="se">\</span>
     -source-text-features sentence:str:1 <span class="se">\</span>
     -source-text-source csv <span class="se">\</span>
