@@ -333,7 +333,7 @@ async def run_commands(
             break
         proc.wait()
         if proc.returncode != 0:
-            errors.append(f"Failed to run: {cmd!r}")
+            errors.append(f"Failed to run: {proc.cmd!r}: {proc.returncode}")
     if errors and not ignore_errors:
         raise RuntimeError("\n".join(errors))
     if daemon:
