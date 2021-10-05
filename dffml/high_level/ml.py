@@ -1,5 +1,8 @@
 import contextlib
+import inspect
 from typing import Union, Dict, Any
+
+from dffml.model.model import ModelContext
 
 from ..model import Model
 from ..record import Record
@@ -58,6 +61,8 @@ async def train(model, *args: Union[BaseSource, Record, Dict[str, Any]]):
         if isinstance(model, Model):
             model = await astack.enter_async_context(model)
             mctx = await astack.enter_async_context(model())
+        elif isinstance(model, ModelContext):
+            mctx = model
         # Run training
         return await mctx.train(sctx)
 
@@ -144,6 +149,8 @@ async def score(
         if isinstance(model, Model):
             model = await astack.enter_async_context(model)
             mctx = await astack.enter_async_context(model())
+        elif isinstance(model, ModelContext):
+            mctx = model
         # Allow for keep models open
         if isinstance(accuracy_scorer, AccuracyScorer):
             accuracy_scorer = await astack.enter_async_context(accuracy_scorer)
@@ -229,6 +236,8 @@ async def predict(
         if isinstance(model, Model):
             model = await astack.enter_async_context(model)
             mctx = await astack.enter_async_context(model())
+        elif isinstance(model, ModelContext):
+            mctx = model
         # Run predictions
         async for record in mctx.predict(sctx):
             yield record if keep_record else (
