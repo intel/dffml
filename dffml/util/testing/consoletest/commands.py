@@ -14,6 +14,7 @@ import asyncio
 import pathlib
 import inspect
 import tempfile
+import platform
 import functools
 import contextlib
 import subprocess
@@ -361,7 +362,9 @@ def pipes(cmd):
 
 
 async def stop_daemon(proc):
-    # Send ctrl-c to daemon if running
+    if platform.system() != "Windows":
+        # Kill the whole process group (for problematic processes)
+        os.killpg(proc.pid, signal.SIGINT)
     proc.send_signal(signal.SIGINT)
     proc.wait()
 
