@@ -49,8 +49,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Renamed `Optimizer` to `Tuner`.
 ### Fixed
 - Record object key properties are now always strings
-- Contexts can be kept open now in`high_level`.
-
+- Contexts can be kept open now in `high_level`.
 ## [0.4.0] - 2021-02-18
 ### Added
 - New model for Anomaly Detection
