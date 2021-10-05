@@ -7,6 +7,7 @@ import sys
 import json
 import time
 import copy
+import fcntl
 import shlex
 import signal
 import atexit
@@ -535,6 +536,18 @@ class PipInstallCommand(ConsoleCommand):
         return
 
 
+class NPMInstallCommand(ConsoleCommand):
+    async def run(self, ctx):
+        await super().run(ctx)
+        if platform.system() != "Windows":
+            flags = fcntl.fcntl(sys.stdout, fcntl.F_GETFL)
+            fcntl.fcntl(sys.stdout, fcntl.F_SETFL, flags & ~os.O_NONBLOCK)
+
+
+class YarnInstallCommand(NPMInstallCommand):
+    pass
+
+
 class DockerRunCommand(ConsoleCommand):
     def __init__(self, cmd: List[str]):
         name, needs_removal, cmd = self.find_name(cmd)
@@ -691,9 +704,11 @@ def build_command(cmd):
         and cmd[cmd.index("pip") + 1] == "install"
     ):
         return PipInstallCommand(cmd)
-    # Handle docker commands
-    if cmd[:2] == ["docker", "run"]:
-        return DockerRunCommand(cmd)
+    # Handle yarn and npm install command
+    if cmd[:2] == ["npm", "install"]:
+        return NPMInstallCommand(cmd)
+    if cmd[:2] == ["yarn", "install"]:
+        return YarnInstallCommand(cmd)
     # Handle simple http server
     if cmd[1:3] == ["-m", "http.server"]:
         return SimpleHTTPServerCommand(cmd)
