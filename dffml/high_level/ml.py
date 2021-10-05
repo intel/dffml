@@ -152,6 +152,8 @@ async def score(
         if isinstance(accuracy_scorer, AccuracyScorer):
             accuracy_scorer = await astack.enter_async_context(accuracy_scorer)
             actx = await astack.enter_async_context(accuracy_scorer())
+        elif isinstance(accuracy_scorer, AccuracyContext):
+            actx = accuracy_scorer
         else:
             # TODO Replace this with static type checking and maybe dynamic
             # through something like pydantic. See issue #36
