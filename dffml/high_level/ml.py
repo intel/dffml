@@ -1,15 +1,12 @@
 import contextlib
-import inspect
 from typing import Union, Dict, Any
 
-from dffml.model.model import ModelContext
-
-from ..model import Model
 from ..record import Record
-from ..feature import Feature, Features
 from ..source.source import BaseSource
-from ..accuracy.accuracy import AccuracyScorer, AccuracyContext
+from ..feature import Feature, Features
+from ..model import Model, ModelContext
 from ..util.internal import records_to_sources
+from ..accuracy.accuracy import AccuracyScorer, AccuracyContext
 
 
 async def train(model, *args: Union[BaseSource, Record, Dict[str, Any]]):
