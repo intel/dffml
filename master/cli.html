@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Command Line &mdash; DFFML 4c2abd6cd documentation</title>
+  <title>Command Line &mdash; DFFML 8b6d000d7 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/tabs.css" type="text/css" />
@@ -33,7 +33,7 @@
             <a href="index.html" class="icon icon-home"> DFFML
           </a>
               <div class="version">
-                4c2abd6cd
+                8b6d000d7
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -687,12 +687,18 @@ also do over an HTTP interface. See the
 <div class="section" id="cli-service-dev-create">
 <span id="id1"></span><h4>Create<a class="headerlink" href="#cli-service-dev-create" title="Permalink to this headline"></a></h4>
 <p>You can create a new python package and start implementing a new plugin for
-DFFML right away with the <code class="docutils literal notranslate"><span class="pre">create</span></code> command of <code class="docutils literal notranslate"><span class="pre">dev</span></code>.</p>
+DFFML right away with the <code class="docutils literal notranslate"><span class="pre">create</span></code> command of <code class="docutils literal notranslate"><span class="pre">dev</span></code>. Use <code class="docutils literal notranslate"><span class="pre">-h</span></code> to see all
+the plugin types (<code class="docutils literal notranslate"><span class="pre">dffml</span> <span class="pre">service</span> <span class="pre">dev</span> <span class="pre">create</span> <span class="pre">-h</span></code>).</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml service dev create model dffml-model-mycoolmodel
 <span class="gp">$ </span><span class="nb">cd</span> dffml-model-mycoolmodel
 <span class="gp">$ </span>python -m pip install -e .<span class="o">[</span>dev<span class="o">]</span>
 <span class="gp">$ </span>python -m unittest discover -v
 </pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If you want to create a Python package that is not a dffml plugin, you can
+use <code class="docutils literal notranslate"><span class="pre">dffml</span> <span class="pre">service</span> <span class="pre">dev</span> <span class="pre">create</span> <span class="pre">blank</span> <span class="pre">mypackage</span></code>.</p>
 </div>
 <p>When you’re done you can upload it to PyPi and it’ll be <code class="docutils literal notranslate"><span class="pre">pip</span></code> installable so
 that other DFFML users can use it in their code or via the CLI. If you don’t
