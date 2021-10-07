@@ -175,10 +175,10 @@ to calculate the hash value used for the <code class="docutils literal notransla
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>url</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – The URL to download</p></li>
-<li><p><strong>target_path</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><em>pathlib.Path</em></a>) – Path on disk to store download</p></li>
-<li><p><strong>expected_hash</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – SHA384 hash of the contents</p></li>
-<li><p><strong>protocol_allowlist</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><em>list</em></a><em>, </em><em>optional</em>) – List of strings, one of which the URL must start with. If you want to be
+<li><p><strong>url</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – The URL to download</p></li>
+<li><p><strong>target_path</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.10)"><em>pathlib.Path</em></a>) – Path on disk to store download</p></li>
+<li><p><strong>expected_hash</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – SHA384 hash of the contents</p></li>
+<li><p><strong>protocol_allowlist</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.10)"><em>list</em></a><em>, </em><em>optional</em>) – List of strings, one of which the URL must start with. If you want to be
 able to download <code class="docutils literal notranslate"><span class="pre">http://</span></code> (rather than <code class="docutils literal notranslate"><span class="pre">https://</span></code>) links, you’ll
 need to override this.</p></li>
 </ul>
@@ -220,11 +220,11 @@ disk. Only the downloaded file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>url</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – The URL to download</p></li>
-<li><p><strong>file_path</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><em>pathlib.Path</em></a>) – Path on disk to store download</p></li>
-<li><p><strong>directory_path</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><em>pathlib.Path</em></a>) – Path on disk to store extracted contents of downloaded archive</p></li>
-<li><p><strong>expected_hash</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – SHA384 hash of the contents</p></li>
-<li><p><strong>protocol_allowlist</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><em>list</em></a><em>, </em><em>optional</em>) – List of strings, one of which the URL must start with. If you want to be
+<li><p><strong>url</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – The URL to download</p></li>
+<li><p><strong>file_path</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.10)"><em>pathlib.Path</em></a>) – Path on disk to store download</p></li>
+<li><p><strong>directory_path</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.10)"><em>pathlib.Path</em></a>) – Path on disk to store extracted contents of downloaded archive</p></li>
+<li><p><strong>expected_hash</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – SHA384 hash of the contents</p></li>
+<li><p><strong>protocol_allowlist</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.10)"><em>list</em></a><em>, </em><em>optional</em>) – List of strings, one of which the URL must start with. If you want to be
 able to download <code class="docutils literal notranslate"><span class="pre">http://</span></code> (rather than <code class="docutils literal notranslate"><span class="pre">https://</span></code>) links, you’ll
 need to override this.</p></li>
 </ul>
@@ -253,7 +253,7 @@ need to override this.</p></li>
 <dt class="sig sig-object py" id="dffml.util.net.sync_urlopen">
 <span class="sig-prename descclassname"><span class="pre">dffml.util.net.</span></span><span class="sig-name descname"><span class="pre">sync_urlopen</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">protocol_allowlist</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">['https://']</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/util/net.html#sync_urlopen"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.util.net.sync_urlopen" title="Permalink to this definition"></a></dt>
 <dd><p>Check that <code class="docutils literal notranslate"><span class="pre">url</span></code> has a protocol defined in <code class="docutils literal notranslate"><span class="pre">protocol_allowlist</span></code>, then
-return the result of calling <a class="reference external" href="https://docs.python.org/3/library/urllib.request.html#urllib.request.urlopen" title="(in Python v3.9)"><code class="xref py py-func docutils literal notranslate"><span class="pre">urllib.request.urlopen()</span></code></a> passing it
+return the result of calling <a class="reference external" href="https://docs.python.org/3/library/urllib.request.html#urllib.request.urlopen" title="(in Python v3.10)"><code class="xref py py-func docutils literal notranslate"><span class="pre">urllib.request.urlopen()</span></code></a> passing it
 <code class="docutils literal notranslate"><span class="pre">url</span></code>.</p>
 </dd></dl>
 

@@ -165,7 +165,7 @@ those records are yielded.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>source</strong> (<a class="reference internal" href="source/source.html#dffml.source.source.BaseSource" title="dffml.source.source.BaseSource"><em>BaseSource</em></a>) – Data source to use. See <a class="reference internal" href="../plugins/dffml_source.html"><span class="doc">Sources</span></a> for sources and
 options.</p></li>
-<li><p><strong>*args</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – Records to be returned. If empty, all the records in a source will be returned.</p></li>
+<li><p><strong>*args</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – Records to be returned. If empty, all the records in a source will be returned.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -219,7 +219,7 @@ options.</p></li>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>model</strong> (<a class="reference internal" href="model/model.html#dffml.model.model.Model" title="dffml.model.model.Model"><em>Model</em></a>) – Machine Learning model to use. See <a class="reference internal" href="../plugins/dffml_model.html"><span class="doc">Models</span></a> for
 models options.</p></li>
-<li><p><strong>*args</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><em>list</em></a>) – Input data for prediction. Could be a <code class="docutils literal notranslate"><span class="pre">dict</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Record</span></code>,
+<li><p><strong>*args</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.10)"><em>list</em></a>) – Input data for prediction. Could be a <code class="docutils literal notranslate"><span class="pre">dict</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Record</span></code>,
 filename, or one of the data <a class="reference internal" href="../plugins/dffml_source.html"><span class="doc">Sources</span></a>.</p></li>
 <li><p><strong>update</strong> (<em>boolean</em><em>, </em><em>optional</em>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code> prediction data within records will be written back to all
 sources given. Defaults to <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
@@ -353,7 +353,7 @@ source. Effectively saving all the records to the source.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>source</strong> (<a class="reference internal" href="source/source.html#dffml.source.source.BaseSource" title="dffml.source.source.BaseSource"><em>BaseSource</em></a>) – Data source to use. See <a class="reference internal" href="../plugins/dffml_source.html"><span class="doc">Sources</span></a> for sources and
 options.</p></li>
-<li><p><strong>*args</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><em>list</em></a>) – Records to be saved.</p></li>
+<li><p><strong>*args</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.10)"><em>list</em></a>) – Records to be saved.</p></li>
 </ul>
 </dd>
 </dl>
@@ -395,7 +395,7 @@ prediction abilities. The model should be already instantiated and trained.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>model</strong> (<a class="reference internal" href="model/model.html#dffml.model.model.Model" title="dffml.model.model.Model"><em>Model</em></a>) – Machine Learning model to use. See <a class="reference internal" href="../plugins/dffml_model.html"><span class="doc">Models</span></a> for
 models options.</p></li>
-<li><p><strong>*args</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><em>list</em></a>) – Input data for training. Could be a <code class="docutils literal notranslate"><span class="pre">dict</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Record</span></code>,
+<li><p><strong>*args</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.10)"><em>list</em></a>) – Input data for training. Could be a <code class="docutils literal notranslate"><span class="pre">dict</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Record</span></code>,
 filename, one of the data <a class="reference internal" href="../plugins/dffml_source.html"><span class="doc">Sources</span></a>, or a filename
 with the extension being one of the data sources.</p></li>
 </ul>
@@ -406,7 +406,7 @@ correct prediction. For some models this has another meaning. Please see
 the documentation for the model your using for further details.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)">float</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)">float</a></p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
@@ -457,7 +457,7 @@ instantiated.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>model</strong> (<a class="reference internal" href="model/model.html#dffml.model.model.Model" title="dffml.model.model.Model"><em>Model</em></a>) – Machine Learning model to use. See <a class="reference internal" href="../plugins/dffml_model.html"><span class="doc">Models</span></a> for
 models options.</p></li>
-<li><p><strong>*args</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><em>list</em></a>) – Input data for training. Could be a <code class="docutils literal notranslate"><span class="pre">dict</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Record</span></code>,
+<li><p><strong>*args</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.10)"><em>list</em></a>) – Input data for training. Could be a <code class="docutils literal notranslate"><span class="pre">dict</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Record</span></code>,
 filename, one of the data <a class="reference internal" href="../plugins/dffml_source.html"><span class="doc">Sources</span></a>, or a filename
 with the extension being one of the data sources.</p></li>
 </ul>

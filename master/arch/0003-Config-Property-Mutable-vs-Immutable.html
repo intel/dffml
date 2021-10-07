@@ -204,7 +204,7 @@ is.</p></li>
 </div>
 <div class="section" id="decision">
 <h2>Decision<a class="headerlink" href="#decision" title="Permalink to this headline"></a></h2>
-<p>Similar to the way <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.NamedTuple" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">typing.NamedTuple</span></code></a> works, config properties will
+<p>Similar to the way <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.NamedTuple" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">typing.NamedTuple</span></code></a> works, config properties will
 default to immutable. This way implementers of classes can assume they don’t
 need to deal with state changes to config properties unless they’ve explicitly
 opted in.</p>
@@ -224,7 +224,7 @@ changes to it at runtime, so we mark it as mutable.</p>
 mutations to the config object.</p>
 <p>The callback we add accepts the key being modified within the config structure
 and the value it was set to. For demonstration purposes we will use the value of
-C in the model object. The callback’s use of <a class="reference external" href="https://docs.python.org/3/library/functions.html#setattr" title="(in Python v3.9)"><code class="xref py py-func docutils literal notranslate"><span class="pre">setattr()</span></code></a> when the value
+C in the model object. The callback’s use of <a class="reference external" href="https://docs.python.org/3/library/functions.html#setattr" title="(in Python v3.10)"><code class="xref py py-func docutils literal notranslate"><span class="pre">setattr()</span></code></a> when the value
 of C is updated in the config structure results in the value of C in the model
 object also changing.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">MyModel</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
