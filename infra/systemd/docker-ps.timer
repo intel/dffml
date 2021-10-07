@@ -1,0 +1,12 @@
+[Unit]
+Description=Run `docker ps` every 30-60 seconds
+Requires=docker-ps.service
+
+[Timer]
+Unit=docker-ps.service
+OnUnitInactiveSec=30s
+RandomizedDelaySec=30s
+AccuracySec=1s
+
+[Install]
+WantedBy=timers.target

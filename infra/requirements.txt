@@ -1,0 +1,3 @@
+https://github.com/pdxjohnny/dffml/archive/b5db2ef26984020b95fed42f8e07e400624035f4.zip#egg=dffml
+python-digitalocean>=1.16.0
+parallel-ssh>=2.5.4

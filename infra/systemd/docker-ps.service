@@ -1,0 +1,9 @@
+[Unit]
+Description=Run `docker ps` to keep docker up and running
+Wants=docker-ps.timer
+
+[Service]
+ExecStart=/usr/bin/docker ps
+
+[Install]
+WantedBy=multi-user.target

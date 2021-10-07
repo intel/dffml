@@ -1,0 +1,13 @@
+
+module sshd_port_1997 1.0;
+
+require {
+	type unreserved_port_t;
+	type sshd_t;
+	class tcp_socket name_bind;
+}
+
+#============= sshd_t ==============
+
+#!!!! This avc can be allowed using the boolean 'nis_enabled'
+allow sshd_t unreserved_port_t:tcp_socket name_bind;
