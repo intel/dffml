@@ -1,5 +1,5 @@
-Welcome to REPLACE_PACKAGE_NAME
-===============================
+Welcome to Project
+==================
 
 .. toctree::
     :glob:
