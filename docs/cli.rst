@@ -558,7 +558,8 @@ Create
 ++++++
 
 You can create a new python package and start implementing a new plugin for
-DFFML right away with the ``create`` command of ``dev``.
+DFFML right away with the ``create`` command of ``dev``. Use ``-h`` to see all
+the plugin types (``dffml service dev create -h``).
 
 .. code-block:: console
     :test:
@@ -567,6 +568,11 @@ DFFML right away with the ``create`` command of ``dev``.
     $ cd dffml-model-mycoolmodel
     $ python -m pip install -e .[dev]
     $ python -m unittest discover -v
+
+.. note::
+
+    If you want to create a Python package that is not a dffml plugin, you can
+    use ``dffml service dev create blank mypackage``.
 
 When you're done you can upload it to PyPi and it'll be ``pip`` installable so
 that other DFFML users can use it in their code or via the CLI. If you don't

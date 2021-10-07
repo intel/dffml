@@ -64,7 +64,8 @@ class Skel:
                 if not linkpath.parent.is_dir():
                     linkpath.parent.mkdir(parents=True)
                 # Resolving first gives more helpful error message if it fails
-                linkpath.resolve().symlink_to(filepath)
+                if not linkpath.resolve().is_file():
+                    linkpath.resolve().symlink_to(filepath)
 
     def copy_template(self, plugin, target):
         # Recursive copy (shutil.copytree doesn't do the right thing if

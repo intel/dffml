@@ -157,6 +157,10 @@ class TestDevelopSkelLink(AsyncTestCase):
         self.assertGreater(len(plugins), 3)
         for plugin in plugins:
             for check in COMMON_FILES:
+                # We skip the setup.cfg symlink check for blank because it has a
+                # custom setup.cfg
+                if plugin.name == "blank" and check.name == "setup.cfg":
+                    continue
                 with chdir(plugin):
                     self.assertTrue(
                         check.is_symlink(),
