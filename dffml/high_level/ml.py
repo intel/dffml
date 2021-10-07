@@ -1,12 +1,12 @@
 import contextlib
 from typing import Union, Dict, Any
 
-from ..model import Model
 from ..record import Record
-from ..feature import Feature, Features
 from ..source.source import BaseSource
-from ..accuracy.accuracy import AccuracyScorer, AccuracyContext
+from ..feature import Feature, Features
+from ..model import Model, ModelContext
 from ..util.internal import records_to_sources
+from ..accuracy.accuracy import AccuracyScorer, AccuracyContext
 
 
 async def train(model, *args: Union[BaseSource, Record, Dict[str, Any]]):
@@ -58,6 +58,8 @@ async def train(model, *args: Union[BaseSource, Record, Dict[str, Any]]):
         if isinstance(model, Model):
             model = await astack.enter_async_context(model)
             mctx = await astack.enter_async_context(model())
+        elif isinstance(model, ModelContext):
+            mctx = model
         # Run training
         return await mctx.train(sctx)
 
@@ -144,10 +146,14 @@ async def score(
         if isinstance(model, Model):
             model = await astack.enter_async_context(model)
             mctx = await astack.enter_async_context(model())
+        elif isinstance(model, ModelContext):
+            mctx = model
         # Allow for keep models open
         if isinstance(accuracy_scorer, AccuracyScorer):
             accuracy_scorer = await astack.enter_async_context(accuracy_scorer)
             actx = await astack.enter_async_context(accuracy_scorer())
+        elif isinstance(accuracy_scorer, AccuracyContext):
+            actx = accuracy_scorer
         else:
             # TODO Replace this with static type checking and maybe dynamic
             # through something like pydantic. See issue #36
@@ -229,6 +235,8 @@ async def predict(
         if isinstance(model, Model):
             model = await astack.enter_async_context(model)
             mctx = await astack.enter_async_context(model())
+        elif isinstance(model, ModelContext):
+            mctx = model
         # Run predictions
         async for record in mctx.predict(sctx):
             yield record if keep_record else (
