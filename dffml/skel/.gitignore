@@ -9,4 +9,5 @@
 */REPLACE_IMPORT_PACKAGE_NAME/version.py
 */REPLACE_IMPORT_PACKAGE_NAME/__init__.py
 */tests/__init__.py
+*/docs/
 !common/**
