@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>dffml.high_level.ml &mdash; DFFML 475dabe3a documentation</title>
+  <title>dffml.high_level.ml &mdash; DFFML 0db777750 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/tabs.css" type="text/css" />
@@ -32,7 +32,7 @@
             <a href="../../../index.html" class="icon icon-home"> DFFML
           </a>
               <div class="version">
-                475dabe3a
+                0db777750
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -130,12 +130,12 @@
 <span></span><span class="kn">import</span> <span class="nn">contextlib</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Any</span>
 
-<span class="kn">from</span> <span class="nn">..model</span> <span class="kn">import</span> <span class="n">Model</span>
 <span class="kn">from</span> <span class="nn">..record</span> <span class="kn">import</span> <span class="n">Record</span>
-<span class="kn">from</span> <span class="nn">..feature</span> <span class="kn">import</span> <span class="n">Feature</span><span class="p">,</span> <span class="n">Features</span>
 <span class="kn">from</span> <span class="nn">..source.source</span> <span class="kn">import</span> <span class="n">BaseSource</span>
-<span class="kn">from</span> <span class="nn">..accuracy.accuracy</span> <span class="kn">import</span> <span class="n">AccuracyScorer</span><span class="p">,</span> <span class="n">AccuracyContext</span>
+<span class="kn">from</span> <span class="nn">..feature</span> <span class="kn">import</span> <span class="n">Feature</span><span class="p">,</span> <span class="n">Features</span>
+<span class="kn">from</span> <span class="nn">..model</span> <span class="kn">import</span> <span class="n">Model</span><span class="p">,</span> <span class="n">ModelContext</span>
 <span class="kn">from</span> <span class="nn">..util.internal</span> <span class="kn">import</span> <span class="n">records_to_sources</span>
+<span class="kn">from</span> <span class="nn">..accuracy.accuracy</span> <span class="kn">import</span> <span class="n">AccuracyScorer</span><span class="p">,</span> <span class="n">AccuracyContext</span>
 
 
 <div class="viewcode-block" id="train"><a class="viewcode-back" href="../../../api/high_level/ml.html#dffml.high_level.ml.train">[docs]</a><span class="k">async</span> <span class="k">def</span> <span class="nf">train</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">BaseSource</span><span class="p">,</span> <span class="n">Record</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]):</span>
@@ -187,6 +187,8 @@
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">Model</span><span class="p">):</span>
             <span class="n">model</span> <span class="o">=</span> <span class="k">await</span> <span class="n">astack</span><span class="o">.</span><span class="n">enter_async_context</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
             <span class="n">mctx</span> <span class="o">=</span> <span class="k">await</span> <span class="n">astack</span><span class="o">.</span><span class="n">enter_async_context</span><span class="p">(</span><span class="n">model</span><span class="p">())</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">ModelContext</span><span class="p">):</span>
+            <span class="n">mctx</span> <span class="o">=</span> <span class="n">model</span>
         <span class="c1"># Run training</span>
         <span class="k">return</span> <span class="k">await</span> <span class="n">mctx</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="n">sctx</span><span class="p">)</span></div>
 
@@ -273,10 +275,14 @@
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">Model</span><span class="p">):</span>
             <span class="n">model</span> <span class="o">=</span> <span class="k">await</span> <span class="n">astack</span><span class="o">.</span><span class="n">enter_async_context</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
             <span class="n">mctx</span> <span class="o">=</span> <span class="k">await</span> <span class="n">astack</span><span class="o">.</span><span class="n">enter_async_context</span><span class="p">(</span><span class="n">model</span><span class="p">())</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">ModelContext</span><span class="p">):</span>
+            <span class="n">mctx</span> <span class="o">=</span> <span class="n">model</span>
         <span class="c1"># Allow for keep models open</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">accuracy_scorer</span><span class="p">,</span> <span class="n">AccuracyScorer</span><span class="p">):</span>
             <span class="n">accuracy_scorer</span> <span class="o">=</span> <span class="k">await</span> <span class="n">astack</span><span class="o">.</span><span class="n">enter_async_context</span><span class="p">(</span><span class="n">accuracy_scorer</span><span class="p">)</span>
             <span class="n">actx</span> <span class="o">=</span> <span class="k">await</span> <span class="n">astack</span><span class="o">.</span><span class="n">enter_async_context</span><span class="p">(</span><span class="n">accuracy_scorer</span><span class="p">())</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">accuracy_scorer</span><span class="p">,</span> <span class="n">AccuracyContext</span><span class="p">):</span>
+            <span class="n">actx</span> <span class="o">=</span> <span class="n">accuracy_scorer</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="c1"># TODO Replace this with static type checking and maybe dynamic</span>
             <span class="c1"># through something like pydantic. See issue #36</span>
@@ -358,6 +364,8 @@
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">Model</span><span class="p">):</span>
             <span class="n">model</span> <span class="o">=</span> <span class="k">await</span> <span class="n">astack</span><span class="o">.</span><span class="n">enter_async_context</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
             <span class="n">mctx</span> <span class="o">=</span> <span class="k">await</span> <span class="n">astack</span><span class="o">.</span><span class="n">enter_async_context</span><span class="p">(</span><span class="n">model</span><span class="p">())</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">ModelContext</span><span class="p">):</span>
+            <span class="n">mctx</span> <span class="o">=</span> <span class="n">model</span>
         <span class="c1"># Run predictions</span>
         <span class="k">async</span> <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">mctx</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">sctx</span><span class="p">):</span>
             <span class="k">yield</span> <span class="n">record</span> <span class="k">if</span> <span class="n">keep_record</span> <span class="k">else</span> <span class="p">(</span>
