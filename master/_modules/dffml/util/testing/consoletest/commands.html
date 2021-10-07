@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>dffml.util.testing.consoletest.commands &mdash; DFFML 0db777750 documentation</title>
+  <title>dffml.util.testing.consoletest.commands &mdash; DFFML 4c2abd6cd documentation</title>
       <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../../../_static/tabs.css" type="text/css" />
@@ -32,7 +32,7 @@
             <a href="../../../../../index.html" class="icon icon-home"> DFFML
           </a>
               <div class="version">
-                0db777750
+                4c2abd6cd
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../../../search.html" method="get">
@@ -59,27 +59,27 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../../plugins/index.html">Plugins</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../cli.html">Command Line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../plugins/service/http/index.html">HTTP API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../../api/noasync.html">Noasync</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../../api/record.html">Record</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../../api/base.html">Base</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../api/plugins.html">Plugins</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../../api/log.html">Log</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../api/version.html">Version</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../../api/port/index.html">Port</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../../api/service/index.html">Service</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../../api/accuracy/index.html">Accuracy</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../../api/secret/index.html">Secret</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../../api/util/index.html">Util</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../api/record.html">Record</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../api/noasync.html">Noasync</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../api/log.html">Log</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../api/base.html">Base</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../api/cli/index.html">Cli</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../api/operation/index.html">Operation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../api/feature/index.html">Feature</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../api/port/index.html">Port</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../api/configloader/index.html">Configloader</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../api/high_level/index.html">High_Level</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../api/tuner/index.html">Tuner</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../../api/operation/index.html">Operation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../api/df/index.html">Df</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../../api/model/index.html">Model</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../../api/db/index.html">Db</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../../api/feature/index.html">Feature</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../api/source/index.html">Source</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../../api/configloader/index.html">Configloader</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../api/db/index.html">Db</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../api/service/index.html">Service</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../api/secret/index.html">Secret</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../api/accuracy/index.html">Accuracy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../api/model/index.html">Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../api/util/index.html">Util</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../troubleshooting.html">Troubleshooting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../arch/index.html">Architecture</a></li>
 </ul>
@@ -136,6 +136,7 @@
 <span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">time</span>
 <span class="kn">import</span> <span class="nn">copy</span>
+<span class="kn">import</span> <span class="nn">fcntl</span>
 <span class="kn">import</span> <span class="nn">shlex</span>
 <span class="kn">import</span> <span class="nn">signal</span>
 <span class="kn">import</span> <span class="nn">atexit</span>
@@ -143,6 +144,7 @@
 <span class="kn">import</span> <span class="nn">pathlib</span>
 <span class="kn">import</span> <span class="nn">inspect</span>
 <span class="kn">import</span> <span class="nn">tempfile</span>
+<span class="kn">import</span> <span class="nn">platform</span>
 <span class="kn">import</span> <span class="nn">functools</span>
 <span class="kn">import</span> <span class="nn">contextlib</span>
 <span class="kn">import</span> <span class="nn">subprocess</span>
@@ -460,7 +462,7 @@
             <span class="k">break</span>
         <span class="n">proc</span><span class="o">.</span><span class="n">wait</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">proc</span><span class="o">.</span><span class="n">returncode</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Failed to run: </span><span class="si">{</span><span class="n">cmd</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Failed to run: </span><span class="si">{</span><span class="n">proc</span><span class="o">.</span><span class="n">cmd</span><span class="si">!r}</span><span class="s2">: </span><span class="si">{</span><span class="n">proc</span><span class="o">.</span><span class="n">returncode</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">errors</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">ignore_errors</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">errors</span><span class="p">))</span>
     <span class="k">if</span> <span class="n">daemon</span><span class="p">:</span>
@@ -490,7 +492,9 @@
 
 
 <span class="k">async</span> <span class="k">def</span> <span class="nf">stop_daemon</span><span class="p">(</span><span class="n">proc</span><span class="p">):</span>
-    <span class="c1"># Send ctrl-c to daemon if running</span>
+    <span class="k">if</span> <span class="n">platform</span><span class="o">.</span><span class="n">system</span><span class="p">()</span> <span class="o">!=</span> <span class="s2">&quot;Windows&quot;</span><span class="p">:</span>
+        <span class="c1"># Kill the whole process group (for problematic processes)</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">killpg</span><span class="p">(</span><span class="n">proc</span><span class="o">.</span><span class="n">pid</span><span class="p">,</span> <span class="n">signal</span><span class="o">.</span><span class="n">SIGINT</span><span class="p">)</span>
     <span class="n">proc</span><span class="o">.</span><span class="n">send_signal</span><span class="p">(</span><span class="n">signal</span><span class="o">.</span><span class="n">SIGINT</span><span class="p">)</span>
     <span class="n">proc</span><span class="o">.</span><span class="n">wait</span><span class="p">()</span>
 
@@ -661,6 +665,18 @@
         <span class="k">return</span></div>
 
 
+<div class="viewcode-block" id="NPMInstallCommand"><a class="viewcode-back" href="../../../../../api/util/testing/consoletest/commands.html#dffml.util.testing.consoletest.commands.NPMInstallCommand">[docs]</a><span class="k">class</span> <span class="nc">NPMInstallCommand</span><span class="p">(</span><span class="n">ConsoleCommand</span><span class="p">):</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">):</span>
+        <span class="k">await</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">ctx</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">platform</span><span class="o">.</span><span class="n">system</span><span class="p">()</span> <span class="o">!=</span> <span class="s2">&quot;Windows&quot;</span><span class="p">:</span>
+            <span class="n">flags</span> <span class="o">=</span> <span class="n">fcntl</span><span class="o">.</span><span class="n">fcntl</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">,</span> <span class="n">fcntl</span><span class="o">.</span><span class="n">F_GETFL</span><span class="p">)</span>
+            <span class="n">fcntl</span><span class="o">.</span><span class="n">fcntl</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">,</span> <span class="n">fcntl</span><span class="o">.</span><span class="n">F_SETFL</span><span class="p">,</span> <span class="n">flags</span> <span class="o">&amp;</span> <span class="o">~</span><span class="n">os</span><span class="o">.</span><span class="n">O_NONBLOCK</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="YarnInstallCommand"><a class="viewcode-back" href="../../../../../api/util/testing/consoletest/commands.html#dffml.util.testing.consoletest.commands.YarnInstallCommand">[docs]</a><span class="k">class</span> <span class="nc">YarnInstallCommand</span><span class="p">(</span><span class="n">NPMInstallCommand</span><span class="p">):</span>
+    <span class="k">pass</span></div>
+
+
 <div class="viewcode-block" id="DockerRunCommand"><a class="viewcode-back" href="../../../../../api/util/testing/consoletest/commands.html#dffml.util.testing.consoletest.commands.DockerRunCommand">[docs]</a><span class="k">class</span> <span class="nc">DockerRunCommand</span><span class="p">(</span><span class="n">ConsoleCommand</span><span class="p">):</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cmd</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]):</span>
         <span class="n">name</span><span class="p">,</span> <span class="n">needs_removal</span><span class="p">,</span> <span class="n">cmd</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find_name</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span>
@@ -817,9 +833,11 @@
         <span class="ow">and</span> <span class="n">cmd</span><span class="p">[</span><span class="n">cmd</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;pip&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;install&quot;</span>
     <span class="p">):</span>
         <span class="k">return</span> <span class="n">PipInstallCommand</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span>
-    <span class="c1"># Handle docker commands</span>
-    <span class="k">if</span> <span class="n">cmd</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="p">[</span><span class="s2">&quot;docker&quot;</span><span class="p">,</span> <span class="s2">&quot;run&quot;</span><span class="p">]:</span>
-        <span class="k">return</span> <span class="n">DockerRunCommand</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span>
+    <span class="c1"># Handle yarn and npm install command</span>
+    <span class="k">if</span> <span class="n">cmd</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="p">[</span><span class="s2">&quot;npm&quot;</span><span class="p">,</span> <span class="s2">&quot;install&quot;</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="n">NPMInstallCommand</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">cmd</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="p">[</span><span class="s2">&quot;yarn&quot;</span><span class="p">,</span> <span class="s2">&quot;install&quot;</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="n">YarnInstallCommand</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span>
     <span class="c1"># Handle simple http server</span>
     <span class="k">if</span> <span class="n">cmd</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span> <span class="o">==</span> <span class="p">[</span><span class="s2">&quot;-m&quot;</span><span class="p">,</span> <span class="s2">&quot;http.server&quot;</span><span class="p">]:</span>
         <span class="k">return</span> <span class="n">SimpleHTTPServerCommand</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span>

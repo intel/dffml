@@ -5,15 +5,15 @@ Operation
     :maxdepth: 2
     :caption: Contents:
 
-    compression
-    db
-    log
-    io
-    mapping
     preprocess
+    archive
+    dataflow
+    io
+    db
+    mapping
     math
+    output
+    log
+    compression
     model
     source
-    dataflow
-    archive
-    output
