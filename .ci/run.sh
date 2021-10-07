@@ -98,6 +98,15 @@ function run_plugin() {
     plugin_creation_dir="$(mktemp -d)"
     TEMP_DIRS+=("${plugin_creation_dir}")
     cd "${plugin_creation_dir}"
+    # Run the create command to create a non-dffml package
+    plugin="blank"
+    dffml service dev create "${plugin}" "ci-test-${plugin}"
+    cd "ci-test-${plugin}"
+    "${PYTHON}" -m pip install -U .
+    "${PYTHON}" -m unittest discover -v
+    # Build the docs
+    "${PYTHON}" -c 'import os, pkg_resources; [e.load() for e in pkg_resources.iter_entry_points("console_scripts") if e.name.startswith("sphinx-build")][0]()' -W -b html docs/ built_html_docs/
+    cd "${plugin_creation_dir}"
     # Plugins we know how to make
     PLUGINS=(\
       "model" \
