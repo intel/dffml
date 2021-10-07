@@ -49,6 +49,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Renamed `Optimizer` to `Tuner`.
 ### Fixed
 - Record object key properties are now always strings
+- High level functions (`train()`, etc.) now work on existing open contexts
 
 ## [0.4.0] - 2021-02-18
 ### Added
