@@ -186,6 +186,9 @@ class RunCMDConfig:
         + "under each context (which is also the record's key)",
         default=False,
     )
+    config: List[str] = field(
+        "configs", action=ParseInputsAction, default_factory=lambda: [],
+    )
 
 
 class RunCMD(SourcesCMD):
@@ -284,6 +287,8 @@ class RunAllRecords(RunCMD):
             async with configloader() as loader:
                 exported = await loader.loadb(dataflow_path.read_bytes())
                 dataflow = DataFlow._fromdict(**exported)
+                for v, k in self.config:
+                    traverse_set(dataflow.configs, k, value=v)
         async with self.orchestrator as orchestrator, self.sources as sources:
             async for record in self.run_dataflow(
                 orchestrator, sources, dataflow
@@ -342,6 +347,9 @@ class RunSingleConfig:
     no_strict: bool = field(
         "Do not exit on operation exceptions, just log errors", default=False,
     )
+    config: List[str] = field(
+        "configs", action=ParseInputsAction, default_factory=lambda: [],
+    )
 
 
 class RunSingle(CMD):
@@ -361,6 +369,9 @@ class RunSingle(CMD):
             async with configloader() as loader:
                 exported = await loader.loadb(dataflow_path.read_bytes())
                 dataflow = DataFlow._fromdict(**exported)
+                for v, k in self.config:
+                    traverse_set(dataflow.configs, k, value=v)
+
         return dataflow
 
     def input_objects(self, dataflow):
