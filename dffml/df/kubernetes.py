@@ -55,18 +55,26 @@ setting.
       exist on the executing machine from another machine that has that code.
       Might be able to leverage "Loaders" of https://github.com/malwaredllc/byob
 """
+import os
 import json
 import pathlib
+import tarfile
 import tempfile
 import textwrap
 import contextlib
 import asyncio.subprocess
-from typing import AsyncIterator, Tuple, Dict, Any
+from typing import AsyncIterator, Tuple, Dict, Any, List
 
 from .base import BaseContextHandle
-from .memory import MemoryOrchestratorContext, MemoryOrchestrator
+from .memory import (
+    MemoryOrchestratorConfig,
+    MemoryOrchestratorContext,
+    MemoryOrchestrator,
+)
+from ..base import config, field
 from ..util.crypto import secure_hash
 from ..util.data import export
+from ..util.os import chdir
 from ..util.entrypoint import entrypoint
 from ..util.subprocess import run_command, exec_subprocess, Subprocess
 
@@ -74,6 +82,23 @@ from ..util.subprocess import run_command, exec_subprocess, Subprocess
 python_code: str = pathlib.Path(__file__).parent.joinpath(
     "kubernetes_execute_pickled_dataflow_with_inputs.py"
 ).read_text()
+
+
+# TODO Move requirements logic to own prep dataflow which get's executed before
+# the real dataflow.
+@config
+class JobKubernetesOrchestratorConfig(MemoryOrchestratorConfig):
+    image: str = field(
+        "Container image to use", default="intelotc/dffml:latest"
+    )
+    context: pathlib.Path = field(
+        "Container build context and working directory for running container",
+        default=None,
+    )
+    requirements: List[str] = field(
+        "Python requirements to install before execution",
+        default_factory=lambda: [],
+    )
 
 
 class JobKubernetesOrchestratorContext(MemoryOrchestratorContext):
@@ -127,7 +152,6 @@ class JobKubernetesOrchestratorContext(MemoryOrchestratorContext):
             "sha384",
         )[:62]
         container_name: str = job_name
-        container_image: str = "intelotc/dffml"
 
         with tempfile.TemporaryDirectory() as tempdir:
             # Create temporary directory pathlib object
@@ -146,6 +170,20 @@ class JobKubernetesOrchestratorContext(MemoryOrchestratorContext):
                 "execute_pickled_dataflow_with_inputs.py"
             )
             execute_pickled_dataflow_with_inputs_path.write_text(python_code)
+            # Write out the requirements
+            requirements_path = tempdir_path.joinpath("requirements.txt")
+            requirements_path.write_text(
+                "\n".join(self.parent.config.requirements)
+            )
+            # Copy the context
+            context_path = tempdir_path.joinpath("context.tar.gz")
+            with tarfile.open(context_path, mode="x:gz") as tarobj:
+                if (
+                    self.parent.config.context is not None
+                    and self.parent.config.context.is_dir()
+                ):
+                    with chdir(self.parent.config.context.resolve()):
+                        tarobj.add(".")
             # Write out the kustomization.yaml file to create a ConfigMap for
             # the Python code and secrets for the dataflow and inputs.
             # https://kubernetes.io/docs/tutorials/configuration/configure-redis-using-configmap/
@@ -161,6 +199,8 @@ class JobKubernetesOrchestratorContext(MemoryOrchestratorContext):
                       files:
                       - {dataflow_path.relative_to(tempdir_path)}
                       - {inputs_path.relative_to(tempdir_path)}
+                      - {requirements_path.relative_to(tempdir_path)}
+                      - {context_path.relative_to(tempdir_path)}
                     """
                 ).lstrip()
             )
@@ -188,6 +228,54 @@ class JobKubernetesOrchestratorContext(MemoryOrchestratorContext):
                 for item in kustomization_apply["items"]
                 if item["kind"] == "Secret"
             ][0]["metadata"]["name"]
+            # The commands to run
+            commands: List[List[str]] = [
+                [
+                    "python",
+                    "-u",
+                    "/usr/src/dffml-kubernetes-job-code/execute_pickled_dataflow_with_inputs.py",
+                ],
+            ]
+            # If we have a context we need to extract it into the working
+            # directory before we run the dataflow.
+            if self.parent.config.requirements:
+                commands.insert(
+                    0,
+                    [
+                        "python",
+                        "-m",
+                        "pip",
+                        "install",
+                        "-r",
+                        '"${REQUIREMENTS}"',
+                        '2>"${PIP_LOG_FILE}"',
+                        "1>&2",
+                    ],
+                )
+            # If we have a requirements file then we need to install from that
+            # before we run the dataflow (if we haven't built a new container
+            # and are doing this at runtime).
+            if (
+                self.parent.config.context is not None
+                and self.parent.config.context.is_dir()
+            ):
+                commands.insert(
+                    0,
+                    [
+                        "tar",
+                        "-xvzf",
+                        '"${CONTEXT}"',
+                        '2>"${CONTEXT_LOG_FILE}"',
+                        "1>&2",
+                    ],
+                )
+            # Shell command to execute all above commands
+            command: List[str] = [
+                "sh",
+                "-c",
+                " && ".join([" ".join(cmd) for cmd in commands]),
+            ]
+            self.logger.debug("command: %r", command)
             # Write out the batch job
             # TODO Make configmap and secrets immutable and volume mounts read
             # only
@@ -206,10 +294,12 @@ class JobKubernetesOrchestratorContext(MemoryOrchestratorContext):
                       template:
                         spec:
                           automountServiceAccountToken: false
+
                           containers:
                           - name: {container_name}
-                            image: {container_image}
-                            command: ["python", "-u", "/usr/src/dffml-kubernetes-job-code/execute_pickled_dataflow_with_inputs.py"]
+                            image: {self.parent.config.image}
+                            command: {json.dumps(command)}
+                            workingDir: /usr/src/dffml-kubernetes-job-working-dir/
                             volumeMounts:
                               # name must match the volume name below
                               - name: dffml-kubernetes-job-code
@@ -218,13 +308,27 @@ class JobKubernetesOrchestratorContext(MemoryOrchestratorContext):
                                 mountPath: /usr/src/dffml-kubernetes-job-secrets
                               - name: dffml-kubernetes-job-state
                                 mountPath: /usr/src/dffml-kubernetes-job-state
+                              - name: dffml-kubernetes-job-working-dir
+                                mountPath: /usr/src/dffml-kubernetes-job-working-dir
                             env:
                             - name: DATAFLOW
                               value: /usr/src/dffml-kubernetes-job-secrets/dataflow.json
                             - name: INPUTS
                               value: /usr/src/dffml-kubernetes-job-secrets/inputs.json
+                            - name: CONTEXT_LOG_FILE
+                              value: /usr/src/dffml-kubernetes-job-state/context-log.txt
+                            - name: PIP_LOG_FILE
+                              value: /usr/src/dffml-kubernetes-job-state/pip-logs.txt
                             - name: LOG_FILE
                               value: /usr/src/dffml-kubernetes-job-state/logs.txt
+                            - name: REQUIREMENTS
+                              value: /usr/src/dffml-kubernetes-job-secrets/requirements.txt
+                            - name: CONTEXT
+                              value: /usr/src/dffml-kubernetes-job-secrets/context.tar.gz
+                            - name: HTTP_PROXY
+                              value: {os.environ["HTTP_PROXY"]}
+                            - name: HTTPS_PROXY
+                              value: {os.environ["HTTPS_PROXY"]}
                           # The secret data is exposed to Containers in the Pod through a Volume.
                           volumes:
                             - name: dffml-kubernetes-job-code
@@ -235,6 +339,8 @@ class JobKubernetesOrchestratorContext(MemoryOrchestratorContext):
                               secret:
                                 secretName: {secret_name}
                             - name: dffml-kubernetes-job-state
+                              emptyDir: {{}}
+                            - name: dffml-kubernetes-job-working-dir
                               emptyDir: {{}}
                           restartPolicy: Never
                       backoffLimit: 0
@@ -333,59 +439,205 @@ class JobKubernetesOrchestrator(MemoryOrchestrator):
     Examples
     --------
 
-    Create a dataflow
+    You'll need a Personal Access Token to be able to make calls to GitHub's
+    API. You can create one by following their documentation.
+
+    - https://docs.github.com/en/github/authenticating-to-github/creating-a-personal-access-token
+
+    When it presents you with a bunch of checkboxes for different "scopes" you
+    don't have to check any of them, unless you want to access your own private
+    repos, then check the repos box.
 
     .. code-block:: console
 
-        $ dffml dataflow create \
-            -inputs \
-              '["product"]'=get_single_spec \
-            -- \
-              multiply \
-              get_single \
-            | tee dataflow.json
+        $ export GITHUB_TOKEN=<paste your personal access token here>
 
-    Execute (kubectl default context will be used)
+    You've just pasted your token into your terminal so it will likely show up
+    in your shell's history. You might want to either remove it from your
+    history, or just delete the token on GitHub's settings page after you're
+    done with this example.
+
+    Create a directory where we'll store all of the operations (Python functions)
+    we'll use to gather project data / metrics.
+
+    .. code-block:: console
+        :test:
+
+        $ mkdir operations/
+
+    Make it a Python module by creating a blank ``__init__.py`` file in it.
+
+    .. code-block:: console
+        :test:
+
+        $ touch operations/__init__.py
+
+    Write a Python function which returns an object representing a GitHub repo.
+    For simplicity of this tutorial, the function will take the token from the
+    environment variable we just set.
+
+    **operations/gh.py**
+
+    .. literalinclude:: /../examples/innersource/swportal/operations/gh.py
+        :test:
+        :filepath: operations/gh.py
+
+    You'll notice that we wrote a function, and then put an ``if`` statement. The
+    ``if`` block let's us only run the code within the block when the script is run
+    directly (rather than when included via ``import``).
+
+    If we run Python on the script, and pass an org name followed by a repo name,
+    our ``if`` block will run the function and print the raw data of the repsonse
+    received from GitHub, containing a bunch of information about the repo.
+
+    You'll notice that the data being output here is a superset of the data we'd see
+    for the repo in the ``repos.json`` file. Meaning we have all the required data
+    and more.
+
+    .. code-block:: console
+        :test:
+
+        $ python operations/gh.py intel dffml
+        {'allow_auto_merge': False,
+         <... output clipped ...>
+         'full_name': 'intel/dffml',
+         <... output clipped ...>
+         'html_url': 'https://github.com/intel/dffml',
+         <... output clipped ...>
+         'watchers_count': 135}
+
+    We're going to create a Python script which will use all the operations we've
+    written.
+
+    We need to download the ``repos.json`` file from the previous example so
+    that we know what fields our DataFlow should output.
+
+    .. code-block:: console
+        :test:
+
+        $ curl -fLo repos.json.bak https://github.com/SAP/project-portal-for-innersource/raw/main/repos.json
+
+    First we declare imports of other packages.
+
+    **dataflow.py**
+
+    .. literalinclude:: /../examples/innersource/swportal/dataflow.py
+        :test:
+        :filepath: dataflow.py
+        :lines: 1-6
+
+    Then we import our operations.
+
+    **dataflow.py**
+
+    .. literalinclude:: /../examples/innersource/swportal/dataflow.py
+        :test:
+        :filepath: dataflow.py
+        :lines: 12-13
+
+    Finally we define our dataflow.
+
+    **dataflow.py**
+
+    .. literalinclude:: /../examples/innersource/swportal/dataflow.py
+        :test:
+        :filepath: dataflow.py
+        :lines: 15-81
+
+    We export the dataflow for use with the CLI, HTTP service, etc.
+
+    .. code-block:: console
+        :test:
+
+        $ dffml service dev export dataflow:dataflow | tee dataflow.json
+
+    You'll need a Personal Access Token to be able to make calls to GitHub's
+    API. You can create one by following their documentation.
+
+    - https://docs.github.com/en/github/authenticating-to-github/creating-a-personal-access-token
+
+    When it presents you with a bunch of checkboxes for different "scopes" you
+    don't have to check any of them, unless you want to access your own private
+    repos, then check the repos box.
 
     .. code-block:: console
 
-        $ dffml dataflow run single \
+        $ export GITHUB_TOKEN=<paste your personal access token here>
+
+    You've just pasted your token into your terminal so it will likely show up
+    in your shell's history. You might want to either remove it from your
+    history, or just delete the token on GitHub's settings page after you're
+    done with this example.
+
+    We can run the dataflow using the DFFML command line interface rather than
+    running the Python file.
+
+    Execute in kubernetes (kubectl default context will be used)
+
+    .. code-block:: console
+        :test:
+
+        $ dffml dataflow run records set \
+            -log debug \
             -dataflow dataflow.json \
+            -config \
+                "$GITHUB_TOKEN='operations.gh:github_get_repo'.token" \
             -orchestrator kubernetes.job \
-            -inputs \
-              4=multiplier_def \
-              4=multiplicand_def
+            -orchestrator-context . \
+            -orchestrator-requirements PyGithub \
+            -record-def "github.repo.url" \
+            -keys \
+              https://github.com/intel/dffml
 
-    The same example using Python
+    We can execute dataflow the from Python too
+
+    **dataflow.py**
 
     .. code-block:: python
+        :test:
+        :filepath: dataflow.py
 
-        import asyncio
-        from dffml import *
+        import os
+        import pprint
+        import logging
 
-        dataflow = DataFlow(multiply, GetSingle)
-        dataflow.seed.append(
-            Input(
-                value=[multiply.op.outputs["product"].name],
-                definition=GetSingle.op.inputs["spec"],
-            )
+        logging.basicConfig(level=logging.DEBUG)
+
+        dataflow.configs[github_get_repo.op.name] = GitHubGetRepoConfig(
+            token=os.environ["GITHUB_TOKEN"],
         )
 
-        orchestrator = JobKubernetesOrchestrator()
+        orchestrator = dffml.JobKubernetesOrchestrator(
+            context=os.getcwd(),
+            requirements=[
+                "PyGithub",
+            ],
+        )
 
         async def main():
-           async for ctx, results in run(
+           async for ctx, results in dffml.run(
                dataflow,
                {
-                   "18": [
-                       Input(value=3, definition=multiply.op.inputs["multiplier"],),
-                       Input(value=6, definition=multiply.op.inputs["multiplicand"],),
+                   "dffml": [
+                       dffml.Input(
+                           value="https://github.com/intel/dffml",
+                           definition=dataflow.definitions["github.repo.url"],
+                       ),
                    ],
                },
                orchestrator=orchestrator,
            ):
-               print(results["product"])
+               pprint.pprint(results)
 
         asyncio.run(main())
+
+    The same execution using Python
+
+    .. code-block:: console
+        :test:
+
+        $ python dataflow.py
+
     """
+    CONFIG = JobKubernetesOrchestratorConfig
     CONTEXT = JobKubernetesOrchestratorContext
