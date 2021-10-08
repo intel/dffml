@@ -35,6 +35,15 @@ def github_split_owner_project(url):
     )
 
 
+@dffml.config
+class GitHubGetRepoConfig:
+    # TODO Set field as secret once dffml has support for secret fields
+    token: str = dffml.field(
+        "GitHub Personal Authentication Token",
+        default=os.environ.get("GITHUB_TOKEN", None),
+    )
+
+
 @dffml.op(
     inputs={
         "org": github_split_owner_project.op.outputs["owner"],
@@ -45,10 +54,11 @@ def github_split_owner_project(url):
             name="PyGithub.Repository", primitive="object",
         ),
     },
+    config_cls=GitHubGetRepoConfig,
 )
-def github_get_repo(org, project):
+def github_get_repo(self, org, project):
     # Instantiate a GitHub API object
-    g = github.Github(os.environ["GITHUB_TOKEN"])
+    g = github.Github(self.config.token)
     # Make the request for the repo
     return {"repo": g.get_repo(f"{org}/{project}")}
 
@@ -69,8 +79,15 @@ def github_repo_raw(repo):
 # repo data using the pprint module.
 if __name__ == "__main__":
     import sys
+    import types
     import pprint
 
     pprint.pprint(
-        github_repo_raw(github_get_repo(sys.argv[-2], sys.argv[-1])["repo"])
+        github_repo_raw(
+            github_get_repo(
+                types.SimpleNamespace(config=GitHubGetRepoConfig()),
+                sys.argv[-2],
+                sys.argv[-1],
+            )["repo"]
+        )
     )
