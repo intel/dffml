@@ -1,6 +1,11 @@
 Notebooks
 =========
 
+Video on Setting up DFFML for Machine Learning Tasks
+
+.. image:: http://img.youtube.com/vi/y6bz-9U4hJg/0.jpg
+   :target: http://www.youtube.com/watch?v=y6bz-9U4hJg
+
 .. toctree::
     :maxdepth: 3
 
