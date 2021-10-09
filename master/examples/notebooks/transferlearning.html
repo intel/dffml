@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Transfer Learning &mdash; DFFML 8b6d000d7 documentation</title>
+  <title>Transfer Learning &mdash; DFFML 3c03addee documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/tabs.css" type="text/css" />
@@ -35,7 +35,7 @@
             <a href="../../index.html" class="icon icon-home"> DFFML
           </a>
               <div class="version">
-                8b6d000d7
+                3c03addee
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -439,7 +439,7 @@ div.rendered_html tbody tr:hover {
 <li><p><strong>Use CNN for Feature Extraction</strong>: Using the representations learned by a previous network to extract meaningful features from new samples. You simply add a new classifier, which will be trained from scratch, on top of the pretrained model. In this approach, we generally freeze all the weights of layers except the final layers. In DFFML, the weights of other layers are frozen by setting <code class="docutils literal notranslate"><span class="pre">trainable</span> <span class="pre">=</span> <span class="pre">False</span></code>, which is also set by default.</p></li>
 <li><p><strong>Fine-Tuning the CNN</strong>: Unfreezing the weights of the top layers of a frozen model base and jointly training both the newly-added classifier layers and the last layers of the base model. This is done by setting the parameter <code class="docutils literal notranslate"><span class="pre">trainable</span> <span class="pre">=</span> <span class="pre">True</span></code>. This part of the tutorial will also focus on showing how to add custom layers to the model to perform fine-tuning of the CNN.</p></li>
 </ol>
-<p>We will be applying the first approach in this tutorial, ie. <strong>Use CNN for Feature Extraction</strong>. In this approach the only difference from <strong>Fine-Tuning the CNN</strong> is essentially setting <code class="docutils literal notranslate"><span class="pre">trainable</span> <span class="pre">=</span> <span class="pre">False</span></code> rather than <code class="docutils literal notranslate"><span class="pre">True</span></code>. Feel free to try and change the bool value as you please.</p>
+<p>We will be applying the first approach in this tutorial, ie. <strong>Use CNN for Feature Extraction</strong>. In this approach the only difference from <strong>Fine-Tuning the CNN</strong> is essentially setting <code class="docutils literal notranslate"><span class="pre">trainable</span> <span class="pre">=</span> <span class="pre">False</span></code> rather than <code class="docutils literal notranslate"><span class="pre">True</span></code>. Feel free to try and change the bool value as you please. <a class="reference external" href="http://www.youtube.com/watch?v=xb3h_S8abZw"><img alt="Video Explanation Thumbnail" src="http://img.youtube.com/vi/xb3h_S8abZw/0.jpg" /></a></p>
 <div class="section" id="Setting-up">
 <h2>Setting-up<a class="headerlink" href="#Setting-up" title="Permalink to this headline"></a></h2>
 <p><strong>Import Packages</strong></p>
