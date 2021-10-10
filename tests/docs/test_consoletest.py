@@ -153,6 +153,7 @@ NO_SETUP = [
     "tutorials/doublecontextentry",
     "tutorials/models/load",
     "tutorials/models/archive",
+    "examples/ci",
 ]
 
 
