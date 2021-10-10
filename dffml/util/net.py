@@ -4,10 +4,11 @@ import shutil
 import pathlib
 import email.message
 import urllib.request
+from functools import partial
 from typing import List, Union, Tuple
 
 from .file import validate_file_hash
-from .log import LOGGER, get_download_logger
+from .log import LOGGER, create_download_logger
 
 
 class ProtocolNotAllowedError(Exception):
@@ -37,31 +38,29 @@ class DirectoryNotExtractedError(Exception):
         return f"Failed to extract - {self.directory_path!r}"
 
 
-def progressbar(percent):
+def progressbar(percent, logger):
     """
     Simple progressbar to show download progress.
     """
     progress = "#" * int(percent / 4)
-    download_logger.debug(
-        f"Downloading: [{progress.ljust(25)}] {int(percent)}%"
-    )
+    logger.debug(f"Downloading: [{progress.ljust(25)}] {int(percent)}%")
 
 
-def progressbar_no_totalsize(blocknum):
+def progressbar_no_totalsize(blocknum, logger):
     """
     Progress bar that bounces back and forth since we don't know total size.
     """
     blank = " " * 25
     progress = blank[: blocknum % 25] + "#" + blank[(blocknum % 25) + 1 :]
-    download_logger.debug(f"Downloading: [{progress}] ?%")
+    logger.debug(f"Downloading: [{progress}] ?%")
 
 
-def progress_reporthook(blocknum, blocksize, totalsize):
+def progress_reporthook(blocknum, blocksize, totalsize, logger):
     """
     Serve as a reporthook for monitoring download progress.
     """
     if totalsize < 0:
-        progressbar_no_totalsize(blocknum + 6)
+        progressbar_no_totalsize(blocknum + 6, logger)
     else:
         percent = (
             min(
@@ -70,12 +69,11 @@ def progress_reporthook(blocknum, blocksize, totalsize):
             )
             * 100
         )
-        progressbar(percent)
+        progressbar(percent, logger)
 
 
 # Default list of URL protocols allowed
 DEFAULT_PROTOCOL_ALLOWLIST: List[str] = ["https://"]
-download_logger = get_download_logger(LOGGER)
 
 
 def validate_protocol(
@@ -155,15 +153,18 @@ def sync_urlretrieve_and_validate(
     if not target_path.is_file() or not validate_file_hash(
         target_path, expected_sha384_hash=expected_sha384_hash, error=False,
     ):
-        if not target_path.parent.is_dir():
-            target_path.parent.mkdir(parents=True)
-        path, _ = sync_urlretrieve(
-            url,
-            filename=str(target_path),
-            protocol_allowlist=protocol_allowlist,
-            reporthook=progress_reporthook,
-        )
-        return path
+        with create_download_logger(LOGGER) as download_logger:
+            if not target_path.parent.is_dir():
+                target_path.parent.mkdir(parents=True)
+            path, _ = sync_urlretrieve(
+                url,
+                filename=str(target_path),
+                protocol_allowlist=protocol_allowlist,
+                reporthook=partial(
+                    progress_reporthook, logger=download_logger
+                ),
+            )
+            return path
     validate_file_hash(
         target_path, expected_sha384_hash=expected_sha384_hash,
     )
