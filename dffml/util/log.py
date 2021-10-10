@@ -24,14 +24,17 @@ class DuplicateFilter(object):
         return rv
 
 
-def get_download_logger(root_logger):
+@contextmanager
+def create_download_logger(root_logger):
     """
-    Helper function to create a child logger for displaying download progress
+    Helper function-based context-manager to create a child logger 
+    for displaying download progress
     """
     logger = root_logger.getChild("download_logger")
     duplicate_filter = DuplicateFilter()
     logger.addFilter(duplicate_filter)
-    return logger
+    yield logger
+    logger.removeFilter(duplicate_filter)
 
 
 def log_time(func):
