@@ -36,6 +36,8 @@ def make_config_inspect(
         properties = {}
 
     properties.update(inspect_params(cls))
+    if "self" in properties:
+        del properties["self"]
 
     return make_config(
         name, [tuple([key] + list(value)) for key, value in properties.items()]
