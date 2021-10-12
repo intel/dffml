@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>dffml.util.net &mdash; DFFML 3c03addee documentation</title>
+  <title>dffml.util.net &mdash; DFFML e7a356dfe documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/tabs.css" type="text/css" />
@@ -32,7 +32,7 @@
             <a href="../../../index.html" class="icon icon-home"> DFFML
           </a>
               <div class="version">
-                3c03addee
+                e7a356dfe
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -133,10 +133,11 @@
 <span class="kn">import</span> <span class="nn">pathlib</span>
 <span class="kn">import</span> <span class="nn">email.message</span>
 <span class="kn">import</span> <span class="nn">urllib.request</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">partial</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Tuple</span>
 
 <span class="kn">from</span> <span class="nn">.file</span> <span class="kn">import</span> <span class="n">validate_file_hash</span>
-<span class="kn">from</span> <span class="nn">.log</span> <span class="kn">import</span> <span class="n">LOGGER</span><span class="p">,</span> <span class="n">get_download_logger</span>
+<span class="kn">from</span> <span class="nn">.log</span> <span class="kn">import</span> <span class="n">LOGGER</span><span class="p">,</span> <span class="n">create_download_logger</span>
 
 
 <div class="viewcode-block" id="ProtocolNotAllowedError"><a class="viewcode-back" href="../../../api/util/net.html#dffml.util.net.ProtocolNotAllowedError">[docs]</a><span class="k">class</span> <span class="nc">ProtocolNotAllowedError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
@@ -166,31 +167,29 @@
         <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;Failed to extract - </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">directory_path</span><span class="si">!r}</span><span class="s2">&quot;</span></div>
 
 
-<div class="viewcode-block" id="progressbar"><a class="viewcode-back" href="../../../api/util/net.html#dffml.util.net.progressbar">[docs]</a><span class="k">def</span> <span class="nf">progressbar</span><span class="p">(</span><span class="n">percent</span><span class="p">):</span>
+<div class="viewcode-block" id="progressbar"><a class="viewcode-back" href="../../../api/util/net.html#dffml.util.net.progressbar">[docs]</a><span class="k">def</span> <span class="nf">progressbar</span><span class="p">(</span><span class="n">percent</span><span class="p">,</span> <span class="n">logger</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Simple progressbar to show download progress.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">progress</span> <span class="o">=</span> <span class="s2">&quot;#&quot;</span> <span class="o">*</span> <span class="nb">int</span><span class="p">(</span><span class="n">percent</span> <span class="o">/</span> <span class="mi">4</span><span class="p">)</span>
-    <span class="n">download_logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
-        <span class="sa">f</span><span class="s2">&quot;Downloading: [</span><span class="si">{</span><span class="n">progress</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="mi">25</span><span class="p">)</span><span class="si">}</span><span class="s2">] </span><span class="si">{</span><span class="nb">int</span><span class="p">(</span><span class="n">percent</span><span class="p">)</span><span class="si">}</span><span class="s2">%&quot;</span>
-    <span class="p">)</span></div>
+    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Downloading: [</span><span class="si">{</span><span class="n">progress</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="mi">25</span><span class="p">)</span><span class="si">}</span><span class="s2">] </span><span class="si">{</span><span class="nb">int</span><span class="p">(</span><span class="n">percent</span><span class="p">)</span><span class="si">}</span><span class="s2">%&quot;</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="progressbar_no_totalsize"><a class="viewcode-back" href="../../../api/util/net.html#dffml.util.net.progressbar_no_totalsize">[docs]</a><span class="k">def</span> <span class="nf">progressbar_no_totalsize</span><span class="p">(</span><span class="n">blocknum</span><span class="p">):</span>
+<div class="viewcode-block" id="progressbar_no_totalsize"><a class="viewcode-back" href="../../../api/util/net.html#dffml.util.net.progressbar_no_totalsize">[docs]</a><span class="k">def</span> <span class="nf">progressbar_no_totalsize</span><span class="p">(</span><span class="n">blocknum</span><span class="p">,</span> <span class="n">logger</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Progress bar that bounces back and forth since we don&#39;t know total size.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">blank</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span> <span class="o">*</span> <span class="mi">25</span>
     <span class="n">progress</span> <span class="o">=</span> <span class="n">blank</span><span class="p">[:</span> <span class="n">blocknum</span> <span class="o">%</span> <span class="mi">25</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;#&quot;</span> <span class="o">+</span> <span class="n">blank</span><span class="p">[(</span><span class="n">blocknum</span> <span class="o">%</span> <span class="mi">25</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span> <span class="p">:]</span>
-    <span class="n">download_logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Downloading: [</span><span class="si">{</span><span class="n">progress</span><span class="si">}</span><span class="s2">] ?%&quot;</span><span class="p">)</span></div>
+    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Downloading: [</span><span class="si">{</span><span class="n">progress</span><span class="si">}</span><span class="s2">] ?%&quot;</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="progress_reporthook"><a class="viewcode-back" href="../../../api/util/net.html#dffml.util.net.progress_reporthook">[docs]</a><span class="k">def</span> <span class="nf">progress_reporthook</span><span class="p">(</span><span class="n">blocknum</span><span class="p">,</span> <span class="n">blocksize</span><span class="p">,</span> <span class="n">totalsize</span><span class="p">):</span>
+<div class="viewcode-block" id="progress_reporthook"><a class="viewcode-back" href="../../../api/util/net.html#dffml.util.net.progress_reporthook">[docs]</a><span class="k">def</span> <span class="nf">progress_reporthook</span><span class="p">(</span><span class="n">blocknum</span><span class="p">,</span> <span class="n">blocksize</span><span class="p">,</span> <span class="n">totalsize</span><span class="p">,</span> <span class="n">logger</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Serve as a reporthook for monitoring download progress.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">totalsize</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="n">progressbar_no_totalsize</span><span class="p">(</span><span class="n">blocknum</span> <span class="o">+</span> <span class="mi">6</span><span class="p">)</span>
+        <span class="n">progressbar_no_totalsize</span><span class="p">(</span><span class="n">blocknum</span> <span class="o">+</span> <span class="mi">6</span><span class="p">,</span> <span class="n">logger</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">percent</span> <span class="o">=</span> <span class="p">(</span>
             <span class="nb">min</span><span class="p">(</span>
@@ -199,12 +198,11 @@
             <span class="p">)</span>
             <span class="o">*</span> <span class="mi">100</span>
         <span class="p">)</span>
-        <span class="n">progressbar</span><span class="p">(</span><span class="n">percent</span><span class="p">)</span></div>
+        <span class="n">progressbar</span><span class="p">(</span><span class="n">percent</span><span class="p">,</span> <span class="n">logger</span><span class="p">)</span></div>
 
 
 <span class="c1"># Default list of URL protocols allowed</span>
 <span class="n">DEFAULT_PROTOCOL_ALLOWLIST</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;https://&quot;</span><span class="p">]</span>
-<span class="n">download_logger</span> <span class="o">=</span> <span class="n">get_download_logger</span><span class="p">(</span><span class="n">LOGGER</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="validate_protocol"><a class="viewcode-back" href="../../../api/util/net.html#dffml.util.net.validate_protocol">[docs]</a><span class="k">def</span> <span class="nf">validate_protocol</span><span class="p">(</span>
@@ -284,15 +282,18 @@
     <span class="k">if</span> <span class="ow">not</span> <span class="n">target_path</span><span class="o">.</span><span class="n">is_file</span><span class="p">()</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">validate_file_hash</span><span class="p">(</span>
         <span class="n">target_path</span><span class="p">,</span> <span class="n">expected_sha384_hash</span><span class="o">=</span><span class="n">expected_sha384_hash</span><span class="p">,</span> <span class="n">error</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="p">):</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">target_path</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">is_dir</span><span class="p">():</span>
-            <span class="n">target_path</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-        <span class="n">path</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">sync_urlretrieve</span><span class="p">(</span>
-            <span class="n">url</span><span class="p">,</span>
-            <span class="n">filename</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">target_path</span><span class="p">),</span>
-            <span class="n">protocol_allowlist</span><span class="o">=</span><span class="n">protocol_allowlist</span><span class="p">,</span>
-            <span class="n">reporthook</span><span class="o">=</span><span class="n">progress_reporthook</span><span class="p">,</span>
-        <span class="p">)</span>
-        <span class="k">return</span> <span class="n">path</span>
+        <span class="k">with</span> <span class="n">create_download_logger</span><span class="p">(</span><span class="n">LOGGER</span><span class="p">)</span> <span class="k">as</span> <span class="n">download_logger</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">target_path</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">is_dir</span><span class="p">():</span>
+                <span class="n">target_path</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">path</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">sync_urlretrieve</span><span class="p">(</span>
+                <span class="n">url</span><span class="p">,</span>
+                <span class="n">filename</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">target_path</span><span class="p">),</span>
+                <span class="n">protocol_allowlist</span><span class="o">=</span><span class="n">protocol_allowlist</span><span class="p">,</span>
+                <span class="n">reporthook</span><span class="o">=</span><span class="n">partial</span><span class="p">(</span>
+                    <span class="n">progress_reporthook</span><span class="p">,</span> <span class="n">logger</span><span class="o">=</span><span class="n">download_logger</span>
+                <span class="p">),</span>
+            <span class="p">)</span>
+            <span class="k">return</span> <span class="n">path</span>
     <span class="n">validate_file_hash</span><span class="p">(</span>
         <span class="n">target_path</span><span class="p">,</span> <span class="n">expected_sha384_hash</span><span class="o">=</span><span class="n">expected_sha384_hash</span><span class="p">,</span>
     <span class="p">)</span>

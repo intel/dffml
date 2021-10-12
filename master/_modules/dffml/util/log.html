@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>dffml.util.log &mdash; DFFML 3c03addee documentation</title>
+  <title>dffml.util.log &mdash; DFFML e7a356dfe documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/tabs.css" type="text/css" />
@@ -32,7 +32,7 @@
             <a href="../../../index.html" class="icon icon-home"> DFFML
           </a>
               <div class="version">
-                3c03addee
+                e7a356dfe
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -153,14 +153,17 @@
         <span class="k">return</span> <span class="n">rv</span></div>
 
 
-<div class="viewcode-block" id="get_download_logger"><a class="viewcode-back" href="../../../api/util/log.html#dffml.util.log.get_download_logger">[docs]</a><span class="k">def</span> <span class="nf">get_download_logger</span><span class="p">(</span><span class="n">root_logger</span><span class="p">):</span>
+<div class="viewcode-block" id="create_download_logger"><a class="viewcode-back" href="../../../api/util/log.html#dffml.util.log.create_download_logger">[docs]</a><span class="nd">@contextmanager</span>
+<span class="k">def</span> <span class="nf">create_download_logger</span><span class="p">(</span><span class="n">root_logger</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Helper function to create a child logger for displaying download progress</span>
+<span class="sd">    Helper function-based context-manager to create a child logger </span>
+<span class="sd">    for displaying download progress</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">logger</span> <span class="o">=</span> <span class="n">root_logger</span><span class="o">.</span><span class="n">getChild</span><span class="p">(</span><span class="s2">&quot;download_logger&quot;</span><span class="p">)</span>
     <span class="n">duplicate_filter</span> <span class="o">=</span> <span class="n">DuplicateFilter</span><span class="p">()</span>
     <span class="n">logger</span><span class="o">.</span><span class="n">addFilter</span><span class="p">(</span><span class="n">duplicate_filter</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">logger</span></div>
+    <span class="k">yield</span> <span class="n">logger</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">removeFilter</span><span class="p">(</span><span class="n">duplicate_filter</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="log_time"><a class="viewcode-back" href="../../../api/util/log.html#dffml.util.log.log_time">[docs]</a><span class="k">def</span> <span class="nf">log_time</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
