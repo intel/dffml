@@ -108,6 +108,8 @@ all the same fundamentally.
             default=os.environ.get("GITHUB_TOKEN", None),
         )
 
+    make_config_inspect(github.Commit.create_status)
+
     @dffml.op(
         inputs={"repo": github_get_repo.op.outputs["repo"],},
         outputs={
@@ -116,7 +118,7 @@ all the same fundamentally.
             ),
         },
     )
-    def github_repo_create_status(repo, sha):
+    def github_repo_create_status(repo, sha, status):
         # sha -> commit on which the status check will be created
         # For example, for a webhook payload
         # sha = data["pull_request"]["head"]["sha"]
