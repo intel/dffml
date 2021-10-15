@@ -99,7 +99,9 @@ jobs:
         - feature/auth
         - service/http
         - configloader/yaml
-        python-version: [3.7]
+        - configloader/image
+        - source/mongodb
+        python-version: [3.7, 3.8]
 
     steps:
     - uses: actions/checkout@v2
@@ -161,6 +163,7 @@ jobs:
         model/pytorch=${{ secrets.PYPI_MODEL_PYTORCH }}
         model/xgboost=${{ secrets.PYPI_MODEL_XGBOOST }}
         source/mysql=${{ secrets.PYPI_SOURCE_MYSQL }}
+        source/mongodb=${{ secrets.PYPI_SOURCE_MONGODB }}
         feature/git=${{ secrets.PYPI_FEATURE_GIT }}
         feature/auth=${{ secrets.PYPI_FEATURE_AUTH }}
         operations/binsec=${{ secrets.PYPI_OPERATIONS_BINSEC }}
