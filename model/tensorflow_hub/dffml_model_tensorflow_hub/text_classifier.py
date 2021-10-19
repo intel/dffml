@@ -89,6 +89,7 @@ class TextClassifierContext(ModelContext):
     async def __aenter__(self):
         if not self.parent._model:
             self.parent._model = self.createModel()
+            self.is_trained = False
         return self
 
     async def __aexit__(self, exc_type, exc_value, traceback):
@@ -227,6 +228,7 @@ class TextClassifierContext(ModelContext):
             batch_size=self.parent.config.batch_size,
             verbose=1,
         )
+        self.is_trained = True
 
     async def predict(
         self, sources: SourcesContext
@@ -234,7 +236,7 @@ class TextClassifierContext(ModelContext):
         """
         Uses trained data to make a prediction about the quality of a record.
         """
-        if not self.parent.model_path.exists():
+        if not self.is_trained:
             raise ModelNotTrained("Train model before assessing for accuracy.")
 
         async for record in sources.with_features(self.parent.features):
@@ -380,6 +382,7 @@ class TextClassificationModel(Model):
             self._model = self.tf.keras.models.load_model(
                 self.model_folder_path
             )
+            self.is_trained = True
         return self
 
     async def __aexit__(self, exc_type, exc_value, traceback):
