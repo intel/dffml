@@ -26,7 +26,7 @@ class SklearnModelAccuracyContext(AccuracyContext):
     async def score(
         self, mctx: ModelContext, sctx: SourcesContext, *features: Feature,
     ):
-        if not mctx.parent.clf_path.is_file():
+        if not mctx.is_trained:
             raise ModelNotTrained("Train model before assessing for accuracy.")
 
         if mctx.parent.clf._estimator_type not in ("classifier", "regressor"):
