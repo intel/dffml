@@ -74,6 +74,7 @@ class Scikit(Model):
         self.clf_path = self._filepath / "ScikitFeatures.joblib"
         if self.clf_path.is_file():
             self.clf = self.joblib.load(str(self.clf_path))
+            self.is_trained = True
         return self
 
     async def __aexit__(self, exc_type, exc_value, traceback):
@@ -92,6 +93,7 @@ class ScikitUnsprvised(Scikit):
         self.clf_path = self._filepath / "ScikitUnsupervised.json"
         if self.clf_path.is_file():
             self.clf = self.joblib.load(str(self.clf_path))
+            self.is_trained = True
 
         return self
 
@@ -180,11 +182,12 @@ class ScikitContext(ModelContext):
                     "Model does not support multi-output. Please refer the docs to find a suitable model entrypoint."
                 )
         self.parent.clf.fit(xdata, ydata)
+        self.is_trained = True
 
     async def predict(
         self, sources: SourcesContext
     ) -> AsyncIterator[Tuple[Record, Any, float]]:
-        if not self.parent.clf_path.is_file():
+        if not self.is_trained:
             raise ModelNotTrained("Train model before prediction.")
         async for record in sources.with_features(self.features):
             record_data = []
@@ -239,11 +242,12 @@ class ScikitContextUnsprvised(ScikitContext):
         xdata = self.np.array(xdata)
         self.logger.info("Number of input records: {}".format(len(xdata)))
         self.parent.clf.fit(xdata)
+        self.is_trained = True
 
     async def predict(
         self, sources: SourcesContext
     ) -> AsyncIterator[Tuple[Record, Any, float]]:
-        if not self.parent.clf_path.is_file():
+        if not self.is_trained:
             raise ModelNotTrained("Train model before prediction.")
         estimator_type = self.parent.clf._estimator_type
         if estimator_type == "clusterer":
