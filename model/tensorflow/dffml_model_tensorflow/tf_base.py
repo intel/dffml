@@ -70,9 +70,10 @@ class TensorflowModelContext(ModelContext):
         self.parent.model.train(
             input_fn=input_fn, steps=self.parent.config.steps
         )
+        self.is_trained = True
 
     async def get_predictions(self, sources: SourcesContext):
-        if not self.parent.base_path.exists():
+        if not self.is_trained:
             raise ModelNotTrained("Train model before prediction.")
         # Create the input function
         input_fn, predict = await self.predict_input_fn(sources)
@@ -140,6 +141,10 @@ class TensorflowModel(Model):
             if not hasattr(self, "temp_dir")
             else self.temp_dir
         )
+
+    @property
+    def is_trained(self):
+        return self.base_path.exists()
 
     @property
     def model_path(self):

@@ -23,7 +23,7 @@ class TextClassifierAccuracyContext(AccuracyContext):
     async def score(
         self, modelcontext: ModelContext, sources: Sources, *features: Features
     ):
-        if not modelcontext.parent.model_path.exists():
+        if not modelcontext.is_trained:
             raise ModelNotTrained("Train model before assessing for accuracy.")
         x, y = await modelcontext.train_data_generator(sources)
         accuracy_score = modelcontext.parent._model.evaluate(x, y)
