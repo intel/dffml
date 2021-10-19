@@ -29,7 +29,7 @@ class SpacyNerAccuracyContext(AccuracyContext):
     async def score(
         self, mctx: ModelContext, sources: SourcesContext, *features: Features
     ):
-        if not mctx.parent.model_path.exists():
+        if not mctx.is_trained:
             raise ModelNotTrained("Train model before assessing for accuracy.")
 
         test_examples = await mctx._preprocess_data(sources)

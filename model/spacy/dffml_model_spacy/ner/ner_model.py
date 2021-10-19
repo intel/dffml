@@ -101,11 +101,12 @@ class SpacyNERModelContext(ModelContext):
                         losses=losses,
                     )
                 self.logger.debug(f"Losses: {losses}")
+        self.is_trained = True
 
     async def predict(
         self, sources: SourcesContext
     ) -> AsyncIterator[Tuple[Record, Any, float]]:
-        if not self.parent.model_path.exists():
+        if not self.is_trained:
             raise ModelNotTrained("Train model before prediction.")
 
         async for record in sources.records():
@@ -303,9 +304,11 @@ class SpacyNERModel(Model):
         if self.model_path.exists():
             self.nlp = spacy.load(self.model_path)
             self.logger.debug("Loaded model from disk.")
+            self.is_trained = True
         elif self.config.model_name:
             self.nlp = spacy.load(self.config.model_name)
             self.logger.debug(f"Loaded model {self.config.model_name}")
+            self.is_trained = True
         else:
             self.nlp = spacy.blank("en")
             self.logger.debug("Created blank 'en' model")
