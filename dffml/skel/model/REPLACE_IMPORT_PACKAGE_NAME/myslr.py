@@ -16,15 +16,11 @@ from dffml import (
 
 
 def matrix_subtract(one, two):
-    return [
-        one_element - two_element for one_element, two_element in zip(one, two)
-    ]
+    return [one_element - two_element for one_element, two_element in zip(one, two)]
 
 
 def matrix_multiply(one, two):
-    return [
-        one_element * two_element for one_element, two_element in zip(one, two)
-    ]
+    return [one_element * two_element for one_element, two_element in zip(one, two)]
 
 
 def squared_error(y, line):
@@ -55,9 +51,7 @@ def best_fit_line(x, y):
 
 @config
 class MySLRModelConfig:
-    features: Features = field(
-        "Features to train on (myslr only supports one)"
-    )
+    features: Features = field("Features to train on (myslr only supports one)")
     predict: Feature = field("Label or the value to be predicted")
     location: pathlib.Path = field("Location where state should be saved")
 
@@ -201,19 +195,18 @@ class MySLRModel(SimpleModel):
         self.logger.debug("Number of training records: %d", len(x))
         # Save m, b, and accuracy
         self.storage["regression_line"] = best_fit_line(x, y)
+        self.is_trained = True
 
     async def predict(self, sources: SourcesContext) -> AsyncIterator[Record]:
         # Load saved regression line
         regression_line = self.storage.get("regression_line", None)
         # Ensure the model has been trained before we try to make a prediction
-        if regression_line is None:
+        if not self.is_trained:
             raise ModelNotTrained("Train model before prediction")
         # Expand the regression_line into named variables
         m, b, accuracy = regression_line
         # Iterate through each record that needs a prediction
-        async for record in sources.with_features(
-            [self.config.features[0].name]
-        ):
+        async for record in sources.with_features([self.config.features[0].name]):
             # Grab the x data from the record
             x = record.feature(self.config.features[0].name)
             # Calculate y
