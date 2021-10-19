@@ -67,7 +67,6 @@ class TestDevelopCreate(AsyncTestCase):
             ("README.rst",),
             ("MANIFEST.in",),
             (import_name, "__init__.py"),
-            (import_name, "version.py"),
             ("tests", "__init__.py"),
         ] + package_specific_files:
             check = os.path.join(root, *filename)
