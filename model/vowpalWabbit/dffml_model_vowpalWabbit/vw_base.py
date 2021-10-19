@@ -210,11 +210,12 @@ class VWContext(ModelContext):
                 X = vw_data
             for x in X:
                 self.parent.clf.learn(x)
+        self.is_trained = True
 
     async def predict(
         self, sources: SourcesContext
     ) -> AsyncIterator[Tuple[Record, Any, float]]:
-        if not os.path.isfile(self.parent.model_filename):
+        if not self.is_trained:
             raise ModelNotTrained("Train model before prediction.")
         importance, tag, base = None, None, None
         if self.parent.config.importance:
@@ -363,6 +364,10 @@ class VWModel(Model):
     def model_filename(self):
         model_name = self._features_hash + ".vw"
         return self._base_path / model_name
+
+    @property
+    def is_trained(self):
+        return self.model_filename.exists()
 
     def _load_model(self):
         formatted_args = ""
