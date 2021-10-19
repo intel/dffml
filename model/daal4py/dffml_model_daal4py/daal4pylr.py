@@ -188,6 +188,7 @@ class DAAL4PyLRModel(SimpleModel):
     def load_model(self):
         if self.path.is_file():
             self.lm_trained = self.joblib.load(self.path)
+            self.is_trained = True
 
     def filepath(self, location, file_name):
         return location / file_name
@@ -206,12 +207,13 @@ class DAAL4PyLRModel(SimpleModel):
             ydata = df[self.parent.config.predict.name]
             self.lm.compute(xdata, ydata)
         self.lm_trained = self.lm.finalize().model
+        self.is_trained = True
 
     async def predict(
         self, sources: SourcesContext
     ) -> AsyncIterator[Tuple[Record, Any, float]]:
         # Iterate through each record that needs a prediction
-        if self.lm_trained is None:
+        if not self.is_trained:
             raise ModelNotTrained("Train model before prediction.")
         async for record in sources.with_features(
             self.parent.config.features.names()
