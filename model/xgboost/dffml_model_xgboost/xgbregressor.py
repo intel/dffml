@@ -186,6 +186,7 @@ class XGBRegressorModel(SimpleModel):
         # Load saved model if it exists
         if self.saved_filepath.is_file():
             self.saved = joblib.load(str(self.saved_filepath))
+            self.is_trained = True
         return self
 
     async def __aexit__(self, exc_type, exc_value, traceback):
@@ -229,12 +230,13 @@ class XGBRegressorModel(SimpleModel):
         )
 
         self.saved.fit(x_data, y_data)
+        self.is_trained = True
 
     async def predict(self, sources: Sources) -> AsyncIterator[Record]:
         """
         Uses saved model to make prediction off never seen before data
         """
-        if not self.saved:
+        if not self.is_trained:
             raise ModelNotTrained(
                 "Train the model first before getting predictions"
             )
