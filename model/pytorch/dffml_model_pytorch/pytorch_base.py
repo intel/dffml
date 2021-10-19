@@ -298,6 +298,7 @@ class PyTorchModelContext(ModelContext):
                 "Best Validation Accuracy: {:4f}".format(best_acc)
             )
             self.parent.model.load_state_dict(best_model_wts)
+        self.is_trained = True
 
     async def predict(
         self, sources: SourcesContext
@@ -305,7 +306,7 @@ class PyTorchModelContext(ModelContext):
         """
         Uses trained data to make a prediction about the quality of a record.
         """
-        if not self.parent.model_path.exists():
+        if not self.is_trained:
             raise ModelNotTrained("Train model before prediction.")
 
         self.parent.model.eval()
@@ -399,6 +400,7 @@ class PyTorchModel(Model):
         if self.model_path.exists():
             self.logger.info(f"Using saved model from {self.model_path}")
             self.model = torch.load(self.model_path)
+            self.is_trained = True
         else:
             self.model = self.createModel()
         return self
