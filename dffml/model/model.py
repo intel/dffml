@@ -53,6 +53,16 @@ class ModelContext(abc.ABC, BaseDataFlowFacilitatorObjectContext):
     def __init__(self, parent: "Model") -> None:
         self.parent = parent
 
+    @property
+    def is_trained(self):
+        return self.parent.is_trained
+
+    @is_trained.setter
+    def is_trained(self, new):
+        # This is done to avoid inconsistency of trained
+        # status between the parent and the context.
+        self.parent.is_trained = new
+
     @abc.abstractmethod
     async def train(self, sources: Sources):
         """
@@ -66,7 +76,6 @@ class ModelContext(abc.ABC, BaseDataFlowFacilitatorObjectContext):
         Uses trained data to make a prediction about the quality of a record.
         """
         raise NotImplementedError()
-        yield (Record(""), "", 0.0)  # skipcq: PYL-W0101
 
 
 @base_entry_point("dffml.model", "model")
@@ -93,6 +102,7 @@ class Model(BaseDataFlowFacilitatorObject):
         # location config properties
         with self.config.no_enforce_immutable():
             self.config.location = location
+        self.is_trained = False
 
     def __call__(self) -> ModelContext:
         return self.CONTEXT(self)
@@ -116,6 +126,8 @@ class Model(BaseDataFlowFacilitatorObject):
             await self._run_operation(
                 self.config.location, self.temp_dir, load_flow
             )
+            # When restoring from a file, we should have a pretrained model.
+            self.is_trained = True
             # Load values from config if it exists
             config_path = self.temp_dir / "config.json"
             if config_path.exists():
@@ -259,6 +271,8 @@ class SimpleModel(Model):
             self.logger.debug("Loaded model from %s", filepath)
         else:
             self.logger.debug("No saved model in %s", filepath)
+        # Set is_trained flag to true after loading
+        self.is_trained = True
 
     def close(self):
         """
