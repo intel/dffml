@@ -24,7 +24,7 @@ class PytorchAccuracyContext(AccuracyContext):
     async def score(
         self, mctx: ModelContext, sctx: Sources, *features: Features
     ):
-        if not mctx.parent.model_path.exists():
+        if not mctx.is_trained:
             raise ModelNotTrained("Train model before assessing for accuracy.")
 
         dataset, size = await mctx.dataset_generator(sctx)
