@@ -32,6 +32,7 @@ class FBProphetModel(SimpleModel):
         # Load saved model if it exists
         if self.saved_filepath.is_file():
             self.saved = joblib.load(str(self.saved_filepath))
+            self.is_trained = True
 
     async def train(self, sources: SourcesContext) -> None:
         # Create a pandas DataFrame from the records with the features we care
@@ -56,6 +57,8 @@ class FBProphetModel(SimpleModel):
         self.saved.fit(df)
         # Save the model
         joblib.dump(self.saved, str(self.saved_filepath))
+        # Set the is_trained flag to True
+        self.is_trained = True
 
     async def accuracy(self, sources: SourcesContext) -> Accuracy:
         # We're not going to calculate accuracy in the example
@@ -63,7 +66,7 @@ class FBProphetModel(SimpleModel):
 
     async def predict(self, sources: SourcesContext) -> AsyncIterator[Record]:
         # Ensure there is a saved model
-        if not self.saved:
+        if not self.is_trained:
             raise ModelNotTrained("Train the model before making predictions")
         # Load all the records into memory for the sake of speed
         records = [
