@@ -34,7 +34,7 @@ class AnomalyDetectionAccuracyContext(AccuracyContext):
         # Load saved anomalies
         anomalies = mctx.storage.get("anomalies", None)
         # Ensure the model has been trained before we try to make a prediction
-        if anomalies is None:
+        if not mctx.is_trained:
             raise ModelNotTrained("Train model before assessing for accuracy.")
 
         epsilon, _F1val, mu, sigma2 = anomalies
