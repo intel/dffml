@@ -51,6 +51,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   same, it still accepts a name or a path.
 - Renamed `accuracy()` to `score()`.
 - Renamed `Optimizer` to `Tuner`.
+- High-level functions now accept list for data.
 ### Fixed
 - Record object key properties are now always strings
 - High level functions (`train()`, etc.) now work on existing open contexts

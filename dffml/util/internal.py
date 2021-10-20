@@ -14,6 +14,13 @@ from ..source.source import (
 from ..source.memory import MemorySource, MemorySourceConfig
 
 
+class CannotConvertToRecord(Exception):
+    """
+    Raised when a list is provided to convert to records but the model doesn't
+    exist.
+    """
+
+
 @contextlib.asynccontextmanager
 async def records_to_sources(*args):
     """
@@ -55,3 +62,13 @@ async def records_to_sources(*args):
             for already_open_sctx in sctxs:
                 sctx.append(already_open_sctx)
             yield sctx
+
+
+def list_records_to_dict(features, *args, model=None):
+    if model:
+        args = list(args)
+        for i in range(len(args)):
+            if isinstance(args[i], list):
+                args[i] = dict(zip(features, args[i]))
+        return args
+    raise CannotConvertToRecord("Model does not exist!")

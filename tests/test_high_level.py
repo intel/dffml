@@ -135,6 +135,16 @@ class TestML(AsyncTestCase):
         self.assertEqual(round(predictions[0][2]["Salary"]["value"]), 70)
         self.assertEqual(round(predictions[1][2]["Salary"]["value"]), 80)
 
+        # Test input data as list
+        await train(model, *self.train_data)
+        await score(model, scorer, Feature("Salary", int, 1), *self.test_data)
+        predictions = [
+            prediction
+            async for prediction in predict(model, *self.predict_data)
+        ]
+        self.assertEqual(round(predictions[0][2]["Salary"]["value"]), 70)
+        self.assertEqual(round(predictions[1][2]["Salary"]["value"]), 80)
+
 
 class TestDataFlow(TestOrchestrator):
     @contextlib.asynccontextmanager
