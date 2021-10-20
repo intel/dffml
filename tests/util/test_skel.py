@@ -16,7 +16,6 @@ COMMON_FILES = list(
             ("setup.py",),
             ("setup.cfg",),
             ("MANIFEST.in",),
-            ("REPLACE_IMPORT_PACKAGE_NAME", "version.py"),
             ("REPLACE_IMPORT_PACKAGE_NAME", "__init__.py"),
             ("tests/__init__.py",),
         ],
