@@ -1,15 +1,15 @@
 import contextlib
-from typing import Union, Dict, Any
+from typing import Union, Dict, Any, List
 
 from ..record import Record
 from ..source.source import BaseSource
 from ..feature import Feature, Features
 from ..model import Model, ModelContext
-from ..util.internal import records_to_sources
+from ..util.internal import records_to_sources, list_records_to_dict
 from ..accuracy.accuracy import AccuracyScorer, AccuracyContext
 
 
-async def train(model, *args: Union[BaseSource, Record, Dict[str, Any]]):
+async def train(model, *args: Union[BaseSource, Record, Dict[str, Any], List]):
     """
     Train a machine learning model.
 
@@ -51,6 +51,23 @@ async def train(model, *args: Union[BaseSource, Record, Dict[str, Any]]):
     >>>
     >>> asyncio.run(main())
     """
+    if (
+        hasattr(model.config, "features")
+        and any(isinstance(arg, list) for arg in args)
+        and hasattr(model.config, "predict")
+    ):
+        if isinstance(model.config.predict, Features):
+            predict_feature = [
+                feature.name for feature in model.config.predict
+            ]
+        else:
+            predict_feature = [model.config.predict.name]
+        args = list_records_to_dict(
+            [feature.name for feature in model.config.features]
+            + predict_feature,
+            *args,
+            model=model,
+        )
     async with contextlib.AsyncExitStack() as astack:
         # Open sources
         sctx = await astack.enter_async_context(records_to_sources(*args))
@@ -68,7 +85,7 @@ async def score(
     model,
     accuracy_scorer: Union[AccuracyScorer, AccuracyContext],
     features: Union[Feature, Features],
-    *args: Union[BaseSource, Record, Dict[str, Any]],
+    *args: Union[BaseSource, Record, Dict[str, Any], List],
 ) -> float:
     """
     Assess the accuracy of a machine learning model.
@@ -138,6 +155,21 @@ async def score(
         )
     if isinstance(features, Feature):
         features = Features(features)
+    if any(isinstance(arg, list) for arg in args) and hasattr(
+        model.config, "predict"
+    ):
+        if isinstance(model.config.predict, Features):
+            predict_feature = [
+                feature.name for feature in model.config.predict
+            ]
+        else:
+            predict_feature = [model.config.predict.name]
+        args = list_records_to_dict(
+            [feature.name for feature in model.config.features]
+            + predict_feature,
+            *args,
+            model=model,
+        )
 
     async with contextlib.AsyncExitStack() as astack:
         # Open sources
@@ -164,7 +196,7 @@ async def score(
 
 async def predict(
     model,
-    *args: Union[BaseSource, Record, Dict[str, Any]],
+    *args: Union[BaseSource, Record, Dict[str, Any], List],
     update: bool = False,
     keep_record: bool = False,
 ):
@@ -228,6 +260,21 @@ async def predict(
     {'Years': 6, 'Salary': 70}
     {'Years': 7, 'Salary': 80}
     """
+    if any(isinstance(arg, list) for arg in args) and hasattr(
+        model.config, "predict"
+    ):
+        if isinstance(model.config.predict, Features):
+            predict_feature = [
+                feature.name for feature in model.config.predict
+            ]
+        else:
+            predict_feature = [model.config.predict.name]
+        args = list_records_to_dict(
+            [feature.name for feature in model.config.features]
+            + predict_feature,
+            *args,
+            model=model,
+        )
     async with contextlib.AsyncExitStack() as astack:
         # Open sources
         sctx = await astack.enter_async_context(records_to_sources(*args))
