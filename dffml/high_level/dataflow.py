@@ -179,5 +179,5 @@ async def run(
         orchestrator = MemoryOrchestrator.withconfig({})
     async with orchestrator:
         async with orchestrator(dataflow) as ctx:
-            async for ctx, results in ctx.run(*input_sets):
+            async for ctx, results in ctx.run(*input_sets, strict=strict):
                 yield ctx, results
