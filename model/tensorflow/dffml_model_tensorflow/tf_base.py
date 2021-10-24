@@ -91,6 +91,7 @@ class TensorflowModel(Model):
         self.tf = importlib.import_module("tensorflow")
         self.feature_columns = self._feature_columns()
         self.features = self._applicable_features()
+        self.is_trained = self.model_path.exists()
 
     def _feature_columns(self):
         """
@@ -141,10 +142,6 @@ class TensorflowModel(Model):
             if not hasattr(self, "temp_dir")
             else self.temp_dir
         )
-
-    @property
-    def is_trained(self):
-        return self.base_path.exists()
 
     @property
     def model_path(self):
