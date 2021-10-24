@@ -322,6 +322,7 @@ class VWModel(Model):
         self.features = self.applicable_features(self.config.features)
         self._features_hash = self._feature_predict_hash()
         self.clf = None
+        self.is_trained = self.model_filename.exists()
 
     @property
     def _base_path(self):
@@ -364,10 +365,6 @@ class VWModel(Model):
     def model_filename(self):
         model_name = self._features_hash + ".vw"
         return self._base_path / model_name
-
-    @property
-    def is_trained(self):
-        return self.model_filename.exists()
 
     def _load_model(self):
         formatted_args = ""
