@@ -134,16 +134,8 @@ class TensorflowModel(Model):
         ]
 
     @property
-    def base_path(self):
-        return (
-            self.config.location
-            if not hasattr(self, "temp_dir")
-            else self.temp_dir
-        )
-
-    @property
     def model_path(self):
-        return self.base_path / "DNNModel"
+        return self.location / "DNNModel"
 
     async def __aenter__(self):
         await super().__aenter__()

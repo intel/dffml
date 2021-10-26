@@ -106,8 +106,7 @@ class Model(BaseDataFlowFacilitatorObject):
                     in ["zip", "tar"],
                 ]
             ):
-                temp_dir = self._get_directory()
-                self.location = temp_dir
+                self.create_temp_directory()
             else:
                 self._make_config_location()
 
@@ -184,10 +183,9 @@ class Model(BaseDataFlowFacilitatorObject):
         async for _, _ in run(dataflow):
             pass
 
-    def _get_directory(self) -> pathlib.Path:
+    def create_temp_directory(self):
         if not hasattr(self, "temp_dir"):
             self.temp_dir = pathlib.Path(mkdtemp())
-        return self.temp_dir
 
     def _make_config_location(self):
         """
@@ -199,6 +197,14 @@ class Model(BaseDataFlowFacilitatorObject):
             location = pathlib.Path(location)
             if not location.is_dir():
                 location.mkdir(mode=MODE_BITS_SECURE, parents=True)
+
+    @property
+    def location(self):
+        return (
+            self.config.location
+            if not hasattr(self, "temp_dir")
+            else self.temp_dir
+        )
 
 
 class SimpleModelNoContext:
@@ -284,12 +290,7 @@ class SimpleModel(Model):
         if "features" in exported:
             exported["features"] = dict(sorted(exported["features"].items()))
         # Hash the exported config
-        return pathlib.Path(
-            self.config.location
-            if not hasattr(self, "temp_dir")
-            else self.temp_dir,
-            "Model",
-        )
+        return pathlib.Path(self.location, "Model",)
 
     def applicable_features(self, features):
         usable = []

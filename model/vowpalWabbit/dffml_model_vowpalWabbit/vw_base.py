@@ -322,14 +322,6 @@ class VWModel(Model):
         self._features_hash = self._feature_predict_hash()
         self.clf = None
 
-    @property
-    def _base_path(self):
-        return (
-            self.config.location
-            if not hasattr(self, "temp_dir")
-            else self.temp_dir
-        )
-
     def applicable_features(self, features):
         usable = []
         for feature in features:
@@ -362,7 +354,7 @@ class VWModel(Model):
     @property
     def model_filename(self):
         model_name = self._features_hash + ".vw"
-        return self._base_path / model_name
+        return self.location / model_name
 
     def _load_model(self):
         formatted_args = ""
@@ -397,7 +389,7 @@ class VWModel(Model):
         saved_file_name = (
             secure_hash(self.config.predict.name, algorithm="sha384") + ".json"
         )
-        return self._base_path / saved_file_name
+        return self.location / saved_file_name
 
     async def __aenter__(self) -> "VWModel":
         await super().__aenter__()

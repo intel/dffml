@@ -58,20 +58,12 @@ class Scikit(Model):
         self.clf = None
         self.joblib = importlib.import_module("joblib")
 
-    @property
-    def _filepath(self):
-        return (
-            self.config.location
-            if not hasattr(self, "temp_dir")
-            else self.temp_dir
-        )
-
     async def __aenter__(self) -> "Scikit":
         await super().__aenter__()
-        self.saved_filepath = self._filepath / "Scikit.json"
+        self.saved_filepath = self.location / "Scikit.json"
         if self.saved_filepath.is_file():
             self.saved = json.loads(self.saved_filepath.read_text())
-        self.clf_path = self._filepath / "ScikitFeatures.joblib"
+        self.clf_path = self.location / "ScikitFeatures.joblib"
         if self.clf_path.is_file():
             self.clf = self.joblib.load(str(self.clf_path))
         return self
@@ -86,10 +78,10 @@ class Scikit(Model):
 class ScikitUnsprvised(Scikit):
     async def __aenter__(self) -> "ScikitUnsprvised":
         await super().__aenter__()
-        self.saved_filepath = self._filepath / "Scikit.json"
+        self.saved_filepath = self.location / "Scikit.json"
         if self.saved_filepath.is_file():
             self.saved = json.loads(self.saved_filepath.read_text())
-        self.clf_path = self._filepath / "ScikitUnsupervised.json"
+        self.clf_path = self.location / "ScikitUnsupervised.json"
         if self.clf_path.is_file():
             self.clf = self.joblib.load(str(self.clf_path))
 
