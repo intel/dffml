@@ -473,16 +473,23 @@ class Diagram(CMD):
 
     CONFIG = DiagramConfig
 
+    async def __aenter__(self):
+        if not isinstance(self.dataflow, DataFlow):
+            dataflow_path = pathlib.Path(self.dataflow)
+            config_cls = self.configloader
+            if config_cls is None:
+                config_type = dataflow_path.suffix.replace(".", "")
+                config_cls = BaseConfigLoader.load(config_type)
+            async with config_cls.withconfig(
+                self.extra_config
+            ) as configloader:
+                async with configloader() as loader:
+                    exported = await loader.loadb(dataflow_path.read_bytes())
+                    self.dataflow = DataFlow._fromdict(**exported)
+        return self
+
     async def run(self):
-        dataflow_path = pathlib.Path(self.dataflow)
-        config_cls = self.configloader
-        if config_cls is None:
-            config_type = dataflow_path.suffix.replace(".", "")
-            config_cls = BaseConfigLoader.load(config_type)
-        async with config_cls.withconfig(self.extra_config) as configloader:
-            async with configloader() as loader:
-                exported = await loader.loadb(dataflow_path.read_bytes())
-                dataflow = DataFlow._fromdict(**exported)
+        dataflow = self.dataflow
         print(f"graph {self.display}")
         for stage in Stage:
             # Skip stage if not wanted
