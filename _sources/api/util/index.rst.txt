@@ -8,17 +8,17 @@ Utilities
     :maxdepth: 2
     :caption: Contents:
 
-    asynctestcase
     packaging
-    skel
-    tempdir
-    entrypoint
     asynchelper
-    display
     os
+    skel
+    display
+    entrypoint
     log
-    net
     data
+    net
+    tempdir
+    asynctestcase
     testing/index
-    cli/index
     config/index
+    cli/index

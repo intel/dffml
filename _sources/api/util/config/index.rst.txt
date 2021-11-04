@@ -6,5 +6,5 @@ Util Config
     :caption: Contents:
 
     fields
-    exceptions
     numpy
+    exceptions
