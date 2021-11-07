@@ -1060,8 +1060,8 @@ class MemoryOperationImplementationNetworkContext(
     async def instantiate(
         self,
         operation: Operation,
-        config: BaseConfig,
         *,
+        config: BaseConfig = None,
         opimp: OperationImplementation = None,
     ) -> bool:
         """
@@ -1073,9 +1073,18 @@ class MemoryOperationImplementationNetworkContext(
                 opimp = OperationImplementation.load(operation.name)
             else:
                 raise OperationImplementationNotInstantiable(operation.name)
-        # Set the correct instance_name
         opimp = copy.deepcopy(opimp)
         opimp.op = operation
+        if config is None:
+            config_cls = getattr(opimp, "CONFIG", BaseConfig)
+            config = config_cls()
+            self.logger.debug(
+                "Instantiating operation implementation %s(%s) with default config: %r",
+                operation.instance_name,
+                operation.name,
+                config,
+            )
+        # Set the correct instance_name
         self.operations[
             operation.instance_name
         ] = await self._stack.enter_async_context(opimp(config))
@@ -1393,26 +1402,22 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
                     opimp_config = dataflow.configs.get(
                         operation.instance_name, None
                     )
-                    if opimp_config is None:
-                        self.logger.debug(
-                            "Instantiating operation implementation %s(%s) with base config",
-                            operation.instance_name,
-                            operation.name,
+                    if (
+                        opimp_config is not None
+                        and isinstance(opimp_config, dict)
+                        and hasattr(
+                            getattr(opimp, "CONFIG", False), "_fromdict"
                         )
-                        opimp_config = BaseConfig()
-                    else:
+                    ):
                         self.logger.debug(
                             "Instantiating operation implementation %s(%s) with provided config %r",
                             operation.instance_name,
                             operation.name,
                             opimp_config,
                         )
-                    if isinstance(opimp_config, dict) and hasattr(
-                        getattr(opimp, "CONFIG", False), "_fromdict"
-                    ):
                         opimp_config = opimp.CONFIG._fromdict(**opimp_config)
                     await self.nctx.instantiate(
-                        operation, opimp_config, opimp=opimp
+                        operation, config=opimp_config, opimp=opimp
                     )
 
     async def seed_inputs(
