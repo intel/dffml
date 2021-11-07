@@ -39,6 +39,12 @@ setting.
 ..
     TODO
 
+     - Cleanup jobs, secrets, configmaps
+
+     - Refactor to separate output of config files from kubectl
+       apply commands. This would allow users to manually apply if they
+       wanted to.
+
      - Add properties to dataflows to allow them to raise issues with the way
        they might be executed.
 
@@ -56,6 +62,7 @@ setting.
       Might be able to leverage "Loaders" of https://github.com/malwaredllc/byob
 """
 import os
+import enum
 import json
 import pathlib
 import tarfile
@@ -65,12 +72,15 @@ import contextlib
 import asyncio.subprocess
 from typing import AsyncIterator, Tuple, Dict, Any, List
 
-from .base import BaseContextHandle
+from ..high_level.dataflow import run
+from .types import DataFlow, Definition, Input
+from .base import BaseOrchestrator, BaseContextHandle
 from .memory import (
     MemoryOrchestratorConfig,
     MemoryOrchestratorContext,
     MemoryOrchestrator,
 )
+from ..operation.output import GetSingle, get_single_spec
 from ..base import config, field
 from ..util.crypto import secure_hash
 from ..util.data import export
@@ -82,11 +92,23 @@ from ..util.subprocess import (
     exec_subprocess,
     Subprocess,
 )
+from ..util.internal import load_dataflow_from_configloader
 
 # TODO Use importlib.resources instead of reading via pathlib
 python_code: str = pathlib.Path(__file__).parent.joinpath(
     "kubernetes_execute_pickled_dataflow_with_inputs.py"
 ).read_text()
+
+
+class JobKubernetesOrchestratorPreApplyDefinitions(enum.Enum):
+    KUSTOMIZATION = Definition(
+        name="kubernetes.job.kustomization", primitive="string"
+    )
+    JOB = Definition(name="kubernetes.job.job", primitive="string")
+    # The BaseInputSetContext about to be applied
+    CONTEXT = Definition(name="kubernetes.job.context", primitive="object")
+    # The temporary directory we're creating job files in
+    TEMPDIR = Definition(name="kubernetes.job.tempdir", primitive="string")
 
 
 # TODO Move requirements logic to own prep dataflow which get's executed before
@@ -105,6 +127,15 @@ class JobKubernetesOrchestratorConfig(MemoryOrchestratorConfig):
         "Python requirements to install before execution",
         default_factory=lambda: [],
     )
+    # TODO Figure out how to make an operation a CMD. Then this object would
+    # also include the orchestrator
+    preapply: DataFlow = field(
+        "DataFlow run on all kubernetes resources before they are applied",
+        default=None,
+    )
+    opreapply: BaseOrchestrator = field(
+        "Orchestrator for preapply dataflow", default=None,
+    )
 
 
 class JobKubernetesOrchestratorContext(MemoryOrchestratorContext):
@@ -122,6 +153,45 @@ class JobKubernetesOrchestratorContext(MemoryOrchestratorContext):
     ) -> None:
         super().__init__(config, parent)
         self.kubectl = ["kubectl", "--context", self.parent.config.context]
+
+    async def modification_preapply(
+        self,
+        ctx: BaseContextHandle,
+        definition: Definition,
+        value: str,
+        *inputs: Input,
+    ):
+        """
+        It could be useful to implement per-context modifications to the generated YAML
+        files before application to the cluster. This could be implemented by emitting a
+        configuration required event to the parent dataflow. Currently only one
+        dataflow to allow for modification of each context's resources may be given.
+        """
+        if self.parent.config.preapply is None:
+            # Do no modification if there is no dataflow to run for preapply
+            return value
+        async for ctx, results in self.opreapply_ctx.run(
+            [
+                Input(
+                    value=ctx,
+                    definition=JobKubernetesOrchestratorPreApplyDefinitions.CONTEXT.value,
+                ),
+                Input(value=value, definition=definition.value),
+                *inputs,
+            ],
+        ):
+            self.logger.debug("preapply results: %r", results)
+            if not results:
+                return value
+            # Return the value if the resulting dict is a key value mapping
+            if isinstance(results, str):
+                return results
+            elif isinstance(results, dict):
+                return [value for value in results.values()][0]
+            else:
+                raise NotImplementedError(
+                    f"Return value of dataflow was neither dict nor str: {results!r}"
+                )
 
     async def run_operations_for_ctx(
         self, ctx: BaseContextHandle, *, strict: bool = True
@@ -198,25 +268,35 @@ class JobKubernetesOrchestratorContext(MemoryOrchestratorContext):
                 ):
                     with chdir(self.parent.config.workdir.resolve()):
                         tarobj.add(".")
-            # Write out the kustomization.yaml file to create a ConfigMap for
+            # Format the kustomization.yaml file to create a ConfigMap for
             # the Python code and secrets for the dataflow and inputs.
             # https://kubernetes.io/docs/tutorials/configuration/configure-redis-using-configmap/
+            kustomization_contents = textwrap.dedent(
+                f"""
+                configMapGenerator:
+                - name: execute-pickled-dataflow-with-inputs-py
+                  files:
+                  - {execute_pickled_dataflow_with_inputs_path.relative_to(tempdir_path)}
+                secretGenerator:
+                - name: dataflow-inputs
+                  files:
+                  - {dataflow_path.relative_to(tempdir_path)}
+                  - {inputs_path.relative_to(tempdir_path)}
+                  - {requirements_path.relative_to(tempdir_path)}
+                  - {context_path.relative_to(tempdir_path)}
+                """
+            ).lstrip()
+            # Write out the kustomization.yaml file
             tempdir_path.joinpath("kustomization.yaml").write_text(
-                textwrap.dedent(
-                    f"""
-                    configMapGenerator:
-                    - name: execute-pickled-dataflow-with-inputs-py
-                      files:
-                      - {execute_pickled_dataflow_with_inputs_path.relative_to(tempdir_path)}
-                    secretGenerator:
-                    - name: dataflow-inputs
-                      files:
-                      - {dataflow_path.relative_to(tempdir_path)}
-                      - {inputs_path.relative_to(tempdir_path)}
-                      - {requirements_path.relative_to(tempdir_path)}
-                      - {context_path.relative_to(tempdir_path)}
-                    """
-                ).lstrip()
+                await self.modification_preapply(
+                    ctx,
+                    JobKubernetesOrchestratorPreApplyDefinitions.KUSTOMIZATION,
+                    kustomization_contents,
+                    Input(
+                        value=tempdir,
+                        definition=JobKubernetesOrchestratorPreApplyDefinitions.TEMPDIR.value,
+                    ),
+                )
             )
             # Create output file to parse with created objects
             kustomization_apply_path = tempdir_path.joinpath(
@@ -290,6 +370,68 @@ class JobKubernetesOrchestratorContext(MemoryOrchestratorContext):
                 " && ".join([" ".join(cmd) for cmd in commands]),
             ]
             self.logger.debug("command: %r", command)
+            # Format the batch job
+            job_contents = textwrap.dedent(
+                f"""
+                apiVersion: batch/v1
+                kind: Job
+                metadata:
+                  name: {job_name}
+                spec:
+                  template:
+                    spec:
+                      automountServiceAccountToken: false
+                      containers:
+                      - name: {container_name}
+                        image: {self.parent.config.image}
+                        command: {json.dumps(command)}
+                        workingDir: /usr/src/dffml-kubernetes-job-working-dir/
+                        volumeMounts:
+                          # name must match the volume name below
+                          - name: dffml-kubernetes-job-code
+                            mountPath: /usr/src/dffml-kubernetes-job-code
+                          - name: dffml-kubernetes-job-secrets
+                            mountPath: /usr/src/dffml-kubernetes-job-secrets
+                          - name: dffml-kubernetes-job-state
+                            mountPath: /usr/src/dffml-kubernetes-job-state
+                          - name: dffml-kubernetes-job-working-dir
+                            mountPath: /usr/src/dffml-kubernetes-job-working-dir
+                        env:
+                        - name: DATAFLOW
+                          value: /usr/src/dffml-kubernetes-job-secrets/dataflow.json
+                        - name: INPUTS
+                          value: /usr/src/dffml-kubernetes-job-secrets/inputs.json
+                        - name: CONTEXT_LOG_FILE
+                          value: /usr/src/dffml-kubernetes-job-state/context-log.txt
+                        - name: PIP_LOG_FILE
+                          value: /usr/src/dffml-kubernetes-job-state/pip-logs.txt
+                        - name: LOG_FILE
+                          value: /usr/src/dffml-kubernetes-job-state/logs.txt
+                        - name: REQUIREMENTS
+                          value: /usr/src/dffml-kubernetes-job-secrets/requirements.txt
+                        - name: CONTEXT
+                          value: /usr/src/dffml-kubernetes-job-secrets/context.tar.gz
+                        - name: HTTP_PROXY
+                          value: {os.environ["HTTP_PROXY"]}
+                        - name: HTTPS_PROXY
+                          value: {os.environ["HTTPS_PROXY"]}
+                      # The secret data is exposed to Containers in the Pod through a Volume.
+                      volumes:
+                        - name: dffml-kubernetes-job-code
+                          configMap:
+                            # Provide the name of the ConfigMap you want to mount.
+                            name: {configmap_name}
+                        - name: dffml-kubernetes-job-secrets
+                          secret:
+                            secretName: {secret_name}
+                        - name: dffml-kubernetes-job-state
+                          emptyDir: {{}}
+                        - name: dffml-kubernetes-job-working-dir
+                          emptyDir: {{}}
+                      restartPolicy: Never
+                  backoffLimit: 0
+                """
+            ).lstrip()
             # Write out the batch job
             # TODO Make configmap and secrets immutable and volume mounts read
             # only
@@ -298,68 +440,15 @@ class JobKubernetesOrchestratorContext(MemoryOrchestratorContext):
             # start right away then another pod is created, up to backoffLimit
             # more pods will be created on failure.
             tempdir_path.joinpath("job.yml").write_text(
-                textwrap.dedent(
-                    f"""
-                    apiVersion: batch/v1
-                    kind: Job
-                    metadata:
-                      name: {job_name}
-                    spec:
-                      template:
-                        spec:
-                          automountServiceAccountToken: false
-
-                          containers:
-                          - name: {container_name}
-                            image: {self.parent.config.image}
-                            command: {json.dumps(command)}
-                            workingDir: /usr/src/dffml-kubernetes-job-working-dir/
-                            volumeMounts:
-                              # name must match the volume name below
-                              - name: dffml-kubernetes-job-code
-                                mountPath: /usr/src/dffml-kubernetes-job-code
-                              - name: dffml-kubernetes-job-secrets
-                                mountPath: /usr/src/dffml-kubernetes-job-secrets
-                              - name: dffml-kubernetes-job-state
-                                mountPath: /usr/src/dffml-kubernetes-job-state
-                              - name: dffml-kubernetes-job-working-dir
-                                mountPath: /usr/src/dffml-kubernetes-job-working-dir
-                            env:
-                            - name: DATAFLOW
-                              value: /usr/src/dffml-kubernetes-job-secrets/dataflow.json
-                            - name: INPUTS
-                              value: /usr/src/dffml-kubernetes-job-secrets/inputs.json
-                            - name: CONTEXT_LOG_FILE
-                              value: /usr/src/dffml-kubernetes-job-state/context-log.txt
-                            - name: PIP_LOG_FILE
-                              value: /usr/src/dffml-kubernetes-job-state/pip-logs.txt
-                            - name: LOG_FILE
-                              value: /usr/src/dffml-kubernetes-job-state/logs.txt
-                            - name: REQUIREMENTS
-                              value: /usr/src/dffml-kubernetes-job-secrets/requirements.txt
-                            - name: CONTEXT
-                              value: /usr/src/dffml-kubernetes-job-secrets/context.tar.gz
-                            - name: HTTP_PROXY
-                              value: {os.environ["HTTP_PROXY"]}
-                            - name: HTTPS_PROXY
-                              value: {os.environ["HTTPS_PROXY"]}
-                          # The secret data is exposed to Containers in the Pod through a Volume.
-                          volumes:
-                            - name: dffml-kubernetes-job-code
-                              configMap:
-                                # Provide the name of the ConfigMap you want to mount.
-                                name: {configmap_name}
-                            - name: dffml-kubernetes-job-secrets
-                              secret:
-                                secretName: {secret_name}
-                            - name: dffml-kubernetes-job-state
-                              emptyDir: {{}}
-                            - name: dffml-kubernetes-job-working-dir
-                              emptyDir: {{}}
-                          restartPolicy: Never
-                      backoffLimit: 0
-                    """
-                ).lstrip()
+                await self.modification_preapply(
+                    ctx,
+                    JobKubernetesOrchestratorPreApplyDefinitions.JOB,
+                    job_contents,
+                    Input(
+                        value=tempdir,
+                        definition=JobKubernetesOrchestratorPreApplyDefinitions.TEMPDIR.value,
+                    ),
+                )
             )
 
             with contextlib.suppress(RuntimeError):
@@ -415,6 +504,8 @@ class JobKubernetesOrchestratorContext(MemoryOrchestratorContext):
                                     "logs",
                                     "-l",
                                     f"{label}={label_value}",
+                                    "-c",
+                                    container_name,
                                 ],
                                 cwd=tempdir,
                                 stdout=stdout,
@@ -438,11 +529,27 @@ class JobKubernetesOrchestratorContext(MemoryOrchestratorContext):
             job_stdout_path = tempdir_path.joinpath("job_stdout")
             with open(job_stdout_path, "wb") as stdout:
                 await run_command(
-                    [*self.kubectl, "logs", "-l", f"{label}={label_value}"],
+                    [
+                        *self.kubectl,
+                        "logs",
+                        "-l",
+                        f"{label}={label_value}",
+                        "-c",
+                        container_name,
+                    ],
                     cwd=tempdir,
                     stdout=stdout,
                 )
             return ctx, json.loads(job_stdout_path.read_text())
+
+    async def __aenter__(self):
+        await super().__aenter__()
+        # Enter orchestrator context context
+        if self.parent.config.preapply is not None:
+            self.opreapply_ctx = await self._stack.enter_async_context(
+                self.parent.opreapply(self.parent.preapply)
+            )
+        return self
 
 
 @entrypoint("kubernetes.job")
@@ -589,7 +696,6 @@ class JobKubernetesOrchestrator(MemoryOrchestrator):
     Execute in kubernetes (kubectl default context will be used)
 
     .. code-block:: console
-        :test:
 
         $ dffml dataflow run records set \
             -log debug \
@@ -648,9 +754,77 @@ class JobKubernetesOrchestrator(MemoryOrchestrator):
     The same execution using Python
 
     .. code-block:: console
-        :test:
 
         $ python dataflow.py
+
+    We may wish to modify the contents of the YAML files the orchestrator
+    applies to the cluster to launch jobs before they are applied.
+
+    We can pass a dataflow with ``preapply`` to be executed before each
+    ``kubectl apply``. Let's write some operations and create a dataflow.
+
+    **TODO** Make preapply a nested dataflow where the operation is the running
+    of the CGI server. Nest it in another dataflow which modifies the yaml to
+    add the ambassador which then runs the inner dataflow for the server.
+
+    **preapply_operations.py**
+
+    .. code-block:: console
+        :test:
+        :filepath: preapply_operations.py
+
+        import yaml
+
+        def add_ambassador(contents: str) -> str:
+            doc = yaml.safe_load(contents)
+            doc["spec"]["template"]["spec"]["containers"].append({
+                "name": "ambassador",
+                "image": "intelotc/dffml:latest",
+                "env": [
+                    {"name": "DIRECTORY", "value": "/mount"},
+                ],
+                "ports": [
+                    {"containerPort": 8080},
+                ],
+            })
+            return yaml.dump(doc)
+
+    **TODO** Remove the usage of ``get_single.nostrict`` and instead check if
+    the definition to be modified is referenced within the dataflow. Do not run
+    the dataflow if the definition to modify is not referenced in the flow.
+
+    .. code-block:: console
+        :test:
+
+        $ dffml dataflow create \
+            -configloader yaml \
+            -config \
+                '["preapply_operations:add_ambassador.outputs.result"]'=get_single.nostrict \
+            -flow \
+                '[{"seed": ["kubernetes.job.job"]}]'=preapply_operations:add_ambassador.inputs.contents \
+            -inputs \
+                preapply_operations:add_ambassador.outputs.result,=get_single_spec \
+            -- \
+                preapply_operations:add_ambassador \
+                get_single \
+            | tee preapply.yaml
+        $ dffml dataflow diagram -stage processing -- preapply.yaml
+
+    .. code-block:: console
+        :test:
+
+        $ dffml dataflow run records set \
+            -log debug \
+            -dataflow dataflow.json \
+            -config \
+                "$GITHUB_TOKEN='operations.gh:github_get_repo'.token" \
+            -orchestrator kubernetes.job \
+            -orchestrator-context . \
+            -orchestrator-requirements PyGithub \
+            -orchestrator-preapply preapply.yaml \
+            -record-def "github.repo.url" \
+            -keys \
+              https://github.com/intel/dffml
 
     """
     CONFIG = JobKubernetesOrchestratorConfig
@@ -669,5 +843,17 @@ class JobKubernetesOrchestrator(MemoryOrchestrator):
             self.logger.debug(
                 "kubectl context not given. Default context is %r",
                 self.config.context,
+            )
+        # Load preapply dataflow
+        if self.config.preapply is not None:
+            # Enter orchestrator context
+            self.opreapply = await self._stack.enter_async_context(
+                self.config.opreapply
+                if self.config.opreapply is not None
+                else MemoryOrchestrator()
+            )
+            # Load preapply dataflow
+            self.preapply = await load_dataflow_from_configloader(
+                self.config.preapply
             )
         return self
