@@ -2,6 +2,7 @@ import copy
 import collections
 from typing import Dict, Any, NamedTuple, List
 
+from ..base import config, field
 from ..df.types import Definition, Stage, DataFlow
 from ..df.base import (
     op,
@@ -105,11 +106,20 @@ get_multi_spec = Definition(name="get_multi_spec", primitive="array")
 get_multi_output = Definition(name="get_multi_output", primitive="map")
 
 
+@config
+class GetMultiConfig:
+    nostrict: List[str] = field(
+        "Do not raise DefinitionNotInContext if these definitions to get are not found",
+        default_factory=lambda: [],
+    )
+
+
 @op(
     name="get_multi",
     inputs={"spec": get_multi_spec},
     outputs={"output": get_multi_output},
     stage=Stage.OUTPUT,
+    config_cls=GetMultiConfig,
 )
 class GetMulti(OperationImplementationContext):
     """
@@ -175,10 +185,19 @@ class GetMulti(OperationImplementationContext):
                 exported[i] = value
 
         # Look up the definiton for each
-        for convert in range(0, len(exported)):
-            exported[convert] = await self.octx.ictx.definition(
-                self.ctx, exported[convert]
-            )
+        for i, convert in enumerate(exported):
+            try:
+                exported[i] = await self.octx.ictx.definition(
+                    self.ctx, convert
+                )
+            except DefinitionNotInContext:
+                if convert in self.parent.config.nostrict:
+                    self.logger.debug(
+                        "Could not find %r but in nostrict", convert
+                    )
+                    del exported[i]
+                else:
+                    raise
         self.logger.debug("output spec: %s", exported)
         # Acquire all definitions within the context
         async with self.octx.ictx.definitions(self.ctx) as od:
@@ -208,6 +227,7 @@ get_single_output = Definition(name="get_single_output", primitive="map")
     inputs={"spec": get_single_spec},
     outputs={"output": get_single_output},
     stage=Stage.OUTPUT,
+    config_cls=GetMultiConfig,
 )
 class GetSingle(GetMulti):
     """
