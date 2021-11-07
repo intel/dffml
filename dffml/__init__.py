@@ -61,6 +61,7 @@ DUPLICATE_PREFER = {
     "save": "high_level.source",
     "run": "high_level.dataflow",
     "list_action": "base",
+    "main": "dffml.util.testing.manifest.shim",
 }
 # List of modules not to expose
 SKIP = ["cli", "util.cli.cmds", "util.testing.consoletest"]
