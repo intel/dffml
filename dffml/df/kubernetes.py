@@ -76,7 +76,12 @@ from ..util.crypto import secure_hash
 from ..util.data import export
 from ..util.os import chdir
 from ..util.entrypoint import entrypoint
-from ..util.subprocess import run_command, exec_subprocess, Subprocess
+from ..util.subprocess import (
+    run_command,
+    run_command_events,
+    exec_subprocess,
+    Subprocess,
+)
 
 # TODO Use importlib.resources instead of reading via pathlib
 python_code: str = pathlib.Path(__file__).parent.joinpath(
@@ -88,6 +93,7 @@ python_code: str = pathlib.Path(__file__).parent.joinpath(
 # the real dataflow.
 @config
 class JobKubernetesOrchestratorConfig(MemoryOrchestratorConfig):
+    context: str = field("kubectl context to use", default=None)
     image: str = field(
         "Container image to use", default="intelotc/dffml:latest"
     )
@@ -108,6 +114,14 @@ class JobKubernetesOrchestratorContext(MemoryOrchestratorContext):
     those as files. To run the dataflow we unpickle the dataflow and inputs and
     execute with the MemoryOrchestrator.
     """
+
+    def __init__(
+        self,
+        config: "MemoryOrchestratorContextConfig",
+        parent: "JobKubernetesOrchestrator",
+    ) -> None:
+        super().__init__(config, parent)
+        self.kubectl = ["kubectl", "--context", self.parent.config.context]
 
     async def run_operations_for_ctx(
         self, ctx: BaseContextHandle, *, strict: bool = True
@@ -210,7 +224,7 @@ class JobKubernetesOrchestratorContext(MemoryOrchestratorContext):
             )
             with open(kustomization_apply_path, "wb") as stdout:
                 await run_command(
-                    ["kubectl", "apply", "-o=json", "-k", "."],
+                    [*self.kubectl, "apply", "-o=json", "-k", "."],
                     cwd=tempdir,
                     stdout=stdout,
                 )
@@ -350,7 +364,7 @@ class JobKubernetesOrchestratorContext(MemoryOrchestratorContext):
 
             with contextlib.suppress(RuntimeError):
                 await run_command(
-                    ["kubectl", "delete", "job", job_name], cwd=tempdir,
+                    [*self.kubectl, "delete", "job", job_name], cwd=tempdir,
                 )
             # NOTE kind is not setup to pull with docker's credentials. It hits
             # the rate limit right away.
@@ -361,7 +375,7 @@ class JobKubernetesOrchestratorContext(MemoryOrchestratorContext):
             job_apply_path = tempdir_path.joinpath("job_apply")
             with open(job_apply_path, "wb") as stdout:
                 await run_command(
-                    ["kubectl", "apply", "-f", "job.yml", "-o=json"],
+                    [*self.kubectl, "apply", "-f", "job.yml", "-o=json"],
                     cwd=tempdir,
                     stdout=stdout,
                 )
@@ -374,7 +388,7 @@ class JobKubernetesOrchestratorContext(MemoryOrchestratorContext):
             # https://github.com/kubernetes/kubectl/issues/913#issuecomment-933750138
 
             cmd = [
-                "kubectl",
+                *self.kubectl,
                 "get",
                 "pods",
                 "--watch",
@@ -397,7 +411,7 @@ class JobKubernetesOrchestratorContext(MemoryOrchestratorContext):
                         with open(job_output_path, "wb") as stdout:
                             await run_command(
                                 [
-                                    "kubectl",
+                                    *self.kubectl,
                                     "logs",
                                     "-l",
                                     f"{label}={label_value}",
@@ -424,7 +438,7 @@ class JobKubernetesOrchestratorContext(MemoryOrchestratorContext):
             job_stdout_path = tempdir_path.joinpath("job_stdout")
             with open(job_stdout_path, "wb") as stdout:
                 await run_command(
-                    ["kubectl", "logs", "-l", f"{label}={label_value}"],
+                    [*self.kubectl, "logs", "-l", f"{label}={label_value}"],
                     cwd=tempdir,
                     stdout=stdout,
                 )
@@ -641,3 +655,19 @@ class JobKubernetesOrchestrator(MemoryOrchestrator):
     """
     CONFIG = JobKubernetesOrchestratorConfig
     CONTEXT = JobKubernetesOrchestratorContext
+
+    async def __aenter__(self):
+        await super().__aenter__()
+        # Find default context to use if not given
+        if self.config.context is None:
+            with self.config.no_enforce_immutable():
+                async for event, result in run_command_events(
+                    ["kubectl", "config", "current-context"],
+                    events=[Subprocess.STDOUT_READLINE],
+                ):
+                    self.config.context = result.decode().strip()
+            self.logger.debug(
+                "kubectl context not given. Default context is %r",
+                self.config.context,
+            )
+        return self
