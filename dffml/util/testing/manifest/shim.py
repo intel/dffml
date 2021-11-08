@@ -186,9 +186,11 @@ DEFAULT_PARSERS = {
 }
 
 
-def parse(contents: str, parsers: Dict[str, Callable[[str], Any]] = None):
+def parse(
+    contents: str, parsers: Dict[str, Callable[[bytes], Any]] = None
+) -> Any:
     r'''
-    Given the contents of the manifest file as a string, parse the contents into
+    Given the contents of the manifest file as bytes, parse the contents into
     a dictionary object.
 
     :param str conents: string containing the manifest file's contents
