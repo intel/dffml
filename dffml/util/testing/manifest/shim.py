@@ -111,6 +111,7 @@ Notes
 - https://github.com/mjg59/ssh_pki
 """
 import os
+import io
 import sys
 import hmac
 import json
@@ -215,10 +216,81 @@ def parse(contents: str, parsers: Dict[str, Callable[[str], Any]] = None):
     raise list(errors.values())[-1][0]
 
 
+def serializer_env(
+    manifest,
+    quoted: bool = False,
+    prefix: Optional[List[str]] = None,
+    output: Optional[io.BytesIO] = None,
+) -> bytes:
+    """
+    Take a dictionary manifest and output it so that it could be parsed by
+    a shell environment.
+
+    This function calls itself recursivly using prefix and output to write
+    nested keys to the output buffer.
+
+    >>> from dffml.util.testing.manifest.shim import serializer_env
+    >>>
+    >>> obj = {
+    ...     "key1": "hello",
+    ...     "key2": [
+    ...         {"indexed_subkey3": "world", "indexed_subkey4": "hi"},
+    ...         {"indexed_subkey5": "there"},
+    ...     ]
+    ... }
+    >>>
+    >>> print(serializer_env(obj).decode(), end="")
+    KEY1=hello
+    KEY2_0_INDEXED_SUBKEY3=world
+    KEY2_0_INDEXED_SUBKEY4=hi
+    KEY2_1_INDEXED_SUBKEY5=there
+    >>>
+    >>> print(serializer_env(obj, quoted=True).decode(), end="")
+    KEY1="hello"
+    KEY2_0_INDEXED_SUBKEY3="world"
+    KEY2_0_INDEXED_SUBKEY4="hi"
+    KEY2_1_INDEXED_SUBKEY5="there"
+    """
+    if prefix is None:
+        prefix = []
+    if output is not None:
+        if isinstance(manifest, dict):
+            for key, value in manifest.items():
+                serializer_env(
+                    value, quoted=quoted, prefix=prefix + [key], output=output
+                )
+        elif isinstance(manifest, list):
+            for i, value in enumerate(manifest):
+                serializer_env(
+                    value,
+                    quoted=quoted,
+                    prefix=prefix + [str(i)],
+                    output=output,
+                )
+        else:
+            # In this case the manifest is any other non-iterable value
+            formatted = "_".join(prefix).upper() + "="
+            if quoted:
+                formatted += f'"{manifest!s}"'
+            else:
+                formatted += str(manifest)
+            output.write(formatted.encode() + b"\n")
+    else:
+        with io.BytesIO() as output:
+            serializer_env(manifest, quoted=quoted, output=output)
+            return output.getvalue()
+
+
+def serializer_env_quoted(manifest) -> bytes:
+    return serializer_env(manifest, quoted=True)
+
+
 # Serialization to the next phase parser
 DEFAULT_SERIALIZERS = {
     "json": lambda manifest: json.dumps(manifest).encode(),
     "pickle": pickle.dumps,
+    "env": serializer_env,
+    "env_quoted": serializer_env_quoted,
 }
 
 # Try to parse with yaml if available
@@ -451,8 +523,8 @@ def shim(
     ] = None,
 ):
     r'''
-
-    **TODO** Find code that sends all rest of args to target (QEMU?)
+    Python Examples
+    ---------------
 
     >>> import sys
     >>> import types
@@ -469,8 +541,12 @@ def shim(
     ... testplan:
     ... - git:
     ...     repo: https://example.com/my-repo.git
-    ...     branch: main
+    ...     branch: dev
     ...     file: my_test.py
+    ... - git:
+    ...     repo: https://example.com/their-repo.git
+    ...     branch: main
+    ...     file: their_test.py
     ... """
     >>>
     >>> contents_sha256 = hashlib.sha256(contents.encode()).hexdigest()
@@ -508,6 +584,15 @@ def shim(
     ...     f"TPS_MANIFEST_PARSER_ARGS_{PARSER_KEY}": "-c 'import sys, pickle, pprint; pprint.pprint(pickle.load(sys.stdin.buffer))'",
     ... })
     >>>
+    >>> PARSER_KEY = "FOUR"
+    >>> environ.update({
+    ...     f"TPS_MANIFEST_PARSER_NAME_{PARSER_KEY}": "D",
+    ...     f"TPS_MANIFEST_PARSER_FORMAT_{PARSER_KEY}": DOCUMENT_FORMAT,
+    ...     f"TPS_MANIFEST_PARSER_VERSION_{PARSER_KEY}": DOCUMENT_VERSION,
+    ...     f"TPS_MANIFEST_PARSER_SERIALIZE_{PARSER_KEY}": "env",
+    ...     f"TPS_MANIFEST_PARSER_ACTION_{PARSER_KEY}": "stdout",
+    ... })
+    >>>
     >>> shim(
     ...     types.SimpleNamespace(
     ...         input_action="target",
@@ -518,8 +603,26 @@ def shim(
     ...     ),
     ...     environ=environ,
     ... )
-    {"$document_format": "tps.manifest", "$document_version": "0.0.1", "testplan": [{"git": {"repo": "https://example.com/my-repo.git", "branch": "main", "file": "my_test.py"}}]}
+    {"$document_format": "tps.manifest", "$document_version": "0.0.1", "testplan": [{"git": {"repo": "https://example.com/my-repo.git", "branch": "dev", "file": "my_test.py"}}, {"git": {"repo": "https://example.com/their-repo.git", "branch": "main", "file": "their_test.py"}}]}
     >>>
+    >>> shim(
+    ...     types.SimpleNamespace(
+    ...         input_action="target",
+    ...         insecure=True,
+    ...         only_validate=False,
+    ...         parser="D",
+    ...         input_target=contents,
+    ...     ),
+    ...     environ=environ,
+    ... )
+    $DOCUMENT_FORMAT=tps.manifest
+    $DOCUMENT_VERSION=0.0.1
+    TESTPLAN_0_GIT_REPO=https://example.com/my-repo.git
+    TESTPLAN_0_GIT_BRANCH=dev
+    TESTPLAN_0_GIT_FILE=my_test.py
+    TESTPLAN_1_GIT_REPO=https://example.com/their-repo.git
+    TESTPLAN_1_GIT_BRANCH=main
+    TESTPLAN_1_GIT_FILE=their_test.py
     >>> shim(
     ...     types.SimpleNamespace(
     ...         input_action="target",
@@ -575,6 +678,11 @@ def shim(
     Traceback (most recent call last):
         ...
     dffml.util.testing.manifest.shim.ValidationError
+
+    Console Examples
+    ----------------
+
+    **TODO**
     '''
     # Set environment to os.environ if not given
     if environ is None:
