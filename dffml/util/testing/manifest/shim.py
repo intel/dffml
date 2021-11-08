@@ -362,7 +362,7 @@ def discover_dataclass_environ(
         discovered_parsers[parser_name][metadata_key] = value
     # Ensure they are loaded into the correct class
     for key, value in discovered_parsers.items():
-        if dataclass_key is not None:
+        if dataclass_key is not None and dataclass_key not in value:
             value[dataclass_key] = key
         discovered_parsers[key] = dataclass(**value)
     return discovered_parsers
@@ -385,6 +385,7 @@ class ManifestFormatParser:
     args: str = ""
 
     PREFIX: str = "TPS_MANIFEST_PARSER_"
+    DATACLASS_KEY: str = "name"
 
 
 def next_phase_parser_action_stdout(
@@ -710,7 +711,10 @@ def shim(
     parsers = {
         (parser.format, parser.version, parser.name): parser
         for parser in discover_dataclass_environ(
-            ManifestFormatParser, ManifestFormatParser.PREFIX, environ=environ,
+            ManifestFormatParser,
+            ManifestFormatParser.PREFIX,
+            environ=environ,
+            dataclass_key=ManifestFormatParser.DATACLASS_KEY,
         ).values()
     }
     # Determine how to get the manifest
