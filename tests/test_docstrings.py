@@ -225,6 +225,16 @@ def mkconsoletest(_name, _import_name, _module, obj):
 
 
 for import_name, module in modules(root, package_name, skip=skip):
+    # Skip if not a class or function
+    if hasattr(module, "__doc__") and module.__spec__.name.startswith(
+        import_name
+    ):
+        # Add to dict to ensure no duplicates
+        to_test[import_name] = (
+            import_name,
+            module,
+            module,
+        )
     # Iterate over all of the objects in the module
     for name, obj in inspect.getmembers(module):
         # Skip if not a class or function
