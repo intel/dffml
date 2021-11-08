@@ -498,6 +498,13 @@ DEFAULT_INPUT_ACTIONS = {
 }
 
 
+class InputActionNotFound(Exception):
+    """
+    Input actions are used to read in manifest. If one is not found then the
+    manifest cannot be read.
+    """
+
+
 class ParserNotFound(Exception):
     """
     Document format/version/action combination not found. It was not registered
@@ -718,6 +725,12 @@ def shim(
         ).values()
     }
     # Determine how to get the manifest
+    if args.input_action not in input_actions:
+        raise InputActionNotFound(
+            "Input action is used to read in manifest"
+            f" {args.input_action!r} not found in loaded input actions:"
+            f" {input_actions!r}"
+        )
     input_action = input_actions[args.input_action]
     # Get the manifest and any validation data that might be associated with it
     contents = input_action(args)
