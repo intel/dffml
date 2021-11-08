@@ -1,5 +1,6 @@
 import enum
 import asyncio
+from typing import List
 
 from .asynchelper import concurrently
 
@@ -42,6 +43,31 @@ async def exec_subprocess(cmd, **kwargs):
     yield Subprocess.COMPLETED, proc.returncode
 
 
+async def run_command_events(
+    cmd, logger=None, events: List[Subprocess] = None, **kwargs
+):
+    # Combination of stdout and stderr
+    output = []
+    if logger is not None:
+        logger.debug(f"Running {cmd}, {kwargs}")
+    async for event, result in exec_subprocess(cmd, **kwargs):
+        if event == Subprocess.CREATED:
+            # Set proc when created
+            proc = result
+        elif event in [Subprocess.STDOUT_READLINE, Subprocess.STDERR_READLINE]:
+            # Log line read
+            if logger is not None:
+                logger.debug(f"{cmd}: {event}: {result.decode().rstrip()}")
+            # Append to output in case of error
+            output.append(result)
+        # Raise if anything goes wrong
+        elif event == Subprocess.COMPLETED and result != 0:
+            raise RuntimeError(repr(cmd) + ": " + b"\n".join(output).decode())
+        # If caller wants event
+        if events and event in events:
+            yield event, result
+
+
 async def run_command(cmd, logger=None, **kwargs):
     r"""
     Run a command using :py:func:`asyncio.create_subprocess_exec`.
@@ -76,20 +102,5 @@ async def run_command(cmd, logger=None, **kwargs):
 	DEBUG:mylogger:['/usr/bin/python3.7', '-c', "print('Hello World')"]: stdout.readline: Hello World
 	DEBUG:mylogger:['/usr/bin/python3.7', '-c', "print('Hello World')"]: stderr.readline:
     """
-    # Combination of stdout and stderr
-    output = []
-    if logger is not None:
-        logger.debug(f"Running {cmd}, {kwargs}")
-    async for event, result in exec_subprocess(cmd, **kwargs):
-        if event == Subprocess.CREATED:
-            # Set proc when created
-            proc = result
-        elif event in [Subprocess.STDOUT_READLINE, Subprocess.STDERR_READLINE]:
-            # Log line read
-            if logger is not None:
-                logger.debug(f"{cmd}: {event}: {result.decode().rstrip()}")
-            # Append to output in case of error
-            output.append(result)
-        # Raise if anything goes wrong
-        elif event == Subprocess.COMPLETED and result != 0:
-            raise RuntimeError(repr(cmd) + ": " + b"\n".join(output).decode())
+    async for _, _ in run_command_events(cmd, logger=logger, **kwargs):
+        pass
