@@ -123,6 +123,7 @@ Notes
 import os
 import io
 import sys
+import copy
 import hmac
 import json
 import shlex
@@ -767,16 +768,16 @@ def shim(
     '''
     # Set environment to os.environ if not given
     if environ is None:
-        environ = os.environ
-    # Load default actions if not given
+        environ = copy.deepcopy(os.environ)
+    # Load defaults if not given
     if input_actions is None:
-        input_actions = DEFAULT_INPUT_ACTIONS
+        input_actions = copy.deepcopy(DEFAULT_INPUT_ACTIONS)
     if validation_actions is None:
-        validation_actions = DEFAULT_VALIDATION_ACTIONS
+        validation_actions = copy.deepcopy(DEFAULT_VALIDATION_ACTIONS)
     if format_parser_actions is None:
-        format_parser_actions = DEFAULT_FORMAT_PARSER_ACTIONS
+        format_parser_actions = copy.deepcopy(DEFAULT_FORMAT_PARSER_ACTIONS)
     if serializers is None:
-        serializers = DEFAULT_SERIALIZERS
+        serializers = copy.deepcopy(DEFAULT_SERIALIZERS)
     # Discover options for format parsers for next phase
     parsers = {
         (parser.format, parser.version, parser.name): parser
