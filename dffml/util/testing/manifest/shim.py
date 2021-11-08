@@ -533,6 +533,7 @@ class SerializerNotFound(Exception):
 def shim(
     args: argparse.Namespace,
     environ: Optional[Dict[str, str]] = None,
+    parsers: Optional[Dict[str, Callable[[bytes], Any]]] = None,
     input_actions: Optional[
         Dict[str, Callable[[argparse.Namespace], bytes]]
     ] = None,
@@ -749,7 +750,7 @@ def shim(
 
         import shim
 
-        def setup_shim_func(parsers, **kwargs):
+        def setup_shim_func(parsers, next_phase_parsers, **kwargs):
             # Declare another parser
             parser = shim.ManifestFormatParser(
                 name="myparser",
@@ -759,7 +760,7 @@ def shim(
                 action="stdout"
             )
             # Add the parser
-            parsers[(parser.format, parser.version, parser.name)] = parser
+            next_phase_parsers[(parser.format, parser.version, parser.name)] = parser
 
     .. code-block:: console
         :test:
@@ -772,6 +773,8 @@ def shim(
     if environ is None:
         environ = copy.deepcopy(os.environ)
     # Load defaults if not given
+    if parsers is None:
+        parsers = copy.deepcopy(DEFAULT_PARSERS)
     if input_actions is None:
         input_actions = copy.deepcopy(DEFAULT_INPUT_ACTIONS)
     if validation_actions is None:
@@ -781,7 +784,7 @@ def shim(
     if serializers is None:
         serializers = copy.deepcopy(DEFAULT_SERIALIZERS)
     # Discover options for format parsers for next phase
-    parsers = {
+    next_phase_parsers = {
         (parser.format, parser.version, parser.name): parser
         for parser in discover_dataclass_environ(
             ManifestFormatParser,
@@ -842,20 +845,20 @@ def shim(
         # Bail if we are only validating the manifest and not parsing it
         return
     # Parse the manifest
-    manifest = parse(contents)
+    manifest = parse(contents, parsers=parsers)
     # Grab mapped parser
     format_version_action = (
         manifest.get("$document_format", None),
         manifest.get("$document_version", None),
         args.parser,
     )
-    if format_version_action not in parsers:
+    if format_version_action not in next_phase_parsers:
         raise ParserNotFound(
             "Unknown document format/version/action combination."
             " Was it registered via environment variables?"
-            f" {format_version_action!r} not found in: {parsers!r}"
+            f" {format_version_action!r} not found in: {next_phase_parsers!r}"
         )
-    parser = parsers[format_version_action]
+    parser = next_phase_parsers[format_version_action]
     # Determine how to get the manifest
     if parser.action not in format_parser_actions:
         raise NextPhaseActionNotFound(
