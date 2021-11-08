@@ -748,17 +748,44 @@ def shim(
         :test:
         :filepath: my_shim_setup.py
 
+        """
+        Ensure we can parse YAML manifests. Do this by downloading PyYAML to a
+        cache directory and doing a direct import, or downloading to a tempdir
+        every execution. If it's already installed, great. This should be a last
+        resort.
+        """
+        import re
+        import sys
         import pathlib
         import tempfile
+        import platform
         import zipimport
+        import contextlib
         import urllib.request
 
         import shim
 
-        # For the sake of the example assume you are unable to preinstall
-        # anything into the environment the shim run in (common reason why we
-        # use a shim).
-        PYYAML_URL: str = "https://files.pythonhosted.org/packages/eb/5f/6e6fe6904e1a9c67bc2ca5629a69e7a5a0b17f079da838bab98a1e548b25/PyYAML-6.0-cp37-cp37m-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_12_x86_64.manylinux2010_x86_64.whl"
+        # In the event that PyYAML is not installed this installs it locally
+        # (relative to this file)
+        PYYAML_URL: str = "https://pypi.org/simple/pyyaml/"
+        CACHE: pathlib.Path = pathlib.Path(__file__).resolve().parent.joinpath(
+            ".cache", "wheels",
+        )
+
+
+        @contextlib.contextmanager
+        def cache_dir():
+            """
+            Try to cache locally if possible, create a directory to store wheels in
+            relative to this file. If that fails, use a tempdir.
+            """
+            try:
+                CACHE.mkdir(parents=True, exist_ok=True)
+                yield CACHE
+            except:
+                with tempfile.TemporaryDirectory() as tempdir:
+                    yield tempdir
+
 
         def setup_shim_func(parsers, next_phase_parsers, **kwargs):
             # Declare another parser
@@ -772,16 +799,36 @@ def shim(
             # Add the parser
             next_phase_parsers[(parser.format, parser.version, parser.name)] = parser
 
-            # Create a temporary directory to hold the pi
-            with tempfile.TemporaryDirectory() as tempdir:
+            # Download PyYAML and load the parser if not preloaded
+            if "yaml" not in parsers:
+                return
+
+            # Use ether the cache or a temporary directory to hold the package
+            with cache_dir() as package_dir:
                 # Path to wheel on disk
-                wheel_path = pathlib.Path(tempdir, "package.whl")
-                # Download the wheel
-                with urllib.request.urlopen(PYYAML_URL) as response:
-                    wheel_path.write_bytes(response.read())
-                # You'll need to change the wheel for this code to work
-                if True:
-                    return
+                wheel_path = pathlib.Path(package_dir, "package.whl")
+                # Download if not cached
+                if not wheel_path.exists():
+                    # Find the correct package
+                    with urllib.request.urlopen(PYYAML_URL) as response:
+                        links = re.findall(r"(https://.*.whl)", response.read().decode())
+                    # Search backwards because last links are the most recent package versions
+                    end_href = '" '
+                    links = [
+                        link[: link.index(end_href)]
+                        for link in links[::-1]
+                        if (
+                            end_href in link
+                            and f"cp{sys.version_info.major}{sys.version_info.minor}" in link
+                            and platform.machine() in link
+                            and {"darwin": "macos"}.get(sys.platform, sys.platform) in link
+                        )
+                    ]
+                    # Grab the most recent applicable wheel link
+                    wheel_url = links[0]
+                    # Download the wheel
+                    with urllib.request.urlopen(wheel_url) as response:
+                        wheel_path.write_bytes(response.read())
                 # Load the module from the downloaded wheel
                 yaml = zipimport.zipimporter(str(wheel_path)).load_module("yaml")
                 # Setup the parser for use by the shim
@@ -918,14 +965,6 @@ def make_parser():
         description=__doc__,
     )
 
-    # TODO Addition of remotely loadable PyPi zip packages? Perhaps it's easier
-    # if we allow for the importing of a setup file with a setup function in it
-    # that is called with the shim execution context (the arguments to shim()).
-    # This is useful because often we find ourselves in a situation where the
-    # reason we are using the shim is that we have no other dependencies
-    # installed other than Python itself. Adding the ability to add more parsers
-    # via the importing of another file which can then import or implement
-    # parsers would be good.
     parser.add_argument(
         "-l", "--lockdown", action="store_true", default=False,
     )
