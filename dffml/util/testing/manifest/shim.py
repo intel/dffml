@@ -6,15 +6,13 @@ Test Procedure Specification (TPS) Report Manifest Shim
 Validate and parse a Test Procedure Specification (TPS) Report manifest. Execute
 something for the next stage of parsing.
 
-This file is used as a shim to bridge the gap between the parsing for the
-TPS manifest format and the next action to taken after parsing. This file allows
-for registration of next phase parsers via environment variables.
-
-The purpose of this script is to preform the initial validation and parsing of
-the TPS manifest. It's responsibility is to then call the appropriate next phase
-manifest parser. It will pass the manifest's data in a format the next phase
-understands, and execute the next phase using capabilities defined within this
-file.
+This script is a shim layer to call the appropriate parser for a given
+manifest format and version. This shim abstracts the complexities of manifest
+versioning and if desired validation. This phased approach to parsing
+simplifies the maintenance of manifest formats and parsers. It also makes
+it easier for the CI/CD community to work towards manifest schema alignment,
+as the shared shim layer facilities sharing of validation mechanisms and next
+phase parsing where appropriate.
 
 Updates
 -------
@@ -25,6 +23,18 @@ https://github.com/intel/dffml/blob/manifest/dffml/util/testing/manifest/shim.py
 
 Pull Request for discussion, questions, comments, concerns, review:
 https://github.com/intel/dffml/pull/1273/files
+
+Usage
+-----
+
+This file allows for registration of next phase parsers via environment
+variables.
+
+The purpose of this script is to preform the initial validation and parsing of
+the manifest. It's responsibility is to then call the appropriate next phase
+manifest parser. It will pass the manifest's data in a format the next phase
+requests, and execute the next phase using capabilities implemented within this
+file.
 
 Contributing
 ------------
