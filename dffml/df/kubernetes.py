@@ -91,7 +91,7 @@ class JobKubernetesOrchestratorConfig(MemoryOrchestratorConfig):
     image: str = field(
         "Container image to use", default="intelotc/dffml:latest"
     )
-    context: pathlib.Path = field(
+    workdir: pathlib.Path = field(
         "Container build context and working directory for running container",
         default=None,
     )
@@ -179,10 +179,10 @@ class JobKubernetesOrchestratorContext(MemoryOrchestratorContext):
             context_path = tempdir_path.joinpath("context.tar.gz")
             with tarfile.open(context_path, mode="x:gz") as tarobj:
                 if (
-                    self.parent.config.context is not None
-                    and self.parent.config.context.is_dir()
+                    self.parent.config.workdir is not None
+                    and self.parent.config.workdir.is_dir()
                 ):
-                    with chdir(self.parent.config.context.resolve()):
+                    with chdir(self.parent.config.workdir.resolve()):
                         tarobj.add(".")
             # Write out the kustomization.yaml file to create a ConfigMap for
             # the Python code and secrets for the dataflow and inputs.
@@ -256,8 +256,8 @@ class JobKubernetesOrchestratorContext(MemoryOrchestratorContext):
             # before we run the dataflow (if we haven't built a new container
             # and are doing this at runtime).
             if (
-                self.parent.config.context is not None
-                and self.parent.config.context.is_dir()
+                self.parent.config.workdir is not None
+                and self.parent.config.workdir.is_dir()
             ):
                 commands.insert(
                     0,
@@ -583,7 +583,7 @@ class JobKubernetesOrchestrator(MemoryOrchestrator):
             -config \
                 "$GITHUB_TOKEN='operations.gh:github_get_repo'.token" \
             -orchestrator kubernetes.job \
-            -orchestrator-context . \
+            -orchestrator-workdir . \
             -orchestrator-requirements PyGithub \
             -record-def "github.repo.url" \
             -keys \
@@ -608,7 +608,7 @@ class JobKubernetesOrchestrator(MemoryOrchestrator):
         )
 
         orchestrator = dffml.JobKubernetesOrchestrator(
-            context=os.getcwd(),
+            workdir=os.getcwd(),
             requirements=[
                 "PyGithub",
             ],
