@@ -748,7 +748,17 @@ def shim(
         :test:
         :filepath: my_shim_setup.py
 
+        import pathlib
+        import tempfile
+        import zipimport
+        import urllib.request
+
         import shim
+
+        # For the sake of the example assume you are unable to preinstall
+        # anything into the environment the shim run in (common reason why we
+        # use a shim).
+        PYYAML_URL: str = "https://files.pythonhosted.org/packages/eb/5f/6e6fe6904e1a9c67bc2ca5629a69e7a5a0b17f079da838bab98a1e548b25/PyYAML-6.0-cp37-cp37m-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_12_x86_64.manylinux2010_x86_64.whl"
 
         def setup_shim_func(parsers, next_phase_parsers, **kwargs):
             # Declare another parser
@@ -761,6 +771,21 @@ def shim(
             )
             # Add the parser
             next_phase_parsers[(parser.format, parser.version, parser.name)] = parser
+
+            # Create a temporary directory to hold the pi
+            with tempfile.TemporaryDirectory() as tempdir:
+                # Path to wheel on disk
+                wheel_path = pathlib.Path(tempdir, "package.whl")
+                # Download the wheel
+                with urllib.request.urlopen(PYYAML_URL) as response:
+                    wheel_path.write_bytes(response.read())
+                # You'll need to change the wheel for this code to work
+                if True:
+                    return
+                # Load the module from the downloaded wheel
+                yaml = zipimport.zipimporter(str(wheel_path)).load_module("yaml")
+                # Setup the parser for use by the shim
+                parsers["yaml"] = shim.decode_if_bytes(yaml.safe_load)
 
     .. code-block:: console
         :test:
