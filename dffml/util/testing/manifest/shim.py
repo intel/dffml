@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-"""
+r"""
 Test Procedure Specification (TPS) Report Manifest Shim
 =======================================================
 
@@ -35,6 +35,158 @@ the manifest. It's responsibility is to then call the appropriate next phase
 manifest parser. It will pass the manifest's data in a format the next phase
 requests, and execute the next phase using capabilities implemented within this
 file.
+
+Download the shim
+
+.. code-block:: console
+    :test:
+    :replace: import os; cmds[0] = ["cp", os.path.join(ctx["root"], "dffml", "util", "testing", "manifest", "shim.py"), "shim.py"]
+
+    $ curl -sfLO https://github.com/intel/dffml/raw/manifest/dffml/util/testing/manifest/shim.py
+
+Create the following file.
+
+**manifest-sample.yaml**
+
+.. code-block:: yaml
+    :test:
+    :filepath: manifest-sample.yaml
+
+    $document_format: tps.manifest
+    $document_version: 0.0.1
+    testplan:
+    - git:
+        repo: https://example.com/my-repo.git
+        branch: main
+        file: my_test.py
+    - git:
+        repo: https://example.com/their-repo.git
+        branch: main
+        file: beef.py
+    - git:
+        repo: https://example.com/their-repo.git
+        branch: main
+        file: other.py
+    - git:
+        repo: https://example.com/my-repo.git
+        branch: main
+        file: face.py
+
+A script to list the git repos given manifests
+
+**ls-manifest-testplan-git-repo.sh**
+
+.. code-block:: bash
+    :test:
+    :filepath: ls-manifest-testplan-git-repo.sh
+
+    #!/usr/bin/env sh
+    set -euo pipefail
+
+    # Python to use
+    PYTHON=${PYTHON:-"python3"}
+    # Absolute path to the directory this file is in
+    SELF_DIR="$(realpath $(dirname $0))"
+    # Path to manifest shim
+    SHIM="${PYTHON} ${SELF_DIR}/shim.py"
+
+    export TPS_MANIFEST_PARSER_NAME_ENV_STYLE="env-style"
+    export TPS_MANIFEST_PARSER_FORMAT_ENV_STYLE="tps.manifest"
+    export TPS_MANIFEST_PARSER_VERSION_ENV_STYLE="0.0.1"
+    export TPS_MANIFEST_PARSER_SERIALIZE_ENV_STYLE="env"
+    export TPS_MANIFEST_PARSER_ACTION_ENV_STYLE="stdout"
+
+    while test $# -gt 0
+    do
+      $SHIM --insecure --input-target "${1}" \
+        --parser env-style | grep '_GIT_REPO=' | sed -e 's/.*_GIT_REPO=//g'
+      shift
+    done
+
+.. code-block:: console
+    :test:
+
+    $ bash ls-manifest-testplan-git-repo.sh ./manifest-sample.yaml
+    https://example.com/my-repo.git
+    https://example.com/their-repo.git
+    https://example.com/their-repo.git
+    https://example.com/my-repo.git
+
+A script to list the test property of the given git repo for the given manifests
+
+**ls-manifest-testplan-git-test.sh**
+
+.. code-block:: bash
+    :test:
+    :filepath: ls-manifest-testplan-git-test.sh
+
+    #!/usr/bin/env sh
+    set -euo pipefail
+
+    GIT_REPO="${1}"
+    shift
+
+    # Python to use
+    PYTHON=${PYTHON:-"python3"}
+    # Absolute path to the directory this file is in
+    SELF_DIR="$(realpath $(dirname $0))"
+    # Path to manifest shim
+    SHIM="${PYTHON} ${SELF_DIR}/shim.py"
+
+    # This script uses the shim layer to call the appropriate parser for the
+    # manifest version. Currently there is only one version of the format. If we
+    # move the to the next version we might want to parse it differently.
+    export TPS_MANIFEST_PARSER_NAME_ENV_STYLE="env-style"
+    export TPS_MANIFEST_PARSER_FORMAT_ENV_STYLE="tps.manifest"
+    export TPS_MANIFEST_PARSER_VERSION_ENV_STYLE="0.0.1"
+    export TPS_MANIFEST_PARSER_SERIALIZE_ENV_STYLE="env"
+    export TPS_MANIFEST_PARSER_ACTION_ENV_STYLE="stdout"
+
+    while test $# -gt 0
+    do
+      # Parse the manifest from YAML into essentially a bash environment
+      # KEY=value. It will now be in the following form:
+      #
+      #   $DOCUMENT_FORMAT=tps.manifest
+      #   $DOCUMENT_VERSION=0.0.1
+      #   TESTPLAN_0_GIT_REPO=https://example.com/my-repo.git
+      #   TESTPLAN_0_GIT_BRANCH=main
+      #   TESTPLAN_0_GIT_FILE=my_test.py
+      #   TESTPLAN_1_GIT_REPO=https://example.com/their-repo.git
+      #   TESTPLAN_1_GIT_BRANCH=main
+      #   TESTPLAN_1_GIT_FILE=beef.py
+      #   TESTPLAN_2_GIT_REPO=https://example.com/their-repo.git
+      #   TESTPLAN_2_GIT_BRANCH=main
+      #   TESTPLAN_2_GIT_FILE=other.py
+      #   TESTPLAN_3_GIT_REPO=https://example.com/my-repo.git
+      #   TESTPLAN_3_GIT_BRANCH=main
+      #   TESTPLAN_3_GIT_FILE=face.py
+      #
+      manifest=$($SHIM --insecure --input-target "${1}" --parser env-style)
+      shift
+      # Find any GIT_REPO lines which match the repo we're looking for.
+      # Cut off the _GIT_REPO and after part, we need to know the prefix since
+      # we need to know the GIT_FILE that is referenced by the same prefix.
+      testplan_indexes=$(grep "_GIT_REPO=$GIT_REPO" <<<"${manifest}" \
+        | sed -e 's/_GIT_REPO.*//g')
+      # If it doesn't then check the next index
+      if [ "x${testplan_indexes}" == "x" ]; then
+        continue
+      fi
+      # Check each index we found. Look for the file associated with the index
+      for testplan_index in ${testplan_indexes[@]}; do
+        testcase=$(grep "${testplan_index}_GIT_FILE=" <<<"${manifest}" \
+          | sed -e 's/.*_GIT_FILE=//g')
+        echo "$GIT_REPO/$testcase"
+      done
+    done
+
+.. code-block:: console
+    :test:
+
+    $ bash ls-manifest-testplan-git-test.sh https://example.com/my-repo.git ./manifest-sample.yaml
+    https://example.com/my-repo.git/my_test.py
+    https://example.com/my-repo.git/face.py
 
 Contributing
 ------------
@@ -93,8 +245,19 @@ schema.
 
 ``$schema: "https://example.com/eff.my.document.format.0.0.0.schema.json"``
 
+Testing
+```````
+
+DFFML's ``tests/test_docstrings.py`` currently handles testing of the shim.
+
+.. code-block:: console
+
+    $ python -u -m unittest discover -v -k manifest
+
 TODO
 ----
+
+- Review hash calls and update allowlist in ``test_hash_usages()``
 
 - Verification of the manifest. Idea: Developer generates manifest.
   Signs manifest with public asymmetric key. Prepends base64 encoded
@@ -138,7 +301,7 @@ import contextlib
 import subprocess
 import dataclasses
 import importlib.util
-from typing import Dict, List, Callable, Any, Union, Optional
+from typing import Any, Callable, Dict, List, Optional
 
 
 def popen_write_to_stdin(
