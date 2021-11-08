@@ -136,6 +136,7 @@ import traceback
 import contextlib
 import subprocess
 import dataclasses
+import importlib.util
 from typing import Dict, List, Callable, Any, Union, Optional
 
 
@@ -613,6 +614,7 @@ def shim(
     >>>
     >>> shim(
     ...     types.SimpleNamespace(
+    ...         setup=None,
     ...         input_action="target",
     ...         insecure=True,
     ...         only_validate=False,
@@ -625,6 +627,7 @@ def shim(
     >>>
     >>> shim(
     ...     types.SimpleNamespace(
+    ...         setup=None,
     ...         input_action="target",
     ...         insecure=True,
     ...         only_validate=False,
@@ -643,6 +646,7 @@ def shim(
     TESTPLAN_1_GIT_FILE=their_test.py
     >>> shim(
     ...     types.SimpleNamespace(
+    ...         setup=None,
     ...         input_action="target",
     ...         insecure=True,
     ...         only_validate=False,
@@ -654,6 +658,7 @@ def shim(
     >>>
     >>> shim(
     ...     types.SimpleNamespace(
+    ...         setup=None,
     ...         input_action="target",
     ...         insecure=False,
     ...         only_validate=False,
@@ -668,6 +673,7 @@ def shim(
     >>>
     >>> shim(
     ...     types.SimpleNamespace(
+    ...         setup=None,
     ...         input_action="target",
     ...         insecure=False,
     ...         only_validate=False,
@@ -682,6 +688,7 @@ def shim(
     >>>
     >>> shim(
     ...     types.SimpleNamespace(
+    ...         setup=None,
     ...         input_action="target",
     ...         insecure=False,
     ...         only_validate=False,
@@ -700,7 +707,63 @@ def shim(
     Console Examples
     ----------------
 
-    **TODO**
+
+    Download the shim
+
+    .. code-block:: console
+        :test:
+        :replace: import os; cmds[0] = ["cp", os.path.join(ctx["root"], "dffml", "util", "testing", "manifest", "shim.py"), "shim.py"]
+
+        $ curl -sfLO https://github.com/intel/dffml/raw/manifest/dffml/util/testing/manifest/shim.py
+
+    Create a test manifest
+
+    **manifest.yaml**
+
+    .. code-block:: yaml
+        :test:
+        :filepath: manifest.yaml
+
+        $document_format: tps.manifest
+        $document_version: 0.0.1
+        testplan:
+        - git:
+            repo: https://example.com/my-repo.git
+            branch: dev
+            file: my_test.py
+        - git:
+            repo: https://example.com/their-repo.git
+            branch: main
+            file: their_test.py
+
+    Write whatever code you need to initialize the shim's environment.
+
+    **my_shim_setup.py**
+
+    .. code-block:: python
+        :test:
+        :filepath: my_shim_setup.py
+
+        import shim
+
+        def setup_shim_func(parsers, **kwargs):
+            # Declare another parser
+            parser = shim.ManifestFormatParser(
+                name="myparser",
+                format="tps.manifest",
+                version="0.0.1",
+                serialize="env",
+                action="stdout"
+            )
+            # Add the parser
+            parsers[(parser.format, parser.version, parser.name)] = parser
+
+    .. code-block:: console
+        :test:
+
+        $ python -u shim.py \
+            --setup my_shim_setup.py --setup-function-name setup_shim_func \
+            --input-target manifest.yaml --parser myparser --insecure
     '''
     # Set environment to os.environ if not given
     if environ is None:
@@ -724,6 +787,31 @@ def shim(
             dataclass_key=ManifestFormatParser.DATACLASS_KEY,
         ).values()
     }
+    # Run any Python assisted setup for extra features not defined in upstream
+    if args.setup is not None:
+        # Check if file exists
+        setup_path = pathlib.Path(args.setup)
+        if not setup_path.exists():
+            # Provide helpful error message if not
+            raise FileNotFoundError(
+                f"Setup file {args.setup!r} does not exist"
+            )
+        # Module name is filename without the extension
+        setup_module_name = setup_path.stem
+        # Create module from file
+        spec = importlib.util.spec_from_file_location(
+            setup_module_name, setup_path
+        )
+        setup_module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(setup_module)
+        if not hasattr(setup_module, args.setup_function_name):
+            # Raise exception if the there is not setup function
+            raise ValueError(
+                f"setup module {args.setup!r} has no"
+                f" function named {args.setup_function_name!r}"
+            )
+        # Call the setup function
+        getattr(setup_module, args.setup_function_name)(**locals())
     # Determine how to get the manifest
     if args.input_action not in input_actions:
         raise InputActionNotFound(
@@ -787,6 +875,11 @@ def shim(
     action(args, parser, serialized)
 
 
+# Function name which will setup the shim environment. The function will be
+# passed all of the same objects shim() is passed.
+DEFAULT_SETUP_FUNCTION_NAME = "setup_shim"
+
+
 def make_parser():
     parser = argparse.ArgumentParser(
         prog="shim.py",
@@ -807,6 +900,16 @@ def make_parser():
     )
     parser.add_argument(
         "-s", "--strict", action="store_true", default=False,
+    )
+    parser.add_argument(
+        "--setup",
+        default=None,
+        help=f"Python script with a {DEFAULT_SETUP_FUNCTION_NAME} function",
+    )
+    parser.add_argument(
+        "--setup-function-name",
+        default=DEFAULT_SETUP_FUNCTION_NAME,
+        help="Name of the function which preforms setup within setup file",
     )
     parser.add_argument(
         "--insecure",
@@ -849,7 +952,7 @@ def make_parser():
         "--validation-args", help="Arguments for validation target",
     )
     parser.add_argument(
-        "--parser", help=f"Parser to handle next phase",
+        "--parser", required=True, help=f"Parser to handle next phase",
     )
     parser.add_argument(
         "--target", help="Target for next phase of manifest processing",
