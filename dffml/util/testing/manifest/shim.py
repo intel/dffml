@@ -51,6 +51,7 @@ Create the following file.
     :test:
     :filepath: manifest-sample.yaml
 
+    ---
     $schema: https://example.com/my.manifest.format.0.0.0.json.schema
     testplan:
     - git:
@@ -761,6 +762,7 @@ def shim(
     >>> DOCUMENT_VERSION = "0.0.0"
     >>>
     >>> contents = f"""\
+    ... ---
     ... $schema: https://example.com/{DOCUMENT_FORMAT}.{DOCUMENT_VERSION}.schema.json
     ... testplan:
     ... - git:
@@ -934,6 +936,7 @@ def shim(
         :test:
         :filepath: manifest.yaml
 
+        ---
         $schema: https://example.com/my.manifest.format.0.0.0.schema.json
         testplan:
         - git:
