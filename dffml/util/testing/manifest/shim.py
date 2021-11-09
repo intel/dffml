@@ -1,10 +1,9 @@
 #!/usr/bin/env python
 r"""
-Test Procedure Specification (TPS) Report Manifest Shim
-=======================================================
+Manifest Shim
+=============
 
-Validate and parse a Test Procedure Specification (TPS) Report manifest. Execute
-something for the next stage of parsing.
+Validate and parse a manifest. Execute something for the next stage of parsing.
 
 This script is a shim layer to call the appropriate parser for a given
 manifest format and version. This shim abstracts the complexities of manifest
@@ -90,11 +89,11 @@ A script to list the git repos given manifests
     # Path to manifest shim
     SHIM="${PYTHON} ${SELF_DIR}/shim.py"
 
-    export TPS_MANIFEST_PARSER_NAME_ENV_STYLE="env-style"
-    export TPS_MANIFEST_PARSER_FORMAT_ENV_STYLE="tps.manifest"
-    export TPS_MANIFEST_PARSER_VERSION_ENV_STYLE="0.0.1"
-    export TPS_MANIFEST_PARSER_SERIALIZE_ENV_STYLE="env"
-    export TPS_MANIFEST_PARSER_ACTION_ENV_STYLE="stdout"
+    export MANIFEST_PARSER_NAME_ENV_STYLE="env-style"
+    export MANIFEST_PARSER_FORMAT_ENV_STYLE="tps.manifest"
+    export MANIFEST_PARSER_VERSION_ENV_STYLE="0.0.1"
+    export MANIFEST_PARSER_SERIALIZE_ENV_STYLE="env"
+    export MANIFEST_PARSER_ACTION_ENV_STYLE="stdout"
 
     while test $# -gt 0
     do
@@ -136,11 +135,11 @@ A script to list the test property of the given git repo for the given manifests
     # This script uses the shim layer to call the appropriate parser for the
     # manifest version. Currently there is only one version of the format. If we
     # move the to the next version we might want to parse it differently.
-    export TPS_MANIFEST_PARSER_NAME_ENV_STYLE="env-style"
-    export TPS_MANIFEST_PARSER_FORMAT_ENV_STYLE="tps.manifest"
-    export TPS_MANIFEST_PARSER_VERSION_ENV_STYLE="0.0.1"
-    export TPS_MANIFEST_PARSER_SERIALIZE_ENV_STYLE="env"
-    export TPS_MANIFEST_PARSER_ACTION_ENV_STYLE="stdout"
+    export MANIFEST_PARSER_NAME_ENV_STYLE="env-style"
+    export MANIFEST_PARSER_FORMAT_ENV_STYLE="tps.manifest"
+    export MANIFEST_PARSER_VERSION_ENV_STYLE="0.0.1"
+    export MANIFEST_PARSER_SERIALIZE_ENV_STYLE="env"
+    export MANIFEST_PARSER_ACTION_ENV_STYLE="stdout"
 
     while test $# -gt 0
     do
@@ -551,7 +550,7 @@ class ManifestFormatParser:
     target: str = ""
     args: str = ""
 
-    PREFIX: str = "TPS_MANIFEST_PARSER_"
+    PREFIX: str = "MANIFEST_PARSER_"
     DATACLASS_KEY: str = "name"
 
 
@@ -738,45 +737,45 @@ def shim(
     >>> contents_sha256 = hashlib.sha256(contents.encode()).hexdigest()
     >>>
     >>> ManifestFormatParser.PREFIX
-    'TPS_MANIFEST_PARSER_'
+    'MANIFEST_PARSER_'
     >>>
     >>> PARSER_KEY = "ONE"
     >>> environ = {
-    ...     f"TPS_MANIFEST_PARSER_NAME_{PARSER_KEY}": "A",
-    ...     f"TPS_MANIFEST_PARSER_FORMAT_{PARSER_KEY}": DOCUMENT_FORMAT,
-    ...     f"TPS_MANIFEST_PARSER_VERSION_{PARSER_KEY}": DOCUMENT_VERSION,
-    ...     f"TPS_MANIFEST_PARSER_SERIALIZE_{PARSER_KEY}": "json",
-    ...     f"TPS_MANIFEST_PARSER_ACTION_{PARSER_KEY}": "stdout",
+    ...     f"MANIFEST_PARSER_NAME_{PARSER_KEY}": "A",
+    ...     f"MANIFEST_PARSER_FORMAT_{PARSER_KEY}": DOCUMENT_FORMAT,
+    ...     f"MANIFEST_PARSER_VERSION_{PARSER_KEY}": DOCUMENT_VERSION,
+    ...     f"MANIFEST_PARSER_SERIALIZE_{PARSER_KEY}": "json",
+    ...     f"MANIFEST_PARSER_ACTION_{PARSER_KEY}": "stdout",
     ... }
     >>>
     >>> PARSER_KEY = "TWO"
     >>> environ.update({
-    ...     f"TPS_MANIFEST_PARSER_NAME_{PARSER_KEY}": "B",
-    ...     f"TPS_MANIFEST_PARSER_FORMAT_{PARSER_KEY}": DOCUMENT_FORMAT,
-    ...     f"TPS_MANIFEST_PARSER_VERSION_{PARSER_KEY}": DOCUMENT_VERSION,
-    ...     f"TPS_MANIFEST_PARSER_SERIALIZE_{PARSER_KEY}": "yaml",
-    ...     f"TPS_MANIFEST_PARSER_ACTION_{PARSER_KEY}": "exec_stdin",
-    ...     f"TPS_MANIFEST_PARSER_TARGET_{PARSER_KEY}": "cat",
+    ...     f"MANIFEST_PARSER_NAME_{PARSER_KEY}": "B",
+    ...     f"MANIFEST_PARSER_FORMAT_{PARSER_KEY}": DOCUMENT_FORMAT,
+    ...     f"MANIFEST_PARSER_VERSION_{PARSER_KEY}": DOCUMENT_VERSION,
+    ...     f"MANIFEST_PARSER_SERIALIZE_{PARSER_KEY}": "yaml",
+    ...     f"MANIFEST_PARSER_ACTION_{PARSER_KEY}": "exec_stdin",
+    ...     f"MANIFEST_PARSER_TARGET_{PARSER_KEY}": "cat",
     ... })
     >>>
     >>> PARSER_KEY = "THREE"
     >>> environ.update({
-    ...     f"TPS_MANIFEST_PARSER_NAME_{PARSER_KEY}": "C",
-    ...     f"TPS_MANIFEST_PARSER_FORMAT_{PARSER_KEY}": DOCUMENT_FORMAT,
-    ...     f"TPS_MANIFEST_PARSER_VERSION_{PARSER_KEY}": DOCUMENT_VERSION,
-    ...     f"TPS_MANIFEST_PARSER_SERIALIZE_{PARSER_KEY}": "pickle",
-    ...     f"TPS_MANIFEST_PARSER_ACTION_{PARSER_KEY}": "exec_stdin",
-    ...     f"TPS_MANIFEST_PARSER_TARGET_{PARSER_KEY}": sys.executable,
-    ...     f"TPS_MANIFEST_PARSER_ARGS_{PARSER_KEY}": "-c 'import sys, pickle, pprint; pprint.pprint(pickle.load(sys.stdin.buffer))'",
+    ...     f"MANIFEST_PARSER_NAME_{PARSER_KEY}": "C",
+    ...     f"MANIFEST_PARSER_FORMAT_{PARSER_KEY}": DOCUMENT_FORMAT,
+    ...     f"MANIFEST_PARSER_VERSION_{PARSER_KEY}": DOCUMENT_VERSION,
+    ...     f"MANIFEST_PARSER_SERIALIZE_{PARSER_KEY}": "pickle",
+    ...     f"MANIFEST_PARSER_ACTION_{PARSER_KEY}": "exec_stdin",
+    ...     f"MANIFEST_PARSER_TARGET_{PARSER_KEY}": sys.executable,
+    ...     f"MANIFEST_PARSER_ARGS_{PARSER_KEY}": "-c 'import sys, pickle, pprint; pprint.pprint(pickle.load(sys.stdin.buffer))'",
     ... })
     >>>
     >>> PARSER_KEY = "FOUR"
     >>> environ.update({
-    ...     f"TPS_MANIFEST_PARSER_NAME_{PARSER_KEY}": "D",
-    ...     f"TPS_MANIFEST_PARSER_FORMAT_{PARSER_KEY}": DOCUMENT_FORMAT,
-    ...     f"TPS_MANIFEST_PARSER_VERSION_{PARSER_KEY}": DOCUMENT_VERSION,
-    ...     f"TPS_MANIFEST_PARSER_SERIALIZE_{PARSER_KEY}": "env",
-    ...     f"TPS_MANIFEST_PARSER_ACTION_{PARSER_KEY}": "stdout",
+    ...     f"MANIFEST_PARSER_NAME_{PARSER_KEY}": "D",
+    ...     f"MANIFEST_PARSER_FORMAT_{PARSER_KEY}": DOCUMENT_FORMAT,
+    ...     f"MANIFEST_PARSER_VERSION_{PARSER_KEY}": DOCUMENT_VERSION,
+    ...     f"MANIFEST_PARSER_SERIALIZE_{PARSER_KEY}": "env",
+    ...     f"MANIFEST_PARSER_ACTION_{PARSER_KEY}": "stdout",
     ... })
     >>>
     >>> shim(
