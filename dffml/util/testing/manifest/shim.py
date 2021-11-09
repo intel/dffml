@@ -51,8 +51,7 @@ Create the following file.
     :test:
     :filepath: manifest-sample.yaml
 
-    $document_format: tps.manifest
-    $document_version: 0.0.1
+    $schema: https://example.com/my.manifest.format.0.0.0.json.schema
     testplan:
     - git:
         repo: https://example.com/my-repo.git
@@ -90,14 +89,14 @@ A script to list the git repos given manifests
     SHIM="${PYTHON} ${SELF_DIR}/shim.py"
 
     export MANIFEST_PARSER_NAME_ENV_STYLE="env-style"
-    export MANIFEST_PARSER_FORMAT_ENV_STYLE="tps.manifest"
-    export MANIFEST_PARSER_VERSION_ENV_STYLE="0.0.1"
+    export MANIFEST_PARSER_FORMAT_ENV_STYLE="my.manifest.format"
+    export MANIFEST_PARSER_VERSION_ENV_STYLE="0.0.0"
     export MANIFEST_PARSER_SERIALIZE_ENV_STYLE="env"
     export MANIFEST_PARSER_ACTION_ENV_STYLE="stdout"
 
     while test $# -gt 0
     do
-      $SHIM --insecure --input-target "${1}" \
+      $SHIM --insecure --no-schema-check --input-target "${1}" \
         --parser env-style | grep '_GIT_REPO=' | sed -e 's/.*_GIT_REPO=//g'
       shift
     done
@@ -136,8 +135,8 @@ A script to list the test property of the given git repo for the given manifests
     # manifest version. Currently there is only one version of the format. If we
     # move the to the next version we might want to parse it differently.
     export MANIFEST_PARSER_NAME_ENV_STYLE="env-style"
-    export MANIFEST_PARSER_FORMAT_ENV_STYLE="tps.manifest"
-    export MANIFEST_PARSER_VERSION_ENV_STYLE="0.0.1"
+    export MANIFEST_PARSER_FORMAT_ENV_STYLE="my.manifest.format"
+    export MANIFEST_PARSER_VERSION_ENV_STYLE="0.0.0"
     export MANIFEST_PARSER_SERIALIZE_ENV_STYLE="env"
     export MANIFEST_PARSER_ACTION_ENV_STYLE="stdout"
 
@@ -146,8 +145,7 @@ A script to list the test property of the given git repo for the given manifests
       # Parse the manifest from YAML into essentially a bash environment
       # KEY=value. It will now be in the following form:
       #
-      #   $DOCUMENT_FORMAT=tps.manifest
-      #   $DOCUMENT_VERSION=0.0.1
+      #   $SCHEMA=https://example.com/my.manifest.format.0.0.0.json.schema
       #   TESTPLAN_0_GIT_REPO=https://example.com/my-repo.git
       #   TESTPLAN_0_GIT_BRANCH=main
       #   TESTPLAN_0_GIT_FILE=my_test.py
@@ -161,7 +159,8 @@ A script to list the test property of the given git repo for the given manifests
       #   TESTPLAN_3_GIT_BRANCH=main
       #   TESTPLAN_3_GIT_FILE=face.py
       #
-      manifest=$($SHIM --insecure --input-target "${1}" --parser env-style)
+      manifest=$($SHIM --insecure --no-schema-check \
+        --input-target "${1}" --parser env-style)
       shift
       # Find any GIT_REPO lines which match the repo we're looking for.
       # Cut off the _GIT_REPO and after part, we need to know the prefix since
@@ -232,17 +231,21 @@ converter.
 Let's learn from JSON Schema and include a URL where we might be able
 to find the schema for the document. We can double up on our previous
 needs by asking that the filename of the URL can help us identify our
-document format (we'll provide fallback for if we don't have control
-over the filename via the ``document_format`` and ``$document_version``
-keys). We'll parse the URL for the filename component. When we parse it
-we'll split on ``.``. If the first part is eff (Extensible Format
-Format) we'll treat the rest up until the semantic version as the format
-name. Then the semantic version is the version of the format. Then the
-rest should be the extension which is associated with the format which
-we can use to validate the contents of the document, such as JSON
-schema.
+document format.
 
-``$schema: "https://example.com/eff.my.document.format.0.0.0.schema.json"``
+We'll parse the URL for the filename component. When we parse it
+we'll split on ``.``. If the first part up until the semantic version
+will be treated as the format name. Then the semantic version is the
+version of the format. Then the rest should be the extension which is
+associated with the format which we can use to validate the contents
+of the document, such as JSON schema.
+
+Optionally the schema URL may include a hash after which a key value pair may
+specify a validation action and target respectively.
+
+.. code-block:: yaml
+
+    $schema: "https://example.com/my.document.format.0.0.0.schema.json#sha256=dfd781dca25694dd808630ff4f27f290ba394143bdcae02911bcafa4a13b8319"
 
 Testing
 ```````
@@ -299,6 +302,7 @@ import traceback
 import contextlib
 import subprocess
 import dataclasses
+import urllib.parse
 import importlib.util
 from typing import Any, Callable, Dict, List, Optional
 
@@ -365,8 +369,7 @@ def parse(
     >>> parse(
     ...     textwrap.dedent(
     ...         """\
-    ...         $document_format: tps.manifest
-    ...         $document_version: 0.0.1
+    ...         $schema: https://example.com/my.manifest.format.0.0.0.schema.json
     ...         testplan:
     ...         - git:
     ...             repo: https://example.com/my-repo.git
@@ -375,7 +378,7 @@ def parse(
     ...         """
     ...     )
     ... )
-    {'$document_format': 'tps.manifest', '$document_version': '0.0.1', 'testplan': [{'git': {'repo': 'https://example.com/my-repo.git', 'branch': 'main', 'file': 'my_test.py'}}]}
+    {'$schema': 'https://example.com/my.manifest.format.0.0.0.schema.json', 'testplan': [{'git': {'repo': 'https://example.com/my-repo.git', 'branch': 'main', 'file': 'my_test.py'}}]}
     '''
     if parsers is None:
         parsers = DEFAULT_PARSERS
@@ -500,20 +503,20 @@ def discover_dataclass_environ(
     ...     MyDataclass.PREFIX,
     ...     {
     ...         "MYPREFIX_NAME_EXAMPLE_FORMAT": "Example Format",
-    ...         "MYPREFIX_VERSION_EXAMPLE_FORMAT": "0.0.1",
+    ...         "MYPREFIX_VERSION_EXAMPLE_FORMAT": "0.0.0",
     ...     },
     ... )
-    {'example_format': MyDataclass(name='Example Format', version='0.0.1')}
+    {'example_format': MyDataclass(name='Example Format', version='0.0.0')}
     >>>
     >>> discover_dataclass_environ(
     ...     MyDataclass,
     ...     MyDataclass.PREFIX,
     ...     {
-    ...         "MYPREFIX_VERSION_EXAMPLE_FORMAT": "0.0.1",
+    ...         "MYPREFIX_VERSION_EXAMPLE_FORMAT": "0.0.0",
     ...     },
     ...     dataclass_key="name",
     ... )
-    {'example_format': MyDataclass(name='example_format', version='0.0.1')}
+    {'example_format': MyDataclass(name='example_format', version='0.0.0')}
     """
     if environ is None:
         environ = os.environ
@@ -664,6 +667,43 @@ DEFAULT_INPUT_ACTIONS = {
 }
 
 
+def parse_schema_url(schema_url):
+    """
+    Parse a schema URL. Return a tuple of document format, document version,
+    schema URL, schema validation action, schema validation target.
+
+    Do not assume any extension. Many will use JSON schema but some may have a
+    binary manifest format or something that doesn't lend itself to JSON schema.
+    """
+    parsed = urllib.parse.urlparse(schema_url)
+    document_format_version = pathlib.Path(parsed.path).name
+    document_format_version_split = document_format_version.split(".")
+    # Once we find three integer values we are at the end (beginning from left
+    # right) of the semantic version.
+    ints_found = 0
+    for i, value in enumerate(document_format_version_split[::-1]):
+        ints_found += int(value.isdigit())
+        if ints_found == 3:
+            break
+    i += 1
+    document_format = ".".join(document_format_version_split[:-i])
+    document_version = ".".join(document_format_version_split[-i : (-i + 3)])
+    schema_valiation_action = None
+    schema_valiation_target = None
+    if parsed.fragment and "=" in parsed.fragment:
+        (
+            schema_valiation_action,
+            schema_valiation_target,
+        ) = parsed.fragment.split("=", maxsplit=1)
+    return (
+        document_format,
+        document_version,
+        parsed._replace(fragment="").geturl(),
+        schema_valiation_action,
+        schema_valiation_target,
+    )
+
+
 class InputActionNotFound(Exception):
     """
     Input actions are used to read in manifest. If one is not found then the
@@ -717,12 +757,11 @@ def shim(
     >>> import textwrap
     >>> from dffml.util.testing.manifest.shim import shim, ManifestFormatParser
     >>>
-    >>> DOCUMENT_FORMAT = "tps.manifest"
-    >>> DOCUMENT_VERSION = "0.0.1"
+    >>> DOCUMENT_FORMAT = "my.manifest.format"
+    >>> DOCUMENT_VERSION = "0.0.0"
     >>>
     >>> contents = f"""\
-    ... $document_format: {DOCUMENT_FORMAT}
-    ... $document_version: {DOCUMENT_VERSION}
+    ... $schema: https://example.com/{DOCUMENT_FORMAT}.{DOCUMENT_VERSION}.schema.json
     ... testplan:
     ... - git:
     ...     repo: https://example.com/my-repo.git
@@ -781,6 +820,7 @@ def shim(
     >>> shim(
     ...     types.SimpleNamespace(
     ...         setup=None,
+    ...         no_schema_check=True,
     ...         input_action="target",
     ...         insecure=True,
     ...         only_validate=False,
@@ -789,11 +829,12 @@ def shim(
     ...     ),
     ...     environ=environ,
     ... )
-    {"$document_format": "tps.manifest", "$document_version": "0.0.1", "testplan": [{"git": {"repo": "https://example.com/my-repo.git", "branch": "dev", "file": "my_test.py"}}, {"git": {"repo": "https://example.com/their-repo.git", "branch": "main", "file": "their_test.py"}}]}
+    {"$schema": "https://example.com/my.manifest.format.0.0.0.schema.json", "testplan": [{"git": {"repo": "https://example.com/my-repo.git", "branch": "dev", "file": "my_test.py"}}, {"git": {"repo": "https://example.com/their-repo.git", "branch": "main", "file": "their_test.py"}}]}
     >>>
     >>> shim(
     ...     types.SimpleNamespace(
     ...         setup=None,
+    ...         no_schema_check=True,
     ...         input_action="target",
     ...         insecure=True,
     ...         only_validate=False,
@@ -802,8 +843,7 @@ def shim(
     ...     ),
     ...     environ=environ,
     ... )
-    $DOCUMENT_FORMAT=tps.manifest
-    $DOCUMENT_VERSION=0.0.1
+    $SCHEMA=https://example.com/my.manifest.format.0.0.0.schema.json
     TESTPLAN_0_GIT_REPO=https://example.com/my-repo.git
     TESTPLAN_0_GIT_BRANCH=dev
     TESTPLAN_0_GIT_FILE=my_test.py
@@ -813,6 +853,7 @@ def shim(
     >>> shim(
     ...     types.SimpleNamespace(
     ...         setup=None,
+    ...         no_schema_check=True,
     ...         input_action="target",
     ...         insecure=True,
     ...         only_validate=False,
@@ -825,6 +866,7 @@ def shim(
     >>> shim(
     ...     types.SimpleNamespace(
     ...         setup=None,
+    ...         no_schema_check=True,
     ...         input_action="target",
     ...         insecure=False,
     ...         only_validate=False,
@@ -840,6 +882,7 @@ def shim(
     >>> shim(
     ...     types.SimpleNamespace(
     ...         setup=None,
+    ...         no_schema_check=True,
     ...         input_action="target",
     ...         insecure=False,
     ...         only_validate=False,
@@ -855,6 +898,7 @@ def shim(
     >>> shim(
     ...     types.SimpleNamespace(
     ...         setup=None,
+    ...         no_schema_check=True,
     ...         input_action="target",
     ...         insecure=False,
     ...         only_validate=False,
@@ -890,8 +934,7 @@ def shim(
         :test:
         :filepath: manifest.yaml
 
-        $document_format: tps.manifest
-        $document_version: 0.0.1
+        $schema: https://example.com/my.manifest.format.0.0.0.schema.json
         testplan:
         - git:
             repo: https://example.com/my-repo.git
@@ -953,8 +996,8 @@ def shim(
             # Declare another parser
             parser = shim.ManifestFormatParser(
                 name="myparser",
-                format="tps.manifest",
-                version="0.0.1",
+                format="my.manifest.format",
+                version="0.0.0",
                 serialize="env",
                 action="stdout"
             )
@@ -1001,7 +1044,8 @@ def shim(
 
         $ python -u shim.py \
             --setup my_shim_setup.py --setup-function-name setup_shim_func \
-            --input-target manifest.yaml --parser myparser --insecure
+            --insecure --no-schema-check \
+            --input-target manifest.yaml --parser myparser
     '''
     # Set environment to os.environ if not given
     if environ is None:
@@ -1080,10 +1124,28 @@ def shim(
         return
     # Parse the manifest
     manifest = parse(contents, parsers=parsers)
+    # Ensure we have
+    if "$schema" not in manifest:
+        raise SchemaNotFound(
+            "Manifest does not contain $schema key at document root"
+        )
+    # Determine document format and version
+    (
+        document_format,
+        document_version,
+        schema_url,
+        schema_validation_action,
+        schema_validation_target,
+    ) = parse_schema_url(manifest["$schema"])
+    # Validate schema
+    if not args.no_schema_check:
+        raise NotImplementedError(
+            f"schema validation not implemented {(schema_url, schema_validation_action, schema_validation_target)!r}"
+        )
     # Grab mapped parser
     format_version_action = (
-        manifest.get("$document_format", None),
-        manifest.get("$document_version", None),
+        document_format,
+        document_version,
         args.parser,
     )
     if format_version_action not in next_phase_parsers:
@@ -1154,6 +1216,12 @@ def make_parser():
         action="store_true",
         default=False,
         help=f"Exit after validating the manifest (validation currently unsupported)",
+    )
+    parser.add_argument(
+        "--no-schema-check",
+        action="store_true",
+        default=False,
+        help=f"Skip checking that the manifest adheres to the schema",
     )
     parser.add_argument(
         "--input-action",
