@@ -38,16 +38,3 @@ class MiscSource(BaseSource):
         self.mem: Dict[str, Record] = {}
         if isinstance(self.config, MiscSourceConfig):
             self.mem = {record.key: record for record in self.config.records}
-
-    @classmethod
-    def args(cls, args, *above) -> Dict[str, Arg]:
-        cls.config_set(
-            args, above, "keys", Arg(type=str, nargs="+", default=[])
-        )
-        return args
-
-    @classmethod
-    def config(cls, config, *above):
-        return MiscSourceConfig(
-            records=list(map(Record, cls.config_get(config, above, "keys")))
-        )
