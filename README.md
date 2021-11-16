@@ -13,7 +13,7 @@ As we all know the Machine Learning space has a lot of tools and libraries for c
 
 Our project aims to make this process a breeze by introducing interoperability under a modular and easily extensible API.DFFML’s plugin-based architecture makes it a swiss army knife of ML research & MLOps.
 
-We heavily rely on DataFlows, which are basically directed graphs. We are also working on a WebUI to make dataflows completely a drag’n drop experience. Currently, all of our functionalities are accessible through Python API, CLI, and HTTP APIs. 
+We heavily rely on DataFlows, which are basically directed graphs. We are also working on a WebUI to make dataflows completely a drag’n drop experience. Currently, all of our functionalities are accessible through Python API, CLI, and HTTP APIs.
 
 We broadly have two types of audience here, one is Citizen Data Scientists and ML researchers, who’d probably use the WebUI to experiment and design models. MLOps people will deploy models and set up data processing pipelines via the HTTP/CLI/Python APIs.
 
