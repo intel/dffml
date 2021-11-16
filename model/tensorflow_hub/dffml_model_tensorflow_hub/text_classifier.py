@@ -351,14 +351,6 @@ class TextClassificationModel(Model):
         return self._model
 
     @property
-    def base_path(self):
-        return (
-            self.config.location
-            if not hasattr(self, "temp_dir")
-            else self.temp_dir
-        )
-
-    @property
     def model_folder_path(self):
         _to_hash = self.features + [
             self.config.predict.name,
@@ -366,7 +358,7 @@ class TextClassificationModel(Model):
             self.config.model_path,
         ]
         model_name = secure_hash("".join(_to_hash), algorithm="sha384")
-        model_folder_path = self.base_path / model_name
+        model_folder_path = self.location / model_name
         if not model_folder_path.exists():
             model_folder_path.mkdir(parents=True, exist_ok=True)
         return model_folder_path
