@@ -295,12 +295,7 @@ class SpacyNERModel(Model):
 
     async def __aenter__(self):
         await super().__aenter__()
-        self.path = (
-            self.config.location
-            if not hasattr(self, "temp_dir")
-            else self.temp_dir
-        )
-        self.model_path = self.path / "ner"
+        self.model_path = self.location / "ner"
         if self.model_path.exists():
             self.nlp = spacy.load(self.model_path)
             self.logger.debug("Loaded model from disk.")
