@@ -36,6 +36,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Dev CMD to remove unused imports, `$ dffml service dev lint imports`
 - Helper for creating a blank generic Python package
   `$ dffml service dev create blank mypackage`
+- Added `is_trained` flag to all models
 ### Changed
 - Calls to hashlib now go through helper functions
 - Build docs using `dffml service dev docs`
@@ -53,6 +54,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Record object key properties are now always strings
 - High level functions (`train()`, etc.) now work on existing open contexts
 - Issue of download progress being logged only on first download
+### Removed
+- `dffml/skel/common/REPLACE_IMPORT_PACKAGE_NAME/version.py`
 
 ## [0.4.0] - 2021-02-18
 ### Added

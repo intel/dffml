@@ -70,9 +70,10 @@ class TensorflowModelContext(ModelContext):
         self.parent.model.train(
             input_fn=input_fn, steps=self.parent.config.steps
         )
+        self.is_trained = True
 
     async def get_predictions(self, sources: SourcesContext):
-        if not self.parent.base_path.exists():
+        if not self.is_trained:
             raise ModelNotTrained("Train model before prediction.")
         # Create the input function
         input_fn, predict = await self.predict_input_fn(sources)
@@ -90,6 +91,7 @@ class TensorflowModel(Model):
         self.tf = importlib.import_module("tensorflow")
         self.feature_columns = self._feature_columns()
         self.features = self._applicable_features()
+        self.is_trained = self.model_path.exists()
 
     def _feature_columns(self):
         """

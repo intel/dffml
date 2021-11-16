@@ -169,12 +169,13 @@ class LogisticRegression(SimpleModel):
                 self.yData, feature_data[self.config.predict.name]
             )
         self.separating_line = self.best_separating_line()
+        self.is_trained = True
 
     async def predict(
         self, sources: SourcesContext
     ) -> AsyncIterator[Tuple[Record, Any, float]]:
         # Ensure the model has been trained before we try to make a prediction
-        if self.separating_line is None:
+        if not self.is_trained:
             raise ModelNotTrained("Train model before prediction.")
         target = self.config.predict.name
         async for record in sources.with_features(

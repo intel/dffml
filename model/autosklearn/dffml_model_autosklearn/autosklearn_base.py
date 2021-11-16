@@ -35,6 +35,7 @@ class AutoSklearnModel(Model):
     def load_model(self):
         if self.path.is_file():
             self.model = joblib.load(self.path)
+            self.is_trained = True
 
 
 class AutoSklearnModelContext(ModelContext):
@@ -72,11 +73,12 @@ class AutoSklearnModelContext(ModelContext):
         self.parent.model.fit_ensemble(
             y_train, ensemble_size=self.parent.config.ensemble_size
         )
+        self.is_trained = True
 
     async def predict(self, sources: SourcesContext) -> AsyncIterator[Record]:
-        if not self.parent.model:
+        if not self.is_trained:
             raise ModelNotTrained(
-                "Train the model first before getting preictions"
+                "Train the model first before getting predictions"
             )
         test_records = await self.get_test_records(sources)
         x_test = pd.DataFrame(

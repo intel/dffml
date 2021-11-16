@@ -201,12 +201,13 @@ class MySLRModel(SimpleModel):
         self.logger.debug("Number of training records: %d", len(x))
         # Save m, b, and accuracy
         self.storage["regression_line"] = best_fit_line(x, y)
+        self.is_trained = True
 
     async def predict(self, sources: SourcesContext) -> AsyncIterator[Record]:
         # Load saved regression line
         regression_line = self.storage.get("regression_line", None)
         # Ensure the model has been trained before we try to make a prediction
-        if regression_line is None:
+        if not self.is_trained:
             raise ModelNotTrained("Train model before prediction")
         # Expand the regression_line into named variables
         m, b, accuracy = regression_line

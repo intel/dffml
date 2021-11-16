@@ -288,6 +288,7 @@ class AnomalyModel(SimpleModel):
             mu.tolist(),
             sigma2.tolist(),
         )
+        self.is_trained = True
 
     async def get_input_data(self, sources: SourcesContext) -> list:
         saved_records = []
@@ -302,7 +303,7 @@ class AnomalyModel(SimpleModel):
         # Load saved anomalies
         anomalies = self.storage.get("anomalies", None)
         # Ensure the model has been trained before we try to make a prediction
-        if anomalies is None:
+        if not self.is_trained:
             raise ModelNotTrained("Train model before prediction")
         # Expand the anomalies into named variables
         epsilon, F1, mu, sigma2 = anomalies

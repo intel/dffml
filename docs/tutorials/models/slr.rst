@@ -140,7 +140,7 @@ confidence in our prediction.
 
 .. literalinclude:: /../dffml/skel/model/REPLACE_IMPORT_PACKAGE_NAME/myslr.py
     :test:
-    :lines: 205-224
+    :lines: 206-225
 
 Python Usage
 ------------
