@@ -24,26 +24,24 @@ include some sources, models, and operations as a part of the main package,
 Mission Statement
 -----------------
 
-DFFML aims to be the easiest and most convenient way to use Machine Learning.
+As we all know the Machine Learning space has a lot of tools and libraries for 
+creating pipelines to train, test & deploy models, and dealing with these many 
+different APIs can be cumbersome.
 
-- Its a machine learning distribution. Providing you access to a set of popular
-  machine learning libraries guaranteed to work together.
+Our project aims to make this process a breeze by introducing interoperability 
+under a modular and easily extensible API. DFFML’s plugin-based architecture makes 
+it a swiss army knife of ML research & MLOps.
 
-- Its a AI/ML Python library, command line application, and HTTP service.
+We heavily rely on DataFlows, which are basically directed graphs. We are also 
+working on a WebUI to make dataflows completely a drag’n drop experience. 
+Currently, all of our functionalities are accessible through Python API, CLI, 
+and HTTP APIs. 
 
-- You give it your data and tell it what kind of model you want to train. It
-  creates a model for you.
+We broadly have two types of audience here, one is Citizen Data Scientists and 
+ML researchers, who’d probably use the WebUI to experiment and design models. 
+MLOps people will deploy models and set up data processing pipelines via the 
+HTTP/CLI/Python APIs.
 
-- If you want finer grained control over the model, you can easily do so by
-  implementing your own model plugin.
-
-- We make it easy to use and deploy your models.
-
-- We provide a directed graph concurrent execution environment with managed
-  locking which we call DataFlows.
-
-- DataFlows make it easy to generate datasets or modify existing datasets for
-  rapid iteration on feature engineering.
 
 What is key objective of DataFlows
 ----------------------------------

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>About &mdash; DFFML 7ef08087c documentation</title>
+  <title>About &mdash; DFFML 66f965a43 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/tabs.css" type="text/css" />
@@ -33,7 +33,7 @@
             <a href="index.html" class="icon icon-home"> DFFML
           </a>
               <div class="version">
-                7ef08087c
+                66f965a43
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -188,21 +188,20 @@ include some sources, models, and operations as a part of the main package,
 <code class="docutils literal notranslate"><span class="pre">dffml</span></code>, and other functionality in more specific packages.</p>
 <div class="section" id="mission-statement">
 <h2>Mission Statement<a class="headerlink" href="#mission-statement" title="Permalink to this headline"></a></h2>
-<p>DFFML aims to be the easiest and most convenient way to use Machine Learning.</p>
-<ul class="simple">
-<li><p>Its a machine learning distribution. Providing you access to a set of popular
-machine learning libraries guaranteed to work together.</p></li>
-<li><p>Its a AI/ML Python library, command line application, and HTTP service.</p></li>
-<li><p>You give it your data and tell it what kind of model you want to train. It
-creates a model for you.</p></li>
-<li><p>If you want finer grained control over the model, you can easily do so by
-implementing your own model plugin.</p></li>
-<li><p>We make it easy to use and deploy your models.</p></li>
-<li><p>We provide a directed graph concurrent execution environment with managed
-locking which we call DataFlows.</p></li>
-<li><p>DataFlows make it easy to generate datasets or modify existing datasets for
-rapid iteration on feature engineering.</p></li>
-</ul>
+<p>As we all know the Machine Learning space has a lot of tools and libraries for
+creating pipelines to train, test &amp; deploy models, and dealing with these many
+different APIs can be cumbersome.</p>
+<p>Our project aims to make this process a breeze by introducing interoperability
+under a modular and easily extensible API. DFFML’s plugin-based architecture makes
+it a swiss army knife of ML research &amp; MLOps.</p>
+<p>We heavily rely on DataFlows, which are basically directed graphs. We are also
+working on a WebUI to make dataflows completely a drag’n drop experience.
+Currently, all of our functionalities are accessible through Python API, CLI,
+and HTTP APIs.</p>
+<p>We broadly have two types of audience here, one is Citizen Data Scientists and
+ML researchers, who’d probably use the WebUI to experiment and design models.
+MLOps people will deploy models and set up data processing pipelines via the
+HTTP/CLI/Python APIs.</p>
 </div>
 <div class="section" id="what-is-key-objective-of-dataflows">
 <h2>What is key objective of DataFlows<a class="headerlink" href="#what-is-key-objective-of-dataflows" title="Permalink to this headline"></a></h2>
