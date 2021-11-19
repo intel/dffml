@@ -5,22 +5,22 @@ Util
     :maxdepth: 2
     :caption: Contents:
 
-    packaging
-    file
-    asynchelper
-    os
-    skel
-    internal
     display
-    python
+    os
     subprocess
-    entrypoint
-    log
-    data
+    skel
+    file
     crypto
-    net
     tempdir
+    net
+    data
+    entrypoint
+    asynchelper
+    packaging
+    internal
     asynctestcase
+    log
+    python
     testing/index
-    config/index
     cli/index
+    config/index
