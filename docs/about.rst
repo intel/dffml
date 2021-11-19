@@ -29,7 +29,7 @@ creating pipelines to train, test & deploy models, and dealing with these many
 different APIs can be cumbersome.
 
 Our project aims to make this process a breeze by introducing interoperability 
-under a modular and easily extensible API.DFFML’s plugin-based architecture makes 
+under a modular and easily extensible API. DFFML’s plugin-based architecture makes 
 it a swiss army knife of ML research & MLOps.
 
 We heavily rely on DataFlows, which are basically directed graphs. We are also 

@@ -11,7 +11,7 @@
 
 As we all know the Machine Learning space has a lot of tools and libraries for creating pipelines to train, test & deploy models, and dealing with these many different APIs can be cumbersome.
 
-Our project aims to make this process a breeze by introducing interoperability under a modular and easily extensible API.DFFML’s plugin-based architecture makes it a swiss army knife of ML research & MLOps.
+Our project aims to make this process a breeze by introducing interoperability under a modular and easily extensible API. DFFML’s plugin-based architecture makes it a swiss army knife of ML research & MLOps.
 
 We heavily rely on DataFlows, which are basically directed graphs. We are also working on a WebUI to make dataflows completely a drag’n drop experience. Currently, all of our functionalities are accessible through Python API, CLI, and HTTP APIs.
 
