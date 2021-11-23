@@ -712,10 +712,23 @@ class InputActionNotFound(Exception):
     """
 
 
+class ValidationActionNotFound(Exception):
+    """
+    Validation actions are used to verify the manifest comes from a trusted
+    source. If one is not found then the manifest cannot be parsed.
+    """
+
+
 class ParserNotFound(Exception):
     """
     Document format/version/action combination not found. It was not registered
     via the environment.
+    """
+
+
+class SchemaNotFound(Exception):
+    """
+    Raised when document does not have a $schema key at the top level
     """
 
 
@@ -1118,6 +1131,12 @@ def shim(
                 f" Choose from {set(validation_actions.keys())!r}"
             )
         # Determine how to get validate the manifest
+        if args.validation_action not in validation_actions:
+            raise ValidationActionNotFound(
+                "Validation action is used to read in manifest"
+                f" {args.validation_action!r} not found in loaded"
+                f" validation actions: {validation_actions!r}"
+            )
         validation_action = validation_actions[args.validation_action]
         # Validate the manifest. Override unvalidated contents with just
         # validated.
