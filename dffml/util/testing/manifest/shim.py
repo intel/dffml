@@ -294,6 +294,7 @@ import hmac
 import json
 import shlex
 import pickle
+import logging
 import pathlib
 import hashlib
 import argparse
@@ -306,6 +307,9 @@ import dataclasses
 import urllib.parse
 import importlib.util
 from typing import Any, Callable, Dict, List, Optional
+
+
+LOGGER = logging.getLogger(pathlib.Path(__file__).stem)
 
 
 def popen_write_to_stdin(
@@ -391,6 +395,7 @@ def parse(
             return parser(contents)
         except Exception as error:
             errors[name] = (error, traceback.format_exc())
+            LOGGER.getChild(f"parse.{name}").error(errors[name][1])
     for name, (_error, traceback_string) in errors.items():
         print(f"Parser {name!r}: {traceback_string}", file=sys.stderr)
     raise list(errors.values())[-1][0]
@@ -1211,6 +1216,7 @@ def make_parser():
         description=__doc__,
     )
 
+    parser.add_argument("--log", default="critical")
     parser.add_argument(
         "-l", "--lockdown", action="store_true", default=False,
     )
@@ -1291,6 +1297,8 @@ def make_parser():
 def main():
     parser = make_parser()
     args = parser.parse_args()
+
+    logging.basicConfig(level=getattr(logging, args.log.upper()))
 
     shim(args)
 
