@@ -43,7 +43,8 @@ Download the shim
 
     $ curl -sfLO https://github.com/intel/dffml/raw/manifest/dffml/util/testing/manifest/shim.py
 
-Create the following file.
+Create the following files. The first is a manifest with a ``$schema`` which
+will give the shim the format name and version based on the filename.
 
 **manifest-sample.yaml**
 
@@ -52,7 +53,7 @@ Create the following file.
     :filepath: manifest-sample.yaml
 
     ---
-    $schema: https://example.com/my.manifest.format.0.0.0.json.schema
+    $schema: https://example.com/my.manifest.format.0.0.1.json.schema
     testplan:
     - git:
         repo: https://example.com/my-repo.git
@@ -71,12 +72,63 @@ Create the following file.
         branch: main
         file: face.py
 
+The second is a manifest in another format entirely. You can also use the shim
+to parse it, but you must provide a way to get that manifests format name and
+version.
+
+**manifest-sample.txt**
+
+.. code-block:: yaml
+    :test:
+    :filepath: manifest-sample.txt
+
+    https://example.com/alt.git#dev yo.py
+    https://example.com/aux.git#main yoma.py
+
+We need to write a custom parser for the non-JSON/YAML input format. We can do
+this via a supplemental setup file used to initialized the shim's environment.
+
+.. note::
+
+    When debugging writing a custom parser. It can be good to add the
+    ``--log debug`` flag to the invocation of the shim.
+
+**setup_shim.py**
+
+.. code-block:: python
+    :test:
+    :filepath: setup_shim.py
+
+    from typing import Dict, Any
+
+
+    def parse_my_manifest_format_0_0_0(contents: bytes) -> Dict[str, Any]:
+        return {
+            "$schema": "https://example.com/my.manifest.format.0.0.0.json.schema",
+            "testplan": [
+                dict(
+                    zip(
+                        ["repo", "branch", "file"],
+                        [*line.split()[0].split("#"), line.split()[1]],
+                    )
+                )
+                for line in contents.decode().strip().split("\n")
+            ]
+        }
+
+
+    def setup_shim(parsers, next_phase_parsers, **kwargs):
+        # Put the parser at the front of the list to try since YAML will also
+        # successfully parse the format
+        parsers.insert(0, ("my.manifest.format.0.0.0", parse_my_manifest_format_0_0_0))
+
 A script to list the git repos given manifests
 
 **ls-manifest-testplan-git-repo.sh**
 
 .. code-block:: bash
     :test:
+    :overwrite:
     :filepath: ls-manifest-testplan-git-repo.sh
 
     #!/usr/bin/env sh
@@ -89,23 +141,37 @@ A script to list the git repos given manifests
     # Path to manifest shim
     SHIM="${PYTHON} ${SELF_DIR}/shim.py"
 
-    export MANIFEST_PARSER_NAME_ENV_STYLE="env-style"
-    export MANIFEST_PARSER_FORMAT_ENV_STYLE="my.manifest.format"
-    export MANIFEST_PARSER_VERSION_ENV_STYLE="0.0.0"
-    export MANIFEST_PARSER_SERIALIZE_ENV_STYLE="env"
-    export MANIFEST_PARSER_ACTION_ENV_STYLE="stdout"
+    # The 0.0.0 manifest format, the non-YAML based one
+    export MANIFEST_PARSER_NAME_GIT_REPOS_0_0_0="repos"
+    export MANIFEST_PARSER_FORMAT_GIT_REPOS_0_0_0="my.manifest.format"
+    export MANIFEST_PARSER_VERSION_GIT_REPOS_0_0_0="0.0.0"
+    export MANIFEST_PARSER_SERIALIZE_GIT_REPOS_0_0_0="env"
+    export MANIFEST_PARSER_ACTION_GIT_REPOS_0_0_0="exec_stdin"
+    export MANIFEST_PARSER_TARGET_GIT_REPOS_0_0_0="${SHELL}"
+    export MANIFEST_PARSER_ARGS_GIT_REPOS_0_0_0="-c \"grep '_REPO=' | sed -e 's/.*_REPO=//g'\""
+
+    # The 0.0.1 manifest format, the YAML based one
+    export MANIFEST_PARSER_NAME_GIT_REPOS_0_0_1="repos"
+    export MANIFEST_PARSER_FORMAT_GIT_REPOS_0_0_1="my.manifest.format"
+    export MANIFEST_PARSER_VERSION_GIT_REPOS_0_0_1="0.0.1"
+    export MANIFEST_PARSER_SERIALIZE_GIT_REPOS_0_0_1="env"
+    export MANIFEST_PARSER_ACTION_GIT_REPOS_0_0_1="exec_stdin"
+    export MANIFEST_PARSER_TARGET_GIT_REPOS_0_0_1="${SHELL}"
+    export MANIFEST_PARSER_ARGS_GIT_REPOS_0_0_1="-c \"grep '_GIT_REPO=' | sed -e 's/.*_GIT_REPO=//g'\""
 
     while test $# -gt 0
     do
       $SHIM --insecure --no-schema-check --input-target "${1}" \
-        --parser env-style | grep '_GIT_REPO=' | sed -e 's/.*_GIT_REPO=//g'
+        --setup setup_shim.py --parser repos
       shift
     done
 
 .. code-block:: console
     :test:
 
-    $ bash ls-manifest-testplan-git-repo.sh ./manifest-sample.yaml
+    $ bash ls-manifest-testplan-git-repo.sh ./manifest-sample.txt ./manifest-sample.yaml
+    https://example.com/alt.git
+    https://example.com/aux.git
     https://example.com/my-repo.git
     https://example.com/their-repo.git
     https://example.com/their-repo.git
@@ -135,11 +201,20 @@ A script to list the test property of the given git repo for the given manifests
     # This script uses the shim layer to call the appropriate parser for the
     # manifest version. Currently there is only one version of the format. If we
     # move the to the next version we might want to parse it differently.
-    export MANIFEST_PARSER_NAME_ENV_STYLE="env-style"
-    export MANIFEST_PARSER_FORMAT_ENV_STYLE="my.manifest.format"
-    export MANIFEST_PARSER_VERSION_ENV_STYLE="0.0.0"
-    export MANIFEST_PARSER_SERIALIZE_ENV_STYLE="env"
-    export MANIFEST_PARSER_ACTION_ENV_STYLE="stdout"
+
+    # The 0.0.0 manifest format, the non-YAML based one
+    export MANIFEST_PARSER_NAME_GIT_REPOS_0_0_0="env-style"
+    export MANIFEST_PARSER_FORMAT_GIT_REPOS_0_0_0="my.manifest.format"
+    export MANIFEST_PARSER_VERSION_GIT_REPOS_0_0_0="0.0.0"
+    export MANIFEST_PARSER_SERIALIZE_GIT_REPOS_0_0_0="env"
+    export MANIFEST_PARSER_ACTION_GIT_REPOS_0_0_0="stdout"
+
+    # The 0.0.1 manifest format, the YAML based one
+    export MANIFEST_PARSER_NAME_GIT_REPOS_0_0_1="env-style"
+    export MANIFEST_PARSER_FORMAT_GIT_REPOS_0_0_1="my.manifest.format"
+    export MANIFEST_PARSER_VERSION_GIT_REPOS_0_0_1="0.0.1"
+    export MANIFEST_PARSER_SERIALIZE_GIT_REPOS_0_0_1="env"
+    export MANIFEST_PARSER_ACTION_GIT_REPOS_0_0_1="stdout"
 
     while test $# -gt 0
     do
@@ -160,22 +235,22 @@ A script to list the test property of the given git repo for the given manifests
       #   TESTPLAN_3_GIT_BRANCH=main
       #   TESTPLAN_3_GIT_FILE=face.py
       #
-      manifest=$($SHIM --insecure --no-schema-check \
+      manifest=$($SHIM --insecure --no-schema-check --setup setup_shim.py \
         --input-target "${1}" --parser env-style)
       shift
       # Find any GIT_REPO lines which match the repo we're looking for.
       # Cut off the _GIT_REPO and after part, we need to know the prefix since
       # we need to know the GIT_FILE that is referenced by the same prefix.
-      testplan_indexes=$(grep "_GIT_REPO=$GIT_REPO" <<<"${manifest}" \
-        | sed -e 's/_GIT_REPO.*//g')
+      testplan_indexes=$(grep "_REPO=$GIT_REPO" <<<"${manifest}" \
+        | sed -e 's/_REPO.*//g')
       # If it doesn't then check the next index
       if [ "x${testplan_indexes}" == "x" ]; then
         continue
       fi
       # Check each index we found. Look for the file associated with the index
       for testplan_index in ${testplan_indexes[@]}; do
-        testcase=$(grep "${testplan_index}_GIT_FILE=" <<<"${manifest}" \
-          | sed -e 's/.*_GIT_FILE=//g')
+        testcase=$(grep "${testplan_index}_FILE=" <<<"${manifest}" \
+          | sed -e 's/.*_FILE=//g')
         echo "$GIT_REPO/$testcase"
       done
     done
@@ -183,6 +258,8 @@ A script to list the test property of the given git repo for the given manifests
 .. code-block:: console
     :test:
 
+    $ bash ls-manifest-testplan-git-test.sh https://example.com/alt.git ./manifest-sample.txt
+    https://example.com/alt.git/yo.py
     $ bash ls-manifest-testplan-git-test.sh https://example.com/my-repo.git ./manifest-sample.yaml
     https://example.com/my-repo.git/my_test.py
     https://example.com/my-repo.git/face.py
