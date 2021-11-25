@@ -306,7 +306,7 @@ import subprocess
 import dataclasses
 import urllib.parse
 import importlib.util
-from typing import Any, Callable, Dict, List, Optional
+from typing import Any, Callable, Dict, Tuple, List, Optional
 
 
 LOGGER = logging.getLogger(pathlib.Path(__file__).stem)
@@ -352,13 +352,14 @@ def decode_if_bytes(func):
 
 
 # The set of parser attempts we've hardcoded into this file
-DEFAULT_PARSERS = {
-    "json": decode_if_bytes(json.loads),
-}
+json_loads_decode_if_bytes = decode_if_bytes(json.loads)
+DEFAULT_PARSERS = [
+    ("json", json_loads_decode_if_bytes),
+]
 
 
 def parse(
-    contents: str, parsers: Dict[str, Callable[[bytes], Any]] = None
+    contents: str, parsers: List[Tuple[str, Callable[[bytes], Any]]] = None
 ) -> Any:
     r'''
     Given the contents of the manifest file as bytes, parse the contents into
@@ -390,7 +391,7 @@ def parse(
     # If we get the end of the list of parsers to try There will be and an
     # Exception we can raise
     errors = {}
-    for name, parser in parsers.items():
+    for name, parser in parsers:
         try:
             return parser(contents)
         except Exception as error:
@@ -482,7 +483,8 @@ DEFAULT_SERIALIZERS = {
 with contextlib.suppress((ImportError, ModuleNotFoundError)):
     import yaml
 
-    DEFAULT_PARSERS["yaml"] = decode_if_bytes(yaml.safe_load)
+    yaml_safe_load_decode_if_bytes = decode_if_bytes(yaml.safe_load)
+    DEFAULT_PARSERS.append(("yaml", yaml_safe_load_decode_if_bytes))
     DEFAULT_SERIALIZERS["yaml"] = lambda manifest: yaml.dump(manifest).encode()
 
 
@@ -754,7 +756,7 @@ class SerializerNotFound(Exception):
 def shim(
     args: argparse.Namespace,
     environ: Optional[Dict[str, str]] = None,
-    parsers: Optional[Dict[str, Callable[[bytes], Any]]] = None,
+    parsers: Optional[List[Tuple[str, Callable[[bytes], Any]]]] = None,
     input_actions: Optional[
         Dict[str, Callable[[argparse.Namespace], bytes]]
     ] = None,
@@ -1026,7 +1028,7 @@ def shim(
             next_phase_parsers[(parser.format, parser.version, parser.name)] = parser
 
             # Download PyYAML and load the parser if not preloaded
-            if "yaml" not in parsers:
+            if len(parsers) < 2:
                 return
 
             # Use ether the cache or a temporary directory to hold the package
@@ -1058,7 +1060,7 @@ def shim(
                 # Load the module from the downloaded wheel
                 yaml = zipimport.zipimporter(str(wheel_path)).load_module("yaml")
                 # Setup the parser for use by the shim
-                parsers["yaml"] = shim.decode_if_bytes(yaml.safe_load)
+                parsers.append(("yaml", shim.decode_if_bytes(yaml.safe_load)))
 
     .. code-block:: console
         :test:
