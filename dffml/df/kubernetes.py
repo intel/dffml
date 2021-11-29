@@ -39,6 +39,9 @@ setting.
 ..
     TODO
 
+     - When we refactor to add event types we should output init container logs
+       via one of those event types or a custom event type.
+
      - Cleanup jobs, secrets, configmaps
 
      - Refactor to separate output of config files from kubectl
@@ -69,8 +72,9 @@ import tarfile
 import tempfile
 import textwrap
 import contextlib
+import dataclasses
 import asyncio.subprocess
-from typing import AsyncIterator, Tuple, Dict, Any, List
+from typing import AsyncIterator, Tuple, Dict, Any, List, Callable
 
 from ..high_level.dataflow import run
 from .types import DataFlow, Definition, Input
@@ -86,6 +90,7 @@ from ..util.crypto import secure_hash
 from ..util.data import export
 from ..util.os import chdir
 from ..util.entrypoint import entrypoint
+from ..util.asynchelper import concurrently
 from ..util.subprocess import (
     run_command,
     run_command_events,
@@ -97,6 +102,9 @@ from ..util.internal import load_dataflow_from_configloader
 # TODO Use importlib.resources instead of reading via pathlib
 python_code: str = pathlib.Path(__file__).parent.joinpath(
     "kubernetes_execute_pickled_dataflow_with_inputs.py"
+).read_text()
+output_server: str = pathlib.Path(__file__).parent.joinpath(
+    "kubernetes_output_server.py"
 ).read_text()
 
 
@@ -111,8 +119,6 @@ class JobKubernetesOrchestratorPreApplyDefinitions(enum.Enum):
     TEMPDIR = Definition(name="kubernetes.job.tempdir", primitive="string")
 
 
-# TODO Move requirements logic to own prep dataflow which get's executed before
-# the real dataflow.
 @config
 class JobKubernetesOrchestratorConfig(MemoryOrchestratorConfig):
     context: str = field("kubectl context to use", default=None)
@@ -123,9 +129,8 @@ class JobKubernetesOrchestratorConfig(MemoryOrchestratorConfig):
         "Container build context and working directory for running container",
         default=None,
     )
-    requirements: List[str] = field(
-        "Python requirements to install before execution",
-        default_factory=lambda: [],
+    prerun: DataFlow = field(
+        "DataFlow run before running each context's DataFlow", default=None,
     )
     # TODO Figure out how to make an operation a CMD. Then this object would
     # also include the orchestrator
@@ -226,15 +231,13 @@ class JobKubernetesOrchestratorContext(MemoryOrchestratorContext):
             "[%s]: dataflow: %s", ctx_str, self.config.dataflow.export(),
         )
         # The kubernetes job
-        job_name: str = secure_hash(
-            ".".join(
-                [
-                    secure_hash(ctx_str, "sha384"),
-                    secure_hash(str(self.config.dataflow.export()), "sha384"),
-                ]
-            ),
-            "sha384",
-        )[:62]
+        job_name_components: List[str] = [
+            secure_hash(ctx_str, "sha384"),
+            secure_hash(str(self.config.dataflow.export()), "sha384"),
+        ]
+        job_name: str = secure_hash(".".join(job_name_components), "sha384")[
+            :62
+        ]
         container_name: str = job_name
 
         with tempfile.TemporaryDirectory() as tempdir:
@@ -254,11 +257,19 @@ class JobKubernetesOrchestratorContext(MemoryOrchestratorContext):
                 "execute_pickled_dataflow_with_inputs.py"
             )
             execute_pickled_dataflow_with_inputs_path.write_text(python_code)
-            # Write out the requirements
-            requirements_path = tempdir_path.joinpath("requirements.txt")
-            requirements_path.write_text(
-                "\n".join(self.parent.config.requirements)
+            # Write out the Python code to execute the dataflow
+            kubernetes_output_server_path = tempdir_path.joinpath(
+                "kubernetes_output_server.py"
             )
+            kubernetes_output_server_path.write_text(output_server)
+            # Write out the prerun dataflow (secret)
+            prerun_dataflow_path = tempdir_path.joinpath(
+                "prerun-dataflow.json"
+            )
+            prerun = DataFlow()
+            if self.parent.config.prerun is not None:
+                prerun = self.parent.prerun
+            prerun_dataflow_path.write_text(json.dumps(prerun.export()))
             # Copy the context
             context_path = tempdir_path.joinpath("context.tar.gz")
             with tarfile.open(context_path, mode="x:gz") as tarobj:
@@ -277,12 +288,13 @@ class JobKubernetesOrchestratorContext(MemoryOrchestratorContext):
                 - name: execute-pickled-dataflow-with-inputs-py
                   files:
                   - {execute_pickled_dataflow_with_inputs_path.relative_to(tempdir_path)}
+                  - {kubernetes_output_server_path.relative_to(tempdir_path)}
                 secretGenerator:
                 - name: dataflow-inputs
                   files:
+                  - {prerun_dataflow_path.relative_to(tempdir_path)}
                   - {dataflow_path.relative_to(tempdir_path)}
                   - {inputs_path.relative_to(tempdir_path)}
-                  - {requirements_path.relative_to(tempdir_path)}
                   - {context_path.relative_to(tempdir_path)}
                 """
             ).lstrip()
@@ -322,52 +334,74 @@ class JobKubernetesOrchestratorContext(MemoryOrchestratorContext):
                 for item in kustomization_apply["items"]
                 if item["kind"] == "Secret"
             ][0]["metadata"]["name"]
-            # The commands to run
-            commands: List[List[str]] = [
-                [
-                    "python",
-                    "-u",
-                    "/usr/src/dffml-kubernetes-job-code/execute_pickled_dataflow_with_inputs.py",
-                ],
-            ]
+            # The init container commands to run
+            init_containers: List[str] = []
+            init_container_names: Dict[str, str] = {}
             # If we have a context we need to extract it into the working
             # directory before we run the dataflow.
-            if self.parent.config.requirements:
-                commands.insert(
-                    0,
-                    [
-                        "python",
-                        "-m",
-                        "pip",
-                        "install",
-                        "-r",
-                        '"${REQUIREMENTS}"',
-                        '2>"${PIP_LOG_FILE}"',
-                        "1>&2",
-                    ],
-                )
-            # If we have a requirements file then we need to install from that
-            # before we run the dataflow (if we haven't built a new container
-            # and are doing this at runtime).
             if (
                 self.parent.config.workdir is not None
                 and self.parent.config.workdir.is_dir()
             ):
-                commands.insert(
-                    0,
-                    [
-                        "tar",
-                        "-xvzf",
-                        '"${CONTEXT}"',
-                        '2>"${CONTEXT_LOG_FILE}"',
-                        "1>&2",
-                    ],
+                command = [
+                    "tar",
+                    "-xvzf",
+                    "/usr/src/dffml-kubernetes-job-secrets/context.tar.gz",
+                ]
+                init_container_name: str = secure_hash(
+                    ".".join(
+                        ["initContainer", "workdir"] + job_name_components
+                    ),
+                    "sha384",
+                )[:62]
+                init_container_names["workdir"] = init_container_name
+                init_containers.append(
+                    textwrap.dedent(
+                        f"""\
+                        - name: {init_container_name}
+                          image: {self.parent.config.image}
+                          command: {json.dumps(command)}
+                          workingDir: /usr/src/dffml-kubernetes-job-working-dir/
+                          volumeMounts:
+                            - name: dffml-kubernetes-job-working-dir
+                              mountPath: /usr/src/dffml-kubernetes-job-working-dir
+                            - name: dffml-kubernetes-job-secrets
+                              mountPath: /usr/src/dffml-kubernetes-job-secrets
+                        """
+                    )
                 )
+            init_containers_text = ""
+            if init_containers:
+                # NOTE Build YAML manually, avoid introducing a dependency on
+                # PyYAML
+                # See below YAML, textwrap.dedent removes 4 4 space indents
+                init_containers_indent: int = 4 * 4 + 6
+                init_containers_text = "\n".join(
+                    ["initContainers:"]
+                    + [
+                        (" " * init_containers_indent) + line
+                        for line in "\n".join(init_containers).split("\n")
+                    ]
+                )
+            # The output container is a simple server which accepts output
+            # context's and results via a local address
+            # TODO This only works for a single context right now
+            output_container_name: str = secure_hash(
+                ".".join(["outputContainer", "single"] + job_name_components),
+                "sha384",
+            )[:62]
+            output_socket: str = "/usr/src/dffml-kubernetes-job-state/output.sock"
+            output_command: List[str] = [
+                "python",
+                "-u",
+                "/usr/src/dffml-kubernetes-job-code/kubernetes_output_server.py",
+                output_socket,
+            ]
             # Shell command to execute all above commands
             command: List[str] = [
                 "sh",
                 "-c",
-                " && ".join([" ".join(cmd) for cmd in commands]),
+                "DATAFLOW=/usr/src/dffml-kubernetes-job-secrets/prerun-dataflow.json INPUTS='' OUTPUT='' python -u /usr/src/dffml-kubernetes-job-code/execute_pickled_dataflow_with_inputs.py && python -u /usr/src/dffml-kubernetes-job-code/execute_pickled_dataflow_with_inputs.py",
             ]
             self.logger.debug("command: %r", command)
             # Format the batch job
@@ -381,6 +415,7 @@ class JobKubernetesOrchestratorContext(MemoryOrchestratorContext):
                   template:
                     spec:
                       automountServiceAccountToken: false
+                      {init_containers_text}
                       containers:
                       - name: {container_name}
                         image: {self.parent.config.image}
@@ -401,20 +436,22 @@ class JobKubernetesOrchestratorContext(MemoryOrchestratorContext):
                           value: /usr/src/dffml-kubernetes-job-secrets/dataflow.json
                         - name: INPUTS
                           value: /usr/src/dffml-kubernetes-job-secrets/inputs.json
-                        - name: CONTEXT_LOG_FILE
-                          value: /usr/src/dffml-kubernetes-job-state/context-log.txt
-                        - name: PIP_LOG_FILE
-                          value: /usr/src/dffml-kubernetes-job-state/pip-logs.txt
-                        - name: LOG_FILE
-                          value: /usr/src/dffml-kubernetes-job-state/logs.txt
-                        - name: REQUIREMENTS
-                          value: /usr/src/dffml-kubernetes-job-secrets/requirements.txt
-                        - name: CONTEXT
-                          value: /usr/src/dffml-kubernetes-job-secrets/context.tar.gz
+                        - name: OUTPUT
+                          value: {output_socket}
                         - name: HTTP_PROXY
                           value: {os.environ["HTTP_PROXY"]}
                         - name: HTTPS_PROXY
                           value: {os.environ["HTTPS_PROXY"]}
+                      - name: {output_container_name}
+                        image: {self.parent.config.image}
+                        command: {json.dumps(output_command)}
+                        workingDir: /usr/src/dffml-kubernetes-job-working-dir/
+                        volumeMounts:
+                          # name must match the volume name below
+                          - name: dffml-kubernetes-job-code
+                            mountPath: /usr/src/dffml-kubernetes-job-code
+                          - name: dffml-kubernetes-job-state
+                            mountPath: /usr/src/dffml-kubernetes-job-state
                       # The secret data is exposed to Containers in the Pod through a Volume.
                       volumes:
                         - name: dffml-kubernetes-job-code
@@ -475,58 +512,176 @@ class JobKubernetesOrchestratorContext(MemoryOrchestratorContext):
             # Watch the state of the job
             # NOTE When using --watch the jsonpath selector is different
             # https://github.com/kubernetes/kubectl/issues/913#issuecomment-933750138
-
             cmd = [
                 *self.kubectl,
                 "get",
                 "pods",
                 "--watch",
-                r'-o=jsonpath={range .items[*]}{.status.phase}{"\n"}',
+                "-o=json",
+                # r'-o=jsonpath={range .items[*]}{.status.phase}{"\n"}',
                 "-l",
                 f"{label}={label_value}",
             ]
-            async for event, result in exec_subprocess(cmd):
-                if event == Subprocess.STDOUT_READLINE:
-                    # Update phase
-                    phase = result.decode().rstrip()
-                    self.logger.debug(f"{cmd}: {event}: {phase}")
-                    # Check for failure
-                    # https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#pod-phase
-                    if phase == "Succeeded":
-                        break
-                    elif phase == "Failed":
-                        # Create log file for output
-                        job_output_path = tempdir_path.joinpath("job_output")
-                        with open(job_output_path, "wb") as stdout:
-                            await run_command(
-                                [
-                                    *self.kubectl,
-                                    "logs",
-                                    "-l",
-                                    f"{label}={label_value}",
-                                    "-c",
-                                    container_name,
-                                ],
-                                cwd=tempdir,
-                                stdout=stdout,
-                            )
-                        raise Exception(
-                            f"pod {label}={label_value} phase {phase}. logs: {job_output_path.read_text()}"
+            get_pods = (exec_subprocess(cmd).__aiter__()).__anext__
+            work = {
+                asyncio.create_task(get_pods()): "get_pods",
+            }
+            self.logger.debug(f"get_pods: {' '.join(cmd)}")
+
+            class _STOPPED:
+                pass
+
+            STOPPED = _STOPPED()
+
+            async def anext(coro):
+                try:
+                    return await coro
+                except StopAsyncIteration:
+                    return STOPPED
+
+            phase = ""
+            # Launched log
+            make_logger_cmd = lambda logs_container_name: [
+                *self.kubectl,
+                "logs",
+                "-l",
+                f"{label}={label_value}",
+                "-c",
+                logs_container_name,
+                "--tail=-1",
+                "-f",
+            ]
+            loggers_launched = set()
+
+            @dataclasses.dataclass
+            class Logger:
+                name: str
+                container_name: str
+                cmd: List[str]
+                anext: Callable = None
+                restart_count: int = 0
+
+            loggers = {
+                f"log.{init_container_purpose}": Logger(
+                    f"log.{init_container_purpose}",
+                    init_container_name,
+                    make_logger_cmd(init_container_name),
+                )
+                for init_container_purpose, init_container_name in init_container_names.items()
+            }
+            # Used to load full JSON
+            get_pods_buffer = ""
+            async for event, result in concurrently(work):
+                if event == "get_pods":
+                    if result is STOPPED:
+                        continue
+                    subprocess_event, result = result
+                    if subprocess_event == Subprocess.STDOUT_READLINE:
+                        # Update phase
+                        line = result.decode().rstrip()
+                        if line == "{":
+                            get_pods_buffer = line
+                        elif line == "}":
+                            get_pods_buffer += line
+                            # Check the phase and launch logs if started
+                            get_pods_data = json.loads(get_pods_buffer)
+                            phase = get_pods_data["status"]["phase"]
+                            self.logger.debug(f"{event}: phase: {phase}")
+                            # Make sure we are collecting logs from all places
+                            # TODO Make this configurable, sometimes we may not
+                            # want to collect logs from chatty containers
+                            for container in get_pods_data["status"][
+                                "containerStatuses"
+                            ]:
+                                if f"log.{container['name']}" in loggers:
+                                    continue
+                                loggers[f"log.{container['name']}"] = Logger(
+                                    f"log.{container['name']}",
+                                    container["name"],
+                                    make_logger_cmd(container["name"]),
+                                )
+                            # Check for failure
+                            # https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#pod-phase
+                            if phase != "Pending" and len(loggers) != len(
+                                loggers_launched
+                            ):
+                                for logger in loggers.values():
+                                    if logger.name in loggers_launched:
+                                        continue
+                                    self.logger.debug(
+                                        f"{logger.name}: {' '.join(logger.cmd)}"
+                                    )
+                                    logger.anext = (
+                                        exec_subprocess(
+                                            make_logger_cmd(
+                                                logger.container_name
+                                            )
+                                        ).__aiter__()
+                                    ).__anext__
+                                    work[
+                                        asyncio.create_task(
+                                            anext(logger.anext())
+                                        )
+                                    ] = logger.name
+                                    loggers_launched.add(logger.name)
+                            if phase == "Succeeded":
+                                break
+                            elif phase in ("Failed", "Unknown"):
+                                raise Exception(
+                                    f"pod {label}={label_value} phase {phase}: {get_pods_buffer}"
+                                )
+                        else:
+                            get_pods_buffer += line + "\n"
+                    elif subprocess_event == Subprocess.STDERR_READLINE:
+                        # Log stderr line read
+                        self.logger.error(
+                            f"{event}: {subprocess_event}: {result.decode().rstrip()}"
                         )
-                    elif phase == "Unknown":
+                    elif (
+                        subprocess_event == Subprocess.COMPLETED
+                        and result != 0
+                    ):
+                        # Raise if anything goes wrong
+                        raise RuntimeError("Failed to watch pod")
+                    # Look for next line from get pods subprocess
+                    task = asyncio.create_task(anext(get_pods()))
+                    work[task] = event
+                elif event.startswith("log."):
+                    if result is STOPPED:
+                        self.logger.error(f"{event}: {result}")
+                        continue
+                    subprocess_event, result = result
+                    if subprocess_event == Subprocess.STDOUT_READLINE:
+                        self.logger.debug(
+                            f"{event}: {subprocess_event}: {result.decode().rstrip()}"
+                        )
+                    elif subprocess_event == Subprocess.STDERR_READLINE:
+                        self.logger.error(
+                            f"{event}: {subprocess_event}: {result.decode().rstrip()}"
+                        )
+                    elif (
+                        subprocess_event == Subprocess.COMPLETED
+                        and result != 0
+                        and loggers[event].restart_count < 1
+                    ):
+                        loggers[event].restart_count += 1
+                        loggers_launched.remove(loggers[event].name)
+                        self.logger.error(
+                            "Failed to read pod logs, restarting "
+                            f"{logger.name}: {' '.join(loggers[event].cmd)}"
+                        )
+                    elif (
+                        subprocess_event == Subprocess.COMPLETED
+                        and phase == "Failed"
+                    ):
                         raise Exception(
                             f"pod {label}={label_value} phase {phase}"
                         )
-                elif event == Subprocess.STDERR_READLINE:
-                    # Log stderr line read
-                    self.logger.error(
-                        f"{cmd}: {event}: {result.decode().rstrip()}"
-                    )
-                elif event == Subprocess.COMPLETED and result != 0:
-                    # Raise if anything goes wrong
-                    raise RuntimeError("Failed to watch pod")
+                    # Look for next line from logs subprocess
+                    task = asyncio.create_task(anext(loggers[event].anext()))
+                    work[task] = event
             # Create file for output
-            job_stdout_path = tempdir_path.joinpath("job_stdout")
+            job_stdout_path = tempdir_path.joinpath("job_output")
             with open(job_stdout_path, "wb") as stdout:
                 await run_command(
                     [
@@ -535,7 +690,7 @@ class JobKubernetesOrchestratorContext(MemoryOrchestratorContext):
                         "-l",
                         f"{label}={label_value}",
                         "-c",
-                        container_name,
+                        output_container_name,
                     ],
                     cwd=tempdir,
                     stdout=stdout,
@@ -690,6 +845,47 @@ class JobKubernetesOrchestrator(MemoryOrchestrator):
     history, or just delete the token on GitHub's settings page after you're
     done with this example.
 
+    We can pass a dataflow with ``prerun`` to be executed before the dataflow is
+    run for each context in a seperate OS process.
+
+    We need to install PyGithub which is not in the container image we are using
+    by default. Therefore it needs to run within the container which will run
+    the dataflow before the dataflow is executed.
+
+    **prerun_operations.py**
+
+    .. code-block:: console
+        :test:
+        :filepath: prerun_operations.py
+
+        import sys
+        import asyncio
+        import subprocess
+        from typing import List
+
+
+        async def pip_install(self, packages: List[str]) -> List[str]:
+            # await (await asyncio.create_subprocess_exec(
+            #     sys.executable, "-m", "pip", "install", *packages,
+            # )).wait()
+            subprocess.check_call(
+                [sys.executable, "-m", "pip", "install", *packages]
+            )
+            return packages
+
+    .. code-block:: console
+        :test:
+
+        $ dffml dataflow create \
+            -inputs \
+                PyGithub,=prerun_operations:pip_install.inputs.packages \
+                prerun_operations:pip_install.outputs.result,=get_single_spec \
+            -- \
+                prerun_operations:pip_install \
+                get_single \
+            | tee prerun.json
+        $ dffml dataflow diagram -stage processing -- prerun.json
+
     We can run the dataflow using the DFFML command line interface rather than
     running the Python file.
 
@@ -704,7 +900,7 @@ class JobKubernetesOrchestrator(MemoryOrchestrator):
                 "$GITHUB_TOKEN='operations.gh:github_get_repo'.token" \
             -orchestrator kubernetes.job \
             -orchestrator-workdir . \
-            -orchestrator-requirements PyGithub \
+            -orchestrator-prerun prerun.json \
             -record-def "github.repo.url" \
             -keys \
               https://github.com/intel/dffml
@@ -729,9 +925,7 @@ class JobKubernetesOrchestrator(MemoryOrchestrator):
 
         orchestrator = dffml.JobKubernetesOrchestrator(
             workdir=os.getcwd(),
-            requirements=[
-                "PyGithub",
-            ],
+            prerun="prerun.json",
         )
 
         async def main():
@@ -780,6 +974,9 @@ class JobKubernetesOrchestrator(MemoryOrchestrator):
             doc["spec"]["template"]["spec"]["containers"].append({
                 "name": "ambassador",
                 "image": "intelotc/dffml:latest",
+                "command": [
+                    "echo", "Hello Ambassador",
+                ],
                 "env": [
                     {"name": "DIRECTORY", "value": "/mount"},
                 ],
@@ -819,8 +1016,8 @@ class JobKubernetesOrchestrator(MemoryOrchestrator):
             -config \
                 "$GITHUB_TOKEN='operations.gh:github_get_repo'.token" \
             -orchestrator kubernetes.job \
-            -orchestrator-context . \
-            -orchestrator-requirements PyGithub \
+            -orchestrator-workdir . \
+            -orchestrator-prerun prerun.json \
             -orchestrator-preapply preapply.yaml \
             -record-def "github.repo.url" \
             -keys \
@@ -835,14 +1032,32 @@ class JobKubernetesOrchestrator(MemoryOrchestrator):
         # Find default context to use if not given
         if self.config.context is None:
             with self.config.no_enforce_immutable():
-                async for event, result in run_command_events(
-                    ["kubectl", "config", "current-context"],
-                    events=[Subprocess.STDOUT_READLINE],
-                ):
-                    self.config.context = result.decode().strip()
+                while not self.config.context:
+                    cmd = ["kubectl", "config", "current-context"]
+                    self.logger.debug(
+                        f"kubectl context not given. running {cmd}"
+                    )
+                    async for event, result in run_command_events(
+                        cmd,
+                        events=[
+                            Subprocess.STDERR_READLINE,
+                            Subprocess.STDOUT_READLINE,
+                        ],
+                    ):
+                        if event == Subprocess.STDERR_READLINE:
+                            self.logger.error(
+                                f"{cmd}: {result.decode().rstrip()}"
+                            )
+                        elif event == Subprocess.STDOUT_READLINE:
+                            self.config.context = result.decode().strip()
             self.logger.debug(
                 "kubectl context not given. Default context is %r",
                 self.config.context,
+            )
+        # Load prerun dataflow
+        if self.config.prerun is not None:
+            self.prerun = await load_dataflow_from_configloader(
+                self.config.prerun
             )
         # Load preapply dataflow
         if self.config.preapply is not None:
