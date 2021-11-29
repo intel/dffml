@@ -30,15 +30,14 @@ async def exec_subprocess(cmd, **kwargs):
             work[task] = f"{output}.readline"
     async for event, result in concurrently(work):
         if event.endswith("readline"):
+            if result == b"":
+                continue
             # Yield line to caller
             yield Subprocess[event.replace(".", "_").upper()], result
             # Read another line if that's the event
             coro = getattr(proc, event.split(".")[0]).readline()
             task = asyncio.create_task(coro)
             work[task] = event
-        else:
-            # When wait() returns process has exited
-            break
     # Yield when process exits
     yield Subprocess.COMPLETED, proc.returncode
 
