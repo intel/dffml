@@ -117,10 +117,45 @@ this via a supplemental setup file used to initialized the shim's environment.
         }
 
 
+    def next_phase_print_repos_with_branches_0_0_0(manifest: Dict[str, Any]) -> None:
+        for testcase in manifest["testplan"]:
+            print(testcase["repo"] + "#" + testcase["branch"])
+
+
+    def next_phase_print_repos_with_branches_0_0_1(manifest: Dict[str, Any]) -> None:
+        for testcase in manifest["testplan"]:
+            print(testcase["git"]["repo"] + "#" + testcase["git"]["branch"])
+
+
     def setup_shim(parsers, next_phase_parsers, **kwargs):
         # Put the parser at the front of the list to try since YAML will also
         # successfully parse the format
         parsers.insert(0, ("my.manifest.format.0.0.0", parse_my_manifest_format_0_0_0))
+
+        # Declare another next phase parser (rather than registering via
+        # environment variables, this enables use of Python).
+        # Use list(next_phase_parsers.values())[0].__class__ to avoid need to
+        # import shim from this file.
+        parser = list(next_phase_parsers.values())[0].__class__(
+            name="repos-with-branch",
+            format="my.manifest.format",
+            version="0.0.0",
+            action="call_function",
+            target=next_phase_print_repos_with_branches_0_0_0,
+        )
+        # Add the next phase parser
+        next_phase_parsers[(parser.format, parser.version, parser.name)] = parser
+
+        # Again for the other format version
+        parser = list(next_phase_parsers.values())[0].__class__(
+            name="repos-with-branch",
+            format="my.manifest.format",
+            version="0.0.1",
+            action="call_function",
+            target=next_phase_print_repos_with_branches_0_0_1,
+        )
+        # Add the next phase parser
+        next_phase_parsers[(parser.format, parser.version, parser.name)] = parser
 
 A script to list the git repos given manifests
 
@@ -140,6 +175,8 @@ A script to list the git repos given manifests
     SELF_DIR="$(realpath $(dirname $0))"
     # Path to manifest shim
     SHIM="${PYTHON} ${SELF_DIR}/shim.py"
+    # Selector for next phase to preform
+    NEXT_PHASE=${NEXT_PHASE:-"repos"}
 
     # The 0.0.0 manifest format, the non-YAML based one
     export MANIFEST_PARSER_NAME_GIT_REPOS_0_0_0="repos"
@@ -162,7 +199,7 @@ A script to list the git repos given manifests
     while test $# -gt 0
     do
       $SHIM --insecure --no-schema-check --input-target "${1}" \
-        --setup setup_shim.py --parser repos
+        --setup setup_shim.py --parser "${NEXT_PHASE}"
       shift
     done
 
@@ -176,6 +213,20 @@ A script to list the git repos given manifests
     https://example.com/their-repo.git
     https://example.com/their-repo.git
     https://example.com/my-repo.git
+
+We can now easily select whcih next phase parser to use since the shim layer has
+them all registered.
+
+.. code-block:: console
+    :test:
+
+    $ NEXT_PHASE=repos-with-branch bash ls-manifest-testplan-git-repo.sh ./manifest-sample.txt ./manifest-sample.yaml
+    https://example.com/alt.git#dev
+    https://example.com/aux.git#main
+    https://example.com/my-repo.git#main
+    https://example.com/their-repo.git#main
+    https://example.com/their-repo.git#main
+    https://example.com/my-repo.git#main
 
 A script to list the test property of the given git repo for the given manifests
 
@@ -383,7 +434,7 @@ import subprocess
 import dataclasses
 import urllib.parse
 import importlib.util
-from typing import Any, Callable, Dict, Tuple, List, Optional
+from typing import Any, Callable, Dict, Tuple, List, Optional, Union
 
 
 LOGGER = logging.getLogger(pathlib.Path(__file__).stem)
@@ -550,6 +601,7 @@ def serializer_env_quoted(manifest) -> bytes:
 
 # Serialization to the next phase parser
 DEFAULT_SERIALIZERS = {
+    "none": lambda manifest: manifest,
     "json": lambda manifest: json.dumps(manifest).encode(),
     "pickle": pickle.dumps,
     "env": serializer_env,
@@ -633,9 +685,9 @@ class ManifestFormatParser:
     name: str
     format: str
     version: str
-    serialize: str
     action: str
-    target: str = ""
+    serialize: str = "none"
+    target: Union[str, Callable[[Dict[str, Any]], Any]] = ""
     args: str = ""
 
     PREFIX: str = "MANIFEST_PARSER_"
@@ -665,9 +717,22 @@ def next_phase_parser_action_exec_stdin(
     ).wait()
 
 
+def next_phase_parser_action_call_function(
+    args: argparse.Namespace,
+    parser: ManifestFormatParser,
+    manifest: Dict[str, Any],
+):
+    """
+    Execute the next phase and pass the manifest as only argument to the
+    parser.target function.
+    """
+    parser.target(manifest)
+
+
 DEFAULT_FORMAT_PARSER_ACTIONS = {
     "stdout": next_phase_parser_action_stdout,
     "exec_stdin": next_phase_parser_action_exec_stdin,
+    "call_function": next_phase_parser_action_call_function,
 }
 
 
