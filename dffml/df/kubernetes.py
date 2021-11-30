@@ -618,9 +618,9 @@ class JobKubernetesOrchestratorContext(MemoryOrchestratorContext):
                             # Make sure we are collecting logs from all places
                             # TODO Make this configurable, sometimes we may not
                             # want to collect logs from chatty containers
-                            for container in get_pods_data["status"][
-                                "containerStatuses"
-                            ]:
+                            for container in get_pods_data["status"].get(
+                                "containerStatuses", []
+                            ):
                                 if f"log.{container['name']}" in loggers:
                                     continue
                                 loggers[f"log.{container['name']}"] = Logger(
@@ -676,7 +676,6 @@ class JobKubernetesOrchestratorContext(MemoryOrchestratorContext):
                     work[task] = event
                 elif event.startswith("log."):
                     if result is STOPPED:
-                        self.logger.error(f"{event}: {result}")
                         continue
                     subprocess_event, result = result
                     if subprocess_event == Subprocess.STDOUT_READLINE:
