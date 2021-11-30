@@ -39,6 +39,9 @@ setting.
 ..
     TODO
 
+     - Sometime success is found in last log status which leads to failure since
+       next round of test job has not really started yet.
+
      - When we refactor to add event types we should output init container logs
        via one of those event types or a custom event type.
 
@@ -67,6 +70,7 @@ setting.
 import os
 import enum
 import json
+import uuid
 import pathlib
 import tarfile
 import tempfile
@@ -236,6 +240,7 @@ class JobKubernetesOrchestratorContext(MemoryOrchestratorContext):
         )
         # The kubernetes job
         job_name_components: List[str] = [
+            str(uuid.uuid4()),
             secure_hash(ctx_str, "sha384"),
             secure_hash(str(self.config.dataflow.export()), "sha384"),
         ]
