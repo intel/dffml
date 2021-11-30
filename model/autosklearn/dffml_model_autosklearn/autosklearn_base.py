@@ -20,12 +20,7 @@ class AutoSklearnModel(Model):
 
     async def __aenter__(self) -> "AutoSklearnModel":
         await super().__aenter__()
-        self.path = self.filepath(
-            self.config.location
-            if not hasattr(self, "temp_dir")
-            else self.temp_dir,
-            "trained_model.sav",
-        )
+        self.path = self.filepath(self.location, "trained_model.sav",)
         self.load_model()
         return self
 
