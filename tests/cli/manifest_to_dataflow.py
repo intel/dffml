@@ -35,9 +35,17 @@ PROCESS_RETURN_CODE = Definition(name="process.returncode", primitive="int")
 WORKDIR = pathlib.Path(__file__).resolve().parent
 
 
+@config
+class ExecuteTestTargetConfig:
+    cmd: List[str] = field(
+        "Command to run to execute test target. $TARGET will be replaced with target file",
+        default_factory=lambda: [sys.executable, "-u", "$TARGET"],
+    )
+
+
 async def execute_test_target(self, repo, target):
     output = {"stdout": "", "stderr": "", "returncode": 1}
-    cmd = [sys.executable, "-u", target]
+    cmd = [arg.replace("$TARGET", target) for arg in self.parent.config.cmd]
     async for event, result in exec_subprocess(cmd, cwd=repo.directory):
         if event == Subprocess.STDOUT_READLINE:
             output["stdout"] += result.decode()
@@ -62,6 +70,7 @@ with contextlib.suppress((ImportError, ModuleNotFoundError)):
             "stderr": TEST_STDERR,
             "returncode": PROCESS_RETURN_CODE,
         },
+        config_cls=ExecuteTestTargetConfig,
     )(execute_test_target)
 
 
