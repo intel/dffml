@@ -151,8 +151,6 @@ async def run_in_k8s(document):
                 ),
                 workdir=WORKDIR,
                 prerun=prerun,
-                # DataFlow to add sidecar for SUT allocation
-                # preapply=preapply,
             ),
             {},
         ),
@@ -225,28 +223,6 @@ async def run_in_k8s(document):
 
     # tcf run -vvt '(type:"Archer City" and not owner) or ipv4_addr' $file; done
     # tcf run -vvt '(type:"{platform}" and not owner) or ipv4_addr' $file; done
-
-    # The preapply dataflow is responsible for adding the SUT allocation sidecar
-    # to the cluster
-    preapply = DataFlow(
-        add_ambassador,
-        GetSingle,
-        configs={
-            GetSingle.op.name: {
-                "nostrict": [add_ambassador.op.outputs["result"]],
-            },
-        },
-        seed=[
-            Input(
-                value=[add_ambassador.op.outputs["result"].name],
-                definition=GetSingle.op.inputs["spec"],
-            ),
-        ],
-    )
-    preapply.flow[add_ambassador.op.name].inputs["seed"] = [
-        {"seed": [JobKubernetesOrchestratorPreApplyDefinitions.JOB.value.name]}
-    ]
-    preapply.update()
 
     # Create dataflow for this testcase specific to it being a controller
     # testcase
