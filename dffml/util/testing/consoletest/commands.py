@@ -21,8 +21,6 @@ import subprocess
 import http.server
 from typing import IO, Any, Dict, List, Union, Optional
 
-import httptest
-
 
 if platform.system() != "Windows":
     import fcntl
@@ -617,6 +615,9 @@ class SimpleHTTPServerCommand(ConsoleCommand):
         handler_class = functools.partial(handler_class, directory=directory)
 
         # Start a server with a random port
+        # Lazy load for optional dependency
+        import httptest
+
         self.ts = httptest.Server(handler_class).__enter__()
         # Map the port that was given to the port that was used
         ctx.setdefault("HTTP_SERVER", {})
