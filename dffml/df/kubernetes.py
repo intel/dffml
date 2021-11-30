@@ -344,9 +344,12 @@ class JobKubernetesOrchestratorContext(MemoryOrchestratorContext):
                 and self.parent.config.workdir.is_dir()
             ):
                 command = [
-                    "tar",
-                    "-xvzf",
+                    "python",
+                    "-m",
+                    "tarfile",
+                    "-ve",
                     "/usr/src/dffml-kubernetes-job-secrets/context.tar.gz",
+                    ".",
                 ]
                 init_container_name: str = secure_hash(
                     ".".join(
