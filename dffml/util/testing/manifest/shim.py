@@ -127,16 +127,14 @@ this via a supplemental setup file used to initialized the shim's environment.
             print(testcase["git"]["repo"] + "#" + testcase["git"]["branch"])
 
 
-    def setup_shim(parsers, next_phase_parsers, **kwargs):
+    def setup_shim(parsers, next_phase_parser_class, next_phase_parsers, **kwargs):
         # Put the parser at the front of the list to try since YAML will also
         # successfully parse the format
         parsers.insert(0, ("my.manifest.format.0.0.0", parse_my_manifest_format_0_0_0))
 
         # Declare another next phase parser (rather than registering via
         # environment variables, this enables use of Python).
-        # Use list(next_phase_parsers.values())[0].__class__ to avoid need to
-        # import shim from this file.
-        parser = list(next_phase_parsers.values())[0].__class__(
+        parser = next_phase_parser_class(
             name="repos-with-branch",
             format="my.manifest.format",
             version="0.0.0",
@@ -147,7 +145,7 @@ this via a supplemental setup file used to initialized the shim's environment.
         next_phase_parsers[(parser.format, parser.version, parser.name)] = parser
 
         # Again for the other format version
-        parser = list(next_phase_parsers.values())[0].__class__(
+        parser = next_phase_parser_class(
             name="repos-with-branch",
             format="my.manifest.format",
             version="0.0.1",
@@ -434,7 +432,7 @@ import subprocess
 import dataclasses
 import urllib.parse
 import importlib.util
-from typing import Any, Callable, Dict, Tuple, List, Optional, Union
+from typing import Any, Callable, Dict, Tuple, List, Optional, Union, Type
 
 
 LOGGER = logging.getLogger(pathlib.Path(__file__).stem)
@@ -909,6 +907,7 @@ def shim(
     format_parser_actions: Optional[
         Dict[str, Callable[[argparse.Namespace, bytes], Any]]
     ] = None,
+    next_phase_parser_class: Type[ManifestFormatParser] = ManifestFormatParser,
 ):
     r'''
     Python Examples
@@ -1230,10 +1229,10 @@ def shim(
     next_phase_parsers = {
         (parser.format, parser.version, parser.name): parser
         for parser in discover_dataclass_environ(
-            ManifestFormatParser,
-            ManifestFormatParser.PREFIX,
+            next_phase_parser_class,
+            next_phase_parser_class.PREFIX,
             environ=environ,
-            dataclass_key=ManifestFormatParser.DATACLASS_KEY,
+            dataclass_key=next_phase_parser_class.DATACLASS_KEY,
         ).values()
     }
     # Run any Python assisted setup for extra features not defined in upstream
