@@ -13,7 +13,7 @@ jsbeautifier>=1.14.0
 autoflake
 twine
 # Test requirements
-httptest>=0.0.15
+httptest>=0.0.17
 Pillow>=8.3.1
 pre-commit
 ipykernel
