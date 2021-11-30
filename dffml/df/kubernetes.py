@@ -129,6 +129,10 @@ class JobKubernetesOrchestratorConfig(MemoryOrchestratorConfig):
         "Container build context and working directory for running container",
         default=None,
     )
+    no_dffml: bool = field(
+        "Do not overwrite the containers version of dffml with the local version",
+        default=False,
+    )
     prerun: DataFlow = field(
         "DataFlow run before running each context's DataFlow", default=None,
     )
@@ -279,6 +283,21 @@ class JobKubernetesOrchestratorContext(MemoryOrchestratorContext):
                 ):
                     with chdir(self.parent.config.workdir.resolve()):
                         tarobj.add(".")
+            # Copy the context
+            dffml_path = tempdir_path.joinpath("dffml.tar.gz")
+            with tarfile.open(dffml_path, mode="x:gz") as tarobj:
+                if not self.parent.config.no_dffml:
+                    with chdir(pathlib.Path(__file__).parents[2].resolve()):
+                        try:
+                            import importlib.metadata as importlib_metadata
+                        except:
+                            import importlib_metadata
+                        # NOTE Need to run $ python setup.py egg_info for
+                        # files()
+                        for filename in importlib_metadata.files("dffml"):
+                            if str(filename).startswith("tests"):
+                                continue
+                            tarobj.add(filename)
             # Format the kustomization.yaml file to create a ConfigMap for
             # the Python code and secrets for the dataflow and inputs.
             # https://kubernetes.io/docs/tutorials/configuration/configure-redis-using-configmap/
@@ -289,6 +308,7 @@ class JobKubernetesOrchestratorContext(MemoryOrchestratorContext):
                   files:
                   - {execute_pickled_dataflow_with_inputs_path.relative_to(tempdir_path)}
                   - {kubernetes_output_server_path.relative_to(tempdir_path)}
+                  - {dffml_path.relative_to(tempdir_path)}
                 secretGenerator:
                 - name: dataflow-inputs
                   files:
@@ -404,7 +424,7 @@ class JobKubernetesOrchestratorContext(MemoryOrchestratorContext):
             command: List[str] = [
                 "sh",
                 "-c",
-                "DATAFLOW=/usr/src/dffml-kubernetes-job-secrets/prerun-dataflow.json INPUTS='' OUTPUT='' python -u /usr/src/dffml-kubernetes-job-code/execute_pickled_dataflow_with_inputs.py && python -u /usr/src/dffml-kubernetes-job-code/execute_pickled_dataflow_with_inputs.py",
+                "set -x && (cd $(python -c 'import sys; print([path for path in sys.path if \"site-packages\" in path][-1])') && python -m tarfile -ve /usr/src/dffml-kubernetes-job-code/dffml.tar.gz .) && DATAFLOW=/usr/src/dffml-kubernetes-job-secrets/prerun-dataflow.json INPUTS='' OUTPUT='' python -u /usr/src/dffml-kubernetes-job-code/execute_pickled_dataflow_with_inputs.py && python -u /usr/src/dffml-kubernetes-job-code/execute_pickled_dataflow_with_inputs.py",
             ]
             self.logger.debug("command: %r", command)
             # Format the batch job
