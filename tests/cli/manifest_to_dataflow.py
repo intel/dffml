@@ -8,6 +8,7 @@ kubernetes clusters.
 import os
 import sys
 import json
+import copy
 import pprint
 import asyncio
 import pathlib
@@ -17,7 +18,7 @@ import unittest
 import importlib
 import contextlib
 import subprocess
-from typing import List
+from typing import List, AsyncIterator, Tuple, Any
 
 import dffml.cli.dataflow
 from dffml import *
@@ -58,20 +59,6 @@ async def execute_test_target(self, repo, target):
         elif event == Subprocess.COMPLETED:
             output["returncode"] = result
     return output
-
-
-with contextlib.suppress((ImportError, ModuleNotFoundError)):
-    from dffml_feature_git.feature.operations import *
-
-    execute_test_target = op(
-        inputs={"repo": git_repository_checked_out, "target": TEST_TARGET},
-        outputs={
-            "stdout": TEST_STDOUT,
-            "stderr": TEST_STDERR,
-            "returncode": PROCESS_RETURN_CODE,
-        },
-        config_cls=ExecuteTestTargetConfig,
-    )(execute_test_target)
 
 
 @op
@@ -118,52 +105,163 @@ def test_case_git_to_inputs(git):
     ]
 
 
-async def run_in_k8s(document):
-    # Install latest versions of packages
-    prerun = DataFlow(
-        pip_install,
+# Install latest versions of packages
+prerun = DataFlow(
+    pip_install,
+    GetSingle,
+    seed=[
+        Input(
+            value=[pip_install.op.outputs["result"].name],
+            definition=GetSingle.op.inputs["spec"],
+        ),
+        Input(
+            value=[
+                "https://github.com/pdxjohnny/dffml/archive/refs/heads/manifest.zip#egg=dffml-feature-git&subdirectory=feature/git",
+            ],
+            definition=pip_install.op.inputs["packages"],
+        ),
+    ],
+)
+prerun.update()
+prerun.operations[pip_install.op.name] = prerun.operations[
+    pip_install.op.name
+]._replace(name=f"{pathlib.Path(__file__).stem}:{pip_install.op.name}")
+
+# Clone repo
+# Checkout commit or branch given
+# Run test
+# Cleanup repo
+test_case_dataflow = DataFlow()
+
+with contextlib.suppress((ImportError, ModuleNotFoundError)):
+    from dffml_feature_git.feature.operations import *
+
+    execute_test_target = op(
+        inputs={"repo": git_repository_checked_out, "target": TEST_TARGET},
+        outputs={
+            "stdout": TEST_STDOUT,
+            "stderr": TEST_STDERR,
+            "returncode": PROCESS_RETURN_CODE,
+        },
+        config_cls=ExecuteTestTargetConfig,
+    )(execute_test_target)
+
+    test_case_dataflow = DataFlow(
+        check_if_valid_git_repository_URL,
+        clone_git_repo,
+        git_repo_checkout,
+        execute_test_target,
         GetSingle,
+        cleanup_git_repo,
         seed=[
             Input(
-                value=[pip_install.op.outputs["result"].name],
-                definition=GetSingle.op.inputs["spec"],
-            ),
-            Input(
                 value=[
-                    "https://github.com/pdxjohnny/dffml/archive/refs/heads/manifest.zip#egg=dffml-feature-git&subdirectory=feature/git",
+                    definition.name
+                    for definition in execute_test_target.op.outputs.values()
                 ],
-                definition=pip_install.op.inputs["packages"],
-            ),
+                definition=GetSingle.op.inputs["spec"],
+            )
         ],
     )
-    prerun.update()
-    prerun.operations[pip_install.op.name] = prerun.operations[
-        pip_install.op.name
-    ]._replace(name=f"{pathlib.Path(__file__).stem}:{pip_install.op.name}")
 
-    # Create orchestrators to talk to both clusters with varrying configs.
-    # Inputs by context where context string is index in testplan.
-    clusters = {
-        "controller_default": (
-            JobKubernetesOrchestrator(
-                context=os.environ.get(
-                    "KUBECTL_CONTEXT_CONTROLLER", "controller-context"
-                ),
-                workdir=WORKDIR,
-                prerun=prerun,
-            ),
-            {},
-        ),
-        "sut_default": (
-            JobKubernetesOrchestrator(
-                context=os.environ.get("KUBECTL_CONTEXT_SUT", "sut-context"),
-                workdir=WORKDIR,
-                prerun=prerun,
-            ),
-            {},
-        ),
-    }
+    test_case_dataflow.operations[
+        execute_test_target.op.name
+    ] = test_case_dataflow.operations[execute_test_target.op.name]._replace(
+        name=f"{pathlib.Path(__file__).stem}:{execute_test_target.op.name}"
+    )
 
+
+# We must create a dataflow to run the dataflows because the execute_test_target
+# config.cmd will be dependent on the BKC. We need to create a dataflow with a
+# modified flow (merge command) which intercepts and modifes each dataflow in a
+# RunDataFlowCustomSpec (which should eventually just be our new CLI +
+# OperationImplementation verison of RunDataFlowConfig)
+class RunDataFlowCustomSpec(NamedTuple):
+    dataflow: DataFlow
+    inputs: List[Input]
+    orchestrator_name: str
+    orchestrator: BaseOrchestrator
+
+
+@op(
+    inputs={
+        "spec": Definition(
+            name="run_dataflow_custom_spec",
+            primitive="object",
+            spec=RunDataFlowCustomSpec,
+        )
+    },
+    outputs={
+        "result": Definition(
+            name="run_dataflow_custom_ctx_results_pair", primitive="object",
+        )
+    },
+)
+async def run_dataflow_custom(
+    self, spec: RunDataFlowCustomSpec,
+) -> AsyncIterator[Tuple[BaseInputSetContext, Any]]:
+    print()
+    print(spec.orchestrator_name, spec.orchestrator, spec.inputs)
+    print()
+    # NOTE Only attempt to run tests if there are any test cases or else the
+    # dataflow will hang forever waiting on an initial input set
+    if not spec.inputs:
+        return
+    async for ctx, results in run(
+        spec.dataflow, spec.inputs, orchestrator=spec.orchestrator,
+    ):
+        print("{ctx!r} results: ", end="")
+        pprint.pprint(results)
+        yield ctx, results
+
+
+# Create orchestrators to talk to both clusters with varrying configs.
+# Inputs by context where context string is index in testplan.
+clusters = {
+    "controller_default": RunDataFlowCustomSpec(
+        copy.deepcopy(test_case_dataflow),
+        {},
+        "controller_default",
+        JobKubernetesOrchestrator(
+            context=os.environ.get(
+                "KUBECTL_CONTEXT_CONTROLLER", "controller-context"
+            ),
+            workdir=WORKDIR,
+            prerun=prerun,
+        ),
+    ),
+    "sut_default": RunDataFlowCustomSpec(
+        copy.deepcopy(test_case_dataflow),
+        {},
+        "sut_default",
+        JobKubernetesOrchestrator(
+            context=os.environ.get("KUBECTL_CONTEXT_SUT", "sut-context"),
+            workdir=WORKDIR,
+            prerun=prerun,
+        ),
+    ),
+}
+
+DATAFLOW = DataFlow(
+    run_dataflow_custom,
+    GetMulti,
+    seed=[
+        Input(
+            value=[
+                definition.name
+                for definition in execute_test_target.op.outputs.values()
+            ],
+            definition=GetMulti.op.inputs["spec"],
+        )
+    ],
+)
+
+DATAFLOW.operations[run_dataflow_custom.op.name] = DATAFLOW.operations[
+    run_dataflow_custom.op.name
+]._replace(name=f"{pathlib.Path(__file__).stem}:{run_dataflow_custom.op.name}")
+
+
+async def run_in_k8s(document):
     # Go through each test case in the test plan
     for i, test_case in enumerate(document["testplan"]):
         # Create list of inputs for each test case context
@@ -175,84 +273,47 @@ async def run_in_k8s(document):
         if "sut" in test_case:
             cluster_base_name = "sut"
         cluster_default_name = cluster_base_name + "_default"
-        cluster_default, _ = clusters[cluster_default_name]
+        cluster_default = clusters[cluster_default_name]
         if "image" in test_case:
             cluster_name = ".".join([cluster_base_name, test_case["image"]])
             # Handle custom container image
             if cluster_name not in clusters:
-                clusters[cluster_name] = (
-                    cluster_default.__class__(
-                        cluster_default.config._replace(
+                clusters[cluster_name] = RunDataFlowCustomSpec(
+                    copy.deepcopy(cluster_default.dataflow),
+                    {},
+                    cluster_name,
+                    cluster_default.orchestrator.__class__(
+                        cluster_default.orchestrator.config._replace(
                             image=test_case["image"]
                         )
                     ),
-                    {},
                 )
         else:
             cluster_name = cluster_default_name
-        cluster = clusters[cluster_name]
         # Add to dict of inputs by context
-        cluster[1][str(i)] = test_case_inputs
-
-    # Clone repo
-    # Checkout commit or branch given
-    # Run test
-    # Cleanup repo
-    dataflow = DataFlow(
-        check_if_valid_git_repository_URL,
-        clone_git_repo,
-        git_repo_checkout,
-        execute_test_target,
-        cleanup_git_repo,
-        GetSingle,
-        seed=[
-            Input(
-                value=[
-                    definition.name
-                    for definition in execute_test_target.op.outputs.values()
-                ],
-                definition=GetSingle.op.inputs["spec"],
-            )
-        ],
-    )
-    dataflow.operations[execute_test_target.op.name] = dataflow.operations[
-        execute_test_target.op.name
-    ]._replace(
-        name=f"{pathlib.Path(__file__).stem}:{execute_test_target.op.name}"
-    )
+        cluster = clusters[cluster_name]
+        cluster.inputs[str(i)] = test_case_inputs
 
     # tcf run -vvt '(type:"Archer City" and not owner) or ipv4_addr' $file; done
     # tcf run -vvt '(type:"{platform}" and not owner) or ipv4_addr' $file; done
 
-    # Create dataflow for this testcase specific to it being a controller
-    # testcase
     # dataflow.configs[github_get_repo.op.name] = GitHubGetRepoConfig(
     #     token=os.environ["GITHUB_TOKEN"],
     # )
-    # Dump dataflow and diagram to stderr for debug purposes
-    print(
-        "To view the dataflow diagram paste into"
-        " https://mermaid-js.github.io/mermaid-live-editor/"
-    )
-    async with dffml.cli.dataflow.Diagram(dataflow=dataflow) as diagram:
-        print("========== BEGIN DIAGRAM ==========\n")
-        await diagram.run()
-        print("\n==========  END  DIAGRAM ==========")
+    # DataFlow to execute test cases within clusters
+    dataflow = copy.deepcopy(DATAFLOW)
+    for cluster in clusters.values():
+        dataflow.seed.append(
+            Input(
+                value=cluster,
+                definition=run_dataflow_custom.op.inputs["spec"],
+            )
+        )
 
-    # TODO Run all test cases at the same time
-    for orchestrator_name, (orchestrator, test_cases) in clusters.items():
-        # NOTE Only attempt to run tests if there are any test cases or else the
-        # dataflow will hang forever waiting on an initial input set
-        if not test_cases:
-            continue
-        print()
-        print(orchestrator_name, orchestrator, test_cases)
-        print()
-        async for ctx, results in run(
-            dataflow, test_cases, orchestrator=orchestrator,
-        ):
-            print("testplan index {ctx!r} results: ", end="")
-            pprint.pprint(results)
+    # NOTE Using yaml
+    import yaml
+
+    print(yaml.dump(export(dataflow)))
 
 
 async def main():
