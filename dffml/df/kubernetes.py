@@ -673,6 +673,7 @@ class JobKubernetesOrchestratorContext(MemoryOrchestratorContext):
                             "Failed to read pod logs, restarting "
                             f"{logger.name}: {' '.join(loggers[event].cmd)}"
                         )
+                        continue
                     elif (
                         subprocess_event == Subprocess.COMPLETED
                         and phase == "Failed"
