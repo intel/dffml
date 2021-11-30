@@ -18,7 +18,7 @@ import unittest
 import importlib
 import contextlib
 import subprocess
-from typing import List, AsyncIterator, Tuple, Any
+from typing import List, AsyncIterator, Tuple, Any, NamedTuple, Dict
 
 import dffml.cli.dataflow
 from dffml import *
@@ -33,7 +33,7 @@ TEST_STDERR = Definition(name="process.stderr", primitive="str")
 PROCESS_RETURN_CODE = Definition(name="process.returncode", primitive="int")
 
 
-WORKDIR = pathlib.Path(__file__).resolve().parent
+WORKDIR = pathlib.Path(__file__).parent
 
 
 @config
@@ -171,11 +171,6 @@ with contextlib.suppress((ImportError, ModuleNotFoundError)):
     )
 
 
-# We must create a dataflow to run the dataflows because the execute_test_target
-# config.cmd will be dependent on the BKC. We need to create a dataflow with a
-# modified flow (merge command) which intercepts and modifes each dataflow in a
-# RunDataFlowCustomSpec (which should eventually just be our new CLI +
-# OperationImplementation verison of RunDataFlowConfig)
 class RunDataFlowCustomSpec(NamedTuple):
     dataflow: DataFlow
     inputs: List[Input]
@@ -183,26 +178,59 @@ class RunDataFlowCustomSpec(NamedTuple):
     orchestrator: BaseOrchestrator
 
 
+class RunDataFlowCustomOutputSpec(NamedTuple):
+    ctx: BaseInputSetContext
+    results: Dict[str, Any]
+
+
+run_dataflow_custom_spec = Definition(
+    name="RunDataFlowCustomSpec",
+    primitive="object",
+    spec=RunDataFlowCustomSpec,
+)
+
+
 @op(
-    inputs={
-        "spec": Definition(
-            name="run_dataflow_custom_spec",
+    inputs={"spec": run_dataflow_custom_spec},
+    outputs={
+        "result": Definition(
+            name="run_dataflow_custom_spec_modified",
             primitive="object",
             spec=RunDataFlowCustomSpec,
         )
     },
+)
+async def modify_dataflow(
+    self, spec: RunDataFlowCustomSpec,
+) -> Dict[str, RunDataFlowCustomOutputSpec]:
+    # We must create a dataflow to run the dataflows because the
+    # execute_test_target config.cmd will be dependent on the BKC. We need to
+    # create a dataflow with a modified flow (merge command) which intercepts
+    # and modifes each dataflow in a RunDataFlowCustomSpec (which should
+    # eventually just be our new CLI + OperationImplementation verison of
+    # RunDataFlowConfig)
+    print(spec.dataflow)
+    return {"result": spec}
+
+
+@op(
+    inputs={"spec": modify_dataflow.op.outputs["result"]},
     outputs={
         "result": Definition(
-            name="run_dataflow_custom_ctx_results_pair", primitive="object",
+            name="run_dataflow_custom_ctx_results_pair",
+            primitive="object",
+            spec=RunDataFlowCustomOutputSpec,
         )
     },
 )
 async def run_dataflow_custom(
     self, spec: RunDataFlowCustomSpec,
-) -> AsyncIterator[Tuple[BaseInputSetContext, Any]]:
-    print()
-    print(spec.orchestrator_name, spec.orchestrator, spec.inputs)
-    print()
+) -> AsyncIterator[RunDataFlowCustomOutputSpec]:
+    self.logger.debug("")
+    self.logger.debug(
+        "%r %r %r", spec.orchestrator_name, spec.orchestrator, spec.inputs
+    )
+    self.logger.debug("")
     # NOTE Only attempt to run tests if there are any test cases or else the
     # dataflow will hang forever waiting on an initial input set
     if not spec.inputs:
@@ -210,9 +238,7 @@ async def run_dataflow_custom(
     async for ctx, results in run(
         spec.dataflow, spec.inputs, orchestrator=spec.orchestrator,
     ):
-        print("{ctx!r} results: ", end="")
-        pprint.pprint(results)
-        yield ctx, results
+        yield {"result": RunDataFlowCustomOutputSpec(ctx, results)}
 
 
 # Create orchestrators to talk to both clusters with varrying configs.
@@ -243,13 +269,14 @@ clusters = {
 }
 
 DATAFLOW = DataFlow(
+    modify_dataflow,
     run_dataflow_custom,
     GetMulti,
     seed=[
         Input(
             value=[
                 definition.name
-                for definition in execute_test_target.op.outputs.values()
+                for definition in run_dataflow_custom.op.outputs.values()
             ],
             definition=GetMulti.op.inputs["spec"],
         )
@@ -304,16 +331,25 @@ async def run_in_k8s(document):
     dataflow = copy.deepcopy(DATAFLOW)
     for cluster in clusters.values():
         dataflow.seed.append(
-            Input(
-                value=cluster,
-                definition=run_dataflow_custom.op.inputs["spec"],
-            )
+            Input(value=cluster, definition=run_dataflow_custom_spec)
         )
 
-    # NOTE Using yaml
-    import yaml
+    """
+    import tempfile
 
-    print(yaml.dump(export(dataflow)))
+
+    # TypeError loading DataFlow
+    with tempfile.TemporaryDirectory() as tempdir:
+        dataflow_path = pathlib.Path(tempdir, "dataflow.json")
+        dataflow_path.write_text(
+            json.dumps(export(dataflow), indent=4, sort_keys=True)
+        )
+        dataflow = await load_dataflow_from_configloader(dataflow_path)
+    """
+
+    async for ctx, results in run(dataflow, []):
+        print(f"{ctx!r} results: ", end="")
+        pprint.pprint(results)
 
 
 async def main():
