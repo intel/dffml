@@ -363,16 +363,8 @@ class PyTorchModel(Model):
         )
 
     @property
-    def base_path(self):
-        return (
-            self.config.location
-            if not hasattr(self, "temp_dir")
-            else self.temp_dir
-        )
-
-    @property
     def model_path(self):
-        return self.base_path / "model.pt"
+        return self.location / "model.pt"
 
     def _classifications(self, cids):
         """
