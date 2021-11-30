@@ -5,9 +5,70 @@ import sys
 import struct
 import asyncio
 import pathlib
-from typing import Union, Tuple, AsyncIterator
+import logging
+from typing import (
+    Dict,
+    Any,
+    AsyncIterator,
+    Tuple,
+    Union,
+    Type,
+    AsyncContextManager,
+    Optional,
+    Set,
+)
 
-import dffml
+
+LOGGER = logging.getLogger(pathlib.Path(__file__).stem)
+
+
+async def concurrently(
+    work: Dict[asyncio.Task, Any],
+    *,
+    errors: str = "strict",
+    nocancel: Optional[Set[asyncio.Task]] = None,
+) -> AsyncIterator[Tuple[Any, Any]]:
+    # Set up logger
+    logger = LOGGER.getChild("concurrently")
+    # Track if first run
+    first = True
+    # Set of tasks we are waiting on
+    tasks = set(work.keys())
+    # Return when outstanding operations reaches zero
+    try:
+        while first or tasks:
+            first = False
+            # Wait for incoming events
+            done, _pending = await asyncio.wait(
+                tasks, return_when=asyncio.FIRST_COMPLETED
+            )
+
+            for task in done:
+                # Remove the task from the set of tasks we are waiting for
+                tasks.remove(task)
+                # Get the tasks exception if any
+                exception = task.exception()
+                if errors == "strict" and exception is not None:
+                    raise exception
+                if exception is None:
+                    # Remove the compeleted task from work
+                    complete = work[task]
+                    del work[task]
+                    yield complete, task.result()
+                    # Update tasks in case work has been updated by called
+                    tasks = set(work.keys())
+                else:
+                    logger.debug(
+                        "[%s] Ignoring exception: %s", task, exception
+                    )
+    finally:
+        for task in tasks:
+            if not task.done() and (nocancel is None or task not in nocancel):
+                task.cancel()
+            else:
+                # For tasks which are done but have exceptions which we didn't
+                # raise, collect their exceptions
+                task.exception()
 
 
 async def server_socket_unix_stream(
@@ -26,7 +87,7 @@ async def server_socket_unix_stream(
     server = await asyncio.start_unix_server(handler, path=socket_path)
     async with server:
         await server.start_serving()
-        async for event, result in dffml.concurrently(work):
+        async for event, result in concurrently(work):
             if event == "queue.get":
                 yield result
                 work[asyncio.create_task(queue.get())] = event
