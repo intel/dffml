@@ -907,6 +907,9 @@ def shim(
     format_parser_actions: Optional[
         Dict[str, Callable[[argparse.Namespace, bytes], Any]]
     ] = None,
+    next_phase_parsers: Dict[
+        Tuple[str, str, str], ManifestFormatParser
+    ] = None,
     next_phase_parser_class: Type[ManifestFormatParser] = ManifestFormatParser,
 ):
     r'''
@@ -1225,16 +1228,20 @@ def shim(
         format_parser_actions = copy.deepcopy(DEFAULT_FORMAT_PARSER_ACTIONS)
     if serializers is None:
         serializers = copy.deepcopy(DEFAULT_SERIALIZERS)
+    if next_phase_parsers is None:
+        next_phase_parsers = {}
     # Discover options for format parsers for next phase
-    next_phase_parsers = {
-        (parser.format, parser.version, parser.name): parser
-        for parser in discover_dataclass_environ(
-            next_phase_parser_class,
-            next_phase_parser_class.PREFIX,
-            environ=environ,
-            dataclass_key=next_phase_parser_class.DATACLASS_KEY,
-        ).values()
-    }
+    next_phase_parsers.update(
+        {
+            (parser.format, parser.version, parser.name): parser
+            for parser in discover_dataclass_environ(
+                next_phase_parser_class,
+                next_phase_parser_class.PREFIX,
+                environ=environ,
+                dataclass_key=next_phase_parser_class.DATACLASS_KEY,
+            ).values()
+        }
+    )
     # Run any Python assisted setup for extra features not defined in upstream
     if args.setup is not None:
         # Check if file exists
