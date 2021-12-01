@@ -522,7 +522,7 @@ def parse(
             return parser(contents)
         except Exception as error:
             errors[name] = (error, traceback.format_exc())
-            LOGGER.getChild(f"parse.{name}").error(errors[name][1])
+            LOGGER.getChild(f"parse.{name}").debug(errors[name][1])
     for name, (_error, traceback_string) in errors.items():
         print(f"Parser {name!r}: {traceback_string}", file=sys.stderr)
     raise list(errors.values())[-1][0]
