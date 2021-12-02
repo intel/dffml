@@ -724,7 +724,7 @@ def next_phase_parser_action_call_function(
     Execute the next phase and pass the manifest as only argument to the
     parser.target function.
     """
-    parser.target(manifest)
+    parser.target(manifest, *args.args)
 
 
 DEFAULT_FORMAT_PARSER_ACTIONS = {
