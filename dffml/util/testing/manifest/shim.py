@@ -1447,6 +1447,8 @@ def make_parser():
 def main():
     parser = make_parser()
     args = parser.parse_args()
+    if not isinstance(args.args, list):
+        args.args = [args.args]
 
     logging.basicConfig(level=getattr(logging, args.log.upper()))
 
