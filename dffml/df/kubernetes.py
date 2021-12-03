@@ -613,6 +613,12 @@ class JobKubernetesOrchestratorContext(MemoryOrchestratorContext):
                             get_pods_buffer += line
                             # Check the phase and launch logs if started
                             get_pods_data = json.loads(get_pods_buffer)
+                            if not isinstance(get_pods_data["status"], dict):
+                                self.logger.info(
+                                    f'get_pods_data["status"] was not a dict: {get_pods_data["status"]}'
+                                )
+                                continue
+                            phase = get_pods_data["status"]["phase"]
                             phase = get_pods_data["status"]["phase"]
                             self.logger.debug(f"{event}: phase: {phase}")
                             # Make sure we are collecting logs from all places
@@ -723,7 +729,13 @@ class JobKubernetesOrchestratorContext(MemoryOrchestratorContext):
                     cwd=tempdir,
                     stdout=stdout,
                 )
-            return ctx, json.loads(job_stdout_path.read_text())
+            job_stdout = job_stdout_path.read_text()
+            try:
+                return ctx, json.loads(job_stdout)
+            except json.decoder.JSONDecodeError as e:
+                raise Exception(
+                    f"job output was not json: {job_stdout}"
+                ) from e
 
     async def __aenter__(self):
         await super().__aenter__()
