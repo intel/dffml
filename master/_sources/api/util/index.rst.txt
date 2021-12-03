@@ -6,21 +6,21 @@ Util
     :caption: Contents:
 
     display
-    os
-    subprocess
-    skel
-    file
-    crypto
-    tempdir
-    net
-    data
-    entrypoint
-    asynchelper
-    packaging
     internal
+    tempdir
+    os
+    packaging
+    entrypoint
+    skel
+    python
+    crypto
     asynctestcase
     log
-    python
+    subprocess
+    net
+    data
+    file
+    asynchelper
+    config/index
     testing/index
     cli/index
-    config/index

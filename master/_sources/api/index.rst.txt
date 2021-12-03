@@ -5,23 +5,23 @@
     :caption: Contents:
 
     version
-    base
-    plugins
     record
+    base
     log
     noasync
-    tuner/index
-    model/index
-    operation/index
-    configloader/index
+    plugins
+    high_level/index
     db/index
     secret/index
-    service/index
+    operation/index
+    configloader/index
     util/index
-    high_level/index
-    cli/index
     accuracy/index
+    df/index
     port/index
     source/index
-    df/index
+    tuner/index
+    service/index
+    model/index
+    cli/index
     feature/index

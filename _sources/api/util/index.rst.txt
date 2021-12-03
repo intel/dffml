@@ -9,16 +9,16 @@ Utilities
     :caption: Contents:
 
     display
-    os
-    skel
     tempdir
-    net
-    data
-    entrypoint
-    asynchelper
+    os
     packaging
+    entrypoint
+    skel
     asynctestcase
     log
+    net
+    data
+    asynchelper
+    config/index
     testing/index
     cli/index
-    config/index

@@ -6,9 +6,9 @@ Df
     :caption: Contents:
 
     multicomm
-    types
-    exceptions
-    base
-    archive
     memory
+    base
+    types
     log
+    exceptions
+    archive

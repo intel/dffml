@@ -6,9 +6,9 @@ Util Testing Consoletest
     :caption: Contents:
 
     runner
-    parser
-    builder
-    cli
-    commands
-    directives
     util
+    builder
+    directives
+    cli
+    parser
+    commands
