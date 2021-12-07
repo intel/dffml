@@ -160,6 +160,7 @@ setup(
         ],
         "dffml.orchestrator": [
             "memory = dffml.df.memory:MemoryOrchestrator",
+            "ssh = dffml.df.ssh:SSHOrchestrator",
             "kubernetes.job = dffml.df.kubernetes:JobKubernetesOrchestrator",
         ],
         # Databases
