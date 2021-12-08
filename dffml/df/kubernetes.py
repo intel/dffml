@@ -151,6 +151,18 @@ class JobKubernetesOrchestratorConfig(MemoryOrchestratorConfig):
     )
 
 
+@contextlib.asynccontextmanager
+async def exit_stacks():
+    """
+    Convenience method to help with refactoring so we don't see large code
+    changes due to indentation changes when introducing an async context
+    manager to an existing context manager.
+    """
+    with contextlib.ExitStack() as stack:
+        async with contextlib.AsyncExitStack() as astack:
+            yield stack, astack
+
+
 class JobKubernetesOrchestratorContext(MemoryOrchestratorContext):
     """
     The JobKubernetesOrchestratorContext will kick off each context within a
