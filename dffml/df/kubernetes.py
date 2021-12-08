@@ -261,7 +261,9 @@ class JobKubernetesOrchestratorContext(MemoryOrchestratorContext):
         ]
         container_name: str = job_name
 
-        with tempfile.TemporaryDirectory() as tempdir:
+        async with exit_stacks() as (stack, astack):
+            # Create a temporary directory
+            tempdir = stack.enter_context(tempfile.TemporaryDirectory())
             # Create temporary directory pathlib object
             tempdir_path = pathlib.Path(tempdir)
             # Create secrets for DATAFLOW and INPUTS environment variables
