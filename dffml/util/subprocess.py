@@ -10,6 +10,8 @@ class Subprocess(enum.Enum):
     COMPLETED = "completed"
     STDOUT_READLINE = "stdout.readline"
     STDERR_READLINE = "stderr.readline"
+    STDOUT = "stdout"
+    STDERR = "stderr"
 
 
 async def exec_subprocess(cmd, **kwargs):
@@ -46,7 +48,11 @@ async def run_command_events(
     cmd, logger=None, events: List[Subprocess] = None, **kwargs
 ):
     # Combination of stdout and stderr
-    output = []
+    output = {
+        Subprocess.STDOUT_READLINE: [],
+        Subprocess.STDERR_READLINE: [],
+        "combinded": [],
+    }
     if logger is not None:
         logger.debug(f"Running {cmd}, {kwargs}")
     async for event, result in exec_subprocess(cmd, **kwargs):
@@ -58,10 +64,21 @@ async def run_command_events(
             if logger is not None:
                 logger.debug(f"{cmd}: {event}: {result.decode().rstrip()}")
             # Append to output in case of error
-            output.append(result)
+            output[event].append(result)
+            output["combinded"].append(result)
         # Raise if anything goes wrong
-        elif event == Subprocess.COMPLETED and result != 0:
-            raise RuntimeError(repr(cmd) + ": " + b"\n".join(output).decode())
+        elif event == Subprocess.COMPLETED:
+            if result != 0:
+                raise RuntimeError(
+                    repr(cmd) + ": " + b"".join(output["combinded"]).decode()
+                )
+            else:
+                yield Subprocess.STDERR, b"".join(
+                    output[Subprocess.STDERR_READLINE]
+                )
+                yield Subprocess.STDOUT, b"".join(
+                    output[Subprocess.STDOUT_READLINE]
+                )
         # If caller wants event
         if events and event in events:
             yield event, result
