@@ -287,7 +287,11 @@ async def run_commands(
         # Set stdout to system stdout so it doesn't go to the pty
         kwargs["stdout"] = stdout if stdout is not None else sys.stdout
         # Check if there is a previous command
-        kwargs["stdin"] = stdin if stdin is not None else subprocess.DEVNULL
+        kwargs["stdin"] = (
+            stdin
+            if (stdin is not None or os.environ.get("CONSOLETEST_STDIN", ""))
+            else subprocess.DEVNULL
+        )
         if i != 0:
             # NOTE asyncio.create_subprocess_exec doesn't work for piping output
             # from one process to the next. It will complain about stdin not
