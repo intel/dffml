@@ -241,6 +241,16 @@ async def run_dataflow_custom(
         yield {"result": RunDataFlowCustomOutputSpec(ctx, results)}
 
 
+# Create an orchestrator to create the BOM manifest and deploy on GFS
+# Right now we're dealing with the combinded format manifest. We need to
+# generate the BOM for the next iteration where we have seperate BOM, testplan,
+# orchestrator manifests.
+bom_orchestrator = SSHOrchestrator(
+    hostname=os.environ.get("HOSTNAME", "localhost"),
+    workdir=WORKDIR,
+    prerun=prerun,
+)
+
 # Create orchestrators to talk to both clusters with varrying configs.
 # Inputs by context where context string is index in testplan.
 clusters = {
