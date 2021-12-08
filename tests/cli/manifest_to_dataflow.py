@@ -137,6 +137,7 @@ with contextlib.suppress((ImportError, ModuleNotFoundError)):
     from dffml_feature_git.feature.operations import *
 
     execute_test_target = op(
+        name=f"{pathlib.Path(__file__).stem}:execute_test_target",
         inputs={"repo": git_repository_checked_out, "target": TEST_TARGET},
         outputs={
             "stdout": TEST_STDOUT,
@@ -164,12 +165,6 @@ with contextlib.suppress((ImportError, ModuleNotFoundError)):
         ],
     )
 
-    test_case_dataflow.operations[
-        execute_test_target.op.name
-    ] = test_case_dataflow.operations[execute_test_target.op.name]._replace(
-        name=f"{pathlib.Path(__file__).stem}:{execute_test_target.op.name}"
-    )
-
 
 class RunDataFlowCustomSpec(NamedTuple):
     dataflow: DataFlow
@@ -191,6 +186,7 @@ run_dataflow_custom_spec = Definition(
 
 
 @op(
+    name=f"{pathlib.Path(__file__).stem}:modify_dataflow",
     inputs={"spec": run_dataflow_custom_spec},
     outputs={
         "result": Definition(
@@ -214,6 +210,7 @@ async def modify_dataflow(
 
 
 @op(
+    name=f"{pathlib.Path(__file__).stem}:run_dataflow_custom",
     inputs={"spec": modify_dataflow.op.outputs["result"]},
     outputs={
         "result": Definition(
@@ -292,10 +289,6 @@ DATAFLOW = DataFlow(
         )
     ],
 )
-
-DATAFLOW.operations[run_dataflow_custom.op.name] = DATAFLOW.operations[
-    run_dataflow_custom.op.name
-]._replace(name=f"{pathlib.Path(__file__).stem}:{run_dataflow_custom.op.name}")
 
 
 async def run_in_k8s(document):
