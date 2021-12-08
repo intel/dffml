@@ -280,17 +280,20 @@ class JobKubernetesOrchestratorContext(MemoryOrchestratorContext):
                 prerun = self.parent.prerun
             prerun_dataflow_path.write_text(json.dumps(prerun.export()))
             # Copy the context
-            context_path = tempdir_path.joinpath("context.tar.gz")
-            with tarfile.open(context_path, mode="x:gz") as tarobj:
+            context_path = tempdir_path.joinpath("context.tar.xz")
+            with tarfile.open(context_path, mode="x:xz") as tarobj:
                 if (
                     self.parent.config.workdir is not None
                     and self.parent.config.workdir.is_dir()
                 ):
                     with chdir(self.parent.config.workdir.resolve()):
                         tarobj.add(".")
+            self.logger.debug(
+                "context_path.stat().st_size: %d", context_path.stat().st_size
+            )
             # Copy the context
-            dffml_path = tempdir_path.joinpath("dffml.tar.gz")
-            with tarfile.open(dffml_path, mode="x:gz") as tarobj:
+            dffml_path = tempdir_path.joinpath("dffml.tar.xz")
+            with tarfile.open(dffml_path, mode="x:xz") as tarobj:
                 if not self.parent.config.no_dffml:
                     with chdir(pathlib.Path(__file__).parents[2].resolve()):
                         try:
@@ -300,9 +303,12 @@ class JobKubernetesOrchestratorContext(MemoryOrchestratorContext):
                         # NOTE Need to run $ python setup.py egg_info for
                         # files()
                         for filename in importlib_metadata.files("dffml"):
-                            if str(filename).startswith("tests"):
+                            if not str(filename).startswith("dffml"):
                                 continue
                             tarobj.add(filename)
+            self.logger.debug(
+                "dffml_path.stat().st_size: %d", dffml_path.stat().st_size
+            )
             # Format the kustomization.yaml file to create a ConfigMap for
             # the Python code and secrets for the dataflow and inputs.
             # https://kubernetes.io/docs/tutorials/configuration/configure-redis-using-configmap/
@@ -373,7 +379,7 @@ class JobKubernetesOrchestratorContext(MemoryOrchestratorContext):
                     "-m",
                     "tarfile",
                     "-ve",
-                    "/usr/src/dffml-kubernetes-job-secrets/context.tar.gz",
+                    "/usr/src/dffml-kubernetes-job-secrets/context.tar.xz",
                     ".",
                 ]
                 init_container_name: str = secure_hash(
@@ -429,7 +435,7 @@ class JobKubernetesOrchestratorContext(MemoryOrchestratorContext):
             command: List[str] = [
                 "sh",
                 "-c",
-                "set -x && (cd $(python -c 'import sys; print([path for path in sys.path if \"site-packages\" in path][-1])') && python -m tarfile -ve /usr/src/dffml-kubernetes-job-code/dffml.tar.gz .) && DATAFLOW=/usr/src/dffml-kubernetes-job-secrets/prerun-dataflow.json INPUTS='' OUTPUT='' python -u /usr/src/dffml-kubernetes-job-code/execute_pickled_dataflow_with_inputs.py && python -u /usr/src/dffml-kubernetes-job-code/execute_pickled_dataflow_with_inputs.py",
+                "set -x && (cd $(python -c 'import sys; print([path for path in sys.path if \"site-packages\" in path][-1])') && python -m tarfile -ve /usr/src/dffml-kubernetes-job-code/dffml.tar.xz .) && DATAFLOW=/usr/src/dffml-kubernetes-job-secrets/prerun-dataflow.json INPUTS='' OUTPUT='' python -u /usr/src/dffml-kubernetes-job-code/execute_pickled_dataflow_with_inputs.py && python -u /usr/src/dffml-kubernetes-job-code/execute_pickled_dataflow_with_inputs.py",
             ]
             self.logger.debug("command: %r", command)
             # Format the batch job
@@ -1062,6 +1068,15 @@ class JobKubernetesOrchestrator(MemoryOrchestrator):
             -record-def "github.repo.url" \
             -keys \
               https://github.com/intel/dffml
+
+    Debugging
+    ---------
+
+    Remove all resources in a namespace
+
+    .. code-block:: console
+
+        $ kubectl --context kind-kind delete all --all
 
     """
     CONFIG = JobKubernetesOrchestratorConfig
