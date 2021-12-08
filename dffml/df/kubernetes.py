@@ -45,8 +45,6 @@ setting.
      - When we refactor to add event types we should output init container logs
        via one of those event types or a custom event type.
 
-     - Cleanup jobs, secrets, configmaps
-
      - Refactor to separate output of config files from kubectl
        apply commands. This would allow users to manually apply if they
        wanted to.
@@ -365,6 +363,12 @@ class JobKubernetesOrchestratorContext(MemoryOrchestratorContext):
                     cwd=tempdir,
                     stdout=stdout,
                 )
+                astack.push_async_callback(
+                    run_command,
+                    [*self.kubectl, "delete", "-k", "."],
+                    cwd=tempdir,
+                    logger=self.logger,
+                )
             kustomization_apply = json.loads(
                 kustomization_apply_path.read_text()
             )
@@ -552,6 +556,12 @@ class JobKubernetesOrchestratorContext(MemoryOrchestratorContext):
                     [*self.kubectl, "apply", "-f", "job.yml", "-o=json"],
                     cwd=tempdir,
                     stdout=stdout,
+                )
+                astack.push_async_callback(
+                    run_command,
+                    [*self.kubectl, "delete", "-f", "job.yml"],
+                    cwd=tempdir,
+                    logger=self.logger,
                 )
             job_apply = json.loads(job_apply_path.read_text())
             # Grab the label which we can view the logs by querying
