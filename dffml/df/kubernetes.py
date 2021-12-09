@@ -125,7 +125,8 @@ class JobKubernetesOrchestratorPreApplyDefinitions(enum.Enum):
 class JobKubernetesOrchestratorConfig(MemoryOrchestratorConfig):
     context: str = field("kubectl context to use", default=None)
     image: str = field(
-        "Container image to use", default="intelotc/dffml:latest"
+        "Container image to use",
+        default="docker.io/library/intelotc/dffml:latest",
     )
     workdir: pathlib.Path = field(
         "Container build context and working directory for running container",
