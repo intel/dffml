@@ -152,7 +152,7 @@ class SSHOrchestratorContext(MemoryOrchestratorContext):
         finally:
             if not self.parent.config.keep_tempdirs:
                 await run_command(
-                    [*self.ssh, "rm", "-vrf", target_tempdir],
+                    [*self.ssh, "rm", "-rf", target_tempdir],
                     logger=self.logger,
                 )
 
