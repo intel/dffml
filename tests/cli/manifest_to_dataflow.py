@@ -133,11 +133,13 @@ prerun.operations[pip_install.op.name] = prerun.operations[
 # Cleanup repo
 test_case_dataflow = DataFlow()
 
+execute_test_target_name = f"{pathlib.Path(__file__).stem}:execute_test_target"
+
 with contextlib.suppress((ImportError, ModuleNotFoundError)):
     from dffml_feature_git.feature.operations import *
 
     execute_test_target = op(
-        name=f"{pathlib.Path(__file__).stem}:execute_test_target",
+        name=execute_test_target_name,
         inputs={"repo": git_repository_checked_out, "target": TEST_TARGET},
         outputs={
             "stdout": TEST_STDOUT,
@@ -185,19 +187,25 @@ run_dataflow_custom_spec = Definition(
 )
 
 
+dataflow_config_updates = Definition(
+    name="DataFlowConfigUpdates", primitive="object",
+)
+
+
 @op(
-    name=f"{pathlib.Path(__file__).stem}:modify_dataflow",
-    inputs={"spec": run_dataflow_custom_spec},
+    name=f"{pathlib.Path(__file__).stem}:update_dataflow_config",
+    inputs={
+        "spec": run_dataflow_custom_spec,
+        "updates": dataflow_config_updates,
+    },
     outputs={
-        "result": Definition(
+        "result": run_dataflow_custom_spec._replace(
             name="run_dataflow_custom_spec_modified",
-            primitive="object",
-            spec=RunDataFlowCustomSpec,
         )
     },
 )
-async def modify_dataflow(
-    self, spec: RunDataFlowCustomSpec,
+async def update_dataflow_config(
+    self, spec: RunDataFlowCustomSpec, updates: dict
 ) -> Dict[str, RunDataFlowCustomOutputSpec]:
     # We must create a dataflow to run the dataflows because the
     # execute_test_target config.cmd will be dependent on the BKC. We need to
@@ -205,13 +213,29 @@ async def modify_dataflow(
     # and modifes each dataflow in a RunDataFlowCustomSpec (which should
     # eventually just be our new CLI + OperationImplementation verison of
     # RunDataFlowConfig)
-    print(spec.dataflow)
+    spec.dataflow.configs.update(updates)
     return {"result": spec}
 
 
 @op(
+    name=f"{pathlib.Path(__file__).stem}:run_dataflow_to_generate_config_updates",
+    inputs={
+        "spec": run_dataflow_custom_spec._replace(
+            name="run_dataflow_to_generate_config_updates_spec",
+        )
+    },
+    outputs={"result": update_dataflow_config.op.inputs["updates"]},
+)
+async def run_dataflow_to_generate_config_updates(
+    self, spec: RunDataFlowCustomSpec,
+) -> AsyncIterator[RunDataFlowCustomOutputSpec]:
+    async for result in run_dataflow_custom(self, spec):
+        yield {"result": list(result["result"].results.values())[0]}
+
+
+@op(
     name=f"{pathlib.Path(__file__).stem}:run_dataflow_custom",
-    inputs={"spec": modify_dataflow.op.outputs["result"]},
+    inputs={"spec": update_dataflow_config.op.outputs["result"]},
     outputs={
         "result": Definition(
             name="run_dataflow_custom_ctx_results_pair",
@@ -243,10 +267,10 @@ async def run_dataflow_custom(
 # generate the BOM for the next iteration where we have seperate BOM, testplan,
 # orchestrator manifests.
 bom_orchestrator = SSHOrchestrator(
-    hostname=os.environ.get("HOSTNAME", "localhost"),
-    workdir=WORKDIR,
-    prerun=prerun,
+    hostname=os.environ.get("HOSTNAME", "localhost"), workdir=WORKDIR,
 )
+bom_orchestrator = MemoryOrchestrator()
+
 
 # Create orchestrators to talk to both clusters with varrying configs.
 # Inputs by context where context string is index in testplan.
@@ -276,8 +300,9 @@ clusters = {
 }
 
 DATAFLOW = DataFlow(
-    modify_dataflow,
+    update_dataflow_config,
     run_dataflow_custom,
+    run_dataflow_to_generate_config_updates,
     GetMulti,
     seed=[
         Input(
@@ -286,7 +311,36 @@ DATAFLOW = DataFlow(
                 for definition in run_dataflow_custom.op.outputs.values()
             ],
             definition=GetMulti.op.inputs["spec"],
-        )
+        ),
+        Input(
+            value=RunDataFlowCustomSpec(
+                DataFlow(GetSingle),
+                {
+                    "get_cmd": [
+                        Input(
+                            value=[GetMulti.op.inputs["spec"].name],
+                            definition=GetSingle.op.inputs["spec"],
+                        ),
+                        Input(
+                            value={
+                                execute_test_target_name: {
+                                    "cmd": ["python", "-u", "$TARGET"],
+                                },
+                                # github_get_repo.op.name: {
+                                #     "token": os.environ["GITHUB_TOKEN"],
+                                # },
+                            },
+                            definition=GetMulti.op.inputs["spec"],
+                        ),
+                    ]
+                },
+                "bom_orchestrator",
+                bom_orchestrator,
+            ),
+            definition=run_dataflow_to_generate_config_updates.op.inputs[
+                "spec"
+            ],
+        ),
     ],
 )
 
