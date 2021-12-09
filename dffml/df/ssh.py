@@ -349,7 +349,11 @@ class SSHOrchestratorContext(MemoryOrchestratorContext):
                     ).__aiter__()
                 ).__anext__
                 work = {
-                    asyncio.create_task(run_command(command)): "dataflow",
+                    asyncio.create_task(
+                        run_command(
+                            command, logger=self.logger, log_cmd_event=False
+                        )
+                    ): "dataflow",
                     asyncio.create_task(accept_unix()): "accept_unix",
                 }
 
