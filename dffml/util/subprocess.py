@@ -45,7 +45,12 @@ async def exec_subprocess(cmd, **kwargs):
 
 
 async def run_command_events(
-    cmd, logger=None, events: List[Subprocess] = None, **kwargs
+    cmd,
+    *,
+    logger=None,
+    log_cmd_event: bool = True,
+    events: List[Subprocess] = None,
+    **kwargs,
 ):
     # Combination of stdout and stderr
     output = {
@@ -62,7 +67,10 @@ async def run_command_events(
         elif event in [Subprocess.STDOUT_READLINE, Subprocess.STDERR_READLINE]:
             # Log line read
             if logger is not None:
-                logger.debug(f"{cmd}: {event}: {result.decode().rstrip()}")
+                log_message = result.decode().rstrip()
+                if log_cmd_event:
+                    log_message = f"{cmd}: {event}: {log_message}"
+                logger.debug(log_message)
             # Append to output in case of error
             output[event].append(result)
             output["combinded"].append(result)
@@ -84,7 +92,9 @@ async def run_command_events(
             yield event, result
 
 
-async def run_command(cmd, logger=None, **kwargs):
+async def run_command(
+    cmd, *, logger=None, log_cmd_event: bool = True, **kwargs
+):
     r"""
     Run a command using :py:func:`asyncio.create_subprocess_exec`.
 
@@ -118,5 +128,7 @@ async def run_command(cmd, logger=None, **kwargs):
 	DEBUG:mylogger:['/usr/bin/python3.7', '-c', "print('Hello World')"]: stdout.readline: Hello World
 	DEBUG:mylogger:['/usr/bin/python3.7', '-c', "print('Hello World')"]: stderr.readline:
     """
-    async for _, _ in run_command_events(cmd, logger=logger, **kwargs):
+    async for _, _ in run_command_events(
+        cmd, logger=logger, log_cmd_event=log_cmd_event, **kwargs
+    ):
         pass
