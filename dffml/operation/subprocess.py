@@ -30,11 +30,11 @@ async def subprocess_line_by_line(self, cmd: List[str], cwd: str = None):
         if event == Subprocess.STDOUT_READLINE:
             output["stdout"] += result.decode()
             result = result.decode().rstrip()
-            self.logger.debug(f"{cmd}: {event}: {result}")
+            self.logger.debug(result)
         elif event == Subprocess.STDERR_READLINE:
             output["stderr"] += result.decode()
             result = result.decode().rstrip()
-            self.logger.error(f"{cmd}: {event}: {result}")
+            self.logger.debug(result)
         elif event == Subprocess.COMPLETED:
             output["returncode"] = result
     return output
