@@ -61,7 +61,7 @@ async def execute_test_target(self, repo, target):
     return output
 
 
-@op
+@op(name=f"{pathlib.Path(__file__).stem}:pip_install",)
 def pip_install(self, packages: List[str]) -> List[str]:
     subprocess.check_call(
         [sys.executable, "-m", "pip", "install", "-U", *packages]
@@ -122,10 +122,6 @@ prerun = DataFlow(
         ),
     ],
 )
-prerun.update()
-prerun.operations[pip_install.op.name] = prerun.operations[
-    pip_install.op.name
-]._replace(name=f"{pathlib.Path(__file__).stem}:{pip_install.op.name}")
 
 # Clone repo
 # Checkout commit or branch given
@@ -229,8 +225,11 @@ async def update_dataflow_config(
 async def run_dataflow_to_generate_config_updates(
     self, spec: RunDataFlowCustomSpec,
 ) -> AsyncIterator[RunDataFlowCustomOutputSpec]:
-    async for result in run_dataflow_custom(self, spec):
-        yield {"result": list(result["result"].results.values())[0]}
+    async for outputs in run_dataflow_custom(self, spec):
+        results = outputs["result"].results
+        if results["returncode"] != 0:
+            raise RuntimeError(results["stderr"])
+        yield {"result": results["stdout"]}
 
 
 @op(
@@ -267,9 +266,35 @@ async def run_dataflow_custom(
 # generate the BOM for the next iteration where we have seperate BOM, testplan,
 # orchestrator manifests.
 bom_orchestrator = SSHOrchestrator(
-    hostname=os.environ.get("HOSTNAME", "localhost"), workdir=WORKDIR,
+    hostname=os.environ.get("HOSTNAME", "localhost"),
+    workdir=WORKDIR,
+    prerun=DataFlow(
+        pip_install,
+        GetSingle,
+        seed=[
+            Input(
+                value=[pip_install.op.outputs["result"].name],
+                definition=GetSingle.op.inputs["spec"],
+            ),
+            Input(
+                value=["pip", "setuptools", "wheel"],
+                definition=pip_install.op.inputs["packages"],
+            ),
+            Input(
+                value=[
+                    line.strip().replace("==", ">=")
+                    for line in pathlib.Path(__file__)
+                    .parent.joinpath("poc", "requirements.txt")
+                    .read_text()
+                    .split("\n")
+                    if line.strip()
+                ],
+                definition=pip_install.op.inputs["packages"],
+            ),
+        ],
+    ),
 )
-bom_orchestrator = MemoryOrchestrator()
+# bom_orchestrator = MemoryOrchestrator()
 
 
 # Create orchestrators to talk to both clusters with varrying configs.
@@ -314,23 +339,34 @@ DATAFLOW = DataFlow(
         ),
         Input(
             value=RunDataFlowCustomSpec(
-                DataFlow(GetSingle),
+                DataFlow(subprocess_line_by_line, GetSingle),
                 {
-                    "get_cmd": [
+                    "get_cmd_and_bom": [
                         Input(
-                            value=[GetMulti.op.inputs["spec"].name],
+                            value=[
+                                {output_key: definition.name}
+                                for output_key, definition in subprocess_line_by_line.op.outputs.items()
+                            ],
                             definition=GetSingle.op.inputs["spec"],
                         ),
                         Input(
-                            value={
-                                execute_test_target_name: {
-                                    "cmd": ["python", "-u", "$TARGET"],
-                                },
-                                # github_get_repo.op.name: {
-                                #     "token": os.environ["GITHUB_TOKEN"],
-                                # },
-                            },
-                            definition=GetMulti.op.inputs["spec"],
+                            value=[
+                                "python",
+                                "-u",
+                                "poc/getArtifactoryBinaries.py",
+                                "download",
+                                "-tcf",
+                                "$TARGET",
+                                "-k",
+                                os.environ.get("K", ""),
+                                "-idsid",
+                                os.environ.get("IDSID", ""),
+                                "-password",
+                                os.environ.get("PASSWORD", ""),
+                            ],
+                            definition=subprocess_line_by_line.op.inputs[
+                                "cmd"
+                            ],
                         ),
                     ]
                 },
