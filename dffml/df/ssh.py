@@ -141,7 +141,13 @@ class SSHOrchestratorContext(MemoryOrchestratorContext):
         with tempfile.NamedTemporaryFile() as fileobj:
             # TODO(security) Aduit default security settings of mktemp -d
             await run_command(
-                [*self.ssh, "mktemp", "-d"],
+                [
+                    *self.ssh,
+                    "mktemp",
+                    "-d",
+                    "--tmpdir",
+                    "tmp.dffml.ssh.XXXXXXXXXX",
+                ],
                 stdout=fileobj,
                 logger=self.logger,
             )
