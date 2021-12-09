@@ -267,6 +267,7 @@ async def run_dataflow_custom(
 # orchestrator manifests.
 bom_orchestrator = SSHOrchestrator(
     hostname=os.environ.get("HOSTNAME", "localhost"),
+    keep_tempdirs=True,
     workdir=WORKDIR,
     prerun=DataFlow(
         pip_install,
@@ -276,6 +277,10 @@ bom_orchestrator = SSHOrchestrator(
                 value=[pip_install.op.outputs["result"].name],
                 definition=GetSingle.op.inputs["spec"],
             ),
+            # TODO HACK This order is not gaurenteed! We should run the pip
+            # install within the ssh executor. And have it cache the
+            # virtual environment it creates so it doesn't have to do it every
+            # time.
             Input(
                 value=["pip", "setuptools", "wheel"],
                 definition=pip_install.op.inputs["packages"],
@@ -324,6 +329,47 @@ clusters = {
     ),
 }
 
+downloads = pathlib.Path("~/Downloads/").expanduser()
+if downloads.joinpath("getArtifactoryBinaries-stdout.log").is_file():
+    cached_succesful_output = [
+        Input(
+            value=downloads.joinpath(
+                "getArtifactoryBinaries-stdout.log"
+            ).read_text(),
+            definition=subprocess_line_by_line.op.outputs["stdout"],
+        ),
+        Input(
+            value=downloads.joinpath(
+                "getArtifactoryBinaries-stderr.log"
+            ).read_text(),
+            definition=subprocess_line_by_line.op.outputs["stderr"],
+        ),
+        Input(
+            value=0,
+            definition=subprocess_line_by_line.op.outputs["returncode"],
+        ),
+    ]
+
+no_cache_run_subprocess = [
+    Input(
+        value=[
+            "python",
+            "-u",
+            "poc/getArtifactoryBinaries.py",
+            "download",
+            "-tcf",
+            "$TARGET",
+            "-k",
+            os.environ.get("K", ""),
+            "-idsid",
+            os.environ.get("IDSID", ""),
+            "-password",
+            os.environ.get("PASSWORD", ""),
+        ],
+        definition=subprocess_line_by_line.op.inputs["cmd"],
+    ),
+]
+
 DATAFLOW = DataFlow(
     update_dataflow_config,
     run_dataflow_custom,
@@ -349,25 +395,9 @@ DATAFLOW = DataFlow(
                             ],
                             definition=GetSingle.op.inputs["spec"],
                         ),
-                        Input(
-                            value=[
-                                "python",
-                                "-u",
-                                "poc/getArtifactoryBinaries.py",
-                                "download",
-                                "-tcf",
-                                "$TARGET",
-                                "-k",
-                                os.environ.get("K", ""),
-                                "-idsid",
-                                os.environ.get("IDSID", ""),
-                                "-password",
-                                os.environ.get("PASSWORD", ""),
-                            ],
-                            definition=subprocess_line_by_line.op.inputs[
-                                "cmd"
-                            ],
-                        ),
+                        # TODO DEBUG read from local FS for cached results
+                        # *cached_succesful_output,
+                        *no_cache_run_subprocess,
                     ]
                 },
                 "bom_orchestrator",
