@@ -2,7 +2,7 @@ from typing import Dict, List, Any
 
 from ..df.types import Definition
 from ..df.base import op
-from ..util.data import traverse_get
+from ..util.data import traverse_get, export
 
 MAPPING = Definition(name="mapping", primitive="map")
 MAPPING_TRAVERSE = Definition(name="mapping_traverse", primitive="List[str]")
@@ -63,6 +63,8 @@ def mapping_extract_value(mapping: Dict[str, Any], traverse: List[str]):
     >>> asyncio.run(main())
     {'value': 42}
     """
+    if not isinstance(mapping, dict):
+        mapping = export(mapping)
     return {"value": traverse_get(mapping, *traverse)}
 
 
