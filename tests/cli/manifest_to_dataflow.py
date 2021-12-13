@@ -329,28 +329,7 @@ clusters = {
     ),
 }
 
-downloads = pathlib.Path("~/Downloads/").expanduser()
-if downloads.joinpath("getArtifactoryBinaries-stdout.log").is_file():
-    cached_succesful_output = [
-        Input(
-            value=downloads.joinpath(
-                "getArtifactoryBinaries-stdout.log"
-            ).read_text(),
-            definition=subprocess_line_by_line.op.outputs["stdout"],
-        ),
-        Input(
-            value=downloads.joinpath(
-                "getArtifactoryBinaries-stderr.log"
-            ).read_text(),
-            definition=subprocess_line_by_line.op.outputs["stderr"],
-        ),
-        Input(
-            value=0,
-            definition=subprocess_line_by_line.op.outputs["returncode"],
-        ),
-    ]
-
-no_cache_run_subprocess = [
+cache_run_subprocess = [
     Input(
         value=[
             "python",
@@ -369,6 +348,27 @@ no_cache_run_subprocess = [
         definition=subprocess_line_by_line.op.inputs["cmd"],
     ),
 ]
+
+downloads = pathlib.Path("~/Downloads/").expanduser()
+if downloads.joinpath("getArtifactoryBinaries-stdout.log").is_file():
+    cache_run_subprocess  = [
+        Input(
+            value=downloads.joinpath(
+                "getArtifactoryBinaries-stdout.log"
+            ).read_text(),
+            definition=subprocess_line_by_line.op.outputs["stdout"],
+        ),
+        Input(
+            value=downloads.joinpath(
+                "getArtifactoryBinaries-stderr.log"
+            ).read_text(),
+            definition=subprocess_line_by_line.op.outputs["stderr"],
+        ),
+        Input(
+            value=0,
+            definition=subprocess_line_by_line.op.outputs["returncode"],
+        ),
+    ]
 
 DATAFLOW = DataFlow(
     update_dataflow_config,
@@ -396,8 +396,7 @@ DATAFLOW = DataFlow(
                             definition=GetSingle.op.inputs["spec"],
                         ),
                         # TODO DEBUG read from local FS for cached results
-                        # *cached_succesful_output,
-                        *no_cache_run_subprocess,
+                        *cache_run_subprocess,
                     ]
                 },
                 "bom_orchestrator",
