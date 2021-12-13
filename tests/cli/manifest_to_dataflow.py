@@ -299,7 +299,6 @@ bom_orchestrator = SSHOrchestrator(
         ],
     ),
 )
-# bom_orchestrator = MemoryOrchestrator()
 
 
 # Create orchestrators to talk to both clusters with varrying configs.
@@ -351,6 +350,7 @@ cache_run_subprocess = [
 
 downloads = pathlib.Path("~/Downloads/").expanduser()
 if downloads.joinpath("getArtifactoryBinaries-stdout.log").is_file():
+    bom_orchestrator = MemoryOrchestrator()
     cache_run_subprocess  = [
         Input(
             value=downloads.joinpath(
