@@ -47,14 +47,20 @@ from ..plugins import (
 )
 
 config = configparser.ConfigParser()
-config.read(Path("~", ".gitconfig").expanduser())
+with contextlib.suppress(Exception):
+    config.read(Path("~", ".gitconfig").expanduser())
 
 USER = "unknown"
 with contextlib.suppress(KeyError):
     USER = getpass.getuser()
 
-NAME = config.get("user", "name", fallback="Unknown")
-EMAIL = config.get("user", "email", fallback="unknown@example.com")
+NAME = "Unknown"
+with contextlib.suppress(Exception):
+    NAME = config.get("user", "name", fallback="Unknown")
+
+EMAIL = "unknown@example.com"
+with contextlib.suppress(Exception):
+    EMAIL = config.get("user", "email", fallback="unknown@example.com")
 
 REPO_ROOT = pathlib.Path(__file__).parents[2]
 
