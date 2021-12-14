@@ -483,8 +483,7 @@ async def main():
     manifest = yaml.safe_load(
         textwrap.dedent(
             """\
-            $document_format: tps.manifest
-            $document_version: 0.0.1
+            $schema: https://goto.intel.com/intel-server-platform-validation.0.0.1.schema.json
             testplan:
             - git:
                 repo: https://gitlab.devtools.intel.com/johnsa1/phoenix-devops-poc
