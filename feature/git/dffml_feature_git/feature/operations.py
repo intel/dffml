@@ -1,3 +1,5 @@
+import os
+import copy
 import shutil
 import asyncio
 import tempfile
@@ -10,7 +12,7 @@ from dateutil.relativedelta import relativedelta
 
 from dffml.df.types import Stage
 from dffml.df.base import op
-from dffml.util.subprocess import Subprocess, run_command_events
+from dffml.util.subprocess import Subprocess, run_command_events, run_command
 
 from .definitions import *
 
@@ -93,15 +95,26 @@ async def check_if_valid_git_repository_URL(URL: str):
 
 @op(
     inputs={"URL": URL},
-    outputs={"repo": git_repository},
+    outputs={"repo": git_repository, "ssh_key": git_repo_ssh_key},
     conditions=[valid_git_repository_URL],
 )
-async def clone_git_repo(URL: str):
-    directory = tempfile.mkdtemp(prefix="dffml-feature-git-")
-    exit_code = await exec_with_logging("git", "clone", URL, directory)
-    if exit_code != 0:
-        shutil.rmtree(directory)
-        raise RuntimeError("Failed to clone git repo %r" % (URL,))
+async def clone_git_repo(URL: str, ssh_key: str = None):
+    with tempfile.TemporaryDirectory() as ssh_key_tempdir:
+        env = copy.deepcopy(os.environ)
+        key = []
+        if ssh_key is not None:
+            ssh_key_path = pathlib.Path(ssh_key_tempdir, "id_rsa")
+            ssh_key_path.write_text(ssh_key)
+            env[
+                "GIT_SSH_COMMAND"
+            ] = "ssh -i {str(ssh_key_path.resolve()} -o UserKnownHostsFile={os.devnull} -o StrictHostKeyChecking=no"
+        directory = tempfile.mkdtemp(prefix="dffml-feature-git-")
+        exit_code = await run_command(
+            ["git", "clone", URL, directory], env=environ
+        )
+        if exit_code != 0:
+            shutil.rmtree(directory)
+            raise RuntimeError("Failed to clone git repo %r" % (URL,))
 
     return {"repo": {"URL": URL, "directory": directory}}
 
