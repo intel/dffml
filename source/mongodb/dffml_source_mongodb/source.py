@@ -25,7 +25,9 @@ class MongoDBSourceContext(BaseSourceContext):
     async def update(self, record):
         self.logger.debug("update: %s: %r", record.key, record.export())
         await self.parent.collection.replace_one(
-            {"_id": record.key}, {"_id": record.key, **record.export()}, upsert=True,
+            {"_id": record.key},
+            {"_id": record.key, **record.export()},
+            upsert=True,
         )
 
     def document_to_record(self, document):
