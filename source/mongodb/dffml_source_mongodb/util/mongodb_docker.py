@@ -136,12 +136,15 @@ def mongodb(*, js_setup: Optional[str] = None):
                     ready = True
                     break
             if not ready:
-                raise MongoDBFailedToStart('Never saw "Waiting for connections"')
+                raise MongoDBFailedToStart(
+                    'Never saw "Waiting for connections"'
+                )
             # Ensure that we can make a connection
             start_time = time.clock_gettime(time.CLOCK_MONOTONIC_RAW)
             max_timeout = float(os.getenv("MONGODB_START_TIMEOUT", "600"))
             LOGGER.debug(
-                "Attempting to connect to MongoDB: Timeout of %d seconds", max_timeout,
+                "Attempting to connect to MongoDB: Timeout of %d seconds",
+                max_timeout,
             )
             while not check_connection(container_ip, DEFAULT_PORT):
                 end_time = time.clock_gettime(time.CLOCK_MONOTONIC_RAW)
@@ -149,7 +152,8 @@ def mongodb(*, js_setup: Optional[str] = None):
                     raise MongoDBFailedToStart("Timed out waiting for MongoDB")
             end_time = time.clock_gettime(time.CLOCK_MONOTONIC_RAW)
             LOGGER.debug(
-                "MongoDB running: Took %0.02f seconds", end_time - container_start_time,
+                "MongoDB running: Took %0.02f seconds",
+                end_time - container_start_time,
             )
             # Yield IP of container to caller
             yield container_ip
