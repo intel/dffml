@@ -35,6 +35,8 @@ definitions = [
         spec=GitRepoCheckedOutSpec,
     ),
     Definition(name="git_commit", primitive="string"),
+    Definition(name="git_grep_search", primitive="string"),
+    Definition(name="git_grep_found", primitive="string"),
     Definition(name="date", primitive="string"),
     Definition(name="no_git_branch_given", primitive="boolean"),
     Definition(name="date_pair", primitive="List[date]"),
