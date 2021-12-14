@@ -5,20 +5,20 @@ Source
     :maxdepth: 2
     :caption: Contents:
 
-    json
-    idx1
-    csv
-    dfpreprocess
-    wrapper
-    memory
-    op
-    log
-    df
-    source
-    db
-    file
     idx3
+    dfpreprocess
     dataframe
+    file
     dir
+    df
+    wrapper
+    source
+    op
     ini
+    csv
+    log
+    json
+    memory
+    idx1
+    db
     dataset/index

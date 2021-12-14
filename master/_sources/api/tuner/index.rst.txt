@@ -5,5 +5,5 @@ Tuner
     :maxdepth: 2
     :caption: Contents:
 
-    tuner
     parameter_grid
+    tuner
