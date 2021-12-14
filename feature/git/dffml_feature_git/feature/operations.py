@@ -10,6 +10,7 @@ from dateutil.relativedelta import relativedelta
 
 from dffml.df.types import Stage
 from dffml.df.base import op
+from dffml.util.subprocess import Subprocess, run_command_events
 
 from .definitions import *
 
@@ -130,6 +131,20 @@ async def git_repo_checkout(repo: Dict[str, str], commit: str):
             URL=repo.URL, directory=repo.directory, commit=commit
         )
     }
+
+
+@op(
+    inputs={"repo": git_repository, "search": git_grep_search},
+    outputs={"found": git_grep_found},
+)
+async def git_grep(self, repo: GitRepoSpec, search: str) -> str:
+    async for event, result in run_command_events(
+        ["git", "grep", search],
+        cwd=repo.directory,
+        logger=self.logger,
+        events=[Subprocess.STDOUT],
+    ):
+        return {"found": result.decode()}
 
 
 @op(
