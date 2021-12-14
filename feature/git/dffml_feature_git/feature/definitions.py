@@ -20,6 +20,7 @@ definitions = [
     Definition(name="quarter", primitive="int"),
     Definition(name="quarters", primitive="int"),
     Definition(name="URL", primitive="string"),
+    Definition(name="git_repo_ssh_key", primitive="string"),
     Definition(name="valid_git_repository_URL", primitive="boolean"),
     Definition(name="git_branch", primitive="str"),
     Definition(
