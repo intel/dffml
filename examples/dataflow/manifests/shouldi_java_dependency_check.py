@@ -111,19 +111,9 @@ orchestrator = JobKubernetesOrchestrator(
     context=os.environ.get("KUBECTL_CONTEXT_CONTROLLER", "kind-kind"),
     prerun=prerun,
 )
-# TODO DEBUG Use k8s
-orchestrator = MemoryOrchestrator()
-
-
-def git_to_inputs(git):
-    return [
-        Input(
-            value=git["repo"],
-            definition=dffml_feature_git.feature.operations.clone_git_repo.op.inputs[
-                "URL"
-            ],
-        ),
-    ]
+orchestrator = MemoryOrchestrator(
+    max_ctxs=1,
+)
 
 
 async def synthesize_dataflow(manifest):
@@ -134,13 +124,24 @@ async def execute_dataflow(manifest):
     async for ctx, results in run(
         DATAFLOW,
         {
-            # TODO Support for things other than git repos
-            target["git"]["repo"]: git_to_inputs(target["git"])
+            target: [
+                Input(
+                    value=target,
+                    definition=dffml_feature_git.feature.operations.clone_git_repo.op.inputs[
+                        "URL"
+                    ],
+                )
+            ]
             for target in manifest["scan"]
         },
+        strict=False,
+        orchestrator=orchestrator,
     ):
-        print(f"{ctx!r} results: ", end="")
+        print(f"{ctx!s} results: ", end="")
         pprint.pprint(results)
+        pathlib.Path(pathlib.Path(f"{ctx!s}-dependency-check.json").stem).write_text(json.dumps(
+            {f"{ctx!s}": export(results)}
+        ))
 
 
 async def main():
@@ -149,18 +150,26 @@ async def main():
     # TODO DEBUG Remove this when using with shim
     import yaml
 
-    manifest = yaml.safe_load(
-        textwrap.dedent(
-            """\
-            $schema: https://schema.dffml.org/dffml.shouldi.java.dependency_check.0.0.0.schema.json
-            scan:
-            - git:
-                repo: https://github.com/cabaletta/baritone
-            """
-        )
+    contents = textwrap.dedent(
+        """\
+        $schema: https://schema.dffml.org/dffml.shouldi.java.dependency_check.0.0.0.schema.json
+        scan:
+        """
+    ) + "- "+ "\n- ".join(
+        pathlib.Path("/tmp/repos-to-scan").read_text().strip().split("\n")
     )
 
+    print(contents)
+
+    # TODO Git clone credentials
+    manifest = yaml.safe_load(contents)
+
     await execute_dataflow(manifest)
+
+
+if __name__ == "__main__":
+    logging.basicConfig(level=logging.DEBUG)
+    asyncio.run(main())
 
 
 if __name__ == "__main__":
