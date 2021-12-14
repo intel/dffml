@@ -8,7 +8,11 @@ from dffml.util.asynctestcase import AsyncTestCase
 
 from dffml_source_mongodb.source import MongoDBSourceConfig, MongoDBSource
 
-from dffml_source_mongodb.util.mongodb_docker import mongodb, DOCKER_ENV, DEFAULT_PORT
+from dffml_source_mongodb.util.mongodb_docker import (
+    mongodb,
+    DOCKER_ENV,
+    DEFAULT_PORT,
+)
 
 
 class TestMongoDBSource(AsyncTestCase, SourceTest):
