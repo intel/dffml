@@ -161,6 +161,7 @@ async def execute_dataflow(manifest):
             for target in manifest["scan"]
         },
         strict=False,
+        orchestrator=orchestrator,
     ):
         print(f"{ctx!s} results: ", end="")
         pprint.pprint(results)
