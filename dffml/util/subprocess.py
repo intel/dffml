@@ -52,6 +52,8 @@ async def run_command_events(
     events: List[Subprocess] = None,
     **kwargs,
 ):
+    if events is None:
+        events = []
     # Combination of stdout and stderr
     output = {
         Subprocess.STDOUT_READLINE: [],
