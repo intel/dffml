@@ -159,7 +159,9 @@ async def run_dependency_check(self, pkg: str) -> Dict[str, Any]:
         except RuntimeError as e:
             raise DependencyCheckError from e
 
-        report_contents = pathlib.Path(tempdir, "dependency-check-report.json").read_text()
+        report_contents = pathlib.Path(
+            tempdir, "dependency-check-report.json"
+        ).read_text()
         dependency_check_op = json.loads(report_contents)
 
     t_result = []
