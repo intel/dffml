@@ -177,15 +177,19 @@ async def main():
     # TODO DEBUG Remove this when using with shim
     import yaml
 
-    manifest = yaml.safe_load(
-        textwrap.dedent(
-            """\
-            $schema: https://schema.dffml.org/dffml.security.scan.log4j.0.0.0.schema.json
-            scan:
-            - https://github.com/cabaletta/baritone
-            """
-        )
+    contents = textwrap.dedent(
+        """\
+        $schema: https://schema.dffml.org/dffml.security.scan.log4j.0.0.0.schema.json
+        scan:
+        """
+    ) + "- "+ "\n- ".join(
+        pathlib.Path("/tmp/repos-to-scan").read_text().strip().split("\n")
     )
+
+    print(contents)
+
+    # TODO Git clone credentials
+    manifest = yaml.safe_load(contents)
 
     await execute_dataflow(manifest)
 
