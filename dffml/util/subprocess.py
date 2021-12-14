@@ -81,12 +81,16 @@ async def run_command_events(
                     repr(cmd) + ": " + b"".join(output["combinded"]).decode()
                 )
             else:
-                yield Subprocess.STDERR, b"".join(
-                    output[Subprocess.STDERR_READLINE]
-                )
-                yield Subprocess.STDOUT, b"".join(
-                    output[Subprocess.STDOUT_READLINE]
-                )
+                # If caller wants event
+                if Subprocess.STDERR in events:
+                    yield Subprocess.STDERR, b"".join(
+                        output[Subprocess.STDERR_READLINE]
+                    )
+                if Subprocess.STDOUT in events:
+                    yield Subprocess.STDOUT, b"".join(
+                        output[Subprocess.STDOUT_READLINE]
+                    )
+                return
         # If caller wants event
         if events and event in events:
             yield event, result
