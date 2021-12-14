@@ -1,54 +1,100 @@
 r"""FileName,ProjectId,Url
-myfile,123,https://example.com/data.json
+myfile,123,http://localhost:8000/examples/dataflow/parallel_curl.py
 """
 import os
 import sys
 import asyncio
 import pathlib
+import http.server
 from typing import List
 
 import dffml
+import aiohttp
+import aiofiles
 
 DEFAULT_OUTPUT_DIRECTORY = "output"
 
 
 @dffml.config
-class BuildCMDConfig:
+class DownloadFileConfig:
     token: str = dffml.field(
         "token to use", default=os.environ.get("token", None)
+    )
+    apikey: str = dffml.field(
+        "apikey to use", default=os.environ.get("apikey", None)
     )
     directory: str = dffml.field(
         "Directory to download to",
         default=os.environ.get("OUTPUT_DIRECTORY", DEFAULT_OUTPUT_DIRECTORY),
     )
+    chunk_size: str = dffml.field(
+        "Chunk of bytes to download and write at a time",
+        default=os.environ.get("CHUNK_SIZE", 8192),
+    )
 
 
-@dffml.op(config_cls=BuildCMDConfig,)
-def build_cmd(self, project_id: str, filepath: str, url: str) -> List[str]:
-    return [
-        "curl",
-        "-v",
-        "--header",
-        "Authorizaiton: Bearer " + self.parent.config.token,
-        url,
-        "--output",
-        f"{self.parent.config.directory}/{project_id}_{filepath}",
-    ]
+@dffml.op(
+    config_cls=DownloadFileConfig,
+    # imp_enter allows us to create instances of objects which are async context
+    # managers and assign them to self.parent which is an object of type
+    # OperationImplementation which will be alive for the lifetime of the
+    # Orchestrator which runs all these operations.
+    imp_enter={
+        "session": (
+            lambda self: aiohttp.ClientSession(
+                # Ironic, for proxies
+                trust_env=os.environ.get("TRUST_ENV", None),
+                headers={
+                    "Authorization": "Bearer " + self.config.token,
+                    "Apikey": self.config.apikey,
+                },
+            )
+        )
+    },
+)
+async def download_file(
+    self, project_id: str, filepath: str, url: str
+) -> None:
+    """
+    Download a file in chunks, write out to a filename in format of
+
+    .. code-block::
+
+        "{self.parent.config.directory}/{project_id}_{filepath}"
+    """
+    wrote_bytes = 0
+    filename = f"{self.parent.config.directory}/{project_id}_{filepath}"
+    if pathlib.Path(filename).exists():
+        self.logger.debug(f"skipping {url} as {filename} already exists")
+        return
+    self.logger.debug(f"making request to {url}")
+    async with self.parent.session.get(url) as resp:  # skipcq: BAN-B310
+        if resp.status != 200:
+            raise Exception(f"Got {url} status {resp.status}")
+        async with aiofiles.open(filename, mode="wb") as f:
+            async for chunk in resp.content.iter_chunked(
+                self.parent.config.chunk_size
+            ):
+                await f.write(chunk)
+                wrote_bytes += len(chunk)
+                self.logger.debug(
+                    f"wrote {wrote_bytes} bytes of {resp.content_length} to {filename}"
+                )
 
 
-# Output of build_cmd() is used to call subprocess_line_by_line()
-build_cmd.op.outputs["result"] = dffml.subprocess_line_by_line.op.inputs["cmd"]
 # Set inputs to be from CSV column names
-build_cmd.op.inputs["project_id"] = dffml.Definition(
+download_file.op.inputs["project_id"] = dffml.Definition(
     name="ProjectId", primitive="string"
 )
-build_cmd.op.inputs["filepath"] = dffml.Definition(
+download_file.op.inputs["filepath"] = dffml.Definition(
     name="FileName", primitive="string"
 )
-build_cmd.op.inputs["url"] = dffml.Definition(name="Url", primitive="string")
+download_file.op.inputs["url"] = dffml.Definition(
+    name="Url", primitive="string"
+)
 
 
-DATAFLOW = dffml.DataFlow(build_cmd, dffml.subprocess_line_by_line)
+DATAFLOW = dffml.DataFlow(download_file)
 
 
 async def main(filepath):
@@ -61,7 +107,7 @@ async def main(filepath):
     .. code-block:: console
 
         $ python -m pip install -U pip setuptools wheel
-        $ python -m pip install -U "https://github.com/pdxjohnny/dffml/archive/manifest.zip#egg=dffml"
+        $ python -m pip install -U aiohttp aiofiles httptest "https://github.com/pdxjohnny/dffml/archive/manifest.zip#egg=dffml"
 
     Usage
     -----
@@ -79,16 +125,16 @@ async def main(filepath):
 
     .. code-block:: console
 
-        $ token=$JWT python -u parallel_curl.py myfile.csv
+        $ token=$JWT apikey=$apikey python -u parallel_curl.py myfile.csv
 
     Test
     ----
 
     .. code-block:: console
 
-        $ token=$JWT python -u -m unittest parallel_curl.py
+        $ token=$JWT apikey=$apikey python -u -m unittest parallel_curl.py
     """
-    max_downloads = int(os.environ.get("MAX_DOWNLOADS", "10"))
+    max_downloads = int(os.environ.get("MAX_DOWNLOADS", "50"))
     output_directory_path = pathlib.Path(
         os.environ.get("OUTPUT_DIRECTORY", DEFAULT_OUTPUT_DIRECTORY)
     )
@@ -104,7 +150,7 @@ async def main(filepath):
                     dffml.Feature("FileName", str),
                     dffml.Feature("ProjectId", str),
                 ),
-                record_def=build_cmd.op.inputs["url"].name,
+                record_def=download_file.op.inputs["url"].name,
                 no_strict=True,
                 orchestrator=dffml.MemoryOrchestrator(max_ctxs=max_downloads),
             )
@@ -122,14 +168,22 @@ if __name__ == "__main__":
 
 import unittest
 import tempfile
+import httptest
 
 
 class TestParallelCurl(unittest.TestCase):
-    def test_parallel(self):
+    @httptest.Server(
+        lambda *args: http.server.SimpleHTTPRequestHandler(
+            *args, directory=pathlib.Path(__file__).parents[2]
+        )
+    )
+    def test_parallel(self, ts=httptest.NoServer()):
         logging.basicConfig(level=logging.DEBUG)
         with tempfile.TemporaryDirectory() as tempdir:
             # CSV in docstring
             csv_path = pathlib.Path(tempdir, "myfile.csv")
-            csv_path.write_text(__doc__)
+            csv_path.write_text(
+                __doc__.replace("http://localhost:8000/", ts.url())
+            )
             # Run curl in parallel
             asyncio.run(main(csv_path))
