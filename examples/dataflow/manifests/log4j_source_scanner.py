@@ -62,19 +62,25 @@ prerun = DataFlow(
 
 @contextlib.asynccontextmanager
 async def get_log4j_versions(self):
-    with sync_urlopen("https://archive.apache.org/dist/logging/log4j/") as response:
+    with sync_urlopen(
+        "https://archive.apache.org/dist/logging/log4j/"
+    ) as response:
         # Source:
         # https://stackoverflow.com/questions/20841363/regex-finding-all-href-in-a-tags
-        yield sorted([
-            possible_version.replace("/", "")
-            for possible_version in re.findall(r'<a[^>]* href="([^"]*)"', response.read().decode())
-            if possible_version[:1].isdigit()
-        ])
+        yield sorted(
+            [
+                possible_version.replace("/", "")
+                for possible_version in re.findall(
+                    r'<a[^>]* href="([^"]*)"', response.read().decode()
+                )
+                if possible_version[:1].isdigit()
+            ]
+        )
 
 
 @op(
     name=f"{pathlib.Path(__file__).stem}:log4j_versions",
-    imp_enter={"versions": get_log4j_versions}
+    imp_enter={"versions": get_log4j_versions},
 )
 def log4j_versions(self, contents: str) -> List[str]:
     # Return the match with the longest string so that we don't match a shorter
@@ -83,11 +89,14 @@ def log4j_versions(self, contents: str) -> List[str]:
     for line in contents.split("\n"):
         match = None
         for version in self.parent.versions:
-            if version in line and (match is None or len(version) > len(match[0])):
+            if version in line and (
+                match is None or len(version) > len(match[0])
+            ):
                 match = (version, line)
         if match is not None:
             found.append(match)
     return found
+
 
 # Clone repo
 # Checkout commit or branch given
@@ -139,8 +148,8 @@ DATAFLOW.update()
 orchestrator = JobKubernetesOrchestrator(
     context=os.environ.get("KUBECTL_CONTEXT_CONTROLLER", "kind-kind"),
     prerun=prerun,
-    max_ctxs=5,
 )
+orchestrator = MemoryOrchestrator(max_ctxs=1,)
 
 
 async def synthesize_dataflow(manifest):
@@ -166,9 +175,9 @@ async def execute_dataflow(manifest):
     ):
         print(f"{ctx!s} results: ", end="")
         pprint.pprint(results)
-        pathlib.Path(pathlib.Path(f"{ctx!s}").stem).write_text(json.dumps(
-            {f"{ctx!s}": export(results)}
-        ))
+        pathlib.Path(pathlib.Path(f"{ctx!s}").stem).write_text(
+            json.dumps({f"{ctx!s}": export(results)})
+        )
 
 
 async def main():
@@ -177,13 +186,17 @@ async def main():
     # TODO DEBUG Remove this when using with shim
     import yaml
 
-    contents = textwrap.dedent(
-        """\
+    contents = (
+        textwrap.dedent(
+            """\
         $schema: https://schema.dffml.org/dffml.security.scan.log4j.0.0.0.schema.json
         scan:
         """
-    ) + "- "+ "\n- ".join(
-        pathlib.Path("/tmp/repos-to-scan").read_text().strip().split("\n")
+        )
+        + "- "
+        + "\n- ".join(
+            pathlib.Path("/tmp/repos-to-scan").read_text().strip().split("\n")
+        )
     )
 
     print(contents)
