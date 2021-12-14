@@ -351,7 +351,7 @@ cache_run_subprocess = [
 downloads = pathlib.Path("~/Downloads/").expanduser()
 if downloads.joinpath("getArtifactoryBinaries-stdout.log").is_file():
     bom_orchestrator = MemoryOrchestrator()
-    cache_run_subprocess  = [
+    cache_run_subprocess = [
         Input(
             value=downloads.joinpath(
                 "getArtifactoryBinaries-stdout.log"
