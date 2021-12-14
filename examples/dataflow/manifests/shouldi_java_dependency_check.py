@@ -111,9 +111,7 @@ orchestrator = JobKubernetesOrchestrator(
     context=os.environ.get("KUBECTL_CONTEXT_CONTROLLER", "kind-kind"),
     prerun=prerun,
 )
-orchestrator = MemoryOrchestrator(
-    max_ctxs=1,
-)
+orchestrator = MemoryOrchestrator(max_ctxs=1,)
 
 
 async def synthesize_dataflow(manifest):
@@ -139,9 +137,9 @@ async def execute_dataflow(manifest):
     ):
         print(f"{ctx!s} results: ", end="")
         pprint.pprint(results)
-        pathlib.Path(pathlib.Path(f"{ctx!s}-dependency-check.json").stem).write_text(json.dumps(
-            {f"{ctx!s}": export(results)}
-        ))
+        pathlib.Path(
+            pathlib.Path(f"{ctx!s}-dependency-check.json").stem
+        ).write_text(json.dumps({f"{ctx!s}": export(results)}))
 
 
 async def main():
@@ -150,13 +148,17 @@ async def main():
     # TODO DEBUG Remove this when using with shim
     import yaml
 
-    contents = textwrap.dedent(
-        """\
+    contents = (
+        textwrap.dedent(
+            """\
         $schema: https://schema.dffml.org/dffml.shouldi.java.dependency_check.0.0.0.schema.json
         scan:
         """
-    ) + "- "+ "\n- ".join(
-        pathlib.Path("/tmp/repos-to-scan").read_text().strip().split("\n")
+        )
+        + "- "
+        + "\n- ".join(
+            pathlib.Path("/tmp/repos-to-scan").read_text().strip().split("\n")
+        )
     )
 
     print(contents)
