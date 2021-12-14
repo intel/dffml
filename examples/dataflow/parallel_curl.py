@@ -80,6 +80,7 @@ async def download_file(
                 self.logger.debug(
                     f"wrote {wrote_bytes} bytes of {resp.content_length} to {filename}"
                 )
+    self.logger.debug(f"Finished writing {wrote_bytes} bytes to {filename}")
 
 
 # Set inputs to be from CSV column names
