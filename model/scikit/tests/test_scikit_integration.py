@@ -207,7 +207,7 @@ class TestScikitRegression(AsyncTestCase):
         )
         self.assertTrue(isinstance(results, list))
         self.assertTrue(results)
-        results = results[0]
+        results = results[0].export()
         self.assertIn("prediction", results)
         results = results["prediction"]
         self.assertIn("true_label", results)
@@ -357,7 +357,7 @@ class TestScikitClustering(AsyncTestCase):
             self.stdout.seek(0)
             self.assertTrue(isinstance(results, list))
             self.assertTrue(results)
-            results = results[0]
+            results = results[0].export()
             self.assertIn("prediction", results)
             results = results["prediction"]
             self.assertIn("cluster", results)
