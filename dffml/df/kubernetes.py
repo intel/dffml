@@ -628,6 +628,27 @@ class JobKubernetesOrchestratorContext(MemoryOrchestratorContext):
                 )
                 for init_container_purpose, init_container_name in init_container_names.items()
             }
+            # TODO Refactor
+            for logger in loggers.values():
+                if logger.name in loggers_launched:
+                    continue
+                self.logger.debug(
+                    f"{logger.name}: {' '.join(logger.cmd)}"
+                )
+                logger.anext = (
+                    exec_subprocess(
+                        make_logger_cmd(
+                            logger.container_name
+                        )
+                    ).__aiter__()
+                ).__anext__
+                work[
+                    asyncio.create_task(
+                        anext(logger.anext())
+                    )
+                ] = logger.name
+                loggers_launched.add(logger.name)
+
             # Used to load full JSON
             get_pods_buffer = ""
             async for event, result in concurrently(work):
@@ -667,9 +688,7 @@ class JobKubernetesOrchestratorContext(MemoryOrchestratorContext):
                                 )
                             # Check for failure
                             # https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#pod-phase
-                            if phase != "Pending" and len(loggers) != len(
-                                loggers_launched
-                            ):
+                            if len(loggers) != len(loggers_launched):
                                 for logger in loggers.values():
                                     if logger.name in loggers_launched:
                                         continue
@@ -726,9 +745,10 @@ class JobKubernetesOrchestratorContext(MemoryOrchestratorContext):
                     elif (
                         subprocess_event == Subprocess.COMPLETED
                         and result != 0
-                        and loggers[event].restart_count < 1
+                        and loggers[event].restart_count < 3
                     ):
-                        loggers[event].restart_count += 1
+                        if phase != "Pending":
+                            loggers[event].restart_count += 1
                         loggers_launched.remove(loggers[event].name)
                         self.logger.error(
                             "Failed to read pod logs, restarting "
