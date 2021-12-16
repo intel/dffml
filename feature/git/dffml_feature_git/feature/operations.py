@@ -98,7 +98,7 @@ async def check_if_valid_git_repository_URL(URL: str):
     outputs={"repo": git_repository, "ssh_key": git_repo_ssh_key},
     conditions=[valid_git_repository_URL],
 )
-async def clone_git_repo(URL: str, ssh_key: str = None):
+async def clone_git_repo(self, URL: str, ssh_key: str = None):
     with tempfile.TemporaryDirectory() as ssh_key_tempdir:
         env = copy.deepcopy(os.environ)
         key = []
@@ -109,12 +109,13 @@ async def clone_git_repo(URL: str, ssh_key: str = None):
                 "GIT_SSH_COMMAND"
             ] = "ssh -i {str(ssh_key_path.resolve()} -o UserKnownHostsFile={os.devnull} -o StrictHostKeyChecking=no"
         directory = tempfile.mkdtemp(prefix="dffml-feature-git-")
-        exit_code = await run_command(
-            ["git", "clone", URL, directory], env=environ
-        )
-        if exit_code != 0:
+        try:
+            await run_command(
+                ["git", "clone", URL, directory], env=env, logger=self.logger,
+            )
+        except:
             shutil.rmtree(directory)
-            raise RuntimeError("Failed to clone git repo %r" % (URL,))
+            raise
 
     return {"repo": {"URL": URL, "directory": directory}}
 
