@@ -14,6 +14,7 @@ import pprint
 import asyncio
 import pathlib
 import logging
+import datetime
 import textwrap
 import unittest
 import itertools
@@ -105,13 +106,15 @@ def log4j_versions(self, contents: str) -> List[str]:
 # Cleanup repo
 DATAFLOW = DataFlow(
     dffml_feature_git.feature.operations.clone_git_repo,
+    dffml_feature_git.feature.operations.git_repo_default_branch,
+    dffml_feature_git.feature.operations.git_repo_author_lines_for_dates,
     dffml_feature_git.feature.operations.git_grep,
     log4j_versions,
     GetSingle,
     dffml_feature_git.feature.operations.cleanup_git_repo,
     configs={
-        dffml_feature_git.feature.operations.clone_git_repo.op.name: {
-            "depth": 1,
+        dffml_feature_git.feature.operations.git_repo_author_lines_for_dates.op.name: {
+            "pretty": "Author:%ae",
         },
     },
     seed=[
@@ -119,6 +122,10 @@ DATAFLOW = DataFlow(
             value=[
                 definition.name
                 for definition in log4j_versions.op.outputs.values()
+            ]
+            + [
+                definition.name
+                for definition in dffml_feature_git.feature.operations.git_repo_author_lines_for_dates.op.outputs.values()
             ],
             definition=GetSingle.op.inputs["spec"],
         ),
@@ -127,8 +134,19 @@ DATAFLOW = DataFlow(
             definition=dffml_feature_git.feature.operations.valid_git_repository_URL,
         ),
         Input(
+            value=True,
+            definition=dffml_feature_git.feature.operations.no_git_branch_given,
+        ),
+        Input(
             value="log4j",
             definition=dffml_feature_git.feature.operations.git_grep_search,
+        ),
+        Input(
+            value=(
+                datetime.datetime.now().strftime("%Y-%m-%d %H:%M"),
+                "1970-01-01 00:00",
+            ),
+            definition=dffml_feature_git.feature.operations.date_pair,
         ),
     ],
 )
