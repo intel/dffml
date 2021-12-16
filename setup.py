@@ -122,6 +122,8 @@ setup(
             "literal_eval = dffml.operation.preprocess:literal_eval",
             # math
             "multiply = dffml.operation.math:multiply",
+            # packaging
+            "pip_install = dffml.operation.packaging:pip_install",
             # Database
             "db_query_create_table = dffml.operation.db:db_query_create_table",
             "db_query_insert = dffml.operation.db:db_query_insert",
