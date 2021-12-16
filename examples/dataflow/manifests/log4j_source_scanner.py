@@ -157,12 +157,12 @@ DATAFLOW.update()
 orchestrator = JobKubernetesOrchestrator(
     context=os.environ.get("KUBECTL_CONTEXT_CONTROLLER", "kind-kind"),
     prerun=prerun,
-    max_ctxs=10,
+    max_ctxs=int(os.environ.get("MAX_CTXS", "5")),
     workdir=WORKDIR,
     image=os.environ.get("K8S_IMAGE", "docker.io/library/intelotc/dffml:latest"),
 )
 orchestrator = MemoryOrchestrator(
-    max_ctxs=3,
+    max_ctxs=int(os.environ.get("MAX_CTXS", "5")),
 )
 
 
@@ -171,6 +171,9 @@ async def synthesize_dataflow(manifest):
 
 
 async def execute_dataflow(manifest):
+    output_path = pathlib.Path("scan-output")
+    if not output_path.is_dir():
+        output_path.mkdir()
     async for ctx, results in run(
         DATAFLOW,
         {
@@ -189,7 +192,7 @@ async def execute_dataflow(manifest):
     ):
         print(f"{ctx!s} results: ", end="")
         pprint.pprint(results)
-        pathlib.Path(pathlib.Path(f"{ctx!s}").stem).write_text(
+        output_path.joinpath(pathlib.Path(f"{ctx!s}").stem).write_text(
             json.dumps({f"{ctx!s}": export(results)})
         )
 
