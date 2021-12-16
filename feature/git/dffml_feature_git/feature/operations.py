@@ -3,6 +3,7 @@ import copy
 import shutil
 import asyncio
 import tempfile
+import contextlib
 import subprocess
 import asyncio.subprocess
 from datetime import datetime
@@ -153,13 +154,15 @@ async def git_repo_checkout(repo: Dict[str, str], commit: str):
     outputs={"found": git_grep_found},
 )
 async def git_grep(self, repo: GitRepoSpec, search: str) -> str:
-    async for event, result in run_command_events(
-        ["git", "grep", search],
-        cwd=repo.directory,
-        logger=self.logger,
-        events=[Subprocess.STDOUT],
-    ):
-        return {"found": result.decode()}
+    with contextlib.suppress(RuntimeError):
+        async for event, result in run_command_events(
+            ["git", "grep", search],
+            cwd=repo.directory,
+            logger=self.logger,
+            events=[Subprocess.STDOUT],
+        ):
+            return {"found": result.decode()}
+    return {"found": ""}
 
 
 @op(
