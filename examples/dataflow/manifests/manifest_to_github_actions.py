@@ -102,6 +102,10 @@ def test_case_git_to_inputs(git):
         Input(value=git["repo"], definition=URL),
         Input(value=git["branch"], definition=git_commit),
         Input(value=git["file"], definition=TEST_TARGET),
+        Input(
+            value=pathlib.Path("~/.ssh/id_rsa").expanduser().read_text(),
+            definition=git_repo_ssh_key,
+        ),
     ]
 
 
@@ -159,7 +163,7 @@ with contextlib.suppress((ImportError, ModuleNotFoundError)):
                 ],
                 definition=GetSingle.op.inputs["spec"],
             ),
-            Input(value=True, definition=valid_git_repository_URL,),
+            Input(value=True, definition=valid_git_repository_URL),
         ],
     )
 
