@@ -186,6 +186,7 @@ async def execute_dataflow(manifest):
                 )
             ]
             for target in manifest["scan"]
+            if not output_path.joinpath(pathlib.Path(target).stem).exists()
         },
         strict=False,
         orchestrator=orchestrator,
