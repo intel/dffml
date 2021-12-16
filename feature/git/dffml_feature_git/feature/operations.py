@@ -116,7 +116,10 @@ async def clone_git_repo(self, URL: str, ssh_key: str = None):
                 ["git", "clone", URL, directory], env=env, logger=self.logger,
             )
         except:
-            shutil.rmtree(directory)
+            # TODO Executor shutil.rmtree
+            await run_command(
+                ["rm", "-rf", directory], logger=self.logger,
+            )
             raise
 
     return {"repo": {"URL": URL, "directory": directory}}
@@ -447,6 +450,9 @@ async def count_authors(author_lines: dict):
 
 
 @op(inputs={"repo": git_repository}, outputs={}, stage=Stage.CLEANUP)
-async def cleanup_git_repo(repo: Dict[str, str]):
-    shutil.rmtree(repo.directory)
+async def cleanup_git_repo(self, repo: Dict[str, str]):
+    # TODO Executor shutil.rmtree
+    await run_command(
+        ["rm", "-rf", repo.directory], logger=self.logger,
+    )
     return {}
