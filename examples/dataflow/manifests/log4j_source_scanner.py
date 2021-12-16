@@ -27,18 +27,9 @@ import dffml.cli.dataflow
 from dffml import *
 
 import dffml_feature_git.feature.operations
-import shouldi.java.dependency_check
 
 
 WORKDIR = pathlib.Path(__file__).parent
-
-
-@op(name=f"{pathlib.Path(__file__).stem}:pip_install")
-def pip_install(self, packages: List[str]) -> List[str]:
-    subprocess.check_call(
-        [sys.executable, "-m", "pip", "install", "-U", *packages]
-    )
-    return packages
 
 
 # Install latest versions of packages
@@ -166,6 +157,9 @@ DATAFLOW.update()
 orchestrator = JobKubernetesOrchestrator(
     context=os.environ.get("KUBECTL_CONTEXT_CONTROLLER", "kind-kind"),
     prerun=prerun,
+    max_ctxs=10,
+    workdir=WORKDIR,
+    image=os.environ.get("K8S_IMAGE", "docker.io/library/intelotc/dffml:latest"),
 )
 orchestrator = MemoryOrchestrator(max_ctxs=1,)
 
@@ -213,7 +207,11 @@ async def main():
         )
         + "- "
         + "\n- ".join(
-            pathlib.Path("/tmp/repos-to-scan").read_text().strip().split("\n")
+            pathlib.Path("~/tmp/repos-to-scan")
+            .expanduser()
+            .read_text()
+            .strip()
+            .split("\n")
         )
     )
 
