@@ -12,6 +12,7 @@ from dateutil.relativedelta import relativedelta
 
 from dffml.df.types import Stage
 from dffml.df.base import op
+from dffml.base import config, field
 from dffml.util.subprocess import Subprocess, run_command_events, run_command
 
 from .definitions import *
@@ -197,6 +198,11 @@ async def git_repo_commit_from_date(
     return {"commit": sha}
 
 
+@config
+class GitRepoAuthorLinesForDates:
+    pretty: str = field("--pretty:format:$pretty", default="Author:%aN")
+
+
 @op(
     inputs={
         "repo": git_repository,
@@ -204,9 +210,10 @@ async def git_repo_commit_from_date(
         "start_end": date_pair,
     },
     outputs={"author_lines": author_line_count},
+    config_cls=GitRepoAuthorLinesForDates,
 )
 async def git_repo_author_lines_for_dates(
-    repo: Dict[str, str], branch: str, start_end: List[str]
+    self, repo: Dict[str, str], branch: str, start_end: List[str]
 ):
     start, end = start_end
     author = ""
@@ -214,7 +221,7 @@ async def git_repo_author_lines_for_dates(
     proc = await create(
         "git",
         "log",
-        "--pretty=format:Author:%aN",
+        "--pretty=format:" + self.parent.config.pretty,
         "--numstat",
         "--before",
         "%s" % (start),
