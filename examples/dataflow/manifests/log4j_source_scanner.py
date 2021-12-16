@@ -161,7 +161,9 @@ orchestrator = JobKubernetesOrchestrator(
     workdir=WORKDIR,
     image=os.environ.get("K8S_IMAGE", "docker.io/library/intelotc/dffml:latest"),
 )
-orchestrator = MemoryOrchestrator(max_ctxs=1,)
+orchestrator = MemoryOrchestrator(
+    max_ctxs=3,
+)
 
 
 async def synthesize_dataflow(manifest):
