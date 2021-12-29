@@ -1,3 +1,4 @@
+import urllib.parse
 from typing import AsyncIterator, Dict, List
 
 from dffml.base import BaseConfig
@@ -14,8 +15,15 @@ import motor.motor_asyncio
 @config
 class MongoDBSourceConfig:
     uri: str
-    db: str
-    collection: str
+    db: str = None
+    collection: str = None
+    tlsInsecure: bool = False
+    log_collection_names: bool = False
+
+    def __post_init__(self):
+        uri = urllib.parse.urlparse(self.uri)
+        if uri.path:
+            self.db = uri.path[1:]
 
 
 # TODO Investigate use of
@@ -46,13 +54,13 @@ class MongoDBSourceContext(BaseSourceContext):
         return self.document_to_record(document)
 
 
-@entrypoint("misc")
+@entrypoint("mongodb")
 class MongoDBSource(BaseSource):
     """
     Stores records ... somewhere! (skeleton template is in memory)
     """
 
-    CONFIG = MongoDBSourceContext
+    CONFIG = MongoDBSourceConfig
     CONTEXT = MongoDBSourceContext
 
     def __init__(self, config: BaseConfig) -> None:
@@ -60,8 +68,13 @@ class MongoDBSource(BaseSource):
         self.client = None
 
     async def __aenter__(self):
-        self.client = motor.motor_asyncio.AsyncIOMotorClient(self.config.uri)
+        self.client = motor.motor_asyncio.AsyncIOMotorClient(self.config.uri,
+                tlsInsecure=self.config.tlsInsecure)
         self.db = self.client[self.config.db]
+        # Thought: Plugins as dataflows. Is a method call an event? Is it an
+        # input?
+        if self.config.log_collection_names:
+            self.logger.info("Collection names: %r", await self.db.list_collection_names())
         self.collection = self.db[self.config.collection]
         return self
 
