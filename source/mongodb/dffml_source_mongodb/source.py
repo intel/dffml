@@ -38,8 +38,12 @@ class MongoDBSourceContext(BaseSourceContext):
             upsert=True,
         )
 
-    def document_to_record(self, document):
+    def document_to_record(self, document, key=None):
         self.logger.debug("document: %r", document)
+        if document is None:
+            if key is None:
+                raise ValueError("Cannot create empty record with no key")
+            return Record(key)
         key = document["key"]
         del document["_id"]
         del document["key"]
@@ -51,7 +55,7 @@ class MongoDBSourceContext(BaseSourceContext):
 
     async def record(self, key: str) -> Record:
         document = await self.parent.collection.find_one({"_id": key})
-        return self.document_to_record(document)
+        return self.document_to_record(document, key=key)
 
 
 @entrypoint("mongodb")
