@@ -7,6 +7,7 @@ import enum
 import logging
 import inspect
 import asyncio
+import datetime
 import argparse
 from typing import Dict, Any
 import dataclasses
@@ -50,6 +51,8 @@ class JSONEncoder(json.JSONEncoder):
         if isinstance(obj, Record):
             return obj.dict()
         elif isinstance(obj, uuid.UUID):
+            return str(obj)
+        elif isinstance(obj, datetime.datetime):
             return str(obj)
         elif isinstance(obj, Feature):
             return obj.name
