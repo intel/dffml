@@ -44,10 +44,16 @@ class MongoDBSourceContext(BaseSourceContext):
             if key is None:
                 raise ValueError("Cannot create empty record with no key")
             return Record(key)
-        key = document["key"]
+        if "key" in document:
+            key = document["key"]
+            del document["key"]
+        else:
+            key = document["_id"]
         del document["_id"]
-        del document["key"]
-        return Record(key, data=document)
+        if "features" in document:
+            return Record(key, data=document)
+        else:
+            return Record(key, data={"features": document})
 
     async def records(self) -> AsyncIterator[Record]:
         async for document in self.parent.collection.find():
@@ -80,6 +86,7 @@ class MongoDBSource(BaseSource):
         if self.config.log_collection_names:
             self.logger.info("Collection names: %r", await self.db.list_collection_names())
         self.collection = self.db[self.config.collection]
+        self.logger.info("Collection options: %r", await self.collection.options())
         return self
 
     async def __aexec__(self, _exc_type, _exc_value, _traceback):
