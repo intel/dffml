@@ -389,8 +389,8 @@ the records we saved is the same record which gets loaded.</p>
 <code class="docutils literal notranslate"><span class="pre">shorthand</span></code> equals <code class="docutils literal notranslate"><span class="pre">python.path.to:Class</span></code> line in the <code class="docutils literal notranslate"><span class="pre">entry_points.txt</span></code>
 file.</p>
 <p><strong>entry_points.txt</strong></p>
-<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[dffml.source]</span>
-<span class="na">myini</span> <span class="o">=</span> <span class="s">dffml_source_ini.misc:INISource</span>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[dffml.source]</span><span class="w"></span>
+<span class="na">myini</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">dffml_source_ini.misc:INISource</span><span class="w"></span>
 </pre></div>
 </div>
 <p>This will add the newly created source to the dffml entrypoints and hence can
@@ -407,13 +407,13 @@ also be used in CLI.</p>
 <h2>CLI Usage<a class="headerlink" href="#cli-usage" title="Permalink to this headline"></a></h2>
 <p>Create a <code class="docutils literal notranslate"><span class="pre">.ini</span></code> file with some record data in it.</p>
 <p><strong>data.ini</strong></p>
-<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[dffml]</span>
-<span class="na">third_party</span> <span class="o">=</span> <span class="s">yes</span>
-<span class="na">maintained</span> <span class="o">=</span> <span class="s">true</span>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[dffml]</span><span class="w"></span>
+<span class="na">third_party</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">yes</span><span class="w"></span>
+<span class="na">maintained</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">true</span><span class="w"></span>
 
-<span class="k">[python]</span>
-<span class="na">third_party</span> <span class="o">=</span> <span class="s">no</span>
-<span class="na">maintained</span> <span class="o">=</span> <span class="s">true</span>
+<span class="k">[python]</span><span class="w"></span>
+<span class="na">third_party</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">no</span><span class="w"></span>
+<span class="na">maintained</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">true</span><span class="w"></span>
 </pre></div>
 </div>
 <p>To use your newly created source in CLI, try listing some records.</p>
@@ -452,7 +452,7 @@ also be used in CLI.</p>
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2017 - 2021, Intel.</p>
+    <p>&#169; Copyright 2017 - 2022, Intel.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

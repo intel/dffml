@@ -202,23 +202,23 @@
 <p>Upload a file to the <code class="docutils literal notranslate"><span class="pre">-upload-dir</span></code> specified when starting the server. You can
 make the filename include a path, but the server won’t create any directories
 that don’t already exist.</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="nt">&quot;error&quot;</span><span class="p">:</span> <span class="kc">null</span><span class="p">}</span>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="nt">&quot;error&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">}</span><span class="w"></span>
 </pre></div>
 </div>
 <p>If no <code class="docutils literal notranslate"><span class="pre">-upload-dir</span></code> was given on the command line, an error will be returned.
 The HTTP status code will be 501, Not Implemented.</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="nt">&quot;error&quot;</span><span class="p">:</span> <span class="s2">&quot;Uploads not allowed&quot;</span><span class="p">}</span>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="nt">&quot;error&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Uploads not allowed&quot;</span><span class="p">}</span><span class="w"></span>
 </pre></div>
 </div>
 <p>If you attempt to use <code class="docutils literal notranslate"><span class="pre">../../</span></code> or anything which would cause a path outside of
 the given <code class="docutils literal notranslate"><span class="pre">-upload-dir</span></code> this endpoint will return an error. The HTTP status
 code will be 400, Bad Request.</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="nt">&quot;error&quot;</span><span class="p">:</span> <span class="s2">&quot;Attempted path traversal&quot;</span><span class="p">}</span>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="nt">&quot;error&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Attempted path traversal&quot;</span><span class="p">}</span><span class="w"></span>
 </pre></div>
 </div>
 <p>If your multipart data doesn’t have a field with the <code class="docutils literal notranslate"><span class="pre">name</span></code> of <code class="docutils literal notranslate"><span class="pre">file</span></code>, you
 will get an error. The HTTP status code will be 400, Bad Request.</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="nt">&quot;error&quot;</span><span class="p">:</span> <span class="s2">&quot;Missing &#39;file&#39; field&quot;</span><span class="p">}</span>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="nt">&quot;error&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Missing &#39;file&#39; field&quot;</span><span class="p">}</span><span class="w"></span>
 </pre></div>
 </div>
 </div>
@@ -229,29 +229,29 @@ will get an error. The HTTP status code will be 400, Bad Request.</p>
 </ul>
 <p>List files in the <code class="docutils literal notranslate"><span class="pre">-upload-dir</span></code> specified when starting the server. The file
 listing will include the size of the file in bytes.</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">[</span>
-  <span class="p">{</span>
-    <span class="nt">&quot;filename&quot;</span><span class="p">:</span> <span class="s2">&quot;.gitignore&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;size&quot;</span><span class="p">:</span> <span class="mi">199</span>
-  <span class="p">},</span>
-  <span class="p">{</span>
-    <span class="nt">&quot;filename&quot;</span><span class="p">:</span> <span class="s2">&quot;.dockerignore&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;size&quot;</span><span class="p">:</span> <span class="mi">18</span>
-  <span class="p">},</span>
-  <span class="p">{</span>
-    <span class="nt">&quot;filename&quot;</span><span class="p">:</span> <span class="s2">&quot;setup.py&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;size&quot;</span><span class="p">:</span> <span class="mi">2337</span>
-  <span class="p">},</span>
-  <span class="p">{</span>
-    <span class="nt">&quot;filename&quot;</span><span class="p">:</span> <span class="s2">&quot;.coveragerc&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;size&quot;</span><span class="p">:</span> <span class="mi">170</span>
-  <span class="p">}</span>
-<span class="p">]</span>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;filename&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;.gitignore&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;size&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">199</span><span class="w"></span>
+<span class="w">  </span><span class="p">},</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;filename&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;.dockerignore&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;size&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">18</span><span class="w"></span>
+<span class="w">  </span><span class="p">},</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;filename&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;setup.py&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;size&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2337</span><span class="w"></span>
+<span class="w">  </span><span class="p">},</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;filename&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;.coveragerc&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;size&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">170</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="p">]</span><span class="w"></span>
 </pre></div>
 </div>
 <p>If no <code class="docutils literal notranslate"><span class="pre">-upload-dir</span></code> was given on the command line, an error will be returned.
 The HTTP status code will be 501, Not Implemented.</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="nt">&quot;error&quot;</span><span class="p">:</span> <span class="s2">&quot;File listing not allowed&quot;</span><span class="p">}</span>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="nt">&quot;error&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;File listing not allowed&quot;</span><span class="p">}</span><span class="w"></span>
 </pre></div>
 </div>
 </div>
@@ -275,54 +275,54 @@ sources.</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">/list/sources</span></code></p></li>
 </ul>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-  <span class="nt">&quot;csv&quot;</span><span class="p">:</span> <span class="p">{</span>
-    <span class="nt">&quot;source&quot;</span><span class="p">:</span> <span class="p">{</span>
-      <span class="nt">&quot;plugin&quot;</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
-      <span class="nt">&quot;config&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="nt">&quot;csv&quot;</span><span class="p">:</span> <span class="p">{</span>
-          <span class="nt">&quot;plugin&quot;</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
-          <span class="nt">&quot;config&quot;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="nt">&quot;filename&quot;</span><span class="p">:</span> <span class="p">{</span>
-              <span class="nt">&quot;plugin&quot;</span><span class="p">:</span> <span class="p">{},</span>
-              <span class="nt">&quot;config&quot;</span><span class="p">:</span> <span class="p">{}</span>
-            <span class="p">},</span>
-            <span class="nt">&quot;readwrite&quot;</span><span class="p">:</span> <span class="p">{</span>
-              <span class="nt">&quot;plugin&quot;</span><span class="p">:</span> <span class="p">{</span>
-                <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;bool&quot;</span><span class="p">,</span>
-                <span class="nt">&quot;action&quot;</span><span class="p">:</span> <span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
-                <span class="nt">&quot;default&quot;</span><span class="p">:</span> <span class="kc">false</span>
-              <span class="p">},</span>
-              <span class="nt">&quot;config&quot;</span><span class="p">:</span> <span class="p">{}</span>
-            <span class="p">},</span>
-            <span class="nt">&quot;allowempty&quot;</span><span class="p">:</span> <span class="p">{</span>
-              <span class="nt">&quot;plugin&quot;</span><span class="p">:</span> <span class="p">{</span>
-                <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;bool&quot;</span><span class="p">,</span>
-                <span class="nt">&quot;action&quot;</span><span class="p">:</span> <span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
-                <span class="nt">&quot;default&quot;</span><span class="p">:</span> <span class="kc">false</span>
-              <span class="p">},</span>
-              <span class="nt">&quot;config&quot;</span><span class="p">:</span> <span class="p">{}</span>
-            <span class="p">},</span>
-            <span class="nt">&quot;label&quot;</span><span class="p">:</span> <span class="p">{</span>
-              <span class="nt">&quot;plugin&quot;</span><span class="p">:</span> <span class="p">{</span>
-                <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;str&quot;</span><span class="p">,</span>
-                <span class="nt">&quot;default&quot;</span><span class="p">:</span> <span class="s2">&quot;unlabeled&quot;</span>
-              <span class="p">},</span>
-              <span class="nt">&quot;config&quot;</span><span class="p">:</span> <span class="p">{}</span>
-            <span class="p">},</span>
-            <span class="nt">&quot;key&quot;</span><span class="p">:</span> <span class="p">{</span>
-              <span class="nt">&quot;plugin&quot;</span><span class="p">:</span> <span class="p">{</span>
-                <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;str&quot;</span><span class="p">,</span>
-                <span class="nt">&quot;default&quot;</span><span class="p">:</span> <span class="kc">null</span>
-              <span class="p">},</span>
-              <span class="nt">&quot;config&quot;</span><span class="p">:</span> <span class="p">{}</span>
-            <span class="p">}</span>
-          <span class="p">}</span>
-        <span class="p">}</span>
-      <span class="p">}</span>
-    <span class="p">}</span>
-  <span class="p">}</span>
-<span class="p">}</span>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;csv&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;source&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;plugin&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;config&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="nt">&quot;csv&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">          </span><span class="nt">&quot;plugin&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w"></span>
+<span class="w">          </span><span class="nt">&quot;config&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="nt">&quot;filename&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">              </span><span class="nt">&quot;plugin&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{},</span><span class="w"></span>
+<span class="w">              </span><span class="nt">&quot;config&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{}</span><span class="w"></span>
+<span class="w">            </span><span class="p">},</span><span class="w"></span>
+<span class="w">            </span><span class="nt">&quot;readwrite&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">              </span><span class="nt">&quot;plugin&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">                </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;bool&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="nt">&quot;action&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w"></span>
+<span class="w">              </span><span class="p">},</span><span class="w"></span>
+<span class="w">              </span><span class="nt">&quot;config&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{}</span><span class="w"></span>
+<span class="w">            </span><span class="p">},</span><span class="w"></span>
+<span class="w">            </span><span class="nt">&quot;allowempty&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">              </span><span class="nt">&quot;plugin&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">                </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;bool&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="nt">&quot;action&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w"></span>
+<span class="w">              </span><span class="p">},</span><span class="w"></span>
+<span class="w">              </span><span class="nt">&quot;config&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{}</span><span class="w"></span>
+<span class="w">            </span><span class="p">},</span><span class="w"></span>
+<span class="w">            </span><span class="nt">&quot;label&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">              </span><span class="nt">&quot;plugin&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">                </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;str&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;unlabeled&quot;</span><span class="w"></span>
+<span class="w">              </span><span class="p">},</span><span class="w"></span>
+<span class="w">              </span><span class="nt">&quot;config&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{}</span><span class="w"></span>
+<span class="w">            </span><span class="p">},</span><span class="w"></span>
+<span class="w">            </span><span class="nt">&quot;key&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">              </span><span class="nt">&quot;plugin&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">                </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;str&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w"></span>
+<span class="w">              </span><span class="p">},</span><span class="w"></span>
+<span class="w">              </span><span class="nt">&quot;config&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{}</span><span class="w"></span>
+<span class="w">            </span><span class="p">}</span><span class="w"></span>
+<span class="w">          </span><span class="p">}</span><span class="w"></span>
+<span class="w">        </span><span class="p">}</span><span class="w"></span>
+<span class="w">      </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
 </pre></div>
 </div>
 </div>
@@ -340,17 +340,17 @@ the <a class="reference internal" href="#list"><span class="std std-ref">List</s
 the JSON object to be used as the configuration of the requested plugin.</p>
 <p>On successful creation and configuration the server will return <code class="docutils literal notranslate"><span class="pre">null</span></code>
 for <code class="docutils literal notranslate"><span class="pre">error</span></code>.</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="nt">&quot;error&quot;</span><span class="p">:</span> <span class="kc">null</span><span class="p">}</span>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="nt">&quot;error&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">}</span><span class="w"></span>
 </pre></div>
 </div>
 <p>If the plugin name requested is not loadable the server will return a HTTP
 status code of 404, Not Found.</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="nt">&quot;error&quot;</span><span class="p">:</span> <span class="s2">&quot;source non-existant not found&quot;</span><span class="p">}</span>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="nt">&quot;error&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;source non-existant not found&quot;</span><span class="p">}</span><span class="w"></span>
 </pre></div>
 </div>
 <p>If there is a problem with configuration the server will tell the client. The
 HTTP status code will be 400, Bad Request.</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="nt">&quot;error&quot;</span><span class="p">:</span> <span class="s2">&quot;CSVSource missing &#39;filename&#39; from source.mydataset&quot;</span><span class="p">}</span>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="nt">&quot;error&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;CSVSource missing &#39;filename&#39; from source.mydataset&quot;</span><span class="p">}</span><span class="w"></span>
 </pre></div>
 </div>
 <div class="section" id="source">
@@ -360,25 +360,25 @@ URL this <code class="docutils literal notranslate"><span class="pre">POST</span
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">/configure/source/csv/mydataset</span></code></p></li>
 </ul>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-  <span class="nt">&quot;source&quot;</span><span class="p">:</span> <span class="p">{</span>
-    <span class="nt">&quot;plugin&quot;</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
-    <span class="nt">&quot;config&quot;</span><span class="p">:</span> <span class="p">{</span>
-      <span class="nt">&quot;filename&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="nt">&quot;plugin&quot;</span><span class="p">:</span> <span class="p">[</span>
-          <span class="s2">&quot;dataset.csv&quot;</span>
-        <span class="p">],</span>
-        <span class="nt">&quot;config&quot;</span><span class="p">:</span> <span class="p">{}</span>
-      <span class="p">},</span>
-      <span class="nt">&quot;readwrite&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="nt">&quot;plugin&quot;</span><span class="p">:</span> <span class="p">[</span>
-          <span class="kc">true</span>
-        <span class="p">],</span>
-        <span class="nt">&quot;config&quot;</span><span class="p">:</span> <span class="p">{}</span>
-      <span class="p">}</span>
-    <span class="p">}</span>
-  <span class="p">}</span>
-<span class="p">}</span>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;source&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;plugin&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;config&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;filename&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="nt">&quot;plugin&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
+<span class="w">          </span><span class="s2">&quot;dataset.csv&quot;</span><span class="w"></span>
+<span class="w">        </span><span class="p">],</span><span class="w"></span>
+<span class="w">        </span><span class="nt">&quot;config&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{}</span><span class="w"></span>
+<span class="w">      </span><span class="p">},</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;readwrite&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="nt">&quot;plugin&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
+<span class="w">          </span><span class="kc">true</span><span class="w"></span>
+<span class="w">        </span><span class="p">],</span><span class="w"></span>
+<span class="w">        </span><span class="nt">&quot;config&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{}</span><span class="w"></span>
+<span class="w">      </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
 </pre></div>
 </div>
 </div>
@@ -389,39 +389,39 @@ URL this <code class="docutils literal notranslate"><span class="pre">POST</span
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">/configure/model/fake/mymodel</span></code></p></li>
 </ul>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-  <span class="nt">&quot;model&quot;</span><span class="p">:</span> <span class="p">{</span>
-    <span class="nt">&quot;plugin&quot;</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
-    <span class="nt">&quot;config&quot;</span><span class="p">:</span> <span class="p">{</span>
-      <span class="nt">&quot;directory&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="nt">&quot;plugin&quot;</span><span class="p">:</span> <span class="p">[</span>
-          <span class="s2">&quot;/home/user/modeldirs/mymodel&quot;</span>
-        <span class="p">],</span>
-        <span class="nt">&quot;config&quot;</span><span class="p">:</span> <span class="p">{}</span>
-      <span class="p">},</span>
-      <span class="nt">&quot;features&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="nt">&quot;plugin&quot;</span><span class="p">:</span> <span class="p">[</span>
-          <span class="p">{</span>
-            <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Years&quot;</span><span class="p">,</span>
-            <span class="nt">&quot;dtype&quot;</span><span class="p">:</span> <span class="s2">&quot;int&quot;</span><span class="p">,</span>
-            <span class="nt">&quot;length&quot;</span><span class="p">:</span> <span class="mi">1</span>
-          <span class="p">},</span>
-          <span class="p">{</span>
-            <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Expertise&quot;</span><span class="p">,</span>
-            <span class="nt">&quot;dtype&quot;</span><span class="p">:</span> <span class="s2">&quot;int&quot;</span><span class="p">,</span>
-            <span class="nt">&quot;length&quot;</span><span class="p">:</span> <span class="mi">1</span>
-          <span class="p">},</span>
-          <span class="p">{</span>
-            <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Trust&quot;</span><span class="p">,</span>
-            <span class="nt">&quot;dtype&quot;</span><span class="p">:</span> <span class="s2">&quot;float&quot;</span><span class="p">,</span>
-            <span class="nt">&quot;length&quot;</span><span class="p">:</span> <span class="mi">1</span>
-          <span class="p">}</span>
-        <span class="p">],</span>
-        <span class="nt">&quot;config&quot;</span><span class="p">:</span> <span class="p">{}</span>
-      <span class="p">}</span>
-    <span class="p">}</span>
-  <span class="p">}</span>
-<span class="p">}</span>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;model&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;plugin&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;config&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;directory&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="nt">&quot;plugin&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
+<span class="w">          </span><span class="s2">&quot;/home/user/modeldirs/mymodel&quot;</span><span class="w"></span>
+<span class="w">        </span><span class="p">],</span><span class="w"></span>
+<span class="w">        </span><span class="nt">&quot;config&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{}</span><span class="w"></span>
+<span class="w">      </span><span class="p">},</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;features&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="nt">&quot;plugin&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
+<span class="w">          </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Years&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="nt">&quot;dtype&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;int&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="nt">&quot;length&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w"></span>
+<span class="w">          </span><span class="p">},</span><span class="w"></span>
+<span class="w">          </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Expertise&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="nt">&quot;dtype&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;int&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="nt">&quot;length&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w"></span>
+<span class="w">          </span><span class="p">},</span><span class="w"></span>
+<span class="w">          </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Trust&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="nt">&quot;dtype&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;float&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="nt">&quot;length&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w"></span>
+<span class="w">          </span><span class="p">}</span><span class="w"></span>
+<span class="w">        </span><span class="p">],</span><span class="w"></span>
+<span class="w">        </span><span class="nt">&quot;config&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{}</span><span class="w"></span>
+<span class="w">      </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
 </pre></div>
 </div>
 </div>
@@ -439,12 +439,12 @@ containing the JSON object to be used as the configuration parameters of the
 requested plugin context type.</p>
 <p>On successful creation of a context the server will return <code class="docutils literal notranslate"><span class="pre">null</span></code> for
 <code class="docutils literal notranslate"><span class="pre">error</span></code>.</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="nt">&quot;error&quot;</span><span class="p">:</span> <span class="kc">null</span><span class="p">}</span>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="nt">&quot;error&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">}</span><span class="w"></span>
 </pre></div>
 </div>
 <p>If there is no configured plugin for the given label the server will return a
 HTTP status code of 404, Not Found.</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="nt">&quot;error&quot;</span><span class="p">:</span> <span class="s2">&quot;mydataset source not found&quot;</span><span class="p">}</span>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="nt">&quot;error&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;mydataset source not found&quot;</span><span class="p">}</span><span class="w"></span>
 </pre></div>
 </div>
 <div class="section" id="id4">
@@ -476,7 +476,7 @@ and then the <a class="reference internal" href="#context"><span class="std std-
 <p>If the ctx_label provided does not exist, for instance the configure and
 context APIs were not used prior to calling a source method, the server will
 return a 404, Not Found response.</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="nt">&quot;error&quot;</span><span class="p">:</span> <span class="s2">&quot;Source not loaded&quot;</span><span class="p">}</span>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="nt">&quot;error&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Source not loaded&quot;</span><span class="p">}</span><span class="w"></span>
 </pre></div>
 </div>
 <div class="section" id="record">
@@ -486,12 +486,12 @@ of the record. Here’s an example response for a <code class="docutils literal 
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">/source/{ctx_label}/record/{key}</span></code></p></li>
 </ul>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-  <span class="nt">&quot;key&quot;</span><span class="p">:</span> <span class="s2">&quot;myrecord&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;features&quot;</span><span class="p">:</span> <span class="p">{</span>
-    <span class="nt">&quot;myfeature&quot;</span><span class="p">:</span> <span class="s2">&quot;somevalue&quot;</span>
-  <span class="p">}</span>
-<span class="p">}</span>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;key&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;myrecord&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;features&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;myfeature&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;somevalue&quot;</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
 </pre></div>
 </div>
 <p>Just as with DFFML, you’ll still get a record even if the record doesn’t exist
@@ -504,17 +504,17 @@ record.</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">/source/{ctx_label}/update/{key}</span></code></p></li>
 </ul>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-  <span class="nt">&quot;key&quot;</span><span class="p">:</span> <span class="s2">&quot;myrecord&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;features&quot;</span><span class="p">:</span> <span class="p">{</span>
-    <span class="nt">&quot;myfeature&quot;</span><span class="p">:</span> <span class="s2">&quot;somevalue&quot;</span>
-  <span class="p">}</span>
-<span class="p">}</span>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;key&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;myrecord&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;features&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;myfeature&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;somevalue&quot;</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
 </pre></div>
 </div>
 <p>Unless something goes wrong within the source, you’ll get a <code class="docutils literal notranslate"><span class="pre">null</span></code> error
 response.</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="nt">&quot;error&quot;</span><span class="p">:</span> <span class="kc">null</span><span class="p">}</span>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="nt">&quot;error&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">}</span><span class="w"></span>
 </pre></div>
 </div>
 </div>
@@ -536,31 +536,31 @@ iterate over. We continue making <code class="docutils literal notranslate"><spa
 <li><p><code class="docutils literal notranslate"><span class="pre">/source/{ctx_label}/records/{chunk_size}</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">/source/{ctx_label}/records/{iterkey}/{chunk_size}</span></code></p></li>
 </ul>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-  <span class="nt">&quot;iterkey&quot;</span><span class="p">:</span> <span class="s2">&quot;1a164836c6d8a27fdf9cd12688440aaa16a852fd1814b170c924a89fba4e084c8ea7522c34f9f5a539803d6237238e90&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;records&quot;</span><span class="p">:</span> <span class="p">{</span>
-    <span class="nt">&quot;myrecord&quot;</span><span class="p">:</span> <span class="p">{</span>
-      <span class="nt">&quot;key&quot;</span><span class="p">:</span> <span class="s2">&quot;myrecord&quot;</span><span class="p">,</span>
-      <span class="nt">&quot;features&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="nt">&quot;myfeature&quot;</span><span class="p">:</span> <span class="s2">&quot;somevalue&quot;</span>
-      <span class="p">}</span>
-    <span class="p">}</span>
-  <span class="p">}</span>
-<span class="p">}</span>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;iterkey&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1a164836c6d8a27fdf9cd12688440aaa16a852fd1814b170c924a89fba4e084c8ea7522c34f9f5a539803d6237238e90&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;records&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;myrecord&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;key&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;myrecord&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;features&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="nt">&quot;myfeature&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;somevalue&quot;</span><span class="w"></span>
+<span class="w">      </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
 </pre></div>
 </div>
 <p>Sample response where the end of iteration has been reached.</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-  <span class="nt">&quot;iterkey&quot;</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
-  <span class="nt">&quot;records&quot;</span><span class="p">:</span> <span class="p">{</span>
-    <span class="nt">&quot;anotherrecord&quot;</span><span class="p">:</span> <span class="p">{</span>
-      <span class="nt">&quot;key&quot;</span><span class="p">:</span> <span class="s2">&quot;anotherrecord&quot;</span><span class="p">,</span>
-      <span class="nt">&quot;features&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="nt">&quot;myfeature&quot;</span><span class="p">:</span> <span class="s2">&quot;othervalue&quot;</span>
-      <span class="p">}</span>
-    <span class="p">}</span>
-  <span class="p">}</span>
-<span class="p">}</span>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;iterkey&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;records&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;anotherrecord&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;key&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;anotherrecord&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;features&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="nt">&quot;myfeature&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;othervalue&quot;</span><span class="w"></span>
+<span class="w">      </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
 </pre></div>
 </div>
 </div>
@@ -577,7 +577,7 @@ and then the <a class="reference internal" href="#context"><span class="std std-
 <p>If the ctx_label provided does not exist, for instance the configure and
 context APIs were not used prior to calling a model method, the server will
 return a 404, Not Found response.</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="nt">&quot;error&quot;</span><span class="p">:</span> <span class="s2">&quot;Model not loaded&quot;</span><span class="p">}</span>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="nt">&quot;error&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Model not loaded&quot;</span><span class="p">}</span><span class="w"></span>
 </pre></div>
 </div>
 <div class="section" id="train">
@@ -587,14 +587,14 @@ to use as training data.</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">/model/{ctx_label}/train</span></code></p></li>
 </ul>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">[</span>
-  <span class="s2">&quot;my_training_dataset&quot;</span>
-<span class="p">]</span>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="w"></span>
+<span class="w">  </span><span class="s2">&quot;my_training_dataset&quot;</span><span class="w"></span>
+<span class="p">]</span><span class="w"></span>
 </pre></div>
 </div>
 <p>Unless something goes wrong within the model, you’ll get a <code class="docutils literal notranslate"><span class="pre">null</span></code> error
 response.</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="nt">&quot;error&quot;</span><span class="p">:</span> <span class="kc">null</span><span class="p">}</span>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="nt">&quot;error&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">}</span><span class="w"></span>
 </pre></div>
 </div>
 </div>
@@ -605,18 +605,18 @@ to use as test data.</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">/model/{ctx_label}/accuracy</span></code></p></li>
 </ul>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">[</span>
-  <span class="s2">&quot;my_test_dataset&quot;</span>
-<span class="p">]</span>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="w"></span>
+<span class="w">  </span><span class="s2">&quot;my_test_dataset&quot;</span><span class="w"></span>
+<span class="p">]</span><span class="w"></span>
 </pre></div>
 </div>
 <p>The response will be a JSON object containing the <code class="docutils literal notranslate"><span class="pre">accuracy</span></code> as a float value.</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="nt">&quot;accuracy&quot;</span><span class="p">:</span> <span class="mf">0.42</span><span class="p">}</span>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="nt">&quot;accuracy&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.42</span><span class="p">}</span><span class="w"></span>
 </pre></div>
 </div>
 <p>Unless something goes wrong within the model, you’ll get a <code class="docutils literal notranslate"><span class="pre">null</span></code> error
 response.</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="nt">&quot;error&quot;</span><span class="p">:</span> <span class="kc">null</span><span class="p">}</span>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="nt">&quot;error&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">}</span><span class="w"></span>
 </pre></div>
 </div>
 </div>
@@ -629,33 +629,33 @@ endpoint.</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">/model/{ctx_label}/predict/0</span></code></p></li>
 </ul>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-  <span class="nt">&quot;42&quot;</span><span class="p">:</span> <span class="p">{</span>
-    <span class="nt">&quot;features&quot;</span><span class="p">:</span> <span class="p">{</span>
-      <span class="nt">&quot;by_ten&quot;</span><span class="p">:</span> <span class="mi">420</span>
-    <span class="p">}</span>
-  <span class="p">}</span>
-<span class="p">}</span>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;42&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;features&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;by_ten&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">420</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
 </pre></div>
 </div>
 <p>Sample response.</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-  <span class="nt">&quot;iterkey&quot;</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
-  <span class="nt">&quot;records&quot;</span><span class="p">:</span> <span class="p">{</span>
-    <span class="nt">&quot;42&quot;</span><span class="p">:</span> <span class="p">{</span>
-      <span class="nt">&quot;key&quot;</span><span class="p">:</span> <span class="s2">&quot;42&quot;</span><span class="p">,</span>
-      <span class="nt">&quot;features&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="nt">&quot;by_ten&quot;</span><span class="p">:</span> <span class="mi">420</span>
-      <span class="p">},</span>
-      <span class="nt">&quot;prediction&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="nt">&quot;confidence&quot;</span><span class="p">:</span> <span class="mi">42</span><span class="p">,</span>
-        <span class="nt">&quot;value&quot;</span><span class="p">:</span> <span class="mi">4200</span>
-      <span class="p">},</span>
-      <span class="nt">&quot;last_updated&quot;</span><span class="p">:</span> <span class="s2">&quot;2019-10-15T08:19:41Z&quot;</span><span class="p">,</span>
-      <span class="nt">&quot;extra&quot;</span><span class="p">:</span> <span class="p">{}</span>
-    <span class="p">}</span>
-  <span class="p">}</span>
-<span class="p">}</span>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;iterkey&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;records&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;42&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;key&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;42&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;features&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="nt">&quot;by_ten&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">420</span><span class="w"></span>
+<span class="w">      </span><span class="p">},</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;prediction&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="nt">&quot;confidence&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">42</span><span class="p">,</span><span class="w"></span>
+<span class="w">        </span><span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">4200</span><span class="w"></span>
+<span class="w">      </span><span class="p">},</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;last_updated&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2019-10-15T08:19:41Z&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;extra&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{}</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
 </pre></div>
 </div>
 </div>
@@ -673,7 +673,7 @@ endpoint.</p>
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2017 - 2021, Intel.</p>
+    <p>&#169; Copyright 2017 - 2022, Intel.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

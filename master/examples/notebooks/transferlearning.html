@@ -367,7 +367,7 @@ div.nboutput.container div.output_area > div[class^='highlight']{
 }
 
 /* hide copybtn icon on prompts (needed for 'sphinx_copybutton') */
-.prompt a.copybtn {
+.prompt .copybtn {
     display: none;
 }
 
@@ -448,8 +448,7 @@ div.rendered_html tbody tr:hover {
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">torch.nn</span> <span class="k">as</span> <span class="nn">nn</span>
 
 <span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="o">*</span>
@@ -461,8 +460,7 @@ div.rendered_html tbody tr:hover {
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">asyncio</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">asyncio</span>
 <span class="kn">import</span> <span class="nn">nest_asyncio</span>
 </pre></div>
 </div>
@@ -472,8 +470,7 @@ div.rendered_html tbody tr:hover {
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">nest_asyncio</span><span class="o">.</span><span class="n">apply</span><span class="p">()</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">nest_asyncio</span><span class="o">.</span><span class="n">apply</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -492,8 +489,7 @@ div.rendered_html tbody tr:hover {
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">train_path</span> <span class="o">=</span> <span class="k">await</span> <span class="n">cached_download_unpack_archive</span><span class="p">(</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">train_path</span> <span class="o">=</span> <span class="k">await</span> <span class="n">cached_download_unpack_archive</span><span class="p">(</span>
     <span class="s2">&quot;https://storage.googleapis.com/laurencemoroney-blog.appspot.com/rps.zip&quot;</span><span class="p">,</span>
     <span class="s2">&quot;train_rps.zip&quot;</span><span class="p">,</span>
     <span class="s2">&quot;train_rps&quot;</span><span class="p">,</span>
@@ -519,8 +515,7 @@ div.rendered_html tbody tr:hover {
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">train_source</span> <span class="o">=</span> <span class="n">DirectorySource</span><span class="p">(</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">train_source</span> <span class="o">=</span> <span class="n">DirectorySource</span><span class="p">(</span>
     <span class="n">foldername</span><span class="o">=</span><span class="s2">&quot;train_rps/rps&quot;</span><span class="p">,</span>
     <span class="n">feature</span><span class="o">=</span><span class="s2">&quot;image&quot;</span><span class="p">,</span>
     <span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;rock&quot;</span><span class="p">,</span> <span class="s2">&quot;paper&quot;</span><span class="p">,</span> <span class="s2">&quot;scissors&quot;</span><span class="p">],</span>
@@ -547,8 +542,7 @@ div.rendered_html tbody tr:hover {
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="k">class</span> <span class="nc">ConvNet</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">ConvNet</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">ConvNet</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
@@ -581,8 +575,7 @@ div.rendered_html tbody tr:hover {
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">Loss</span> <span class="o">=</span> <span class="n">CrossEntropyLossFunction</span><span class="p">()</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Loss</span> <span class="o">=</span> <span class="n">CrossEntropyLossFunction</span><span class="p">()</span>
 <span class="n">AlexnetModel</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;alexnet&quot;</span><span class="p">)</span>
 
 <span class="n">predict_feature</span> <span class="o">=</span> <span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;label&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
@@ -604,8 +597,7 @@ div.rendered_html tbody tr:hover {
     <span class="n">optimizer</span><span class="o">=</span><span class="s2">&quot;Adam&quot;</span><span class="p">,</span>
     <span class="n">enableGPU</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
 <span class="p">)</span>
-
-</pre></div>
+<br/></pre></div>
 </div>
 </div>
 <p>Note that you can leave out the <code class="docutils literal notranslate"><span class="pre">trainable</span></code> parameter which is essentially setting it to <code class="docutils literal notranslate"><span class="pre">trainable</span> <span class="pre">=</span> <span class="pre">False</span></code> since that is the default value. Similarly, you can also leave out the <code class="docutils literal notranslate"><span class="pre">pre-trained</span></code> parameter which is essentially setting it to <code class="docutils literal notranslate"><span class="pre">pre-trained</span> <span class="pre">=</span> <span class="pre">True</span></code> since that is the default value.</p>
@@ -617,8 +609,7 @@ div.rendered_html tbody tr:hover {
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="k">await</span> <span class="n">train</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">train_source</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">await</span> <span class="n">train</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">train_source</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -652,8 +643,7 @@ INFO:dffml.AlexNetModelContext:Best Validation Accuracy: 1.000000
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">ClassificationAccuracy</span> <span class="o">=</span> <span class="n">AccuracyScorer</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;clf&quot;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ClassificationAccuracy</span> <span class="o">=</span> <span class="n">AccuracyScorer</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;clf&quot;</span><span class="p">)</span>
 
 <span class="n">scorer</span> <span class="o">=</span> <span class="n">ClassificationAccuracy</span><span class="p">()</span>
 
@@ -681,8 +671,7 @@ Accuracy =  0.946236559139785
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="k">async</span> <span class="k">def</span> <span class="nf">display_image_predictions</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">prediction_source</span><span class="p">):</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">async</span> <span class="k">def</span> <span class="nf">display_image_predictions</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">prediction_source</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Display 12 images and their predictions.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -708,8 +697,7 @@ Accuracy =  0.946236559139785
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">display_image_predictions</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">predict_source</span><span class="p">))</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">display_image_predictions</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">predict_source</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -743,7 +731,7 @@ INFO:dffml.AlexNetModelContext:Using saved model from /home/dffml/examples/noteb
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2017 - 2021, Intel.</p>
+    <p>&#169; Copyright 2017 - 2022, Intel.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

@@ -317,18 +317,18 @@ should create these files and populate them with the code your about to see.</p>
 </div>
 <p>The style sheet which gives the page colors and styling</p>
 <p><strong>theme.css</strong></p>
-<div class="highlight-css notranslate"><div class="highlight"><pre><span></span><span class="p">.</span><span class="nc">good</span> <span class="p">{</span>
-  <span class="k">background-color</span><span class="p">:</span> <span class="kc">lightgreen</span><span class="p">;</span>
-<span class="p">}</span>
+<div class="highlight-css notranslate"><div class="highlight"><pre><span></span><span class="p">.</span><span class="nc">good</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="k">background-color</span><span class="p">:</span><span class="w"> </span><span class="kc">lightgreen</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
 
-<span class="p">.</span><span class="nc">dangerous</span> <span class="p">{</span>
-  <span class="k">background-color</span><span class="p">:</span> <span class="kc">red</span><span class="p">;</span>
-<span class="p">}</span>
+<span class="p">.</span><span class="nc">dangerous</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="k">background-color</span><span class="p">:</span><span class="w"> </span><span class="kc">red</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
 
-<span class="nt">table</span><span class="o">,</span> <span class="nt">th</span><span class="o">,</span> <span class="nt">td</span> <span class="p">{</span>
-  <span class="k">border</span><span class="p">:</span> <span class="mi">1</span><span class="kt">px</span> <span class="kc">solid</span> <span class="kc">black</span><span class="p">;</span>
-  <span class="k">border-collapse</span><span class="p">:</span> <span class="kc">collapse</span><span class="p">;</span>
-<span class="p">}</span>
+<span class="nt">table</span><span class="o">,</span><span class="w"> </span><span class="nt">th</span><span class="o">,</span><span class="w"> </span><span class="nt">td</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="k">border</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="kt">px</span><span class="w"> </span><span class="kc">solid</span><span class="w"> </span><span class="kc">black</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="k">border-collapse</span><span class="p">:</span><span class="w"> </span><span class="kc">collapse</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
 </pre></div>
 </div>
 <p>Now create the <strong>cgi-bin</strong> directory which is where our server side Python
@@ -869,31 +869,31 @@ which is in JSON format, and set the resulting prediction classification in the
 database.</p>
 <p>We modify the backend CGI Python API to have it call our <strong>predict.sh</strong> script.</p>
 <p><strong>cgi-bin/api.py</strong></p>
-<div class="highlight-udiff notranslate"><div class="highlight"><pre><span></span><span class="gd">--- /home/runner/work/dffml/dffml/examples/maintained/cgi-bin/api.py</span>
-<span class="gi">+++ /home/runner/work/dffml/dffml/examples/maintained/cgi-bin/api-ml.py</span>
-<span class="gu">@@ -2,6 +2,7 @@</span>
- import os
- import sys
- import json
-<span class="gi">+import subprocess</span>
- import urllib.parse
- import mysql.connector
- 
-<span class="gu">@@ -31,6 +32,14 @@</span>
-     )
-     cnx.commit()
-     print(json.dumps({&quot;success&quot;: True}))
-<span class="gi">+elif action == &quot;predict&quot;:</span>
-<span class="gi">+    # Set current working directory (cwd) to the parent directory of cgi-bin</span>
-<span class="gi">+    print(</span>
-<span class="gi">+        subprocess.check_output(</span>
-<span class="gi">+            [&quot;bash&quot;, &quot;predict.sh&quot;, query[&quot;URL&quot;]],</span>
-<span class="gi">+            cwd=os.path.join(os.path.dirname(__file__), &quot;..&quot;),</span>
-<span class="gi">+        ).decode()</span>
-<span class="gi">+    )</span>
- else:
-     print(json.dumps({&quot;error&quot;: &quot;Unknown action&quot;}))
- 
+<div class="highlight-udiff notranslate"><div class="highlight"><pre><span></span><span class="gd">--- /home/runner/work/dffml/dffml/examples/maintained/cgi-bin/api.py</span><span class="w"></span>
+<span class="gi">+++ /home/runner/work/dffml/dffml/examples/maintained/cgi-bin/api-ml.py</span><span class="w"></span>
+<span class="gu">@@ -2,6 +2,7 @@</span><span class="w"></span>
+<span class="w"> </span>import os<span class="w"></span>
+<span class="w"> </span>import sys<span class="w"></span>
+<span class="w"> </span>import json<span class="w"></span>
+<span class="gi">+import subprocess</span><span class="w"></span>
+<span class="w"> </span>import urllib.parse<span class="w"></span>
+<span class="w"> </span>import mysql.connector<span class="w"></span>
+<span class="w"> </span>
+<span class="gu">@@ -31,6 +32,14 @@</span><span class="w"></span>
+<span class="w"> </span>    )<span class="w"></span>
+<span class="w"> </span>    cnx.commit()<span class="w"></span>
+<span class="w"> </span>    print(json.dumps({&quot;success&quot;: True}))<span class="w"></span>
+<span class="gi">+elif action == &quot;predict&quot;:</span><span class="w"></span>
+<span class="gi">+    # Set current working directory (cwd) to the parent directory of cgi-bin</span><span class="w"></span>
+<span class="gi">+    print(</span><span class="w"></span>
+<span class="gi">+        subprocess.check_output(</span><span class="w"></span>
+<span class="gi">+            [&quot;bash&quot;, &quot;predict.sh&quot;, query[&quot;URL&quot;]],</span><span class="w"></span>
+<span class="gi">+            cwd=os.path.join(os.path.dirname(__file__), &quot;..&quot;),</span><span class="w"></span>
+<span class="gi">+        ).decode()</span><span class="w"></span>
+<span class="gi">+    )</span><span class="w"></span>
+<span class="w"> </span>else:<span class="w"></span>
+<span class="w"> </span>    print(json.dumps({&quot;error&quot;: &quot;Unknown action&quot;}))<span class="w"></span>
+<span class="w"> </span>
 </pre></div>
 </div>
 <p>Test the new prediction capabilities from the command line with <code class="docutils literal notranslate"><span class="pre">curl</span></code></p>
@@ -928,24 +928,24 @@ the Predict button is clicked.</p>
 <p>We need to import the new script into the main page and add the HTML for the
 predict button.</p>
 <p><strong>index.html</strong></p>
-<div class="highlight-udiff notranslate"><div class="highlight"><pre><span></span><span class="gd">--- /home/runner/work/dffml/dffml/examples/maintained/index.html</span>
-<span class="gi">+++ /home/runner/work/dffml/dffml/examples/maintained/ml.html</span>
-<span class="gu">@@ -3,6 +3,7 @@</span>
-   &lt;head&gt;
-     &lt;title&gt;Git Repo Maintenance Tracker&lt;/title&gt;
-     &lt;script type=&quot;text/javascript&quot; src=&quot;main.js&quot;&gt;&lt;/script&gt;
-<span class="gi">+    &lt;script type=&quot;text/javascript&quot; src=&quot;ml.js&quot;&gt;&lt;/script&gt;</span>
-     &lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;theme.css&quot;&gt;
-   &lt;/head&gt;
-   &lt;body&gt;
-<span class="gu">@@ -15,6 +16,7 @@</span>
-       &lt;input id=&quot;URL&quot; placeholder=&quot;git://server.git/repo&quot;&gt;&lt;/input&gt;
-       &lt;button id=&quot;maintained&quot; class=&quot;good&quot;&gt;Maintained&lt;/button&gt;
-       &lt;button id=&quot;unmaintained&quot; class=&quot;dangerous&quot;&gt;Unmaintained&lt;/button&gt;
-<span class="gi">+      &lt;button id=&quot;predict&quot;&gt;Predict&lt;/button&gt;</span>
-     &lt;/div&gt;
- 
-     &lt;br /&gt;
+<div class="highlight-udiff notranslate"><div class="highlight"><pre><span></span><span class="gd">--- /home/runner/work/dffml/dffml/examples/maintained/index.html</span><span class="w"></span>
+<span class="gi">+++ /home/runner/work/dffml/dffml/examples/maintained/ml.html</span><span class="w"></span>
+<span class="gu">@@ -3,6 +3,7 @@</span><span class="w"></span>
+<span class="w"> </span>  &lt;head&gt;<span class="w"></span>
+<span class="w"> </span>    &lt;title&gt;Git Repo Maintenance Tracker&lt;/title&gt;<span class="w"></span>
+<span class="w"> </span>    &lt;script type=&quot;text/javascript&quot; src=&quot;main.js&quot;&gt;&lt;/script&gt;<span class="w"></span>
+<span class="gi">+    &lt;script type=&quot;text/javascript&quot; src=&quot;ml.js&quot;&gt;&lt;/script&gt;</span><span class="w"></span>
+<span class="w"> </span>    &lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;theme.css&quot;&gt;<span class="w"></span>
+<span class="w"> </span>  &lt;/head&gt;<span class="w"></span>
+<span class="w"> </span>  &lt;body&gt;<span class="w"></span>
+<span class="gu">@@ -15,6 +16,7 @@</span><span class="w"></span>
+<span class="w"> </span>      &lt;input id=&quot;URL&quot; placeholder=&quot;git://server.git/repo&quot;&gt;&lt;/input&gt;<span class="w"></span>
+<span class="w"> </span>      &lt;button id=&quot;maintained&quot; class=&quot;good&quot;&gt;Maintained&lt;/button&gt;<span class="w"></span>
+<span class="w"> </span>      &lt;button id=&quot;unmaintained&quot; class=&quot;dangerous&quot;&gt;Unmaintained&lt;/button&gt;<span class="w"></span>
+<span class="gi">+      &lt;button id=&quot;predict&quot;&gt;Predict&lt;/button&gt;</span><span class="w"></span>
+<span class="w"> </span>    &lt;/div&gt;<span class="w"></span>
+<span class="w"> </span>
+<span class="w"> </span>    &lt;br /&gt;<span class="w"></span>
 </pre></div>
 </div>
 <p>Visit the web app, and input a Git repo to evaluate into the input field. Then
@@ -968,7 +968,7 @@ process, and integrated machine learning into a legacy application.</p>
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2017 - 2021, Intel.</p>
+    <p>&#169; Copyright 2017 - 2022, Intel.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

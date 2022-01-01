@@ -282,10 +282,10 @@ http requests so let’s install <code class="docutils literal notranslate"><spa
 <p>Add the dependencies to the list of packages seen in <code class="docutils literal notranslate"><span class="pre">install_requires</span></code>,
 <code class="docutils literal notranslate"><span class="pre">dffml</span></code> will be there, add these right below that.</p>
 <p><strong>setup.cfg</strong></p>
-<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span>    <span class="na">aiohttp&gt;</span><span class="o">=</span><span class="s">3.5.4</span>
-    <span class="na">bandit&gt;</span><span class="o">=</span><span class="s">1.6.2</span>
-    <span class="na">safety&gt;</span><span class="o">=</span><span class="s">1.8.5</span>
-    <span class="na">PyYAML&gt;</span><span class="o">=</span><span class="s">5.1.2</span>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="w">    </span><span class="na">aiohttp&gt;</span><span class="o">=</span><span class="s">3.5.4</span><span class="w"></span>
+<span class="w">    </span><span class="na">bandit&gt;</span><span class="o">=</span><span class="s">1.6.2</span><span class="w"></span>
+<span class="w">    </span><span class="na">safety&gt;</span><span class="o">=</span><span class="s">1.8.5</span><span class="w"></span>
+<span class="w">    </span><span class="na">PyYAML&gt;</span><span class="o">=</span><span class="s">5.1.2</span><span class="w"></span>
 </pre></div>
 </div>
 <div class="admonition note">
@@ -826,8 +826,8 @@ the <code class="docutils literal notranslate"><span class="pre">shouldi.cli</sp
 <p>We’re going to remove the <code class="docutils literal notranslate"><span class="pre">dffml.operation</span></code> entry’s for now. We’ll address
 those shortly.</p>
 <p><strong>entry_points.txt</strong></p>
-<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[console_scripts]</span>
-<span class="na">shouldi</span> <span class="o">=</span> <span class="s">shouldi.cli:ShouldI.main</span>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[console_scripts]</span><span class="w"></span>
+<span class="na">shouldi</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">shouldi.cli:ShouldI.main</span><span class="w"></span>
 </pre></div>
 </div>
 <p>When we change <code class="docutils literal notranslate"><span class="pre">console_scripts</span></code> section of the <code class="docutils literal notranslate"><span class="pre">entry_points.txt</span></code> file we
@@ -918,12 +918,12 @@ Add the following in the <code class="docutils literal notranslate"><span class=
 we edited the file we removed the <code class="docutils literal notranslate"><span class="pre">[dffml.operations]</span></code> section. This time
 we’re adding it back in with the operations we’ve just written.</p>
 <p><strong>entry_points.txt</strong></p>
-<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[dffml.operation]</span>
-<span class="na">run_bandit</span> <span class="o">=</span> <span class="s">shouldi.python.bandit:run_bandit</span>
-<span class="na">safety_check</span> <span class="o">=</span> <span class="s">shouldi.python.safety:safety_check</span>
-<span class="na">pypi_package_json</span> <span class="o">=</span> <span class="s">shouldi.python.pypi:pypi_package_json</span>
-<span class="na">pypi_package_contents</span> <span class="o">=</span> <span class="s">shouldi.python.pypi:pypi_package_contents</span>
-<span class="na">cleanup_pypi_package</span> <span class="o">=</span> <span class="s">shouldi.python.pypi:cleanup_pypi_package</span>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[dffml.operation]</span><span class="w"></span>
+<span class="na">run_bandit</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">shouldi.python.bandit:run_bandit</span><span class="w"></span>
+<span class="na">safety_check</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">shouldi.python.safety:safety_check</span><span class="w"></span>
+<span class="na">pypi_package_json</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">shouldi.python.pypi:pypi_package_json</span><span class="w"></span>
+<span class="na">pypi_package_contents</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">shouldi.python.pypi:pypi_package_contents</span><span class="w"></span>
+<span class="na">cleanup_pypi_package</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">shouldi.python.pypi:cleanup_pypi_package</span><span class="w"></span>
 </pre></div>
 </div>
 <p>Run the setuptools <code class="docutils literal notranslate"><span class="pre">egg_info</span></code> hook to make <code class="docutils literal notranslate"><span class="pre">entry_points</span></code> changes take
@@ -988,7 +988,7 @@ new meta static analysis tool over an HTTP interface.</p>
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2017 - 2021, Intel.</p>
+    <p>&#169; Copyright 2017 - 2022, Intel.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
