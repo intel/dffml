@@ -5,6 +5,8 @@ This Sphinx extension allows you to tests your `code-block` and
 you're telling users to run, and the files you're telling them to write, produce
 intended results.
 
+Video explaining: https://www.youtube.com/watch?v=DrftXxzqJpg
+
 - [Example](#example)
 
 - [`conf.py`](#confpy)
