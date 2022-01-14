@@ -4,24 +4,24 @@
     :maxdepth: 2
     :caption: Contents:
 
-    plugins
-    version
-    log
-    record
     base
     noasync
+    log
+    version
+    record
+    plugins
+    cli/index
+    tuner/index
     operation/index
+    util/index
+    configloader/index
     db/index
     service/index
-    source/index
-    feature/index
-    tuner/index
-    secret/index
-    model/index
-    configloader/index
-    accuracy/index
     df/index
-    cli/index
-    util/index
+    model/index
     high_level/index
+    source/index
     port/index
+    accuracy/index
+    feature/index
+    secret/index
