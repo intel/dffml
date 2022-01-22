@@ -18,6 +18,11 @@ import contextlib
 import subprocess
 from typing import IO, Any, Dict, List, Union
 
+
+if platform.system() != "Windows":
+    import fcntl
+
+
 from .... import plugins
 
 
