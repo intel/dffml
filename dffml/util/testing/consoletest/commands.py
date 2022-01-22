@@ -24,6 +24,11 @@ from typing import IO, Any, Dict, List, Union, Optional
 
 import httptest
 
+
+if platform.system() != "Windows":
+    import fcntl
+
+
 from .... import plugins
 
 
