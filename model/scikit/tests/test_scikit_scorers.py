@@ -11,7 +11,7 @@ from .test_scikit import (
     CLUSTERERS,
     CLASSIFIERS,
     TestScikitModel,
-    regeressor_types,
+    regressor_types,
     classifier_types,
 )
 
@@ -68,7 +68,7 @@ CLUSTERING_SCORERS = [
 
 for scorer in REGRESSION_SCORERS:
     for reg in REGRESSORS:
-        for model_type in regeressor_types:
+        for model_type in regressor_types:
             if scorer in MULTIOUTPUT_EXCEPTIONS and "MULTI_" in model_type:
                 continue
             test_cls = type(
