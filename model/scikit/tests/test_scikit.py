@@ -58,7 +58,7 @@ class TestScikitModel:
                 for i in range(0, len(A))
             ]
 
-        elif cls.MODEL_TYPE in regeressor_types:
+        elif cls.MODEL_TYPE in regressor_types:
             cls.features.append(Feature("A", float, 1))
             cls.features.append(Feature("B", float, 1))
             cls.features.append(Feature("C", float, 1))
@@ -149,7 +149,7 @@ class TestScikitModel:
                     self.model.config.predict,
                     self.sources,
                 )
-        elif self.MODEL_TYPE in regeressor_types:
+        elif self.MODEL_TYPE in regressor_types:
             res = await score(
                 self.model,
                 self.scorer,
@@ -319,7 +319,7 @@ CLUSTERERS = [
 supervised_estimators = ["classifier", "regressor"]
 unsupervised_estimators = ["clusterer"]
 classifier_types = ["CLASSIFICATION", "MULTI_CLASSIFICATION"]
-regeressor_types = ["REGRESSION", "MULTI_REGRESSION"]
+regressor_types = ["REGRESSION", "MULTI_REGRESSION"]
 valid_estimators = supervised_estimators + unsupervised_estimators
 
 for clf in CLASSIFIERS:
@@ -341,7 +341,7 @@ for clf in CLASSIFIERS:
         setattr(sys.modules[__name__], test_cls.__qualname__, test_cls)
 
 for reg in REGRESSORS:
-    for model_type in regeressor_types:
+    for model_type in regressor_types:
         test_cls = type(
             f"Test{reg}Model",
             (TestScikitModel, AsyncTestCase),
