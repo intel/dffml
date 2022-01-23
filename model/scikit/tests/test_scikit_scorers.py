@@ -23,6 +23,10 @@ class TestScikitScorer(TestScikitModel):
         )
         self.assertTrue(float("-inf") < res < float("inf"))
 
+    async def test_02_predict(self):
+        # Scorers need not to have tests related to predict
+        pass
+
 
 REGRESSION_SCORERS = [
     "ExplainedVarianceScore",
