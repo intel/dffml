@@ -183,7 +183,6 @@ class TestScikitModel:
                     else:
                         prediction = record.prediction(target).value
                     if self.MODEL_TYPE == "CLASSIFICATION":
-                        print("prediction:", prediction)
                         self.assertIn(prediction, [2, 4])
                     elif self.MODEL_TYPE == "REGRESSION":
                         correct = FEATURE_DATA_REGRESSION[int(record.key)][3]
