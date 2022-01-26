@@ -1,6 +1,7 @@
 """
 Python specific helper functions
 """
+import sys
 import types
 import pathlib
 import inspect
@@ -147,7 +148,11 @@ def within_method(obj: object, method_name: str, max_depth: int = -1) -> bool:
     global IN_IPYTHON
     global CHECKED_IN_IPYTHON
     global IPYTHON_INSPECT_PATCHED
-    if not CHECKED_IN_IPYTHON:
+    if (
+        not CHECKED_IN_IPYTHON
+        and sys.version_info.major == 3
+        and sys.version_info.minor <= 7
+    ):
         try:
             get_ipython()
             IN_IPYTHON = True
