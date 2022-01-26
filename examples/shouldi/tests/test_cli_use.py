@@ -50,7 +50,7 @@ class TestCLIUse(AsyncTestCase):
                 ),
             )
         self.assertGreater(
-            list(results.values())[0]["static_analysis"][0].high, 2940
+            list(results.values())[0]["static_analysis"][0].high, 1
         )
 
     async def test_use_rust(self):
