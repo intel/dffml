@@ -52,6 +52,24 @@ package.
         .. code-block:: console
 
             (.venv) C:\Users\username> python -m pip install -U dffml
+            
+For creating plugin packages you can install git via winget for Windows and Homebrew for MacOS
+
+.. tabs::
+
+    .. group-tab:: MacOS
+
+        .. code-block:: console
+            :test:
+
+            $ brew install git
+
+    .. group-tab:: Windows
+
+        .. code-block:: console
+
+            (.venv) C:\Users\username> winget install --id Git.Git -e --source winget
+
 
 .. warning::
 
