@@ -60,7 +60,6 @@ For creating plugin packages you can install git via winget for Windows and Home
     .. group-tab:: MacOS
 
         .. code-block:: console
-            :test:
 
             $ brew install git
 
