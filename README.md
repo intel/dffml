@@ -1,4 +1,3 @@
-![Logo light](https://raw.githubusercontent.com/intel/dffml/master/docs/images/logo-lightmode.svg#gh-dark-mode-only)
 ![Logo-dark](https://raw.githubusercontent.com/intel/dffml/master/docs/images/logo-darkmode.svg#gh-dark-mode-only)
 ![Logo-light](https://raw.githubusercontent.com/intel/dffml/master/docs/images/logo-lightmode.svg#gh-light-mode-only)
 [![Actions Status](https://github.com/intel/dffml/workflows/Tests/badge.svg?branch=master&event=push)](https://github.com/intel/dffml/actions)
