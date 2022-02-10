@@ -1,5 +1,4 @@
 ![Logo light](https://raw.githubusercontent.com/intel/dffml/master/docs/images/logo-lightmode.svg)
-![Logo dark](https://raw.githubusercontent.com/intel/dffml/master/docs/images/logo-darkmode.svg)
 [![Actions Status](https://github.com/intel/dffml/workflows/Tests/badge.svg?branch=master&event=push)](https://github.com/intel/dffml/actions)
 [![Gitpod Ready-to-Code](https://img.shields.io/badge/Gitpod-ready--to--code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/intel/dffml)
 [![codecov](https://codecov.io/gh/intel/dffml/branch/master/graph/badge.svg)](https://codecov.io/gh/intel/dffml)
