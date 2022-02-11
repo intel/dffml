@@ -40,6 +40,12 @@ Running
 
     $ cat myapp.pyz | ssh "$USER@$HOST" python -c "os,sys,tempfile,atexit,functools,shutil,subprocess,pathlib=list(map(__import__,'os,sys,tempfile,atexit,functools,shutil,subprocess,pathlib'.split(',')));tempdir=tempfile.mkdtemp();atexit.register(functools.partial(shutil.rmtree,tempdir));target_path=pathlib.Path(tempdir,'dffml-remote-exec.pyz');target_path.write_bytes(sys.stdin.buffer.read());subprocess.check_call([sys.executable,target_path.name],cwd=tempdir)"
 
+Workaround for issue with importlib.resources.open_binary and ``.pyz`` files.
+
+.. code-block:: console
+
+    $ tar -C ~/.cache/dffml/df/ssh/myapp/ -c --sort=name --mtime="2015-10-21 00:00Z" --owner=0 --group=0 --numeric-owner --pax-option=exthdr.name=%d/PaxHeaders/%f,delete=atime,delete=ctime . | ssh "$USER@$HOST" python -c "io,os,sys,tempfile,atexit,functools,shutil,subprocess,pathlib,tarfile=list(map(__import__,'io,os,sys,tempfile,atexit,functools,shutil,subprocess,pathlib,tarfile'.split(',')));tempdir=tempfile.mkdtemp();atexit.register(functools.partial(shutil.rmtree,tempdir));tarfile_obj=tarfile.open(fileobj=io.BytesIO(sys.stdin.buffer.read()),mode='r');tarfile_obj.extractall(tempdir);subprocess.check_call([sys.executable,'-m','myapp'],cwd=tempdir)"
+
 """
 import os
 import sys
