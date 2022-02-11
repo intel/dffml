@@ -1,5 +1,45 @@
 """
 Our goal is to run a dataflow where each context is run via an ssh command.
+
+TODO
+****
+
+- Change approach to the following
+
+    - https://docs.python.org/3/library/zipapp.html#creating-standalone-applications-with-zipapp
+
+.. code-block:: console
+
+    $ dffml service dev create blank myapp
+
+Put all the code in myapp. Also cache it's creation in
+``~/.cache/dffml/df/ssh/myapp``.
+
+We'd want to install dffml in there.
+
+.. code-block:: console
+
+    $ python -m pip install -r requirements.txt --target myapp
+    $ rm myapp/*.dist-info
+
+For Linux
+
+.. code-block:: console
+
+    $ python -m zipapp -p '/usr/bin/env python' myapp
+
+For Windows
+
+.. code-block:: console
+
+    $ python -m zipapp -p 'C:\Python36\python.exe' myapp
+
+Running
+
+.. code-block:: console
+
+    $ cat myapp.pyz | ssh "$USER@$HOST" python -c "os,sys,tempfile,atexit,functools,shutil,subprocess,pathlib=list(map(__import__,'os,sys,tempfile,atexit,functools,shutil,subprocess,pathlib'.split(',')));tempdir=tempfile.mkdtemp();atexit.register(functools.partial(shutil.rmtree,tempdir));target_path=pathlib.Path(tempdir,'dffml-remote-exec.pyz');target_path.write_bytes(sys.stdin.buffer.read());subprocess.check_call([sys.executable,target_path.name],cwd=tempdir)"
+
 """
 import os
 import sys
@@ -718,6 +758,13 @@ class SSHOrchestrator(MemoryOrchestrator):
 
     async def __aenter__(self):
         await super().__aenter__()
+        # Create myapp in the cache
+        # import dffml.service.dev
+        # cache_path = pathlib.Path('~', ".cache", "dffml", "df", "ssh", "myapp")
+        # if not cache_path.is_dir():
+        #     cache_path.mkdir(parents=True)
+        # with chdir(cache_path.parent):
+        #     await dffml.service.dev.Develop.create.blank._main("myapp")
         # Load prerun dataflow
         if self.config.prerun is not None:
             self.prerun = await load_dataflow_from_configloader(
