@@ -1,0 +1,4 @@
+[dffml.operation]
+calc_add = dffml_operations_innersource.operations:calc_add
+calc_mult = dffml_operations_innersource.operations:calc_mult
+calc_parse_line = dffml_operations_innersource.operations:calc_parse_line
