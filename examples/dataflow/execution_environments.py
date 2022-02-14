@@ -19,32 +19,97 @@ TODO
 import asyncio
 import itertools
 
+import httptest
+
 import dffml
+
+# --- Local and Remote same flow ---
 
 
 # To start we're going to use the same dataflow when executing local and remote.
-# TODO Later in the example, we'll change the remote example to execute a
-# different operation with an extra input which we'll wire up.
-example_return_type = dffml.Definition(
-    name="example_return_type", primitive="string",
-)
-SHARED_DATAFLOW = dffml.DataFlow(
-    dffml.GetSingle,
-    seed=[
-        dffml.Input(
-            value=[example_return_type.name],
-            definition=dffml.GetSingle.op.inputs["spec"],
+@dffml.op(
+    inputs={
+        "username": dffml.Definition(
+            name="username_type", primitive="string",
         ),
-    ],
+    },
+    outputs={
+        "greeting": dffml.Definition(
+            name="example_return_type", primitive="string",
+        ),
+    }
 )
-SHARED_DATAFLOW.definitions[example_return_type.name] = example_return_type
+def say_hello(username: str) -> dict:
+    return {"greeting": f"Hello {username}"}
+
+
+SHARED_DATAFLOW = dffml.DataFlow(
+    say_hello,
+    dffml.GetSingle,
+)
+SHARED_DATAFLOW.seed += [
+    dffml.Input(
+        value=list(
+            set(
+                itertools.chain(
+                    *[
+                        [
+                            definition.name
+                            for definition in operation.outputs.values()
+                        ]
+                        for operation in SHARED_DATAFLOW.operations.values()
+                        if operation.name != dffml.GetSingle.op.name
+                    ]
+                )
+            )
+        ),
+        definition=dffml.GetSingle.op.inputs["spec"],
+    ),
+]
 LOCAL_DATAFLOW = SHARED_DATAFLOW
 REMOTE_DATAFLOW = SHARED_DATAFLOW
 
 
+# Make the inputs for each dataflow all of the inputs from each dataflow's flow
+# which come from that dataflow's seed values.
 DATAFLOW = dffml.DataFlow(
     dffml.GetMulti,
-    operations={"local": dffml.run_dataflow, "remote": dffml.run_dataflow,},
+    operations={
+        "local": dffml.run_dataflow.op._replace(
+            inputs=dict(
+                itertools.chain(
+                    *[
+                        [
+                            (input_name, LOCAL_DATAFLOW.operations[
+                                instance_name
+                            ].inputs[input_name],)
+                            for input_name, origins in input_flow.inputs.items()
+                            if "seed" in origins
+                        ]
+                        for instance_name, input_flow in LOCAL_DATAFLOW.flow.items()
+                        if instance_name != "get_single"
+                    ]
+                )
+            ),
+        ),
+        "remote": dffml.run_dataflow.op._replace(
+            inputs=dict(
+                itertools.chain(
+                    *[
+                        [
+                            (input_name, REMOTE_DATAFLOW.operations[
+                                instance_name
+                            ].inputs[input_name],)
+                            for input_name, origins in input_flow.inputs.items()
+                            if "seed" in origins
+                        ]
+                        for instance_name, input_flow in REMOTE_DATAFLOW.flow.items()
+                        if instance_name != "get_single"
+                    ]
+                )
+            ),
+        ),
+    },
     configs={
         "local": {"dataflow": LOCAL_DATAFLOW,},
         "remote": {"dataflow": REMOTE_DATAFLOW,},
@@ -52,15 +117,8 @@ DATAFLOW = dffml.DataFlow(
 )
 DATAFLOW.seed += [
     dffml.Input(
-        value={
-            "context": [
-                {
-                    "value": "the_return_value",
-                    "definition": example_return_type.name,
-                },
-            ]
-        },
-        definition=dffml.run_dataflow.op.inputs["inputs"],
+        value="World",
+        definition=say_hello.op.inputs["username"],
     ),
     dffml.Input(
         value=list(
@@ -89,3 +147,7 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+
+# TODO
+# --- Next we change the remote example to execute a different operation with
+# an extra input which we'll wire up ---
