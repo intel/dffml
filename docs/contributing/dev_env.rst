@@ -25,6 +25,12 @@ unless you uninstall it first!
 
     $ python3 -m pip uninstall dffml
 
+Here is how to uninstall all package of dffml not installed in development mode.
+
+.. code-block:: console
+
+    $ python -m pip uninstall -y $(dffml version -no-errors | grep site-packages | awk '{print $1}')
+
 Once you're sure DFFML is not installed on your system, you'll reinstall it in
 development mode.
 
