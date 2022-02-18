@@ -29,6 +29,7 @@ from typing import Optional
 
 from .os import chdir
 from .packaging import is_develop
+from ..high_level.dataflow import run
 
 
 @contextlib.contextmanager
@@ -148,3 +149,14 @@ class AsyncTestCase(unittest.TestCase):
             self.skipTest(
                 f"Required plugins: {', '.join(args)} must be installed in development mode"
             )
+
+    async def assertRunDataFlow(self, dataflow, check):
+        async for ctx, results in run(dataflow, {
+            check_ctx_str: check_inputs
+            for check_ctx_str, (check_inputs, _check_results) in check.items()
+        }):
+            ctx_str = (await ctx.handle()).as_string()
+            if check[ctx_str][1] != results:
+                raise AssertionError(
+                    f"{ctx_str} was {results} should be {check[ctx_str][1]}",
+                )
