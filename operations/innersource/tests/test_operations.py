@@ -15,17 +15,27 @@ OPIMPS = opimp_in(sys.modules[__name__])
 
 DFFML_ROOT_DIR = pathlib.Path(__file__).parents[3]
 
+DATAFLOW = DataFlow.auto(
+    *OPIMPS,
+)
+
 
 class TestOperations(AsyncTestCase):
     async def test_run(self):
-        check = {"dffml": 42}
+        check = {
+            "dffml": {
+                github_workflow_present.op.outputs["result"].name: True
+            },
+        }
         async for ctx, results in run(
-            DataFlow.auto(*OPIMPS),
+            DATAFLOW,
             {
                 "dffml": [
                     Input(
-                        value=DFFML_ROOT_DIR.joinpath(".github", "workflows", "testing.yml").read_text(),
-                        definition=parse_github_workflow.op.inputs["contents"],
+                        value=github_workflow_present.op.inputs["repo"].spec(
+                            directory=DFFML_ROOT_DIR,
+                        ),
+                        definition=github_workflow_present.op.inputs["repo"],
                     ),
                     Input(
                         value=list(itertools.chain(*[
