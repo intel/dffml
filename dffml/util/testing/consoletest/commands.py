@@ -7,7 +7,6 @@ import sys
 import json
 import time
 import copy
-import fcntl
 import shlex
 import signal
 import atexit
