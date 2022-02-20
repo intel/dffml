@@ -96,8 +96,8 @@ async def check_if_valid_git_repository_URL(URL: str):
 
 
 @op(
-    inputs={"URL": URL},
-    outputs={"repo": git_repository, "ssh_key": git_repo_ssh_key},
+    inputs={"URL": URL, "ssh_key": git_repo_ssh_key},
+    outputs={"repo": git_repository},
     conditions=[valid_git_repository_URL],
 )
 async def clone_git_repo(self, URL: str, ssh_key: str = None):
