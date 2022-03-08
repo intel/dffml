@@ -1,6 +1,8 @@
 Quickstart
 ==========
 
+ **The commands line provided in this page are for Linux**
+
 In this example we have employee data telling us the employee's years of
 experience, our level of trust in them, their level of expertise, and their
 salary. Our goal will be to predict what the salary of a new hire should be,
