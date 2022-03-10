@@ -25,23 +25,32 @@ Project Ideas
 We currently have the following project ideas:
 
 - `Save and Load Models to ONNX format <onnx_save_load.md>_`
+
   - Allow for DFFML to save trained models in the Open Neural Network Exchange
     format. This will help users easily deploy models.
   - Begineer
   - 175 hours
+
 - `Time-Series Forecasting and Anomaly Detection <forecasting.md>_`
+
   - Give users of DFFML forecasting capabilties. Allow them to predict the
     future! Work with time stamped data to train models and make predictions.
   - Begineer
   - 350 hours
+
 - `Implementing AutoML <automl.md>_`
+
   - Implement hyperparameter tuners, best model selection via grid search and
     or other means, automated feature engineering by modifying dataflows.
   - Intermediate to Difficult
   - 350 hours
-- `<dataflow_event_types.md>_`
+
+- `Refactor of DataFlows to Include Event Type <dataflow_event_types.md>_`
+
   - Refactor the :py:func:`dffml.high_level.run` API (and others) to make
-    running Data Flows as dynamic as their event based content.
+    running Data Flows as dynamic as their event based content. This will let us
+    use Data Flows "all the way down", paving the way for us to provide
+    unprecedented levels of configurability to users.
   - Difficult
   - 350 hours
 
