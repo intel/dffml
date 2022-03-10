@@ -24,28 +24,28 @@ Project Ideas
 
 We currently have the following project ideas:
 
-- `Save and Load Models to ONNX format <onnx_save_load.md>_`
+- `Save and Load Models to ONNX format <https://github.com/intel/dffml/blob/master/docs/contributing/gsoc/2022/onnx_save_load.md>`_
 
   - Allow for DFFML to save trained models in the Open Neural Network Exchange
     format. This will help users easily deploy models.
   - Begineer
   - 175 hours
 
-- `Time-Series Forecasting and Anomaly Detection <forecasting.md>_`
+- `Time-Series Forecasting and Anomaly Detection <https://github.com/intel/dffml/blob/master/docs/contributing/gsoc/2022/forecasting.md>`_
 
   - Give users of DFFML forecasting capabilties. Allow them to predict the
     future! Work with time stamped data to train models and make predictions.
   - Begineer
   - 350 hours
 
-- `Implementing AutoML <automl.md>_`
+- `Implementing AutoML <https://github.com/intel/dffml/blob/master/docs/contributing/gsoc/2022/automl.md>`_
 
   - Implement hyperparameter tuners, best model selection via grid search and
     or other means, automated feature engineering by modifying dataflows.
   - Intermediate to Difficult
   - 350 hours
 
-- `Refactor of DataFlows to Include Event Type <dataflow_event_types.md>_`
+- `Refactor of DataFlows to Include Event Type <https://github.com/intel/dffml/blob/master/docs/contributing/gsoc/2022/dataflow_event_types.md>`_
 
   - Refactor the :py:func:`dffml.high_level.run` API (and others) to make
     running Data Flows as dynamic as their event based content. This will let us
@@ -64,7 +64,7 @@ project before the end of the summer, and have more that you want to do.
 Getting Started
 ---------------
 
-- Read the doc:`/contributing/index` documentation.
+- Read the `Contributing <https://intel.github.io/dffml/master/contributing/index.html>`_ documentation.
 
 - Get your development environment set up
 
@@ -103,12 +103,15 @@ Getting Started
   - You could write a `new model <https://github.com/intel/dffml/issues/29>`_!
     Models are wrappers around any machine learning implementation or library,
     see the
-    :doc:`new model tutorials </tutorials/models/index>`
+    `new model tutorials
+    <https://intel.github.io/dffml/master/tutorials/models/index.html>`_
     for more info. Make sure to include tests!
 
   - You could write a new operation to do something! Anything! Operations to
     grab weather and stock data have been suggested by people as good ideas.
-    See the :doc:`Ice Cream Sales </examples/icecream_sales>` example.
+    See the :doc:`Ice Cream Sales
+    <https://intel.github.io/dffml/master/examples/icecream_sales.html>`_
+    example.
 
 Writing your GSoC application
 -----------------------------
