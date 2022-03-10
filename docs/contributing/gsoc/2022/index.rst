@@ -109,7 +109,7 @@ Getting Started
 
   - You could write a new operation to do something! Anything! Operations to
     grab weather and stock data have been suggested by people as good ideas.
-    See the :doc:`Ice Cream Sales
+    See the `Ice Cream Sales
     <https://intel.github.io/dffml/master/examples/icecream_sales.html>`_
     example.
 
