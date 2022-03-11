@@ -6,6 +6,14 @@ Software Foundation umbrella. You can read all about what GSoC is at
 http://python-gsoc.org/ and
 https://summerofcode.withgoogle.com/how-it-works/#timeline
 
+NOTE:
+=====
+  
+One of our community members is going to deliver a talk on GSoC. 
+We'd recommend new contributors join and clear any GSoC related queries. 
+Link for registration: https://lnkd.in/gAWiVrAE (Time mentioned in IST timezone)
+
+
 About DFFML
 -----------
 
