@@ -94,7 +94,9 @@ class Version(CMD):
         path = pathlib.Path(path).resolve()
         dirty = None
         short_hash = None
-        with contextlib.suppress(subprocess.CalledProcessError):
+        with contextlib.suppress(
+            subprocess.CalledProcessError, FileNotFoundError
+        ):
             dirty = bool(
                 subprocess.call(
                     ["git", "diff-index", "--quiet", "HEAD", "--"],
