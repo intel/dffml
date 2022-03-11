@@ -35,4 +35,4 @@ should subscribe, and send questions to: `dffml-dev@lists.01.org <dffml-dev@list
 
 .. raw:: html
 
-    <iframe src="https://calendar.google.com/calendar/embed?src=0b6g0ki0qsq1fd1sr703ceeioc%40group.calendar.google.com&ctz=America%2FLos_Angeles" marginheight="0" marginwidth="0" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true" width="688" height="600" frameborder="0"></iframe>
+    <iframe src="https://calendar.google.com/calendar/embed?src=tugk70789n8pdubgb433klqfno%40group.calendar.google.com&ctz=America%2FLos_Angeles" marginheight="0" marginwidth="0" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true" width="688" height="600" frameborder="0"></iframe>
