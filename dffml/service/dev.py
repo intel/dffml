@@ -877,8 +877,8 @@ class LintCommits(CMD):
         return mutations
 
     async def _get_relevant_commits(self):
-        #! This needs to change when master is renamed to main.
-        cmd = ["git", "cherry", "-v", "origin/master"]
+        #! This needs to change when main is renamed to main.
+        cmd = ["git", "cherry", "-v", "origin/main"]
         commits = await get_cmd_output(cmd)
         commits_list = [
             " ".join(line.split()[2:]) for line in commits.split("\n")

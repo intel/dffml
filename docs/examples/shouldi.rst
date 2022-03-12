@@ -155,7 +155,7 @@ Create a new package using the create script.
 .. note::
 
     All the code for this example is located under the
-    `examples/shouldi <https://github.com/intel/dffml/blob/master/examples/shouldi/>`_
+    `examples/shouldi <https://github.com/intel/dffml/blob/main/examples/shouldi/>`_
     directory of the DFFML source code.
 
 Remove the example files as we won't be needing them

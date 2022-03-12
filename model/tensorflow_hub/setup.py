@@ -30,7 +30,7 @@ setup(
     long_description_content_type="text/markdown",
     author="Himanshu Tripathi",
     author_email="himanshutripathi366@gmail.com",
-    url="https://github.com/intel/dffml/blob/master/model/tensorflow_hub/README.md",
+    url="https://github.com/intel/dffml/blob/main/model/tensorflow_hub/README.md",
     license="MIT",
     keywords=[""],
     classifiers=[

@@ -25,35 +25,35 @@ implementations in the same way.
 DFFML is also a tool for dataset generation. DFFML ues directed graphs to
 generate and modify datasets.
 
-Read more on the about page: https://intel.github.io/dffml/master/about.html
+Read more on the about page: https://intel.github.io/dffml/main/about.html
 
 Project Ideas
 -------------
 
 We currently have the following project ideas:
 
-- `Save and Load Models to ONNX format <https://github.com/intel/dffml/blob/master/docs/contributing/gsoc/2022/onnx_save_load.md>`_
+- `Save and Load Models to ONNX format <https://github.com/intel/dffml/blob/main/docs/contributing/gsoc/2022/onnx_save_load.md>`_
 
   - Allow for DFFML to save trained models in the Open Neural Network Exchange
     format. This will help users easily deploy models.
   - Begineer
   - 175 hours
 
-- `Time-Series Forecasting and Anomaly Detection <https://github.com/intel/dffml/blob/master/docs/contributing/gsoc/2022/forecasting.md>`_
+- `Time-Series Forecasting and Anomaly Detection <https://github.com/intel/dffml/blob/main/docs/contributing/gsoc/2022/forecasting.md>`_
 
   - Give users of DFFML forecasting capabilties. Allow them to predict the
     future! Work with time stamped data to train models and make predictions.
   - Begineer
   - 350 hours
 
-- `Implementing AutoML <https://github.com/intel/dffml/blob/master/docs/contributing/gsoc/2022/automl.md>`_
+- `Implementing AutoML <https://github.com/intel/dffml/blob/main/docs/contributing/gsoc/2022/automl.md>`_
 
   - Implement hyperparameter tuners, best model selection via grid search and
     or other means, automated feature engineering by modifying dataflows.
   - Intermediate to Difficult
   - 350 hours
 
-- `Refactor of DataFlows to Include Event Type <https://github.com/intel/dffml/blob/master/docs/contributing/gsoc/2022/dataflow_event_types.md>`_
+- `Refactor of DataFlows to Include Event Type <https://github.com/intel/dffml/blob/main/docs/contributing/gsoc/2022/dataflow_event_types.md>`_
 
   - Refactor the :py:func:`dffml.high_level.run` API (and others) to make
     running Data Flows as dynamic as their event based content. This will let us
@@ -72,7 +72,7 @@ project before the end of the summer, and have more that you want to do.
 Getting Started
 ---------------
 
-- Read the `Contributing <https://intel.github.io/dffml/master/contributing/index.html>`_ documentation.
+- Read the `Contributing <https://intel.github.io/dffml/main/contributing/index.html>`_ documentation.
 
 - Get your development environment set up
 
@@ -83,7 +83,7 @@ Getting Started
 
   - Run the examples for the various models found on the model plugins page
 
-- `Run the tests <https://github.com/intel/dffml/tree/master/tests>`_. DFFML has
+- `Run the tests <https://github.com/intel/dffml/tree/main/tests>`_. DFFML has
   unit tests and we track coverage (amount of lines of code tested).
   Make sure you know how to run them, and if you've never done Python unittests
   before you might want to
@@ -112,13 +112,13 @@ Getting Started
     Models are wrappers around any machine learning implementation or library,
     see the
     `new model tutorials
-    <https://intel.github.io/dffml/master/tutorials/models/index.html>`_
+    <https://intel.github.io/dffml/main/tutorials/models/index.html>`_
     for more info. Make sure to include tests!
 
   - You could write a new operation to do something! Anything! Operations to
     grab weather and stock data have been suggested by people as good ideas.
     See the `Ice Cream Sales
-    <https://intel.github.io/dffml/master/examples/icecream_sales.html>`_
+    <https://intel.github.io/dffml/main/examples/icecream_sales.html>`_
     example.
 
 Writing your GSoC application

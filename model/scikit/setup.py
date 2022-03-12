@@ -41,7 +41,7 @@ setup(
     author_email="yashlamba2000@gmail.com",
     maintainer="John Andersen",
     maintainer_email="john.s.andersen@intel.com",
-    url="https://github.com/intel/dffml/blob/master/model/scikit/README.md",
+    url="https://github.com/intel/dffml/blob/main/model/scikit/README.md",
     license="MIT",
     keywords=["dffml"],
     classifiers=[

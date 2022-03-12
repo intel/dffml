@@ -51,20 +51,20 @@ Intermediate/Hard
 
 ## Related Readings
 
-- https://github.com/intel/dffml/blob/master/docs/contributing/gsoc/2022/
+- https://github.com/intel/dffml/blob/main/docs/contributing/gsoc/2022/
 - https://scikit-learn.org/stable/model_selection.html#model-selection
 - https://www.automl.org/automl/
 
 ## Getting Started
 
 - Read the contributing guidelines
-  - https://intel.github.io/dffml/master/contributing/index.html
+  - https://intel.github.io/dffml/main/contributing/index.html
 - Go through the quickstart
-  - https://intel.github.io/dffml/master/quickstart/model.html
+  - https://intel.github.io/dffml/main/quickstart/model.html
 - Go trough the model tutorials
-  - https://intel.github.io/dffml/master/tutorials/models/
+  - https://intel.github.io/dffml/main/tutorials/models/
 - Go through the model plugins
-  - https://intel.github.io/dffml/master/plugins/dffml_model.html
+  - https://intel.github.io/dffml/main/plugins/dffml_model.html
 
 ## Potential Mentors
 

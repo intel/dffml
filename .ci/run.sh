@@ -171,7 +171,7 @@ function run_changelog() {
     exit 0
   fi
   # Ensure the number of lines added in the changelog is not 0
-  added_to_changelog=$(git diff origin/master --numstat -- CHANGELOG.md \
+  added_to_changelog=$(git diff origin/main --numstat -- CHANGELOG.md \
     | awk '{print $1}')
   if [ "x$added_to_changelog" == "x" ] || [ "$added_to_changelog" -eq 0 ]; then
     echo "No changes to CHANGELOG.md" >&2
@@ -206,7 +206,7 @@ function run_style() {
 function run_commit(){
   BRANCH="$(echo $GITHUB_REF | cut -d'/' -f 3)"
   echo "On Branch: ${BRANCH}"
-  if [[ "$BRANCH" != "master" ]]; then
+  if [[ "$BRANCH" != "main" ]]; then
     dffml service dev lint commits
   fi
 }
@@ -245,13 +245,13 @@ function run_docs() {
     exit 1
   fi
 
-  # Make master docs
-  master_docs="$(mktemp -d)"
-  TEMP_DIRS+=("${master_docs}")
+  # Make main docs
+  main_docs="$(mktemp -d)"
+  TEMP_DIRS+=("${main_docs}")
   rm -rf pages
   dffml service dev docs || ./scripts/docs.sh
 
-  mv pages "${master_docs}/html"
+  mv pages "${main_docs}/html"
 
   # Make last release docs
   release_docs="$(mktemp -d)"
@@ -276,14 +276,14 @@ function run_docs() {
     "${release_docs}/old-gh-pages-branch"
 
   mv "${release_docs}/old-gh-pages-branch/.git" "${release_docs}/html/"
-  mv "${master_docs}/html" "${release_docs}/html/master"
+  mv "${main_docs}/html" "${release_docs}/html/main"
 
   # Make webui
   git clone https://github.com/intel/dffml -b webui "${release_docs}/webui"
   cd "${release_docs}/webui/service/webui/webui"
   yarn install
   yarn build
-  mv build/ "${release_docs}/html/master/webui"
+  mv build/ "${release_docs}/html/main/webui"
 
   cd "${release_docs}/html"
 
@@ -293,8 +293,8 @@ function run_docs() {
   git add -A
   git commit -sam "docs: $(date)"
 
-  # Don't push docs unless we're running on master
-  if [ "x${GITHUB_ACTIONS}" == "xtrue" ] && [ "x${GITHUB_REF}" != "xrefs/heads/master" ]; then
+  # Don't push docs unless we're running on main
+  if [ "x${GITHUB_ACTIONS}" == "xtrue" ] && [ "x${GITHUB_REF}" != "xrefs/heads/main" ]; then
     return
   fi
 
@@ -312,7 +312,7 @@ function run_docs() {
   cd -
 
   git reset --hard HEAD
-  git checkout master
+  git checkout main
 }
 
 function run_lines() {
@@ -320,7 +320,7 @@ function run_lines() {
 }
 
 function run_container() {
-  docker build --build-arg DFFML_RELEASE=master -t intelotc/dffml .
+  docker build --build-arg DFFML_RELEASE=main -t intelotc/dffml .
   docker run --rm intelotc/dffml version
   docker run --rm intelotc/dffml service dev entrypoints list dffml.model
 }

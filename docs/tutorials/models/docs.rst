@@ -177,7 +177,7 @@ Testing Examples
 ----------------
 
 Using the
-`consoletest <https://github.com/intel/dffml/tree/master/dffml/util/testing/consoletest>`_
+`consoletest <https://github.com/intel/dffml/tree/main/dffml/util/testing/consoletest>`_
 module we can test the ``code-block`` sections within the docstring. DFFML has a
 :py:func:`run_consoletest <dffml.util.testing.docs.run_consoletest>` function we
 will be using.

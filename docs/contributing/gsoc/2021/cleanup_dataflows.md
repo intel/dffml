@@ -26,30 +26,30 @@ Intermediate
 
 ## Related Readings
 
-- https://intel.github.io/dffml/master/contributing/gsoc/2021/index.html
+- https://intel.github.io/dffml/main/contributing/gsoc/2021/index.html
 - We have some preprocessing operations for images and NLP already. Some of them leverage scikit
-  - https://intel.github.io/dffml/master/plugins/dffml_operation.html#dffml-operations-nlp
-  - https://intel.github.io/dffml/master/plugins/dffml_operation.html#dffml-operations-image
+  - https://intel.github.io/dffml/main/plugins/dffml_operation.html#dffml-operations-nlp
+  - https://intel.github.io/dffml/main/plugins/dffml_operation.html#dffml-operations-image
   - https://scikit-learn.org/stable/modules/preprocessing.html#preprocessing
 
 ## Getting Started
 
 - Read the contributing guidelines
-  - https://intel.github.io/dffml/master/contributing/index.html
+  - https://intel.github.io/dffml/main/contributing/index.html
 - Go through the quickstart
-  - https://intel.github.io/dffml/master/quickstart/model.html
+  - https://intel.github.io/dffml/main/quickstart/model.html
 - Go trough the model tutorials
-  - https://intel.github.io/dffml/master/tutorials/models/
+  - https://intel.github.io/dffml/main/tutorials/models/
 - Go through the model plugins
-  - https://intel.github.io/dffml/master/plugins/dffml_model.html
+  - https://intel.github.io/dffml/main/plugins/dffml_model.html
 - Go through the data flow related docs and tutorials
-  - https://intel.github.io/dffml/master/tutorials/dataflows/index.html
-  - https://intel.github.io/dffml/master/examples/integration.html
-  - https://intel.github.io/dffml/master/examples/shouldi.html
-  - https://intel.github.io/dffml/master/examples/dataflows.html
-  - https://intel.github.io/dffml/master/examples/mnist.html
-  - https://intel.github.io/dffml/master/examples/flower17/flower17.html
-  - https://intel.github.io/dffml/master/examples/webhook/index.html
+  - https://intel.github.io/dffml/main/tutorials/dataflows/index.html
+  - https://intel.github.io/dffml/main/examples/integration.html
+  - https://intel.github.io/dffml/main/examples/shouldi.html
+  - https://intel.github.io/dffml/main/examples/dataflows.html
+  - https://intel.github.io/dffml/main/examples/mnist.html
+  - https://intel.github.io/dffml/main/examples/flower17/flower17.html
+  - https://intel.github.io/dffml/main/examples/webhook/index.html
 - Find a few public datasets that are in need of cleanup
   - Make sure there are a mix of data types, floats, ints, boolean values.
   - Make sure that across all the examples you find, there are at least 4

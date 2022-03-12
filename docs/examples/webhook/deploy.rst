@@ -10,7 +10,7 @@ we'll setup another HTTP service which waits on GitHub webhooks to rebuilt and d
 .. note::
 
     All the code for this example is located under the
-    `examples/ffmpeg <https://github.com/intel/dffml/blob/master/examples/ffmpeg/>`_
+    `examples/ffmpeg <https://github.com/intel/dffml/blob/main/examples/ffmpeg/>`_
     directory of the DFFML source code.
 
 We'll be using additional plugins from dffml, ``dffml-config-yaml`` and ``dffml-http-service``.
@@ -97,7 +97,7 @@ Now from another terminal, we can send post requests to the dataflow running at 
     $ curl -v --request POST --data-binary @input.mp4 http://localhost:8080/ffmpeg -o output.gif
 
 You should replace ``input.mp4`` with path to your video file and ``output.gif`` to where you want the converted gif
-to be output to. An example video is available `here <https://github.com/intel/dffml/raw/master/examples/ffmpeg/input.mp4>`_ .
+to be output to. An example video is available `here <https://github.com/intel/dffml/raw/main/examples/ffmpeg/input.mp4>`_ .
 
 Deploying via container
 =======================

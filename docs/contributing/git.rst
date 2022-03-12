@@ -23,7 +23,7 @@ to do your work on.
 .. code-block:: console
 
     $ git fetch origin
-    $ git checkout -b my_new_thing origin/master
+    $ git checkout -b my_new_thing origin/main
 
 You need to have your own version of DFFML to track your work. Log in to your
 Github account and go to `DFFML <https://github.com/intel/dffml>`_ repository.
@@ -96,7 +96,7 @@ review your work or help you figure out what might be going wrong or how you
 could solve an issue your stuck on.
 
 Before you are get help, a review, or a final review, make sure to fetch the
-latest changes from the master branch and ``merge`` or ``rebase`` them into your
+latest changes from the main branch and ``merge`` or ``rebase`` them into your
 branch.
 
 When you are ready for final review, remove the ``WIP:`` prefix or draft status.
@@ -140,13 +140,13 @@ is okay.
 +--------------+---------------------------------------------------------------+
 | LINES        | A python file was changed that has specific lines referenced  |
 |              | by a ``.rst`` file. If one of the files is not true, its      |
-|              | because you need to merge or rebase origin/master into your   |
+|              | because you need to merge or rebase origin/main into your     |
 |              | branch.                                                       |
 +--------------+---------------------------------------------------------------+
 
 For the tests in the various plugins:
 
-- You need to grab the latests changes from the master branch. Maybe you need to
+- You need to grab the latests changes from the main branch. Maybe you need to
   adapt to them, for example if something got renamed, check the changelog.
 
 - You need to add any dependencies (``pip install ...``)  you need to the

@@ -8,7 +8,7 @@ This example shows one such usage.
 .. note::
 
     All the code for this example is located under the
-    `examples/dataflow/locking <https://github.com/intel/dffml/blob/master/examples/dataflow/locking>`_
+    `examples/dataflow/locking <https://github.com/intel/dffml/blob/main/examples/dataflow/locking>`_
     directory of the DFFML source code.
 
 First we import required packages and objects, and create Definitions for each

@@ -8,7 +8,7 @@ software development workflow that makes is easy for a large group of developers
 to collaborate quickly and effectively.
 
 All the code for this example project is located under the
-`examples/innersource/swportal <https://github.com/intel/dffml/blob/master/examples/innersource/swportal/>`_
+`examples/innersource/swportal <https://github.com/intel/dffml/blob/main/examples/innersource/swportal/>`_
 directory of the DFFML source code.
 
 History
@@ -103,7 +103,7 @@ We have a number of constraints for this example.
 
 - The repos we are interested in displaying are all hosted in GitHub. We can
   find the information we need stored on the file system. (See the
-  `orgs <https://github.com/intel/dffml/blob/master/examples/innersource/swportal/orgs/>`_
+  `orgs <https://github.com/intel/dffml/blob/main/examples/innersource/swportal/orgs/>`_
   directory to see what this looks like).
 
  - The structure is such that GitHub orgs are directories. Each directory
@@ -381,7 +381,7 @@ Try listing all the records in the new source to verify it works.
                     ]
                 },
                 "created_at": "2017-01-31T09:39:12Z",
-                "default_branch": "master",
+                "default_branch": "main",
                 "description": "Earth is the third planet from the Sun and the home-world of humanity.",
                 "forks_count": 331,
                 "full_name": "Sol/earth",

@@ -6,7 +6,7 @@ DAAL4Py models.
 
 ## Demo
 
-![Demo](https://github.com/intel/dffml/raw/master/docs/images/model_demo.gif)
+![Demo](https://github.com/intel/dffml/raw/main/docs/images/model_demo.gif)
 
 ## License
 

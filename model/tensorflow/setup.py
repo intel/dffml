@@ -30,7 +30,7 @@ setup(
     long_description_content_type="text/markdown",
     author="John Andersen",
     author_email="john.s.andersen@intel.com",
-    url="https://github.com/intel/dffml/blob/master/model/tensorflow/README.md",
+    url="https://github.com/intel/dffml/blob/main/model/tensorflow/README.md",
     license="MIT",
     keywords=[""],
     classifiers=[

@@ -40,24 +40,24 @@ Beginner
 ## Related Readings
 
 - Related readings and links have also been added in the related issues mentioned above.
-- https://intel.github.io/dffml/master/examples/data_cleanup/data_cleanup.html
-- https://intel.github.io/dffml/master/examples/icecream_sales.html
-- https://intel.github.io/dffml/master/examples/or_covid_data_by_county.html
-- https://intel.github.io/dffml/master/api/source/dataset/base.html
-- https://intel.github.io/dffml/master/api/source/dataset/iris.html
+- https://intel.github.io/dffml/main/examples/data_cleanup/data_cleanup.html
+- https://intel.github.io/dffml/main/examples/icecream_sales.html
+- https://intel.github.io/dffml/main/examples/or_covid_data_by_county.html
+- https://intel.github.io/dffml/main/api/source/dataset/base.html
+- https://intel.github.io/dffml/main/api/source/dataset/iris.html
 
 ## Getting Started
 
 - Read the contributing guidelines
-  - https://intel.github.io/dffml/master/contributing/index.html
+  - https://intel.github.io/dffml/main/contributing/index.html
 - Go through the quickstart
-  - https://intel.github.io/dffml/master/quickstart/model.html
+  - https://intel.github.io/dffml/main/quickstart/model.html
 - Go through the model tutorials
-  - https://intel.github.io/dffml/master/tutorials/models/
+  - https://intel.github.io/dffml/main/tutorials/models/
 - Go through the model plugins
-  - https://intel.github.io/dffml/master/plugins/dffml_model.html
+  - https://intel.github.io/dffml/main/plugins/dffml_model.html
 - Go through Jupyter Notebook Examples (they also have video walkthroughs available)
-  - https://intel.github.io/dffml/master/examples/notebooks/index.html
+  - https://intel.github.io/dffml/main/examples/notebooks/index.html
 - You don't need to go through all of them. Just get a feel for running a few
 
 ## Potential Mentors

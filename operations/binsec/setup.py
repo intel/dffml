@@ -30,7 +30,7 @@ setup(
     long_description_content_type="text/markdown",
     author="Himanshu Tripathi",
     author_email="himanshutripathi366@gmail.com",
-    url="https://github.com/intel/dffml/blob/master/operations/binsec/README.md",
+    url="https://github.com/intel/dffml/blob/main/operations/binsec/README.md",
     license="MIT",
     keywords=[""],
     classifiers=[

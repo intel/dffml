@@ -17,7 +17,7 @@ implementations in the same way.
 DFFML is also a tool for dataset generation. DFFML ues directed graphs to
 generate and modify datasets.
 
-Read more on the about page: https://intel.github.io/dffml/master/about.html
+Read more on the about page: https://intel.github.io/dffml/main/about.html
 
 Project Ideas
 -------------
@@ -53,7 +53,7 @@ Getting Started
 
   - Run the examples for the various models found on the model plugins page
 
-- `Run the tests <https://github.com/intel/dffml/tree/master/tests>`_. DFFML has
+- `Run the tests <https://github.com/intel/dffml/tree/main/tests>`_. DFFML has
   unit tests and we track coverage (amount of lines of code tested).
   Make sure you know how to run them, and if you've never done Python unittests
   before you might want to

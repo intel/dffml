@@ -21,18 +21,18 @@ Beginner/Intermediate
 
 ## Related Readings
 
-- https://intel.github.io/dffml/master/contributing/gsoc/2021/
+- https://intel.github.io/dffml/main/contributing/gsoc/2021/
 
 ## Getting Started
 
 - Read the contributing guidelines
-  - https://intel.github.io/dffml/master/contributing/index.html
+  - https://intel.github.io/dffml/main/contributing/index.html
 - Go through the quickstart
-  - https://intel.github.io/dffml/master/quickstart/model.html
+  - https://intel.github.io/dffml/main/quickstart/model.html
 - Go trough the model tutorials
-  - https://intel.github.io/dffml/master/tutorials/models/
+  - https://intel.github.io/dffml/main/tutorials/models/
 - Go through the model plugins
-  - https://intel.github.io/dffml/master/plugins/dffml_model.html
+  - https://intel.github.io/dffml/main/plugins/dffml_model.html
 - Start programming to understand better what will need to happen. The following
   is a rough guide meant to give you some activities that will help you better
   understand what needs to be done so you can write a more complete proposal.

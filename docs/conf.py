@@ -88,7 +88,7 @@ source_suffix = {
 nbsphinx_prolog = r"""
 {% set docname = env.doc2path(env.docname, base=None) %}
 {% if "." not in env.config.release %}
-    {% set nb_version = "master/" %}
+    {% set nb_version = "main/" %}
 {% endif %}
 
 .. image:: ../../images/Download-.ipynb-button.svg
@@ -108,7 +108,7 @@ html_theme = "sphinx_rtd_theme"
 html_context = {
     "github_user": "intel",
     "github_repo": "dffml",
-    "github_version": "master",
+    "github_version": "main",
     "conf_py_path": "/docs/",
     "display_github": True,
 }

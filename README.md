@@ -1,8 +1,8 @@
-![Logo-dark](https://raw.githubusercontent.com/intel/dffml/master/docs/images/logo-darkmode.svg#gh-dark-mode-only)
-![Logo-light](https://raw.githubusercontent.com/intel/dffml/master/docs/images/logo-lightmode.svg#gh-light-mode-only)
-[![Actions Status](https://github.com/intel/dffml/workflows/Tests/badge.svg?branch=master&event=push)](https://github.com/intel/dffml/actions)
+![Logo-dark](https://raw.githubusercontent.com/intel/dffml/main/docs/images/logo-darkmode.svg#gh-dark-mode-only)
+![Logo-light](https://raw.githubusercontent.com/intel/dffml/main/docs/images/logo-lightmode.svg#gh-light-mode-only)
+[![Actions Status](https://github.com/intel/dffml/workflows/Tests/badge.svg?branch=main&event=push)](https://github.com/intel/dffml/actions)
 [![Gitpod Ready-to-Code](https://img.shields.io/badge/Gitpod-ready--to--code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/intel/dffml)
-[![codecov](https://codecov.io/gh/intel/dffml/branch/master/graph/badge.svg)](https://codecov.io/gh/intel/dffml)
+[![codecov](https://codecov.io/gh/intel/dffml/branch/main/graph/badge.svg)](https://codecov.io/gh/intel/dffml)
 [![CII](https://bestpractices.coreinfrastructure.org/projects/2594/badge)](https://bestpractices.coreinfrastructure.org/projects/2594)
 [![Gitter chat](https://badges.gitter.im/gitterHQ/gitter.svg)](https://gitter.im/dffml/community)
 [![PyPI version](https://img.shields.io/pypi/v/dffml.svg)](https://pypi.org/project/dffml)
@@ -21,12 +21,12 @@ We broadly have two types of audience here, one is Citizen Data Scientists and M
 
 Documentation for the latest release is hosted at https://intel.github.io/dffml/
 
-Documentation for the master branch is hosted at
-https://intel.github.io/dffml/master/index.html
+Documentation for the main branch is hosted at
+https://intel.github.io/dffml/main/index.html
 
 ## Contributing
 
-The [contributing page](https://intel.github.io/dffml/master/contributing/index.html)
+The [contributing page](https://intel.github.io/dffml/main/contributing/index.html)
 will guide you through getting setup and contributing to DFFML.
 
 ## Help

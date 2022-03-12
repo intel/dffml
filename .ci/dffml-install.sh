@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -xe
 
-if [ "x${DFFML_RELEASE}" == "xmaster" ]; then
+if [ "x${DFFML_RELEASE}" == "xmain" ]; then
   pip install -e .[dev]
   dffml service dev install
 elif [ "x${DFFML_RELEASE}" == "xlatest" ]; then

@@ -41,7 +41,7 @@ setup(
     author_email=AUTHOR_EMAIL,
     maintainer=AUTHOR_NAME,
     maintainer_email=AUTHOR_EMAIL,
-    url=f"https://github.com/{ORG}/dffml/tree/master/service/http",
+    url=f"https://github.com/{ORG}/dffml/tree/main/service/http",
     license="MIT",
     keywords=["dffml"],
     classifiers=[

@@ -253,7 +253,7 @@ items that you want evaluated.
             "extra": {},
             "features": {
                 "created_at": "2018-09-19T21:06:34Z",
-                "default_branch": "master",
+                "default_branch": "main",
                 "description": "The easiest way to use Machine Learning. Mix and match underlying ML libraries and data set sources. Generate new datasets or modify existing ones with ease.",
                 "forks_count": 118,
                 "full_name": "intel/dffml",

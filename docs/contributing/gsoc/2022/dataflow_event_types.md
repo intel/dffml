@@ -53,25 +53,25 @@ Intermediate/Hard
 
 ## Related Readings
 
-- https://intel.github.io/dffml/master/contributing/gsoc/2022/index.html
+- https://intel.github.io/dffml/main/contributing/gsoc/2022/index.html
 
 ## Getting Started
 
 - Read the contributing guidelines
-  - https://intel.github.io/dffml/master/contributing/index.html
+  - https://intel.github.io/dffml/main/contributing/index.html
 - Go through the quickstart
-  - https://intel.github.io/dffml/master/quickstart/model.html
+  - https://intel.github.io/dffml/main/quickstart/model.html
 - Go through the data flow related docs and tutorials
-  - https://intel.github.io/dffml/master/tutorials/dataflows/index.html
-  - https://intel.github.io/dffml/master/examples/integration.html
-  - https://intel.github.io/dffml/master/examples/shouldi.html
-  - https://intel.github.io/dffml/master/examples/dataflows.html
-  - https://intel.github.io/dffml/master/examples/mnist.html
-  - https://intel.github.io/dffml/master/examples/flower17/flower17.html
-  - https://intel.github.io/dffml/master/examples/webhook/index.html
+  - https://intel.github.io/dffml/main/tutorials/dataflows/index.html
+  - https://intel.github.io/dffml/main/examples/integration.html
+  - https://intel.github.io/dffml/main/examples/shouldi.html
+  - https://intel.github.io/dffml/main/examples/dataflows.html
+  - https://intel.github.io/dffml/main/examples/mnist.html
+  - https://intel.github.io/dffml/main/examples/flower17/flower17.html
+  - https://intel.github.io/dffml/main/examples/webhook/index.html
 - Read about what data flows are and how they work
-  - https://intel.github.io/dffml/master/concepts/index.html#dataflows
-  - https://intel.github.io/dffml/master/concepts/dataflow.html
+  - https://intel.github.io/dffml/main/concepts/index.html#dataflows
+  - https://intel.github.io/dffml/main/concepts/dataflow.html
 - Come up with a basic example where the user will see inputs moving through the
   network.
   - Make it simple and include a few operations.

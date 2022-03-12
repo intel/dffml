@@ -31,7 +31,7 @@ Beginner
 
 ## Related Readings
 
-- https://intel.github.io/dffml/master/contributing/gsoc/2022/
+- https://intel.github.io/dffml/main/contributing/gsoc/2022/
 - https://github.com/onnx/tensorflow-onnx
 - https://github.com/onnx/tutorials/blob/master/tutorials/TensorflowToOnnx-1.ipynb
 - https://github.com/onnx/tutorials/blob/master/tutorials/OnnxTensorflowImport.ipynb
@@ -42,21 +42,21 @@ Beginner
 ## Getting Started
 
 - Read the contributing guidelines
-  - https://intel.github.io/dffml/master/contributing/index.html
+  - https://intel.github.io/dffml/main/contributing/index.html
 - Go through the quickstart
-  - https://intel.github.io/dffml/master/quickstart/model.html
+  - https://intel.github.io/dffml/main/quickstart/model.html
 - Go trough the model tutorials
-  - https://intel.github.io/dffml/master/tutorials/models/
+  - https://intel.github.io/dffml/main/tutorials/models/
 - Go through the model plugins
-  - https://intel.github.io/dffml/master/plugins/dffml_model.html
+  - https://intel.github.io/dffml/main/plugins/dffml_model.html
 - Train a tensorflow model
-  - https://intel.github.io/dffml/master/tutorials/models/iris.html
-  - https://intel.github.io/dffml/master/examples/mnist.html
+  - https://intel.github.io/dffml/main/tutorials/models/iris.html
+  - https://intel.github.io/dffml/main/examples/mnist.html
 - Attempt exporting the tensorflow model
   - https://github.com/onnx/tensorflow-onnx
-  - https://github.com/onnx/tutorials/blob/master/tutorials/TensorflowToOnnx-1.ipynb
+  - https://github.com/onnx/tutorials/blob/main/tutorials/TensorflowToOnnx-1.ipynb
 - Attempt import of ONNX tensorflow model
-  - https://github.com/onnx/tutorials/blob/master/tutorials/OnnxTensorflowImport.ipynb
+  - https://github.com/onnx/tutorials/blob/main/tutorials/OnnxTensorflowImport.ipynb
 - Start programming to understand better what will need to happen. The following
   is a rough guide meant to give you some activities that will help you better
   understand what needs to be done so you can write a more complete proposal.

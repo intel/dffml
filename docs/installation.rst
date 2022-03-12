@@ -130,7 +130,7 @@ Master Branch
 -------------
 
 If you want to stay on the bleeding edge of bug fixes, etc. You can install from
-the master branch.
+the main branch.
 
 .. tabs::
 
@@ -139,13 +139,13 @@ the master branch.
         .. code-block:: console
             :test:
 
-            $ python -m pip install -U "https://github.com/intel/dffml/archive/master.zip#egg=dffml"
+            $ python -m pip install -U "https://github.com/intel/dffml/archive/main.zip#egg=dffml"
 
     .. group-tab:: Windows
 
         .. code-block:: console
 
-            (.venv) C:\Users\username> python -m pip install -U "https://github.com/intel/dffml/archive/master.zip#egg=dffml"
+            (.venv) C:\Users\username> python -m pip install -U "https://github.com/intel/dffml/archive/main.zip#egg=dffml"
 
 You can also install the bleeding edge version of any plugin. To get the
 subdirectory you should use, take the package name on PyPi and remove ``dffml-``
@@ -158,19 +158,19 @@ and replace ``-`` with ``/``.
         .. code-block:: console
             :test:
 
-            $ python -m pip install -U "https://github.com/intel/dffml/archive/master.zip#egg=dffml" \
-                "https://github.com/intel/dffml/archive/master.zip#egg=dffml-feature-git&subdirectory=feature/git"
+            $ python -m pip install -U "https://github.com/intel/dffml/archive/main.zip#egg=dffml" \
+                "https://github.com/intel/dffml/archive/main.zip#egg=dffml-feature-git&subdirectory=feature/git"
 
     .. group-tab:: Windows
 
         .. code-block:: console
 
-            (.venv) C:\Users\username> python -m pip install -U "https://github.com/intel/dffml/archive/master.zip#egg=dffml" ^
-                "https://github.com/intel/dffml/archive/master.zip#egg=dffml-feature-git&subdirectory=feature/git"
+            (.venv) C:\Users\username> python -m pip install -U "https://github.com/intel/dffml/archive/main.zip#egg=dffml" ^
+                "https://github.com/intel/dffml/archive/main.zip#egg=dffml-feature-git&subdirectory=feature/git"
 
 There's an online IDE based on Theia (similar to VS Code) called GitPod that
 gives you a setup development environment to get started working with/on DFFML
-right away. However, it comes with the master branch installed, you'll need to
+right away. However, it comes with the main branch installed, you'll need to
 run the above commands to get the latest released version.
 
 .. image:: https://gitpod.io/button/open-in-gitpod.svg

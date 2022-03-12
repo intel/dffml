@@ -50,11 +50,11 @@ Doing a Release
 
 - Push the new branch (if created) and the tag
 
-- Switch to the master branch
+- Switch to the main branch
 
 - Cherry pick the release commit from the new branch, but not the pinning commit
 
-- Push the master branch
+- Push the main branch
 
 .. code-block:: console
 
@@ -66,6 +66,6 @@ Doing a Release
     $ git tag $(dffml service dev setuppy version dffml/version.py)
     $ git push -u origin N.N.x
     $ git push --tags
-    $ git checkout master
+    $ git checkout main
     $ git cherry-pick X.Y.Z~1
     $ git push

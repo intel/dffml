@@ -1,6 +1,6 @@
 # shouldi
 
-![shouldi](https://github.com/intel/dffml/raw/master/examples/shouldi/shouldi.jpg)
+![shouldi](https://github.com/intel/dffml/raw/main/examples/shouldi/shouldi.jpg)
 
 ## What Is ShouldI?
 

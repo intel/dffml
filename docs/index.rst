@@ -1,10 +1,10 @@
 Welcome to DFFML!
 =================
 
-.. image:: https://github.com/intel/dffml/workflows/Tests/badge.svg?branch=master&event=push
+.. image:: https://github.com/intel/dffml/workflows/Tests/badge.svg?branch=main&event=push
     :target: https://github.com/intel/dffml/actions
     :alt: Test Status
-.. image:: https://codecov.io/gh/intel/dffml/branch/master/graph/badge.svg
+.. image:: https://codecov.io/gh/intel/dffml/branch/main/graph/badge.svg
     :target: https://codecov.io/gh/intel/dffml
     :alt: codecov
 .. image:: https://bestpractices.coreinfrastructure.org/projects/2594/badge
@@ -33,8 +33,8 @@ Output:
     {'Years': 6, 'Expertise': 13, 'Trust': 0.7, 'Salary': 70.0}
     {'Years': 7, 'Expertise': 15, 'Trust': 0.8, 'Salary': 80.0}
 
-This is the documentation for the latest release, documentation for the master
-branch can be found `here <master/index.html>`_.
+This is the documentation for the latest release, documentation for the main
+branch can be found `here <main/index.html>`_.
 
 .. toctree::
     :glob:
@@ -79,7 +79,7 @@ branch can be found `here <master/index.html>`_.
     :caption: Community
 
     GitHub <https://github.com/intel/dffml>
-    Master Branch Docs <https://intel.github.io/dffml/master/>
+    Master Branch Docs <https://intel.github.io/dffml/main/>
     publications
     contact
     contributing/index

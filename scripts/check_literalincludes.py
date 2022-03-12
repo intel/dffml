@@ -44,7 +44,7 @@ def main():
         check_changed[referenced].setdefault(contains_literalinclude, False)
     # Get the list of changed files
     changed_files = subprocess.check_output(
-        ["git", "diff-index", "origin/master"]
+        ["git", "diff-index", "origin/main"]
     )
     changed_files = changed_files.decode()
     changed_files = list(

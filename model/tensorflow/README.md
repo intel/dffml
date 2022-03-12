@@ -2,7 +2,7 @@
 
 ## Demo
 
-![Demo](https://github.com/intel/dffml/raw/master/docs/images/iris_demo.gif)
+![Demo](https://github.com/intel/dffml/raw/main/docs/images/iris_demo.gif)
 
 > This demo was taken before the below steps were updated, the actual accuracy
 > may vary as this video shows accuracy being assessed against the training

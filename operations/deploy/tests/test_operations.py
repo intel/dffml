@@ -56,10 +56,10 @@ class TestOperations(AsyncTestCase):
         ]
 
         test_data = {
-            "ref": "refs/master",
+            "ref": "refs/main",
             "repository": {
                 "clone_url": f"https://github.com/{USER}/{REPO}.git",
-                "default_branch": "master",
+                "default_branch": "main",
                 "html_url": f"https://github.com/{USER}/{REPO}",
             },
         }

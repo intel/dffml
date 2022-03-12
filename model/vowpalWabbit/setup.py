@@ -41,7 +41,7 @@ setup(
     author_email="himanshutripathi366@gmail.com",
     maintainer="John Andersen",
     maintainer_email="john.s.andersen@intel.com",
-    url="https://github.com/intel/dffml/blob/master/model/vowpalWabbit/README.md",
+    url="https://github.com/intel/dffml/blob/main/model/vowpalWabbit/README.md",
     license="MIT",
     keywords=["dffml"],
     classifiers=[

@@ -4,7 +4,7 @@ Git features scrape data from Git repositories.
 
 ## Demo
 
-![Demo](https://github.com/intel/dffml/raw/master/docs/images/commits_demo.gif)
+![Demo](https://github.com/intel/dffml/raw/main/docs/images/commits_demo.gif)
 
 ## Usage
 

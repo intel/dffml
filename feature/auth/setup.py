@@ -30,7 +30,7 @@ setup(
     long_description_content_type="text/markdown",
     author="John Andersen",
     author_email="john.s.andersen@intel.com",
-    url="https://github.com/intel/dffml/blob/master/feature/auth/README.md",
+    url="https://github.com/intel/dffml/blob/main/feature/auth/README.md",
     license="MIT",
     keywords=[""],
     classifiers=[
