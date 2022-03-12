@@ -32,7 +32,7 @@ jobs:
         git fetch origin $BRANCH
         git reset --hard origin/$BRANCH
         git log -n 3 --oneline
-        git log --stat $BRANCH | grep -E '\.png|\.jpeg|\.jpg|\.gif'
+        git log --stat | grep -E '\.png|\.jpeg|\.jpg|\.gif'
         cat > $GIT_FILTER_REPO_PATHS <<'EOF'
         glob:*.gif
         glob:*.png
@@ -40,7 +40,9 @@ jobs:
         glob:*.jpeg
         EOF
         git filter-repo --force --invert-paths --paths-from-file $GIT_FILTER_REPO_PATHS
+        set +e
         git log --stat | grep -E '\.png|\.jpeg|\.jpg|\.gif'
+        set -e
 
         export GIT_SSH_COMMAND='ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no'
 
