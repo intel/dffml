@@ -1,0 +1,51 @@
+name: Remove Images
+
+on:
+  push:
+    paths:
+    - '.github/workflows/remove_images.yml'
+
+jobs:
+  remove_images:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+    - name: Install git-filter-repo
+      shell: bash -xe {0}
+      run: |
+        pip install -U pip setuptools wheel
+        pip install git-filter-repo
+    - name: Run git-filter-repo
+      env:
+        REPO_URL: https://github.com/intel/dffml
+        BRANCH: master
+        GIT_FILTER_REPO_PATHS: /tmp/git-filter-repo-paths
+      shell: bash -xe {0}
+      run: |
+        git init
+        git remote add origin $REPO_URL
+        git fetch origin $BRANCH
+        git reset --hard origin/$BRANCH
+        git log -n 3 --oneline
+        git log --stat $BRANCH | grep -E '\.png|\.jpeg|\.jpg|\.gif'
+        cat > $GIT_FILTER_REPO_PATHS <<'EOF'
+        glob:*.gif
+        glob:*.png
+        glob:*.jpg
+        glob:*.jpeg
+        EOF
+        git filter-repo --force --invert-paths --paths-from-file $GIT_FILTER_REPO_PATHS
+        git diff --stat origin/$BRANCH
+        git log --stat $BRANCH | grep -E '\.png|\.jpeg|\.jpg|\.gif'
+        git branch
+    - name: Push
+      env:
+        BRANCH: main
+      shell: bash -xe {0}
+      run: |
+        git checkout -b $BRANCH
+        git push -u origin $BRANCH
