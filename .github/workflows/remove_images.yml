@@ -22,7 +22,7 @@ jobs:
     - name: Run git-filter-repo
       env:
         REPO_URL: https://github.com/intel/dffml
-        BRANCH: master
+        BRANCH: gh-pages
         GIT_FILTER_REPO_PATHS: /tmp/git-filter-repo-paths
         SSH_DFFML_GH_PAGES: ${{ secrets.SSH_DFFML_GH_PAGES }}
       shell: bash -xe {0}
@@ -66,5 +66,4 @@ jobs:
         git remote set-url origin git@github.com:intel/dffml
         set -e
 
-        git checkout -b main
-        git push -u origin main
+        git push -fu origin $BRANCH
