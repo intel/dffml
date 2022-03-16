@@ -36,14 +36,14 @@ We currently have the following project ideas:
 
   - Allow for DFFML to save trained models in the Open Neural Network Exchange
     format. This will help users easily deploy models.
-  - Begineer
+  - Beginner
   - 175 hours
 
 - `Time-Series Forecasting and Anomaly Detection <https://github.com/intel/dffml/blob/main/docs/contributing/gsoc/2022/forecasting.md>`_
 
   - Give users of DFFML forecasting capabilties. Allow them to predict the
     future! Work with time stamped data to train models and make predictions.
-  - Begineer
+  - Beginner
   - 350 hours
 
 - `Implementing AutoML <https://github.com/intel/dffml/blob/main/docs/contributing/gsoc/2022/automl.md>`_
