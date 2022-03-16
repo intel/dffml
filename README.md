@@ -26,7 +26,7 @@ https://intel.github.io/dffml/main/index.html
 
 ## Contributing
 
-The [contributing page](https://intel.github.io/dffml/main/contributing/index.html)
+The [contributing page](https://intel.github.io/dffml/contributing/index.html)
 will guide you through getting setup and contributing to DFFML.
 
 ## Help
