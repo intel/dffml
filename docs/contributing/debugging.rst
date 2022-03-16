@@ -9,6 +9,23 @@ if you see anything other than ``.egg-link`` behind the name of the ``dffml``
 package you are working on, you probably need to delete that package and
 re-install it in development mode (``pip install -e``).
 
+Pop open debugger on execption
+------------------------------
+
+Run with pdb and input ``c`` to start execution.
+
+- ``w`` to print stack trace.
+
+- ``print(locals())`` to print all local variables.
+
+.. code-block:: console
+
+    $ python -m pdb -m dffml --help
+    (Pdb) c
+    Traceback ...
+    (Pdb) w
+    (Pdb) print(locals())
+
 Plugin Loading / Entrypoint Issues
 ----------------------------------
 
