@@ -14,13 +14,13 @@ If you wanted to use machine learning models based on TensorFlow, you'd install
 ``dffml-model-tensorflow``. The source code for all *Official* plugins is within
 the same Git repo (https://github.com/intel/dffml).
 
-A *Official* plugin is any plugin maintained within the main Git repo.
+An *Official* plugin is any plugin maintained within the main Git repo.
 
 This means users only have to install what they need. TensorFlow is several
 hundred megabytes, not everyone wants that, or needs that to get machine
 learning models that perform accurately on their problem.
 
-All plugins have their base class that they derive from in the main package,
+All plugins have their base class that they derive from the main package,
 which is located in the ``dffml`` directory at the root of the git repo.
 
 The plugin packages are located within their respective directories at the root
@@ -175,7 +175,7 @@ For example, to create a new package containing operations we run the following.
     $ dffml service dev create operations dffml-operations-feedface
 
 If you want to work on any of the packages in ``skel/``, you'll need to run the
-``skel link`` command first fromt he ``dev`` service. This will symlink required
+``skel link`` command first from the ``dev`` service. This will symlink required
 files in from ``common/`` so that testing will work.
 
 .. code-block:: console
