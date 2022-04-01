@@ -123,6 +123,12 @@ To rebase all the commits between another branch and the current branch state, y
 When you have an open PR and you want to take the changes that happened in main
 and add them back to your PR, you can do the following.
 
+..
+    sequenceDiagram
+        upstream/main->>+feature_branch: git pull --rebase upstream main
+        feature_branch->>+origin/feature_branch: git push --force
+        origin/feature_branch->>+upstream/main: pull request
+
 .. image:: https://user-images.githubusercontent.com/74865775/159732897-c4ec72af-e456-4664-948a-5bc5397aa095.jpg
     
 To rebase the last few commits in your current branch, you can enter the following command in your shell:
