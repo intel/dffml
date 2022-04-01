@@ -120,6 +120,11 @@ To rebase all the commits between another branch and the current branch state, y
 
     $ git rebase --interactive other_branch_name
     
+When you have an open PR and you want to take the changes that happened in main
+and add them back to your PR, you can do the following.
+
+.. image:: https://user-images.githubusercontent.com/74865775/159732897-c4ec72af-e456-4664-948a-5bc5397aa095.jpg
+    
 To rebase the last few commits in your current branch, you can enter the following command in your shell:
 
 .. code-block:: console
