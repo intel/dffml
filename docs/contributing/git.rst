@@ -106,15 +106,21 @@ maintainer to merge your pull request at this point. Pull requests with the
 
 Rebasing in branches
 --------------------
+Sources/References:
 
-The git rebase command allows you to easily change a series of commits, modifying the history of your repository. You can reorder, edit, or squash commits together.
-Git rebase is typically used to:-
+- https://docs.github.com/en/get-started/using-git/about-git-rebase
+
+The git rebase command allows you to easily change a series of commits,
+modifying the history of your repository. You can reorder, edit, or squash
+commits together. Git rebase is typically used to:
 
 1) Edit previous commit messages
 2) Combine multiple commits into one
 3) Delete or revert commits that are no longer necessary
 
-To rebase all the commits between another branch and the current branch state, you can enter the following command in your shell (either the command prompt for Windows, or the terminal for Mac and Linux):
+To rebase all the commits between another branch and the current branch
+state, you can enter the following command in your shell (either the
+command prompt for Windows, or the terminal for Mac and Linux):
 
 .. code-block:: console
 
@@ -131,7 +137,8 @@ and add them back to your PR, you can do the following.
 
 .. image:: https://user-images.githubusercontent.com/74865775/159732897-c4ec72af-e456-4664-948a-5bc5397aa095.jpg
     
-To rebase the last few commits in your current branch, you can enter the following command in your shell:
+To rebase the last few commits in your current branch, you can enter the
+following command in your shell:
 
 .. code-block:: console
 
