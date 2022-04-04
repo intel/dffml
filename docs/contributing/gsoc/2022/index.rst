@@ -8,10 +8,13 @@ https://summerofcode.withgoogle.com/how-it-works/#timeline
 
 NOTE:
 =====
-  
-One of our community members is going to deliver a talk on GSoC. 
-We'd recommend new contributors join and clear any GSoC related queries. 
-Link for registration: https://lnkd.in/gAWiVrAE (Time mentioned in IST timezone)
+
+One of our community members delivered a talk on GSoC. 
+We'd recommend new contributors to watch the recording 
+and clear any GSoC related queries. Relevant links are given below:
+
+* `Video recording <https://youtu.be/lGm2a7gG4yI>`_
+* `Presentation File <https://docs.google.com/presentation/d/1a8NLzwtM64QT_rKuMAsB1ythw4FDFI5CRhEUpOydiRY/edit?usp=sharing>`_
 
 
 About DFFML
