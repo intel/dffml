@@ -104,6 +104,51 @@ At this point, all the CI tests should be passing. It should be okay for a
 maintainer to merge your pull request at this point. Pull requests with the
 ``WIP:`` prefix or draft status will not be merged.
 
+Rebasing in branches
+--------------------
+
+Sources/References:
+
+- https://docs.github.com/en/get-started/using-git/about-git-rebase
+
+  - CC BY 4.0: Docs on this page were sourced from GitHub's open source
+    docs. We've added some extra content intermixed, including a diagram
+    showing the flow.
+
+The git rebase command allows you to easily change a series of commits,
+modifying the history of your repository. You can reorder, edit, or squash
+commits together. Git rebase is typically used to:
+
+1) Edit previous commit messages
+2) Combine multiple commits into one
+3) Delete or revert commits that are no longer necessary
+
+To rebase all the commits between another branch and the current branch
+state, you can enter the following command in your shell (either the
+command prompt for Windows, or the terminal for Mac and Linux):
+
+.. code-block:: console
+
+    $ git rebase --interactive other_branch_name
+    
+When you have an open PR and you want to take the changes that happened in main
+and add them back to your PR, you can do the following.
+
+..
+    sequenceDiagram
+        upstream/main->>+feature_branch: git pull --rebase upstream main
+        feature_branch->>+origin/feature_branch: git push --force
+        origin/feature_branch->>+upstream/main: pull request
+
+.. image:: https://user-images.githubusercontent.com/74865775/159732897-c4ec72af-e456-4664-948a-5bc5397aa095.jpg
+    
+To rebase the last few commits in your current branch, you can enter the
+following command in your shell:
+
+.. code-block:: console
+
+    $ git rebase --interactive HEAD~7
+
 How to Read the CI
 ------------------
 
