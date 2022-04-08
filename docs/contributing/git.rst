@@ -106,9 +106,14 @@ maintainer to merge your pull request at this point. Pull requests with the
 
 Rebasing in branches
 --------------------
+
 Sources/References:
 
 - https://docs.github.com/en/get-started/using-git/about-git-rebase
+
+  - CC BY 4.0: Docs on this page were sourced from GitHub's open source
+    docs. We've added some extra content intermixed, including a diagram
+    showing the flow.
 
 The git rebase command allows you to easily change a series of commits,
 modifying the history of your repository. You can reorder, edit, or squash
