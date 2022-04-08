@@ -30,14 +30,6 @@ def tup_to_dict(tup):
 
 @config
 class OrionModelConfig:
-    data: str = field(
-        "Time sequence data (timestamps and corresponding values) to be put into the orion model as a csv file"
-    )
-    predict: str = field(
-        "The start and end values of your ground truth as a csv file",
-        default="",
-    )
-    accuracy: str = field("The ground truth ", default="")
     hyperparameters: tuple = field(
         "Hyperparameters for training the model",
         default=("keras.Sequential.LSTMTimeSeriesRegressor#1", {"epochs": 5}),
@@ -60,6 +52,10 @@ class OrionModel(SimpleModel):
     Run it with python ./tests/gen_data.py
 
     The same is also available in orion/examples/gen_data.py
+
+    The data is passed in the format of a pandas table with 2 columns:
+        1. timestamp: an INTEGER or FLOAT column with the time of the observation in Unix Time Format
+        2. value: an INTEGER or FLOAT column with the observed value at the indicated timestamp
 
     **train.csv**
 
@@ -86,11 +82,8 @@ class OrionModel(SimpleModel):
 
         $ dffml train \
             -model orion \
-            -model-data './tests/train.csv' \
-            -model-predict './tests/predict.csv' \
-            -model-accuracy './tests/test.csv' \
             -model-hyperparameters "keras.Sequential.LSTMTimeSeriesRegressor#1"\,{\"epochs\": 5} \
-            -sources f=csv
+            -sources f=csv \
             -source-filename ./tests/train.csv
 
     Assess the accuracy
@@ -100,12 +93,10 @@ class OrionModel(SimpleModel):
 
         $ dffml accuracy \
             -model orion \
-            --model-data './tests/train.csv' \
-            -model-predict './tests/predict.csv' \
-            -model-accuracy './tests/test.csv' \
             -model-hyperparameters "keras.Sequential.LSTMTimeSeriesRegressor#1"\,{\"epochs\": 5} \
-            -sources f=csv
-            -source-filename ./tests/test.csv
+            -sources pred=csv test=csv \
+            -source-pred-filename ./tests/predict.csv \
+            -source-test-filename ./tests/test.csv
         accuracy     0.950341
         f1           0.313208
         recall       0.185682
@@ -126,11 +117,8 @@ class OrionModel(SimpleModel):
     .. code-block:: console
         :test:
 
-        $ dffml predict all \                                                                     (gsoc)
+        $ dffml predict all \
                  -model orion \
-                 -model-data './tests/train.csv' \
-                 -model-predict './tests/predict.csv' \
-                 -model-accuracy './tests/test.csv' \
                  -model-hyperparameters "keras.Sequential.LSTMTimeSeriesRegressor#1"\,{\"epochs\": 5} \
                  -sources f=csv \
                  -source-filename ./tests/predict.csv
@@ -176,8 +164,14 @@ class OrionModel(SimpleModel):
         self.trained = False
 
     async def train(self, sources: SourcesContext) -> None:
-        # Loading the train data from a csv file
-        train_data = load_signal(self.config.data)
+        # Loading the train data from a csv file that is included in our sources
+        timestamp = []
+        value = []
+        async for record in sources.with_features(["timestamp", "value"]):
+            timestamp.append(record.feature("timestamp"))
+            value.append(record.feature("value"))
+
+        train_data = pd.DataFrame({"timestamp": timestamp, "value": value})
         hyperparameters = tup_to_dict(self.config.hyperparameters)
 
         # Instantiating our model
@@ -203,8 +197,24 @@ class OrionModel(SimpleModel):
             # Load our previously trained model from the pickle file
             orion = Orion.load(self.config.directory / "orion_model.p")
 
-        ground_truth = load_signal(self.config.accuracy)
-        new_data = load_signal(self.config.predict)
+        # Loading the prediction data to make predictions that will later be compared with ground truth
+        timestamp = []
+        value = []
+        async for record in sources.with_features(["timestamp", "value"]):
+            timestamp.append(record.feature("timestamp"))
+            value.append(record.feature("value"))
+
+        new_data = pd.DataFrame({"timestamp": timestamp, "value": value})
+
+        # Loading our ground truth values
+        start = []
+        end = []
+        async for record in sources.with_features(["start", "end"]):
+            start.append(record.feature("start"))
+            end.append(record.feature("end"))
+
+        ground_truth = pd.DataFrame({"start": start, "end": end})
+
         scores = orion.evaluate(new_data, ground_truth)
         print(scores)
         accuracy = scores.accuracy
@@ -219,7 +229,14 @@ class OrionModel(SimpleModel):
             # Load our previously trained model from the pickle file
             orion = Orion.load(self.config.directory / "orion_model.p")
 
-        new_data = load_signal(self.config.predict)
+        # Loading the prediction data to make predictions that will later be compared with ground truth
+        timestamp = []
+        value = []
+        async for record in sources.with_features(["timestamp", "value"]):
+            timestamp.append(record.feature("timestamp"))
+            value.append(record.feature("value"))
+
+        new_data = pd.DataFrame({"timestamp": timestamp, "value": value})
 
         anomalies = orion.detect(new_data)
         anomalies = anomalies.to_dict("records")

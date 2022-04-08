@@ -6,22 +6,24 @@ from dffml_model_orion import OrionModel
 
 
 async def main():
-    # Configure the model
-    model = OrionModel(
-        data="./tests/train.csv",
-        predict="./tests/predict.csv",
-        accuracy="./tests/test.csv",
-    )
+    # Instantiate the model. We can add hyperparameters too, but in this case
+    # we'll leave them to the default hyperparameters
+    model = OrionModel()
 
     # Train the model
-    await train(model)
+    await train(model, "./examples/train.csv")
 
     # Make predictions
-    async for i, features, prediction in predict(model):
+    async for i, features, prediction in predict(
+        model, "./examples/predict.csv"
+    ):
         print(features["predict"])
 
     # Check accuracy of our predictions
-    print("Accuracy:", await accuracy(model))
+    print(
+        "Accuracy:",
+        await accuracy(model, "./examples/predict.csv", "./examples/test.csv"),
+    )
 
 
 if __name__ == "__main__":
