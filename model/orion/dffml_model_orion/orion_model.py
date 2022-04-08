@@ -59,6 +59,8 @@ class OrionModel(SimpleModel):
     The dataset used for these examples is generated through orion/tests/gen_data.py
     Run it with python ./tests/gen_data.py
 
+    The same is also available in orion/examples/gen_data.py
+
     **train.csv**
 
     .. code-block::
