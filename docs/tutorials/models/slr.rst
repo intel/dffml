@@ -62,6 +62,9 @@ Anything that a user might want to tweak about a models behavior should go in
 the ``Config`` class for the model. The naming convention is ``TheName`` +
 ``Model`` + ``Config``.
 
+Hyperparameters for a model should live inside the model's config. Ideally at
+the top level and not nested within another structure.
+
 Our model has three configurable properties.
 
 - ``features``. A list of :py:class:`Feature <dffml.feature.Feature>` objects
