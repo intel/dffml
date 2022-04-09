@@ -231,6 +231,17 @@ You may have noticed we're importing from ``dffml.noasync``. If you're using
 
 .. literalinclude:: /../examples/quickstart_async.py
 
+
+If you are running this on Jupyter (Jupyter Lab or Jupyter Notebook), you 
+might encounter the RuntimeError caused by the event loop started automatically
+by Jupyter. To solve this problem, simply replace the last line of codes
+.. code-block :: Python
+    asyncio.run(main())
+
+with
+.. code-block :: Python
+    await(main())
+
 HTTP
 ----
 
