@@ -19,7 +19,7 @@ Imports
 
 We're going to need a few modules from the standard library, let's import them.
 
-- ``pathlib`` will be used to define the directory were saved model state should
+- ``pathlib`` will be used to define the directory where saved model state should
   be stored.
 
 - ``statistics`` will be used to help us calculate the average (mean) of our
