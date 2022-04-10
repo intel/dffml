@@ -1,7 +1,13 @@
 import pathlib
 
-from ..csv import CSVSource
-from .base import dataset_source
+import sys
+import path
+
+directory = path.Path(__file__).abspath()
+sys.path.append(directory.parent.parent)
+
+from source.csv import CSVSource
+from base import dataset_source
 from ...util.net import cached_download
 from ...util.file import find_replace_with_hash_validation
 
