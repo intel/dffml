@@ -75,6 +75,12 @@ class DataFrameSourceConfig:
         ", use 1 here.",
         default=0,
     )
+    excel: str = field(
+        "Path to excel file to load from", default=None,
+    )
+    sheet_name: int = field(
+        "Name of excel sheet to grab or index", default=0,
+    )
     protocol_allowlist: List[str] = field(
         'List of protocols allowed for ``html`` URL. Example ``["http://"]``',
         default_factory=lambda: DEFAULT_PROTOCOL_ALLOWLIST,
@@ -197,6 +203,10 @@ class DataFrameSource(BaseSource):
                 self.config.dataframe = dataframes[
                     self.config.html_table_index
                 ]
+            elif self.config.excel is not None:
+                self.config.dataframe = pandas.read_excel(
+                    self.config.excel, self.config.sheet_name,
+                )
             else:
                 # Create empty DataFrame
                 self.config.dataframe = pandas.DataFrame()
