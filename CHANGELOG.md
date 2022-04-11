@@ -38,6 +38,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `$ dffml service dev create blank mypackage`
 - `is_trained` flag to all models
 - Dynamic `location` property to `Model` baseclass.
+- Pandas dataframe source can read from Excel files
 ### Changed
 - Calls to hashlib now go through helper functions
 - Build docs using `dffml service dev docs`
