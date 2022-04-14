@@ -107,5 +107,5 @@ class TestH2ORegressionModel(AsyncTestCase):
                 self.assertIn("TARGET", results)
                 results = results["TARGET"]
                 self.assertIn("value", results)
-                self.assertAlmostEqual(results["value"], 3.639936099771113)
+                self.assertAlmostEqual(results["value"], 3.639936099771113, 2)
       

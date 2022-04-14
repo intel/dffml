@@ -21,7 +21,7 @@ class AutoH2OConfig:
         default="regression",
     )
     max_runtime_secs: int = field(
-        "The maximum time that the AutoML process will run", default=1000
+        "The maximum time that the AutoML process will run", default=0
     )
     max_models: int = field(
         "Maximum number of models to build in AutoML run", default=10
