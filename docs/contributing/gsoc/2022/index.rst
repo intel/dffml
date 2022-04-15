@@ -171,6 +171,35 @@ different angle. And when in doubt use the source! Reading the source of
 something you're importing or using can be very helpful in figuring out your
 problem.
 
+Proposal Review
+***************
+
+Grading rubirc: https://dffml.github.io/dffml-pre-image-removal/master/contributing/gsoc/rubric.html
+
+- Focus on what use cases you are going to enable
+
+  - Your code needs docs, ensure that your proposal reflects what documenation
+    it will be used in. Docs ensure people know about and use the cool stuff
+    you plan to add!
+
+Please email draft proposals to:
+
+- programmer290399@gmail.com
+- john.s.andersen@intel.com and johnandersenpdx@gmail.com
+- hashimchaudry23@gmail.com
+
+Typical feedback:
+
+- Areas you need to read more existing docs to understand how things currently
+  work.
+  
+- Issues or potential PRs that might be good pre-work / contributions
+
+  - Contributions are MERGED PRs, or something that is complete but blocked
+    on something outside your control.
+
+- Re-check the grading rubric
+
 Mentors
 -------
 
@@ -178,6 +207,7 @@ This years mentors are as follows.
 
 - Saahil Ali `@programmer290399 <https://github.com/programmer290399>`_
 - John Andersen `@pdxjohnny <https://github.com/pdxjohnny>`_
+- Hashim Chaudry `@mHash1m <https://github.com/mHash1m>`_
 
 Thanks
 ------
