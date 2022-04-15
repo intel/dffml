@@ -6,7 +6,7 @@ from typing import AsyncIterator
 
 from ..record import Record
 from ..util.entrypoint import entrypoint
-from .source import BaseSource, BaseSourceContext
+from .source import BaseSource, BaseSourceContext, Sources
 from ..util.config.inspect import make_config_inspect
 
 
@@ -103,7 +103,7 @@ class ContextManagedWrapperSource(WrapperSource):
             with self.WRAPPED(**kwargs) as source:
                 pass
         # Ensure the object returned really is a source
-        if not isinstance(source, BaseSource):
+        if not isinstance(source, (BaseSource, Sources)):
             raise FunctionDidNotYieldSource(
                 f"{self.WRAPPED} did not 'yield' an instantiated source. Instead it yielded {source!r}"
             )
