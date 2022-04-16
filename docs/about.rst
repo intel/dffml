@@ -267,7 +267,7 @@ Foundation. A big thanks to our students, Yash and Sudharsana!
 
 - :doc:`GSoC 2019 Student Contributions <contributing/gsoc/2019>`
 
-We are currently participating in Google Summer of Code 2020 under the Python
+We participated in Google Summer of Code 2020 under the Python
 Software Foundation. Big thanks to Aghin, Himanshu, and Saksham!
 
 - :doc:`GSoC 2020 Student Contributions <contributing/gsoc/2020>`
