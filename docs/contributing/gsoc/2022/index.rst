@@ -75,7 +75,7 @@ project before the end of the summer, and have more that you want to do.
 Getting Started
 ---------------
 
-- Read the `Contributing <https://intel.github.io/dffml/main/contributing/index.html>`_ documentation.
+- Read the `Contributing <https://intel.github.io/dffml/master/contributing/index.html>`_ documentation.
 
 - Get your development environment set up
 
