@@ -9,7 +9,7 @@ so.
 Grading Rubric
 --------------
 
-.. image:: /images/rubric-table.png
+.. image:: /images/rubric-table.svg
     :alt: Screenshot of grading rubric
 
 .. NOTE The text of the table wasn't included in this file because Sphynx
