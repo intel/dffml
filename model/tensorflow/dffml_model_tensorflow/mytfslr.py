@@ -18,7 +18,7 @@ from dffml import (
 )
 
 
-
+tf.compat.v1.disable_eager_execution()
 
 @config
 class MyTFSLRModelConfig:
