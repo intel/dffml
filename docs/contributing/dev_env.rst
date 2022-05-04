@@ -162,7 +162,7 @@ Activate it (on Linux / OSX / UNIX variants)
 
     $ . .venv/bin/activate
 
-Activate it (on Widows)
+Activate it (on Windows)
 
 .. code-block:: console
 
