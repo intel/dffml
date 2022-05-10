@@ -4,7 +4,7 @@ GSoC 2022
 DFFML is participating in Google Summer of Code under the Python
 Software Foundation umbrella. You can read all about what GSoC is at
 http://python-gsoc.org/ and
-https://summerofcode.withgoogle.com/how-it-works/#timeline
+https://developers.google.com/open-source/gsoc/timeline
 
 NOTE:
 =====
