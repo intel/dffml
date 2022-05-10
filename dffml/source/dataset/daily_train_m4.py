@@ -1,6 +1,6 @@
 import pathlib
 import os
-from zipfile import ZipFile 
+from zipfile import ZipFile
 
 from ..csv import CSVSource
 from .base import dataset_source
