@@ -27,4 +27,8 @@ async def daily_train_m4(
         
         original_path = cache_dir / "Daily-train.csv"
 
+<<<<<<< HEAD
         yield CSVSource(filename=str(original_path))
+=======
+        yield CSVSource(filename=str(original_path))
+>>>>>>> 72e0abc27 (Create daily_train_m4.py)
