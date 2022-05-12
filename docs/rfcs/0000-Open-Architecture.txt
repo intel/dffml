@@ -1,0 +1,68 @@
+Open Architecture Working Group
+Internet-Draft
+Intended status: Draft
+Expires: June 1, 2023
+                                                                  March 12, 2022
+
+
+      Open Architecture: Methodology for interpreting directed graphs as
+                          any system architecture
+
+Abstract
+
+   This document describes the Open Architecture; a proxy format for domain
+   specific representations of architecture.
+
+   The Open Architecture builds on the Open Digital Asset Protocol. We define a
+   methodology for interpreting a directed graph of digital assets as a system
+   architecture.
+
+   We suggest methods for interpreting those graphs as software and hardware
+   architectures as well as the Open Architecture's role in living threat
+   models.
+
+Status of This Memo
+
+   This Internet-Draft will be submitted in full conformance with the
+   provisions of BCP 78 and BCP 79.
+
+   This draft will expire on June 1st, 2023.
+
+Table of Contents
+
+   1.  Introduction
+   2.  References
+
+1.  Introduction
+
+   The Open Architecture enables hybrid on/off chain smart contacts.
+   It does this by incorporating risk management into architecture definition /
+   smart contract. Smart contracts with understanding of risk are effectively
+   entities making decisions based on models. This allows for mutation in
+   implementation while maintaining principles.
+
+   The smart contract is able to make its own decisions based on learned
+   experience so as to continue to operate until its strategic goals are meet.
+   As measured by oracle data ordained from trusted parties as is
+   applicable to context. Where chains of trust are established via Peer DIDs
+   between entities and data for provenance. Leveraging verifiable credentials
+   for review system to measure risk in absence of attestation.
+
+2.  References
+
+2.1.  Normative References
+
+   [draft-hargreaves-odap-03]
+              Internet Engineering Task Force, "Open Digital Asset Protocol"
+              ODAP, November, 2021,
+              <https://datatracker.ietf.org/doc/html/draft-hargreaves-odap-03>.
+
+2.2.  Informative References
+
+   [alice-discussion]
+              DFFML Authors, "Alice", May 2022,
+              <https://github.com/intel/dffml/discussions/1369>.
+
+   [living-threat-models]
+              John Whiteman, "Living Threat Models", TDB,
+              <https://example.com/ltm>.
