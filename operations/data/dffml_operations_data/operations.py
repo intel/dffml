@@ -2,6 +2,12 @@ import numpy as np
 from sklearn.decomposition import PCA, TruncatedSVD
 from sklearn.preprocessing import OneHotEncoder, StandardScaler
 from sklearn.impute import SimpleImputer
+from sklearn.feature_selection import (
+    SelectKBest,
+    SelectPercentile,
+    chi2,
+    f_regression,
+)
 
 from dffml.df.base import op
 
@@ -11,9 +17,11 @@ from .definitions import (
     input_data,
     categories,
     output_data,
+    target_data,
     random_state,
     n_components,
     missing_values,
+    percentile,
 )
 
 
@@ -22,7 +30,8 @@ from .definitions import (
     outputs={"result": output_data},
 )
 async def principal_component_analysis(
-    data, n_components=None,
+    data,
+    n_components=None,
 ):
     """
     Decomposes the data into (n_samples, n_components)
@@ -55,7 +64,10 @@ async def principal_component_analysis(
     outputs={"result": output_data},
 )
 async def singular_value_decomposition(
-    data, n_components=2, n_iter=5, random_state=None,
+    data,
+    n_components=2,
+    n_iter=5,
+    random_state=None,
 ):
     """
     Decomposes the data into (n_samples, n_components)
@@ -158,7 +170,7 @@ async def standard_scaler(data):
     ----------
     data: List[List[int]]
         data that needs to be standardized
-    
+
     Returns
     -------
     result: Standardized data
@@ -169,7 +181,8 @@ async def standard_scaler(data):
 
 
 @op(
-    inputs={"data": input_data}, outputs={"result": output_data},
+    inputs={"data": input_data},
+    outputs={"result": output_data},
 )
 async def remove_whitespaces(data):
     """
@@ -189,7 +202,8 @@ async def remove_whitespaces(data):
 
 
 @op(
-    inputs={"data": input_data}, outputs={"result": output_data},
+    inputs={"data": input_data},
+    outputs={"result": output_data},
 )
 async def ordinal_encoder(data):
     """
@@ -210,4 +224,39 @@ async def ordinal_encoder(data):
     enc = OneHotEncoder()
     enc.fit(data)
     new_data = enc.transform(data).toarray()
+    return {"result": new_data}
+
+
+@op(
+    inputs={
+        "input_data": input_data,
+        "target_data": target_data,
+        "percentile": percentile,
+    },
+    outputs={"result": output_data},
+)
+async def feature_selection(input_data, target_data, percentile=70):
+    """
+    Select features according to a percentile of the highest scores.
+
+    Parameters
+    ----------
+    input_data : List[List[int]]
+        Data to perform feature selecton for
+
+    target_data: List[int]
+        Target data to fit input data against for feature selection
+
+    percentile: int
+        Percentage of best features to keep
+
+    Returns
+    -------
+    result: Truncated dataset with a certain percetage of features selected.
+    """
+
+    new_data = SelectPercentile(
+        f_regression, percentile=percentile
+    ).fit_transform(input_data, target_data)
+
     return {"result": new_data}

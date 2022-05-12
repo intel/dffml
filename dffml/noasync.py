@@ -8,6 +8,11 @@ from .high_level.ml import (
     predict as high_level_predict,
 )
 
+import nest_asyncio
+
+# allow for nested async calls
+nest_asyncio.apply()
+
 
 def train(*args, **kwargs):
     return asyncio.run(high_level_train(*args, **kwargs))

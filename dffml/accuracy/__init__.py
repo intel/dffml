@@ -9,5 +9,3 @@ from .accuracy import (
     AccuracyScorer,
     InvalidNumberOfFeaturesError,
 )
-from .mse import MeanSquaredErrorAccuracy
-from .clf import ClassificationAccuracy

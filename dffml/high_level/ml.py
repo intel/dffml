@@ -7,6 +7,7 @@ from ..feature import Feature, Features
 from ..model import Model, ModelContext
 from ..util.internal import records_to_sources, list_records_to_dict
 from ..accuracy.accuracy import AccuracyScorer, AccuracyContext
+from ..tuner.tuner import Tuner, TunerContext
 
 
 async def train(model, *args: Union[BaseSource, Record, Dict[str, Any], List]):
@@ -192,6 +193,142 @@ async def score(
             raise TypeError(f"{accuracy_scorer} is not an AccuracyScorer")
 
         return float(await actx.score(mctx, sctx, *features))
+
+
+async def tune(
+    model,
+    tuner: Union[Tuner, TunerContext],
+    accuracy_scorer: Union[AccuracyScorer, AccuracyContext],
+    features: Union[Feature, Features],
+    train_ds: Union[List[Dict[str, Any]], str],
+    valid_ds: Union[List[Dict[str, Any]], str],
+) -> float:
+    """
+    Tune the hyperparameters of a model with a given tuner.
+
+    Provide records to the model to assess the percent accuracy of its
+    prediction abilities. The model should be already instantiated and trained.
+
+    Parameters
+    ----------
+    model : Model
+        Machine Learning model to use. See :doc:`/plugins/dffml_model` for
+        models options.
+    tuner: Tuner
+        Hyperparameter tuning method to use. See :doc:`/plugins/dffml_tuner` for
+        tuner options.
+    *args : list
+        Input data for training. Could be a ``dict``, :py:class:`Record`,
+        filename, one of the data :doc:`/plugins/dffml_source`, or a filename
+        with the extension being one of the data sources.
+
+    Returns
+    -------
+    float
+        A decimal value representing the percent of the time the model made the
+        correct prediction. For some models this has another meaning. Please see
+        the documentation for the model your using for further details.
+
+    Examples
+    --------
+
+    >>> import asyncio
+    >>> from dffml import *
+    >>>
+    >>> model = SLRModel(
+    ...     features=Features(
+    ...         Feature("Years", int, 1),
+    ...     ),
+    ...     predict=Feature("Salary", int, 1),
+    ...     location="tempdir",
+    ... )
+    >>>
+    >>> async def main():
+    ...     await train(
+    ...         model,
+    ...         {"Years": 0, "Salary": 10},
+    ...         {"Years": 1, "Salary": 20},
+    ...         {"Years": 2, "Salary": 30},
+    ...         {"Years": 3, "Salary": 40},
+    ...     )
+    ...     print(
+    ...         "Accuracy:",
+    ...         await score(
+    ...             model,
+    ...             MeanSquaredErrorAccuracy(),
+    ...             Feature("Salary", int, 1),
+    ...             {"Years": 4, "Salary": 50},
+    ...             {"Years": 5, "Salary": 60},
+    ...         ),
+    ...     )
+    >>>
+    >>> asyncio.run(main())
+    Accuracy: 0.0
+    """
+
+    if not isinstance(features, (Feature, Features)):
+        raise TypeError(
+            f"features was {type(features)}: {features!r}. Should have been Feature or Features"
+        )
+    if isinstance(features, Feature):
+        features = Features(features)
+    if hasattr(model.config, "predict"):
+        if isinstance(model.config.predict, Features):
+            predict_feature = [
+                feature.name for feature in model.config.predict
+            ]
+        else:
+            predict_feature = [model.config.predict.name]
+    if hasattr(model.config, "features") and any(
+        isinstance(td, list) for td in train_ds
+    ):
+        train_ds = list_records_to_dict(
+            [feature.name for feature in model.config.features]
+            + predict_feature,
+            *train_ds,
+            model=model,
+        )
+    if hasattr(model.config, "features") and any(
+        isinstance(td, list) for td in valid_ds
+    ):
+        valid_ds = list_records_to_dict(
+            [feature.name for feature in model.config.features]
+            + predict_feature,
+            *valid_ds,
+            model=model,
+        )
+
+    async with contextlib.AsyncExitStack() as astack:
+        # Open sources
+        train = await astack.enter_async_context(records_to_sources(*train_ds))
+        test = await astack.enter_async_context(records_to_sources(*valid_ds))
+        # Allow for keep models open
+        if isinstance(model, Model):
+            model = await astack.enter_async_context(model)
+            mctx = await astack.enter_async_context(model())
+        elif isinstance(model, ModelContext):
+            mctx = model
+
+        # Allow for keep models open
+        if isinstance(accuracy_scorer, AccuracyScorer):
+            accuracy_scorer = await astack.enter_async_context(accuracy_scorer)
+            actx = await astack.enter_async_context(accuracy_scorer())
+        elif isinstance(accuracy_scorer, AccuracyContext):
+            actx = accuracy_scorer
+
+        if isinstance(tuner, Tuner):
+            tuner = await astack.enter_async_context(tuner)
+            tctx = await astack.enter_async_context(tuner())
+        elif isinstance(accuracy_scorer, AccuracyContext):
+            tctx = tuner
+        else:
+            # TODO Replace this with static type checking and maybe dynamic
+            # through something like pydantic. See issue #36
+            raise TypeError(f"{accuracy_scorer} is not an AccuracyScorer")
+
+        return float(
+            await tctx.optimize(mctx, model.config.predict, actx, train, test)
+        )
 
 
 async def predict(

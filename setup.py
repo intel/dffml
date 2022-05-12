@@ -172,6 +172,8 @@ setup(
         # Tuner
         "dffml.tuner": [
             "parameter_grid = dffml.tuner.parameter_grid:ParameterGrid",
+            "bayes_opt_gp = dffml.tuner.bayes_opt_gp:BayesOptGP",
+            "random_search = dffml.tuner.random_search:RandomSearch",
         ],
     },
 )

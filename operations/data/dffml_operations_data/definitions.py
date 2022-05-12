@@ -3,6 +3,7 @@ from dffml.df.types import Definition
 
 definitions = [
     Definition(name="input_data", primitive="List[List[int]]"),
+    Definition(name="target_data", primitive="List[int]"),
     Definition(name="output_data", primitive="List[List[int]]"),
     Definition(name="n_components", primitive="int"),
     Definition(name="n_iter", primitive="int"),
@@ -10,6 +11,7 @@ definitions = [
     Definition(name="missing_values", primitive="Any"),
     Definition(name="strategy", primitive="str"),
     Definition(name="categories", primitive="List[List[Any]]"),
+    Definition(name="percentile", primitive="ints"),
 ]
 
 for definition in definitions:

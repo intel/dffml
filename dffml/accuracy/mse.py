@@ -8,6 +8,10 @@ from .accuracy import (
     AccuracyContext,
 )
 
+from ..base import (
+    config,
+)
+
 
 @config
 class MeanSquaredErrorAccuracyConfig:
@@ -20,7 +24,10 @@ class MeanSquaredErrorAccuracyContext(AccuracyContext):
     """
 
     async def score(
-        self, mctx: ModelContext, sources: SourcesContext, feature: Feature,
+        self,
+        mctx: ModelContext,
+        sources: SourcesContext,
+        feature: Feature,
     ):
         y = []
         y_predict = []

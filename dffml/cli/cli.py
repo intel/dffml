@@ -39,7 +39,7 @@ from ..base import field, config
 
 from .dataflow import Dataflow
 from .config import Config
-from .ml import Train, Accuracy, Predict
+from .ml import Train, Accuracy, Predict, Tune
 from .list import List
 
 version = VERSION
@@ -173,10 +173,12 @@ class Packages(CMD):
 @config
 class EditCMDConfig:
     dataflow: str = field(
-        "File containing exported DataFlow", default=None,
+        "File containing exported DataFlow",
+        default=None,
     )
     config: BaseConfigLoader = field(
-        "ConfigLoader to use for importing DataFlow", default=None,
+        "ConfigLoader to use for importing DataFlow",
+        default=None,
     )
     features: Features = field(
         "Feature definitions of records to update",
@@ -257,10 +259,12 @@ class Edit(CMD):
 @config
 class MergeConfig:
     src: BaseSource = field(
-        "Source to pull records from", labeled=True,
+        "Source to pull records from",
+        labeled=True,
     )
     dest: BaseSource = field(
-        "Source to merge records into", labeled=True,
+        "Source to merge records into",
+        labeled=True,
     )
 
 
@@ -285,7 +289,8 @@ class Merge(CMD):
 
 class ImportExportCMDConfig(PortCMDConfig, SourcesCMDConfig):
     filename: str = field(
-        "Filename", default=None,
+        "Filename",
+        default=None,
     )
 
 
@@ -366,6 +371,7 @@ class CLI(CMD):
     train = Train
     accuracy = Accuracy
     predict = Predict
+    tune = Tune
     service = services()
     dataflow = Dataflow
     config = Config

@@ -1,6 +1,7 @@
 from typing import Union, Dict, Any
 import itertools
 import logging
+import random
 
 from ..base import (
     config,
@@ -16,16 +17,15 @@ from ..feature.feature import Feature
 
 
 @config
-class ParameterGridConfig:
-    parameters: dict = field(
-        "Parameters to be optimized", default_factory=lambda: dict()
-    )
+class RandomSearchConfig:
+    parameters: dict = field("Parameters to be optimized")
     objective: str = field(
         "How to optimize the given scorer. Values are min/max", default="max"
     )
+    trials: int = field("Number of random configurations to try.", default=20)
 
 
-class ParameterGridContext(TunerContext):
+class RandomSearchContext(TunerContext):
     """
     Parameter Grid Tuner
     """
@@ -81,17 +81,16 @@ class ParameterGridContext(TunerContext):
         logging.info(names)
 
         with model.parent.config.no_enforce_immutable():
-            for combination in itertools.product(
-                *list(self.parent.config.parameters.values())
-            ):
+            for _ in range(self.parent.config.trials):
+                combination = []
+                for pvs in self.parent.config.parameters.values():
+                    combination.append(random.choice(pvs))
                 logging.info(combination)
 
                 for i in range(len(combination)):
                     param = names[i]
                     setattr(model.parent.config, names[i], combination[i])
-
                 await train(model.parent, *train_data)
-
                 acc = await score(
                     model.parent, accuracy_scorer, feature, *test_data
                 )
@@ -119,8 +118,8 @@ class ParameterGridContext(TunerContext):
         return highest_acc
 
 
-@entrypoint("parameter_grid")
-class ParameterGrid(Tuner):
+@entrypoint("random_search")
+class RandomSearch(Tuner):
 
-    CONFIG = ParameterGridConfig
-    CONTEXT = ParameterGridContext
+    CONFIG = RandomSearchConfig
+    CONTEXT = RandomSearchContext

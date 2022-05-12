@@ -1,9 +1,13 @@
 import inspect
+import json
+
+from dffml.hyperparameter.hyperparameter import Hyperparameter
 
 from ..model.model import Model
 from ..source.source import Sources, SubsetSources
 from ..util.cli.cmd import CMD, CMDOutputOverride
-from ..high_level.ml import train, predict, score
+from ..high_level.ml import train, predict, score, tune
+
 from ..util.config.fields import FIELD_SOURCES
 from ..util.cli.cmds import (
     SourcesCMD,
@@ -15,7 +19,9 @@ from ..util.cli.cmds import (
 )
 from ..base import config, field
 from ..accuracy import AccuracyScorer
+from ..tuner import Tuner
 from ..feature import Features
+from ..hyperparameter import Hyperparameters
 
 
 @config
@@ -31,6 +37,20 @@ class AccuracyCMDConfig:
     )
     features: Features = field("Predict Feature(s)", default=Features())
     sources: Sources = FIELD_SOURCES
+
+
+@config
+class TuneCMDConfig:
+    model: Model = field("Model used for ML", required=True)
+    tuner: Tuner = field("Tuner to optimize hyperparameters", required=True)
+    scorer: AccuracyScorer = field(
+        "Method to use to score accuracy", required=True
+    )
+    features: Features = field("Predict Feature(s)", default=Features())
+    sources: Sources = FIELD_SOURCES
+    hyperparameters: Hyperparameters = field(
+        "Hyperparameters", default_factory=lambda: Hyperparameters()
+    )
 
 
 class MLCMD(SourcesCMD, ModelCMD):
@@ -71,13 +91,59 @@ class Accuracy(MLCMD):
         )
 
 
+class Tune(MLCMD):
+    """Optimize hyperparameters of model with given sources"""
+
+    CONFIG = TuneCMDConfig
+
+    async def run(self):
+        # Instantiate the accuracy scorer class if for some reason it is a class
+        # at this point rather than an instance.
+        if inspect.isclass(self.scorer):
+            self.scorer = self.scorer.withconfig(self.extra_config)
+        if inspect.isclass(self.tuner):
+            self.tuner = self.tuner.withconfig(self.extra_config)
+
+        if self.tuner.config.parameters:
+            self.hyperparameters = Hyperparameters()
+            for (para, vals) in self.tuner.config.parameters.items():
+                res = list(map(lambda x: str(x), vals))
+                self.hyperparameters.append(
+                    Hyperparameter(
+                        "{}:{}:{}".format(
+                            para, vals[0].__class__.__name__, ",".join(res)
+                        )
+                    )
+                )
+        if self.hyperparameters:
+            for hp in self.hyperparameters:
+                self.tuner.config.parameters[hp.name] = hp.vals
+
+        if len(self.hyperparameters) == 0:
+            raise NotImplementedError(
+                "No hyperoptimization configuration found."
+            )
+        self.tuner.hyperparameters = self.hyperparameters
+
+        return await tune(
+            self.model,
+            self.tuner,
+            self.scorer,
+            self.features,
+            [self.sources[0]],
+            [self.sources[1]],
+        )
+
+
 @config
 class PredictAllConfig(MLCMDConfig):
     update: bool = field(
-        "Update record with sources", default=False,
+        "Update record with sources",
+        default=False,
     )
     pretty: bool = field(
-        "Outputs data in tabular form", default=False,
+        "Outputs data in tabular form",
+        default=False,
     )
 
 

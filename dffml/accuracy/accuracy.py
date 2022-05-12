@@ -15,6 +15,12 @@ class InvalidNumberOfFeaturesError(Exception):
     pass
 
 
+from ..base import (
+    config,
+    field,
+)
+
+
 @config
 class AccuracyConfig:
     pass

@@ -225,9 +225,10 @@ class XGBClassifierModel(SimpleModel):
             min_child_weight=self.config.min_child_weight,
             reg_lambda=self.config.reg_lambda,
             reg_alpha=self.config.reg_alpha,
+            eval_metric="merror",
         )
 
-        self.saved.fit(x_data, y_data, eval_metric="merror")
+        self.saved.fit(x_data, y_data)
         self.is_trained = True
 
     async def predict(self, sources: Sources) -> AsyncIterator[Record]:
