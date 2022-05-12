@@ -64,6 +64,15 @@ their latest versions (``pip setuptools wheel``).
     $ python3 -m pip install -U pip setuptools wheel
     $ python3 -m pip install --prefix=~/.local -e .[dev]
 
+
+In case you're using zsh shell, you may encounter ``zsh: no matches found: [dev]``. 
+This occurs as zsh interprets square brackets differently. This issue can be 
+resolved by enclosing [dev] within quotation marks
+
+.. code-block:: console
+
+    $ python3 -m pip install --prefix=~/.local -e .'[dev]'
+
 Verify you can use ``dffml`` from the command line.
 
 .. code-block:: console
