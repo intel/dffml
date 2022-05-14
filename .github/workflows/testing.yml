@@ -92,6 +92,7 @@ jobs:
         - model/spacy
         - model/pytorch
         - model/xgboost
+        - model/orion
         - operations/binsec
         - operations/data
         - operations/deploy

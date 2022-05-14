@@ -32,6 +32,7 @@ CORE_PLUGINS = [
     ("model", "pytorch"),
     ("model", "spacy"),
     ("model", "daal4py"),
+    ("model", "orion"),
 ]
 
 # Models which currently don't support Windows or MacOS

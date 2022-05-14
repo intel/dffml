@@ -1,0 +1,2 @@
+[dffml.model]
+orion = dffml_model_orion.orion_model:OrionModel
