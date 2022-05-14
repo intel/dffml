@@ -165,7 +165,7 @@ Command Line Flags Explained
 
 - ``-scorer mse``
 
-  - Report the modules accuracy use the Mead Squared Error accuracy scorer.
+  - Report the modules accuracy use the Mean Squared Error accuracy scorer.
     See the :doc:`/plugins/dffml_accuracy` plugin page for all accuracy scorers.
 
 - ``-sources f=csv``
