@@ -578,7 +578,7 @@ class Diagram(CMD):
                                 origin_definition_name
                             )
                             print(
-                                f"{seed_input_node}({source}<br>{origin_definition_name})"
+                                f"{seed_input_node}({origin}<br>{definition_name})"
                             )
                             if len(self.stages) == 1:
                                 print(
