@@ -822,6 +822,62 @@ class BaseInputNetwork(BaseDataFlowObject):
     """
 
 
+@config
+class LoadSourceInputNetworkConfig:
+    pass
+
+
+class LoadSourceInputNetworkContextEntry(NamedTuple):
+    ctx: BaseInputSetContext
+    definitions: Dict[Definition, List[Input]]
+    by_origin: Dict[Union[str, Tuple[str, str]], List[Input]]
+
+
+class MemoryDefinitionSetContext(BaseDefinitionSetContext):
+    async def inputs(self, definition: Definition) -> AsyncIterator[Input]:
+        # Grab the input set context handle
+        handle = await self.ctx.handle()
+        handle_string = handle.as_string()
+        # Associate inputs with their context handle grouped by definition
+        async with self.parent.ctxhd_lock:
+            # Yield all items under the context for the given definition
+            entry = self.parent.ctxhd[handle_string]
+            for item in entry.definitions[definition]:
+                yield item
+
+
+class UpdateSourceInputNetworkContext(BaseInputNetworkContext):
+    async def add(self, input_set: BaseInputSet):
+        await self.sctx.update(
+            Record(
+                (await input_set.ctx.handle()).as_string(),
+                data={
+                    "features": {
+                        self.parent.config.feature_name: input_set
+            )
+        )
+        return await self.ictx.add(input_set)
+
+
+class LoadSourceInputNetworkContext(BaseInputNetworkContext):
+    async def __aenter__(self):
+        return await self.ctx.add(input_set)
+        return self.ctx
+
+
+@entrypoint("source.load")
+class LoadSourceInputNetwork(BaseInputNetwork, BaseMemoryDataFlowObject):
+    """
+    Load an input network with data from from underlying source on initial load.
+
+    .. code-block:: console
+        :test:
+    """
+
+    CONTEXT = LoadSourceInputNetworkContext
+    CONFIG = LoadSourceInputNetworkConfig
+
+
 class OperationImplementationNotInstantiable(Exception):
     """
     OperationImplementation cannot be instantiated and is required to continue.
