@@ -63,6 +63,8 @@ def mapping_extract_value(mapping: Dict[str, Any], traverse: List[str]):
     >>> asyncio.run(main())
     {'value': 42}
     """
+    if isinstance(traverse, str):
+        traverse = [traverse]
     if not isinstance(mapping, dict):
         mapping = export(mapping)
     return {"value": traverse_get(mapping, *traverse)}
