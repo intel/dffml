@@ -22,6 +22,7 @@ class FileSourceConfig:
     tag: str = "untagged"
     readwrite: bool = False
     allowempty: bool = False
+    mkdirs: bool = False
 
 
 @entrypoint("file")
@@ -54,6 +55,10 @@ class FileSource(BaseSource):
         return {}
 
     async def _open(self):
+        # Create directories for default source if not exists
+        filepath = pathlib.Path(self.config.filename)
+        if not filepath.parent.is_dir() and self.config.mkdirs:
+            filepath.parent.mkdir(parents=True)
         if not os.path.exists(self.config.filename) or os.path.isdir(
             self.config.filename
         ):
