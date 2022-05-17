@@ -1,0 +1,5 @@
+aiohttp>=3.4.4
+motor>=2.0.0
+git+https://github.com/pdxjohnny/dffml@manifest#egg=dffml
+git+https://github.com/pdxjohnny/dffml@manifest#egg=dffml-feature-git&subdirectory=feature/git
+# Need CVEMap
