@@ -28,12 +28,16 @@ class EnsureTokeiConfig:
         },
     )
 
+import contextlib
 
 @dffml.op(
     config_cls=EnsureTokeiConfig,
+    imp_enter={
+        "stack": contextlib.AsyncExitStack,
+    },
 )
 async def ensure_tokei(self) -> str:
-    return await dffml.cached_download_unpack_archive(
+    tokei = await dffml.cached_download_unpack_archive(
         **{
             "file_path": self.parent.config.cache_dir.joinpath("tokei.tar.gz"),
             "directory_path": self.parent.config.cache_dir.joinpath("tokei-download"),
@@ -41,7 +45,7 @@ async def ensure_tokei(self) -> str:
             **self.parent.config.platform_urls[platform.system()],
         }
     )
-
+    self.parent.stack.enter_context(dffml.prepend_to_path(tokei))
 
 
 COLLECTOR_DATAFLOW = dffml.DataFlow(
