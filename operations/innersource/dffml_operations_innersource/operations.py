@@ -1,10 +1,28 @@
 import pathlib
+import datetime
 from typing import List
 
 import yaml
 
 import dffml
-from dffml_feature_git.feature.definitions import git_repository
+from dffml_feature_git.feature.definitions import (
+    git_repository,
+    quarter_start_date,
+)
+
+
+@dffml.op(inputs={"repo": git_repository,},)
+def github_workflow_present(repo: git_repository.spec) -> dict:
+    return pathlib.Path(repo.directory, ".github", "workflows").is_dir()
+
+
+# TODO Auto definition code which is about to undergo refactor will fix up this
+# oddness with typing and half abilty to have auto inputs with types.
+@dffml.op(inputs={}, outputs={"result": quarter_start_date})
+def get_current_datetime_as_git_date():
+    return {
+        "result": datetime.datetime.now().strftime("%Y-%m-%d %H:%M"),
+    }
 
 
 @dffml.op(inputs={"repo": git_repository,},)
@@ -83,14 +101,34 @@ import dataclasses
 import dffml.cli.dataflow
 
 
+DEFAULT_SOURCE = dffml.JSONSource(
+    filename=pathlib.Path(
+        ".tools",
+        "open-architecture",
+        "innersource",
+        "repos.json",
+    ),
+    readwrite=True,
+    allowempty=True,
+    mkdirs=True,
+)
+
+
+# NOTE When CLI and operations are merged: All this is the same stuff that will
+# happen to Operation config_cls structures. We need a more ergonomic API to
+# obsucre the complexity dataclasses introduces when modifying fields/defaults
+# within subclasses.
 for dffml_cli_class_name, field_modifications in {
     "RunAllRecords": {
-        "dataflow": {"default": COLLECTOR_DATAFLOW,},
-        "record_def": {"default": COLLECTOR_DATAFLOW.definitions["URL"].name,},
+        # metadata setting could be less awkward
+        "dataflow": {"default": COLLECTOR_DATAFLOW},
+        "record_def": {"default": COLLECTOR_DATAFLOW.definitions["URL"].name},
+        "sources": {"default_factory": lambda: dffml.Sources(DEFAULT_SOURCE)}
     },
     "RunRecordSet": {
-        "dataflow": {"default": COLLECTOR_DATAFLOW,},
-        "record_def": {"default": COLLECTOR_DATAFLOW.definitions["URL"].name,},
+        "dataflow": {"default": COLLECTOR_DATAFLOW},
+        "record_def": {"default": COLLECTOR_DATAFLOW.definitions["URL"].name},
+        "sources": {"default_factory": lambda: dffml.Sources(DEFAULT_SOURCE)}
     },
     "Diagram": {"dataflow": {"default": COLLECTOR_DATAFLOW,},},
 }.items():
