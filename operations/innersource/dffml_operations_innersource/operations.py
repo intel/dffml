@@ -25,12 +25,12 @@ def get_current_datetime_as_git_date():
     }
 
 
-@dffml.op(inputs={"repo": git_repository,},)
-def github_workflow_present(repo: git_repository.spec) -> dict:
-    return pathlib.Path(repo.directory, ".github", "workflows").is_dir()
-
-
-@dffml.op(stage=dffml.Stage.OUTPUT)
+@dffml.op(
+    inputs={
+        "results": dffml.GroupBy.op.outputs["output"],
+    },
+    stage=dffml.Stage.OUTPUT,
+)
 def maintained(results: dict) -> bool:
     return True
 
@@ -44,7 +44,11 @@ class UnmaintainedConfig:
 
 
 @dffml.op(
-    stage=dffml.Stage.OUTPUT, config_cls=UnmaintainedConfig,
+    inputs={
+        "results": dffml.GroupBy.op.outputs["output"],
+    },
+    stage=dffml.Stage.OUTPUT,
+    config_cls=UnmaintainedConfig,
 )
 def unmaintained(self, results: dict) -> bool:
     # As an example, if there are no commits in the last quarter, return
