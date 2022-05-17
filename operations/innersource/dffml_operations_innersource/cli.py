@@ -128,9 +128,9 @@ COLLECTOR_DATAFLOW.seed = [
     ),
 ]
 COLLECTOR_DATAFLOW.operations[
-    dffml_feature_git.feature.operations.lines_of_code_by_language.op.name
+    COLLECTOR_DATAFLOW.operations["lines_of_code_by_language"].name
 ] = COLLECTOR_DATAFLOW.operations[
-    dffml_feature_git.feature.operations.lines_of_code_by_language.op.name
+    COLLECTOR_DATAFLOW.operations["lines_of_code_by_language"].name
 ]._replace(
     conditions=[ensure_tokei.op.outputs["result"]]
 )
