@@ -1,6 +1,6 @@
 import pathlib
 import contextlib
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Union
 
 from ..base import BaseConfig
 from ..df.base import BaseOrchestrator, OperationImplementation
@@ -151,8 +151,8 @@ class Create(CMD):
 
 @config
 class RunCMDConfig:
-    dataflow: str = field(
-        "File containing exported DataFlow", required=True,
+    dataflow: Union[str, DataFlow] = field(
+        "File containing exported DataFlow",
     )
     configloader: BaseConfigLoader = field(
         "ConfigLoader to use for importing DataFlow", default=None,
@@ -278,25 +278,31 @@ class RunAllRecords(RunCMD):
                     await sctx.update(record)
 
     async def run(self):
-        dataflow_path = pathlib.Path(self.dataflow)
-        config_cls = self.configloader
-        if config_cls is None:
-            config_type = dataflow_path.suffix.replace(".", "")
-            config_cls = BaseConfigLoader.load(config_type)
-        async with config_cls.withconfig(self.extra_config) as configloader:
-            async with configloader() as loader:
-                exported = await loader.loadb(dataflow_path.read_bytes())
-                dataflow = DataFlow._fromdict(**exported)
-                for v, k in self.config:
-                    traverse_set(dataflow.configs, k, value=v)
         async with self.orchestrator as orchestrator, self.sources as sources:
             async for record in self.run_dataflow(
-                orchestrator, sources, dataflow
+                orchestrator, sources, self.dataflow
             ):
                 if not self.no_echo:
                     yield record
         if self.no_echo:
             yield CMDOutputOverride
+
+    async def __aenter__(self):
+        if not isinstance(self.dataflow, DataFlow):
+            dataflow_path = pathlib.Path(self.dataflow)
+            config_cls = self.configloader
+            if config_cls is None:
+                config_type = dataflow_path.suffix.replace(".", "")
+                config_cls = BaseConfigLoader.load(config_type)
+            async with config_cls.withconfig(
+                self.extra_config
+            ) as configloader:
+                async with configloader() as loader:
+                    exported = await loader.loadb(dataflow_path.read_bytes())
+                    self.dataflow = DataFlow._fromdict(**exported)
+                    for v, k in self.config:
+                        traverse_set(dataflow.configs, k, value=v)
+        return self
 
 
 @config
@@ -327,8 +333,8 @@ class RunRecords(CMD):
 
 @config
 class RunSingleConfig:
-    dataflow: str = field(
-        "File containing exported DataFlow", required=True,
+    dataflow: Union[str, DataFlow] = field(
+        "File containing exported DataFlow",
     )
     no_echo: bool = field(
         "Do not echo back records", default=False,
@@ -455,7 +461,9 @@ class Run(CMD):
 
 @config
 class DiagramConfig:
-    dataflow: str = field("File containing exported DataFlow")
+    dataflow: Union[str, DataFlow] = field(
+        "File containing exported DataFlow",
+    )
     configloader: BaseConfigLoader = field(
         "ConfigLoader to use for importing DataFlow", default=None,
     )
