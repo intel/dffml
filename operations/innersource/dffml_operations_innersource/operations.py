@@ -6,13 +6,13 @@ import yaml
 
 import dffml
 from dffml_feature_git.feature.definitions import (
-    git_repository,
+    git_repository_checked_out,
     quarter_start_date,
 )
 
 
-@dffml.op(inputs={"repo": git_repository,},)
-def github_workflow_present(repo: git_repository.spec) -> dict:
+@dffml.op(inputs={"repo": git_repository_checked_out,},)
+def github_workflow_present(repo: git_repository_checked_out.spec) -> dict:
     return pathlib.Path(repo.directory, ".github", "workflows").is_dir()
 
 
