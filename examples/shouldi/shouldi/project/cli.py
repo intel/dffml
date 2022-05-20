@@ -43,6 +43,7 @@ class ProjectCreateCMD(CMD):
     CONFIG = ProjectCreateCMDConfig
 
     async def run(self):
+        self.logger.critical("This command does not generate an SBOM. It will soon.")
         return mkbom(self.authoritative, self.dbs, self.source, add=self.add)
 
 
