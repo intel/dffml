@@ -123,6 +123,10 @@ COLLECTOR_DATAFLOW.seed = [
                 ].name,
                 "by": "quarter",
             },
+            operations.github_workflow_present.op.outputs["result"].name: {
+                "group": operations.github_workflow_present.op.outputs["result"].name,
+                "by": "quarter",
+            },
         },
         definition=COLLECTOR_DATAFLOW.definitions["group_by_spec"],
     ),
