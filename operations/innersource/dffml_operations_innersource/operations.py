@@ -12,7 +12,9 @@ from dffml_feature_git.feature.definitions import (
 
 
 @dffml.op(inputs={"repo": git_repository_checked_out,},)
-def github_workflow_present(repo: git_repository_checked_out.spec) -> dict:
+def github_workflow_present(self, repo: git_repository_checked_out.spec) -> dict:
+    import subprocess
+    self.logger.debug("%s", list(pathlib.Path(repo.directory).rglob("*")))
     return pathlib.Path(repo.directory, ".github", "workflows").is_dir()
 
 
