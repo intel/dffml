@@ -8,6 +8,7 @@ from dffml import CMD, DataFlow, Input, GetMulti, run, config, field
 # directory that will be scanned
 from dffml_feature_git.feature.operations import (
     clone_git_repo,
+    check_if_valid_git_repository_URL,
     cleanup_git_repo,
 )
 
@@ -26,6 +27,7 @@ from .types import SA_RESULTS
 # Link inputs and outputs together according to their definitions
 DATAFLOW = DataFlow.auto(
     clone_git_repo,
+    check_if_valid_git_repository_URL,
     check_python,
     analyze_python,
     check_javascript,
@@ -86,9 +88,12 @@ class Use(CMD):
                             "directory": str(path),
                         },
                         definition=clone_git_repo.op.outputs["repo"],
-                    )
-                    if path.is_dir()
-                    else Input(
+                    ),
+                    Input(value=True, definition=valid_git_repository_URL),
+                ]
+                if path.is_dir()
+                else [
+                    Input(
                         value=target_name,
                         definition=clone_git_repo.op.inputs["URL"],
                     )
