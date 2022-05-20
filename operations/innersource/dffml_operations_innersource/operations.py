@@ -18,6 +18,16 @@ def github_workflow_present(self, repo: git_repository_checked_out.spec) -> dict
     return pathlib.Path(repo.directory, ".github", "workflows").is_dir()
 
 
+@dffml.op(inputs={"repo": git_repository_checked_out,},)
+def contributing_present(self, repo: git_repository_checked_out.spec) -> dict:
+    return any(
+        [
+            pathlib.Path(repo.directory, "CONTRIBUTING.md").is_file(),
+            pathlib.Path(repo.directory, "CONTRIBUTING.rst").is_file()
+        ]
+    )
+
+
 # TODO Auto definition code which is about to undergo refactor will fix up this
 # oddness with typing and half abilty to have auto inputs with types.
 @dffml.op(inputs={}, outputs={"result": quarter_start_date})
