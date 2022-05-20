@@ -1,0 +1,2 @@
+[console_scripts]
+alice = alice.cli:AliceCLI.main
