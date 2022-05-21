@@ -179,5 +179,9 @@ setup(
         "dffml.tuner": [
             "parameter_grid = dffml.tuner.parameter_grid:ParameterGrid",
         ],
+        # Overlays
+        "dffml.overlay": [
+            "dffml = dffml.overlay.dffml:DFFML_MAIN_PACKAGE_OVERLAY",
+        ],
     },
 )
