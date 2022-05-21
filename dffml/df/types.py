@@ -525,6 +525,7 @@ class Forward:
 class DataFlow:
 
     CONFIGLOADABLE = True
+    DEFINITION = Definition(name="dataflow", primitive="object")
 
     def __init__(
         self,
