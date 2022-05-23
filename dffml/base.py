@@ -126,9 +126,10 @@ def mkarg(field):
         if hasattr(arg["type"], "load"):
             # TODO (python3.8) Use Protocol
             arg["type"] = arg["type"].load
-    elif get_origin(field.type) in (list, tuple):
+    elif get_origin(field.type) in (list, tuple, Union):
         arg["type"] = get_args(field.type)[0]
-        arg["nargs"] = "+"
+        if get_origin(field.type) in (list, tuple):
+            arg["nargs"] = "+"
     if "description" in field.metadata:
         arg["help"] = field.metadata["description"]
     if field.metadata.get("action"):
