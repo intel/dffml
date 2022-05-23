@@ -15,7 +15,6 @@ from ..df.memory import MemoryOrchestrator
 
 @config
 class DataFlowSourceConfig:
-    source: BaseSource = field("Source to wrap")
     dataflow: DataFlow = field("DataFlow to use for preprocessing")
     features: Features = field(
         "Features to pass as definitions to each context from each "
@@ -33,9 +32,6 @@ class DataFlowSourceConfig:
         "If set, record.key will be added to the set of inputs "
         "under each context (which is also the record's key)",
         default=None,
-    )
-    length: str = field(
-        "Definition name to add as source length", default=None
     )
     all_for_single: bool = field(
         "Run all records through dataflow before grabing "
@@ -76,8 +72,6 @@ class DataFlowSourceContext(BaseSourceContext):
                     )
 
     async def __aenter__(self) -> "DataFlowPreprocessSourceContext":
-        self.sctx = await self.parent.source().__aenter__()
-
         if isinstance(self.parent.config.dataflow, str):
             dataflow_path = pathlib.Path(self.parent.config.dataflow)
             config_type = dataflow_path.suffix.replace(".", "")
@@ -95,7 +89,6 @@ class DataFlowSourceContext(BaseSourceContext):
 
     async def __aexit__(self, exc_type, exc_value, traceback):
         await self.octx.__aexit__(exc_type, exc_value, traceback)
-        await self.sctx.__aexit__(exc_type, exc_value, traceback)
 
 
 @entrypoint("df")
@@ -105,10 +98,8 @@ class DataFlowSource(BaseSource):
     CONTEXT = DataFlowSourceContext
 
     async def __aenter__(self) -> "DataFlowSource":
-        self.source = await self.config.source.__aenter__()
         self.orchestrator = await self.config.orchestrator.__aenter__()
         return self
 
     async def __aexit__(self, exc_type, exc_value, traceback):
         await self.orchestrator.__aexit__(exc_type, exc_value, traceback)
-        await self.source.__aexit__(exc_type, exc_value, traceback)
