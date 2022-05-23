@@ -47,6 +47,29 @@ async def convert_records_to_list(self, features, predict_features):
 
 
 @op(
+    config_cls=SourceOperationConfig,
+    expand=["result"],
+    imp_enter={"source": (lambda self: self.config.source)},
+    ctx_enter={"sctx": (lambda self: self.parent.source())},
+)
+async def source_records(self, features, predict_features):
+    matrix = []
+    keys = []
+    unprocessed_matrix = []
+    async for record in self.sctx.records():
+        keys.append(record.key)
+        matrix.append([record.feature(feature) for feature in features])
+        unprocessed_matrix.append(
+            [record.feature(feature) for feature in predict_features]
+        )
+    return {
+        "keys": keys,
+        "matrix": matrix,
+        "unprocessed_matrix": unprocessed_matrix,
+    }
+
+
+@op(
     inputs={
         "matrix": convert_records_to_list.op.outputs["matrix"],
         "features": convert_records_to_list.op.inputs["features"],
