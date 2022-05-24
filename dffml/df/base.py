@@ -342,6 +342,8 @@ def op(
     def wrap(func):
         if not "name" in kwargs:
             name = func.__name__
+            if name == "<lambda>":
+                raise ValueError("op.name must given when lambda is wrapped")
             module_name = inspect.getmodule(func).__name__
             if module_name != "__main__":
                 name = f"{module_name}:{name}"
