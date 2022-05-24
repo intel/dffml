@@ -44,7 +44,10 @@ def load(
             modname, qualname_separator, qualname = entry.partition(":")
             obj = importlib.import_module(modname)
             for attr in qualname.split("."):
-                obj = getattr(obj, attr)
+                if hasattr(obj, "__getitem__"):
+                    obj = obj[attr]
+                else:
+                    obj = getattr(obj, attr)
             yield obj
     finally:
         if relative is not None:
