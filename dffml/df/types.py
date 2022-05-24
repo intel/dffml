@@ -224,6 +224,28 @@ class Operation(Entrypoint):
     validator: bool = False
     retry: int = 0
 
+    def __post_init__(self):
+        # Covert all typing.NewType's to definitions
+        for definition_container in [
+            self.inputs,
+            self.outputs,
+            self.conditions,
+        ]:
+            if isinstance(definition_container, list):
+                definition_iterable = enumerate(definition_container)
+            else:
+                definition_iterable = definition_container.items()
+            for i, definition in definition_iterable:
+                if (
+                    not isinstance(definition, Definition)
+                    and hasattr(definition, "__name__")
+                    and hasattr(definition, "__supertype__")
+                ):
+                    # typing.NewType support
+                    definition_container[i] = new_type_to_defininition(
+                        definition
+                    )
+
     def _replace(self, **kwargs):
         return replace(self, **kwargs)
 
