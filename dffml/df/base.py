@@ -249,8 +249,8 @@ def create_definition(name, param_annotation, default=NO_DEFAULT):
             name=name, primitive="map", default=default, spec=param_annotation,
         )
 
-    raise OpCouldNotDeterminePrimitive(
-        f"The primitive of {name} could not be determined"
+    return Definition(
+        name=name, primitive="object", default=default, spec=param_annotation,
     )
 
 
