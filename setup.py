@@ -181,7 +181,7 @@ setup(
         ],
         # Overlays
         "dffml.overlay": [
-            "dffml = dffml.overlay.dffml:DFFML_MAIN_PACKAGE_OVERLAY",
+            "dffml = dffml.overlay.overlay:DFFML_MAIN_PACKAGE_OVERLAY",
         ],
     },
 )
