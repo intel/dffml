@@ -22,6 +22,13 @@ from ..util.data import export_dict, type_lookup
 from ..util.entrypoint import Entrypoint, base_entry_point
 
 
+primitive_types = (int, float, str, bool, dict, list, bytes)
+# Used to convert python types in to their programming language agnostic
+# names
+# TODO Combine with logic in dffml.util.data
+primitive_convert = {dict: "map", list: "array"}
+
+
 class DefinitionMissing(Exception):
     """
     Definition missing from linked DataFlow

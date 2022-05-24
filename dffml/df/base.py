@@ -17,7 +17,16 @@ from dataclasses import dataclass, is_dataclass, replace
 from contextlib import asynccontextmanager
 
 from .exceptions import NotOpImp
-from .types import Operation, Input, Parameter, Stage, Definition, NO_DEFAULT
+from .types import (
+    Operation,
+    Input,
+    Parameter,
+    Stage,
+    Definition,
+    NO_DEFAULT,
+    primitive_types,
+    primitive_convert,
+)
 
 from .log import LOGGER
 
@@ -31,13 +40,6 @@ from ..util.data import get_origin, get_args
 from ..util.asynchelper import context_stacker
 from ..util.entrypoint import base_entry_point
 from ..util.entrypoint import load as load_entrypoint
-
-
-primitive_types = (int, float, str, bool, dict, list, bytes)
-# Used to convert python types in to their programming language agnostic
-# names
-# TODO Combine with logic in dffml.util.data
-primitive_convert = {dict: "map", list: "array"}
 
 
 class BaseDataFlowObjectContext(BaseDataFlowFacilitatorObjectContext):
