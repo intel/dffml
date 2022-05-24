@@ -265,6 +265,7 @@ def op(
     ctx_enter=None,
     config_cls=None,
     valid_return_none=True,
+    multi_output=True,
     **kwargs,
 ):
     """
@@ -414,6 +415,12 @@ def op(
                 }
                 auto_def_outputs = True
 
+        # Support operation defined with one output via auto def or keyword
+        # argument.
+        if auto_def_outputs:
+            nonlocal multi_output
+            multi_output = False
+
         func.op = Operation(**kwargs)
         func.ENTRY_POINT_NAME = ["operation"]
         cls_name = (
@@ -464,6 +471,8 @@ def op(
                 async def run(
                     self, inputs: Dict[str, Any]
                 ) -> Union[bool, Dict[str, Any]]:
+                    # Comes from top level op scope
+                    nonlocal multi_output
                     # Add config to inputs if it's used by the function
                     if uses_config is not None:
                         inputs[uses_config] = self.parent.config
@@ -482,7 +491,7 @@ def op(
                     else:
                         # TODO Add auto thread pooling of non-async functions
                         result = func(**inputs)
-                    if auto_def_outputs and len(self.parent.op.outputs) == 1:
+                    if not multi_output and len(self.parent.op.outputs) == 1:
                         if inspect.isasyncgen(result):
 
                             async def convert_asyncgen(outputs):
