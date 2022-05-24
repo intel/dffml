@@ -199,6 +199,11 @@ class OperationImplementation(BaseDataFlowObject):
 
 
 def create_definition(name, param_annotation, default=NO_DEFAULT):
+    if hasattr(param_annotation, "__name__") and hasattr(
+        param_annotation, "__supertype__"
+    ):
+        # typing.NewType support
+        return new_type_to_defininition(param_annotation)
     if param_annotation in primitive_types:
         return Definition(
             name=name,
