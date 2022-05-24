@@ -414,7 +414,8 @@ class RemapConfig(NamedTuple):
 
     @classmethod
     def _fromdict(cls, **kwargs):
-        kwargs["dataflow"] = DataFlow._fromdict(**kwargs["dataflow"])
+        if isinstance(kwargs["dataflow"], dict):
+            kwargs["dataflow"] = DataFlow._fromdict(**kwargs["dataflow"])
         return cls(**kwargs)
 
 
