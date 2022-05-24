@@ -21,7 +21,7 @@ async def run(
     strict: bool = True,
     ctx: Optional[BaseInputSetContext] = None,
     halt: Optional[asyncio.Event] = None,
-    overlay: Union[None, LOAD_DEFAULT, DataFlow] = LOAD_DEFAULT,
+    overlay: Union[None, _LOAD_DEFAULT, DataFlow] = LOAD_DEFAULT,
 ) -> AsyncIterator[Tuple[BaseInputSetContext, Dict[str, Any]]]:
     """
     Run a DataFlow
@@ -192,7 +192,8 @@ async def run(
     if overlay is LOAD_DEFAULT:
         # Load defaults via entrypoints, aka installed dataflows registered as
         # plugins.
-        overlay = Overlay.default()
+        # TODO Maybe pass orchestrator to default
+        overlay = await Overlay.default(orchestrator)
     # Apply overlay if given or installed
     if overlay is not None:
         # This effectivly creates a new system context, a direct ancestor of the
@@ -200,7 +201,7 @@ async def run(
         # listed in the input parents when we finally split this out so that run
         # is called as an operation, where the overlay is applied prior to
         # calling run.
-        dataflow = overlay.apply(dataflow)
+        dataflow = await overlay.apply(orchestrator, dataflow)
     async with orchestrator:
         async with orchestrator(dataflow) as ctx:
             async for ctx, results in ctx.run(*input_sets, strict=strict):
