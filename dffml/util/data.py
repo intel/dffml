@@ -38,6 +38,7 @@ def merge(one, two, list_append: bool = True):
                 one[key] += two[key]
         else:
             one[key] = two[key]
+    return one
 
 
 def traverse_config_set(target, *args):
