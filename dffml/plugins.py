@@ -49,6 +49,7 @@ CORE_PLUGINS += [
     ("operations", "deploy"),
     ("operations", "image"),
     ("operations", "nlp"),
+    ("operations", "innersource"),
     ("service", "http"),
     ("source", "mysql"),
 ]
