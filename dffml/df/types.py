@@ -15,6 +15,8 @@ from typing import (
     Iterator,
     Callable,
     Tuple,
+    Type,
+    NewType,
 )
 
 from ..base import BaseConfig
@@ -27,6 +29,33 @@ primitive_types = (int, float, str, bool, dict, list, bytes)
 # names
 # TODO Combine with logic in dffml.util.data
 primitive_convert = {dict: "map", list: "array"}
+
+
+def find_primitive(new_type: Type) -> Type:
+    if new_type in primitive_types:
+        return new_type
+    if hasattr(new_type, "__supertype__"):
+        return find_primitive(new_type.__supertype__)
+    if isinstance(new_type, type):
+        return object
+    raise TypeError(
+        f"{new_type} has no member __supertype__. Are you sure it is a typing.NewType? It says it is of type {type(new_type)!r}"
+    )
+
+
+def new_type_to_defininition(new_type: Type) -> Type:
+    """
+    >>> from typing import NewType
+    >>> from dffml import new_type_to_defininition
+    >>>
+    >>> new_type_to_defininition(NewType("FeedFace", str))
+    Definition(name='FeedFace', primitive='str')
+    """
+    # TODO Split on capital letters into lowercase dot separated.
+    return Definition(
+        name=new_type.__name__,
+        primitive=find_primitive(new_type).__qualname__,
+    )
 
 
 class DefinitionMissing(Exception):
