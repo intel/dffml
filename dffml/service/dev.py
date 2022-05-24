@@ -323,23 +323,10 @@ class Export(CMD):
                 for obj in load(self.export, relative=os.getcwd()):
                     self.logger.debug("Loaded %s: %s", self.export, obj)
                     if isinstance(obj, DataFlow):
-                        sys.stdout.buffer.write(
-                            await loader.dumpb(
-                                obj.export(linked=not self.not_linked)
-                            )
-                        )
-                    elif hasattr(obj, "export"):
-                        sys.stdout.buffer.write(
-                            await loader.dumpb(obj.export())
-                        )
-                    elif hasattr(obj, "_asdict"):
-                        sys.stdout.buffer.write(
-                            await loader.dumpb(obj._asdict())
-                        )
-                    else:
-                        sys.stdout.buffer.write(
-                            await loader.dumpb(export(obj))
-                        )
+                        obj = obj.export(linked=not self.not_linked)
+                    sys.stdout.buffer.write(
+                        await loader.dumpb(export(obj))
+                    )
 
 
 class MissingDependenciesError(Exception):
