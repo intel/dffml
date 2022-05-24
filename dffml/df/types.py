@@ -399,6 +399,13 @@ class Input(object):
     ):
         # NOTE For some reason doctests end up with id(type(definition)) not
         # equal to id(Definition). Therefore just compare the class name.
+        # typing.NewType support. Auto convert NewTypes into definitions.
+        if (
+            definition.__class__.__qualname__ != "Definition"
+            and hasattr(definition, "__name__")
+            and hasattr(definition, "__supertype__")
+        ):
+            definition = new_type_to_defininition(definition)
         if definition.__class__.__qualname__ != "Definition":
             raise TypeError("Input given non definition")
         # TODO Add optional parameter Input.target which specifies the operation
