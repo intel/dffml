@@ -50,6 +50,7 @@ CORE_PLUGINS += [
     ("operations", "image"),
     ("operations", "nlp"),
     ("operations", "innersource"),
+    ("entities", "alice"),
     ("service", "http"),
     ("source", "mysql"),
 ]
@@ -93,7 +94,7 @@ def package_names_by_plugin(validation=None):
             and (not validation or validation(sub_plugin_type, name))
         ]
         for plugin_type, plugin_name in CORE_PLUGINS
-        if plugin_type != "examples"
+        if plugin_type not in ("examples", "entities")
     }
     # Operations used to be named features
     by_plugin["operations"].extend(by_plugin["features"])
@@ -104,7 +105,7 @@ def package_names_by_plugin(validation=None):
         "dffml-%s-%s"
         % (ALTERNATIVES.get(plugin_type, plugin_type), name.replace("_", "-"),)
         for plugin_type, name in CORE_PLUGINS
-        if plugin_type != "examples"
+        if plugin_type not in ("examples", "entities")
         and (not validation or validation(plugin_type, name))
     ]
 
@@ -128,7 +129,7 @@ PACKAGE_NAMES_BY_PLUGIN_INSTALLABLE = package_names_by_plugin(
 def package_names_to_directory(validation=None):
     pkgs = {}
     for plugin_type, name in CORE_PLUGINS:
-        if plugin_type == "examples":
+        if plugin_type in ("examples", "entities"):
             pkg = name
         else:
             pkg = "dffml-%s-%s" % (
