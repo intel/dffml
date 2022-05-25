@@ -9,15 +9,22 @@ import inspect
 import asyncio
 import datetime
 import argparse
+import dataclasses
 from typing import Dict, Any
 import dataclasses
 
 from ...record import Record
 from ...feature import Feature
 
-from ..data import export_dict
+from ..data import export_dict, merge
 from .arg import Arg, parse_unknown
-from ...base import config, mkarg, field
+from ...base import (
+    config,
+    mkarg,
+    field,
+    make_config,
+    BaseDataFlowFacilitatorObject,
+)
 from ...configloader.configloader import ConfigLoaders
 
 DisplayHelp = "Display help message"
@@ -304,3 +311,72 @@ class CMD(object):
         it doesn't work with other things that's why.
         """
         return args
+
+    @classmethod
+    def subclass(
+        cls, new_class_name: str, field_modifications: Dict[str, Any]
+    ) -> "CMD":
+        """
+        >>> import sys
+        >>> import asyncio
+        >>>
+        >>> import dffml
+        >>> import dffml.cli.dataflow
+        >>>
+        >>> # The overlayed keyword arguements of fields within to be created
+        >>> field_modifications = {
+        ...     "dataflow": {"default_factory": lambda: dffml.DataFlow()},
+        ...     "simple": {"default": True},
+        ...     "stages": {"default_factory": lambda: [dffml.Stage.PROCESSING]},
+        ... }
+        >>> # Create a derived class
+        >>> DiagramForMyDataFlow = dffml.cli.dataflow.Diagram.subclass(
+        ...     "DiagramForMyDataFlow", field_modifications,
+        ... )
+        >>> print(DiagramForMyDataFlow)
+        <class 'dffml.util.cli.cmd.DiagramForMyDataFlow'>
+        >>> print(DiagramForMyDataFlow.CONFIG)
+        <class 'types.DiagramForMyDataFlowConfig'>
+        >>> asyncio.run(DiagramForMyDataFlow._main())
+        graph TD
+        """
+        # The name of the config class
+        new_class_config_name = new_class_name + "Config"
+        # Figure out what the keyword arguments we need to call dataclasses.field
+        # are.
+        dataclasses_field_inspect_signature_parameters = inspect.signature(
+            dataclasses.field
+        ).parameters.keys()
+        dataclasses_field_inspect_signature_parameters_set = set(
+            dataclasses_field_inspect_signature_parameters
+        )
+        dataclasses_field_slots_set = set(dataclasses.Field.__slots__)
+        # Figure out if we can get all of those keyword arguements from an instance
+        # of the dataclasses.Field object
+        if not dataclasses_field_inspect_signature_parameters_set.issubset(
+            dataclasses_field_slots_set
+        ):
+            raise NotImplementedError(
+                f"Python {sys.version_info} is lacking fields in dataclasses.Field required to make a copy of a dataclasses.Field via dataclasses.field: {dataclasses_field_slots_set}"
+            )
+
+        new_class_config = make_config(
+            new_class_config_name,
+            [
+                (
+                    field.name,
+                    field.type,
+                    dataclasses.field(
+                        **merge(
+                            {
+                                key: getattr(field, key)
+                                for key in dataclasses_field_inspect_signature_parameters
+                            },
+                            field_modifications.get(field.name, {}),
+                        )
+                    ),
+                )
+                for field in dataclasses.fields(cls.CONFIG)
+            ],
+        )
+        return type(new_class_name, (cls,), {"CONFIG": new_class_config})
