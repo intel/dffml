@@ -36,6 +36,8 @@ def merge(one, two, list_append: bool = True):
                 merge(one[key], two[key], list_append=list_append)
             elif list_append and isinstance(value, list):
                 one[key] += two[key]
+            else:
+                one[key] = two[key]
         else:
             one[key] = two[key]
     return one
