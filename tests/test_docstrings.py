@@ -224,36 +224,34 @@ def mkconsoletest(_name, _import_name, _module, obj):
     return test_consoletest
 
 
-for import_name, module in modules(root, package_name, skip=skip):
-    # Skip if not a class or function
-    if hasattr(module, "__doc__") and module.__spec__.name.startswith(
-        import_name
-    ):
-        # Add to dict to ensure no duplicates
-        to_test[import_name] = (
-            import_name,
-            module,
-            module,
-        )
-    # Iterate over all of the objects in the module
-    for name, obj in inspect.getmembers(module):
-        # Skip if not a class or function
-        if (
-            not hasattr(obj, "__module__")
-            or not obj.__module__.startswith(import_name)
-            or (not inspect.isclass(obj) and not inspect.isfunction(obj))
-        ):
-            continue
-        # Add to dict to ensure no duplicates
-        to_test[obj.__module__ + "." + obj.__qualname__] = (
-            import_name,
-            module,
-            obj,
-        )
-        if inspect.isclass(obj):
-            cls = obj
-            # Iterate over all of the objects in the class
-            for name, obj in inspect.getmembers(cls):
+def recurse_properties(discovered, import_name, module, prefix, parent):
+    if inspect.ismodule(parent) or inspect.isclass(parent):
+        for name, obj in inspect.getmembers(parent):
+            if inspect.ismodule(parent):
+                # Skip if not a class or function
+                if (
+                    not hasattr(obj, "__module__")
+                    or not obj.__module__.startswith(import_name)
+                    or (
+                        not inspect.isclass(obj)
+                        and not inspect.isfunction(obj)
+                    )
+                ):
+                    continue
+                # Add to dict to ensure no duplicates
+                discovered[".".join([prefix, obj.__qualname__])] = (
+                    prefix,
+                    module,
+                    obj,
+                )
+                recurse_properties(
+                    discovered,
+                    import_name,
+                    module,
+                    ".".join([prefix, obj.__qualname__]),
+                    obj,
+                )
+            if inspect.isclass(parent):
                 # Skip if not a class or function
                 if (
                     not hasattr(obj, "__module__")
@@ -266,13 +264,24 @@ for import_name, module in modules(root, package_name, skip=skip):
                 ):
                     continue
                 # Add to dict to ensure no duplicates
-                to_test[
-                    cls.__module__
-                    + "."
-                    + cls.__qualname__
-                    + "."
-                    + obj.__qualname__
-                ] = (import_name, module, obj)
+                discovered[".".join([prefix, obj.__qualname__])] = (
+                    prefix,
+                    module,
+                    obj,
+                )
+                recurse_properties(
+                    discovered,
+                    import_name,
+                    module,
+                    ".".join([prefix, obj.__qualname__]),
+                    obj,
+                )
+
+
+# Iterate over all of the objects in the module
+for import_name, module in modules(root, package_name, skip=skip):
+    recurse_properties(to_test, import_name, module, import_name, module)
+
 
 for name, (import_name, module, obj) in to_test.items():
     # Check that class or function has an example that could be doctested
