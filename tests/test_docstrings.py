@@ -260,6 +260,7 @@ def recurse_properties(discovered, import_name, module, prefix, parent):
                     or (
                         not inspect.isclass(obj)
                         and not inspect.isfunction(obj)
+                        and not inspect.ismethod(obj)
                     )
                 ):
                     continue
