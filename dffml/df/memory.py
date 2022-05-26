@@ -1868,8 +1868,12 @@ class MemoryOrchestrator(BaseOrchestrator, BaseMemoryDataFlowObject):
     def __init__(self, config: "BaseConfig") -> None:
         super().__init__(config)
         self._stack = None
+        self._entered = 0
 
     async def __aenter__(self) -> "DataFlowFacilitator":
+        self._entered += 1
+        if self._entered > 1:
+            return self
         self._stack = await aenter_stack(
             self,
             {
@@ -1884,7 +1888,9 @@ class MemoryOrchestrator(BaseOrchestrator, BaseMemoryDataFlowObject):
         return self
 
     async def __aexit__(self, exc_type, exc_value, traceback):
-        await self._stack.aclose()
+        self._entered -= 1
+        if self._entered < 1:
+            await self._stack.aclose()
 
     def __call__(
         self,
