@@ -495,6 +495,58 @@ def make_config(cls_name: str, fields, *args, namespace=None, **kwargs):
     )
 
 
+def replace_config(
+    new_class_config_name: str,
+    config: BaseConfig,
+    field_modifications: Dict[str, Any],
+) -> BaseConfig:
+    """
+    Return a new config class which has new class scope field properties which
+    are distinct instances from the class scope field properties within the
+    config passed in.
+
+    If we don't make new field object, and only update within a subclass, it
+    ends up updating the properties of the base class as well.
+    """
+    # Figure out what the keyword arguments we need to call dataclasses.field
+    # are.
+    dataclasses_field_inspect_signature_parameters = inspect.signature(
+        dataclasses.field
+    ).parameters.keys()
+    dataclasses_field_inspect_signature_parameters_set = set(
+        dataclasses_field_inspect_signature_parameters
+    )
+    dataclasses_field_slots_set = set(dataclasses.Field.__slots__)
+    # Figure out if we can get all of those keyword arguements from an instance
+    # of the dataclasses.Field object
+    if not dataclasses_field_inspect_signature_parameters_set.issubset(
+        dataclasses_field_slots_set
+    ):
+        raise NotImplementedError(
+            f"Python {sys.version_info} is lacking fields in dataclasses.Field required to make a copy of a dataclasses.Field via dataclasses.field: {dataclasses_field_slots_set}"
+        )
+
+    return make_config(
+        new_class_config_name,
+        [
+            (
+                field.name,
+                field.type,
+                dataclasses.field(
+                    **merge(
+                        {
+                            key: getattr(field, key)
+                            for key in dataclasses_field_inspect_signature_parameters
+                        },
+                        field_modifications.get(field.name, {}),
+                    )
+                ),
+            )
+            for field in dataclasses.fields(config)
+        ],
+    )
+
+
 @config
 class BaseConfig:
     """
