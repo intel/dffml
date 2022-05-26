@@ -340,43 +340,12 @@ class CMD(object):
         >>> asyncio.run(DiagramForMyDataFlow._main())
         graph TD
         """
-        # The name of the config class
-        new_class_config_name = new_class_name + "Config"
-        # Figure out what the keyword arguments we need to call dataclasses.field
-        # are.
-        dataclasses_field_inspect_signature_parameters = inspect.signature(
-            dataclasses.field
-        ).parameters.keys()
-        dataclasses_field_inspect_signature_parameters_set = set(
-            dataclasses_field_inspect_signature_parameters
-        )
-        dataclasses_field_slots_set = set(dataclasses.Field.__slots__)
-        # Figure out if we can get all of those keyword arguements from an instance
-        # of the dataclasses.Field object
-        if not dataclasses_field_inspect_signature_parameters_set.issubset(
-            dataclasses_field_slots_set
-        ):
-            raise NotImplementedError(
-                f"Python {sys.version_info} is lacking fields in dataclasses.Field required to make a copy of a dataclasses.Field via dataclasses.field: {dataclasses_field_slots_set}"
-            )
-
-        new_class_config = make_config(
-            new_class_config_name,
-            [
-                (
-                    field.name,
-                    field.type,
-                    dataclasses.field(
-                        **merge(
-                            {
-                                key: getattr(field, key)
-                                for key in dataclasses_field_inspect_signature_parameters
-                            },
-                            field_modifications.get(field.name, {}),
-                        )
-                    ),
+        return type(
+            new_class_name,
+            (cls,),
+            {
+                "CONFIG": replace_config(
+                    new_class_name + "Config", cls.CONFIG, field_modifications,
                 )
-                for field in dataclasses.fields(cls.CONFIG)
-            ],
+            },
         )
-        return type(new_class_name, (cls,), {"CONFIG": new_class_config})
