@@ -1,10 +1,12 @@
 import uuid
 import copy
 import types
+import inspect
 import itertools
 import pkg_resources
+import collections.abc
 from enum import Enum
-from dataclasses import dataclass, field, asdict, replace
+from dataclasses import dataclass, field, asdict, replace, is_dataclass
 from typing import (
     NamedTuple,
     Union,
@@ -20,8 +22,16 @@ from typing import (
 )
 
 from ..base import BaseConfig
+from ..util.data import get_origin, get_args
 from ..util.data import export_dict, type_lookup
 from ..util.entrypoint import Entrypoint, base_entry_point
+
+
+class _NO_DEFAULT:
+    pass
+
+
+NO_DEFAULT = _NO_DEFAULT()
 
 
 primitive_types = (int, float, str, bool, dict, list, bytes)
@@ -58,6 +68,78 @@ def new_type_to_defininition(new_type: Type) -> Type:
     )
 
 
+class FailedToAutoCreateDefinitionInvalidNameError(ValueError):
+    pass
+
+
+def _create_definition(name, param_annotation, default=NO_DEFAULT):
+    if param_annotation in primitive_types:
+        return Definition(
+            name=name,
+            primitive=primitive_convert.get(
+                param_annotation, param_annotation.__name__
+            ),
+            default=default,
+        )
+    elif get_origin(param_annotation) in [
+        Union,
+        collections.abc.AsyncIterator,
+    ]:
+        # If the annotation is of the form Optional
+        return create_definition(name, list(get_args(param_annotation))[0])
+    elif (
+        get_origin(param_annotation) is list
+        or get_origin(param_annotation) is dict
+    ):
+        # If the annotation are of the form List[MyDataClass] or Dict[str, MyDataClass]
+        if get_origin(param_annotation) is list:
+            primitive = "array"
+            innerclass = list(get_args(param_annotation))[0]
+        else:
+            primitive = "map"
+            innerclass = list(get_args(param_annotation))[1]
+
+        if innerclass in primitive_types:
+            return Definition(name=name, primitive=primitive, default=default)
+        if is_dataclass(innerclass) or bool(
+            inspect.isclass(innerclass)
+            and issubclass(innerclass, tuple)
+            and hasattr(innerclass, "_asdict")
+        ):
+            return Definition(
+                name=name,
+                primitive=primitive,
+                default=default,
+                spec=innerclass,
+                subspec=True,
+            )
+    elif is_dataclass(param_annotation) or bool(
+        inspect.isclass(param_annotation)
+        and issubclass(param_annotation, tuple)
+        and hasattr(param_annotation, "_asdict")
+    ):
+        # If the annotation is either a dataclass or namedtuple
+        return Definition(
+            name=name, primitive="map", default=default, spec=param_annotation,
+        )
+
+    return Definition(
+        name='.'.join(filter(bool, [repr(param_annotation), name])), primitive="object", default=default, spec=param_annotation,
+    )
+
+def create_definition(name, param_annotation, default=NO_DEFAULT):
+    if hasattr(param_annotation, "__name__") and hasattr(
+        param_annotation, "__supertype__"
+    ):
+        # typing.NewType support
+        return new_type_to_defininition(param_annotation)
+    definition = _create_definition(name, param_annotation, default=default)
+    # We can guess name if converting from NewType. However, we can't otherwise.
+    if not definition.name:
+        raise FailedToAutoCreateDefinitionInvalidNameError(repr(name))
+    return definition
+
+
 class DefinitionMissing(Exception):
     """
     Definition missing from linked DataFlow
@@ -68,13 +150,6 @@ class PrimitiveDoesNotMatchValue(Exception):
     """
     Primitive does not match the value type
     """
-
-
-class _NO_DEFAULT:
-    pass
-
-
-NO_DEFAULT = _NO_DEFAULT()
 
 
 class Definition(NamedTuple):
@@ -236,13 +311,10 @@ class Operation(Entrypoint):
             else:
                 definition_iterable = definition_container.items()
             for i, definition in definition_iterable:
-                if (
-                    not isinstance(definition, Definition)
-                    and hasattr(definition, "__name__")
-                    and hasattr(definition, "__supertype__")
-                ):
+                if definition.__class__.__qualname__ != "Definition":
                     # typing.NewType support
-                    definition_container[i] = new_type_to_defininition(
+                    definition_container[i] = create_definition(
+                        "",
                         definition
                     )
 
@@ -400,14 +472,13 @@ class Input(object):
         # NOTE For some reason doctests end up with id(type(definition)) not
         # equal to id(Definition). Therefore just compare the class name.
         # typing.NewType support. Auto convert NewTypes into definitions.
-        if (
-            definition.__class__.__qualname__ != "Definition"
-            and hasattr(definition, "__name__")
-            and hasattr(definition, "__supertype__")
-        ):
-            definition = new_type_to_defininition(definition)
         if definition.__class__.__qualname__ != "Definition":
-            raise TypeError("Input given non definition")
+            # typing.NewType support
+            old_definition = definition
+            definition = create_definition(
+                "",
+                definition
+            )
         # TODO Add optional parameter Input.target which specifies the operation
         # instance name this Input is intended for.
         self.validated = validated

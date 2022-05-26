@@ -26,6 +26,7 @@ from .types import (
     NO_DEFAULT,
     primitive_types,
     primitive_convert,
+    create_definition,
 )
 
 from .log import LOGGER
@@ -36,7 +37,6 @@ from ..base import (
     BaseDataFlowFacilitatorObject,
 )
 from ..util.cli.arg import Arg
-from ..util.data import get_origin, get_args
 from ..util.asynchelper import context_stacker
 from ..util.entrypoint import base_entry_point
 from ..util.entrypoint import load as load_entrypoint
@@ -196,67 +196,6 @@ class OperationImplementation(BaseDataFlowObject):
                 )
             )
         return loading_classes
-
-
-def create_definition(name, param_annotation, default=NO_DEFAULT):
-    if hasattr(param_annotation, "__name__") and hasattr(
-        param_annotation, "__supertype__"
-    ):
-        # typing.NewType support
-        return new_type_to_defininition(param_annotation)
-    if param_annotation in primitive_types:
-        return Definition(
-            name=name,
-            primitive=primitive_convert.get(
-                param_annotation, param_annotation.__name__
-            ),
-            default=default,
-        )
-    elif get_origin(param_annotation) in [
-        Union,
-        collections.abc.AsyncIterator,
-    ]:
-        # If the annotation is of the form Optional
-        return create_definition(name, list(get_args(param_annotation))[0])
-    elif (
-        get_origin(param_annotation) is list
-        or get_origin(param_annotation) is dict
-    ):
-        # If the annotation are of the form List[MyDataClass] or Dict[str, MyDataClass]
-        if get_origin(param_annotation) is list:
-            primitive = "array"
-            innerclass = list(get_args(param_annotation))[0]
-        else:
-            primitive = "map"
-            innerclass = list(get_args(param_annotation))[1]
-
-        if innerclass in primitive_types:
-            return Definition(name=name, primitive=primitive, default=default)
-        if is_dataclass(innerclass) or bool(
-            inspect.isclass(innerclass)
-            and issubclass(innerclass, tuple)
-            and hasattr(innerclass, "_asdict")
-        ):
-            return Definition(
-                name=name,
-                primitive=primitive,
-                default=default,
-                spec=innerclass,
-                subspec=True,
-            )
-    elif is_dataclass(param_annotation) or bool(
-        inspect.isclass(param_annotation)
-        and issubclass(param_annotation, tuple)
-        and hasattr(param_annotation, "_asdict")
-    ):
-        # If the annotation is either a dataclass or namedtuple
-        return Definition(
-            name=name, primitive="map", default=default, spec=param_annotation,
-        )
-
-    return Definition(
-        name=name, primitive="object", default=default, spec=param_annotation,
-    )
 
 
 def op(
