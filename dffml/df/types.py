@@ -65,6 +65,11 @@ def new_type_to_defininition(new_type: Type) -> Type:
     return Definition(
         name=new_type.__name__,
         primitive=find_primitive(new_type).__qualname__,
+        links=(
+            create_definition(
+                find_primitive(new_type).__qualname__, new_type.__supertype__
+            ),
+        ),
     )
 
 
@@ -152,6 +157,21 @@ def _create_definition(name, param_annotation, default=NO_DEFAULT):
             ),
             primitive="object",
             default=default,
+            links=(
+                Definition(
+                    name=param_annotation.__qualname__,
+                    primitive="object",
+                    links=(
+                        Definition(
+                            name=param_annotation.__module__,
+                            primitive="object",
+                            links=(
+                                Definition(name="module", primitive="object"),
+                            ),
+                        ),
+                    ),
+                ),
+            ),
         )
 
 
@@ -219,9 +239,13 @@ class Definition(NamedTuple):
     # subspec is when your input is a list or dict of values which conform to
     # the spec
     subspec: bool = False
+    # TODO Remove validate callable code, should be using operations instead via
+    # overlays
     # validate property will be a callable (function or lambda) which returns
     # the sanitized version of the value
     validate: Callable[[Any], Any] = None
+    # Links to other inputs/definitions
+    links: Tuple["Definition"] = None
 
     def __repr__(self):
         return self.name
@@ -240,6 +264,12 @@ class Definition(NamedTuple):
             del exported["lock"]
         if not self.validate:
             del exported["validate"]
+        if not self.links:
+            del exported["links"]
+        else:
+            exported["links"] = tuple(
+                [tuple(link.export().items()) for link in exported["links"]]
+            )
         if not self.spec:
             del exported["spec"]
             del exported["subspec"]
@@ -290,6 +320,13 @@ class Definition(NamedTuple):
                 kwargs["spec"]["name"],
                 bases=(NamedTuple,),
                 exec_body=populate_ns,
+            )
+        if "links" in kwargs:
+            kwargs["links"] = tuple(
+                cls._fromdict(
+                    **(dict(link) if isinstance(link, tuple) else link)
+                )
+                for link in kwargs["links"]
             )
         return cls(**kwargs)
 
@@ -507,11 +544,15 @@ class Input(object):
         value: Any,
         definition: Definition,
         parents: Optional[List["Input"]] = None,
+        # TODO(alice) Rename Input.parents to Input.links
         origin: Optional[Union[str, Tuple[Operation, str]]] = "seed",
         validated: bool = True,
         *,
         uid: Optional[str] = "",
+        links: Optional[Tuple["Input"]] = None,
     ):
+        # TODO(alice)
+
         # NOTE For some reason doctests end up with id(type(definition)) not
         # equal to id(Definition). Therefore just compare the class name.
         # typing.NewType support. Auto convert NewTypes into definitions.
