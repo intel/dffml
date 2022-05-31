@@ -104,21 +104,23 @@ def _create_definition(name, param_annotation, default=NO_DEFAULT):
         else:
             primitive = "map"
             innerclass = list(get_args(param_annotation))[1]
-
-        if innerclass in primitive_types:
-            return Definition(name=name, primitive=primitive, default=default)
+        # Create definition for internal type
+        definition = create_definition(
+            name, innerclass, default=default
+        )._replace(primitive=primitive,)
+        # NOTE(security) NamedTuple is safe to use a spec, because it offers no
+        # mechanisms around running code during init. Dataclasses and everything
+        # else cannot be trusted! They might run __post_init__() code! We MUST
+        # traverse the graph of links to sandbox instatiation of the correct
+        # type.
         if is_dataclass(innerclass) or bool(
             inspect.isclass(innerclass)
             and issubclass(innerclass, tuple)
             and hasattr(innerclass, "_asdict")
         ):
-            return Definition(
-                name=name,
-                primitive=primitive,
-                default=default,
-                spec=innerclass,
-                subspec=True,
-            )
+            return definition._replace(spec=innerclass, subspec=True,)
+
+        return definition
     elif is_dataclass(param_annotation) or bool(
         inspect.isclass(param_annotation)
         and issubclass(param_annotation, tuple)
@@ -128,9 +130,33 @@ def _create_definition(name, param_annotation, default=NO_DEFAULT):
         return Definition(
             name=name, primitive="map", default=default, spec=param_annotation,
         )
+    elif inspect.isclass(param_annotation):
+        # In the event the annotation is Python class. We create definitions for
+        # both it's usage within the context (aka name). As well as a definition
+        # for the parent (param_annotation) as well as for the parent's module.
+        # This will allow us to dynamicly apply serialization/deserialization
+        # sandboxing aka allowlist of modules and types which can be
+        # instantiated based off inputs, and what operations they must go
+        # through before instantiatation (aka overlays should apply vetting to
+        # input data to avoid yaml.load CVE-2017-18342 style situations).
+        return Definition(
+            name=".".join(
+                filter(
+                    bool,
+                    [
+                        param_annotation.__module__,
+                        param_annotation.__qualname__,
+                        name,
+                    ],
+                )
+            ),
+            primitive="object",
+            default=default,
+        )
+
 
     raise CouldNotDeterminePrimitive(
-        f"The primitive of {name} could not be determined"
+        f"The primitive of {name} could not be determined: {param_annotation}"
     )
 
 
@@ -308,11 +334,12 @@ class Operation(Entrypoint):
 
     def __post_init__(self):
         # Covert all typing.NewType's to definitions
-        for definition_container in [
-            self.inputs,
-            self.outputs,
-            self.conditions,
-        ]:
+        for definition_container_name in (
+            "inputs",
+            "outputs",
+            "conditions",
+        ):
+            definition_container = getattr(self, definition_container_name)
             if isinstance(definition_container, list):
                 definition_iterable = enumerate(definition_container)
             else:
@@ -321,8 +348,17 @@ class Operation(Entrypoint):
                 if definition.__class__.__qualname__ != "Definition":
                     # typing.NewType support
                     definition_container[i] = create_definition(
-                        "",
-                        definition
+                        ".".join(
+                            [self.name, definition_container_name]
+                            + (
+                                [str(i)]
+                                if not isinstance(
+                                    definition_container_name, int
+                                )
+                                else []
+                            )
+                        ),
+                        definition,
                     )
 
     def _replace(self, **kwargs):
@@ -482,10 +518,7 @@ class Input(object):
         if definition.__class__.__qualname__ != "Definition":
             # typing.NewType support
             old_definition = definition
-            definition = create_definition(
-                "",
-                definition
-            )
+            definition = create_definition("", definition)
         # TODO Add optional parameter Input.target which specifies the operation
         # instance name this Input is intended for.
         self.validated = validated
