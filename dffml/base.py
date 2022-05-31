@@ -796,6 +796,44 @@ class BaseDataFlowFacilitatorObjectContext(LoggingLogger):
     async def __aexit__(self, exc_type, exc_value, traceback):
         pass
 
+    @classmethod
+    def subclass(
+        cls, new_class_name: str, field_modifications: Dict[str, Any]
+    ) -> "BaseDataFlowFacilitatorObjectContext":
+        """
+        >>> import sys
+        >>> import asyncio
+        >>>
+        >>> import dffml
+        >>> import dffml.cli.dataflow
+        >>>
+        >>> # The overlayed keyword arguements of fields within to be created
+        >>> field_modifications = {
+        ...     "dataflow": {"default_factory": lambda: dffml.DataFlow()},
+        ...     "simple": {"default": True},
+        ...     "stages": {"default_factory": lambda: [dffml.Stage.PROCESSING]},
+        ... }
+        >>> # Create a derived class
+        >>> DiagramForMyDataFlow = dffml.cli.dataflow.Diagram.subclass(
+        ...     "DiagramForMyDataFlow", field_modifications,
+        ... )
+        >>> print(DiagramForMyDataFlow)
+        <class 'dffml.util.cli.cmd.DiagramForMyDataFlow'>
+        >>> print(DiagramForMyDataFlow.CONFIG)
+        <class 'types.DiagramForMyDataFlowConfig'>
+        >>> asyncio.run(DiagramForMyDataFlow._main())
+        graph TD
+        """
+        return type(
+            new_class_name,
+            (cls,),
+            {
+                "CONFIG": replace_config(
+                    new_class_name + "Config", cls.CONFIG, field_modifications,
+                )
+            },
+        )
+
 
 class BaseDataFlowFacilitatorObject(
     BaseDataFlowFacilitatorObjectContext, BaseConfigurable, Entrypoint
