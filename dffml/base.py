@@ -497,9 +497,9 @@ def make_config(cls_name: str, fields, *args, namespace=None, **kwargs):
 
 def replace_config(
     new_class_config_name: str,
-    config: BaseConfig,
+    config: Any,
     field_modifications: Dict[str, Any],
-) -> BaseConfig:
+) -> Any:
     """
     Return a new config class which has new class scope field properties which
     are distinct instances from the class scope field properties within the
