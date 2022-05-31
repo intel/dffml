@@ -72,6 +72,12 @@ class FailedToAutoCreateDefinitionInvalidNameError(ValueError):
     pass
 
 
+class CouldNotDeterminePrimitive(Exception):
+    """
+    Could not determine the primitive of the parameter
+    """
+
+
 def _create_definition(name, param_annotation, default=NO_DEFAULT):
     if param_annotation in primitive_types:
         return Definition(
@@ -123,9 +129,10 @@ def _create_definition(name, param_annotation, default=NO_DEFAULT):
             name=name, primitive="map", default=default, spec=param_annotation,
         )
 
-    return Definition(
-        name='.'.join(filter(bool, [repr(param_annotation), name])), primitive="object", default=default, spec=param_annotation,
+    raise CouldNotDeterminePrimitive(
+        f"The primitive of {name} could not be determined"
     )
+
 
 def create_definition(name, param_annotation, default=NO_DEFAULT):
     if hasattr(param_annotation, "__name__") and hasattr(

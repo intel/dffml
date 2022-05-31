@@ -121,12 +121,6 @@ class FailedToLoadOperationImplementation(Exception):
     """
 
 
-class OpCouldNotDeterminePrimitive(Exception):
-    """
-    op could not determine the primitive of the parameter
-    """
-
-
 @base_entry_point("dffml.operation", "opimp")
 class OperationImplementation(BaseDataFlowObject):
     def __init__(self, config: "BaseConfig") -> None:
