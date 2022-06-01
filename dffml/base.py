@@ -802,6 +802,20 @@ class BaseConfigurable(metaclass=BaseConfigurableMetaClass):
         return cls(cls.config(config, *above))
 
 
+def subclass(
+    cls, new_class_name: str, field_modifications: Dict[str, Any],
+) -> "BaseDataFlowFacilitatorObjectContext":
+    return type(
+        new_class_name,
+        (cls,),
+        {
+            "CONFIG": replace_config(
+                new_class_name + "Config", cls.CONFIG, field_modifications,
+            )
+        },
+    )
+
+
 class BaseDataFlowFacilitatorObjectContext(LoggingLogger):
     """
     Base class for all Data Flow Facilitator object's contexts. These are
@@ -845,15 +859,7 @@ class BaseDataFlowFacilitatorObjectContext(LoggingLogger):
         >>> asyncio.run(DiagramForMyDataFlow._main())
         graph TD
         """
-        return type(
-            new_class_name,
-            (cls,),
-            {
-                "CONFIG": replace_config(
-                    new_class_name + "Config", cls.CONFIG, field_modifications,
-                )
-            },
-        )
+        return subclass(cls, new_class_name, field_modifications)
 
 
 class BaseDataFlowFacilitatorObject(
