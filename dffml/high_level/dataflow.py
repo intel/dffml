@@ -1,17 +1,18 @@
 import asyncio
 from typing import Optional, Tuple, List, Union, Dict, Any, AsyncIterator
 
-from ..overlay.overlay import Overlay
+from ..overlay.overlay import (
+    Overlay,
+    SystemContext,
+    DFFMLOverlaysInstalled,
+)
 from ..df.types import DataFlow, Input
 from ..df.memory import MemoryOrchestrator
 from ..df.base import BaseInputSetContext, BaseOrchestrator, BaseInputSet
-
-
-class _LOAD_DEFAULT:
-    pass
-
-
-LOAD_DEFAULT = _LOAD_DEFAULT()
+from ..df.system_context.system_context import (
+    _APPLY_INSTALLED_OVERLAYS,
+    APPLY_INSTALLED_OVERLAYS,
+)
 
 
 async def run(
@@ -21,7 +22,9 @@ async def run(
     strict: bool = True,
     ctx: Optional[BaseInputSetContext] = None,
     halt: Optional[asyncio.Event] = None,
-    overlay: Union[None, _LOAD_DEFAULT, DataFlow] = LOAD_DEFAULT,
+    overlay: Union[
+        None, _APPLY_INSTALLED_OVERLAYS, SystemContext
+    ] = APPLY_INSTALLED_OVERLAYS,
 ) -> AsyncIterator[Tuple[BaseInputSetContext, Dict[str, Any]]]:
     """
     Run a DataFlow
@@ -189,20 +192,22 @@ async def run(
     # TODO(alice) Rework once we have system context. Run overlay system context
     # using orchestrator from that. System context is basic clay a dataclass
     # with the properties as this functions arguments.
-    if overlay is LOAD_DEFAULT:
+    if overlay is APPLY_INSTALLED_OVERLAYS:
         # Load defaults via entrypoints, aka installed dataflows registered as
         # plugins.
         # TODO Maybe pass orchestrator to default
-        overlay = await Overlay.default(orchestrator)
-    # Apply overlay if given or installed
-    if overlay is not None:
-        # This effectivly creates a new system context, a direct ancestor of the
-        # of the one that got passed in and the overlay. Therefore they are both
-        # listed in the input parents when we finally split this out so that run
-        # is called as an operation, where the overlay is applied prior to
-        # calling run.
-        dataflow = await overlay.apply(orchestrator, dataflow)
+        overlay = DFFMLOverlaysInstalled
     async with orchestrator:
+        # Apply overlay if given or installed
+        if overlay is not None:
+            # This effectivly creates a new system context, a direct ancestor of the
+            # of the one that got passed in and the overlay. Therefore they are both
+            # listed in the input parents when we finally split this out so that run
+            # is called as an operation, where the overlay is applied prior to
+            # calling run.
+            async with overlay_cls(orchestrator=orchestrator) as overlay:
+                async with overlay() as overlay_context:
+                    dataflow = await overlay_context.apply(dataflow)
         async with orchestrator(dataflow) as ctx:
             async for ctx, results in ctx.run(*input_sets, strict=strict):
                 yield ctx, results
