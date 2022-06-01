@@ -20,6 +20,14 @@ from ..util.data import merge as _merge
 from ..util.entrypoint import base_entry_point, Entrypoint
 
 
+class DuplicateInputShortNames(Exception):
+    """
+    Raised when default system context execution cannot be hanlded gracefully
+    due to duplicate input values with same shared short name within different
+    operations.
+    """
+
+
 class _LOAD_DEFAULT_DEPLOYMENT_ENVIONRMENT:
     pass
 
@@ -101,11 +109,104 @@ class SystemContext(BaseDataFlowFacilitatorObject):
 
     def deployment(
         self,
+        *,
         deployment_environment: Union[
             _LOAD_DEFAULT_DEPLOYMENT_ENVIONRMENT, str
         ] = LOAD_DEFAULT_DEPLOYMENT_ENVIONRMENT,
     ) -> Callable[Any, Any]:
-        return
+        # TODO Fixup inspect function signature on yielded func including return
+        # type annotation
+        return self.deployment_dataflow_async_iter_func(deployment_environment)
+
+    def deployment_async_iter_func(
+        self,
+        *,
+        deployment_environment: Union[
+            _LOAD_DEFAULT_DEPLOYMENT_ENVIONRMENT, str
+        ] = LOAD_DEFAULT_DEPLOYMENT_ENVIONRMENT,
+    ) -> Callable[Any, Any]:
+        # deployment_environment aka method for dataflow as class aka output
+        # aka operation to run
+        if not isinstance(self.upstream, DataFlow):
+            raise NotImplementedError(
+                "deployment_async_iter_func only operates on datalfows."
+            )
+        # NOTE This assumes we are in a system context which has only an
+        # upstream and we have already derived the upstream from application of
+        # an overlay.
+        # TODO(alice) We cannot know the deployment environments available for a
+        # dataflow unless we apply overlays. We could execute an incorrect
+        # default and then hook via overlays to take control.
+        return self.deployment_dataflow_async_iter_func(
+            deployment_environment=deployment_environment
+        )
+
+    def deployment_dataflow_async_iter_func(
+        self,
+        *,
+        origin: str = "seed",
+        deployment_environment: Union[
+            _LOAD_DEFAULT_DEPLOYMENT_ENVIONRMENT, str
+        ] = LOAD_DEFAULT_DEPLOYMENT_ENVIONRMENT,
+    ) -> Callable[Any, Any]:
+        # Create a new function
+        async def func(**kwargs):
+            # See 4cd70c6ff421fbc902db3499f4bfe4ebe0e6480f for CachedDownloadWrapper
+            # Run the top level system context for CLI commands.
+            # TODO Allowlist for dataflow inputs from each origin, dataflow
+            # including what origin values are for acceptable inputs. For now
+            # we consult DataFlow.flow, this is potentiall correct already, but
+            # let's just double check.
+            if deployment_environment == LOAD_DEFAULT_DEPLOYMENT_ENVIONRMENT:
+                # If we are to load the default deployment enviornment, that
+                # means we are not running any specific operation, we are going
+                # to analyze DataFlow.flow can also be found in a more
+                # convenitent form for this task restrucutred by stage and
+                # origin within DataFlow.by_origin
+                input_definition_list = list(
+                    itertools.chain(
+                        *[
+                            operation.inputs.items()
+                            for operation in self.upstream.by_origin.values()[
+                                origin
+                            ]
+                            if deployment_environment
+                            == LOAD_DEFAULT_DEPLOYMENT_ENVIONRMENT
+                        ]
+                    )
+                )
+                input_definitions = dict(input_definition_list)
+                if len(input_definitions) != input_definitions_list:
+                    # Raise on duplicate keys
+                    raise DuplicateInputShortNames(input_definition_list)
+            else:
+                # TODO(alice) Figure out how we should maybe add conditional on
+                # target operation via overlay?
+                raise NotImplementedError(
+                    "No support for calling specific operations within system contexts / different deployment environment yet via system context deployment helpers"
+                )
+                input_definitions = [
+                    operation.inputs
+                    for operation in self.upstream.by_origin.values()[origin]
+                    if deployment_environment == operation.instance_name
+                ][0]
+
+            # Create the orchestrator context and add inputs as needed
+            async with self.orchestrator as orchestrator:
+                async with orchestrator as octx:
+                    async for ctx, results in octx.run(
+                        dataflow,
+                        [
+                            Input(
+                                value=value,
+                                definition=input_definitions[key],
+                                origin=origin,
+                            )
+                            for key, value in kwargs.items()
+                        ],
+                        overlay=self.overlay,
+                    ):
+                        yield ctx, results
 
     @classmethod
     def config_as_defaults_for_subclass(
@@ -127,54 +228,3 @@ class SystemContext(BaseDataFlowFacilitatorObject):
                 },
             ),
         )
-
-
-for sysctx in SystemContext.load():
-    # Ideally we would have load not setting propreties on the loaded classes.
-    # TODO for name, sysctx in SystemContext.load_dict().items():
-    name = sysctx.ENTRY_POINT_LABEL
-    """
-    sysctx.parents
-    sysctx.upstream
-    sysctx.overlay
-    sysctx.orchestrator
-    """
-
-    # sysctx.variable_name('python')
-    # sysctx.add_to_namespace(sys.modules[__name__])
-
-    # In the event the deployment enviornment requested as not found
-    # (aka an auto start operation when condition
-    # "string.sysctx.deployment.unknown" is present as an input)
-
-    def make_correct_python_callable(name, sysctx):
-        sysctx.deployment("python")
-        # TODO, if deployment has non-auto start operatations with
-        def func():
-            func.__name__ = name
-
-        return func
-
-    setattr(sys.modules[__name__], name, make_correct_python_callable(syctx))
-
-
-# END **system_contexts/__init__.py** END
-# END **wonderland/async.py** END
-
-# from wonderland import Alice, alice
-# from wonderland.async import Alice
-
-# async with AliceSystemContext() as alice:
-#     async with alice() as alice_ctx:
-#         async for thought in alice_ctx.thoughts():
-#         # async for thought in alice_ctx(): # .thoughts is the default
-
-# async with Alice() as alice:
-#     async for thought in alice:
-
-# for thought in alice:
-#     print(thought)
-
-# alice = Alice()
-# for thought in alice:
-#     print(thought)
