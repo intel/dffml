@@ -72,9 +72,54 @@ COLLECTOR_DATAFLOW.seed = [
     ),
     dffml.Input(
         value={
-            "authors": {"group": "author_count", "by": "quarter",},
-            "commits": {"group": "commit_count", "by": "quarter",},
-            "work": {"group": "work_spread", "by": "quarter",},
+            COLLECTOR_DATAFLOW.operations["lines_of_code_to_comments"]
+            .outputs["code_to_comment_ratio"]
+            .name: {
+                "group": COLLECTOR_DATAFLOW.operations["lines_of_code_to_comments"]
+                .outputs["code_to_comment_ratio"]
+                .name,
+                "by": "quarter",
+            },
+            COLLECTOR_DATAFLOW.operations["git_repo_release"]
+            .outputs["present"]
+            .name: {
+                "group": COLLECTOR_DATAFLOW.operations["git_repo_release"]
+                .outputs["present"]
+                .name,
+                "by": "quarter",
+            },
+            COLLECTOR_DATAFLOW.operations["git_repo_author_lines_for_dates"]
+            .outputs["author_lines"]
+            .name: {
+                "group": COLLECTOR_DATAFLOW.operations[
+                    "git_repo_author_lines_for_dates"
+                ]
+                .outputs["author_lines"]
+                .name,
+                "by": "quarter",
+            },
+            COLLECTOR_DATAFLOW.operations["lines_of_code_by_language"]
+            .outputs["lines_by_language"]
+            .name: {
+                "group": COLLECTOR_DATAFLOW.operations["lines_of_code_by_language"]
+                .outputs["lines_by_language"]
+                .name,
+                "by": "quarter",
+            },
+            "commit_shas": {
+                "group": COLLECTOR_DATAFLOW.operations["git_repo_commit_from_date"]
+                .outputs["commit"]
+                .name,
+                "by": "quarter",
+            },
+            operations.github_workflow_present.op.outputs["result"].name: {
+                "group": operations.github_workflow_present.op.outputs["result"].name,
+                "by": "quarter",
+            },
+            operations.contributing_present.op.outputs["result"].name: {
+                "group": operations.contributing_present.op.outputs["result"].name,
+                "by": "quarter",
+            },
         },
         definition=COLLECTOR_DATAFLOW.definitions["group_by_spec"],
     ),
