@@ -18,6 +18,7 @@ from .util.python import within_method
 from .util.data import get_args, get_origin
 from .util.cli.arg import Arg
 from .util.data import (
+    merge,
     traverse_config_set,
     traverse_config_get,
     type_lookup,
