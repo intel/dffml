@@ -4,11 +4,63 @@ import pathlib
 import platform
 import contextlib
 import dataclasses
-from typing import Dict
+from typing import Dict, NewType
+
+
+try:
+    import importlib.metadata as importlib_metadata
+except:
+    import importlib_metadata
+
 
 import dffml
 import shouldi.cli
 import dffml_operations_innersource.cli
+
+
+# TODO Unify make Definitions really Inputs with parents for lineage based of
+# Python's typing.
+#
+# References:
+# - https://docs.python.org/3/library/typing.html#newtype
+# - https://docs.python.org/3/library/typing.html#user-defined-generic-types
+#   - Maybe usful for operations / data structure shorthand for dataflow
+#     definition.
+
+SemanticVersion = NewType('SemanticVersion', str)
+AliceVersion = NewType('AliceVersion', SemanticVersion)
+
+
+def get_alice_version() -> AliceVersion:
+    return importlib_metadata.version("alice")
+
+
+SYSTEM_CONTEXT_ALICE_CLI_VERSION = 
+
+
+class AliceVersionCLI(dffml.CMD):
+    DATAFLOW = dffml.DataFlow(
+        dffml.GetSingle,
+        seed=[
+            dffml.Input(
+                value=[AliceVersion.__name__],
+                definition=dffml.GetSingle.op.inputs["spec"],
+            ),
+        ]
+    )
+
+    async def run(self):
+        async for ctx, results in dffml.run(
+            dffml.Input(
+                value=importlib_metadata.version("alice"),
+                definition=AliceVersion,
+            ),
+            # TODO Make sure that we can grab overlays from parent flow if
+            # running within another flow, as a subflow, always use parent
+            # overlays when creating a new dataflow (we should modify
+            # run_dataflow, or subflow, or whatever, probably subflow).
+        ):
+            print(results)
 
 
 class ShouldiCLI(dffml.CMD):
@@ -35,3 +87,45 @@ class AliceCLI(dffml.CMD):
 class AliceCLI(dffml.CMD):
 
     shouldi = ShouldiCLI
+    # version = AliceVersionCLI
+    # TODO 2022-05-26 13:15 PM PDT: Maybe this should be a dataflow rather than
+    # a system context? Or support both more likely.
+    # version = DataFlow(op(stage=Stage.OUTPUT)(get_alice_version))
+    version = SystemContext(
+        # TODO Set parent as Input when runing and after overlay!!!
+        parent=None,
+        inputs=[]
+        architecture=OpenArchitecture(dataflow=DataFlow(op(stage=Stage.OUTPUT)(get_alice_version))),
+        orchestrator=MemoryOrchestrator(),
+        # If we want results to be AliceVersion. Then we need to run the
+        # operation which produces AliceVersion as an output operation.
+        #
+        # TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO
+        # TODO TODO TODO 2022-05-26 12:53 PM PDT  TODO TODO TODO
+        # TODO TODO TODO        SEE BELOW         TODO TODO TODO
+        # TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO
+        #
+        # THE TODO: We want grab SemanticVersion. Look for types who's liniage
+        # is derived from that. If there is no operation which outputs a derived
+        # or direct type. Raise invalid.
+        #
+        # We will overlay output operations and check validity
+        #
+        # For a system context to be used as a CLI command we will overlay with
+        # an output operation which returns a single result within
+        # dffml.util.cli.cmd. This flow should produce a result of the CLI
+        # result data type. This flow should have an operation in it which
+        # produces cli_result via taking a single peice of data derived from
+        # SemanticVersion.
+        #
+        # We can check if we can use the System Context as a CLI command by
+        # checking if it's valid when we overlay a system context which has an
+        # the following input in it: `cli_result`. If we are we get an invalid
+        # context, we know that we cannot use this as a CLI command, since it
+        # doesn't produce a CLI result.
+        #
+        # Maybe we know that all CLI commands must accept an input int
+
+
+        # architecture=OpenArchitecture(dataflow=DataFlow(op(stage=Stage.OUTPUT)(get_alice_version))),
+    )
