@@ -555,9 +555,13 @@ def replace_config(
                         {
                             key: getattr(field, key)
                             for key in dataclasses_field_inspect_signature_parameters
-                            if not any([
-                                key == "default" and "default_factory" in field_modifications.get(field.name, {}),
-                            ])
+                            if not any(
+                                [
+                                    key == "default"
+                                    and "default_factory"
+                                    in field_modifications.get(field.name, {}),
+                                ]
+                            )
                         },
                         field_modifications.get(field.name, {}),
                     )
