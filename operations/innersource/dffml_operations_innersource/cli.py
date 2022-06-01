@@ -127,12 +127,8 @@ COLLECTOR_DATAFLOW.seed = [
                 "group": operations.github_workflow_present.op.outputs["result"].name,
                 "by": "quarter",
             },
-            operations.contributing_present.op
-            .outputs["result"]
-            .name: {
-                "group": operations.contributing_present.op
-                .outputs["result"]
-                .name,
+            operations.contributing_present.op.outputs["result"].name: {
+                "group": operations.contributing_present.op.outputs["result"].name,
                 "by": "quarter",
             },
         },
