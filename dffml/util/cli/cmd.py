@@ -23,7 +23,7 @@ from ...base import (
     mkarg,
     field,
     make_config,
-    BaseDataFlowFacilitatorObject,
+    subclass,
 )
 from ...configloader.configloader import ConfigLoaders
 
@@ -311,3 +311,33 @@ class CMD(object):
         it doesn't work with other things that's why.
         """
         return args
+
+    @classmethod
+    def subclass(
+        cls, new_class_name: str, field_modifications: Dict[str, Any]
+    ) -> "BaseDataFlowFacilitatorObjectContext":
+        """
+        >>> import sys
+        >>> import asyncio
+        >>>
+        >>> import dffml
+        >>> import dffml.cli.dataflow
+        >>>
+        >>> # The overlayed keyword arguements of fields within to be created
+        >>> field_modifications = {
+        ...     "dataflow": {"default_factory": lambda: dffml.DataFlow()},
+        ...     "simple": {"default": True},
+        ...     "stages": {"default_factory": lambda: [dffml.Stage.PROCESSING]},
+        ... }
+        >>> # Create a derived class
+        >>> DiagramForMyDataFlow = dffml.cli.dataflow.Diagram.subclass(
+        ...     "DiagramForMyDataFlow", field_modifications,
+        ... )
+        >>> print(DiagramForMyDataFlow)
+        <class 'dffml.util.cli.cmd.DiagramForMyDataFlow'>
+        >>> print(DiagramForMyDataFlow.CONFIG)
+        <class 'types.DiagramForMyDataFlowConfig'>
+        >>> asyncio.run(DiagramForMyDataFlow._main())
+        graph TD
+        """
+        return subclass(cls, new_class_name, field_modifications)
