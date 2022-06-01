@@ -1,2 +1,5 @@
 [console_scripts]
 alice = alice.cli:AliceCLI.main
+
+[dffml.sysctx]
+Alice = alice.system_context:Alice
