@@ -3,7 +3,9 @@
 **system_contexts/__init__.py**
 
 """
+import inspect
 import itertools
+import contextlib
 from typing import Any, Dict, NewType, Type, List, Union, Callable
 
 from ...base import (
@@ -47,7 +49,7 @@ class ActiveSystemContext(BaseDataFlowFacilitatorObjectContext):
     parent: "SystemContext"
 
     async def __aenter__(self) -> "ActiveSystemContext":
-        self.__stack = AsyncExitStack()
+        self.__stack = contextlib.AsyncExitStack()
         await self.__stack.__aenter__()
         self.octx = await self.__stack.enter_async_context(
             self.parent.orchestrator()
@@ -78,7 +80,7 @@ class SystemContextConfig:
     )
     orchestrator: Union["SystemContextConfig", BaseOrchestrator] = field(
         "The system context who's default flow will be used to produce an orchestrator which will be used to execute this system context including application of overlays",
-        default=None,
+        default_factory=lambda: MemoryOrchestrator,
     )
 
 
@@ -103,11 +105,15 @@ class SystemContext(BaseDataFlowFacilitatorObject):
     CONTEXT = ActiveSystemContext
 
     async def __aenter__(self) -> "SystemContext":
-        self.__stack = AsyncExitStack()
+        self.__stack = contextlib.AsyncExitStack()
         await self.__stack.__aenter__()
         # TODO Ensure orchestrators are reentrant
+        if inspect.isclass(self.config.orchestrator):
+            orchestrator = self.config.orchestrator()
+        else:
+            orchestrator = self.config.orchestrator
         self.orchestrator = await self.__stack.enter_async_context(
-            self.parent.config.orchestrator
+            orchestrator
         )
         return self
 
@@ -152,14 +158,11 @@ class SystemContext(BaseDataFlowFacilitatorObject):
         # dataflow unless we apply overlays. We could execute an incorrect
         # default and then hook via overlays to take control.
         return self.deployment_dataflow_async_iter_func(
-            self.config.upstream,
-            origin=origin,
-            deployment_environment=deployment_environment,
+            origin=origin, deployment_environment=deployment_environment,
         )
 
-    @staticmethod
     def deployment_dataflow_async_iter_func(
-        dataflow: DataFlow,
+        self,
         *,
         origin: str = "seed",
         deployment_environment: Union[
@@ -189,12 +192,12 @@ class SystemContext(BaseDataFlowFacilitatorObject):
                                     for operation in origins.get(origin, [])
                                 ]
                             )
-                            for _stage, origins in dataflow.by_origin.items()
+                            for _stage, origins in self.config.upstream.by_origin.items()
                         ]
                     )
                 )
                 input_definitions = dict(input_definitions_list)
-                if len(input_definitions) != input_definitions_list:
+                if len(input_definitions) != len(input_definitions_list):
                     # Raise on duplicate keys
                     raise DuplicateInputShortNames(input_definitions_list)
             else:
@@ -205,15 +208,17 @@ class SystemContext(BaseDataFlowFacilitatorObject):
                 )
                 input_definitions = [
                     operation.inputs
-                    for operation in dataflow.by_origin.values()[origin]
+                    for operation in self.config.upstream.by_origin.values()[
+                        origin
+                    ]
                     if deployment_environment == operation.instance_name
                 ][0]
 
-            # Create the orchestrator context and add inputs as needed
-            async with self.orchestrator as orchestrator:
-                async with orchestrator as octx:
-                    async for ctx, results in octx.run(
-                        dataflow,
+            # Create the active system context and add inputs as needed
+            async with self as system_context:
+                async with system_context as active_system_context:
+                    async for ctx, results in active_system_context.orchestrator.run(
+                        self.config.upstream,
                         [
                             Input(
                                 value=value,
@@ -222,7 +227,7 @@ class SystemContext(BaseDataFlowFacilitatorObject):
                             )
                             for key, value in kwargs.items()
                         ],
-                        overlay=self.overlay,
+                        overlay=self.config.overlay,
                     ):
                         yield ctx, results
 
