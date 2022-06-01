@@ -512,7 +512,9 @@ class SetupPyVersion(CMD):
 
 
 # Instance of parse_version method as function for logging
-parse_version = SetupPyVersion().parse_version
+parse_version = lambda filename: SetupPyVersion(filename).parse_version(
+    filename
+)
 
 
 class SetupPy(CMD):
