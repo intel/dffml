@@ -5,19 +5,19 @@
 """
 from typing import Any, Dict, NewType, Type, List, Union, Callable
 
-from ..base import (
+from ...base import (
     config,
     field,
     replace_config,
     BaseDataFlowFacilitatorObjectContext,
     BaseDataFlowFacilitatorObject,
 )
-from ..df.types import Stage, DataFlow, Input, Definition
-from ..operation.output import remap
-from ..df.memory import MemoryOrchestrator
-from ..df.base import op
-from ..util.data import merge as _merge
-from ..util.entrypoint import base_entry_point, Entrypoint
+from ..types import Stage, DataFlow, Input, Definition
+from ...operation.output import remap
+from ..memory import MemoryOrchestrator
+from ..base import op
+from ...util.data import merge as _merge
+from ...util.entrypoint import base_entry_point, Entrypoint
 
 
 class DuplicateInputShortNames(Exception):
@@ -26,6 +26,13 @@ class DuplicateInputShortNames(Exception):
     due to duplicate input values with same shared short name within different
     operations.
     """
+
+
+class _APPLY_INSTALLED_OVERLAYS:
+    pass
+
+
+APPLY_INSTALLED_OVERLAYS = _APPLY_INSTALLED_OVERLAYS()
 
 
 class _LOAD_DEFAULT_DEPLOYMENT_ENVIONRMENT:
@@ -58,17 +65,20 @@ class SystemContextConfig:
     # inputs: List[Input] # inputs can be added to overlay
     # architecture: OpenArchitecture
     upstream: "SystemContextConfig" = field(
-        "The system context which created this system context, or which this system context is to be derived from, or duplicated exactly (aka re-run or something)"
+        "The system context which created this system context, or which this system context is to be derived from, or duplicated exactly (aka re-run or something)",
+        default=None,
     )
     # When we run the overlay we should pass the system context / system context
     # config.
     # Links live within overlay
     # links: 'SystemContextConfig'
     overlay: "SystemContextConfig" = field(
-        "The overlay we will apply with any overlays to merge within it (see default overlay usage docs)"
+        "The overlay we will apply with any overlays to merge within it (see default overlay usage docs)",
+        default=APPLY_INSTALLED_OVERLAYS,
     )
     orchestrator: "SystemContextConfig" = field(
-        "The system context who's default flow will be used to produce an orchestrator which will be used to execute this system context including application of overlays"
+        "The system context who's default flow will be used to produce an orchestrator which will be used to execute this system context including application of overlays",
+        default=None,
     )
 
 
