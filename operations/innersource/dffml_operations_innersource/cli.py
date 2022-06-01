@@ -181,38 +181,18 @@ for dffml_cli_class_name, field_modifications in {
     "Diagram": {"dataflow": {"default": COLLECTOR_DATAFLOW,},},
 }.items():
     # Create the class and config names by prepending InnerSource
-    inner_source_class_name = "InnerSource" + dffml_cli_class_name
-    inner_source_class_config_name = inner_source_class_name + "Config"
-    # Copy the old class
-    inner_source_class_config = type(
-        inner_source_class_config_name,
-        (getattr(dffml.cli.dataflow, dffml_cli_class_name + "Config"),),
-        {},
-    )
-    inner_source_class = type(
-        inner_source_class_name,
-        (getattr(dffml.cli.dataflow, dffml_cli_class_name),),
-        {"CONFIG": inner_source_class_config,},
+    new_class_name = "InnerSource" + dffml_cli_class_name
+    # Create a derived class
+    new_class = getattr(dffml.cli.dataflow, dffml_cli_class_name).subclass(
+        new_class_name, field_modifications,
     )
     # Add our new class to the global namespace
     setattr(
-        sys.modules[__name__],
-        inner_source_class_config_name,
-        inner_source_class_config,
+        sys.modules[__name__], new_class.CONFIG.__qualname__, new_class.CONFIG,
     )
     setattr(
-        sys.modules[__name__], inner_source_class_name, inner_source_class,
+        sys.modules[__name__], new_class.__qualname__, new_class,
     )
-    # Create mapping of fields
-    fields = {
-        field.name: field for field in dataclasses.fields(inner_source_class_config)
-    }
-    # Modify fields
-    for field_name, modifications in field_modifications.items():
-        if not field_name in fields:
-            raise KeyError(field_name, fields)
-        for key_to_modify, value_to_use in modifications.items():
-            setattr(fields[field_name], key_to_modify, value_to_use)
 
 
 class InnerSourceRunRecords(dffml.CMD):
