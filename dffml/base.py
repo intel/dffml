@@ -204,14 +204,13 @@ def convert_value(arg, value, *, dataclass=None):
             if isinstance(value, str) and type_cls is not str:
                 value = parser_helper(value)
             # dict -> dataclass of namedtuple
-            if (
+            if isinstance(value, dict) and (
                 dataclasses.is_dataclass(type_cls)
                 or bool(
                     inspect.isclass(type_cls)
                     and issubclass(type_cls, tuple)
                     and hasattr(type_cls, "_asdict")
                 )
-                and isinstance(value, dict)
             ):
                 value = type_cls(**value)
             else:
