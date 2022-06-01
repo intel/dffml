@@ -324,9 +324,7 @@ class Export(CMD):
                     self.logger.debug("Loaded %s: %s", self.export, obj)
                     if isinstance(obj, DataFlow):
                         obj = obj.export(linked=not self.not_linked)
-                    sys.stdout.buffer.write(
-                        await loader.dumpb(export(obj))
-                    )
+                    sys.stdout.buffer.write(await loader.dumpb(export(obj)))
 
 
 class MissingDependenciesError(Exception):
