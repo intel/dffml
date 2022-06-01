@@ -3,6 +3,7 @@
 **system_contexts/__init__.py**
 
 """
+import itertools
 from typing import Any, Dict, NewType, Type, List, Union, Callable
 
 from ...base import (
@@ -15,7 +16,7 @@ from ...base import (
 from ..types import Stage, DataFlow, Input, Definition
 from ...operation.output import remap
 from ..memory import MemoryOrchestrator
-from ..base import op
+from ..base import op, BaseOrchestrator
 from ...util.data import merge as _merge
 from ...util.entrypoint import base_entry_point, Entrypoint
 
@@ -64,19 +65,18 @@ class SystemContextConfig:
     # parent.definition = SystemContextConfig
     # inputs: List[Input] # inputs can be added to overlay
     # architecture: OpenArchitecture
-    upstream: "SystemContextConfig" = field(
+    upstream: Union["SystemContextConfig", DataFlow] = field(
         "The system context which created this system context, or which this system context is to be derived from, or duplicated exactly (aka re-run or something)",
-        default=None,
     )
     # When we run the overlay we should pass the system context / system context
     # config.
     # Links live within overlay
     # links: 'SystemContextConfig'
-    overlay: "SystemContextConfig" = field(
+    overlay: Union["SystemContextConfig", DataFlow] = field(
         "The overlay we will apply with any overlays to merge within it (see default overlay usage docs)",
         default=APPLY_INSTALLED_OVERLAYS,
     )
-    orchestrator: "SystemContextConfig" = field(
+    orchestrator: Union["SystemContextConfig", BaseOrchestrator] = field(
         "The system context who's default flow will be used to produce an orchestrator which will be used to execute this system context including application of overlays",
         default=None,
     )
@@ -120,24 +120,28 @@ class SystemContext(BaseDataFlowFacilitatorObject):
     def deployment(
         self,
         *,
+        origin: str = "seed",
         deployment_environment: Union[
             _LOAD_DEFAULT_DEPLOYMENT_ENVIONRMENT, str
         ] = LOAD_DEFAULT_DEPLOYMENT_ENVIONRMENT,
     ) -> Callable[Any, Any]:
         # TODO Fixup inspect function signature on yielded func including return
         # type annotation
-        return self.deployment_dataflow_async_iter_func(deployment_environment)
+        return self.deployment_async_iter_func(
+            deployment_environment=deployment_environment, origin=origin
+        )
 
     def deployment_async_iter_func(
         self,
         *,
+        origin: str = "seed",
         deployment_environment: Union[
             _LOAD_DEFAULT_DEPLOYMENT_ENVIONRMENT, str
         ] = LOAD_DEFAULT_DEPLOYMENT_ENVIONRMENT,
     ) -> Callable[Any, Any]:
         # deployment_environment aka method for dataflow as class aka output
         # aka operation to run
-        if not isinstance(self.upstream, DataFlow):
+        if not isinstance(self.config.upstream, DataFlow):
             raise NotImplementedError(
                 "deployment_async_iter_func only operates on datalfows."
             )
@@ -148,11 +152,14 @@ class SystemContext(BaseDataFlowFacilitatorObject):
         # dataflow unless we apply overlays. We could execute an incorrect
         # default and then hook via overlays to take control.
         return self.deployment_dataflow_async_iter_func(
-            deployment_environment=deployment_environment
+            self.config.upstream,
+            origin=origin,
+            deployment_environment=deployment_environment,
         )
 
+    @staticmethod
     def deployment_dataflow_async_iter_func(
-        self,
+        dataflow: DataFlow,
         *,
         origin: str = "seed",
         deployment_environment: Union[
@@ -173,22 +180,23 @@ class SystemContext(BaseDataFlowFacilitatorObject):
                 # to analyze DataFlow.flow can also be found in a more
                 # convenitent form for this task restrucutred by stage and
                 # origin within DataFlow.by_origin
-                input_definition_list = list(
+                input_definitions_list = list(
                     itertools.chain(
                         *[
-                            operation.inputs.items()
-                            for operation in self.upstream.by_origin.values()[
-                                origin
-                            ]
-                            if deployment_environment
-                            == LOAD_DEFAULT_DEPLOYMENT_ENVIONRMENT
+                            itertools.chain(
+                                *[
+                                    operation.inputs.items()
+                                    for operation in origins.get(origin, [])
+                                ]
+                            )
+                            for _stage, origins in dataflow.by_origin.items()
                         ]
                     )
                 )
-                input_definitions = dict(input_definition_list)
+                input_definitions = dict(input_definitions_list)
                 if len(input_definitions) != input_definitions_list:
                     # Raise on duplicate keys
-                    raise DuplicateInputShortNames(input_definition_list)
+                    raise DuplicateInputShortNames(input_definitions_list)
             else:
                 # TODO(alice) Figure out how we should maybe add conditional on
                 # target operation via overlay?
@@ -197,7 +205,7 @@ class SystemContext(BaseDataFlowFacilitatorObject):
                 )
                 input_definitions = [
                     operation.inputs
-                    for operation in self.upstream.by_origin.values()[origin]
+                    for operation in dataflow.by_origin.values()[origin]
                     if deployment_environment == operation.instance_name
                 ][0]
 
@@ -217,6 +225,8 @@ class SystemContext(BaseDataFlowFacilitatorObject):
                         overlay=self.overlay,
                     ):
                         yield ctx, results
+
+        return func
 
     @classmethod
     def config_as_defaults_for_subclass(
