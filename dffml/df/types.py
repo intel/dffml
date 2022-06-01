@@ -174,7 +174,6 @@ def _create_definition(name, param_annotation, default=NO_DEFAULT):
             ),
         )
 
-
     raise CouldNotDeterminePrimitive(
         f"The primitive of {name} could not be determined: {param_annotation}"
     )
@@ -868,29 +867,29 @@ class DataFlow:
             for output_source in input_flow.conditions:
                 if isinstance(output_source, str):
                     self.by_origin[operation.stage].setdefault(
-                        output_source, []
+                        output_source, {}
                     )
-                    self.by_origin[operation.stage][output_source].append(
-                        operation
-                    )
+                    self.by_origin[operation.stage][output_source][
+                        operation.instance_name
+                    ] = operation
                 else:
                     for origin in output_source.items():
                         _, origin = input_flow.get_alternate_definitions(
                             origin
                         )
-                        self.by_origin[operation.stage].setdefault(origin, [])
-                        self.by_origin[operation.stage][origin].append(
-                            operation
-                        )
+                        self.by_origin[operation.stage].setdefault(origin, {})
+                        self.by_origin[operation.stage][origin][
+                            operation.instance_name
+                        ] = operation
             for output_name, output_sources in input_flow.inputs.items():
                 for output_source in output_sources:
                     if isinstance(output_source, str):
                         self.by_origin[operation.stage].setdefault(
-                            output_source, []
+                            output_source, {}
                         )
-                        self.by_origin[operation.stage][output_source].append(
-                            operation
-                        )
+                        self.by_origin[operation.stage][output_source][
+                            operation.instance_name
+                        ] = operation
                     else:
                         # In order to support selection an input based using an
                         # alternate definition along with restriction to inputs
@@ -914,11 +913,16 @@ class DataFlow:
                                 origin
                             )
                             self.by_origin[operation.stage].setdefault(
-                                origin, []
+                                origin, {}
                             )
-                            self.by_origin[operation.stage][origin].append(
-                                operation
-                            )
+                            self.by_origin[operation.stage][origin][
+                                operation.instance_name
+                            ] = operation
+        # NOTE We converted to and from dict here so that operations in
+        # lists would be unique based on instance name.
+        for stage, origins in self.by_origin.items():
+            for origin in origins:
+                origins[origin] = list(origins[origin].values())
 
     def export(self, *, linked: bool = False):
         exported = {
