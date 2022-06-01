@@ -74,7 +74,9 @@ async def main():
         OurEntitiesName = NewType(OurEntitiesName, Entity)
 
         def decide_if_a_response_is_needed_to_a_phrase_heard(
-            self, phrase: PhraseHeard, our_entities_name: OurEntitiesName = "Alice",
+            self,
+            phrase: PhraseHeard,
+            our_entities_name: OurEntitiesName = "Alice",
         ) -> None:
             # Split the incoming phrase
             phrase_split = phrase.lower().split()
@@ -96,12 +98,15 @@ async def main():
             #     example_phrase_source,
             # },
         )
-        async def listen_for_phrases(phrase_source: PhraseSource) -> PhraseHeard:
+        async def listen_for_phrases(
+            phrase_source: PhraseSource,
+        ) -> PhraseHeard:
             async for phrase in load(phrase_source):
                 yield phrase.key
 
         @op(
-            decide_if_a_response_is_needed_to_a_phrase_heard, listen_for_phrases,
+            decide_if_a_response_is_needed_to_a_phrase_heard,
+            listen_for_phrases,
         )
         async def phrase_heard_set_trigger_for_response_if_needed(
             # : PhraseHeard,
