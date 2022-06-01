@@ -285,7 +285,7 @@ def _fromdict(cls, **kwargs):
             config = {}
             if is_config_dict(value):
                 value, config = value["plugin"], value["config"]
-            value = convert_value(mkarg(field), value)
+            value = convert_value(mkarg(field), value, dataclass=cls)
             if inspect.isclass(value) and issubclass(value, BaseConfigurable):
                 # TODO This probably isn't 100% correct. Figure out what we need
                 # to do with nested configs.
