@@ -1,34 +1,25 @@
-for sysctx in SystemContext.load():
+import sys
+
+import dffml
+
+DEFAULT_DEPLOYMENT: str = "python.native"
+
+for sysctx in dffml.SystemContext.load():
     # Ideally we would have load not setting propreties on the loaded classes.
     # TODO for name, sysctx in SystemContext.load_dict().items():
-    name = sysctx.ENTRY_POINT_LABEL
-    """
-    sysctx.parents
-    sysctx.upstream
-    sysctx.overlay
-    sysctx.orchestrator
-    """
+    setattr(
+        sys.modules[__name__],
+        sysctx.ENTRY_POINT_LABEL,
+        # TODO(alice) Should probably set origin / use origin as python.caller
+        # or something like that.
+        sysctx.deployment(deployment_environment=DEFAULT_DEPLOYMENT),
+    )
 
-    # sysctx.variable_name('python')
-    # sysctx.add_to_namespace(sys.modules[__name__])
+delattr(sys.modules[__name__], "dffml")
+delattr(sys.modules[__name__], "sys")
 
-    # In the event the deployment enviornment requested as not found
-    # (aka an auto start operation when condition
-    # "string.sysctx.deployment.unknown" is present as an input)
-
-    def make_correct_python_callable(name, sysctx):
-        sysctx.deployment("python")
-        # TODO, if deployment has non-auto start operatations with
-        def func():
-            func.__name__ = name
-
-        return func
-
-    setattr(sys.modules[__name__], name, make_correct_python_callable(syctx))
-
-
-# END **system_contexts/__init__.py** END
-# END **wonderland/async.py** END
+# **system_contexts/__init__.py**
+# **wonderland/async.py**
 
 # from wonderland import Alice, alice
 # from wonderland.async import Alice
@@ -44,7 +35,12 @@ for sysctx in SystemContext.load():
 # for thought in alice:
 #     print(thought)
 
+# TODO Pick this work back up later when we have more of an idea about how the
+# CLI is working and how we do overlays on an entity to create a different
+# version / evolution of that entity.
+
 # alice = Alice()
+# print(alice)
+# breakpoint()
 # for thought in alice:
 #     print(thought)
-
