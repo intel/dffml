@@ -16,6 +16,7 @@ from typing import Dict, Any, Type, Optional, Union
 
 from .util.python import (
     within_method,
+    is_forward_ref_dataclass,
     resolve_forward_ref_dataclass,
 )
 from .util.data import get_args, get_origin
@@ -174,7 +175,7 @@ def convert_value(arg, value, *, dataclass=None):
         value = value[0]
     if "type" in arg:
         type_cls = arg["type"]
-        if isinstance(type_cls, str):
+        if dataclass is not None and is_forward_ref_dataclass(dataclass, type_cls):
             resolve_forward_ref_dataclass(dataclass, type_cls)
         if type_cls == Type:
             type_cls = type_lookup
