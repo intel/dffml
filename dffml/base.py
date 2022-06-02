@@ -102,7 +102,7 @@ class LoggingLogger(object):
         return logger
 
 
-def mkarg(field):
+def mkarg(field, *, dataclass=None):
     if field.type != bool:
         arg = Arg(type=field.type)
     else:
@@ -133,6 +133,8 @@ def mkarg(field):
             arg["type"] = arg["type"].load
     elif get_origin(field.type) in (list, tuple, Union):
         arg["type"] = get_args(field.type)[0]
+        if dataclass is not None and is_forward_ref_dataclass(dataclass, arg["type"]):
+            arg["type"] = resolve_forward_ref_dataclass(dataclass, arg["type"])
         if get_origin(field.type) in (list, tuple):
             arg["nargs"] = "+"
     if "description" in field.metadata:
@@ -272,7 +274,7 @@ def _fromdict(cls, **kwargs):
             config = {}
             if is_config_dict(value):
                 value, config = value["plugin"], value["config"]
-            value = convert_value(mkarg(field), value, dataclass=cls)
+            value = convert_value(mkarg(field, dataclass=cls), value, dataclass=cls)
             if inspect.isclass(value) and issubclass(value, BaseConfigurable):
                 # TODO This probably isn't 100% correct. Figure out what we need
                 # to do with nested configs.
@@ -759,7 +761,7 @@ class BaseConfigurable(metaclass=BaseConfigurableMetaClass):
                 f"{cls.__qualname__} requires CONFIG property or implementation of args() classmethod"
             )
         for field in dataclasses.fields(cls.CONFIG):
-            cls.config_set(args, above, field.name, mkarg(field))
+            cls.config_set(args, above, field.name, mkarg(field, dataclass=cls.CONFIG))
         return args
 
     @classmethod

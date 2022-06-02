@@ -120,7 +120,7 @@ class Parser(argparse.ArgumentParser):
         # Add arguments to the Parser
         position_list = {}
         for i, field in enumerate(dataclasses.fields(add_from.CONFIG)):
-            arg = mkarg(field)
+            arg = mkarg(field, dataclass=add_from.CONFIG)
             if isinstance(arg, Arg):
                 position = None
                 if not "default" in arg and not arg.get("required", False):
@@ -174,7 +174,7 @@ class CMD(object):
         self.extra_config = extra_config
 
         for field in dataclasses.fields(self.CONFIG):
-            arg = mkarg(field)
+            arg = mkarg(field, dataclass=self.CONFIG)
             if isinstance(arg, Arg):
                 if not field.name in kwargs and "default" in arg:
                     kwargs[field.name] = arg["default"]
