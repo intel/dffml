@@ -6,7 +6,7 @@ import types
 import pathlib
 import inspect
 import importlib
-from typing import Callable, Iterator, Optional, Tuple, Union
+from typing import Callable, Iterator, Optional, Tuple, Union, ForwardRef
 
 
 def modules(
@@ -183,6 +183,20 @@ def within_method(obj: object, method_name: str, max_depth: int = -1) -> bool:
 
 
 def convert_forward_ref_dataclass(dataclass, type_cls):
+    """
+    >>> import dataclasses
+    >>> import dffml
+    >>>
+    >>> @dataclasses.dataclass
+    ... class MyClass:
+    ...     a: "MyClass"
+    >>>
+    >>> dffml.convert_forward_ref_dataclass(MyClass, list(dataclasses.fields(MyClass))[0].type)
+    """
+    if isinstance(type_cls, ForwardRef):
+        # Grab the string version
+        # See: https://github.com/python/cpython/pull/21553#discussion_r459034775
+        type_cls = type_cls.__forward_arg__
     if dataclass is not None and type_cls == dataclass.__qualname__:
         # Handle special case where string type is the dataclass. When
         # an object is definined with a property whose type is the same
