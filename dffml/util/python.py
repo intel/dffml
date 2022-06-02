@@ -182,6 +182,15 @@ def within_method(obj: object, method_name: str, max_depth: int = -1) -> bool:
     return False
 
 
+def is_forward_ref_dataclass(dataclass, type_cls):
+    """
+    Check if a field's type is a ForwardRef, either via being an instance, or
+    being a type which is a string. An instance of a string is not a type,
+    therefore if we see a string, we should assume it is a ForwardRef.
+    """
+    return isinstance(type_cls, (ForwardRef, str))
+
+
 def resolve_forward_ref_dataclass(dataclass, type_cls):
     """
     >>> import dataclasses
