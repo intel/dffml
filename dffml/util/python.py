@@ -180,3 +180,23 @@ def within_method(obj: object, method_name: str, max_depth: int = -1) -> bool:
         ):
             return True
     return False
+
+
+def convert_forward_ref_dataclass(dataclass, type_cls):
+    if dataclass is not None and type_cls == dataclass.__qualname__:
+        # Handle special case where string type is the dataclass. When
+        # an object is definined with a property whose type is the same
+        # as the class being defined. Therefore object is not yet
+        # defined within the scope of the object's definition. Therefore
+        # we handle the special case by checking if the name is the
+        # same.
+        type_cls = dataclass
+    else:
+        # TODO Handle case where string is used that is not the same
+        # class. This may require using ast.parse or just loading a
+        # module via importlib and inspecting the global namespace. This
+        # usually happens when a class which is used a property is
+        # defined later within the same file.
+        raise NotImplementedError(
+            "No support for string types other than own class"
+        )
