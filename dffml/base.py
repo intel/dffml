@@ -19,6 +19,7 @@ from .util.data import get_args, get_origin
 from .util.cli.arg import Arg
 from .util.data import (
     merge,
+    convert_forward_ref_dataclass,
     traverse_config_set,
     traverse_config_get,
     type_lookup,
@@ -172,23 +173,7 @@ def convert_value(arg, value, *, dataclass=None):
     if "type" in arg:
         type_cls = arg["type"]
         if isinstance(type_cls, str):
-            if dataclass is not None and type_cls == dataclass.__qualname__:
-                # Handle special case where string type is the dataclass. When
-                # an object is definined with a property whose type is the same
-                # as the class being defined. Therefore object is not yet
-                # defined within the scope of the object's definition. Therefore
-                # we handle the special case by checking if the name is the
-                # same.
-                type_cls = dataclass
-            else:
-                # TODO Handle case where string is used that is not the same
-                # class. This may require using ast.parse or just loading a
-                # module via importlib and inspecting the global namespace. This
-                # usually happens when a class which is used a property is
-                # defined later within the same file.
-                raise NotImplementedError(
-                    "No support for string types other than own class"
-                )
+            convert_forward_ref_dataclass(dataclass, type_cls)
         if type_cls == Type:
             type_cls = type_lookup
         # TODO This is a oversimplification of argparse's nargs
