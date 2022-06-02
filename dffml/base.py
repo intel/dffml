@@ -14,12 +14,14 @@ import collections.abc
 from argparse import ArgumentParser
 from typing import Dict, Any, Type, Optional, Union
 
-from .util.python import within_method
+from .util.python import (
+    within_method,
+    resolve_forward_ref_dataclass,
+)
 from .util.data import get_args, get_origin
 from .util.cli.arg import Arg
 from .util.data import (
     merge,
-    convert_forward_ref_dataclass,
     traverse_config_set,
     traverse_config_get,
     type_lookup,
@@ -173,7 +175,7 @@ def convert_value(arg, value, *, dataclass=None):
     if "type" in arg:
         type_cls = arg["type"]
         if isinstance(type_cls, str):
-            convert_forward_ref_dataclass(dataclass, type_cls)
+            resolve_forward_ref_dataclass(dataclass, type_cls)
         if type_cls == Type:
             type_cls = type_lookup
         # TODO This is a oversimplification of argparse's nargs

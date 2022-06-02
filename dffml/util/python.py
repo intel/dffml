@@ -182,7 +182,7 @@ def within_method(obj: object, method_name: str, max_depth: int = -1) -> bool:
     return False
 
 
-def convert_forward_ref_dataclass(dataclass, type_cls):
+def resolve_forward_ref_dataclass(dataclass, type_cls):
     """
     >>> import dataclasses
     >>> import dffml
@@ -191,7 +191,7 @@ def convert_forward_ref_dataclass(dataclass, type_cls):
     ... class MyClass:
     ...     a: "MyClass"
     >>>
-    >>> dffml.convert_forward_ref_dataclass(MyClass, list(dataclasses.fields(MyClass))[0].type)
+    >>> dffml.resolve_forward_ref_dataclass(MyClass, list(dataclasses.fields(MyClass))[0].type)
     """
     if isinstance(type_cls, ForwardRef):
         # Grab the string version
