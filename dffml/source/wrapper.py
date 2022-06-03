@@ -200,16 +200,22 @@ def context_managed_wrapper_source(
         # Handle async case. Func should be an async context manager if the
         # function was defined using `async def` rather than just `def`
         is_async = False
+        # Check if it uses self
+        sig = inspect.signature(func)
+        uses_self = bool(
+            sig.parameters and list(sig.parameters.keys())[0] == "self"
+        )
         if inspect.isasyncgenfunction(func):
             func = contextlib.asynccontextmanager(func)
             is_async = True
 
             @contextlib.asynccontextmanager
             async def wrapped(*args, **kwargs):
-                async with func(
-                    *ContextManagedWrapperSource.remove_self_from_args(args),
-                    **kwargs,
-                ) as source:
+                if not uses_self:
+                    args = ContextManagedWrapperSource.remove_self_from_args(
+                        args
+                    )
+                async with func(*args, **kwargs,) as source:
                     yield source
 
         elif inspect.isgeneratorfunction(func):
@@ -217,10 +223,11 @@ def context_managed_wrapper_source(
 
             @contextlib.contextmanager
             def wrapped(*args, **kwargs):
-                with func(
-                    *ContextManagedWrapperSource.remove_self_from_args(args),
-                    **kwargs,
-                ) as source:
+                if not uses_self:
+                    args = ContextManagedWrapperSource.remove_self_from_args(
+                        args
+                    )
+                with func(*args, **kwargs,) as source:
                     yield source
 
         else:
