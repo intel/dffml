@@ -111,6 +111,14 @@ async def clone_git_repo(self, URL: str, ssh_key: str = None):
                 "GIT_SSH_COMMAND"
             ] = "ssh -i {str(ssh_key_path.resolve()} -o UserKnownHostsFile={os.devnull} -o StrictHostKeyChecking=no"
         directory = tempfile.mkdtemp(prefix="dffml-feature-git-")
+
+        if "GH_ACCESS_TOKEN" in os.environ and URL.startswith(
+            "https://github.com"
+        ):
+            URL = URL.replace(
+                "https://github.com",
+                f"https://{os.environ['GH_ACCESS_TOKEN']}@github.com",
+            )
         try:
             await run_command(
                 ["git", "clone", URL, directory], env=env, logger=self.logger,
