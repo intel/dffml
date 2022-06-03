@@ -206,6 +206,9 @@ def resolve_forward_ref_dataclass(dataclass, type_cls):
         # Grab the string version
         # See: https://github.com/python/cpython/pull/21553#discussion_r459034775
         type_cls = type_cls.__forward_arg__
+    if not inspect.isclass(dataclass):
+        # Check if dataclass is an instance, if so, grab the class
+        dataclass = dataclass.__class__
     if dataclass is not None and type_cls == dataclass.__qualname__:
         # Handle special case where string type is the dataclass. When
         # an object is definined with a property whose type is the same
