@@ -130,7 +130,7 @@ class SystemContext(BaseDataFlowFacilitatorObject):
         deployment_environment: Union[
             _LOAD_DEFAULT_DEPLOYMENT_ENVIONRMENT, str
         ] = LOAD_DEFAULT_DEPLOYMENT_ENVIONRMENT,
-    ) -> Callable[Any, Any]:
+    ) -> Callable[[Any], Any]:
         # TODO Fixup inspect function signature on yielded func including return
         # type annotation
         return self.deployment_async_iter_func(
@@ -144,7 +144,7 @@ class SystemContext(BaseDataFlowFacilitatorObject):
         deployment_environment: Union[
             _LOAD_DEFAULT_DEPLOYMENT_ENVIONRMENT, str
         ] = LOAD_DEFAULT_DEPLOYMENT_ENVIONRMENT,
-    ) -> Callable[Any, Any]:
+    ) -> Callable[[Any], Any]:
         # deployment_environment aka method for dataflow as class aka output
         # aka operation to run
         if not isinstance(self.config.upstream, DataFlow):
@@ -168,7 +168,7 @@ class SystemContext(BaseDataFlowFacilitatorObject):
         deployment_environment: Union[
             _LOAD_DEFAULT_DEPLOYMENT_ENVIONRMENT, str
         ] = LOAD_DEFAULT_DEPLOYMENT_ENVIONRMENT,
-    ) -> Callable[Any, Any]:
+    ) -> Callable[[Any], Any]:
         # Create a new function
         async def func(**kwargs):
             # See 4cd70c6ff421fbc902db3499f4bfe4ebe0e6480f for CachedDownloadWrapper
