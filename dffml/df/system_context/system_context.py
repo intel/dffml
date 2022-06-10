@@ -4,6 +4,7 @@
 
 """
 import inspect
+import warnings
 import itertools
 import contextlib
 from typing import Any, Dict, NewType, Type, List, Union, Callable
@@ -15,10 +16,16 @@ from ...base import (
     BaseDataFlowFacilitatorObjectContext,
     BaseDataFlowFacilitatorObject,
 )
-from ..types import Stage, DataFlow, Input, Definition
+from ..types import (
+    Stage,
+    DataFlow,
+    Input,
+    Definition,
+    APPLY_INSTALLED_OVERLAYS,
+)
 from ...operation.output import remap
 from ..memory import MemoryOrchestrator
-from ..base import op, BaseOrchestrator
+from ..base import op, BaseOrchestrator, BaseDataFlowObjectContext
 from ...util.data import merge as _merge
 from ...util.entrypoint import base_entry_point, Entrypoint
 
@@ -31,13 +38,6 @@ class DuplicateInputShortNames(Exception):
     """
 
 
-class _APPLY_INSTALLED_OVERLAYS:
-    pass
-
-
-APPLY_INSTALLED_OVERLAYS = _APPLY_INSTALLED_OVERLAYS()
-
-
 class _LOAD_DEFAULT_DEPLOYMENT_ENVIONRMENT:
     pass
 
@@ -45,14 +45,28 @@ class _LOAD_DEFAULT_DEPLOYMENT_ENVIONRMENT:
 LOAD_DEFAULT_DEPLOYMENT_ENVIONRMENT = _LOAD_DEFAULT_DEPLOYMENT_ENVIONRMENT()
 
 
-class ActiveSystemContext(BaseDataFlowFacilitatorObjectContext):
+class ActiveSystemContext(BaseDataFlowObjectContext):
+    # SystemContextConfig for ActiveSystemContext should not have overlay, and
+    # only upstream, since overlay should have already been applied, resulting
+    # in the context config being used here, where output of applied is now
+    # upstream and there is no more overlay to apply.
+    config: "SystemContextConfig"
     parent: "SystemContext"
+
+    def __init__(self, config, parent) -> None:
+        super().__init__(config, parent)
+        if config is parent.config:
+            warnings.warn(
+                "ActiveSystemContext.config as SystemContext.config support will be deprecated ASAP",
+                DeprecationWarning,
+                stacklevel=2,
+            )
 
     async def __aenter__(self) -> "ActiveSystemContext":
         self.__stack = contextlib.AsyncExitStack()
         await self.__stack.__aenter__()
         self.octx = await self.__stack.enter_async_context(
-            self.parent.orchestrator()
+            self.parent.orchestrator(self.config.upstream)
         )
         return self
 
@@ -115,13 +129,19 @@ class SystemContext(BaseDataFlowFacilitatorObject):
         self.orchestrator = await self.__stack.enter_async_context(
             orchestrator
         )
+        # TODO(alice) Apply overlay
+        if self.config.overlay not in (None, APPLY_INSTALLED_OVERLAYS):
+            breakpoint()
+            raise NotImplementedError(
+                "Application of overlays within SystemContext class entry not yet supported"
+            )
         return self
 
     async def __aexit__(self, _exc_type, _exc_value, _traceback):
         await self.__stack.aclose()
 
     def __call__(self):
-        return self.CONTEXT(self)
+        return self.CONTEXT(self.config, self,)
 
     def deployment(
         self,

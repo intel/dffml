@@ -34,6 +34,13 @@ class _NO_DEFAULT:
 NO_DEFAULT = _NO_DEFAULT()
 
 
+class _APPLY_INSTALLED_OVERLAYS:
+    pass
+
+
+APPLY_INSTALLED_OVERLAYS = _APPLY_INSTALLED_OVERLAYS()
+
+
 primitive_types = (int, float, str, bool, dict, list, bytes)
 # Used to convert python types in to their programming language agnostic
 # names
