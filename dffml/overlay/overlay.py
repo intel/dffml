@@ -1,3 +1,4 @@
+import itertools
 from typing import Any, Dict, NewType, Type, List
 
 from ..base import replace_config
@@ -33,6 +34,29 @@ DataFlowBeingOverlayedAsDict = NewType(
     "DataFlowBeingOverlayedAsDict", DataFlow
 )
 DataFlowAfterOverlaysMerged = NewType("DataFlowAfterOverlaysMerged", DataFlow)
+
+
+@op
+def merge_implementations(target: DataFlow, *args: DataFlow,) -> DataFlow:
+    """
+    Populate implementations from lambdas which were lost darning above export
+    """
+    for operation_instance_name, opimp in itertools.chain(
+        *[arg.implementations.items() for arg in args]
+    ):
+        # Check if we already have another conflicting version of this
+        # implementation
+        if (
+            operation_instance_name in target.implementations
+            and opimp is not target.implementations[operation_instance_name]
+        ):
+            # Complain if we can't find the implementation anywhere
+            raise Exception(
+                f"Non-unique opimp {operation_instance_name} found while merging: Conflict {target.implementations[operation_instance_name]} currently exists in target and attempted to add {opimp}"
+            )
+        # Add the implementation to the target
+        target.implementations[operation_instance_name] = opimp
+    return target
 
 
 # TODO Example of configurable return type for instance usage within DataFlow
@@ -176,21 +200,11 @@ DFFML_OVERLAYS_INSTALLED = DataFlow._fromdict(
 del DFFML_OVERLAYS_INSTALLED.operations[
     "apply_overlay_to_dataflow_to_be_executed"
 ]
-
-# Populate implemenations from lambds which were lost durning above export
-for operation_instance_name in DFFML_OVERLAYS_INSTALLED.operations.keys():
-    opimp = DFFML_MAIN_PACKAGE_OVERLAY.implementations.get(
-        operation_instance_name,
-        _DFFML_OVERLAYS_INSTALLED.implementations.get(
-            operation_instance_name, None,
-        ),
-    )
-    if opimp is None:
-        raise Exception(
-            f"No implemenation for {operation_instance_name} within DFFML_OVERLAYS_INSTALLED"
-        )
-    DFFML_OVERLAYS_INSTALLED.implementations[operation_instance_name] = opimp
-
+merge_implementations(
+    DFFML_OVERLAYS_INSTALLED,
+    DFFML_MAIN_PACKAGE_OVERLAY,
+    _DFFML_OVERLAYS_INSTALLED,
+)
 DFFML_OVERLAYS_INSTALLED.update(auto_flow=True)
 
 # Create Class for calling operations within the System Context as methods
