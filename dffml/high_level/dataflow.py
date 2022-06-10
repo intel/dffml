@@ -205,6 +205,7 @@ async def run(
             # listed in the input parents when we finally split this out so that run
             # is called as an operation, where the overlay is applied prior to
             # calling run.
+            overlay_cls = overlay
             async with overlay_cls(orchestrator=orchestrator) as overlay:
                 async with overlay() as overlay_context:
                     dataflow = await overlay_context.apply(dataflow)
