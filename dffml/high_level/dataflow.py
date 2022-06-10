@@ -1,3 +1,4 @@
+import inspect
 import asyncio
 from typing import Optional, Tuple, List, Union, Dict, Any, AsyncIterator
 
@@ -6,13 +7,14 @@ from ..overlay.overlay import (
     SystemContext,
     DFFMLOverlaysInstalled,
 )
-from ..df.types import DataFlow, Input
-from ..df.memory import MemoryOrchestrator
-from ..df.base import BaseInputSetContext, BaseOrchestrator, BaseInputSet
-from ..df.system_context.system_context import (
+from ..df.types import (
+    DataFlow,
+    Input,
     _APPLY_INSTALLED_OVERLAYS,
     APPLY_INSTALLED_OVERLAYS,
 )
+from ..df.memory import MemoryOrchestrator
+from ..df.base import BaseInputSetContext, BaseOrchestrator, BaseInputSet
 
 
 async def run(
@@ -200,15 +202,27 @@ async def run(
     async with orchestrator:
         # Apply overlay if given or installed
         if overlay is not None:
-            # This effectivly creates a new system context, a direct ancestor of the
-            # of the one that got passed in and the overlay. Therefore they are both
-            # listed in the input parents when we finally split this out so that run
-            # is called as an operation, where the overlay is applied prior to
-            # calling run.
-            overlay_cls = overlay
-            async with overlay_cls(orchestrator=orchestrator) as overlay:
-                async with overlay() as overlay_context:
-                    dataflow = await overlay_context.apply(dataflow)
+            # This effectivly creates a new system context, a direct ancestor of
+            # the of the one that got passed in and the overlay.
+            if inspect.isclass(overlay):
+                overlay = overlay()
+            # TODO(alice) overlay.deployment("native.python.overlay.apply")
+            apply_overlay = overlay.deployment()
+            async for _ctx, result in apply_overlay(dataflow=dataflow,):
+                resultant_system_context = SystemContext(
+                    upstream=result["overlays_merged"], overlay=None,
+                )
+                """
+                links=[
+                    SystemContext(
+                        upstream=dataflow,
+                        overlay=overlay,
+                        orchestrator=orchestrator,
+                    ),
+                ]
+                """
+                # TODO(alice) Fixup links and run system context
+                dataflow = resultant_system_context.config.upstream
         async with orchestrator(dataflow) as ctx:
             async for ctx, results in ctx.run(*input_sets, strict=strict):
                 yield ctx, results
