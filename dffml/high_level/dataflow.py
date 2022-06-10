@@ -208,7 +208,11 @@ async def run(
                 overlay = overlay()
             # TODO(alice) overlay.deployment("native.python.overlay.apply")
             apply_overlay = overlay.deployment()
-            async for _ctx, result in apply_overlay(dataflow=dataflow,):
+            async for _ctx, result in apply_overlay(
+                dataflow=dataflow,
+            ):
+                continue
+                # TODO
                 resultant_system_context = SystemContext(
                     upstream=result["overlays_merged"], overlay=None,
                 )
