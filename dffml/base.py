@@ -113,6 +113,10 @@ def mkarg(field, *, dataclass=None):
         arg["default"] = field.default
     if "dataclasses._MISSING_TYPE" not in repr(field.default_factory):
         arg["default"] = field.default_factory()
+    if not inspect.isclass(dataclass):
+        # In the event that we are dealing with an instance instead of a class,
+        # use the value from the instance.
+        arg["default"] = getattr(dataclass, field.name)
     if field.type == bool:
         arg["action"] = "store_true"
     elif inspect.isclass(field.type):
