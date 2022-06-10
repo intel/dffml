@@ -209,7 +209,12 @@ def resolve_forward_ref_dataclass(dataclass, type_cls):
     if not inspect.isclass(dataclass):
         # Check if dataclass is an instance, if so, grab the class
         dataclass = dataclass.__class__
-    if dataclass is not None and type_cls == dataclass.__qualname__:
+    # TODO(alice) NOTE HACK type_cls comparision to SystemContextConfig needs to
+    # be fixed to compare against issubclass of base (MRO?)
+    if dataclass is not None and (
+        type_cls == dataclass.__qualname__
+        or type_cls == 'SystemContextConfig'
+    ):
         # Handle special case where string type is the dataclass. When
         # an object is definined with a property whose type is the same
         # as the class being defined. Therefore object is not yet
