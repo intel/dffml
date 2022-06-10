@@ -176,6 +176,21 @@ DFFML_OVERLAYS_INSTALLED = DataFlow._fromdict(
 del DFFML_OVERLAYS_INSTALLED.operations[
     "apply_overlay_to_dataflow_to_be_executed"
 ]
+
+# Populate implemenations from lambds which were lost durning above export
+for operation_instance_name in DFFML_OVERLAYS_INSTALLED.operations.keys():
+    opimp = DFFML_MAIN_PACKAGE_OVERLAY.implementations.get(
+        operation_instance_name,
+        _DFFML_OVERLAYS_INSTALLED.implementations.get(
+            operation_instance_name, None,
+        ),
+    )
+    if opimp is None:
+        raise Exception(
+            f"No implemenation for {operation_instance_name} within DFFML_OVERLAYS_INSTALLED"
+        )
+    DFFML_OVERLAYS_INSTALLED.implementations[operation_instance_name] = opimp
+
 DFFML_OVERLAYS_INSTALLED.update(auto_flow=True)
 
 # Create Class for calling operations within the System Context as methods
