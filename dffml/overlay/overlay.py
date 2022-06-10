@@ -74,7 +74,7 @@ DFFML_MAIN_PACKAGE_OVERLAY = DataFlow(
             outputs={"dataflow_as_dict": DataFlowBeingOverlayedAsDict},
             multi_output=False,
         )(lambda dataflow: dataflow.export()),
-        "merge": op(
+        "dataflow_merge": op(
             name="dataflow_merge",
             stage=Stage.OUTPUT,
             inputs={
