@@ -27,7 +27,10 @@ from .types import (
     primitive_types,
     primitive_convert,
     create_definition,
+    DataFlow,
+    APPLY_INSTALLED_OVERLAYS,
 )
+from .system_context.system_context import APPLY_INSTALLED_OVERLAYS
 
 from .log import LOGGER
 
@@ -101,14 +104,54 @@ class OperationImplementationContext(BaseDataFlowObjectContext):
         """
 
     @asynccontextmanager
-    async def subflow(self, dataflow):
-        """
+    async def subflow(
+        self,
+        dataflow,
+        *,
+        overlay: Optional[DataFlow] = None,
+        overlay_application_orchestrator: Optional['BaseOrchestrator'] = None,
+    ):
+        r"""
         Registers subflow `dataflow` with parent flow and yields an instance of `BaseOrchestratorContext`
 
-        >>> async def my_operation(arg):
-        ...     async with self.subflow(self.config.dataflow) as octx:
-        ...         return octx.run({"ctx_str": []})
+        >>> import dffml
+        >>> import dffml.noasync
+        >>>
+        >>> @dffml.op
+        ... async def my_operation(self):
+        ...     async with self.subflow(
+        ...         dffml.DataFlow(),
+        ...         overlay=dffml.DataFlow(),
+        ...         overlay_application_orchestrator=dffml.MemoryOrchestrator(),
+        ...     ) as octx:
+        ...         print(octx.run({"ctx_str": []}))
+        >>>
+        >>> print(list(dffml.noasync.run(dffml.DataFlow(my_operation))))
         """
+        # TODO(alice) Also accept SystemContext for overlay, run deployment
+        # ``dffml.overlay`` to produce dataflow to apply as overlay.
+        # TODO(alice) Rework once we have system context. Run overlay system context
+        # using orchestrator from that. System context is basic clay a dataclass
+        # with the properties as this functions arguments.
+        if overlay is APPLY_INSTALLED_OVERLAYS:
+            # Load defaults via entrypoints, aka installed dataflows registered as
+            # plugins.
+            # TODO Maybe pass orchestrator to default
+            overlay = DFFMLOverlaysInstalled
+        # Apply overlay if given or installed
+        if overlay is not None:
+            orchestrator = self.octx.parent
+            if overlay_application_orchestrator is not None:
+                orchestrator = overlay_application_orchestrator
+            # This effectivly creates a new system context, a direct ancestor of the
+            # of the one that got passed in and the overlay. Therefore they are both
+            # listed in the input parents when we finally split this out so that run
+            # is called as an operation, where the overlay is applied prior to
+            # calling run.
+            overlay_cls = overlay
+            async with overlay_cls(orchestrator=self.octx.parent) as overlay:
+                async with overlay() as overlay_context:
+                    dataflow = await overlay_context.apply(dataflow)
         async with self.octx.parent(dataflow) as octx:
             self.octx.subflows[self.parent.op.instance_name] = octx
             yield octx
