@@ -55,7 +55,7 @@ def overlays_installed(
 
 # For inital overlay load of top level system context, we call
 # overlays_installed to get all the dataflows which need to be merged. We then
-# execute the merged installed overlays if LOAD_DEFAULT_DEPLOYMENT_ENVIONRMENT
+# execute the merged installed overlays if APPLY_INSTALLED_OVERLAYS
 # is given for.
 # ``overlay`` on ``run()``. Then we we run, the only default overlay added from
 # the main package on install is one which defines an output operation which
@@ -185,9 +185,7 @@ DFFMLOverlaysInstalled = SystemContext.subclass(
         "upstream": {"default_factory": lambda: DFFML_OVERLAYS_INSTALLED},
         # TODO(alice) We'll need to make sure we have code to instantiate and
         # instance of a class if only a class is given an not an instance.
-        "overlay": {
-            "default_factory": lambda: LOAD_DEFAULT_DEPLOYMENT_ENVIONRMENT
-        },
+        "overlay": {"default_factory": lambda: None},
         "orchestrator": {"default_factory": lambda: MemoryOrchestrator()},
     },
 )
