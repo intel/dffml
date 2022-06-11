@@ -94,6 +94,7 @@ setup(
             "dir = dffml.source.dir:DirectorySource",
             "dataframe = dffml.source.dataframe:DataFrameSource",
             "iris.training = dffml.source.dataset.iris:iris_training.source",
+            "owasp.threat-dragon = dffml.source.dataset.threat_modeling:threat_dragon.source",
         ],
         "dffml.port": ["json = dffml.port.json:JSON"],
         "dffml.service.cli": ["dev = dffml.service.dev:Develop"],
