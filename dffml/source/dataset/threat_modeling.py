@@ -8,7 +8,10 @@ from .base import dataset_source
 
 @dataset_source("owasp.threat-dragon")
 async def threat_dragon(
-    filepath: pathlib.Path, feature_name: str = "threat_model",
+    filepath: pathlib.Path,
+    feature_name: str = "threat_model",
+    schema_url: str = "https://github.com/OWASP/threat-dragon/raw/1.6.2/docs/development/schema/owasp.threat-dragon.schema.json",
+    format_version: str = "1.0.0",
 ):
     r"""
     Examples
@@ -29,15 +32,37 @@ async def threat_dragon(
     >>> records[0].export()
     {'key': '0', 'features': {'SepalLength': 6.4, 'SepalWidth': 2.8, 'PetalLength': 5.6, 'PetalWidth': 2.2, 'classification': 2}, 'extra': {}}
     """
+    if format_version is None:
+        format_version = "1.0.0"
+    # Read in the file
     contents = filepath.read_text()
+    # Load the contents
     threat_model_dict = json.loads(contents)
-    # TODO(security) Validate JSON schema
+    # TODO(security) Validate using JSON schema before accessing properties
     title = threat_model_dict["summary"]["title"]
     yield MemorySource(
         records=[
             Record(
                 key=title,
-                data={"features": {feature_name: threat_model_dict,},},
+                data={"features": {feature_name: threat_model_dict}},
+                extra={
+                    "open-architecture": {
+                        "features": {
+                            feature_name: {
+                                "manifest_metadata": {
+                                    "schema": schema_url,
+                                    "format_name": threat_dragon.source.ENTRY_POINT_LABEL,
+                                    "format_version": format_version,
+                                },
+                                "extra": {
+                                    "dffml": {
+                                        "source": threat_dragon.source.ENTRY_POINT_LABEL,
+                                    },
+                                },
+                            },
+                        },
+                    },
+                },
             )
         ],
     )
