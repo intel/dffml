@@ -23,6 +23,7 @@ from ..util.cli.cmds import (
     KeysCMD,
     KeysCMDConfig,
 )
+from ..overlay.overlay import merge_implementations
 from ..util.cli.parser import ParseInputsAction
 from ..util.config.fields import FIELD_SOURCES
 from ..util.crypto import insecure_hash
@@ -336,6 +337,9 @@ class RunSingleConfig:
     dataflow: Union[str, DataFlow] = field(
         "File containing exported DataFlow",
     )
+    overlay: Union[str, DataFlow] = field(
+        "File containing exported DataFlow to use as an overlay", default=None,
+    )
     no_echo: bool = field(
         "Do not echo back records", default=False,
     )
@@ -382,6 +386,29 @@ class RunSingle(CMD):
 
         return dataflow
 
+    async def get_overlay(self, overlay_path):
+        if isinstance(overlay_path, DataFlow):
+            return overlay_path
+
+        if not isinstance(overlay_path, (str, pathlib.Path)):
+            return overlay_path
+
+        if isinstance(overlay_path, str):
+            overlay_path = pathlib.Path(overlay_path)
+
+        config_cls = self.configloader
+        if config_cls is None:
+            config_type = overlay_path.suffix.replace(".", "")
+            config_cls = BaseConfigLoader.load(config_type)
+        async with config_cls.withconfig(self.extra_config) as configloader:
+            async with configloader() as loader:
+                exported = await loader.loadb(overlay_path.read_bytes())
+                overlay = DataFlow._fromdict(**exported)
+                for v, k in self.config:
+                    traverse_set(overlay.configs, k, value=v)
+
+        return overlay
+
     def input_objects(self, dataflow):
         for value, def_name in self.inputs:
             if not def_name in dataflow.definitions:
@@ -392,6 +419,17 @@ class RunSingle(CMD):
 
     async def run(self):
         dataflow = await self.get_dataflow(self.dataflow)
+        overlay = await self.get_overlay(self.overlay)
+        if overlay is not None:
+            unoverlayed_dataflow = dataflow
+            dataflow = DataFlow._fromdict(
+                **merge(unoverlayed_dataflow.export(), overlay.export(),)
+            )
+            merge_implementations(
+                dataflow, unoverlayed_dataflow, overlay,
+            )
+            dataflow.update(auto_flow=True)
+
         async for ctx, results in run_dataflow(
             dataflow,
             list(self.input_objects(dataflow)),
