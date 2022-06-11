@@ -71,7 +71,6 @@ def threat_dragon_threat_model_to_open_architecture(
 async def open_architecture_mermaid_diagram(
     open_architecture: OpenArchitecture,
 ) -> OpenArchitectureDiagram:
-    breakpoint()
     # The overlayed keyword arguements of fields within to be created
     field_modifications = {
         "dataflow": {"default_factory": lambda: open_architecture},
@@ -84,9 +83,11 @@ async def open_architecture_mermaid_diagram(
     )
     a_out = io.StringIO()
     a_out.buffer = io.BytesIO()
-    with contextlib.redirect_stdout(a_out):
-        await DiagramForMyDataFlow._main()
+    with dffml.chdir(pathlib.Path(__file__).parents[1]):
+        with contextlib.redirect_stdout(a_out):
+            await DiagramForMyDataFlow._main()
 
+    # TODO FIXME We only have the threat dragon output right now
     return a_out.buffer.getvalue().decode()
 
 
