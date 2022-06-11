@@ -77,4 +77,4 @@ class AliceCLI(dffml.CMD):
     #
     # Maybe we know that all CLI commands must accept an input int
     # architecture=OpenArchitecture(dataflow=DataFlow(op(stage=Stage.OUTPUT)(get_alice_version))),
-    version = Alice.only("version")
+    # version = Alice.only("version")
