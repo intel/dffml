@@ -366,7 +366,9 @@ class RunSingle(CMD):
         self.orchestrator = self.orchestrator.withconfig(self.extra_config)
 
     async def get_dataflow(self, dataflow_path):
-        dataflow_path = pathlib.Path(dataflow_path)
+        if isinstance(dataflow_path, DataFlow):
+            return dataflow_path
+
         config_cls = self.configloader
         if config_cls is None:
             config_type = dataflow_path.suffix.replace(".", "")
