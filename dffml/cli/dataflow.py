@@ -425,10 +425,10 @@ class RunSingle(CMD):
             dataflow = DataFlow._fromdict(
                 **merge(unoverlayed_dataflow.export(), overlay.export(),)
             )
-            merge_implementations(
+            dataflow = merge_implementations(
                 dataflow, unoverlayed_dataflow, overlay,
             )
-            dataflow.update(auto_flow=True)
+            # TODO We have an issue with ``links``
 
         async for ctx, results in run_dataflow(
             dataflow,
