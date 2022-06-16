@@ -193,12 +193,13 @@ class MemoryParameterSet(BaseParameterSet):
             yield parameter
 
     async def inputs_and_parents_recursive(self) -> AsyncIterator[Input]:
-        for item in itertools.chain(
-            *[
-                [parameter.origin] + list(parameter.origin.get_parents())
-                for parameter in self.__parameters
-            ]
-        ):
+        parents = []
+        for parameter in self.__parameters:
+            parents.append(
+                [parameter.origin]
+                + [item async for item in parameter.origin.get_parents()]
+            )
+        for item in itertools.chain(*parents):
             yield item
 
 
