@@ -330,7 +330,7 @@ class Definition(NamedTuple):
         if "links" in kwargs:
             kwargs["links"] = tuple(
                 cls._fromdict(
-                    **(dict(link) if isinstance(link, tuple) else link)
+                    **(dict(link) if isinstance(link, (tuple, list)) else link)
                 )
                 for link in kwargs["links"]
             )
