@@ -17,7 +17,8 @@ from ..feature.feature import Feature
 
 @config
 class ParameterGridConfig:
-    parameters: dict = field("Parameters to be optimized")
+    parameters: dict = field("Parameters to be optimized", default_factory= lambda:dict())
+    objective: str = field("How to optimize for the scorer", default="max")
 
 
 class ParameterGridContext(TunerContext):
@@ -38,6 +39,8 @@ class ParameterGridContext(TunerContext):
         Uses a grid of hyperparameters in the form of a dictionary present in config,
         Trains each permutation of the grid of parameters and compares accuracy.
         Sets model to the best parameters and returns highest accuracy.
+        If no hyperparameters are provided, the model is simply trained using
+        default parameters.
 
         Parameters
         ----------
@@ -59,33 +62,56 @@ class ParameterGridContext(TunerContext):
         Returns
         -------
         float
-            The highest score value
+            The best score value
         """
-        highest_acc = -1
+        # Score should be optimized based on objective
+        if self.parent.config.objective == "min":
+            highest_acc = float("inf")
+        elif self.parent.config.objective == "max":
+            highest_acc = -1
+        else:
+            raise NotImplementedError('Objective must be either "min" or "max".')
+
         best_config = dict()
         logging.info(
             f"Optimizing model with parameter grid: {self.parent.config.parameters}"
         )
+
         names = list(self.parent.config.parameters.keys())
         logging.info(names)
-        with model.config.no_enforce_immutable():
+
+        with model.parent.config.no_enforce_immutable():
             for combination in itertools.product(
                 *list(self.parent.config.parameters.values())
             ):
                 logging.info(combination)
+
                 for i in range(len(combination)):
                     param = names[i]
-                    setattr(model.config, names[i], combination[i])
-                await train(model, *train_data)
-                acc = await score(model, accuracy_scorer, feature, *test_data)
+                    setattr(model.parent.config, names[i], combination[i])
+
+                await train(model.parent, *train_data)
+
+                acc = await score(
+                    model.parent, accuracy_scorer, feature, *test_data
+                )
+
                 logging.info(f"Accuracy of the tuned model: {acc}")
-                if acc > highest_acc:
-                    highest_acc = acc
-                    for param in names:
-                        best_config[param] = getattr(model.config, param)
+                if self.parent.config.objective == "min":
+                    if acc < highest_acc:
+                        highest_acc = acc
+                        
+                elif self.parent.config.objective == "max":
+                    if acc > highest_acc:
+                        highest_acc = acc
+                for param in names:
+                    best_config[param] = getattr(
+                        model.parent.config, param
+                    )
             for param in names:
-                setattr(model.config, param, best_config[param])
-            await train(model, *train_data)
+                setattr(model.parent.config, param, best_config[param])
+            await train(model.parent, *train_data)
+            highest_acc = await score(model.parent, accuracy_scorer, feature, *test_data)
         logging.info(f"\nOptimal Hyper-parameters: {best_config}")
         logging.info(f"Accuracy of Optimized model: {highest_acc}")
         return highest_acc
