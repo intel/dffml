@@ -1,9 +1,10 @@
 import inspect
 
 from ..model.model import Model
+from ..tuner.tuner import Tuner
 from ..source.source import Sources, SubsetSources
 from ..util.cli.cmd import CMD, CMDOutputOverride
-from ..high_level.ml import train, predict, score
+from ..high_level.ml import train, predict, score, tune
 from ..util.config.fields import FIELD_SOURCES
 from ..util.cli.cmds import (
     SourcesCMD,
@@ -15,6 +16,7 @@ from ..util.cli.cmds import (
 )
 from ..base import config, field
 from ..accuracy import AccuracyScorer
+
 from ..feature import Features
 
 
@@ -118,3 +120,37 @@ class Predict(CMD):
 
     record = PredictRecord
     _all = PredictAll
+
+
+@config
+class TuneCMDConfig:
+    model: Model = field("Model used for ML", required=True)
+    tuner: Tuner = field("Tuner to optimize hyperparameters", required=True)
+    scorer: AccuracyScorer = field(
+        "Method to use to score accuracy", required=True
+    )
+    features: Features = field("Predict Feature(s)", default=Features())
+    sources: Sources = FIELD_SOURCES
+  
+
+class Tune(MLCMD):
+    """Optimize hyperparameters of model with given sources"""
+
+    CONFIG = TuneCMDConfig
+
+    async def run(self):
+        # Instantiate the accuracy scorer class if for some reason it is a class
+        # at this point rather than an instance.
+        if inspect.isclass(self.scorer):
+            self.scorer = self.scorer.withconfig(self.extra_config)
+        if inspect.isclass(self.tuner):
+            self.tuner = self.tuner.withconfig(self.extra_config)
+        
+        return await tune(
+            self.model,
+            self.tuner,
+            self.scorer,
+            self.features,
+            [self.sources[0]],
+            [self.sources[1]],
+        )

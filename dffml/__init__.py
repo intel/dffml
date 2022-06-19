@@ -57,6 +57,7 @@ DUPLICATE_PREFER = {
     "train": "high_level.ml",
     "predict": "high_level.ml",
     "score": "high_level.ml",
+    "tune": "high_level.ml",
     "load": "high_level.source",
     "save": "high_level.source",
     "run": "high_level.dataflow",

@@ -6,6 +6,7 @@ from .high_level.ml import (
     train as high_level_train,
     score as high_level_score,
     predict as high_level_predict,
+    tune as high_level_tune,
 )
 
 
@@ -21,6 +22,21 @@ train.__doc__ = (
     .replace(
         "    >>> from dffml import *\n",
         "    >>> from dffml import *\n    >>> from dffml.noasync import train\n",
+    )
+)
+
+def tune(*args, **kwargs):
+    return asyncio.run(high_level_tune(*args, **kwargs))
+
+
+tune.__doc__ = (
+    high_level_tune.__doc__.replace("await ", "")
+    .replace("async ", "")
+    .replace("asyncio.run(main())", "main()")
+    .replace("    >>> import asyncio\n", "")
+    .replace(
+        "    >>> from dffml import *\n",
+        "    >>> from dffml import *\n    >>> from dffml.noasync import tune\n",
     )
 )
 
