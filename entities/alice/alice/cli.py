@@ -4,7 +4,7 @@ import pathlib
 import platform
 import contextlib
 import dataclasses
-from typing import Dict, NewType
+from typing import Dict, List, NewType
 
 
 import dffml
@@ -62,10 +62,144 @@ class AliceCLI(dffml.CMD):
     produce = AliceProduceCLI
 
 
+@dffml.config
+class AlicePleaseContributeCLIConfig:
+    repos: List[str] = dffml.field(
+        "Repos to contribute to", default_factory=lambda: [],
+    )
+
+
+class AlicePleaseContributeCLI(dffml.CMD):
+
+    CONFIG = AlicePleaseContributeCLIConfig
+
+    async def run(self):
+        # TODO When running Alice from the CLI we will inspect the top level
+        # system context in the furture applied overlay which is the alice
+        # please contribute overlay which provides CLI applications. It should
+        # auto populate the input required to the base repo dataflow.
+
+        import os
+        import textwrap
+        import unittest
+
+        content_should_be = textwrap.dedent(
+            """
+            - [] [README](https://github.com/intel/dffml/blob/main/README.md)
+            - [] Code of conduct
+            - [] [Contributing](https://github.com/intel/dffml/blob/main/CONTRIBUTING.md)
+            - [] [License](https://github.com/intel/dffml/blob/main/LICENSE)
+            - [] Security
+            """
+        ).lstrip()
+
+        import pathlib
+
+        import dffml_feature_git.feature.definitions
+
+        @dffml.op(
+            inputs={"repo": dffml_feature_git.feature.definitions.git_repository,},
+            outputs={"result": NewType("repo.directory.has.readme", bool),},
+        )
+        def has_readme(repo):
+            # "$REPO_DIRECTORY/README.md"
+            return {"result": pathlib.Path(repo.directory, "README.md").exists()}
+
+        @dffml.op(
+            inputs={"repo": dffml_feature_git.feature.definitions.git_repository,},
+            outputs={"result": NewType("repo.directory.has.code_of_conduct", bool),},
+        )
+        def has_code_of_conduct(repo):
+            return {
+                "result": pathlib.Path(repo.directory, "CODE_OF_CONDUCT.md").exists()
+            }
+
+        @dffml.op(
+            inputs={"repo": dffml_feature_git.feature.definitions.git_repository,},
+            outputs={"result": NewType("repo.directory.has.contributing", bool),},
+        )
+        def has_contributing(repo):
+            return {"result": pathlib.Path(repo.directory, "CONTRIBUTING.md").exists()}
+
+        @dffml.op(
+            inputs={"repo": dffml_feature_git.feature.definitions.git_repository,},
+            outputs={"result": NewType("repo.directory.has.license", bool),},
+        )
+        def has_license(repo):
+            return {"result": pathlib.Path(repo.directory, "LICENSE.md").exists()}
+
+        @dffml.op(
+            inputs={"repo": dffml_feature_git.feature.definitions.git_repository,},
+            outputs={"result": NewType("repo.directory.has.security", bool),},
+        )
+        def has_security(repo):
+            return {"result": pathlib.Path(repo.directory, "SECURITY.md").exists()}
+
+        DFFMLCLICMD = NewType("dffml.util.cli.CMD", object)
+
+        @dffml.op(
+            inputs={"cmd": DFFMLCLICMD,},
+            outputs={"repo": dffml_feature_git.feature.definitions.git_repository,},
+            expand=["repo"],
+        )
+        def cli_is_meant_on_this_repo(cmd):
+            return {
+                "repo": [
+                    dffml_feature_git.feature.definitions.GitRepoSpec(
+                        directory=os.getcwd(), URL=None,
+                    ),
+                ]
+                if not cmd.repos
+                else []
+            }
+
+        @dffml.op(
+            inputs={"cmd": DFFMLCLICMD,},
+            outputs={"repo": dffml_feature_git.feature.definitions.git_repository,},
+            expand=["repo"],
+        )
+        def cli_has_repos(cmd):
+            return {
+                "repo": [
+                    dffml_feature_git.feature.definitions.GitRepoSpec(
+                        directory=repo, URL=repo,
+                    )
+                    for repo in cmd.repos
+                ]
+            }
+
+        async for ctx, results in dffml.run(
+            dffml.DataFlow(*dffml.opimp_in(locals())),
+            [dffml.Input(value=self, definition=DFFMLCLICMD,),],
+        ):
+            (await ctx.handle()).as_string()
+
+        content_was = textwrap.dedent(
+            """
+            - [] [README](https://github.com/intel/dffml/blob/main/README.md)
+            - [] Code of conduct
+            - [] [Contributing](https://github.com/intel/dffml/blob/main/CONTRIBUTING.md)
+            - [] [License](https://github.com/intel/dffml/blob/main/LICENSE)
+            - [] Security
+            """
+        ).lstrip()
+
+        unittest.TestCase().assertEqual(content_should_be, content_was)
+
+        # TODO Implement creation of issues once we have body text generation
+        # working.
+
+
+class AlicePleaseCLI(dffml.CMD):
+
+    contribute = AlicePleaseContributeCLI
+
+
 class AliceCLI(dffml.CMD):
 
     shouldi = ShouldiCLI
     threats = AliceThreatsMd
+    please = AlicePleaseCLI
     # TODO 2022-05-26 13:15 PM PDT: Maybe this should be a dataflow rather than
     # a system context? Or support both more likely.
     # version = DataFlow(op(stage=Stage.OUTPUT)(get_alice_version))
