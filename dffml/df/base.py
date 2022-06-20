@@ -1,4 +1,5 @@
 import abc
+import types
 import inspect
 import collections
 import pkg_resources
@@ -575,7 +576,12 @@ def mk_base_in(predicate):
         return list(
             map(
                 lambda item: item[1],
-                inspect.getmembers(to_check, predicate=predicate),
+                inspect.getmembers(
+                    to_check
+                    if not isinstance(to_check, dict)
+                    else types.SimpleNamespace(**to_check),
+                    predicate=predicate,
+                ),
             )
         )
 
