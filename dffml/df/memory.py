@@ -955,7 +955,7 @@ class MemoryLockNetworkContext(BaseLockNetworkContext):
         self.locks: Dict[str, asyncio.Lock] = {}
 
     @asynccontextmanager
-    async def acquire(self, parameter_set: BaseParameterSet):
+    async def acquire(self, parameter_set: BaseParameterSet, *, operation: Optional[Operation] = None):
         """
         Acquire the lock for each input in the input set which must be locked
         prior to running an operation using the input.
@@ -980,9 +980,20 @@ class MemoryLockNetworkContext(BaseLockNetworkContext):
             # Take all the locks we found we needed for this parameter set
             for _uid, (item, lock) in need_lock.items():
                 # Take the lock
-                self.logger.debug("Acquiring: %s(%r)", item.uid, item.value)
+                if operation is not None:
+                    self.logger.debug("%s acquiring: %s(%r)", operation, item.uid, item.value)
+                elif hasattr(lock, "operation") and operation is not None:
+                    self.logger.debug("%s acquiring: %s(%r) (previously held by %s)", operation, item.uid, item.value, lock.operation)
+                elif hasattr(lock, "operation"):
+                    self.logger.debug("Acquiring: %s(%r) (previously held by %s)", item.uid, item.value, lock.operation)
+                else:
+                    self.logger.debug("Acquiring: %s(%r)", item.uid, item.value)
                 await stack.enter_async_context(lock)
-                self.logger.debug("Acquired: %s(%r)", item.uid, item.value)
+                if operation is not None:
+                    lock.operation = operation
+                    self.logger.debug("Acquiring: %s(%r) (now held by %s)", item.uid, item.value, lock.operation)
+                else:
+                    self.logger.debug("Acquired: %s(%r)", item.uid, item.value)
             # All locks for these parameters have been acquired
             yield
 
@@ -1199,7 +1210,7 @@ class MemoryOperationImplementationNetworkContext(
         """
         # Ensure that we can run the operation
         # Lock all inputs which cannot be used simultaneously
-        async with octx.lctx.acquire(parameter_set):
+        async with octx.lctx.acquire(parameter_set, operation=operation):
             # Run the operation
             outputs = await self.run(
                 parameter_set.ctx,
