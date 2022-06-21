@@ -3,6 +3,7 @@ import sys
 import types
 import inspect
 import collections
+import collections.abc
 import pkg_resources
 from typing import (
     AsyncIterator,
@@ -28,6 +29,8 @@ from .types import (
     NO_DEFAULT,
     primitive_types,
     primitive_convert,
+    resolve_if_forward_ref,
+    new_type_to_defininition,
     create_definition,
     DataFlow,
     APPLY_INSTALLED_OVERLAYS,
@@ -42,6 +45,7 @@ from ..base import (
     BaseDataFlowFacilitatorObject,
 )
 from ..util.cli.arg import Arg
+from ..util.data import get_origin, get_args
 from ..util.asynchelper import context_stacker
 from ..util.entrypoint import base_entry_point
 from ..util.entrypoint import load as load_entrypoint
@@ -382,14 +386,44 @@ def op(
                     continue
                 name_list = [kwargs["name"], "inputs", name]
 
-                kwargs["inputs"][name] = create_definition(
-                    ".".join(name_list),
-                    param.annotation,
-                    NO_DEFAULT
-                    if param.default is inspect.Parameter.empty
-                    else param.default,
-                    forward_refs_from_cls=forward_refs_from_cls,
-                )
+                param_annotation = param.annotation
+                if forward_refs_from_cls:
+                    param_annotation = resolve_if_forward_ref(
+                        param_annotation, forward_refs_from_cls
+                    )
+
+                if get_origin(param_annotation) in [
+                    Union,
+                    collections.abc.AsyncIterator,
+                ]:
+                    param_annotation = list(get_args(param_annotation))[0]
+                    param_annotation = resolve_if_forward_ref(
+                        param_annotation, forward_refs_from_cls
+                    )
+
+                definition_name = ".".join(name_list)
+                if hasattr(param_annotation, "__supertype__") and hasattr(
+                    param_annotation, "__name__"
+                ):
+                    definition_name = param_annotation.__name__
+                if inspect.isclass(param_annotation) and hasattr(
+                    param_annotation, "__qualname__"
+                ):
+                    definition_name = param_annotation.__qualname__
+
+                if isinstance(param_annotation, Definition):
+                    kwargs["inputs"][name] = param_annotation
+                else:
+                    kwargs["inputs"][name] = create_definition(
+                        definition_name,
+                        param_annotation,
+                        forward_refs_from_cls=forward_refs_from_cls,
+                    )
+
+                if param.default is not inspect.Parameter.empty:
+                    kwargs["inputs"][name] = kwargs["inputs"][name]._replace(
+                        default=param.default
+                    )
 
         auto_def_outputs = False
         # Definition for return type of a function
@@ -398,12 +432,42 @@ def op(
             if return_type not in (None, inspect._empty):
                 name_list = [kwargs["name"], "outputs", "result"]
 
-                kwargs["outputs"] = {
-                    "result": create_definition(
-                        ".".join(name_list),
-                        return_type,
+                param_annotation = return_type
+                if forward_refs_from_cls:
+                    param_annotation = resolve_if_forward_ref(
+                        param_annotation, forward_refs_from_cls
+                    )
+
+                if get_origin(param_annotation) in [
+                    Union,
+                    collections.abc.AsyncIterator,
+                ]:
+                    param_annotation = list(get_args(param_annotation))[0]
+                    param_annotation = resolve_if_forward_ref(
+                        param_annotation, forward_refs_from_cls
+                    )
+
+                definition_name = ".".join(name_list)
+                if hasattr(param_annotation, "__supertype__") and hasattr(
+                    param_annotation, "__name__"
+                ):
+                    definition_name = param_annotation.__name__
+                if inspect.isclass(param_annotation) and hasattr(
+                    param_annotation, "__qualname__"
+                ):
+                    definition_name = param_annotation.__qualname__
+
+                if isinstance(param_annotation, Definition):
+                    definition = param_annotation
+                else:
+                    definition = create_definition(
+                        definition_name,
+                        param_annotation,
                         forward_refs_from_cls=forward_refs_from_cls,
                     )
+
+                kwargs["outputs"] = {
+                    "result": definition,
                 }
                 auto_def_outputs = True
 
