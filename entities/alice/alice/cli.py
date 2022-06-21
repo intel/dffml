@@ -166,8 +166,6 @@ AlicePleaseContributeRecommendedCommunityStandardsExecutedFromCLI = NewType(
 
 import dffml.df.types
 
-print(dffml.df.types.Expand)
-
 # TODO A way to deactivate installed overlays so they are not merged or applied.
 class AlicePleaseContributeRecommendedCommunityStandardsCLIOverlay:
     @staticmethod
