@@ -24,6 +24,7 @@ class AliceGitRepo(NamedTuple):
     directory: str
     URL: str
 
+
 DFFMLCLICMD = NewType("dffml.util.cli.CMD", object)
 
 
@@ -105,26 +106,9 @@ class AlicePleaseContributeRecommendedCommunityStandards:
         # TODO(security) How bad is this?
         if not pathlib.Path(repo_string).is_dir():
             return
-        return AliceGitRepo(
-            directory=repo_string, URL=None,
-        )
+        return AliceGitRepo(directory=repo_string, URL=None)
 
-    async def guess_repo_string_is_url(
-        self,
-        repo_string: "RepoString",
-    ) -> AliceGitRepo:
-        if "://" not in repo_string:
-            return
-        print(self.octx.config.dataflow.operations['alice.cli.AlicePleaseContributeRecommendedCommunityStandards:has_readme'])
-        print(self.octx.config.dataflow.operations['alice.cli.AlicePleaseContributeRecommendedCommunityStandards:guess_repo_string_is_url'])
-        return AliceGitRepo(
-            directory=repo_string, URL=repo_string,
-        )
-
-    def has_readme(
-        self,
-        repo: AliceGitRepo,
-    ) -> "HasReadme":
+    def has_readme(self, repo: AliceGitRepo,) -> "HasReadme":
         return pathlib.Path(repo.directory, "README.md").exists()
 
     # TODO Run this system context where readme contexts is given on CLI or
