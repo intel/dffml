@@ -131,6 +131,7 @@ class AlicePleaseContributeRecommendedCommunityStandards:
 class AlicePleaseContributeRecommendedCommunityStandardsOverlayOperationsGit:
     GuessedGitURL = NewType("guessed.git.url", bool)
 
+    # The operations we use defined elsewhere
     check_if_valid_git_repository_URL = (
         dffml_feature_git.feature.operations.check_if_valid_git_repository_URL
     )
@@ -138,16 +139,6 @@ class AlicePleaseContributeRecommendedCommunityStandardsOverlayOperationsGit:
     git_repo_default_branch = (
         dffml_feature_git.feature.operations.git_repo_default_branch
     )
-
-    """
-    def guess_repo_string_is_url(
-        self,
-        repo_string: AlicePleaseContributeRecommendedCommunityStandards.RepoString,
-    ) -> dffml_feature_git.feature.definitions.URLType:
-        if "://" not in repo_string:
-            return
-        return repo_string
-    """
 
     def guess_repo_string_is_url(
         self,
