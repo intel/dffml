@@ -1,4 +1,5 @@
 import abc
+import sys
 import types
 import inspect
 import collections
@@ -336,6 +337,15 @@ def op(
         if not "conditions" in kwargs:
             kwargs["conditions"] = []
 
+        forward_refs_from_cls = None
+        if hasattr(func, "__qualname__") and "." in func.__qualname__:
+            # Attempt to lookup type definitions defined within class
+            forward_refs_from_cls = getattr(
+                sys.modules[func.__module__],
+                func.__qualname__.split(".")[0],
+                None,
+            )
+
         sig = inspect.signature(func)
         # Check if the function uses the operation implementation context
         uses_self = bool(
@@ -378,6 +388,7 @@ def op(
                     NO_DEFAULT
                     if param.default is inspect.Parameter.empty
                     else param.default,
+                    forward_refs_from_cls=forward_refs_from_cls,
                 )
 
         auto_def_outputs = False
@@ -389,7 +400,9 @@ def op(
 
                 kwargs["outputs"] = {
                     "result": create_definition(
-                        ".".join(name_list), return_type
+                        ".".join(name_list),
+                        return_type,
+                        forward_refs_from_cls=forward_refs_from_cls,
                     )
                 }
                 auto_def_outputs = True
