@@ -1562,6 +1562,10 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
     async def subflow_system_context_added(self, ctx: BaseContextHandle):
         await self.ictx.child_flow_context_created(ctx)
 
+    async def subflow_context_result(self, ctx: BaseContextHandle, result):
+        # TODO Note from subflow
+        await self.ictx.add_context_result(ctx, result)
+
     # TODO(dfass) Get rid of run_operations, make it run_dataflow. Pass down the
     # dataflow to everything. Make inputs a list of InputSets or an
     # asyncgenerator of InputSets. Add a parameter which tells us if we should
@@ -1959,6 +1963,8 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
             output = list(output.values())[0]
         # Notify watchers of return value
         await self.ictx.add_context_result(ctx, output)
+        if hasattr(ctx, "orchestrator_parent"):
+            await ctx.orchestrator_parent.subflow_context_result(ctx, output)
 
     async def run_stage(self, ctx: BaseInputSetContext, stage: Stage):
         # Identify which operations have complete contextually appropriate
