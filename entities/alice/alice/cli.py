@@ -380,12 +380,12 @@ class AlicePleaseContributeRecommendedCommunityStandardsOverlayGitHubIssue:
             [
                 "- [x] [README]({repo.URL}/blob/{base}/{readme_path.relative_to(repo.directory).as_posix()})"
                 if readme_path is not None
-                else "- [ ] {readme_issue}",
+                else f"- [ ] {readme_issue}",
             ]
         )
 
-    @staticmethod
     async def create_meta_issue(
+        self,
         repo: AliceGitRepo,
         body: "MetaIssueBody",
         title: Optional["MetaIssueTitle"] = "Recommended Community Standards",
