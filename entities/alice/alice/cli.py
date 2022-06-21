@@ -482,6 +482,7 @@ class AlicePleaseContributeCLI(dffml.CMD):
             AlicePleaseContributeRecommendedCommunityStandards,
             # dffml.DataFlow(*dffml.opimp_in(locals())),
             [dffml.Input(value=self, definition=DFFMLCLICMD,),],
+            # TODO Merge all overlays into one and then run
             overlay=AlicePleaseContributeRecommendedCommunityStandardsCLIOverlay,
         ):
             (await ctx.handle()).as_string()
