@@ -4,7 +4,7 @@ import pathlib
 import platform
 import contextlib
 import dataclasses
-from typing import Dict, List, NewType
+from typing import Dict, List, Optional, NewType
 
 
 import dffml
@@ -72,57 +72,118 @@ class AlicePleaseContributeCLIConfig:
 import dffml_feature_git.feature.definitions
 
 # TODO GitRepoSpec resolve to correct definition on auto def
-class AlicePleaseContributeRecommendedCommunityStandards(dffml.SystemContext):
+class AlicePleaseContributeRecommendedCommunityStandards:
     # TODO SystemContext __new__ auto populate config to have upstream set to
     # dataflow generated from methods in this class with memory orchestarator.
+    ReadmeContents = NewType("repo.directory.readme.contents", str)
+    ReadmeContents = NewType("repo.directory.readme.contents", str)
+    HasReadme = NewType("repo.directory.readme.exists", bool)
+
+    # TODO Generate output definition when wrapped with op decorator, example:
+    #   HasReadme = NewType("AlicePleaseContributeRecommendedCommunityStandards.has.readme", bool)
+
+    # TODO
+    # ) -> bool:
+    # ...
+    #     has_readme: 'has_readme',
+
     @staticmethod
     def has_readme(
         repo: dffml_feature_git.feature.definitions.GitRepoSpec,
-    ) -> NewType("repo.directory.has.readme", bool):
-        # "$REPO_DIRECTORY/README.md"
+    ) -> "HasReadme":
         return pathlib.Path(repo.directory, "README.md").exists()
 
+    # TODO Run this system context where readme contexts is given on CLI or
+    # overriden via disabling of static overlay and application of overlay to
+    # generate contents dynamiclly.
     @staticmethod
-    def has_code_of_conduct(
+    def create_readme_file(
         repo: dffml_feature_git.feature.definitions.GitRepoSpec,
-    ) -> NewType("repo.directory.has.code_of_conduct", bool):
-        return pathlib.Path(repo.directory, "CODE_OF_CONDUCT.md").exists()
+        has_readme: "has_readme",
+        readme_contents: Optional["ReadmeContents"] = "# My Awesome Project's README",
+    ) -> "ReadmeBranch":
+        # Do not create readme if it already exists
+        if has_readme:
+            return
+        pathilb.Path(repo.directory, "README.md").write_text(readme_contents)
+
+
+class AlicePleaseContributeRecommendedCommunityStandardsGit:
+    ReadmeCommitMessage = NewType("repo.readme.git.commit.message", str)
+    ReadmeBranch = NewType("repo.readme.git.branch", str)
+    BaseBranch = NewType("repo.git.base.branch", str)
+
+    git_repo_default_branch = staticmethod(
+        dffml_feature_git.feature.operations.git_repo_default_branch
+    )
 
     @staticmethod
-    def has_contributing(
-        repo: dffml_feature_git.feature.definitions.GitRepoSpec,
-    ) -> NewType("repo.directory.has.contributing", bool):
-        return pathlib.Path(repo.directory, "CONTRIBUTING.md").exists()
+    def determin_base_branch(
+        default_branch: dffml_feature_git.feature.definitions.git_branch,
+    ) -> "BaseBranch":
+        # TODO .tools/process.yml which defines branches to contibute to under
+        # different circumstances. Model with Linux kernel for complex case,
+        # take KVM.
+        # Later do NLP on contributing docs to determine
+        return default_branch
 
     @staticmethod
-    def has_license(
+    async def contribute_readme_md(
         repo: dffml_feature_git.feature.definitions.GitRepoSpec,
-    ) -> NewType("repo.directory.has.license", bool):
-        return pathlib.Path(repo.directory, "LICENSE.md").exists()
-
-    @staticmethod
-    def has_security(
-        repo: dffml_feature_git.feature.definitions.GitRepoSpec,
-    ) -> NewType("repo.directory.has.security", bool):
-        return pathlib.Path(repo.directory, "SECURITY.md").exists()
+        base: "BaseBranch",
+        commit_message: Optional[
+            "ReadmeCommitMessage"
+        ] = "Recommended Community Standard: Add README",
+    ) -> "ReadmeBranch":
+        await dffml.run_command(
+            ["git", "checkout", base,], cwd=repo.directory,
+        )
+        await dffml.run_command(
+            [
+                "git",
+                "checkout",
+                "-b",
+                "alice-contribute-recommended-community-standards-readme",
+            ],
+            cwd=repo.directory,
+        )
+        await dffml.run_command(
+            ["git", "add", "README.md",], cwd=repo.directory,
+        )
+        await dffml.run_command(
+            ["git", "commit", "-sm", commit_message,], cwd=repo.directory,
+        )
 
 
 DFFMLCLICMD = NewType("dffml.util.cli.CMD", object)
-AlicePleaseContributeRecommendedCommunityStandardsExecutedFromCLI = NewType("AlicePleaseContributeRecommendedCommunityStandardsExecutedFromCLI", bool)
+AlicePleaseContributeRecommendedCommunityStandardsExecutedFromCLI = NewType(
+    "AlicePleaseContributeRecommendedCommunityStandardsExecutedFromCLI", bool
+)
 
 import dffml.df.types
 
 print(dffml.df.types.Expand)
 
 # TODO A way to deactivate installed overlays so they are not merged or applied.
-class AlicePleaseContributeRecommendedCommunityStandardsCLIOverlay(dffml.SystemContext):
+class AlicePleaseContributeRecommendedCommunityStandardsCLIOverlay:
     @staticmethod
     def cli_is_asking_for_recommended_community_standards(
         cmd: DFFMLCLICMD,
     ) -> AlicePleaseContributeRecommendedCommunityStandardsExecutedFromCLI:
+        """
+
+        .. code-block:: console
+            :test:
+
+            $ alice please contribute recommended community standards
+
+
+        """
         if not "" in cmd.extra_config:
             return
-        return cmd.extra_config[""]["plugin"][0].startswith("recommended community standards")
+        return cmd.extra_config[""]["plugin"][0].startswith(
+            "recommended community standards"
+        )
 
     @staticmethod
     def cli_is_meant_on_this_repo(
@@ -152,6 +213,154 @@ class AlicePleaseContributeRecommendedCommunityStandardsCLIOverlay(dffml.SystemC
             dffml_feature_git.feature.definitions.GitRepoSpec(directory=repo, URL=repo,)
             for repo in cmd.repos
         ]
+
+
+class AlicePleaseContributeRecommendedCommunityStandardsGitHubIssueOverlay(
+    dffml.SystemContext
+):
+    """
+
+    Check if we have any other issues open for the repo
+
+    .. code-block:: console
+        :test:
+
+        $ gh issue -R "${GITHUB_REPO}" list --search "Recommended Community Standard"
+        no issues match your search in intel/dffml
+
+    """
+
+    ReadmeIssue: NewType("ReadmeIssue", str)
+    ReadmeIssueTitle: NewType("ReadmeIssueTitle", str)
+    ReadmeIssueBody: NewType("ReadmeIssueBody", str)
+    MetaIssue: NewType("MetaIssue", str)
+    MetaIssueTitle: NewType("MetaIssueTitle", str)
+    MetaIssueBody: NewType("MetaIssueBody", str)
+
+    # body: Optional['ContributingIssueBody'] = "References:\n- https://docs.github.com/articles/setting-guidelines-for-repository-contributors/",
+    async def readme_issue(
+        self,
+        repo: dffml_feature_git.feature.definitions.GitRepoSpec,
+        title: Optional["ReadmeIssueTitle"] = "Recommended Community Standard: README",
+        body: Optional[
+            "ReadmeIssueBody"
+        ] = "References:\n- https://docs.github.com/articles/about-readmes/",
+    ) -> "ReadmeIssue":
+        async for event, result in dffml.run_command_events(
+            [
+                "gh",
+                "issue",
+                "create",
+                "-R",
+                repo.URL,
+                "--title",
+                title,
+                "--body",
+                body,
+            ],
+            logger=self.logger,
+        ):
+            if event is Subprocess.STDOUT:
+                # The URL of the issue created
+                return result.strip()
+
+    @staticmethod
+    def readme_commit_message(
+        issue_url: "ReadmeIssue",
+    ) -> AlicePleaseContributeRecommendedCommunityStandardsGit.ReadmeCommitMessage:
+        return textwrap.dedent(
+            f"""
+            Recommended Community Standard: README
+
+            Closes: #{issue_url}
+            """
+        ).lstrip()
+
+    @staticmethod
+    def meta_issue_body(
+        repo: dffml_feature_git.feature.definitions.GitRepoSpec,
+        readme_issue: Optional["ReadmeIssue"] = None,
+        readme_path: Optional["ReadmePath"] = None,
+    ) -> "MetaIssueBody":
+        """
+        >>> AlicePleaseContributeRecommendedCommunityStandardsGitHubIssueOverlay.meta_issue_body(
+        ...     repo=dffml_feature_git.feature.definitions.GitRepoSpec(
+        ...     ),
+        ... )
+        - [] [README](https://github.com/intel/dffml/blob/main/README.md)
+        - [] Code of conduct
+        - [] [Contributing](https://github.com/intel/dffml/blob/main/CONTRIBUTING.md)
+        - [] [License](https://github.com/intel/dffml/blob/main/LICENSE)
+        - [] Security
+        """
+        return "\n".join(
+            [
+                "- [x] [README]({repo.URL}/blob/{base}/{readme_path.relative_to(repo.directory).as_posix()})"
+                if readme_path is not None
+                else "- [ ] {readme_issue}",
+            ]
+        )
+
+    @staticmethod
+    async def create_meta_issue(
+        repo: dffml_feature_git.feature.definitions.GitRepoSpec,
+        body: "MetaIssueBody",
+        title: Optional["MetaIssueTitle"] = "Recommended Community Standards",
+    ) -> "MetaIssue":
+        async for event, result in dffml.run_command_events(
+            [
+                "gh",
+                "issue",
+                "create",
+                "-R",
+                repo.URL,
+                "--title",
+                title,
+                "--body",
+                body,
+            ],
+            logger=self.logger,
+        ):
+            if event is Subprocess.STDOUT:
+                # The URL of the issue created
+                return result.strip()
+
+
+# TODO Spawn background task (could use an orchestrator which creates a
+# GitHub Actions cron job to execute later). set_close_meta_issue_trigger
+class AlicePleaseContributeRecommendedCommunityStandardsGitHubPullRequestOverlay(
+    dffml.SystemContext
+):
+    @staticmethod
+    async def readme_pr(
+        repo: dffml_feature_git.feature.definitions.GitRepoSpec,
+        base: AlicePleaseContributeRecommendedCommunityStandardsGit.BaseBranch,
+        head: AlicePleaseContributeRecommendedCommunityStandardsGit.ReadmeBranch,
+    ) -> "ReadmePR":
+        """
+
+        Check if we have any other issues open for the repo
+
+        .. code-block:: console
+            :exec:
+
+            $ gh issue -R "${GITHUB_REPO_URL}" create --title "Recommended Community Standards (alice)" --body "${META_ISSUE_BODY}"
+
+        """
+        await dffml.run_command(
+            [
+                "gh",
+                "pr",
+                "create",
+                "--base",
+                default_branch,
+                "--head",
+                head,
+                "--body",
+                body,
+            ],
+            cwd=repo.directory,
+        )
 
 
 class AlicePleaseContributeCLI(dffml.CMD):
@@ -253,9 +462,15 @@ class AlicePleaseContributeCLI(dffml.CMD):
 
         async for ctx, results in dffml.run(
             dffml.DataFlow(
-                dffml.op(AlicePleaseContributeRecommendedCommunityStandardsCLIOverlay.cli_is_asking_for_recommended_community_standards),
-                dffml.op(AlicePleaseContributeRecommendedCommunityStandardsCLIOverlay.cli_is_meant_on_this_repo),
-                dffml.op(AlicePleaseContributeRecommendedCommunityStandardsCLIOverlay.cli_has_repos),
+                dffml.op(
+                    AlicePleaseContributeRecommendedCommunityStandardsCLIOverlay.cli_is_asking_for_recommended_community_standards
+                ),
+                dffml.op(
+                    AlicePleaseContributeRecommendedCommunityStandardsCLIOverlay.cli_is_meant_on_this_repo
+                ),
+                dffml.op(
+                    AlicePleaseContributeRecommendedCommunityStandardsCLIOverlay.cli_has_repos
+                ),
             ),
             [dffml.Input(value=self, definition=DFFMLCLICMD,),],
         ):
