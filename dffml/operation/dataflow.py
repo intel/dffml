@@ -186,7 +186,7 @@ class run_dataflow(OperationImplementationContext):
         # an OperationImplementation (and then keep this as the context).
         ctx_input_name, ctx_definition = list(self.parent.op.inputs.items())[0]
 
-        if ctx_definition.primitive != "string":
+        if ctx_definition.primitive not in ["string", "str"]:
             raise InvalidCustomRunDataFlowContext(ctx_definition.export())
 
         subflow_inputs = {inputs[ctx_input_name]: []}
