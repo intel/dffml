@@ -1816,12 +1816,12 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
         tasks = set()
         # String representing the context we are executing operations for
         ctx_str = (await ctx.handle()).as_string()
+        # We are orchestrating this context
+        ctx.orchestrator = self
         # NOTE Not sure if statisfied with this, wanted to look at Monitor use.
         # If we are a subflow, send events to parent as well
         if hasattr(ctx, "orchestrator_parent"):
             await ctx.orchestrator_parent.subflow_system_context_added(ctx)
-        # We are orchestrating this context
-        ctx.orchestrator = self
         # schedule running of operations with no inputs
         async for task in self.dispatch_auto_starts(ctx):
             tasks.add(task)
