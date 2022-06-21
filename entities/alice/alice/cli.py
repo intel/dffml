@@ -126,14 +126,63 @@ class AlicePleaseContributeRecommendedCommunityStandards:
         pathlib.Path(repo.directory, "README.md").write_text(readme_contents)
 
 
+# An overlay which could be installed if you have dffml-feature-git
+# (aka dffml-operations-git) installed.
+class AlicePleaseContributeRecommendedCommunityStandardsOverlayOperationsGit:
+    GuessedGitURL = NewType("guessed.git.url", bool)
+
+    check_if_valid_git_repository_URL = (
+        dffml_feature_git.feature.operations.check_if_valid_git_repository_URL
+    )
+    clone_git_repo = dffml_feature_git.feature.operations.clone_git_repo
+    git_repo_default_branch = (
+        dffml_feature_git.feature.operations.git_repo_default_branch
+    )
+
+    """
+    def guess_repo_string_is_url(
+        self,
+        repo_string: AlicePleaseContributeRecommendedCommunityStandards.RepoString,
+    ) -> dffml_feature_git.feature.definitions.URLType:
+        if "://" not in repo_string:
+            return
+        return repo_string
+    """
+
+    def guess_repo_string_is_url(
+        self,
+        repo_string: AlicePleaseContributeRecommendedCommunityStandards.RepoString,
+    ) -> GuessedGitURL:
+        if "://" not in repo_string:
+            return
+        return repo_string
+
+    def guessed_repo_string_means_no_git_branch_given(
+        repo_url: GuessedGitURL,
+    ) -> dffml_feature_git.feature.definitions.NoGitBranchGivenType:
+        # TODO Support _ prefixed unused variables (repo_url used to trigger,
+        # always true on trigger).
+        return True
+
+    def guessed_repo_string_is_operations_git_url(
+        repo_url: GuessedGitURL,
+    ) -> dffml_feature_git.feature.definitions.URLType:
+        return repo_url
+
+    def git_repo_to_alice_git_repo(
+        repo: dffml_feature_git.feature.definitions.git_repository,
+    ) -> AliceGitRepo:
+        return repo
+
+
+# This overlay has a suggested companion overlay of
+# AlicePleaseContributeRecommendedCommunityStandardsOverlayOperationsGit due to
+# it providing inputs this overlay needs, could suggest to use overlays together
+# based of this info.
 class AlicePleaseContributeRecommendedCommunityStandardsOverlayGit:
     ReadmeCommitMessage = NewType("repo.readme.git.commit.message", str)
     ReadmeBranch = NewType("repo.readme.git.branch", str)
     BaseBranch = NewType("repo.git.base.branch", str)
-
-    git_repo_default_branch = staticmethod(
-        dffml_feature_git.feature.operations.git_repo_default_branch
-    )
 
     @staticmethod
     def determin_base_branch(
@@ -439,6 +488,7 @@ class AlicePleaseContributeCLI(dffml.CMD):
                         for cls in [
                             AlicePleaseContributeRecommendedCommunityStandards,
                             AlicePleaseContributeRecommendedCommunityStandardsOverlayGit,
+                            AlicePleaseContributeRecommendedCommunityStandardsOverlayOperationsGit,
                             AlicePleaseContributeRecommendedCommunityStandardsOverlayCLI,
                             AlicePleaseContributeRecommendedCommunityStandardsOverlayGitHubIssue,
                             AlicePleaseContributeRecommendedCommunityStandardsOverlayGitHubPullRequest,
