@@ -835,7 +835,7 @@ class DataFlow:
         for operation in args:
             name = getattr(getattr(operation, "op", operation), "name")
             if name in operations:
-                raise ValueError("Operation given as positional and in dict")
+                raise ValueError(f"Operation {name} given as positional and in dict")
             operations[name] = operation
 
         self.operations = operations
