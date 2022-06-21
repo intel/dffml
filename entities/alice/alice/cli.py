@@ -9,7 +9,7 @@ import platform
 import itertools
 import contextlib
 import dataclasses
-from typing import Dict, List, Optional, NewType
+from typing import Dict, List, Optional, AsyncIterator, NewType
 
 
 import dffml
@@ -168,6 +168,8 @@ import dffml.df.types
 
 # TODO A way to deactivate installed overlays so they are not merged or applied.
 class AlicePleaseContributeRecommendedCommunityStandardsCLIOverlay:
+    CLIRunOnRepo = NewType("CLIRunOnRepo", object)
+
     @staticmethod
     def cli_is_asking_for_recommended_community_standards(
         cmd: DFFMLCLICMD,
@@ -188,34 +190,41 @@ class AlicePleaseContributeRecommendedCommunityStandardsCLIOverlay:
             return
         return "recommended community standards" in " ".join(args)
 
-    @staticmethod
-    def cli_is_meant_on_this_repo(
+    async def cli_is_meant_on_this_repo(
+        self,
         cmd: DFFMLCLICMD,
         wanted: AlicePleaseContributeRecommendedCommunityStandardsExecutedFromCLI,
-    ) -> dffml.df.types.Expand[dffml_feature_git.feature.definitions.GitRepoSpec]:
-        if not wanted:
+    ) -> AsyncIterator['CLIRunOnRepo']:
+        if not wanted or cmd.repos:
             return
-        return (
-            [
-                dffml_feature_git.feature.definitions.GitRepoSpec(
-                    directory=os.getcwd(), URL=None,
-                ),
-            ]
-            if not cmd.repos
-            else []
+        yield dffml_feature_git.feature.definitions.GitRepoSpec(
+            directory=os.getcwd(), URL=None,
         )
 
     @staticmethod
-    def cli_has_repos(
+    async def cli_has_repos(
         cmd: DFFMLCLICMD,
         wanted: AlicePleaseContributeRecommendedCommunityStandardsExecutedFromCLI,
-    ) -> dffml.df.types.Expand[dffml_feature_git.feature.definitions.GitRepoSpec]:
+    ) -> AsyncIterator['CLIRunOnRepo']:
         if not wanted:
             return
-        return [
-            dffml_feature_git.feature.definitions.GitRepoSpec(directory=repo, URL=repo,)
-            for repo in cmd.repos
-        ]
+        # TODO directory should really be None
+        for repo in cmd.repos:
+            yield dffml_feature_git.feature.definitions.GitRepoSpec(
+                directory=repo, URL=repo,
+            )
+
+    async def cli_run_on_repo(self, repo: 'CLIRunOnRepo'):
+        # TODO Similar to Expand being an alias of Union
+        #
+        # async def cli_run_on_repo(self, repo: 'CLIRunOnRepo') -> SystemContext[StringInputSetContext[dffml_feature_git.feature.definitions.GitRepoSpec]]:
+        #     return repo
+        #
+        # Or ideally at class scope
+        #
+        # 'CLIRunOnRepo' -> SystemContext[StringInputSetContext[dffml_feature_git.feature.definitions.GitRepoSpec]]
+        self.config.dataflow = self.octx.config.dataflow
+        await dffml.run_dataflow.run_custom(self, {"repo": repo})
 
 
 class AlicePleaseContributeRecommendedCommunityStandardsGitHubIssueOverlay:
