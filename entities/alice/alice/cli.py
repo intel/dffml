@@ -104,7 +104,7 @@ class AlicePleaseContributeRecommendedCommunityStandards:
     @staticmethod
     def create_readme_file(
         repo: dffml_feature_git.feature.definitions.GitRepoSpec,
-        has_readme: "has_readme",
+        has_readme: "HasReadme",
         readme_contents: Optional["ReadmeContents"] = "# My Awesome Project's README",
     ) -> "ReadmeBranch":
         # Do not create readme if it already exists
