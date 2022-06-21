@@ -389,15 +389,23 @@ class AlicePleaseContributeCLI(dffml.CMD):
 
         async for ctx, results in dffml.run(
             dffml.DataFlow(
-                dffml.op(
-                    AlicePleaseContributeRecommendedCommunityStandardsCLIOverlay.cli_is_asking_for_recommended_community_standards
-                ),
-                dffml.op(
-                    AlicePleaseContributeRecommendedCommunityStandardsCLIOverlay.cli_is_meant_on_this_repo
-                ),
-                dffml.op(
-                    AlicePleaseContributeRecommendedCommunityStandardsCLIOverlay.cli_has_repos
-                ),
+                *itertools.chain(
+                    *[
+                        [
+                            dffml.op(
+                                name=f"{cls.__module__}.{cls.__qualname__}:{name}"
+                            )(method)
+                            for name, method in inspect.getmembers(
+                                cls,
+                                predicate=lambda i: inspect.ismethod(i)
+                                or inspect.isfunction(i),
+                            )
+                        ]
+                        for cls in [
+                            AlicePleaseContributeRecommendedCommunityStandardsCLIOverlay,
+                        ]
+                    ]
+                )
             ),
             [dffml.Input(value=self, definition=DFFMLCLICMD,),],
         ):
