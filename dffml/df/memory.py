@@ -287,6 +287,7 @@ class MemoryInputNetworkContext(BaseInputNetworkContext):
     ) -> None:
         super().__init__(config, parent)
         self.ctx_notification_set = NotificationSet()
+        self.result_notification_set = NotificationSet()
         self.input_notification_set = {}
         # Organize by context handle string then by definition within that
         self.ctxhd: Dict[str, Dict[Definition, Any]] = {}
@@ -305,6 +306,27 @@ class MemoryInputNetworkContext(BaseInputNetworkContext):
         self.logger.debug(f"Forwarding inputs to contexts {ctx_keys}")
         for ctx in ctx_keys:
             await self.sadd(ctx, *inputs)
+
+    async def child_flow_context_created(self, ctx):
+        """
+        Takes context creation event from child dataflow to watch for results
+        """
+        self.logger.debug(
+            f"Received context {ctx} from child flow {ctx.orchestrator}"
+        )
+        async with self.ctx_notification_set() as ctx:
+            await ctx.add((None, ctx))
+
+    async def add_context_result(self, ctx, result):
+        """
+        Takes context creation events from self and child dataflows to watch for
+        results.
+        """
+        self.logger.debug(
+            f"Received {ctx} result {result} from {ctx.orchestrator}"
+        )
+        async with self.result_notification_set() as ctx:
+            await ctx.add((ctx, result))
 
     async def add(self, input_set: BaseInputSet):
         # Grab the input set context handle
@@ -400,6 +422,10 @@ class MemoryInputNetworkContext(BaseInputNetworkContext):
     async def ctx(self) -> Tuple[bool, BaseInputSetContext]:
         async with self.ctx_notification_set() as ctx:
             return await ctx.added()
+
+    async def result(self) -> Tuple[bool, BaseInputSetContext]:
+        async with self.result_notification_set() as result:
+            return await result.added()
 
     async def added(
         self, watch_ctx: BaseInputSetContext
@@ -1522,6 +1548,9 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
                     instance_name
                 ].ictx.receive_from_parent_flow(inputs)
 
+    async def subflow_system_context_added(self, ctx: BaseContextHandle):
+        await self.ictx.child_flow_context_created(ctx)
+
     # TODO(dfass) Get rid of run_operations, make it run_dataflow. Pass down the
     # dataflow to everything. Make inputs a list of InputSets or an
     # asyncgenerator of InputSets. Add a parameter which tells us if we should
@@ -1533,6 +1562,7 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
         strict: bool = True,
         ctx: Optional[BaseInputSetContext] = None,
         halt: Optional[asyncio.Event] = None,
+        parent: Optional[BaseOrchestratorContext] = None,
     ) -> AsyncIterator[Tuple[BaseContextHandle, Dict[str, Any]]]:
         """
         Run a DataFlow.
@@ -1582,6 +1612,8 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
         tasks = set()
         # Track the number of contexts running
         num_ctxs = 0
+        # Track if there are more context results
+        more = True
         # If the max_ctxs is more than the total number of contexts, then set max_ctxs to None
         if self.config.max_ctxs is not None and self.config.max_ctxs > len(
             ctxs
@@ -1597,6 +1629,14 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
                 break
             # Grab the context by its index
             ctx = ctxs[ctxs_index]
+            if parent is not None:
+                # TODO(alice) It's upstream + the execution of this operation.
+                # We'll have to make the flow on the fly to describe this input
+                # being triggered?
+                # ctx.overlay = dffml.DataFlow(parent.config.dataflow, dataflow, not sure here on any of these)
+                # ctx.upstream = dffml.DataFlow(dataflow, ...)
+                ctx.orchestartor = self
+                ctx.orchestrator_parent = parent
             self.logger.debug(
                 "kickstarting context: %s", (await ctx.handle()).as_string()
             )
@@ -1607,9 +1647,18 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
             )
             # Ensure we don't run more contexts conncurrently than requested
             num_ctxs += 1
+        # Create initial events to wait on
+        # TODO Listen for child context creation and bubble up events per system
+        # context policy to parent (if we should call add_context_result
+        # from here or not, probably done within the dataflow version of this
+        # function eventually when it's cleaned up)
+        context_result = asyncio.create_task(self.ictx.result())
+        tasks.add(context_result)
         try:
             # Return when outstanding operations reaches zero
             while tasks:
+                if not more and len(tasks) == 1 and context_result in tasks:
+                    break
                 # Wait for incoming events
                 done, _pending = await asyncio.wait(
                     tasks, return_when=asyncio.FIRST_COMPLETED
@@ -1629,12 +1678,20 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
                         task.print_stack(file=output)
                         self.logger.error("%s", output.getvalue().rstrip())
                         output.close()
-                    else:
+
+                    if task is context_result:
                         # All operations for a context completed
                         # Yield the context that completed and the results of its
                         # output operations
-                        ctx, results = task.result()
-                        yield ctx, results
+                        yield task.result()
+                        context_result = asyncio.create_task(
+                            self.ictx.result()
+                        )
+                        tasks.add(context_result)
+                    else:
+                        # Just run everything else to completion if not known
+                        # event.
+                        task.result()
                     # Create more tasks to wait on the results of each of the
                     # contexts submitted if we are caping the number of them
                     while (
@@ -1746,6 +1803,12 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
         tasks = set()
         # String representing the context we are executing operations for
         ctx_str = (await ctx.handle()).as_string()
+        # NOTE Not sure if statisfied with this, wanted to look at Monitor use.
+        # If we are a subflow, send events to parent as well
+        if hasattr(ctx, "orchestrator_parent"):
+            await ctx.orchestrator_parent.subflow_system_context_added(ctx)
+        # We are orchestrating this context
+        ctx.orchestrator = self
         # schedule running of operations with no inputs
         async for task in self.dispatch_auto_starts(ctx):
             tasks.add(task)
@@ -1881,8 +1944,8 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
         # of a dict with it as the only key value pair
         if len(output) == 1:
             output = list(output.values())[0]
-        # Return the context along with it's output
-        return ctx, output
+        # Notify watchers of return value
+        await self.ictx.add_context_result(ctx, output)
 
     async def run_stage(self, ctx: BaseInputSetContext, stage: Stage):
         # Identify which operations have complete contextually appropriate
@@ -1890,6 +1953,8 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
         async for operation, parameter_set in self.operations_parameter_set_pairs(
             ctx, self.config.dataflow, stage=stage
         ):
+            # TODO(alice) Configurable yielding of all returns via scoped ctx
+            # given to ``await self.ictx.add_context_result(ctx, result)``
             # Run the operation, input set pair
             yield operation, await self.nctx.run(
                 ctx, self, operation, await parameter_set._asdict()

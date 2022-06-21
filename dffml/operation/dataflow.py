@@ -200,7 +200,7 @@ class run_dataflow(OperationImplementationContext):
         op_outputs = sorted(self.parent.op.outputs.keys())
 
         async with self.subflow(self.config.dataflow) as octx:
-            async for ctx, result in octx.run(subflow_inputs):
+            async for ctx, result in octx.run(subflow_inputs, parent=self.octx):
                 if op_outputs != sorted(result.keys()):
                     raise InvalidCustomRunDataFlowOutputs(
                         ctx_definition.export()
