@@ -252,8 +252,22 @@ class AlicePleaseContributeCLI(dffml.CMD):
             }
 
         async for ctx, results in dffml.run(
-            dffml.DataFlow(*dffml.opimp_in(locals())),
+            dffml.DataFlow(
+                dffml.op(AlicePleaseContributeRecommendedCommunityStandardsCLIOverlay.cli_is_asking_for_recommended_community_standards),
+                dffml.op(AlicePleaseContributeRecommendedCommunityStandardsCLIOverlay.cli_is_meant_on_this_repo),
+                dffml.op(AlicePleaseContributeRecommendedCommunityStandardsCLIOverlay.cli_has_repos),
+            ),
             [dffml.Input(value=self, definition=DFFMLCLICMD,),],
+        ):
+            print((await ctx.handle()).as_string(), results)
+
+        return
+
+        async for ctx, results in dffml.run(
+            AlicePleaseContributeRecommendedCommunityStandards,
+            # dffml.DataFlow(*dffml.opimp_in(locals())),
+            [dffml.Input(value=self, definition=DFFMLCLICMD,),],
+            overlay=AlicePleaseContributeRecommendedCommunityStandardsCLIOverlay,
         ):
             (await ctx.handle()).as_string()
 
