@@ -19,6 +19,9 @@ import dffml_operations_innersource.cli
 from .system_context import Alice
 
 
+DFFMLCLICMD = NewType("dffml.util.cli.CMD", object)
+
+
 # NOTE When CLI and operations are merged: All this is the same stuff that will
 # happen to Operation config_cls structures. We need a more ergonomic API to
 # obsucre the complexity dataclasses introduces when modifying fields/defaults
@@ -76,10 +79,12 @@ class AlicePleaseContributeCLIConfig:
 
 import dffml_feature_git.feature.definitions
 
+
 # TODO GitRepoSpec resolve to correct definition on auto def
 class AlicePleaseContributeRecommendedCommunityStandards:
     # TODO SystemContext __new__ auto populate config to have upstream set to
     # dataflow generated from methods in this class with memory orchestarator.
+    RepoString = NewType("repo.string", str)
     ReadmeContents = NewType("repo.directory.readme.contents", str)
     HasReadme = NewType("repo.directory.readme.exists", bool)
 
@@ -90,6 +95,25 @@ class AlicePleaseContributeRecommendedCommunityStandards:
     # ) -> bool:
     # ...
     #     has_readme: 'has_readme',
+
+    async def guess_repo_string_is_directory(
+        repo_string: "RepoString",
+    ) -> dffml_feature_git.feature.definitions.GitRepoSpec:
+        # TODO(security) How bad is this?
+        if not pathlib.Path(repo_string).is_dir():
+            return
+        return dffml_feature_git.feature.definitions.GitRepoSpec(
+            directory=repo_string, URL=None,
+        )
+
+    async def guess_repo_string_is_url(
+        repo_string: "RepoString",
+    ) -> dffml_feature_git.feature.definitions.GitRepoSpec:
+        if "://" not in repo_string:
+            return
+        return dffml_feature_git.feature.definitions.GitRepoSpec(
+            directory=repo_string, URL=repo_string,
+        )
 
     @staticmethod
     def has_readme(
@@ -159,7 +183,6 @@ class AlicePleaseContributeRecommendedCommunityStandardsGit:
         )
 
 
-DFFMLCLICMD = NewType("dffml.util.cli.CMD", object)
 AlicePleaseContributeRecommendedCommunityStandardsExecutedFromCLI = NewType(
     "AlicePleaseContributeRecommendedCommunityStandardsExecutedFromCLI", bool
 )
@@ -168,7 +191,7 @@ import dffml.df.types
 
 # TODO A way to deactivate installed overlays so they are not merged or applied.
 class AlicePleaseContributeRecommendedCommunityStandardsCLIOverlay:
-    CLIRunOnRepo = NewType("CLIRunOnRepo", object)
+    CLIRunOnRepo = NewType("CLIRunOnRepo", str)
 
     @staticmethod
     def cli_is_asking_for_recommended_community_standards(
@@ -194,27 +217,23 @@ class AlicePleaseContributeRecommendedCommunityStandardsCLIOverlay:
         self,
         cmd: DFFMLCLICMD,
         wanted: AlicePleaseContributeRecommendedCommunityStandardsExecutedFromCLI,
-    ) -> AsyncIterator['CLIRunOnRepo']:
+    ) -> AsyncIterator["CLIRunOnRepo"]:
         if not wanted or cmd.repos:
             return
-        yield dffml_feature_git.feature.definitions.GitRepoSpec(
-            directory=os.getcwd(), URL=None,
-        )
+        yield os.getcwd()
 
     @staticmethod
     async def cli_has_repos(
         cmd: DFFMLCLICMD,
         wanted: AlicePleaseContributeRecommendedCommunityStandardsExecutedFromCLI,
-    ) -> AsyncIterator['CLIRunOnRepo']:
+    ) -> AsyncIterator["CLIRunOnRepo"]:
         if not wanted:
             return
         # TODO directory should really be None
         for repo in cmd.repos:
-            yield dffml_feature_git.feature.definitions.GitRepoSpec(
-                directory=repo, URL=repo,
-            )
+            yield repo
 
-    async def cli_run_on_repo(self, repo: 'CLIRunOnRepo'):
+    async def cli_run_on_repo(self, repo: "CLIRunOnRepo"):
         # TODO Similar to Expand being an alias of Union
         #
         # async def cli_run_on_repo(self, repo: 'CLIRunOnRepo') -> SystemContext[StringInputSetContext[dffml_feature_git.feature.definitions.GitRepoSpec]]:
@@ -223,8 +242,22 @@ class AlicePleaseContributeRecommendedCommunityStandardsCLIOverlay:
         # Or ideally at class scope
         #
         # 'CLIRunOnRepo' -> SystemContext[StringInputSetContext[dffml_feature_git.feature.definitions.GitRepoSpec]]
-        self.config.dataflow = self.octx.config.dataflow
-        await dffml.run_dataflow.run_custom(self, {"repo": repo})
+        async with self.parent.__class__(self.parent.config) as custom_run_dataflow:
+            async with custom_run_dataflow(
+                self.ctx, self.octx
+            ) as custom_run_dataflow_ctx:
+                # This is the type cast
+                custom_run_dataflow.op = self.parent.op._replace(
+                    inputs={
+                        "repo": AlicePleaseContributeRecommendedCommunityStandards.RepoString
+                    }
+                )
+                # Set the dataflow to be the same flow
+                # TODO Reuse ictx? Is that applicable?
+                custom_run_dataflow.config.dataflow = self.octx.config.dataflow
+                await dffml.run_dataflow.run_custom(
+                    custom_run_dataflow_ctx, {"repo": repo},
+                )
 
 
 class AlicePleaseContributeRecommendedCommunityStandardsGitHubIssueOverlay:
