@@ -19,6 +19,7 @@ from typing import (
     Tuple,
     Type,
     NewType,
+    ForwardRef,
 )
 
 from ..base import BaseConfig
@@ -93,8 +94,39 @@ class CouldNotDeterminePrimitive(Exception):
     """
 
 
-def _create_definition(name, param_annotation, default=NO_DEFAULT):
-    if param_annotation in primitive_types:
+def resolve_if_forward_ref(param_annotation, forward_refs_from_cls):
+    if isinstance(param_annotation, ForwardRef):
+        param_annotation = param_annotation.__forward_arg__
+    if (
+        isinstance(param_annotation, str)
+        and forward_refs_from_cls
+        and hasattr(forward_refs_from_cls, param_annotation)
+    ):
+        param_annotation = getattr(forward_refs_from_cls, param_annotation)
+        if hasattr(param_annotation, "__name__") and hasattr(
+            param_annotation, "__supertype__"
+        ):
+            # typing.NewType support
+            return new_type_to_defininition(param_annotation)
+    return param_annotation
+
+
+def _create_definition(
+    name,
+    param_annotation,
+    default=NO_DEFAULT,
+    *,
+    forward_refs_from_cls: Optional[object] = None,
+):
+    param_annotation = resolve_if_forward_ref(
+        param_annotation, forward_refs_from_cls
+    )
+    if isinstance(param_annotation, Definition):
+        return param_annotation
+    if (
+        inspect.isclass(param_annotation)
+        and param_annotation in primitive_types
+    ):
         return Definition(
             name=name,
             primitive=primitive_convert.get(
@@ -107,7 +139,11 @@ def _create_definition(name, param_annotation, default=NO_DEFAULT):
         collections.abc.AsyncIterator,
     ]:
         # If the annotation is of the form Optional
-        return create_definition(name, list(get_args(param_annotation))[0])
+        return create_definition(
+            name,
+            list(get_args(param_annotation))[0],
+            forward_refs_from_cls=forward_refs_from_cls,
+        )
     elif (
         get_origin(param_annotation) is list
         or get_origin(param_annotation) is dict
@@ -121,7 +157,10 @@ def _create_definition(name, param_annotation, default=NO_DEFAULT):
             innerclass = list(get_args(param_annotation))[1]
         # Create definition for internal type
         definition = create_definition(
-            name, innerclass, default=default
+            name,
+            innerclass,
+            default=default,
+            forward_refs_from_cls=forward_refs_from_cls,
         )._replace(primitive=primitive,)
         # NOTE(security) NamedTuple is safe to use a spec, because it offers no
         # mechanisms around running code during init. Dataclasses and everything
@@ -189,13 +228,24 @@ def _create_definition(name, param_annotation, default=NO_DEFAULT):
     )
 
 
-def create_definition(name, param_annotation, default=NO_DEFAULT):
+def create_definition(
+    name,
+    param_annotation,
+    default=NO_DEFAULT,
+    *,
+    forward_refs_from_cls: Optional[object] = None,
+):
     if hasattr(param_annotation, "__name__") and hasattr(
         param_annotation, "__supertype__"
     ):
         # typing.NewType support
         return new_type_to_defininition(param_annotation)
-    definition = _create_definition(name, param_annotation, default=default)
+    definition = _create_definition(
+        name,
+        param_annotation,
+        default=default,
+        forward_refs_from_cls=forward_refs_from_cls,
+    )
     # We can guess name if converting from NewType. However, we can't otherwise.
     if not definition.name:
         raise FailedToAutoCreateDefinitionInvalidNameError(repr(name))
