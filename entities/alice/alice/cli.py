@@ -9,7 +9,7 @@ import platform
 import itertools
 import contextlib
 import dataclasses
-from typing import Dict, List, Optional, AsyncIterator, NewType
+from typing import Dict, List, Optional, AsyncIterator, NamedTuple, NewType
 
 
 import dffml
@@ -17,7 +17,12 @@ import shouldi.cli
 import dffml_operations_innersource.cli
 
 from .system_context import Alice
+from .threats_md import THREATS_MD_DATAFLOW
 
+
+class AliceGitRepo(NamedTuple):
+    directory: str
+    URL: str
 
 DFFMLCLICMD = NewType("dffml.util.cli.CMD", object)
 
@@ -54,9 +59,7 @@ class ShouldiCLI(dffml.CMD):
     # TODO Take PURL or SW Heritage ID as an input definition
     use = shouldi.cli.ShouldI.install
     reuse = shouldi.use.Use
-    contribute = (
-        dffml_operations_innersource.cli.InnerSourceCLI.run.records._set
-    )
+    contribute = dffml_operations_innersource.cli.InnerSourceCLI.run.records._set
     # diagram = ShouldiDiagram
 
 
@@ -98,35 +101,38 @@ class AlicePleaseContributeRecommendedCommunityStandards:
 
     async def guess_repo_string_is_directory(
         repo_string: "RepoString",
-    ) -> dffml_feature_git.feature.definitions.GitRepoSpec:
+    ) -> AliceGitRepo:
         # TODO(security) How bad is this?
         if not pathlib.Path(repo_string).is_dir():
             return
-        return dffml_feature_git.feature.definitions.GitRepoSpec(
+        return AliceGitRepo(
             directory=repo_string, URL=None,
         )
 
     async def guess_repo_string_is_url(
+        self,
         repo_string: "RepoString",
-    ) -> dffml_feature_git.feature.definitions.GitRepoSpec:
+    ) -> AliceGitRepo:
         if "://" not in repo_string:
             return
-        return dffml_feature_git.feature.definitions.GitRepoSpec(
+        print(self.octx.config.dataflow.operations['alice.cli.AlicePleaseContributeRecommendedCommunityStandards:has_readme'])
+        print(self.octx.config.dataflow.operations['alice.cli.AlicePleaseContributeRecommendedCommunityStandards:guess_repo_string_is_url'])
+        return AliceGitRepo(
             directory=repo_string, URL=repo_string,
         )
 
-    @staticmethod
     def has_readme(
-        repo: dffml_feature_git.feature.definitions.GitRepoSpec,
+        self,
+        repo: AliceGitRepo,
     ) -> "HasReadme":
         return pathlib.Path(repo.directory, "README.md").exists()
 
     # TODO Run this system context where readme contexts is given on CLI or
     # overriden via disabling of static overlay and application of overlay to
     # generate contents dynamiclly.
-    @staticmethod
     def create_readme_file(
-        repo: dffml_feature_git.feature.definitions.GitRepoSpec,
+        self,
+        repo: AliceGitRepo,
         has_readme: "HasReadme",
         readme_contents: Optional["ReadmeContents"] = "# My Awesome Project's README",
     ):
@@ -157,7 +163,7 @@ class AlicePleaseContributeRecommendedCommunityStandardsGit:
 
     @staticmethod
     async def contribute_readme_md(
-        repo: dffml_feature_git.feature.definitions.GitRepoSpec,
+        repo: AliceGitRepo,
         base: "BaseBranch",
         commit_message: Optional[
             "ReadmeCommitMessage"
@@ -236,12 +242,12 @@ class AlicePleaseContributeRecommendedCommunityStandardsCLIOverlay:
     async def cli_run_on_repo(self, repo: "CLIRunOnRepo"):
         # TODO Similar to Expand being an alias of Union
         #
-        # async def cli_run_on_repo(self, repo: 'CLIRunOnRepo') -> SystemContext[StringInputSetContext[dffml_feature_git.feature.definitions.GitRepoSpec]]:
+        # async def cli_run_on_repo(self, repo: 'CLIRunOnRepo') -> SystemContext[StringInputSetContext[AliceGitRepo]]:
         #     return repo
         #
         # Or ideally at class scope
         #
-        # 'CLIRunOnRepo' -> SystemContext[StringInputSetContext[dffml_feature_git.feature.definitions.GitRepoSpec]]
+        # 'CLIRunOnRepo' -> SystemContext[StringInputSetContext[AliceGitRepo]]
         async with self.parent.__class__(self.parent.config) as custom_run_dataflow:
             async with custom_run_dataflow(
                 self.ctx, self.octx
@@ -284,7 +290,7 @@ class AlicePleaseContributeRecommendedCommunityStandardsGitHubIssueOverlay:
     # body: Optional['ContributingIssueBody'] = "References:\n- https://docs.github.com/articles/setting-guidelines-for-repository-contributors/",
     async def readme_issue(
         self,
-        repo: dffml_feature_git.feature.definitions.GitRepoSpec,
+        repo: AliceGitRepo,
         title: Optional["ReadmeIssueTitle"] = "Recommended Community Standard: README",
         body: Optional[
             "ReadmeIssueBody"
@@ -322,13 +328,13 @@ class AlicePleaseContributeRecommendedCommunityStandardsGitHubIssueOverlay:
 
     @staticmethod
     def meta_issue_body(
-        repo: dffml_feature_git.feature.definitions.GitRepoSpec,
+        repo: AliceGitRepo,
         readme_issue: Optional["ReadmeIssue"] = None,
         readme_path: Optional["ReadmePath"] = None,
     ) -> "MetaIssueBody":
         """
         >>> AlicePleaseContributeRecommendedCommunityStandardsGitHubIssueOverlay.meta_issue_body(
-        ...     repo=dffml_feature_git.feature.definitions.GitRepoSpec(
+        ...     repo=AliceGitRepo(
         ...     ),
         ... )
         - [] [README](https://github.com/intel/dffml/blob/main/README.md)
@@ -347,7 +353,7 @@ class AlicePleaseContributeRecommendedCommunityStandardsGitHubIssueOverlay:
 
     @staticmethod
     async def create_meta_issue(
-        repo: dffml_feature_git.feature.definitions.GitRepoSpec,
+        repo: AliceGitRepo,
         body: "MetaIssueBody",
         title: Optional["MetaIssueTitle"] = "Recommended Community Standards",
     ) -> "MetaIssue":
@@ -377,7 +383,7 @@ class AlicePleaseContributeRecommendedCommunityStandardsGitHubPullRequestOverlay
 
     @staticmethod
     async def readme_pr(
-        repo: dffml_feature_git.feature.definitions.GitRepoSpec,
+        repo: AliceGitRepo,
         base: AlicePleaseContributeRecommendedCommunityStandardsGit.BaseBranch,
         head: AlicePleaseContributeRecommendedCommunityStandardsGit.ReadmeBranch,
     ) -> "ReadmePR":
