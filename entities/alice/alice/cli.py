@@ -437,9 +437,38 @@ class AlicePleaseContributeRecommendedCommunityStandardsOverlayGitHubPullRequest
         )
 
 
+# TODO(alice) Replace with definition as system context
+AlicePleaseContributeCLIDataFlow = dffml.DataFlow(
+    *itertools.chain(
+        *[
+            [
+                dffml.op(name=f"{cls.__module__}.{cls.__qualname__}:{name}")(method)
+                if not hasattr(method, "imp")
+                else method.imp
+                for name, method in inspect.getmembers(
+                    cls,
+                    predicate=lambda i: inspect.ismethod(i)
+                    or inspect.isfunction(i)
+                    and not hasattr(i, "__supertype__"),
+                )
+            ]
+            for cls in [
+                AlicePleaseContributeRecommendedCommunityStandards,
+                AlicePleaseContributeRecommendedCommunityStandardsOverlayGit,
+                AlicePleaseContributeRecommendedCommunityStandardsOverlayOperationsGit,
+                AlicePleaseContributeRecommendedCommunityStandardsOverlayCLI,
+                AlicePleaseContributeRecommendedCommunityStandardsOverlayGitHubIssue,
+                AlicePleaseContributeRecommendedCommunityStandardsOverlayGitHubPullRequest,
+            ]
+        ]
+    )
+)
+
+
 class AlicePleaseContributeCLI(dffml.CMD):
 
     CONFIG = AlicePleaseContributeCLIConfig
+    DATAFLOW = AlicePleaseContributeCLIDataFlow
 
     async def run(self):
         # TODO When running Alice from the CLI we will inspect the top level
@@ -460,34 +489,7 @@ class AlicePleaseContributeCLI(dffml.CMD):
         # TODO(alice) ctx is the system context, so it will have an orchestartor
         # property on it with the orchestrator which is yielding these results.
         async for ctx, results in dffml.run(
-            dffml.DataFlow(
-                *itertools.chain(
-                    *[
-                        [
-                            dffml.op(
-                                name=f"{cls.__module__}.{cls.__qualname__}:{name}"
-                            )(method)
-                            if not hasattr(method, "imp")
-                            else method.imp
-                            for name, method in inspect.getmembers(
-                                cls,
-                                predicate=lambda i: inspect.ismethod(i)
-                                or inspect.isfunction(i)
-                                and not hasattr(i, "__supertype__"),
-                            )
-                        ]
-                        for cls in [
-                            AlicePleaseContributeRecommendedCommunityStandards,
-                            AlicePleaseContributeRecommendedCommunityStandardsOverlayGit,
-                            AlicePleaseContributeRecommendedCommunityStandardsOverlayOperationsGit,
-                            AlicePleaseContributeRecommendedCommunityStandardsOverlayCLI,
-                            AlicePleaseContributeRecommendedCommunityStandardsOverlayGitHubIssue,
-                            AlicePleaseContributeRecommendedCommunityStandardsOverlayGitHubPullRequest,
-                        ]
-                    ]
-                )
-            ),
-            [dffml.Input(value=self, definition=DFFMLCLICMD,),],
+            self.DATAFLOW, [dffml.Input(value=self, definition=DFFMLCLICMD,),],
         ):
             print((await ctx.handle()).as_string(), results)
 
