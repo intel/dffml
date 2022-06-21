@@ -325,8 +325,8 @@ class MemoryInputNetworkContext(BaseInputNetworkContext):
         self.logger.debug(
             f"Received {ctx} result {result} from {ctx.orchestrator}"
         )
-        async with self.result_notification_set() as ctx:
-            await ctx.add((ctx, result))
+        async with self.result_notification_set() as result_ctx:
+            await result_ctx.add((ctx, result))
 
     async def add(self, input_set: BaseInputSet):
         # Grab the input set context handle
