@@ -420,12 +420,23 @@ class MemoryInputNetworkContext(BaseInputNetworkContext):
         return ctx
 
     async def ctx(self) -> Tuple[bool, BaseInputSetContext]:
+        # XXX THIS DOES NOTHING AND IS UNUSED
         async with self.ctx_notification_set() as ctx:
             return await ctx.added()
 
     async def result(self) -> Tuple[bool, BaseInputSetContext]:
-        async with self.result_notification_set() as result:
-            return await result.added()
+        # Notify whatever is listening for new inputs in this context
+        async with self.result_notification_set() as ctx:
+            """
+            return await ctx.added()
+            """
+            async with ctx.parent.event_added_lock:
+                await ctx.parent.event_added.wait()
+                ctx.parent.event_added.clear()
+                async with ctx.parent.lock:
+                    notification_items = ctx.parent.notification_items
+                    ctx.parent.notification_items = []
+                    return False, notification_items
 
     async def added(
         self, watch_ctx: BaseInputSetContext
@@ -1683,7 +1694,9 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
                         # All operations for a context completed
                         # Yield the context that completed and the results of its
                         # output operations
-                        yield task.result()
+                        more, results = task.result()
+                        for ctx, result in results:
+                            yield ctx, result
                         context_result = asyncio.create_task(
                             self.ictx.result()
                         )
