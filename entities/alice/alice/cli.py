@@ -81,7 +81,6 @@ class AlicePleaseContributeRecommendedCommunityStandards:
     # TODO SystemContext __new__ auto populate config to have upstream set to
     # dataflow generated from methods in this class with memory orchestarator.
     ReadmeContents = NewType("repo.directory.readme.contents", str)
-    ReadmeContents = NewType("repo.directory.readme.contents", str)
     HasReadme = NewType("repo.directory.readme.exists", bool)
 
     # TODO Generate output definition when wrapped with op decorator, example:
@@ -106,7 +105,7 @@ class AlicePleaseContributeRecommendedCommunityStandards:
         repo: dffml_feature_git.feature.definitions.GitRepoSpec,
         has_readme: "HasReadme",
         readme_contents: Optional["ReadmeContents"] = "# My Awesome Project's README",
-    ) -> "ReadmeBranch":
+    ):
         # Do not create readme if it already exists
         if has_readme:
             return
@@ -399,7 +398,8 @@ class AlicePleaseContributeCLI(dffml.CMD):
                             for name, method in inspect.getmembers(
                                 cls,
                                 predicate=lambda i: inspect.ismethod(i)
-                                or inspect.isfunction(i),
+                                or inspect.isfunction(i)
+                                and not hasattr(i, "__supertype__"),
                             )
                         ]
                         for cls in [
