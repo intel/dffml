@@ -183,9 +183,10 @@ class AlicePleaseContributeRecommendedCommunityStandardsCLIOverlay:
         """
         if not "" in cmd.extra_config:
             return
-        return cmd.extra_config[""]["plugin"][0].startswith(
-            "recommended community standards"
-        )
+        args = cmd.extra_config[""]["plugin"]
+        if not isinstance(args, list):
+            return
+        return "recommended community standards" in " ".join(args)
 
     @staticmethod
     def cli_is_meant_on_this_repo(
