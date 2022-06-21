@@ -387,6 +387,7 @@ class AlicePleaseContributeCLI(dffml.CMD):
             """
         ).lstrip()
 
+        # TODO Use overlays instead of combining all classes into one
         async for ctx, results in dffml.run(
             dffml.DataFlow(
                 *itertools.chain(
@@ -402,7 +403,11 @@ class AlicePleaseContributeCLI(dffml.CMD):
                             )
                         ]
                         for cls in [
+                            AlicePleaseContributeRecommendedCommunityStandards,
+                            AlicePleaseContributeRecommendedCommunityStandardsGit,
                             AlicePleaseContributeRecommendedCommunityStandardsCLIOverlay,
+                            AlicePleaseContributeRecommendedCommunityStandardsGitHubIssueOverlay,
+                            AlicePleaseContributeRecommendedCommunityStandardsGitHubPullRequestOverlay,
                         ]
                     ]
                 )
