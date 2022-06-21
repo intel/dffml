@@ -107,6 +107,53 @@ class AlicePleaseContributeRecommendedCommunityStandards(dffml.SystemContext):
         return pathlib.Path(repo.directory, "SECURITY.md").exists()
 
 
+DFFMLCLICMD = NewType("dffml.util.cli.CMD", object)
+AlicePleaseContributeRecommendedCommunityStandardsExecutedFromCLI = NewType("AlicePleaseContributeRecommendedCommunityStandardsExecutedFromCLI", bool)
+
+import dffml.df.types
+
+print(dffml.df.types.Expand)
+
+# TODO A way to deactivate installed overlays so they are not merged or applied.
+class AlicePleaseContributeRecommendedCommunityStandardsCLIOverlay(dffml.SystemContext):
+    @staticmethod
+    def cli_is_asking_for_recommended_community_standards(
+        cmd: DFFMLCLICMD,
+    ) -> AlicePleaseContributeRecommendedCommunityStandardsExecutedFromCLI:
+        if not "" in cmd.extra_config:
+            return
+        return cmd.extra_config[""]["plugin"][0].startswith("recommended community standards")
+
+    @staticmethod
+    def cli_is_meant_on_this_repo(
+        cmd: DFFMLCLICMD,
+        wanted: AlicePleaseContributeRecommendedCommunityStandardsExecutedFromCLI,
+    ) -> dffml.df.types.Expand[dffml_feature_git.feature.definitions.GitRepoSpec]:
+        if not wanted:
+            return
+        return (
+            [
+                dffml_feature_git.feature.definitions.GitRepoSpec(
+                    directory=os.getcwd(), URL=None,
+                ),
+            ]
+            if not cmd.repos
+            else []
+        )
+
+    @staticmethod
+    def cli_has_repos(
+        cmd: DFFMLCLICMD,
+        wanted: AlicePleaseContributeRecommendedCommunityStandardsExecutedFromCLI,
+    ) -> dffml.df.types.Expand[dffml_feature_git.feature.definitions.GitRepoSpec]:
+        if not wanted:
+            return
+        return [
+            dffml_feature_git.feature.definitions.GitRepoSpec(directory=repo, URL=repo,)
+            for repo in cmd.repos
+        ]
+
+
 class AlicePleaseContributeCLI(dffml.CMD):
 
     CONFIG = AlicePleaseContributeCLIConfig
