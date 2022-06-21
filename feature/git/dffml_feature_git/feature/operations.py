@@ -142,6 +142,9 @@ async def git_repo_default_branch(repo: Dict[str, str]):
     branches = (
         await check_output("git", "branch", "-r", cwd=repo.directory)
     ).split("\n")
+    # If there's no branches then bail out
+    if not list(filter(bool, branches)):
+        return
     main = [branch for branch in branches if "->" in branch][0].split()[-1]
     main = main.split("/")[-1]
     return {"branch": main}
