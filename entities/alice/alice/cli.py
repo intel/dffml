@@ -427,6 +427,8 @@ class AlicePleaseContributeCLI(dffml.CMD):
         ).lstrip()
 
         # TODO Use overlays instead of combining all classes into one
+        # TODO(alice) ctx is the system context, so it will have an orchestartor
+        # property on it with the orchestrator which is yielding these results.
         async for ctx, results in dffml.run(
             dffml.DataFlow(
                 *itertools.chain(
