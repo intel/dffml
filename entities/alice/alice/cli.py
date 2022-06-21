@@ -427,6 +427,8 @@ class AlicePleaseContributeCLI(dffml.CMD):
                             dffml.op(
                                 name=f"{cls.__module__}.{cls.__qualname__}:{name}"
                             )(method)
+                            if not hasattr(method, "imp")
+                            else method.imp
                             for name, method in inspect.getmembers(
                                 cls,
                                 predicate=lambda i: inspect.ismethod(i)
