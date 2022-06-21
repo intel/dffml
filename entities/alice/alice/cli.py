@@ -88,6 +88,7 @@ import dffml_feature_git.feature.definitions
 class AlicePleaseContributeRecommendedCommunityStandards:
     # TODO SystemContext __new__ auto populate config to have upstream set to
     # dataflow generated from methods in this class with memory orchestarator.
+    ReadmePath = NewType("ReadmePath", object)
     RepoString = NewType("repo.string", str)
     ReadmeContents = NewType("repo.directory.readme.contents", str)
     HasReadme = NewType("repo.directory.readme.exists", bool)
@@ -108,28 +109,27 @@ class AlicePleaseContributeRecommendedCommunityStandards:
             return
         return AliceGitRepo(directory=repo_string, URL=None)
 
-    def has_readme(self, repo: AliceGitRepo,) -> "HasReadme":
-        return pathlib.Path(repo.directory, "README.md").exists()
-
     # TODO Run this system context where readme contexts is given on CLI or
     # overriden via disabling of static overlay and application of overlay to
     # generate contents dynamiclly.
-    def create_readme_file(
+    def create_readme_file_if_not_exists(
         self,
         repo: AliceGitRepo,
-        has_readme: "HasReadme",
         readme_contents: Optional["ReadmeContents"] = "# My Awesome Project's README",
-    ):
+    ) -> "ReadmePath":
         # Do not create readme if it already exists
-        if has_readme:
-            return
-        pathlib.Path(repo.directory, "README.md").write_text(readme_contents)
+        path = pathlib.Path(repo.directory, "README.md")
+        if path.exists():
+            return path
+        path.write_text(readme_contents)
+        return path
 
 
 # An overlay which could be installed if you have dffml-feature-git
 # (aka dffml-operations-git) installed.
 class AlicePleaseContributeRecommendedCommunityStandardsOverlayOperationsGit:
     GuessedGitURL = NewType("guessed.git.url", bool)
+    DefaultBranchName = NewType("default.branch.name", str)
 
     # The operations we use defined elsewhere
     check_if_valid_git_repository_URL = (
@@ -139,6 +139,25 @@ class AlicePleaseContributeRecommendedCommunityStandardsOverlayOperationsGit:
     git_repo_default_branch = (
         dffml_feature_git.feature.operations.git_repo_default_branch
     )
+
+    async def create_branch_if_none_exists(
+        self, repo: AliceGitRepo, name: Optional["DefaultBranchName"] = "main",
+    ) -> dffml_feature_git.feature.definitions.GitBranchType:
+        """
+        If there are no branches, the git_repo_default_branch operation will
+        return None, aka there si no default branch. Therefore, in this
+        operation, we check if there are any branches at all, and if there are
+        not we create a new branch. We could optionally facilitate interaction
+        of multiple similar operations which wish to create a default branch if
+        none exist by creating a new defintion which is locked which could be
+        used to synchronise communication aka request for lock from some service
+        which has no native locking (transmistion of NFT via DIDs over abitrary
+        channels for example).
+        """
+        await dffml.run_command(
+            ["git", "branch", "-M", name], cwd=repo.directory, logger=self.logger,
+        )
+        return name
 
     def guess_repo_string_is_url(
         self,
@@ -160,6 +179,8 @@ class AlicePleaseContributeRecommendedCommunityStandardsOverlayOperationsGit:
     ) -> dffml_feature_git.feature.definitions.URLType:
         return repo_url
 
+
+class AlicePleaseContributeRecommendedCommunityStandardsOverlayAliceOperationsGit:
     def git_repo_to_alice_git_repo(
         repo: dffml_feature_git.feature.definitions.git_repository,
     ) -> AliceGitRepo:
@@ -303,7 +324,6 @@ class AlicePleaseContributeRecommendedCommunityStandardsOverlayGitHubIssue:
 
     """
 
-    ReadmePath = NewType("ReadmePath", str)
     ReadmeIssue = NewType("ReadmeIssue", str)
     ReadmeIssueTitle = NewType("ReadmeIssueTitle", str)
     ReadmeIssueBody = NewType("ReadmeIssueBody", str)
@@ -350,11 +370,13 @@ class AlicePleaseContributeRecommendedCommunityStandardsOverlayGitHubIssue:
             """
         ).lstrip()
 
+    # TODO(alice) There is a bug with Optional which can be revield by use here
     @staticmethod
     def meta_issue_body(
         repo: AliceGitRepo,
+        base: AlicePleaseContributeRecommendedCommunityStandardsOverlayGit.BaseBranch,
+        readme_path: AlicePleaseContributeRecommendedCommunityStandards.ReadmePath,
         readme_issue: Optional["ReadmeIssue"] = None,
-        readme_path: Optional["ReadmePath"] = None,
     ) -> "MetaIssueBody":
         """
         >>> AlicePleaseContributeRecommendedCommunityStandardsGitHubIssueOverlay.meta_issue_body(
@@ -369,8 +391,8 @@ class AlicePleaseContributeRecommendedCommunityStandardsOverlayGitHubIssue:
         """
         return "\n".join(
             [
-                "- [x] [README]({repo.URL}/blob/{base}/{readme_path.relative_to(repo.directory).as_posix()})"
-                if readme_path is not None
+                f"- [x] [README]({repo.URL}/blob/{base}/{readme_path.relative_to(repo.directory).as_posix()})"
+                if readme_issue is None
                 else f"- [ ] {readme_issue}",
             ]
         )
@@ -456,6 +478,7 @@ AlicePleaseContributeCLIDataFlow = dffml.DataFlow(
                 AlicePleaseContributeRecommendedCommunityStandards,
                 AlicePleaseContributeRecommendedCommunityStandardsOverlayGit,
                 AlicePleaseContributeRecommendedCommunityStandardsOverlayOperationsGit,
+                AlicePleaseContributeRecommendedCommunityStandardsOverlayAliceOperationsGit,
                 AlicePleaseContributeRecommendedCommunityStandardsOverlayCLI,
                 AlicePleaseContributeRecommendedCommunityStandardsOverlayGitHubIssue,
                 AlicePleaseContributeRecommendedCommunityStandardsOverlayGitHubPullRequest,
