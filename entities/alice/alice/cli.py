@@ -72,34 +72,36 @@ class AlicePleaseContributeCLIConfig:
 import dffml_feature_git.feature.definitions
 
 # TODO GitRepoSpec resolve to correct definition on auto def
-class AlicePleaseContributeRecommendedCommunityStandards:
+class AlicePleaseContributeRecommendedCommunityStandards(dffml.SystemContext):
+    # TODO SystemContext __new__ auto populate config to have upstream set to
+    # dataflow generated from methods in this class with memory orchestarator.
+    @staticmethod
     def has_readme(
-        self,
         repo: dffml_feature_git.feature.definitions.GitRepoSpec,
     ) -> NewType("repo.directory.has.readme", bool):
         # "$REPO_DIRECTORY/README.md"
         return pathlib.Path(repo.directory, "README.md").exists()
 
+    @staticmethod
     def has_code_of_conduct(
-        self,
         repo: dffml_feature_git.feature.definitions.GitRepoSpec,
     ) -> NewType("repo.directory.has.code_of_conduct", bool):
         return pathlib.Path(repo.directory, "CODE_OF_CONDUCT.md").exists()
 
+    @staticmethod
     def has_contributing(
-        self,
         repo: dffml_feature_git.feature.definitions.GitRepoSpec,
     ) -> NewType("repo.directory.has.contributing", bool):
         return pathlib.Path(repo.directory, "CONTRIBUTING.md").exists()
 
+    @staticmethod
     def has_license(
-        self,
         repo: dffml_feature_git.feature.definitions.GitRepoSpec,
     ) -> NewType("repo.directory.has.license", bool):
         return pathlib.Path(repo.directory, "LICENSE.md").exists()
 
+    @staticmethod
     def has_security(
-        self,
         repo: dffml_feature_git.feature.definitions.GitRepoSpec,
     ) -> NewType("repo.directory.has.security", bool):
         return pathlib.Path(repo.directory, "SECURITY.md").exists()
