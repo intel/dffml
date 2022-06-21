@@ -14,9 +14,11 @@ class GitRepoCheckedOutSpec(NamedTuple):
     URL: str = None
     commit: str = None
 
+
 # URLType = NewType("dffml.operations.git.url", str)
 URLType = NewType("URL", str)
 NoGitBranchGivenType = NewType("no_git_branch_given", bool)
+GitBranchType = NewType("git_branch", str)
 
 definitions = [
     Definition(name="quarter_start_date", primitive="int"),
@@ -25,7 +27,7 @@ definitions = [
     new_type_to_defininition(URLType),
     Definition(name="git_repo_ssh_key", primitive="string", default=None),
     Definition(name="valid_git_repository_URL", primitive="boolean"),
-    Definition(name="git_branch", primitive="str"),
+    new_type_to_defininition(GitBranchType),
     Definition(
         name="git_repository",
         primitive="Dict[str, str]",
