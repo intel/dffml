@@ -41,6 +41,9 @@ class _APPLY_INSTALLED_OVERLAYS:
 APPLY_INSTALLED_OVERLAYS = _APPLY_INSTALLED_OVERLAYS()
 
 
+Expand = Union
+
+
 primitive_types = (int, float, str, bool, dict, list, bytes)
 # Used to convert python types in to their programming language agnostic
 # names
