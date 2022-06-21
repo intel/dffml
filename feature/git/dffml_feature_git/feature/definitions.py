@@ -16,6 +16,7 @@ class GitRepoCheckedOutSpec(NamedTuple):
 
 # URLType = NewType("dffml.operations.git.url", str)
 URLType = NewType("URL", str)
+NoGitBranchGivenType = NewType("no_git_branch_given", bool)
 
 definitions = [
     Definition(name="quarter_start_date", primitive="int"),
@@ -41,7 +42,7 @@ definitions = [
     Definition(name="git_grep_search", primitive="string"),
     Definition(name="git_grep_found", primitive="string"),
     Definition(name="date", primitive="string"),
-    Definition(name="no_git_branch_given", primitive="boolean"),
+    new_type_to_defininition(NoGitBranchGivenType),
     Definition(name="date_pair", primitive="List[date]"),
     Definition(name="author_line_count", primitive="Dict[str, int]"),
     Definition(name="work_spread", primitive="int"),
