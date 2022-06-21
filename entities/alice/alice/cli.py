@@ -69,6 +69,42 @@ class AlicePleaseContributeCLIConfig:
     )
 
 
+import dffml_feature_git.feature.definitions
+
+# TODO GitRepoSpec resolve to correct definition on auto def
+class AlicePleaseContributeRecommendedCommunityStandards:
+    def has_readme(
+        self,
+        repo: dffml_feature_git.feature.definitions.GitRepoSpec,
+    ) -> NewType("repo.directory.has.readme", bool):
+        # "$REPO_DIRECTORY/README.md"
+        return pathlib.Path(repo.directory, "README.md").exists()
+
+    def has_code_of_conduct(
+        self,
+        repo: dffml_feature_git.feature.definitions.GitRepoSpec,
+    ) -> NewType("repo.directory.has.code_of_conduct", bool):
+        return pathlib.Path(repo.directory, "CODE_OF_CONDUCT.md").exists()
+
+    def has_contributing(
+        self,
+        repo: dffml_feature_git.feature.definitions.GitRepoSpec,
+    ) -> NewType("repo.directory.has.contributing", bool):
+        return pathlib.Path(repo.directory, "CONTRIBUTING.md").exists()
+
+    def has_license(
+        self,
+        repo: dffml_feature_git.feature.definitions.GitRepoSpec,
+    ) -> NewType("repo.directory.has.license", bool):
+        return pathlib.Path(repo.directory, "LICENSE.md").exists()
+
+    def has_security(
+        self,
+        repo: dffml_feature_git.feature.definitions.GitRepoSpec,
+    ) -> NewType("repo.directory.has.security", bool):
+        return pathlib.Path(repo.directory, "SECURITY.md").exists()
+
+
 class AlicePleaseContributeCLI(dffml.CMD):
 
     CONFIG = AlicePleaseContributeCLIConfig
@@ -94,8 +130,6 @@ class AlicePleaseContributeCLI(dffml.CMD):
         ).lstrip()
 
         import pathlib
-
-        import dffml_feature_git.feature.definitions
 
         @dffml.op(
             inputs={"repo": dffml_feature_git.feature.definitions.git_repository,},
