@@ -219,9 +219,7 @@ class AlicePleaseContributeRecommendedCommunityStandardsCLIOverlay:
         ]
 
 
-class AlicePleaseContributeRecommendedCommunityStandardsGitHubIssueOverlay(
-    dffml.SystemContext
-):
+class AlicePleaseContributeRecommendedCommunityStandardsGitHubIssueOverlay:
     """
 
     Check if we have any other issues open for the repo
@@ -234,12 +232,13 @@ class AlicePleaseContributeRecommendedCommunityStandardsGitHubIssueOverlay(
 
     """
 
-    ReadmeIssue: NewType("ReadmeIssue", str)
-    ReadmeIssueTitle: NewType("ReadmeIssueTitle", str)
-    ReadmeIssueBody: NewType("ReadmeIssueBody", str)
-    MetaIssue: NewType("MetaIssue", str)
-    MetaIssueTitle: NewType("MetaIssueTitle", str)
-    MetaIssueBody: NewType("MetaIssueBody", str)
+    ReadmePath = NewType("ReadmePath", str)
+    ReadmeIssue = NewType("ReadmeIssue", str)
+    ReadmeIssueTitle = NewType("ReadmeIssueTitle", str)
+    ReadmeIssueBody = NewType("ReadmeIssueBody", str)
+    MetaIssue = NewType("MetaIssue", str)
+    MetaIssueTitle = NewType("MetaIssueTitle", str)
+    MetaIssueBody = NewType("MetaIssueBody", str)
 
     # body: Optional['ContributingIssueBody'] = "References:\n- https://docs.github.com/articles/setting-guidelines-for-repository-contributors/",
     async def readme_issue(
@@ -332,9 +331,9 @@ class AlicePleaseContributeRecommendedCommunityStandardsGitHubIssueOverlay(
 
 # TODO Spawn background task (could use an orchestrator which creates a
 # GitHub Actions cron job to execute later). set_close_meta_issue_trigger
-class AlicePleaseContributeRecommendedCommunityStandardsGitHubPullRequestOverlay(
-    dffml.SystemContext
-):
+class AlicePleaseContributeRecommendedCommunityStandardsGitHubPullRequestOverlay:
+    ReadmePR = NewType("ReadmePR", str)
+
     @staticmethod
     async def readme_pr(
         repo: dffml_feature_git.feature.definitions.GitRepoSpec,
