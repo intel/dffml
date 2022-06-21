@@ -1,7 +1,7 @@
 import sys
-from typing import NamedTuple
+from typing import NamedTuple, NewType
 
-from dffml.df.types import Definition
+from dffml.df.types import Definition, new_type_to_defininition
 
 
 class GitRepoSpec(NamedTuple):
@@ -14,12 +14,14 @@ class GitRepoCheckedOutSpec(NamedTuple):
     URL: str = None
     commit: str = None
 
+# URLType = NewType("dffml.operations.git.url", str)
+URLType = NewType("URL", str)
 
 definitions = [
     Definition(name="quarter_start_date", primitive="int"),
     Definition(name="quarter", primitive="int"),
     Definition(name="quarters", primitive="int"),
-    Definition(name="URL", primitive="string"),
+    new_type_to_defininition(URLType),
     Definition(name="git_repo_ssh_key", primitive="string", default=None),
     Definition(name="valid_git_repository_URL", primitive="boolean"),
     Definition(name="git_branch", primitive="str"),
