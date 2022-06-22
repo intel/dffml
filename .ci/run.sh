@@ -278,13 +278,6 @@ function run_docs() {
   mv "${release_docs}/old-gh-pages-branch/.git" "${release_docs}/html/"
   mv "${main_docs}/html" "${release_docs}/html/main"
 
-  # Make webui
-  git clone https://github.com/intel/dffml -b webui "${release_docs}/webui"
-  cd "${release_docs}/webui/service/webui/webui"
-  yarn install
-  yarn build
-  mv build/ "${release_docs}/html/main/webui"
-
   cd "${release_docs}/html"
 
   git config user.name 'John Andersen'
