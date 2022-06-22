@@ -74,7 +74,7 @@ class GroupBy(OperationImplementationContext):
                 # Find all inputs within the input network for the by definition
                 async for item in od.inputs(output.group):
                     # Get all the parents of the input
-                    parents = list([i async for i in item.get_parents()])
+                    parents = list(item.get_parents())
                     for group, related in group_by.values():
                         # Ensure that the definition we need to group by is in
                         # the parents
@@ -323,7 +323,7 @@ class Associate(OperationImplementationContext):
             # Output dict
             want = {}
             async for item in od.inputs(value):
-                parents = list([i async for i in item.get_parents()])
+                parents = item.get_parents()
                 for parent in parents:
                     if key == parent.definition:
                         want[parent.value] = item.value
@@ -401,7 +401,7 @@ class AssociateDefinition(OperationImplementationContext):
             # Make exported into key, value which it will be in output
             for key, value in spec.items():
                 async for item in od.inputs(value):
-                    parents = list([i async for i in item.get_parents()])
+                    parents = item.get_parents()
                     for parent in parents:
                         if key.name == parent.definition.name:
                             want[key.name] = item.value
