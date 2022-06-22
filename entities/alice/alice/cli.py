@@ -154,6 +154,14 @@ class AlicePleaseContributeRecommendedCommunityStandardsOverlayOperationsGit:
         which has no native locking (transmistion of NFT via DIDs over abitrary
         channels for example).
         """
+        branches = (
+            await dffml_feature_git.feature.operations.check_output(
+                "git", "branch", "-r", cwd=repo.directory
+            )
+        ).split("\n")
+        # If there's branches then bail out
+        if list(filter(bool, branches)):
+            return
         await dffml.run_command(
             ["git", "branch", "-M", name], cwd=repo.directory, logger=self.logger,
         )
@@ -216,16 +224,10 @@ class AlicePleaseContributeRecommendedCommunityStandardsOverlayGit:
         base: "BaseBranch",
         commit_message: "ReadmeCommitMessage",
     ) -> "ReadmeBranch":
+        branch_name: str = "alice-contribute-recommended-community-standards-readme"
         # Attempt multiple commands
         async for event, result in dffml.run_command_events(
-            [
-                "git",
-                "checkout",
-                base,
-                "-b",
-                # TODO DynamicName
-                "alice-contribute-recommended-community-standards-readme",
-            ],
+            ["git", "checkout", base, "-b", branch_name,],
             cwd=repo.directory,
             logger=self.logger,
             raise_on_failure=False,
@@ -235,13 +237,7 @@ class AlicePleaseContributeRecommendedCommunityStandardsOverlayGit:
                 if b"is not a commit and a branch" in result:
                     # Retry without explict branch when repo has no commits
                     await dffml.run_command(
-                        [
-                            "git",
-                            "checkout",
-                            "-b",
-                            # TODO DynamicName
-                            "alice-contribute-recommended-community-standards-readme",
-                        ],
+                        ["git", "checkout", "-b", branch_name,],
                         cwd=repo.directory,
                         logger=self.logger,
                     )
@@ -256,6 +252,7 @@ class AlicePleaseContributeRecommendedCommunityStandardsOverlayGit:
             cwd=repo.directory,
             logger=self.logger,
         )
+        return branch_name
 
 
 AlicePleaseContributeRecommendedCommunityStandardsExecutedFromCLI = NewType(
@@ -457,12 +454,18 @@ class AlicePleaseContributeRecommendedCommunityStandardsOverlayGitHubIssue:
 # GitHub Actions cron job to execute later). set_close_meta_issue_trigger
 class AlicePleaseContributeRecommendedCommunityStandardsOverlayGitHubPullRequest:
     ReadmePR = NewType("ReadmePR", str)
+    Title = NewType("github.pr.title", str)
+    Body = NewType("github.pr.body", str)
+    WriteableGitRemoteOrigin = NewType("writable.github.remote.origin", str)
 
-    @staticmethod
     async def readme_pr(
+        self,
         repo: AliceGitRepo,
         base: AlicePleaseContributeRecommendedCommunityStandardsOverlayGit.BaseBranch,
+        origin: "WriteableGitRemoteOrigin",
         head: AlicePleaseContributeRecommendedCommunityStandardsOverlayGit.ReadmeBranch,
+        title: "Title",
+        body: "Body",
     ) -> "ReadmePR":
         """
 
@@ -474,20 +477,91 @@ class AlicePleaseContributeRecommendedCommunityStandardsOverlayGitHubPullRequest
             $ gh issue -R "${GITHUB_REPO_URL}" create --title "Recommended Community Standards (alice)" --body "${META_ISSUE_BODY}"
 
         """
+        # Ensure an origin we can write to has an up to date version of head
+        # with what we have locally so that GitHub can reference that branch for
+        # the pull request.
+        await dffml.run_command(
+            ["git", "push", "-u", origin, head], cwd=repo.directory, logger=self.logger,
+        )
         await dffml.run_command(
             [
                 "gh",
                 "pr",
                 "create",
                 "--base",
-                default_branch,
+                base,
                 "--head",
                 head,
+                "--title",
+                title,
                 "--body",
                 body,
             ],
             cwd=repo.directory,
+            logger=self.logger,
         )
+
+
+class AlicePleaseContributeRecommendedCommunityStandardsOverlayGitHubWritableRemotesFromPermissions:
+    async def already_owns_repo(
+        self, repo: AliceGitRepo,
+    ) -> AlicePleaseContributeRecommendedCommunityStandardsOverlayGitHubPullRequest.WriteableGitRemoteOrigin:
+        if repo.URL is None:
+            return
+        origins = {}
+        async for event, result in dffml.run_command_events(
+            ["git", "remote", "-v"],
+            cwd=repo.directory,
+            logger=self.logger,
+            events=[dffml.Subprocess.STDOUT_READLINE],
+        ):
+            if event is dffml.Subprocess.STDOUT_READLINE:
+                origin, url_and_usages = result.decode().strip().split("\t", maxsplit=2)
+                origins[origin] = url_and_usages.split()[0]
+        for origin, url in origins.items():
+            async for event, result in dffml.run_command_events(
+                [
+                    "gh",
+                    "repo",
+                    "view",
+                    url,
+                    "--json",
+                    "viewerPermission",
+                    "-q",
+                    ".viewerPermission",
+                ],
+                logger=self.logger,
+                events=[dffml.Subprocess.STDOUT],
+            ):
+                result = result.strip().decode()
+                if event is dffml.Subprocess.STDOUT and result in (
+                    "ADMIN",
+                    "MAINTAIN",
+                ):
+                    return origin
+
+
+class AlicePleaseContributeRecommendedCommunityStandardsOverlayGitHubPullRequestReferenceIssue:
+    @staticmethod
+    async def readme_pr_body(
+        readme_issue: AlicePleaseContributeRecommendedCommunityStandardsOverlayGitHubIssue.ReadmeIssue,
+    ) -> AlicePleaseContributeRecommendedCommunityStandardsOverlayGitHubPullRequest.Body:
+        return f"Closes: {readme_issue}"
+
+    async def readme_pr_title(
+        self,
+        readme_issue: AlicePleaseContributeRecommendedCommunityStandardsOverlayGitHubIssue.ReadmeIssue,
+    ) -> AlicePleaseContributeRecommendedCommunityStandardsOverlayGitHubPullRequest.Title:
+        """
+        Use the issue title as the pull request title
+        """
+        async for event, result in dffml.run_command_events(
+            ["gh", "issue", "view", "--json", "title", "-q", ".title", readme_issue,],
+            logger=self.logger,
+            events=[dffml.Subprocess.STDOUT],
+        ):
+            if event is dffml.Subprocess.STDOUT:
+                return result.strip().decode()
 
 
 # TODO(alice) Replace with definition as system context
@@ -513,6 +587,8 @@ AlicePleaseContributeCLIDataFlow = dffml.DataFlow(
                 AlicePleaseContributeRecommendedCommunityStandardsOverlayCLI,
                 AlicePleaseContributeRecommendedCommunityStandardsOverlayGitHubIssue,
                 AlicePleaseContributeRecommendedCommunityStandardsOverlayGitHubPullRequest,
+                AlicePleaseContributeRecommendedCommunityStandardsOverlayGitHubPullRequestReferenceIssue,
+                AlicePleaseContributeRecommendedCommunityStandardsOverlayGitHubWritableRemotesFromPermissions,
             ]
         ]
     )
