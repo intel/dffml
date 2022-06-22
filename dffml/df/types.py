@@ -14,7 +14,7 @@ from typing import (
     Dict,
     Optional,
     Any,
-    AsyncIterator,
+    Iterator,
     Callable,
     Tuple,
     Type,
@@ -599,14 +599,17 @@ class Input(object):
         if not self.uid:
             self.uid = str(uuid.uuid4())
 
-    async def get_parents(self) -> AsyncIterator["Input"]:
-        parents = []
-        for item in self.parents:
-            parents.append(
-                [item] + [item async for item in item.get_parents()]
+    def get_parents(self) -> Iterator["Input"]:
+        return list(
+            set(
+                itertools.chain(
+                    *[
+                        [item] + list(set(item.get_parents()))
+                        for item in self.parents
+                    ]
+                )
             )
-        for parent in list(set(itertools.chain(*parents))):
-            yield parent
+        )
 
     def __repr__(self):
         return f"Input(value={self.value}, definition={self.definition})"
