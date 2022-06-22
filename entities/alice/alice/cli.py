@@ -157,6 +157,10 @@ class AlicePleaseContributeRecommendedCommunityStandardsOverlayOperationsGit:
         await dffml.run_command(
             ["git", "branch", "-M", name], cwd=repo.directory, logger=self.logger,
         )
+        await dffml.run_command(
+            ["git", "commit", "-m", "Created branch", "--allow-empty"],
+            logger=self.logger,
+        )
         return name
 
     def guess_repo_string_is_url(
@@ -206,31 +210,53 @@ class AlicePleaseContributeRecommendedCommunityStandardsOverlayGit:
         # Later do NLP on contributing docs to determine
         return default_branch
 
-    @staticmethod
     async def contribute_readme_md(
+        self,
         repo: AliceGitRepo,
         base: "BaseBranch",
         commit_message: Optional[
             "ReadmeCommitMessage"
         ] = "Recommended Community Standard: Add README",
     ) -> "ReadmeBranch":
-        await dffml.run_command(
-            ["git", "checkout", base,], cwd=repo.directory,
-        )
-        await dffml.run_command(
+        # Attempt multiple commands
+        async for event, result in dffml.run_command_events(
             [
                 "git",
                 "checkout",
+                base,
                 "-b",
+                # TODO DynamicName
                 "alice-contribute-recommended-community-standards-readme",
             ],
             cwd=repo.directory,
+            logger=self.logger,
+            raise_on_failure=False,
+            events=[dffml.Subprocess.STDERR, dffml.Subprocess.COMPLETED,],
+        ):
+            if event is dffml.Subprocess.STDERR:
+                if b"is not a commit and a branch" in result:
+                    # Retry without explict branch when repo has no commits
+                    await dffml.run_command(
+                        [
+                            "git",
+                            "checkout",
+                            "-b",
+                            # TODO DynamicName
+                            "alice-contribute-recommended-community-standards-readme",
+                        ],
+                        cwd=repo.directory,
+                        logger=self.logger,
+                    )
+            elif event is dffml.Subprocess.COMPLETED:
+                if result != 0:
+                    raise RuntimeError("Failed to create branch for contribution")
+        await dffml.run_command(
+            ["git", "add", "README.md"], cwd=repo.directory, logger=self.logger,
         )
         await dffml.run_command(
-            ["git", "add", "README.md",], cwd=repo.directory,
-        )
-        await dffml.run_command(
-            ["git", "commit", "-sm", commit_message,], cwd=repo.directory,
+            ["git", "commit", "-sm", commit_message],
+            cwd=repo.directory,
+            logger=self.logger,
         )
 
 
