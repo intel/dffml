@@ -249,7 +249,7 @@ function run_docs() {
   main_docs="$(mktemp -d)"
   TEMP_DIRS+=("${main_docs}")
   rm -rf pages
-  dffml service dev docs || ./scripts/docs.sh
+  dffml service dev docs -no-strict || ./scripts/docs.sh
 
   mv pages "${main_docs}/html"
 
@@ -269,7 +269,7 @@ function run_docs() {
   rm -rf ~/.local
   "${PYTHON}" -m pip install --prefix=~/.local -U -e "${SRC_ROOT}[dev]"
   "${PYTHON}" -m dffml service dev install -user
-  dffml service dev docs || ./scripts/docs.sh
+  dffml service dev docs -no-strict || ./scripts/docs.sh
   mv pages "${release_docs}/html"
 
   git clone https://github.com/intel/dffml -b gh-pages \
