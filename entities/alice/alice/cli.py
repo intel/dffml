@@ -198,7 +198,7 @@ class AlicePleaseContributeRecommendedCommunityStandardsOverlayGit:
 
     @staticmethod
     def determin_base_branch(
-        default_branch: dffml_feature_git.feature.definitions.git_branch,
+        default_branch: dffml_feature_git.feature.definitions.GitBranchType,
     ) -> "BaseBranch":
         # TODO .tools/process.yml which defines branches to contibute to under
         # different circumstances. Model with Linux kernel for complex case,
