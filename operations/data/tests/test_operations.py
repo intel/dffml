@@ -5,7 +5,7 @@ from dffml.df.types import Input, DataFlow
 from dffml.operation.output import GetSingle
 from dffml.df.memory import MemoryOrchestrator
 from dffml.util.asynctestcase import AsyncTestCase
-
+from sklearn.feature_selection import f_classif
 from dffml_operations_data.operations import *
 
 
@@ -222,6 +222,79 @@ class TestOperations(AsyncTestCase):
             self.assertTrue(
                 (
                     results[ordinal_encoder.op.outputs["result"].name]
+                    == output_data
+                ).all()
+            )
+
+    async def test_select_k_best(self):
+        input_data = [[1, 1], [1, 2], [1, 1], [0, 2], [1, 1], [1, 1]]
+        target_data = [1,2,1,2,1,2]
+        output_data = [[1], [2], [1], [2], [1], [1]]
+
+        async for ctx, results in MemoryOrchestrator.run(
+            DataFlow.auto(select_k_best, GetSingle),
+            [
+                Input(
+                    value=[select_k_best.op.outputs["result"].name],
+                    definition=GetSingle.op.inputs["spec"],
+                ),
+                Input(
+                    value=input_data,
+                    definition=select_k_best.op.inputs["data"],
+                ),
+                Input(
+                    value=target_data,
+                    definition=select_k_best.op.inputs["target_data"],
+                ),
+                Input(
+                    value=f_classif,
+                    definition=select_k_best.op.inputs["score_func"],
+                ),
+                Input(
+                    value=1,
+                    definition=select_k_best.op.inputs["k"],
+                ),
+            ],
+        ):
+            self.assertTrue(
+                (
+                    results[select_k_best.op.outputs["result"].name]
+                    == output_data
+                ).all()
+            )
+    async def test_select_percentile(self):
+        input_data = [[1, 1], [1, 2], [1, 1], [0, 2], [1, 1], [1, 1]]
+        target_data = [1,2,1,2,1,2]
+        output_data = [[1], [2], [1], [2], [1], [1]]
+
+        async for ctx, results in MemoryOrchestrator.run(
+            DataFlow.auto(select_percentile, GetSingle),
+            [
+                Input(
+                    value=[select_percentile.op.outputs["result"].name],
+                    definition=GetSingle.op.inputs["spec"],
+                ),
+                Input(
+                    value=input_data,
+                    definition=select_percentile.op.inputs["data"],
+                ),
+                Input(
+                    value=target_data,
+                    definition=select_percentile.op.inputs["target_data"],
+                ),
+                Input(
+                    value=f_classif,
+                    definition=select_percentile.op.inputs["score_func"],
+                ),
+                Input(
+                    value=50,
+                    definition=select_percentile.op.inputs["percentile"],
+                ),
+            ],
+        ):
+            self.assertTrue(
+                (
+                    results[select_percentile.op.outputs["result"].name]
                     == output_data
                 ).all()
             )
