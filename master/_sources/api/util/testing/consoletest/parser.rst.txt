@@ -1,5 +1,0 @@
-Util Testing Consoletest Parser
-===============================
-
-.. automodule:: dffml.util.testing.consoletest.parser
-   :members:

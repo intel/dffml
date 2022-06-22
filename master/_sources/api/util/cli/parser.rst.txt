@@ -1,5 +1,0 @@
-Util Cli Parser
-===============
-
-.. automodule:: dffml.util.cli.parser
-   :members:

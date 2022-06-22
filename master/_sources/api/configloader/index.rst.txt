@@ -1,9 +1,0 @@
-Configloader
-============
-.. toctree::
-    :glob:
-    :maxdepth: 2
-    :caption: Contents:
-
-    configloader
-    json

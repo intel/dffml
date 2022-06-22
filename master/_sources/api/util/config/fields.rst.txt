@@ -1,5 +1,0 @@
-Util Config Fields
-==================
-
-.. automodule:: dffml.util.config.fields
-   :members:

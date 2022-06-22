@@ -1,5 +1,0 @@
-Util Testing Docs
-=================
-
-.. automodule:: dffml.util.testing.docs
-   :members:

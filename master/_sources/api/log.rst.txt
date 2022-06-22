@@ -1,5 +1,0 @@
-Log
-===
-
-.. automodule:: dffml.log
-   :members:

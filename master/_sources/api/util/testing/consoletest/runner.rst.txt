@@ -1,5 +1,0 @@
-Util Testing Consoletest Runner
-===============================
-
-.. automodule:: dffml.util.testing.consoletest.runner
-   :members:

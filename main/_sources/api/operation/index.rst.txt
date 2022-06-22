@@ -1,0 +1,19 @@
+Operation
+=========
+.. toctree::
+    :glob:
+    :maxdepth: 2
+    :caption: Contents:
+
+    archive
+    dataflow
+    log
+    output
+    preprocess
+    compression
+    model
+    math
+    db
+    io
+    source
+    mapping

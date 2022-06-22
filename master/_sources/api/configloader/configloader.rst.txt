@@ -1,5 +1,0 @@
-Configloader Configloader
-=========================
-
-.. automodule:: dffml.configloader.configloader
-   :members:

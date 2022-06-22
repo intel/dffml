@@ -1,5 +1,0 @@
-Configloader Json
-=================
-
-.. automodule:: dffml.configloader.json
-   :members:

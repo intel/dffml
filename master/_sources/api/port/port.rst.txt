@@ -1,5 +1,0 @@
-Port Port
-=========
-
-.. automodule:: dffml.port.port
-   :members:

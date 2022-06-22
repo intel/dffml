@@ -1,5 +1,0 @@
-Model Accuracy
-==============
-
-.. automodule:: dffml.model.accuracy
-   :members:

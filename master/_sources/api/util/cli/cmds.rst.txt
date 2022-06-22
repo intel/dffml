@@ -1,5 +1,0 @@
-Util Cli Cmds
-=============
-
-.. automodule:: dffml.util.cli.cmds
-   :members:

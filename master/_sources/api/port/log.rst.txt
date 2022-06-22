@@ -1,5 +1,0 @@
-Port Log
-========
-
-.. automodule:: dffml.port.log
-   :members:

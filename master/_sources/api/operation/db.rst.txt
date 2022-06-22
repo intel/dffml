@@ -1,5 +1,0 @@
-Operation Db
-============
-
-.. automodule:: dffml.operation.db
-   :members:

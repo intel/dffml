@@ -1,5 +1,0 @@
-Source Op
-=========
-
-.. automodule:: dffml.source.op
-   :members:

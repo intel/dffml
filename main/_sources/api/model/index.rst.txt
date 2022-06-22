@@ -1,0 +1,11 @@
+Model
+=====
+.. toctree::
+    :glob:
+    :maxdepth: 2
+    :caption: Contents:
+
+    slr
+    log
+    model
+    accuracy

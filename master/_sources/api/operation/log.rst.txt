@@ -1,5 +1,0 @@
-Operation Log
-=============
-
-.. automodule:: dffml.operation.log
-   :members:

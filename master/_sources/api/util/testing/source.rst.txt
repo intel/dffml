@@ -1,5 +1,0 @@
-Util Testing Source
-===================
-
-.. automodule:: dffml.util.testing.source
-   :members:

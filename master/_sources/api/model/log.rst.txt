@@ -1,5 +1,0 @@
-Model Log
-=========
-
-.. automodule:: dffml.model.log
-   :members:

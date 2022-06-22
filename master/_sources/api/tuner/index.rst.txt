@@ -1,9 +1,0 @@
-Tuner
-=====
-.. toctree::
-    :glob:
-    :maxdepth: 2
-    :caption: Contents:
-
-    tuner
-    parameter_grid

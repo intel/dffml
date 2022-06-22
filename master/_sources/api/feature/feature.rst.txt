@@ -1,5 +1,0 @@
-Feature Feature
-===============
-
-.. automodule:: dffml.feature.feature
-   :members:

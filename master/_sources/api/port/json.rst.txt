@@ -1,5 +1,0 @@
-Port Json
-=========
-
-.. automodule:: dffml.port.json
-   :members:

@@ -1,5 +1,0 @@
-Util Cli Arg
-============
-
-.. automodule:: dffml.util.cli.arg
-   :members:

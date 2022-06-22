@@ -1,0 +1,10 @@
+Util Testing
+============
+.. toctree::
+    :glob:
+    :maxdepth: 2
+    :caption: Contents:
+
+    docs
+    source
+    consoletest/index

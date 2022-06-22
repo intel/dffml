@@ -1,5 +1,0 @@
-Util Data
-=========
-
-.. automodule:: dffml.util.data
-   :members:

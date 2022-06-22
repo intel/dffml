@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>&lt;no title&gt; &mdash; DFFML 5b53a7dbe documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/tabs.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/copybutton.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> DFFML
+          </a>
+              <div class="version">
+                5b53a7dbe
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Introduction</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../concepts/index.html">Concepts</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Usage</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart/model.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../plugins/index.html">Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cli.html">Command Line</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../plugins/service/http/index.html">HTTP API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/base.html">Base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/log.html">Log</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/noasync.html">Noasync</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/plugins.html">Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/record.html">Record</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/version.html">Version</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/db/index.html">Db</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/cli/index.html">Cli</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/df/index.html">Df</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/high_level/index.html">High_Level</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/tuner/index.html">Tuner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/service/index.html">Service</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/util/index.html">Util</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/configloader/index.html">Configloader</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/accuracy/index.html">Accuracy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/source/index.html">Source</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/operation/index.html">Operation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/model/index.html">Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/secret/index.html">Secret</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/port/index.html">Port</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/feature/index.html">Feature</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../arch/index.html">Architecture</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Subprojects</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../shouldi.html">shouldi</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Community</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/intel/dffml">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://intel.github.io/dffml/main/">Master Branch Docs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../publications.html">Publications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contact.html">Contact Us</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../news/index.html">News</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">DFFML</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>&lt;no title&gt;</li>
+
+
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/intel/dffml/blob/main/docs/rfcs/0000-Open-Architecture.txt" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+
+
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<p>Open Architecture Working Group
+Internet-Draft
+Intended status: Draft
+Expires: June 1, 2023
+March 12, 2022</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>  <span class="n">Open</span> <span class="n">Architecture</span><span class="p">:</span> <span class="n">Methodology</span> <span class="k">for</span> <span class="n">interpreting</span> <span class="n">directed</span> <span class="n">graphs</span> <span class="k">as</span>
+                      <span class="nb">any</span> <span class="n">system</span> <span class="n">architecture</span>
+</pre></div>
+</div>
+<p>Abstract</p>
+<p>This document describes the Open Architecture; a proxy format for domain
+specific representations of architecture.</p>
+<p>The Open Architecture builds on the Open Digital Asset Protocol. We define a
+methodology for interpreting a directed graph of digital assets as a system
+architecture.</p>
+<p>We suggest methods for interpreting those graphs as software and hardware
+architectures as well as the Open Architecture’s role in living threat
+models.</p>
+<p>Status of This Memo</p>
+<p>This Internet-Draft will be submitted in full conformance with the
+provisions of BCP 78 and BCP 79.</p>
+<p>This draft will expire on June 1st, 2023.</p>
+<p>Table of Contents</p>
+<ol class="simple">
+<li><p>Introduction</p></li>
+<li><p>References</p></li>
+<li><p>Introduction</p></li>
+</ol>
+<p>The Open Architecture enables hybrid on/off chain smart contacts.
+It does this by incorporating risk management into architecture definition /
+smart contract. Smart contracts with understanding of risk are effectively
+entities making decisions based on models. This allows for mutation in
+implementation while maintaining principles.</p>
+<p>The smart contract is able to make its own decisions based on learned
+experience so as to continue to operate until its strategic goals are meet.
+As measured by oracle data ordained from trusted parties as is
+applicable to context. Where chains of trust are established via Peer DIDs
+between entities and data for provenance. Leveraging verifiable credentials
+for review system to measure risk in absence of attestation.</p>
+<ol class="simple">
+<li><p>References</p></li>
+</ol>
+<p>2.1.  Normative References</p>
+<p>[draft-hargreaves-odap-03]
+Internet Engineering Task Force, “Open Digital Asset Protocol”
+ODAP, November, 2021,
+<a class="reference external" href="https://datatracker.ietf.org/doc/html/draft-hargreaves-odap-03">https://datatracker.ietf.org/doc/html/draft-hargreaves-odap-03</a>.</p>
+<p>2.2.  Informative References</p>
+<p>[alice-discussion]
+DFFML Authors, “Alice”, May 2022,
+<a class="reference external" href="https://github.com/intel/dffml/discussions/1369">https://github.com/intel/dffml/discussions/1369</a>.</p>
+<p>[living-threat-models]
+John Whiteman, “Living Threat Models”, TDB,
+<a class="reference external" href="https://example.com/ltm">https://example.com/ltm</a>.</p>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2017 - 2022, Intel.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,5 +1,0 @@
-Util Entrypoint
-===============
-
-.. automodule:: dffml.util.entrypoint
-   :members:

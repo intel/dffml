@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cli Cli &mdash; DFFML 5b53a7dbe documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/tabs.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/copybutton.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="author" title="About these documents" href="../../about.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Df" href="../df/index.html" />
+    <link rel="prev" title="Cli Config" href="config.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> DFFML
+          </a>
+              <div class="version">
+                5b53a7dbe
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Introduction</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../concepts/index.html">Concepts</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Usage</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../quickstart/model.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples/index.html">Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../plugins/index.html">Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cli.html">Command Line</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../plugins/service/http/index.html">HTTP API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../base.html">Base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../log.html">Log</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../noasync.html">Noasync</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../plugins.html">Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../record.html">Record</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../version.html">Version</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../db/index.html">Db</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Cli</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="ml.html">Cli Ml</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dataflow.html">Cli Dataflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="log.html">Cli Log</a></li>
+<li class="toctree-l2"><a class="reference internal" href="list.html">Cli List</a></li>
+<li class="toctree-l2"><a class="reference internal" href="config.html">Cli Config</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Cli Cli</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../df/index.html">Df</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../high_level/index.html">High_Level</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tuner/index.html">Tuner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../service/index.html">Service</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../util/index.html">Util</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../configloader/index.html">Configloader</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../accuracy/index.html">Accuracy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../source/index.html">Source</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../operation/index.html">Operation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../model/index.html">Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../secret/index.html">Secret</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../port/index.html">Port</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../feature/index.html">Feature</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../arch/index.html">Architecture</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Subprojects</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../shouldi.html">shouldi</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Community</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/intel/dffml">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://intel.github.io/dffml/main/">Master Branch Docs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../publications.html">Publications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contact.html">Contact Us</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing/index.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../news/index.html">News</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../changelog.html">Changelog</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">DFFML</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../index.html">&lt;no title&gt;</a> &raquo;</li>
+          <li><a href="index.html">Cli</a> &raquo;</li>
+      <li>Cli Cli</li>
+
+
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/intel/dffml/blob/main/docs/api/cli/cli.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+
+
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<section id="module-dffml.cli.cli">
+<span id="cli-cli"></span><h1>Cli Cli<a class="headerlink" href="#module-dffml.cli.cli" title="Permalink to this headline"></a></h1>
+<p>Command line interface evaluates packages given their source URLs</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="dffml.cli.cli.CLI">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dffml.cli.cli.</span></span><span class="sig-name descname"><span class="pre">CLI</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">extra_config</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/cli/cli.html#CLI"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.cli.cli.CLI" title="Permalink to this definition"></a></dt>
+<dd><p>CLI interface for dffml</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dffml.cli.cli.CLI.accuracy">
+<span class="sig-name descname"><span class="pre">accuracy</span></span><a class="headerlink" href="#dffml.cli.cli.CLI.accuracy" title="Permalink to this definition"></a></dt>
+<dd><p>alias of <a class="reference internal" href="ml.html#dffml.cli.ml.Accuracy" title="dffml.cli.ml.Accuracy"><code class="xref py py-class docutils literal notranslate"><span class="pre">dffml.cli.ml.Accuracy</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dffml.cli.cli.CLI.edit">
+<span class="sig-name descname"><span class="pre">edit</span></span><a class="headerlink" href="#dffml.cli.cli.CLI.edit" title="Permalink to this definition"></a></dt>
+<dd><p>alias of <a class="reference internal" href="#dffml.cli.cli.Edit" title="dffml.cli.cli.Edit"><code class="xref py py-class docutils literal notranslate"><span class="pre">dffml.cli.cli.Edit</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dffml.cli.cli.CLI.export">
+<span class="sig-name descname"><span class="pre">export</span></span><a class="headerlink" href="#dffml.cli.cli.CLI.export" title="Permalink to this definition"></a></dt>
+<dd><p>alias of <a class="reference internal" href="#dffml.cli.cli.Export" title="dffml.cli.cli.Export"><code class="xref py py-class docutils literal notranslate"><span class="pre">dffml.cli.cli.Export</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dffml.cli.cli.CLI.merge">
+<span class="sig-name descname"><span class="pre">merge</span></span><a class="headerlink" href="#dffml.cli.cli.CLI.merge" title="Permalink to this definition"></a></dt>
+<dd><p>alias of <a class="reference internal" href="#dffml.cli.cli.Merge" title="dffml.cli.cli.Merge"><code class="xref py py-class docutils literal notranslate"><span class="pre">dffml.cli.cli.Merge</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dffml.cli.cli.CLI.predict">
+<span class="sig-name descname"><span class="pre">predict</span></span><a class="headerlink" href="#dffml.cli.cli.CLI.predict" title="Permalink to this definition"></a></dt>
+<dd><p>alias of <a class="reference internal" href="ml.html#dffml.cli.ml.Predict" title="dffml.cli.ml.Predict"><code class="xref py py-class docutils literal notranslate"><span class="pre">dffml.cli.ml.Predict</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dffml.cli.cli.CLI.service">
+<span class="sig-name descname"><span class="pre">service</span></span><a class="headerlink" href="#dffml.cli.cli.CLI.service" title="Permalink to this definition"></a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">dffml.cli.cli.services.&lt;locals&gt;.Service</span></code></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dffml.cli.cli.CLI.train">
+<span class="sig-name descname"><span class="pre">train</span></span><a class="headerlink" href="#dffml.cli.cli.CLI.train" title="Permalink to this definition"></a></dt>
+<dd><p>alias of <a class="reference internal" href="ml.html#dffml.cli.ml.Train" title="dffml.cli.ml.Train"><code class="xref py py-class docutils literal notranslate"><span class="pre">dffml.cli.ml.Train</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dffml.cli.cli.CLI.version">
+<span class="sig-name descname"><span class="pre">version</span></span><a class="headerlink" href="#dffml.cli.cli.CLI.version" title="Permalink to this definition"></a></dt>
+<dd><p>alias of <a class="reference internal" href="#dffml.cli.cli.Version" title="dffml.cli.cli.Version"><code class="xref py py-class docutils literal notranslate"><span class="pre">dffml.cli.cli.Version</span></code></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dffml.cli.cli.Edit">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dffml.cli.cli.</span></span><span class="sig-name descname"><span class="pre">Edit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">extra_config</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/cli/cli.html#Edit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.cli.cli.Edit" title="Permalink to this definition"></a></dt>
+<dd><p>Edit records</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dffml.cli.cli.Edit.record">
+<span class="sig-name descname"><span class="pre">record</span></span><a class="headerlink" href="#dffml.cli.cli.Edit.record" title="Permalink to this definition"></a></dt>
+<dd><p>alias of <a class="reference internal" href="#dffml.cli.cli.EditRecord" title="dffml.cli.cli.EditRecord"><code class="xref py py-class docutils literal notranslate"><span class="pre">dffml.cli.cli.EditRecord</span></code></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dffml.cli.cli.EditAllRecords">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dffml.cli.cli.</span></span><span class="sig-name descname"><span class="pre">EditAllRecords</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/cli/cli.html#EditAllRecords"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.cli.cli.EditAllRecords" title="Permalink to this definition"></a></dt>
+<dd><p>Edit all records using operations</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dffml.cli.cli.EditCMDConfig">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dffml.cli.cli.</span></span><span class="sig-name descname"><span class="pre">EditCMDConfig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataflow:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config:</span> <span class="pre">dffml.configloader.configloader.BaseConfigLoader</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">features:</span> <span class="pre">dffml.feature.feature.Features</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sources:</span> <span class="pre">dffml.source.source.Sources</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/cli/cli.html#EditCMDConfig"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.cli.cli.EditCMDConfig" title="Permalink to this definition"></a></dt>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="dffml.cli.cli.EditCMDConfig.no_enforce_immutable">
+<span class="sig-name descname"><span class="pre">no_enforce_immutable</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#dffml.cli.cli.EditCMDConfig.no_enforce_immutable" title="Permalink to this definition"></a></dt>
+<dd><p>By default, all properties of a config object are immutable. If you would
+like to mutate immutable properties, you must explicitly call this method
+using it as a context manager.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">config</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nd">@config</span>
+<span class="gp">... </span><span class="k">class</span> <span class="nc">MyConfig</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">C</span><span class="p">:</span> <span class="nb">int</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">config</span> <span class="o">=</span> <span class="n">MyConfig</span><span class="p">(</span><span class="n">C</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">config</span><span class="o">.</span><span class="n">no_enforce_immutable</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="n">config</span><span class="o">.</span><span class="n">C</span> <span class="o">=</span> <span class="mi">1</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dffml.cli.cli.EditRecord">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dffml.cli.cli.</span></span><span class="sig-name descname"><span class="pre">EditRecord</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/cli/cli.html#EditRecord"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.cli.cli.EditRecord" title="Permalink to this definition"></a></dt>
+<dd><p>Edit each specified record</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dffml.cli.cli.EditRecord.CONFIG">
+<span class="sig-name descname"><span class="pre">CONFIG</span></span><a class="headerlink" href="#dffml.cli.cli.EditRecord.CONFIG" title="Permalink to this definition"></a></dt>
+<dd><p>alias of <a class="reference internal" href="#dffml.cli.cli.EditRecordConfig" title="dffml.cli.cli.EditRecordConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">dffml.cli.cli.EditRecordConfig</span></code></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dffml.cli.cli.EditRecordConfig">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dffml.cli.cli.</span></span><span class="sig-name descname"><span class="pre">EditRecordConfig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">keys:</span> <span class="pre">List[str],</span> <span class="pre">dataflow:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">config:</span> <span class="pre">dffml.configloader.configloader.BaseConfigLoader</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">features:</span> <span class="pre">dffml.feature.feature.Features</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;,</span> <span class="pre">sources:</span> <span class="pre">dffml.source.source.Sources</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/cli/cli.html#EditRecordConfig"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.cli.cli.EditRecordConfig" title="Permalink to this definition"></a></dt>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="dffml.cli.cli.EditRecordConfig.no_enforce_immutable">
+<span class="sig-name descname"><span class="pre">no_enforce_immutable</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#dffml.cli.cli.EditRecordConfig.no_enforce_immutable" title="Permalink to this definition"></a></dt>
+<dd><p>By default, all properties of a config object are immutable. If you would
+like to mutate immutable properties, you must explicitly call this method
+using it as a context manager.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">config</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nd">@config</span>
+<span class="gp">... </span><span class="k">class</span> <span class="nc">MyConfig</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">C</span><span class="p">:</span> <span class="nb">int</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">config</span> <span class="o">=</span> <span class="n">MyConfig</span><span class="p">(</span><span class="n">C</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">config</span><span class="o">.</span><span class="n">no_enforce_immutable</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="n">config</span><span class="o">.</span><span class="n">C</span> <span class="o">=</span> <span class="mi">1</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dffml.cli.cli.Export">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dffml.cli.cli.</span></span><span class="sig-name descname"><span class="pre">Export</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/cli/cli.html#Export"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.cli.cli.Export" title="Permalink to this definition"></a></dt>
+<dd><p>Exports records</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dffml.cli.cli.Import">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dffml.cli.cli.</span></span><span class="sig-name descname"><span class="pre">Import</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/cli/cli.html#Import"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.cli.cli.Import" title="Permalink to this definition"></a></dt>
+<dd><p>Imports records</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dffml.cli.cli.ImportExportCMD">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dffml.cli.cli.</span></span><span class="sig-name descname"><span class="pre">ImportExportCMD</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/cli/cli.html#ImportExportCMD"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.cli.cli.ImportExportCMD" title="Permalink to this definition"></a></dt>
+<dd><p>Shared import export arguments</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dffml.cli.cli.ImportExportCMD.CONFIG">
+<span class="sig-name descname"><span class="pre">CONFIG</span></span><a class="headerlink" href="#dffml.cli.cli.ImportExportCMD.CONFIG" title="Permalink to this definition"></a></dt>
+<dd><p>alias of <a class="reference internal" href="#dffml.cli.cli.ImportExportCMDConfig" title="dffml.cli.cli.ImportExportCMDConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">dffml.cli.cli.ImportExportCMDConfig</span></code></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dffml.cli.cli.ImportExportCMDConfig">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dffml.cli.cli.</span></span><span class="sig-name descname"><span class="pre">ImportExportCMDConfig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">port</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../port/port.html#dffml.port.port.Port" title="dffml.port.port.Port"><span class="pre">dffml.port.port.Port</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/cli/cli.html#ImportExportCMDConfig"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.cli.cli.ImportExportCMDConfig" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dffml.cli.cli.Merge">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dffml.cli.cli.</span></span><span class="sig-name descname"><span class="pre">Merge</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">extra_config</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/cli/cli.html#Merge"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.cli.cli.Merge" title="Permalink to this definition"></a></dt>
+<dd><p>Merge record data between sources</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dffml.cli.cli.Merge.CONFIG">
+<span class="sig-name descname"><span class="pre">CONFIG</span></span><a class="headerlink" href="#dffml.cli.cli.Merge.CONFIG" title="Permalink to this definition"></a></dt>
+<dd><p>alias of <a class="reference internal" href="#dffml.cli.cli.MergeConfig" title="dffml.cli.cli.MergeConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">dffml.cli.cli.MergeConfig</span></code></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dffml.cli.cli.MergeConfig">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dffml.cli.cli.</span></span><span class="sig-name descname"><span class="pre">MergeConfig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">src</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../source/source.html#dffml.source.source.BaseSource" title="dffml.source.source.BaseSource"><span class="pre">dffml.source.source.BaseSource</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">dest</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../source/source.html#dffml.source.source.BaseSource" title="dffml.source.source.BaseSource"><span class="pre">dffml.source.source.BaseSource</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/cli/cli.html#MergeConfig"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.cli.cli.MergeConfig" title="Permalink to this definition"></a></dt>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="dffml.cli.cli.MergeConfig.no_enforce_immutable">
+<span class="sig-name descname"><span class="pre">no_enforce_immutable</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#dffml.cli.cli.MergeConfig.no_enforce_immutable" title="Permalink to this definition"></a></dt>
+<dd><p>By default, all properties of a config object are immutable. If you would
+like to mutate immutable properties, you must explicitly call this method
+using it as a context manager.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">config</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nd">@config</span>
+<span class="gp">... </span><span class="k">class</span> <span class="nc">MyConfig</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">C</span><span class="p">:</span> <span class="nb">int</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">config</span> <span class="o">=</span> <span class="n">MyConfig</span><span class="p">(</span><span class="n">C</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">config</span><span class="o">.</span><span class="n">no_enforce_immutable</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="n">config</span><span class="o">.</span><span class="n">C</span> <span class="o">=</span> <span class="mi">1</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dffml.cli.cli.Version">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dffml.cli.cli.</span></span><span class="sig-name descname"><span class="pre">Version</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">extra_config</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/cli/cli.html#Version"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.cli.cli.Version" title="Permalink to this definition"></a></dt>
+<dd><p>Print version and installed dffml packages</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dffml.cli.cli.Version.CONFIG">
+<span class="sig-name descname"><span class="pre">CONFIG</span></span><a class="headerlink" href="#dffml.cli.cli.Version.CONFIG" title="Permalink to this definition"></a></dt>
+<dd><p>alias of <a class="reference internal" href="#dffml.cli.cli.VersionConfig" title="dffml.cli.cli.VersionConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">dffml.cli.cli.VersionConfig</span></code></a></p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dffml.cli.cli.Version.git_hash">
+<em class="property"><span class="pre">async</span><span class="w"> </span><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">git_hash</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.10)"><span class="pre">Union</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.10)"><span class="pre">pathlib.Path</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/cli/cli.html#Version.git_hash"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.cli.cli.Version.git_hash" title="Permalink to this definition"></a></dt>
+<dd><p>If the path is a git repo we’ll return.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pathlib</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">subprocess</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">dffml.cli.cli</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">subprocess</span><span class="o">.</span><span class="n">check_call</span><span class="p">([</span><span class="s2">&quot;git&quot;</span><span class="p">,</span> <span class="s2">&quot;init&quot;</span><span class="p">])</span>
+<span class="go">0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">subprocess</span><span class="o">.</span><span class="n">check_call</span><span class="p">([</span><span class="s2">&quot;git&quot;</span><span class="p">,</span> <span class="s2">&quot;config&quot;</span><span class="p">,</span> <span class="s2">&quot;user.name&quot;</span><span class="p">,</span> <span class="s2">&quot;First Last&quot;</span><span class="p">])</span>
+<span class="go">0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">subprocess</span><span class="o">.</span><span class="n">check_call</span><span class="p">([</span><span class="s2">&quot;git&quot;</span><span class="p">,</span> <span class="s2">&quot;config&quot;</span><span class="p">,</span> <span class="s2">&quot;user.email&quot;</span><span class="p">,</span> <span class="s2">&quot;first.last@example.com&quot;</span><span class="p">])</span>
+<span class="go">0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;README.md&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">write_text</span><span class="p">(</span><span class="s2">&quot;Contents&quot;</span><span class="p">)</span>
+<span class="go">8</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">subprocess</span><span class="o">.</span><span class="n">check_call</span><span class="p">([</span><span class="s2">&quot;git&quot;</span><span class="p">,</span> <span class="s2">&quot;add&quot;</span><span class="p">,</span> <span class="s2">&quot;README.md&quot;</span><span class="p">])</span>
+<span class="go">0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">subprocess</span><span class="o">.</span><span class="n">check_call</span><span class="p">([</span><span class="s2">&quot;git&quot;</span><span class="p">,</span> <span class="s2">&quot;commit&quot;</span><span class="p">,</span> <span class="s2">&quot;-m&quot;</span><span class="p">,</span> <span class="s2">&quot;First commit&quot;</span><span class="p">])</span>
+<span class="go">0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dirty</span><span class="p">,</span> <span class="n">short_hash</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">dffml</span><span class="o">.</span><span class="n">cli</span><span class="o">.</span><span class="n">cli</span><span class="o">.</span><span class="n">Version</span><span class="o">.</span><span class="n">git_hash</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dirty</span>
+<span class="go">False</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">int</span><span class="p">(</span><span class="n">short_hash</span><span class="p">,</span> <span class="mi">16</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dffml.cli.cli.VersionConfig">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dffml.cli.cli.</span></span><span class="sig-name descname"><span class="pre">VersionConfig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">no_errors</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/cli/cli.html#VersionConfig"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.cli.cli.VersionConfig" title="Permalink to this definition"></a></dt>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="dffml.cli.cli.VersionConfig.no_enforce_immutable">
+<span class="sig-name descname"><span class="pre">no_enforce_immutable</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#dffml.cli.cli.VersionConfig.no_enforce_immutable" title="Permalink to this definition"></a></dt>
+<dd><p>By default, all properties of a config object are immutable. If you would
+like to mutate immutable properties, you must explicitly call this method
+using it as a context manager.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">config</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nd">@config</span>
+<span class="gp">... </span><span class="k">class</span> <span class="nc">MyConfig</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">C</span><span class="p">:</span> <span class="nb">int</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">config</span> <span class="o">=</span> <span class="n">MyConfig</span><span class="p">(</span><span class="n">C</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">config</span><span class="o">.</span><span class="n">no_enforce_immutable</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="n">config</span><span class="o">.</span><span class="n">C</span> <span class="o">=</span> <span class="mi">1</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dffml.cli.cli.failed_to_load_service">
+<span class="sig-prename descclassname"><span class="pre">dffml.cli.cli.</span></span><span class="sig-name descname"><span class="pre">failed_to_load_service</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">loading_what</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'services'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/cli/cli.html#failed_to_load_service"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.cli.cli.failed_to_load_service" title="Permalink to this definition"></a></dt>
+<dd><p>Sometimes weird dependency issues show up and prevent us from loading
+anything. We log the traceback in that case.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dffml.cli.cli.services">
+<span class="sig-prename descclassname"><span class="pre">dffml.cli.cli.</span></span><span class="sig-name descname"><span class="pre">services</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/cli/cli.html#services"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.cli.cli.services" title="Permalink to this definition"></a></dt>
+<dd><p>Loads dffml.services.cli entrypoint and creates a CMD class incorporating
+all of the loaded CLI versions of services as subcommands.</p>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="config.html" class="btn btn-neutral float-left" title="Cli Config" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../df/index.html" class="btn btn-neutral float-right" title="Df" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2017 - 2022, Intel.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

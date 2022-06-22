@@ -1,5 +1,0 @@
-Source Log
-==========
-
-.. automodule:: dffml.source.log
-   :members:

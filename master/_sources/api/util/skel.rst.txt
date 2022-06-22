@@ -1,5 +1,0 @@
-Util Skel
-=========
-
-.. automodule:: dffml.util.skel
-   :members:

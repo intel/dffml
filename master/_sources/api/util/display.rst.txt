@@ -1,5 +1,0 @@
-Util Display
-============
-
-.. automodule:: dffml.util.display
-   :members:

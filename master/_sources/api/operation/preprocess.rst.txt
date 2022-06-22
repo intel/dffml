@@ -1,5 +1,0 @@
-Operation Preprocess
-====================
-
-.. automodule:: dffml.operation.preprocess
-   :members:

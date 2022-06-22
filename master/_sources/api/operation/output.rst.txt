@@ -1,5 +1,0 @@
-Operation Output
-================
-
-.. automodule:: dffml.operation.output
-   :members:
