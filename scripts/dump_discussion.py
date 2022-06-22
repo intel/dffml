@@ -101,6 +101,7 @@ After removing the first chapter of Alice's Adventures in Wonderland:
 """
 import os
 import json
+import shutil
 import asyncio
 import pathlib
 import tempfile
@@ -186,8 +187,11 @@ def output_markdown(
 
 
 async def main():
-    output_markdown(INPUT, pathlib.Path(__file__).parents[1])
-    # os.system(f"rm -rf 'docs/tutorials/alice/'")
+    root_path = pathlib.Path(__file__).parents[1]
+    adr_path = root_path.joinpath("docs", "arch", "alice")
+    if adr_path.is_dir():
+        shutil.rmtree(adr_path)
+    output_markdown(INPUT, root_path)
 
 
 if __name__ == "__main__":
