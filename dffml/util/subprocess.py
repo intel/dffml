@@ -50,6 +50,7 @@ async def run_command_events(
     logger=None,
     log_cmd_event: bool = True,
     events: List[Subprocess] = None,
+    raise_on_failure: bool = True,
     **kwargs,
 ):
     if events is None:
@@ -78,7 +79,7 @@ async def run_command_events(
             output["combinded"].append(result)
         # Raise if anything goes wrong
         elif event == Subprocess.COMPLETED:
-            if result != 0:
+            if result != 0 and raise_on_failure:
                 raise RuntimeError(
                     repr(cmd) + ": " + b"".join(output["combinded"]).decode()
                 )
