@@ -105,10 +105,13 @@ import shutil
 import asyncio
 import pathlib
 import tempfile
+import subprocess
 from typing import Callable, Type, Union, NewType
 
 import dffml
 
+
+ROOT_PATH = pathlib.Path(__file__).parents[1]
 
 INPUT = json.loads(pathlib.Path("output.json.formated.json").read_text())
 
@@ -140,16 +143,35 @@ def output_markdown(
         # Data goes through azure log analytics
         prefix = ["docs", "arch", "alice", "discussion"]
         # prefix = ["docs", "tutorials", "alice"]
-        text = discussion_node["discussion"]["body"]
+        node = discussion_node["discussion"]
+        text = node["body"]
         text = text.replace("\r", "")
         # path.write_text(text)
         # volume = current_volume(text)
         path = output_directory.joinpath(
             *[*prefix, "_".join([f"{0:04}"]), "index.md"],
         )
+        relative_path = path.relative_to(ROOT_PATH)
         print(path, repr(text[:100] + "..."))
         if not path.parent.is_dir():
             path.parent.mkdir(parents=True)
+        if node["userContentEdits"]:
+            for edit in node["userContentEdits"]["nodes"][::-1]:
+                if not edit["diff"]:
+                    continue
+                path.write_text(edit["diff"].replace("\r", ""))
+                for cmd in [
+                    ["git", "add", str(relative_path),],
+                    [
+                        "git",
+                        "commit",
+                        "-sm",
+                        ": ".join(
+                            list(relative_path.parts) + [edit["editedAt"]]
+                        ),
+                    ],
+                ]:
+                    subprocess.check_call(cmd, cwd=ROOT_PATH)
         path.write_text(text)
         for i, comment_node in enumerate(
             discussion_node["discussion"]["comments"]["nodes"], start=1
@@ -165,11 +187,30 @@ def output_markdown(
             """
             # Output a file for the comment
             path = output_directory.joinpath(*filename_parts, "index.md")
+            relative_path = path.relative_to(ROOT_PATH)
+            node = comment_node
             text = comment_node["body"]
             text = text.replace("\r", "")
             print(path, repr(text[:100] + "..."))
             if not path.parent.is_dir():
                 path.parent.mkdir(parents=True)
+            if node["userContentEdits"]:
+                for edit in node["userContentEdits"]["nodes"][::-1]:
+                    if not edit["diff"]:
+                        continue
+                    path.write_text(edit["diff"].replace("\r", ""))
+                    for cmd in [
+                        ["git", "add", str(relative_path),],
+                        [
+                            "git",
+                            "commit",
+                            "-sm",
+                            ": ".join(
+                                list(relative_path.parts) + [edit["editedAt"]]
+                            ),
+                        ],
+                    ]:
+                        subprocess.check_call(cmd, cwd=ROOT_PATH)
             path.write_text(text)
             replys = []
             # Output a file for the reply
@@ -177,21 +218,40 @@ def output_markdown(
                 path = output_directory.joinpath(
                     *[*filename_parts, "_".join(["reply", f"{j:04}"]) + ".md"],
                 )
+                relative_path = path.relative_to(ROOT_PATH)
+                node = reply_node
                 text = reply_node["body"]
                 text = text.replace("\r", "")
                 replys += text
                 print(path, repr(text[:100] + "..."))
                 if not path.parent.is_dir():
                     path.parent.mkdir(parents=True)
+                if node["userContentEdits"]:
+                    for edit in node["userContentEdits"]["nodes"][::-1]:
+                        if not edit["diff"]:
+                            continue
+                        path.write_text(edit["diff"].replace("\r", ""))
+                        for cmd in [
+                            ["git", "add", str(relative_path),],
+                            [
+                                "git",
+                                "commit",
+                                "-sm",
+                                ": ".join(
+                                    list(relative_path.parts)
+                                    + [edit["editedAt"]]
+                                ),
+                            ],
+                        ]:
+                            subprocess.check_call(cmd, cwd=ROOT_PATH)
                 path.write_text(text)
 
 
 async def main():
-    root_path = pathlib.Path(__file__).parents[1]
-    adr_path = root_path.joinpath("docs", "arch", "alice")
+    adr_path = ROOT_PATH.joinpath("docs", "arch", "alice")
     if adr_path.is_dir():
         shutil.rmtree(adr_path)
-    output_markdown(INPUT, root_path)
+    output_markdown(INPUT, ROOT_PATH)
 
 
 if __name__ == "__main__":
