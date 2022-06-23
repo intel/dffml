@@ -481,7 +481,8 @@ class AlicePleaseContributeRecommendedCommunityStandardsOverlayGitHubPullRequest
         # with what we have locally so that GitHub can reference that branch for
         # the pull request.
         await dffml.run_command(
-            ["git", "push", "-u", origin, head], cwd=repo.directory, logger=self.logger,
+            # TODO Remove -f
+            ["git", "push", "-fu", origin, head], cwd=repo.directory, logger=self.logger,
         )
         await dffml.run_command(
             [
