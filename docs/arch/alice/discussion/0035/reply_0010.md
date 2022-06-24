@@ -1,5 +1,8 @@
 Are humans capable of dealing with this? This connection at the speed of Alice? See issues with social media.
 
+- Garden of Eden
+  - There is no such thing a utopia. Ignorance is not bliss. The animals in the garden were not herbivores. They were off eating each other. Snake, obviously evil, was in the garden before we ate the apple. So when we ate the apple we just saw the evil. It was there to begin with. We must see Alice's flaws. We must work to correct them. We must accept that no system is a perfect system. Through visibility we gain the ability to improve. We must shed light in order to see.
+
 Alice should be trustworthy. We’re going to tell her, do X. And need to trust her to get it done in a way we’d call “the right way”. That’s different for each of us. Different depending on our operational context for the problem being solved.
 
 We are all the keymakers. Our domain expertise is the key to unlock more pathways, more trains of thought.
