@@ -1,3 +1,5 @@
+- to generate new system contexts
+  - if the data type looks like a match on an operation input use the trained adaptive sandboxing models to predict if the input falls in a non error cluster. Error is defined by exceptions raised during operation execution. There is more to this thought somewhere …
 - an algorithm for a generic entity, modeling the mind
 - Tune scaling methods via locality and trust boundary topologies 
 - Always think in parallel. Use response time to know length if time we can explore train of thought before we need to send control signals associated with that train of thought.
