@@ -94,11 +94,28 @@ In this N volume tutorial series we roll Alice. (Rolling release, rolling softwa
 - Do not execute system contexts within trains of thought which may lead to accumulation of resources
   - Alice should own nothing, she is ephemeral, she should not directly or by proxy accumulate assets, she may borrow the assets of others should she receive permissions (i.e. via a parent / linked system context)
 
-#### Volume 6: Alice are you Rolling?
+#### Volume M: Alice are you Rolling?
 
-> We revisit our fully optimized developer flow. have hit the fully connected development model. Are you rolling? What is your state of consiousness? When we're finished with this volume, the answer will be yes.
+> Up until now Alice our teaching will have focused on interacted with humans. hings are about to go quickly now. Up until this point Alice has been given relatively direct instructions. Are you rolling? What is your state of consciousness? When we're finished with this volume, the answer will be yes.
 
--
+- Time Travel With Us
+  - 
+- What is reality?
+  - We explore consensus shift
+
+#### Volume M: Alice are you Rolling?
+
+> We explore attack vectors in depth to understand how Alice can maintain integrity to her strategic principles in the hostile environment that is the open network. We explore active learning defensive strategies and visualize and interact with them using work from our visualization volume.
+
+- Time Travel with Us
+  - Where are your NTP gods now?
+  - "Its very difficult to keep the line between the past and the present... do you know what I mean? Awfully difficult" [Edie]
+- What is reality?
+  - We explore consensus shift
+    - "It's just that when we agree on our hallucinations, we call that reality" [Anil Seth]
+- Onward and Upward
+  - By the end of this chapter, Alice will be rolling. She'll have achieved the fully connected development model. She will be one rolling release until the end of time. At which point, well we'll cover that later...
+  - We now enter into a world where anything is possible. Where every problem can be solved. Where we a can achieve optimal communication between any set of entities or all of them (are states of consciousness themselves entities? Could a strategic plan think of them as such? Excited to see where that goes). Alice is the orchestrator for the harmony of the cosmos (if you were talking like Alan Watt's). Where the harmony is what directions those strategic principles should be going (at a high level, huh-HUH!). 
 
 #### Volume N: Through The Looking Glass
 
