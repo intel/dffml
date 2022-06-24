@@ -1,3 +1,3 @@
-Started with software dojo thinking about BJJ went to 
+Started with software dojo thinking about BJJ went to software gym then thought rolling like jiujitsu whoch is like the way we form our gameplan and execute our game and our training to that across different system contexts (classes, flow roll, off mat study)
 
 given any snapshot she can give you debug and also get you up to speed on how to solve the most important problems, not setup and environment problems, not wrong argument to curl. She figures out your intent. What you’re trying to communicate, and how to make that happen given available resources extracted from the top level system context (different secret locations for different deployments / output method calls / overlayed on demand flows.
