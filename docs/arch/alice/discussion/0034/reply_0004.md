@@ -1,2 +1,3 @@
 - Lakehouse: A New Generation of Open Platforms that Unify Data Warehousing and Advanced Analytics
   - http://www.cidrdb.org/cidr2021/papers/cidr2021_paper17.pdf
+- switch_root + kexec ?
