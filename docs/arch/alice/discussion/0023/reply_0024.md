@@ -12,7 +12,6 @@
   - [ ] Install discord
   - [ ] Fuck this drive speed is way to slow when using as disk, live images do somethign to fix this, we are not them apparently
   - [x] Eventually we fired up the server its running arch from 2017 October.
-  - [x] 
 - Software Supply Chain and Hyperledger Grid
   - https://github.com/Cargill/grid-rfcs/blob/ryanlassigbanks-purchase-order-rfc/text/0025-purchase-orer.md
     - Could we leverage this to request a CI/CD job be done?
