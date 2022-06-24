@@ -1,1 +1,2 @@
 - Understand all the layers of the stack. Understand calling conventions within and between them as protocols. Represent via heterogeneous serialization format (web3)
+- Its like SWIG but cross everything via always option to I/O to web3
