@@ -6,5 +6,6 @@
   - https://github.com/TBD54566975/collaboration/blob/main/milestones/MILESTONE_001.md
   - https://github.com/TBD54566975/ssi-sdk
   - https://github.com/TBD54566975/ssi-service
-    - This is a ODAP gateway
+    - This is like a firefly gateway
+    - "The Self Sovereign Identity Service (SSIS) facilitates all things relating to [DIDs](https://www.w3.org/TR/did-core/) and [Verifiable Credentials](https://www.w3.org/TR/vc-data-model) -- in a box!"
     - Leverage NFT storage UCAN auth?
