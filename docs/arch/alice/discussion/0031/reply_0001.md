@@ -1,0 +1,1 @@
+- time travel: sometimes to go fast you have to go slow. RTS turtling, the tortoise and the hare
