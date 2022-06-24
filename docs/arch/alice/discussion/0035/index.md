@@ -35,8 +35,8 @@
   - Architecture
   - Domain Expertise
 - Take them through the story
-- Vision: Help developers go faster with better quality
-- Way down at the bottom we have something involving SGX
+- focus on more high quality changes
+- Way down at the bottom we have something involving hardware feature
 - Make sure to have c4models
 - Think about argument as constructing a building
 - Think about how the building interacts with the human element. How to do doors, windows, light coming in, how does that interact with users.
