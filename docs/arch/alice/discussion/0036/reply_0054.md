@@ -1,0 +1,1 @@
+tell user what changes have happened between the last system context they saw and the one now, like sleep wake up good morning Alice tell me whats new what have you been thinking about
