@@ -9,6 +9,13 @@
   - Propose that the format which can be used to describe any system architecture be called the Open Architecture (aka Universal Blueprint, DataFlow, System Context). The Open Architecture describes assets using the Open Data Asset Protocol. One option for definition of a system architecture via the Open Architecture is to link via directed graphs, component domain specific architectures, i.e. hardware, software, digital, physical, business process, or any combination thereof.
   - TODO look in more detail at SPARTA(?) work from facebook research.
 
+```yaml
+$schema: https://intel.github.io/dffml/open-architecture.0.0.1.schema.json
+plugin: dataflow
+config:
+  ... a saved dataflow ...
+```
+
 ---
 
 - https://kubernetes.io/docs/tasks/configure-pod-container/translate-compose-kubernetes/
