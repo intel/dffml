@@ -1,5 +1,7 @@
 Are humans capable of dealing with this? This connection at the speed of Alice? See issues with social media.
 
+Cleanliness Is Next to Godliness
+
 Alice should be trustworthy. We’re going to tell her, do X. And need to trust her to get it done in a way we’d call “the right way”. That’s different for each of us. Different depending on our operational context for the problem being solved.
 
 10b parameter language model: https://github.com/bigscience-workshop/t-zero
