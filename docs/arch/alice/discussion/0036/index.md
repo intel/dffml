@@ -13,7 +13,7 @@ This month we'll only be able to scratch the surface of what Alice would need to
 
 ## Target
 
-By June 1st, Alice should be ready to analyze projects (repo or set of repos) and present threat models on those projects. She will talk to a slide deck she creates by making a system context that gets executed to produce a PDF of the slides. The slides will use inputs from the threat model data. Threat models will be created as hybrid reStructuredText and markdown Sphinx sites (for mermaid diagrams rendering on GitHub by default, allow for using markdown). Alice will read the content of the report which will not be copied verbatim to slides, only graphics for each section will be copied to slides.
+By June 1st, Alice should be ready to analyze projects (repo or set of repos) and present threat models on those projects. She will create a slide deck by making a system context that gets executed to produce a PDF of the slides. The slides will use inputs from the threat model data. Threat models will be created as hybrid reStructuredText and markdown Sphinx sites (for mermaid diagrams rendering on GitHub by default, allow for using markdown). Ideally we’ll be able to have Alice read the content of the report (which will not be copied verbatim to slides, only graphics for each section will be copied to slides) while giving a presentation of the slide deck. 
 
 This is in preparation for our upcoming second and third party plugin support. We'll later look to create CI jobs which keep the threat model documents up to date within each repo.
 
