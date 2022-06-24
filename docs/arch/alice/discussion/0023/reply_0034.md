@@ -1,7 +1,7 @@
 - can use web3 as cve bin tool mirrors / torrent / webtorrent / ipfs
 - Bridging the web2/web3 Identity Gap
 - `did:key` is a method 0 `did:peer` (inception key without doc)
-  - Add top level context overlay switch to command line and high level run.
+  - Add top level context overlay switch to command line and high level run. Use this to pass dataflow which might load from `~/.local/` or somewhere else. Always require argument, never load from disk a default, people can make aliases or use environment variables to set. Always load via env vars or CLI or python API. Never assume disk.
 
 https://identity.foundation/peer-did-method-spec/#generation-method
 
