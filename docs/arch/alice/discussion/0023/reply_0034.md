@@ -1,3 +1,4 @@
+- 2 comments, different threads, same connent, use Peer DID to reference same conneent and filter discussion based on parent thread
 - can use web3 as cve bin tool mirrors / torrent / webtorrent / ipfs
 - Bridging the web2/web3 Identity Gap
 - `did:key` is a method 0 `did:peer` (inception key without doc)
