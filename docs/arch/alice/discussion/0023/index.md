@@ -1,6 +1,6 @@
 # Alice's Adventures in Wonderland - Introduction and Context
 
-> Introduction and Context to Tutorial series - May 2022
+> Introduction and Context to tutorial series - May 2022
 
 ## Engineering Logs
 
