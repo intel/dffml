@@ -6,6 +6,6 @@ Usage stats of a universal blueprint within downstream blueprints should be take
 
 After new system contexts are issued by strategic decision maker, there should be a prioritizer which decides which thoughts get played out (dataflows with system context executed) on what available resources (orchestrators).
 
-Streamline the research to usage pipeline of the ML ecosystem (researchers making models and software engineers using them in real world applications). Want to make it easy to take from the ideation phase to production very quickly deploying to any environment, effectively create a unified programming interface across UI/client and server. Combining threat model data with 
+Streamline the research to usage pipeline of the ML ecosystem (researchers making models and software engineers using them in real world applications). Want to make it easy to take from the ideation phase to production very quickly deploying to any environment, effectively create a unified programming interface across UI/client and server. Combining threat model data with dede
 
 Operations should expose (historical) data on timeouts clients (when remote) should try waiting before raising timeout issues.
