@@ -40,3 +40,7 @@ Failure to achieve ubiquitous adoption of an open architecture with meticulously
 Much of this discussions thread are notes and scratch work around the purpose and future of the project. Everything here will be converted to ADRs, issues, code, etc. as appropriate. We as a community (open to everyone) will work together to map our our activities to achieve these goals. We will document our process along the way and write these series of tutorials to show others how they can understand and extend the open architecture (Alice).
 
 This thread is a central place for everyone interested to participate and collaborate.  There are many pieces to this plan that need to be driven by many individuals to make this all happen. Reach out or just start commenting if you want to get involved.
+
+## References
+
+- Open Architecture RFC: [Open-Architecture.txt](https://raw.githubusercontent.com/intel/dffml/main/docs/rfcs/0000-Open-Architecture.txt)
