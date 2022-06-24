@@ -1,0 +1,1 @@
+Kernels builds on ramdisks with iverlayfs cahcing distrivuted via TURN over websocket (container layers). Gives us A/B feature build validation 
