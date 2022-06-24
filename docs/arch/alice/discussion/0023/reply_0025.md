@@ -7,4 +7,4 @@ point phone at item do purchase to alignment to strategoc values models. Priorit
 
 the data will tell us the truth. Active distrupive inputs (ML master’s thesis)
 
-sawtooth fish demo with webapp camera and webrtc decode to detect abd compare
+sawtooth fish demo with webapp camera and webrtc decode to detect abd compare. Proteine poweder example provenance as credential healthy websites trusted
