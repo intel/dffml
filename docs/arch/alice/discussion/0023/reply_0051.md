@@ -19,6 +19,10 @@ $ grep '<input type="hidden" name="anchor_id"' /tmp/b
 ```
 
 - https://github.com/cli/cli/issues/5659#issuecomment-1138588268
+- https://docs.github.com/en/graphql/guides/using-the-graphql-api-for-discussions#discussioncomment
+  - We define fragments which are saying what we want from a given type. Like a select.
+- `Edge` suffix in GitHub docs looks like an `Input` item.
+  - https://docs.github.com/en/graphql/reference/objects#usercontenteditedge
 
 **intial_discussion_query.graphql**
 
