@@ -54,3 +54,5 @@ The original usage of DFFML was nicknamed George. George analyzed open source de
 Alice's Adventures in Wonderland is in the public domain, which is a great reason to leverage it for reuse. It's all over the place, just massive chaos, nothing makes sense. Alice navigates the chaos.
 
 Also, in cryptography Alice and Bob are already commonly used names. So there's some shared understanding in the community that Alice is the name of a theoretical entity.
+
+Also when George got a name people started liking him a lot more, talking positively about him, making quips about him. It's just more fun to give the inanimate object a name. Or a personality, oh George doesn't like that repo! I'm sure Alice would agree that things are a lot more interesting when inanimate objects have names and personalities.
