@@ -2,10 +2,6 @@
 
 > May 2022 tutorials
 
-## Engineering Logs
-
-- [Architecting Alice: Volume 0: Context](https://youtube.com/playlist?list=PLtzAOVTpO2jaHsS4o-sDzDyHEug-1KRbK)
-
 ### Table Of Contents
 
 - [Introduction](https://github.com/intel/dffml/discussions/1369#discussioncomment-2603280)
