@@ -56,3 +56,4 @@
 - Use case Caviats are solving
   - Benjamin: SOmeone has the ability to delicate to a bucket of data, they want 
   - Can be expested in the second capability, you don't need the second
+- https://docs.microsoft.com/en-us/azure/active-directory/verifiable-credentials/issuer-openid
