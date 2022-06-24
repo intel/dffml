@@ -28,8 +28,6 @@ AI has the potential to do many great things. However, it also has the potential
 
 As we democratize AI, we must be careful not to democratize AI that will do harm. We must think secure by default in terms of architecture which has facilities for guard rails, baking safety into AI.
 
-## Future work
-
 Failure to achieve ubiquitous adoption of an open architecture with meticulously audited safety controls would be bad. The best defense is a good offense.
 
 ## Notes
