@@ -1,0 +1,1 @@
+- generic solver for any system state as if it where a chemical reaction (the chemistry of software)
