@@ -1,16 +1,21 @@
-# [Alice's Adventures in Wonderland - Introduction and Context](https://github.com/intel/dffml/discussions/1369#discussioncomment-2603280)
+# [Volume 0: Introduction and Context](https://github.com/intel/dffml/discussions/1369#discussioncomment-2603280)
 
 > Introduction and Context to tutorial series - May 2022
 
 ## Engineering Logs
 
-- [Architecting Alice: Volume 0: Context](https://youtube.com/playlist?list=PLtzAOVTpO2jaHsS4o-sDzDyHEug-1KRbK)
+- [Architecting Alice](https://youtube.com/playlist?list=PLtzAOVTpO2jaHsS4o-sDzDyHEug-1KRbK)
 
 ### Table Of Contents
 
+#### Volume 0: Architecting Alice
+
 - [Preface](https://github.com/intel/dffml/discussions/1369#discussion-4023096)
-- [Introduction](https://github.com/intel/dffml/discussions/1369#discussioncomment-2603280)
-- [Chapter I: Down the Rabbit-Hole](https://github.com/intel/dffml/discussions/1369#discussioncomment-2663771)
+- [Introduction and Context](https://github.com/intel/dffml/discussions/1369#discussioncomment-2603280)
+
+#### Volume 1: Alice's Adventures in Wonderland
+
+- [Down the Rabbit-Hole](https://github.com/intel/dffml/discussions/1369#discussioncomment-2663771)
 
 Together we'll build Alice. We'll be successful when Alice successfully maintains a codebase as the only maintainer for a year. Debugging issues, writing fixes, reviewing code, accepting pull requests, refactoring the code base post PR merge, dealing with vulnerabilities, cutting releases, maintaining release branches, and completing development work in alignment with the plugin's universal blueprint. She will modify, submit pull requests to, and track upstreaming of patches to her dependencies to achieve the cleanest architecture possible. We'll interact with her as we would any other remote developer.
 
