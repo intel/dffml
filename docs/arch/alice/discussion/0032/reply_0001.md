@@ -10,3 +10,4 @@ Other projects to leverage:
   - SPIFFE workload identify (similar to the github workflow OIDC claim stuff)
 - linkerd?
 - https://www.deepmind.com/blog/tackling-multiple-tasks-with-a-single-visual-language-model
+- https://adr.github.io/
