@@ -1,1 +1,1 @@
-`pip install jwcrypto`
+`pip install jwcrypto didcomm`
