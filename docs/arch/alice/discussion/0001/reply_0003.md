@@ -1,0 +1,1 @@
+Write accounts of software engineering teams. Post mortums and highlights. Write how we got here.
