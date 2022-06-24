@@ -15,3 +15,4 @@
         - Model in elixir is crash, then supervisers break down
   - Broadway is what is producing the events, flow is what
   - Supervision tree could initaite fail fast patterns
+  - Discord uses elixir at the proxy and then rust for proecessing
