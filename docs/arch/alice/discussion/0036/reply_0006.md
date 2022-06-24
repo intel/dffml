@@ -1,0 +1,1 @@
+Give Alice a linux command line and see how long we have ti train her before she can figure out how to do basic data transformation. Have straigc plans that read output of commands and associate with man pages and instantiate dynamicly discovered opimps in OpImpN. 
