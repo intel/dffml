@@ -1,0 +1,1 @@
+Hitting Critical Velocity. The fully connected dev model.
