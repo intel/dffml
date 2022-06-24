@@ -1,1 +1,1 @@
-Debug webapp: start in playwright
+Debug webapp: start in playwright hook into browser state to view variables across client and server.
