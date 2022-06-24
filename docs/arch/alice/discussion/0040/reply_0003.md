@@ -19,3 +19,4 @@ $ alice please contribute recommended community standards -log debug -repos http
   - Will assess 10,000 repos against recommended community standards and track contributions to show her positive impact by end of Q3
     - Monitor negative feedback and all interactions!
     - Reach out via email or something to send innersource report
+      - Periodic batch comparison
