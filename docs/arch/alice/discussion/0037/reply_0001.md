@@ -4,6 +4,6 @@ GAN and autoencoders used to encode non image data such as strategic plans / pri
 
 Autoencoders unsupervised to supervised clustering
 
-Do demo where we train model permutations on outputs of operations
+Do demo where we train model permutations on outputs of operations. Then make an operation for each permutation fr each conceptual layer (concious layers)
 
 you can set organiztional policy and agents set their policy. This is like a self reporting servce. Dev/agent chooses how much they want to communicate. Org overlays help agent understand the provenance information required from them to submit work/inputs. This is tied to tbDEX contract stuff
