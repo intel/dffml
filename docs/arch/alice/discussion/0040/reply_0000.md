@@ -1,4 +1,5 @@
-Where we're at as of 2022-06-21-12-55 PDT and 521b9151689e3c5e446c90f2c7a6be6f0cc301ce
+- Where we're at as of 2022-06-21-12-55 PDT and 521b9151689e3c5e446c90f2c7a6be6f0cc301ce
+  - We got multiple contexts result yielding working
 
 ```console
 $ alice please contribute -log debug -repos https://github.com/pdxjohnny/testa -- recommended community standards
