@@ -1,5 +1,6 @@
 - https://etiennefd.substack.com/p/the-secret-of-happiness-is-that-there
   - optimize in part for Psychological richness for our agents
+- https://scored.dev/call_for_papers/
 - https://mobile.twitter.com/XMPPwocky/status/1526237836935954432
   - https://github.com/tweag/trustix
   - Nix based builds we should check out
