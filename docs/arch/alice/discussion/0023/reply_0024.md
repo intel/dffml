@@ -7,5 +7,6 @@
 - Mounted `rootfs.img`
 - `systemd-nspawn -D /path/to/mount/directory/for/rootfs` to start container
 - Run `anaconda`
-- Select text basaed interface
+- Select text based interface
   - Wait for it to load a while ignore errors about not being able to connect (3 line same thing)
+- 
