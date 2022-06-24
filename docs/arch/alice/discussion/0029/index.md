@@ -1,0 +1,1 @@
+The unit of granularity which we currently use to track changes is a single line. By leveraging a universal blueprint as an intermediate representation we are able to see the complex relationships resulting from a change. A line of adding a dependency with 100 other dependicies has a profound difference in the change delta over the use of a stdlib builtin.
