@@ -21,7 +21,8 @@
   - Dataflow as class
   - Operation for dataflow as class methods
   - instantiate operations from top level system context from auto start background contexts. Like our current implementation of datflow.seed but for contexts.
-  - Implement caching 
+  - Implement caching (collector/corellator/visualizer/controller/strategic plan split) 
+  - Create first distinct ancestor of Alice by creating ongoing validation flows to re check cves when new vulns come in. Show how tjisbis trival by adding those contexts to the chain whoch are picked ip and executed by agents. Agents just look for any contexts that have been issused but not executed. Prioritizer also prioritizes “reminder threads whoch remind prioritizater to re broadcast train of thought on periodic cycle if not scheduled for execution with frequency based on priority. Agents ckning online need inly look at chain for tasks
 - What will Alice do?
   - Architect
   - DJ
