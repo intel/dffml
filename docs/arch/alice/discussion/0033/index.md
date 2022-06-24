@@ -1,4 +1,4 @@
-How we can successfully foster innovation? Reward successful trains of thoughts with more effort to see how they play out and what new system contexts they generate.
+How we can successfully foster innovation? Reward successful trains of thoughts with more effort to see how they play out and what new system contexts they generate. Be careful not to do too much work without seeing ROI. Don't keep working on a job if you aren't getting paid. Estimate likelihood of getting paid based off frequency. Measure time and energy (compute cycles) put in and correlate with pay to decide what to work on based on ROI for Alice.
 
 There is an equilibrium between chaos and complete control (measured as 100% of inputs produced within a system context, including all subflows/contexts, are consumed by strategic plans, meaning we are taking every possible thing into account before issuing new system contexts to be executed) where optimal performance is measured as the number of system contexts being executed successfully.
 
