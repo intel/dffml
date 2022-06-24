@@ -5,7 +5,7 @@ $ gh repo create -y --private $USER/test-0001
 ```
 
 ```console
-$ alice please contribute recommended community standards -log debug -repos https://github.com/$USER/test-0001
+$ alice please contribute -log debug -repos https://github.com/$USER/test-0001 -- recommended community standards 
 ```
 
 ---
