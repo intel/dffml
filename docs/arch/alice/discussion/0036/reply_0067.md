@@ -33,7 +33,7 @@
   - [ ] Run demo again 
   - [ ] Head to mention section and mention future work and how to get involved
 - TODO
-  - [x] Initial Threat Dragon Source
+  - [ ] Initial Threat Dragon Source
     - 7969de3a0dc84ba1ddaef605744072e1cdaecb9f
   - [x] Add manifest metadata to Threat Dragon Source Records via `extra`
     - 51799da78a56f3557101fed0524c571fca0ce195
