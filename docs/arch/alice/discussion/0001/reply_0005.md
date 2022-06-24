@@ -1,0 +1,1 @@
+Resilience factor for paycheck to paycheck via diversification.
