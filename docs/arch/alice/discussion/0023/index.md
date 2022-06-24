@@ -45,7 +45,7 @@ Alice is going to be held to very high standards. We should expect this list to 
     - She should figure out how to validate that she has a working linux distro by overlaying discovered tests with intergration tests such as boot check via qemu serial.
   - Alice, spin up ABC helm charts and visualize the cluster (viewing in an AR headset)
   - Alice, let's talk about the automating classification web app included in the example.
-    - Alice, give us an overview of the threats on our database, deploy the prod backup to a new environment. Attempt to exploit known threats and come up with new ones for the next 2 weeks. Submit a report and presentation with your findings.
+    - Alice, give us an overview of the threats on our database, deploy the prod backup to a new environment. Attempt to exploit known threats and come up with new ones for the next 2 weeks. Submit a report and presentation with your findings. Begin work on issues found as you find them.
 - We should be able to see Alice think and understand her trains of thought
 
 ### Alice's Understanding of Software Engineering
