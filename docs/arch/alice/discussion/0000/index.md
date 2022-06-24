@@ -13,3 +13,5 @@ As we democratize AI, we must be careful not to democratize AI that will do harm
 Failure to achieve ubiquitous adoption of an open architecture with meticulously audited safety controls would be bad. The best defense is a good offense.
 
 > Most of what's on this thread is just putting enough words to make us remember the related stuff later and fill it out so it makes sense. This thread is a central place for everyone interested to participate and collaborate. There are many pieces to this plan that need to be driven by many individuals to make this all happen. Reach out or just start commenting if you want to get involved.
+
+![image](https://user-images.githubusercontent.com/5950433/166466092-f16c2502-5d19-4359-987d-5b09c480a9b2.png)
