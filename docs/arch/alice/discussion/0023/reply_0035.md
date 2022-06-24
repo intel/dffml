@@ -1,1 +1,2 @@
 - did:githubkey: similar to peerdid. Rename method and you have the did:key. And you know how to go verify by treating this the cut off prefix of the method name as an inlut to your did verifying/whatever it is that peerdid lobrary does and do it via a dataflow / system context for each lookup with dataflow as class method being the sepefic type of key (the prefix, so github or keybase, ideally keybase
+- Be true to yourself via which organizations tou align with and how your shared effort can overlap with your strategic plans / principles/ passions
