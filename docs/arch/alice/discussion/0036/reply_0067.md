@@ -2,10 +2,12 @@
 - Data Flow serialization is our current Open Architecture
   - We will evolve over time
   - Let's make sure that we include all the items which we would like to see in a manifest
-- 2022-06-11 - state of the art - time travel, system context
-  - Upstream
-    - Past
-  - Overlay
-    - Present
-  - Orchestration
-    - Takes us to the future
+
+- https://github.com/intel/dffml/issues/1287
+  - 2022-06-11 - state of the art - time travel, system context
+    - Upstream
+      - Past
+    - Overlay
+      - Present
+    - Orchestration
+      - Takes us to the future
