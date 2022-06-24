@@ -20,7 +20,7 @@
 
 #### Volume 2: Alice and the Art of Strategy
 
-> We step inside Alice's mind and visualize her thoughts. We'll visualize architectures, strategic plans, and principles.
+> We step inside Alice's mind and visualize her thoughts. We'll visualize architectures, strategic plans, and their effects on trains of thought.
 
 - Selecting visualization options (volume 0)
 
