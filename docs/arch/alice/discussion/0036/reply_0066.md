@@ -25,6 +25,17 @@
   - https://github.com/johnlwhiteman/living-threat-models/issues/1
   - https://github.com/intel/cve-bin-tool/pull/1698
 - https://github.com/pdxjohnny/pdxjohnny.github.io/blob/dev/content/posts/tricks.md
+- https://identity.foundation/peer-did-method-spec/index.html#method-name
+- https://w3c.github.io/did-core/#dfn-did-methods
+- https://www.sciencedirect.com/science/article/pii/S2096720922000136
+- Peer DIDs
+  - https://github.com/sicpa-dlab/didcomm-demo/blob/main/didcomm-demo-python/didcomm_demo/did_resolver_peer_did.py
+  - https://github.com/sicpa-dlab/didcomm-demo/blob/main/didcomm-demo-python/didcomm_demo/didcomm_demo.py
+  - https://github.com/sicpa-dlab/didcomm-python/tree/stable#2-build-an-unencrypted-but-signed-didcomm-message
+- JSON Web Keys
+  - https://jwcrypto.readthedocs.io/en/latest/jwk.html#examples
+- https://github.com/WebOfTrust/ietf-keri
+  - Prerotation on keys
 
 ---
 
