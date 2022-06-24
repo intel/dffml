@@ -1,6 +1,7 @@
 What makes web3 / Peer DIDs different than classical blockchain technologies? https://identity.foundation/peer-did-method-spec/#diddocs
 
 > Early explorations of this DID method used the term microledger for backing storage. This term has some resonance, in that backing storage is an append-only record of immutable transactions. However, ledger technology requires strong ordering, whereas our ordering requirements are somewhat relaxed. What we need is closer to the approach of [triple-signed receipts](https://opentransactions.org/wiki/Triple-Signed_Receipts) or [KERI](https://arxiv.org/abs/1907.02143), not to a ledger or blockchain maintained by pure consensus. Thus, we have chosen not to emphasize the term here, because it may feel intimidating to some, and because the actual storage mechanism in an implementation of this method could be a simple file, a database, or anything else that provides suitable features.
+> https://datatracker.ietf.org/doc/draft-ssmith-oobi/00/
 
 ---
 
