@@ -2,3 +2,4 @@
   - sbom -> git repos -> authors
 - investigate: game theory
   - looks aligned at first glance
+- apply gird city design principles to maintain living entities (cve scanning Alice)
