@@ -1,6 +1,6 @@
 # [Volume 0: Architecting Alice: Preface](https://github.com/intel/dffml/discussions/1369#discussion-4023096)
 
-> Planning for our tutorial series (Volume 1) which will run from May 2022 to June 2023. Planned end date, last post for Volume 1 ends there. Volume 0 will be updated frequently throughout. Volume 0 is our ADRs and our plans and will be a living document and contributable to by all. Right now it's a discussion thread so please comment with anything and then once it's converted to a set of ADRs we'll start writing the tutorials as examples PRs just like we have been doing with everything else. Think of Alice as our 2nd/3rd party plugin assistant maintainer / common CI jobs across plugins.
+> Planning for our tutorial series (Volume 1) which will run from May 2022 to June 2023. Planned end date, last post for Volume 1 ends there. Volume 0 will be updated frequently throughout. Volume 0 is our ADRs and our plans and will be a living document and contributable to by all. Right now it's a discussion thread so please comment with anything and then once it's converted to a set of ADRs we'll start writing the tutorials as examples PRs just like we have been doing with everything else. Alice will be a maintainer who works across 2nd/3rd party plugins. She’ll act as a helper to other developers and do work herself (think dependabot PRs). She’ll act like an intelligent context aware set of CI jobs that learns with you.
 >
 > Artificial Life Is Coming Eventually
 
