@@ -1,6 +1,7 @@
 ### Nice to have
 
 - [ ] DID as CBOR
+  - [ ] Would be really nice for DICE attestation
 
 ### Security Considerations
 
