@@ -23,7 +23,7 @@ We'll follow along an adapted version of Lewis Carroll's classic, Alice's Advent
 
 ### What is Alice?
 
-Alice is an architecture for code that will write and maintain itself based off of a standard description of architecture, a universal blueprint. As such Alice is both an AI software architect and the AI software's architecture itself. The universal blueprint is universal because it's intuitive enough that anyone can begin using it quickly after the correct way of communicating to that individual is established via some communication method (spoken language, visual of some kind, text, etc.). This universal blueprint is an abstraction layer between descriptions of architecture within different domain specific representations for subcomponents as required to fully describe the system.
+Alice is an architecture for code that will write and maintain itself based off of a standard description of architecture, a universal blueprint, the open architecture. As such Alice is both an AI software architect and the AI software's architecture itself. The universal blueprint is universal because it's intuitive enough that anyone can begin using it quickly after the correct way of communicating to that individual is established via some communication method (spoken language, visual of some kind, text, etc.). This universal blueprint is an abstraction layer between descriptions of architecture within different domain specific representations for subcomponents as required to fully describe the system.
 
 This universal blueprint (system context) is an integral part of creating a shared language for meaning and intent between humans and an Artificial General Intelligence. The goal is to provide an architecture and implementation for independent entities which act in accordance with guiding strategic plans/blueprints. This architecture must be safe and secure by default, scalable, and easily extensible.
 
@@ -39,7 +39,8 @@ The end goal is to create a software architect, Alice. She will consult on exist
 
 ### Terminology
 
-- Universal Blueprint
+- Open Architecture
+  - Universal Blueprint
   - Standard architecture we use to describe anything. Provides the ability to use / reference domain specific architectures as needed to define architecture of whole.
 - Think
   - Come up with new data flows and system context input
