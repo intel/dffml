@@ -1,5 +1,19 @@
 - https://singularityhub.com/2022/06/14/in-its-greatest-biology-feat-yet-ai-decoded-the-protein-complexes-that-house-our-dna/
   - once again we see the notion of the gatekeeper, with the dna as the nucleus and the gatekeeper filters inputs
+- FUTURE
+
+```mermaid
+graph TD
+    bash_shell_prompt_command --> herstory
+    alice_shell --> herstory
+    herstory --> ipynb
+    radio_free_alice --> audio_stream
+    audio_stream --> transcript
+    transcript --> ipynb
+    ipynb --> sphinx_build
+    sphinx_build --> intuitive_doc_editing_gsoc_project
+```
+
 - TODO
   - [ ] bisect to find out if we recently caused the lock issue #1394
   - [ ] We time travel back to the days of Metrics and Prophets to revive locking and event streams which we at one point 3 years ago had working with a UI (service/ossse). We cobble these working concepts together with our current data flow implementation which is in need of both working locking (due to that one bug, let's still bisect first in case we don't need to pull out the locking part), and event streams (and UI would be nice).
