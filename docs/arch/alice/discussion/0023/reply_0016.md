@@ -1,0 +1,1 @@
+Devpull model did public N consumers
