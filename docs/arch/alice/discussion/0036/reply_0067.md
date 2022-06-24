@@ -58,6 +58,9 @@
 ---
 
 - [ ] Docker compose analysis to supplement / generate same as `good.json`
+- [ ] SPDX 3.0 security profiles for policy (input network / umbrella / gatekeeper / open policy agent?)
+- [ ] VEX as links?
+  - https://www.cisa.gov/sites/default/files/publications/VEX_Use_Cases_Aprill2022.pdf
 
 ---
 
