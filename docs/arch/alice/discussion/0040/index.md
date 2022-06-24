@@ -12,26 +12,39 @@ References:
   - List of files / must haves
 - https://opensource.guide/
 
+We want to be able to ask Alice to contribute [recommended community standards](https://opensource.guide/) to our projects.
+
+```console
+$ alice please contribute -repos https://github.com/intel/dffml "recommended community standards"
+```
+
+
+What the body of the issue should be
+
+```
+- [] [README](https://github.com/intel/dffml/blob/main/README.md)
+- [] Code of conduct
+- [] [Contributing](https://github.com/intel/dffml/blob/main/CONTRIBUTING.md)
+- [] [License](https://github.com/intel/dffml/blob/main/LICENSE)
+```
+
+We will also add now (and later `THREATS.md`)
+
+```
+- [] Security
+```
+
+We will omit for now
+
+```
+- []  Issue templates
+- []  Pull request template
+- []  Repository admins accept content reports
+```
 
 ```console
 ```
 
-Community Standards
-Here’s how this project compares to [recommended community standards](https://opensource.guide/).
-
-Checklist
-
- 
- Description
- [README](https://github.com/intel/dffml/blob/main/README.md)
- Code of conduct
- [Contributing](https://github.com/intel/dffml/blob/main/CONTRIBUTING.md)
- [License](https://github.com/intel/dffml/blob/main/LICENSE)
- Issue templates
- Pull request template
- Repository admins accept content reports
-
-
-```console
-```
-
+- Future work
+  - `-repos https://github.com/intel/dffml`
+    - Infer from context (cwd)
