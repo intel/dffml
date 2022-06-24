@@ -1,6 +1,6 @@
 # Chapter I: Down the Rabbit-Hole
 
-> May 2022 Tutorials
+> May 2022 tutorials
 
 ### Table Of Contents
 
