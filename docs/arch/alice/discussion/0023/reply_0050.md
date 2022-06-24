@@ -61,4 +61,4 @@
 - https://docs.microsoft.com/en-us/azure/active-directory/verifiable-credentials/issuer-openid
 - https://docs.microsoft.com/en-us/azure/active-directory/verifiable-credentials/introduction-to-verifiable-credentials-architecture
 - Gordon and Chris Joel have been developing Rust UCAN (cdata on github)
-  - They are building a notetaking app called subconscious (sounds similar)
+  - They are building a notetaking app called subconscious
