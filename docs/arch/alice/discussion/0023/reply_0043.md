@@ -4,3 +4,9 @@
 - https://twitter.com/bernhardsson/status/1526635195243409408
   - > Something that old boring process literature talk about (Toyota, The Goal etc) that applies to software engineering 10000000% is that minimizing the size of the feedback loop is much more important for productivity than minimizing idleness
   - Why? The more useful data we have, the more precise we can be with the control portion of our feedback loop. Splitting into small feedback loops (like refactoring into a set of functions with locality or trustbonudries understood) helps us measure more granularly.
+- TODO
+  - `alice new architecture <project-name>`
+    - Have alice guess based on parent system context and project name what kind of project she should create (operations -> within `operations/` or name `-operations-<something>`
+    - Run setup tasks overlayed from parent system context
+      - You use github? Create a github repo for it
+      - You want to register a project name with your container registery you usally use, right?
