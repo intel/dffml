@@ -1,7 +1,10 @@
+- https://etiennefd.substack.com/p/the-secret-of-happiness-is-that-there
+  - Psychological richness 
 - https://mobile.twitter.com/XMPPwocky/status/1526237836935954432
   - https://github.com/tweag/trustix
   - Nix based builds we should check out
 - https://www.radicalxchange.org/media/announcements/a-new-chapter-for-radicalxchange/
+  - > Plural Funding better describes how the mechanism fosters emergent democratic communities and encourages a plurality of stakeholders to contribute to network goods. It also improves upon the simple version of Quadratic Funding by formally recognizing community structure through “soulbound” or non-transferrable community tokens (more on this below).
 - DFFML clone git repos
   - https://github.com/intel/dffml/discussions/1382#discussioncomment-2762256
   - pako: https://nodeca.github.io/pako/
