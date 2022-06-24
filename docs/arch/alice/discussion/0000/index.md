@@ -154,5 +154,5 @@ This thread is a central place for everyone interested to participate and collab
 - Open Architecture RFC: [Open-Architecture.txt](https://raw.githubusercontent.com/intel/dffml/main/docs/rfcs/0000-Open-Architecture.txt)
 - Alice Date 0 = Gregorian Calendar Date 2022-04-16 ~ 11 AM
 - First Name: Alice
-- Middle Name: O
-- Last Name: A
+- Middle Name: O (Omega)
+- Last Name: A (Alpha, Architecture, America)
