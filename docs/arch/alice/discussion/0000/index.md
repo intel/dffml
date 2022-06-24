@@ -30,7 +30,7 @@
 
 -
 
-#### Volume X: Alice the Health of the Ecosystem
+#### Volume X: Alice and the Health of the Ecosystem
 
 > OSS ecosystem, package maintenance, etc. talk about scale up
 
