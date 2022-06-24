@@ -1,0 +1,1 @@
+https://next.redhat.com/2022/04/21/sharding-for-security-and-scalability/
