@@ -29,10 +29,12 @@ Alice is going to be held to very high standards. We should expect this list to 
 
 We'll teach Alice what she needs to know about software engineering though our InnerSource series. She'll follow the best practices outlined there. She'll understand a codebase's health in part using InnerSource metric collectors.
 
-### Why name it Alice?
+### Naming
 
 You can name it or call it whatever you like. This blog series will call it Alice. Alice will be used to refer to the entity carrying out this job of maintainer. The name Alice will also be used to refer to the AGI in general, the architecture through which one can instantiate arbitrary entities. In effect, the whole bit is arbitrary, and you can call it whatever you like.
 
+Being that Alice is the nickname for both our an entity and the architecture in general. Alice when used in reference to the architecture is a stand in for the the technical term for the architecture. Not sure what the right technical term is right now. Maybe something like: data centric fail safe architecture for artificial general intelligence.
+
 The original usage of DFFML was nicknamed George. George analyzed open source dependencies. This was his "job". 
 
-Alice navigates the chaos of Wonderland.
+Alice's Adventures in Wonderland is in the public domain, which is a great reason to leverage it for reuse. It's all over the place, just massive chaos, nothing makes sense. Alice navigates the chaos.
