@@ -32,3 +32,43 @@ splitting out execution from analysis via caching of contexts is helpful with al
 OpenSSF: Have DIDs been looked at to assist with data distribution/consumption? Allow users to add links to chains, data added to chain in such a way that the data is self descriptive (include schema ref with format name and version). Consumers can choose to follow links in chains from sources they trust. Data they consume could be via interfaces created from manifest schema. This approach allow for various data models, not enforcing a common one. It allows for natural convergence, tracking data models used by traversing chains to schemas. Visibility allows for fostering convergence, watch new use cases appear, converge, repeat. For example, NVD is frequently not enough, sometimes we need to check project websites to supplement CVE data. Projects themselves could self publish to data to relevant chains (or expose via any other interface, rss, whatever, not important, point is there is an standard interface which exposes these relevant pieces of data). How can we ensure we foster an open ecosystem for all relevant data? We need to enable entities and systems to publish any data they think may be relevant, and see what ends up really helping over time. Right now we think we know, but we haven't done this yet, so we don't really know what data helps us effectively secure across the industry and what doesn't. We're working with a cherry picked set of data models right now. By opening the distribution/consumption mechanisms we may find correlations we did not foresee.
 
 `dffml dataflow c4models` - similar to dataflow diagram
+
+```mermaid
+    graph TB
+
+      classDef background fill:#ffffff00,stroke:#ffffff00;
+      classDef Person color:#ffffff,fill:#08427b,stroke:#08427b;
+      classDef NewSystem color:#ffffff,fill:#1168bd,stroke:#1168bd;
+      classDef ExistingSystem color:#ffffff,fill:#999999,stroke:#999999;
+
+      subgraph system_context[System Context for InnerSource]
+
+        requirements_management[Requirements Managment<br>&#91Software System&#93]
+        data_storage[Artifact Managment<br>&#91Software System&#93]
+        asset_change[Code Change - new system state<br>&#91Input&#93]
+        engineer[Software Engineer<br>&#91Person&#93]
+        manager[Project Manager<br>&#91Person&#93]
+        customer[Customer<br>&#91Person&#93]
+        trigger_dependents[Continuous Integration - on all downstream<br>&#91Operation&#93]
+        cd_software[Continuous Deployment<br>&#91Software System&#93]
+        iaas[Infrastructure as a Service<br>&#91Software System&#93]
+
+        customer -->|Understand customer requirements| requirements_management
+        requirements_management --> manager
+        manager -->|Communicate priority of tasks| engineer
+        engineer --> asset_change
+        asset_change --> trigger_dependents
+        data_storage -->|Pull dependencies from| trigger_dependents
+        iaas -->|Provide compute to| trigger_dependents
+        trigger_dependents -->|Validation passed, promote and release, proceed to A/B test with other live environments. safe mode-thinking: playing out trains of thought with stubs, run through outputs of sub execution / model execution with strategic plans and run though gatekeeper to decide which ones meet the must have qualifications. Qualifications are which strategic plans were used, if they attempted to pull a veto, veto prioritization in provenance, all the input data and output data involved in executing the strategic plans, gatekeeper - formerly referred to as the decision maker, and prioritizer| cd_software
+        cd_software -->|Store copy| data_storage
+        cd_software -->|Make available to| customer
+
+        class manager,engineer,customer Person;
+        class innersource NewSystem;
+        class trigger_dependents,cd_software,requirements_management,asset_change,data_storage,iaas ExistingSystem;
+
+      end
+
+      class system_context background;
+```
