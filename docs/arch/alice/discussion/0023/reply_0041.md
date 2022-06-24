@@ -1,1 +1,2 @@
-- Map English language text instructions from issue to execution of development activies
+- Map English language text instructions from issue / engineering logs to execution of development activies
+- https://medium.com/qe-unit/airbnbs-microservices-architecture-journey-to-quality-engineering-d5a490e6ba4f
