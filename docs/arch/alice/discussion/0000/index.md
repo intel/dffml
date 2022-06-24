@@ -4,7 +4,7 @@
 >
 > Artificial Life Is Coming Eventually
 >
-> How do we build it with intention? We flush it out conceptually via this set of volumes holding our collective thoughts on what a system we could cohabitate with would look like. We follow trains if thought to their logical conclusions when making predictions about the future. We implement and validate in order to ensure that a transparent entity with the collective’s best interests at heart is the most powerful among those that are created.
+> How do we build it with intention? We flush it out conceptually via our collective thoughts on what a system would look like that we could cohabitate with. We follow trains of thought to their logical conclusions when making predictions about the future. We implement and validate in order to ensure that a transparent entity with the collective’s best interests at heart is ubiquitously adopted.
 
 ## Rolling Alice
 
