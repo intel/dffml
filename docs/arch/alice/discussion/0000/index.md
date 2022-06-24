@@ -22,7 +22,7 @@ In this N volume tutorial series we roll Alice. (Rolling release, rolling softwa
 
 > We build Alice the Software Architect.
 
-- [Down the Rabbit-Hole](https://github.com/intel/dffml/discussions/1369#discussioncomment-2663771)
+- [Down the Dependency Rabbit-Hole](https://github.com/intel/dffml/discussions/1369#discussioncomment-2663771)
 
 #### Volume 2: Alice and the Art of Strategy
 
@@ -42,7 +42,7 @@ In this N volume tutorial series we roll Alice. (Rolling release, rolling softwa
 
 -
 
-#### Volume N: Alice’s Memoirs
+#### Volume N: Through The Looking Glass
 
 > Alice will write this volume. One chapter on each previous volume with postmortem analysis and her running plans for the future as well as summary of previous. To be updated by Alice as she sees fit.
 
