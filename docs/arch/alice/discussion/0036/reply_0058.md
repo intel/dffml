@@ -1,0 +1,1 @@
+Alice the architecture is really about prblem solving. Its a methodology for approaching any problem
