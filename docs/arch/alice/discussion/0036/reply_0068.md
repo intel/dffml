@@ -1,3 +1,5 @@
+- Created label [`Alice`](https://github.com/intel/dffml/labels/Alice) color #E33FB7
+- Converted the following to issue https://github.com/intel/dffml/issues/1393
 - `alice shouldi contribute -overlay alice.shouldi.contribute.overlays:GITHUB_CREATE_ISSUES https://github.com/owner/repo`
   - Check for status of common files
   - [ ] Create as issue with body content similar to `THREATS.md`, checkboxes for each thing the issue is about, instructions on how to write and apply overlays to re-run the check to make it accurate if it's not
