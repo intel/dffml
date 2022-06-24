@@ -1,1 +1,3 @@
 Your docs via overlays see ltms become your deployment environments inform your scopes and applicaple orangiational overlays and policies. Aka if i see you have a docs page that says how to deploy to server we better see security settings for that deployment environment used. Aka if you dobt have a code path which allows you give a tls cert to a mysql connection then you have an unmitigated threat of EITM (“Entity In The Middle” [John Whiteman]) on that link in the mermaid diagram display via html escaped emojis and ascii along line expore popups or dive ins when visualized via other output overlays/deployments
+
+TODO example where we auto start context on opimp instantiation within opimp.octx
