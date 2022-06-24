@@ -1,0 +1,3 @@
+Started with software dojo thinking about BJJ went to 
+
+given any snapshot she can give you debug and also get you up to speed on how to solve the most important problems, not setup and environment problems, not wrong argument to curl. She figures out your intent. What you’re trying to communicate, and how to make that happen given available resources extracted from the top level system context (different secret locations for different deployments / output method calls / overlayed on demand flows.
