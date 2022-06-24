@@ -1,0 +1,1 @@
+Prioritizer, stratigic plans, gatekeeper as soul
