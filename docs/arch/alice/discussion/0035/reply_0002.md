@@ -1,1 +1,1 @@
-Record terminal of dev and make ci jobs from detected tests to run
+Record terminal of dev and make ci jobs from detected tests to run: https://github.com/ellie/atuin/blob/main/docs/server.md
