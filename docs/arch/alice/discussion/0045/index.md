@@ -21,6 +21,8 @@ The following is an example report
 
 # InnerSource Org Health
 
+`"Minimum health or above"` if `has_readme and has_contributing`
+
 ```mermaid
 pie title Overall
     "Minimum health or above" : 100
