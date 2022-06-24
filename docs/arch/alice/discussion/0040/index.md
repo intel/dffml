@@ -17,7 +17,7 @@ References:
 We want to be able to ask Alice to contribute [recommended community standards](https://opensource.guide/) to our projects.
 
 ```console
-$ alice please contribute -repos https://github.com/intel/dffml "recommended community standards"
+$ alice please contribute -repos https://github.com/intel/dffml -- recommended community standards
 ```
 
 
@@ -45,7 +45,7 @@ We will omit for now
 ```
 
 ```console
-$ alice please contribute "recommended community standards"
+$ alice please contribute recommended community standards
 ```
 
 Show it working with gh pr list
