@@ -1,7 +1,7 @@
 ## Starting a new project with Alice
 
 ```console
-$ gh repo create -y --internal $USER/test-0001
+$ gh repo create -y --private $USER/test-0001
 ```
 
 ```console
