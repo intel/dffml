@@ -40,6 +40,12 @@ Alice is going to be held to very high standards. We should expect this list to 
   - Changes would be additions of messages from different sources (email, chat, etc.)
 - Alice should be able to accept a meeting, join it, and talk to you
   - You should be able to have a conversation about a universal blueprint and she should be able to go act on it.
+  - She should be able to analyze any codebase you have access to live and build and walk you through architecture diagrams
+  - Alice build me a linux distro with these versions of these applications deploy it in a VM in QEMU, show me the screen while it's booting. Then give me control of it via this meeting. ... Okay now snapshot and deploy to XYZ CSP.
+    - She should figure out how to validate that she has a working linux distro by overlaying discovered tests with intergration tests such as boot check via qemu serial.
+  - Alice, spin up ABC helm charts and visualize the cluster (viewing in an AR headset)
+  - Alice, let's talk about the automating classification web app included in the example.
+    - Alice, give us an overview of the threats on our database, deploy the prod backup to a new environment. Attempt to exploit known threats and come up with new ones for the next 2 weeks. Submit a report and presentation with your findings.
 - We should be able to see Alice think and understand her trains of thought
 
 ### Alice's Understanding of Software Engineering
