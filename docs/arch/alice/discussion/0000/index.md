@@ -27,6 +27,7 @@ Alice’s architecture, the open architecture, is based around thought. She comm
 - [She's arriving when?](https://github.com/intel/dffml/discussions/1369#discussioncomment-2990099)
 - [A Shell for a Ghost](https://github.com/intel/dffml/discussions/1369#discussioncomment-2990160)
 - [Traveler of the Edge](https://github.com/intel/dffml/discussions/1369#discussioncomment-2989954)
+-
 
 #### Volume 1: Coach Alice
 
