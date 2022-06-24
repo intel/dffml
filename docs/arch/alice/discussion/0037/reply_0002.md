@@ -1,0 +1,1 @@
+Strategic plans make thoughts cohesive
