@@ -1,1 +1,3 @@
-The cells are working togeter
+The cells are working together
+
+love they neighbor
