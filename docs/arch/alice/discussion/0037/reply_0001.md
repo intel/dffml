@@ -1,0 +1,1 @@
+Strategic plan alignment. There us no path. Many people walk same way. Now there is a path
