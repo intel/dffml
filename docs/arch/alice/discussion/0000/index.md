@@ -20,7 +20,7 @@
 
 #### Volume 2: Alice and the Art of Strategy
 
-> We step inside the matrix as we visualize Alice's thoughts. We transform data into and out of the web3 space leveraging the Open Digital Asset Protocol (ODAP). We'll step into AR/VR environments where we'll visualize our data flows, strategic plans, and principles.
+> We step inside Alice's mind and visualize her thoughts. We transform data into and out of the web3 space leveraging the Open Digital Asset Protocol (ODAP). We'll step into AR/VR environments where we'll visualize our data flows, strategic plans, and principles.
 
 -
 
