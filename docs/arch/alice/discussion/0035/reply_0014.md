@@ -1,1 +1,1 @@
-Identifying alignment and incentivizing collaborating so as to bring about high impact results as measured by personal and organizational targets.
+Identifying alignment and incentivizing collaborating so as to bring about high impact results as measured by personal and organizational targets while having as much fun as possible.
