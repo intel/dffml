@@ -86,3 +86,7 @@ Prioritizers could instigate change in CSP to reduce cost and sacrifice performa
 
       class system_context background;
 ```
+
+
+
+Intercepting workstreams/trains of thought. Thinking strategically across workstreams to optimize for strategic principles. This is when we have some interactions between strategic plans, gatekeeper, prirotizer for creating and executing system contexts which identify improvements to two trains of thought when they are made to overlap in one or more areas. This is reuse. Can model via the two devs, or via working groups with their own strategies and goals, whose activities can be modeled as trains of thought. This aspect of the prirotizer might involve running a concurrent/parallel task alongside each executing dataflow context. It could suggest new system conexts via polling inspection across active system contexts. subflows and this new construct might be able to track liniage across flows via adding parent flow inputs passed to subflows created by adding those inputs to `Input.parents` for each derived input passed to the subflow. This would allow for traversing of data across subflows. We might need inputs to have a handle on which context they came from so we can understand boundaries.
