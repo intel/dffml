@@ -21,3 +21,5 @@
     - https://github.com/hyperledger/ursa/blob/92d752100e6c8afde48e3406eaa585e1cb02b954/libursa/src/signatures/ed25519.rs#L288-L299
     - Okay no we are tabling this.
 - WE shold be looking at stable of DIDComm https://github.com/sicpa-dlab/didcomm-python/tree/stable
+  - https://github.com/sicpa-dlab/didcomm-python/tree/stable#2-build-an-unencrypted-but-signed-didcomm-message
+    - This is what we want to start
