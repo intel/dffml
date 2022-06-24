@@ -1,0 +1,1 @@
+This isn't the blockchain we've been hearing about for the past few years with tokens. This about a cryptographically linked list. A privacy and security preserving communication mechanism via an unbroken chain of knowledge.
