@@ -1,5 +1,7 @@
 Other projects to leverage:
 
+- https://dev.opencerts.io/
+  - Review system (did jobs complete)
 - https://hubs.mozilla.com/
   - https://github.com/microsoft/Microsoft-3D-Movie-Maker
 - https://github.com/alice-bot/alice (elixir, nice!)
