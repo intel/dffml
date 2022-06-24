@@ -23,6 +23,13 @@
   - The term manifest is used to describe a domain specific representation of architecture
   - Each node in the an Open Architecture graph is a manifest
   - The top level document aka Alice aka the Open Architecture itself is a manifest
+- Demo
+  - [ ] Show generation of THREATS.md using `dffml merge`
+  - [ ] Explain Open Architecture (above)
+  - [ ] Talk to Manifest Schema (https://github.com/intel/dffml/discussions/1369#discussioncomment-2603269)
+  - [ ] Explain demo (below)
+  - [ ] Run demo again 
+  - [ ] Head to mention section and mention future work and how to get involved
 - TODO
   - [x] Initial Threat Dragon Source
     - 7969de3a0dc84ba1ddaef605744072e1cdaecb9f
