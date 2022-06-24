@@ -11,4 +11,6 @@ https://identity.foundation/peer-did-method-spec/#generation-method
   - https://github.com/intel/dffml/issues/1381
 
 - struggled to make Ed25519 `ssh-keygen` generate to PEM format
-  - Ed25519 keys always use the new private key format
+  - "Ed25519 keys always use the new private key format"
+    - https://it-qa.com/why-is-the-ed25519-private-key-not-supported-in-openssh/
+- Can we generate with openssl and convert to ssh version of ed25519?
