@@ -1,4 +1,3 @@
-- Implemented threat dragon source in 7969de3a0dc84ba1ddaef605744072e1cdaecb9f
 - Alignment
   - https://www.threatmodelingmanifesto.org/
 - Threat Model Cheatsheet from OWASP mentions defining the dataflow
@@ -6,7 +5,7 @@
 - https://github.com/OWASP/threat-dragon/issues/437
 - Data Flow serialization is our current Open Architecture
   - We will evolve over time
-  - Let's make sure that we include all the items which we would like to see in a manifest
+  - Let's make sure that we include all the items which we would like to see in a manifest (manifest metadata)
     - [ ] schema
     - [ ] format name
     - [ ] version
@@ -18,3 +17,11 @@
       - Present
     - Orchestration
       - Takes us to the future
+- TODO
+  - [x] Initial Threat Dragon Source
+    - 7969de3a0dc84ba1ddaef605744072e1cdaecb9f
+  - [x] Add manifest metadata to Threat Dragon Source Records via `extra`
+    - 51799da78a56f3557101fed0524c571fca0ce195
+  - [ ] Modify DataFlow to include manifest metadata
+  - [ ] Use Data Flow Preprocessing Source as the merge source which pulls from the threat dragon source and converts to a dataflow
+  - [ ] Initial Open Architecture Source where we use `dffml service dev export` programmatically similarly to what was done with CVE Bin Tool to output  (https://github.com/intel/cve-bin-tool/blob/7cb90d6009d047dfc08dead28110f2314d8c016a/cve_bin_tool/output_engine/threats.py#L88-L143) to take a feature which is a dataflow and output it to a JSON file
