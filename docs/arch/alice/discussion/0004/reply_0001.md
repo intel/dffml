@@ -1,1 +1,1 @@
-- Treat the dataflows / system contexts / other operations passed as suggestions to overlay when inputs matching key are present (or set with tuple). They will take from those vars
+- Treat the dataflows / system contexts / other operations passed as suggestions to overlay when inputs matching key are present (or set with tuple). They will act as conditionals when applied on the operations as they exist within the parent flow. For the ones which are also inputs, they will be used as makes sense or with liniage transformation via ReadWriteLock style type hint
