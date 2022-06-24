@@ -1,6 +1,7 @@
 - https://singularityhub.com/2022/06/14/in-its-greatest-biology-feat-yet-ai-decoded-the-protein-complexes-that-house-our-dna/
   - once again we see the notion of the gatekeeper, with the dna as the nucleus and the gatekeeper filters inputs
 - Open Architecture could potentially leverage DIDs combined with SPDX canonicalization efforts
+  - https://twitter.com/pdxjohnny/status/1538932106859905024
   - https://lists.spdx.org/g/Spdx-tech/topic/canonicalization/91874737?p=,,,20,0,0,0::recentpostdate/sticky,,,20,0,0,91874737,previd%3D1655725634943138777,nextid%3D1654282605249609460&previd=1655725634943138777&nextid=1654282605249609460
   - Reproduced here just in case: [SPDX Canonicalization 20220620.pdf](https://github.com/intel/dffml/files/8942540/SPDX.Canonicalization.20220620.pdf)
 - FUTURE
