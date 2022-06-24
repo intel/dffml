@@ -3,3 +3,4 @@
 - investigate: game theory
   - looks aligned at first glance
 - apply gird city design principles to maintain living entities (cve scanning Alice)
+  - shes everywhere and nowhere at the same time. She’s fully event based which means resuming from cached state, any system context stored for instance stored on chain or referenced from another system context (a did doc itself). She can transform herself via synthesis into a purpose built representation that waits for wake on lan for instance (full firmware stack and all).
