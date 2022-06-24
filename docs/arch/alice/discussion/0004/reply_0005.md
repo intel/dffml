@@ -1,4 +1,4 @@
 - Should links (previously parents) exist within the BaseDFFMLObject Config? Is it like log? We should take links from cli as well like overlay and log
 - Python native async iter can reach up stack as it understands that is within scope. It can also have call then add some inputs within a context. When used as a context manager it will only yield once. When used with async for it will yield multipe times or just act as it would usually cleaning up loop scope variables because they exist within subflow input network
-- Should add links and logs as defaulted BaseConfig properties. Can use @config to apply base class. Or subclass from baseclass
+- Should add links and logs as defaulted BaseConfig properties. Can use config decorator to apply base class. Or subclass from baseclass
 - deployment is just a quick check to see if a method aka an operation exists on a system context. If so deployment should return an appropriate object for iteration, calling, async calling, if you want to use a list as a context manager its up to you to wrap wuth cobtext lib cleanup will be handled okay as decrived ablve
