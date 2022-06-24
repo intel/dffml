@@ -3,6 +3,8 @@
 > Planning for our tutorial series (Volume 1) which will run from May 2022 to June 2023. Planned end date, last post for Volume 1 ends there. Volume 0 will be updated frequently throughout. Volume 0 is our ADRs and our plans and will be a living document and contributable to by all. Right now it's a discussion thread so please comment with anything and then once it's converted to a set of ADRs we'll start writing the tutorials as examples PRs just like we have been doing with everything else. Alice will be a maintainer who works across 2nd/3rd party plugins. She’ll act as a helper to other developers and do work herself (think dependabot PRs). She’ll act like an intelligent context aware set of CI jobs that learns with you.
 >
 > Artificial Life Is Coming Eventually
+>
+> How do we build it with intention? We flush it out conceptually via this set of volumes holding our collective thoughts on what a system we could cohabitate with would look like. We follow trains if thought to their logical conclusions when making predictions about the future. We implement and validate in order to ensure that a transparent entity with the collective’s best interests at heart is the most powerful among those that are created.
 
 ## Rolling Alice
 
