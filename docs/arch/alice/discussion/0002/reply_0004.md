@@ -19,3 +19,5 @@ $ curl 'https://account.thethingsnetwork.org/api/v2/users' \
   --data-raw '{"email":"name@example.com","username":"name","password":"jsdfjoj38909e3j1"}' \
   --compressed
 ```
+
+Email validation link: https://account.thethingsnetwork.org/users/emails/validate_email/727252716457186abdecf41ad796b37af9c?email=name%40example.com&recipient=name%40example.com
