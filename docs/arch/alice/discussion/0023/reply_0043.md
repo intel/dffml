@@ -1,3 +1,5 @@
 - https://github.com/cilium/tetragon
 - https://github.com/tokio-rs/axum
 - https://mdformat.readthedocs.io/en/stable/users/installation_and_usage.html#python-api-usage
+- https://twitter.com/bernhardsson/status/1526635195243409408
+  - > Something that old boring process literature talk about (Toyota, The Goal etc) that applies to software engineering 10000000% is that minimizing the size of the feedback loop is much more important for productivity than minimizing idleness
