@@ -1,0 +1,2 @@
+- do city simulator
+  - this becomes shared human machine language for himans working with ai assistant to define policy
