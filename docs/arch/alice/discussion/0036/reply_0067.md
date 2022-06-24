@@ -1,1 +1,4 @@
 - Implemented threat dragon source in 7969de3a0dc84ba1ddaef605744072e1cdaecb9f
+- Data Flow serialization is our current Open Architecture
+  - We will evolve over time
+  - Let's make sure that we include all the items which we would like to see in a manifest
