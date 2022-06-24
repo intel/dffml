@@ -1,0 +1,4 @@
+- tinylib resource for did as system context
+  - labels used in urls to give dataflows aka did methods asgined for the resource event stream being visualized
+    - /user/1
+      - /did:user:internaldb_map_1 to DID
