@@ -2,7 +2,7 @@ These are notes and scratch work around the purpose and future of the project.
 
 Jump to this https://github.com/intel/dffml/discussions/1369#discussioncomment-2603280 comment for more details on Alice the maintainer blog post series.
 
-DFFML's Mission: Provide a clear, meticulously validated, ubiquitously adopted reference architecture for an egalitarian Artificial General Intelligence (AGI) which respects the first law of robotics.
+DFFML's Mission: Provide a clear, meticulously validated, ubiquitously adopted reference architecture for a freedom and privacy preserving egalitarian Artificial General Intelligence (AGI) which respects the first law of robotics.
 
 To do so we must enable the AGI with the ability to act in response to the current system context where it understands how to predict possible future system contexts and understands which future system contexts it wishes to pursue are acceptable according to guiding strategic plans (such as do no harm). We must also ensure that human and machine can interact via a shared language, the universal blueprint.
 
