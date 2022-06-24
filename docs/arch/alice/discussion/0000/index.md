@@ -1,4 +1,4 @@
-# [Volume 0: Rolling Alice: Preface](https://github.com/intel/dffml/discussions/1369#discussion-4023096)
+# [Volume 0: Architecting Alice: Preface](https://github.com/intel/dffml/discussions/1369#discussion-4023096)
 
 > Planning for our tutorial series (Volume 1) which will run from May 2022 to June 2023. Planned end date, last post for Volume 1 ends there. Volume 0 will be updated frequently throughout. Volume 0 is our ADRs and our plans and will be a living document and contributable to by all. Right now it's a discussion thread so please comment with anything and then once it's converted to a set of ADRs we'll start writing the tutorials as examples PRs just like we always do.
 >
