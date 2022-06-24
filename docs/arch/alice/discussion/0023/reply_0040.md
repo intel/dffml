@@ -10,10 +10,24 @@
 
 ```mermaid
 flowchart TD
+    subgraph tbDEX
+      Ask --> |Bob| COND_OFFER[Conditional Offer]
+      COND_OFFER --> |Alice| OFFER_ACCEPT[Offer Accept]
+      OFFER_ACCEPT --> |Bob| IDV_REQ[IDV Request]
+      IDV_REQ ---> |Alice| IDV_SUB[IDV Submission]
+      IDV_SUB --> |Bob| IDV_REQ
+      IDV_SUB --> |Bob| SETTL_REQ[Settlement Request]
+      SETTL_REQ --> |Alice| SETTL_DETAIL[Settlement Details]
+      SETTL_DETAIL --> |Bob| IDV_REQ
+      SETTL_DETAIL ---> |Bob| SETTL_REQ
+      SETTL_DETAIL --> |Bob| SETTL_RECEIPT[Settlement Receipt]
+    end
+
     subgraph alice_open_architecture_dataflow[Alice - Open Architecture DataFlow]
       alice_inputs[New Inputs]
       alice_operations[Operations]
       alice_opimps[Operation Implementations]
+      alice_prioritizer[Prioritizer]
 
       alice_ictx[Input Network]
       alice_opctx[Operation Network]
@@ -26,6 +40,11 @@ flowchart TD
       alice_ictx_gather_inputs[Generate Operation parameter set pairs]
       alice_opimpctx_dispatch[Dispatch operation for running]
       alice_opimpctx_run_operation[Run an operation using given parameter set as inputs]
+
+      alice_operation_system_context_run[system_context_run operation]
+      alice_operation_prioritizer_check_bids[prioritizer_check_bids operation]
+      alice_operation_prioritizer_check_bids_trigger[prioritizer_check_bids_trigger operation]
+      alice_operation_call_for_bids[call_for_bids operation]
 
       alice_inputs --> alice_ictx
 
@@ -43,15 +62,34 @@ flowchart TD
 
       alice_opimpctx --> alice_lctx
 
-      alice_lctx --> |Lock any inputs that can't be used at the same time| alice_opimpctx_run_operation
+      alice_lctx --> |Lock any inputs that can't be used at the same time| alice_prioritizer
+      
+      alice_prioritizer -->|Execute on prioritizer go ahead| alice_opimpctx_run_operation
 
       alice_opimpctx_run_operation --> |Outputs of Operation become inputs to other operations| alice_inputs
+
+      subgraph alice_get_bids[Get Bids on System Context Execution]
+        alice_opimpctx_run_operation --> alice_operation_system_context_run
+        alice_opimpctx_run_operation --> alice_operation_evaluate_conditional_offer
+
+        alice_operation_system_context_run --> alice_prioritizer
+        alice_prioritizer -->|Determins we want to<br>wait for bids before executing<br>set trigger to go with best bid<br>on timeout or other condition| alice_operation_prioritizer_check_bids_trigger
+        alice_operation_prioritizer_check_bids_trigger --> alice_operation_prioritizer_check_bids
+
+        alice_operation_prioritizer_check_bids_trigger_timeout --> alice_operation_prioritizer_check_bids_trigger
+        Ask --> alice_operation_prioritizer_check_bids_trigger
+
+        alice_operation_prioritizer_check_bids -->|If time is up or good enough offer threshold meet| COND_OFFER
+
+        alice_prioritizer --> OFFER_ACCEPT
+      end
     end
 
     subgraph bob_open_architecture_dataflow[Bob - Open Architecture DataFlow]
       bob_inputs[New Inputs]
       bob_operations[Operations]
       bob_opimps[Operation Implementations]
+      bob_prioritizer[Prioritizer]
 
       bob_ictx[Input Network]
       bob_opctx[Operation Network]
@@ -81,59 +119,25 @@ flowchart TD
 
       bob_opimpctx --> bob_lctx
 
-      bob_lctx --> |Lock any inputs that can't be used at the same time| bob_opimpctx_run_operation
+      bob_lctx --> |Lock any inputs that can't be used at the same time| bob_prioritizer
+      
+      bob_prioritizer -->|Execute on prioritizer go ahead| bob_opimpctx_run_operation
 
       bob_opimpctx_run_operation --> |Outputs of Operation become inputs to other operations| bob_inputs
     end
 
-    subgraph both_open_architecture_dataflow[Overlayed tbDEX Job Bid Operations - Open Architecture DataFlow]
-      subgraph tbDEX
-        Ask --> |PFI| COND_OFFER[Conditional Offer]
-        COND_OFFER --> |Alice| OFFER_ACCEPT[Offer Accept]
-        OFFER_ACCEPT --> |PFI| IDV_REQ[IDV Request]
-        IDV_REQ ---> |Alice| IDV_SUB[IDV Submission]
-        IDV_SUB --> |PFI| IDV_REQ
-        IDV_SUB --> |PFI| SETTL_REQ[Settlement Request]
-        SETTL_REQ --> |Alice| SETTL_DETAIL[Settlement Details]
-        SETTL_DETAIL --> |PFI| IDV_REQ
-        SETTL_DETAIL ---> |PFI| SETTL_REQ
-        SETTL_DETAIL --> |PFI| SETTL_RECEIPT[Settlement Receipt]
-      end
+    subgraph web3
+      input_to_did[Encode Every Input to DID/DID Doc]
+      input_to_chain[Send DID/DID Doc to Chain]
 
-      subgraph web3
-        input_to_did[Encode Every Input to DID/DID Doc]
-        input_to_chain[Send DID/DID Doc to Chain]
+      alice_ictx --> input_to_did
+      bob_ictx --> input_to_did
 
-        alice_ictx --> input_to_did
-        bob_ictx --> input_to_did
+      input_to_did --> input_to_chain
 
-        input_to_did --> input_to_chain
-
-        input_to_chain --> alice_inputs
-        input_to_chain --> bob_inputs
-      end
-
-      both_prioritizer[Prioritizer]
-      both_operation_system_context_run[system_context_run operation]
-      both_operation_prioritizer_check_bids[prioritizer_check_bids operation]
-      both_operation_prioritizer_check_bids_trigger[prioritizer_check_bids_trigger operation]
-      both_operation_call_for_bids[call_for_bids operation]
-
-      alice_opimpctx_run_operation --> both_operation_system_context_run
-      alice_opimpctx_run_operation --> both_operation_evaluate_conditional_offer
-      bob_opimpctx_run_operation --> both_operation_system_context_run
-      bob_opimpctx_run_operation --> both_operation_evaluate_conditional_offer
-
-      both_operation_system_context_run --> both_prioritizer
-      both_prioritizer -->|Determins we want to<br>wait for bids before executing<br>set trigger to go with best bid<br>on timeout or other condition| both_operation_prioritizer_check_bids_trigger
-      both_operation_prioritizer_check_bids_trigger --> both_operation_prioritizer_check_bids
-
-      both_operation_prioritizer_check_bids_trigger_timeout --> both_operation_prioritizer_check_bids_trigger
-      Ask --> both_operation_prioritizer_check_bids_trigger
-
-      both_operation_prioritizer_check_bids -->|If time is up or good enough offer threshold meet| COND_OFFER
+      input_to_chain --> alice_inputs
+      input_to_chain --> bob_inputs
     end
-
 
     Ask --> alice_ictx
 
@@ -146,4 +150,5 @@ flowchart TD
     alice_opimpctx_run_operation -->|Alice Strategic Plan Suggests New Sytem Context<br>and Wants Bids to Execute| run_system_context_operation_get_bids
 
     run_system_context_operation_get_bids --> Ask
+
 ```
