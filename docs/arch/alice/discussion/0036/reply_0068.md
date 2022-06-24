@@ -1,0 +1,10 @@
+- `alice healthcheck https://github.com/owner/repo`
+  - Check for status of common files
+  - [ ] Create as issue with body content similar to `THREATS.md`, checkboxes for each thing the issue is about, instructions on how to write and apply overlays to re-run the check to make it accurate if it's not
+    - [ ] README
+    - [ ] Code of conduct
+    - [ ] Contributing
+    - [ ] License
+    - [ ] Security
+  - [ ] Close issue immediately if all are already done
+  - [ ] GitHub Action Ci job to on trigger to document how to make this happen on same repo (since token write permissions will only existing for OIDC token of job within repo, could use different token to support against other repos)
