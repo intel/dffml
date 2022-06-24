@@ -2,3 +2,4 @@
 - https://medium.com/qe-unit/airbnbs-microservices-architecture-journey-to-quality-engineering-d5a490e6ba4f
 - eBPF networking for our deployments
   - https://github.com/cilium/cilium
+- legend of zelda style sound effects on copy from browser paste to terminal
