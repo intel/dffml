@@ -1,3 +1,9 @@
+- https://github.com/TBD54566975/tbdex-whitepaper/blob/main/whitepaper.pdf
+   - tbDEX likely appropriate when we want a strategic plan to proposed and accepted by a
+   - new system context to be executed (inptu added to network)
+     - dataflow running operation is dispatched
+       - wrapped by prioritizer
+         - prioritizer checks parent / provenance information. If coming with a tbDEX ASK, reply do full before prioritizing
 - reset
   - What do we want?
     - CVE Bin Tool scan distoros
