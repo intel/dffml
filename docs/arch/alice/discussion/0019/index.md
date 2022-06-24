@@ -1,0 +1,2 @@
+- [ ] Run dataflow, collect usage statistics when running locally or k8s for CPU, memory, etc. Build model to predict how much CPU or memory is needed, check if cluster has enough before warn if orchestrator predicts using built model that number of context executing will exceed resource constraints based on historical estimated usage.
+- [ ] How would we write a decorator to cache operations which do API calls which are ratelimited?
