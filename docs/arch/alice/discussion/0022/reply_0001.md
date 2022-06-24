@@ -1,0 +1,5 @@
+Source: https://identity.foundation/decentralized-web-node/spec/
+
+> Most digital activities between people, organizations, devices, and other entities require the exchange of messages and data. For entities to exchange messages and data for credential, app, or service flows, they need an interface through which to store, discover, and fetch data related to the flows and experiences they are participating in. A Decentralized Web Node (DWN) is a data storage and message relay mechanism entities can use to locate public or private permissioned data related to a given Decentralized Identifier (DID). Decentralized Web Nodes are a mesh-like datastore construction that enable an entity to operate multiple nodes that sync to the same state across one another, enabling the owning entity to secure, manage, and transact their data with others without reliance on location or provider-specific infrastructure, interfaces, or routing mechanisms.
+
+![image](https://user-images.githubusercontent.com/5950433/164611361-46ae7a74-8717-4c6e-ad01-b7eaa1384073.png)
