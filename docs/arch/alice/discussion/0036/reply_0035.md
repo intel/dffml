@@ -1,0 +1,1 @@
+Use input networks, opimps to bridge to other backends. Might this piode / vscode javascript / typescript hybrid be our first UI based interaction point? We'll do terminal first but damnit if we don't always need cloud dv envs.
