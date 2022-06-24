@@ -3,8 +3,6 @@
   - > As OpenSSL doesn't understand the OpenSSH private keys format, a common question among programmers and devops is if it is possible to convert it into a PEM format. As you might have guessed reading the previous sections, the answer is no. The PEM format for private keys uses PKCS#5, so it supports only the standard implementation of PBKDF2.
 - We may be able to use step
   - https://github.com/smallstep/certificates/issues/151
-
-
 - what we mine has real value, system contexts. We can execute them on/off chain to create something of value as determined by ad-hoc batter systems. We are trading services and assets. There is no need for currency.
 - did:githubkey: similar to peerdid. Rename method and you have the did:key. And you know how to go verify by treating this the cut off prefix of the method name as an inlut to your did verifying/whatever it is that peerdid lobrary does and do it via a dataflow / system context for each lookup with dataflow as class method being the sepefic type of key (the prefix, so github or keybase, ideally keybase
 - Be true to yourself via which organizations tou align with and how your shared effort can overlap with your strategic plans / principles/ passions
