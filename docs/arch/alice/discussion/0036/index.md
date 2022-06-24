@@ -1,6 +1,6 @@
 # [Volume 1: Chapter 1: Down the Dependency Rabbit-Hole Again](https://github.com/intel/dffml/discussions/1369#discussioncomment-2663771)
 
-> May 2022 tutorials
+> June 2022 tutorials
 
 ### Table Of Contents
 
