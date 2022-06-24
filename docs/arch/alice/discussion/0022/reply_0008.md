@@ -1,0 +1,1 @@
+https://twitter.com/_jasonwei/status/1518731710321479685 10B parameter translator
