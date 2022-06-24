@@ -1,1 +1,3 @@
 Something something blockchain hash all thoughts (system contexts) reward attestatable or verifiable executions (distributed oracles, gcc valid) of system contexts via hash of serialized system context being “minded” via addition of acceptable provenance data to the chain checked via contract. Contracts issues by prioritizer and decision maker (likeyhood of opimps/flows choosen to successfully complete execution of system contexts)
+
+anyone can run their statigic plans,decider, pirorizers and issue contracts for agents to accept. Pay to influsnce agent actions via rewards targeted at their historically determined skill sets. 
