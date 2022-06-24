@@ -1,3 +1,5 @@
+> This section moved to https://github.com/intel/dffml/discussions/1369#discussioncomment-2990099
+
 # Volume 0: Chapter 2: She's arriving when?
 
 Between the tick and the tock. Which is not a finite amount
