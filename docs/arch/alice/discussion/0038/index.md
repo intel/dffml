@@ -7,3 +7,4 @@
     - deployment: `rebuild.container`, `rebuild.binary`
     - deployment: `native.python` execute python function, include metadata in format within operation so that we can parse and create the correct callable
     - deployment: `results.cve_bin_tool_scan`
+    - deployment could also be a string, maybe a JSON, or CBOR, or DID, which 
