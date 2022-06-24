@@ -1,1 +1,3 @@
-https://jupyterlite.readthedocs.io/en/latest/ -> pyiode ->vscode in browers cloud dev environment agnostic to backend
+https://jupyterlite.readthedocs.io/en/latest/ -> pyiode ->vscode in browers cloud dev environment agnostic to backend.
+
+Use this to facilitate a view, want to see what alice is doing? Open up this vscode window in your broswer and you can connec to an entity at any time. With files open, the operations we have been working on recently (subflows, or rewriting, feature additoin, refactoring code (python 3.9 ast).
