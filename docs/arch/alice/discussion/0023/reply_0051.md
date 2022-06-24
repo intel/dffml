@@ -27,16 +27,20 @@ $ grep '<input type="hidden" name="anchor_id"' /tmp/b
 **intial_discussion_query.graphql**
 
 ```graphql
-fragment user on User {
-  login
-  name
-}
 fragment comment on DiscussionComment {
-  author {
-    ...user
+  body
+  createdAt
+  userContentEdits(first: 50) {
+    pageInfo {
+      endCursor
+      hasNextPage
+    }
+    totalCount
+    nodes {
+      diff
+      editedAt
+    }
   }
-  bodyText
-  isMinimized
 }
 query ($owner: String!, $repo: String!) {
   repository(owner: $owner, name: $repo) {
@@ -44,17 +48,24 @@ query ($owner: String!, $repo: String!) {
       nodes {
         discussion {
           title
-          bodyText
-          author {
-            ...user
-          }
+          body
           category {
             name
           }
-          comments(first: 100) {
+          comments(first: 90) {
+            pageInfo {
+              endCursor
+              hasNextPage
+            }
+            totalCount
             nodes {
               ...comment
               replies(first: 100) {
+                pageInfo {
+                  endCursor
+                  hasNextPage
+                }
+                totalCount
                 nodes {
                   ...comment
                 }
@@ -70,6 +81,19 @@ query ($owner: String!, $repo: String!) {
 
 ```console
 $ gh api graphql -F owner='intel' -F repo='dffml' -F query=@intial_discussion_query.graphql | tee output.json | python -m json.tool | tee output.json.formated.json
+```
+
+Confirm we got everything, otherwise, write pagination code (there should be some in github operations somewhere).
+
+```console
+$ grep '"hasNextPage": false' < output.json.formated.json | wc -l
+279
+```
+
+The following command returns no results if we got everything and don't need to paginate.
+
+```console
+$ grep '"hasNextPage": true' < output.json.formated.json
 ```
 
 **dump_discussion.py**
