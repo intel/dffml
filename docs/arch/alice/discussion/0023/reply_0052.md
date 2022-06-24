@@ -5,4 +5,6 @@
   - Create mirrors for dependencies, ensure we are always building from our forks of all the dependencies
   - Stream 10 rebuild C/C++ packages on the fly with patches applied via overlays.
 - We can do `system_context_as_class` but not `dataflow_as_class` because dataflows have no method of execution without an orchestrator.
-  - We should switch the overlay infrastructure to work with system contexts instead of dataflows.
+  - We will switch the overlay infrastructure to work with system contexts instead of dataflows.
+  - We will introduce the `SystemContext` data structure which defines inputs, architecture, and orchestration.
+    - This can be turned into a class for use for the previously called `dataflow as class methods` where methods send inputs into the running system context with origins as labeled via `system_context_as_class` keyword arguments (defaults to `seed` if not set). `Input` objects added matching method signature type hints used for auto definitions.
