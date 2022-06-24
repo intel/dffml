@@ -2,14 +2,11 @@
 
 > Introduction and Context to tutorial series - May 2022
 
-## Engineering Logs
-
-- [Architecting Alice](https://youtube.com/playlist?list=PLtzAOVTpO2jaHsS4o-sDzDyHEug-1KRbK)
-
 ### Table Of Contents
 
 #### Volume 0: Architecting Alice
 
+- [`Engineering Logs`](https://youtube.com/playlist?list=PLtzAOVTpO2jaHsS4o-sDzDyHEug-1KRbK)
 - [Preface](https://github.com/intel/dffml/discussions/1369#discussion-4023096)
 - [Introduction and Context](https://github.com/intel/dffml/discussions/1369#discussioncomment-2603280)
 
