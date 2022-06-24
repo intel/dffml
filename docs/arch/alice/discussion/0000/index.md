@@ -43,6 +43,7 @@ In this 7 volume tutorial series we roll Alice. This series will be written a ch
 
 > We step inside Alice's mind and visualize her thoughts. We'll visualize architectures, strategic plans, and their effects on trains of thought. We also use this chapter to explore Alice's UX. How do we set and guide her strategic principles? What communication mechanisms are most effective for human machine interaction in a dynamic problem space?
 
+- Collage
 - Selecting visualization options (volume 0)
 
 #### Volume 3: Alice and the Strategy of Art
