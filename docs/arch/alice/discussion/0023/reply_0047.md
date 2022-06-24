@@ -1,5 +1,5 @@
 - DevCloud for compute?
-- Treat modeling tool yaml as output for going our initial thoughts
+- Treat modeling tool yaml as output for helping our initial volume 1 chapter 1 thoughts on threat model generation
 - Remap output op in default overlay with dataflow which does a remap operation within it which grabs all the dataflows with get multi, expands them, merges them, then the parent remap operation takes the output of the next level down remap and outputs a get single on the merged dataflow dict, converts it back into a dataflow, and returns it
 - Common use cases for overlays
   - Org specific RBAC on operations
