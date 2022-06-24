@@ -1,1 +1,1 @@
-How we can successfully foster innovation? Rewards successful trains of thoughts with more effort to see how they play out and what new system contexts they generate.
+How we can successfully foster innovation? Reward successful trains of thoughts with more effort to see how they play out and what new system contexts they generate.
