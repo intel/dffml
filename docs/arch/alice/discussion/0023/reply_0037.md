@@ -16,3 +16,5 @@
   - For each compoeent of infra srcutrue you use you define failure modes as strategic plans outputs
     - Attah to each failure mode obseravabiltiy metrics via consuming them via strategic plans
       - Based on those observiablity metrics you desgign mittiations via strategic plans
+-  https://github.com/dalek-cryptography/x25519-dalek/issues/67#issuecomment-806490225
+  - > We do not recommend you do this. If you can at all escape from doing this, you absolutely should. You should never be reusing keys for both authentication and encryption. You especially should not be doing this without a very strong understanding of potential ramifications in the protocol you're working on. I'm sorry, I feel like I'm being a jerk here, but we've already spelled it out pretty explicitly how to accomplish this with our public API, and also that we don't support people doing it. I'm refusing to provide copy/paste code to further facilitate potentially bad practices.
