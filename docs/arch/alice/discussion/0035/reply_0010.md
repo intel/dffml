@@ -33,6 +33,8 @@ OpenSSF: Have DIDs been looked at to assist with data distribution/consumption? 
 
 `dffml dataflow c4models` - similar to dataflow diagram
 
+With A/B field testing of new system contexts (changes, running dev branches against dev branches). We start to see a complete picture of the fully connected dev model. We can proactively pair changes from one system context with another system context, both overlayed over a base system context. This is when you have two devs working on two feature branches and both have active PRs. They can now effectively work together because they have this translation, this transparent overlay of their respective diffs to the upstream system context (data flow or program flow in this example).
+
 ```mermaid
     graph TB
 
