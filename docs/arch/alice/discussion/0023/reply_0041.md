@@ -1,0 +1,1 @@
+- Map English language text instructions from issue to execution of development activies
