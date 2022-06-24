@@ -141,3 +141,5 @@ After removing the first chapter of Alice's Adventures in Wonderland:
 $ python3 -u dump_discussion.py | wc
    2499   40571  273084
 ```
+
+- Backed up without edits here: b5e26e9b81b58ffe9a2dc9b39c76c1ed06cc8d20
