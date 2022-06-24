@@ -18,7 +18,7 @@
 
 Provide a clear, meticulously validated, ubiquitously adopted reference architecture for a freedom and privacy preserving egalitarian Artificial General Intelligence (AGI) which respects the first law of robotics.
 
-To do so we must enable the AGI with the ability to act in response to the current system context where it understands how to predict possible future system contexts and understands which future system contexts it wishes to pursue are acceptable according to guiding strategic plans (such as do no harm). We must also ensure that human and machine can interact via a shared language, the universal blueprint.
+To do so we must enable the AGI with the ability to act in response to the current system context where it understands how to predict possible future system contexts and understands which future system contexts it wishes to pursue are acceptable according to guiding strategic plans (such as do no harm). We must also ensure that human and machine can interact via a shared language, the open architecture.
 
 ## Background
 
