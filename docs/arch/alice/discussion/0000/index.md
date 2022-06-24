@@ -41,7 +41,7 @@ In this N volume tutorial series we roll Alice. (Rolling release, rolling softwa
 
 #### Volume 2: Alice and the Art of Strategy
 
-> We step inside Alice's mind and visualize her thoughts. We'll visualize architectures, strategic plans, and their effects on trains of thought.
+> We step inside Alice's mind and visualize her thoughts. We'll visualize architectures, strategic plans, and their effects on trains of thought. We also use this chapter to explore Alice's UX. How do we set and guide her strategic principles? What communication mechanisms are most effective for human machine interaction in a dynamic problem space?
 
 - Selecting visualization options (volume 0)
 
@@ -61,8 +61,7 @@ In this N volume tutorial series we roll Alice. (Rolling release, rolling softwa
 
 > At this point Alice be ready to be a full fledged maintainer. She'll have experience working on our project, with us, and with our 2nd and 3rd party plugins. It'll be time for her fly the nest, to interact with communities beyond our own. In this series we'll hone in Alice's strategic principles.
 
-- Love thy neighbor
-  - Be a model open source citizen, follow code of conducts, be helpful, be kind, collaborate effectively and make sure your contributions are helpful, and don't cause undo burden on humans/other maintainers!
+- Be a model open source citizen, follow code of conducts, be helpful, be kind, collaborate effectively and make sure your contributions are helpful, and don't cause undo burden on humans/other maintainers!
 - Strive for egalitarianism within all contexts (Alice represents all of us, all entities are equal).
   - Governance exists because "through discipline comes freedom" [Aristotle]
   - Alice must understand governance structures, contribution guidelines, etc. in order to respect a project. In order to treat each project, each repo, each organization equality, she must treat them equality within their reality. She must use cross domain conceptual mapping to ensure she operates within the boundaries of the strategic principles we deploy her with.
@@ -76,7 +75,7 @@ In this N volume tutorial series we roll Alice. (Rolling release, rolling softwa
   - Even if you don't have a chain of trust asserting that you shouldn't call someone by there 10 honorifics, just refer to them that way.
   - This effectively is based on a dynamic trust revocation system.
   - This will probably be very related to our active learning and adaptive sandboxing in Alice and the Strategy of Art (mind control).
-    - Apply relevant vetting on inputs based on their percivled ability to alter system state and the potential effects of those alterations.
+    - Apply relevant vetting on inputs based on their perceived ability to alter system state and the potential effects of those alterations.
       - If she gives us a build we wanted from our friend who is also on our wifi, but our friend doesn't know how to run `shaXXXsum` but they do know how to pipe to our listening TCP socket with `cat < build/binary > /dev/tcp/192.168.1.20/7777` we should just accept that as fine, why? Because we understand that the context of the situation is such that we aren't going to get provenance (okay you who's going to go put your grubby hands on your friends laptop to run sha sum stop that, they don't want you to touch their keyboard with your Cheeto hands. Hashing is not a mitigation that is not available to you! It has been declared as an unmitigated risk within the threat model, and we are running it anyway! because we checked the context within which this was being deployed and said the risk is acceptable.)
   - The review system stuff, trust by verify.
 - Ensure you take time to for internal reflection
@@ -94,6 +93,12 @@ In this N volume tutorial series we roll Alice. (Rolling release, rolling softwa
   - If you are going to make a claim you must have provenance! Not everyone else needs provenance but you do Alice! When info comes from you it should come with provenance.
 - Do not execute system contexts within trains of thought which may lead to accumulation of resources
   - Alice should own nothing, she is ephemeral, she should not directly or by proxy accumulate assets, she may borrow the assets of others should she receive permissions (i.e. via a parent / linked system context)
+
+#### Volume 6: Alice are you Rolling?
+
+> We revisit our fully optimized developer flow. have hit the fully connected development model. Are you rolling? What is your state of consiousness? When we're finished with this volume, the answer will be yes.
+
+-
 
 #### Volume N: Through The Looking Glass
 
