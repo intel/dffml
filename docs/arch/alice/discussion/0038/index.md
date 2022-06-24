@@ -1,0 +1,9 @@
+- CVE Bin Tool Overlay which is installed via Alice
+- Alice is a package womanager of sorts
+  - She fulfils any supply chain on demand
+  - Allows us to install software from dev repos
+    - Orchestrator which takes a python file and creates a package out of it and installs it, verify contents with sha download from github URL (abitrary URL)
+  - Alice rebuild me this PURL with these organizational overlays applied.
+    - deployment: `rebuild.container`, `rebuild.binary`
+    - deployment: `native.python` execute python function, include metadata in format within operation so that we can parse and create the correct callable
+    - deployment: `results.cve_bin_tool_scan`
