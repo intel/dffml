@@ -1,0 +1,1 @@
+Manifest as dataflow as class as interface over DID methods? Or is a DID method spec maybe a manifest.
