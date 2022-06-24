@@ -1,3 +1,4 @@
+- can have only chaced flow by implementating denylist on execution stage to not run processing
 - 2 comments, different threads, same connent, use Peer DID to reference same conneent and filter discussion based on parent thread
 - can use web3 as cve bin tool mirrors / torrent / webtorrent / ipfs
 - Bridging the web2/web3 Identity Gap
