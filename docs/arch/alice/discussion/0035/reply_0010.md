@@ -41,6 +41,8 @@ Implementation note: subflow will be called one time for each new system context
 
 We can have an output operation which grabs outputs from subflow which is the most favorable from re-running plans, gatekeeper, and pirorirtizer. We could also enable grabbing certain outputs from multiple subflows to pick the highest accuracy predictions for outputs. The output operations run for a context could block waiting for other contexts within the train of thought to complete, and then return outputs from derived contexts once all have finished execution or based on some trigger / threshold values (strategic plans, loss).
 
+Thinking about how we cross cut workstreams (the strategic initiative version of https://en.wikipedia.org/wiki/Cross-cutting_concern). Like how to organize tasks across a set of working groups with different goals. How to relate an agents goals or goals of a pool of agents with other agents and pools of agents to deliver optimal work assignment.
+
 Risk assessment on potential system context execution done via strategic plans, gatekeeper, and prioritizer combo. If for example it would violate a security principle, do not execute it. As another example if it has hypnotized outputs that are beyond the acceptable estimates for cost to execute or something, the gatekeeper would drop it.
 
 Prioritizers could instigate change in CSP to reduce cost and sacrifice performance by rerunning their strategic plans with new inputs for strategic principles. Since plans yield system context instances.
