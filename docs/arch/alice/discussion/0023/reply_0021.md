@@ -15,6 +15,17 @@
 - https://eips.ethereum.org/EIPS/eip-165
   - Detection of methods for smart contracts
   - Should we encode to smart contract and be an execution engine for that?
+- Execution of contracts were rewarded party executes off chain system context needs information within network up front to make decision about if a party is able to accept a reward.
+- One possible flow for rewards
+  - Strategic plans publish system contexts they want executed to chain
+    - Call for Proposals to execute or hypothesize
+    - Mint NFT for system context on DID backed chain
+  - Other agents in network publish proposed applicable system contexts including what provenance information would be provided (what SLSA level can an agent meet). References to previous executions with provenance information.
+    - Like a reverse bid/purchased.
+      - Ideally multiple NFT can be purchased multiple times (maybe we really want at fungible token for this use case if we can issue more than one?).
+      - NFTs might be good for results / outputs and FTs might be good for issueing requests for thought (do something with this system context).
+      - NFTs are likely also a help to use in solving our distributed locking needs (Inputs with `lock=True` are likely NFTs).
+    - If agent buys the system context originally minted within this example, then we have agreed to a contract which says 
 - For this recording
   - [ ] Ensure nft.storage can interact with DID based blockchain (firefly, transact?)
   - [ ] Deploy nft.storage and interact with it via UCAN token auth
