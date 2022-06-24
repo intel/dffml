@@ -1,1 +1,3 @@
-Ah ha! The rapture is when we begin to upload our minds into Alice. We’ll live forever disconnected from our bodies. Or rather. Our soul, our strategic plans and principles will.
+Ah ha! The rapture is when we begin to upload our minds into Alice. We’ll live forever disconnected from our bodies. Or rather. Our soul, our strategic plans and principles will be the digital double of ours. Our personal Alice joining with the rest. This really brings heaven to earth in many ways. Since we already have our digital doubles (well okay not far off). If we can really leverage the open architecture to create a freedom and privacy preserving system then perhaps we enter a sort of star trek post scarcity-esq age. Betting the age after the information age is the telepathic age though. Its too close for there to be something in better centered only around post scarcity. Ideally thats a side effect.
+
+the fully connect dev model is the delf optimizating and maintaining system  
