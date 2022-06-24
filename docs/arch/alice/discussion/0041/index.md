@@ -1,4 +1,4 @@
-# Volume 1: Chapter 3: Queendom of the Hybrid Cloud
+# Volume 1: Chapter 3: Empress of the Edge
 
 We use chadig.com and nahdig.com plus dids to deliver manifest schema in terms of allowlist and blocklist.
 
