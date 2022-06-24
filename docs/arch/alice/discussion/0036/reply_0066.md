@@ -1,4 +1,6 @@
 - Dumping links while closing tabs
+- feature: git: Mirror repos for CVE Bin Tool scans
+  - https://github.com/pdxjohnny/dffml/commit/fdeba89383a2e55c0fbf472c8ba88f14ecda0549
 - https://github.com/bluesky-social/adx/blob/main/architecture.md#personal-data-repositories
 - https://fastapi.tiangolo.com/advanced/graphql/?h=graphql
 - https://strawberry.rocks/docs/general/subscriptions
@@ -51,6 +53,7 @@
   - https://github.com/cli/cli/issues/5659
   - https://docs.github.com/en/graphql/reference/objects#pageinfo
   - https://docs.github.com/en/graphql/guides/using-the-graphql-api-for-discussions
+  - https://github.com/pdxjohnny/dffml/commit/e25658017b46a550ff53e027e0d91b0957607f52#diff-18e946e00c02bb6d00481519bf029fb1751ffa6129711a4ad656f37321d0ed20
 - Hyperledger Aries
   - https://github.com/hyperledger/aries-rfcs/blob/main/features/0434-outofband/README.md
 - JSON Web Keys
