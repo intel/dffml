@@ -11,9 +11,9 @@
 - [Preface](https://github.com/intel/dffml/discussions/1369#discussion-4023096)
 - [Introduction and Context](https://github.com/intel/dffml/discussions/1369#discussioncomment-2603280)
 
-#### Volume 1: Alice's Adventures in Wonderland
+#### Volume 1: Coach Alice
 
-- [Down the Rabbit-Hole](https://github.com/intel/dffml/discussions/1369#discussioncomment-2663771)
+- [Down the Dependency Rabbit-Hole Again](https://github.com/intel/dffml/discussions/1369#discussioncomment-2663771)
 
 Together we'll build Alice the AI software architect. We'll be successful when Alice successfully maintains a codebase as the only maintainer for a year. Debugging issues, writing fixes, reviewing code, accepting pull requests, refactoring the code base post PR merge, dealing with vulnerabilities, cutting releases, maintaining release branches, and completing development work in alignment with the plugin's universal blueprint. She will modify, submit pull requests to, and track upstreaming of patches to her dependencies to achieve the cleanest architecture possible. We'll interact with her as we would any other remote developer.
 
