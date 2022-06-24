@@ -2,3 +2,5 @@
   - once again we see the notion of the gatekeeper, with the dna as the nucleus and the gatekeeper filters inputs
 - TODO
   - [ ] bisect to find out if we recently caused the lock issue #1394
+  - [ ] We time travel back to the days of Metrics and Prophets to revive locking and event streams which we at one point 3 years ago had working with a UI (service/ossse). We cobble these working concepts together with our current data flow implementation which is in need of both working locking (due to that one bug, let's still bisect first in case we don't need to pull out the locking part), and event streams (and UI would be nice).
+    - The initial implementation worked locking wise and ossse datastreaming wise (events?) Revisit the Metrics and the Prophets to prophecy.fulfill() (SystemContext.hypotheses().execution())
