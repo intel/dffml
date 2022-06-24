@@ -32,3 +32,8 @@
   - This is the same as what credential / certificate issuers do I trust
   - Do I know that I can trust them to check id on their accounts coming in.
   - You could weight claims based on issuer. Risk models evolve for contract auto acceptance
+- If you are asking for something, you provide me the provenance data up front that proves you can do it.
+  - GIve me your attested reviews up front
+- What happens when someone issues multiple certs?
+  - From psective of reviewer, if you rotate your keys then others will need to recache your new certs. Perhaps something like stapling? Ensure stapled service via dataflow analysis hooks to sperate key hieirarcy within same controlling authority.
+  - Check out SPOOKY
