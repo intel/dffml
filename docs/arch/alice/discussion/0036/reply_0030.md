@@ -1,5 +1,7 @@
 Beyond a software nutrition label: Towards software DNA.
 
+doing some research working on a hunch that we can leverage phylogeny if we view software as DNA and different deployment contexts / configurations / starting states for it as different gene expressions.
+
 What software is like what other software in what ways.
 
 - clade
