@@ -13,7 +13,14 @@
 - Learning on the job. Pair no/low experience agents with agents they can learn the most from when forming ad-hoc organizations (teams) between agents to work towards overall goals across a set of subsystems or projects / repos / trains of thought.
 - Commits in repo map to train of thought. Commit is system context. Train of thought is branch.
 - Overloaded
-  - Hypothesis: Optimal performance exists in the via a diverse set of trains of thoughts which can only be achieved when agents are involved in more initiatives than they can feasibly make progress on. Agents will therefore either strategically "drop packets" (trains of thought that were progressing but all the sudden do not progress, didn't work on any issues within a given project this week for example) or shoot for a lost train of thought metric (number of dropped packets / time) which is come up with via analysis of equilibrium model for current state so as to account for "acceptable losses" within a train of thought when optimizing for overall strategic principles.
+  - Hypothesis: Optimal performance exists in the via a diverse set of trains of thoughts which can only be achieved when agents are involved in more initiatives than they can feasibly make progress on. Agents will therefore either strategically "drop packets" (trains of thought that were progressing but all the sudden do not progress, didn't work on any issues within a given project this week for example) or shoot for a lost train of thought metric (number of dropped packets / time) which is come up with via analysis of equilibrium model for current state so as to account for "acceptable losses" within a train of thought when optimizing for overall strategic principles. This is like over booking. Could use strategic plans which output metrics on system contexts to feed into prioritizer. Prioritizer could have some sort of dont schedule or prioritize until we have this core set of metrics accounted for (hypothesized or tested). Prioritizer will also pull from other maybe global or train of through specific metrics to decide opportunity cost in relation to moving strategic principals. Via requesting runs or waiting for in progress runs of contexts which could have handles maybe allowing us to track their parents. Maybe their handles are an input object where the input object can be received asynchronously via prioritizers input network.
+- plan
+  - on chain, herstory of all thoughts (LOL it really is flip mode would ya look at that!)
+    - ensure that we can import export Input objects to Peer DID chain with Input instances as NFTs. Later maybe with allowlist of encoding of values which strategic plans can be overlayed to think up system contexts that convert data types in inputs to off chain storage.
+  - Dataflow as class
+  - Operation for dataflow as class methods
+  - instantiate operations from top level system context from auto start background contexts. Like our current implementation of datflow.seed but for contexts.
+  - Implement caching 
 - What will Alice do?
   - Architect
   - DJ
