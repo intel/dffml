@@ -1,0 +1,1 @@
+Money is not power. Power is power. If you can create representations which map the production power in one contact to another you dont need money
