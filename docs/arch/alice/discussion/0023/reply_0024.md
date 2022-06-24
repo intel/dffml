@@ -10,7 +10,7 @@
   - [ ] Boot to USB
   - [ ] Install OBS
   - [ ] Install discord
-  - [ ] Fuck this drive speed is way to slow when using as disk, live images do somethign to fix this, we are not them apparently
+  - [x] Fuck this drive speed is way to slow when using as disk, live images do somethign to fix this, we are not them apparently
 - Software Supply Chain and Hyperledger Grid
   - https://github.com/Cargill/grid-rfcs/blob/ryanlassigbanks-purchase-order-rfc/text/0025-purchase-orer.md
     - Could we leverage this to request a CI/CD job be done?
