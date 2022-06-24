@@ -8,12 +8,12 @@
 
 ### Table Of Contents
 
-### Volume 0: Architecting Alice
+#### Volume 0: Architecting Alice
 
 - [Preface](https://github.com/intel/dffml/discussions/1369#discussion-4023096)
 - [Introduction and Context](https://github.com/intel/dffml/discussions/1369#discussioncomment-2603280)
 
-### Volume 1: Alice's Adventures in Wonderland
+#### Volume 1: Alice's Adventures in Wonderland
 
 - [Down the Rabbit-Hole](https://github.com/intel/dffml/discussions/1369#discussioncomment-2663771)
 
