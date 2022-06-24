@@ -1,14 +1,14 @@
 - We hit another blue screen immediately after boot
-  - We downloaded Fedora Workstation 35 x86_64 and wrote it to a live USB
-  - Boot to new fedora live USB
-  - Install onto 128GB USB
-  - https://github.com/dorssel/usbipd-win
-  - https://devblogs.microsoft.com/commandline/connecting-usb-devices-to-wsl/
-  - Copy over home directory to USB
-  - Copy over OBS files to USB from windows homedir
-  - Boot to USB
-  - Install OBS
-  - Install discord
+  - [x] We downloaded Fedora Workstation 35 x86_64 and wrote it to a live USB
+  - [x] Boot to new fedora live USB
+  - [x] Install onto 128GB USB
+  - [x] https://github.com/dorssel/usbipd-win
+  - [x] https://devblogs.microsoft.com/commandline/connecting-usb-devices-to-wsl/
+  - [ ] Copy over home directory to USB
+  - [ ] Copy over OBS files to USB from windows homedir
+  - [ ] Boot to USB
+  - [ ] Install OBS
+  - [ ] Install discord
 - Software Supply Chain and Hyperledger Grid
   - https://github.com/Cargill/grid-rfcs/blob/ryanlassigbanks-purchase-order-rfc/text/0025-purchase-orer.md
     - Could we leverage this to request a CI/CD job be done?
