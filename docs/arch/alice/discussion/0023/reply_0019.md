@@ -17,3 +17,5 @@ When your top level system context is looking at a DID to run dataflow within it
 - `join_meeting | obs youtube && youtube stream active link | tee >(tweet https://twitter.com/path/to/thread) >(gh discussion comment))`
   - We already have some shell parsing in consoletest, could we implement shell to dataflow.
   - This would allow for definition where we can use the subprocess orchestrator PR (never got merged, go grab) to run commands. We effectively implement a shell. This would also help with our fully connected development. We just are the shell. This would allow for running shell commands where daemons are just opimps that stay around and bash funtions are method on dataflows as classes
+- TODO
+  - Talk to Marcela about hyperledger transact and if there is any k8s integration she knows about planned
