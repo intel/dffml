@@ -1,0 +1,1 @@
+- The Open Architecture enables hybrid on/off chain smart contacts
