@@ -1,0 +1,1 @@
+Classes become systems of events (dataflows) where the interface they fit into is defined by contracts (manifests)
