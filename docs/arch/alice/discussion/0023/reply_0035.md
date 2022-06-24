@@ -4,3 +4,4 @@
 - input network woth geaphql support which auto exposes if desired cached vs dynamicly collected data. Dataflow sent with query to specify how graph nodes should be updated. Almost like an operation which we apply similar to how we do with the prioritizer by wrapping all instantiated  implementations on dataflow inital cont
   - the self fulfilling supply chain
 - The software development model must be fully instrumented so as to identify integration opportunities at large and create the cleanest possible architecture for any job(s).
+  - what is software fundamentally? Its whatever is not cost effective to put in hardware due to the degree to which your components have become commodities or are on their way to becoming at all stages in your supply chain. Factor in r&d scaled for your neiche application (system context/dataflow)  
