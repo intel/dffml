@@ -9,4 +9,6 @@
 - struggled to make Ed25519 `ssh-keygen` generate to PEM format
   - "Ed25519 keys always use the new private key format"
     - https://it-qa.com/why-is-the-ed25519-private-key-not-supported-in-openssh/
+- https://coolaj86.com/demos/ssh-to-jwk/
+  - Turns public keys into JWK
 - Can we generate with openssl and convert to ssh version of ed25519?
