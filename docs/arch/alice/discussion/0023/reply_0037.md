@@ -23,4 +23,5 @@
     - Okay no we are tabling this.
 - WE shold be looking at stable of DIDComm https://github.com/sicpa-dlab/didcomm-python/tree/stable
   - https://github.com/sicpa-dlab/didcomm-python/tree/stable#2-build-an-unencrypted-but-signed-didcomm-message
-    - This is what we want to start
+    - This is what we want to start with
+    - Going to run dataflows via two run system context operation instantiated which will be similar to run_dataflow operation which will be modifed to take the orchestrator as an input. Each will share Alice’s root did to start. Then we will make one alice and one bob. We will implement the input network as a regular class rather than doing dataflow as class first
