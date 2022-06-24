@@ -5,5 +5,5 @@
       - Leverage `reg` as used here https://gist.github.com/pdxjohnny/a0dc3a58b4651dc3761bee65a198a80d
       - Scan list of images
       - Save cached flows with all inputs linked to did root key via context, context should have did and be linked to the orchetsrator context. The orchestrator context should be linked ot the sytsem context, and the sytem context should be linked to the top level system context. On orchestartor context creation we should apply any overlays.
-- We should modify operations and the orchestrators to not pass any orchestrator context or orchestrator context sub variables that are not predeclared. Perhaps the orchestrator context should 
+- We should modify operations and the orchestrators to not pass any orchestrator context or orchestrator context sub variables that are not predeclared. 
   - Declare what of anything an Operation wants to use from the orchestrator context up front in the allowlist and declare what the acceptable interface definition is (class, manifest) 
