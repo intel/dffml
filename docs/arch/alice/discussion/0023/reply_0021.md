@@ -6,3 +6,4 @@
 - Intercept route
   - identity aware context -> ucan (via cbor) -> dice (device attestation)
     - Allows us to share attestations via opencreds type stuff across humans / machines when our strategic plans are attempting to mitigate risk via execution of operations via implementations which have attestested properties
+- https://github.com/nftstorage/nft.storage/tree/main/examples/ucan-node
