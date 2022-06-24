@@ -1,3 +1,5 @@
 Give Alice a linux command line and see how long we have ti train her before she can figure out how to do basic data transformation. Have straigc plans that read output of commands and associate with man pages and instantiate dynamicly discovered opimps in OpImpN.
 
 maybe fastest path to results. Because this could teacher her how to use tools for threat modeling. This is the first thing a developer should learn anyway right, the UNIX command line?
+
+implement dataflow as class then cached contexts then prioritizer, gatekeeper, strategic plans. Then record commands run on command line. Then make stratigc plan to do suggestions if new system contexts based off of looking at previous command line executions, man pages for example, and building next opimps and new system contexts which call those opimps. See if we can make her read manpages. At least via some hardcodee mechanisms at first.
