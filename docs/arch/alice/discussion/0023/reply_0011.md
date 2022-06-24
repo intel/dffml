@@ -6,6 +6,6 @@
     - Threat: Funding for the spec
     - Causes for suspicion:
       - "This specification provides a mechanism to express these sorts of credentials on the Web in a way that is cryptographically secure, privacy respecting, and machine-verifiable." missing the word "freedom".
-      - Recording explains around 1h
+      - Recording explains around 1h TODO update draft here
     - Mitigation 1: Draft: Hey Daniel, ...
     - Mitigation 2: Ask Matt once we have code.
