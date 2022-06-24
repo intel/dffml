@@ -42,6 +42,12 @@ In this N volume tutorial series we roll Alice. (Rolling release, rolling softwa
 
 -
 
+#### Volume N: Alice’s Memoirs
+
+> Alice will write this volume. One chapter on each previous volume with postmortem analysis and her running plans for the future as well as summary of previous. To be updated by Alice as she sees fit.
+
+-
+
 ## Priority Number 1
 
 Provide a clear, meticulously validated, ubiquitously adopted reference architecture for a freedom and privacy preserving compassionate egalitarian Artificial General Intelligence (AGI) which respects the first law of robotics.
