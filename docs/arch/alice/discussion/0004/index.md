@@ -1,0 +1,8 @@
+- You could have a manifests for anything
+  - Any CLI tool could have a manifest which could be converted into it’s CLI args
+    - See subprocess orchestrator branch
+- Convert from manifest into data flow description
+  - Ideally well defined machine readable (auditable) and writable
+  - consoletest even plays with documentation as manifest / dataflow
+- Manifests are a problem space specific way of defining a dataflow
+  - We convert to data flow so people have common way to understand implementations for different problem spaces
