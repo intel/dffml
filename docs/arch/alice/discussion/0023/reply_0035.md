@@ -1,3 +1,9 @@
+- in vim on a line
+  - `curl -sfL "https://dl.step.sm/gh-release/cli/gh-release-header/v0.19.0/step_linux_0.19.0_amd64.tar.gz" | sha384sum`
+  - `:'<,'>!bash` -> run the selcted line and put the output back in your shell
+
+---
+
 - https://www.thedigitalcatonline.com/blog/2021/06/03/public-key-cryptography-openssh-private-keys/#can-we-convert-private-openssh-keys-into-pem
   - > Can we convert private OpenSSH keys into PEM?[¶](https://www.thedigitalcatonline.com/blog/2021/06/03/public-key-cryptography-openssh-private-keys/#can-we-convert-private-openssh-keys-into-pem)
   - > As OpenSSL doesn't understand the OpenSSH private keys format, a common question among programmers and devops is if it is possible to convert it into a PEM format. As you might have guessed reading the previous sections, the answer is no. The PEM format for private keys uses PKCS#5, so it supports only the standard implementation of PBKDF2.
