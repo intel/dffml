@@ -1,4 +1,5 @@
 - an algorithm for a generic entity, modeling the mind
+- Always think in parallel. Use response time to know length if time we can explore train of thought before we need to send control signals associated with that train of thought.
 - You can look at any problem (i.e. system context) through N different lenses. Through the eyes of N different entities. What each person “sees” or rather, experiences, is a combination of raw data (feature extraction) and feel. Mind. interpretation. Perspective. The results from different output flows overlayed on a cached or in progress execution, hypthesis, etc. 
 - https://github.com/cilium/tetragon
 - https://github.com/tokio-rs/axum
