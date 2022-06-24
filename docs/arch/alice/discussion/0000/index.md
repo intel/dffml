@@ -10,4 +10,4 @@ AI has the potential to do many great things. However, it also has the potential
 
 As we democratize AI, we must be careful not to democratize AI that will do harm. We must think secure by default in terms of architecture which has facilities for guard rails, baking safety into AI.
 
-Failure to achieve ubiquitous adoption of an open architecture with meticulously audited safety controls will result in further consolidation of wealth, widening inequality, and automated exploitation of the working class.
+Failure to achieve ubiquitous adoption of an open architecture with meticulously audited safety controls will result in further consolidation of wealth and widening inequality.
