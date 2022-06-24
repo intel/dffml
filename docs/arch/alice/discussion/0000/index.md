@@ -1,8 +1,11 @@
 These are notes and scratch work around the purpose and future of the project.
 
-Mission: Provide a clear, meticulously validated, ubiquitously adopted reference architecture for Artificial General Intelligence capable of respecting the three laws of robotics.
+Mission: Provide a clear, meticulously validated, ubiquitously adopted reference architecture for Artificial General Intelligence (AGI) capable of respecting the three laws of robotics.
 
 To do so we must enable the AGI with the ability to act in response to the current system context where it understand how to predict possible future system contexts and understands how which future system contexts it wishes to pursue are acceptable according to guiding strategic plans (such as do no harm). We must also ensure that human and machine can interact via a shared language, the universal blueprint.
 
-AI has the potential to do many great things. However, it also has the potential to further 
-We must ensure that Failure to achieve ubiquitous adoption of 
+AI has the potential to do many great things. However, it also has the potential to to terrible things too. Recently there was an example of scientists who used a model that was good a generating life saving drugs, in reverse, to generate deadly poisons. GPU manufacturers recently implemented anti-crypto mining features. Since the ubiquitous unit of parallel compute is a GPU, this stops people from buying up GPUs for what we as a community at large have deemed undesirable behavior (hogging all the GPUs). There is nothing stopping those people from buying for building their own ASICs to mine crypto. However, the market for that is a subset of the larger GPU market. GPU manufacturers are effectively able to ensure that the greater good is looked after because GPUs are the ubiquitous facilitator of parallel compute. If we prove out an architecture for an AGI that is robust, easy to adopt, and integrates with the existing open source ecosystem, we can bake in this looking after the greater good.
+
+As we democratize AI, we must be careful not to democratize AI that will do harm. We must think secure by default in terms of architecture which has facilities for guard rails, baking safety into AI.
+
+Failure to achieve ubiquitous adoption of an open architecture with meticulously audited safety controls will result in further consolidation of wealth and widening inequality.
