@@ -1,0 +1,1 @@
+Certain modes like delete prod imenante or life or death modes might warnet Alice turn the speaker on and yell at you instead if an inotify
