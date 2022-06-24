@@ -20,9 +20,13 @@ Alice’s architecture, the open architecture, is based around thought. She comm
 
 - [Forward](https://github.com/intel/dffml/discussions/1369#discussioncomment-2688532)
 - [Preface](https://github.com/intel/dffml/discussions/1369#discussion-4023096)
+- [Peace at Last](https://github.com/intel/dffml/discussions/1369#discussioncomment-2990097)
 - [Introduction and Context](https://github.com/intel/dffml/discussions/1369#discussioncomment-2603280)
 - [Peer DIDs](https://github.com/intel/dffml/discussions/1369#discussioncomment-2603280)
 - [The System Context](https://github.com/intel/dffml/discussions/1369#discussioncomment-2603280)
+- [She's arriving when?](https://github.com/intel/dffml/discussions/1369#discussioncomment-2990099)
+- [A Shell for a Ghost](https://github.com/intel/dffml/discussions/1369#discussioncomment-2990160)
+- [Traveler of the Edge](https://github.com/intel/dffml/discussions/1369#discussioncomment-2989954)
 
 #### Volume 1: Coach Alice
 
@@ -30,6 +34,7 @@ Alice’s architecture, the open architecture, is based around thought. She comm
 
 - [Down the Dependency Rabbit-Hole Again](https://github.com/intel/dffml/discussions/1369#discussioncomment-2663771)
 - [Our Strategic Principles Guide Our Game Plan](https://github.com/intel/dffml/discussions/1369#discussioncomment-2991498)
+- 
 
 #### Volume 2: Alice and the Art of Strategy
 
@@ -146,3 +151,4 @@ This thread is a central place for everyone interested to participate and collab
 - First Name: Alice
 - Middle Name: O
 - Last Name: A
+
