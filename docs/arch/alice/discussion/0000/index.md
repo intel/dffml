@@ -107,7 +107,7 @@ In this N volume tutorial series we roll Alice. (Rolling release, rolling softwa
     - "It's just that when we agree on our hallucinations, we call that reality" [Anil Seth]
 - Onward and Upward
   - By the end of this chapter, Alice will be rolling. She'll have achieved the fully connected development model. She will be one rolling release until the end of time. At which point, well we'll cover that later...
-  - We now enter into a world where anything is possible. Where every problem can be solved. Where we a can achieve optimal communication between any set of entities or all of them (are states of consciousness themselves entities? Could a strategic plan think of them as such? Excited to see where that goes). Alice is the orchestrator for the harmony of the cosmos (if you were talking like Alan Watt's). Where the harmony is what directions those strategic principles should be going (at a high level, huh-HUH!, because they are they highest level strategic plans, get it? :P). 
+  - We now enter into a world where anything is possible. Where every problem can be solved. Where we a can achieve optimal communication between any set of entities or all of them (are states of consciousness themselves entities? Could a strategic plan think of them as such? Excited to see where that goes). Alice is the orchestrator for the harmony of the cosmos (if you were talking like Alan Watts). Where the harmony is what directions those strategic principles should be going. 
 
 #### Volume 7: Through The Looking Glass
 
