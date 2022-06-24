@@ -50,6 +50,10 @@ $ alice please contribute recommended community standards
 
 Show it working with gh pr list
 
+Then show how to install an overlay which populates from `source.records()` from a source instantiated via an overlay operation triggered via autostart from looking at cli cmd when associated CLI overlay is installed (read from yml files from innersource example in main).
+
+Finally show how we update into another source by installing another overlay which just defines what inputs it wants and then has an autostart for a source instantiation, then inserts the data from the output operations defined within the system context class of this overlay to show insert into "metrics" collection of mongodb.
+
 - Future work
   - `-repos https://github.com/intel/dffml`
     - Infer from context (cwd)
