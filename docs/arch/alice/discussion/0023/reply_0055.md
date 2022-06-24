@@ -1,0 +1,2 @@
+- https://singularityhub.com/2022/06/14/in-its-greatest-biology-feat-yet-ai-decoded-the-protein-complexes-that-house-our-dna/
+  - once again we see the notion of the gatekeeper, with the dna as the nucleus and the gatekeeper filters inputs
