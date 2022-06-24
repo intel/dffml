@@ -3,4 +3,6 @@
 - operating in hybrid inference vontrol mode where infernce is faster than calculation from fwature data extraction then subsequent strategic plan models. Predect the future context and execute and predict control instructions with risk assement for deployment and recall time to determine optimal next system context as determented by agent and distrivuted organizational plan assements
 - As life goes on. Time speeds up. The more system contexts we execute the faster time becomes. So much so that we can go back by building and accurate model which allows us to completely control the next state. Based on understanding of how the state machine works (time itself)
 - atlantis the ecosystem poc
+  - el durado
+  - The bleeding edge which is also referred to as the “state of the art”
 - onward and upward
