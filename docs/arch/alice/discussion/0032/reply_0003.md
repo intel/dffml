@@ -1,0 +1,1 @@
+Using kcp we can create a multi-cluster setup where we add operations as CRDs to other kcp clusters and join them as we instantiate operations https://asciinema.org/a/471709
