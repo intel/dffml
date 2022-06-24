@@ -1,0 +1,1 @@
+Technical debt exits in all organizations created by not everyone looking at the same picture. Alice is a mechanism for distributed agreements facilitate collaboration towards shared goals.
