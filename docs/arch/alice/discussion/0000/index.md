@@ -35,8 +35,8 @@ In this N volume tutorial series we roll Alice. (Rolling release, rolling softwa
 -
 -
 -
-- [Alice is Rolling]()
-  - Hopefully by in chapter Alice will hit critical velocity
+- [Alice are you Rolling?]()
+  - In chapter Alice we will work on analyzing herstorical system contexts to determine a measurement of delta for conscious states and their critical velocity values for overlayed asks.
 
 #### Volume 2: Alice and the Art of Strategy
 
