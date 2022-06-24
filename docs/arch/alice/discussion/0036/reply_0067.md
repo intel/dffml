@@ -1,8 +1,14 @@
 - Implemented threat dragon source in 7969de3a0dc84ba1ddaef605744072e1cdaecb9f
+- Alignment
+  - https://www.threatmodelingmanifesto.org/
+- Threat Model Cheatsheet from OWASP mentions defining the dataflow
+  - https://github.com/OWASP/CheatSheetSeries/blob/master/cheatsheets/Threat_Modeling_Cheat_Sheet.md#define-data-flow-over-your-dfd
 - Data Flow serialization is our current Open Architecture
   - We will evolve over time
   - Let's make sure that we include all the items which we would like to see in a manifest
-
+    - [ ] schema
+    - [ ] format name
+    - [ ] version
 - https://github.com/intel/dffml/issues/1287
   - 2022-06-11 - state of the art - time travel, system context
     - Upstream
