@@ -1,0 +1,1 @@
+- The system context can tell us it's links if we overlay it's input object onto it with a method to grab links
