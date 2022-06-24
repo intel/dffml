@@ -1,0 +1,1 @@
+Phylogeny tree as optimal team topologys for individuals as viewed within different collaboration model stratigic plan system contexts as input to selected roles blanced with other organizational prioritizties
