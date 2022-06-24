@@ -7,4 +7,5 @@
   - el durado
   - The bleeding edge which is also referred to as the “state of the art”
 - onward and upward
-- A tuned brute force approach is just the agregate of the most effective domain specific approaches 
+- A tuned brute force approach is just the agregate of the most effective domain specific approaches
+- https://github.com/in-toto/demo
