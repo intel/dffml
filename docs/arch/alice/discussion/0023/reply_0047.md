@@ -8,4 +8,4 @@
       - In it's simplest cases this means identifying matching interfaces via operation config and input data types and valid transformations into those types respecting linage and other previously mentioned methods of determination (adaptive sandboxes as one example, strategic plan model predictions as another)
   - TODO
     - In non default overlays, apply overlay to each operation, after or before prioritization, or both, could be even different overlays.
-    - TODO Use overlays to apply prioritizers to operations.
+    - Use overlays to apply prioritizers to operations.
