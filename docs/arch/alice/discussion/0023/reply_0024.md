@@ -24,7 +24,7 @@
 - DID itself is a manifest
   - It tells us format name (`did:format_name`)
   - It tells us format version for Peer DID encoded into `numalgo` 
-  - `did:example` is the DID method, `example`
-  - `did:peer` is the DID method `peer`
-  - `did:key` is the DID method `
+  - prefix `did:example:` is the `example` DID method
+  - prefix `did:peer` is the `peer` DID method
+  - prefix `did:key` is the `key` DID method
   - A did is a manifest, the DID method encodes the information needed for the next phase parser
