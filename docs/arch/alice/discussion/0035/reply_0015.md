@@ -1,1 +1,1 @@
-https://github.com/ossf/Project-Security-Metrics
+contribute to https://github.com/ossf/Project-Security-Metrics
