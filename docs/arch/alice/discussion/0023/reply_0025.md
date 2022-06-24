@@ -13,4 +13,6 @@ https://github.com/saulpw/visidata
 
 visdata terminal tmux rerecord map pane to visual field content for image understanding so we can link the file object feater extracted to the image to all the text that happened within that shell to the execution of each terminal command so we can enable the capture flyby effect of if developer sees text flying by and does pattern recognition of error message rhat moght be blured in stream. Do this for all running trains of thought
 
-we stand on the shoulders of giants. 
+we stand on the shoulders of giants.
+
+create DIDs to SPDXIDs https://lists.spdx.org/g/Spdx-tech/message/4493 mapping. Aka an operation that takes an spdxid and outputs any id will be mapped to a did if the inputnetwork in use is defined by a flow which includes creation of dids. We can later query the chaced values to see how a value in one system (spdxid relates to a vlue in another system (git auth)) because we could have an operation return true if a given id was indeed associed with abother id. In checking if a web2 limk exists by running with a web3 backing we have added the data to the chain without doing anything. We get for free the ability to trace everything in all it’s possible forms.  
