@@ -1,0 +1,1 @@
+Any starting point options. What are my available paths, next system contexts to suggest / think up. Just piece is down small emough and then relate it to what ypu care about. What drives goodness in your startegic principles when looking at the possibility paths to start investigating 
