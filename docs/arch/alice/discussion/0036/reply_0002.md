@@ -27,3 +27,5 @@ if everything is a encoder then create encoder/decoder models on all permutation
 We can leverage task 2: caching to use sources to map input values within system contexts including strategic plan inputs and outputs into dataset sources. We can leverage dataflows to modify data in different ways as it is saved to and loaded from the cache. For example run inputs with locality of file through uploads to blob storage or personal datastore. Then create references in db A and update references used in 
 
 play with DIDs and personal datastores before making any input networks. Create proxies from web2 to web3 which are DFFML agnostic but are packaged as dffml-service-web3-did|datastore|relay|bdrige-irc|smtp etc.
+
+For caching/input interception record to asciinema streams. Have an asciinema source that supports when a record is saved use its features as timestamps and save stream or send out next line to listeners via pub/sub or otherwise to facilitate watching trains of thought execute live.
