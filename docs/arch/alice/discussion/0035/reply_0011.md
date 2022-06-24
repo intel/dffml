@@ -1,1 +1,1 @@
-Need to make a formal RFC for both alice and universal blueprint
+Need to make a formal RFC for universal blueprint/Alice
