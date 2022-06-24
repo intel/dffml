@@ -1,4 +1,4 @@
-- `alice issues -create https://github.com/owner/repo`
+- `alice issues -overlay alice.issues.overlays:GITHUB_CREATE https://github.com/owner/repo`
   - Check for status of common files
   - [ ] Create as issue with body content similar to `THREATS.md`, checkboxes for each thing the issue is about, instructions on how to write and apply overlays to re-run the check to make it accurate if it's not
     - [ ] README
