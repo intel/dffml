@@ -5,4 +5,4 @@
   - Create mirrors for dependencies, ensure we are always building from our forks of all the dependencies
   - Stream 10 rebuild C/C++ packages on the fly with patches applied via overlays.
 - We can do `system_context_as_class` but not `dataflow_as_class` because dataflows have no method of execution without an orchestrator.
-  - We should switch the overlay infrastructure to support taking a system context instead of a dataflow.
+  - We should switch the overlay infrastructure to work with system contexts instead of dataflows.
