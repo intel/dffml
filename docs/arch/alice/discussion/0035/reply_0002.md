@@ -1,0 +1,1 @@
+Record terminal of dev and make ci jobs from detected tests to run
