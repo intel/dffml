@@ -1,3 +1,4 @@
+- Dumping links while closing tabs
 - https://github.com/bluesky-social/adx/blob/main/architecture.md#personal-data-repositories
 - https://fastapi.tiangolo.com/advanced/graphql/?h=graphql
 - https://strawberry.rocks/docs/general/subscriptions
@@ -18,3 +19,6 @@
 - https://github.com/ipld/ipld/
   - https://ipld.io/docs/intro/hello-world/
 - https://localhost.run
+- https://identity.foundation/credential-manifest/
+- https://github.com/intel/cve-bin-tool
+- https://github.com/johnlwhiteman/living-threat-models
