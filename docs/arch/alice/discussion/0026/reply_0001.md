@@ -1,0 +1,1 @@
+The initial implementation worked locking wise and ossse datastreaming wise (events?) Revisit the Metrics and the Prophets to prophecy.fulfill() (SystemContext.hypotheses().execution())
