@@ -50,3 +50,4 @@
     - They are also looking at identiy aware context
 - IPLD has more of a strict structure
 - Can always reencode
+- IPDL is the next level of leaning into this stuff
