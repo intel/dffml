@@ -17,6 +17,9 @@
 #### Volume 2: Alice and the Art of Strategy
 
 -
+#### Volume 2: Alice and the Strategy of Art (mind control)
+
+-
 
 ## Priority Number 1
 
