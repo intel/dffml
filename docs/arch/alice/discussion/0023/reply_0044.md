@@ -1,4 +1,5 @@
 - Map actives in recorded / streamed sessions to link up issues, branches, prs, chats, etc.
+- Check out how crisper works (how does it sitch things together). Does it look for patern
 - External Service Elixir for github token rate limiting
 - https://github.com/rusterlium/rustler
 - AI that looked at codebase and generated property based testing (like fuzz testing)
