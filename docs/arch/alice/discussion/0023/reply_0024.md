@@ -34,5 +34,7 @@
     - Suggest including descriptions, names not entirely helpful
   - https://github.com/w3c/did-spec-registries
   - Maybe we'll create our data within another IDD method for now and link later for identity aware context have a peer did which links DID attached to individual Input objects (maybe during write out).
+  - https://workday.github.io/work-did-method-spec/
+  - Reach out to Dave to see if anything has been up with his evlution off DIDs: https://github.com/dhuseby
 
 ![Detailed DID Architecture](https://w3c.github.io/did-core/diagrams/did_detailed_architecture_overview.svg)
