@@ -1,0 +1,15 @@
+- Orchestrator allows for
+  - Switching execution method easily
+    - Run on my local machine to test
+    - Run in kubernetes cluster
+    - Run in Intel DevCloud for access to machines with ML hardware
+  - Local development
+    - Rapid iteration on CI jobs
+    - No need to push repo to validate CI is working
+    - Finally we can support running all tests locally
+- Operation abstraction layer allows for
+  - Overrides
+    - Use implementation X when running in k8s, do Y when running in DevCloud, do Z when running locally
+  - Overlays
+   -  Add extend flows when in different environments or for different purposes or different deployment models
+   - https://intel.github.io/dffml/examples/dataflows.html
