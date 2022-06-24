@@ -8,6 +8,7 @@
   - what is software fundamentally? Its whatever is not cost effective to put in hardware due to the degree to which your components have become commodities or are on their way to becoming at all stages in your supply chain. Factor in r&d scaled for your neiche application (system context/dataflow) based on past data from research of heard form others (revoews / credentials). Alice will build and manage these supplh chains to foful the goals outlined by her strategic plans in accordance with her principles (gatekeeper and piroritizer) and as optimally as possible as measured by startegic principles.
 - `did:web:` is how we prove a link between the key that signed a `did` and a domain / path for sub methods (additional `:`). Example:
   - `did:web:w3c-ccg.github.io:user:alice` -> `https://w3c-ccg.github.io/user/alice/did.json`
+  - Could be interesting as we get into ODIC and auth within jobs within kcp
 
 ```mermaid
 graph TD
