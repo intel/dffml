@@ -152,3 +152,4 @@ This thread is a central place for everyone interested to participate and collab
 ## References
 
 - Open Architecture RFC: [Open-Architecture.txt](https://raw.githubusercontent.com/intel/dffml/main/docs/rfcs/0000-Open-Architecture.txt)
+- Alice Date 0 = Gregorian Calendar Date 2022-04-17 ~ 11 AM
