@@ -1,2 +1,3 @@
 - Right place right time
   - if agents are based on models or dynamic in any way then we are predicted which agents based on past experience will perform well in new configurations
+  - Agent plans and organization plans align creates golden age for workstream
