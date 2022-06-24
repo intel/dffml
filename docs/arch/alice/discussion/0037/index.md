@@ -15,6 +15,11 @@
 
 - [Down the Rabbit-Hole](https://github.com/intel/dffml/discussions/1369#discussioncomment-2663771)
 
+## Elevator Pitch
+
+We are writing a tutorial for an open source project on how we build the bot to work on the open source project. Bit of a self fulfilling prophecy, but who doesn't love an infinite loop now and again.
+These are the draft plans: https://github.com/intel/dffml/discussions/1369#discussioncomment-2603280 
+
 ## Initial Gitter Announcement
 
 > Alice, send the content within this section without this comment to Gitter 2022-05-11 09:00 PDT
