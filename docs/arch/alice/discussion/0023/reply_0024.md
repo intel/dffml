@@ -1,3 +1,5 @@
+- https://youtu.be/DQ2cYdKi6vo
+- Was up till 3:44
 - We hit another blue screen immediately after boot
 - Ridiculous amount is issues installing a linux USB drive (removed self from sudo on accident after install)
   - [x] We downloaded Fedora Workstation 35 x86_64 and wrote it to a live USB
