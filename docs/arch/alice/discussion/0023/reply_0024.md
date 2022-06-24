@@ -28,3 +28,4 @@
   - prefix `did:peer` is the `peer` DID method
   - prefix `did:key` is the `key` DID method
   - A did is a manifest, the DID method encodes the information needed for the next phase parser
+- https://github.com/openssi/peer-did-method-spec/issues/112
