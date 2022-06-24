@@ -1,0 +1,1 @@
+Meausre impact of abstraction  allowing for mutability. Something about pace of though processes utilizing less vs. more abstraction
