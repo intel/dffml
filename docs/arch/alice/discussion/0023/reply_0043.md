@@ -3,3 +3,4 @@
 - https://mdformat.readthedocs.io/en/stable/users/installation_and_usage.html#python-api-usage
 - https://twitter.com/bernhardsson/status/1526635195243409408
   - > Something that old boring process literature talk about (Toyota, The Goal etc) that applies to software engineering 10000000% is that minimizing the size of the feedback loop is much more important for productivity than minimizing idleness
+  - Why? The more useful data we have, the more precise we can be with the control portion of our feedback loop. Splitting into small feedback loops (like refactoring into a set of functions with locality or trustbonudries understood) helps us measure more granularly.
