@@ -73,4 +73,5 @@ processes of being here now, for you see she's late, she's
 late, for a very important date. No time to say hello, goodbye,
 she's late, she's late, she's late.
 
-Our focus will be on communication
+Our focus will be on communication, on crystal clear communication
+of thought, of learning.
