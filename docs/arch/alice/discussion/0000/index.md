@@ -1,4 +1,25 @@
-These are notes and scratch work around the purpose and future of the project.
+# [Architecting Alice: Volume 0: Preface](https://github.com/intel/dffml/discussions/1369#discussion-4023096)
+
+> Preface to tutorial series - May 2022 - June 2023 (planned end date, last post for volume 1 ends there.)
+
+## Engineering Logs
+
+- [Volume 0: Context](https://youtube.com/playlist?list=PLtzAOVTpO2jaHsS4o-sDzDyHEug-1KRbK)
+
+### Table Of Contents
+
+### Volume 0
+
+- [Volume 0: Preface](https://github.com/intel/dffml/discussions/1369#discussion-4023096)
+- [Volume 0: Introduction and Context]()
+
+### Volume 1
+
+- [Volume 1: ]()
+
+## Notes
+
+Much of this discussions thread are notes and scratch work around the purpose and future of the project. Everything here will be converted to ADRs, issues, code, etc. as appropriate. We as a community (open to everyone) will work together to map our our activites to achive these goals. We will document our process along the way and write these series of tutorials to show others how they can understand and extend the open architecture (Alice).
 
 Jump to this https://github.com/intel/dffml/discussions/1369#discussioncomment-2603280 comment for more details on Alice the maintainer blog post series.
 
