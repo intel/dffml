@@ -1,0 +1,1 @@
+more like like a soul than a brain. Brain is the logical part. Logic is in there. But with all these models from learned experience are almost emtional responses. Gut feels.
