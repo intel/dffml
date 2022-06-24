@@ -12,4 +12,5 @@
     - https://it-qa.com/why-is-the-ed25519-private-key-not-supported-in-openssh/
 - https://coolaj86.com/demos/ssh-to-jwk/
   - Turns public keys into JWK
+- https://github.com/pyrsia/pyrsia
 - Can we generate with openssl and convert to ssh version of ed25519?
