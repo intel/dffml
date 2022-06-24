@@ -1,5 +1,6 @@
 - https://youtu.be/1kXbP_H5Dcc
 - Free trade working group -> trade federation?
+- different chains as differnet tinylib resource syncs (different data flows for different comms with different chains)
 - https://github.com/bluesky-social/adx/blob/main/architecture.md
   - https://github.com/bluesky-social/adx/blob/main/architecture.md#personal-data-repositories
     - "[Merkle DAG](https://docs.ipfs.io/concepts/merkle-dag/)"!
