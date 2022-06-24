@@ -4,4 +4,4 @@
   - this qubit is perfect for the circle, the everything is one, the infinity between zero and on - elightnement: everything is one 
     - Therefore really does the quibit just represent the deviation from one? We are always hoping between system contexts. Is this some sort of where did we land? How aligned was the system context with what we we requested? Was the milstone met? Sometimes we care about partial credit, sometimes we don't is that the 0 or 1?
     - Alice, do you think you can achive this next state? Cross domain conceptual mapping (x/z = a/b where you have two unkown denomenators, you predict from x to z and then to b or from a to b and tehn to z or ..., whatever you have good models for. Alice encode these models into quibits, then use quantum computing simulation to predict your ability to do a system context transform from state A to state B within bounds of overlayed strategic principles)
-- 
+- Working on backing up this doc...
