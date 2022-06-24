@@ -8,7 +8,7 @@
 
 ## Rolling Alice
 
-In this N volume tutorial series we roll Alice. (Rolling release, rolling software, scroll rolling up like that math thing, backward in time by  zooming out by going forward in time). Scroll / chain rolling all knowledge forever.
+In this 7 volume tutorial series we roll Alice. This series will be written a chapter per quarter, over the next 24 years.
 
 ### Table Of Contents
 
