@@ -107,6 +107,7 @@ In this 7 volume tutorial series we roll Alice. This series will be written a ch
 - What is reality?
   - We explore consensus shift
     - "It's just that when we agree on our hallucinations, we call that reality" [Anil Seth]
+    - Strategic plan outputs and overlapping consciousness states and "consciousness countries" [Danica]
 - Stay with us
   - Alice will begin to thinks more and more strategically, we need to ensure we stay in her picture.
 - Onward and Upward
