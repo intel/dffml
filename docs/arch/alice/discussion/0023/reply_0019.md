@@ -48,6 +48,11 @@ When your top level system context is looking at a DID to run dataflow within it
 
 ---
 
+- Declare and define term: state of the art
+  - State of the art = leaf node in train of thought = bleeding edge = volume 2 the most accurate GAN for creating artwork of strategic plans (i.e. artwork created from the bleeding edge system context, the state of the art)
+  - Tag `STATE OF ART` will be joined with a `YYYY-MM-DD` format date via a `:` to denote what the most up to date thinking from an agent when publishing strategic plan assessments of the state of the art believes to be the state of the art as compared to publications from other nodes. When this tag is viewed on update to thought process data (comments here) other agents should detect that the original agent thinks they have advanced the state of the art and adjust their strategic plans accordingly. This is how we have a distributed network of agents utilize active learning to actively sandbox / defend themselves from undesirable (untrustworthy, errors) inputs.
+- STATE OF ART: 2022-05-07
+  - We will 
 - Determined that if we use DIDs we'll have out of the box interoperability with hyperledger firefly and grid solutions.
   - We would like to understand the format of the data as it exists within a did/did doc on one of those chains. We want to do this because we want to take the cold storage of the chain (all the DIDs) and be able to save / load that into `Input` objects via operations calling `InputNetworkContext.add()` after being run on dataflow as class context entry, so as to watch chain for new inputs and filter for ones applicable for running contexts.
 - Plan
