@@ -1,0 +1,1 @@
+This guys gets it: https://cwarny.medium.com/gpt3-meet-web3-6b00f5857355
