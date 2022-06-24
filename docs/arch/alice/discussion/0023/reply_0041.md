@@ -7,3 +7,9 @@
 - Wallet interoperability
 - tbDEX usage
   - We are submitting Asks to be rewarded for aligned system context remembrance (read), hypothesis(infer), or execution(read/write).
+    - They really mean execute some architecture (maybe a dataflow) which would allow for scoped sandboxed execution to given constraints.
+      - Constraints are part of the strategic plans which would result in a dropped system context from the gatekeeper. - Reworded to below
+      - Constraints exist as a concept which are implemented via strategic plans. Strategic plans which result in a dropped system context by the gatekeeper, are called design constraints.
+        - > Design constraints are conditions that need to happen for a project to be successful.
+          > https://study.com/academy/lesson/design-constraints-in-engineering-definition-example.html
+    - 
