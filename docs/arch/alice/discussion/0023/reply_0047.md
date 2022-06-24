@@ -1,3 +1,3 @@
 - DevCloud for compute?
 - Treat modeling tool yaml as output for going our initial thoughts
-- Remap output op in default overlay with dataflow which does a remap operation within it which grabs all the dataflows with get multi, expands them, merges them, then the parent remap operation takes the output of the next level down remap and outputs a get single on the merged dataflow structure
+- Remap output op in default overlay with dataflow which does a remap operation within it which grabs all the dataflows with get multi, expands them, merges them, then the parent remap operation takes the output of the next level down remap and outputs a get single on the merged dataflow dict, converts it back into a dataflow, and returns it
