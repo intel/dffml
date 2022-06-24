@@ -10,7 +10,7 @@ We'll follow along an adapted version of Lewis Carroll's classic, Alice's Advent
 
 ### Table Of Contents
 
-- [Introduction](https://github.com/intel/dffml/discussions/1369#discussioncomment-2663771)
+- [Introduction](https://github.com/intel/dffml/discussions/1369#discussioncomment-2603280)
 - [Chapter I: Down the Rabbit-Hole](https://github.com/intel/dffml/discussions/1369#discussioncomment-2663771)
 
 ### What is Alice?
