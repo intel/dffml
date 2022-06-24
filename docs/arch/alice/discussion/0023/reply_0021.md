@@ -6,6 +6,7 @@
   - Immediate Goals: leverge existing off-chain storage interfaces provided by nft.stroage and authentication via ucan (based on DIDs) to act as portion of gateway for our reverse engineering environment where we attempt to get data into firefly DLT based on DIDs.
   - https://github.com/ucan-wg/spec/discussions/18
     - Recording where we are talking about this is about 30 minutes into https://youtu.be/u2ZyqX-9xk8
+    - Autocodec maps to our shim / manifest encoding as DNA discussion
   - https://github.com/nftstorage/nft.storage/tree/main/examples/ucan-node
 - Intercept route
   - identity aware context -> ucan (via cbor) -> dice (device attestation)
