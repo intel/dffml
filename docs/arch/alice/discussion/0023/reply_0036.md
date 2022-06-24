@@ -1,3 +1,5 @@
+- https://git.coolaj86.com/coolaj86/ssh-to-jwk.js
 - https://words.filippo.io/professional-maintainers/
 - https://www.sciencedirect.com/science/article/pii/S2096720922000136
-- We don't need to crea bout using the key for encryption, because we only need it to 
+- https://libsodium.gitbook.io/doc/quickstart#how-can-i-sign-and-encrypt-using-the-same-key-pair
+  - We don't need to care about using the key for encryption, because we only need it to 
