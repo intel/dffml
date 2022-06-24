@@ -27,10 +27,22 @@ pie title Overall
     "Less than minimum health" : 100
 ```
 
+Then drill down into each
+
 ```mermaid
-pie title Contributing
-    "Has file" : 100
-    "Does not have file" : 100
+graph LR
+    overall[Overall]
+    has_readme[Has Readme]
+    has_code_of_conduct[Has Code of Conduct]
+    has_security[Has Security]
+    has_contributing[Has Contributing]
+    has_license[Has License]
+
+    has_readme --> overall
+    has_code_of_conduct --> overall
+    has_security --> overall
+    has_contributing --> overall
+    has_license --> overall
 ```
 
 <details>
