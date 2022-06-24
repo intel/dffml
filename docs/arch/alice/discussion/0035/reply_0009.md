@@ -1,0 +1,1 @@
+https://youtu.be/8X5PWa7A6pY - "SPDX in the Yocto Project" - BOM
