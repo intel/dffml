@@ -7,6 +7,8 @@ documentation of processes via a standard interface (manifests).
 Our manifests can be thought of as ways to provide a config class with it's
 parameters or ways to provide an operation with it's inputs.
 
+Similar to an OpenAPIv3 spec.
+
 References:
 
 - JSON Schema
