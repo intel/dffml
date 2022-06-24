@@ -1,5 +1,7 @@
 Other projects to leverage:
 
+- https://docs.decentraland.org/decentraland/glossary/
+  - Leverage web3 connection here for system context visualization?
 - https://dev.opencerts.io/
   - Review system (did jobs complete)
   - Need to double check trust boundary situation with kcp / opimpn to see if hostel cluster could be made to be within scope for mitigation within threat model.
