@@ -17,7 +17,8 @@
 #### Volume 2: Alice and the Art of Strategy
 
 -
-#### Volume 2: Alice and the Strategy of Art (mind control)
+
+#### Volume 3: Alice and the Strategy of Art (mind control)
 
 -
 
