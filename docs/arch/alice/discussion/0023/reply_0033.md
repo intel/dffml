@@ -1,0 +1,1 @@
+- [ ] Use tdDEX and Peer DIDs for first context issuance to chain as request for execution.
