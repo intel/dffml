@@ -3,3 +3,7 @@
   - https://mlsteele.keybase.pub/.well-known/stellar.toml
   - https://book.keybase.io/guides/proof-integration-guide#1-config
   - https://book.keybase.io/guides/proof-integration-guide#proof-verification-script
+
+---
+
+- https://twitter.com/dizaytsev/status/1524116790657179649
