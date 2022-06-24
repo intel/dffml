@@ -1,6 +1,9 @@
 - https://mobile.twitter.com/XMPPwocky/status/1526237836935954432
   - https://github.com/tweag/trustix
   - Nix based builds we should check out
+- pako
+  - > zlib port to javascript, very fast!
+  - https://nodeca.github.io/pako/
 - do city simulator
   - this becomes shared human machine language for himans working with ai assistant to define policy
 - operating in hybrid inference vontrol mode where infernce is faster than calculation from fwature data extraction then subsequent strategic plan models. Predect the future context and execute and predict control instructions with risk assement for deployment and recall time to determine optimal next system context as determented by agent and distrivuted organizational plan assements
