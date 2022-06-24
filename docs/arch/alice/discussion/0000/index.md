@@ -20,7 +20,7 @@ In this N volume tutorial series we roll Alice. (Rolling release, rolling softwa
 
 #### Volume 1: Coach Alice
 
-> We build Alice the Software Architect. The context aware pile of CI jobs that learns with you and your organizations. She helps us communicate and coaches us on how we can use our assets, our knowledge, our hardware, our time to have a posting impact on our and our organizations strategic principles.
+> We build Alice the Software Architect. The context aware pile of CI jobs that learns with you and your organizations. She helps us communicate and coaches us on how we can use our assets, our knowledge, our hardware, our time to have maximize the breadth, depth, and pace of our impact on our and our organizations strategic principles.
 
 - [Down the Dependency Rabbit-Hole](https://github.com/intel/dffml/discussions/1369#discussioncomment-2663771)
 
