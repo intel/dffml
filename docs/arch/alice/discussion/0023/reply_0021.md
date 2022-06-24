@@ -26,6 +26,7 @@
       - NFTs are likely also a help to use in solving our distributed locking needs (Inputs with `lock=True` are likely NFTs).
     - If agent buys the system context originally minted within this example, then we have agreed to a contract which says they will hypothesize or execute the system context outlined as outlined via their response system context counter proposal.
     - Counter proposals evaluated by analysis of historical agent execution (agent with counter proposal) data to calculate risk tolerance (i.e. based on review system of previous quality of execution or via attestation)
+    - Counter proposals are feed directly into regular dataflow execution loop and priroriatized and ran through gateway just like anything else. Can apply overlays to do context / threat model specific vetting.
 - For this recording
   - [ ] Ensure nft.storage can interact with DID based blockchain (firefly, transact?)
   - [ ] Deploy nft.storage and interact with it via UCAN token auth
