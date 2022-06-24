@@ -1,0 +1,1 @@
+A pile of CI jobs that can be used on any project
