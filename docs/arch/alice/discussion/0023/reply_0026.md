@@ -1,1 +1,1 @@
-**CRITICAL** WE ARE OPTIMIZING FOR AGENT HAPPIENSS / FLOW: https://www.openculture.com/2015/12/creativity-is-the-key-to-happiness-psychologist-mihaly-csikszentmihalys-theory-of-flow.html
+optimize for agent happiness / flow maybe applicable resource:  https://www.openculture.com/2015/12/creativity-is-the-key-to-happiness-psychologist-mihaly-csikszentmihalys-theory-of-flow.html
