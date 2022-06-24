@@ -18,7 +18,7 @@ Plan for this tutorial:
         lines changed during capture.
 - [ ] Use NLP models based off the videos to write the English
       language text between running of commands.
-- [ ] Mention future work
+- [ ] Mention future tutorials
   - [ ] Evolve complexity of I/O watching to save files,
         database state, etc. via overlays to capture
         more complete context for analysis to deduplicate
@@ -32,6 +32,14 @@ Plan for this tutorial:
         10 seconds (Alert!, Message from Bob!). The pane is
         then closed and we pop into the chat for that person,
         unless we've already switch to the comms pane.
+  - [ ] Async comms overlays to show how to have Alice
+        communicate with other developers or people or
+        systems which you might want to notify of your
+        activities periodically on trigger.
+    - [ ] Example flow where we notify other devs when we
+          tag and push a new version of anything, it does
+          this by publishing to a RSS feed and notifying
+          any waiting websocket connections.
 
 Alice is the ghost in the shell. We know she's in there,
 she's the communication of herstory. We're in the shell,
