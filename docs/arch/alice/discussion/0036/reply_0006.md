@@ -1,1 +1,3 @@
-Give Alice a linux command line and see how long we have ti train her before she can figure out how to do basic data transformation. Have straigc plans that read output of commands and associate with man pages and instantiate dynamicly discovered opimps in OpImpN. 
+Give Alice a linux command line and see how long we have ti train her before she can figure out how to do basic data transformation. Have straigc plans that read output of commands and associate with man pages and instantiate dynamicly discovered opimps in OpImpN.
+
+maybe fastest path to results. Because this could teacher her how to use tools for threat modeling. This is the first thing a developer should learn anyway right, the UNIX command line?
