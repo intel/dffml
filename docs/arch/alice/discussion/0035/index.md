@@ -4,10 +4,7 @@
     - Form teams based on qualities of programmers to ensure we have teams to match workstreams for all four flows. Always able to build the optimal teams to execute any business strategy.
       - You'll find and identify gaps
   - InnerSource is our measurement and suggestion mechanism to enable independent agents to collaborate most effectively towards shared goals (strategic plans generating system contexts and going through prioritizer)
-
-
 - Why do InnerSource?
-
 - Open Source is how companies optimize engineering resources across companies.
 - Employees move from project to project and grow skills
   - Those skills are tracked as they change role (people apply for roles they have had experience with before for adjacent technologies and topologies and modes.
@@ -19,7 +16,6 @@
     - Agents that change pools are analyzed to understand metrics leading to change. This allows us to optimize for change policies.
 
 - Map to measured properties of a project from all collectors. Train clustering model over it and you'll be able to understand what projects are similar. You can then map that to architectures and figure out what kinds of teams of agents you'll need for new project (a new project is what do we think will happen if we introduce a new set of strategic plans, we can guess by adding desired train or test data to a cached system context in place of the new plans yet to be collected data, we can use a model we trained against a training dataset of such contexts by looking at the inputs from the network that the new strategic plan is consuming from the training data and use it to predict output values. This will help us in the event that we don't have access to inputs we need to run a plan, we can decide to use the predicted value for that plan until we get a new data point) as they go through planning. You can also use this to understand yellow card pull cost to work on patching vulns (metric of: vulns * time * cost to mitigate / lifetime of project) and get a complete picture of 
-
 - The goal of this whole thing is optimal resource utilization of agents (engineers).
   - We have agents capable of exploration with particular qualities that make them work well in certain team topologies when operating in certain modes to get better outputs from some strategic plan whose metric we wish to move in a particular direction.
   - As a case study we will create a hypothetical team of consultants.
@@ -31,7 +27,6 @@
 
 ---
 
-
 - Start with the vision
   - As few words are possible: optimize for domain expertise. Increasing productivity by removing barriers to knowledges. That’s what we need in and InnerSource gives us that.
 - T-shirt sized montra - slide 1
@@ -39,7 +34,6 @@
 - Here are the three points to the vision
   - Architecture
   - Domain Expertise
-
 - Take them through the story
 - Vision: Help developers go faster with better quality
 - Way down at the bottom we have something involving SGX
