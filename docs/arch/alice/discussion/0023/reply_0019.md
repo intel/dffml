@@ -27,3 +27,13 @@ When your top level system context is looking at a DID to run dataflow within it
   - Somehow engage as users or members. Cross with OpenSSF streams to work on blockchain supply chain security.
   - This is criticial because blockchains and DIDs easily translate into our open source ecosystem as a whole being a polyrepo development environment. Think grafting = forks. Central Comms = Blockchain (where do I find the chat server? is the chat server blockchain based? maybe?).
   - https://github.com/Indicio-tech/did-indy-demo
+  - https://github.com/Sirius-social/didcomm-mediator
+    - Mediator is 
+  - https://github.com/hyperledger/aries-cloudagent-python
+  - https://wiki.hyperledger.org/display/aries
+  - https://hyperledger.github.io/firefly/overview/
+    - Firefly using aries or transact where we plugin into their orchestrator concept
+    - Then can leverage chain to chain network interoperability imminent due to recent tooling to connect us to Hyperedge Supply Chain solution - Grid, which does not yet look as if it supports DID based chains directly. Should probably look at roadmap first to see if time it takes to implement grafting/proxies/multi-network infra setup in parallel is comparable to their roadmap for direct support of DID based chains.
+
+
+![image](https://user-images.githubusercontent.com/5950433/167244462-ed30727c-4951-4e3e-a4e6-3bc0cf683362.png)
