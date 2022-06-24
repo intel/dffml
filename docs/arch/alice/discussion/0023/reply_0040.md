@@ -1,5 +1,5 @@
 - Alice co maintain this distro package, or this set of distro packages
-- mermaid to operations based on dataflow which does best guess fuzzy find for pulling operations from inventories
+- mermaid to operations based on dataflow which does best guess fuzzy find for pulling operations from inventories (could be accessed via DIDs)
 - Given YAML or JSON examples, build dataclasses with correct observed types
 - https://github.com/decentralized-identity/decentralized-web-node/issues/136#issuecomment-1085832891
   - > There is no custom tbDEX interface, tbDEX is just a set of schema'd objects sent over Threads and data objects fetchable in Collections. The point of this tech is specifically that you don't create new interfaces or API surfaces, your messages are your own API that you get by simply defining their schemas and how to handle them. You'll never see a tbDEX-specific feature, because tbDEX is literally just a set of message types that are defined independently
