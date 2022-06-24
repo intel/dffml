@@ -1,1 +1,3 @@
 Maybe we could even make this into a whole conference down the road. Something about domain expertise and knitting together the future. Helping push the bounds of what the AI is capable of. This like shared human machine communication pushing the bounds of different trains of thought. The set of all system contexts ever created, thought of, or executed/validated is all recorded knowledge. Optimizing strategic plans, decision maker, and prioritizer over the set of all recorded knowledge.
+
+track time system context was first created. Always track liniage of system contexts. Heartbeat metrics of access or execution or dirivitive or access or execution thereof. 
