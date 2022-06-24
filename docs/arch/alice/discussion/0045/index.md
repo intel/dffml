@@ -21,6 +21,8 @@ The following is an example report
 
 # InnerSource Org Health
 
+Overall maps to our general Good/Bad for a train of thought.
+
 `"Minimum health or above"` if `has_readme and has_contributing`
 
 ```mermaid
