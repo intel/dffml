@@ -1,4 +1,4 @@
-These guys get it: https://www.infoq.com/articles/what-software-architecture/
+These guys get it (2022-04-15): https://www.infoq.com/articles/what-software-architecture/
 
 > - Software architecture needs to be wrested from committees of people disconnected from developing, and to put it in the hands of the people who can actually make it real and executable, the developers. Only then will we achieve the resilience and sustainability that we need from today’s applications 
 > - Software architecture is about capturing decisions, not describing structure
