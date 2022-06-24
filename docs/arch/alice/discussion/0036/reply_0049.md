@@ -1,0 +1,1 @@
+How do we track diffs? Can we take the diff format and apply it and then look at the delta between the dataflows of the filesystem and associate that woth the diff?
