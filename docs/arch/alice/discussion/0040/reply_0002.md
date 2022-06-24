@@ -278,3 +278,93 @@ a6ed501edbf561fda49a0a0a3ca310f0 --> 8b5928cd265dd2c44d67d076f60c8b05
 4e1d5ea96e050e46ebf95ebc0713d54c --> 181f1b33df4d795fbad2911ec7087e86
 end
 ```
+
+---
+
+- For repos without a branch GitHub does not allow PRs for first commit
+
+```
+DEBUG:dffml.AliceCliAlicepleasecontributerecommendedcommunitystandardsoverlaygit:ContributeReadmeMdImplementationContext:['git', 'checkout', 'main', '-b', 'alice-contribute-recommended-community-standards-readme']: Subprocess.STDERR_READLINE: fatal: 'main' is not a commit and a branch 'alice-contribute-recommended-community-standards-readme' cannot be created from it
+DEBUG:dffml.AliceCliAlicepleasecontributerecommendedcommunitystandardsoverlaygit:ContributeReadmeMdImplementationContext:Running ['git', 'checkout', '-b', 'alice-contribute-recommended-community-standards-readme'], {'cwd': '/tmp/dffml-feature-git-yw8kwexw'}
+DEBUG:dffml.AliceCliAlicepleasecontributerecommendedcommunitystandardsoverlaygit:ContributeReadmeMdImplementationContext:['git', 'checkout', '-b', 'alice-contribute-recommended-community-standards-readme']: Subprocess.STDERR_READLINE: Switched to a new branch 'alice-contribute-recommended-community-standards-readme'
+DEBUG:dffml.AliceCliAlicepleasecontributerecommendedcommunitystandardsoverlaygit:ContributeReadmeMdImplementationContext:Running ['git', 'add', 'README.md'], {'cwd': '/tmp/dffml-feature-git-yw8kwexw'}
+DEBUG:dffml.AliceCliAlicepleasecontributerecommendedcommunitystandardsoverlaygit:ContributeReadmeMdImplementationContext:Running ['git', 'commit', '-sm', 'Recommended Community Standard: README\n\nCloses: https://github.com/pdxjohnny/testa/issues/156\n'], {'cwd': '/tmp/dffml-feature-git-yw8kwexw'}
+DEBUG:dffml.AliceCliAlicepleasecontributerecommendedcommunitystandardsoverlaygit:ContributeReadmeMdImplementationContext:['git', 'commit', '-sm', 'Recommended Community Standard: README\n\nCloses: https://github.com/pdxjohnny/testa/issues/156\n']: Subprocess.STDOUT_READLINE: [alice-contribute-recommended-community-standards-readme (root-commit) 6b49de0] Recommended Community Standard: README
+DEBUG:dffml.AliceCliAlicepleasecontributerecommendedcommunitystandardsoverlaygit:ContributeReadmeMdImplementationContext:['git', 'commit', '-sm', 'Recommended Community Standard: README\n\nCloses: https://github.com/pdxjohnny/testa/issues/156\n']: Subprocess.STDOUT_READLINE:  1 file changed, 1 insertion(+)
+DEBUG:dffml.AliceCliAlicepleasecontributerecommendedcommunitystandardsoverlaygit:ContributeReadmeMdImplementationContext:['git', 'commit', '-sm', 'Recommended Community Standard: README\n\nCloses: https://github.com/pdxjohnny/testa/issues/156\n']: Subprocess.STDOUT_READLINE:  create mode 100644 README.md
+DEBUG:dffml.MemoryOperationImplementationNetworkContext:Outputs: {'result': 'alice-contribute-recommended-community-standards-readme'}
+DEBUG:dffml.MemoryOperationImplementationNetworkContext:---
+DEBUG:dffml.MemoryOperationImplementationNetworkContext:[DISPATCH] alice.cli.AlicePleaseContributeRecommendedCommunityStandardsOverlayGitHubPullRequest:readme_pr
+DEBUG:dffml.MemoryOrchestratorContext:[https://github.com/pdxjohnny/testa]: dispatch operation: alice.cli.AlicePleaseContributeRecommendedCommunityStandardsOverlayGitHubPullRequest:readme_pr
+DEBUG:dffml.MemoryLockNetworkContext:Operation(name='alice.cli.AlicePleaseContributeRecommendedCommunityStandardsOverlayGitHubPullRequest:readme_pr', inputs={'repo': AliceGitRepo, 'base': repo.git.base.branch, 'head': repo.readme.git.branch, 'title': github.pr.title, 'body': github.pr.body}, outputs={'result': ReadmePR}, stage=<Stage.PROCESSING: 'processing'>, conditions=[], expand=[], instance_name='alice.cli.AlicePleaseContributeRecommendedCommunityStandardsOverlayGitHubPullRequest:readme_pr', validator=False, retry=0) acquiring: 27a83531-85ca-4925-a4ed-0556999e1818(GitRepoSpec(directory='/tmp/dffml-feature-git-yw8kwexw', URL='https://github.com/pdxjohnny/testa'))
+DEBUG:dffml.MemoryLockNetworkContext:Acquiring: 27a83531-85ca-4925-a4ed-0556999e1818(GitRepoSpec(directory='/tmp/dffml-feature-git-yw8kwexw', URL='https://github.com/pdxjohnny/testa')) (now held by Operation(name='alice.cli.AlicePleaseContributeRecommendedCommunityStandardsOverlayGitHubPullRequest:readme_pr', inputs={'repo': AliceGitRepo, 'base': repo.git.base.branch, 'head': repo.readme.git.branch, 'title': github.pr.title, 'body': github.pr.body}, outputs={'result': ReadmePR}, stage=<Stage.PROCESSING: 'processing'>, conditions=[], expand=[], instance_name='alice.cli.AlicePleaseContributeRecommendedCommunityStandardsOverlayGitHubPullRequest:readme_pr', validator=False, retry=0))
+DEBUG:dffml.MemoryOperationImplementationNetworkContext:---
+DEBUG:dffml.MemoryOperationImplementationNetworkContext:Stage: PROCESSING: alice.cli.AlicePleaseContributeRecommendedCommunityStandardsOverlayGitHubPullRequest:readme_pr
+DEBUG:dffml.MemoryOperationImplementationNetworkContext:Inputs: {'repo': GitRepoSpec(directory='/tmp/dffml-feature-git-yw8kwexw', URL='https://github.com/pdxjohnny/testa'), 'base': 'main', 'head': 'alice-contribute-recommended-community-standards-readme', 'title': 'Recommended Community Standard: README', 'body': 'Closes: https://github.com/pdxjohnny/testa/issues/156'}
+DEBUG:dffml.MemoryOperationImplementationNetworkContext:Conditions: {}
+DEBUG:dffml.AliceCliAlicepleasecontributerecommendedcommunitystandardsoverlaygithubpullrequest:ReadmePrImplementationContext:Running ['gh', 'pr', 'create', '--base', 'main', '--head', 'alice-contribute-recommended-community-standards-readme', '--body', 'Closes: https://github.com/pdxjohnny/testa/issues/156', '--title', 'Closes: https://github.com/pdxjohnny/testa/issues/156'], {'cwd': '/tmp/dffml-feature-git-yw8kwexw'}
+DEBUG:dffml.AliceCliAlicepleasecontributerecommendedcommunitystandardsoverlaygithubpullrequest:ReadmePrImplementationContext:['gh', 'pr', 'create', '--base', 'main', '--head', 'alice-contribute-recommended-community-standards-readme', '--body', 'Closes: https://github.com/pdxjohnny/testa/issues/156', '--title', 'Closes: https://github.com/pdxjohnny/testa/issues/156']: Subprocess.STDERR_READLINE: pull request create failed: GraphQL: Head sha can't be blank, Base sha can't be blank, No commits between main and alice-contribute-recommended-community-standards-readme, Head ref must be a branch, Base ref must be a branch (createPullRequest)
+Traceback (most recent call last):
+  File "/home/pdxjohnny/Documents/python/dffml/dffml/df/memory.py", line 1277, in run_dispatch
+    outputs = await self.run(
+  File "/home/pdxjohnny/Documents/python/dffml/dffml/df/memory.py", line 1242, in run
+    return await self.run_no_retry(ctx, octx, operation, inputs)
+  File "/home/pdxjohnny/Documents/python/dffml/dffml/df/memory.py", line 1220, in run_no_retry
+    outputs = await opctx.run(inputs)
+  File "/home/pdxjohnny/Documents/python/dffml/dffml/df/base.py", line 544, in run
+    result = await result
+  File "/home/pdxjohnny/Documents/python/dffml/entities/alice/alice/cli.py", line 482, in readme_pr
+    await dffml.run_command(
+  File "/home/pdxjohnny/Documents/python/dffml/dffml/util/subprocess.py", line 138, in run_command
+    async for _, _ in run_command_events(
+  File "/home/pdxjohnny/Documents/python/dffml/dffml/util/subprocess.py", line 83, in run_command_events
+    raise RuntimeError(
+RuntimeError: ['gh', 'pr', 'create', '--base', 'main', '--head', 'alice-contribute-recommended-community-standards-readme', '--body', 'Closes: https://github.com/pdxjohnny/testa/issues/156', '--title', 'Closes: https://github.com/pdxjohnny/testa/issues/156']: pull request create failed: GraphQL: Head sha can't be blank, Base sha can't be blank, No commits between main and alice-contribute-recommended-community-standards-readme, Head ref must be a branch, Base ref must be a branch (createPullRequest)
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/pdxjohnny/Documents/python/dffml/dffml/df/memory.py", line 1277, in run_dispatch
+    outputs = await self.run(
+  File "/home/pdxjohnny/Documents/python/dffml/dffml/df/memory.py", line 1242, in run
+    return await self.run_no_retry(ctx, octx, operation, inputs)
+  File "/home/pdxjohnny/Documents/python/dffml/dffml/df/memory.py", line 1220, in run_no_retry
+    outputs = await opctx.run(inputs)
+  File "/home/pdxjohnny/Documents/python/dffml/dffml/df/base.py", line 544, in run
+    result = await result
+  File "/home/pdxjohnny/Documents/python/dffml/entities/alice/alice/cli.py", line 334, in cli_run_on_repo
+    await dffml.run_dataflow.run_custom(
+  File "/home/pdxjohnny/Documents/python/dffml/dffml/operation/dataflow.py", line 203, in run_custom
+    async for ctx, result in octx.run(subflow_inputs, parent=self.octx):
+  File "/home/pdxjohnny/Documents/python/dffml/dffml/df/memory.py", line 1689, in run
+    raise exception
+  File "/home/pdxjohnny/Documents/python/dffml/dffml/df/memory.py", line 1857, in run_operations_for_ctx
+    raise OperationException(
+dffml.df.base.OperationException: alice.cli.AlicePleaseContributeRecommendedCommunityStandardsOverlayGitHubPullRequest:readme_pr({'repo': AliceGitRepo, 'base': repo.git.base.branch, 'head': repo.readme.git.branch, 'title': github.pr.title, 'body': github.pr.body}): {'repo': GitRepoSpec(directory='/tmp/dffml-feature-git-yw8kwexw', URL='https://github.com/pdxjohnny/testa'), 'base': 'main', 'head': 'alice-contribute-recommended-community-standards-readme', 'title': 'Recommended Community Standard: README', 'body': 'Closes: https://github.com/pdxjohnny/testa/issues/156'}
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/pdxjohnny/.local/bin/alice", line 33, in <module>
+    sys.exit(load_entry_point('alice', 'console_scripts', 'alice')())
+  File "/home/pdxjohnny/Documents/python/dffml/dffml/util/cli/cmd.py", line 282, in main
+    result = loop.run_until_complete(cls._main(*argv[1:]))
+  File "/usr/lib/python3.9/asyncio/base_events.py", line 642, in run_until_complete
+    return future.result()
+  File "/home/pdxjohnny/Documents/python/dffml/dffml/util/cli/cmd.py", line 248, in _main
+    return await cls.cli(*args)
+  File "/home/pdxjohnny/Documents/python/dffml/dffml/util/cli/cmd.py", line 234, in cli
+    return await cmd.do_run()
+  File "/home/pdxjohnny/Documents/python/dffml/dffml/util/cli/cmd.py", line 213, in do_run
+    return await self.run()
+  File "/home/pdxjohnny/Documents/python/dffml/entities/alice/alice/cli.py", line 585, in run
+    async for ctx, results in dffml.run(
+  File "/home/pdxjohnny/Documents/python/dffml/dffml/high_level/dataflow.py", line 231, in run
+    async for ctx, results in ctx.run(*input_sets, strict=strict):
+  File "/home/pdxjohnny/Documents/python/dffml/dffml/df/memory.py", line 1689, in run
+    raise exception
+  File "/home/pdxjohnny/Documents/python/dffml/dffml/df/memory.py", line 1857, in run_operations_for_ctx
+    raise OperationException(
+dffml.df.base.OperationException: alice.cli.AlicePleaseContributeRecommendedCommunityStandardsOverlayCLI:cli_run_on_repo({'repo': CLIRunOnRepo}): {'repo': 'https://github.com/pdxjohnny/testa'}
+```
