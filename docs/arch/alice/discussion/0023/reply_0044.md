@@ -1,1 +1,2 @@
 - Map activies in recorded / streamed sessions to link up issues, branches, prs, chats, etc.
+- Tap into the matrix, step into the flow, use the force, 6th (Nth conceptual models with acuracy dejavu)
