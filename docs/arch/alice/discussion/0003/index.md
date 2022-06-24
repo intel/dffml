@@ -11,3 +11,10 @@
 - Manifests should also link to outputs they return or create in other systems
   - If there is a direct return value it should be treated as it's own manifest we reference with how to interpret the data returned
   - If the objects created are not returned directly those manifests should be referenced as well.
+- Manifests should also describe what failure conditions might happen. This could like to those non direct manifests. For instance, if you cancel this thing in the middle, 
+- For inventory
+  - Software Source
+  - Software Binary
+  - Hardware Source
+  - Hardware Interface
+  - Service (HTTP, SMTP, etc.)
