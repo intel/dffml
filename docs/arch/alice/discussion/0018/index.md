@@ -1,0 +1,1 @@
+To implement and interface one but satisfy system usage contraints. I.e. must be ready to accept certain events (manifest) and fulfill contract. Might also need to give certain events (inputas manifest)
