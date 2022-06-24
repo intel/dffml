@@ -1,4 +1,4 @@
-- First draft of RFC: 743256be10d03bf32226d22fcbbfa43d55787d14
+- First draft of RFC: edcf9ec177e721de1fa72bee429b30e57654ac4c
 - RBAC on DIDs via provenance and dynamic trust relationships
 - Failure Mode Analysis
   - For each compoeent of infra srcutrue you use you define failure modes as strategic plans outputs
