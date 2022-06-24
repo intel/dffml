@@ -1,0 +1,1 @@
+Provenance for files on linux fs based on who wrote to them (what processes) only trust files coming from attested processes
