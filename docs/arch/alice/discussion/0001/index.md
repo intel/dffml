@@ -1,0 +1,1 @@
+By convention operations which have a single output we usually name that output `result`
