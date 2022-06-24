@@ -4,4 +4,5 @@
   - https://github.com/TBD54566975/tbdex-protocol/blob/main/lib/README.md
   - https://github.com/TBD54566975/collaboration/blob/main/milestones/MILESTONE_001.md
   - https://github.com/TBD54566975/ssi-sdk
+  - https://github.com/TBD54566975/ssi-service
     - This is a ODAP gateway
