@@ -8,4 +8,5 @@
   - The bleeding edge which is also referred to as the “state of the art”
 - onward and upward
 - A tuned brute force approach is just the agregate of the most effective domain specific approaches
+- Attested TDX checking account funds check initiate ACH transfer to avoid debt card fees
 - https://github.com/in-toto/demo
