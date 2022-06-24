@@ -1,7 +1,8 @@
 - https://mobile.twitter.com/XMPPwocky/status/1526237836935954432
   - https://github.com/tweag/trustix
   - Nix based builds we should check out
-- pako
+- https://github.com/intel/dffml/discussions/1382#discussioncomment-2762256
+  - pako
   - > zlib port to javascript, very fast!
   - https://nodeca.github.io/pako/
 - do city simulator
