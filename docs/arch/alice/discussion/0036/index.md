@@ -10,7 +10,7 @@
 - [Preface](https://github.com/intel/dffml/discussions/1369#discussion-4023096)
 - [Introduction and Context](https://github.com/intel/dffml/discussions/1369#discussioncomment-2603280)
 
-#### Volume 1: Alice's Adventures in Wonderland
+#### Volume 1: Coach Alice
 
 - [Down the Dependency Rabbit-Hole Again](https://github.com/intel/dffml/discussions/1369#discussioncomment-2663771)
 
