@@ -48,7 +48,7 @@ graph LR
 ```
 
 <details>
-<summary>Test</summary>
+<summary>Links to Repo Metric Visualizations</summary>
 
 | Repo                           | Report URL                                         |
 |--------------------------------|----------------------------------------------------|
