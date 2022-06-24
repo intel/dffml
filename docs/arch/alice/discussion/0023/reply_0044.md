@@ -8,3 +8,9 @@
     - It can manage how it fails
     - Backpressure is watching the infinate stream and it's monitoring and watching and detecting if it's oversubscribing the resources available
     - People are using elixir with rust
+    - We deploy an elixir app
+      - We give a stream of data to the pipeline
+      - The produce plucks the head of the stream for the processes downstrema to do their work and it will stich the data bcak togethere. I twill partiion the data in parallel and then 
+      - If your process crashes, the supervision tree decides what to do (strategic plans)
+        - Model in elixir is crash, then supervisers break down
+  - Broadway is what is producing the events, flow is what
