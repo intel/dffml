@@ -1,6 +1,6 @@
 # [Volume 0: Architecting Alice: Preface](https://github.com/intel/dffml/discussions/1369#discussion-4023096)
 
-> Volume 0 is our planning for our tutorial series which will run from May 2022 to June 2023. Planned end date, last post for volume 1 ends there.)
+> Planning for our tutorial series which will run from May 2022 to June 2023. Planned end date, last post for volume 1 ends there. Volume 0 will be updated frequently throughout. It is our ADRs and our plans and will be a living document and contributable to by all.
 
 ## Engineering Logs
 
