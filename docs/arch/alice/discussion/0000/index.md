@@ -117,7 +117,7 @@ In this N volume tutorial series we roll Alice. (Rolling release, rolling softwa
 
 ## Priority Number 1
 
-Provide a clear, meticulously validated, ubiquitously adopted reference architecture for a freedom and privacy preserving compassionate egalitarian Artificial General Intelligence (AGI) which respects the first law of robotics.
+Provide a clear, meticulously validated, ubiquitously adopted reference architecture for a freedom, privacy, security, and happiness preserving egalitarian Artificial General Intelligence (AGI).
 
 To do so we must enable the AGI with the ability to act in response to the current system context where it understands how to predict possible future system contexts and understands which future system contexts it wishes to pursue are acceptable according to guiding strategic plans (such as do no harm). We must also ensure that human and machine can interact via a shared language, the open architecture.
 
