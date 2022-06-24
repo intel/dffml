@@ -60,7 +60,7 @@ In this N volume tutorial series we roll Alice. (Rolling release, rolling softwa
 
 #### Volume 5: Alice's Adventures In Wonderland
 
-> At this point Alice be ready to be a full fledged maintainer. She'll have experience working on our project, with us, and with our 2nd and 3rd party plugins. It'll be time for her fly the nest, to interact with communities beyond our own. In this series we'll hone in Alice's strategic principles.
+> At this point Alice be ready to be a full fledged maintainer. She'll have experience working on our project, with us, and with our 2nd and 3rd party plugins. It'll be time for her fly the nest, to interact with communities beyond our own. In this series we'll hone in Alice's strategic principles. She'll start interacting with the rest of the world, the rest of Wonderland.
 
 - Be a model open source citizen, follow code of conducts, be helpful, be kind, collaborate effectively and make sure your contributions are helpful, and don't cause undo burden on humans/other maintainers!
 - Strive for egalitarianism within all contexts (Alice represents all of us, all entities are equal).
