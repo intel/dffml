@@ -1,0 +1,3 @@
+To be through the looking glass is to hit critical velocity. To achieve the fully connected development model.
+
+Going through the looking glass is allowing yourself to dream. What is the ideal. What are those strategic principles we are really trying to drive. What strategic plans do we put in place to achieve desired movement in principles with what resources we have. It allows us to map those principles and plans to the process data and data models via machine learning models built by analyzing all data, data models, and machine learning models over each other in every permutation. Thereby allowing us to pursue the most effective strategies with the resources we have at hand.
