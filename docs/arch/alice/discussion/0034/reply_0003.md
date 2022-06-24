@@ -1,0 +1,1 @@
+Anything that can be checkpointed and restored on linux could be part of a cached system context / input network / opimp network.
