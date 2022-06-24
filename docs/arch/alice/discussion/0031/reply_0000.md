@@ -1,0 +1,1 @@
+https://www.slideshare.net/leonanavi/ab-linux-updates-with-rauc-and-metarauccommunity-now-in-the-future
