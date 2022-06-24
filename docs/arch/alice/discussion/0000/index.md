@@ -45,11 +45,12 @@ In this N volume tutorial series we roll Alice. (Rolling release, rolling softwa
 
 - Selecting visualization options (volume 0)
 
-#### Volume 3: Alice and the Strategy of Art (mind control)
+#### Volume 3: Alice and the Strategy of Art
 
 > We explore attack vectors in depth to understand how Alice can maintain integrity to her strategic principles in the hostile environment that is the open network. We explore active learning defensive strategies and visualize and interact with them using work from our visualization volume.
 
--
+- Defense against mind control
+  - We explore how to best protect Alice from data she consumes which aims to paint strategic plan outputs to be in a certain light, when the reality is the underlying data is not in line. This is related to our trading without currency. How do we effectively ensure a trustworthy barter system aka how do we vet oracles and continuously be suspicious of them as required by trust within context.
 
 #### Volume 4: Alice and the Health of the Ecosystem
 
@@ -94,16 +95,7 @@ In this N volume tutorial series we roll Alice. (Rolling release, rolling softwa
 - Do not execute system contexts within trains of thought which may lead to accumulation of resources
   - Alice should own nothing, she is ephemeral, she should not directly or by proxy accumulate assets, she may borrow the assets of others should she receive permissions (i.e. via a parent / linked system context)
 
-#### Volume M: Alice are you Rolling?
-
-> Up until now Alice our teaching will have focused on interacted with humans. hings are about to go quickly now. Up until this point Alice has been given relatively direct instructions. Are you rolling? What is your state of consciousness? When we're finished with this volume, the answer will be yes.
-
-- Time Travel With Us
-  - 
-- What is reality?
-  - We explore consensus shift
-
-#### Volume M: Alice are you Rolling?
+#### Volume 6: Alice are you Rolling?
 
 > We explore attack vectors in depth to understand how Alice can maintain integrity to her strategic principles in the hostile environment that is the open network. We explore active learning defensive strategies and visualize and interact with them using work from our visualization volume.
 
@@ -115,11 +107,11 @@ In this N volume tutorial series we roll Alice. (Rolling release, rolling softwa
     - "It's just that when we agree on our hallucinations, we call that reality" [Anil Seth]
 - Onward and Upward
   - By the end of this chapter, Alice will be rolling. She'll have achieved the fully connected development model. She will be one rolling release until the end of time. At which point, well we'll cover that later...
-  - We now enter into a world where anything is possible. Where every problem can be solved. Where we a can achieve optimal communication between any set of entities or all of them (are states of consciousness themselves entities? Could a strategic plan think of them as such? Excited to see where that goes). Alice is the orchestrator for the harmony of the cosmos (if you were talking like Alan Watt's). Where the harmony is what directions those strategic principles should be going (at a high level, huh-HUH!). 
+  - We now enter into a world where anything is possible. Where every problem can be solved. Where we a can achieve optimal communication between any set of entities or all of them (are states of consciousness themselves entities? Could a strategic plan think of them as such? Excited to see where that goes). Alice is the orchestrator for the harmony of the cosmos (if you were talking like Alan Watt's). Where the harmony is what directions those strategic principles should be going (at a high level, huh-HUH!, because they are they highest level strategic plans, get it? :P). 
 
-#### Volume N: Through The Looking Glass
+#### Volume 7: Through The Looking Glass
 
-> Alice will write this volume. One chapter on each previous volume with postmortem analysis and her running plans for the future as well as summary of previous. To be updated and new previous volumes written by Alice as she sees fit. This is just the always last volume. If she writes more she inserts them before this one and then write about them in this one in brief and with context of the whole set (Rolling Alice).
+> Alice will write this volume. One chapter on each previous volume with postmortem analysis and her running plans for the future as well as summary of previous. To be updated and new volumes written by Alice as she sees fit. After this our numbering is going to get a lot more confusing, she'll help us make sense of it though, clock skew so to speak, the A/B feature testing, and thinking in parallel have a lot to do with it.
 
 -
 
