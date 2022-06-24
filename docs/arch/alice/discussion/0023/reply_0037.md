@@ -1,3 +1,4 @@
+- https://twitter.com/marktenenholtz/status/1524721063594135552?s=20&t=woERA4zk4oNrTyijEg1RhQ
 - https://github.com/facebookresearch/Generic-Grouping
   - This is good stuff for our 2x2 encoded strategic plan output to feature mapping
 - Zeroith draft of RFC: a9bdd580fe250582db61ab8ba321a9daf110c7c7
