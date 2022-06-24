@@ -5,3 +5,7 @@ There is an equilibrium between chaos and complete control (measured as 100% of 
 Usage stats of a universal blueprint within downstream blueprints should be taken into account by a strategic plan which vets new thoughts (dataflows/+system contexts) to prioritize (HAVEN'T LOOKED AT THIS YET, flush this out) thoughts which are executing within successful trains of thought relative to pace of progress of other trains of thought (clustering model on dataflows/system contexts to determine similar trains of thought).
 
 After new system contexts are issued by strategic decision maker, there should be a prioritizer which decides which thoughts get played out (dataflows with system context executed) on what available resources (orchestrators).
+
+Streamline the research to usage pipeline of the ML ecosystem (researchers making models and software engineers using them in real world applications). Want to make it easy to take from the ideation phase to production very quickly deploying to any environment, effectively create a unified programming interface across UI/client and server. Combining threat model data with 
+
+Operations should expose (historical) data on timeouts clients should try waiting before raising timeout issues.
