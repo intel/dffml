@@ -20,6 +20,6 @@
   - did is the system/orchestartor context id
   - did doc is the manifest, is the operation inputs
   - service endpoint is the dataflow or operation we execute
-    - Some callers will have already defined via the did method the dataflow, and we may be just executing an operation
+    - Some callers will have already defined via the did method the dataflow, and we may be just executing an operation where the serviceEndpoint is just the operation name, and it is understood by the executor how to pass the did doc as the input data to the impelementation
 - We should modify operations and the orchestrators to not pass any orchestrator context or orchestrator context sub variables that are not predeclared. 
   - Declare what of anything an Operation wants to use from the orchestrator context up front in the allowlist and declare what the acceptable interface definition is (class, manifest) 
