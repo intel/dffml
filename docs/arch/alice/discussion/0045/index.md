@@ -6,16 +6,27 @@ produce a markdown file, INNERSOURCE.md, which describes the health
 of the org at the scope desired. By default this is the repo scope,
 this would mean the repo and it's dependencies.
 
-Because we do not yet have 
+At time of writing we do not yet have dependency tree creation flushed
+out from ShouldI / CVE Bin Tool / SBOM traversal. We will instead add
+an overlay which specifies we should pull repos to report on from the
+source which we developed for the InnerSource collector example.
 
 ```console
 $ alice please contribute report on innersource health
 ```
 
+The following is an example report
+
 ---
+
+# InnerSource Org Health
 
 ```mermaid
 pie title Contributing
     "Has file" : 100
     "Does not have file" : 100
 ```
+
+<detail>
+<summary>Test</summary>
+</detail>
