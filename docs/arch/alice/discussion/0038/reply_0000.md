@@ -1,0 +1,1 @@
+Our strategic umbrella (new term for gatekeeper). She shields us executing unacceptable  decisions (system contexts, rain umbrella unacceptable system context is water on holder, using the umbrella we attempt to avoid these system contexts but its not perfect, its a filter) 
