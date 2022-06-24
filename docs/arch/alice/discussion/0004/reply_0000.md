@@ -1,3 +1,4 @@
+- We’re enabling a two way sync between time. We can write any chain of system contexts. A two way sync of state across representations of state with integrated risk management.
 - Understand all the layers of the stack. Understand calling conventions within and between them as protocols. Represent via heterogeneous serialization format (web3)
 - Its like SWIG but cross everything via always option to I/O to web3
 - Alice, the AI, the entity, is what understands how to initiate communication with and work with any other entities under any organizational or other constraints to get a job done, to move strategic principals in desired direction. People who don’t speak the same language moving a couch. Communication requires context and may involve language but requires a shared agreement on “reality”
