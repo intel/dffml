@@ -5,3 +5,8 @@ on k8s crd creation we effectively have an Alice start which is given system con
 We need to be rerunning the accuracy on the strategic plan model after every execution. This will have the effect that in Flash Boys where everyone wanted to recreate the SEC approved something number so they could abitrare faster than the latency of the time it took others without the model to see the new price. We want to predict dataflows that satisfy the output constraints. We do this by using our stratigic plan to I/O models.
 
 if everything is a encoder then create encoder/decoder models on all permutations of inputs and outputs across stratigic plans and system context I/O
+
+
+We can leverage task 2: caching to use sources to map input values within system contexts including strategic plan inputs and outputs into dataset sources. We can leverage dataflows to modify data in different ways as it is saved to and loaded from the cache. For example run inputs with locality of file through uploads to blob storage or personal datastore. Then create references in db A and update references used in 
+
+play with DIDs and personal datastores before making any input networks. Create proxies from web2 to web3 which are DFFML agnostic but are packaged as dffml-service-web3-did|datastore|relay|bdrige-irc|smtp etc.
