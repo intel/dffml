@@ -26,7 +26,7 @@
 - Living Threat Models Are Better Than Dead Threat Models
   - https://us06web.zoom.us/j/89207603012?pwd=bUF2c2Q1WWthUm01WS9hREZsOVBQQT09
 - Demo
-  - [ ] Show generation of THREATS.md using `dffml merge`
+  - [ ] Show generation of THREATS.md using `alice threatsmerge`
   - [ ] Explain Open Architecture (above)
   - [ ] Talk to Manifest Schema (https://github.com/intel/dffml/discussions/1369#discussioncomment-2603269)
   - [ ] Explain demo (below)
