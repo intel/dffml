@@ -1,6 +1,7 @@
 - https://mobile.twitter.com/XMPPwocky/status/1526237836935954432
   - https://github.com/tweag/trustix
   - Nix based builds we should check out
+- https://www.radicalxchange.org/media/announcements/a-new-chapter-for-radicalxchange/
 - DFFML clone git repos
   - https://github.com/intel/dffml/discussions/1382#discussioncomment-2762256
   - pako: https://nodeca.github.io/pako/
