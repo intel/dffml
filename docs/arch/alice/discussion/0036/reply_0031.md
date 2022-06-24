@@ -1,0 +1,1 @@
+Alice helps us identify rabbit holes  Trains of thought we dont wiah to continue down. Pathsother devs have taken to no avail.explain your thought pricess tobehr and she help guide you
