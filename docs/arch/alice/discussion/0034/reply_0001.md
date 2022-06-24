@@ -1,0 +1,1 @@
+Want users to be able to do some functionality, generate mermaid svg, don't care how it's done. If dataflow defined and executed across client and server. It can tell if being executed from client that it can just render the svg itself. If flow ran from server side it would start container. Directory on one machine can be transfered to another machine using zip up strategy.
