@@ -1,0 +1,1 @@
+Serializable graph data structure with linkage, can be used for "shared config", just add another property like an inode to the `plugin, config` baseconfigurable code in `dffml.base`. Then populate `configs` based off instantiated plugins with inodes in `shared_configs` section.
