@@ -1,8 +1,30 @@
-Target:
+# Alice's First Presentation
+
+> Tutorial developed May 2022
+
+DFFML has been lacking public threat model documentation. It's important the main package, all the plugins, and the environment resulting from every tutorial and example be thoroughly validated for security. This means we need to understand the security posture of those environments. A [Threat Model](https://owasp.org/www-community/Threat_Modeling) identifies assets, threats, and mitigations. It's a document we want to keep up to date so end users know what kind of security guarantees they have about their environment, and what trade offs or considerations they should be aware of. In the spirt of automating our documentation validation, we should also automate our the creation and validation of threat models associated with the environments produced as a result of our documentation. Therefore we will spend the month of May teaching Alice her first skill, threat modeling!
+
+This month we'll only be able to scratch the surface of what Alice would need to know to create complete threat models. As we end our month we'll talk about how we'll measure that completeness in a future tutorial, and how we'll leverage concurrency and parallelism to raise the value of our completeness over time as Alice learns more about her new skill.
+
+
+
+## Target
 
 By June 1st, Alice should be ready to analyze projects (repo or set of repos) and present threat models on those projects. She will talk to a slide deck she creates by making a system context that gets executed to produce a PDF of the slides. The slides will use inputs from the threat model data. Threat models will be created as hybrid reStructuredText and markdown Sphinx sites (for mermaid diagrams rendering on GitHub by default, allow for using markdown). Alice will read the content of the report which will not be copied verbatim to slides, only graphics for each section will be copied to slides.
 
-Plan:
+## Plan
+
+shouldi is ripe for expansion. Let's see if we can pick a set of repos and make sure Alice can create basic threat models on them via pure static analysis. Build an SBOM, run CVE Bin Tool against it. Traverse dependency trees to get all installed modules. Map network functions to dependencies. Guess what activities are happening based off of functionalities of underlying stdlib libraries where used.
+
+Let's then expand upon that and add dynamic analysis.
+
+## People
+
+- John Whiteman was planning on writing collectors and analyzing AST
+- Michael could help us generate PDFs from Sphinx sites
+- 
+
+## Checklist
 
 - [ ] Dataflow as class
 - [ ] Fix TODO on watching new contexts in memory orchestrator
