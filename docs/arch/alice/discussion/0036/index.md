@@ -1,4 +1,4 @@
-# [Volume 1: Chapter I: Down the Rabbit-Hole](https://github.com/intel/dffml/discussions/1369#discussioncomment-2663771)
+# [Volume 1: Chapter I: Down the Dependency Rabbit-Hole Again](https://github.com/intel/dffml/discussions/1369#discussioncomment-2663771)
 
 > May 2022 tutorials
 
@@ -12,7 +12,7 @@
 
 #### Volume 1: Alice's Adventures in Wonderland
 
-- [Down the Rabbit-Hole](https://github.com/intel/dffml/discussions/1369#discussioncomment-2663771)
+- [Down the Dependency Rabbit-Hole Again](https://github.com/intel/dffml/discussions/1369#discussioncomment-2663771)
 
 DFFML has been lacking public threat model documentation. It's important the main package, all the plugins, and the environment resulting from every tutorial and example be thoroughly validated for security. This means we need to understand the security posture of those environments. A [Threat Model](https://owasp.org/www-community/Threat_Modeling) identifies assets, threats, and mitigations. It's a document we want to keep up to date so end users know what kind of security guarantees they have about their environment, and what trade offs or considerations they should be aware of. In the spirt of automating our documentation validation, we should also automate our the creation and validation of threat models associated with the environments produced as a result of our documentation. Therefore we will spend the month of May teaching Alice her first skill, threat modeling!
 
