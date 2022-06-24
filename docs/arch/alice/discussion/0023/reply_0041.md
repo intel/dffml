@@ -4,3 +4,4 @@
   - https://github.com/cilium/cilium
 - legend of zelda style sound effects on copy from browser paste to terminal
 - Remember remember trail
+- Wallet interoperability
