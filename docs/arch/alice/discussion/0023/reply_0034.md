@@ -9,3 +9,6 @@ https://identity.foundation/peer-did-method-spec/#generation-method
 
 - security: Do not print out secrets from configs ever
   - https://github.com/intel/dffml/issues/1381
+
+- struggled to make Ed25519 `ssh-keygen` generate to PEM format
+  - Ed25519 keys always use the new private key format
