@@ -1,1 +1,2 @@
 - To time travel we require 3 things. What our starting state is, what our ending state is, and how we are going to get there. These are all described when you combine the upstream, the overlay and the orchestrator.
+- `SystemContext` is a different representation of `Time`, the combined form (maybe?)
