@@ -4,6 +4,8 @@
      - dataflow running operation is dispatched
        - wrapped by prioritizer
          - prioritizer checks parent / provenance information. If coming with a tbDEX ASK, reply do full before prioritizing
+         - currency in ASK is teh DID of the a system context askign to be executed
+         - currency in the COnditionalOffer is the DID of the system ccontext which can be executed by the operation with provenacne information attached.
 - reset
   - What do we want?
     - CVE Bin Tool scan distoros
