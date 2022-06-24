@@ -1,4 +1,4 @@
-- an algorithm for a generic entity
+- an algorithm for a generic entity, modeling the mind
 - You can look at any problem (i.e. system context) through N different lenses. Through the eyes of N different entities. What each person “sees” or rather, experiences, is a combination of raw data (feature extraction) and feel. Mind. interpretation. Perspective. The results from different output flows overlayed on a cached or in progress execution, hypthesis, etc. 
 - https://github.com/cilium/tetragon
 - https://github.com/tokio-rs/axum
