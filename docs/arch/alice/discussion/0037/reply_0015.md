@@ -9,3 +9,5 @@ thise can be provenance with attesttionby listed prties
 
 
 optimizer suggesters. We reward thought which offer us better ways to go about our process. For example suggest overlay to compule pythong packages using type hints to c support via suggesting context with iverlay applied when apllied overlay has provenance to suggester. Could have had bid asking for X improvement as predicted by some mode or seen after implementation. . If we all p
+
+Could have uptime claim or something
