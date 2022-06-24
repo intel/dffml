@@ -1,5 +1,7 @@
 ### 2022-05-25 UCAN Community Meeting
 
+- Mission Objective
+  - UCAN seems like a good way to do OIDC in the near future. From what we can tell this could be very useful in embedded applications. We're hoping we can leverage UCAN/Verifiable Credentials to get TPM/SGX/TDX attestations from hardware to incorporate into provenance/attestation information. DIDs and UCAN are the primitives we can use for data and auth in web3. All devices can speak VC, we can do that similar to Peer DID/DIDCommv2. It's just PGP on JSON blobs. Engaging with the https://ucan.xyz community to identify web2/web3 gateways of interest from an auth perspective (ODIC GitHub Actions Token -> UCAN token? Peer DID referencing the ODIC token? Hoping we can ensure their auth format will support attestations from DICE devices. Then we can have our firmware through WASM all talking the same auth which will make things much easier as Alice moves through the devices.
 - 10:00 AM PDT
   - https://lu.ma/ucan
   - https://github.com/ucan-wg/spec/discussions/66
