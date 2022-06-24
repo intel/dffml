@@ -5,6 +5,8 @@ can use web3 as cve bin tool mirrors / cia torrent / webtorrent
 
 tbdex currency as DID. DID method are like CLI command config are like operation inputs. Can make currency therefore sets of values. I will trade you things matching these strategic principles for execution of this off chain contract.
 
+> We're getting rid of money
+
 thise can be provenance with attesttionby listed prties
 
 
