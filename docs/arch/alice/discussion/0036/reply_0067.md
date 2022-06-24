@@ -3,6 +3,7 @@
   - https://www.threatmodelingmanifesto.org/
 - Threat Model Cheatsheet from OWASP mentions defining the dataflow
   - https://github.com/OWASP/CheatSheetSeries/blob/master/cheatsheets/Threat_Modeling_Cheat_Sheet.md#define-data-flow-over-your-dfd
+- https://github.com/OWASP/threat-dragon/issues/437
 - Data Flow serialization is our current Open Architecture
   - We will evolve over time
   - Let's make sure that we include all the items which we would like to see in a manifest
