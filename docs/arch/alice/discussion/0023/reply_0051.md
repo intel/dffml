@@ -67,3 +67,41 @@ query ($owner: String!, $repo: String!) {
 ```console
 $ gh api graphql -F owner='intel' -F repo='dffml' -F query=@intial_discussion_query.graphql | tee output.json | python -m json.tool | tee output.json.formated.json
 ```
+
+**dump_discussion.py**
+
+```python
+import os
+import json
+import pathlib
+import tempfile
+
+
+INPUT = json.loads(pathlib.Path("output.json.formated.json").read_text())
+
+with tempfile.TemporaryDirectory() as tempdir:
+    tempdir_path = pathlib.Path(tempdir)
+    # Loop through all the pinned discussions
+    for discussion_node in INPUT["data"]["repository"]["pinnedDiscussions"][
+        "nodes"
+    ]:
+        print(discussion_node["discussion"]["body"])
+        for comment_node in discussion_node["discussion"]["comments"]["nodes"]:
+            print(comment_node["body"])
+            for reply_node in comment_node["replies"]["nodes"]:
+                print(reply_node["body"])
+```
+
+As is before this comment update
+
+```console
+$ python3 -u dump_discussion.py | wc
+   2566   42911  285694
+```
+
+After removing the first chapter of Alice's Adventures in Wonderland:
+
+```console
+$ python3 -u dump_discussion.py | wc
+   2499   40571  273084
+```
