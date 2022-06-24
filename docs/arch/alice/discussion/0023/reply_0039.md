@@ -6,6 +6,10 @@
          - prioritizer checks parent / provenance information. If coming with a tbDEX ASK, reply do full before prioritizing
          - currency in ASK is teh DID of the a system context askign to be executed
          - currency in the COnditionalOffer is the DID of the system ccontext which can be executed by the operation with provenacne information attached.
+         - settlement receipt could be did doc
+         - This could be impelemented in daaflows applyed as overlays to both Alice and Bob's flows within prirorizers and input networks
+           - Input network must have declared list on instantiation of what inputs it might add at any time. System context is not valid unless all these declared inputs are mapped to operation inputs.
+           - One of thse inputs might be an input which dynamically add more to the declared list. Therefore for the system context ot be valid and the input network to have been used, there must be an operation within the orchetator context which will dealwith this dynamic list modfciation of the input newtowrk to maintain vlaidaisty checking.
 - reset
   - What do we want?
     - CVE Bin Tool scan distoros
