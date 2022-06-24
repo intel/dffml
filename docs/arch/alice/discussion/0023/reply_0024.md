@@ -32,3 +32,5 @@
 - Should at other DID methods?
   - https://w3c.github.io/did-spec-registries/#did-methods
   - Maybe we'll create our data within another IDD method for now and link later for identity aware context have a peer did which links DID attached to individual Input objects (maybe during write out).
+
+![Detailed DID Architecture](https://w3c.github.io/did-core/diagrams/did_detailed_architecture_overview.svg)
