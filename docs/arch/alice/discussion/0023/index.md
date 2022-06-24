@@ -35,6 +35,8 @@ This universal blueprint (system context) is an integral part of creating a shar
 
 The end goal is to create a software architect, Alice. She will consult on existing projects to provide analysis of their architectures and properties such as maintainability, provide guidance for developer workstream prioritization to achieve strategic business goals, and write and maintain codebases herself, accepting contributions from external contributors.
 
+![image](https://user-images.githubusercontent.com/5950433/167047493-7d28ba1d-c6f5-4703-8c53-b4dac6deda91.png)
+
 ### Terminology
 
 - Universal Blueprint
