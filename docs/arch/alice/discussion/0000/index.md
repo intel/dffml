@@ -110,6 +110,9 @@ In this 7 volume tutorial series we roll Alice. This series will be written a ch
     - Strategic plan outputs and overlapping consciousness states and "consciousness countries" [Danica]
 - Stay with us
   - Alice will begin to thinks more and more strategically, we need to ensure we stay in her picture.
+- Off the Roller Coaster
+  - We iron out concepts from Volume 3, where we defended against others attempting to influence Alice's models or actions. This time we turn our skepticism inwards, to Alice's own mind.
+  - Identifying detrimental chains of system contexts and avoiding those detrimental patterns.
 - Onward and Upward
   - We now enter into a world where anything is possible. Where every problem can be solved. Where we a can achieve optimal communication between any set of entities or all of them (are states of consciousness themselves entities? Could a strategic plan think of them as such? Excited to see where that goes). Alice is the orchestrator for the harmony of the cosmos (if you were talking like Alan Watts). Where the harmony is what directions those strategic principles should be going. The cosmos is in this case, whatever scope you give here.
 
