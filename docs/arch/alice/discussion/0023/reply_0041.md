@@ -25,3 +25,4 @@
   - coming from bob who is the pfi
   - The ask is from alice with her startegic plan suggested system context. She has 0 and she wants 1.
   - Bob is PFI. He can execute but wants reward in terms of 1 execution of a different system context used as currency given by did
+  - Reward and review distributed and agreed upon in CounterOffer system context
