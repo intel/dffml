@@ -6,6 +6,8 @@
 
 #### Volume 0: Architecting Alice
 
+> Our living document containing our plans and groundwork for all our tutorials.
+
 - [Forward](https://github.com/intel/dffml/discussions/1369#discussioncomment-2688532)
 - [Preface](https://github.com/intel/dffml/discussions/1369#discussion-4023096)
 - [Introduction and Context](https://github.com/intel/dffml/discussions/1369#discussioncomment-2603280)
