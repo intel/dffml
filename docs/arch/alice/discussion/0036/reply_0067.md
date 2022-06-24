@@ -57,6 +57,10 @@
 
 ---
 
+- [ ] Docker compose analysis to supplement / generate same as `good.json`
+
+---
+
 - The following is the bad threat model John W made
 
 ![image](https://user-images.githubusercontent.com/5950433/173202578-d2d5495b-8c4a-4383-9577-0e807ef442eb.png)
