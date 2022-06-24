@@ -1,1 +1,1 @@
-Focus is always on getting some input data into manifest format. The shim layer. How do we know how to kickstart? shared config thing?
+Focus is always on getting some input data into manifest format. The shim layer. How do we know how to kickstart? shared config thing? Can that be done by just re-using this think about top level context thing.
