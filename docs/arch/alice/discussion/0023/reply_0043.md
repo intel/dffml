@@ -1,3 +1,4 @@
+- You can look at any problem (i.e. system context) through N different lenses. Through the eyes of N different entities. What each person “sees” or rather, experiences, is a combination of raw data (feature extraction) and feel. Mind. interpretation. Perspective. The results from different output flows overlayed on a cached or in progress execution, hypthesis, etc. 
 - https://github.com/cilium/tetragon
 - https://github.com/tokio-rs/axum
 - https://mdformat.readthedocs.io/en/stable/users/installation_and_usage.html#python-api-usage
