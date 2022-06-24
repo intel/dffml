@@ -28,6 +28,8 @@ graph TD
 
 ---
 
+> This section moved to https://github.com/intel/dffml/discussions/1369#discussioncomment-2990097
+
 # Volume 0: Chapter 1: Peace at Last
 
 Clear your mind. Focus.
