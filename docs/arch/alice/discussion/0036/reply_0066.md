@@ -22,3 +22,6 @@
 - https://identity.foundation/credential-manifest/
 - https://github.com/intel/cve-bin-tool
 - https://github.com/johnlwhiteman/living-threat-models
+  - https://github.com/johnlwhiteman/living-threat-models/issues/1
+  - https://github.com/intel/cve-bin-tool/pull/1698
+  - https://github.com/pdxjohnny/pdxjohnny.github.io/blob/dev/content/posts/tricks.md
