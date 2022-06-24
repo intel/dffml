@@ -30,6 +30,12 @@
 
 -
 
+#### Volume X: Alice the Health of the Ecosystem
+
+> OSS ecosystem, package maintenance, etc. talk about scale up
+
+-
+
 ## Priority Number 1
 
 Provide a clear, meticulously validated, ubiquitously adopted reference architecture for a freedom and privacy preserving compassionate egalitarian Artificial General Intelligence (AGI) which respects the first law of robotics.
