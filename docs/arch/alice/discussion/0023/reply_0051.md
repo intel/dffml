@@ -79,17 +79,53 @@ import tempfile
 
 INPUT = json.loads(pathlib.Path("output.json.formated.json").read_text())
 
-with tempfile.TemporaryDirectory() as tempdir:
-    tempdir_path = pathlib.Path(tempdir)
+
+def title_to_filename(title_link_line: str):
+    title = title_link_line[2:]
+    if "[" in title_link_line:
+        title = title_link_line[3:]
+        title = title[: title.index("]")]
+    return title.upper().replace(":", "").replace(" ", "_").replace("-", "_")
+
+
+def output_markdown(
+    graphql_query_output: dict, output_directory: pathlib.Path
+):
     # Loop through all the pinned discussions
-    for discussion_node in INPUT["data"]["repository"]["pinnedDiscussions"][
-        "nodes"
-    ]:
-        print(discussion_node["discussion"]["body"])
-        for comment_node in discussion_node["discussion"]["comments"]["nodes"]:
-            print(comment_node["body"])
-            for reply_node in comment_node["replies"]["nodes"]:
-                print(reply_node["body"])
+    for discussion_node in graphql_query_output["data"]["repository"][
+        "pinnedDiscussions"
+    ]["nodes"]:
+        # Create the filename for the top level file
+        filename = title_to_filename(
+            discussion_node["discussion"]["body"].split("\n")[0]
+        )
+        output_directory.joinpath(
+            "_".join(["ROLLING", "ALICE", f"{0:04}"]) + ".md"
+        ).write_text(discussion_node["discussion"]["body"],)
+        for i, comment_node in enumerate(
+            discussion_node["discussion"]["comments"]["nodes"], start=1
+        ):
+            # Create the filename which will be joined by underscores
+            filename_parts = ["ROLLING", "ALICE", f"{i:04}"]
+            if comment_node["body"].split()[:1] == ["#"]:
+                # If we are in a chapter. Create a directory
+                filename_parts += [
+                    title_to_filename(comment_node["body"].split("\n")[0])
+                ]
+            # Output a file for the comment
+            output_directory.joinpath(
+                "_".join(filename_parts) + ".md"
+            ).write_text(comment_node["body"],)
+            # Output a file for the reply
+            for j, reply_node in enumerate(comment_node["replies"]["nodes"]):
+                output_directory.joinpath(
+                    "_".join(filename_parts + ["REPLY", f"{j:04}"]) + ".md"
+                ).write_text(reply_node["body"],)
+
+
+with tempfile.TemporaryDirectory() as tempdir:
+    output_markdown(INPUT, pathlib.Path(tempdir))
+    os.system(f"tree {tempdir}")
 ```
 
 As is before this comment update
