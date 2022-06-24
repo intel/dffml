@@ -1,1 +1,2 @@
-- The Open Architecture enables hybrid on/off chain smart contacts
+- The Open Architecture enables hybrid on/off chain smart contacts.
+  - It does this by incorporating risk management into architecture definition.
