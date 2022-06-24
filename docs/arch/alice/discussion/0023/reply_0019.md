@@ -37,3 +37,7 @@ When your top level system context is looking at a DID to run dataflow within it
 
 
 ![image](https://user-images.githubusercontent.com/5950433/167244462-ed30727c-4951-4e3e-a4e6-3bc0cf683362.png)
+
+- https://hyperledger.github.io/firefly/overview/data_exchange.html
+  - https://github.com/hyperledger/firefly-dataexchange-https
+  - Can implement data transfer over input network because data exchange supports transfer over arbitrary mechanisms.
