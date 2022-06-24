@@ -12,7 +12,7 @@ some time now.
 > the working event, lock (if we do have a problem with that)
 > and OSSSE UI code. This is to be used as a metaphor showing
 > that not only was she already present in the CLI commands,
-> but she always has been present within the codebase.
+> but her pattern always has been present within the codebase.
 
 In the future we will travel to the past, to the days of
 the metrics and the prophets...
