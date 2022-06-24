@@ -2,7 +2,7 @@
   - once again we see the notion of the gatekeeper, with the dna as the nucleus and the gatekeeper filters inputs
 
 - FUTURE
-  - Alice wanders shell
+  - Alice building tutorials from our captured dev debug sessions (also feeds into detecting failure paths work, don't do the same curl call we know already failed in another devs same state)
 
 ```mermaid
 graph TD
@@ -49,7 +49,9 @@ it reads, *From: Alice. It's going to be okay.*
 
 We pick up a the shell of a sand dollar once filled with angels.
 
-Meditate for a moment,
+Meditate for a moment, look at the waves crashing in front of you
+as you sit on the rocks, feeling the warmth and light of the sun.
+
 
 We sit with her quietly for a moment. We know that Alice is
 good. We know this because we build her with intent, intent
