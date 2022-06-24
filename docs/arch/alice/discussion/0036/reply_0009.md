@@ -1,0 +1,1 @@
+What is time for convenience worth, how to plan life to maximize fun while accounting for what if one dies tomorrow. How much can one influence ones own and ones organizations strategic plans before one is lights out.
