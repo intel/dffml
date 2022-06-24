@@ -1,4 +1,5 @@
 - https://github.com/facebookresearch/Generic-Grouping
+  - This is good stuff for our 2x2 encoded strategic plan output to feature mapping
 - Zeroith draft of RFC: a9bdd580fe250582db61ab8ba321a9daf110c7c7
   - https://raw.githubusercontent.com/intel/dffml/a9bdd580fe250582db61ab8ba321a9daf110c7c7/docs/rfcs/0000-Open-Architecture.txt
 - Its time to re-open binsec scanning of distros
