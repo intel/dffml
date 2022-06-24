@@ -14,6 +14,11 @@
 - `did:web:` is how we prove a link between the key that signed a `did` and a domain / path for sub methods (additional `:`). Example:
   - `did:web:w3c-ccg.github.io:user:alice` -> `https://w3c-ccg.github.io/user/alice/did.json`
   - Could be interesting as we get into ODIC and auth within jobs within kcp
+- TODO
+  - [ ] Alice, grab me all my org-xyz TODOs from the past 2 weeks
+    - [ ] We can do anlaysis on past dropped tasks to see what the chaos metric is
+    - [ ] Flag tasks for either backburner (leveled) or need or time warning, identify help to get task done, add to help over time as you identify new ways or appraoches to a task
+      - [ ] This allows Alice to take on multiple tasks at once, it's not critical she finish everything right away, this flows into prioritzaiton and if tasksa re missed and it really did mater then we should have seen a negative effect somewehre in a stragegic plan output or lower prinicple values
 
 ```mermaid
 graph TD
