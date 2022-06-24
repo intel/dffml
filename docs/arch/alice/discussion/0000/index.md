@@ -1,6 +1,6 @@
 These are notes and scratch work around the purpose and future of the project.
 
-Jump to this https://github.com/intel/dffml/discussions/1369#discussioncomment-2603280 comment for more details on Alice blog post series.
+Jump to this https://github.com/intel/dffml/discussions/1369#discussioncomment-2603280 comment for more details on Alice the maintainer blog post series.
 
 DFFML's Mission: Provide a clear, meticulously validated, ubiquitously adopted reference architecture for an egalitarian Artificial General Intelligence (AGI) which respects the first law of robotics.
 
