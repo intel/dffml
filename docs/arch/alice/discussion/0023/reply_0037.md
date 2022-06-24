@@ -1,4 +1,5 @@
-- First draft of RFC: edcf9ec177e721de1fa72bee429b30e57654ac4c
+- First draft of RFC: a9bdd580fe250582db61ab8ba321a9daf110c7c7
+  - https://raw.githubusercontent.com/intel/dffml/a9bdd580fe250582db61ab8ba321a9daf110c7c7/docs/rfcs/0000-Open-Architecture.txt
 - RBAC on DIDs via provenance and dynamic trust relationships
 - Failure Mode Analysis
   - For each compoeent of infra srcutrue you use you define failure modes as strategic plans outputs
