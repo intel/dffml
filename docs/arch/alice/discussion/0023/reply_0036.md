@@ -1,6 +1,7 @@
 - https://git.coolaj86.com/coolaj86/ssh-to-jwk.js
 - https://words.filippo.io/professional-maintainers/
 - https://words.filippo.io/using-ed25519-keys-for-encryption/
+  - https://github.com/FiloSottile/age/blob/dfa2052cb731a0d9e672d2c25942db78c3c48099/agessh/agessh.go#L202-L246
 - https://www.sciencedirect.com/science/article/pii/S2096720922000136
 - https://libsodium.gitbook.io/doc/quickstart#how-can-i-sign-and-encrypt-using-the-same-key-pair
   - We don't need to care about using the key for encryption, because we only need it to anchor the root of trust into a web2 world we trust (keybase, github, etc.)
