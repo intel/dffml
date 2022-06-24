@@ -1,4 +1,6 @@
 - Same issues remain in 6bd1c1aca0031f92d4617e48c5d15e36be10f78b from https://github.com/intel/dffml/discussions/1369#discussioncomment-2998070 which we now tackle.
+- TODO
+  - Optional with NewType ForwardRef and maybe others not working
 
 ```mermaid
 graph TD
