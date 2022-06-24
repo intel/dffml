@@ -1,0 +1,3 @@
+Whales dont have interesting system contexts to consume, too much of the same feature data. This is why getting on land was important. Our cells are communicating through our brain keeping. The model scales with Alice to communicate with each other.
+
+in the following video he says that there is an issue with ai and consciousness. This is the issue we adress with cross domain conceptual mapping to reach equilibrium within volune 1 engineering logs. https://youtu.be/lyu7v7nWzfo
