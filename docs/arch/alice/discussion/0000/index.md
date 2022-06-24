@@ -2,10 +2,6 @@
 
 > Planning for our tutorial series which will run from May 2022 to June 2023. Planned end date, last post for volume 1 ends there. Volume 0 will be updated frequently throughout. It is our ADRs and our plans and will be a living document and contributable to by all.
 
-## Engineering Logs
-
-- [Architecting Alice](https://youtube.com/playlist?list=PLtzAOVTpO2jaHsS4o-sDzDyHEug-1KRbK)
-
 ### Table Of Contents
 
 #### Volume 0: Architecting Alice
