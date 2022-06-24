@@ -25,7 +25,9 @@
 - If a key is identiy, different providers are adding meta data to that principle, issueing a cert to that key, multiple issues can issue certs to the same key
 - So you can peresent diffent cerst for differnet situations
 - Myabe even create a temproary identiy which has a certain set of properties which are not elsewhere, may not be attached to main identity (TPM)
-- 
+- Multi-key wallet, i have NFT
+- SPKI, sp and elison
+- Basics of X509, nothing saying multiple issues can't issue certs for the same key
 - What do I know about identity provider X?
   - This is the same as what credential / certificate issuers do I trust
   - Do I know that I can trust them to check id on their accounts coming in.
