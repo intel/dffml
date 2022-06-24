@@ -9,3 +9,9 @@ Time travel: https://80.lv/articles/transforming-images-with-openai-dall-e-2/ ta
 System for communication, a tool for effective organization in a anarchistic society, rules are context local (location based, tribe based, one belongs to many tribes). Helps people (agents, runners, compute) align activities to operational context constraints (rules) as well as individual and tribe based strategic plans
 
 splitting out execution from analysis via caching of contexts is helpful with all of this. Can slice contexts different ways for different strategic plans (different plans consume different context Input objects in cached input network with system context)
+
+- measure
+- Change
+- Correlate
+- Tweak general guidelines
+- Repeat
