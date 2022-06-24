@@ -1,4 +1,8 @@
 - https://youtu.be/A-S9Z684o4Y
+- New problem
+  - feature extraction on problem space for concepts (models for strategic plans).
+  - Use conceptual to herstorical operation cached putouts mapping models
+  - ystem contraints and system context top level herstorical 
 - The Open Architecture enables hybrid on/off chain smart contacts.
   - It does this by incorporating risk management into architecture definition / smart contract.
     - Strategic plans work with the gatekeeper and prioritizer to negotiate and execute off chain contracts.
