@@ -7,3 +7,12 @@
 - Working on backing up this doc...
    - Python files as operations with imports being themseleves inputs when viewed from the static analysis data which later tells us how we can reconstruct waht needs to be installed when we also pair with dynamic analysis and figure out how to swap packages via existing tooling (aka if we run a CI job with PIP_INDEX set to a mirror were we put our own versions of dependencies, see 2ndparty ADR, this came from that, then when the CI job runs pip install as it usually would it picks up the depenencies with no changes to the contents of the job)
    - `imp_enter` call dataflow to pip install discovered `import/from` modules
+
+```console
+$ curl 'https://github.com/intel/dffml/discussions/1369/comments/2603280/threads?back_page=1&forward_page=0&anchor_id=2813540' | tee /tmp/a
+$ curl 'https://github.com/intel/dffml/discussions/1369/comments/2603280/threads?back_page=1&forward_page=0&anchor_id=0' | tee /tmp/a.0
+$ diff -u /tmp/a /tmp/a.0
+$ grep 2813540 /tmp/b | grep -v '2813540&quot' | grep 2813540
+$ curl 'https://github.com/intel/dffml/discussions/1369' | tee /tmp/b
+$ grep '<input type="hidden" name="anchor_id"' /tmp/b
+```
