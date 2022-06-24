@@ -6,4 +6,4 @@
   - Manifest Schema: https://github.com/intel/dffml/discussions/1369#discussioncomment-2603269
   - Living Threat Models: https://github.com/johnlwhiteman/living-threat-models
 - Agenda
-  - Review PR in it's current form
+  - Review PR in it's current form (anything in this thread will be exported to markdown in git with authors preserved)
