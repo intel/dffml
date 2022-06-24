@@ -29,3 +29,6 @@
   - prefix `did:key` is the `key` DID method
   - A did is a manifest, the DID method encodes the information needed for the next phase parser
 - https://github.com/openssi/peer-did-method-spec/issues/112
+- Should at other DID methods?
+  - https://w3c.github.io/did-spec-registries/#did-methods
+  - Maybe we'll create our data within another IDD method for now and link later for identity aware context have a peer did which links DID attached to individual Input objects (maybe during write out).
