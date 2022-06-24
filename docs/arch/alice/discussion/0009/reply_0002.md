@@ -1,0 +1,1 @@
+You wouldn’t take a class without taking notes. We should teach how to take notes and learn from them in our day to day life. 
