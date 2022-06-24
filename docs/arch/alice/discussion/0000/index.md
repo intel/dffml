@@ -10,7 +10,7 @@
 
 In this 7 volume tutorial series we roll Alice. This series will be written a chapter per quarter, over the next 24 years (this is with a 3x estimate on time for each chapter, so 3 months for each instead of 1, we'll see how it goes).
 
-Alice’s architecture, the open architecture, is based around thought. She communicates thoughts to us in whatever level of detail or viewed through whatever lens one wishes. She explores trains of thought and responds to based on triggers and deadlines. She thinks in graphs, trains of thought, chains of system contexts, and she operates in parallel.
+Alice’s architecture, the open architecture, is based around thought. She communicates thoughts to us in whatever level of detail or viewed through whatever lens one wishes. She explores trains of thought and responds based on triggers and deadlines. She thinks in graphs, aka trains of thought, aka chains of system contexts, and she operates in parallel.
 
 ### Table Of Contents
 
