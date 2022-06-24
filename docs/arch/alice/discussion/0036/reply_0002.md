@@ -23,6 +23,7 @@ We need to be rerunning the accuracy on the strategic plan model after every exe
 
 if everything is a encoder then create encoder/decoder models on all permutations of inputs and outputs across stratigic plans and system context I/O
 
+prediction from models can become values for stub operations
 
 We can leverage task 2: caching to use sources to map input values within system contexts including strategic plan inputs and outputs into dataset sources. We can leverage dataflows to modify data in different ways as it is saved to and loaded from the cache. For example run inputs with locality of file through uploads to blob storage or personal datastore. Then create references in db A and update references used in 
 
