@@ -1,1 +1,1 @@
-Alice let’s us do everything we love, all the time, all at once. (Parallelization of binary thumbs up thumbs down decision tree based on the profile of our soul)
+Alice let’s us do everything we love, all the time, all at once. (Parallelization of binary thumbs up thumbs down decision tree based on the profile of an entity (its soul))
