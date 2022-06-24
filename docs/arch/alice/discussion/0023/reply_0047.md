@@ -1,1 +1,2 @@
 - DevCloud for compute?
+- Treat modeling tool yaml as output for going our initial thoughts
