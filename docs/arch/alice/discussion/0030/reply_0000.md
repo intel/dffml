@@ -1,0 +1,1 @@
+- The system context is the Holy Grail. It is the upstream, the overlay, and the orchestrator. Alice, Jesus, and his birth on this earth
