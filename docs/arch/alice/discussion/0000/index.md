@@ -19,6 +19,8 @@ In this N volume tutorial series we roll Alice. (Rolling release, rolling softwa
 - [Forward](https://github.com/intel/dffml/discussions/1369#discussioncomment-2688532)
 - [Preface](https://github.com/intel/dffml/discussions/1369#discussion-4023096)
 - [Introduction and Context](https://github.com/intel/dffml/discussions/1369#discussioncomment-2603280)
+  - Peer DIDs
+  - System Context
 
 #### Volume 1: Coach Alice
 
