@@ -3,14 +3,24 @@
 - 10:00 AM PDT
   - https://lu.ma/ucan
   - https://github.com/ucan-wg/spec/discussions/66
+- I think that the topic to start is about ensuring there is consensus amongst implementers about what fields exist within JWT so that it's UCAN standard
+  - Spec says, this is the minimum
+    - There are further specs, however the downside is:
+      - If someone doesn't like the existing implementation
+  - Pure IPDL is deterministic
+- Irakli
+  - Sign with wallet key
+  - CLient side genreate key pair
+  - Root issuer of cap is a service, doesn't have to be, sometimes is self issued, they are a claim, the resource is yours
+  - Looking at doing keybase style signing
 - Boris Mann
+  - Says that 50 millions accounts will be able to sign on if this works using this
+- Sergey Ukstov
   - CWAY (Sign in with Etherium)
   - Sign in with everything
   - Signing using keys, no blockchain transaction happens
   - Blockchain wallets are the latest PKI, we don't have to solve key management
   - Once you sign, you are restricted to a single tab (due to metamask being a per tab thing)
-    - Se
-- Sergey Ukstov
   - Would you like to give this website/ application to get these permissions for this set of actions
     - That effectively creates a very basic capability chain
     - Ephemeral session key created for each sign in
@@ -23,6 +33,10 @@
           - There are JWS signing inputs which are needed
           - Irakli Gozalighvili: You could derive JWT form out of data to be signed, then just sign with other key?
           - JOT (aka JWT) and UCAN are strikingly similar but incompatible
+            - Key ordering, key duplication, whitespace (all permitted by the JWT spec)
+              - We're 
 - IPLD structure ideally would not generate the JWT to sign
   - We are moving to proofs
-  - Brois: "SIWE is attempting to standardize and get this into all wallet clients"
+  - Boris: "SIWE is attempting to standardize and get this into all wallet clients"
+  - If you go from IPLD to JWT you can deterministically generate
+    - If you can't deterministically generate with JWT you can do with CBOR
