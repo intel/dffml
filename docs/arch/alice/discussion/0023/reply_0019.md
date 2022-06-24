@@ -24,4 +24,4 @@ When your top level system context is looking at a DID to run dataflow within it
     - Extend and translate to transact to leverage new web3 concepts such as DIDs off the bat.
     - They are looking at state: https://github.com/hyperledger/transact-rfcs/pull/12
 - Hyperledger Supply Chain SIG
-  - Somehow engage as users or members. Cross with OpenSSF streams.
+  - Somehow engage as users or members. Cross with OpenSSF streams to work on blockchain supply chain security.
