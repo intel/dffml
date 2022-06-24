@@ -78,7 +78,7 @@ Alice will see problems and look for solutions. Problems are gaps between the pr
 
 ### Naming
 
-You can name it or call it whatever you like. This blog series will call it Alice. Alice will be used to refer to the entity carrying out this job of maintainer. The name Alice will also be used to refer to the AGI in general, the architecture through which one can instantiate arbitrary entities. In effect, the whole bit is arbitrary, and you can call it whatever you like.
+You can name it or call it whatever you like. This tutorial series will call it Alice. Alice will be used to refer to the entity carrying out this job of maintainer. The name Alice will also be used to refer to the AGI in general, the architecture through which one can instantiate arbitrary entities. In effect, the whole bit is arbitrary, and you can call it whatever you like.
 
 Being that Alice is the nickname for both our an entity and the architecture in general. Alice when used in reference to the architecture is a stand in for the the technical term for the architecture. Not sure what the right technical term is right now. Maybe something like: data centric fail safe architecture for artificial general intelligence.
 
