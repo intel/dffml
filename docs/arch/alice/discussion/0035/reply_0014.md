@@ -1,0 +1,1 @@
+Identifying alignment and incentivizing collaborating so as to bring about high impact results as measured by personal and organizational targets.
