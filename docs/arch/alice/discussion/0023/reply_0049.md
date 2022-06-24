@@ -1,0 +1,2 @@
+- alice credits | scrolling_text
+  - sbom -> git repos -> authors
