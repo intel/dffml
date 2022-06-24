@@ -6,6 +6,20 @@ Together we'll build Alice, an Artificial General Intelligence. We'll be success
 
 We'll need to build the foundations of Alice's thought processes. Throughout this series, we'll rely heavily on a mental model based on how humans think and problem solve. By the end of this series we'll have ensured Alice has all the primitive operations she requires to carry out the scientific process.
 
+### What is Alice?
+
+Alice is an architecture for code that will write and maintain itself based off of a standard description of architecture, a universal blueprint. The universal blueprint is universal because it's intuitive enough that anyone can begin using it quickly after the correct way of communicating to that individual is established via some communication method (spoken language, visual of some kind, text, etc.). This universal blueprint is an abstraction layer between descriptions of architecture within different domain specific representations.
+
+This universal blueprint (system context) is an integral part of creating a shared language for meaning and intent between humans and an Artificial General Intelligence. The goal is to provide an architecture and implementation for independent entities which act in accordance with guiding strategic plans/blueprints. This architecture must be safe and secure by default, scalable, and easily extensible.
+
+- InnerSource is where we learn what Alice should consider to be quality code
+
+- CI/CD is where we learn how Alice can run and deploy code
+
+- Supply Chain Security is how we learn how Alice can create a compute network suitable for various edge deployment scenarios. Edge deployment scenarios being the usage of all assets she has at her disposal.
+
+The end goal is to create a software architect, Alice. She will consult on existing projects to provide analysis of their architectures and properties such as maintainability, provide guidance for developer workstream prioritization to achieve strategic business goals, and write and maintain codebases herself, accepting contributions from external contributors.
+
 ### Terminology
 
 - Universal Blueprint
@@ -28,18 +42,6 @@ Alice is going to be held to very high standards. We should expect this list to 
 ### Alice's Understanding of Software Engineering
 
 We'll teach Alice what she needs to know about software engineering though our InnerSource series. She'll follow the best practices outlined there. She'll understand a codebase's health in part using InnerSource metric collectors.
-
-InnerSource, CI/CD, and Supply Chain Security are areas of interest. Alice is the pursuit of code that will write and maintain itself based off of a standard description of architecture, a universal blueprint. The universal blueprint is universal because it's intuitive enough that anyone can begin using it quickly after the correct way of communicating to that individual is established via some communication method (spoken language, visual of some kind, text, etc.). This universal blueprint is an abstraction layer between descriptions of architecture within different domain specific representations.
-
-This universal blueprint (system context) is an integral parts of creating a shared language for meaning and intent between humans and an Artificial General Intelligence. The goal is to provide an architecture and implementation for independent entities which act in accordance with guiding strategic plans/blueprints. This architecture must be safe and secure by default, scalable, and easily extensible.
-
-- InnerSource is where we learn how to write good code
-
-- CI/CD is where we learn how to run and deploy code
-
-- Supply Chain Security is how we learn how to create a compute network suitable for various edge deployment scenarios
-
-The end goal is to create a software architect, Alice. She will consult on existing projects to provide analysis of their architectures and properties such as maintainability, provide guidance for developer workstream prioritization to achieve strategic business goals, and write and maintain codebases herself, accepting contributions from external contributors.
 
 ### Naming
 
