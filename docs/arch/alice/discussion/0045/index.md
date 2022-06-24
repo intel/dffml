@@ -22,6 +22,12 @@ The following is an example report
 # InnerSource Org Health
 
 ```mermaid
+pie title Overall
+    "Minimum health or above" : 100
+    "Less than minimum health" : 100
+```
+
+```mermaid
 pie title Contributing
     "Has file" : 100
     "Does not have file" : 100
