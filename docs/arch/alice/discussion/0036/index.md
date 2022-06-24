@@ -45,7 +45,11 @@ Let's then expand upon that and add dynamic analysis.
     - [ ] Wonderland: The nickname we give the collective mass of thoughts in existence. This all the data in Alice on chain.
     - [ ] https://github.com/intel/dffml/issues/1377
 - [ ] Dataflow as class
-- [ ] Fix TODO on watching new contexts in memory orchestrator
+- [ ] Cached flows to did chain then ti backing storage via default input network as dataflow that does this to did in background. Start with json so they get saved to file. Add identity as input to top level context. Identiy could have parent input objects. such as this is of definition github username, which you could then have an operation that takes github usernames and outputs their SPDXIDs. When that operation SPDXID output is run through the deafult DID input network, a strategic plan (default overlayed dataflow to the default input network) which does this forking stuff. Could have location for user overlays in .local or something. When a context is thought of or hypothesised or executed it will be in the user context herstory. Users can optionally add overlays to their default flows (kind of like systemd). This could enable a user to overlay if im worjing within this cwd for this top level system cobtext run these commands. Alice as shell
+  - [ ] long term: fork to save to chain on process exit (can we fork or coredump somehow on atexit?) by default.
+- [ ] cve bin tool checker from chain
+- [ ] 
+- [ ] Fix TODO on watching new contexts in memory orchestrator OR maybe this is fixed via the seperate linage? Probably needs event filtration similar to run_command so by default if not set in kwargs only 
 - [ ] Operations and their config as inputs
   - [ ] Unify typing via parent type / primitive as Input parents
   - [ ] Can have operations that filter and old let through Input objects with specific parents or parents in specific order
