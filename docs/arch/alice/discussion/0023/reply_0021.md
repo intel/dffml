@@ -11,3 +11,8 @@
 - Intercept route
   - identity aware context -> ucan (via cbor) -> dice (device attestation)
     - Allows us to share attestations via opencreds type stuff across humans / machines when our strategic plans are attempting to mitigate risk via execution of operations via implementations which have attestested properties
+- For this recording
+  - [ ] Ensure nft.storage can interact with DID based blockchain (firefly, transact?)
+  - [ ] Deploy nft.storage and interact with it via UCAN token auth
+  - [ ] Dump resulting chain
+  - [ ] Reconstruct chain via Python code in `dffml.git/operations/peerdid` (tree has it wrong in previous commits, folder named `peerid` instead of what it should be: `peerdid`)
