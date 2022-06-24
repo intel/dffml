@@ -26,7 +26,7 @@
 
 #### Volume 3: Alice and the Strategy of Art (mind control)
 
-> We explore attack vectors in depth to understand how Alice can maintain integrity to her strategic principles in the hostile environment that is the open network. We explore active learning defensive strategies and visualize them similarly to how we did in our previous volume.
+> We explore attack vectors in depth to understand how Alice can maintain integrity to her strategic principles in the hostile environment that is the open network. We explore active learning defensive strategies and visualize and interact with them using work from our visualization volume.
 
 -
 
