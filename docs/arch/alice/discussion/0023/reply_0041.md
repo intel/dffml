@@ -12,4 +12,4 @@
       - Constraints exist as a concept which are implemented via strategic plans. Strategic plans which result in a dropped system context by the gatekeeper, are called design constraints.
         - > Design constraints are conditions that need to happen for a project to be successful.
           > https://study.com/academy/lesson/design-constraints-in-engineering-definition-example.html
-    - 
+- The ConditionalOffer sourceCurrency is the did of the aligned context
