@@ -35,7 +35,7 @@
 - TODO
   - [ ] Initial Threat Dragon Source
     - 7969de3a0dc84ba1ddaef605744072e1cdaecb9f
-  - [x] Add manifest metadata to Threat Dragon Source Records via `extra`
+  - [ ] Add manifest metadata to Threat Dragon Source Records via `extra`
     - 51799da78a56f3557101fed0524c571fca0ce195
   - [ ] `TheatsMarkdownSource` which outputs a feature within a record which is an Open Architecture (a System Context, a dataflow,  remember a dataflow alone is just a system context where the upstream is the dataflow and everything else is unset) to a `THREATS.md` file
   - [ ] Merge with Record with image data of screenshot from threat dragon
