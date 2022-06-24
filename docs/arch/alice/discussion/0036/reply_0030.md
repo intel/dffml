@@ -1,3 +1,7 @@
+Beyond a software nutrition label: Towards software DNA.
+
+What software is like what other software in what ways.
+
 - clade
 - dichotomous key
   - sometimes things look alike but they are not
