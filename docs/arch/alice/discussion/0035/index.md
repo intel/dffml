@@ -28,3 +28,27 @@
   - We will train models to understand the optimal team topologies for our set of consultants
     - As new strategic plans are introduced the strategic plans, decision maker, and prioritizer suggest possible future courses of action
       - Record of if courses of action were taken or not lies in the capturing all changes to system context.
+
+---
+
+
+- Start with the vision
+  - As few words are possible: optimize for domain expertise. Increasing productivity by removing barriers to knowledges. That’s what we need in and InnerSource gives us that.
+- T-shirt sized montra - slide 1
+- If you can visualize it that will help a lot to
+- Here are the three points to the vision
+  - Architecture
+  - Domain Expertise
+
+- Take them through the story
+- Vision: Help developers go faster with better quality
+- Way down at the bottom we have something involving SGX
+- Make sure to have c4models
+- Think about argument as constructing a building
+- Think about how the building interacts with the human element. How to do doors, windows, light coming in, how does that interact with users.
+- How to architect it for engineers to use, it’s intuitive
+- Always think about how it’s being used
+- Think about how things fit together
+  - Architects mindset is all about structure
+    - You can go to far
+- As soon as agent understands what needs to get done agent executes the best it can
