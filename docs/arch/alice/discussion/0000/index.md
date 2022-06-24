@@ -4,7 +4,7 @@
 
 ## Engineering Logs
 
-- [Volume 0: Context](https://youtube.com/playlist?list=PLtzAOVTpO2jaHsS4o-sDzDyHEug-1KRbK)
+- [Architecting Alice](https://youtube.com/playlist?list=PLtzAOVTpO2jaHsS4o-sDzDyHEug-1KRbK)
 
 ### Table Of Contents
 
