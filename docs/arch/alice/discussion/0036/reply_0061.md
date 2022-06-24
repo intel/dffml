@@ -1,0 +1,1 @@
+- Treat each CLI command as a dataflow as class. Each subparser CLI command has diagram commdn which daigram slfowo, threat subcommands as subflows, with consitiionals direting exxecution
