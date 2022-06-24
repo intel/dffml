@@ -16,7 +16,7 @@ This universal blueprint (system context) is an integral part of creating a shar
 
 - CI/CD is where we learn how Alice can run and deploy code
 
-- Supply Chain Security is how we learn how Alice can create a compute network suitable for various edge deployment scenarios. Edge deployment scenarios being the usage of all assets she has at her disposal.
+- Supply Chain Security is how we learn how Alice can create a compute network suitable for various edge deployment scenarios. Edge deployment scenarios being the usage of all assets she has at her disposal. This is where she'll be comprehending security.
 
 The end goal is to create a software architect, Alice. She will consult on existing projects to provide analysis of their architectures and properties such as maintainability, provide guidance for developer workstream prioritization to achieve strategic business goals, and write and maintain codebases herself, accepting contributions from external contributors.
 
