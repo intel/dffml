@@ -12,4 +12,5 @@
 ---
 
 - https://kubernetes.io/docs/tasks/configure-pod-container/translate-compose-kubernetes/
-- 
+- https://www.hjp.at/doc/rfc/rfc7491.html#ref_ONF
+  - Interesting network traffic architecture deployment / execution environment
