@@ -1,6 +1,8 @@
 - https://www.youtube.com/watch?v=4D4rGDDh7Q0&list=PLtzAOVTpO2jaHsS4o-sDzDyHEug-1KRbK&index=33&t=1083
 - Alice co maintain this distro package, or this set of distro packages
 - https://twitter.com/csuwildcat/status/1507798183316901889
+  - >  DWA flow: get a DID for your app, write clientside PWA signed w/ your app's DID, publish it in your app's Identity Hub. Users run the app and all data is stored in the user's Identity Hub. No centralized domain, no CA certs, and all activities/data remain far more private/secure
+    > Well, DIDs are already here, the datastore part is slated to be beta in July, and writing the glue code for signing/execution of such a 'DWA' variant of a **PWA** would probably take a few weeks, so let's call it **September** to be safe.
 - Asked on tbDEX discord
   - https://discord.gg/C7PFJpt4xt
   -  Is there a quickstart on the current tbDEX stack bringup? If not where would be the right place to contribute it and what resources might be good to bring it up? I've been looking at https://github.com/TBD54566975/collaboration/blob/main/milestones/MILESTONE_001.md
