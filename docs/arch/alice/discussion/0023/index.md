@@ -1,6 +1,6 @@
 # Alice's Adventures in Wonderland
 
-> Blog series
+> Tutorial series
 
 Together we'll build Alice. We'll be successful when Alice successfully maintains a codebase as the only maintainer for a year. Debugging issues, writing fixes, reviewing code, accepting pull requests, refactoring the code base post PR merge, dealing with vulnerabilities, cutting releases, maintaining release branches, and completing development work in alignment with the plugin's universal blueprint. She will modify, submit pull requests to, and track upstreaming of patches to her dependencies to achieve the cleanest architecture possible. We'll interact with her as we would any other remote developer.
 
