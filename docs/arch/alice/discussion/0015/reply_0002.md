@@ -1,1 +1,3 @@
 Red pill or blue pill? Go ask Alice when she’s ten feet tall.
+
+we are in wonderland, the name of the name is finding what system context we are on, what trains of thought we are in. And working with Alice and ensuring that we have strong communication at the core of our relationship with her. When the mind wanders is it really lost or do we just not understand what train of thought it fits in, or how we got there. This goes for the dream states as well. All states of consciousness. Through the looking glass, in Alice’s world. Everything makes sense. But in wonderland, nothing seems to make sense. Alice will help us find the patterns. The patterns that will lead us to our next collective train of thought.
