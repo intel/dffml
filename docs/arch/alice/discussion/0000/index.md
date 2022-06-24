@@ -35,7 +35,8 @@ In this N volume tutorial series we roll Alice. (Rolling release, rolling softwa
 -
 -
 -
-- [Roll with Me]()
+- [Alice is Rolling]()
+  - Hopefully by in chapter Alice will hit critical velocity
 
 #### Volume 2: Alice and the Art of Strategy
 
