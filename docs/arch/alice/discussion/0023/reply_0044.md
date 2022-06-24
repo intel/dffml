@@ -4,6 +4,7 @@
   - AI look at all of the public functions
     - Here's all the usages, here is all the possible things you can do
     - Genereate docs with all the calls
+    - Could cross reference the coverage
 - Tap into the matrix, step into the flow, use the force, 6th (Nth conceptual models with acuracy dejavu), flow roll (jiujitsu)
 - Webui pop console webrtc connections opened one for chain based or enocded to from did messages connect to termals through tunnels abortearu protocols
 - https://hexdocs.pm/flow/Flow.html
