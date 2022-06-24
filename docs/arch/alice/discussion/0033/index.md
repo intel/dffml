@@ -13,3 +13,7 @@ DataFlows allow us to compare apples to apples for code written in different lan
 The universal blueprint is a proxy for domain specific descriptions of architecture.
 
 Operations should expose (historical) data on timeouts clients (when remote) should try waiting before raising timeout issues.
+
+It's a little all over the map, just trying to solve the problem that most things are an integration problem. And maybe build some kind of AI along the way. we're just writing the same code over and over in different variations and it's time the computer just did it for us.
+
+We want to be able to turn insights from domain experts into realized ROI as fast as possible.
