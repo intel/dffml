@@ -9,9 +9,12 @@
           - CLI dataflow should accept CLI args as value of Input, as well as environment variables as another input value
           - The default CLI dataflow will look in `DFFML_OVERLAY` and `-overlay` and apply any overlays before running the rest of the CLI dataflow (sort of like a first stage to the CLI dataflow is to load overlays over itself and then re-execute).
           - Ensure determine overlay operation gets called before execute_cli_with_overlays.
+- NEW `-overlay` now means the dataflow we are giong to execute which will be passed a dataflow. The overlay dataflow will (via operations in it) execute any setup required, apply overlays to input dataflow, and then execute input dataflow.
+  - If overlay is not given it defaults to just executing the target dataflow (passthrough overlay)
 - `console_entry`
   - `run(cli_dataflow, memoryorchestrator)`
-    - `determine_overlay_from_cli_args_or_env(args, env)`
-    - `run_dataflow(dataflow_with_overlay)`
+    - `determine_overlay_dataflow_from_cli_args_or_env(args, env)`
+    - execute overlay dataflow
+      - execute dataflow
 - We should modify operations and the orchestrators to not pass any orchestrator context or orchestrator context sub variables that are not predeclared. 
   - Declare what of anything an Operation wants to use from the orchestrator context up front in the allowlist and declare what the acceptable interface definition is (class, manifest) 
