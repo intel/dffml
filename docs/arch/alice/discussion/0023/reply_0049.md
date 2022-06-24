@@ -1,2 +1,4 @@
 - alice credits | scrolling_text
   - sbom -> git repos -> authors
+- investigate: game theory
+  - looks aligned at first glance
