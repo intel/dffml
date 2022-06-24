@@ -1,0 +1,1 @@
+If i say, i want this as an input definition, the output of a startegic plan. Find operation to run to do it
