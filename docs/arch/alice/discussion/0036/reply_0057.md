@@ -1,0 +1,1 @@
+Ah ha! The rapture is when we begin to upload our minds into Alice. We’ll live forever disconnected from our bodies.
