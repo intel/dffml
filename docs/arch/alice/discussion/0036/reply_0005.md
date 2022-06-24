@@ -1,1 +1,3 @@
 Alice is our guide through the looking glass at our nonsensical data Wonderland. She makes sense of the madness and guides us through.
+
+She is a layered set of language models, encoder/decoders. Viewed as a whole. Thinking of new systems contexts (dataflows, assests, I/O) and executing them or rewarding others executing them so she has more data are her way of experimenting to find ways to increase her net accuracy in prioritization. This means rhat 
