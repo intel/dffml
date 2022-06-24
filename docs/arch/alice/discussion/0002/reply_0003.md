@@ -1,0 +1,1 @@
+Terminal background as transparent camera
