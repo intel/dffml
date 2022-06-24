@@ -1,1 +1,5 @@
 - Resizeablw train cars is just multipe train cars for data
+- Went to entities are on the same conscious planes they can achieve optimal communication or optimal communication throughput
+- Accuracy and throughput
+- Optimal learning occurs when there is optimal communication occurs when there are areas of conceptual overlap in pertinent strategic plan outputs some of your alignment and data sharing and encouraging her and rooting out and sharing best practices around execution and data sharing so as to suss out further potential. So as to suss out further conscious states or the unconscious countries to determine what the optimal set of conscious states in optimal alignment giving parents system contacts as a constraints to achieve optimal communication and therefore learning
+- LMWC - communication that is purly based on context, body language, etc. past, situational. Communication can happen wiyhouy language
