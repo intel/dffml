@@ -1,4 +1,5 @@
 - Map English language text instructions from issue / engineering logs to execution of development activies
+- How do we preserve privacy? By chains if trust via acceptabilty of provenance determined by startegic plans
 - https://medium.com/qe-unit/airbnbs-microservices-architecture-journey-to-quality-engineering-d5a490e6ba4f
 - eBPF networking for our deployments
   - https://github.com/cilium/cilium
