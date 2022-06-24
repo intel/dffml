@@ -22,6 +22,6 @@
     - 7969de3a0dc84ba1ddaef605744072e1cdaecb9f
   - [x] Add manifest metadata to Threat Dragon Source Records via `extra`
     - 51799da78a56f3557101fed0524c571fca0ce195
-  - [ ] Modify DataFlow to include manifest metadata
   - [ ] Initial Open Architecture Source where we use `dffml service dev export` programmatically similarly to what was done with CVE Bin Tool to output  (https://github.com/intel/cve-bin-tool/blob/7cb90d6009d047dfc08dead28110f2314d8c016a/cve_bin_tool/output_engine/threats.py#L88-L143) to take a feature which is a dataflow and output it to a JSON file
   - [ ] Use Data Flow Preprocessing Source as the merge source which pulls from the threat dragon source and converts to a dataflow
+  - [ ] Modify DataFlow to include manifest metadata
