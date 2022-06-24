@@ -33,6 +33,8 @@ Let's then expand upon that and add dynamic analysis.
 
 - [ ] Alice on chain
   - [ ] https://github.com/intel/dffml/discussions/1369#discussioncomment-2683370
+  - [ ] Distributed system context store: web3 + manifests
+    - [ ] Wonderland: The nickname we give the collective mass of thoughts in existence. This all the data in Alice on chain.
 - [ ] Dataflow as class
 - [ ] Fix TODO on watching new contexts in memory orchestrator
 - [ ] Operations and their config as inputs
