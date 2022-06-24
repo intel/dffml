@@ -1,0 +1,5 @@
+- https://www.frontiersin.org/articles/10.3389/fbloc.2019.00024/full
+  - Ned! NTT to him.
+  - This is 3 years ago, think remember reading this
+  - Last talked to him about DIDs he said CBOR would be great (DICE)
+- NFTs on Peer DIDs allow us to build graph
