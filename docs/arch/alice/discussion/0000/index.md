@@ -15,6 +15,10 @@
 
 - [Down the Rabbit-Hole](https://github.com/intel/dffml/discussions/1369#discussioncomment-2663771)
 
+#### Volume 2: Alice and the Art of Strategy
+
+-
+
 ## Priority Number 1
 
 Provide a clear, meticulously validated, ubiquitously adopted reference architecture for a freedom and privacy preserving egalitarian Artificial General Intelligence (AGI) which respects the first law of robotics.
