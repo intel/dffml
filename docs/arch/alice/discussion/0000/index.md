@@ -12,13 +12,19 @@
 
 #### Volume 1: Alice's Adventures in Wonderland
 
+> We build Alice the Software Architect
+
 - [Down the Rabbit-Hole](https://github.com/intel/dffml/discussions/1369#discussioncomment-2663771)
 
 #### Volume 2: Alice and the Art of Strategy
 
+> We step inside the matrix as we visualize Alice's thoughts
+
 -
 
 #### Volume 3: Alice and the Strategy of Art (mind control)
+
+> We explore attack vectors in depth to understand how Alice can maintain integrity to her strategic principles in the hostile environment that is the open network. We explore active learning defensive strategies and visualize them similarly to how we did in our previous volume.
 
 -
 
