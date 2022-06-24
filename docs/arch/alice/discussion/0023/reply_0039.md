@@ -11,6 +11,7 @@
            - Input network must have declared list on instantiation of what inputs it might add at any time. System context is not valid unless all these declared inputs are mapped to operation inputs.
            - One of thse inputs might be an input which dynamically add more to the declared list. Therefore for the system context ot be valid and the input network to have been used, there must be an operation within the orchetator context which will dealwith this dynamic list modfciation of the input newtowrk to maintain vlaidaisty checking.
 - reset
+  - https://youtu.be/IQtc9DXiks4
   - What do we want?
     - CVE Bin Tool scan distoros
       - Standard format for a distro? Container image
