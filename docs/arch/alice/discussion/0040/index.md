@@ -11,6 +11,7 @@ References:
 - https://github.com/intel/dffml/community
   - List of files / must haves
 - https://opensource.guide/
+- https://github.com/intel/dffml/discussions/1369#discussioncomment-2959986
 
 We want to be able to ask Alice to contribute [recommended community standards](https://opensource.guide/) to our projects.
 
