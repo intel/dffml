@@ -7,3 +7,4 @@
     - Can run this over web3
     - It can manage how it fails
     - Backpressure is watching the infinate stream and it's monitoring and watching and detecting if it's oversubscribing the resources available
+    - People are using elixir with rust
