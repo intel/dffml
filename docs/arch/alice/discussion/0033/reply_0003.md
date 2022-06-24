@@ -1,0 +1,1 @@
+- alan watts said it better. with the patterns of the cosmos. everything as data data is the patterns as seen via the trains of thought aka the chains of system contexts
