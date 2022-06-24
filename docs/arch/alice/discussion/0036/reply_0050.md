@@ -1,0 +1,1 @@
+Figure out DID stuff right off the bat. Alice starts on chain. Provide NVD like mirror idea with shas. Manifests on chain with refs and shas. Saved system contexts become manifest on chain. Manifests are also of course system context manifests which are dataflows which sjow how to access off chain info wihin context of different deployment environments
