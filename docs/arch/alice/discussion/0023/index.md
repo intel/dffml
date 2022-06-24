@@ -1,7 +1,7 @@
 # [Volume 0: Introduction and Context](https://github.com/intel/dffml/discussions/1369#discussioncomment-2603280)
 
 > Introduction and Context to tutorial series - May 2022
-> Engineering Log: https://www.youtube.com/playlist?list=PLtzAOVTpO2jaHsS4o-sDzDyHEug-1KRbK
+> [Engineering Logs]( https://www.youtube.com/playlist?list=PLtzAOVTpO2jaHsS4o-sDzDyHEug-1KRbK)
 
 ### Table Of Contents
 
