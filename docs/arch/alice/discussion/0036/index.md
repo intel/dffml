@@ -65,3 +65,13 @@ system context includes
     - We need to log which plans we execute as a part of the prioritizer using structured metrics or as an output of some kind
   - Gatekeeper
 - Dataflow
+
+---
+
+### Note
+
+What follows is Chapter 1. It should be used as a guide for how much work is realistic to get done in one month. Picking this twelve chapter to twelve months thing makes it so we have to have a defined end date.
+
+Instead of writing the adapted version right off the bat, we're going to follow the trunk based development branch by abstraction method and start with the original text. Understand what the diff is from our literal modifications to the script. This tells us where are abstractions need to sit. We can then being creating metaphors to riff where we need to and go into technical details.
+
+---
