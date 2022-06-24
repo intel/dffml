@@ -1,6 +1,9 @@
 - Dumping links while closing tabs
 - CVE Bin Tool
-  - https://github.com/pdxjohnny/cve-bin-tool/blob/7cb90d6009d047dfc08dead28110f2314d8c016a/doc/DATA_FLOW_SCANNER.rst
+  - Snapshot of current state
+    - https://github.com/intel/cve-bin-tool/blob/7cb90d6009d047dfc08dead28110f2314d8c016a/doc/DATA_FLOW_SCANNER.rst
+    - https://youtu.be/f3FdGYn5c3s?t=3000
+  - https://github.com/pdxjohnny/cve-bin-tool/blob/data_flow_scanner/doc/DATA_FLOW_SCANNER.rst
 - feature: git: Mirror repos for CVE Bin Tool scans
   - https://github.com/pdxjohnny/dffml/commit/fdeba89383a2e55c0fbf472c8ba88f14ecda0549
 - https://github.com/bluesky-social/adx/blob/main/architecture.md#personal-data-repositories
