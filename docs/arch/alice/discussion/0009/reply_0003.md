@@ -1,0 +1,1 @@
+- Drop all the primitive stuff, a definition, is a system context, is an input (DID)
