@@ -27,6 +27,12 @@ pie title Contributing
     "Does not have file" : 100
 ```
 
-<detail>
+<details>
 <summary>Test</summary>
-</detail>
+
+| Repo | Report URL              |
+|------|-------------------------|
+| ...  | https://chadig.com/good |
+| ...  | https://nahdig.com/bad  |
+
+</details>
