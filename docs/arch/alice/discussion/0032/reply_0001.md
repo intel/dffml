@@ -1,6 +1,7 @@
 Other projects to leverage:
 
-- https://github.com/alice-bot/alice
+- https://github.com/alice-bot/alice (elixir, nice!)
+- https://github.com/charliegerard/gaze-detection
 - https://github.com/calcom/cal.com
   - Scheduling meetings with Alice
 - https://github.com/zinclabs/zinc
