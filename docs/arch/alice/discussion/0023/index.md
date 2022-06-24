@@ -1,6 +1,10 @@
-# Alice's Adventures in Wonderland - Introduction
+# Alice's Adventures in Wonderland - Introduction and Context
 
-> Tutorial series
+> Introduction and Context to Tutorial series - May 2022
+
+## Engineering Logs
+
+- [Architecting Alice: Volume 0: Context](https://youtube.com/playlist?list=PLtzAOVTpO2jaHsS4o-sDzDyHEug-1KRbK)
 
 ### Table Of Contents
 
