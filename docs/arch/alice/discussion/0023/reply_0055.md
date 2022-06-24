@@ -6,6 +6,8 @@
   - Reproduced here just in case: [SPDX Canonicalization 20220620.pdf](https://github.com/intel/dffml/files/8942540/SPDX.Canonicalization.20220620.pdf)
 - FUTURE
   - Alice building tutorials from our captured dev debug sessions (also feeds into detecting failure paths work, don't do the same curl call we know already failed in another devs same state)
+    - Radio Free Alice: https://github.com/TheThingsNetwork/lorawan-stack
+    - Work with EdgeX team and maybe swap out kcp for edgex foundry when running code on IoT devices locality? https://docs.edgexfoundry.org/2.1/getting-started/Ch-GettingStartedSDK-Go/
 
 ```mermaid
 graph TD
