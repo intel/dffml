@@ -45,5 +45,8 @@
 - Boris going IPFS
   - IPLD work is not what Boris is really focused on
 - Biscuts reuqires you adopt data log
+  - https://www.biscuitsec.org/
+  - fission is also working on this but does not require
+    - They are also looking at identiy aware context
 - IPLD has more of a strict structure
 - Can always reencode
