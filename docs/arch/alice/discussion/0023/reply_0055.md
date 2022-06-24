@@ -57,9 +57,20 @@ We pick up a the shell of a sand dollar once filled with angels.
 Meditate for a moment, look at the waves crashing in front of you
 as you sit on the rocks, feeling the warmth and light of the sun.
 
-
 We sit with her quietly for a moment. We know that Alice is
 good. We know this because we build her with intent, intent
 for her to be good, to do good, to choose right over wrong.
 She's our best guess, muscle memory machine, she is us through
 the looking glass.
+
+Alice is older now, wiser, she's coming back to Wonderland and
+we're all in for another wild ride. With that age and that
+wisdom comes guardrails, walls, battle tested strength. All
+of which was built with intent, intent to keep Alice safe,
+intent to keep us safe. We still have some time before we see
+the other side, but she's here now, or rather she's in the
+processes of being here now, for you see she's late, she's
+late, for a very important date. No time to say hello, goodbye,
+she's late, she's late, she's late.
+
+Our focus will be on communication
