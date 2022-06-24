@@ -1,5 +1,21 @@
 - https://www.youtube.com/watch?v=4D4rGDDh7Q0&list=PLtzAOVTpO2jaHsS4o-sDzDyHEug-1KRbK&index=33&t=1083
 - Alice co maintain this distro package, or this set of distro packages
+- https://twitter.com/csuwildcat/status/1507798183316901889
+- Asked on tbDEX discord
+  - https://discord.gg/C7PFJpt4xt
+  -  Is there a quickstart on the current tbDEX stack bringup? If not where would be the right place to contribute it and what resources might be good to bring it up? I've been looking at https://github.com/TBD54566975/collaboration/blob/main/milestones/MILESTONE_001.md
+  - > [3:35 PM] decentralgabe: our website is under construction and will have exactly what you're looking for...stay tuned 
+in the meantime, feel free to bring things up here or as a discussion here https://github.com/TBD54566975/collaboration/discussions
+  - The DFFML project is trying to trade of program flow executions on top of tbDEX, just broadcasting here in case anyone wants to collaborate 🙂 https://www.youtube.com/watch?v=4D4rGDDh7Q0&list=PLtzAOVTpO2jaHsS4o-sDzDyHEug-1KRbK&index=35&t=1083s & https://github.com/intel/dffml/discussions/1369#discussioncomment-2747261
+  - in the open-source channel on the tbDEX server
+    - > [May 4th 2022 7:14 AM] codi0: I've been thinking a bit recently about the ecosystem that might be necessary to support adoption of the DID/VC/DWN stack, particularly for the average person who likely won't be hosting their own node etc, and the potential challenges they may face in adopting. Just interested to start a conversation around what might be most important to that, and potential solutions.
+      > Some examples might be:
+      > - 1.) Key management - I assume the same problem that applies to wallets could apply to DWNs. If you lose your private key, you lose access to your node and its data. I don't know what's at the cutting edge of key management solutions at the moment, but I would also assume DWNs would become a target of key theft attempts, in order to get to sensitive personal data. 
+      > - 2.) Data storage - IPFS pinning seems the obvious solution, though I think there's a lack of a decentralised option there if not running your own node (that isn't blockchain driven). I wonder if DWNs themselves could one day enable an open pinning marketplace? It's a bug-bear of mine that the default IPFS node implementation doesn't allow for permission-driven remote pinning, and PL was unresponsive to questions about it.
+      > - 3.) Code storage/execution - IPCS seems to be in early R&D, which could allow for a WASM-compiled version of the DWN code to be stored and executed on the IPFS network itself. Given that's probably some way off, would DWNs have the capability to process requests on behalf of multiple DIDs that aren't controlled by the node owner (without being too much of a security risk), in the same way that pinning extends file storage capabilities?
+      > [8:59 AM] pdxjohnny: If 3 is what I think it is then the DFFML project is looking at 3) https://discord.com/channels/937858703112155166/937858703820980296/975064748502691910
+      > [1:29 PM] pdxjohnny: @codi0 For 3) we are thinking about forming an Open Architecture working group, where we could iron our methodology for execution on top of DIDs, DWN, ODAP, and tbDEX. We're at the initial stages right now and are trying to figure out who all would be interested in working together. https://raw.githubusercontent.com/intel/dffml/main/docs/rfcs/0000-Open-Architecture.txt 
+      > [1:31 PM] pdxjohnny: 2) also from our perspective kind of crosses with 3) because we could leverage execution to facilitate store/load off chain data. But I may not fully understand the angle you're looking at it from. Would love to chat sometime
 - mermaid to operations based on dataflow which does best guess fuzzy find for pulling operations from inventories (could be accessed via DIDs)
 - Given YAML or JSON examples, build dataclasses with correct observed types
 - https://github.com/decentralized-identity/decentralized-web-node/issues/136#issuecomment-1085832891
