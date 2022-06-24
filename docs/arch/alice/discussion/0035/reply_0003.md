@@ -1,1 +1,5 @@
 Single electron. Each system context is a possibility. On a search to see what one is the right one, no. To discover all possible system contexts.
+
+The universal blueprint binds schematics written in domain specific representations. It allows for knitting them together in different configurations by understanding their interfaces. Retaining domain specific representations maintains flexibility. Layers of abstraction can be shed during synthesis to create flows describable via domain specific representation within specific constraints (as defined by the system context).
+
+Example of shedding abstraction layers: UB says application written in Python passes data to application written in Rust. One possible domain specific representation: A Rust program with a Python interpreter built into it and the Python program built into it.
