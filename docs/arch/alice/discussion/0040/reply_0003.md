@@ -20,3 +20,4 @@ $ alice please contribute recommended community standards -log debug -repos http
     - Monitor negative feedback and all interactions!
     - Reach out via email or something to send innersource report
       - Periodic batch comparison
+      - Eventually look up user and target comms to their skill level / concerns
