@@ -43,7 +43,10 @@ We will omit for now
 ```
 
 ```console
+$ alice please contribute -repos https://github.com/intel/dffml "recommended community standards"
 ```
+
+Show it working with gh pr list
 
 - Future work
   - `-repos https://github.com/intel/dffml`
