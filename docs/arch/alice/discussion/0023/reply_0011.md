@@ -9,3 +9,4 @@
       - Recording explains around 1h TODO update draft here
     - Mitigation 1: Draft: Hey Daniel, ...
     - Mitigation 2: Ask Matt once we have code.
+  - Going with it for now because it looks like we can encode DAG into claims, should be enough to get first stage system context on chain
