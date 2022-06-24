@@ -1,8 +1,8 @@
 - We hit another blue screen immediately after boot
-- We downloaded Fedora Workstation 35 x86_64 and wrote it to our future Alice USB stick
-- We attempted to boot to our trusty live USB stick which is labeled Ubuntu 14.04 but looks like it contains sous 4.3
-- Copied Fedora `.iso` to external drive (2TB, new backup drive)
-- Boot to NUC
-- `dd` fedora from 2TB to Ubuntu 14.04 USB
-- Boot to new fedora live USB
-- Install onto 128GB USB
+  - We downloaded Fedora Workstation 35 x86_64 and wrote it to a live USB
+  - Boot to new fedora live USB
+  - Install onto 128GB USB
+- Software Supply Chain and Hyperledger Grid
+  - https://github.com/Cargill/grid-rfcs/blob/ryanlassigbanks-purchase-order-rfc/text/0025-purchase-orer.md
+    - Could we leverage this to request a CI/CD job be done?
+    - Use https://github.com/hyperledger/cactus to get from DID chain to Grid chain
