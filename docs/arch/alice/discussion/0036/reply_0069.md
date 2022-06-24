@@ -1,4 +1,5 @@
 - Uh oh, we've run into an issue with the managed locking code. At least it seems so right now. Saw this bug about a month ago and forgot about it, dismissed the locking bug as a one off, as if. LOL.
+  - Issue: https://github.com/intel/dffml/issues/1394
 
 ```
 $ python -m pdb -m alice shouldi contribute -keys ~/Documents/python/cve-bin-tool -log debug
