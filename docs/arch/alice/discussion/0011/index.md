@@ -1,0 +1,5 @@
+- Show how we convert from abitrary manifests into dataflow format
+  - Will likely need to flush out config / object loading.
+  - Probably need to support full object paths and then validate that they are BaseConfigurables
+- Need to support secret "unlock" stuff, this is probably similar to dataflow for config
+  - This also amounts to: my input goes through this flow to become a different value
