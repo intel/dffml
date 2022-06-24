@@ -1,0 +1,1 @@
+Hook into detection of terminal and understand what data dev is seeing and looking at stats of or forms of via https://jsvine.github.io/intro-to-visidata/index.html and correlate that with the ML models they end up building
