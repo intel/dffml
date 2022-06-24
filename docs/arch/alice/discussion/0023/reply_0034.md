@@ -1,1 +1,1 @@
-can use web3 as cve bin tool mirrors / cia torrent / webtorrent
+can use web3 as cve bin tool mirrors / torrent / webtorrent / ipfs
