@@ -15,7 +15,8 @@
   - `run(cli_dataflow, memoryorchestrator)`
     - `return_passthrough_overlay_or_overlay_loaded_as_dataflow_from_cli_args_or_env(args, env)`
     - execute overlay dataflow
-      - execute dataflow
+      - Apply any overlays to input dataflow
+      - execute input dataflow
 - web3
   - did is the system/orchestartor context id
   - did doc is the manifest, is the operation inputs
