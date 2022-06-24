@@ -55,4 +55,9 @@ When your top level system context is looking at a DID to run dataflow within it
   - Dump to cold storage (file).
   - Inspect all records in chain (look at the dumped data within the file).
   - Understand how each record maps to what is seen or unseen in the firefly explorer UI.
-  - 
+  - Attempt to generate inputs using execution of dataflow with values matching what existing in data stored on chain from firefly example chain data.
+  - Write operation which runs on output which grabs all inputs within inputs network and serializes them to the format that they dumped example is in.
+    - Build on what we found with peerdid
+    - 
+  - Attempt to import chain from newly created dump.
+    - Confirm via firefly UI that we are looking at equivalent data with different keys having signed.
