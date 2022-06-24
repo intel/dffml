@@ -45,4 +45,8 @@ When your top level system context is looking at a DID to run dataflow within it
   - Looks like dataflow / manifest
   - https://github.com/hyperledger/firefly-dataexchange-https/releases/tag/v1.0.0
     - Release is 7 days ago, woohoo!
-    - 
+
+---
+
+- Determined that if we use DIDs we'll have out of the box interoperability with hyperledger firefly and grid solutions.
+  - We would like to understand the format of the data as it exists within a did/did doc on one of those chains. We want to do this because we want to take the cold storage of the chain (all the DIDs) and be able to save / load that into `Input` objects via operations calling `InputNetworkContext.add()` after being run on dataflow as class context entry, so as to watch chain for new inputs and filter for ones applicable for running contexts.
