@@ -39,6 +39,7 @@ Alice is going to be held to very high standards. We should expect this list to 
   - Likely a datastore with the ability to listen for changes
   - Changes would be additions of messages from different sources (email, chat, etc.)
 - Alice should be able to accept a meeting, join it, and talk to you
+  - If Alice notices conversation getting off topic, she could interject to ask how it relates, and then update references in docs to that effect.
   - You should be able to have a conversation about a universal blueprint and she should be able to go act on it.
   - She should be able to analyze any codebase you have access to live and build and walk you through architecture diagrams
   - Alice build me a linux distro with these versions of these applications deploy it in a VM in QEMU, show me the screen while it's booting. Then give me control of it via this meeting. ... Okay now snapshot and deploy to XYZ CSP.
@@ -47,6 +48,7 @@ Alice is going to be held to very high standards. We should expect this list to 
   - Alice, let's talk about the automating classification web app included in the example.
     - Alice, give us an overview of the threats on our database, deploy the prod backup to a new environment. Attempt to exploit known threats and come up with new ones for the next 2 weeks. Submit a report and presentation with your findings. Begin work on issues found as you find them.
 - We should be able to see Alice think and understand her trains of thought
+  - If Alice is presenting and she estimates thinking of the correct solution will take longer than a reasonable time her next word is expected by to keep regular conversational cadence, she should either offer to brainstorm, work through it and wait until it makes sense to respond, maybe there are situations where the output is related to saving someone's life, then maybe she interupts as soon as she's done thinking. Provided she didn't detect that the train of thought which was being spoken about by others was not of higher prioritiy than her own (with regards to lifesaving metrics).
 
 ### Alice's Understanding of Software Engineering
 
