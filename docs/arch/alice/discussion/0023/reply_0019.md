@@ -67,3 +67,8 @@ When your top level system context is looking at a DID to run dataflow within it
   - Attempt to import chain from newly created dump.
     - Confirm via firefly UI that we are looking at equivalent data with different keys having signed.
 - Down the line maybe kcp running something with https://hyperledger.github.io/firefly/tutorials/custom_contracts.html#create-a-blockchain-event-listener to use that instead of HTTPS to accept incoming specs for CRDs.
+  - Listener within / alongside kcp acts as web2/web3 proxy where web2 is the kubernetes API server.
+    - This proxy service on start will kick off DFFML to either
+      - kick off operation to deploy firefly supernode (or blockchain node? on kcp cluster? configurable with dataflow)
+      - start listening itself for DIDs incoming converts them into k8s specs to call job subclass CRDs which we define via templates created from operation type information given via input/output defintitions and config as dataclass with soon to be unified python typing and defintion approach. alternate transport mechanisams could be dataflow which triggers k8s api triggered via non did proxy)
+      - some hybrid thereof
