@@ -16,5 +16,10 @@
     - `return_passthrough_overlay_or_overlay_loaded_as_dataflow_from_cli_args_or_env(args, env)`
     - execute overlay dataflow
       - execute dataflow
+- web3
+  - did is the system/orchestartor context id
+  - did doc is the manifest, is the operation inputs
+  - service endpoint is the dataflow or operation we execute
+    - Some callers will have already defined via the did method the dataflow, and we may be just executing an operation
 - We should modify operations and the orchestrators to not pass any orchestrator context or orchestrator context sub variables that are not predeclared. 
   - Declare what of anything an Operation wants to use from the orchestrator context up front in the allowlist and declare what the acceptable interface definition is (class, manifest) 
