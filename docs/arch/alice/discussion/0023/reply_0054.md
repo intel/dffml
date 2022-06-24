@@ -1,1 +1,2 @@
-The thing is, we haven't really architected anything at all. We're just reusing the existing best understood architecture, the brain.
+- The thing is, we haven't really architected anything at all. We're just reusing the existing best understood architecture, the brain.
+- SBOM VEX for links?
