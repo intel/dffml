@@ -1,0 +1,1 @@
+Strateigic plans can take outputs of other strategic plans. These map to layers in a nueral network. The final layer is the srategic principles. Each layer represents a conceptual level of understanding
