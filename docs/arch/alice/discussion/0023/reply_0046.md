@@ -1,6 +1,7 @@
 - Free trade working group -> trade federation?
 - https://github.com/bluesky-social/adx/blob/main/architecture.md
   - https://github.com/bluesky-social/adx/blob/main/architecture.md#personal-data-repositories
+    - "Merkle DAG"! (Called it!)
   - ADX plus tbDEX
   - ADX for comm layer, figure out format and serialize to that, it will be did based it looks like
 - DIDs are the open source solution to zero trust
