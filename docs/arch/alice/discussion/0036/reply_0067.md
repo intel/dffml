@@ -24,7 +24,6 @@
   - Each node in the an Open Architecture graph is a manifest
   - The top level document aka Alice aka the Open Architecture itself is a manifest
 - TODO
-  - [ ] Publish Open Architecture as PR so others can review
   - [x] Initial Threat Dragon Source
     - 7969de3a0dc84ba1ddaef605744072e1cdaecb9f
   - [x] Add manifest metadata to Threat Dragon Source Records via `extra`
@@ -32,4 +31,23 @@
   - [ ] Modify DataFlow to include manifest metadata
   - [ ] Use Data Flow Preprocessing Source as the merge source which pulls from the threat dragon source and converts to a dataflow
   - [ ] Initial Open Architecture Source where we use `dffml service dev export` programmatically similarly to what was done with CVE Bin Tool to output  (https://github.com/intel/cve-bin-tool/blob/7cb90d6009d047dfc08dead28110f2314d8c016a/cve_bin_tool/output_engine/threats.py#L88-L143) to take a feature which is a dataflow and output it to a JSON file
-  - [ ] Record demo
+  - [ ] `TheatsMarkdownSource` which outputs a feature within a record which is an Open Architecture (a System Context, a dataflow,  remember a dataflow alone is just a system context where the upstream is the dataflow and everything else is unset) to a `THREATS.md` file
+  - [ ] Merge with Record with image data of screenshot from threat dragon
+    - 
+  - [ ] Record demo (copy out a slice from asciinema, ensure we record with a terminal at 1080p)
+  - [ ] Mention:
+    - [ ] The Open Architecture is currently this mostly contained within this thread. Please comment within the thread and it will be converted to a PR soon.
+    - [ ] Mention we are meeting in July and to comment in this thread for to get an invite (link will also be posted there)
+      - [ ] https://github.com/intel/dffml/discussions/1369#discussioncomment-2929904
+      - [ ] We are hoping the working group will land under the OpenSSF. We've engaged with them previously about aligned work and are waiting until after our first meeting in July to ensure we are all aligned before engaging further ("we have not yet discussed defining the SPDX Abstract Syntax Tree" [David Kemp] - Could this be related?)
+    - Future Work
+      - CVE Bin Tool does scan, outputs open architecture
+        - https://github.com/intel/cve-bin-tool/pull/1698
+      - Optionally runs any auditors via overlays
+      - Overlays can be arbitrarily layered
+
+---
+
+- The following is the bad threat model John W made
+
+![image](https://user-images.githubusercontent.com/5950433/173202578-d2d5495b-8c4a-4383-9577-0e807ef442eb.png)
