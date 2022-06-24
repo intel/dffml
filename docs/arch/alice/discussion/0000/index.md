@@ -18,7 +18,7 @@ In this N volume tutorial series we roll Alice. (Rolling release, rolling softwa
 - [Preface](https://github.com/intel/dffml/discussions/1369#discussion-4023096)
 - [Introduction and Context](https://github.com/intel/dffml/discussions/1369#discussioncomment-2603280)
 
-#### Volume 1: Alice's Adventures in Wonderland
+#### Volume 1: Coach Alice
 
 > We build Alice the Software Architect.
 
