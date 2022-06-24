@@ -1,3 +1,4 @@
+- https://youtu.be/A-S9Z684o4Y
 - The Open Architecture enables hybrid on/off chain smart contacts.
   - It does this by incorporating risk management into architecture definition / smart contract.
     - Strategic plans work with the gatekeeper and prioritizer to negotiate and execute off chain contracts.
