@@ -8,7 +8,7 @@
 
 ## Rolling Alice
 
-In this 7 volume tutorial series we roll Alice. This series will be written a chapter per quarter, over the next 24 years.
+In this 7 volume tutorial series we roll Alice. This series will be written a chapter per quarter, over the next 24 years (this is with a 3x estimate on time for each chapter, so 3 months for each instead of 1, we'll see how it goes).
 
 ### Table Of Contents
 
