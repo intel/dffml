@@ -1,4 +1,6 @@
 - overlays let you treat any upstream as a template
+- Alice helps those who help themselves
+  - She can help you debug, but you have to take the first step and start experimenting. Alice lets us experiment by starting with thoughts, safe mode where she’s just thinking, and she’ll think with us based on remembering associated data that may be pertinent to the problem space we are looking at. She can help guide us to get us unstuck by seeing if we or others previously tried to do the dame thing. Helping us always work towards rhe state of the art, helping us learn quickly and grow (move strategic principles in desired directions) whatever skills mater to us. Alice can help you learn anything.
 - How do you pack the trains 
   - encode the dna
   - most efficient shraed organizational DWN routes via packed trains of data from participating agents
