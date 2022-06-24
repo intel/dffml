@@ -6,4 +6,4 @@ TODO Alice, explore the field of psychological operations research and formulate
 
 Using cross domain conceptual mapping. We can explain to Alice that we keep a dog on a leash to keep it safe, for its own security. At the expense of its freedom (and a plethora of other analogies) we can ensure she has a solid training dataset for what not to do, as well as what to do, to preserve our freedom, privacy, and security, within different yet unseen contexts. The effect of this when we scale up and begin yo think strategically is that she will understand freedom, privacy, and security and how to mitigate threats to those areas strategically as good or better than we can (since she’ll be able to see more thing at the same time as is to think more strategically, that oversubscribed system causing good chaos, learning in one domain accelerating learning in another.
 
-Phased reality consensus shift
+Phased reality consensus shift - DAGs of DAGs over time where time is relative to states of consciousness 
