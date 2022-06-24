@@ -19,3 +19,7 @@ When your top level system context is looking at a DID to run dataflow within it
   - This would allow for definition where we can use the subprocess orchestrator PR (never got merged, go grab) to run commands. We effectively implement a shell. This would also help with our fully connected development. We just are the shell. This would allow for running shell commands where daemons are just opimps that stay around and bash funtions are method on dataflows as classes
 - TODO
   - Talk to Marcela about hyperledger transact and if there is any k8s integration she knows about planned
+- https://www.sciencedirect.com/science/article/pii/S2096720922000136
+  - Privacy preserving Supply Chain implemented on fabric
+    - Extend and translate to transact to leverage new web3 concepts such as DIDs off the bat.
+    - They are looking at state: https://github.com/hyperledger/transact-rfcs/pull/12
