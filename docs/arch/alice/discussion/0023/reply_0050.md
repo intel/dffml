@@ -16,5 +16,8 @@
     - Ephemeral session key created for each sign in
     - Could do this with COCAO, but then you have a whole different world behind that browser tab (k8s, JWT, JWS style stuff)
       - Why not use JWT, JWS
-      - For this to work, this deligation, we need to reference the parent capablity
-        - This need to acess the parent capability as signed by the wallet is the topic of discussion
+      - For this to work, this delegation, we need to reference the parent capability
+        - This need to access the parent capability as signed by the wallet is the topic of discussion
+        - Main issue is the JWT algo
+          - Need to support secp256k1 and BLS
+          - There are JWS signing inputs which are needed
