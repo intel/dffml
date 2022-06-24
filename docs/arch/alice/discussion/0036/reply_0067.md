@@ -23,6 +23,8 @@
   - The term manifest is used to describe a domain specific representation of architecture
   - Each node in the an Open Architecture graph is a manifest
   - The top level document aka Alice aka the Open Architecture itself is a manifest
+- Living Threat Models Are Better Than Dead Threat Models
+  - https://us06web.zoom.us/j/89207603012?pwd=bUF2c2Q1WWthUm01WS9hREZsOVBQQT09
 - Demo
   - [ ] Show generation of THREATS.md using `dffml merge`
   - [ ] Explain Open Architecture (above)
@@ -35,12 +37,12 @@
     - 7969de3a0dc84ba1ddaef605744072e1cdaecb9f
   - [x] Add manifest metadata to Threat Dragon Source Records via `extra`
     - 51799da78a56f3557101fed0524c571fca0ce195
-  - [ ] Modify DataFlow to include manifest metadata
-  - [ ] Use Data Flow Preprocessing Source as the merge source which pulls from the threat dragon source and converts to a dataflow
-  - [ ] Initial Open Architecture Source where we use `dffml service dev export` programmatically similarly to what was done with CVE Bin Tool to output  (https://github.com/intel/cve-bin-tool/blob/7cb90d6009d047dfc08dead28110f2314d8c016a/cve_bin_tool/output_engine/threats.py#L88-L143) to take a feature which is a dataflow and output it to a JSON file
   - [ ] `TheatsMarkdownSource` which outputs a feature within a record which is an Open Architecture (a System Context, a dataflow,  remember a dataflow alone is just a system context where the upstream is the dataflow and everything else is unset) to a `THREATS.md` file
   - [ ] Merge with Record with image data of screenshot from threat dragon
     - https://user-images.githubusercontent.com/5950433/173202578-d2d5495b-8c4a-4383-9577-0e807ef442eb.png
+  - [ ] Modify DataFlow to include manifest metadata
+  - [ ] Use Data Flow Preprocessing Source as the merge source which pulls from the threat dragon source and converts to a dataflow
+  - [ ] Initial Open Architecture Source where we use `dffml service dev export` programmatically similarly to what was done with CVE Bin Tool to output  (https://github.com/intel/cve-bin-tool/blob/7cb90d6009d047dfc08dead28110f2314d8c016a/cve_bin_tool/output_engine/threats.py#L88-L143) to take a feature which is a dataflow and output it to a JSON file
   - [ ] Record demo (copy out a slice from asciinema, ensure we record with a terminal at 1080p)
   - [ ] Mention:
     - [ ] The Open Architecture is currently this mostly contained within this thread. Please comment within the thread and it will be converted to a PR soon.
