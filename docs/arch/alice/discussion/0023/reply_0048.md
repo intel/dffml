@@ -1,1 +1,5 @@
 - overlays let you treat any upstream as a template
+- How do you pack the trains 
+  - encode the dna
+  - most efficient shraed organizational DWN routes via packed trains of data from participating agents
+  - Human trains with secure plexiglass barriers rentable with configurable size
