@@ -1,0 +1,1 @@
+Figure out how to have alice do everything required for automatic release every commit if desired for any codebase to any release platform (custom pypi server)
