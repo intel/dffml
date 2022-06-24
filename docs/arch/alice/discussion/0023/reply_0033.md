@@ -7,7 +7,7 @@ What makes web3 / Peer DIDs different than classical blockchain technologies? ht
 - [ ] Use tdDEX and Peer DIDs for first context issuance to chain as request for execution.
 - [ ] Treat DID methods as manifests
   - [ ] `did:schema:` 
-  - [ ] `did:manifest:` - These we can use for encoding operations
+  - [ ] `did:manifest:` - These we can use for encoding operations. can also just have flows added to chain which return static data.
 - [ ] Define manifest DID method
   - [ ] Make fields for system context attributes
     - [ ] We can leverage DID update resolution mechanisms if we define as a DID method
