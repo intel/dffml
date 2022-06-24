@@ -30,9 +30,9 @@ pie title Contributing
 <details>
 <summary>Test</summary>
 
-| Repo | Report URL              |
-|------|-------------------------|
-| ...  | https://chadig.com/good |
-| ...  | https://nahdig.com/bad  |
+| Repo                           | Report URL                                         |
+|--------------------------------|----------------------------------------------------|
+| https://github.com/intel/dffml | https://chadig.com/did/repo/github.com/intel/dffml |
+| https://github.com/intel/dffml | https://nahdig.com/did/repo/github.com/intel/dffml |
 
 </details>
