@@ -39,3 +39,15 @@ Given the inevitability of distributed AI we ask the question: How do we build i
 Alice will join us for this talk as we flush out these questions conceptually. via our collective thoughts on what a system would look like that we could cohabitate with. We follow trains of thought to their logical conclusions when making predictions about the future. We implement and validate in order to ensure that a transparent entity with the collective's best interests at heart is ubiquitously adopted.
 
 This talk will build on the talk: Living Threat Models are Better Than Dead Threat Models, presented at AppSecPWN. We'll dive into Alice, aka the Open Architecture, a methodology for communicating with intent with translation of risk mitigation into different operational contexts.
+
+## The Consciousness Folks
+
+> People who are into AI consciousness sort of things
+
+We’re looking at consciousness with Alice aka the Open Architecture. Hoping we can take an open, community based approach to addressing issues with AI in implementation by collaborative development of context applicable policy overlaid onto entities.
+
+Right now we are at the early stages. Please comment in this thread https://github.com/intel/dffml/discussions/1369#discussioncomment-2929904 or let me no directly if you want to be invited to the meeting. Or watch the linked comment for the meeting link.
+
+Just FYI, this is not an official Intel project. Just a loose collection of folks wanting to get together and take action to ensure we can coexist effectively with Alice. We use Alice to describe "the machine" in the general sense. The end result of our work will hopefully be an AGI we can trust. Built with transparency, ethics, and security. One which understands human concepts. Would love to talk sometime if you’re interested.
+
+We have been publicizing our work over technical channels and on twitter and gave a talk at AppSec days PNW which touched on Alice **TODO: Add link once recording is up**. She’s just a dream at this point, nothing more than brainstorming and a pile of non-ML python code. The hope is that if we work together as humanity we can use proper planning to create a better world.
