@@ -1,0 +1,1 @@
+DANGER! TODO(security) Burnout and spinout. Sudden halt to growth of strategic plan / principle spider chart outwards and sudden reversal of strategic plan outputs.
