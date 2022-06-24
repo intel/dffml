@@ -17,9 +17,14 @@
     - Use https://github.com/hyperledger/cactus to get from DID chain to Grid chain
 - SSI Service looks to implement DID key method, that doesn't seem applicable to us. Think we will abandon anythign but the lower level peer DID lirbary and just go with that for now
 - https://github.com/transmute-industries/did-key.js
+  - https://identity.foundation/peer-did-method-spec/index.html#core
   - https://identity.foundation/peer-did-method-spec/index.html#method-specific-identifier
   - Led us to find out that did:nacl is depreciated in favor of did:key which will be used by tdDEX folks
   - Peer DID is the linked list version of DIDs `did:peer`
 - DID itself is a manifest
   - It tells us format name (`did:format_name`)
   - It tells us format version for Peer DID encoded into `numalgo` 
+  - `did:example` is the DID method, `example`
+  - `did:peer` is the DID method `peer`
+  - `did:key` is the DID method `
+  - A did is a manifest, the DID method encodes the information needed for the next phase parser
