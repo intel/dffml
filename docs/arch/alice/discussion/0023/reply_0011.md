@@ -2,6 +2,8 @@
 
 - `Engineering log`: https://youtu.be/0X4LumJ94iE
 - https://www.w3.org/TR/vc-data-model/
+  - https://w3c.github.io/vc-test-suite/implementations/
+    - Reference to see if any we can use to better understand spec
   - Threat Model: Attacker: Nation State: US Government
     - Threat: Funding for the spec
     - Causes for suspicion:
