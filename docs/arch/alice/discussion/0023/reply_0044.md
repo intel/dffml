@@ -2,6 +2,8 @@
 - Tap into the matrix, step into the flow, use the force, 6th (Nth conceptual models with acuracy dejavu), flow roll (jiujitsu)
 - Webui pop console webrtc connections opened one for chain based or enocded to from did messages connect to termals through tunnels abortearu protocols
 - https://hexdocs.pm/flow/Flow.html
+  - Elixir send the function where the data is, so it takes care of scheduling based on locality
+    - Has comms at base layer
   - OTP - erlang is a glorified supervision tree
     - Can hook into this to issue commands to erlang VMs, gives you fault tolerence
     - Can run this over web3
