@@ -28,7 +28,8 @@ in the meantime, feel free to bring things up here or as a discussion here https
   - Worked through drawing out dataflow on paper combined with tbDEX flow.
     - The below is still work in progress
 
-```mermaidflowchart TD
+```mermaid
+flowchart TD
     subgraph notes[Notes]
       tbDEX_all_messages_communicated_via_chain[All tbDEX Messages]
     end
