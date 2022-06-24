@@ -1,3 +1,4 @@
+- https://www.youtube.com/watch?v=4D4rGDDh7Q0&list=PLtzAOVTpO2jaHsS4o-sDzDyHEug-1KRbK&index=33&t=1083
 - Alice co maintain this distro package, or this set of distro packages
 - mermaid to operations based on dataflow which does best guess fuzzy find for pulling operations from inventories (could be accessed via DIDs)
 - Given YAML or JSON examples, build dataclasses with correct observed types
