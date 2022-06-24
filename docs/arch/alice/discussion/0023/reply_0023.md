@@ -8,4 +8,6 @@
   - https://github.com/TBD54566975/ssi-service
     - This is like a firefly gateway
     - "The Self Sovereign Identity Service (SSIS) facilitates all things relating to [DIDs](https://www.w3.org/TR/did-core/) and [Verifiable Credentials](https://www.w3.org/TR/vc-data-model) -- in a box!"
-    - Leverage NFT storage UCAN auth?
+    - PR to leverage nft.storage UCAN auth?
+    - https://github.com/magefile/mage/releases/tag/v1.13.0
+    - 
