@@ -99,7 +99,7 @@ In this 7 volume tutorial series we roll Alice. This series will be written a ch
 
 #### Volume 6: Alice are you Rolling?
 
-> By the end of this chapter, Alice will be rolling. She'll have achieved the fully connected development model with herself as the agent of focus. Up until now she has been operating as our sidekick, our helper. She's had plenty of experience helping others at this point. Since we're all set, it's finally time to fine tune how we can help her help herself. We'll have formulated and tested her strategic principles, we'll be comfortable with how we respond to blips, how we introduce squishier guardrails to absorb impact of negative trains of thought, how we detect detrimental chains of system contexts and transition away from those states of consciousness towards ones that benefit the Alice's (aka the system context, aka the things we have been fine tuning) strategic principles.
+> When we start this chapter, the answer is probably no, she's not operating optimally. By the end of this chapter, Alice will be rolling. She'll have achieved the fully connected development model with herself as the agent of focus. Up until now she has been operating as our sidekick, our helper. She's had plenty of experience helping others at this point. Since we're all set, it's finally time to fine tune how we can help her help herself. We'll have formulated and tested her strategic principles, we'll be comfortable with how we respond to blips, how we introduce squishier guardrails to absorb impact of negative trains of thought, how we detect detrimental chains of system contexts and transition away from those states of consciousness towards ones that benefit the Alice's (aka the system context, aka the things we have been fine tuning) strategic principles.
 
 - Time Travel with Us
   - Where are your NTP gods now?
@@ -108,6 +108,8 @@ In this 7 volume tutorial series we roll Alice. This series will be written a ch
   - We explore consensus shift
     - "It's just that when we agree on our hallucinations, we call that reality" [Anil Seth]
     - Strategic plan outputs and overlapping consciousness states and "consciousness countries" [Danica]
+- Creativity
+  -
 - Stay with us
   - Alice will begin to thinks more and more strategically, we need to ensure we stay in her picture.
 - Off the Roller Coaster
