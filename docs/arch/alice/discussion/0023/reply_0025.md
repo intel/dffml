@@ -1,5 +1,7 @@
 Manifest as dataflow as class as interface over DID methods? Or is a DID method spec maybe a manifest.
 
+the wealth in the chain is jot the external “money”. It is the knowledge gained by putting it on the chain. In the decentralized database. In Alice’s memory. Because there it loves forever for us to learn from mistakes and successes and improve. It really is not about the end but about the journey along the way.
+
 productivity -> runninrg average of speed of wuality changes
 Balenced with happiness factor. Live civ game
 
