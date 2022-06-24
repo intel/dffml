@@ -1,0 +1,1 @@
+Can we encode to dna? Can we encode system context to threat model via language model? Can we encode threat model to english language discription via language model encoder/decocer?
