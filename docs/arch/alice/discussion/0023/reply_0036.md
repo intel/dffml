@@ -1,4 +1,5 @@
- - Look at other open source communities for practices
+- https://www.youtube.com/watch?v=mpWHEVMPFq8&list=PLtzAOVTpO2jaHsS4o-sDzDyHEug-1KRbK&index=28
+- Look at other open source communities for practices
   - submit early submit often, as soon as you have data give it to the chain so others can think abou tit
   - chormium intent to impelemnt process (doing relevenet standard if there is one)
     - ADRs (manifests) establish intent of design
