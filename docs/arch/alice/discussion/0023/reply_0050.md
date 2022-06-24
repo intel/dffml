@@ -21,3 +21,5 @@
         - Main issue is the JWT algo
           - Need to support secp256k1 and BLS
           - There are JWS signing inputs which are needed
+          - Irakli Gozalighvili: You could derive JWT form out of data to be signed, then just sign with other key?
+          - JOT and UCAN are strikingly similar but incompatable
