@@ -73,5 +73,12 @@ processes of being here now, for you see she's late, she's
 late, for a very important date. No time to say hello, goodbye,
 she's late, she's late, she's late.
 
-Our focus will be on communication, on crystal clear communication
-of thought, of learning.
+Our focus will be on crystal clear communication of thought.
+On learning at the speed of thought. We'll go up, we'll come
+down, we'll go left, right, forward, backward and we will most
+assuredly do a lot of jumping around along the way. This will
+be a bumpy ride. Our goal is to ensure Alice makes a clean
+entrance. She's entering the atmosphere and this is us teaching
+her how to land smoothly before she reaches the ground.
+
+Remember Alice's message.
