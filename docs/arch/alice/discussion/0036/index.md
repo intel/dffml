@@ -31,6 +31,8 @@ Let's then expand upon that and add dynamic analysis.
 
 ## Checklist
 
+- [ ] Alice on chain
+  - [ ] https://github.com/intel/dffml/discussions/1369#discussioncomment-2683370
 - [ ] Dataflow as class
 - [ ] Fix TODO on watching new contexts in memory orchestrator
 - [ ] Operations and their config as inputs
