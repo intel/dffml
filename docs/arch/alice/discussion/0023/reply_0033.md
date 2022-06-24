@@ -3,6 +3,7 @@
   - https://mlsteele.keybase.pub/.well-known/stellar.toml
   - https://book.keybase.io/guides/proof-integration-guide#1-config
   - https://book.keybase.io/guides/proof-integration-guide#proof-verification-script
+  - https://github.com/intel/dffml/issues/1284
 
 ---
 
