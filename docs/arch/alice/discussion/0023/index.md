@@ -8,6 +8,7 @@
 
 ### Table Of Contents
 
+- [Preface](https://github.com/intel/dffml/discussions/1369#discussion-4023096)
 - [Introduction](https://github.com/intel/dffml/discussions/1369#discussioncomment-2603280)
 - [Chapter I: Down the Rabbit-Hole](https://github.com/intel/dffml/discussions/1369#discussioncomment-2663771)
 
