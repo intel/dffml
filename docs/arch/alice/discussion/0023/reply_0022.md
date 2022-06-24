@@ -4,6 +4,7 @@
     - Models within strategic plans are involved in risk tolerance.
   - Smart contracts with understanding of risk are effectively entities making decisions based on models. This allows for mutation in implementation while maintaining principles.
     - The smart contract is able to make its own decisions based on learned experience (models) so as to continue to operate until its strategic goals are meet. As measured by oracle data ordained from trusted parties as is applicable to context. Where chains of trust are established via Peer DIDs between entities and data for provenance. Leveraging verifiable credentials (opencert) for review system to measure risk in absence of attestation.
+- For trains of thought at critical velocity. Fully optimized resource utilization to optimally progress train of thought to move strategic principles in correct directions and advance the “state of the art” for any given conceptual field. A/B feature branch permutation testing to sus out bleeding edge to determine system context which is the optimal selection of overlays where overlays are forks, branches, similar repos, similar projects, similar specs, similar working groups, similar goals, similar strategic plans, similar strategic principles, priorities. Autoencoders trained against input data for system context with high accuracy represent. 
 - What will Alice do?
   - Architect
   - DJ
