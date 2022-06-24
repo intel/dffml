@@ -1,5 +1,9 @@
 - Map activies in recorded / streamed sessions to link up issues, branches, prs, chats, etc.
-- AI that looked at codebase and generated property based testing
+- AI that looked at codebase and generated property based testing (like fuzz testing)
+  - Try to call the functions
+    - Try to make calls with every permutation of every type with every function
+      - Here is all the data about how that execution went
+      - You now know the signature of the function, I know now the permutations, I now know the interface
   - Then auto doc all of it
   - AI look at all of the public functions
     - Here's all the usages, here is all the possible things you can do
