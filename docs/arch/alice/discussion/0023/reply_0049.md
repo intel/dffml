@@ -6,3 +6,4 @@
   - shes everywhere and nowhere at the same time. She’s fully event based which means resuming from cached state, any system context stored for instance stored on chain or referenced from another system context (a did doc itself). She can transform herself via synthesis into a purpose built representation that waits for wake on lan for instance (full firmware stack and all).
 - https://mobile.twitter.com/PHuenermund/status/1528795431274262530
   - > To collect taxes, Christian IV of Denmark asked captains of ships crossing the Øresund to estimate the value of their cargo, which was applied as the tax base without further audit. But the king also claimed the right to buy the entire cargo at exactly that price.
+  - Could we pair this with above train car idea somehow?
