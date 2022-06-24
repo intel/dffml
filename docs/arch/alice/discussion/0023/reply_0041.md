@@ -5,3 +5,5 @@
 - legend of zelda style sound effects on copy from browser paste to terminal
 - Remember remember trail
 - Wallet interoperability
+- tbDEX usage
+  - We are submitting Asks to be rewarded for aligned system context remembrance (read), hypothesis(infer), or execution(read/write).
