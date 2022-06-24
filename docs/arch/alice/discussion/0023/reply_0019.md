@@ -66,3 +66,4 @@ When your top level system context is looking at a DID to run dataflow within it
     - https://github.com/pdxjohnny/dffml/blob/0404b6dc449658ea4ecb324c8f4f5522b1a438a7/operations/peerid/dffml_operations_peerid.py
   - Attempt to import chain from newly created dump.
     - Confirm via firefly UI that we are looking at equivalent data with different keys having signed.
+- Down the line maybe kcp running something with https://hyperledger.github.io/firefly/tutorials/custom_contracts.html#create-a-blockchain-event-listener to use that instead of HTTPS to accept incoming specs for CRDs.
