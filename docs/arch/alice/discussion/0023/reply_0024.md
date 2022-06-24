@@ -2,11 +2,7 @@
 - We downloaded Fedora Workstation 35 x86_64 and wrote it to our future Alice USB stick
 - We attempted to boot to our trusty live USB stick which is labeled Ubuntu 14.04 but looks like it contains sous 4.3
 - Copied Fedora `.iso` to external drive (2TB, new backup drive)
-- Mounted `.iso` from 2TB drive
-- Mounted `squashfs.img` within LiveCD directory
-- Mounted `rootfs.img`
-- `systemd-nspawn -D /path/to/mount/directory/for/rootfs` to start container
-- Run `anaconda`
-- Select text based interface
-  - Wait for it to load a while ignore errors about not being able to connect (3 line same thing)
-- 
+- Boot to NUC
+- `dd` fedora from 2TB to Ubuntu 14.04 USB
+- Boot to new fedora live USB
+- Install onto 128GB USB
