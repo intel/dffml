@@ -1,0 +1,1 @@
+- https://ellenchisa.substack.com/p/building-faster?sd=nfs&s=r
