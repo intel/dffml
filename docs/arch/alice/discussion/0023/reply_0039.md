@@ -39,3 +39,6 @@
 - We should modify operations and the orchestrators to not pass any orchestrator context or orchestrator context sub variables that are not predeclared. 
   - Declare what of anything an Operation wants to use from the orchestrator context up front in the allowlist and declare what the acceptable interface definition is (class, manifest)
 - Going to run dataflows via two run system context operation instantiated which will be similar to run_dataflow operation which will be modifed to take the orchestrator as an input. Each will share Alice’s root did to start. Then we will make one alice and one bob. We will implement the input network as a regular class rather than doing dataflow as class first
+- `MemoryInputSet` and `MemoryParameterSet`
+  - MUST be updated to have handles to the input network for things like removal, etc.
+  - MUST be made to use the double context entry pattern
