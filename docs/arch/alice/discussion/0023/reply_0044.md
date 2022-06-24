@@ -14,3 +14,4 @@
       - If your process crashes, the supervision tree decides what to do (strategic plans)
         - Model in elixir is crash, then supervisers break down
   - Broadway is what is producing the events, flow is what
+  - Supervision tree could initaite fail fast patterns
