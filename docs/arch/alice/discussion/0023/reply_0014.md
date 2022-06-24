@@ -5,3 +5,5 @@ DIDCommv2: https://identity.foundation/didcomm-messaging/spec/#plaintext-message
 > published and versioned schema
 
 which makes it a manifest
+
+Throw it at the shim
