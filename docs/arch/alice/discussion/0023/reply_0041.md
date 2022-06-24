@@ -1,3 +1,4 @@
+- https://youtu.be/e25HzQRtErA
 - Map English language text instructions from issue / engineering logs to execution of development activies
 - How do we preserve privacy? By chains if trust via acceptabilty of provenance determined by startegic plans
 - The strategic plans are the soul
