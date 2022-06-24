@@ -1,6 +1,13 @@
 - Map English language text instructions from issue / engineering logs to execution of development activies
 - How do we preserve privacy? By chains if trust via acceptabilty of provenance determined by startegic plans
 - The strategic plans are the soul
+  - ask system context contains strategic plans in did doc with soul for the entity for that job. This means all contraint strategic plans are included in the system context referenced in the ask along with any trained models to be used for cached execution when evaluating aligned system contexts with evaluating entities startegic plans overlayed so as to account for their priorities.
+  - The PFI, bob in this case, responds with a did which contains a system cobtext which has a verifiable chain of parent Input objects which are DID docs for each system context and operation from which the aligned system context came from (its open liniage / sawtooth / gird / cosign / rekot provenance).
+  - Alice loads the aligned system context and executes its deployment which retrieves the provenance information from its cached state within a sandboxed environment (allowlist opimpn similar to subset source).
+  - Alice verifies the provenance information by feeding it to her verifier(s) of choice.
+  - Alice accepts the offer.
+  - Bob executes the contract
+  - alice sets triggers to verify bob is executing contract and files reviews upon completion or timeout or other conditions as agreed to within counteroffer’s aligned system context.
 - https://medium.com/qe-unit/airbnbs-microservices-architecture-journey-to-quality-engineering-d5a490e6ba4f
 - eBPF networking for our deployments
   - https://github.com/cilium/cilium
