@@ -1,0 +1,20 @@
+### 2022-05-25 UCAN Community Meeting
+
+- 10:00 AM PDT
+  - https://lu.ma/ucan
+  - https://github.com/ucan-wg/spec/discussions/66
+- Boris Mann
+  - CWAY (Sign in with Etherium)
+  - Sign in with everything
+  - Signing using keys, no blockchain transaction happens
+  - Blockchain wallets are the latest PKI, we don't have to solve keymanagement
+  - Once you sign, you are restricted to a single tab (due to metamask being a per tab thing)
+    - Se
+- Sergey Ukstov
+  - Would you like to give this website/ application to get these permissions for this set of actions
+    - That effectivly creates a very basic capability chain
+    - Ephemeral session key created for each sign in
+    - Could do this with COCAO, but then you have a whole different world behind that browser tab (k8s, JWT, JWS style stuff)
+      - Why not use JWT, JWS
+      - For this to work, this deligation, we need to reference the parent capablity
+        - This need to acess the parent capability as signed by the wallet is the topic of discussion
