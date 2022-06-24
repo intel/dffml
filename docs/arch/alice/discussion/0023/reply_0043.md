@@ -36,7 +36,7 @@ always a speck of yang-
       - You want to register a project name with your container registery you usally use, right?
       - 
 
-source of below diagram: learnk8s
+source of below diagram: https://learnk8s.io/troubleshooting-deployments
 
 Alice, learn from this diagram information which assists you with root causing and fixing k8s issues
 ![6C714A81-3391-4841-9F20-C3EA05555459](https://user-images.githubusercontent.com/5950433/169081622-68d14d98-9bd5-427b-b377-f3f65190c360.jpeg)
