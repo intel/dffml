@@ -4,6 +4,8 @@
 >
 > Artificial Life Is Coming Eventually
 
+## Rolling Alice
+
 ### Table Of Contents
 
 #### Volume 0: Architecting Alice
