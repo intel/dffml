@@ -3,3 +3,6 @@
   - This is 3 years ago, think remember reading this
   - Last talked to him about DIDs he said CBOR would be great (DICE)
 - NFTs on Peer DIDs allow us to build graph
+- Intercept route
+  - identity aware context -> ucan (via cbor) -> dice (device attestation)
+    - Allows us to share attestations via opencreds type stuff across humans / machines when our strategic plans are attempting to mitigate risk via execution of operations via implementations which have attestested properties
