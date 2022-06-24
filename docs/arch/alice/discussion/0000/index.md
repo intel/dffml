@@ -10,4 +10,4 @@ AI has the potential to do many great things. However, it also has the potential
 
 As we democratize AI, we must be careful not to democratize AI that will do harm. We must think secure by default in terms of architecture which has facilities for guard rails, baking safety into AI.
 
-Failure to achieve ubiquitous adoption of an open architecture with meticulously audited safety controls will result in further consolidation of wealth and widening inequality.
+Failure to achieve ubiquitous adoption of an open architecture with meticulously audited safety controls will result in further consolidation of wealth and widening inequality. This is about equal access to technology to make peoples lives better. About baking in UX. About right to repair. We have to democratize effective use of technological assets. We have to ensure that this access to effective use is baked in to commodity hardware and software. This is about proving that a free society can behave in a way which maintains its principles of freedom while optimizing for increasing the greater good (i.e. fight climate change).
