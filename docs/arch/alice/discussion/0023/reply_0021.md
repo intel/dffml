@@ -11,6 +11,10 @@
 - Intercept route
   - identity aware context -> ucan (via cbor) -> dice (device attestation)
     - Allows us to share attestations via opencreds type stuff across humans / machines when our strategic plans are attempting to mitigate risk via execution of operations via implementations which have attestested properties
+- https://eips.ethereum.org/EIPS/eip-1155#metadata
+- https://eips.ethereum.org/EIPS/eip-165
+  - Detection of methods for smart contracts
+  - Should we encode to smart contract and be an execution engine for that?
 - For this recording
   - [ ] Ensure nft.storage can interact with DID based blockchain (firefly, transact?)
   - [ ] Deploy nft.storage and interact with it via UCAN token auth
