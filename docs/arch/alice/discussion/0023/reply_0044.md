@@ -1,3 +1,9 @@
 - Map activies in recorded / streamed sessions to link up issues, branches, prs, chats, etc.
 - Tap into the matrix, step into the flow, use the force, 6th (Nth conceptual models with acuracy dejavu), flow roll (jiujitsu)
 - Webui pop console webrtc connections opened one for chain based or enocded to from did messages connect to termals through tunnels abortearu protocols
+- https://hexdocs.pm/flow/Flow.html
+  - OTP - erlang is a glorified supervision tree
+    - Can hook into this to issue commands to erlang VMs, gives you fault tolerence
+    - Can run this over web3
+    - It can manage how it fails
+    - Backpressure is watching the infinate stream and it's monitoring and watching and detecting if it's oversubscribing the resources available
