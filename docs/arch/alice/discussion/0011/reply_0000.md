@@ -1,0 +1,2 @@
+- https://mobile.twitter.com/bibryam/status/1530140893151379456
+  - kubernetes anti paterns
