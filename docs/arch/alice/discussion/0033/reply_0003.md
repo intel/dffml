@@ -1,1 +1,4 @@
-- alan watts said it better. with the patterns of the cosmos. everything as data data is the patterns as seen via the trains of thought aka the chains of system contexts
+- alan watts articulated well enlightenment and the patterns of the cosmos. everything as data data is the patterns as seen via the trains of thought aka the chains of system contexts
+- Would be fun to go through these with Alice
+  - https://github.com/microsoft/Data-Science-For-Beginners
+  - https://github.com/microsoft/ML-For-Beginners
