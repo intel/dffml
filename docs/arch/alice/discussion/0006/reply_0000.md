@@ -1,1 +1,1 @@
-Modify `@op` to add in additional to be added as parents to `Input` objects produced as results of `opimp_ctx.run()`
+Modify `@op` to add in additional `Input`s to be added as parents to `Input` objects produced as results of `opimp_ctx.run()`
