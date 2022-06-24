@@ -21,3 +21,4 @@ $ alice please contribute recommended community standards -log debug -repos http
     - Reach out via email or something to send innersource report
       - Periodic batch comparison
       - Eventually look up user and target comms to their skill level / concerns
+      - Do with 5 pilot repos by end of July with these reports
