@@ -1,0 +1,5 @@
+- RBAC on DIDs via provenance and dynamic trust relationships
+- Failure Mode Analysis
+  - For each compoeent of infra srcutrue you use you define failure modes as strategic plans outputs
+    - Attah to each failure mode obseravabiltiy metrics via consuming them via strategic plans
+      - Based on those observiablity metrics you desgign mittiations via strategic plans
