@@ -18,7 +18,7 @@
 
 We are writing a tutorial for an open source project on how we build an AI to work on the open source project as if she were a remote developer. Bit of a self fulfilling prophecy, but who doesn't love an infinite loop now and again. These are the draft plans: https://github.com/intel/dffml/discussions/1369#discussioncomment-2603280
 
-Essentially we are going to be using web3 (DID, DWN), KCP (kubernetes API server), provenance and attestation, and automl with feature engineering for a distributed data, analysis, control loop.
+Essentially we are going to be using web3 (DID, DWN), KCP (kubernetes API server), provenance and attestation, and automl with feature engineering for a distributed data, analysis, control loop. We'll grow contributors into mentors, and mentors into maintainers, and Alice will grow along with us.
 
 ## Initial Gitter Announcement
 
