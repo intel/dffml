@@ -1,0 +1,1 @@
+If you do A/B testing by Alice of developer branches you can see what combinations of branches break each other before they are merged. What combinations of commits. Like seterioids for git bisect
