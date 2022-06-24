@@ -35,6 +35,7 @@ Alice is going to be held to very high standards. We should expect this list to 
 
 - Alice should be able to work on any project as a remote developer
   - She should be able to make changes to projects following the branch by abstraction methodology
+  - When she works on a github issue she'll comment what commands she tries and what files she modifies with diffs
 - Alice will maintain a system which allows her to respond to asynchronous messages
   - Likely a datastore with the ability to listen for changes
   - Changes would be additions of messages from different sources (email, chat, etc.)
