@@ -1,3 +1,3 @@
-- The system context is the Holy Grail. It is the upstream, the overlay, and the orchestrator.
+- It is the upstream, the overlay, and the orchestrator. We can use these to represent the past (upstream), the present (overlay), and the future (via orchestration).
 - Links are defined within the overlay, just as inputs would be. This way they can be any type. There could be static input data added to overlay which when the deployment is run for something like system_context_static_links (an operation) which we can validate and traverse the potential call graph of in a static manner
 - from wonderland.async for async versions
