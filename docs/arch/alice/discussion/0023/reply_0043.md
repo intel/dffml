@@ -1,4 +1,6 @@
+- https://youtu.be/23NlO1EOGyI
 - Automating Enlightenment
+  - “the tao of wu” by the RZA. Need to go through in detail and pull out well worded bits for Alice to incorporate into her soul
   - > 62
 past Born-_from 9 to 10- you're actually going back to
 1, or Knowledge, because 10 is 1 with a circle beside it.
