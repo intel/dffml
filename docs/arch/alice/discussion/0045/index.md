@@ -29,7 +29,7 @@ pie title Overall
     "Less than minimum health" : 100
 ```
 
-Then drill down into each
+Show dataflow of only connections to the overall calculation.
 
 ```mermaid
 graph LR
