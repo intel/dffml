@@ -39,9 +39,9 @@ We will also add now (and later `THREATS.md`)
 We will omit for now
 
 ```
-- []  Issue templates
-- []  Pull request template
-- []  Repository admins accept content reports
+- [] Issue templates
+- [] Pull request template
+- [] Repository admins accept content reports
 ```
 
 ```console
