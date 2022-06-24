@@ -8,6 +8,9 @@ When your top level system context is looking at a DID to run dataflow within it
 - https://github.com/hyperledger/aries-rfcs/blob/main/features/0023-did-exchange/README.md
 - https://identity.foundation/peer-did-method-spec/#layers-of-support
 - https://github.com/hyperledger/aries-rfcs/blob/main/concepts/0003-protocols/README.md#piuri
+- Found out that hyperledger has firefly project, similar to DFFML, but in go, no ML that we can see so far
+- https://crates.io/crates/transact
+  - DataFlows should be interoperable with hyperledger transact
 
 ---
 
