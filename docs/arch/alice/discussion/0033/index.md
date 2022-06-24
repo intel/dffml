@@ -3,3 +3,5 @@ How we can successfully foster innovation? Reward successful trains of thoughts 
 There is an equilibrium between chaos and complete control (measured as 100% of inputs produced within a system context, including all subflows/contexts, are consumed by strategic plans, meaning we are taking every possible thing into account before issuing new system contexts to be executed) where optimal performance is measured as the number of system contexts being executed successfully.
 
 Usage stats of a universal blueprint within downstream blueprints should be taken into account by a strategic plan which vets new thoughts (dataflows/+system contexts) to prioritize (HAVEN'T LOOKED AT THIS YET, flush this out) thoughts which are executing within successful trains of thought relative to pace of progress of other trains of thought (clustering model on dataflows/system contexts to determine similar trains of thought).
+
+After new system contexts are issued by strategic decision maker, there should be a prioritizer which decides which thoughts get played out (dataflows with system context executed) on what available resources (orchestrators).
