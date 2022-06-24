@@ -13,6 +13,7 @@
 - https://github.com/intel/dffml/discussions/1383
 - Abstract submission deadline Jun. 24, 2022
   - Intel Security Conference (iSecCon) 2022 Call for Papers
+  - https://easychair.org/cfp/USISECCON2022
   - https://easychair.org/account/signin
   - [U.S. iSecCon 2022_submission_instructions.pdf](https://github.com/intel/dffml/files/8884245/U.S.iSecCon.2022_submission_instructions.pdf)
 - https://www.thethingsindustries.com/docs/devices/adding-devices/
@@ -32,14 +33,38 @@
   - https://github.com/sicpa-dlab/didcomm-demo/blob/main/didcomm-demo-python/didcomm_demo/did_resolver_peer_did.py
   - https://github.com/sicpa-dlab/didcomm-demo/blob/main/didcomm-demo-python/didcomm_demo/didcomm_demo.py
   - https://github.com/sicpa-dlab/didcomm-python/tree/stable#2-build-an-unencrypted-but-signed-didcomm-message
+  - https://identity.foundation/peer-did-method-spec/#verificationMethod
+  - https://identity.foundation/peer-did-method-spec/#read-resolve
+  - https://identity.foundation/peer-did-method-spec/#grafting
+  - https://identity.foundation/peer-did-method-spec/#service
+  - https://github.com/sicpa-dlab/peer-did-python/blob/c63461860891d7c111abb6b24a51f23dad845a74/tests/test_vectors.py#L57-L96
+  - https://github.com/sicpa-dlab/peer-did-python/blob/c63461860891d7c111abb6b24a51f23dad845a74/tests/test_did_doc.py#L36
+  - https://github.com/hyperledger/aries-rfcs/blob/main/features/0023-did-exchange/README.md
+  - https://github.com/hyperledger/aries-rfcs/blob/main/features/0434-outofband/README.md#roles
+  - https://identity.foundation/peer-did-method-spec/#create-register
+  - https://github.com/sicpa-dlab/peer-did-python
+  - https://github.com/sicpa-dlab/peer-did-python/blob/c63461860891d7c111abb6b24a51f23dad845a74/peerdid/core/peer_did_helper.py#L157
+  - https://github.com/sicpa-dlab/peer-did-python/blob/c63461860891d7c111abb6b24a51f23dad845a74/peerdid/types.py#L13
+  - https://github.com/sicpa-dlab/peer-did-python/blob/c63461860891d7c111abb6b24a51f23dad845a74/peerdid/types.py#L45
+  - https://github.com/sicpa-dlab/peer-did-python/blob/main/tests/test_resolve_peer_did_numalgo_2.py
+- GitHub Discussions backup
+  - https://github.com/cli/cli/issues/5659
+  - https://docs.github.com/en/graphql/reference/objects#pageinfo
+  - https://docs.github.com/en/graphql/guides/using-the-graphql-api-for-discussions
+- Hyperledger Aries
+  - https://github.com/hyperledger/aries-rfcs/blob/main/features/0434-outofband/README.md
 - JSON Web Keys
   - https://jwcrypto.readthedocs.io/en/latest/jwk.html#examples
 - https://github.com/WebOfTrust/ietf-keri
   - Prerotation on keys
+  - https://github.com/WebOfTrust/keripy
+- RFC template
+  - https://github.com/martinthomson/internet-draft-template
 
 ---
 
 - Below doesn't work, need to diff with other version in Volume 0 and update there if appropriate.
+  - https://github.com/intel/dffml/discussions/1369#discussioncomment-2747261
 
 ```
 
