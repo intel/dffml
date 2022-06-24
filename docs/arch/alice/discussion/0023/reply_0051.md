@@ -1,5 +1,5 @@
 - https://azure.microsoft.com/en-us/overview/what-is-a-qubit/#introduction
   - > A qubit uses the quantum mechanical phenomena of superposition to achieve a linear combination of two states. A classical binary bit can only represent a single binary value, such as 0 or 1, meaning that it can only be in one of two possible states. A qubit, however, can represent a 0, a 1, or any proportion of 0 and 1 in superposition of both states, with a certain probability of being a 0 and a certain probability of being a 1.
 - applied quantum computing train of thought
-  - this qubit is perfect for the circle, the everything is one, the infinity between zero and one, 
+  - this qubit is perfect for the circle, the everything is one, the infinity between zero and on - elightnement: everything is one 
   - 
