@@ -13,3 +13,6 @@
         - > Design constraints are conditions that need to happen for a project to be successful.
           > https://study.com/academy/lesson/design-constraints-in-engineering-definition-example.html
 - The ConditionalOffer sourceCurrency is the did of the aligned context
+  - coming from bob who is the pfi
+  - The ask is from alice with her startegic plan suggested system context. She has 0 and she wants 1.
+  - Bob is PFI. He can execute but wants reward in terms of 1 execution of a different system context used as currency given by did
