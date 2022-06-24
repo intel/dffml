@@ -19,3 +19,51 @@ $ grep '<input type="hidden" name="anchor_id"' /tmp/b
 ```
 
 - https://github.com/cli/cli/issues/5659#issuecomment-1138588268
+
+**intial_discussion_query.graphql**
+
+```graphql
+fragment user on User {
+  login
+  name
+}
+fragment comment on DiscussionComment {
+  author {
+    ...user
+  }
+  bodyText
+  isMinimized
+}
+query ($owner: String!, $repo: String!) {
+  repository(owner: $owner, name: $repo) {
+    pinnedDiscussions(first: 1) {
+      nodes {
+        discussion {
+          title
+          bodyText
+          author {
+            ...user
+          }
+          category {
+            name
+          }
+          comments(first: 100) {
+            nodes {
+              ...comment
+              replies(first: 100) {
+                nodes {
+                  ...comment
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+```console
+$ gh api graphql -F owner='intel' -F repo='dffml' -F query=@intial_discussion_query.graphql | tee output.json | python -m json.tool | tee output.json.formated.json
+```
