@@ -1,1 +1,4 @@
 - https://github.com/intel/dffml/issues/1388
+- Alice convert to polyrepo path/to/dffml
+  - filter branch out subdirectories with packages, create github repos for them.
+  - Create mirrors for dependencies, ensure we are always building from our forks of all the dependencies
