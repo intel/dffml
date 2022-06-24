@@ -7,12 +7,12 @@
   - CWAY (Sign in with Etherium)
   - Sign in with everything
   - Signing using keys, no blockchain transaction happens
-  - Blockchain wallets are the latest PKI, we don't have to solve keymanagement
+  - Blockchain wallets are the latest PKI, we don't have to solve key management
   - Once you sign, you are restricted to a single tab (due to metamask being a per tab thing)
     - Se
 - Sergey Ukstov
   - Would you like to give this website/ application to get these permissions for this set of actions
-    - That effectivly creates a very basic capability chain
+    - That effectively creates a very basic capability chain
     - Ephemeral session key created for each sign in
     - Could do this with COCAO, but then you have a whole different world behind that browser tab (k8s, JWT, JWS style stuff)
       - Why not use JWT, JWS
@@ -22,4 +22,7 @@
           - Need to support secp256k1 and BLS
           - There are JWS signing inputs which are needed
           - Irakli Gozalighvili: You could derive JWT form out of data to be signed, then just sign with other key?
-          - JOT and UCAN are strikingly similar but incompatable
+          - JOT (aka JWT) and UCAN are strikingly similar but incompatible
+- IPLD structure ideally would not generate the JWT to sign
+  - We are moving to proofs
+  - Brois: "SIWE is attempting to standardize and get this into all wallet clients"
