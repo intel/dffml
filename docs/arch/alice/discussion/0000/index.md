@@ -1,0 +1,1 @@
+These are notes and scratch work around the purpose and future of the project
