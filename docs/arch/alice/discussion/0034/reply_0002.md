@@ -1,0 +1,1 @@
+Run in container locally vs. web service remote
