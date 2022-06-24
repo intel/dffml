@@ -1,1 +1,1 @@
-Job construct can be used to call `opimp_ctx.run()`
+Job construct can be used to call `opimp_ctx.run()`, everything can be done using the job construct to trigger domain / CRD specific implementation.
