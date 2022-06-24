@@ -38,3 +38,5 @@ Being that Alice is the nickname for both our an entity and the architecture in 
 The original usage of DFFML was nicknamed George. George analyzed open source dependencies. This was his "job". 
 
 Alice's Adventures in Wonderland is in the public domain, which is a great reason to leverage it for reuse. It's all over the place, just massive chaos, nothing makes sense. Alice navigates the chaos.
+
+Also, in cryptography Alice and Bob are already commonly used names. So there's some shared understanding in the community that Alice is the name of a theoretical entity.
