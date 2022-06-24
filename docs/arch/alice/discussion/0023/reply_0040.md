@@ -1,1 +1,2 @@
+- Alice co maintain this distro package, or this set of distro packages
 - Given YAML or JSON examples, build dataclasses with correct observed types
