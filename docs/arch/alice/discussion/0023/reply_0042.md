@@ -9,4 +9,5 @@
 - onward and upward
 - A tuned brute force approach is just the agregate of the most effective domain specific approaches
 - Attested TDX checking account funds check initiate ACH transfer to avoid debt card fees
+  - Free trade working group?
 - https://github.com/in-toto/demo
