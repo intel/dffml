@@ -1,4 +1,4 @@
-# Alice's First Presentation
+# Alice Learns to Threat Model
 
 > Tutorial developed May 2022
 
@@ -6,11 +6,11 @@ DFFML has been lacking public threat model documentation. It's important the mai
 
 This month we'll only be able to scratch the surface of what Alice would need to know to create complete threat models. As we end our month we'll talk about how we'll measure that completeness in a future tutorial, and how we'll leverage concurrency and parallelism to raise the value of our completeness over time as Alice learns more about her new skill.
 
-
-
 ## Target
 
 By June 1st, Alice should be ready to analyze projects (repo or set of repos) and present threat models on those projects. She will talk to a slide deck she creates by making a system context that gets executed to produce a PDF of the slides. The slides will use inputs from the threat model data. Threat models will be created as hybrid reStructuredText and markdown Sphinx sites (for mermaid diagrams rendering on GitHub by default, allow for using markdown). Alice will read the content of the report which will not be copied verbatim to slides, only graphics for each section will be copied to slides.
+
+This is in preparation for our upcoming second and third party plugin support. We'll later look to create CI jobs which keep the threat model documents up to date within each repo.
 
 ## Plan
 
