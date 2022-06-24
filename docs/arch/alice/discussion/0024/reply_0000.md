@@ -1,0 +1,1 @@
+I think the shared config stuff is a lot easier than we were making it out to be. We can just do like what Linux does and use a concept like an inode, a unique identifier for the instances.
