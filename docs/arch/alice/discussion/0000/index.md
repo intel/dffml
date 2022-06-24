@@ -12,13 +12,13 @@
 
 #### Volume 1: Alice's Adventures in Wonderland
 
-> We build Alice the Software Architect
+> We build Alice the Software Architect.
 
 - [Down the Rabbit-Hole](https://github.com/intel/dffml/discussions/1369#discussioncomment-2663771)
 
 #### Volume 2: Alice and the Art of Strategy
 
-> We step inside the matrix as we visualize Alice's thoughts
+> We step inside the matrix as we visualize Alice's thoughts. We leverage web3 as we transform data into and out of the web3 space leveraging the Open Digital Asset Protocol (ODAP).
 
 -
 
