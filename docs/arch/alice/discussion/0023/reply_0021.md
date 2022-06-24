@@ -25,6 +25,7 @@
       - Ideally multiple NFT can be "purchased" multiple times (mitigated anyways via call response proposal system, where we come to an agreement on what system context will be hyphotesised or executed. and then accpet contract on that)
       - NFTs are likely also a help to use in solving our distributed locking needs (Inputs with `lock=True` are likely NFTs).
     - If agent buys the system context originally minted within this example, then we have agreed to a contract which says they will hypothesize or execute the system context outlined as outlined via their response system context counter proposal.
+      - Counter proposal is effectively just another NFT minted and then Peer DID linked to original proposal. When DID for original context is prompted to sign peer link is where we do our vetting. Form peer/link, if we accept. (Can pay via whatever mechanizam, once payment is received agent will start work and then do whatever with results as asked, maybe mint another NFT with results, maybe never hits the chain, just run the dataflow)
     - Counter proposals evaluated by analysis of historical agent execution (agent with counter proposal) data to calculate risk tolerance (i.e. based on review system of previous quality of execution or via attestation)
     - Counter proposals are feed directly into regular dataflow execution loop and priroriatized and ran through gateway just like anything else. Can apply overlays to do context / threat model specific vetting.
 - For this recording
