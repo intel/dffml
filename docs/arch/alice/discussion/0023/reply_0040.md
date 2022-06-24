@@ -8,6 +8,7 @@
   - https://github.com/decentralized-identity/decentralized-web-node/issues/136#issuecomment-1107530144
 - https://dffml.github.io/dffml-pre-image-removal/master/concepts/dataflow.html
   - Worked through drawing out dataflow on paper combined with tbDEX flow.
+    - The below is still work in progress
 
 ```mermaid
 flowchart TD
