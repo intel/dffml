@@ -1,4 +1,4 @@
-# Alice's Adventures in Wonderland
+# Alice's Adventures in Wonderland - Introduction
 
 > Tutorial series
 
@@ -7,6 +7,11 @@ Together we'll build Alice. We'll be successful when Alice successfully maintain
 We'll need to build the foundations of Alice's thought processes. Throughout this series, we'll rely heavily on a mental model based on how humans think and problem solve. By the end of this series we'll have ensured Alice has all the primitive operations she requires to carry out the scientific process.
 
 We'll follow along an adapted version of Lewis Carroll's classic, Alice's Adventures in Wonderland. We take one chapter at a time, 12 chapters, 12 months, to build Alice. Next year at this time she'll begin maintenance of a repo. We'll spend the next year visualizing her thought processes and understanding how we can interact with her to extend her capabilities while she's on the job. Each quarter throughout the year we'll survey the user community of the repo she's been maintaining to get their feedback on her performance. Finally, we'll decide based on the feedback, what Alice's next adventures will be. More time in software Wonderland? Or off to learn about something new.
+
+### Table Of Contents
+
+- [Introduction](https://github.com/intel/dffml/discussions/1369#discussioncomment-2663771)
+- [Chapter I: Down the Rabbit-Hole](https://github.com/intel/dffml/discussions/1369#discussioncomment-2663771)
 
 ### What is Alice?
 
@@ -73,7 +78,3 @@ Alice's Adventures in Wonderland is in the public domain, which is a great reaso
 Also, in cryptography Alice and Bob are already commonly used names. So there's some shared understanding in the community that Alice is the name of a theoretical entity.
 
 Also when George got a name people started liking him a lot more, talking positively about him, making quips about him. It's just more fun to give the inanimate object a name. Or a personality, oh George doesn't like that repo! I'm sure Alice would agree that things are a lot more interesting when inanimate objects have names and personalities.
-
-### Tutorials
-
-- [Chapter I: Down the Rabbit-Hole](https://github.com/intel/dffml/discussions/1369#discussioncomment-2663771)
