@@ -1,0 +1,13 @@
+- Manifest is a domain specific way to describe system state
+- Manifests to describe pipelines, BOMs, tests
+  - We need this so that we can do our polyrepo setup
+- Manifest contains enough information to reproduce the run
+  - Decouples intent from implementation
+    - Reduces lock in
+    - In absence of a tool (EOL) one could implement the operations to reproduce the execution of the manifest
+- Human and machine editable text files
+- Will be checked in to version control
+  - Added to PR comments to allow for version overrides
+- Manifests should also link to outputs they return or create in other systems
+  - If there is a direct return value it should be treated as it's own manifest we reference with how to interpret the data returned
+  - If the objects created are not returned directly those manifests should be referenced as well.
