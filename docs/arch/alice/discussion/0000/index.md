@@ -1,4 +1,4 @@
-# [Architecting Alice: Volume 0: Preface](https://github.com/intel/dffml/discussions/1369#discussion-4023096)
+# [Volume 0: Architecting Alice: Preface](https://github.com/intel/dffml/discussions/1369#discussion-4023096)
 
 > Volume 0 is our planning for our tutorial series which will run from May 2022 to June 2023. Planned end date, last post for volume 1 ends there.)
 
@@ -8,14 +8,14 @@
 
 ### Table Of Contents
 
-### Volume 0
+### Volume 0: Architecting Alice
 
 - [Preface](https://github.com/intel/dffml/discussions/1369#discussion-4023096)
 - [Introduction and Context](https://github.com/intel/dffml/discussions/1369#discussioncomment-2603280)
 
-### Volume 1
+### Volume 1: Alice's Adventures in Wonderland
 
-- [Chapter I: Down the Rabbit-Hole](https://github.com/intel/dffml/discussions/1369#discussioncomment-2663771)
+- [Down the Rabbit-Hole](https://github.com/intel/dffml/discussions/1369#discussioncomment-2663771)
 
 ## Priority Number 1
 
