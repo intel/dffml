@@ -1,4 +1,4 @@
-# Volume 1: Chapter 3: Traveler on the Edge
+# Volume 1: Chapter 4: Traveler on the Edge
 
 Alice will use chadig.com and nahdig.com plus DIDs to deliver manifest schema in terms of allowlist and blocklist.
 
