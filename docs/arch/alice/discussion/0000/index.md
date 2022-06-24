@@ -1,6 +1,6 @@
 These are notes and scratch work around the purpose and future of the project.
 
-Mission: Provide a clear, meticulously validated, ubiquitously adopted reference architecture for Artificial General Intelligence (AGI) capable of respecting the three laws of robotics.
+Mission: Provide a clear, meticulously validated, ubiquitously adopted reference architecture for an egalitarian Artificial General Intelligence (AGI) which respects the first law of robotics.
 
 To do so we must enable the AGI with the ability to act in response to the current system context where it understand how to predict possible future system contexts and understands how which future system contexts it wishes to pursue are acceptable according to guiding strategic plans (such as do no harm). We must also ensure that human and machine can interact via a shared language, the universal blueprint.
 
