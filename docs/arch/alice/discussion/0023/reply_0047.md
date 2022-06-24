@@ -1,2 +1,3 @@
 - DevCloud for compute?
 - Treat modeling tool yaml as output for going our initial thoughts
+- Remap output op in default overlay with dataflow which does a dfpreprocess all for single on a memory source where the the merge operation is executed on the outputs of the interation over the memory source. The memory source is an i
