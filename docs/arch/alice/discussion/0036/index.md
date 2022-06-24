@@ -36,13 +36,13 @@ Let's then expand upon that and add dynamic analysis.
 - [ ] Operations and their config as inputs
   - [ ] Unify typing via parent type / primitive as Input parents
   - [ ] Can have operations that filter and old let through Input objects with specific parents or parents in specific order
-  - [ ] The config dataflow, the startup on is the same as this new instantiate operations from Input objects. We can add shared config becomes a bunch of input objects. We have something like flow. ‘config_flow’ maybe which is where we’ll do initialization. Actually, lets just re use the main execution. Instantiate operations via an operation that instantiates them. We can then for each operation, use our newfound input filtering operations to form appropriate dependency graphs on order of instantiatation and usage of config objects (when executing in this top level context,
+  - [ ] The config dataflow, the startup on is the same as this new instantiate operations from Input objects. We can add shared config becomes a bunch of input objects. We have something like flow. ‘config_flow’ maybe which is where we’ll do initialization. Actually, lets just re use the main execution. Instantiate operations via an operation that instantiates them. We can then for each operation, use our newfound input filtering operations to form appropriate dependency graphs on order of instantiatation and usage of config objects (when executing in this top level context) we can then pass config and shared config as input objects to build config classes with references to same underlying data in memory. This solves shared config #720
   - [ ] Locality
   - [ ] Operation name
   - [ ] Stub values added as parents to outputs. Structured logs from an operation added as parents to operation outputs
 - [ ] Use newfound operations and inputs with stub values
 - [ ] Run an overlayed flow with output operations to build c4models of our dataflow based on parent input analysis. Generate architecture diagrams from it.
-- [ ] Unify type system with Python’s type system via newfound input parent chains
+- [ ] Unify type system with Python’s type system via newfound input parent chains (#188)
 - [ ] prioritizer
   - [ ] statigic plans (similar to dataflow as class method output grabbers)
   - [ ] gatekeeper
