@@ -38,6 +38,7 @@ Alice is going to be held to very high standards. We should expect this list to 
   - Changes would be additions of messages from different sources (email, chat, etc.)
 - Alice should be able to accept a meeting, join it, and talk to you
   - You should be able to have a conversation about a universal blueprint and she should be able to go act on it.
+- We should be able to see Alice think and understand her trains of thought
 
 ### Alice's Understanding of Software Engineering
 
