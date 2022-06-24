@@ -41,3 +41,5 @@ When your top level system context is looking at a DID to run dataflow within it
 - https://hyperledger.github.io/firefly/overview/data_exchange.html
   - https://github.com/hyperledger/firefly-dataexchange-https
   - Can implement data transfer over input network because data exchange supports transfer over arbitrary mechanisms.
+- https://hyperledger.github.io/firefly/reference/firefly_interface_format
+  - Looks like dataflow / manifest
