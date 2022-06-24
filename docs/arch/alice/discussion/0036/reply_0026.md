@@ -1,0 +1,1 @@
+Optimize for lowest stress level to get the job done. How to have the most productivity for the longest amount of time and be the happiest about it. Doing work that doesn't even feel like work because it aligns perfectly with your passion. These are the trains of thought you should be in. These are the fellow agents in those trains of thought. Team Topologies.
