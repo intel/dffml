@@ -1,0 +1,2 @@
+- https://www.openpolicyagent.org/docs/latest/
+  - Open Policy Agent could be used on `dataflow.flow.inputs|contidionals`
