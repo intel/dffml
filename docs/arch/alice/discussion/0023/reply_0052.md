@@ -2,3 +2,4 @@
 - Alice convert to polyrepo path/to/dffml
   - filter branch out subdirectories with packages, create github repos for them.
   - Create mirrors for dependencies, ensure we are always building from our forks of all the dependencies
+  - Stream 10 rebuild C/C++ packages on the fly with patches applied via overlays.
