@@ -16,4 +16,5 @@ $ alice please contribute recommended community standards -log debug -repos http
     - [ ] Call cached download given URL to template.
   - [ ] If python repo and no ci workflows, contribute build and test
 - She demoed again! Positive feedback
-  - Will assess 10,000 repos against recommended community standards and track contributions by end of Q3
+  - Will assess 10,000 repos against recommended community standards and track contributions to show her positive impact by end of Q3
+    - Monitor negative feedback and all interactions!
