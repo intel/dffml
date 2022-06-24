@@ -1,7 +1,8 @@
-https://www.thedigitalcatonline.com/blog/2021/06/03/public-key-cryptography-openssh-private-keys/#can-we-convert-private-openssh-keys-into-pem
-
-> Can we convert private OpenSSH keys into PEM?[¶](https://www.thedigitalcatonline.com/blog/2021/06/03/public-key-cryptography-openssh-private-keys/#can-we-convert-private-openssh-keys-into-pem)
-> As OpenSSL doesn't understand the OpenSSH private keys format, a common question among programmers and devops is if it is possible to convert it into a PEM format. As you might have guessed reading the previous sections, the answer is no. The PEM format for private keys uses PKCS#5, so it supports only the standard implementation of PBKDF2.
+- https://www.thedigitalcatonline.com/blog/2021/06/03/public-key-cryptography-openssh-private-keys/#can-we-convert-private-openssh-keys-into-pem
+  - > Can we convert private OpenSSH keys into PEM?[¶](https://www.thedigitalcatonline.com/blog/2021/06/03/public-key-cryptography-openssh-private-keys/#can-we-convert-private-openssh-keys-into-pem)
+  - > As OpenSSL doesn't understand the OpenSSH private keys format, a common question among programmers and devops is if it is possible to convert it into a PEM format. As you might have guessed reading the previous sections, the answer is no. The PEM format for private keys uses PKCS#5, so it supports only the standard implementation of PBKDF2.
+- We may be able to use step
+  - https://github.com/smallstep/certificates/issues/151
 
 
 - what we mine has real value, system contexts. We can execute them on/off chain to create something of value as determined by ad-hoc batter systems. We are trading services and assets. There is no need for currency.
