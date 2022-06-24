@@ -23,5 +23,8 @@ splitting out execution from analysis via caching of contexts is helpful with al
 - measure
 - Change
 - Correlate
-- Tweak general guidelines
+- modify operating procedures accordingly
+  - strategic plans
+  - strategic decision mater
+  - priroitizer
 - Repeat
