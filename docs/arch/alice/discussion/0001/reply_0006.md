@@ -1,1 +1,1 @@
-Open Religion - a collective of people contributing to overal governance and agreeing to funell overflow reward to deal woth extrernal group trade and agreed upon mechanisms of developing qoutes (feautre extraction)
+Open Religion - a collective of people contributing to overal governance and agreeing to funell overflow reward to deal woth extrernal group trade and agreed upon mechanisms of developing qoutes (feautre extraction). Keep some shared pools for investment and some for r&d and some for maintainance
