@@ -1,1 +1,1 @@
-Adb uiautomater remote capture. Sjow alove how do do something on phone
+Adb uiautomater remote capture. Show Alice how do do something on phone
