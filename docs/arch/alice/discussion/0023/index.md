@@ -44,6 +44,8 @@ Alice is going to be held to very high standards. We should expect this list to 
 
 We'll teach Alice what she needs to know about software engineering though our InnerSource series. She'll follow the best practices outlined there. She'll understand a codebase's health in part using InnerSource metric collectors.
 
+Alice will see problems and look for solutions. Problems are gaps between the present system capabilities and desired system capabilities or interpretations of outputs of strategic plans which are unfavorable by the strategic decision maker or the prioritizer.
+
 ### Naming
 
 You can name it or call it whatever you like. This blog series will call it Alice. Alice will be used to refer to the entity carrying out this job of maintainer. The name Alice will also be used to refer to the AGI in general, the architecture through which one can instantiate arbitrary entities. In effect, the whole bit is arbitrary, and you can call it whatever you like.
