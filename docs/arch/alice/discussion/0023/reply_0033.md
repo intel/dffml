@@ -8,3 +8,5 @@
 ---
 
 - https://twitter.com/dizaytsev/status/1524116790657179649
+- https://developers.redhat.com/blog/2020/04/02/how-to-write-an-abi-compliance-checker-using-libabigail
+  - Risk of changes
