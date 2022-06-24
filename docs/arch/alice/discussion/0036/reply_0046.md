@@ -1,0 +1,2 @@
+- Dockerfile lost a line where packages got isntalled via refactor
+  - How could we detect this an ananomoly? Different output data in terms of container SBOM. Did we mean to make that change? Seems out of the ordinary, highlight on PR via comment from CI
