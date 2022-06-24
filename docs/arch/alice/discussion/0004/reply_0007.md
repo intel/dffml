@@ -1,0 +1,1 @@
+https://docs.sigstore.dev/cosign/openid_signing
