@@ -26,3 +26,4 @@ When your top level system context is looking at a DID to run dataflow within it
 - Hyperledger Supply Chain SIG
   - Somehow engage as users or members. Cross with OpenSSF streams to work on blockchain supply chain security.
   - This is criticial because blockchains and DIDs easily translate into our open source ecosystem as a whole being a polyrepo development environment. Think grafting = forks. Central Comms = Blockchain (where do I find the chat server? is the chat server blockchain based? maybe?).
+  - https://github.com/Indicio-tech/did-indy-demo
