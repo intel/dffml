@@ -1,7 +1,6 @@
-# [Volume 0: Introduction and Context](https://github.com/intel/dffml/discussions/1369#discussioncomment-2603280)
+# [Rolling Alice: Volume 0: Introduction and Context](https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/architecting_alice/introduction_and_context.md)
 
-> Introduction and Context to tutorial series - May 2022
-> [Engineering Logs]( https://www.youtube.com/playlist?list=PLtzAOVTpO2jaHsS4o-sDzDyHEug-1KRbK)
+> Introduction and Context to tutorial series - Started May 2022
 
 ### Table Of Contents
 
@@ -35,7 +34,55 @@ This universal blueprint (system context) is an integral part of creating a shar
 
 The end goal is to create a software architect, Alice. She will consult on existing projects to provide analysis of their architectures and properties such as maintainability, provide guidance for developer workstream prioritization to achieve strategic business goals, and write and maintain codebases herself, accepting contributions from external contributors.
 
-![image](https://user-images.githubusercontent.com/5950433/167047493-7d28ba1d-c6f5-4703-8c53-b4dac6deda91.png)
+```mermaid
+graph BT
+    subgraph Alice[Alice the Entity]
+        subgraph compute[Compute]
+        Web5[Web 5]
+        KCP
+        CI_CD[CI/CD]
+        end
+        subgraph soul[Strategic Plans and Principles]
+        Threat_Modeling[Threat Modeling]
+        Debug
+        end
+        subgraph collector[Collector]
+        subgraph dynamic_analysis[Dynamic Analysis]
+            policy[policy.yml]
+            sandbox_policy_generator[Adaptive Sandboxing]
+        end
+        subgraph static_analysis[Static Analysis]
+            cve_bin_tool[CVE Binary Tool]
+            SBOM
+        end
+        end
+        Open_Architecture
+        Open_Architecture[Alice the Open Architecture]
+        snapshot_system_context[Alice the Overlay<br>Snapshot of System Context]
+        orchestartor[Orchestartor]
+
+
+        Open_Architecture --> Threat_Modeling
+        Open_Architecture --> Debug
+
+        Threat_Modeling --> orchestartor
+        Debug --> orchestartor
+
+        orchestartor --> KCP
+        orchestartor --> Web5
+        orchestartor --> CI_CD
+
+        CI_CD --> snapshot_system_context
+        KCP --> snapshot_system_context
+        Web5 --> snapshot_system_context
+
+        snapshot_system_context --> sandbox_policy_generator
+        snapshot_system_context --> cve_bin_tool
+
+        sandbox_policy_generator --> policy --> Open_Architecture
+        cve_bin_tool --> SBOM --> Open_Architecture
+    end
+```
 
 ### Terminology
 
