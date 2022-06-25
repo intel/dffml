@@ -1,6 +1,6 @@
-# [Volume 0: Architecting Alice: Forward](https://github.com/intel/dffml/discussions/1369#discussioncomment-2688532)
+# [Rolling ALice: Forward](https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0000_forward.md)
 
-> Copy pastable bits for getting others involved in the project. 
+> Copy pastable bits for getting others involved in the project.
 
 ### Table Of Contents
 
