@@ -1,6 +1,6 @@
 # [Volume 1: Chapter 1: Down the Dependency Rabbit-Hole Again](https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0001_coach_alice/0001_down_the_dependency_rabbit_hole_again.md)
 
-> June 2022 tutorials
+> 2022 tutorials
 
 ### Table Of Contents
 
