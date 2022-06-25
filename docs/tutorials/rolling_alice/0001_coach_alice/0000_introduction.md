@@ -15,6 +15,5 @@ We will coach Alice and she will coach us. From our point of view
 if you can't teach it you don't know it. So it's time to teach Alice
 how to be an open source contributor, by teaching her how to teach
 it. In this volume, volume 1, we will build Coach Alice, our open
-source developer coach. It's developer boot camp for Alice this
-volume as her boots make contact with the ground at the bottom of
-the rabbit hole.
+source developer coach. It's developer boot camp for Alice as her
+boots make contact with the bottom of the rabbit hole.
