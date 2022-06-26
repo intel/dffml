@@ -2,23 +2,25 @@
 
 > Introduction and Context to tutorial series - Started May 2022
 
-### Table Of Contents
-
-#### Volume 0: Architecting Alice
-
-- [Forward](https://github.com/intel/dffml/discussions/1369#discussioncomment-2688532)
-- [Preface](https://github.com/intel/dffml/discussions/1369#discussion-4023096)
-- [Introduction and Context](https://github.com/intel/dffml/discussions/1369#discussioncomment-2603280)
-
-#### Volume 1: Coach Alice
-
-- [Down the Dependency Rabbit-Hole Again](https://github.com/intel/dffml/discussions/1369#discussioncomment-2663771)
-
 Together we'll build Alice the AI software architect. We'll be successful when Alice successfully maintains a codebase as the only maintainer for a year. Debugging issues, writing fixes, reviewing code, accepting pull requests, refactoring the code base post PR merge, dealing with vulnerabilities, cutting releases, maintaining release branches, and completing development work in alignment with the plugin's universal blueprint. She will modify, submit pull requests to, and track upstreaming of patches to her dependencies to achieve the cleanest architecture possible. We'll interact with her as we would any other remote developer.
 
 We'll need to build the foundations of Alice's thought processes. Throughout this series, we'll rely heavily on a mental model based on how humans think and problem solve. By the end of this series we'll have ensured Alice has all the primitive operations she requires to carry out the scientific process.
 
 We'll follow along an adapted version of Lewis Carroll's classic, Alice's Adventures in Wonderland. We take one chapter at a time, 12 chapters, 12 months, to build Alice. Next year at this time she'll begin maintenance of a repo. We'll spend the next year visualizing her thought processes and understanding how we can interact with her to extend her capabilities while she's on the job. Each quarter throughout the year we'll survey the user community of the repo she's been maintaining to get their feedback on her performance. Finally, we'll decide based on the feedback, what Alice's next adventures will be. More time in software Wonderland? Or off to learn about something new.
+
+### Table Of Contents
+
+- [Rolling Alice](../)
+- [Forward](../0000_forward.md)
+- [Preface](../0000_preface.md)
+- [Volume 0: Architecting Alice](../0000_architecting_alice)
+- [Volume 1: Coach Alice](../0001_coach_alice)
+- [Volume 2: Alice and the Art of Strategy](../0002_alice_and_the_art_of_strategy)
+- [Volume 3: Alice and the Strategy of Art](../0003_alice_and_the_strategy_of_art)
+- [Volume 4: Alice and the Health of the Ecosystem](../0004_alice_and_the_health_of_the_ecosystem)
+- [Volume 5: Alice's Adventures in Wonderland](../0005_alices_adventures_in_wonderland)
+- [Volume 6: Alice are you Rolling?](../0006_alice_are_you_rolling)
+- [Volume 7: Through the Looking Glass](../0007_through_the_looking_glass)
 
 ### What is Alice?
 
