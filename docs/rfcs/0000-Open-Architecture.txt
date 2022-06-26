@@ -10,16 +10,16 @@ Expires: June 1, 2023
 
 Abstract
 
-   This document describes the Open Architecture; a proxy format for domain
-   specific representations of architecture.
+   This document describes the Open Architecture, aka Alice; a proxy format
+   for domain specific representations of architecture.
 
-   The Open Architecture builds on the Open Digital Asset Protocol. We define a
-   methodology for interpreting a directed graph of digital assets as a system
-   architecture.
+   The Open Architecture is a methodology for intepretation of exisitng
+   well established, formats, protocols, and other domain specific
+   representations of architecture. We define a methodology for interpreting
+   a directed graph representing a system architecture.
 
-   We suggest methods for interpreting those graphs as software and hardware
-   architectures as well as the Open Architecture's role in living threat
-   models.
+   We provide implementations which interpret those graphs as software and hardware
+   architectures.
 
 Status of This Memo
 
@@ -52,17 +52,12 @@ Table of Contents
 
 2.1.  Normative References
 
-   [draft-hargreaves-odap-03]
-              Internet Engineering Task Force, "Open Digital Asset Protocol"
-              ODAP, November, 2021,
-              <https://datatracker.ietf.org/doc/html/draft-hargreaves-odap-03>.
-
 2.2.  Informative References
 
-   [alice-discussion]
+   [alice-reveiw]
               DFFML Authors, "Alice", May 2022,
-              <https://github.com/intel/dffml/discussions/1369>.
+              <https://github.com/intel/dffml/pulls/1401>.
 
    [living-threat-models]
-              John Whiteman, "Living Threat Models", TDB,
-              <https://example.com/ltm>.
+              John L Whiteman & John S Andersen, "Living Threat Models", June 11th 2022,
+              <https://github.com/johnlwhiteman/living-threat-models>.
