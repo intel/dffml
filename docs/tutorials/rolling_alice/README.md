@@ -2,8 +2,6 @@
 
 Please review and contribute to the alice branch. https://github.com/intel/dffml/pull/1401
 
-![Alice glowinng neon orange (later will be pink)](https://user-images.githubusercontent.com/5950433/175826682-08dc6c4b-1089-40c5-b5a0-978d65be7dc2.png)
-
 The following seven sets of tutorials describe Alice's next adventure as she
 returns to Wonderland. Where's Wonderland? Well that's where we are,
 the physical world. We'll travel through through time and space as we
