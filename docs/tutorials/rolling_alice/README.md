@@ -1,4 +1,4 @@
-# Rolling Alice
+# [Rolling Alice](https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/)
 
 The following seven volumes describe Alice's next adventure as she
 returns to Wonderland. Where's Wonderland? Well that's where we are,
