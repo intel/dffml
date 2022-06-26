@@ -4,7 +4,7 @@
 
 ### Table Of Contents
 
-- [Rolling Alice](README.md)
+- [Rolling Alice](./)
 - [Forward](0000_forward.md)
 - [Preface](0000_preface.md)
 - [Volume 0: Architecting Alice](0000_architecting_alice)
