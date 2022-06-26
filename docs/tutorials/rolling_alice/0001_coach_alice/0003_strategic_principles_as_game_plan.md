@@ -1,4 +1,4 @@
-# Volume 1: Chapter 3: Our Strategic Principles Guide Our Game Plan
+# Volume 1: Chapter 3: Strategic Principles as Game Plan
 
 We'd like to be able to ask Alice for a rolled up view of how our org
 health looks. When we run the following command, we want her to
