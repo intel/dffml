@@ -57,4 +57,4 @@ We have been publicizing our work over technical channels and on twitter and gav
 
 ## RFCv1 Announcement
 
-Here is the first version of Alice aka the Open Architecture and this pull request is a Request For Comments https://github.com/intel/dffml/tree/alice/docs/tutorials/rolling_alice Please Review and provide any and all technical or conceptual feedback! This is also a call for participation if anyone would like to get involved and contribute please comment in the linked pull request or with talk to me. Looking forward to working with you all!
+Here is the first version of Alice aka the Open Architecture and this pull request is a Request For Comments https://github.com/intel/dffml/tree/alice/docs/tutorials/rolling_alice Please Review and provide any and all technical or conceptual feedback! This is also a call for participation if anyone would like to get involved and contribute please comment in the linked pull request or reach out to me directly. Looking forward to working with you all!
