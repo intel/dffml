@@ -15,6 +15,7 @@
         <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../_static/doctools.js"></script>
         <script src="../../_static/copybutton.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -178,7 +179,7 @@
 }
 </style>
 <section id="deploying-with-the-http-service">
-<span id="usage-ffmpeg-deploy"></span><h1>Deploying with the HTTP Service<a class="headerlink" href="#deploying-with-the-http-service" title="Permalink to this headline"></a></h1>
+<span id="usage-ffmpeg-deploy"></span><h1>Deploying with the HTTP Service<a class="headerlink" href="#deploying-with-the-http-service" title="Permalink to this heading"></a></h1>
 <p>In this tutorial we will deploy a dataflow(ffmpeg dataflow) which converts a video to gif over an HTTP service. We’ll
 also see how to deploy the same in a docker container. Finally in <a class="reference internal" href="#usage-ffmpeg-deploy-serve"><span class="std std-ref">Serving the DataFlow</span></a>
 we’ll setup another HTTP service which waits on GitHub webhooks to rebuilt and deploy the ffmpeg dataflow.</p>
@@ -193,7 +194,7 @@ directory of the DFFML source code.</p>
 </pre></div>
 </div>
 <section id="writing-the-function">
-<h2>Writing the function<a class="headerlink" href="#writing-the-function" title="Permalink to this headline"></a></h2>
+<h2>Writing the function<a class="headerlink" href="#writing-the-function" title="Permalink to this heading"></a></h2>
 <p>We’ll first write the function to convert videos files to gif by calling
 <code class="docutils literal notranslate"><span class="pre">ffmpeg</span></code> (Make sure you <a class="reference external" href="https://www.ffmpeg.org/download.html">download and install</a> it) in
 <code class="docutils literal notranslate"><span class="pre">operation.py</span></code>. The function accepts bytes (of the video), converts it to gif and outputs it as
@@ -232,7 +233,7 @@ bytes.</p>
 </div>
 </section>
 <section id="dataflow-and-config-files">
-<h2>Dataflow and Config files<a class="headerlink" href="#dataflow-and-config-files" title="Permalink to this headline"></a></h2>
+<h2>Dataflow and Config files<a class="headerlink" href="#dataflow-and-config-files" title="Permalink to this heading"></a></h2>
 <p>DFFML can create a dataflow out of our python function.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml dataflow create -config yaml operations:convert_to_gif get_single <span class="se">\</span>
     -inputs <span class="nv">480</span><span class="o">=</span>operations.convert_to_gif.inputs.resolution <span class="se">\</span>
@@ -283,7 +284,7 @@ where <code class="docutils literal notranslate"><span class="pre">results</span
 <p>For more details see <a class="reference external" href="../../plugins/service/http/dataflow.html#HttpChannelConfig">HttpChannelConfig</a> .</p>
 </section>
 <section id="serving-the-dataflow">
-<span id="usage-ffmpeg-deploy-serve"></span><h2>Serving the DataFlow<a class="headerlink" href="#serving-the-dataflow" title="Permalink to this headline"></a></h2>
+<span id="usage-ffmpeg-deploy-serve"></span><h2>Serving the DataFlow<a class="headerlink" href="#serving-the-dataflow" title="Permalink to this heading"></a></h2>
 <p>Serving the dataflow on port 8080</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml service http server -insecure -mc-config deploy -port <span class="m">8080</span>
 </pre></div>
@@ -303,7 +304,7 @@ to be output to. An example video is available <a class="reference external" hre
 </section>
 </section>
 <section id="deploying-via-container">
-<h1>Deploying via container<a class="headerlink" href="#deploying-via-container" title="Permalink to this headline"></a></h1>
+<h1>Deploying via container<a class="headerlink" href="#deploying-via-container" title="Permalink to this heading"></a></h1>
 <p><strong>Dockerfile</strong></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Usage</span>
 <span class="c1"># docker build -t $USER/ffmpeg .</span>

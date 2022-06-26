@@ -15,6 +15,7 @@
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/copybutton.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -176,7 +177,7 @@
 }
 </style>
 <section id="concepts">
-<h1>Concepts<a class="headerlink" href="#concepts" title="Permalink to this headline"></a></h1>
+<h1>Concepts<a class="headerlink" href="#concepts" title="Permalink to this heading"></a></h1>
 <p>Here we explain the main concepts of DFFML. How things work, and the
 philosophies behind why they work the way they do. If anything here is unclear,
 or you think there’s a more user friendly way to do something, please let us
@@ -197,13 +198,13 @@ creating a public Git repo.</p>
 <p>If you don’t see the plugin you need already implemented under
 <a class="reference internal" href="../plugins/index.html"><span class="doc">Plugins</span></a>, you can <a class="reference internal" href="../cli.html#cli-service-dev-create"><span class="std std-ref">Create</span></a> it yourself.</p>
 <section id="sources">
-<span id="intro-sources"></span><h2>Sources<a class="headerlink" href="#sources" title="Permalink to this headline"></a></h2>
+<span id="intro-sources"></span><h2>Sources<a class="headerlink" href="#sources" title="Permalink to this heading"></a></h2>
 <p>A <code class="docutils literal notranslate"><span class="pre">Source</span></code> of data might be something like a CSV file, SQL database, or HDFS.</p>
 <p>By providing a generic abstraction around where data is being saved and stored,
 model implementations can access the data via the same API no matter where it
 is.</p>
 <section id="records">
-<h3>Records<a class="headerlink" href="#records" title="Permalink to this headline"></a></h3>
+<h3>Records<a class="headerlink" href="#records" title="Permalink to this heading"></a></h3>
 <p>A common construct within DFFML is the <code class="docutils literal notranslate"><span class="pre">Record</span></code>. A <code class="docutils literal notranslate"><span class="pre">Record</span></code> object is a
 repository of information associated with a unique key. The <code class="docutils literal notranslate"><span class="pre">Record</span></code> holds all
 the data associated with that key.</p>
@@ -223,7 +224,7 @@ within a key value mapping within the <code class="docutils literal notranslate"
 </section>
 </section>
 <section id="models">
-<span id="intro-models"></span><h2>Models<a class="headerlink" href="#models" title="Permalink to this headline"></a></h2>
+<span id="intro-models"></span><h2>Models<a class="headerlink" href="#models" title="Permalink to this heading"></a></h2>
 <p>A <code class="docutils literal notranslate"><span class="pre">Model</span></code> could be any implementation of a machine learning algorithm.</p>
 <p>By wrapping various implementations of machine learning algorithms in DFFML’s
 API, applications using DFFML via its Python library interface, command line
@@ -232,7 +233,7 @@ design pattern. This means that switching from a model implemented with one
 major framework to another is painless.</p>
 </section>
 <section id="dataflows">
-<span id="intro-data-flow"></span><h2>DataFlows<a class="headerlink" href="#dataflows" title="Permalink to this headline"></a></h2>
+<span id="intro-data-flow"></span><h2>DataFlows<a class="headerlink" href="#dataflows" title="Permalink to this heading"></a></h2>
 <p>One can think of the data flow side of DFFML as a event loop running at a high
 level of abstraction. Event loop usually refers to waiting for <code class="docutils literal notranslate"><span class="pre">read</span></code>,
 <code class="docutils literal notranslate"><span class="pre">write</span></code>, and <code class="docutils literal notranslate"><span class="pre">error</span></code> events on network connections, files, or if you’re in
@@ -249,20 +250,20 @@ DFFML makes heavy use of, makes it easy to run things in parallel, so as to
 fully utilize a CPUs cores and threads.</p>
 <p>The following are the key concepts relating to DataFlows.</p>
 <section id="definition">
-<h3>Definition<a class="headerlink" href="#definition" title="Permalink to this headline"></a></h3>
+<h3>Definition<a class="headerlink" href="#definition" title="Permalink to this heading"></a></h3>
 <p>The name of the data type, and what it’s primitive is. Primitive meaning is it a
 string, integer, float, etc.</p>
 <p>If a piece of data created or used of this data type needs to be locked, the
 definition will also specify that (<code class="docutils literal notranslate"><span class="pre">lock=True</span></code>).</p>
 </section>
 <section id="operation">
-<h3>Operation<a class="headerlink" href="#operation" title="Permalink to this headline"></a></h3>
+<h3>Operation<a class="headerlink" href="#operation" title="Permalink to this heading"></a></h3>
 <p>The definition of some routine or function that will process some input
 data and produce some output data. It contains the names of the inputs and
 outputs, what stage the operation runs in, and the name of the operation.</p>
 </section>
 <section id="stage">
-<h3>Stage<a class="headerlink" href="#stage" title="Permalink to this headline"></a></h3>
+<h3>Stage<a class="headerlink" href="#stage" title="Permalink to this heading"></a></h3>
 <p>Operations can be run at various different stages.</p>
 <ul class="simple">
 <li><p>Processing</p>
@@ -286,7 +287,7 @@ will produce the data used as the result of running all the operations.</p></li>
 </ul>
 </section>
 <section id="operation-implementation">
-<h3>Operation Implementation<a class="headerlink" href="#operation-implementation" title="Permalink to this headline"></a></h3>
+<h3>Operation Implementation<a class="headerlink" href="#operation-implementation" title="Permalink to this heading"></a></h3>
 <p>The routine or function responsible for preforming an Operation.</p>
 <p>We separate the concept of an operation from its implementation because the goal
 is to allow for transparent execution of operations written in other languages,
@@ -294,35 +295,35 @@ deployed as micro services, or parts of SaaS APIs. Transparent from the view of
 the DataFlow which defines the interconnections between operations.</p>
 </section>
 <section id="input-network">
-<h3>Input Network<a class="headerlink" href="#input-network" title="Permalink to this headline"></a></h3>
+<h3>Input Network<a class="headerlink" href="#input-network" title="Permalink to this heading"></a></h3>
 <p>All data, inputs and outputs live within the Input Network, since outputs of one
 operation are usually inputs to another, we refer to them all as inputs.
 Therefore, they all reside within the Input Network.</p>
 </section>
 <section id="operation-network">
-<h3>Operation Network<a class="headerlink" href="#operation-network" title="Permalink to this headline"></a></h3>
+<h3>Operation Network<a class="headerlink" href="#operation-network" title="Permalink to this heading"></a></h3>
 <p>All the definitions of Operations reside in the Operation Network.</p>
 </section>
 <section id="operation-implementation-network">
-<h3>Operation Implementation Network<a class="headerlink" href="#operation-implementation-network" title="Permalink to this headline"></a></h3>
+<h3>Operation Implementation Network<a class="headerlink" href="#operation-implementation-network" title="Permalink to this heading"></a></h3>
 <p>All the references to implementations of Operations reside in the Operation
 Implementation Network.</p>
 <p>This network is responsible for the execution of any given Operation within it.</p>
 </section>
 <section id="redundancy-checker">
-<h3>Redundancy Checker<a class="headerlink" href="#redundancy-checker" title="Permalink to this headline"></a></h3>
+<h3>Redundancy Checker<a class="headerlink" href="#redundancy-checker" title="Permalink to this heading"></a></h3>
 <p>Checks if an operation has been called before with a given set of input
 parameters. This is used because a DataFlow runs by executing all possible
 permutations of inputs for any given operation, and completes when no new
 permutations of inputs exist for every operation.</p>
 </section>
 <section id="lock-network">
-<h3>Lock Network<a class="headerlink" href="#lock-network" title="Permalink to this headline"></a></h3>
+<h3>Lock Network<a class="headerlink" href="#lock-network" title="Permalink to this heading"></a></h3>
 <p>Manages locking of input data so that operations can run concurrently without
 managing their own resource locking.</p>
 </section>
 <section id="orchestrator">
-<h3>Orchestrator<a class="headerlink" href="#orchestrator" title="Permalink to this headline"></a></h3>
+<h3>Orchestrator<a class="headerlink" href="#orchestrator" title="Permalink to this heading"></a></h3>
 <p>The orchestrator uses the various networks to execute dataflows.</p>
 <div class="toctree-wrapper compound">
 <ul>

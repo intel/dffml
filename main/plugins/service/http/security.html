@@ -15,6 +15,7 @@
         <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
         <script src="../../../_static/jquery.js"></script>
         <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../../_static/doctools.js"></script>
         <script src="../../../_static/copybutton.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -169,10 +170,10 @@
 }
 </style>
 <section id="security">
-<h1>Security<a class="headerlink" href="#security" title="Permalink to this headline"></a></h1>
+<h1>Security<a class="headerlink" href="#security" title="Permalink to this heading"></a></h1>
 <p>Vulnerabilities should be reported via <a class="reference external" href="https://intel.com/security">https://intel.com/security</a></p>
 <section id="cors">
-<h2>CORS<a class="headerlink" href="#cors" title="Permalink to this headline"></a></h2>
+<h2>CORS<a class="headerlink" href="#cors" title="Permalink to this heading"></a></h2>
 <p>You’ll want to configure the domains that should be able to request the API via
 the CORS flag, if you are putting this on a different domain.</p>
 <p>For example if you are hosting the API service on
@@ -190,13 +191,13 @@ all origins via <code class="docutils literal notranslate"><span class="pre">*</
 </div>
 </section>
 <section id="atomic-mode">
-<h2>Atomic Mode<a class="headerlink" href="#atomic-mode" title="Permalink to this headline"></a></h2>
+<h2>Atomic Mode<a class="headerlink" href="#atomic-mode" title="Permalink to this heading"></a></h2>
 <p>The <code class="docutils literal notranslate"><span class="pre">-mc-atomic</span></code> flag will disable all routes other than those registered via
 <code class="docutils literal notranslate"><span class="pre">-mc-config</span></code>. If you want the server to only respond using the specified
 dataflows, and provide no other functionality, use this option.</p>
 </section>
 <section id="multitenancy">
-<h2>Multitenancy<a class="headerlink" href="#multitenancy" title="Permalink to this headline"></a></h2>
+<h2>Multitenancy<a class="headerlink" href="#multitenancy" title="Permalink to this heading"></a></h2>
 <p>The HTTP API service is <strong>not</strong> intended for multi-tenant use, and most likely
 never will be.</p>
 <p>This means that its currently assumed that anyone allowed to connect to the
@@ -205,7 +206,7 @@ and <code class="docutils literal notranslate"><span class="pre">.pem</span></co
 time, but they won’t be stopped from clobbering each other’s work.</p>
 </section>
 <section id="file-network-etc-access">
-<h2>File, Network, Etc. Access<a class="headerlink" href="#file-network-etc-access" title="Permalink to this headline"></a></h2>
+<h2>File, Network, Etc. Access<a class="headerlink" href="#file-network-etc-access" title="Permalink to this heading"></a></h2>
 <p>Since this just exposes existing DFFML APIs, its damn near impossible for use to
 lock everything down within all the plugins of DFFML you might choose to expose
 via this HTTP API. So we’re not going to try. What this means is that if you’re
@@ -222,7 +223,7 @@ running the HTTP API. So that means it might have access to internal databases
 or something listing only on <code class="docutils literal notranslate"><span class="pre">127.0.0.1</span></code>.</p>
 </section>
 <section id="authentication">
-<h2>Authentication<a class="headerlink" href="#authentication" title="Permalink to this headline"></a></h2>
+<h2>Authentication<a class="headerlink" href="#authentication" title="Permalink to this heading"></a></h2>
 <p>TLS client authentication is currently used. There are scripts to generate basic
 functioning certs. These certs should <strong>not</strong> be used in a production capacity.</p>
 <p>In the future, we’ll probably support JSON Web Tokens (JWT) signed with a public

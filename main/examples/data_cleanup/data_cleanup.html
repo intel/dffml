@@ -15,6 +15,7 @@
         <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../_static/doctools.js"></script>
         <script src="../../_static/copybutton.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -181,7 +182,7 @@
 }
 </style>
 <section id="data-cleanup-operations">
-<h1>Data Cleanup Operations<a class="headerlink" href="#data-cleanup-operations" title="Permalink to this headline"></a></h1>
+<h1>Data Cleanup Operations<a class="headerlink" href="#data-cleanup-operations" title="Permalink to this heading"></a></h1>
 <p>In this example we are going to perform cleanup
 operations on a real-world dataset.</p>
 <p>In this example we will perform the following steps</p>
@@ -198,7 +199,7 @@ of the data</p></li>
 </pre></div>
 </div>
 <section id="dataset">
-<h2>Dataset<a class="headerlink" href="#dataset" title="Permalink to this headline"></a></h2>
+<h2>Dataset<a class="headerlink" href="#dataset" title="Permalink to this heading"></a></h2>
 <p>The dataset we will be using is available on
 kaggle <a class="reference external" href="https://www.kaggle.com/harlfoxem/housesalesprediction">https://www.kaggle.com/harlfoxem/housesalesprediction</a></p>
 <p>you may go ahead and download the dataset</p>
@@ -207,7 +208,7 @@ kaggle <a class="reference external" href="https://www.kaggle.com/harlfoxem/hous
 </div>
 </section>
 <section id="id1">
-<h2>Data Cleanup Operations<a class="headerlink" href="#id1" title="Permalink to this headline"></a></h2>
+<h2>Data Cleanup Operations<a class="headerlink" href="#id1" title="Permalink to this heading"></a></h2>
 <p>We will be performing two cleanup operations on our dataset
 - <cite>standard_scaler</cite> will normalize the dataset having
 unit variance and standard deviation of 0
@@ -239,7 +240,7 @@ into (number of samples, number of components)</p>
 </div>
 </section>
 <section id="merge-command">
-<h2>Merge Command<a class="headerlink" href="#merge-command" title="Permalink to this headline"></a></h2>
+<h2>Merge Command<a class="headerlink" href="#merge-command" title="Permalink to this heading"></a></h2>
 <p>Now we will run the dataflow on our dataset, with
 the help of merge command we can see what our preprocessed
 data looks like.</p>
@@ -258,7 +259,7 @@ data looks like.</p>
 </div>
 </section>
 <section id="training">
-<h2>Training<a class="headerlink" href="#training" title="Permalink to this headline"></a></h2>
+<h2>Training<a class="headerlink" href="#training" title="Permalink to this heading"></a></h2>
 <p>Now we will train our model on the preprocessed
 dataset that we just got using the merge command.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml train <span class="se">\</span>
@@ -273,7 +274,7 @@ dataset that we just got using the merge command.</p>
 </div>
 </section>
 <section id="accuracy">
-<h2>Accuracy<a class="headerlink" href="#accuracy" title="Permalink to this headline"></a></h2>
+<h2>Accuracy<a class="headerlink" href="#accuracy" title="Permalink to this heading"></a></h2>
 <p>After training of the dataset we can check the
 accuracy of the model.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml accuracy <span class="se">\</span>
@@ -290,7 +291,7 @@ accuracy of the model.</p>
 </div>
 </section>
 <section id="without-cleanup-operations">
-<h2>Without Cleanup Operations<a class="headerlink" href="#without-cleanup-operations" title="Permalink to this headline"></a></h2>
+<h2>Without Cleanup Operations<a class="headerlink" href="#without-cleanup-operations" title="Permalink to this heading"></a></h2>
 <p>Here we will be checking what is the accuracy
 of the model without performing cleanup operations.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml train <span class="se">\</span>
@@ -317,7 +318,7 @@ of the model without performing cleanup operations.</p>
 </div>
 </section>
 <section id="conclusion">
-<h2>Conclusion<a class="headerlink" href="#conclusion" title="Permalink to this headline"></a></h2>
+<h2>Conclusion<a class="headerlink" href="#conclusion" title="Permalink to this heading"></a></h2>
 <p>We can see that after performing cleanup operations
 and doing preprocessing on the data we have increased
 our accuracy and also reduced our training time for the

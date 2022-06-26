@@ -15,6 +15,7 @@
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/copybutton.js"></script>
         <script src="../_static/tabs.js"></script>
@@ -176,7 +177,7 @@
 }
 </style>
 <section id="dataflow-http-deployment">
-<h1>DataFlow HTTP Deployment<a class="headerlink" href="#dataflow-http-deployment" title="Permalink to this headline"></a></h1>
+<h1>DataFlow HTTP Deployment<a class="headerlink" href="#dataflow-http-deployment" title="Permalink to this heading"></a></h1>
 <p>In the <a class="reference internal" href="shouldi.html"><span class="doc">Meta Static Analysis</span></a> we created a command line meta static
 analysis tool, <code class="docutils literal notranslate"><span class="pre">shouldi</span></code>.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>shouldi install dffml insecure-package
@@ -218,7 +219,7 @@ without the need to hardcode in <code class="docutils literal notranslate"><span
 </pre></div>
 </div>
 <section id="config-files">
-<h2>Config Files<a class="headerlink" href="#config-files" title="Permalink to this headline"></a></h2>
+<h2>Config Files<a class="headerlink" href="#config-files" title="Permalink to this heading"></a></h2>
 <p>As we saw before, DataFlows can be serialized to config files. JSON
 representations of DataFlows are not fun to hand edit. YAML looks a lot cleaner.</p>
 <p>We’re going to install the <code class="docutils literal notranslate"><span class="pre">dffml-config-yaml</span></code> package so that we don’t have
@@ -254,7 +255,7 @@ the <a class="reference internal" href="shouldi.html"><span class="doc">Meta Sta
 </div>
 </section>
 <section id="multicomms">
-<h2>MultiComms<a class="headerlink" href="#multicomms" title="Permalink to this headline"></a></h2>
+<h2>MultiComms<a class="headerlink" href="#multicomms" title="Permalink to this heading"></a></h2>
 <p>Another concept in DFFML is the <code class="docutils literal notranslate"><span class="pre">MultiComm</span></code>, they are contain multiple
 channels of communications. <code class="docutils literal notranslate"><span class="pre">MultiComm</span></code>’s will typically be protocol based.
 An IRC or Slack <code class="docutils literal notranslate"><span class="pre">MultiComm</span></code> channel of communication might be a chat room, or
@@ -271,7 +272,7 @@ communication are URL paths (Example: <code class="docutils literal notranslate"
 </div>
 </section>
 <section id="http-channel-config">
-<h2>HTTP Channel Config<a class="headerlink" href="#http-channel-config" title="Permalink to this headline"></a></h2>
+<h2>HTTP Channel Config<a class="headerlink" href="#http-channel-config" title="Permalink to this heading"></a></h2>
 <p>To deploy our <code class="docutils literal notranslate"><span class="pre">shouldi</span></code> dataflow via the HTTP API, we need to register a
 communication channel, which is the association of a URL path to the dataflow.</p>
 <p>We create a config file for the <code class="docutils literal notranslate"><span class="pre">MultiComm</span></code> we’ll be using. <code class="docutils literal notranslate"><span class="pre">MultiComm</span></code>
@@ -293,7 +294,7 @@ for websockets / http2).</p>
 </div>
 </section>
 <section id="serving-the-dataflow">
-<h2>Serving the DataFlow<a class="headerlink" href="#serving-the-dataflow" title="Permalink to this headline"></a></h2>
+<h2>Serving the DataFlow<a class="headerlink" href="#serving-the-dataflow" title="Permalink to this heading"></a></h2>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">-insecure</span></code> flag is only being used here to speed up this
@@ -336,7 +337,7 @@ items that you want evaluated.</p>
 </div>
 </section>
 <section id="combining-operations">
-<h2>Combining Operations<a class="headerlink" href="#combining-operations" title="Permalink to this headline"></a></h2>
+<h2>Combining Operations<a class="headerlink" href="#combining-operations" title="Permalink to this heading"></a></h2>
 <p>If you’ve gone through the <a class="reference internal" href="integration.html"><span class="doc">Automating Classification</span></a> example, you’ve seen the
 Git and source code analysis related operations (a list of all available
 operations can be found on the <a class="reference internal" href="../plugins/dffml_operation.html"><span class="doc">Operations</span></a> plugins page).</p>
@@ -453,7 +454,7 @@ with the existing flow.</p>
 results in the graph.</p>
 </section>
 <section id="redeploying">
-<h2>Redeploying<a class="headerlink" href="#redeploying" title="Permalink to this headline"></a></h2>
+<h2>Redeploying<a class="headerlink" href="#redeploying" title="Permalink to this heading"></a></h2>
 <p>We can now stop the server we had running, and start it again with the new
 configs.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dffml service http server -port <span class="m">8080</span> -insecure -mc-config shouldi/deploy

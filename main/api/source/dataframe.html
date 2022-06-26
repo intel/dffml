@@ -15,6 +15,7 @@
         <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../_static/doctools.js"></script>
         <script src="../../_static/copybutton.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -174,7 +175,7 @@
 }
 </style>
 <section id="module-dffml.source.dataframe">
-<span id="source-dataframe"></span><h1>Source Dataframe<a class="headerlink" href="#module-dffml.source.dataframe" title="Permalink to this headline"></a></h1>
+<span id="source-dataframe"></span><h1>Source Dataframe<a class="headerlink" href="#module-dffml.source.dataframe" title="Permalink to this heading"></a></h1>
 <p>Expose Pandas DataFrame as DFFML Source</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="dffml.source.dataframe.DataFrameSource">
@@ -248,13 +249,13 @@ the command line.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="dffml.source.dataframe.DataFrameSource.CONFIG">
 <span class="sig-name descname"><span class="pre">CONFIG</span></span><a class="headerlink" href="#dffml.source.dataframe.DataFrameSource.CONFIG" title="Permalink to this definition"></a></dt>
-<dd><p>alias of <a class="reference internal" href="#dffml.source.dataframe.DataFrameSourceConfig" title="dffml.source.dataframe.DataFrameSourceConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">dffml.source.dataframe.DataFrameSourceConfig</span></code></a></p>
+<dd><p>alias of <a class="reference internal" href="#dffml.source.dataframe.DataFrameSourceConfig" title="dffml.source.dataframe.DataFrameSourceConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrameSourceConfig</span></code></a></p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="dffml.source.dataframe.DataFrameSource.CONTEXT">
 <span class="sig-name descname"><span class="pre">CONTEXT</span></span><a class="headerlink" href="#dffml.source.dataframe.DataFrameSource.CONTEXT" title="Permalink to this definition"></a></dt>
-<dd><p>alias of <a class="reference internal" href="#dffml.source.dataframe.DataFrameSourceContext" title="dffml.source.dataframe.DataFrameSourceContext"><code class="xref py py-class docutils literal notranslate"><span class="pre">dffml.source.dataframe.DataFrameSourceContext</span></code></a></p>
+<dd><p>alias of <a class="reference internal" href="#dffml.source.dataframe.DataFrameSourceContext" title="dffml.source.dataframe.DataFrameSourceContext"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrameSourceContext</span></code></a></p>
 </dd></dl>
 
 </dd></dl>
@@ -286,10 +287,10 @@ using it as a context manager.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="dffml.source.dataframe.DataFrameSourceContext">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dffml.source.dataframe.</span></span><span class="sig-name descname"><span class="pre">DataFrameSourceContext</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="source.html#dffml.source.source.BaseSource" title="dffml.source.source.BaseSource"><span class="pre">dffml.source.source.BaseSource</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/dataframe.html#DataFrameSourceContext"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.source.dataframe.DataFrameSourceContext" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dffml.source.dataframe.</span></span><span class="sig-name descname"><span class="pre">DataFrameSourceContext</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="source.html#dffml.source.source.BaseSource" title="dffml.source.source.BaseSource"><span class="pre">BaseSource</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/dataframe.html#DataFrameSourceContext"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.source.dataframe.DataFrameSourceContext" title="Permalink to this definition"></a></dt>
 <dd><dl class="py method">
 <dt class="sig sig-object py" id="dffml.source.dataframe.DataFrameSourceContext.record">
-<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">record</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../record.html#dffml.record.Record" title="dffml.record.Record"><span class="pre">dffml.record.Record</span></a></span></span><a class="reference internal" href="../../_modules/dffml/source/dataframe.html#DataFrameSourceContext.record"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.source.dataframe.DataFrameSourceContext.record" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">record</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../record.html#dffml.record.Record" title="dffml.record.Record"><span class="pre">Record</span></a></span></span><a class="reference internal" href="../../_modules/dffml/source/dataframe.html#DataFrameSourceContext.record"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.source.dataframe.DataFrameSourceContext.record" title="Permalink to this definition"></a></dt>
 <dd><p>Get a record from the source or add it if it doesn’t exist.</p>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">asyncio</span>
@@ -315,7 +316,7 @@ using it as a context manager.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="dffml.source.dataframe.DataFrameSourceContext.records">
-<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">records</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.AsyncIterator" title="(in Python v3.10)"><span class="pre">AsyncIterator</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../record.html#dffml.record.Record" title="dffml.record.Record"><span class="pre">dffml.record.Record</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/dffml/source/dataframe.html#DataFrameSourceContext.records"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.source.dataframe.DataFrameSourceContext.records" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">records</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.AsyncIterator" title="(in Python v3.10)"><span class="pre">AsyncIterator</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../record.html#dffml.record.Record" title="dffml.record.Record"><span class="pre">Record</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/dffml/source/dataframe.html#DataFrameSourceContext.records"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.source.dataframe.DataFrameSourceContext.records" title="Permalink to this definition"></a></dt>
 <dd><p>Returns a list of records retrieved from self.src</p>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">asyncio</span>
@@ -335,7 +336,7 @@ using it as a context manager.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="dffml.source.dataframe.DataFrameSourceContext.update">
-<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">record</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../record.html#dffml.record.Record" title="dffml.record.Record"><span class="pre">dffml.record.Record</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/dataframe.html#DataFrameSourceContext.update"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.source.dataframe.DataFrameSourceContext.update" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">record</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../record.html#dffml.record.Record" title="dffml.record.Record"><span class="pre">Record</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/dataframe.html#DataFrameSourceContext.update"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.source.dataframe.DataFrameSourceContext.update" title="Permalink to this definition"></a></dt>
 <dd><p>Updates a record for a source</p>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">asyncio</span>

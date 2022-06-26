@@ -15,6 +15,7 @@
         <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../_static/doctools.js"></script>
         <script src="../../_static/copybutton.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -161,7 +162,7 @@
 }
 </style>
 <section id="module-dffml.model.model">
-<span id="model-model"></span><h1>Model Model<a class="headerlink" href="#module-dffml.model.model" title="Permalink to this headline"></a></h1>
+<span id="model-model"></span><h1>Model Model<a class="headerlink" href="#module-dffml.model.model" title="Permalink to this heading"></a></h1>
 <p>Model subclasses are responsible for training themselves on records, making
 predictions about the value of a feature in the record, and assessing their
 prediction accuracy.</p>
@@ -173,7 +174,7 @@ various machine learning frameworks or concepts.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="dffml.model.model.Model.CONFIG">
 <span class="sig-name descname"><span class="pre">CONFIG</span></span><a class="headerlink" href="#dffml.model.model.Model.CONFIG" title="Permalink to this definition"></a></dt>
-<dd><p>alias of <a class="reference internal" href="#dffml.model.model.ModelConfig" title="dffml.model.model.ModelConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">dffml.model.model.ModelConfig</span></code></a></p>
+<dd><p>alias of <a class="reference internal" href="#dffml.model.model.ModelConfig" title="dffml.model.model.ModelConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">ModelConfig</span></code></a></p>
 </dd></dl>
 
 </dd></dl>
@@ -205,18 +206,18 @@ using it as a context manager.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="dffml.model.model.ModelContext">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dffml.model.model.</span></span><span class="sig-name descname"><span class="pre">ModelContext</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#dffml.model.model.Model" title="dffml.model.model.Model"><span class="pre">dffml.model.model.Model</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/model/model.html#ModelContext"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.model.model.ModelContext" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dffml.model.model.</span></span><span class="sig-name descname"><span class="pre">ModelContext</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#dffml.model.model.Model" title="dffml.model.model.Model"><span class="pre">Model</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/model/model.html#ModelContext"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.model.model.ModelContext" title="Permalink to this definition"></a></dt>
 <dd><p>Abstract base class which should be derived from and implemented using
 various machine learning frameworks or concepts.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="dffml.model.model.ModelContext.predict">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sources</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../source/source.html#dffml.source.source.SourcesContext" title="dffml.source.source.SourcesContext"><span class="pre">dffml.source.source.SourcesContext</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.AsyncIterator" title="(in Python v3.10)"><span class="pre">AsyncIterator</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../record.html#dffml.record.Record" title="dffml.record.Record"><span class="pre">dffml.record.Record</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/dffml/model/model.html#ModelContext.predict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.model.model.ModelContext.predict" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">abstract</span><span class="w"> </span><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sources</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../source/source.html#dffml.source.source.SourcesContext" title="dffml.source.source.SourcesContext"><span class="pre">SourcesContext</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.AsyncIterator" title="(in Python v3.10)"><span class="pre">AsyncIterator</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../record.html#dffml.record.Record" title="dffml.record.Record"><span class="pre">Record</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/dffml/model/model.html#ModelContext.predict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.model.model.ModelContext.predict" title="Permalink to this definition"></a></dt>
 <dd><p>Uses trained data to make a prediction about the quality of a record.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="dffml.model.model.ModelContext.train">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">train</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sources</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../source/source.html#dffml.source.source.Sources" title="dffml.source.source.Sources"><span class="pre">dffml.source.source.Sources</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/model/model.html#ModelContext.train"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.model.model.ModelContext.train" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">abstract</span><span class="w"> </span><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">train</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sources</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../source/source.html#dffml.source.source.Sources" title="dffml.source.source.Sources"><span class="pre">Sources</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/model/model.html#ModelContext.train"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.model.model.ModelContext.train" title="Permalink to this definition"></a></dt>
 <dd><p>Train using records as the data to learn from.</p>
 </dd></dl>
 
@@ -233,7 +234,7 @@ various machine learning frameworks or concepts.</p>
 <dd><dl class="py attribute">
 <dt class="sig sig-object py" id="dffml.model.model.SimpleModel.CONTEXT">
 <span class="sig-name descname"><span class="pre">CONTEXT</span></span><a class="headerlink" href="#dffml.model.model.SimpleModel.CONTEXT" title="Permalink to this definition"></a></dt>
-<dd><p>alias of <a class="reference internal" href="#dffml.model.model.SimpleModelNoContext" title="dffml.model.model.SimpleModelNoContext"><code class="xref py py-class docutils literal notranslate"><span class="pre">dffml.model.model.SimpleModelNoContext</span></code></a></p>
+<dd><p>alias of <a class="reference internal" href="#dffml.model.model.SimpleModelNoContext" title="dffml.model.model.SimpleModelNoContext"><code class="xref py py-class docutils literal notranslate"><span class="pre">SimpleModelNoContext</span></code></a></p>
 </dd></dl>
 
 <dl class="py method">

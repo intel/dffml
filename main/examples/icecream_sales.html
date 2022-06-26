@@ -15,6 +15,7 @@
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/copybutton.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -177,7 +178,7 @@
 }
 </style>
 <section id="ice-cream-sales">
-<h1>Ice Cream Sales<a class="headerlink" href="#ice-cream-sales" title="Permalink to this headline"></a></h1>
+<h1>Ice Cream Sales<a class="headerlink" href="#ice-cream-sales" title="Permalink to this heading"></a></h1>
 <p>In this tutorial we are going to predict ice-cream sales.</p>
 <p>This example consist of the following steps</p>
 <ul class="simple">
@@ -189,7 +190,7 @@
 <li><p>Getting predictions from the model using test dataset.</p></li>
 </ul>
 <section id="dataset">
-<h2>Dataset<a class="headerlink" href="#dataset" title="Permalink to this headline"></a></h2>
+<h2>Dataset<a class="headerlink" href="#dataset" title="Permalink to this heading"></a></h2>
 <p>In this we have two datasets for training and testing. We have
 fields city, state, month, sales. This is a dummy dataset.</p>
 <p><strong>dataset.csv</strong></p>
@@ -310,7 +311,7 @@ fields city, state, month, sales. This is a dummy dataset.</p>
 </div>
 </section>
 <section id="operations">
-<h2>Operations<a class="headerlink" href="#operations" title="Permalink to this headline"></a></h2>
+<h2>Operations<a class="headerlink" href="#operations" title="Permalink to this heading"></a></h2>
 <p>We will be writing two operations:</p>
 <ol class="arabic simple">
 <li><p>An operation to get the temperature given the city, month.</p></li>
@@ -477,7 +478,7 @@ that we have and download the matching dataset for state and
 returns the population for that particular city.</p>
 </section>
 <section id="dataflow">
-<h2>Dataflow<a class="headerlink" href="#dataflow" title="Permalink to this headline"></a></h2>
+<h2>Dataflow<a class="headerlink" href="#dataflow" title="Permalink to this heading"></a></h2>
 <p>Now we will be creating a dataflow using the operations that
 we have written earlier. The main objective of the dataflow
 would be to give output after running the operations over our
@@ -503,7 +504,7 @@ in the json format. Now we can use this dataflow within our
 merge command.</p>
 </section>
 <section id="merge-command">
-<h2>Merge Command<a class="headerlink" href="#merge-command" title="Permalink to this headline"></a></h2>
+<h2>Merge Command<a class="headerlink" href="#merge-command" title="Permalink to this heading"></a></h2>
 <p>We will be using the merge command. In the merge command we
 would go over the dataset.csv file run it through the dataflow
 that we have created earlier and dump the values of population
@@ -523,7 +524,7 @@ and temperature in a new file.</p>
 </div>
 </section>
 <section id="model-install">
-<h2>Model Install<a class="headerlink" href="#model-install" title="Permalink to this headline"></a></h2>
+<h2>Model Install<a class="headerlink" href="#model-install" title="Permalink to this heading"></a></h2>
 <p>We need to install the tensorflow models since we’ll be using the
 <a class="reference internal" href="../plugins/dffml_model.html#plugin-model-dffml-model-tensorflow-tfdnnr"><span class="std std-ref">TensorFlow DNN Regressor</span></a></p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python -m pip install -U dffml-model-tensorflow
@@ -531,7 +532,7 @@ and temperature in a new file.</p>
 </div>
 </section>
 <section id="model-training">
-<h2>Model Training<a class="headerlink" href="#model-training" title="Permalink to this headline"></a></h2>
+<h2>Model Training<a class="headerlink" href="#model-training" title="Permalink to this heading"></a></h2>
 <p>Now we will be training our model, the model which
 we will be using is <cite>tfdnnr</cite> model. You may also
 use any other model for this purpose.</p>
@@ -553,7 +554,7 @@ and the output being sales.</p>
 </div>
 </section>
 <section id="model-accuracy">
-<h2>Model Accuracy<a class="headerlink" href="#model-accuracy" title="Permalink to this headline"></a></h2>
+<h2>Model Accuracy<a class="headerlink" href="#model-accuracy" title="Permalink to this heading"></a></h2>
 <p>The accuracy of the trained model can be found out
 using the accuracy method.</p>
 <p><strong>accuracy.sh</strong></p>
@@ -570,7 +571,7 @@ using the accuracy method.</p>
 </div>
 </section>
 <section id="prediction">
-<h2>Prediction<a class="headerlink" href="#prediction" title="Permalink to this headline"></a></h2>
+<h2>Prediction<a class="headerlink" href="#prediction" title="Permalink to this heading"></a></h2>
 <p>For the prediction we will using the <cite>test_dataset.csv</cite> this data
 was not present in the training dataset.</p>
 <p>Here instead of creating and intermediary file we are directly

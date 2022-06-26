@@ -15,6 +15,7 @@
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
         <script src="_static/copybutton.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -167,10 +168,10 @@
 }
 </style>
 <section id="shouldi">
-<h1>shouldi<a class="headerlink" href="#shouldi" title="Permalink to this headline"></a></h1>
+<h1>shouldi<a class="headerlink" href="#shouldi" title="Permalink to this heading"></a></h1>
 <p><img alt="shouldi" src="https://github.com/intel/dffml/raw/main/examples/shouldi/shouldi.jpg" /></p>
 <section id="what-is-shouldi">
-<h2>What Is ShouldI?<a class="headerlink" href="#what-is-shouldi" title="Permalink to this headline"></a></h2>
+<h2>What Is ShouldI?<a class="headerlink" href="#what-is-shouldi" title="Permalink to this heading"></a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">shouldi</span></code> is a tool that runs static analysis tools to let you know if there are
 any issues in any of the python packages you were thinking of installing.</p>
 <p><code class="docutils literal notranslate"><span class="pre">shouldi</span></code> is similar to things like <a class="reference external" href="https://goreportcard.com/">Go Report Card</a>.</p>
@@ -179,13 +180,13 @@ any issues in any of the python packages you were thinking of installing.</p>
 </div></blockquote>
 </section>
 <section id="installation">
-<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline"></a></h2>
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this heading"></a></h2>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python3 -m pip install -U shouldi
 </pre></div>
 </div>
 </section>
 <section id="usage">
-<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline"></a></h2>
+<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this heading"></a></h2>
 <p>There are several different subcommands of <code class="docutils literal notranslate"><span class="pre">shoudli</span></code></p>
 <ul class="simple">
 <li><p><a class="reference external" href="#install-command">install</a></p>
@@ -206,7 +207,7 @@ static analysis tools for that language</p></li>
 </li>
 </ul>
 <section id="install-command">
-<h3>Install Command<a class="headerlink" href="#install-command" title="Permalink to this headline"></a></h3>
+<h3>Install Command<a class="headerlink" href="#install-command" title="Permalink to this heading"></a></h3>
 <p>Run bandit and safety. Tell the person who ran the command not to install the
 Python package if there were any issues found by either tool.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>shouldi install insecure-package bandit
@@ -216,7 +217,7 @@ Python package if there were any issues found by either tool.</p>
 </div>
 </section>
 <section id="use-command">
-<h3>Use Command<a class="headerlink" href="#use-command" title="Permalink to this headline"></a></h3>
+<h3>Use Command<a class="headerlink" href="#use-command" title="Permalink to this heading"></a></h3>
 <p>Given a Git URL or a directory, figure out what the language the codebase is and
 run the appropriate static analysis tools for that language.</p>
 <p>Tools for each language are as follows.</p>
@@ -255,7 +256,7 @@ run the appropriate static analysis tools for that language.</p>
 </div>
 </section>
 <section id="project-command">
-<h3>Project Command<a class="headerlink" href="#project-command" title="Permalink to this headline"></a></h3>
+<h3>Project Command<a class="headerlink" href="#project-command" title="Permalink to this heading"></a></h3>
 <p>Given a directory, output a JSON describing the dependencies found within that
 directory.</p>
 <p>At the moment it will auto discover Python dependencies listed in <code class="docutils literal notranslate"><span class="pre">setup.py</span></code>’s
@@ -348,10 +349,10 @@ the above <code class="docutils literal notranslate"><span class="pre">deps.yaml
 </section>
 </section>
 <section id="license">
-<h2>License<a class="headerlink" href="#license" title="Permalink to this headline"></a></h2>
+<h2>License<a class="headerlink" href="#license" title="Permalink to this heading"></a></h2>
 <p>shouldi is distributed under the <a class="reference external" href="https://spdx.org/licenses/MIT.html">MIT License</a>.</p>
 <section id="what-s-this-really-called">
-<h3>What’s This Really Called<a class="headerlink" href="#what-s-this-really-called" title="Permalink to this headline"></a></h3>
+<h3>What’s This Really Called<a class="headerlink" href="#what-s-this-really-called" title="Permalink to this heading"></a></h3>
 <p>The real name of this package is “DFFML Evaluator for PyPi Packages”. <code class="docutils literal notranslate"><span class="pre">shouldi</span></code>
 is merely the command line invocation, and we claim <code class="docutils literal notranslate"><span class="pre">shouldi</span></code>, the package name
 on PyPi, to avoid a supply chain attack.</p>

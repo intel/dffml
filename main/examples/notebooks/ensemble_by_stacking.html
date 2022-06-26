@@ -15,6 +15,7 @@
         <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../_static/doctools.js"></script>
         <script src="../../_static/copybutton.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -442,11 +443,11 @@ div.rendered_html tbody tr:hover {
 <div class="line"><br /></div>
 </div>
 <section id="Ensemble-by-stacking">
-<h1>Ensemble by stacking<a class="headerlink" href="#Ensemble-by-stacking" title="Permalink to this headline"></a></h1>
+<h1>Ensemble by stacking<a class="headerlink" href="#Ensemble-by-stacking" title="Permalink to this heading"></a></h1>
 <p>In this demo, we’ll be using the Red Wine Quality dataset. The dataset can be used with both regression and classification models.</p>
 <p>The purpose of this notebook is to build different models and use stacking, an ensemble learning technique, using the DFFML API. <a class="reference external" href="http://www.youtube.com/watch?v=PCoSP-jO9Y8"><img alt="Video Explanation Thumbnail" src="http://img.youtube.com/vi/PCoSP-jO9Y8/0.jpg" /></a></p>
 <section id="Import-Packages">
-<h2>Import Packages<a class="headerlink" href="#Import-Packages" title="Permalink to this headline"></a></h2>
+<h2>Import Packages<a class="headerlink" href="#Import-Packages" title="Permalink to this heading"></a></h2>
 <p>Let us import dffml and other packages that we might need.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
@@ -469,7 +470,7 @@ div.rendered_html tbody tr:hover {
 </div>
 </section>
 <section id="Build-our-Dataset">
-<h2>Build our Dataset<a class="headerlink" href="#Build-our-Dataset" title="Permalink to this headline"></a></h2>
+<h2>Build our Dataset<a class="headerlink" href="#Build-our-Dataset" title="Permalink to this heading"></a></h2>
 <p>util.Dffml has a very convinient function <a class="reference internal" href="../../api/util/net.html#dffml.util.net.cached_download"><span class="std std-ref">cached_download()</span></a> that can be used to download datasets and make sure you don’t download them if you have already.</p>
 <p>The cached_download() has the following parameters:</p>
 <ol class="arabic simple">
@@ -558,7 +559,7 @@ div.rendered_html tbody tr:hover {
 </div>
 </section>
 <section id="Split-our-data">
-<h2>Split our data<a class="headerlink" href="#Split-our-data" title="Permalink to this headline"></a></h2>
+<h2>Split our data<a class="headerlink" href="#Split-our-data" title="Permalink to this heading"></a></h2>
 <p>Lets split our dataset into train, validation and test splits with a ratio of 60:20:20.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
@@ -598,7 +599,7 @@ div.rendered_html tbody tr:hover {
 </pre></div></div>
 </div>
 <section id="Let-the-Ensemble-begin!">
-<h3>Let the Ensemble begin!<a class="headerlink" href="#Let-the-Ensemble-begin!" title="Permalink to this headline"></a></h3>
+<h3>Let the Ensemble begin!<a class="headerlink" href="#Let-the-Ensemble-begin!" title="Permalink to this heading"></a></h3>
 <p>As mentioned before, we’ll be using the <code class="docutils literal notranslate"><span class="pre">stacking</span></code> technique to ensemble our models.</p>
 <p>The following are the steps to ensemble by <code class="docutils literal notranslate"><span class="pre">stacking</span></code>:</p>
 <ol class="arabic simple">
@@ -610,7 +611,7 @@ div.rendered_html tbody tr:hover {
 </ol>
 </section>
 <section id="1.-Training-First-Level-Base-Models-on-train-data.">
-<h3>1. Training First-Level Base Models on train data.<a class="headerlink" href="#1.-Training-First-Level-Base-Models-on-train-data." title="Permalink to this headline"></a></h3>
+<h3>1. Training First-Level Base Models on train data.<a class="headerlink" href="#1.-Training-First-Level-Base-Models-on-train-data." title="Permalink to this heading"></a></h3>
 <p>For the sake of this demo and to make things simpler, we will be using 2 models. It is generally prefered to use diverse models so that the meta model can provide superior predictions. Since our data can be used for the classification and regression tasks, we’ll use both to make an ensemble model and see how it performs.</p>
 <p><strong>Instantiate our Models with parameters.</strong></p>
 <p>Dffml makes it quite easy to load multiple models dynamically using the <code class="docutils literal notranslate"><span class="pre">Model.load()</span></code> function. All the entrypoints for models available in DFFML can be found at the <a class="reference internal" href="../../plugins/dffml_model.html"><span class="doc">Model Plugins Page</span></a>. After that, you just have to parameterize the loaded models and they are ready to train interchangably!</p>
@@ -708,7 +709,7 @@ Accuracy of Model2: 0.4735202492211838
 </div>
 <p>As expected, the classification model (<code class="docutils literal notranslate"><span class="pre">Model1</span></code>) performs way better than the regression model (<code class="docutils literal notranslate"><span class="pre">Model2</span></code>) on our data. What would happen if we ensemble these 2 models together? Will the emsemble be able to learn from our Classifier and Regressor and perform better overall? Let’s find out!</p>
 <section id="2.-First-Level-Base-Model-predictions-on-Validation-data-and-Test-data.">
-<h4>2. First-Level Base Model predictions on Validation data and Test data.<a class="headerlink" href="#2.-First-Level-Base-Model-predictions-on-Validation-data-and-Test-data." title="Permalink to this headline"></a></h4>
+<h4>2. First-Level Base Model predictions on Validation data and Test data.<a class="headerlink" href="#2.-First-Level-Base-Model-predictions-on-Validation-data-and-Test-data." title="Permalink to this heading"></a></h4>
 <p>Here, we will be using our models to predict on both the validation data and the test data, and save these predictions in lists. We will simply use the high-level <code class="docutils literal notranslate"><span class="pre">predict()</span></code> function to get the predictions and store these predictions in a list.</p>
 <p><strong>Model1 Predictions</strong></p>
 <div class="nbinput docutils container">
@@ -764,7 +765,7 @@ First 5 Test Predictions:  [4, 6, 5, 5, 5]
 </div>
 </section>
 <section id="3.-Stack-Predictions.">
-<h4>3. Stack Predictions.<a class="headerlink" href="#3.-Stack-Predictions." title="Permalink to this headline"></a></h4>
+<h4>3. Stack Predictions.<a class="headerlink" href="#3.-Stack-Predictions." title="Permalink to this heading"></a></h4>
 <p>Now, we will stack all the validation predictions together into a list of dictionaries, and test predictions into another list of dictionaries. After this, we will have 2 lists consisting of stacked validation predictions and stacked test predictions.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
@@ -859,7 +860,7 @@ First 5 Test Predictions:  [4, 6, 5, 5, 5]
 </div>
 </section>
 <section id="4.-Build-and-Train-Level-2-Meta-Model.">
-<h4>4. Build and Train Level-2 Meta-Model.<a class="headerlink" href="#4.-Build-and-Train-Level-2-Meta-Model." title="Permalink to this headline"></a></h4>
+<h4>4. Build and Train Level-2 Meta-Model.<a class="headerlink" href="#4.-Build-and-Train-Level-2-Meta-Model." title="Permalink to this heading"></a></h4>
 <p>The stacked validation predictions will serve as features to our level-2 meta-model. Classifiers clearly outperform regressors on the data we are using, so let’s also use a classifier for our meta model. For this demo, we will use the Scikit SVC model available in DFFML by the entrypoint <code class="docutils literal notranslate"><span class="pre">&quot;scikitsvc&quot;</span></code>.</p>
 <p><strong>Build and train the meta-model</strong></p>
 <div class="nbinput nblast docutils container">
@@ -919,7 +920,7 @@ Accuracy of Ensemble Model: 0.5763239875389408
 <p>Our experiment was a success! It turns out the Ensemble model was after all able to learn somthing from not only the classifier but the regressor as well, and performed better than both. Feel free to download the notebook and tune the models to get even better accuracies.</p>
 </section>
 <section id="5.-Final-Prediction">
-<h4>5. Final Prediction<a class="headerlink" href="#5.-Final-Prediction" title="Permalink to this headline"></a></h4>
+<h4>5. Final Prediction<a class="headerlink" href="#5.-Final-Prediction" title="Permalink to this heading"></a></h4>
 <p>Now our ensembled model is ready to perform the final predictions. We can simply go ahead and predict on stacked test predictions to get the final predcitions.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:

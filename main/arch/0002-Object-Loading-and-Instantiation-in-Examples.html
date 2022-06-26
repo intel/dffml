@@ -15,6 +15,7 @@
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/copybutton.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -164,14 +165,14 @@
 }
 </style>
 <section id="object-loading-and-instantiation-in-examples">
-<h1>2. Object Loading and Instantiation in Examples<a class="headerlink" href="#object-loading-and-instantiation-in-examples" title="Permalink to this headline"></a></h1>
+<h1>2. Object Loading and Instantiation in Examples<a class="headerlink" href="#object-loading-and-instantiation-in-examples" title="Permalink to this heading"></a></h1>
 <p>Date: 2021-04-13</p>
 <section id="status">
-<h2>Status<a class="headerlink" href="#status" title="Permalink to this headline"></a></h2>
+<h2>Status<a class="headerlink" href="#status" title="Permalink to this heading"></a></h2>
 <p>Accepted</p>
 </section>
 <section id="context">
-<h2>Context<a class="headerlink" href="#context" title="Permalink to this headline"></a></h2>
+<h2>Context<a class="headerlink" href="#context" title="Permalink to this heading"></a></h2>
 <p>We have a plugin based system where we can load and instantiated loaded classes</p>
 <p>We have two options, we allow for loading and installation at the same time, or
 keep it separate.</p>
@@ -186,11 +187,11 @@ keep it separate.</p>
 </div>
 </section>
 <section id="decision">
-<h2>Decision<a class="headerlink" href="#decision" title="Permalink to this headline"></a></h2>
+<h2>Decision<a class="headerlink" href="#decision" title="Permalink to this heading"></a></h2>
 <p>We decided that it’s more straightforward to end users to keep it serrate.</p>
 </section>
 <section id="consequences">
-<h2>Consequences<a class="headerlink" href="#consequences" title="Permalink to this headline"></a></h2>
+<h2>Consequences<a class="headerlink" href="#consequences" title="Permalink to this heading"></a></h2>
 <p>Examples that do dynamic loading should load classes then instantiate, instead
 of all at once.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load the model</span>

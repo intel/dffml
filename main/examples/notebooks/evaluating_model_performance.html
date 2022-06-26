@@ -15,6 +15,7 @@
         <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../_static/doctools.js"></script>
         <script src="../../_static/copybutton.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -444,10 +445,10 @@ div.rendered_html tbody tr:hover {
 <div class="line"><br /></div>
 </div>
 <section id="Evaluating-Model-Performance">
-<h1>Evaluating Model Performance<a class="headerlink" href="#Evaluating-Model-Performance" title="Permalink to this headline"></a></h1>
+<h1>Evaluating Model Performance<a class="headerlink" href="#Evaluating-Model-Performance" title="Permalink to this heading"></a></h1>
 <p>In this demo, we’ll be using the Red Wine Quality dataset. The datset can be used in both regression and classification models. The purpose of this notebook is to build different models, classifiers and regressors, and compare their performance to see which one performs the best on our data.</p>
 <section id="Import-Packages">
-<h2>Import Packages<a class="headerlink" href="#Import-Packages" title="Permalink to this headline"></a></h2>
+<h2>Import Packages<a class="headerlink" href="#Import-Packages" title="Permalink to this heading"></a></h2>
 <p>Let us import dffml and other packages that we might need.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
@@ -470,7 +471,7 @@ div.rendered_html tbody tr:hover {
 </div>
 </section>
 <section id="Build-our-Dataset">
-<h2>Build our Dataset<a class="headerlink" href="#Build-our-Dataset" title="Permalink to this headline"></a></h2>
+<h2>Build our Dataset<a class="headerlink" href="#Build-our-Dataset" title="Permalink to this heading"></a></h2>
 <p>Dffml has a very convinient function <code class="docutils literal notranslate"><span class="pre">cached_download()</span></code> that can be used to download datasets and make sure you don’t download them if you have already.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
@@ -570,7 +571,7 @@ div.rendered_html tbody tr:hover {
 </div>
 </section>
 <section id="Instantiate-our-Models-with-parameters">
-<h2>Instantiate our Models with parameters<a class="headerlink" href="#Instantiate-our-Models-with-parameters" title="Permalink to this headline"></a></h2>
+<h2>Instantiate our Models with parameters<a class="headerlink" href="#Instantiate-our-Models-with-parameters" title="Permalink to this heading"></a></h2>
 <p>Dffml makes it quite easy to load multiple models dynamically using the <code class="docutils literal notranslate"><span class="pre">Model.load()</span></code> function. After that, you just have to parameterize the loaded models and they are ready to train interchangably!</p>
 <p>For this example, we’ll be demonstrating 2 basic models for classification and 2 for regression.</p>
 <div class="nbinput nblast docutils container">
@@ -615,7 +616,7 @@ div.rendered_html tbody tr:hover {
 </div>
 </section>
 <section id="Train-our-Models">
-<h2>Train our Models<a class="headerlink" href="#Train-our-Models" title="Permalink to this headline"></a></h2>
+<h2>Train our Models<a class="headerlink" href="#Train-our-Models" title="Permalink to this heading"></a></h2>
 <p>Finally, our models are ready to be trained using the <code class="docutils literal notranslate"><span class="pre">high-level</span></code> API. Let’s make sure to pass each record as a parameter by simply using the unpacking operator(*).</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
@@ -630,7 +631,7 @@ div.rendered_html tbody tr:hover {
 </div>
 </section>
 <section id="Test-our-Models">
-<h2>Test our Models<a class="headerlink" href="#Test-our-Models" title="Permalink to this headline"></a></h2>
+<h2>Test our Models<a class="headerlink" href="#Test-our-Models" title="Permalink to this heading"></a></h2>
 <p>To test our model, we’ll use the <code class="docutils literal notranslate"><span class="pre">score()</span></code> function in the <code class="docutils literal notranslate"><span class="pre">high-level</span></code> API.</p>
 <p>We ask for the accuracy to be assessed using the Mean Squared Error method.</p>
 <div class="nbinput docutils container">

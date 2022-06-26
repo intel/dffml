@@ -15,6 +15,7 @@
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/copybutton.js"></script>
         <script src="../_static/tabs.js"></script>
@@ -168,9 +169,9 @@
 }
 </style>
 <section id="neural-networks">
-<h1>Neural Networks<a class="headerlink" href="#neural-networks" title="Permalink to this headline"></a></h1>
+<h1>Neural Networks<a class="headerlink" href="#neural-networks" title="Permalink to this heading"></a></h1>
 <section id="rock-paper-scissors-hand-pose-classification">
-<h2>Rock Paper Scissors Hand Pose Classification<a class="headerlink" href="#rock-paper-scissors-hand-pose-classification" title="Permalink to this headline"></a></h2>
+<h2>Rock Paper Scissors Hand Pose Classification<a class="headerlink" href="#rock-paper-scissors-hand-pose-classification" title="Permalink to this heading"></a></h2>
 <p>This tutorial will show you how to train and test a PyTorch based custom neural network model made using DFFML.
 The dataset we will be using is the <a class="reference external" href="http://www.laurencemoroney.com/rock-paper-scissors-dataset/">rock-paper-scissors-dataset</a>
 which contains images of hands in Rock/Paper/Scissors poses, each image is a 300x300 RGB image.</p>
@@ -221,7 +222,7 @@ it is rock, paper or scissors!</p>
 </dl>
 </section>
 <section id="command-line">
-<h2>Command Line<a class="headerlink" href="#command-line" title="Permalink to this headline"></a></h2>
+<h2>Command Line<a class="headerlink" href="#command-line" title="Permalink to this heading"></a></h2>
 <p>We first create a YAML file to define the neural network with all the information about the layers along with
 the forward method which is passed as list of layers under the model name key:</p>
 <p><strong>model.yaml</strong></p>
@@ -488,7 +489,7 @@ the top level layers (Sequential or Single) sequentially in the order they were 
 </div>
 </section>
 <section id="python-api">
-<h2>Python API<a class="headerlink" href="#python-api" title="Permalink to this headline"></a></h2>
+<h2>Python API<a class="headerlink" href="#python-api" title="Permalink to this heading"></a></h2>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">torch.nn</span> <span class="k">as</span> <span class="nn">nn</span>
 <span class="kn">import</span> <span class="nn">asyncio</span>
 

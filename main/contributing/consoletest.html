@@ -15,6 +15,7 @@
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/copybutton.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -180,7 +181,7 @@
 }
 </style>
 <section id="consoletest-sphinx-extension">
-<h1>consoletest Sphinx extension<a class="headerlink" href="#consoletest-sphinx-extension" title="Permalink to this headline"></a></h1>
+<h1>consoletest Sphinx extension<a class="headerlink" href="#consoletest-sphinx-extension" title="Permalink to this heading"></a></h1>
 <p>This Sphinx extension allows you to tests your <code class="docutils literal notranslate"><span class="pre">code-block</span></code> and
 <code class="docutils literal notranslate"><span class="pre">literalinclude</span></code> directives in your documentation to make sure that the command
 you’re telling users to run, and the files you’re telling them to write, produce
@@ -197,7 +198,7 @@ intended results.</p>
 </li>
 </ul>
 <section id="example">
-<h2>Example<a class="headerlink" href="#example" title="Permalink to this headline"></a></h2>
+<h2>Example<a class="headerlink" href="#example" title="Permalink to this heading"></a></h2>
 <p>Each <code class="docutils literal notranslate"><span class="pre">.rst</span></code>, <code class="docutils literal notranslate"><span class="pre">.md</span></code>, .etc file will get it’s own temporary directory in which the
 test will run.</p>
 <p>One “test” is the running of all directives in a file marked with the <code class="docutils literal notranslate"><span class="pre">:test:</span></code>
@@ -326,7 +327,7 @@ server is ready to respond to requests.</p>
 </pre></div>
 </div>
 <section id="conf-py">
-<h3><code class="docutils literal notranslate"><span class="pre">conf.py</span></code><a class="headerlink" href="#conf-py" title="Permalink to this headline"></a></h3>
+<h3><code class="docutils literal notranslate"><span class="pre">conf.py</span></code><a class="headerlink" href="#conf-py" title="Permalink to this heading"></a></h3>
 <p>If you install DFFML you will have <code class="docutils literal notranslate"><span class="pre">consoletest</span></code> installed. Simply add it to
 your list of extensions using it’s full path.</p>
 <p><strong>conf.py</strong></p>
@@ -419,11 +420,11 @@ containing the packages being tested already installed.</p></li>
 </section>
 </section>
 <section id="options">
-<h2>Options<a class="headerlink" href="#options" title="Permalink to this headline"></a></h2>
+<h2>Options<a class="headerlink" href="#options" title="Permalink to this heading"></a></h2>
 <p>Multiple options have been added to the <code class="docutils literal notranslate"><span class="pre">code-block</span></code> and <code class="docutils literal notranslate"><span class="pre">literalinclude</span></code>
 directives.</p>
 <section id="code-block">
-<h3><code class="docutils literal notranslate"><span class="pre">code-block</span></code><a class="headerlink" href="#code-block" title="Permalink to this headline"></a></h3>
+<h3><code class="docutils literal notranslate"><span class="pre">code-block</span></code><a class="headerlink" href="#code-block" title="Permalink to this heading"></a></h3>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">test</span></code>: Boolean</p>
 <ul>
@@ -491,7 +492,7 @@ For example <code class="docutils literal notranslate"><span class="pre">\n</spa
 </ul>
 </section>
 <section id="literalinclude">
-<h3><code class="docutils literal notranslate"><span class="pre">literalinclude</span></code><a class="headerlink" href="#literalinclude" title="Permalink to this headline"></a></h3>
+<h3><code class="docutils literal notranslate"><span class="pre">literalinclude</span></code><a class="headerlink" href="#literalinclude" title="Permalink to this heading"></a></h3>
 <ul>
 <li><p><code class="docutils literal notranslate"><span class="pre">test</span></code>: Boolean</p>
 <ul class="simple">

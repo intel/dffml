@@ -15,6 +15,7 @@
         <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../_static/doctools.js"></script>
         <script src="../../_static/copybutton.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -179,7 +180,7 @@
 }
 </style>
 <section id="innersource-microservice">
-<h1>InnerSource Microservice<a class="headerlink" href="#innersource-microservice" title="Permalink to this headline"></a></h1>
+<h1>InnerSource Microservice<a class="headerlink" href="#innersource-microservice" title="Permalink to this heading"></a></h1>
 <p>We created a crawler in the previous tutorial
 <a class="reference internal" href="swportal.html"><span class="doc">InnerSource Portal</span></a>. Now we are going to deploy a micro
 service which evaluates a single repo at a time using the same DataFlow we used
@@ -187,7 +188,7 @@ for the crawler.</p>
 <p>Our end result will be a container which serves a JSON API endpoint. We can
 send a request to the endpoint to evaluate metrics for an InnerSource repo.</p>
 <section id="config-files">
-<h2>Config Files<a class="headerlink" href="#config-files" title="Permalink to this headline"></a></h2>
+<h2>Config Files<a class="headerlink" href="#config-files" title="Permalink to this heading"></a></h2>
 <p>As we’ve seen before, DataFlows can be serialized to config files. JSON
 representations of DataFlows are not fun to hand edit. YAML looks a lot cleaner.</p>
 <p>We’re going to install the <code class="docutils literal notranslate"><span class="pre">dffml-config-yaml</span></code> package so that we don’t have
@@ -197,7 +198,7 @@ to look at JSON.</p>
 </div>
 </section>
 <section id="http-service">
-<h2>HTTP Service<a class="headerlink" href="#http-service" title="Permalink to this headline"></a></h2>
+<h2>HTTP Service<a class="headerlink" href="#http-service" title="Permalink to this heading"></a></h2>
 <p>We’re going to install the <code class="docutils literal notranslate"><span class="pre">dffml-service-http</span></code> package which will be the
 server process of our microservice.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python -m pip install dffml-service-http
@@ -233,7 +234,7 @@ for websockets / http2).</p>
 </div>
 </section>
 <section id="querying-github">
-<h2>Querying GitHub<a class="headerlink" href="#querying-github" title="Permalink to this headline"></a></h2>
+<h2>Querying GitHub<a class="headerlink" href="#querying-github" title="Permalink to this heading"></a></h2>
 <p>Create a directory where we’ll store all of the operations (Python functions)
 we’ll use to gather project data / metrics.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>mkdir operations/
@@ -365,7 +366,7 @@ and more.</p>
 </div>
 </section>
 <section id="dataflow">
-<h2>DataFlow<a class="headerlink" href="#dataflow" title="Permalink to this headline"></a></h2>
+<h2>DataFlow<a class="headerlink" href="#dataflow" title="Permalink to this heading"></a></h2>
 <p>We’re going to create a Python script which will use all the operations we’ve
 written.</p>
 <p>We need to download the <code class="docutils literal notranslate"><span class="pre">repos.json</span></code> file from the previous example so that we
@@ -478,7 +479,7 @@ running the Python file.</p>
 </div>
 </section>
 <section id="serving-the-dataflow">
-<h2>Serving the DataFlow<a class="headerlink" href="#serving-the-dataflow" title="Permalink to this headline"></a></h2>
+<h2>Serving the DataFlow<a class="headerlink" href="#serving-the-dataflow" title="Permalink to this heading"></a></h2>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">-insecure</span></code> flag is only being used here to speed up this

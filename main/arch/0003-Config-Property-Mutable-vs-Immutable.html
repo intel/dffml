@@ -15,6 +15,7 @@
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/copybutton.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -164,14 +165,14 @@
 }
 </style>
 <section id="config-property-mutable-vs-immutable">
-<h1>3. Config Property Mutable vs Immutable<a class="headerlink" href="#config-property-mutable-vs-immutable" title="Permalink to this headline"></a></h1>
+<h1>3. Config Property Mutable vs Immutable<a class="headerlink" href="#config-property-mutable-vs-immutable" title="Permalink to this heading"></a></h1>
 <p>Date: 2021-08-04</p>
 <section id="status">
-<h2>Status<a class="headerlink" href="#status" title="Permalink to this headline"></a></h2>
+<h2>Status<a class="headerlink" href="#status" title="Permalink to this heading"></a></h2>
 <p>Accepted</p>
 </section>
 <section id="context">
-<h2>Context<a class="headerlink" href="#context" title="Permalink to this headline"></a></h2>
+<h2>Context<a class="headerlink" href="#context" title="Permalink to this heading"></a></h2>
 <p>This document and 0004-Model-Saving-and-Loading were drafted at the same
 time. See the 2021-05-25 Weekly Sync Meeting recording for more details.</p>
 <p>Through discussion about model config properties in relation to modification of
@@ -204,7 +205,7 @@ is.</p></li>
 </ul>
 </section>
 <section id="decision">
-<h2>Decision<a class="headerlink" href="#decision" title="Permalink to this headline"></a></h2>
+<h2>Decision<a class="headerlink" href="#decision" title="Permalink to this heading"></a></h2>
 <p>Similar to the way <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.NamedTuple" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">typing.NamedTuple</span></code></a> works, config properties will
 default to immutable. This way implementers of classes can assume they don’t
 need to deal with state changes to config properties unless they’ve explicitly
@@ -248,7 +249,7 @@ object also changing.</p>
 of the object/config.</p>
 </section>
 <section id="consequences">
-<h2>Consequences<a class="headerlink" href="#consequences" title="Permalink to this headline"></a></h2>
+<h2>Consequences<a class="headerlink" href="#consequences" title="Permalink to this heading"></a></h2>
 <p>The <a class="reference internal" href="../api/base.html#dffml.base.field" title="dffml.base.field"><code class="xref py py-func docutils literal notranslate"><span class="pre">field</span></code></a> function will need to be modified to add
 a <code class="docutils literal notranslate"><span class="pre">mutable</span></code> keyword argument.</p>
 <p>We need to figure out how we’ll support modifying sub-objects of configs. This

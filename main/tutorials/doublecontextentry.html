@@ -15,6 +15,7 @@
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/copybutton.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -167,7 +168,7 @@
 }
 </style>
 <section id="double-context-entry">
-<h1>Double Context Entry<a class="headerlink" href="#double-context-entry" title="Permalink to this headline"></a></h1>
+<h1>Double Context Entry<a class="headerlink" href="#double-context-entry" title="Permalink to this heading"></a></h1>
 <p>Double context entry is a pattern you will see throughout DFFML. It’s used
 almost everywhere for consistencies sake.</p>
 <div class="admonition note">
@@ -179,7 +180,7 @@ almost everywhere for consistencies sake.</p>
 contexts, we are always talking about the <code class="docutils literal notranslate"><span class="pre">async</span></code> context unless explicitly
 stated.</p>
 <section id="rules-of-the-double-context-entry-pattern">
-<h2>Rules of the double context entry pattern<a class="headerlink" href="#rules-of-the-double-context-entry-pattern" title="Permalink to this headline"></a></h2>
+<h2>Rules of the double context entry pattern<a class="headerlink" href="#rules-of-the-double-context-entry-pattern" title="Permalink to this heading"></a></h2>
 <ul class="simple">
 <li><p>All objects are comprised of two classes</p>
 <ul>
@@ -201,13 +202,13 @@ sub resources, etc.</p></li>
 </ul>
 </section>
 <section id="benefits-of-using-this-pattern">
-<h2>Benefits of using this pattern<a class="headerlink" href="#benefits-of-using-this-pattern" title="Permalink to this headline"></a></h2>
+<h2>Benefits of using this pattern<a class="headerlink" href="#benefits-of-using-this-pattern" title="Permalink to this heading"></a></h2>
 <p>Many network attached resources will fall into this pattern. By applying it
 uniformly, we make it so all classes have a future proof place to load network
 resources when / if needed.</p>
 </section>
 <section id="example-model">
-<h2>Example - Model<a class="headerlink" href="#example-model" title="Permalink to this headline"></a></h2>
+<h2>Example - Model<a class="headerlink" href="#example-model" title="Permalink to this heading"></a></h2>
 <p>You can also keep model or sources loaded by passing in their contexts.
 The advantage of this method is that we as the caller can control when
 models are saved and loaded, and when sources are opened / closed (for

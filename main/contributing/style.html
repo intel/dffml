@@ -15,6 +15,7 @@
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/copybutton.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -179,14 +180,14 @@
 }
 </style>
 <section id="style">
-<h1>Style<a class="headerlink" href="#style" title="Permalink to this headline"></a></h1>
+<h1>Style<a class="headerlink" href="#style" title="Permalink to this heading"></a></h1>
 <p>This document talks about code formatting, conventions, documentation, and any
 stylistic choices that we adhere to.</p>
 <p>Try to run the formatters before every commit. This way, if you push up files
 for review, they are easy to read, even if your pull request isn’t yet ready to
 merge.</p>
 <section id="python-file-formatting">
-<h2>Python File Formatting<a class="headerlink" href="#python-file-formatting" title="Permalink to this headline"></a></h2>
+<h2>Python File Formatting<a class="headerlink" href="#python-file-formatting" title="Permalink to this heading"></a></h2>
 <p>To install black in the environment</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>pip install <span class="nv">black</span><span class="o">==</span><span class="m">19</span>.10b0
 </pre></div>
@@ -204,7 +205,7 @@ merge.</p>
 </div>
 </section>
 <section id="javascript-file-formatting">
-<h2>JavaScript File Formatting<a class="headerlink" href="#javascript-file-formatting" title="Permalink to this headline"></a></h2>
+<h2>JavaScript File Formatting<a class="headerlink" href="#javascript-file-formatting" title="Permalink to this heading"></a></h2>
 <p>Run the <a class="reference external" href="https://github.com/beautify-web/js-beautify">js-beautify</a> formatter
 on all JavaScript files. Use the following options.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>js-beautify -r -n -s <span class="m">2</span> file_to_format.js
@@ -212,14 +213,14 @@ on all JavaScript files. Use the following options.</p>
 </div>
 </section>
 <section id="naming-conventions">
-<h2>Naming Conventions<a class="headerlink" href="#naming-conventions" title="Permalink to this headline"></a></h2>
+<h2>Naming Conventions<a class="headerlink" href="#naming-conventions" title="Permalink to this heading"></a></h2>
 <ul class="simple">
 <li><p>Variables should always use underscores, as well as functions and methods.</p></li>
 <li><p>Classes should use CamelCase.</p></li>
 </ul>
 </section>
 <section id="imports">
-<h2>Imports<a class="headerlink" href="#imports" title="Permalink to this headline"></a></h2>
+<h2>Imports<a class="headerlink" href="#imports" title="Permalink to this heading"></a></h2>
 <p>Here’s an example of how we style our imports.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">re</span>
 <span class="kn">import</span> <span class="nn">json</span>
@@ -268,7 +269,7 @@ characters go before lines with more characters. If you’re feeling wordy you c
 refer to this as “XMAS tree” instead of “reverse reverse christmas tree”.</p>
 </section>
 <section id="docstrings">
-<h2>Docstrings<a class="headerlink" href="#docstrings" title="Permalink to this headline"></a></h2>
+<h2>Docstrings<a class="headerlink" href="#docstrings" title="Permalink to this heading"></a></h2>
 <p>We use Numpy style docstrings, as opposed to Google or the Sphinx default.</p>
 <p>This is because Google does not support multiple return values, and it looks a
 bit more organized to have multi line descriptions for arguments indented on the
@@ -276,7 +277,7 @@ following line.</p>
 <p>More information on the Numpy docstiring format can be found
 <a class="reference external" href="https://numpydoc.readthedocs.io/en/latest/format.html">here</a>.</p>
 <section id="example-docstring">
-<h3>Example Docstring<a class="headerlink" href="#example-docstring" title="Permalink to this headline"></a></h3>
+<h3>Example Docstring<a class="headerlink" href="#example-docstring" title="Permalink to this heading"></a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Tuple</span>
 
 

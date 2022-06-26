@@ -15,6 +15,7 @@
         <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../_static/doctools.js"></script>
         <script src="../../_static/copybutton.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -169,7 +170,7 @@
 }
 </style>
 <section id="module-dffml.operation.dataflow">
-<span id="operation-dataflow"></span><h1>Operation Dataflow<a class="headerlink" href="#module-dffml.operation.dataflow" title="Permalink to this headline"></a></h1>
+<span id="operation-dataflow"></span><h1>Operation Dataflow<a class="headerlink" href="#module-dffml.operation.dataflow" title="Permalink to this heading"></a></h1>
 <dl class="py exception">
 <dt class="sig sig-object py" id="dffml.operation.dataflow.InvalidCustomRunDataFlowContext">
 <em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dffml.operation.dataflow.</span></span><span class="sig-name descname"><span class="pre">InvalidCustomRunDataFlowContext</span></span><a class="reference internal" href="../../_modules/dffml/operation/dataflow.html#InvalidCustomRunDataFlowContext"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.operation.dataflow.InvalidCustomRunDataFlowContext" title="Permalink to this definition"></a></dt>
@@ -211,7 +212,7 @@ using it as a context manager.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="dffml.operation.dataflow.run_dataflow">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dffml.operation.dataflow.</span></span><span class="sig-name descname"><span class="pre">run_dataflow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../df/base.html#dffml.df.base.OperationImplementation" title="dffml.df.base.OperationImplementation"><span class="pre">dffml.df.base.OperationImplementation</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">ctx</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../df/base.html#dffml.df.base.BaseInputSetContext" title="dffml.df.base.BaseInputSetContext"><span class="pre">dffml.df.base.BaseInputSetContext</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">octx</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../df/base.html#dffml.df.base.BaseOrchestratorContext" title="dffml.df.base.BaseOrchestratorContext"><span class="pre">dffml.df.base.BaseOrchestratorContext</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/operation/dataflow.html#run_dataflow"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.operation.dataflow.run_dataflow" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dffml.operation.dataflow.</span></span><span class="sig-name descname"><span class="pre">run_dataflow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../df/base.html#dffml.df.base.OperationImplementation" title="dffml.df.base.OperationImplementation"><span class="pre">OperationImplementation</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">ctx</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../df/base.html#dffml.df.base.BaseInputSetContext" title="dffml.df.base.BaseInputSetContext"><span class="pre">BaseInputSetContext</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">octx</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../df/base.html#dffml.df.base.BaseOrchestratorContext" title="dffml.df.base.BaseOrchestratorContext"><span class="pre">BaseOrchestratorContext</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/operation/dataflow.html#run_dataflow"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dffml.operation.dataflow.run_dataflow" title="Permalink to this definition"></a></dt>
 <dd><p>Starts a subflow <code class="docutils literal notranslate"><span class="pre">self.config.dataflow</span></code> and adds <code class="docutils literal notranslate"><span class="pre">inputs</span></code> in it.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -328,7 +329,7 @@ This allows you to run a subflow as if it were an operation.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="dffml.operation.dataflow.run_dataflow.imp">
 <span class="sig-name descname"><span class="pre">imp</span></span><a class="headerlink" href="#dffml.operation.dataflow.run_dataflow.imp" title="Permalink to this definition"></a></dt>
-<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">dffml.base.DffmlDataflowRunImplementation</span></code></p>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">DffmlDataflowRunImplementation</span></code></p>
 </dd></dl>
 
 <dl class="py method">
