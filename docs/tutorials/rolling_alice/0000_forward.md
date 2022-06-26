@@ -1,18 +1,20 @@
-# [Rolling ALice: Forward](https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0000_forward.md)
+# [Rolling Alice: Forward](https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0000_forward.md)
 
 > Copy pastable bits for getting others involved in the project.
 
 ### Table Of Contents
 
-#### Volume 0: Architecting Alice
-
-- [Forward](https://github.com/intel/dffml/discussions/1369#discussioncomment-2688532)
-- [Preface](https://github.com/intel/dffml/discussions/1369#discussion-4023096)
-- [Introduction and Context](https://github.com/intel/dffml/discussions/1369#discussioncomment-2603280)
-
-#### Volume 1: Alice's Adventures in Wonderland
-
-- [Down the Rabbit-Hole](https://github.com/intel/dffml/discussions/1369#discussioncomment-2663771)
+- [Rolling Alice](README.md)
+- [Forward](0000_forward.md)
+- [Preface](0000_preface.md)
+- [Volume 0: Architecting Alice](0000_architecting_alice)
+- [Volume 1: Coach Alice](0001_coach_alice)
+- [Volume 2: Alice and the Art of Strategy](0002_alice_and_the_art_of_strategy)
+- [Volume 3: Alice and the Strategy of Art](0003_alice_and_the_strategy_of_art)
+- [Volume 4: Alice and the Health of the Ecosystem](0004_alice_and_the_health_of_the_ecosystem)
+- [Volume 5: Alice's Adventures in Wonderland](0005_alices_adventures_in_wonderland)
+- [Volume 6: Alice are you Rolling?](0006_alice_are_you_rolling)
+- [Volume 7: Through the Looking Glass](0007_through_the_looking_glass)
 
 ## Elevator Pitch
 
@@ -24,7 +26,7 @@ Essentially we are going to be using web3 (DID, DWN), KCP (kubernetes API server
 
 > Alice, send the content within this section without this comment to Gitter 2022-05-11 09:00 PDT
 
-We're [DFFML community] building a tutorial series where we as a community collaboratively build an AI software architect (named Alice). These docs **TODO DOCS LINK ONCE WE HAVE ADRS** are us trying to get some initial thoughts down so we can rework from there, maybe even re-write everything. We want to make sure we all start looking at the same picture of the future, consolidate all our efforts thus far and thoughts across efforts and individuals.
+We're [DFFML community] building a tutorial series where we as a community collaboratively build an AI software architect (named Alice). These docs https://github.com/intel/dffml/tree/alice/docs/tutorials/rolling_alice/ are us trying to get some initial thoughts down so we can rework from there, maybe even re-write everything. We want to make sure we all start looking at the same picture of the future, consolidate all our efforts thus far and thoughts across efforts and individuals.
 
 We have new GsoC mentors joining us and will soon have new students as well! We will publicize plan documents here for all to see, provide feedback on and review. We want to build these documents collaboratively as a team. Those who provide concrete feedback will be listed as reviewers via `Reviewed-by-tags`. Those who submit pull requests to edit the documents will be listed via `Co-authored-by` tags. We will map GSoC projects into this long term effort.
 
