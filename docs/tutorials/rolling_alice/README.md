@@ -1,6 +1,6 @@
 # [Rolling Alice](https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/)
 
-Please Review and contribute to the alice branch. https://github.com/intel/dffml/pull/1401
+Please review and contribute to the alice branch. https://github.com/intel/dffml/pull/1401
 
 The following seven volumes describe Alice's next adventure as she
 returns to Wonderland. Where's Wonderland? Well that's where we are,
