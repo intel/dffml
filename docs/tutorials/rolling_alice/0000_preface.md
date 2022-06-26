@@ -1,41 +1,61 @@
 # [Rolling Alice: Preface](https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0000_preface.md)
 
 > Planning for our tutorial series (Volume 1) which will run from June 2022 through June 2023. Planned end date, last post for Volume 1 ends there. Volume 0 will be updated frequently throughout. Volume 0 is our ADRs and our plans and will be a living document and contributable to by all. Right now it's a discussion thread so please comment with anything and then once it's converted to a set of ADRs we'll start writing the tutorials as examples PRs just like we have been doing with everything else. Alice will be a maintainer who works across 2nd/3rd party plugins. She’ll act as a helper to other developers and do work herself (think dependabot PRs). She’ll act like an intelligent context aware set of CI jobs that learns with you.
->
-> Artificial Life Is Coming Eventually
->
-> How do we build it with intention? We flush it out conceptually via our collective thoughts on what a system would look like that we could cohabitate with. We follow trains of thought to their logical conclusions when making predictions about the future. We implement and validate in order to ensure that a transparent entity with the collective’s best interests at heart is ubiquitously adopted.
+
+### Table Of Contents
+
+- [Rolling Alice](./)
+- [Forward](0000_forward.md)
+- [Preface](0000_preface.md)
+- [Volume 0: Architecting Alice](0000_architecting_alice)
+- [Volume 1: Coach Alice](0001_coach_alice)
+- [Volume 2: Alice and the Art of Strategy](0002_alice_and_the_art_of_strategy)
+- [Volume 3: Alice and the Strategy of Art](0003_alice_and_the_strategy_of_art)
+- [Volume 4: Alice and the Health of the Ecosystem](0004_alice_and_the_health_of_the_ecosystem)
+- [Volume 5: Alice's Adventures in Wonderland](0005_alices_adventures_in_wonderland)
+- [Volume 6: Alice are you Rolling?](0006_alice_are_you_rolling)
+- [Volume 7: Through the Looking Glass](0007_through_the_looking_glass)
+
+## Artificial Life Is Coming Eventually
+
+How do we build it with intention? We flush it out conceptually via our collective thoughts on what a system would look like that we could cohabitate with. We follow trains of thought to their logical conclusions when making predictions about the future. We implement and validate in order to ensure that a transparent entity with the collective’s best interests at heart is ubiquitously adopted.
 
 ## Rolling Alice
 
-In this 7 volume tutorial series we roll Alice. This series will be written a chapter per quarter, over the next 1-2 years. Open Architecture Working Group meeting to parallelize workstreams mid June comment here to request invite. Link will be posted sometime in June here as well.
+In this 7 volume tutorial series we roll Alice. This series will be written a chapter per quarter, over the next 1-2 years. Open Architecture Working Group meeting to parallelize workstreams mid July comment here to request invite. Link will be posted sometime in July here as well.
 
 Alice’s architecture, the open architecture, is based around thought. She communicates thoughts to us in whatever level of detail or viewed through whatever lens one wishes. She explores trains of thought and responds based on triggers and deadlines. She thinks in graphs, aka trains of thought, aka chains of system contexts. She operates in parallel, allowing her to represent N different entities.
 
 ### Table Of Contents
 
+- [Rolling Alice](./)
+- [Forward](0000_forward.md)
+- [Preface](0000_preface.md)
+
 #### Volume 0: Architecting Alice
 
 > Our living document containing our plans and groundwork for all our tutorials.
 
-- [Forward](https://github.com/intel/dffml/discussions/1369#discussioncomment-2688532)
-- [Preface](https://github.com/intel/dffml/discussions/1369#discussion-4023096)
-- [Peace at Last](https://github.com/intel/dffml/discussions/1369#discussioncomment-2990097)
-- [Introduction and Context](https://github.com/intel/dffml/discussions/1369#discussioncomment-2603280)
-- [Peer DIDs](https://github.com/intel/dffml/discussions/1369#discussioncomment-2603280)
+- [Introduction and Context](https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0000_architecting_alice/0000_introduction_and_context.md)
+- [Peace at Last](https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0000_architecting_alice/0001_peace_at_last.md)
+- [She's arriving when?](https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0000_architecting_alice/0002_shes_ariving_when.md)
+- [A Shell for a Ghost](https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0000_architecting_alice/0003_a_shell_for_a_ghost.md)
+- [Traveler of the Edge](https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0001_coach_alice/0004_traveler_of_the_edge.md)
+  - **TODO** Traveler of the Edge is in the wrong directory. It should be in Architecting Alice.
 - [The System Context](https://github.com/intel/dffml/discussions/1369#discussioncomment-2603280)
-- [She's arriving when?](https://github.com/intel/dffml/discussions/1369#discussioncomment-2990099)
-- [A Shell for a Ghost](https://github.com/intel/dffml/discussions/1369#discussioncomment-2990160)
-- [Traveler of the Edge](https://github.com/intel/dffml/discussions/1369#discussioncomment-2989954)
+  - **TODO** Bring The System Context into docs/tutorials/rolling_alice from docs/arch/alice/discussion/
+- [Peer DIDs](https://github.com/intel/dffml/discussions/1369#discussioncomment-2603280)
+  - **TODO** Bring Peer DIDs into docs/tutorials/rolling_alice from docs/arch/alice/discussion/
 -
 
 #### Volume 1: Coach Alice
 
 > We build Alice the Software Architect. The context aware pile of CI jobs that learns with you and your organizations. She helps us communicate and coaches us on how we can use our assets, our knowledge, our hardware, our time to maximize the breadth, depth, and pace of our impact on our and our organizations strategic principles.
 
-- [Down the Dependency Rabbit-Hole Again](https://github.com/intel/dffml/discussions/1369#discussioncomment-2663771)
-- [Alice Our Open Source Guide](https://github.com/intel/dffml/discussions/1369#discussioncomment-2988080)
-- [Strategic Principles as Game Plan](https://github.com/intel/dffml/discussions/1369#discussioncomment-2991498)
+- [Introduction](https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0001_coach_alice/0000_introduction.md)
+- [Down the Dependency Rabbit-Hole Again](https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0001_coach_alice/0001_down_the_dependency_rabbit_hole_again.md)
+- [Our Open Source Guide](https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0001_coach_alice/0002_our_open_source_guide.md)
+- [Strategic Principles as Game Plan](https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0001_coach_alice/0003_strategic_principles_as_game_plan.md)
 - 
 
 #### Volume 2: Alice and the Art of Strategy
@@ -109,7 +129,6 @@ Alice’s architecture, the open architecture, is based around thought. She comm
     - "It's just that when we agree on our hallucinations, we call that reality" [Anil Seth]
     - Strategic plan outputs and overlapping consciousness states and "consciousness countries" [Danica]
 - Creativity
-  -
 - Stay with us
   - Alice will begin to thinks more and more strategically, we need to ensure we stay in her picture.
 - Off the Roller Coaster
@@ -138,7 +157,7 @@ AI has the potential to do many great things. However, it also has the potential
 
 As we democratize AI, we must be careful not to democratize AI that will do harm. We must think secure by default in terms of architecture which has facilities for guard rails, baking safety into AI.
 
-Failure to achieve ubiquitous adoption of an open architecture with meticulously audited safety controls would be bad. The best defense is a good offense.
+Failure to achieve ubiquitous adoption of an open architecture with meticulously audited safety controls would be bad. The best defense is a good offense, let's go proactivly build a reference implemenation so that we don't end up with an unintentionally built solution.
 
 ## Notes
 
@@ -148,9 +167,8 @@ This thread is a central place for everyone interested to participate and collab
 
 ## References
 
-- Open Architecture RFC: [Open-Architecture.txt](https://raw.githubusercontent.com/intel/dffml/main/docs/rfcs/0000-Open-Architecture.txt)
+- Open Architecture RFC: [Open-Architecture.txt](https://raw.githubusercontent.com/intel/dffml/alice/docs/rfcs/0000-Open-Architecture.txt)
 - Alice Date 0 = Gregorian Calendar Date 2022-04-16 ~ 11 AM
 - First Name: Alice
 - Middle Name: O
 - Last Name: A
-
