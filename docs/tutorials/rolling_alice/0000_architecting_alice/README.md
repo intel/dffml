@@ -1,4 +1,4 @@
-# [Rolling Alice: Volume 0: Introduction and Context](https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/architecting_alice/introduction_and_context.md)
+# [Rolling Alice: Volume 0: Introduction and Context](https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0000_architecting_alice)
 
 > Introduction and Context to tutorial series - Started May 2022
 
