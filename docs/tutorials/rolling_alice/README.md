@@ -38,3 +38,33 @@ into our time.
 - [Volume 5: Alice's Adventures in Wonderland](0005_alices_adventures_in_wonderland)
 - [Volume 6: Alice are you Rolling?](0006_alice_are_you_rolling)
 - [Volume 7: Through the Looking Glass](0007_through_the_looking_glass)
+
+## Roadmap
+
+> Haven't done this before with the gantt chart, needs more work.
+
+```mermaid
+gantt
+    title Coach Alice
+    dateFormat  2022-06-25
+    section Intuative and Accessable Documenation Editing
+    JupyterLite         :a1, 2022-06-25, 30d
+    UI Hotswap    :after a1  , 30d
+    GitHub PR      :after a2  , 30d
+    section THREATS.md
+    JupyterLite         :t1, 2022-08-25, 30d
+    UI Hotswap    :after t1  , 30d
+    GitHub PR      :after t2  , 30d
+    section Recommended Community Standards
+    JupyterLite         :c1, 2022-06-25, 30d
+    UI Hotswap    :after c1  , 30d
+    GitHub PR      :after c2  , 30d
+    section INNERSOURCE.md
+    Maturity         :b1, 2022-06-25, 30d
+    UI Hotswap    :after b1  , 30d
+    GitHub PR      :after b2  , 30d
+    section QA Model on Engineering Logs
+    Existing docs         :qa1, 2022-09-25, 30d
+    All transcripts at once    :after qa1  , 30d
+    Stand alone use      :after qa2  , 30d
+```
