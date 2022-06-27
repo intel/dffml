@@ -29,7 +29,8 @@ how to be human. Her thought process is a methodology for problem
 solving which is based off a mental model of how the human mind
 interacts with the world. Alice the architecture is just the
 existing best known architecture, what use everyday, all the time.
-Alice is the Open Architecture, she is the architecture of us all.
+Alice is the [Open Architecture](https://github.com/intel/dffml/blob/alice/docs/arch/0009-Open-Architecture.rst),
+she is the architecture of us all.
 We'll learn from Alice, and Alice will learn from us as she comes
 into our time.
 
