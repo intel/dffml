@@ -21,8 +21,49 @@ Install for development
 
     Add ``-log debug`` to any ``alice`` CLI command to get verbose log output.
 
+please contribute
+*****************
+
+Alice will be working on our repos with us, we are going to use the ``please
+contribute`` set of commands (we'll overlay to ``alice.please.contribute``).
+
+recommend community standards
+-----------------------------
+
+.. note::
+
+    Tutorial on how we made this: https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0001_coach_alice/0002_our_open_source_guide.md
+
+Create a new git repo and add some contents
+
+.. code-block:: console
+
+    $ gh repo create -y --internal https://github.com/$USER/my-new-python-project
+    $ my-new-python-project
+    $ echo 'print("Hello World")' > test.py
+    $ git add test.py
+    $ git commit -sam 'Initial Commit'
+    $ git push --set-upstream origin master
+
+Ask Alice: please contribute recommended community standards to the repo
+
+.. code-block:: console
+
+    $ alice please contribute -repos https://github.com/$USER/my-new-python-project -log debug -- recommended community standards
+
+Visit
+https://github.com/$USER/my-new-python-project/issues
+
+Merge pull request with README. Now the new project has a README!
+
+**TODO** Link to docs on how to extend for org specific custom README templates.
+
 shouldi
 *******
+
+.. note::
+
+    Tutorial on how we made this: https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0001_coach_alice/0001_down_the_dependency_rabbit_hole_again.md
 
 Alice's initial functionality is based around
 https://intel.github.io/dffml/shouldi.html
