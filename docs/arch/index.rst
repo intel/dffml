@@ -9,4 +9,5 @@ https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions
 
     0002-Object-Loading-and-Instantiation-in-Examples
     0003-Config-Property-Mutable-vs-Immutable
+    0007-A-GitHub-Public-Bey-and-TPM-Based-Supply-Chain-Security-Mitigation-Option
     0008-Manifest
