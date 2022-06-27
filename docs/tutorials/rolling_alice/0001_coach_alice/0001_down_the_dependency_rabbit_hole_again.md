@@ -99,3 +99,56 @@ system context includes
 - shouldi, wonder about installing packages. Explain how that increases threat surface.
 - write about how we extended shouldi and go into technical details.
 - Building markdown docs with mermaid diagrams
+
+---
+
+## Living THREATS.md
+
+Install Alice https://github.com/intel/dffml/tree/alice/entities/alice
+
+Create the `THREATS.md` file
+
+```console
+$ alice threats \
+    -inputs \
+      models/good.json=ThreatDragonThreatModelPath \
+      models/GOOD_THREATS.md=ThreatsMdPath
+```
+
+We made `auditor_overlay.py` which is a data flow which calls the auditor. We
+use `sed` to direct the data flow to run on the path to the threat model from
+Threat Dragon used as input.
+
+```console
+$ dffml service dev export auditor_overlay:AUDITOR_OVERLAY \
+    -configloader yaml \
+    | sed -e 's/auditor_overlay:audit.inputs.ltm/ThreatDragonThreatModelPath/g' \
+    | tee auditor_overlay.yaml
+```
+
+Generate `GOOD_THREATS.md` with auditing overlay.
+
+```console
+$ alice threats -log debug \
+    -overlay auditor_overlay.yaml \
+    -inputs \
+      models/good.json=ThreatDragonThreatModelPath \
+      models/GOOD_THREATS.md=ThreatsMdPath
+```
+
+Generate `BAD_THREATS.md` with auditing overlay.
+
+```console
+$ alice threats -log debug \
+    -overlay auditor_overlay.yaml \
+    -inputs \
+      models/bad.json=ThreatDragonThreatModelPath \
+      models/BAD_THREATS.md=ThreatsMdPath
+```
+
+Dump out to HTTP to copy to GitHub for rendering.
+
+```console
+$ (echo -e 'HTTP/1.0 200 OK\n' && cat models/GOOD_THREATS.md) | nc -Nlp 9999;
+$ (echo -e 'HTTP/1.0 200 OK\n' && cat models/BAD_THREATS.md) | nc -Nlp 9999;
+```
