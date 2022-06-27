@@ -1,4 +1,4 @@
-# Volume 1: Chapter 2: Alice Our Open Source Guide
+# Volume 1: Chapter 2: Our Open Source Guide
 
 > Alice will be acting as our proactive open source guide to
 > 2nd and 3rd party plugin maintainers and contributors.
@@ -13,6 +13,8 @@ References:
 - https://opensource.guide/
 - https://github.com/intel/dffml/issues/1393
   - https://github.com/intel/dffml/discussions/1369#discussioncomment-2959986
+
+Install Alice https://github.com/intel/dffml/tree/alice/entities/alice
 
 We want to be able to ask Alice to contribute [recommended community standards](https://opensource.guide/) to our projects.
 
