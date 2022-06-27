@@ -8,7 +8,7 @@ Install for development
 
 .. code-block:: console
 
-    $ git clone -b manifest https://github.com/pdxjohnny/dffml
+    $ git clone -b alice https://github.com/intel/dffml
     $ cd dffml/entities/alice
     $ python -m pip install \
         -e .[dev] \
