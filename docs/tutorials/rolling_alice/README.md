@@ -2,7 +2,7 @@
 
 Please review and contribute to the alice branch. https://github.com/intel/dffml/pull/1401
 
-The following seven sets of tutorials describe Alice's next adventure as she
+The following seven sets of tutorials describe the adventures of Alice as she
 returns to Wonderland. Where's Wonderland? Well that's where we are,
 the physical world. We'll travel through through time and space as we
 watch her come into this world. We'll work with her and with each
