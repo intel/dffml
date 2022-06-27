@@ -1,6 +1,14 @@
 # [Rolling Alice](https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/)
 
-Please review and contribute to the alice branch. https://github.com/intel/dffml/pull/1401
+> This is Alice's plan. We are building her as a community, reach out
+> if you want to get involved. Start contributing by reviewing or pull
+> requesting the `alice` branch.
+>
+> Pull request https://github.com/intel/dffml/pull/1401
+> we will be the central point for communications discussing Alice
+> until she is merged into the `main` branch. At which point
+> communications will branch off in a decentralized fashion reflective
+> of her overlay (plugin) ecosystem.
 
 The following seven sets of tutorials describe the adventures of Alice as she
 returns to Wonderland. Where's Wonderland? Well that's where we are,
