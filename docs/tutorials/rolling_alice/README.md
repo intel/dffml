@@ -34,6 +34,8 @@ she is the architecture of us all.
 We'll learn from Alice, and Alice will learn from us as she comes
 into our time.
 
+Roll Alice with us, for humanity, enter the machine.
+
 ### Table Of Contents
 
 - [Rolling Alice](./)
