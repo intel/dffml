@@ -54,6 +54,11 @@ Just FYI, this is not an official Intel project. Just a loose collection of folk
 
 We have been publicizing our work over technical channels and on twitter and gave a talk at AppSec days PNW which touched on Alice **TODO: Add link once recording is up**. She’s just a dream at this point, nothing more than brainstorming and a pile of non-ML python code. The hope is that if we work together as humanity we can use proper planning to create a better world.
 
+## Security Folks
+
+Ready to bring security to the mind? https://github.com/intel/dffml/tree/alice/docs/tutorials/rolling_alice
+
+Securing the software supply chain is becoming about securing the supply chain of the mind, the developer mind. We need to teach developers, and we'll be teaching developers in a language they understand, code. We'll teach them by teaching Alice how to teach them, along the way we'll build Alice, who will be a developer herself one day.
 
 ## RFCv1 Announcement
 
