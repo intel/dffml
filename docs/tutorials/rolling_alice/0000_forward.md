@@ -60,6 +60,10 @@ Ready to bring security to the mind? https://github.com/intel/dffml/tree/alice/d
 
 Securing the software supply chain is becoming about securing the supply chain of the mind, the developer mind. We need to teach developers, and we'll be teaching developers in a language they understand, code. We'll teach them by teaching Alice how to teach them, along the way we'll build Alice, who will be a developer herself one day.
 
+### Why might security folks want to be involved in the Open Architecture's definition and implemenation?
+
+Anything accessible via the Open Architecture methodology as a proxy can be used to combine external/internal work with programmatic application of context and organizationally aware modifications to those components as they are sourced from an SBOM. This allows us to apply policy universally across static and dynamic analysis. This will allow us to apply techniques such as RBAC based on programming languague agnostic descriptions of policy at any level of granularity at analysis or runtime.
+
 ## RFCv1 Announcement
 
 Here is the first version of Alice aka the Open Architecture and this pull request is a Request For Comments https://github.com/intel/dffml/tree/alice/docs/tutorials/rolling_alice Please Review and provide any and all technical or conceptual feedback! This is also a call for participation if anyone would like to get involved and contribute please comment in the linked pull request or reach out to me directly. Looking forward to working with you all!
