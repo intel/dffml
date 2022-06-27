@@ -1,4 +1,4 @@
-# Manifest Schema
+# Manifest
 
 Manifests allow us to focus less on code and more on data.
 By focusing on the data going into and out of systems. We can achieve standard
