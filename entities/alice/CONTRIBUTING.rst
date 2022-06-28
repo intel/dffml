@@ -22,7 +22,7 @@ Finding Data Types to Work With
 
 .. code-block:: console
 
-    $ dffml service list entrypoints dffml.overlays`
+    $ dffml service list entrypoints dffml.overlays
 
 Writing an Overlay
 ******************
