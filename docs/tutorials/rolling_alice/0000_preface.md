@@ -36,7 +36,7 @@ Alice’s architecture, the open architecture, is based around thought. She comm
 
 > Our living document containing our plans and groundwork for all our tutorials.
 
-- [Introduction and Context](https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0000_architecting_alice/0000_introduction_and_context.md)
+- [Introduction and Context](https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0000_architecting_alice/)
 - [Peace at Last](https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0000_architecting_alice/0001_peace_at_last.md)
 - [She's arriving when?](https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0000_architecting_alice/0002_shes_ariving_when.md)
 - [A Shell for a Ghost](https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0000_architecting_alice/0003_a_shell_for_a_ghost.md)
