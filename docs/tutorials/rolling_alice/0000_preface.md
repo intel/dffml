@@ -56,7 +56,9 @@ Alice’s architecture, the open architecture, is based around thought. She comm
 - [Down the Dependency Rabbit-Hole Again](https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0001_coach_alice/0001_down_the_dependency_rabbit_hole_again.md)
 - [Our Open Source Guide](https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0001_coach_alice/0002_our_open_source_guide.md)
 - [Strategic Principles as Game Plan](https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0001_coach_alice/0003_strategic_principles_as_game_plan.md)
-- 
+- [In the Lab](https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0001_coach_alice/0004_in_the_lab.md)
+  - Using what we learned from "A Shell for a Ghost", we put Alice in JypterLite as a followon to Intuitive and Accessable Documenation Editing GSOC 2022 Project by Claire.
+  - Extend to VS Code via a mechanism similar to their language server interface
 
 #### Volume 2: Alice and the Art of Strategy
 
