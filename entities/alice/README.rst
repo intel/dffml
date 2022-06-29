@@ -1,6 +1,9 @@
 Alice
 #####
 
+See https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/
+for more information on Alice. She is our developer helper.
+
 Install
 *******
 
