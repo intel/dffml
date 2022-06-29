@@ -148,11 +148,13 @@ class Entrypoint(object):
     ENTRY_POINT_LABEL = ""
 
     @classmethod
-    def load(cls, loading=None):
+    def load(cls, loading=None, entrypoint=None):
         """
         Loads all installed loading and returns them as a list. Sources to be
         loaded should be registered to ENTRYPOINT via setuptools.
         """
+        if entrypoint is None:
+            entrypoint = cls.ENTRYPOINT
         try:
             # Loading from entrypoint if ":" is in name
             if loading is not None and ":" in loading:
@@ -163,7 +165,7 @@ class Entrypoint(object):
         # Load from registered entrypoints otherwise
         loaded_names = []
         loading_classes = []
-        for i in pkg_resources.iter_entry_points(cls.ENTRYPOINT):
+        for i in pkg_resources.iter_entry_points(entrypoint):
             loaded_names.append(i.name)
             if loading is not None and i.name != loading:
                 continue
