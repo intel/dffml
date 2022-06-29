@@ -56,7 +56,7 @@ Installing in Development Mode
 
     .. code-block:: console
 
-        $ python -m pip -y uninstall \
+        $ python -m pip uninstall -y \
             alice \
             dffml \
             shouldi \
