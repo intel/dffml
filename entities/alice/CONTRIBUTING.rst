@@ -15,6 +15,23 @@ Python interpreter breakpointed at the raised exception.
 
     $ python -m pdb -m alice
 
+Cloning the Repo
+****************
+
+We are currently on the ``alice`` feature branch of DFFML. See
+https://github.com/intel/dffml/pull/1401 for more details.
+
+.. code-block:: console
+
+    $ git clone -b alice https://github.com/intel/dffml
+
+Now open or change directory to the directory containing Alice's
+source code within the project ``entities/alice``.
+
+.. code-block:: console
+
+    $ cd dffml/entities/alice
+
 Data Flow Programming
 *********************
 
@@ -51,17 +68,6 @@ Need to do something like the following, this section should source from
             dffml service dev export {entrypoint}.$0 | tee {entrypoint}.$.json
             recursive(entrypoint + "." + $0)
 
-**entry_points.txt**
-
-.. code-block::
-
-    [dffml.overlays.alice.please.contribute.recommended-community-standards.git]
-    alice.please.contribute.git.read_my_config_if_exists = alice.overalys.my_new_overlay:read_my_config_if_exists
-    alice.please.contribute.git.my_config_project_name = alice.overalys.my_new_overlay:my_config_project_name
-    alice.please.contribute.git.validate_my_config = alice.overalys.my_new_overlay:validate_my_config
-
-Modify the ``entry_points.txt`` file in the ``dffml.git/entities/alice``
-
 Making a Game Plan
 ******************
 
@@ -75,19 +81,33 @@ collector flows (**TODO** link to Living Threat Model terminology).
 We want to enable collection of the ``name`` field within the JSON file
 ``.myconfig.json``. Here's our game plan
 
-- Check if the ``.myconfig.json`` file exists within a directory
-  (The following if statements are within this operation on purpose to
-  avoid a TOCTOU issue if the lock on the directory were to be released
-  between time of this operation and time of the next, so we contain
-  dealing with the resource to this operation).
+- Check if the ``.myconfig.json`` file exists within a directory.
+
   - If it doesn't exist, bail out, go no further
   - Read in the contexts
   - Parse the contents as JSON
   - Return the parsed contents
+
 - Validate the contents conform to the expected format
+
   - Input validation using JSON schema
   - If schema validation fails, bail out, go no further
+
 - Return the ``name`` property of the parsed contents
+
+.. warning::
+
+    **SECURITY** The if statements in the first list item where we check for
+    file existance within this operation happens within and not as a
+    distinct operation on purpose to avoid a TOCTOU issue if the lock on the
+    directory were to be released between time of this operation and
+    time of the next, so we contain dealing with the resource to this
+    operation.
+    
+    References:
+
+    - https://github.com/intel/dffml/blob/alice/docs/concepts/dataflow.rst
+    - https://github.com/intel/dffml/issues/51
 
 Writing Operations
 ******************
@@ -200,6 +220,13 @@ this is the method which we use to register overlays. The name is on the
 left of the ``=``, the path to the overlay is on the right. The ``.ini``
 section is the connonical form of the system context which our overlay
 should be applied to.
+
+.. note::
+
+    If you are working within the exsiting alice codebase then the
+    following ``entry_points.txt`` file and the
+    rest of your files should be in the ``dffml.git/entities/alice``
+    directory.
 
 **entry_points.txt**
 
