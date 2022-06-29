@@ -98,24 +98,24 @@ altough a distinct concept itself.
 Finding Data Types to Work With
 *******************************
 
-**TODO** Finish this section
+You can leverage
+https://mermaid-js.github.io/mermaid-live-editor/
+to visualize dataflows. Copy paste the output of the diagram code into
+the webpage to edit and visualze the flow.
+
+You can also install ``dffml-config-yaml`` via ``python -m pip install -e
+configloader/yaml`` which gives you the ability to dump to YAML via addition of
+the ``-configloader yaml`` option.
+
+The JSON or YAML document's ``definitions`` field can be useful for finding new
+data types available within the flow.
 
 .. code-block:: console
 
-    $ dffml service dev export alice.please.contribute:AlicePleaseContributeRecommendedCommunityStandards | tee alice.please.contribute.recommended_community_standards.json
-    ...
-    $schema: https://github.com/intel/dffml/raw/alice/entities/alice/schema/alice.please.contribute.recommended_community_standards.schema.json
-    ...
+    $ dffml service dev export alice.cli:AlicePleaseContributeCLIDataFlow | tee alice.please.contribute.recommended_community_standards.json
+    $ dffml dataflow diagram alice.please.contribute.recommended_community_standards.json
 
-Need to do something like the following, this section should source from
-"She's Arriving When?" once completed or push to there for now.
-
-.. code-block::
-
-    def recursive(entrypoint):
-        for line in subprocess.check_output("dffml service dev entrypoints list {entrypoint}", shell=True).split():
-            dffml service dev export {entrypoint}.$0 | tee {entrypoint}.$.json
-            recursive(entrypoint + "." + $0)
+.. image:: https://mermaid.ink/svg/pako:eNrFXP1vozdy_lcW219sILfg98eiOKBN-hHgrglyKfrDbiGQw-GuGlt2JTmpEeR_70O9sqS1c5q3PXv3ctl1ZHLI4Qxnnocc6tfXdNP49dvXH9bl9uOrH795v9rc1ek_SvS5qKhMVjFyI082di7KmtCLSfrd9-sb4s1mufrw6i_b8oH_E52391cs9nzVl1dXb_-u9GZTqv6rzXZ98xPjA0cllpMpcC9ec6iWOPdqSguemFxmCsFzVe_K1ZL4DV0t3_zD-On7Ky4b_vpmtV0v692Wf2C6ub7mVeP2NX64Wy2395jqqpV127ylNZctL_Bnu-YF5sSLZV-sbrYL_p_lZrs56CNNY69P7901PmiDJhz1-1WOQVkbuHL22jeluvaZvIcclYrnF1cilxxC5GqdsUklSs4wNd16xJSY_cW-M2FIXm03l3KXV3_4wx9fSYq9XyVjerYcqfoedLStpEbVOFVKs6QNRr69uZTbzRyOWjLFxG6DUdXq1qoxGb9x3bjiasJwm7ur7aVsk92Akrj3KxjlxFuDoxTZ6aC8dXY4OsWYILF5pXP_G731wx322mIs2AIehk23WG4Wbblm2t6s7w--Kk3ivK_amlvU5GxvqrYWggqqhw7PN7CR6y-sgiey2GBY7FpdtJptKvi3FViGdLUXJ30v5eY7K0oqwRngb1mTdrYZxjJko2JtKQyfD7HXo9tIsiY_FcQ9dRtjXYwx9BwU3M-HHnxuHAu3XnT4m9b8u595fVXudx2_u-V12S5vVpt_WW7fflhuJ1Nsbxa7ERYPn5z40vmZnfelElh5uCH8zlUDISGW0lMomVwtsX4JvWAb5SJpG2qxVJXjUnxRhrr3NZb2EJCkdjtDSwpiCWJADGmGyCekigqHINtciTlkBaFHz5JkTQMK4p54Vg0-ImYbUiZkTtYzgiz-JHLeaH4OC3z9p2_fQsDiY5l29jFrSqOf956K3exjyMF1rTv2Nv7oWYfW2OTO7qXmrnLQ3JVG9huLnxXVhA2uAGmUqaQv6Lpdys129pJ0QOKzqsVQulY5cna1N_hbUib5rhq7ePFLQU4eA0otZw5ousaCp0gWGIZ6ynDm3EuuXgevuz96pCRrN6Ak7rFHYgelQiHHDjzVe4Nz6BAaJeVs7s_rkcgtZfPTyDL9Zg37Hnou6KErUsm-78FrpRkK-ZMVAxsoskr7YruuRiNsAGxU40suX1K_FgtyF5Bc11RSdEVp4IMQTYHBkrZ7z5aaTUlV0BMbBD9Ytr04bXqoCjGsqUClqtQp6RMsJsnaDSiJe-xoZJRSPnlbe9UhN4SdEFXkboD5VKrPbIhrxj5d3KwW24_LzadJVJrJeYdKADjZeYWlcak17ZruzkeFvOwaPW8Y_Gt61GSyrSpXm32rFj6RXa6hUrZedSTNyXGkZjs7SvqMuJNDgQjuOjdHmrwKEYYPHJyuMRxDotRy5oApsDY5xuw7K6fZecwbSD-pYLXNJ_BPkjUNKIh77KnFavizLwWSso5Ga92qd2AcnSjY9JwWXt-thnE_8U9pfAHkWYIvax2QhxKyRFAZm7IiS1BIsfaXm31ntqoo2CGDlNXQFVF1BVuqdOtafoByUrsJWQlqPDaaAeXoDd6tOCQGa2w6wxcq2QyYnJ4Fsw8wS4ceDwz_uh0sJ01CAFhooZoBPvO-GR882AyyXgihRF8cvbAKtlVyKSbyXAnGAcWGKqwyAj-CRbqoGO1SbjfhHkGX9yvkCHyunA8O8QKQHsCtqQj2ht3bar4YyoAnXIOhlg9jYKnHzIGbKgVUPNaYK_C8UmQYEcGUEoGGfXlwU6ndzOHg6gO_ZI4m-zgSqYf_Iq_mRK63foLvBFlTnhfEPd4XOescNZzS-O5SqcllG8iDH3OkUPVzOVXjLa-vl6vF8JJFXZcVfTzsC2kSAoQD13XdFJVzdTB30Y4B69vAvEnV-sIqWF9daN04gAUFWORDbfB_ctob70y4aNwLLLjvcSn3mAwpaAVm4IoG34WLBzID6nrdiumOEBtjMifMQJI1MQNB3GPP6ejIPtnqQGmMQaZNY3tjpFhC6PmZlv1f7-q3m80dP5ybXvO2APjgk4P7SDMRTnvRg2rBbiZfa0I8tlgpW0IDHqjms-gxaGKMHY4QdLUWpMwrS5a94-RaKhf1pt1fyu2m4yxBIXiOQoCMGYtjM4UWI9C5VsBiwBGR6HDKK7WbOVwEAPPKMOkCykCquwwXq4AvNraS1cV2ub0aEVxqOHM83UNBBLaZU1W9xnH6wj2PqVd2IZ6cKguydgNK4p4c4iD2sokNMy5oqzobH6MnNCYddXtuhzp60mK4yfE4R5jH-W0RwQGc7thXySHNKYb-jTVHJvA4Vi-vRaoZabxh_k4nE9k6jRmVlrmUkkg9AA6p3c6IkjojvZLtyETOg0oDV7feK4gDp6K6R0Z9uHTZzfFSbj9z2JZSj0q17rPtHBDIkBDGZZxJOXHQD8Pelu3IHVLzmaOa3Ylwqn54sDbK1EDaVasN6Z6MO0QAod3c4XLwKjuQMaOaxm9grmAMpaTZNJWPO1KSNaUqQdyTQyxQOVDAwI4zpRoRXtiAjEI-FSjy3L58uJ47RajHAythNuf3pevBYTFCyWbobJxlOJvpBIfX2NefS5fIpWatItVqTDNoRT4HUxNTjY7ixbSX79ZXl3LjnVUlzcBdgWGLSYCI-J8fRD3E4MehbivWNnV0I0nWxCEFcU-wMja384ikjlrKBWDVjkNHrnl3c5dfaOk_BTvSJASsHJDTjQEANMHC-bTVBXu6gTTUWnN9YRVsgcEthvZVuxaYHMiMAp2xmBZ4-wPOkdpNCFnQBUCgxgT-qcb9Rc0uxwbAZAEObco2lf4Q5aR2M4dT1FUG-1UIl80xISzZ3prF770DSjvgHKnhzPGs96bX4jIiNHiDcgkfjHO10sZNlDkhAIKsaUBB3BMC4DJ1x9GNE3cHZFE5Ij25VJMCPHTP50vf311d_cD_fceb7YNH3a6P8F-Yh3AexsUlZDTuI5lWyNJg2GagpabD59BCxaxqp540AlHOPpWYjTPjGo6LVu0B50jtppgmqAMjupB88yoYXXO3utnIClFQa9UbxD_sQandzOFCV4kRfH2j7KzrSSWTm3f4ED6Y68VHLMWl3G7mcBYMCfQveAOczr63omPVpUekoA78e3GzXn5Yri7lljMHrIMiKUTjqg3XZh0lZDqvwBO8ZaMeYozUbuZwqttaQ09A9FW1XGIHWsrjkBTMBZ8cY4zQcOZ4sXLoQWU1LtQAyox3vYdkg9VeI_-cXIgLsiaoKIh7HGOisZGgSLXJGnQsvY0L9Jw0RmBdX2R3_sCd17wi_iSH3a4_pVfS1AR6Ra5mimmU-oSsbcy2llBcsGog2_5FFAORUs56HRSmVLtWjOQAp_HjOqwp84QCCe0nkwuawnM8AxN3k1RNFLxukFdtrDmqUb9zUnQhyZqcWhD32MdS5KoreITnppB_RymdGzw_jtoOZT-vKXb79-Bk0twEJ2umwUMbxVHbVMkXj7VwumpsOZ_9l9HM6wzSA8ZGyCXjUtXEgFSmALmCg3qPvUxqP3mZoCpAXgqAVzlbLFum6iKIexiH4-Sj61GfeJkgazoVEsQ99jIfmy2egKeSUcAo2WcEPhV7TS04q5_PFv-xXm5LvUKP65stb_55fXP9_Ti43mxGxdXbcjXW935x88vq0cW3NEXhHBX0gzNXb8C6FIeWB7RtvbSGVNS_rII1hqiBtg1CB5JNc8g72XedyNpQajhkaaHdvl7wvKajaKdXhTRrMtIa3KdwbiYiH-toVN25-MMJpCBrX7RzXtyTy86QQJ0ayCFasFLWVT9OA7urxrF9ljOCT2v49ofa0xXHVM-84sdV2dK0zvuXdpo1AI0Hss-GKHFwLndHjkYVcv7sShH41Lic9sEaJlW0CSbQqLjs40LHXqzK9e5eUmg3hRNBO4ixHqGPqmlsuzGxG9B9CwSlEHpCOtxLSu1mDgcHs-CDpWCScPyGXyIw9Mo2aaJIRxeWZO0GlMQ9OWsh06MfRRgAxx6EzmhPOQTVeog-mue39u_WOt-tr44nL8KUBPdl0AykK8DiosHDuyupIJ0Zw5wg5bMqlC2m1WNC8sq1UgayQNDxlogMcJR5VLYtNZ9cSlBwHCaDyblWrfUe9MCWaFMHuEnj7A3c6MSlBFlTVBTEPTmvqDkXKinVWEwb5WkQCretI7M3317IAtwe2-Dm0GhX6XzqY9Icz_tYC6GM-ucGFousVUmr0Aa7SuMEJ5kvq6En3YDMQwzgiXY8VYGSZPt4v1Gjn-4c9gfGUtsppgjqjoIzlz2wv0lgm4ZzVuTsuEEpJvkcw9HjJFn7at3z4p6yVxWD0Sla5PddxVkNNMgx8BXc238ee4wSwQ1y184U-2T2Yfkzr06o7Pl5nvc6ZXVHYglkFUgWY_FGuYli7wIWrLgvr6Wy4EsEpNVgY1IhBJNKiZ0KuWiNPfU8qe1U3CqojJBJuqtxfNUSUmNtkFYqHAXe4m1rJ8UZkqwJcgriniDA2C27qoutyLKj0qxk9GUVdYaQfVnz4nZnisUnFV9nq5IXN5M9dqt8fY-Offnh7W75nr5skiYhlLulbhPlBlw8TgItIwU5T8gBMSRtX1oFaxpwm8Vi26yU7trV4E1NNofugj7cHUjtpsAh6PJ-VSiUXUFgsgxi79EBBoc4Rq518aT6WpI1nYEI4h77C8TQqBzzRuUSAdApgWIo4J3UFbDaO_rI9NPAwD9j2dvhhc5mOZZr8e8__OlgdUnUeat3H-Pg3c6OovFxJVdtZ-W1tgDNTs2aSHROcUTq5NRTcKNKzhkdTAUzxyqZCzS7lJvtVlKa0PtVYjuOvDRyNPmmdveIVkOkGg9otbrYzfRS1m2qRhakPalG7thJxjSNRi2PA5IM4s4hxfHKA6iGrgZrefJUTOonoFmP5NBb9d44KNObL60Wdtmp0lLzT0dlbnHENy4efEGRjYlCtNlbr1XOtLeJ1GyCmsLooybEZ5OomeBbM-RcC3FUtvWgKFXlLzabj4uf-P5SbjpzRMfAZ1zyeBYGqwWuPY8KWAQ7i8BNh7tGQdJ0FS4IG5VgmCgr_FWwMqlmeI2Bd2XVAyGB__rXtsdvct-ZGj-OIPAiD2uNIm0EAM4OoT8mb3e8Ibw7PPP7tB7yJG6cF3DeIZEtVTBYMQ2fRuD1sKcdr6DwH5zZnhleJ8RFsAi0bDvsV5rBhmCKKkVOh7Mhqd1u2aR5YKYxeE26wuMAarNrnVLT-KFgrQOQwaFOVJI1DSiIg2eSJUCErsdDyOTCmHUppFLmVIIxv_4OaPpN7jZT3U-9xGpvkRSVbQQQDc42YGbSSmeAaeS0d4eE_G_8y4_3t8eTcKmn4B6lcgFXHI9jB2rXCul6nLrBptSs_71xi2Pwy2xa8s1Wlayqo8wKYMZGi5T7cL4jtZsWSpgAEGNw47nxuNEwbHzDtozcSrX4ASiPLra3l3KrmYN9ahUYuGDy3AxDbimqJx17AP9uVKsyx9W5vl9MPy1u1zf_BbC0GItwMJIk6LyRGBE3sPag_i1h5WroeXhcAdOHO9GMaSBYmgbOqIcnJrDpqrA3AkBaBBhJ7WLqdim33C2kNKPxrDQG7iNWma6KTxn_JuRw7BsDTHHyFkmSNRELQdwThhmUBnZIAC8WidurbovfbUZ8Albx7gTglrY4rltf31wf8e7AU48OayXJ0mlXCnCFUCgnbSrgsG4mqqDcQDMl_3_mVXMHakIyQB4qIQIfwMdijshTWqXSLg7dLuXG-yOr87Mc5tXRjC-6GPdurprcjXKlFQ4ZMCny6ZHVeVl7854X96RwMQMADM5Hsasw4HNm_MTBAvurerIxd-l-V1f-sJTHekNBiHCt4wOgYeJYXTOm-BL1KNrrBiCtMPDl-SnYUXQELktGRUWmdyyTJluRPvFBq8cNKbWceLAwm0G8UwqgnbA9zG7BoVOm4irgi09Onxz5SLL2xPu8uL3FHmFyl0wE-zIeETmiYfbkkRJALNhUru--Bmld3d0-_hYeoZv0LTyPLhyBpKAY_j_utIBnNXzOBmTPrGo24d13d9vbu-2jOUi9_m9zWK4wwubdt7u_DmNMnz64XWgAt0c5eiDA3fWDSsZ4Qmyk7FvYvWl2Hr8vHkD4YgOm8Pd1_ccBzt4cdv6b6e74zck340iSJjMLX58jf-fIRN6Er8WRv2BippjQuTc09-OsLtbgkTPAGaID6NDdu0-X53CQL3Wb0IPwJS0y13n4VpWz38iBkGmS14F6UUi-FrjJWAZqxfKa8YCwHJRovV9fvbnbLq92p4hf__mbS7n3PuCe_9YH-dn7_k3y-e9y-Cy6SO_8P8skpDfjMxdUegkuf-_FdDgjPBWW34rPFCM9jpsKaIWXr3IB-_QtVsI71pmxSHqfOjMWyWKkq919cfH5N48yL54pRnobshMjvaObucTS-7iZSyyLAWBs1oFFZTDf2qD7KE6Bt0XoFJ0-bOw_87bs6q5-3JeBSj2n4inh3d1M_5ceYskV6_s30-cfVslfGzc5rvBSaq6NhRdQc20sipm1NtJDGkTxBlJJ1JQB99ZIe8MBkPUCqEm0hg6u8sMOKe2c5R-nim-p67QDhacZM5dVenIxc1llMWD1pWIdaytaMbgf1hm0EGoAXMNTf289fjy80zjfd4IYwmOOmZtHqu6Xy2SnEwuhal_-woEpQArV-HKJ295ZztfYz3QWqXZ-prPIYqSizslSQmX93DAnFE_PFCNVx85dYqHwce4Si2IMMEGHFI91b8ljTskn3VVVBO07HzHqdE7_ZjqWfrM_bJW6TwhKqLibuSZSJd3MNZHFvCSbk2q35LKsPSk8X5AzU4xUXTHTMtKl-0zLyGKkip8pKQv3yDPFSFefu--cHF8Ky60CumpEUwc8g38sMgni-_FQ5HDZdbzmlPruEdz5u1D5snsPr89fMM48QZAu3OAs8Ggs6ijLL7UjvTWQpb578kvjgOewIMvV5pZp-2bB17fb-_1fl7KAqZhCuOD5XPOQ7n7kw89pDwo3H3Ixyj5_nT9hlw_P93vw_LHv7kjx9Vevr3l9XZbt9dvXv75fvXr1_vX2I1_z-9dv8eM-Vbx__X71G5re3Y5j6H9q48779dterjb81etyt735y_2KDh9Mrb5Zlg_rcr3_9Lf_BQXd4ms
 
 Making a Game Plan
 ******************
@@ -152,7 +152,7 @@ We want to enable collection of the ``name`` field within the JSON file
     directory were to be released between time of this operation and
     time of the next, so we contain dealing with the resource to this
     operation.
-    
+
     References:
 
     - https://github.com/intel/dffml/blob/alice/docs/concepts/dataflow.rst
@@ -187,14 +187,14 @@ References for writing operations, including examples with networking:
 
     def read_my_config_from_directory_if_exists(
         directory: MyConfigDirectory,
-    ) -> MyConfig:
+    ) -> MyConfigUnvalidated:
         """
         >>> import json
         >>> import pathlib
         >>> import tempfile
         >>>
         >>> with tempfile.TemporaryDirectory() as tempdir:
-        ...     pathlib.Path(tempdir, ".myconfig.json").write_text(json.dumps({"name": "Hello World"}))
+        ...     _ = pathlib.Path(tempdir, ".myconfig.json").write_text(json.dumps({"name": "Hello World"}))
         ...     print(read_my_config_from_directory_if_exists(tempdir))
         {'name': 'Hello World'}
         """
@@ -243,15 +243,15 @@ provided an ``OperationImplementationNetwork`` is/can be implemented)
 
 .. code-block:: python
 
-    from alice.please.contribute.recommended_community_standards.git import AliceGitRepo
+    from alice.cli import AliceGitRepo
 
-    from .myconfig import MyConfigDirectory
+    from myconfig import MyConfigDirectory
 
     def repo_directory(
         repo: AliceGitRepo,
     ) -> MyConfigDirectory:
         """
-        >>> from alice.please.contribute.recommended_community_standards.git import AliceGitRepo
+        >>> from alice.cli import AliceGitRepo
         >>>
         >>> print(repo_directory(AliceGitRepo(directory="Wonderland", URL=None)))
         Wonderland
@@ -284,11 +284,9 @@ should be applied to.
 
 .. code-block::
 
-    [dffml.overlays.alice.please.contribute.recommended_community_standards.git]
-    myconfig = myconfig
-
-    [dffml.overlays.alice.please.contribute.recommended_community_standards.git.myconfig]
-    git = alice_please_contribute_recommended_community_standards_overlay_git_myconfig
+    [dffml.overlays.alice.please.contribute.recommended_community_standards]
+    MyConfigReader = myconfig
+    AlicePleaseContributeRecommendedCommunityStandardsOverlayMyConfigReader = alice_please_contribute_recommended_community_standards_overlay_git_myconfig
 
 Reinstall the package.
 
@@ -323,26 +321,30 @@ References:
 .. code-block:: console
 
     $ dffml service dev create blank alice-please-contribute-recommended_community_standards-overlay-git-myconfig
-    $ cd alice-please-contribute-overlay-git-myconfig
 
-Move the old files into position
-
-.. code-block:: console
-
-    $ mv ../dffml.git/entities/alice/myconfig* alice_please_contribute_overlay_git_myconfig/
-
-Find and replace the Python ``import`` style paths which we
-registered earlier.
+Move the old files into the new directory
+``alice-please-contribute-recommended_community_standards-overlay-git-myconfig/alice_please_contribute_recommended_community_standards_overlay_git_myconfig``
 
 .. code-block:: console
 
-    $ sed -i 's/= myconfig/= alice_please_contribute_overlay_git_myconfig.myconfig/g' entry_points.txt
+    $ mv *myconfig.py alice-please-contribute-recommended_community_standards-overlay-git-myconfig/alice_please_contribute_recommended_community_standards_overlay_git_myconfig/
+
+Add a section to the ``entry_points.txt`` with the the new versions of the
+Python ``import`` style paths.
+
+**alice-please-contribute-recommended_community_standards-overlay-git-myconfig/entry_points.txt**
+
+.. code-block::
+
+    [dffml.overlays.alice.please.contribute.recommended_community_standards]
+    MyConfigReader = alice_please_contribute_recommended_community_standards_overlay_git_myconfig.myconfig
+    AlicePleaseContributeRecommendedCommunityStandardsOverlayMyConfigReader = alice_please_contribute_recommended_community_standards_overlay_git_myconfig.overlay
 
 Install the new package.
 
 .. code-block:: console
 
-    $ python -m pip install -e .
+    $ python -m pip install -e alice-please-contribute-recommended_community_standards-overlay-git-myconfig
 
 .. note::
 
@@ -354,6 +356,10 @@ Install the new package.
     .. code-block:: console
 
         $ python -m pip -y install -e dffml.git/entities/alice
+
+Now re-run any commands which you might have run previously to validate you're
+new overlays are being applied. The diagram or please contribute commands are
+good targets.
 
 Registering a Flow
 ******************
@@ -390,7 +396,7 @@ TODO/Misc.
 
 - In "Contributing a Plugin to the 2nd or 3rd Party Ecosystem"
   link to 2nd Party ADR.
-  
+
 - CI job to export dataflow to schema to validate lists of
   values for correctness as different definitions.
 
