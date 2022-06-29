@@ -1,12 +1,18 @@
 CONTRIBUTING
 ############
 
+**TODO** Test this with the modified consoletest which doesn't
+just take blocks with ``:test:`` on them (so that they render
+on GitHub).
+
 This document describes how to write Open Architecture overlays,
 overlays for Alice, how to work within the codebase, and the
 contribution process.
 
 Debugging
 *********
+
+Add ``-log debug`` to any ``alice`` CLI command to get verbose log output.
 
 Run within the builtin Python debugger to be presented with a
 Python interpreter breakpointed at the raised exception.
@@ -26,11 +32,56 @@ https://github.com/intel/dffml/pull/1401 for more details.
     $ git clone -b alice https://github.com/intel/dffml
 
 Now open or change directory to the directory containing Alice's
-source code within the project ``entities/alice``.
+source code within the DFFML project: ``entities/alice``.
+``dffml.git/entities/alice`` therefore means, the path
+to ``entities/alice``, where the parent directory is wherever
+you cloned the ``dffml`` git repo to above. If you were in a shell
+at the root of the source tree this would be your current working
+directory, the same as the output of ``pwd``. The directory itself
+in the following example is just named ``dffml``, which is the default
+for git to name based off the repo name on clone.
 
 .. code-block:: console
 
     $ cd dffml/entities/alice
+
+Installing in Development Mode
+******************************
+
+.. note::
+
+    If you installed the package not in development mode
+    off the README's instructions you'll need to uninstall
+    all the packages you installed **by name**.
+
+    .. code-block:: console
+
+        $ python -m pip -y uninstall \
+            alice \
+            dffml \
+            shouldi \
+            dffml-feature-git \
+            dffml-operations-innersource
+
+Run ``pip`` with the ``-e`` flag to specify an editable install,
+this must be done for each package.
+
+We select the ``dev`` extra from ``extra_requires`` group to install.
+This group is given in the ``setup.cfg`` file. It contains dependencies
+which are referenced in the documentation and must be installed when
+working on Alice.
+
+We do not select the ``dev`` extra on the other packages unless we
+intended to do development work on the as well.
+
+.. code-block:: console
+
+    $ python -m pip install \
+        -e .[dev] \
+        -e ../../ \
+        -e ../../examples/shouldi/ \
+        -e ../../feature/git/ \
+        -e ../../operations/innersource/
 
 Data Flow Programming
 *********************
@@ -42,14 +93,12 @@ altough a distinct concept itself.
 - https://en.wikipedia.org/wiki/Dataflow_programming
 - https://www.gamedeveloper.com/programming/tips-on-writing-code-for-data-oriented-design
 - https://www.youtube.com/watch?v=aPh4Z3SioB8
+- https://github.com/intel/dffml/blob/alice/docs/concepts/dataflow.rst
 
 Finding Data Types to Work With
 *******************************
 
 **TODO** Finish this section
-
-**TODO** CI job to export dataflow to schema to validate lists of
-values for correctness as different definitions.
 
 .. code-block:: console
 
@@ -76,7 +125,7 @@ want to get caught up writing unnessicary code. We don't want to deal with
 production or development database configuration, we just want to figure
 out how to get the data we need, then figure out where / how we can plug
 that data extraction, that feature extraction, into the any applicable
-collector flows (**TODO** link to Living Threat Model terminology).
+collector flows (https://github.com/johnlwhiteman/living-threat-models).
 
 We want to enable collection of the ``name`` field within the JSON file
 ``.myconfig.json``. Here's our game plan
@@ -178,9 +227,6 @@ Run Doctests
 
 We can run our doctests using Python's builtin helper.
 
-**TODO** In maintainers cover unit testing infrastructure is slightly
-different, see issue https://github.com/intel/dffml/issues/619
-
 .. code-block:: console
 
     $ python -m doctest myconfig.py
@@ -193,7 +239,7 @@ be classes, files, dataflows, anything which you can generate
 and Open Architecture description of (which should be everything
 provided an ``OperationImplementationNetwork`` is/can be implemented)
 
-**myconfig_overlay_alice_please_contribute_recommended_community_standards_overlay_git_myconfig.py**
+**alice_please_contribute_recommended_community_standards_overlay_git_myconfig.py**
 
 .. code-block:: python
 
@@ -211,6 +257,12 @@ provided an ``OperationImplementationNetwork`` is/can be implemented)
         Wonderland
         """
         return repo.directory
+
+Run our doctests for the new overlay.
+
+.. code-block:: console
+
+    $ python -m doctest alice_please_contribute_recommended_community_standards_overlay_git_myconfig.py
 
 Registering an Overlay
 **********************
@@ -236,10 +288,16 @@ should be applied to.
     myconfig = myconfig
 
     [dffml.overlays.alice.please.contribute.recommended-community-standards.git.myconfig]
-    git = myconfig_overlay_alice_please_contribute_recommended_community_standards_overlay_git_myconfig
+    git = alice_please_contribute_recommended_community_standards_overlay_git_myconfig
 
-Creating a Plugin
-*****************
+Reinstall the package.
+
+.. code-block:: console
+
+    $ python -m pip install -e .
+
+Contributing a Plugin to the 2nd or 3rd Party Ecosystem
+*******************************************************
 
 .. note::
 
@@ -273,6 +331,30 @@ Move the old files into position
 
     $ mv ../dffml.git/entities/alice/myconfig* alice_please_contribute_overlay_git_myconfig/
 
+Find and replace the Python ``import`` style paths which we
+registered earlier.
+
+.. code-block:: console
+
+    $ sed -i 's/= myconfig/= alice_please_contribute_overlay_git_myconfig.myconfig/g' entry_points.txt
+
+Install the new package.
+
+.. code-block:: console
+
+    $ python -m pip install -e .
+
+.. note::
+
+    If you originally edited the ``entry_points.txt`` file in
+    ``dffml.git/entities/alice`` then you need to remove the
+    lines you added and reinstall the ``alice`` package in
+    development mode.
+
+    .. code-block:: console
+
+        $ python -m pip -y install -e dffml.git/entities/alice
+
 Registering a Flow
 ******************
 
@@ -280,15 +362,9 @@ You can write a base flow as a class and then give the entrypoint
 style path to the class or you can write a file with functions and
 give the entrypoint style path as the entrypoint.
 
-**TODO** Cover how overlay load infrastructure can be added too,
-beyond these default only merge on apply `@overlays.present` (of
-which `@overlay` is an alias).
-
-TODO/Misc.
-**********
-
 **TODO** modify **dffml.git/entities/alice/entry_points.txt**
-add the following, rename files first.
+add the following, rename files first. Use this as an example
+here after it's moved.
 
 .. code-block::
 
@@ -300,3 +376,31 @@ add the following, rename files first.
 
     [dffml.overlays.alice.please.contribute.recommended-community-standards]
     git = alice.please.contribute.git:AlicePleaseContributeRecommendedCommunityStandardsOverlayGit
+
+TODO/Misc.
+**********
+
+- Example of running static type checker (``mypy`` or something
+  on ``myconfig.py``, ``dffml`` has incomplete type data, we
+  have an open issue on this.
+
+- Cover how overlay load infrastructure can be added too,
+  beyond these default only merge on apply `@overlays.present` (of
+  which `@overlay` is an alias).
+
+- In "Contributing a Plugin to the 2nd or 3rd Party Ecosystem"
+  link to 2nd Party ADR.
+  
+- CI job to export dataflow to schema to validate lists of
+  values for correctness as different definitions.
+
+- In "Installing in Development Mode" reference pip/setuptools
+  docs on editable installs.
+
+- Covered in DFFML maintainers docs that unit testing infrastructure is
+  slightly different, we want to intergrate the output of
+  https://github.com/intel/dffml/issues/619 once complete.
+
+- In "Making a Game Plan" link to Living Threat Model terminology
+  within some general LTM page which has links to all resources,
+  probably Joh
