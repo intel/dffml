@@ -3,3 +3,13 @@ alice = alice.cli:AliceCLI.main
 
 [dffml.sysctx]
 Alice = alice.system_context:Alice
+
+[dffml.overlays.alice.please.contribute.recommended_community_standards]
+Git                                  = alice.cli:AlicePleaseContributeRecommendedCommunityStandardsOverlayGit
+OperationsGit                        = alice.cli:AlicePleaseContributeRecommendedCommunityStandardsOverlayOperationsGit
+AliceOperationsGit                   = alice.cli:AlicePleaseContributeRecommendedCommunityStandardsOverlayAliceOperationsGit
+CLI                                  = alice.cli:AlicePleaseContributeRecommendedCommunityStandardsOverlayCLI
+GitHubIssue                          = alice.cli:AlicePleaseContributeRecommendedCommunityStandardsOverlayGitHubIssue
+GitHubPullRequest                    = alice.cli:AlicePleaseContributeRecommendedCommunityStandardsOverlayGitHubPullRequest
+GitHubPullRequestReferenceIssue      = alice.cli:AlicePleaseContributeRecommendedCommunityStandardsOverlayGitHubPullRequestReferenceIssue
+GitHubWritableRemotesFromPermissions = alice.cli:AlicePleaseContributeRecommendedCommunityStandardsOverlayGitHubWritableRemotesFromPermissions

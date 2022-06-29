@@ -102,9 +102,9 @@ Finding Data Types to Work With
 
 .. code-block:: console
 
-    $ dffml service dev export alice.please.contribute:AlicePleaseContributeRecommendedCommunityStandards | tee alice.please.contribute.recommended-community-standards.json
+    $ dffml service dev export alice.please.contribute:AlicePleaseContributeRecommendedCommunityStandards | tee alice.please.contribute.recommended_community_standards.json
     ...
-    $schema: https://github.com/intel/dffml/raw/alice/entities/alice/schema/alice.please.contribute.recommended-community-standards.schema.json
+    $schema: https://github.com/intel/dffml/raw/alice/entities/alice/schema/alice.please.contribute.recommended_community_standards.schema.json
     ...
 
 Need to do something like the following, this section should source from
@@ -284,10 +284,10 @@ should be applied to.
 
 .. code-block::
 
-    [dffml.overlays.alice.please.contribute.recommended-community-standards.git]
+    [dffml.overlays.alice.please.contribute.recommended_community_standards.git]
     myconfig = myconfig
 
-    [dffml.overlays.alice.please.contribute.recommended-community-standards.git.myconfig]
+    [dffml.overlays.alice.please.contribute.recommended_community_standards.git.myconfig]
     git = alice_please_contribute_recommended_community_standards_overlay_git_myconfig
 
 Reinstall the package.
@@ -322,7 +322,7 @@ References:
 
 .. code-block:: console
 
-    $ dffml service dev create blank alice-please-contribute-recommended-community-standards-overlay-git-myconfig
+    $ dffml service dev create blank alice-please-contribute-recommended_community_standards-overlay-git-myconfig
     $ cd alice-please-contribute-overlay-git-myconfig
 
 Move the old files into position
@@ -372,9 +372,9 @@ here after it's moved.
     contribute = alice.please.contribute.git:AlicePleaseContribute
 
     [dffml.overlays.alice.please.contribute]
-    recommended-community-standards = alice.please.contribute:AlicePleaseContributeRecommendedCommunityStandards
+    recommended_community_standards = alice.please.contribute:AlicePleaseContributeRecommendedCommunityStandards
 
-    [dffml.overlays.alice.please.contribute.recommended-community-standards]
+    [dffml.overlays.alice.please.contribute.recommended_community_standards]
     git = alice.please.contribute.git:AlicePleaseContributeRecommendedCommunityStandardsOverlayGit
 
 TODO/Misc.
