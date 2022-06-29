@@ -90,10 +90,11 @@ Data Flow programming focueses on data types and data transformations.
 Data Orented Design is also helpful in understanding Data Flow programming,
 altough a distinct concept itself.
 
+- https://youtu.be/D9puJiKKKS8?t=873
+- https://github.com/intel/dffml/blob/alice/docs/concepts/dataflow.rst
 - https://en.wikipedia.org/wiki/Dataflow_programming
 - https://www.gamedeveloper.com/programming/tips-on-writing-code-for-data-oriented-design
 - https://www.youtube.com/watch?v=aPh4Z3SioB8
-- https://github.com/intel/dffml/blob/alice/docs/concepts/dataflow.rst
 
 Finding Data Types to Work With
 *******************************
@@ -125,7 +126,7 @@ want to get caught up writing unnessicary code. We don't want to deal with
 production or development database configuration, we just want to figure
 out how to get the data we need, then figure out where / how we can plug
 that data extraction, that feature extraction, into the any applicable
-collector flows (https://github.com/johnlwhiteman/living-threat-models).
+collector flows (Living Threat Model terminology)
 
 We want to enable collection of the ``name`` field within the JSON file
 ``.myconfig.json``. Here's our game plan
@@ -162,8 +163,8 @@ Writing Operations
 ******************
 
 Your base flow is your core functionality, it should be modular enough run
-an on it's own with mock data. Think of it as the library behind your
-functionality.
+with mock data or pre-configured connections. Think of it as the library behind
+your functionality.
 
 We implement off of our game plan, focusing on the functionality of bite sized
 chunks. Leveraging doctests as our unittests.
@@ -236,8 +237,13 @@ Writing an Overlay
 
 Overlays can be as simple as a single function, or they can
 be classes, files, dataflows, anything which you can generate
-and Open Architecture description of (which should be everything
-provided an ``OperationImplementationNetwork`` is/can be implemented)
+an Open Architecture description of.
+
+We use overlays to help keep our code modular. They focus on
+the data types we need to connect. In this overlay, we will
+be adding an operation which takes Alice's representation of
+a Git repo, ``AliceGitRepo``, and returns the directory property
+as the ``MyConfigDirectory`` definition.
 
 **alice_please_contribute_recommended_community_standards_overlay_git_myconfig.py**
 
@@ -407,6 +413,8 @@ TODO/Misc.
   slightly different, we want to intergrate the output of
   https://github.com/intel/dffml/issues/619 once complete.
 
-- In "Making a Game Plan" link to Living Threat Model terminology
-  within some general LTM page which has links to all resources,
-  probably Joh
+- Explain how to grab data to feed the Living Threat Model
+  https://github.com/johnlwhiteman/living-threat-models
+
+  - Overlay for insertion of all data in input network to database,
+    or to file for caching.
