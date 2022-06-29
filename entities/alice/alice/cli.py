@@ -84,6 +84,7 @@ class AlicePleaseContributeCLIConfig:
 import dffml_feature_git.feature.definitions
 
 
+# @base_entry_point("dffml.overlays.alice.please.contribute.recommended_community_standards")
 # TODO GitRepoSpec resolve to correct definition on auto def
 class AlicePleaseContributeRecommendedCommunityStandards:
     # TODO SystemContext __new__ auto populate config to have upstream set to
@@ -566,6 +567,8 @@ class AlicePleaseContributeRecommendedCommunityStandardsOverlayGitHubPullRequest
 
 
 # TODO(alice) Replace with definition as system context
+# AlicePleaseContributeRecommendedCommunityStandards.sysctx = object()
+# AlicePleaseContributeRecommendedCommunityStandards.sysctx.upstream = AlicePleaseContributeCLIDataFlow = dffml.DataFlow(
 AlicePleaseContributeCLIDataFlow = dffml.DataFlow(
     *itertools.chain(
         *[
@@ -582,14 +585,8 @@ AlicePleaseContributeCLIDataFlow = dffml.DataFlow(
             ]
             for cls in [
                 AlicePleaseContributeRecommendedCommunityStandards,
-                AlicePleaseContributeRecommendedCommunityStandardsOverlayGit,
-                AlicePleaseContributeRecommendedCommunityStandardsOverlayOperationsGit,
-                AlicePleaseContributeRecommendedCommunityStandardsOverlayAliceOperationsGit,
-                AlicePleaseContributeRecommendedCommunityStandardsOverlayCLI,
-                AlicePleaseContributeRecommendedCommunityStandardsOverlayGitHubIssue,
-                AlicePleaseContributeRecommendedCommunityStandardsOverlayGitHubPullRequest,
-                AlicePleaseContributeRecommendedCommunityStandardsOverlayGitHubPullRequestReferenceIssue,
-                AlicePleaseContributeRecommendedCommunityStandardsOverlayGitHubWritableRemotesFromPermissions,
+                # *AlicePleaseContributeRecommendedCommunityStandards.overlays(),
+                *dffml.Overlay.load(entrypoint="dffml.overlays.alice.please.contribute.recommended_community_standards")
             ]
         ]
     )
