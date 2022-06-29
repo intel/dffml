@@ -4,18 +4,58 @@ Alice
 Install
 *******
 
-Install for development
+DFFML currently **supports Python 3.7 to 3.9 on Linux**. If your distribution's
+package manager doesn't provide Python 3.7 through 3.9,
+`pyenv <https://github.com/pyenv/pyenv#simple-python-version-management-pyenv>`_
+is another good way to install it. You could also use the docker container.
+
+**Windows and MacOS are not officially supported yet**. Support varies by which
+plugins you install. We do not currently have a list of what is supported and
+what is not supported on those OSs. Most things should work. However, until we
+are testing for everything we won't declare them to be officially supported.
+Please create issues for any problems you encounter.
+
+First make sure you have the latest versions of ``pip``, ``setuptools``, and
+``wheel``. Some ML libraries require them to be up-to-date.
+
+You may want to first create a virtual environment to avoid any permissions
+issues when running ``pip install``.
+
+.. tabs::
+
+    .. group-tab:: Linux and MacOS
+
+        .. code-block:: console
+
+            $ python -m venv .venv
+            $ . .venv/bin/activate
+            $ python -m pip install -U pip setuptools wheel
+
+    .. group-tab:: Windows
+
+        .. code-block:: console
+
+            C:\Users\username> python -m venv .venv
+            C:\Users\username> .venv\Scripts\activate
+            (.venv) C:\Users\username> python -m pip install -U pip setuptools wheel
+
+.. warning::
+
+    Make sure that if pip is complaining that directories are not in your
+    ``PATH``, that you add those directories to your ``PATH`` environment
+    variable!.
+
+Install latest known working version
 
 .. code-block:: console
 
-    $ git clone -b alice https://github.com/intel/dffml
-    $ cd dffml/entities/alice
     $ python -m pip install \
-        -e .[dev] \
-        -e ../../ \
-        -e ../../examples/shouldi/ \
-        -e ../../feature/git/ \
-        -e ../../operations/innersource/
+        "https://github.com/intel/dffml/archive/a2f2a1422e9f5792d306b3c43c79d0921bf85c21.zip#egg=dffml" \
+        "https://github.com/intel/dffml/archive/a2f2a1422e9f5792d306b3c43c79d0921bf85c21.zip#egg=dffml-feature-git&subdirectory=feature/git" \
+        "https://github.com/intel/dffml/archive/a2f2a1422e9f5792d306b3c43c79d0921bf85c21.zip#egg=shouldi&subdirectory=examples/shouldi" \
+        "https://github.com/intel/dffml/archive/a2f2a1422e9f5792d306b3c43c79d0921bf85c21.zip#egg=dffml-config-yaml&subdirectory=configloader/yaml" \
+        "https://github.com/intel/dffml/archive/a2f2a1422e9f5792d306b3c43c79d0921bf85c21.zip#egg=dffml-operations-innersource&subdirectory=operations/innersource" \
+        "https://github.com/intel/dffml/archive/a2f2a1422e9f5792d306b3c43c79d0921bf85c21.zip#egg=alice&subdirectory=entities/alice"
 
 .. note::
 
