@@ -17,7 +17,8 @@ import shouldi.cli
 import dffml_operations_innersource.cli
 
 from .system_context import Alice
-from .threats_md import THREATS_MD_DATAFLOW
+# from .threats_md import THREATS_MD_DATAFLOW
+THREATS_MD_DATAFLOW = dffml.DataFlow()
 from .please.contribute.recommended_community_standards.recommended_community_standards import AlicePleaseContributeRecommendedCommunityStandards
 from .please.contribute.recommended_community_standards.cli import DFFMLCLICMD
 
