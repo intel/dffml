@@ -53,12 +53,12 @@ Install latest known working version
 .. code-block:: console
 
     $ python -m pip install \
-        "https://github.com/intel/dffml/archive/a2f2a1422e9f5792d306b3c43c79d0921bf85c21.zip#egg=dffml" \
-        "https://github.com/intel/dffml/archive/a2f2a1422e9f5792d306b3c43c79d0921bf85c21.zip#egg=dffml-feature-git&subdirectory=feature/git" \
-        "https://github.com/intel/dffml/archive/a2f2a1422e9f5792d306b3c43c79d0921bf85c21.zip#egg=shouldi&subdirectory=examples/shouldi" \
-        "https://github.com/intel/dffml/archive/a2f2a1422e9f5792d306b3c43c79d0921bf85c21.zip#egg=dffml-config-yaml&subdirectory=configloader/yaml" \
-        "https://github.com/intel/dffml/archive/a2f2a1422e9f5792d306b3c43c79d0921bf85c21.zip#egg=dffml-operations-innersource&subdirectory=operations/innersource" \
-        "https://github.com/intel/dffml/archive/a2f2a1422e9f5792d306b3c43c79d0921bf85c21.zip#egg=alice&subdirectory=entities/alice"
+        "https://github.com/intel/dffml/archive/78e6669bddcda69bdab5edab954d1616d9998a4a.zip#egg=dffml" \
+        "https://github.com/intel/dffml/archive/78e6669bddcda69bdab5edab954d1616d9998a4a.zip#egg=dffml-feature-git&subdirectory=feature/git" \
+        "https://github.com/intel/dffml/archive/78e6669bddcda69bdab5edab954d1616d9998a4a.zip#egg=shouldi&subdirectory=examples/shouldi" \
+        "https://github.com/intel/dffml/archive/78e6669bddcda69bdab5edab954d1616d9998a4a.zip#egg=dffml-config-yaml&subdirectory=configloader/yaml" \
+        "https://github.com/intel/dffml/archive/78e6669bddcda69bdab5edab954d1616d9998a4a.zip#egg=dffml-operations-innersource&subdirectory=operations/innersource" \
+        "https://github.com/intel/dffml/archive/78e6669bddcda69bdab5edab954d1616d9998a4a.zip#egg=alice&subdirectory=entities/alice"
 
 .. note::
 
