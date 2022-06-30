@@ -23,10 +23,10 @@ ThreatDragonThreatModelPath = NewType("ThreatDragonThreatModelPath", pathlib.Pat
 ThreatsMarkdown = NewType("ThreatsMarkdown", str)
 ThreatsMdPath = NewType("ThreatsMdPath", str)
 # Tested on Python 3.9.2 (list rather than typing.List)
-ThreatModelSections = NewType("ThreatModelSections", List[str])
-OpenArchitectureDiagram = NewType("OpenArchitectureDiagram", List[str])
-OpenArchitecture = NewType("OpenArchitecture", List[str])
-OpenArchitectureJSON = NewType("OpenArchitectureJSON", List[str])
+ThreatModelSections = NewType("ThreatModelSections", list[str])
+OpenArchitectureDiagram = NewType("OpenArchitectureDiagram", list[str])
+OpenArchitecture = NewType("OpenArchitecture", list[str])
+OpenArchitectureJSON = NewType("OpenArchitectureJSON", list[str])
 
 
 @dffml.op
