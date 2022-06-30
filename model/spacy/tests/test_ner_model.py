@@ -5,7 +5,8 @@ import tempfile
 from dffml.record import Record
 from dffml.source.source import Sources
 from dffml.feature.feature import Feature
-from dffml import train, score, predict, run_consoletest
+from dffml import train, score, predict, tune, run_consoletest
+from dffml.tuner.parameter_grid import ParameterGrid
 from dffml.util.asynctestcase import AsyncTestCase
 from dffml.source.memory import MemorySource, MemorySourceConfig
 from dffml_model_spacy.accuracy import SpacyNerAccuracy
@@ -56,6 +57,7 @@ class TestSpacyNERModel(AsyncTestCase):
             )
         )
         cls.scorer = SpacyNerAccuracy()
+        cls.tuner = ParameterGrid(parameters={"n_iter":[5,10]}, objective="max")
 
     @classmethod
     def tearDownClass(cls):
@@ -81,6 +83,12 @@ class TestSpacyNERModel(AsyncTestCase):
         self.assertIn(
             predictions[0][2]["Tag"]["value"][0][1], ["ORG", "PERSON", "LOC"]
         )
+    
+    async def test_03_tune(self):
+        res = await tune(
+            self.model, self.tuner, self.scorer, Feature("Tag", str, 1), [self.train_sources], [self.test_sources]
+        )
+        self.assertGreaterEqual(res, 0)
 
     async def test_docstring(self):
         await run_consoletest(SpacyNERModel)

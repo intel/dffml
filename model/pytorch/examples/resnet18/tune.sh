@@ -1,0 +1,24 @@
+dffml tune \
+  -model resnet18 \
+  -model-add_layers \
+  -model-layers @layers.yaml \
+  -model-clstype str \
+  -model-classifications ants bees \
+  -model-location resnet18_model \
+  -model-imageSize 224 \
+  -model-epochs 5 \
+  -model-batch_size 32 \
+  -model-enableGPU \
+  -model-features image:int:$((500*500)) \
+  -model-predict label:str:1 \
+  -sources train=dir test=dir \
+    -source-train-foldername hymenoptera_data/train \
+    -source-train-feature image \
+    -source-train-labels ants bees \
+    -source-test-foldername hymenoptera_data/val \
+    -source-test-feature image \
+    -source-test-labels ants bees \
+  -scorer pytorchscore \
+  -tuner parameter_grid \
+  -tuner-parameters @parameters.json \
+  -log critical

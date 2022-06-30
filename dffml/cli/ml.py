@@ -145,7 +145,7 @@ class Tune(MLCMD):
             self.scorer = self.scorer.withconfig(self.extra_config)
         if inspect.isclass(self.tuner):
             self.tuner = self.tuner.withconfig(self.extra_config)
-        
+
         return await tune(
             self.model,
             self.tuner,

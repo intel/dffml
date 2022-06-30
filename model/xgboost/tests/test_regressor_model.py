@@ -6,8 +6,9 @@ import numpy as np
 
 from dffml.record import Record
 from dffml.source.source import Sources
-from dffml import train, score, predict, run_consoletest
+from dffml import train, score, predict, tune, run_consoletest
 from dffml.util.asynctestcase import AsyncTestCase
+from dffml.tuner.parameter_grid import ParameterGrid
 from dffml.feature.feature import Feature, Features
 from dffml.accuracy import MeanSquaredErrorAccuracy
 from dffml.source.memory import MemorySource, MemorySourceConfig
@@ -57,6 +58,16 @@ class TestXGBRegressor(AsyncTestCase):
         cls.testsource = Sources(
             MemorySource(MemorySourceConfig(records=cls.records[1800:]))
         )
+        cls.scorer = MeanSquaredErrorAccuracy()
+        cls.tuner = ParameterGrid(
+            parameters = {
+                "learning_rate": [0.01, 0.05, 0.1],
+                "n_estimators": [20, 100, 200],
+                "max_depth": [3,5,8]
+
+            },
+            objective = "min"
+        )
 
     @classmethod
     def tearDownClass(cls):
@@ -91,6 +102,18 @@ class TestXGBRegressor(AsyncTestCase):
             acceptable = 0.5
             # Sometimes causes an issue when only one data point anomalously has high error
             self.assertLess(error, acceptable)
+
+    async def test_03_tune(self):
+        # Integration with tuning method
+        acc = await tune(
+            self.model, 
+            self.tuner, 
+            self.scorer, 
+            Features(Feature("Target", int, 1)), 
+            self.trainingsource, 
+            self.testsource
+        )
+        self.assertTrue(acc <= 10)
 
 
 class TestXGBClassifierDocstring(AsyncTestCase):

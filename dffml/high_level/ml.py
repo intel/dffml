@@ -438,6 +438,6 @@ async def tune(
             raise TypeError(f"{tuner} is not an Tuner")
 
         return float(
-            await tctx.optimize(mctx, model.config.predict, actx, train, test)
+            await tctx.optimize(mctx, *features, actx, train, test)
         )
 

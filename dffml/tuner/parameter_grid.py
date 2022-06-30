@@ -56,7 +56,7 @@ class ParameterGridContext(TunerContext):
         train_data: SourcesContext
             The train_data to train models on with the hyperparameters provided.
 
-        sources : SourcesContext
+        test_data : SourcesContext
             The test_data to score against and optimize hyperparameters.
 
         Returns

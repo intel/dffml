@@ -9,7 +9,8 @@ from sklearn.metrics import f1_score
 
 from dffml.record import Record
 from dffml.source.source import Sources
-from dffml import train, score, predict, run_consoletest
+from dffml import train, score, predict, tune, run_consoletest
+from dffml.tuner.parameter_grid import ParameterGrid
 from dffml.util.asynctestcase import AsyncTestCase
 from dffml.feature.feature import Feature, Features
 from dffml.source.memory import MemorySource, MemorySourceConfig
@@ -61,6 +62,16 @@ class TestXGBClassifier(AsyncTestCase):
             MemorySource(MemorySourceConfig(records=cls.records[1800:]))
         )
         cls.scorer = ClassificationAccuracy()
+        cls.tuner = ParameterGrid(
+            parameters = {
+                "learning_rate": [0.01, 0.05, 0.1],
+                "n_estimators": [20, 100, 200],
+                "max_depth": [3,5,8]
+
+            },
+            objective = "max"
+        )
+
 
     @classmethod
     def tearDownClass(cls):
@@ -145,6 +156,18 @@ class TestXGBClassifier(AsyncTestCase):
             "iris_classification.py",
         )
         subprocess.check_call([sys.executable, filepath])
+    
+    async def test_06_tune(self):
+        # Integration with tuning method
+        acc = await tune(
+            self.model, 
+            self.tuner, 
+            self.scorer, 
+            Features(Feature("Target", int, 1)), 
+            self.trainingsource, 
+            self.testsource
+        )
+        self.assertTrue(0.8 <= acc)
 
 
 class TestXGBClassifierDocstring(AsyncTestCase):

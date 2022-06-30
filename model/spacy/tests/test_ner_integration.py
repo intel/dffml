@@ -9,6 +9,7 @@ import pathlib
 import tempfile
 import contextlib
 import subprocess
+import shutil
 
 from dffml.cli.cli import CLI
 from dffml.util.os import chdir
@@ -159,6 +160,43 @@ class TestSpacyNERModel(AsyncTestCase):
             "-model-n_iter",
             "5",
         )
+       
+        param_path =  os.path.join(os.path.dirname(__file__), "../examples/ner/parameters.json")
+
+        # Tune model
+        await CLI.cli(
+            "tune",
+            "-model",
+            "spacyner",
+            "-model-model_name",
+            "en_core_web_sm",
+            "-model-location",
+            directory,
+            "-scorer",
+            "sner",
+            "-tuner",
+            "parameter_grid",
+            "-tuner-parameters",
+            "@" + str(param_path),
+            "-features",
+            "Tag:str:1",
+            "-sources",
+            "train=op",
+            "test=op",
+            "-source-train-opimp",
+            "model.spacy.dffml_model_spacy.ner.utils:parser",
+            "-source-train-args",
+            train_data_filename,
+            "False",
+            "-source-test-opimp",
+            "model.spacy.dffml_model_spacy.ner.utils:parser",
+            "-source-test-args",
+            test_data_filename,
+            "True",
+            "-log",
+            "debug",
+        )
+
         self.assertTrue(isinstance(results, list))
         self.assertTrue(results)
         results = results[0].export()
@@ -208,6 +246,10 @@ class TestSpacyNERModel(AsyncTestCase):
             return cmnd
 
         with directory_with_csv_files() as tempdir:
+            shutil.copy(
+                os.path.join(os.path.dirname(__file__), "../examples/ner/parameters.json"),
+                os.path.join(tempdir, "parameters.json"),
+            )
             with open(
                 os.path.join(
                     os.path.dirname(os.path.dirname(__file__)),
@@ -231,6 +273,19 @@ class TestSpacyNERModel(AsyncTestCase):
             ) as f:
                 accuracy_cmnd = clean_args(f, tempdir)
             await CLI.cli(*accuracy_cmnd[1:])
+
+            with open(
+                os.path.join(
+                    os.path.dirname(os.path.dirname(__file__)),
+                    "examples",
+                    "ner",
+                    "tune.sh",
+                ),
+                "r",
+            ) as f:
+                accuracy_cmnd = clean_args(f, tempdir)
+            await CLI.cli(*accuracy_cmnd[1:])
+
 
             with open(
                 os.path.join(
