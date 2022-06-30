@@ -48,6 +48,27 @@ for git to name based off the repo name on clone.
 Installing in Development Mode
 ******************************
 
+We recommened creating a virtual environment for Alice
+if you haven't already.
+
+.. tabs::
+
+    .. group-tab:: Linux and MacOS
+
+        .. code-block:: console
+
+            $ python -m venv .venv
+            $ . .venv/bin/activate
+            $ python -m pip install -U pip setuptools wheel
+
+    .. group-tab:: Windows
+
+        .. code-block:: console
+
+            C:\Users\username> python -m venv .venv
+            C:\Users\username> .venv\Scripts\activate
+            (.venv) C:\Users\username> python -m pip install -U pip setuptools wheel
+
 .. note::
 
     If you installed the package not in development mode
@@ -199,7 +220,7 @@ References for writing operations, including examples with networking:
         ...     print(read_my_config_from_directory_if_exists(tempdir))
         {'name': 'Hello World'}
         """
-        path = patlib.Path(directory, ".myconfig.json")
+        path = pathlib.Path(directory, ".myconfig.json")
         if not path.exists():
             return
         return json.loads(path.read_text())
@@ -300,6 +321,15 @@ Reinstall the package.
 
     $ python -m pip install -e .
 
+We can verify the plugins were installed by listing the items registered
+to ``dffml.overlays.alice.please.contribute.recommended_community_standard``.
+
+.. code-block:: console
+
+    $ dffml service dev entrypoints list dffml.overlays.alice.please.contribute.recommended_community_standards | grep myconfig
+    MyConfigReader = myconfig -> alice 0.0.1 (/tmp/tmp.O6smY0v327/dffml/entities/alice)
+    OperationsGit = alice.cli:AlicePleaseContributeRecommendedCommunityStandardsOverlayOperationsGit -> alice 0.0.1 (/tmp/tmp.O6smY0v327/dffml/entities/alice)
+
 Contributing a Plugin to the 2nd or 3rd Party Ecosystem
 *******************************************************
 
@@ -346,6 +376,12 @@ Python ``import`` style paths.
     MyConfigReader = alice_please_contribute_recommended_community_standards_overlay_git_myconfig.myconfig
     AlicePleaseContributeRecommendedCommunityStandardsOverlayMyConfigReader = alice_please_contribute_recommended_community_standards_overlay_git_myconfig.overlay
 
+Enable the use of entrypoints registered in the ``entry_points.txt`` file.
+
+.. code-block:: console
+
+    $ sed -i 's/^# entry_points/entry_points/g' setup.cfg
+
 Install the new package.
 
 .. code-block:: console
@@ -361,11 +397,22 @@ Install the new package.
 
     .. code-block:: console
 
-        $ python -m pip -y install -e dffml.git/entities/alice
+        $ grep -v myconfig entry_points.txt | tee entry_points.txt.removed
+        $ mv entry_points.txt.removed entry_points.txt
+        $ python -m pip install -e .
 
 Now re-run any commands which you might have run previously to validate you're
 new overlays are being applied. The diagram or please contribute commands are
 good targets.
+
+We can verify the plugins were installed by listing the items registered
+to ``dffml.overlays.alice.please.contribute.recommended_community_standard``.
+
+.. code-block:: console
+
+    $ dffml service dev entrypoints list dffml.overlays.alice.please.contribute.recommended_community_standards | grep myconfig
+    MyConfigReader = myconfig -> alice 0.0.1 (/tmp/tmp.O6smY0v327/dffml/entities/alice)
+    OperationsGit = alice.cli:AlicePleaseContributeRecommendedCommunityStandardsOverlayOperationsGit -> alice 0.0.1 (/tmp/tmp.O6smY0v327/dffml/entities/alice)
 
 Registering a Flow
 ******************
