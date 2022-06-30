@@ -82,7 +82,8 @@ if you haven't already.
             dffml \
             shouldi \
             dffml-feature-git \
-            dffml-operations-innersource
+            dffml-operations-innersource \
+            dffml-config-yaml
 
 Run ``pip`` with the ``-e`` flag to specify an editable install,
 this must be done for each package.
@@ -102,7 +103,8 @@ intended to do development work on the as well.
         -e ../../ \
         -e ../../examples/shouldi/ \
         -e ../../feature/git/ \
-        -e ../../operations/innersource/
+        -e ../../operations/innersource/ \
+        -e ../../configloaders/yaml/
 
 Data Flow Programming
 *********************
