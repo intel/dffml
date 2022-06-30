@@ -1,10 +1,6 @@
 CONTRIBUTING
 ############
 
-**TODO** Test this with the modified consoletest which doesn't
-just take blocks with ``:test:`` on them (so that they render
-on GitHub).
-
 This document describes how to write Open Architecture overlays,
 overlays for Alice, how to work within the codebase, and the
 contribution process.
@@ -44,6 +40,12 @@ for git to name based off the repo name on clone.
 .. code-block:: console
 
     $ cd dffml/entities/alice
+
+Dependencies
+************
+
+We require you have ``git`` and ``gh`` (https://cli.github.com/)
+installed.
 
 Installing in Development Mode
 ******************************
@@ -104,7 +106,7 @@ intended to do development work on the as well.
         -e ../../examples/shouldi/ \
         -e ../../feature/git/ \
         -e ../../operations/innersource/ \
-        -e ../../configloaders/yaml/
+        -e ../../configloader/yaml/
 
 Data Flow Programming
 *********************
@@ -272,7 +274,7 @@ as the ``MyConfigDirectory`` definition.
 
 .. code-block:: python
 
-    from alice.cli import AliceGitRepo
+    from alice.please.contribute.recommended_community_standards.recommended_community_standards import AliceGitRepo
 
     from myconfig import MyConfigDirectory
 
@@ -280,7 +282,7 @@ as the ``MyConfigDirectory`` definition.
         repo: AliceGitRepo,
     ) -> MyConfigDirectory:
         """
-        >>> from alice.cli import AliceGitRepo
+        >>> from alice.please.contribute.recommended_community_standards.recommended_community_standards import AliceGitRepo
         >>>
         >>> print(repo_directory(AliceGitRepo(directory="Wonderland", URL=None)))
         Wonderland
@@ -329,8 +331,8 @@ to ``dffml.overlays.alice.please.contribute.recommended_community_standard``.
 .. code-block:: console
 
     $ dffml service dev entrypoints list dffml.overlays.alice.please.contribute.recommended_community_standards | grep myconfig
-    MyConfigReader = myconfig -> alice 0.0.1 (/tmp/tmp.O6smY0v327/dffml/entities/alice)
-    OperationsGit = alice.cli:AlicePleaseContributeRecommendedCommunityStandardsOverlayOperationsGit -> alice 0.0.1 (/tmp/tmp.O6smY0v327/dffml/entities/alice)
+    AlicePleaseContributeRecommendedCommunityStandardsOverlayMyConfigReader = alice_please_contribute_recommended_community_standards_overlay_git_myconfig -> alice 0.0.1 (/tmp/tmp.XrelIRGR0v/dffml/entities/alice)
+    MyConfigReader = myconfig -> alice 0.0.1 (/tmp/tmp.XrelIRGR0v/dffml/entities/alice)
 
 Contributing a Plugin to the 2nd or 3rd Party Ecosystem
 *******************************************************
@@ -382,7 +384,7 @@ Enable the use of entrypoints registered in the ``entry_points.txt`` file.
 
 .. code-block:: console
 
-    $ sed -i 's/^# entry_points/entry_points/g' setup.cfg
+    $ sed -i 's/^# entry_points/entry_points/g' alice-please-contribute-recommended_community_standards-overlay-git-myconfig/setup.cfg
 
 Install the new package.
 
@@ -413,8 +415,8 @@ to ``dffml.overlays.alice.please.contribute.recommended_community_standard``.
 .. code-block:: console
 
     $ dffml service dev entrypoints list dffml.overlays.alice.please.contribute.recommended_community_standards | grep myconfig
-    MyConfigReader = myconfig -> alice 0.0.1 (/tmp/tmp.O6smY0v327/dffml/entities/alice)
-    OperationsGit = alice.cli:AlicePleaseContributeRecommendedCommunityStandardsOverlayOperationsGit -> alice 0.0.1 (/tmp/tmp.O6smY0v327/dffml/entities/alice)
+    AlicePleaseContributeRecommendedCommunityStandardsOverlayMyConfigReader = alice_please_contribute_recommended_community_standards_overlay_git_myconfig.overlay -> alice-please-contribute-recommended-community-standards-overlay-git-myconfig 0.1.dev1+gc4185e9.d20220630 (/tmp/tmp.XrelIRGR0v/dffml/entities/alice/alice-please-contribute-recommended_community_standards-overlay-git-myconfig)
+    MyConfigReader = alice_please_contribute_recommended_community_standards_overlay_git_myconfig.myconfig -> alice-please-contribute-recommended-community-standards-overlay-git-myconfig 0.1.dev1+gc4185e9.d20220630 (/tmp/tmp.XrelIRGR0v/dffml/entities/alice/alice-please-contribute-recommended_community_standards-overlay-git-myconfig)
 
 Registering a Flow
 ******************
@@ -423,23 +425,19 @@ You can write a base flow as a class and then give the entrypoint
 style path to the class or you can write a file with functions and
 give the entrypoint style path as the entrypoint.
 
-**TODO** modify **dffml.git/entities/alice/entry_points.txt**
-add the following, rename files first. Use this as an example
-here after it's moved.
-
-.. code-block::
-
-    [dffml.overlays.alice.please]
-    contribute = alice.please.contribute.git:AlicePleaseContribute
-
-    [dffml.overlays.alice.please.contribute]
-    recommended_community_standards = alice.please.contribute:AlicePleaseContributeRecommendedCommunityStandards
-
-    [dffml.overlays.alice.please.contribute.recommended_community_standards]
-    git = alice.please.contribute.git:AlicePleaseContributeRecommendedCommunityStandardsOverlayGit
+**TODO** Currently there are only contribution docs for extending
+Alice please contribute recommended community standards.
 
 TODO/Misc.
 **********
+
+- Tell people not to write stuff in init files
+
+- Fix the docs build
+
+- Test this with the modified consoletest which doesn't
+  just take blocks with ``:test:`` on them (so that they render
+  on GitHub).
 
 - Example of running static type checker (``mypy`` or something
   on ``myconfig.py``, ``dffml`` has incomplete type data, we
@@ -467,3 +465,18 @@ TODO/Misc.
 
   - Overlay for insertion of all data in input network to database,
     or to file for caching.
+
+- Modify **dffml.git/entities/alice/entry_points.txt**
+  add the following, rename files first. Use this as an example
+  under "Registering a Flow" after it's moved.
+
+.. code-block::
+
+    [dffml.overlays.alice.please]
+    contribute = alice.please.contribute.git:AlicePleaseContribute
+
+    [dffml.overlays.alice.please.contribute]
+    recommended_community_standards = alice.please.contribute:AlicePleaseContributeRecommendedCommunityStandards
+
+    [dffml.overlays.alice.please.contribute.recommended_community_standards]
+    git = alice.please.contribute.git:AlicePleaseContributeRecommendedCommunityStandardsOverlayGit
