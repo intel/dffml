@@ -12,4 +12,7 @@ SepalLength:float:1 \
  -scorer clf \
 -sources train=csv test=csv \
  -source-train-filename iris_training.csv \
- -source-test-filename iris_test.csv
+ -source-test-filename iris_test.csv \
+ -source-train-tag train \
+-source-test-tag test \
+-features classification:int:1

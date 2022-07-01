@@ -145,12 +145,32 @@ class Tune(MLCMD):
             self.scorer = self.scorer.withconfig(self.extra_config)
         if inspect.isclass(self.tuner):
             self.tuner = self.tuner.withconfig(self.extra_config)
-
+        
+        train_source = test_source = None
+        
+        # Check for tags to determine train/test sets 
+        for source in self.sources:
+        
+            if hasattr(source, "tag") and source.tag == "train":
+                train_source = source
+            if hasattr(source, "tag") and source.tag == "test":
+                test_source = source
+    
+        if not train_source or not test_source:
+            # If tags not found, default to positional
+            if len(self.sources) >= 2:
+                train_source = self.sources[0]
+                test_source = self.sources[1]
+            elif not train_source:
+                raise NotImplementedError("Train set not found.")
+            else:
+                raise NotImplementedError("Test set not found.")
+        
         return await tune(
             self.model,
             self.tuner,
             self.scorer,
             self.features,
-            [self.sources[0]],
-            [self.sources[1]],
+            [train_source],
+            [test_source],
         )
