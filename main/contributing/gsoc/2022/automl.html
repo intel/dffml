@@ -1,17 +1,38 @@
+
+
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" />
+  <meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
   <title>Implementing AutoML &mdash; DFFML 5b53a7dbe documentation</title>
-      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="../../../_static/tabs.css" type="text/css" />
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/tabs.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
   <!--[if lt IE 9]>
     <script src="../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
         <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
         <script src="../../../_static/jquery.js"></script>
         <script src="../../../_static/underscore.js"></script>
@@ -19,22 +40,42 @@
         <script src="../../../_static/doctools.js"></script>
         <script src="../../../_static/copybutton.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="../../../_static/js/theme.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
     <link rel="author" title="About these documents" href="../../../about.html" />
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
 </head>
 
-<body class="wy-body-for-nav"> 
+<body class="wy-body-for-nav">
+
+   
   <div class="wy-grid-for-nav">
+    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
+          
+
+          
             <a href="../../../index.html" class="icon icon-home"> DFFML
+          
+
+          
           </a>
+
+          
+            
+            
               <div class="version">
                 5b53a7dbe
               </div>
+            
+          
+
+          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -42,7 +83,18 @@
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
               <p class="caption" role="heading"><span class="caption-text">Introduction</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../about.html">About</a></li>
@@ -99,34 +151,77 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../changelog.html">Changelog</a></li>
 </ul>
 
+            
+          
         </div>
+        
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../../../index.html">DFFML</a>
+        
       </nav>
 
+
       <div class="wy-nav-content">
+        
         <div class="rst-content">
-          <div role="navigation" aria-label="Page navigation">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
   <ul class="wy-breadcrumbs">
+    
       <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
       <li>Implementing AutoML</li>
+    
+    
 
 
       <li class="wy-breadcrumbs-aside">
+        
+          
+            
               <a href="https://github.com/intel/dffml/blob/main/docs/contributing/gsoc/2022/automl.md" class="fa fa-github"> Edit on GitHub</a>
+            
+          
+        
       </li>
+    
 
 
   </ul>
+
+  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
-             
+            
   
 <style>
 /* CSS overrides for sphinx_rtd_theme */
@@ -152,7 +247,7 @@
 }
 </style>
 <section id="implementing-automl">
-<h1>Implementing AutoML<a class="headerlink" href="#implementing-automl" title="Permalink to this heading"></a></h1>
+<h1>Implementing AutoML<a class="headerlink" href="#implementing-automl" title="Permalink to this heading">¶</a></h1>
 <p>AutoML or Automated Machine Learning as the name suggests automates the process
 of solving problems with Machine Learning. AutoML is generally helpful for
 people who aren’t either familiar with Machine Learning or the involved
@@ -183,7 +278,7 @@ after implementing what we found to be gaps in the previous phase.<br></p></li>
 <p>Due to the shortened GSoC cycle, we may end up not doing all of these phases.
 Which one we go to will be decided as we approach the selection process.</p>
 <section id="skills">
-<h2>Skills<a class="headerlink" href="#skills" title="Permalink to this heading"></a></h2>
+<h2>Skills<a class="headerlink" href="#skills" title="Permalink to this heading">¶</a></h2>
 <ul class="simple">
 <li><p>Python</p></li>
 <li><p>Intermediate Machine Learning</p></li>
@@ -192,15 +287,15 @@ be a plus)</p></li>
 </ul>
 </section>
 <section id="difficulty">
-<h2>Difficulty<a class="headerlink" href="#difficulty" title="Permalink to this heading"></a></h2>
+<h2>Difficulty<a class="headerlink" href="#difficulty" title="Permalink to this heading">¶</a></h2>
 <p>Intermediate/Hard</p>
 </section>
 <section id="estimated-time-required">
-<h2>Estimated Time Required<a class="headerlink" href="#estimated-time-required" title="Permalink to this heading"></a></h2>
+<h2>Estimated Time Required<a class="headerlink" href="#estimated-time-required" title="Permalink to this heading">¶</a></h2>
 <p>350 hours</p>
 </section>
 <section id="related-readings">
-<h2>Related Readings<a class="headerlink" href="#related-readings" title="Permalink to this heading"></a></h2>
+<h2>Related Readings<a class="headerlink" href="#related-readings" title="Permalink to this heading">¶</a></h2>
 <ul class="simple">
 <li><p>https://github.com/intel/dffml/blob/main/docs/contributing/gsoc/2022/</p></li>
 <li><p>https://scikit-learn.org/stable/model_selection.html#model-selection</p></li>
@@ -208,7 +303,7 @@ be a plus)</p></li>
 </ul>
 </section>
 <section id="getting-started">
-<h2>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this heading"></a></h2>
+<h2>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this heading">¶</a></h2>
 <ul class="simple">
 <li><p>Read the contributing guidelines</p>
 <ul>
@@ -233,7 +328,7 @@ be a plus)</p></li>
 </ul>
 </section>
 <section id="potential-mentors">
-<h2>Potential Mentors<a class="headerlink" href="#potential-mentors" title="Permalink to this heading"></a></h2>
+<h2>Potential Mentors<a class="headerlink" href="#potential-mentors" title="Permalink to this heading">¶</a></h2>
 <ul class="simple">
 <li><p><a class="reference external" href="https://github.com/pdxjohnny">John Andersen</a></p></li>
 <li><p><a class="reference external" href="https://github.com/yashlamba">Yash Lamba</a></p></li>
@@ -241,7 +336,7 @@ be a plus)</p></li>
 </ul>
 </section>
 <section id="tracking-and-discussion">
-<h2>Tracking and Discussion<a class="headerlink" href="#tracking-and-discussion" title="Permalink to this heading"></a></h2>
+<h2>Tracking and Discussion<a class="headerlink" href="#tracking-and-discussion" title="Permalink to this heading">¶</a></h2>
 <p>This project is related to the following issues. Please discuss and ask
 questions in the issue comments. Please also ping mentors on
 <a class="reference external" href="https://gitter.im/dffml/community">Gitter</a> when you post on the following
@@ -254,30 +349,46 @@ issues so that they are sure to see that you’ve commented.</p>
 
 
            </div>
+           
           </div>
           <footer>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2017 - 2022, Intel.</p>
-  </div>
+    <p>
+        &#169; Copyright 2017 - 2022, Intel.
 
-  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
     <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    provided by <a href="https://readthedocs.org">Read the Docs</a>.
-   
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
         </div>
       </div>
+
     </section>
+
   </div>
-  <script>
+  
+
+  <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

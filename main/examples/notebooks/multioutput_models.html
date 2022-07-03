@@ -1,17 +1,38 @@
+
+
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" />
+  <meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
   <title>Working with Multi-Output models &mdash; DFFML 5b53a7dbe documentation</title>
-      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="../../_static/tabs.css" type="text/css" />
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/tabs.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
   <!--[if lt IE 9]>
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
         <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
@@ -21,7 +42,10 @@
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
         <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
         <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script src="../../_static/js/theme.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
     <link rel="author" title="About these documents" href="../../about.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -29,16 +53,33 @@
     <link rel="prev" title="Transfer Learning" href="transferlearning.html" /> 
 </head>
 
-<body class="wy-body-for-nav"> 
+<body class="wy-body-for-nav">
+
+   
   <div class="wy-grid-for-nav">
+    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
+          
+
+          
             <a href="../../index.html" class="icon icon-home"> DFFML
+          
+
+          
           </a>
+
+          
+            
+            
               <div class="version">
                 5b53a7dbe
               </div>
+            
+          
+
+          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -46,7 +87,18 @@
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
               <p class="caption" role="heading"><span class="caption-text">Introduction</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../about.html">About</a></li>
@@ -129,36 +181,81 @@
 <li class="toctree-l1"><a class="reference internal" href="../../changelog.html">Changelog</a></li>
 </ul>
 
+            
+          
         </div>
+        
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../../index.html">DFFML</a>
+        
       </nav>
 
+
       <div class="wy-nav-content">
+        
         <div class="rst-content">
-          <div role="navigation" aria-label="Page navigation">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
   <ul class="wy-breadcrumbs">
+    
       <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
           <li><a href="../index.html">Examples</a> &raquo;</li>
+        
           <li><a href="index.html">Notebooks</a> &raquo;</li>
+        
       <li>Working with Multi-Output models</li>
+    
+    
 
 
       <li class="wy-breadcrumbs-aside">
+        
+          
+            
               <a href="https://github.com/intel/dffml/blob/main/docs/examples/notebooks/multioutput_models.nblink" class="fa fa-github"> Edit on GitHub</a>
+            
+          
+        
       </li>
+    
 
 
   </ul>
+
+  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
-             
+            
   
 <style>
 /* CSS for nbsphinx extension */
@@ -442,7 +539,7 @@ div.rendered_html tbody tr:hover {
 <div class="line"><br /></div>
 </div>
 <section id="Working-with-Multi-Output-models">
-<h1>Working with Multi-Output models<a class="headerlink" href="#Working-with-Multi-Output-models" title="Permalink to this heading"></a></h1>
+<h1>Working with Multi-Output models<a class="headerlink" href="#Working-with-Multi-Output-models" title="Permalink to this heading">¶</a></h1>
 <p>In this notebook, we’ll be performing multi-output tasks with the help of DFFML. DFFML makes it so that users can use a range of different models to perform multi-output tasks with the usual worklow, but instantiating models with a list of targets/labels! <a class="reference external" href="http://www.youtube.com/watch?v=7whKBThZDN4"><img alt="Video Explanation Thumbnail" src="http://img.youtube.com/vi/7whKBThZDN4/0.jpg" /></a></p>
 <p><strong>Import Packages</strong></p>
 <p>Let us import dffml and other packages that we might need.</p>
@@ -471,10 +568,10 @@ div.rendered_html tbody tr:hover {
 </div>
 </div>
 <section id="Multi-Output-Regression">
-<h2>Multi-Output Regression<a class="headerlink" href="#Multi-Output-Regression" title="Permalink to this heading"></a></h2>
+<h2>Multi-Output Regression<a class="headerlink" href="#Multi-Output-Regression" title="Permalink to this heading">¶</a></h2>
 <p>To perform multi-output regression tasks, we can select any scikit regression model and pass our multi-output dataset onto the model.</p>
 <section id="Build-our-Dataset">
-<h3>Build our Dataset<a class="headerlink" href="#Build-our-Dataset" title="Permalink to this heading"></a></h3>
+<h3>Build our Dataset<a class="headerlink" href="#Build-our-Dataset" title="Permalink to this heading">¶</a></h3>
 <p>For our dataset, we will be generating a random multi-output dataset</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
@@ -559,7 +656,7 @@ div.rendered_html tbody tr:hover {
 </div>
 </section>
 <section id="Instantiate-our-Model-with-parameters">
-<h3>Instantiate our Model with parameters<a class="headerlink" href="#Instantiate-our-Model-with-parameters" title="Permalink to this heading"></a></h3>
+<h3>Instantiate our Model with parameters<a class="headerlink" href="#Instantiate-our-Model-with-parameters" title="Permalink to this heading">¶</a></h3>
 <p>Dffml makes it quite easy to load multiple models dynamically using the <code class="docutils literal notranslate"><span class="pre">Model.load()</span></code> function. All the entrypoints for models available in DFFML can be found at the <a class="reference internal" href="../../plugins/dffml_model.html"><span class="doc">Model Plugins Page</span></a>.</p>
 <p><strong>Note:</strong> All(and only) <a class="reference internal" href="../../plugins/dffml_model.html#dffml-model-scikit"><span class="std std-ref">Scikit Regressors and Classifiers</span></a> support multioutput.</p>
 <p>After that, you just have to parameterize the loaded model and it is ready to train!</p>
@@ -594,7 +691,7 @@ div.rendered_html tbody tr:hover {
 </div>
 </section>
 <section id="Train-our-Model">
-<h3>Train our Model<a class="headerlink" href="#Train-our-Model" title="Permalink to this heading"></a></h3>
+<h3>Train our Model<a class="headerlink" href="#Train-our-Model" title="Permalink to this heading">¶</a></h3>
 <p>Finally, our model is ready to be trained using the <code class="docutils literal notranslate"><span class="pre">high-level</span></code> API. Let’s make sure to pass each record as a parameter by simply using the unpacking operator(*).</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
@@ -606,7 +703,7 @@ div.rendered_html tbody tr:hover {
 </div>
 </section>
 <section id="Test-our-Models">
-<h3>Test our Models<a class="headerlink" href="#Test-our-Models" title="Permalink to this heading"></a></h3>
+<h3>Test our Models<a class="headerlink" href="#Test-our-Models" title="Permalink to this heading">¶</a></h3>
 <p>To test our model, we’ll use the <code class="docutils literal notranslate"><span class="pre">score()</span></code> function in the <code class="docutils literal notranslate"><span class="pre">high-level</span></code> API.</p>
 <p>Just like models, the scorers can be dynamically loaded in a similar fashion.</p>
 <p>We will evaluate our model using the Mean Squared Error Scorer by passing <code class="docutils literal notranslate"><span class="pre">&quot;meansqrerr&quot;</span></code> to <code class="docutils literal notranslate"><span class="pre">AccuracyScorer.load()</span></code>, which is an entrypoint for a scikit scorer.</p>
@@ -633,7 +730,7 @@ Score: 158.02450547009664
 </div>
 </section>
 <section id="Make-predictions-using-our-Model.">
-<h3>Make predictions using our Model.<a class="headerlink" href="#Make-predictions-using-our-Model." title="Permalink to this heading"></a></h3>
+<h3>Make predictions using our Model.<a class="headerlink" href="#Make-predictions-using-our-Model." title="Permalink to this heading">¶</a></h3>
 <p>Let’s make predictions and see what they look like for each model using the <code class="docutils literal notranslate"><span class="pre">predict</span></code> function in the <code class="docutils literal notranslate"><span class="pre">high-level</span></code> API. Note that the <code class="docutils literal notranslate"><span class="pre">predict</span></code> function returns an asynciterator of a <code class="docutils literal notranslate"><span class="pre">Record</span></code> object that contains a tuple of record.key, features and predictions.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
@@ -674,10 +771,10 @@ Score: 158.02450547009664
 </section>
 </section>
 <section id="Multi-Output-Classifier">
-<h2>Multi-Output Classifier<a class="headerlink" href="#Multi-Output-Classifier" title="Permalink to this heading"></a></h2>
+<h2>Multi-Output Classifier<a class="headerlink" href="#Multi-Output-Classifier" title="Permalink to this heading">¶</a></h2>
 <p>To perform multi-output classification tasks, we can select any scikit classification model and pass our multi-output dataset onto the model.</p>
 <section id="id1">
-<h3>Build our Dataset<a class="headerlink" href="#id1" title="Permalink to this heading"></a></h3>
+<h3>Build our Dataset<a class="headerlink" href="#id1" title="Permalink to this heading">¶</a></h3>
 <p>We again utilize sklearn to build our multi-output dataset for our classification task.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
@@ -708,7 +805,7 @@ Score: 158.02450547009664
 </div>
 </section>
 <section id="id2">
-<h3>Instantiate our Model with parameters<a class="headerlink" href="#id2" title="Permalink to this heading"></a></h3>
+<h3>Instantiate our Model with parameters<a class="headerlink" href="#id2" title="Permalink to this heading">¶</a></h3>
 <p>Dffml makes it quite easy to load multiple models dynamically using the <code class="docutils literal notranslate"><span class="pre">Model.load()</span></code> function. All the entrypoints for models available in DFFML can be found at the <a class="reference internal" href="../../plugins/dffml_model.html"><span class="doc">Model Plugins Page</span></a>. After that, you just have to parameterize the loaded model and it is ready to train!</p>
 <p>Note that we will set <code class="docutils literal notranslate"><span class="pre">predict</span></code> in the model config to <code class="docutils literal notranslate"><span class="pre">Features</span></code>, a list of features ie. the targets, instead of a single feature. This sets the output targets in the model causing it to work as a Multi-Output model.</p>
 <div class="nbinput nblast docutils container">
@@ -732,7 +829,7 @@ Score: 158.02450547009664
 </div>
 </section>
 <section id="id3">
-<h3>Train our Model<a class="headerlink" href="#id3" title="Permalink to this heading"></a></h3>
+<h3>Train our Model<a class="headerlink" href="#id3" title="Permalink to this heading">¶</a></h3>
 <p>Finally, our model is ready to be trained using the <code class="docutils literal notranslate"><span class="pre">high-level</span></code> API. Let’s make sure to pass each record as a parameter by simply using the unpacking operator(*).</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
@@ -744,7 +841,7 @@ Score: 158.02450547009664
 </div>
 </section>
 <section id="id4">
-<h3>Test our Models<a class="headerlink" href="#id4" title="Permalink to this heading"></a></h3>
+<h3>Test our Models<a class="headerlink" href="#id4" title="Permalink to this heading">¶</a></h3>
 <p>To test our model, we’ll again use the <code class="docutils literal notranslate"><span class="pre">score()</span></code> function in the <code class="docutils literal notranslate"><span class="pre">high-level</span></code> API.</p>
 <p>This time, we evaluate our model using the Accuracy Scorer by passing <code class="docutils literal notranslate"><span class="pre">&quot;acscore&quot;</span></code> to <code class="docutils literal notranslate"><span class="pre">AccuracyScorer.load()</span></code>, which is also an entrypoint for a scikit scorer.</p>
 <p>All the available entrypoints for scorers can be found at the <a class="reference internal" href="../../plugins/dffml_accuracy.html"><span class="doc">Scorers Plugin Page</span></a>.</p>
@@ -770,7 +867,7 @@ Accuracy: 1.0
 </div>
 </section>
 <section id="id5">
-<h3>Make predictions using our Model.<a class="headerlink" href="#id5" title="Permalink to this heading"></a></h3>
+<h3>Make predictions using our Model.<a class="headerlink" href="#id5" title="Permalink to this heading">¶</a></h3>
 <p>Let’s make predictions and see what they look like using the <code class="docutils literal notranslate"><span class="pre">predict</span></code> function in the <code class="docutils literal notranslate"><span class="pre">high-level</span></code> API. Note that the <code class="docutils literal notranslate"><span class="pre">predict</span></code> function returns an asynciterator of a <code class="docutils literal notranslate"><span class="pre">Record</span></code> object that contains a tuple of record.key, features and predictions.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
@@ -894,33 +991,50 @@ Accuracy: 1.0
 
 
            </div>
+           
           </div>
-          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="transferlearning.html" class="btn btn-neutral float-left" title="Transfer Learning" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
         <a href="../integration.html" class="btn btn-neutral float-right" title="Automating Classification" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="transferlearning.html" class="btn btn-neutral float-left" title="Transfer Learning" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2017 - 2022, Intel.</p>
-  </div>
+    <p>
+        &#169; Copyright 2017 - 2022, Intel.
 
-  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
     <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    provided by <a href="https://readthedocs.org">Read the Docs</a>.
-   
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
         </div>
       </div>
+
     </section>
+
   </div>
-  <script>
+  
+
+  <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>
