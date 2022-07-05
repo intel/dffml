@@ -77,14 +77,6 @@ COLLECTOR_DATAFLOW.seed = [
     ),
     dffml.Input(
         value={
-            COLLECTOR_DATAFLOW.operations["lines_of_code_to_comments"]
-            .outputs["code_to_comment_ratio"]
-            .name: {
-                "group": COLLECTOR_DATAFLOW.operations["lines_of_code_to_comments"]
-                .outputs["code_to_comment_ratio"]
-                .name,
-                "by": "quarter",
-            },
             COLLECTOR_DATAFLOW.operations["git_repo_release"]
             .outputs["present"]
             .name: {
@@ -103,34 +95,10 @@ COLLECTOR_DATAFLOW.seed = [
                 .name,
                 "by": "quarter",
             },
-            COLLECTOR_DATAFLOW.operations["lines_of_code_by_language"]
-            .outputs["lines_by_language"]
-            .name: {
-                "group": COLLECTOR_DATAFLOW.operations["lines_of_code_by_language"]
-                .outputs["lines_by_language"]
-                .name,
-                "by": "quarter",
-            },
             "commit_shas": {
                 "group": COLLECTOR_DATAFLOW.operations["git_repo_commit_from_date"]
                 .outputs["commit"]
                 .name,
-                "by": "quarter",
-            },
-            operations.github_workflow_present.op.outputs["result"].name: {
-                "group": operations.github_workflow_present.op.outputs["result"].name,
-                "by": "quarter",
-            },
-            operations.contributing_present.op.outputs["result"].name: {
-                "group": operations.contributing_present.op.outputs["result"].name,
-                "by": "quarter",
-            },
-            dffml_feature_git.feature.operations.lines_of_code_to_comments.op.outputs[
-                "code_to_comment_ratio"
-            ].name: {
-                "group": dffml_feature_git.feature.operations.lines_of_code_to_comments.op.outputs[
-                    "code_to_comment_ratio"
-                ].name,
                 "by": "quarter",
             },
             operations.github_workflow_present.op.outputs["result"].name: {
