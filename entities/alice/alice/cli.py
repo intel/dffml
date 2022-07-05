@@ -16,10 +16,14 @@ import dffml
 import shouldi.cli
 import dffml_operations_innersource.cli
 
+
 from .system_context import Alice
+
 # from .threats_md import THREATS_MD_DATAFLOW
 THREATS_MD_DATAFLOW = dffml.DataFlow()
-from .please.contribute.recommended_community_standards.recommended_community_standards import AlicePleaseContributeRecommendedCommunityStandards
+from .please.contribute.recommended_community_standards.recommended_community_standards import (
+    AlicePleaseContributeRecommendedCommunityStandards,
+)
 from .please.contribute.recommended_community_standards.cli import DFFMLCLICMD
 
 
@@ -108,6 +112,7 @@ def object_to_operations(obj, module=None):
         )
     ]
 
+
 # TODO(alice) Replace with definition as system context
 # AlicePleaseContributeRecommendedCommunityStandards.sysctx = object()
 # AlicePleaseContributeRecommendedCommunityStandards.sysctx.upstream = AlicePleaseContributeCLIDataFlow = dffml.DataFlow(
@@ -118,7 +123,9 @@ AlicePleaseContributeCLIDataFlow = dffml.DataFlow(
             for cls in [
                 AlicePleaseContributeRecommendedCommunityStandards,
                 # *AlicePleaseContributeRecommendedCommunityStandards.overlays(),
-                *dffml.Overlay.load(entrypoint="dffml.overlays.alice.please.contribute.recommended_community_standards")
+                *dffml.Overlay.load(
+                    entrypoint="dffml.overlays.alice.please.contribute.recommended_community_standards"
+                ),
             ]
         ]
     )
