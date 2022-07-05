@@ -23,6 +23,10 @@ from .please.contribute.recommended_community_standards.recommended_community_st
 from .please.contribute.recommended_community_standards.cli import DFFMLCLICMD
 
 
+# TODO Make this use the overlay stuff on runtime instead of on module load.
+ALICE_COLLECTOR_DATAFLOW = dffml_operations_innersource.cli.COLLECTOR_DATAFLOW
+
+
 # NOTE When CLI and operations are merged: All this is the same stuff that will
 # happen to Operation config_cls structures. We need a more ergonomic API to
 # obsucre the complexity dataclasses introduces when modifying fields/defaults
@@ -30,6 +34,13 @@ from .please.contribute.recommended_community_standards.cli import DFFMLCLICMD
 for (new_class_name, dffml_cli_class), field_modifications in {
     ("AliceThreatsMd", dffml.cli.dataflow.RunSingle): {
         "dataflow": {"default_factory": lambda: THREATS_MD_DATAFLOW},
+        "no_echo": {"default": True},
+    },
+    (
+        "AliceShouldIContribute",
+        dffml_operations_innersource.cli.InnerSourceCLI.run.records._set,
+    ): {
+        "dataflow": {"default_factory": lambda: ALICE_COLLECTOR_DATAFLOW},
         "no_echo": {"default": True},
     },
 }.items():
@@ -51,7 +62,7 @@ class ShouldiCLI(dffml.CMD):
     # TODO Take PURL or SW Heritage ID as an input definition
     use = shouldi.cli.ShouldI.install
     reuse = shouldi.use.Use
-    contribute = dffml_operations_innersource.cli.InnerSourceCLI.run.records._set
+    contribute = AliceShouldIContribute
     # diagram = ShouldiDiagram
 
 
