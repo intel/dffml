@@ -27,18 +27,14 @@ from .please.contribute.recommended_community_standards.cli import DFFMLCLICMD
 # happen to Operation config_cls structures. We need a more ergonomic API to
 # obsucre the complexity dataclasses introduces when modifying fields/defaults
 # within subclasses.
-for dffml_cli_class_name, field_modifications in {
-    "RunSingle": {
+for (new_class_name, dffml_cli_class), field_modifications in {
+    ("AliceThreatsMd", dffml.cli.dataflow.RunSingle): {
         "dataflow": {"default_factory": lambda: THREATS_MD_DATAFLOW},
         "no_echo": {"default": True},
     },
 }.items():
-    # Create the class and config names by prepending InnerSource
-    new_class_name = "AliceThreatsMd"
     # Create a derived class
-    new_class = getattr(dffml.cli.dataflow, dffml_cli_class_name).subclass(
-        new_class_name, field_modifications,
-    )
+    new_class = dffml_cli_class.subclass(new_class_name, field_modifications)
     # Add our new class to the global namespace
     setattr(
         sys.modules[__name__], new_class.CONFIG.__qualname__, new_class.CONFIG,
