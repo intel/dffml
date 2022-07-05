@@ -1,6 +1,7 @@
 import sys
 import pathlib
 import platform
+import itertools
 from typing import Dict
 
 import dffml
@@ -52,6 +53,15 @@ COLLECTOR_DATAFLOW = dffml.DataFlow(
     *dffml.opimp_in(dffml_feature_git.feature.operations),
     *dffml.opimp_in(operations),
     *dffml.opimp_in(sys.modules[__name__]),
+    # TODO(alice) Update to use the real overlay infra within run()
+    *itertools.chain(
+        *[
+            dffml.object_to_operations(cls)
+            for cls in dffml.Overlay.load(
+                entrypoint="dffml.overlays.alice.shouldi.contribute",
+            )
+        ],
+    ),
     configs={
         ensure_tokei.op.name: EnsureTokeiConfig(
             cache_dir=pathlib.Path(
