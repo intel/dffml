@@ -18,6 +18,10 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: 3.9
+    - name: Configure git user info
+      run: |
+       git config --global user.email "alice@chadig.com"
+       git config --global user.name "Alice"
     - name: Configure github CLI auth
       env:
         GH_USER: aliceoa
