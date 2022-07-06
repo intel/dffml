@@ -6,6 +6,7 @@ We build Coach Alice, our remote developer and new community developer coach.
 
 ### Table Of Contents
 
+- [Upstream](https://github.com/intel/dffml/tree/alice/entities/alice)
 - [Rolling Alice](../)
 - [Forward](../0000_forward.md)
 - [Preface](../0000_preface.md)
