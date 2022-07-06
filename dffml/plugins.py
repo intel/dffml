@@ -51,6 +51,7 @@ CORE_PLUGINS += [
     ("operations", "nlp"),
     ("service", "http"),
     ("source", "mysql"),
+    ("tuner", "bayes_opt_gp"),
 ]
 
 

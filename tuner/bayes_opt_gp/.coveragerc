@@ -1,0 +1,13 @@
+[run]
+source =
+    dffml_tuner_bayes_opt_gp
+    tests
+branch = True
+
+[report]
+exclude_lines =
+    no cov
+    no qa
+    noqa
+    pragma: no cover
+    if __name__ == .__main__.:

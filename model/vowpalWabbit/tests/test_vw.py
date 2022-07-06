@@ -4,13 +4,14 @@ import numpy as np
 from sklearn.datasets import make_friedman1
 
 from dffml.record import Record
-from dffml.high_level.ml import score
+from dffml.high_level.ml import score, tune
 from dffml.source.source import Sources
 from dffml.source.memory import MemorySource, MemorySourceConfig
 from dffml.feature import Feature, Features
 from dffml.util.asynctestcase import AsyncTestCase
 from dffml.accuracy import MeanSquaredErrorAccuracy
 from dffml_model_vowpalWabbit.vw_base import VWModel, VWConfig
+from dffml.tuner.parameter_grid import ParameterGrid
 
 
 class TestVWModel(AsyncTestCase):
@@ -73,6 +74,7 @@ class TestVWModel(AsyncTestCase):
             )
         )
         cls.scorer = MeanSquaredErrorAccuracy()
+        cls.tuner = ParameterGrid(parameters={}, objective="min")
 
     @classmethod
     def tearDownClass(cls):
@@ -96,6 +98,12 @@ class TestVWModel(AsyncTestCase):
                 async for record in mctx.predict(sctx):
                     prediction = record.prediction(target).value
                     self.assertTrue(isinstance(prediction, float))
+    
+    async def test_03_tune(self):
+        res = await tune(
+            self.model, self.tuner, self.scorer, Feature("X", float, 1), [self.sources], [self.sources]
+        )
+        self.assertTrue(isinstance(res, float))
 
 
 DATA_LEN = 500
