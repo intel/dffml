@@ -10,6 +10,7 @@ We'll follow along an adapted version of Lewis Carroll's classic, Alice's Advent
 
 ### Table Of Contents
 
+- [Upstream](https://github.com/intel/dffml/tree/alice/entities/alice)
 - [Rolling Alice](../)
 - [Forward](../0000_forward.md)
 - [Preface](../0000_preface.md)
