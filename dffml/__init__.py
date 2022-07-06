@@ -84,26 +84,25 @@ for import_name, module in modules(root, package_name, skip=skip):
             or (not inspect.isclass(obj) and not inspect.isfunction(obj))
         ):
             continue
-        fullname = obj.__module__ + "." + obj.__qualname__
-        if obj.__qualname__ in cls_func_all:
+        if name in cls_func_all:
             # Do not override prefered is already in cls_func_all, or if it's a
             # duplicate of itself (somehow this is possible that we see it from
             # the same module twice?)
-            if cls_func_all[obj.__qualname__][1] == module:
+            if cls_func_all[name][1] == module:
                 continue
             if name in DUPLICATE_PREFER:
-                if cls_func_all[obj.__qualname__][0] == DUPLICATE_PREFER[name]:
+                if cls_func_all[name][0] == DUPLICATE_PREFER[name]:
                     continue
             else:
                 raise DuplicateName(
                     f"{name} in both "
-                    f"{cls_func_all[obj.__qualname__][0]} and "
+                    f"{cls_func_all[name][0]} and "
                     f"{import_name_no_package}: "
-                    f"(exists: {cls_func_all[obj.__qualname__][1]}, "
+                    f"(exists: {cls_func_all[name][1]}, "
                     f"new: {module}) "
                 )
         # Add to dict to ensure no duplicates
-        cls_func_all[obj.__qualname__] = (import_name_no_package, module, obj)
+        cls_func_all[name] = (import_name_no_package, module, obj)
 
 for name, (_import_name, _module, obj) in cls_func_all.items():
     setattr(sys.modules[__name__], name, obj)
