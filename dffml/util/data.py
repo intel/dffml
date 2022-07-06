@@ -14,7 +14,7 @@ import dataclasses
 import collections
 from functools import wraps
 import pathlib
-from typing import Callable
+from typing import Optional, Dict, Any, Callable
 
 from .log import LOGGER
 
@@ -43,8 +43,27 @@ def merge(one, two, list_append: bool = True):
     return one
 
 
-def traverse_config_set(target, *args):
+TRAVERSE_CONFIG_SET_DEFAULT_VALUE_KEY = "plugin"
+TRAVERSE_CONFIG_SET_DEFAULT_NESTING_KEY = "config"
+TRAVERSE_CONFIG_SET_DEFAULT_INIT_FN = lambda: {"plugin": None, "config": {}}
+
+
+def traverse_config_set(
+    target,
+    *args,
+    nesting_key: Optional[str] = TRAVERSE_CONFIG_SET_DEFAULT_NESTING_KEY,
+    value_key: Optional[str] = TRAVERSE_CONFIG_SET_DEFAULT_VALUE_KEY,
+    init_fn: Optional[
+        Callable[[], Dict[str, Any]]
+    ] = None,
+):
     """
+    The traverse_config_get/set family of help functions is responsible for
+    creation, update / inserstion of new keys.
+
+    config is a manifest for a plugin, there the plugin docs are the ADR (aka
+    the Manifest ADR) for that format name (aka the plugin).
+
     Examples
     --------
 
@@ -63,16 +82,18 @@ def traverse_config_set(target, *args):
     ... }, "level", "one", 42)
     {'level': {'plugin': None, 'config': {'one': {'plugin': 42, 'config': {}}}}}
     """
+    if init_fn is None:
+        init_fn = TRAVERSE_CONFIG_SET_DEFAULT_INIT_FN
     # Seperate the path down from the value to set
     path, value = args[:-1], args[-1]
     current = target
     last = target
     for level in path:
         if not level in current:
-            current[level] = {"plugin": None, "config": {}}
+            current[level] = init_fn()
         last = current[level]
-        current = last["config"]
-    last["plugin"] = value
+        current = last[nesting_key]
+    last[value_key] = value
     return target
 
 
