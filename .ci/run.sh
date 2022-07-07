@@ -250,6 +250,11 @@ function run_docs() {
   TEMP_DIRS+=("${main_docs}")
   rm -rf pages
   dffml service dev docs -no-strict || ./scripts/docs.sh
+  # Check to see if docs built successfully
+  if [ ! -f pages/index.html ]; then
+    echo "Docs build failed" 1>&2
+    exit 1
+  fi
 
   mv pages "${main_docs}/html"
 
@@ -270,6 +275,11 @@ function run_docs() {
   "${PYTHON}" -m pip install --prefix=~/.local -U -e "${SRC_ROOT}[dev]"
   "${PYTHON}" -m dffml service dev install -user
   dffml service dev docs -no-strict || ./scripts/docs.sh
+  # Check to see if docs built successfully
+  if [ ! -f pages/index.html ]; then
+    echo "Docs build failed" 1>&2
+    exit 1
+  fi
   mv pages "${release_docs}/html"
 
   git clone https://github.com/intel/dffml -b gh-pages \
