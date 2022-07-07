@@ -258,6 +258,18 @@ function run_docs() {
 
   mv pages "${main_docs}/html"
 
+  # Make alice docs
+  alice_branch_repo="$(mktemp -d)"
+  alice_docs="$(mktemp -d)"
+  TEMP_DIRS+=("${main_docs}")
+  git clone --depth=1 https://github.com/intel/dffml -b alice "${alice_branch_repo}"
+  rm -rf pages
+  dffml service dev docs -no-strict || ./scripts/docs.sh
+  # Check to see if docs built successfully
+  if [ ! -f pages/index.html ]; then
+    echo "::warning::Alice docs build failed" 1>&2
+  fi
+
   # Make last release docs
   release_docs="$(mktemp -d)"
   TEMP_DIRS+=("${release_docs}")
@@ -287,11 +299,12 @@ function run_docs() {
 
   mv "${release_docs}/old-gh-pages-branch/.git" "${release_docs}/html/"
   mv "${main_docs}/html" "${release_docs}/html/main"
+  mv "${alice_docs}/html" "${release_docs}/html/alice"
 
   cd "${release_docs}/html"
 
   git config user.name 'Alice'
-  git config user.email 'alice@chadig.com'
+  git config user.email 'alice@docs.ci.dffml.chadig.com'
 
   git add -A
   git commit -sam "docs: $(date)"
