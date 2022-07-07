@@ -290,8 +290,8 @@ function run_docs() {
 
   cd "${release_docs}/html"
 
-  git config user.name 'John Andersen'
-  git config user.email 'johnandersenpdx@gmail.com'
+  git config user.name 'Alice'
+  git config user.email 'alice@chadig.com'
 
   git add -A
   git commit -sam "docs: $(date)"
