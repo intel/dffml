@@ -22,7 +22,7 @@ Once it's be uploaded, we go to PyPi and create an API key which will be used to
 upload it via the automatic release at the end of ``run_plugin`` within the CI
 script.
 
-.. image:: /images/pypi-token-to-github-secret.gif
+.. image:: https://dffml.github.io/dffml-pre-image-removal/master/_images/pypi-token-to-github-secret.gif
 
 Finally, update the ``PYPI_TOKENS`` file in ``.github/workflows/testing.yml``.
 Add a line for the plugin along with it's sceret.

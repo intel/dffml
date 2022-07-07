@@ -91,7 +91,7 @@ nbsphinx_prolog = r"""
     {% set nb_version = "main/" %}
 {% endif %}
 
-.. image:: ../../images/Download-.ipynb-button.svg
+.. image:: https://dffml.github.io/dffml-pre-image-removal/master/_images/Download-.ipynb-button.svg
     :target: https://intel.github.io/dffml/{{ nb_version }}{{ docname[:-6] }}ipynb
     :alt: Notebook download button
 

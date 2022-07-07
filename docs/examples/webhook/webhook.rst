@@ -91,7 +91,7 @@ Deploy it in port 8081 as 8080 is being used by ffmpeg http service
 
         $ ssh -R 80:localhost:8081 $RANDOM@ssh.localhost.run
 
-    .. image:: ./images/localhost_run.png
+    .. image:: https://dffml.github.io/dffml-pre-image-removal/master/_images/localhost_run.png
 
     Using ngrok
 
@@ -99,12 +99,12 @@ Deploy it in port 8081 as 8080 is being used by ffmpeg http service
 
         $ ~/ngrok http 8081
 
-    .. image:: ./images/ngrok_out.png
+    .. image:: https://dffml.github.io/dffml-pre-image-removal/master/_images/ngrok_out.png
 
 Copy paste the output url to ``Payload URL`` in webhook settings of ffmpeg repo and set
 the secret token.
 
-.. image:: ./images/github_settings.png
+.. image:: https://dffml.github.io/dffml-pre-image-removal/master/_images/github_settings.png
 
 Now whenever there's a push to the default branch of the repo, the ffmpeg container
 which is running gets redeployed from the fresh pull. To check this we will modify the

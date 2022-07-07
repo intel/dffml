@@ -9,7 +9,7 @@ so.
 Grading Rubric
 --------------
 
-.. image:: /images/rubric-table.png
+.. image:: https://dffml.github.io/dffml-pre-image-removal/master/_images/rubric-table.png
     :alt: Screenshot of grading rubric
 
 .. NOTE The text of the table wasn't included in this file because Sphynx

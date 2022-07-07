@@ -136,7 +136,7 @@ satisfies our constraints.
         repos_yml_source -->|for each repo| dataflow
         dataflow -->|write| repos_json_source
 
-.. image:: /images/swportal-high-level-architecture.svg
+.. image:: https://dffml.github.io/dffml-pre-image-removal/master/_images/swportal-high-level-architecture.svg
     :alt: Flow chart showing high level architechture where we read the repos.yml files run the dataflow on each repo, then save to the repos.json source.
 
 Implementation Plan
@@ -318,7 +318,7 @@ Try listing all the records in the new source to verify it works.
             "extra": {},
             "features": {
                 "_InnerSourceMetadata": {
-                    "logo": "./images/demo/Earth.png",
+                    "logo": "https://dffml.github.io/dffml-pre-image-removal/master/_images/demo/Earth.png",
                     "participation": [
                         15,
                         3,
@@ -392,7 +392,7 @@ Try listing all the records in the new source to verify it works.
                 "name": "earth",
                 "open_issues_count": 98,
                 "owner": {
-                    "avatar_url": "./images/demo/Sol.png",
+                    "avatar_url": "https://dffml.github.io/dffml-pre-image-removal/master/_images/demo/Sol.png",
                     "login": "Sol"
                 },
                 "pushed_at": "2020-10-08T12:18:22Z",

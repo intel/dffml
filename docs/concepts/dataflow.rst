@@ -214,7 +214,7 @@ running a DataFlow. The following sequence of events take place.
 
     opimpctx_run_operation --> |Outputs of Operation become inputs to other operations| inputs
 
-.. image:: /images/dataflow_diagram.svg
+.. image:: https://dffml.github.io/dffml-pre-image-removal/master/_images/dataflow_diagram.svg
     :alt: Flow chart showing how DataFlow Orchestrator works
 
 Benefits of DataFlows

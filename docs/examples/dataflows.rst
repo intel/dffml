@@ -245,7 +245,7 @@ can use ``lines_of_code_to_comments``.
 The ``lines_of_code_to_comments`` operation needs the output given by
 ``lines_of_code_by_language``, which needs a Git repos source code.
 
-.. image:: /images/comments_to_code.svg
+.. image:: https://dffml.github.io/dffml-pre-image-removal/master/_images/comments_to_code.svg
     :alt: Diagram showing DataFlow of comment to code ratio operations
 
 A ``git_repository_checked_out`` is defined as:
@@ -323,7 +323,7 @@ It contains the following files.
 
 We've modified the flow to create the following dataflow
 
-.. image:: /images/shouldi-dataflow-extended.svg
+.. image:: https://dffml.github.io/dffml-pre-image-removal/master/_images/shouldi-dataflow-extended.svg
     :alt: Diagram showing DataFlow with use of comment to code ratio
 
 The diagram above can be re-generated with the following commands

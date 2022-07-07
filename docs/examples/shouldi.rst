@@ -353,7 +353,7 @@ code from PyPi.
 
 .. TODO Autogenerate this from the dataflow
 
-.. image:: /images/shouldi-dataflow-processing.svg
+.. image:: https://dffml.github.io/dffml-pre-image-removal/master/_images/shouldi-dataflow-processing.svg
     :alt: Diagram showing DataFlow for processing stage
 
 The DataFlow above describes the following process:
@@ -579,7 +579,7 @@ You can now copy that graph and paste it in the mermaidjs live editor:
 
 It should render the following SVG showing how all the operations are connected.
 
-.. image:: /images/shouldi-dataflow.svg
+.. image:: https://dffml.github.io/dffml-pre-image-removal/master/_images/shouldi-dataflow.svg
     :alt: Diagram showing DataFlow
 
 GitLab will render mermaidjs diagrams found in markdown files. There is also a

@@ -13,7 +13,7 @@ unmaintained).
 
 To help you track your assigned statues you built a Python 3 CGI web app.
 
-.. image:: /images/website-before.png
+.. image:: https://dffml.github.io/dffml-pre-image-removal/master/_images/website-before.png
     :alt: Screenshot of the very basic web app with a table showing repo URLs and their mantainance status
 
 When you assign a maintenance status to a repo you are *classifying* it.
@@ -371,7 +371,7 @@ operations. Arrows show how data moves between operations.
 
 .. TODO Autogenerate this from the dataflow
 
-.. image:: /images/integration_dataflow.svg
+.. image:: https://dffml.github.io/dffml-pre-image-removal/master/_images/integration_dataflow.svg
     :alt: Diagram showing Dataflow
 
 We can also visualize how the individual inputs and outputs are linked together.
@@ -380,7 +380,7 @@ automatically.
 
 .. TODO Autogenerate this from the dataflow
 
-.. image:: /images/integration_dataflow_complex.svg
+.. image:: https://dffml.github.io/dffml-pre-image-removal/master/_images/integration_dataflow_complex.svg
     :alt: Diagram showing detailed version of Dataflow
 
 The inputs and outputs of operations within a running DataFlow are organized by
@@ -569,4 +569,4 @@ But you can look through the table and you'll find that a prediction has been
 run on the repo. Congratulations! You've automated a manual classification
 process, and integrated machine learning into a legacy application.
 
-.. image:: /images/integration_demo.gif
+.. image:: https://dffml.github.io/dffml-pre-image-removal/master/_images/integration_demo.gif

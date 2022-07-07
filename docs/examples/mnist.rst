@@ -48,7 +48,7 @@ and the seed to have the input of the associate_definition operation come from t
     style 113e51b1af7d424eee96c632d74847f7 fill:#f6dbf9,stroke:#a178ca
     113e51b1af7d424eee96c632d74847f7 --> 0fbe41b549bb236aabadebd7924379fd
 
-.. image:: /images/mnist-normalize.svg
+.. image:: https://dffml.github.io/dffml-pre-image-removal/master/_images/mnist-normalize.svg
     :alt: Diagarm of MNIST normalization dataflow
 
 Train the model.
@@ -95,7 +95,7 @@ and to have the input of the associate_definition operation come from the output
     style 24e79f7035a289834b34967054b338f5 fill:#f6dbf9,stroke:#a178ca
     24e79f7035a289834b34967054b338f5 --> dc3d3b1a336fbbd51585e31c95f45c83
 
-.. image:: /images/mnist-resize.svg
+.. image:: https://dffml.github.io/dffml-pre-image-removal/master/_images/mnist-resize.svg
     :alt: Diagarm of MNIST resizing and normalizing dataflow
 
 In this example, the ``image.csv`` file contains the names of the following images

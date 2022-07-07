@@ -158,7 +158,7 @@ request is ready for review or not.
 If you want to run one of the tests locally, you reference
 :ref:`running_ci_tests_locally`.
 
-.. image:: /images/how-to-read-ci-tests.png
+.. image:: https://dffml.github.io/dffml-pre-image-removal/master/_images/how-to-read-ci-tests.png
     :alt: Screenshot of CI with some tests passing and some failing
 
 Look through all of the tests and identify which ones are failing. Click on the
