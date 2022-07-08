@@ -3,6 +3,7 @@ import copy
 import types
 import inspect
 import itertools
+import collections
 import pkg_resources
 import collections.abc
 from enum import Enum
@@ -332,12 +333,23 @@ class Definition(NamedTuple):
         if not self.spec:
             del exported["spec"]
             del exported["subspec"]
-        else:
+        elif all(
+            [
+                hasattr(self.spec, key)
+                for key in [
+                    "__qualname__",
+                    "__annotations__",
+                    "_field_defaults",
+                ]
+            ]
+        ):
             exported["spec"] = export_dict(
                 name=self.spec.__qualname__,
                 types=self.spec.__annotations__,
                 defaults=self.spec._field_defaults,
             )
+        else:
+            raise NotImplementedError(f"Unknown how to export {self.spec}")
         return exported
 
     @classmethod
