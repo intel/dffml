@@ -1,17 +1,17 @@
-name: Alice Please Contribute Recommended Community Standards
+name: Alice Should I Contribute?
 
 on:
   workflow_dispatch:
     inputs:
       repo_url:
-        description: 'URL of git repo to contribute community standards to'
+        description: 'URL of git repo to check repo maturity for contribution'
         required: true
         type: string
 
 
 jobs:
-  contribute:
-    name: Contribute
+  collector:
+    name: Collector
     runs-on: ubuntu-latest
     steps:
     - name: Set up Python 3.9
@@ -52,7 +52,7 @@ jobs:
           "https://github.com/intel/dffml/archive/${ALICE_STATE_OF_ART_COMMIT}.zip#egg=alice&subdirectory=entities/alice"
     - name: DFFML Version
       run: dffml version
-    - name: Make contribution
+    - name: Collect data on repo
       env:
         REPO_URL: ${{ github.event.inputs.repo_url }}
       run: |
@@ -61,3 +61,9 @@ jobs:
         cd $(mktemp -d)
         pwd
         alice shouldi contribute -keys "${REPO_URL}" -log debug
+    - uses: actions/upload-artifact@v3
+      with:
+        name: collector_output
+        path: .tools/open-architecture/innersource/repos.json
+    # TODO(alice) Once caching is complete upload DID exported cache of dataflow
+    # optionally with snapshots on intervals provided by overlays as input
