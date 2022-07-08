@@ -1,0 +1,63 @@
+name: Alice Please Contribute Recommended Community Standards
+
+on:
+  workflow_dispatch:
+    inputs:
+      repo_url:
+        description: 'URL of git repo to contribute community standards to'
+        required: true
+        type: string
+
+
+jobs:
+  contribute:
+    name: Contribute
+    runs-on: ubuntu-latest
+    steps:
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.9
+    - name: Configure git user info
+      run: |
+       git config --global user.email "alice@contribute.shouldi.ci.dffml.chadig.com"
+       git config --global user.name "Alice"
+    - name: Configure github CLI auth
+      env:
+        GH_USER: aliceoa
+        GH_ACCESS_TOKEN: ${{ secrets.GH_ACCESS_TOKEN_ALICE_PLEASE_CONTRIBUTE }}
+      run: |
+        mkdir -p ~/.config/gh/
+        echo "github.com:" > ~/.config/gh/hosts.yml
+        echo "    oauth_token: ${GH_ACCESS_TOKEN}" >> ~/.config/gh/hosts.yml
+        echo "    user: ${GH_USER}" >> ~/.config/gh/hosts.yml
+        echo "    git_protocol: https" >> ~/.config/gh/hosts.yml
+        gh auth setup-git
+    - name: Install python dependencies
+      run: |
+        set -x
+        pip install -U pip setuptools wheel
+    - name: Install dependencies
+      run: |
+        set -x
+        export ALICE_STATE_OF_ART_COMMIT=cdec226e72316121d7399a3b171253bde0ce62d9
+        # TODO Update dffml to install from next release once rolled (0.5.0).
+        pip install \
+          "https://github.com/intel/dffml/archive/${ALICE_STATE_OF_ART_COMMIT}.zip#egg=dffml" \
+          "https://github.com/intel/dffml/archive/${ALICE_STATE_OF_ART_COMMIT}.zip#egg=dffml-feature-git&subdirectory=feature/git" \
+          "https://github.com/intel/dffml/archive/${ALICE_STATE_OF_ART_COMMIT}.zip#egg=shouldi&subdirectory=examples/shouldi" \
+          "https://github.com/intel/dffml/archive/${ALICE_STATE_OF_ART_COMMIT}.zip#egg=dffml-config-yaml&subdirectory=configloader/yaml" \
+          "https://github.com/intel/dffml/archive/${ALICE_STATE_OF_ART_COMMIT}.zip#egg=dffml-source-mongodb&subdirectory=source/mongodb" \
+          "https://github.com/intel/dffml/archive/${ALICE_STATE_OF_ART_COMMIT}.zip#egg=dffml-operations-innersource&subdirectory=operations/innersource" \
+          "https://github.com/intel/dffml/archive/${ALICE_STATE_OF_ART_COMMIT}.zip#egg=alice&subdirectory=entities/alice"
+    - name: DFFML Version
+      run: dffml version
+    - name: Make contribution
+      env:
+        REPO_URL: ${{ github.event.inputs.repo_url }}
+      run: |
+        set -x
+        pwd
+        cd $(mktemp -d)
+        pwd
+        alice shouldi contribute -keys "${REPO_URL}" -log debug
