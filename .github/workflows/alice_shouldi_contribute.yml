@@ -58,8 +58,6 @@ jobs:
       run: |
         set -x
         pwd
-        cd $(mktemp -d)
-        pwd
         alice shouldi contribute -keys "${REPO_URL}" -log debug
     - uses: actions/upload-artifact@v3
       with:
