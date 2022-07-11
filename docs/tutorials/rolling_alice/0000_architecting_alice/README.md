@@ -96,6 +96,8 @@ graph BT
   - Come up with new data flows and system context input
 - Thoughts
   - Data Flows and system context input pairs (these two plus orchestration config we get the whole system context)
+- Downstream Validation
+  - Running validation on all dependent packages to check for API breakages or regressions in the ecosystem
 
 ### Expectations
 
