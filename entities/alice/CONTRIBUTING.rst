@@ -17,6 +17,15 @@ Python interpreter breakpointed at the raised exception.
 
     $ python -m pdb -m alice
 
+Cloud Development Environment
+*****************************
+
+Using a cloud development environment gives you a place to work
+that already has everything installed and configured. You can
+start playing around and writing code immediatly.
+
+https://gitpod.io/#github.com/intel/dffml/tree/alice
+
 Cloning the Repo
 ****************
 
