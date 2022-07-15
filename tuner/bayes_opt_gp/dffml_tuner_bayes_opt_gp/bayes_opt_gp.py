@@ -59,6 +59,11 @@ class BayesOptGPContext(TunerContext):
         Trains each permutation of the grid of parameters and compares accuracy.
         Sets model to the best parameters and returns highest accuracy.
 
+        Note that for this tuner, each hyperparameter field to be tuned must have exactly 2 values 
+        specified, representing the minimum and maximum values in the search space for that 
+        hyperparameter. Additionally, they must be either float/integer values. Otherwise,
+        an error is raised.
+
         Parameters
         ----------
         model : ModelContext
@@ -83,7 +88,7 @@ class BayesOptGPContext(TunerContext):
         """
 
         nest_asyncio.apply()
-        
+
         def check_parameters(pars):
             for (pax, vals) in pars.items():
                 if len(vals) != 2:

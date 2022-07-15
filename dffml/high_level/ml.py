@@ -387,25 +387,22 @@ async def tune(
             ]
         else:
             predict_feature = [model.config.predict.name]
-
-    if hasattr(model.config, "features") and any(
-        isinstance(td, list) for td in train_ds
-    ):
-        train_ds = list_records_to_dict(
-            [feature.name for feature in model.config.features]
-            + predict_feature,
-            *train_ds,
-            model=model,
-        )
-    if hasattr(model.config, "features") and any(
-        isinstance(td, list) for td in valid_ds
-    ):
-        valid_ds = list_records_to_dict(
-            [feature.name for feature in model.config.features]
-            + predict_feature,
-            *valid_ds,
-            model=model,
-        )
+    
+    def records_to_dict_check(ds):
+        if hasattr(model.config, "features") and any(
+            isinstance(td, list) for td in ds
+        ):
+            return list_records_to_dict(
+                [feature.name for feature in model.config.features]
+                + predict_feature,
+                *ds,
+                model=model,
+            )
+        return ds
+        
+    train_ds = records_to_dict_check(train_ds)
+    valid_ds = records_to_dict_check(valid_ds)
+    
 
     async with contextlib.AsyncExitStack() as astack:
         # Open sources
@@ -418,7 +415,7 @@ async def tune(
         elif isinstance(model, ModelContext):
             mctx = model
 
-        # Allow for keep models open
+        # Allow for scorers to be kept open
         if isinstance(accuracy_scorer, AccuracyScorer):
             accuracy_scorer = await astack.enter_async_context(accuracy_scorer)
             actx = await astack.enter_async_context(accuracy_scorer())

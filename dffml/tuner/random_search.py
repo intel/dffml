@@ -76,7 +76,7 @@ class RandomSearchContext(TunerContext):
 
         best_config = dict()
         logging.info(
-            f"Optimizing model with parameter grid: {self.parent.config.parameters}"
+            f"Optimizing model with random search: {self.parent.config.parameters}"
         )
 
         names = list(self.parent.config.parameters.keys())

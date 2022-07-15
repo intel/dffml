@@ -25,7 +25,3 @@ dffml tune \
     -source-test-foldername rps-test-set/rps-test-set \
     -source-test-feature image \
     -source-test-labels rock paper scissors \
-
-  
-  
- 

@@ -100,7 +100,6 @@ class ParameterGridContext(TunerContext):
                 if self.parent.config.objective == "min":
                     if acc < highest_acc:
                         highest_acc = acc
-                        
                 elif self.parent.config.objective == "max":
                     if acc > highest_acc:
                         highest_acc = acc
