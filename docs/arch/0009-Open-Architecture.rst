@@ -18,7 +18,7 @@ any system architecture.
 Context
 *******
 
-This document describes the Open Architecture; a proxy format for domain
+This document describes the Open Architecture; a proxy to domain
 specific representations of architecture.
 
 The Open Architecture is a methodology for intepretation of exisitng
@@ -38,9 +38,11 @@ implementation while maintaining principles.
 The smart contract is able to make its own decisions based on learned
 experience so as to continue to operate until its strategic goals are meet.
 As measured by oracle data ordained from trusted parties as is
-applicable to context. Where chains of trust are established via Peer DIDs
+applicable to context. Where chains of trust are established via DIDs
 between entities and data for provenance. Leveraging verifiable credentials
 for review system to measure risk in absence of attestation.
+
+Our reference architecture is built around a specs such as SBOM, VEX, and DIDs.
 
 Intent
 ******
