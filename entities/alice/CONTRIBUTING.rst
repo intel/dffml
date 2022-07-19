@@ -5,6 +5,9 @@ This document describes how to write Open Architecture overlays,
 overlays for Alice, how to work within the codebase, and the
 contribution process.
 
+Alice is very much a work in progress. See
+https://github.com/intel/dffml/pull/1401 for status.
+
 Debugging
 *********
 
