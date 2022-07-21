@@ -81,7 +81,7 @@ Create a new git repo and add some contents
 
 .. code-block:: console
 
-    $ gh repo create -y --internal https://github.com/$USER/my-new-python-project
+    $ gh repo create -y --private https://github.com/$USER/my-new-python-project
     $ my-new-python-project
     $ echo 'print("Hello World")' > test.py
     $ git add test.py
