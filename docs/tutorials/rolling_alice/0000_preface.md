@@ -23,7 +23,7 @@ How do we build it with intention? We flush it out conceptually via our collecti
 
 ## Rolling Alice
 
-In this 7 volume tutorial series we roll Alice. This series will be written a chapter per quarter, over the next 1-2 years. Open Architecture Working Group meeting to parallelize workstreams mid July comment here to request invite. Link will be posted sometime in July here as well.
+In this 7 volume tutorial series we roll Alice. This series will be written over the next 7 years. Alice Initiative/Open Architecture Working Group will meet to parallelize workstreams end of July: https://github.com/intel/dffml/discussions/1406#discussioncomment-3216576
 
 Alice’s architecture, the open architecture, is based around thought. She communicates thoughts to us in whatever level of detail or viewed through whatever lens one wishes. She explores trains of thought and responds based on triggers and deadlines. She thinks in graphs, aka trains of thought, aka chains of system contexts. She operates in parallel, allowing her to represent N different entities.
 
