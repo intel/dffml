@@ -172,7 +172,7 @@ This thread is a central place for everyone interested to participate and collab
 
 ## References
 
-- Open Architecture RFC: [Open-Architecture.txt](https://raw.githubusercontent.com/intel/dffml/alice/docs/rfcs/0000-Open-Architecture.txt)
+- Open Architecture: https://github.com/intel/dffml/blob/alice/docs/arch/0009-Open-Architecture.rst
 - Alice Date 0 = Gregorian Calendar Date 2022-04-16 ~ 11 AM
 - First Name: Alice
 - Middle Name: O
