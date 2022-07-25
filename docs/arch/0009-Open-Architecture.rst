@@ -64,6 +64,12 @@ References
   - John L Whiteman & John S Andersen, "Living Threat Models", June 11th 2022
   - https://github.com/johnlwhiteman/living-threat-models
 
+- An Architecture for Trustworthy and Transparent Digital Supply Chains (IETF/SCITT)
+
+  - https://datatracker.ietf.org/doc/html/draft-birkholz-scitt-architecture
+  - https://github.com/intel/dffml/discussions/1406#discussioncomment-3223361
+  - https://docs.google.com/document/d/1vf-EliXByhg5HZfgVbTqZhfaJFCmvMdQuZ4tC-Eq6wg/edit?pli=1#
+
 - TODO
 
   - Add content from discussion thread
