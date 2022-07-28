@@ -19,6 +19,7 @@ class GitRepoCheckedOutSpec(NamedTuple):
 URLType = NewType("URL", str)
 NoGitBranchGivenType = NewType("no_git_branch_given", bool)
 GitBranchType = NewType("git_branch", str)
+GitRemoteType = NewType("git_remote", str)
 
 definitions = [
     Definition(name="quarter_start_date", primitive="int"),
@@ -28,6 +29,7 @@ definitions = [
     Definition(name="git_repo_ssh_key", primitive="string", default=None),
     Definition(name="valid_git_repository_URL", primitive="boolean"),
     new_type_to_defininition(GitBranchType),
+    new_type_to_defininition(GitRemoteType),
     Definition(
         name="git_repository",
         primitive="Dict[str, str]",
