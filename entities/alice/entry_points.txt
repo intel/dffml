@@ -5,11 +5,8 @@ alice = alice.cli:AliceCLI.main
 Alice = alice.system_context:Alice
 
 [dffml.overlays.alice.please.contribute.recommended_community_standards]
-CLI                                  = alice.please.contribute.recommended_community_standards.cli:AlicePleaseContributeRecommendedCommunityStandardsOverlayCLI
-Git                                  = alice.please.contribute.recommended_community_standards.recommended_community_standards:AlicePleaseContributeRecommendedCommunityStandardsOverlayGit
-GitHubIssue                          = alice.please.contribute.recommended_community_standards.recommended_community_standards:AlicePleaseContributeRecommendedCommunityStandardsOverlayGitHubIssue
-GitHubWritableRemotesFromPermissions = alice.please.contribute.recommended_community_standards.recommended_community_standards:AlicePleaseContributeRecommendedCommunityStandardsOverlayGitHubWritableRemotesFromPermissions
-GitHubPullRequest                    = alice.please.contribute.recommended_community_standards.recommended_community_standards:AlicePleaseContributeRecommendedCommunityStandardsOverlayGitHubPullRequest
-GitHubPullRequestReferenceIssue      = alice.please.contribute.recommended_community_standards.recommended_community_standards:AlicePleaseContributeRecommendedCommunityStandardsOverlayGitHubPullRequestReferenceIssue
-AliceOperationsGit                   = alice.please.contribute.recommended_community_standards.recommended_community_standards:AlicePleaseContributeRecommendedCommunityStandardsOverlayAliceOperationsGit
-OperationsGit                        = alice.please.contribute.recommended_community_standards.recommended_community_standards:AlicePleaseContributeRecommendedCommunityStandardsOverlayOperationsGit
+CLI                                            = alice.please.contribute.recommended_community_standards.cli:OverlayCLI
+OverlayGit                                     = alice.please.contribute.recommended_community_standards.recommended_community_standards:OverlayGit
+OverlayGitHub                                  = alice.please.contribute.recommended_community_standards.recommended_community_standards:OverlayGitHub
+OverlayREADME                                  = alice.please.contribute.recommended_community_standards.recommended_community_standards:OverlayREADME
+OverlayMetaIssue                               = alice.please.contribute.recommended_community_standards.recommended_community_standards:OverlayMetaIssue
