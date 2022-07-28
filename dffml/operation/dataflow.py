@@ -1,7 +1,7 @@
 from typing import Dict, Any
 
 from ..base import config
-from ..df.base import op, OperationImplementationContext
+from ..df.base import op, OperationImplementationContext, BaseInputSetContext
 from ..df.types import DataFlow, Input, Definition
 
 
@@ -22,6 +22,7 @@ class InvalidCustomRunDataFlowOutputs(Exception):
 @config
 class RunDataFlowConfig:
     dataflow: DataFlow
+    input_set_context_cls: BaseInputSetContext = None
 
 
 DEFAULT_INPUTS = {
@@ -186,21 +187,33 @@ class run_dataflow(OperationImplementationContext):
         # an OperationImplementation (and then keep this as the context).
         ctx_input_name, ctx_definition = list(self.parent.op.inputs.items())[0]
 
-        if ctx_definition.primitive not in ["string", "str"]:
+        if self.parent.config.input_set_context_cls is not None:
+            subflow_input_set_context = self.parent.config.input_set_context_cls(
+                inputs[ctx_input_name]
+            )
+        elif ctx_definition.primitive not in ["string", "str"]:
             raise InvalidCustomRunDataFlowContext(ctx_definition.export())
-
-        subflow_inputs = {inputs[ctx_input_name]: []}
+        else:
+            subflow_input_set_context = inputs[ctx_input_name]
+            if isinstance(subflow_input_set_context, Input):
+                subflow_input_set_context = subflow_input_set_context.value
+        # Create the dict where we will fill the one context with our inputs
+        subflow_inputs = {subflow_input_set_context: []}
 
         for input_name, value in inputs.items():
             definition = self.parent.op.inputs[input_name]
-            subflow_inputs[inputs[ctx_input_name]].append(
-                Input(value=value, definition=definition)
-            )
+            if isinstance(value, Input):
+                item = value
+            else:
+                item = Input(value=value, definition=definition)
+            subflow_inputs[subflow_input_set_context].append(item)
 
         op_outputs = sorted(self.parent.op.outputs.keys())
 
         async with self.subflow(self.config.dataflow) as octx:
-            async for ctx, result in octx.run(subflow_inputs, parent=self.octx):
+            async for ctx, result in octx.run(
+                subflow_inputs, parent=self.octx
+            ):
                 if op_outputs != sorted(result.keys()):
                     raise InvalidCustomRunDataFlowOutputs(
                         ctx_definition.export()
