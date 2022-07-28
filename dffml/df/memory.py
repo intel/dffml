@@ -269,7 +269,9 @@ class MemoryInputNetworkContextEntry(NamedTuple):
 
 
 class MemoryDefinitionSetContext(BaseDefinitionSetContext):
-    async def inputs(self, definition: Definition) -> AsyncIterator[Input]:
+    async def inputs(
+        self, definition: Optional[Definition] = None
+    ) -> AsyncIterator[Input]:
         # Grab the input set context handle
         handle = await self.ctx.handle()
         handle_string = handle.as_string()
@@ -277,8 +279,12 @@ class MemoryDefinitionSetContext(BaseDefinitionSetContext):
         async with self.parent.ctxhd_lock:
             # Yield all items under the context for the given definition
             entry = self.parent.ctxhd[handle_string]
-            for item in entry.definitions[definition]:
-                yield item
+            definitions = [definition]
+            if definition is None:
+                definitions = entry.definitions.keys()
+            for yield_inputs_within_definition in definitions:
+                for item in entry.definitions[yield_inputs_within_definition]:
+                    yield item
 
 
 class MemoryInputNetworkContext(BaseInputNetworkContext):

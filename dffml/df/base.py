@@ -44,6 +44,7 @@ from ..base import (
     BaseDataFlowFacilitatorObjectContext,
     BaseDataFlowFacilitatorObject,
 )
+from ..util.entrypoint import Entrypoint
 from ..util.cli.arg import Arg
 from ..util.data import get_origin, get_args
 from ..util.asynchelper import context_stacker
@@ -720,7 +721,8 @@ class BaseContextHandle(abc.ABC):
         pass
 
 
-class BaseInputSetContext(abc.ABC):
+@base_entry_point("dffml.df.input_set_context", "isctx")
+class BaseInputSetContext(Entrypoint):
     @abc.abstractmethod
     async def handle(self) -> BaseContextHandle:
         pass
@@ -829,7 +831,9 @@ class BaseDefinitionSetContext(BaseDataFlowObjectContext):
         self.ctx = ctx
 
     @abc.abstractmethod
-    async def inputs(self, Definition: Definition) -> AsyncIterator[Input]:
+    async def inputs(
+        self, Definition: Optional[Definition] = None
+    ) -> AsyncIterator[Input]:
         """
         Asynchronous iterator of all inputs within a context, which are of a
         definition.
