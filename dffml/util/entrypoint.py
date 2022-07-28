@@ -6,6 +6,7 @@ to their subclasses.
 """
 import os
 import sys
+import inspect
 import pathlib
 import importlib
 import traceback
@@ -153,6 +154,8 @@ class Entrypoint(object):
         Loads all installed loading and returns them as a list. Sources to be
         loaded should be registered to ENTRYPOINT via setuptools.
         """
+        if inspect.isclass(loading) and issubclass(loading, cls):
+            return loading
         if entrypoint is None:
             entrypoint = cls.ENTRYPOINT
         try:
