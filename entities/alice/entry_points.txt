@@ -13,3 +13,4 @@ OverlayMetaIssue                               = alice.please.contribute.recomme
 
 [dffml.overlays.alice.please.contribute.recommended_community_standards.overlay.readme]
 OverlayGit                                     = alice.please.contribute.recommended_community_standards.recommended_community_standards:OverlayGit
+OverlayGitHub                                  = alice.please.contribute.recommended_community_standards.recommended_community_standards:OverlayGitHub
