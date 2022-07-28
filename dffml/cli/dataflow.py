@@ -512,6 +512,7 @@ class DiagramConfig:
         default_factory=lambda: [],
     )
     simple: bool = field("Don't display input and output names", default=False)
+    shortname: bool = field("Cut long operation names", default=False)
     display: str = field(
         "How to display (TD: top down, LR, RL, BT)", default="TD",
     )
@@ -553,9 +554,17 @@ class Diagram(CMD):
                 subgraph_node = insecure_hash("subgraph." + instance_name)
                 node = insecure_hash(instance_name)
                 if not self.simple:
-                    print(f"subgraph {subgraph_node}[{instance_name}]")
+                    if ":" in instance_name and self.shortname:
+                        print(
+                            f"subgraph {subgraph_node}[{instance_name.split(':')[-1]}]"
+                        )
+                    else:
+                        print(f"subgraph {subgraph_node}[{instance_name}]")
                     print(f"style {subgraph_node} fill:#fff4de,stroke:#cece71")
-                print(f"{node}[{operation.instance_name}]")
+                if ":" in operation.instance_name and self.shortname:
+                    print(f"{node}[{operation.instance_name.split(':')[-1]}]")
+                else:
+                    print(f"{node}[{operation.instance_name}]")
                 for input_name in operation.inputs.keys():
                     input_node = insecure_hash(
                         "input." + instance_name + "." + input_name
