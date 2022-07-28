@@ -93,7 +93,6 @@ async def run_command_events(
                     yield Subprocess.STDOUT, b"".join(
                         output[Subprocess.STDOUT_READLINE]
                     )
-                return
         # If caller wants event
         if events and event in events:
             yield event, result
