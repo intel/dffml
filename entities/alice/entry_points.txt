@@ -5,11 +5,11 @@ alice = alice.cli:AliceCLI.main
 Alice = alice.system_context:Alice
 
 [dffml.overlays.alice.please.contribute.recommended_community_standards]
-Git                                  = alice.please.contribute.recommended_community_standards.dffml.operations.git.contribute:AlicePleaseContributeRecommendedCommunityStandardsOverlayGit
-GitHubIssue                          = alice.please.contribute.recommended_community_standards.alice.operations.github.issue:AlicePleaseContributeRecommendedCommunityStandardsOverlayGitHubIssue
-GitHubWritableRemotesFromPermissions = alice.please.contribute.recommended_community_standards.alice.operations.github.permissions_checks:AlicePleaseContributeRecommendedCommunityStandardsOverlayGitHubWritableRemotesFromPermissions
-GitHubPullRequest                    = alice.please.contribute.recommended_community_standards.alice.operations.github.pull_request:AlicePleaseContributeRecommendedCommunityStandardsOverlayGitHubPullRequest
-GitHubPullRequestReferenceIssue      = alice.please.contribute.recommended_community_standards.alice.operations.github.pull_request:AlicePleaseContributeRecommendedCommunityStandardsOverlayGitHubPullRequestReferenceIssue
 CLI                                  = alice.please.contribute.recommended_community_standards.cli:AlicePleaseContributeRecommendedCommunityStandardsOverlayCLI
-AliceOperationsGit                   = alice.please.contribute.recommended_community_standards.dffml.operations.git.alice:AlicePleaseContributeRecommendedCommunityStandardsOverlayAliceOperationsGit
-OperationsGit                        = alice.please.contribute.recommended_community_standards.dffml.operations.git.git:AlicePleaseContributeRecommendedCommunityStandardsOverlayOperationsGit
+Git                                  = alice.please.contribute.recommended_community_standards.recommended_community_standards:AlicePleaseContributeRecommendedCommunityStandardsOverlayGit
+GitHubIssue                          = alice.please.contribute.recommended_community_standards.recommended_community_standards:AlicePleaseContributeRecommendedCommunityStandardsOverlayGitHubIssue
+GitHubWritableRemotesFromPermissions = alice.please.contribute.recommended_community_standards.recommended_community_standards:AlicePleaseContributeRecommendedCommunityStandardsOverlayGitHubWritableRemotesFromPermissions
+GitHubPullRequest                    = alice.please.contribute.recommended_community_standards.recommended_community_standards:AlicePleaseContributeRecommendedCommunityStandardsOverlayGitHubPullRequest
+GitHubPullRequestReferenceIssue      = alice.please.contribute.recommended_community_standards.recommended_community_standards:AlicePleaseContributeRecommendedCommunityStandardsOverlayGitHubPullRequestReferenceIssue
+AliceOperationsGit                   = alice.please.contribute.recommended_community_standards.recommended_community_standards:AlicePleaseContributeRecommendedCommunityStandardsOverlayAliceOperationsGit
+OperationsGit                        = alice.please.contribute.recommended_community_standards.recommended_community_standards:AlicePleaseContributeRecommendedCommunityStandardsOverlayOperationsGit
