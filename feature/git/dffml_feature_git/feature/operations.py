@@ -135,7 +135,7 @@ async def clone_git_repo(self, URL: str, ssh_key: str = None):
 
 @op(
     inputs={"repo": git_repository},
-    outputs={"branch": git_branch},
+    outputs={"branch": git_branch, "remote": git_remote},
     conditions=[no_git_branch_given],
 )
 async def git_repo_default_branch(repo: Dict[str, str]):
@@ -146,8 +146,9 @@ async def git_repo_default_branch(repo: Dict[str, str]):
     if not list(filter(bool, branches)):
         return
     main = [branch for branch in branches if "->" in branch][0].split()[-1]
-    main = main.split("/")[-1]
-    return {"branch": main}
+    # origin/HEAD -> origin/main
+    # {'branch': 'main', 'remote': 'origin'}
+    return dict(zip(["remote", "branch"], main.split("/", maxsplit=1)))
 
 
 @op(
