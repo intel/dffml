@@ -113,9 +113,7 @@ class OverlayGit:
         if list(filter(bool, branches)):
             return
         await dffml.run_command(
-            ["git", "branch", "-M", name],
-            cwd=repo.directory,
-            logger=self.logger,
+            ["git", "branch", "-M", name], cwd=repo.directory, logger=self.logger,
         )
         await dffml.run_command(
             ["git", "commit", "-m", "Created branch", "--allow-empty"],
@@ -145,9 +143,7 @@ async def github_owns_remote(
         events=[dffml.Subprocess.STDOUT_READLINE],
     ):
         if event is dffml.Subprocess.STDOUT_READLINE:
-            remote, url_and_usages = (
-                result.decode().strip().split("\t", maxsplit=2)
-            )
+            remote, url_and_usages = result.decode().strip().split("\t", maxsplit=2)
             if remote != check_remote:
                 continue
             url = url_and_usages.split()[0]
@@ -284,9 +280,7 @@ class OverlayREADME:
     def create_readme_file_if_not_exists(
         self,
         repo: ReadmeGitRepo,
-        readme_contents: Optional[
-            "ReadmeContents"
-        ] = "# My Awesome Project's README",
+        readme_contents: Optional["ReadmeContents"] = "# My Awesome Project's README",
     ) -> "ReadmePath":
         # Do not create readme if it already exists
         path = pathlib.Path(repo.directory, "README.md")
@@ -320,13 +314,9 @@ class OverlayREADME:
                     )
             elif event is dffml.Subprocess.COMPLETED:
                 if result != 0:
-                    raise RuntimeError(
-                        "Failed to create branch for contribution"
-                    )
+                    raise RuntimeError("Failed to create branch for contribution")
         await dffml.run_command(
-            ["git", "add", "README.md"],
-            cwd=repo.directory,
-            logger=self.logger,
+            ["git", "add", "README.md"], cwd=repo.directory, logger=self.logger,
         )
         await dffml.run_command(
             ["git", "commit", "-sm", commit_message],
@@ -385,9 +375,7 @@ class OverlayREADME:
     async def readme_issue(
         self,
         repo: ReadmeGitRepo,
-        title: Optional[
-            "ReadmeIssueTitle"
-        ] = "Recommended Community Standard: README",
+        title: Optional["ReadmeIssueTitle"] = "Recommended Community Standard: README",
         body: Optional[
             "ReadmeIssueBody"
         ] = "References:\n- https://docs.github.com/articles/about-readmes/",
@@ -412,9 +400,7 @@ class OverlayREADME:
                 return result.strip().decode()
 
     @staticmethod
-    def readme_commit_message(
-        issue_url: "ReadmeIssue",
-    ) -> "ReadmeCommitMessage":
+    def readme_commit_message(issue_url: "ReadmeIssue",) -> "ReadmeCommitMessage":
         return textwrap.dedent(
             f"""
             Recommended Community Standard: README
@@ -427,23 +413,12 @@ class OverlayREADME:
     async def readme_pr_body(readme_issue: "ReadmeIssue",) -> "ReadmePRBody":
         return f"Closes: {readme_issue}"
 
-    async def readme_pr_title(
-        self, readme_issue: "ReadmeIssue",
-    ) -> "ReadmePRTitle":
+    async def readme_pr_title(self, readme_issue: "ReadmeIssue",) -> "ReadmePRTitle":
         """
         Use the issue title as the pull request title
         """
         async for event, result in dffml.run_command_events(
-            [
-                "gh",
-                "issue",
-                "view",
-                "--json",
-                "title",
-                "-q",
-                ".title",
-                readme_issue,
-            ],
+            ["gh", "issue", "view", "--json", "title", "-q", ".title", readme_issue,],
             logger=self.logger,
             events=[dffml.Subprocess.STDOUT],
         ):
