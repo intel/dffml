@@ -261,6 +261,10 @@ class OverlayREADME:
                     outputs={},
                 )
                 # TODO Optionally support forward subflow
+                # TODO After OpImp.run refactor to take inputs as Input objects
+                # set parents here. Also ensure parent context is set correctly
+                # through when custom context is used to maintain chains of
+                # thoughts.
                 await dffml.run_dataflow.run_custom(
                     custom_run_dataflow_ctx,
                     {
