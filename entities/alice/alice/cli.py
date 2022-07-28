@@ -18,7 +18,7 @@ import shouldi.cli
 import dffml_operations_innersource.cli
 
 
-from .system_context import Alice
+from .system_context import Alice, alice_version
 
 # from .threats_md import THREATS_MD_DATAFLOW
 THREATS_MD_DATAFLOW = dffml.DataFlow()
@@ -164,6 +164,11 @@ class AlicePleaseCLI(dffml.CMD):
     contribute = AlicePleaseContributeCLI
 
 
+class AliceVersionCLI(dffml.CMD):
+    async def run(self):
+        print(alice_version())
+
+
 class AliceCLI(dffml.CMD):
     r"""
                             .,*&&888@@#&:,
@@ -247,3 +252,4 @@ class AliceCLI(dffml.CMD):
     shouldi = ShouldiCLI
     threats = AliceThreatsMd
     please = AlicePleaseCLI
+    version = AliceVersionCLI
