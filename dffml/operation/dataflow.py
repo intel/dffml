@@ -1,7 +1,12 @@
 from typing import Dict, Any
 
 from ..base import config
-from ..df.base import op, OperationImplementationContext, BaseInputSetContext
+from ..df.base import (
+    op,
+    OperationImplementationContext,
+    BaseInputSetContext,
+    BaseDataFlowObjectContext,
+)
 from ..df.types import DataFlow, Input, Definition
 
 
@@ -23,6 +28,7 @@ class InvalidCustomRunDataFlowOutputs(Exception):
 class RunDataFlowConfig:
     dataflow: DataFlow
     input_set_context_cls: BaseInputSetContext = None
+    reuse: Dict[str, BaseDataFlowObjectContext] = None
 
 
 DEFAULT_INPUTS = {
@@ -210,7 +216,9 @@ class run_dataflow(OperationImplementationContext):
 
         op_outputs = sorted(self.parent.op.outputs.keys())
 
-        async with self.subflow(self.config.dataflow) as octx:
+        async with self.subflow(
+            self.config.dataflow, reuse=self.config.reuse
+        ) as octx:
             async for ctx, result in octx.run(
                 subflow_inputs, parent=self.octx
             ):
