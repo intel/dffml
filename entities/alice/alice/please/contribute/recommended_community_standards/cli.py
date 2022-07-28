@@ -114,8 +114,9 @@ class OverlayCLI:
                 ]
             )
         )
+        # TODO copy.deepcopy(self.octx.config.dataflow)?
         async with dffml.run_dataflow.imp(
-            dataflow=self.octx.config.dataflow,
+            dataflow=copy.deepcopy(self.octx.config.dataflow),
         ) as custom_run_dataflow:
             # Copy all inputs from parent context into child. We eventually
             # should have InputNetworks which support acting as generic Copy on
