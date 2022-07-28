@@ -14,7 +14,9 @@ from typing import Dict, List, Optional, AsyncIterator, NamedTuple, NewType
 
 import dffml
 
-from .recommended_community_standards import AlicePleaseContributeRecommendedCommunityStandards
+from .recommended_community_standards import (
+    AlicePleaseContributeRecommendedCommunityStandards,
+)
 
 
 DFFMLCLICMD = NewType("dffml.util.cli.CMD", object)
@@ -23,7 +25,7 @@ AlicePleaseContributeRecommendedCommunityStandardsExecutedFromCLI = NewType(
 )
 
 # TODO A way to deactivate installed overlays so they are not merged or applied.
-class AlicePleaseContributeRecommendedCommunityStandardsOverlayCLI:
+class OverlayCLI:
     CLIRunOnRepo = NewType("CLIRunOnRepo", str)
 
     @staticmethod
@@ -66,7 +68,9 @@ class AlicePleaseContributeRecommendedCommunityStandardsOverlayCLI:
         for repo in cmd.repos:
             yield repo
 
-    async def cli_run_on_repo(self, repo: "CLIRunOnRepo"):
+    async def cli_run_on_repo(
+        self, repo: "CLIRunOnRepo"
+    ) -> AlicePleaseContributeRecommendedCommunityStandards.RepoString:
         # TODO Similar to Expand being an alias of Union
         #
         # async def cli_run_on_repo(self, repo: 'CLIRunOnRepo') -> SystemContext[StringInputSetContext[AliceGitRepo]]:
@@ -75,19 +79,81 @@ class AlicePleaseContributeRecommendedCommunityStandardsOverlayCLI:
         # Or ideally at class scope
         #
         # 'CLIRunOnRepo' -> SystemContext[StringInputSetContext[AliceGitRepo]]
-        async with self.parent.__class__(self.parent.config) as custom_run_dataflow:
+        """
+        async with dffml.run_dataflow.imp(
+            dataflow=self.octx.config.dataflow,
+        ) as custom_run_dataflow:
             async with custom_run_dataflow(
                 self.ctx, self.octx
             ) as custom_run_dataflow_ctx:
                 # This is the type cast
-                custom_run_dataflow.op = self.parent.op._replace(
+                custom_run_dataflow.op = custom_run_dataflow.op._replace(
                     inputs={
                         "repo": AlicePleaseContributeRecommendedCommunityStandards.RepoString
-                    }
+                    },
+                    outputs={},
                 )
                 # Set the dataflow to be the same flow
-                # TODO Reuse ictx? Is that applicable?
-                custom_run_dataflow.config.dataflow = self.octx.config.dataflow
                 await dffml.run_dataflow.run_custom(
                     custom_run_dataflow_ctx, {"repo": repo},
+                )
+        """
+        # TODO Clean this up once SystemContext refactor complete
+        # This is used to ensure we don't add any inputs that would retrigger
+        # any operations within this overlay when calling the subflow.
+        overlay_cli_dataflow = dffml.DataFlow(
+            *itertools.chain(
+                *[
+                    dffml.object_to_operations(cls)
+                    for cls in [
+                        OverlayCLI,
+                        *dffml.Overlay.load(
+                            entrypoint="dffml.overlays.alice.please.contribute.recommended_community_standards.overlay.cli"
+                        ),
+                    ]
+                ]
+            )
+        )
+        async with dffml.run_dataflow.imp(
+            dataflow=self.octx.config.dataflow,
+        ) as custom_run_dataflow:
+            # Copy all inputs from parent context into child. We eventually
+            # should have InputNetworks which support acting as generic Copy on
+            # Write over an underlying InputNetwork.
+            async with custom_run_dataflow(
+                self.ctx, self.octx
+            ) as custom_run_dataflow_ctx:
+                async with self.octx.ictx.definitions(self.ctx) as definitions:
+                    custom_run_dataflow.config.dataflow.seed = (
+                        custom_run_dataflow.config.dataflow.seed
+                        + [
+                            item
+                            async for item in definitions.inputs()
+                            if (
+                                item.definition
+                                in custom_run_dataflow.config.dataflow.definitions.values()
+                                and item.definition
+                                not in overlay_cli_dataflow.definitions.values()
+                            )
+                        ]
+                    )
+                input_key = list(self.parent.op.inputs.keys())[0]
+                key, definition = list(self.parent.op.outputs.items())[0]
+                # This is the type cast
+                custom_run_dataflow.op = custom_run_dataflow.op._replace(
+                    # TODO Debug why the commented out version doesn't work
+                    # Likely due to re-auto-definition
+                    inputs={input_key: definition},
+                    outputs={},
+                )
+                await dffml.run_dataflow.run_custom(
+                    custom_run_dataflow_ctx,
+                    {
+                        input_key: dffml.Input(
+                            value=repo,
+                            definition=definition,
+                            parents=None,
+                            origin=(self.parent.op.instance_name, key),
+                        )
+                    },
                 )
