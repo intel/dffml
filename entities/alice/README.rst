@@ -7,8 +7,8 @@ for more information on Alice. She is our developer helper.
 Install
 *******
 
-DFFML currently **supports Python 3.7 to 3.9 on Linux**. If your distribution's
-package manager doesn't provide Python 3.7 through 3.9,
+Alice currently **supports Python 3.9 on Linux**. If your distribution's
+package manager doesn't provide Python 3.9,
 `pyenv <https://github.com/pyenv/pyenv#simple-python-version-management-pyenv>`_
 is another good way to install it. You could also use the docker container.
 
