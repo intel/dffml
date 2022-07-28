@@ -207,26 +207,30 @@ class OverlayREADME:
     ReadmePRBody = NewType("github.pr.body", str)
 
     # async def cli_run_on_repo(self, repo: "CLIRunOnRepo"):
-    async def alice_contribute_readme(
-        self, repo: AliceGitRepo
-    ) -> ReadmeGitRepo:
+    async def alice_contribute_readme(self, repo: AliceGitRepo) -> ReadmeGitRepo:
         # TODO Clean this up once SystemContext refactor complete
-        overlay_readme_dataflow = dffml.DataFlow(
+        readme_dataflow_cls_upstream = OverlayREADME
+        readme_dataflow_cls_overlays = dffml.Overlay.load(
+            entrypoint="dffml.overlays.alice.please.contribute.recommended_community_standards.overlay.readme"
+        )
+        readme_dataflow_upstream = dffml.DataFlow(
+            *dffml.object_to_operations(readme_dataflow_cls_upstream)
+        )
+        # auto_flow with overlays
+        readme_dataflow = dffml.DataFlow(
             *itertools.chain(
                 *[
                     dffml.object_to_operations(cls)
                     for cls in [
-                        OverlayREADME,
-                        *dffml.Overlay.load(
-                            entrypoint="dffml.overlays.alice.please.contribute.recommended_community_standards.overlay.readme"
-                        ),
+                        readme_dataflow_cls_upstream,
+                        *readme_dataflow_cls_overlays,
                     ]
                 ]
             )
         )
         async with dffml.run_dataflow.imp(
             # dataflow=self.octx.config.dataflow,
-            dataflow=overlay_readme_dataflow,
+            dataflow=readme_dataflow,
             input_set_context_cls=AliceGitRepoInputSetContext,
         ) as custom_run_dataflow:
             # Copy all inputs from parent context into child. We eventually
@@ -236,6 +240,8 @@ class OverlayREADME:
                 self.ctx, self.octx
             ) as custom_run_dataflow_ctx:
                 async with self.octx.ictx.definitions(self.ctx) as definitions:
+                    # Only add / forward inputs to this flow (the base flow,
+                    # _upstream in this case)
                     custom_run_dataflow.config.dataflow.seed = (
                         custom_run_dataflow.config.dataflow.seed
                         + [
@@ -243,7 +249,7 @@ class OverlayREADME:
                             async for item in definitions.inputs()
                             if (
                                 item.definition
-                                in custom_run_dataflow.config.dataflow.definitions.values()
+                                in readme_dataflow_upstream.definitions.values()
                                 and item.definition
                                 not in self.parent.op.inputs.values()
                             )
@@ -258,6 +264,7 @@ class OverlayREADME:
                     inputs={input_key: definition},
                     outputs={},
                 )
+                # TODO Optionally support forward subflow
                 await dffml.run_dataflow.run_custom(
                     custom_run_dataflow_ctx,
                     {
