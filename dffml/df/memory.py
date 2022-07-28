@@ -1200,19 +1200,22 @@ class MemoryOperationImplementationNetworkContext(
         ) as opctx:
             self.logger.debug("---")
             self.logger.debug(
-                "Stage: %s: %s",
+                "%s Stage: %s: %s",
+                operation.instance_name,
                 operation.stage.value.upper(),
                 operation.instance_name,
             )
             str_inputs = str(inputs)
             self.logger.debug(
-                "Inputs: %s",
+                "%s Inputs: %s",
+                operation.instance_name,
                 str_inputs
                 if len(str_inputs) < 512
                 else (str_inputs[:512] + "..."),
             )
             self.logger.debug(
-                "Conditions: %s",
+                "%s Conditions: %s",
+                operation.instance_name,
                 dict(
                     zip(
                         map(
@@ -1226,7 +1229,8 @@ class MemoryOperationImplementationNetworkContext(
             outputs = await opctx.run(inputs)
             str_outputs = str(outputs)
             self.logger.debug(
-                "Outputs: %s",
+                "%s Outputs: %s",
+                operation.instance_name,
                 str_outputs
                 if len(str_outputs) < 512
                 else (str_outputs[:512] + "..."),
