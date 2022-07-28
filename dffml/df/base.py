@@ -115,6 +115,7 @@ class OperationImplementationContext(BaseDataFlowObjectContext):
         self,
         dataflow,
         *,
+        reuse: Dict[str, BaseDataFlowObjectContext] = None,
         overlay: Optional[DataFlow] = None,
         overlay_application_orchestrator: Optional["BaseOrchestrator"] = None,
     ):
@@ -159,7 +160,7 @@ class OperationImplementationContext(BaseDataFlowObjectContext):
             async with overlay_cls(orchestrator=self.octx.parent) as overlay:
                 async with overlay() as overlay_context:
                     dataflow = await overlay_context.apply(dataflow)
-        async with self.octx.parent(dataflow) as octx:
+        async with self.octx.parent(dataflow, reuse=reuse) as octx:
             self.octx.subflows[self.parent.op.instance_name] = octx
             yield octx
 
