@@ -22,6 +22,12 @@ help us most effectively communicate so as to reach critical velocity.
     :target: https://github.com/intel/dffml/edit/alice/entities/alice
     :alt: Software Analysis Trinity diagram showing Human Intent, Static Analysis, and Dynamic Analysis to represent the soul of the software / entity and the process taken to improve it
 
+Dependencies
+************
+
+We require you have ``git`` and ``gh`` (https://cli.github.com/)
+installed.
+
 Install
 *******
 
