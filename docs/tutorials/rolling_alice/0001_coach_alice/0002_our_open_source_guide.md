@@ -106,7 +106,7 @@ $ gh -R https://github.com/$USER/my-new-python-project pr list
 ## Debugging
 
 ```console
-for pr in $(gh -R https://github.com/$USER/ pr list --json number --jq '.[].number'); do gh -R https://github.com/pdxjohnny/testaaaa pr close "${pr}"; done;
+$ for pr in $(gh -R https://github.com/$USER/my-new-python-project pr list --json number --jq '.[].number'); do gh -R https://github.com/$USER/my-new-python-project pr close "${pr}"; done;
 ```
 
 ## Future Work
