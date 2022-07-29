@@ -505,18 +505,3 @@ TODO/Misc.
 
   - Overlay for insertion of all data in input network to database,
     or to file for caching.
-
-- Modify **dffml.git/entities/alice/entry_points.txt**
-  add the following, rename files first. Use this as an example
-  under "Registering a Flow" after it's moved.
-
-.. code-block::
-
-    [dffml.overlays.alice.please]
-    contribute = alice.please.contribute.git:AlicePleaseContribute
-
-    [dffml.overlays.alice.please.contribute]
-    recommended_community_standards = alice.please.contribute:AlicePleaseContributeRecommendedCommunityStandards
-
-    [dffml.overlays.alice.please.contribute.recommended_community_standards]
-    git = alice.please.contribute.git:AlicePleaseContributeRecommendedCommunityStandardsOverlayGit
