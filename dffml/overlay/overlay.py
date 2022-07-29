@@ -1,14 +1,16 @@
+import warnings
 import itertools
-from typing import Any, Dict, NewType, Type, List
+from typing import Any, Dict, NewType, Type, List, AsyncIterator, Tuple
 
 from ..base import replace_config
 from ..df.system_context.system_context import SystemContext
 from ..df.types import Stage, DataFlow, Input, Definition
 from ..operation.output import remap
 from ..df.memory import MemoryOrchestrator
-from ..df.base import op
+from ..df.base import op, BaseInputSetContext
 from ..util.data import merge as _merge
 from ..util.entrypoint import base_entry_point, Entrypoint
+from ..util.df.internal import object_to_operations
 
 
 # TODO Unify this DataFlowType. Used as an example to show auto typing.NewType
@@ -369,3 +371,41 @@ class Overlay(DataFlow, Entrypoint):
         # type matching system context within that an open architecutre
         # within that with a dataflow within that.
         return results["overlayed"]
+
+    @staticmethod
+    def _static_cls_to_dataflow(dataflow_cls: Type):
+        return DataFlow(*object_to_operations(dataflow_cls))
+
+    @classmethod
+    def _static_overlay_installed_overlays(
+        cls, dataflow_cls: Type, entrypoint: str
+    ) -> DataFlow:
+        # References:
+        # - https://docs.python.org/3/library/warnings.html#warnings.warn
+        message = "THIS WILL BE REMOVED ASAP"
+        warnings.warn(message, DeprecationWarning, stacklevel=2)
+        # TODO Clean this up once SystemContext refactor complete
+        overlays = cls.load(entrypoint=entrypoint)
+        # auto_flow with overlays
+        dataflow = DataFlow(
+            *itertools.chain(
+                *[object_to_operations(i) for i in [dataflow_cls, *overlays,]]
+            )
+        )
+        return dataflow
+
+    @classmethod
+    def _static_dataflow_and_upstream(cls, dataflow_cls: Type):
+        """
+        Take dataflow class decorated with ``@entrypoint`` and return the
+        upstream with overlays applied and without.
+
+        Returns: Tuple
+            dataflow: DataFlow
+            upstream: DataFlow
+        """
+        upstream = cls._static_cls_to_dataflow(dataflow_cls)
+        dataflow = cls._static_overlay_installed_overlays(
+            dataflow_cls, dataflow_cls.ENTRY_POINT_ORIG_LABEL
+        )
+        return dataflow, upstream
