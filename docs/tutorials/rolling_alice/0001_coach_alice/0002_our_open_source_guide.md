@@ -43,13 +43,14 @@ base flow.
 Copy readme overlay to new file
 
 ```console
-$ cp alice/please/contribute/recommended_community_standards/readme.py alice/please/contribute/recommended_community_standards/contribute.py
+$ cp alice/please/contribute/recommended_community_standards/readme.py alice/please/contribute/recommended_community_standards/code_of_conduct.py
+$ git diff -R
 ```
 
 Rename types, classes, variables, etc.
 
 ```console
-$ sed -e 's/Readme/Contributing/g' -e 's/README/CONTRIBUTING/g' -e 's/readme/contributing/g' -i alice/please/contribute/recommended_community_standards/contribute.py
+$ sed -e 's/Readme/CodeOfConduct/g' -e 's/README/CODE_OF_CONDUCT/g' -e 's/readme/code_of_conduct/g' -i alice/please/contribute/recommended_community_standards/code_of_conduct.py
 ```
 
 Add `OverlayCONTRIBUTING` to the list of overlays to be applied to the
@@ -66,9 +67,9 @@ index 129b2866a1..9e130cb3b2 100644
 @@ -9,6 +9,7 @@ CLI                                            = alice.please.contribute.recomme
  OverlayGit                                     = alice.please.contribute.recommended_community_standards.recommended_community_standards:OverlayGit
  OverlayGitHub                                  = alice.please.contribute.recommended_community_standards.recommended_community_standards:OverlayGitHub
- OverlayREADME                                  = alice.please.contribute.recommended_community_standards.recommended_community_standards:OverlayREADME
-+OverlayCONTRIBUTING                            = alice.please.contribute.recommended_community_standards.recommended_community_standards:OverlayCONTRIBUTING
- # OverlayMetaIssue                               = alice.please.contribute.recommended_community_standards.recommended_community_standards:OverlayMetaIssue
+ OverlayREADME                                  = alice.please.contribute.recommended_community_standards.readme:OverlayREADME
+ OverlayCONTRIBUTING                            = alice.please.contribute.recommended_community_standards.contributing:OverlayCONTRIBUTING
++OverlayCODE_OF_CONDUCT                         = alice.please.contribute.recommended_community_standards.code_of_conduct:OverlayCODE_OF_CONDUCT
 
  [dffml.overlays.alice.please.contribute.recommended_community_standards.overlay.readme]
 ```
@@ -78,9 +79,9 @@ Add the `OverlayGit` and `OverlayGitHub` overlays to the new overlay as well.
 **dffml.git/entites/alice/entry_points.txt**
 
 ```ini
-[dffml.overlays.alice.please.contribute.recommended_community_standards.overlay.contributing]
+[dffml.overlays.alice.please.contribute.recommended_community_standards.code_of_conduct]
 OverlayGit                                     = alice.please.contribute.recommended_community_standards.recommended_community_standards:OverlayGit
-OverlayGitHub                                  = alice.please.contribute.recommended_community_standards.recommended_community_standards:OverlayGitHu
+OverlayGitHub                                  = alice.please.contribute.recommended_community_standards.recommended_community_standards:OverlayGitHub
 ```
 
 Reinstall for new entrypoints to take effect
