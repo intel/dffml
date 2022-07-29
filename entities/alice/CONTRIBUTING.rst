@@ -31,6 +31,9 @@ Using a cloud development environment gives you a place to work
 that already has everything installed and configured. You can
 start playing around and writing code immediatly.
 
+**NOTE** Not sure what state gitpod is in, pretty sure there
+was some sort of issue we need to move a file around or something.
+
 https://gitpod.io/#github.com/intel/dffml/tree/alice
 
 Cloning the Repo
@@ -124,6 +127,14 @@ intended to do development work on the as well.
         -e ../../operations/innersource/ \
         -e ../../configloader/yaml/
 
+Tutorials
+*********
+
+These are tutorials on how to extend parts of Alice, they are backlinked from
+her README.
+
+- https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0001_coach_alice/0002_our_open_source_guide.md
+
 Data Flow Programming
 *********************
 
@@ -131,11 +142,24 @@ Data Flow programming focueses on data types and data transformations.
 Data Orented Design is also helpful in understanding Data Flow programming,
 altough a distinct concept itself.
 
-- https://youtu.be/D9puJiKKKS8?t=873
-- https://github.com/intel/dffml/blob/alice/docs/concepts/dataflow.rst
-- https://en.wikipedia.org/wiki/Dataflow_programming
-- https://www.gamedeveloper.com/programming/tips-on-writing-code-for-data-oriented-design
-- https://www.youtube.com/watch?v=aPh4Z3SioB8
+- Tutorials on DFFML Operations / DataFlows
+
+  - https://intel.github.io/dffml/main/examples/shouldi.html
+  - https://intel.github.io/dffml/main/examples/dataflows.html
+
+- Talk snippit explaining above tutorial
+
+  - https://youtu.be/D9puJiKKKS8?t=873
+  
+- Concuptual docs on data flow execution
+
+  - https://intel.github.io/dffml/main/concepts/dataflow.html
+  
+- Misc. References
+
+  - https://en.wikipedia.org/wiki/Dataflow_programming
+  - https://www.gamedeveloper.com/programming/tips-on-writing-code-for-data-oriented-design
+  - https://www.youtube.com/watch?v=aPh4Z3SioB8
 
 Finding Data Types to Work With
 *******************************
@@ -155,7 +179,7 @@ data types available within the flow.
 .. code-block:: console
 
     $ dffml service dev export alice.cli:AlicePleaseContributeCLIDataFlow | tee alice.please.contribute.recommended_community_standards.json
-    $ dffml dataflow diagram alice.please.contribute.recommended_community_standards.json
+    $ dffml dataflow diagram -shortname alice.please.contribute.recommended_community_standards.json
 
 .. image:: https://user-images.githubusercontent.com/5950433/176561571-cb866c83-4b4c-48f0-9dee-91c9ae7a12f5.svg
 
