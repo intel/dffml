@@ -47,7 +47,7 @@ $ cd my-new-python-project
 $ echo 'print("Hello World")' > test.py
 $ git add test.py
 $ git commit -sam 'Initial Commit'
-$ git push --set-upstream origin $(git branch --show-current)
+$ git push --set-upstream origin $(git branch -r | sed -e 's/.*\///')
 $ cd ..
 $ rm -rf my-new-python-project
 ```
