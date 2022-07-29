@@ -63,6 +63,10 @@ DUPLICATE_PREFER = {
     "list_action": "base",
     "main": "dffml.util.testing.manifest.shim",
     "concurrently": "dffml.util.asynchelper",
+    "field": "dffml.base",
+    "config": "dffml.base",
+    # Static
+    "LOGGER": "dffml.log",
 }
 # List of modules not to expose
 SKIP = ["cli", "util.cli.cmds", "util.testing.consoletest"]
@@ -77,12 +81,7 @@ for import_name, module in modules(root, package_name, skip=skip):
         continue
     # Iterate over all of the objects in the module
     for name, obj in inspect.getmembers(module):
-        # Skip if not a class or function
-        if (
-            not hasattr(obj, "__module__")
-            or not obj.__module__.startswith(import_name)
-            or (not inspect.isclass(obj) and not inspect.isfunction(obj))
-        ):
+        if name.startswith("__") and name.endswith("__"):
             continue
         if name in cls_func_all:
             # Do not override prefered is already in cls_func_all, or if it's a
@@ -90,16 +89,21 @@ for import_name, module in modules(root, package_name, skip=skip):
             # the same module twice?)
             if cls_func_all[name][1] == module:
                 continue
+            if inspect.ismodule(obj):
+                # Do not expore any modules (they are probably just imported)
+                continue
             if name in DUPLICATE_PREFER:
                 if cls_func_all[name][0] == DUPLICATE_PREFER[name]:
                     continue
+            elif cls_func_all[name][2] is obj:
+                pass
             else:
                 raise DuplicateName(
-                    f"{name} in both "
+                    f"{name!r} in both "
                     f"{cls_func_all[name][0]} and "
                     f"{import_name_no_package}: "
-                    f"(exists: {cls_func_all[name][1]}, "
-                    f"new: {module}) "
+                    f"(exists in {cls_func_all[name][1]} as {cls_func_all[name][2]!r}, "
+                    f"new in {module} is {obj!r})"
                 )
         # Add to dict to ensure no duplicates
         cls_func_all[name] = (import_name_no_package, module, obj)
