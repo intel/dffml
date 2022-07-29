@@ -7,6 +7,10 @@ some time now.
 
 ....
 
+> This should probably turn into something about time being
+> relative to the sum of knowledge in aligned chains of
+> thought / system contexts. See discussion dump for details.
+>
 > The following about the metrics and the prophets should
 > go at the end of this tutorial and talk about leveraging
 > the working event, lock (if we do have a problem with that)
