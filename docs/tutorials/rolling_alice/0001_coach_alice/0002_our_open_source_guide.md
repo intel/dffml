@@ -16,6 +16,9 @@ We're going to extend the existing
 functionality to provide a `CODE_OF_CONDUCT.md` file to a repo if it doesn't
 have one already.
 
+This tutorial is covered in
+[Rolling Alice: 2022 Progress Reports: July Activities Recap](https://www.youtube.com/watch?v=JDh2DARl8os&list=PLtzAOVTpO2jYt71umwc-ze6OmwwCIMnLw&index=2)
+
 ## Setup
 
 We need to get setup for contribing to Alice first
