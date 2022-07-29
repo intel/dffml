@@ -1,6 +1,6 @@
 import inspect
 import asyncio
-from typing import Optional, Tuple, List, Union, Dict, Any, AsyncIterator
+from typing import Optional, Tuple, List, Union, Dict, Any, AsyncIterator, Type
 
 from ..overlay.overlay import (
     Overlay,
@@ -230,3 +230,38 @@ async def run(
         async with orchestrator(dataflow) as ctx:
             async for ctx, results in ctx.run(*input_sets, strict=strict):
                 yield ctx, results
+
+
+async def subflow_typecast(
+    opimp_ctx,
+    cls: Type,
+    input_set_context: Type[BaseInputSetContext],
+    value: Any,
+) -> AsyncIterator[Tuple[BaseInputSetContext, Any]]:
+    dataflow, upstream = Overlay._static_dataflow_and_upstream(cls)
+    key, definition = list(opimp_ctx.parent.op.outputs.items())[0]
+    # TODO Run with opimp_ctx.subflow(), enable forwarding
+    async with opimp_ctx.octx.ictx.definitions(opimp_ctx.ctx) as definitions:
+        async for ctx, results in run(
+            dataflow,
+            {
+                input_set_context: [
+                    Input(
+                        value=value,
+                        definition=definition,
+                        parents=None,
+                        origin=(opimp_ctx.parent.op.instance_name, key),
+                    ),
+                    *[
+                        item
+                        async for item in definitions.inputs()
+                        if (
+                            item.definition in upstream.definitions.values()
+                            and item.definition
+                            not in opimp_ctx.parent.op.inputs.values()
+                        )
+                    ],
+                ],
+            },
+        ):
+            yield ctx, results
