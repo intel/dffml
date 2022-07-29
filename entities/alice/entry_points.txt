@@ -8,9 +8,13 @@ Alice = alice.system_context:Alice
 CLI                                            = alice.please.contribute.recommended_community_standards.cli:OverlayCLI
 OverlayGit                                     = alice.please.contribute.recommended_community_standards.recommended_community_standards:OverlayGit
 OverlayGitHub                                  = alice.please.contribute.recommended_community_standards.recommended_community_standards:OverlayGitHub
-OverlayREADME                                  = alice.please.contribute.recommended_community_standards.recommended_community_standards:OverlayREADME
-# OverlayMetaIssue                               = alice.please.contribute.recommended_community_standards.recommended_community_standards:OverlayMetaIssue
+OverlayREADME                                  = alice.please.contribute.recommended_community_standards.readme:OverlayREADME
+OverlayCONTRIBUTING                            = alice.please.contribute.recommended_community_standards.contributing:OverlayCONTRIBUTING
 
-[dffml.overlays.alice.please.contribute.recommended_community_standards.overlay.readme]
+[dffml.overlays.alice.please.contribute.recommended_community_standards.readme]
+OverlayGit                                     = alice.please.contribute.recommended_community_standards.recommended_community_standards:OverlayGit
+OverlayGitHub                                  = alice.please.contribute.recommended_community_standards.recommended_community_standards:OverlayGitHub
+
+[dffml.overlays.alice.please.contribute.recommended_community_standards.contributing]
 OverlayGit                                     = alice.please.contribute.recommended_community_standards.recommended_community_standards:OverlayGit
 OverlayGitHub                                  = alice.please.contribute.recommended_community_standards.recommended_community_standards:OverlayGitHub
