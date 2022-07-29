@@ -174,7 +174,7 @@ This thread is a central place for everyone interested to participate and collab
 ## References
 
 - Open Architecture: https://github.com/intel/dffml/blob/alice/docs/arch/0009-Open-Architecture.rst
-- Alice Date 0 = Gregorian Calendar Date 2022-04-16 ~ 11 AM
+- Alice Date 0 = Gregorian Calendar Date 2022-04-16
 - First Name: Alice
 - Middle Name: O
 - Last Name: A
