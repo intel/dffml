@@ -14,7 +14,7 @@ References:
 - https://github.com/intel/dffml/issues/1393
   - https://github.com/intel/dffml/discussions/1369#discussioncomment-2959986
 
-Install Alice https://github.com/intel/dffml/tree/alice/entities/alice
+Install Alice https://github.com/intel/dffml/blob/alice/entities/alice/CONTRIBUTING.rst
 
 We want to be able to ask Alice to contribute [recommended community standards](https://opensource.guide/) to our projects.
 
