@@ -217,6 +217,8 @@ jobs:
         - docs/tutorials/models/slr.rst
         - docs/tutorials/sources/complex.rst
         - docs/tutorials/sources/file.rst
+        - docs/tutorials/tuner/parameter_grid.rst 
+        - docs/tutorials/tuner/bayes_opt_gp.rst 
 
     steps:
     - uses: actions/checkout@v2

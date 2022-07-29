@@ -30,6 +30,7 @@ file:
 
 .. code-block:: console
     :test:
+    :filepath: bayes_opt_gp_xgboost.py
     from sklearn.datasets import load_iris
     from sklearn.model_selection import train_test_split
 
@@ -98,7 +99,7 @@ Note that because of its different nature, our BayesOptGP tuner only accepts a s
 space configuration. For each hyperparameter, we accept two values representing the minimum and maximum bounds of that 
 hypeparameter which the tuner searches over. Also, Bayesian optimization only works on numerical hyperparameters (
 technically it should only work on floats, but we made some modfiications so it works on discrete values). This is because 
-the selection of the next set of hypeparameters derives from a closed-form integral which exepcts a continuous search space. 
+the selection of the next set of hypeparameters derives from a closed-fm integral which exepcts a continuous search space. 
 
 Examples of non-legitimate hyperparameter configurations:
 
@@ -143,20 +144,20 @@ In the same folder, we perform the CLI tune command.
 
 .. code-block:: console
     $ dffml tune \
-    -model xgbclassifier \
-    -model-features \
-    SepalLength:float:1 \
-    SepalWidth:float:1 \
-    PetalLength:float:1 \
-    -model-predict classification \
-    -model-location tempDir \
-    -tuner bayes_opt_gp \
-    -tuner-parameters @parameters.json \
-    -tuner-objective max \
-    -scorer clf \
-    -sources train=csv test=csv \
-    -source-train-filename iris_training.csv \
-    -source-test-filename iris_test.csv \
-    -source-train-tag train \
-    -source-test-tag test \
-    -features classification:int:1
+      -model xgbclassifier \
+      -model-features \
+        SepalLength:float:1 \
+        SepalWidth:float:1 \
+        PetalLength:float:1 \
+      -model-predict classification \
+      -model-location tempDir \
+      -tuner bayes_opt_gp \
+      -tuner-parameters @parameters.json \
+      -tuner-objective max \
+      -scorer clf \
+      -sources train=csv test=csv \
+      -source-train-filename iris_training.csv \
+      -source-test-filename iris_test.csv \
+      -source-train-tag train \
+      -source-test-tag test \
+      -features classification:int:1

@@ -1,12 +1,14 @@
 from typing import Union, Dict, Any, List
 import itertools
 import logging
+import functools
 
 from dffml.base import (
     config,
     field,
 )
 from dffml.noasync import train, score
+from dffml.high_level.ml import train as async_train
 from dffml.tuner import Tuner, TunerContext
 from dffml.util.entrypoint import entrypoint
 from dffml.record import Record
@@ -44,6 +46,41 @@ class BayesOptGPContext(TunerContext):
     Bayesian Optimization GP Tuner
     """
 
+    def check_parameters(self, pars):
+        for (pax, vals) in pars.items():
+            if len(vals) != 2:
+                raise InvalidParametersException(
+                    f"2 values are not provided for parameter {pax}"
+                )
+            for val in vals:
+                if not type(val) is float and not type(val) is int:
+                    raise InvalidParametersException(
+                        f"Parameter {pax} is not of type int or float."
+                    )
+        return True
+    
+    def obj_func(self, model, train_data, accuracy_scorer, feature, test_data, **vals):
+
+        with model.parent.config.no_enforce_immutable():
+            for param in vals.keys():
+
+                if (
+                    hasattr(model.parent.config, param)
+                    and model.parent.config.__annotations__[param].__name__
+                    == "int"
+                ):
+                    setattr(model.parent.config, param, int(vals[param]))
+                else:
+                    setattr(model.parent.config, param, vals[param])
+
+            train(model.parent, *train_data)
+            acc = score(model.parent, accuracy_scorer, feature, *test_data)
+
+            if self.parent.config.objective == "min":
+                return -acc
+            elif self.parent.config.objective == "max":
+                return acc
+
     async def optimize(
         self,
         model: ModelContext,
@@ -78,7 +115,7 @@ class BayesOptGPContext(TunerContext):
         train_data: SourcesContext
             The train_data to train models on with the hyperparameters provided.
 
-        sources : SourcesContext
+        test_data : SourcesContext
             The test_data to score against and optimize hyperparameters.
 
         Returns
@@ -89,48 +126,14 @@ class BayesOptGPContext(TunerContext):
 
         nest_asyncio.apply()
 
-        def check_parameters(pars):
-            for (pax, vals) in pars.items():
-                if len(vals) != 2:
-                    raise InvalidParametersException(
-                        f"2 values are not provided for parameter {pax}"
-                    )
-                for val in vals:
-                    if not type(val) is float and not type(val) is int:
-                        raise InvalidParametersException(
-                            f"Parameter {pax} is not of type int or float."
-                        )
-            return True
-
-        check_parameters(self.parent.config.parameters)
+        self.check_parameters(self.parent.config.parameters)
 
         logging.info(
             f"Optimizing model with Bayesian optimization with gaussian processes: {self.parent.config.parameters}"
         )
 
-        def func(**vals):
-            with model.parent.config.no_enforce_immutable():
-                for param in vals.keys():
-
-                    if (
-                        hasattr(model.parent.config, param)
-                        and model.parent.config.__annotations__[param].__name__
-                        == "int"
-                    ):
-                        setattr(model.parent.config, param, int(vals[param]))
-                    else:
-                        setattr(model.parent.config, param, vals[param])
-
-                train(model.parent, *train_data)
-                acc = score(model.parent, accuracy_scorer, feature, *test_data)
-
-                if self.parent.config.objective == "min":
-                    return -acc
-                elif self.parent.config.objective == "max":
-                    return acc
-
         optimizer = BayesianOptimization(
-            f=func,
+            f=functools.partial(self.obj_func, model, train_data, accuracy_scorer, feature, test_data),
             pbounds=self.parent.config.parameters,
             random_state=1,
         )
@@ -151,7 +154,7 @@ class BayesOptGPContext(TunerContext):
                 else:
                     setattr(model.parent.config, param, val)
 
-            train(model.parent, *train_data)
+            await async_train(model.parent, *train_data)
 
         if self.parent.config.objective == "min":
             return -optimizer.max["target"]

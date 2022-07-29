@@ -6,7 +6,7 @@ from ..record import Record
 from ..source.source import BaseSource
 from ..feature import Feature, Features
 from ..model import Model, ModelContext
-from ..util.internal import records_to_sources, list_records_to_dict
+from ..util.internal import records_to_sources, list_records_to_dict, records_to_dict_check
 from ..accuracy.accuracy import AccuracyScorer, AccuracyContext
 from ..tuner import Tuner, TunerContext
 
@@ -387,23 +387,10 @@ async def tune(
             ]
         else:
             predict_feature = [model.config.predict.name]
-    
-    def records_to_dict_check(ds):
-        if hasattr(model.config, "features") and any(
-            isinstance(td, list) for td in ds
-        ):
-            return list_records_to_dict(
-                [feature.name for feature in model.config.features]
-                + predict_feature,
-                *ds,
-                model=model,
-            )
-        return ds
-        
-    train_ds = records_to_dict_check(train_ds)
-    valid_ds = records_to_dict_check(valid_ds)
-    
 
+    train_ds = records_to_dict_check(train_ds, model, predict_feature)
+    valid_ds = records_to_dict_check(valid_ds, model, predict_feature)
+    
     async with contextlib.AsyncExitStack() as astack:
         # Open sources
         train = await astack.enter_async_context(records_to_sources(*train_ds))
