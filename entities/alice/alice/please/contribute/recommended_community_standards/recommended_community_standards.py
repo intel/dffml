@@ -199,8 +199,8 @@ class OverlayREADME:
     ReadmeIssue = NewType("ReadmeIssue", str)
     ReadmeIssueBody = NewType("ReadmeIssueBody", str)
     ReadmeIssueTitle = NewType("ReadmeIssueTitle", str)
-    ReadmePRTitle = NewType("github.pr.title", str)
-    ReadmePRBody = NewType("github.pr.body", str)
+    ReadmePRTitle = NewType("readme.github.pr.title", str)
+    ReadmePRBody = NewType("readme.github.pr.body", str)
 
     # async def cli_run_on_repo(self, repo: "CLIRunOnRepo"):
     async def alice_contribute_readme(self, repo: AliceGitRepo) -> ReadmeGitRepo:
