@@ -82,7 +82,7 @@ from .memory import (
     MemoryRedundancyChecker,
     MEMORYORCHESTRATORCONFIG_MAX_CTXS,
 )
-from .kubernetes_output_server import server_socket_unix_stream, read_messages
+from .kubernetes_output_server import server_socket_unix_stream, read_messages, PYTHON_CODE, OUTPUT_SERVER
 from ..operation.output import GetSingle, get_single_spec
 from ..base import config, field
 from ..util.crypto import secure_hash
@@ -97,14 +97,6 @@ from ..util.subprocess import (
     Subprocess,
 )
 from ..util.internal import load_dataflow_from_configloader
-
-# TODO Use importlib.resources instead of reading via pathlib
-python_code: str = pathlib.Path(__file__).parent.joinpath(
-    "kubernetes_execute_pickled_dataflow_with_inputs.py"
-).read_text()
-output_server: str = pathlib.Path(__file__).parent.joinpath(
-    "kubernetes_output_server.py"
-).read_text()
 
 
 @config
@@ -300,13 +292,13 @@ class SSHOrchestratorContext(MemoryOrchestratorContext):
                     "execute_pickled_dataflow_with_inputs.py"
                 )
                 execute_pickled_dataflow_with_inputs_path.write_text(
-                    python_code
+                    PYTHON_CODE
                 )
                 # Write out the Python code to execute the dataflow
                 kubernetes_output_server_path = tempdir_path.joinpath(
                     "kubernetes_output_server.py"
                 )
-                kubernetes_output_server_path.write_text(output_server)
+                kubernetes_output_server_path.write_text(OUTPUT_SERVER)
                 # Write out the prerun dataflow
                 prerun_dataflow_path = tempdir_path.joinpath(
                     "prerun-dataflow.json"

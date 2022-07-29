@@ -21,6 +21,12 @@ from typing import (
 
 LOGGER = logging.getLogger(pathlib.Path(__file__).stem)
 
+# TODO Use importlib.resources instead of reading via pathlib
+PYTHON_CODE: str = pathlib.Path(__file__).parent.joinpath(
+    "kubernetes_execute_pickled_dataflow_with_inputs.py"
+).read_text()
+OUTPUT_SERVER: str = pathlib.Path(__file__).read_text()
+
 
 async def concurrently(
     work: Dict[asyncio.Task, Any],
