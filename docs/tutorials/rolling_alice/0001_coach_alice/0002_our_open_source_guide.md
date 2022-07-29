@@ -18,10 +18,108 @@ Install Alice https://github.com/intel/dffml/tree/alice/entities/alice
 
 We want to be able to ask Alice to contribute [recommended community standards](https://opensource.guide/) to our projects.
 
+## Setup
+
+First let's create a repo to work with
+
 ```console
-$ alice please contribute -repos https://github.com/intel/dffml -- recommended community standards
+$ gh repo create -y --private https://github.com/$USER/my-new-python-project
+$ git clone https://github.com/$USER/my-new-python-project
+$ cd my-new-python-project
+$ echo 'print("Hello World")' > test.py
+$ git add test.py
+$ git commit -sam 'Initial Commit'
+$ git push --set-upstream origin main
 ```
 
+## How to help Alice contribute more files
+
+
+This tutorial will help you create a new Open Architecture / Alice
+overlay which runs when another flow runs. The upstream flow
+in this case is the `AlicePleaseContributeRecommendedCommunityStandards`
+base flow.
+
+Copy readme overlay to new file
+
+```console
+$ cp alice/please/contribute/recommended_community_standards/readme.py alice/please/contribute/recommended_community_standards/contribute.py
+```
+
+Rename types, classes, variables, etc.
+
+```console
+$ sed -e 's/Readme/Contributing/g' -e 's/README/CONTRIBUTING/g' -e 's/readme/contributing/g' -i alice/please/contribute/recommended_community_standards/contribute.py
+```
+
+Add `OverlayCONTRIBUTING` to the list of overlays to be applied to the
+`dffml.overlays.alice.please.contribute.recommended_community_standard`
+base flow.
+
+**dffml.git/entites/alice/entry_points.txt**
+
+```diff
+diff --git a/entities/alice/entry_points.txt b/entities/alice/entry_points.txt
+index 129b2866a1..9e130cb3b2 100644
+--- a/entities/alice/entry_points.txt
++++ b/entities/alice/entry_points.txt
+@@ -9,6 +9,7 @@ CLI                                            = alice.please.contribute.recomme
+ OverlayGit                                     = alice.please.contribute.recommended_community_standards.recommended_community_standards:OverlayGit
+ OverlayGitHub                                  = alice.please.contribute.recommended_community_standards.recommended_community_standards:OverlayGitHub
+ OverlayREADME                                  = alice.please.contribute.recommended_community_standards.recommended_community_standards:OverlayREADME
++OverlayCONTRIBUTING                            = alice.please.contribute.recommended_community_standards.recommended_community_standards:OverlayCONTRIBUTING
+ # OverlayMetaIssue                               = alice.please.contribute.recommended_community_standards.recommended_community_standards:OverlayMetaIssue
+
+ [dffml.overlays.alice.please.contribute.recommended_community_standards.overlay.readme]
+```
+
+Add the `OverlayGit` and `OverlayGitHub` overlays to the new overlay as well.
+
+**dffml.git/entites/alice/entry_points.txt**
+
+```ini
+[dffml.overlays.alice.please.contribute.recommended_community_standards.overlay.contributing]
+OverlayGit                                     = alice.please.contribute.recommended_community_standards.recommended_community_standards:OverlayGit
+OverlayGitHub                                  = alice.please.contribute.recommended_community_standards.recommended_community_standards:OverlayGitHu
+```
+
+Reinstall for new entrypoints to take effect
+
+```console
+$ python -m pip install -e .
+```
+
+- Re-run the command and observe results
+
+```console
+$ alice please contribute -log debug -repos https://github.com/$USER/my-new-python-project -- recommended community standards
+```
+
+```console
+$ gh -R https://github.com/$USER/my-new-python-project pr list
+297     Recommended Community Standard: README  alice-contribute-recommended-community-standards-readme OPEN
+295     Recommended Community Standard: CONTRIBUTING    alice-contribute-recommended-community-standards-contributing   OPEN
+```
+
+![Screenshot showing pull request for adding README.md and CONTRIBUTING.md files](https://user-images.githubusercontent.com/5950433/181796646-0b49335c-7739-4dff-bce4-bab98a8fc560.png)
+
+## Debugging
+
+```console
+for pr in $(gh -R https://github.com/$USER/ pr list --json number --jq '.[].number'); do gh -R https://github.com/pdxjohnny/testaaaa pr close "${pr}"; done;
+```
+
+## Future Work
+
+This section is TODO but long term probably
+
+- Future work
+  - `-repos https://github.com/intel/dffml`
+    - Infer from context (cwd)
+
+### Meta Issue
+
+Disabled for now
 
 What the body of the issue should be
 
@@ -45,17 +143,3 @@ We will omit for now
 - [] Pull request template
 - [] Repository admins accept content reports
 ```
-
-```console
-$ alice please contribute recommended community standards
-```
-
-Show it working with gh pr list
-
-Then show how to install an overlay which populates from `source.records()` from a source instantiated via an overlay operation triggered via autostart from looking at cli cmd when associated CLI overlay is installed (read from yml files from innersource example in main).
-
-Finally show how we update into another source by installing another overlay which just defines what inputs it wants and then has an autostart for a source instantiation, then inserts the data from the output operations defined within the system context class of this overlay to show insert into "metrics" collection of mongodb.
-
-- Future work
-  - `-repos https://github.com/intel/dffml`
-    - Infer from context (cwd)
