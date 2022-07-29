@@ -211,6 +211,11 @@ async def ordinal_encoder(data):
     Returns
     -------
     result: Encoded data for categorical values
+
+    References:
+
+        - https://scikit-learn.org/stable/modules/generated/sklearn.feature_selection.SelectKBest.html
+    
     """
     enc = OneHotEncoder()
     enc.fit(data)
@@ -271,6 +276,11 @@ async def select_percentile(data, target_data, score_func=f_classif, percentile=
     Returns
     -------
     result: Encoded data for categorical values
+
+    References:
+
+        - https://scikit-learn.org/stable/modules/generated/sklearn.feature_selection.SelectPercentile.html
+
     """
 
     selector = SelectPercentile(score_func, percentile=percentile)
