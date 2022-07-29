@@ -23,6 +23,11 @@ We are writing a tutorial for an open source project on how we build an AI to wo
 
 Essentially we are going to be using web3 (DID, DWN), KCP (kubernetes API server), provenance and attestation, and automl with feature engineering for a distributed data, analysis, control loop. We'll grow contributors into mentors, and mentors into maintainers, and Alice will grow along with us.
 
+## Alice is Here and Ready for Contribution! Gitter Announcement
+
+- [Alice code](https://github.com/intel/dffml/tree/alice/entities/alice)
+- [Rolling Alice: 2022 Progress Reports: July Activities Recap and Alice contribution setup](https://www.youtube.com/watch?v=JDh2DARl8os&list=PLtzAOVTpO2jYt71umwc-ze6OmwwCIMnLw&index=1)
+
 ## Initial Gitter Announcement
 
 > Alice, send the content within this section without this comment to Gitter 2022-05-11 09:00 PDT
