@@ -52,13 +52,14 @@ Install latest known working version
 
 .. code-block:: console
 
+    $ export ALICE_STATE_OF_ART=7d2874bcc5817b23aec50cc379fa16f9361177ad
     $ python -m pip install \
-        "https://github.com/intel/dffml/archive/78e6669bddcda69bdab5edab954d1616d9998a4a.zip#egg=dffml" \
-        "https://github.com/intel/dffml/archive/78e6669bddcda69bdab5edab954d1616d9998a4a.zip#egg=dffml-feature-git&subdirectory=feature/git" \
-        "https://github.com/intel/dffml/archive/78e6669bddcda69bdab5edab954d1616d9998a4a.zip#egg=shouldi&subdirectory=examples/shouldi" \
-        "https://github.com/intel/dffml/archive/78e6669bddcda69bdab5edab954d1616d9998a4a.zip#egg=dffml-config-yaml&subdirectory=configloader/yaml" \
-        "https://github.com/intel/dffml/archive/78e6669bddcda69bdab5edab954d1616d9998a4a.zip#egg=dffml-operations-innersource&subdirectory=operations/innersource" \
-        "https://github.com/intel/dffml/archive/78e6669bddcda69bdab5edab954d1616d9998a4a.zip#egg=alice&subdirectory=entities/alice"
+        "https://github.com/intel/dffml/archive/${ALICE_STATE_OF_ART}.zip#egg=dffml" \
+        "https://github.com/intel/dffml/archive/${ALICE_STATE_OF_ART}.zip#egg=dffml-feature-git&subdirectory=feature/git" \
+        "https://github.com/intel/dffml/archive/${ALICE_STATE_OF_ART}.zip#egg=shouldi&subdirectory=examples/shouldi" \
+        "https://github.com/intel/dffml/archive/${ALICE_STATE_OF_ART}.zip#egg=dffml-config-yaml&subdirectory=configloader/yaml" \
+        "https://github.com/intel/dffml/archive/${ALICE_STATE_OF_ART}.zip#egg=dffml-operations-innersource&subdirectory=operations/innersource" \
+        "https://github.com/intel/dffml/archive/${ALICE_STATE_OF_ART}.zip#egg=alice&subdirectory=entities/alice"
 
 .. note::
 
