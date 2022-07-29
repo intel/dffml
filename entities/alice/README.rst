@@ -21,6 +21,9 @@ Please create issues for any problems you encounter.
 First make sure you have the latest versions of ``pip``, ``setuptools``, and
 ``wheel``. Some ML libraries require them to be up-to-date.
 
+If you want to contribute please see
+https://github.com/intel/dffml/blob/alice/entities/alice/CONTRIBUTING.rst
+
 You may want to first create a virtual environment to avoid any permissions
 issues when running ``pip install``.
 
@@ -83,7 +86,8 @@ Create a new git repo and add some contents
 .. code-block:: console
 
     $ gh repo create -y --private https://github.com/$USER/my-new-python-project
-    $ my-new-python-project
+    $ git clone https://github.com/$USER/my-new-python-project
+    $ cd my-new-python-project
     $ echo 'print("Hello World")' > test.py
     $ git add test.py
     $ git commit -sam 'Initial Commit'
