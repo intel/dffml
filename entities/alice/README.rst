@@ -4,6 +4,24 @@ Alice
 See https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/
 for more information on Alice. She is our developer helper.
 
+Vision
+******
+
+Our goal is to achieve the fully connected development model, in which AI driven
+feedback helps us understand our work, how it relates to other's work, and how
+we can most effectively collaborate.
+
+To achieve the fully connect development model we must hit critical velocity.
+Critical velocity is the maximum throughput of changes meeting our bar for high
+quality given the assets at our disposal (contributors, compute, etc.).
+Alice, our AI, will help us hit critical velocity. She sits at the intesection
+of the software / entity analysis trinity to identifify patterns which
+help us most effectively communicate so as to reach critical velocity.
+
+.. image:: https://user-images.githubusercontent.com/5950433/181014158-4187950e-d0a4-4d7d-973b-dc414320e64f.svg
+    :target: https://github.com/intel/dffml/edit/alice/entities/alice
+    :alt: Software Analysis Trinity diagram showing Human Intent, Static Analysis, and Dynamic Analysis to represent the soul of the software / entity and the process taken to improve it
+
 Install
 *******
 
