@@ -25,6 +25,9 @@ for more details.
 ```console
 $ git clone -b alice https://github.com/intel/dffml dffml
 $ cd dffml/entities/alice
+$ python -m venv .venv
+$ . .venv/bin/activate
+$ python -m pip install -U pip setuptools wheel
 $ python -m pip install \
     -e .[dev] \
     -e ../../ \
@@ -44,7 +47,7 @@ $ cd my-new-python-project
 $ echo 'print("Hello World")' > test.py
 $ git add test.py
 $ git commit -sam 'Initial Commit'
-$ git push --set-upstream origin main
+$ git push --set-upstream origin $(git branch --show-current)
 $ cd ..
 $ rm -rf my-new-python-project
 ```
@@ -72,21 +75,27 @@ Add `OverlayCONTRIBUTING` to the list of overlays to be applied to the
 `dffml.overlays.alice.please.contribute.recommended_community_standard`
 base flow.
 
+```console
+$ sed -i 's/OverlayREADME .*/&\nOverlayCODE_OF_CONDUCT                         = alice.please.contribute.recommended_community_standards.code_of_conduct:OverlayCODE_OF_CONDUCT/' entry_points.txt
+```
+
+The output of `git diff` should look similar to the following
+
 **entry_points.txt**
 
 ```diff
 diff --git a/entities/alice/entry_points.txt b/entities/alice/entry_points.txt
-index 129b2866a1..9e130cb3b2 100644
+index b764491..c9bd781 100644
 --- a/entities/alice/entry_points.txt
 +++ b/entities/alice/entry_points.txt
 @@ -9,6 +9,7 @@ CLI                                            = alice.please.contribute.recomme
  OverlayGit                                     = alice.please.contribute.recommended_community_standards.recommended_community_standards:OverlayGit
  OverlayGitHub                                  = alice.please.contribute.recommended_community_standards.recommended_community_standards:OverlayGitHub
  OverlayREADME                                  = alice.please.contribute.recommended_community_standards.readme:OverlayREADME
- OverlayCONTRIBUTING                            = alice.please.contribute.recommended_community_standards.contributing:OverlayCONTRIBUTING
 +OverlayCODE_OF_CONDUCT                         = alice.please.contribute.recommended_community_standards.code_of_conduct:OverlayCODE_OF_CONDUCT
+ OverlayCONTRIBUTING                            = alice.please.contribute.recommended_community_standards.contributing:OverlayCONTRIBUTING
 
- [dffml.overlays.alice.please.contribute.recommended_community_standards.overlay.readme]
+ [dffml.overlays.alice.please.contribute.recommended_community_standards.readme]
 ```
 
 Add the following section to the end of ``entry_points.txt`` to enable the
