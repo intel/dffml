@@ -1,7 +1,7 @@
 import pathlib
 import textwrap
 import itertools
-from typing import NamedTuple, NewType, Optional
+from typing import NamedTuple, NewType, Optional, Type
 
 
 import dffml
@@ -190,6 +190,9 @@ class ReadmeGitRepo(NamedTuple):
     URL: str
 
 
+@dffml.entrypoint(
+    "dffml.overlays.alice.please.contribute.recommended_community_standards.overlay.readme"
+)
 class OverlayREADME:
     ReadmePath = NewType("ReadmePath", object)
     ReadmeContents = NewType("repo.directory.readme.contents", str)
@@ -204,78 +207,10 @@ class OverlayREADME:
 
     # async def cli_run_on_repo(self, repo: "CLIRunOnRepo"):
     async def alice_contribute_readme(self, repo: AliceGitRepo) -> ReadmeGitRepo:
-        # TODO Clean this up once SystemContext refactor complete
-        readme_dataflow_cls_upstream = OverlayREADME
-        readme_dataflow_cls_overlays = dffml.Overlay.load(
-            entrypoint="dffml.overlays.alice.please.contribute.recommended_community_standards.overlay.readme"
-        )
-        readme_dataflow_upstream = dffml.DataFlow(
-            *dffml.object_to_operations(readme_dataflow_cls_upstream)
-        )
-        # auto_flow with overlays
-        readme_dataflow = dffml.DataFlow(
-            *itertools.chain(
-                *[
-                    dffml.object_to_operations(cls)
-                    for cls in [
-                        readme_dataflow_cls_upstream,
-                        *readme_dataflow_cls_overlays,
-                    ]
-                ]
-            )
-        )
-        async with dffml.run_dataflow.imp(
-            # dataflow=self.octx.config.dataflow,
-            dataflow=readme_dataflow,
-            input_set_context_cls=AliceGitRepoInputSetContext,
-        ) as custom_run_dataflow:
-            # Copy all inputs from parent context into child. We eventually
-            # should have InputNetworks which support acting as generic Copy on
-            # Write over an underlying InputNetwork.
-            async with custom_run_dataflow(
-                self.ctx, self.octx
-            ) as custom_run_dataflow_ctx:
-                async with self.octx.ictx.definitions(self.ctx) as definitions:
-                    # Only add / forward inputs to this flow (the base flow,
-                    # _upstream in this case)
-                    custom_run_dataflow.config.dataflow.seed = (
-                        custom_run_dataflow.config.dataflow.seed
-                        + [
-                            item
-                            async for item in definitions.inputs()
-                            if (
-                                item.definition
-                                in readme_dataflow_upstream.definitions.values()
-                                and item.definition
-                                not in self.parent.op.inputs.values()
-                            )
-                        ]
-                    )
-                input_key = list(self.parent.op.inputs.keys())[0]
-                key, definition = list(self.parent.op.outputs.items())[0]
-                # This is the type cast
-                custom_run_dataflow.op = custom_run_dataflow.op._replace(
-                    # TODO Debug why the commented out version doesn't work
-                    # Likely due to re-auto-definition
-                    inputs={input_key: definition},
-                    outputs={},
-                )
-                # TODO Optionally support forward subflow
-                # TODO After OpImp.run refactor to take inputs as Input objects
-                # set parents here. Also ensure parent context is set correctly
-                # through when custom context is used to maintain chains of
-                # thoughts.
-                await dffml.run_dataflow.run_custom(
-                    custom_run_dataflow_ctx,
-                    {
-                        input_key: dffml.Input(
-                            value=repo,
-                            definition=definition,
-                            parents=None,
-                            origin=(self.parent.op.instance_name, key),
-                        )
-                    },
-                )
+        async for ctx, results in dffml.subflow_typecast(
+            self, OverlayREADME, AliceGitRepoInputSetContext(repo), repo,
+        ):
+            pass
 
     # TODO Run this system context where readme contexts is given on CLI or
     # overriden via disabling of static overlay and application of overlay to
