@@ -45,6 +45,7 @@ $ echo 'print("Hello World")' > test.py
 $ git add test.py
 $ git commit -sam 'Initial Commit'
 $ git push --set-upstream origin main
+$ cd ..
 $ rm -rf my-new-python-project
 ```
 
