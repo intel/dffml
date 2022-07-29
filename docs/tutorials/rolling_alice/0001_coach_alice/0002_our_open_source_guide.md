@@ -16,6 +16,9 @@ References:
 
 Install Alice https://github.com/intel/dffml/blob/alice/entities/alice/CONTRIBUTING.rst
 
+This tutorial is how we extend the `alice please contribute recommended community standards`
+command from https://github.com/intel/dffml/tree/alice/entities/alice#recommend-community-standards
+
 We want to be able to ask Alice to contribute [recommended community standards](https://opensource.guide/) to our projects.
 
 ## Setup
@@ -33,7 +36,6 @@ $ git push --set-upstream origin main
 ```
 
 ## How to help Alice contribute more files
-
 
 This tutorial will help you create a new Open Architecture / Alice
 overlay which runs when another flow runs. The upstream flow
