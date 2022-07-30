@@ -133,7 +133,7 @@ Tutorials
 These are tutorials on how to extend parts of Alice, they are backlinked from
 her README.
 
-- https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0001_coach_alice/0002_our_open_source_guide.md
+- `Coach Alice Our Open Source Guide <https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0001_coach_alice/0002_our_open_source_guide.md>`_
 
 Data Flow Programming
 *********************
@@ -457,6 +457,12 @@ to ``dffml.overlays.alice.please.contribute.recommended_community_standard``.
     $ dffml service dev entrypoints list dffml.overlays.alice.please.contribute.recommended_community_standards | grep myconfig
     AlicePleaseContributeRecommendedCommunityStandardsOverlayMyConfigReader = alice_please_contribute_recommended_community_standards_overlay_git_myconfig.overlay -> alice-please-contribute-recommended-community-standards-overlay-git-myconfig 0.1.dev1+gc4185e9.d20220630 (/tmp/tmp.XrelIRGR0v/dffml/entities/alice/alice-please-contribute-recommended_community_standards-overlay-git-myconfig)
     MyConfigReader = alice_please_contribute_recommended_community_standards_overlay_git_myconfig.myconfig -> alice-please-contribute-recommended-community-standards-overlay-git-myconfig 0.1.dev1+gc4185e9.d20220630 (/tmp/tmp.XrelIRGR0v/dffml/entities/alice/alice-please-contribute-recommended_community_standards-overlay-git-myconfig)
+
+If you push your repo to a hosting server you can install it as follows.
+
+.. code-block:: console
+
+    $ python -m pip install -U "https://github.com/$USER/alice-please-contribute-recommended_community_standards-overlay-git-myconfig/archive/main.zip#egg=alice-please-contribute-recommended_community_standards-overlay-git-myconfig"
 
 Registering a Flow
 ******************
