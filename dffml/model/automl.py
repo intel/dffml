@@ -27,8 +27,8 @@ class AutoMLModelConfig:
     models: List[str] = field("List of models to tune and compare against", default_factory= lambda:list())
     objective: str = field(
         "How to optimize the given scorer. Values are min/max", default="max"
-    ),
-    premodel: str = field("Type of model to predict with after training", default="None")
+    )
+
 
 @entrypoint("automl")
 class AutoMLModel(SimpleModel):
@@ -50,20 +50,24 @@ class AutoMLModel(SimpleModel):
         await super().__aenter__()
 
 
-        self.model_classes = {}
+        dest = pathlib.Path(self.parent.config.location)
+        best_path = dest / "best_model"
+        # Check if model has been trained, and if so, get the type of the model
+        best_model = best_model_path =  None
+        if dest.exists() and best_path.exists() and len(os.listdir(best_path)):
+            best_model = os.listdir(best_path)[0]
+     
         # We want to allow users to not need to deal with individual model configuration. 
         # So we accept a list of strings and initialize our models based on that.
+        self.model_classes = {}
         for ep in pkg_resources.iter_entry_points(group='dffml.model'):
-            if ep.name in self.parent.config.models or ep.name == self.parent.config.premodel:
+            if ep.name in self.parent.config.models or ep.name == best_model:
                 self.model_classes.update({ep.name: ep.load()})
         
-        dest = pathlib.Path(self.parent.config.location)
 
-        # This is for prediction. If a trained model exists in the target directory, we initialize
-        # a model of type premodel and use that for prediction. 
-        if self.parent.config.premodel != "None" and dest.exists():
-            model = self.model_classes[self.parent.config.premodel](
-                location = dest,
+        if best_model:
+            model = self.model_classes[best_model](
+                location = best_path / best_model,
                 features = self.parent.config.features,
                 predict = self.parent.config.predict
             )
@@ -81,7 +85,6 @@ class AutoMLModel(SimpleModel):
         await super().__aexit__(exc_type, exc_value, traceback)
 
     async def train(self, sources: Sources) -> None:
-        # X and Y data
 
         tuner = self.parent.config.tuner
         scorer = self.parent.config.scorer
@@ -125,30 +128,29 @@ class AutoMLModel(SimpleModel):
             shutil.rmtree(dest)
   
 
-        best_path = ""
-        temp_dirs = []
+        best_path = best_name = ""
 
         for model_name in self.parent.config.models:
-            dirpath = tempfile.mkdtemp()
-            temp_dirs.append(dirpath)
+            model_dir = dest / model_name
+   
             model = self.model_classes[model_name](
-                location = dirpath,
+                location = model_dir,
                 features = features,
                 predict = self.parent.config.predict
             )
-
       
             val = await tune(model, tuner, scorer, self.parent.config.predict, [train_source], [test_source])
             if self.parent.config.objective == "min" and val < highest_acc:
-                best_path = dirpath
+                best_path = model_dir
+                best_name = model_name
             elif self.parent.config.objective == "max" and val > highest_acc:
-                best_path = dirpath
+                best_path = model_dir
+                best_name = model_name
         
-       
-        shutil.copytree(best_path, dest)
+        best_model_dir = dest / "best_model" / best_name
+        shutil.copytree(best_path, best_model_dir)
 
-        for td in temp_dirs:
-            shutil.rmtree(td)
+      
 
     async def predict(
         self, sources: SourcesContext
