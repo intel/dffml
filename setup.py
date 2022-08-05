@@ -161,7 +161,7 @@ setup(
         # Databases
         "dffml.db": ["sqlite = dffml.db.sqlite:SqliteDatabase"],
         # Models
-        "dffml.model": ["slr = dffml.model.slr:SLRModel"],
+        "dffml.model": ["slr = dffml.model.slr:SLRModel", "automl = dffml.model.automl:AutoMLModel"],
         # Secrets
         "dffml.secret": ["ini = dffml.secret.ini:INISecret"],
         # Accuracy
