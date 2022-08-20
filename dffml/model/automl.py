@@ -1,6 +1,7 @@
 import pathlib
 import os
 import shutil
+import json
 import tempfile
 import contextlib
 import pkg_resources
@@ -28,6 +29,8 @@ class AutoMLModelConfig:
     objective: str = field(
         "How to optimize the given scorer. Values are min/max", default="max"
     )
+    parameters: dict = field("Hyperparameter configuration of different models to optimize", default_factory= lambda:dict()),
+    use_default: bool = field("Whether or not to utilize DFFML's default hyperparameter settings for tuning", default=False)
 
 
 @entrypoint("automl")
@@ -45,15 +48,14 @@ class AutoMLModel(SimpleModel):
         super().__init__(config)
         # The saved model
         self.saved = None
+        self.forbidden = ["automl", "autosklearn"]
 
     async def __aenter__(self):
-        await super().__aenter__()
-
 
         dest = pathlib.Path(self.parent.config.location)
         best_path = dest / "best_model"
         # Check if model has been trained, and if so, get the type of the model
-        best_model = best_model_path =  None
+        best_model =  None
         if dest.exists() and best_path.exists() and len(os.listdir(best_path)):
             best_model = os.listdir(best_path)[0]
      
@@ -63,8 +65,8 @@ class AutoMLModel(SimpleModel):
         for ep in pkg_resources.iter_entry_points(group='dffml.model'):
             if ep.name in self.parent.config.models or ep.name == best_model:
                 self.model_classes.update({ep.name: ep.load()})
-        
 
+        # loading a trained model for prediction
         if best_model:
             model = self.model_classes[best_model](
                 location = best_path / best_model,
@@ -90,30 +92,13 @@ class AutoMLModel(SimpleModel):
         scorer = self.parent.config.scorer
         features = self.parent.config.features
         location = self.parent.config.location
-        source_files = sources[0]
 
         tuner.config.objective = self.parent.config.objective 
-            
-        train_source = test_source = None
 
-        
-        # Check for tags to determine train/test sets 
-        for source in source_files:
-        
-            if hasattr(source, "tag") and source.tag == "train":
-                train_source = source
-            if hasattr(source, "tag") and source.tag == "test":
-                test_source = source
-    
-        if not train_source or not test_source:
-            # If tags not found, default to positional
-            if len(source_files) >= 2:
-                train_source = source_files[0]
-                test_source = source_files[1]
-            elif not train_source:
-                raise NotImplementedError("Train set not found.")
-            else:
-                raise NotImplementedError("Test set not found.")
+        if self.parent.config.use_default:
+            pth = pathlib.Path(__file__).parents[1] / "util" / "autodefault.json"
+            with open(str(pth), "r") as tar:
+                self.parent.config.parameters = json.load(tar)
 
         if self.parent.config.objective == "min":
             highest_acc = float("inf")
@@ -131,6 +116,9 @@ class AutoMLModel(SimpleModel):
         best_path = best_name = ""
 
         for model_name in self.parent.config.models:
+            if model_name in self.forbidden:
+                print(f"{model_name} is a forbidden model. Skipping...")
+                continue
             model_dir = dest / model_name
    
             model = self.model_classes[model_name](
@@ -138,14 +126,21 @@ class AutoMLModel(SimpleModel):
                 features = features,
                 predict = self.parent.config.predict
             )
+            if model_name in self.parent.config.parameters:
+                tuner.config.parameters = self.parent.config.parameters[model_name]
+            else:
+                tuner.config.parameters = {}
       
-            val = await tune(model, tuner, scorer, self.parent.config.predict, [train_source], [test_source])
+            val = await tune(model, tuner, scorer, self.parent.config.predict, sources, sources)
+       
             if self.parent.config.objective == "min" and val < highest_acc:
                 best_path = model_dir
                 best_name = model_name
+                highest_acc = val
             elif self.parent.config.objective == "max" and val > highest_acc:
                 best_path = model_dir
                 best_name = model_name
+                highest_acc = val
         
         best_model_dir = dest / "best_model" / best_name
         shutil.copytree(best_path, best_model_dir)

@@ -1,0 +1,137 @@
+{
+    
+    "xgbclassifier":  {"learning_rate": [0.01, 0.05, 0.1],
+                        "n_estimators": [20, 100, 200],
+                        "max_depth": [3,5,8]},
+    "scikitsvc": {"gamma": [0.001, 0.1], "C": [1, 10]},
+    "daal4py":{},
+    "pytorch":{},
+    "automl":{},
+    "slr":{}, 
+    "anomalydetection":{}, 
+    "scratchlgrsag":{}, 
+    "xgbregressor": {"learning_rate": [0.01, 0.05, 0.1],
+                    "n_estimators": [20, 100, 200],
+                    "max_depth": [3,5,8]},
+    "vwmodel":{}, 
+    "scikitac":{},
+    "scikitadaboost":{
+        "base_estimator": ["DecisionTreeClassifier", "LogisticRegressor", "SVC"],
+        "n_estimators": [10, 50, 100, 500, 1000, 5000],
+        "learning_rate": [0.1, 0.5, 0.9, 1.5],
+        "tree_depth": [3,5,7,9]
+
+    }, 
+    "scikitap":{}, 
+    "scikitard":{
+        "alpha_1": [1e-5, 1e-6, 1e-7],
+        "alpha_2": [1e-5, 1e-6, 1e-7]
+    }, 
+    "scikitbgc":{},
+    "scikitbirch":{"threshold":[0.3,0.5,0.7]},
+    "scikitbnb":{}, 
+    "scikitbyr":{}, 
+    "scikitdtc":{
+        "criterion": ["gini", "entropy"],
+        "max_depth": [3,5,7,9]
+    }, 
+    "scikitdtr":{
+        "criterion": ["gini", "entropy"],
+        "max_depth": [3,5,7,9]
+    }, 
+    "scikiteln":{
+        "max_iter": [1, 5, 10],
+        "alpha": [0.0001, 0.001, 0.01, 0.1, 1, 10, 100]
+
+    }, 
+    "scikitetc":{
+        "n_estimators": [10,50,100],
+        "criterion": ["mse", "mae"],
+        "max_depth": [2,8,16,32,50],
+        "min_sample_split": [2,4,6],
+        "min_sample_leaf": [1,2]
+    },
+    "scikitgbc":{
+        "learning_rates": [1, 0.5, 0.25, 0.1, 0.05, 0.01],
+        "n_estimators": [1, 2, 4, 8, 16, 32, 64, 100, 200]
+    }, 
+    "scikitgnb":{"var_smoothing":[1e-7,1e-8,1e-9]}, 
+    "scikitgpc":{}, 
+    "scikitgpr":{},
+    "scikitkmeans":{
+        "n_clusters":[5,10,15],
+        "tol":[1e-3, 1e-4, 1e-5]
+    }, 
+    "scikitknn":{"n_neighbours": [2, 4, 8, 16, 32, 64, 128]}, 
+    "scikitlars":{}, 
+    "scikitlas":{}, 
+    "scikitlda":{}, 
+    "scikitlor":{}, 
+    "scikitlr":{}, 
+    "scikitmbkmeans":{}, 
+    "scikitmlp":{
+        "hidden_layer_sizes": [[50,50,50], [50,100,50], [100]],
+        "activation": ["tanh", "relu"],
+        "solver": ["sgd", "adam"],
+        "alpha": [0.0001, 0.05],
+        "learning_rate": ["constant","adaptive"]
+
+    }, 
+    "scikitmnb":{
+        "alpha":[0,0.5,1.0]
+    }, 
+    "scikitms":{}, 
+    "scikitomp":{
+        "n_nonzero_coefs":[0.1,0.2,0.3]
+    }, 
+    "scikitoptics":{"min_samples":[5,10,15]}, 
+    "scikitqda":{"reg_param": [0.1, 0.2, 0.3, 0.4, 0.5]}, 
+    "scikitrfc":{
+        "max_depth": [10, 20, 30, 40, 50, 60, 70, 80, 90, 100],
+        "max_features": ["auto", "sqrt"],
+        "min_samples_leaf": [1, 2, 4],
+        "min_samples_split": [2, 5, 10],
+        "n_estimators": [200, 400, 600, 800, 1000, 1200, 1400, 1600, 1800, 2000]
+    }, 
+    "scikitridge":{
+        "alpha_init":[1, 1.1, 1.2, 1.3, 1.4, 1.5, 1.9],
+        "lambda_init": [1e-1, 1e-2, 1e-3, 1e-4, 1e-5, 1e-6, 1e-9]
+    }, 
+    "scikitrsc":{}, 
+    "scikitsc":{}, 
+    "alexnet":{"optimizer":["Adam", "AdamW"]}, 
+    "densenet121":{"optimizer":["Adam", "AdamW"]}, 
+    "densenet161":{"optimizer":["Adam", "AdamW"]}, 
+    "densenet169":{"optimizer":["Adam", "AdamW"]}, 
+    "densenet201":{"optimizer":["Adam", "AdamW"]}, 
+    "googlenet":{"optimizer":["Adam", "AdamW"]}, 
+    "inception_v3":{"optimizer":["Adam", "AdamW"]}, 
+    "mnasnet0_5":{"optimizer":["Adam", "AdamW"]}, 
+    "mnasnet1_0":{"optimizer":["Adam", "AdamW"]}, 
+    "mobilenet_v2":{"optimizer":["Adam", "AdamW"]}, 
+    "pytorchnet":{"optimizer":["Adam", "AdamW"]}, 
+    "resnet101":{"optimizer":["Adam", "AdamW"]}, 
+    "resnet152":{"optimizer":["Adam", "AdamW"]}, 
+    "resnet18":{"optimizer":["Adam", "AdamW"]}, 
+    "resnet34":{"optimizer":["Adam", "AdamW"]}, 
+    "resnet50":{"optimizer":["Adam", "AdamW"]}, 
+    "resnext101_32x8d":{"optimizer":["Adam", "AdamW"]}, 
+    "resnext50_32x4d":{"optimizer":["Adam", "AdamW"]}, 
+    "shufflenet_v2_x0_5":{"optimizer":["Adam", "AdamW"]}, 
+    "shufflenet_v2_x1_0":{"optimizer":["Adam", "AdamW"]}, 
+    "vgg11":{"optimizer":["Adam", "AdamW"]}, 
+    "vgg11_bn":{"optimizer":["Adam", "AdamW"]}, 
+    "vgg13":{"optimizer":["Adam", "AdamW"]}, 
+    "vgg13_bn":{"optimizer":["Adam", "AdamW"]}, 
+    "vgg16":{"optimizer":["Adam", "AdamW"]}, 
+    "vgg16_bn":{"optimizer":["Adam", "AdamW"]}, 
+    "vgg19":{"optimizer":["Adam", "AdamW"]}, 
+    "vgg19_bn":{"optimizer":["Adam", "AdamW"]}, 
+    "wide_resnet101_2":{"optimizer":["Adam", "AdamW"]}, 
+    "wide_resnet50_2":{"optimizer":["Adam", "AdamW"]}, 
+    "daal4pylr":{}, 
+    "spacyner":{}, 
+    "tfdnnc":{}, 
+    "tfdnnr":{}, 
+    "text_classifier":{}
+}
