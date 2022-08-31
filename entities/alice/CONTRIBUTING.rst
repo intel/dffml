@@ -236,7 +236,7 @@ chunks. Leveraging doctests as our unittests.
 
 References for writing operations, including examples with networking:
 
-- https://intel.github.io/dffml/alice/examples/shouldi.html
+- https://intel.github.io/dffml/main/examples/shouldi.html
 
 **myconfig.py**
 
