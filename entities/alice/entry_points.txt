@@ -10,11 +10,16 @@ OverlayGit                                     = alice.please.contribute.recomme
 OverlayGitHub                                  = alice.please.contribute.recommended_community_standards.recommended_community_standards:OverlayGitHub
 OverlayREADME                                  = alice.please.contribute.recommended_community_standards.readme:OverlayREADME
 OverlayCONTRIBUTING                            = alice.please.contribute.recommended_community_standards.contributing:OverlayCONTRIBUTING
+OverlayCODE_OF_CONDUCT                         = alice.please.contribute.recommended_community_standards.code_of_conduct:OverlayCODE_OF_CONDUCT
 
 [dffml.overlays.alice.please.contribute.recommended_community_standards.readme]
 OverlayGit                                     = alice.please.contribute.recommended_community_standards.recommended_community_standards:OverlayGit
 OverlayGitHub                                  = alice.please.contribute.recommended_community_standards.recommended_community_standards:OverlayGitHub
 
 [dffml.overlays.alice.please.contribute.recommended_community_standards.contributing]
+OverlayGit                                     = alice.please.contribute.recommended_community_standards.recommended_community_standards:OverlayGit
+OverlayGitHub                                  = alice.please.contribute.recommended_community_standards.recommended_community_standards:OverlayGitHub
+
+[dffml.overlays.alice.please.contribute.recommended_community_standards.code_of_conduct]
 OverlayGit                                     = alice.please.contribute.recommended_community_standards.recommended_community_standards:OverlayGit
 OverlayGitHub                                  = alice.please.contribute.recommended_community_standards.recommended_community_standards:OverlayGitHub
