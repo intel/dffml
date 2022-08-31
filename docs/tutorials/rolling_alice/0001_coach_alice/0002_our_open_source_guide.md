@@ -17,7 +17,9 @@ functionality to provide a `CODE_OF_CONDUCT.md` file to a repo if it doesn't
 have one already.
 
 This tutorial is covered in
-[Rolling Alice: 2022 Progress Reports: July Activities Recap](https://www.youtube.com/watch?v=JDh2DARl8os&list=PLtzAOVTpO2jYt71umwc-ze6OmwwCIMnLw&index=2)
+[Our Open Source Guide: How to help Alice contribute additional Recommended Community Standards](https://www.youtube.com/watch?v=u2lGjMMIlAo&list=PLtzAOVTpO2ja6DXSCzoF3v_mQDh7l0ymH&index=2)
+
+The resulting commit from completion of this tutorial was: https://github.com/intel/dffml/commit/6c1719f9ec779a9d64bfb3b364e2c41c5ac9aab7
 
 ## Setup
 
