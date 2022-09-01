@@ -21,6 +21,8 @@ This tutorial is covered in
 
 The resulting commit from completion of this tutorial was: https://github.com/intel/dffml/commit/6c1719f9ec779a9d64bfb3b364e2c41c5ac9aab7
 
+Please provide feedback / thoughts for extension / improvement about this tutorial in the following discussion thread: https://github.com/intel/dffml/discussions/1411
+
 ## Setup
 
 We need to get setup for contribing to Alice first
