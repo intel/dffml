@@ -3,9 +3,9 @@ image:
     file: scripts/gitpod.Dockerfile
 tasks:
   - init: >
+      rm $(pyenv prefix)/lib/libpython* &&
       pip install -U pip setuptools wheel &&
       pip install -e .[dev] &&
-      rm $(pyenv prefix)/lib/libpython* &&
       pip install cython &&
       dffml service dev install &&
       echo -e '#!/bin/sh\nexec python3 -m black --check .' > .git/hooks/pre-commit &&

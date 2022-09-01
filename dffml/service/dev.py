@@ -412,11 +412,7 @@ class Install(CMD):
             raise MissingDependenciesError(msg)
 
     async def run(self):
-        main_package = is_develop("dffml")
-        if not main_package:
-            raise NotImplementedError(
-                "Currently you need to have at least the main package already installed in development mode."
-            )
+        main_package = pathlib.Path(__file__).parents[2]
         # Check if plugins not in skip list have unmet dependencies
         if not self.nocheck:
             self.dep_check(CORE_PLUGIN_DEPS, self.skip)
@@ -739,11 +735,7 @@ class BumpPackages(CMD):
         return new_version_no_rc + f"-rc{original_rc + increment_rc}"
 
     async def run(self):
-        main_package = is_develop("dffml")
-        if not main_package:
-            raise NotImplementedError(
-                "Need to reinstall the main package in development mode."
-            )
+        main_package = pathlib.Path(__file__).parents[2]
         # Go through each plugin
         for directory, name in {
             ".": "dffml",
