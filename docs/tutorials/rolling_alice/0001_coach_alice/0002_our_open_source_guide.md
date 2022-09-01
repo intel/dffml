@@ -5,23 +5,23 @@ Alice will be acting as our proactive open source guide to
 She will attempt to contribute helpful community files
 so as to provide value as soon as possible to the community.
 
-This tutorial is how we extend the `alice please contribute recommended community standards`
-command from https://github.com/intel/dffml/tree/alice/entities/alice#recommend-community-standards
-
-We want to be able to ask Alice to contribute a new kind of
+- Context
+  - This tutorial is how we extend the [`alice please contribute recommended community standards`](https://github.com/intel/dffml/tree/alice/entities/alice#recommend-community-standards)
+command.
+- Goals
+  - We want to be able to ask Alice to contribute a new kind of
 [recommended community standard](https://opensource.guide/) to our projects.
-
-We're going to extend the existing
+- Actions
+  - We're going to extend the existing
 [`alice please contribute recommended community standards`](https://github.com/intel/dffml/tree/alice/entities/alice#recommend-community-standards)
 functionality to provide a `CODE_OF_CONDUCT.md` file to a repo if it doesn't
 have one already.
-
-This tutorial is covered in
+- References
+  - This tutorial is covered in
 [Our Open Source Guide: How to help Alice contribute additional Recommended Community Standards](https://www.youtube.com/watch?v=u2lGjMMIlAo&list=PLtzAOVTpO2ja6DXSCzoF3v_mQDh7l0ymH&index=2)
-
-The resulting commit from completion of this tutorial was: https://github.com/intel/dffml/commit/6c1719f9ec779a9d64bfb3b364e2c41c5ac9aab7
-
-Please provide feedback / thoughts for extension / improvement about this tutorial in the following discussion thread: https://github.com/intel/dffml/discussions/1411
+  - The resulting commit from completion of this tutorial was: [6c1719f9ec779a9d64bfb3b364e2c41c5ac9aab7](https://github.com/intel/dffml/commit/6c1719f9ec779a9d64bfb3b364e2c41c5ac9aab7)
+- Feedback
+  - Please provide feedback / thoughts for extension / improvement about this tutorial in the following discussion thread: https://github.com/intel/dffml/discussions/1411
 
 ## Setup
 
