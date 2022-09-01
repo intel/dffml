@@ -83,7 +83,8 @@ class TestAutoMLModel(AsyncTestCase):
                     "gamma": [0.001, 0.1],
                     "C": [1, 10]
                 }
-            }
+            },
+            split_data = True
 
         )
 

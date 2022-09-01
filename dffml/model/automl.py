@@ -5,6 +5,8 @@ import json
 import tempfile
 import contextlib
 import pkg_resources
+import numpy as np
+from sklearn.model_selection  import train_test_split
 from typing import AsyncIterator, Tuple, Any, Type, List
 from ..high_level.ml import tune
 from ..base import config, field
@@ -29,8 +31,10 @@ class AutoMLModelConfig:
     objective: str = field(
         "How to optimize the given scorer. Values are min/max", default="max"
     )
-    parameters: dict = field("Hyperparameter configuration of different models to optimize", default_factory= lambda:dict()),
+    parameters: dict = field("Hyperparameter configuration of different models to optimize", default_factory= lambda:dict())
     use_default: bool = field("Whether or not to utilize DFFML's default hyperparameter settings for tuning", default=False)
+    split_data: bool = field("Whether or not to split data when performing tuning. Assumes dataset is in a tabular format.", default=False)
+    split_ratio: float = field("The percentage of records in the train set, if splitting is performed.", default=0.8)
 
 
 @entrypoint("automl")
@@ -46,7 +50,6 @@ class AutoMLModel(SimpleModel):
 
     def __init__(self, config) -> None:
         super().__init__(config)
-        # The saved model
         self.saved = None
         self.forbidden = ["automl", "autosklearn"]
 
@@ -88,6 +91,7 @@ class AutoMLModel(SimpleModel):
 
     async def train(self, sources: Sources) -> None:
 
+
         tuner = self.parent.config.tuner
         scorer = self.parent.config.scorer
         features = self.parent.config.features
@@ -103,7 +107,7 @@ class AutoMLModel(SimpleModel):
         if self.parent.config.objective == "min":
             highest_acc = float("inf")
         elif self.parent.config.objective == "max":
-            highest_acc = -1
+            highest_acc = -float("inf")
         else:
             raise NotImplementedError('Objective must be either "min" or "max".')
 
@@ -111,7 +115,18 @@ class AutoMLModel(SimpleModel):
         # We clear the destination directory first, to avoid conflicts.
         if dest.exists() and dest.is_dir():
             shutil.rmtree(dest)
-  
+
+        train_source = test_source = None
+        
+        if self.parent.config.split_data:
+            data = []
+            async for record in sources.with_features(
+                self.features + [self.parent.config.predict.name]
+            ):
+                data.append(record)
+            train_source, test_source = train_test_split(data, train_size=self.parent.config.split_ratio)
+        else:
+            train_source = test_source = sources
 
         best_path = best_name = ""
 
@@ -131,19 +146,20 @@ class AutoMLModel(SimpleModel):
             else:
                 tuner.config.parameters = {}
       
-            val = await tune(model, tuner, scorer, self.parent.config.predict, sources, sources)
+            value = await tune(model, tuner, scorer, self.parent.config.predict, train_source, test_source)
        
-            if self.parent.config.objective == "min" and val < highest_acc:
+            if self.parent.config.objective == "min" and value < highest_acc:
                 best_path = model_dir
                 best_name = model_name
-                highest_acc = val
-            elif self.parent.config.objective == "max" and val > highest_acc:
+                highest_acc = value
+            elif self.parent.config.objective == "max" and value > highest_acc:
                 best_path = model_dir
                 best_name = model_name
-                highest_acc = val
+                highest_acc = value
         
         best_model_dir = dest / "best_model" / best_name
         shutil.copytree(best_path, best_model_dir)
+
 
       
 
