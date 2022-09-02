@@ -11,7 +11,7 @@ Our goal is to achieve the fully connected development model, in which AI driven
 feedback helps us understand our work, how it relates to other's work, and how
 we can most effectively collaborate.
 
-To achieve the fully connect development model we must hit critical velocity.
+To enter the fully connected development model we must hit critical velocity.
 Critical velocity is the maximum throughput of changes meeting our bar for high
 quality given the assets at our disposal (contributors, compute, etc.).
 Alice, our AI, will help us hit critical velocity. She sits at the intesection
