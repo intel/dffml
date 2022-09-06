@@ -4,6 +4,11 @@ Alice
 See https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/
 for more information on Alice. She is our developer helper.
 
+Here is the most recent 5 minute
+`Status Update <https://www.youtube.com/watch?v=THKMfJpPt8I&list=PLtzAOVTpO2jZltVwl3dSEeQllKWZ0YU39>`_
+which covers what Alice is for the uninitiatied, where are we progress wise,
+and how to get involved.
+
 Vision
 ******
 
