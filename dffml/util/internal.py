@@ -12,6 +12,7 @@ from ..source.source import (
     BaseSource,
     BaseSourceContext,
 )
+from ..df.types import DataFlow
 from ..configloader.configloader import BaseConfigLoader
 from ..source.memory import MemorySource, MemorySourceConfig
 
