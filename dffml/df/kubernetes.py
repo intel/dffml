@@ -485,9 +485,9 @@ class JobKubernetesOrchestratorContext(MemoryOrchestratorContext):
                         - name: OUTPUT
                           value: {output_socket}
                         - name: HTTP_PROXY
-                          value: {os.environ["HTTP_PROXY"]}
+                          value: {os.environ.get("http_proxy", os.environ.get("HTTP_PROXY", ""))}
                         - name: HTTPS_PROXY
-                          value: {os.environ["HTTPS_PROXY"]}
+                          value: {os.environ.get("https_proxy", os.environ.get("HTTPS_PROXY", ""))}
                       - name: {output_container_name}
                         image: {self.parent.config.image}
                         command: {json.dumps(output_command)}
