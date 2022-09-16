@@ -6,7 +6,7 @@ import tempfile
 import contextlib
 import pkg_resources
 import numpy as np
-from sklearn.model_selection  import train_test_split
+
 from typing import AsyncIterator, Tuple, Any, Type, List
 from ..high_level.ml import tune
 from ..base import config, field
@@ -124,7 +124,11 @@ class AutoMLModel(SimpleModel):
                 self.features + [self.parent.config.predict.name]
             ):
                 data.append(record)
-            train_source, test_source = train_test_split(data, train_size=self.parent.config.split_ratio)
+            train_len = int(self.parent.config.split_ratio * len(data))
+            train_source = data[:train_len]
+            test_source = data[train_len:]
+
+            
         else:
             train_source = test_source = sources
 

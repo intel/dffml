@@ -103,12 +103,11 @@ class TestAutoMLModel(AsyncTestCase):
         res = await score(
             self.model, self.scorer, Feature("Target", float, 1), self.testsource
         )
-        # Ensure the accuracy is above 80%
-        print(res)
+      
         self.assertTrue(res > 0.8) 
 
     async def test_02_predict(self):
-        # reduce overfitting
+  
         res_train = await score(
             self.model,
             self.scorer,
@@ -122,6 +121,6 @@ class TestAutoMLModel(AsyncTestCase):
             Feature("Target", float, 1),
             self.testsource,
         )
-        # Test fails if the difference between training and testing is more that 5%
+    
         self.assertLess(res_train - res_test, 0.05)
     
