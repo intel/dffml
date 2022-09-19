@@ -50,7 +50,6 @@ async def ensure_tokei(self) -> str:
 
 COLLECTOR_DATAFLOW = dffml.DataFlow(
     dffml.GroupBy,
-    dffml.GetMulti,
     *dffml.opimp_in(dffml_feature_git.feature.operations),
     *dffml.opimp_in(operations),
     *dffml.opimp_in(sys.modules[__name__]),
@@ -72,13 +71,10 @@ COLLECTOR_DATAFLOW = dffml.DataFlow(
     },
 )
 COLLECTOR_DATAFLOW.seed = [
-    dffml.Input(value=10, definition=COLLECTOR_DATAFLOW.definitions["quarters"]),
+    dffml.Input(value=1, definition=COLLECTOR_DATAFLOW.definitions["quarters"]),
+    # dffml.Input(value=10, definition=COLLECTOR_DATAFLOW.definitions["quarters"]),
     dffml.Input(
         value=True, definition=COLLECTOR_DATAFLOW.definitions["no_git_branch_given"],
-    ),
-    dffml.Input(
-        value={"github_actions_workflows": operations.github_workflows.op.outputs["result"].name, "jenkinsfiles": operations.jenkinsfiles.op.outputs["result"].name},
-        definition=COLLECTOR_DATAFLOW.definitions["get_multi_spec"],
     ),
     dffml.Input(
         value={
@@ -106,13 +102,29 @@ COLLECTOR_DATAFLOW.seed = [
                 .name,
                 "by": "quarter",
             },
-            operations.github_workflow_present.op.outputs["result"].name: {
-                "group": operations.github_workflow_present.op.outputs["result"].name,
-                "by": "quarter",
-            },
             operations.contributing_present.op.outputs["result"].name: {
                 "group": operations.contributing_present.op.outputs["result"].name,
                 "by": "quarter",
+            },
+            operations.action_yml_files.op.outputs["result"].name: {
+                "group": operations.action_yml_files.op.outputs["result"].name,
+                "by": "quarter",
+                "nostrict": True,
+            },
+            operations.groovy_files.op.outputs["result"].name: {
+                "group": operations.groovy_files.op.outputs["result"].name,
+                "by": "quarter",
+                "nostrict": True,
+            },
+            operations.jenkinsfiles.op.outputs["result"].name: {
+                "group": operations.jenkinsfiles.op.outputs["result"].name,
+                "by": "quarter",
+                "nostrict": True,
+            },
+            operations.github_workflows.op.outputs["result"].name: {
+                "group": operations.github_workflows.op.outputs["result"].name,
+                "by": "quarter",
+                "nostrict": True,
             },
         },
         definition=COLLECTOR_DATAFLOW.definitions["group_by_spec"],
