@@ -1295,6 +1295,9 @@ class MemoryOperationImplementationNetworkContext(
             if not inspect.isasyncgen(outputs):
 
                 async def to_async_gen(x):
+                    # TODO This needs to change, OperationImplementationContext
+                    # should be adding to ictx directly and recieving Input
+                    # objects directly.
                     yield x
 
                 outputs = to_async_gen(outputs)
