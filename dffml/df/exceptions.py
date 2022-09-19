@@ -14,6 +14,10 @@ class DefinitionNotInContext(Exception):
     pass
 
 
+class NoInputsWithDefinitionInContext(Exception):
+    pass
+
+
 class NotOpImp(Exception):
     pass
 
