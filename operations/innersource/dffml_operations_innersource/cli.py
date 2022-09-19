@@ -50,6 +50,7 @@ async def ensure_tokei(self) -> str:
 
 COLLECTOR_DATAFLOW = dffml.DataFlow(
     dffml.GroupBy,
+    dffml.GetMulti,
     *dffml.opimp_in(dffml_feature_git.feature.operations),
     *dffml.opimp_in(operations),
     *dffml.opimp_in(sys.modules[__name__]),
@@ -74,6 +75,10 @@ COLLECTOR_DATAFLOW.seed = [
     dffml.Input(value=10, definition=COLLECTOR_DATAFLOW.definitions["quarters"]),
     dffml.Input(
         value=True, definition=COLLECTOR_DATAFLOW.definitions["no_git_branch_given"],
+    ),
+    dffml.Input(
+        value={"github_actions_workflows": operations.github_workflows.op.outputs["result"].name, "jenkinsfiles": operations.jenkinsfiles.op.outputs["result"].name},
+        definition=COLLECTOR_DATAFLOW.definitions["get_multi_spec"],
     ),
     dffml.Input(
         value={
