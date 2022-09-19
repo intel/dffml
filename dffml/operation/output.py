@@ -10,7 +10,10 @@ from ..df.base import (
     BaseInputSetContext,
     BaseInputNetworkContext,
 )
-from ..df.exceptions import DefinitionNotInContext
+from ..df.exceptions import (
+    DefinitionNotInContext,
+    NoInputsWithDefinitionInContext,
+)
 from ..util.data import traverse_get
 
 
@@ -109,7 +112,8 @@ get_multi_output = Definition(name="get_multi_output", primitive="map")
 @config
 class GetMultiConfig:
     nostrict: List[str] = field(
-        "Do not raise DefinitionNotInContext if these definitions to get are not found",
+        # TODO Make this more granular (per exception)
+        "Do not raise DefinitionNotInContext or NoInputsWithDefinitionInContext if these definitions to get are not found",
         default_factory=lambda: [],
     )
 
@@ -195,7 +199,6 @@ class GetMulti(OperationImplementationContext):
                     self.logger.debug(
                         "Could not find %r but in nostrict", convert
                     )
-                    del exported[i]
                 else:
                     raise
         self.logger.debug("output spec: %s", exported)
@@ -205,9 +208,18 @@ class GetMulti(OperationImplementationContext):
             want = {}
             # Group each requested output
             for definition in exported:
-                async for item in od.inputs(definition):
-                    want.setdefault(definition.name, [])
-                    want[definition.name].append(item.value)
+                try:
+                    async for item in od.inputs(definition):
+                        want.setdefault(definition.name, [])
+                        want[definition.name].append(item.value)
+                except NoInputsWithDefinitionInContext:
+                    if definition in self.parent.config.nostrict:
+                        self.logger.debug(
+                            "Could not find any inputs with definition %r but in nostrict",
+                            definition,
+                        )
+                    else:
+                        raise
 
             # Rename outputs if present in name_map
             for key, value in want.copy().items():

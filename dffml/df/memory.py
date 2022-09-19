@@ -26,6 +26,7 @@ from .exceptions import (
     DefinitionNotInContext,
     ValidatorMissing,
     MultipleAncestorsFoundError,
+    NoInputsWithDefinitionInContext,
 )
 from .types import (
     Input,
@@ -283,6 +284,8 @@ class MemoryDefinitionSetContext(BaseDefinitionSetContext):
             if definition is None:
                 definitions = entry.definitions.keys()
             for yield_inputs_within_definition in definitions:
+                if not yield_inputs_within_definition in entry.definitions:
+                    raise NoInputsWithDefinitionInContext(yield_inputs_within_definition)
                 for item in entry.definitions[yield_inputs_within_definition]:
                     yield item
 
