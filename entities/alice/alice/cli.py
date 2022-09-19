@@ -28,8 +28,24 @@ from .please.contribute.recommended_community_standards.recommended_community_st
 from .please.contribute.recommended_community_standards.cli import DFFMLCLICMD
 
 
-# TODO Make this use the overlay stuff on runtime instead of on module load.
-ALICE_COLLECTOR_DATAFLOW = dffml_operations_innersource.cli.COLLECTOR_DATAFLOW
+# Add the static overlay stuff to dataflow used by the command:
+#
+# .. code-block:: console
+#
+#     $ alice shouldi contribute
+ALICE_COLLECTOR_DATAFLOW  = dffml.DataFlow(
+    *itertools.chain(
+        *[
+            dffml.object_to_operations(cls)
+            for cls in [
+                dffml_operations_innersource.cli.COLLECTOR_DATAFLOW,
+                *dffml.Overlay.load(
+                    entrypoint="dffml.overlays.alice.shouldi.contribute"
+                ),
+            ]
+        ]
+    )
+)
 
 
 # NOTE When CLI and operations are merged: All this is the same stuff that will
