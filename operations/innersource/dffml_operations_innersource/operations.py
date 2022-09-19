@@ -1,6 +1,6 @@
 import pathlib
 import datetime
-from typing import List
+from typing import List, NewType
 
 import yaml
 
@@ -11,14 +11,109 @@ from dffml_feature_git.feature.definitions import (
 )
 
 
-@dffml.op(inputs={"repo": git_repository_checked_out,},)
-def github_workflow_present(self, repo: git_repository_checked_out.spec) -> dict:
-    self.logger.debug("%s", list(pathlib.Path(repo.directory).rglob("*")))
-    return pathlib.Path(repo.directory, ".github", "workflows").is_dir()
+GitHubActionsWorkflowUnixStylePath = NewType("GitHubActionsWorkflowUnixStylePath", str)
+JenkinsfileWorkflowUnixStylePath = NewType("JenkinsfileWorkflowUnixStylePath", str)
+GroovyFileWorkflowUnixStylePath = NewType("GroovyFileWorkflowUnixStylePath", str)
+ActionYAMLFileWorkflowUnixStylePath = NewType("ActionYAMLFileWorkflowUnixStylePath", str)
+
+# Check for
+#   "usage", "example(s)", "Known issues" (text or link to issue tracker) in docs
+#   Support / contact information in docs (issue tracker link)
+#   Linting (goovy linter, YAML linting), score it needs to meet
+#   CI/CD on library itself (Actions workflows or webhooks configured)
+#   We want to check for branch protection
+#   We want to make sure that the issues are being addressed (hyptothetical SLA estimates)
+#   Libraries should not have any hardcoded settings
+#   Credentials must be managed securly and with minimal scope needed
+#   Dependencies
+#   - Must be explictly documented somewhere (SBOM okay)
+#   - All dependnecies should be created by github or github verified createors or within dffml org
+#   We should seperate seperate functionality into seperate libraries
+#   We should be using symver
+
+
+def relative_paths(
+    directory: str,
+    paths: List[str],
+):
+    return [
+        path.relative_to(directory)
+        for path in paths
+    ]
+
+
+@dffml.op(
+    inputs={"repo": git_repository_checked_out,},
+    outputs={"result": GitHubActionsWorkflowUnixStylePath},
+    expand=["result"],
+)
+def github_workflows(self, repo: git_repository_checked_out.spec) -> dict:
+    return {
+        "result": map(
+            str,
+            relative_paths(
+                repo.directory,
+                pathlib.Path(repo.directory, ".github", "workflows").glob("*.yml"),
+            ),
+        ),
+    }
+
+
+@dffml.op(
+    inputs={"repo": git_repository_checked_out,},
+    outputs={"result": JenkinsfileWorkflowUnixStylePath},
+    expand=["result"],
+)
+def jenkinsfiles(self, repo: git_repository_checked_out.spec) -> dict:
+    return {
+        "result": map(
+            str,
+            relative_paths(
+                repo.directory,
+                pathlib.Path(repo.directory).rglob("**/*Jenkinsfile")
+            ),
+        ),
+    }
+
+
+@dffml.op(
+    inputs={"repo": git_repository_checked_out,},
+    outputs={"result": GroovyFileWorkflowUnixStylePath},
+    expand=["result"],
+)
+def groovy_files(self, repo: git_repository_checked_out.spec) -> dict:
+    return {
+        "result": map(
+            str,
+            relative_paths(
+                repo.directory,
+                [
+                    *pathlib.Path(repo.directory).rglob("vars/*.groovy"),
+                    *pathlib.Path(repo.directory).rglob("src/**/*.groovy"),
+                ],
+            ),
+        ),
+    }
+
+@dffml.op(
+    inputs={"repo": git_repository_checked_out,},
+    outputs={"result": ActionYAMLFileWorkflowUnixStylePath},
+    expand=["result"],
+)
+def action_yml_files(self, repo: git_repository_checked_out.spec) -> dict:
+    return {
+        "result": map(
+            str,
+            relative_paths(
+                repo.directory,
+                pathlib.Path(repo.directory).rglob("**/action.yml")
+            ),
+        ),
+    }
 
 
 @dffml.op(inputs={"repo": git_repository_checked_out,},)
-def contributing_present(self, repo: git_repository_checked_out.spec) -> dict:
+def contributing_present(self, repo: git_repository_checked_out.spec) -> bool:
     return any(
         [
             pathlib.Path(repo.directory, "CONTRIBUTING.md").is_file(),
