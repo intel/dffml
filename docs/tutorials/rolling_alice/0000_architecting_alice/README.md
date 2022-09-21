@@ -141,3 +141,22 @@ Alice's Adventures in Wonderland is in the public domain, which is a great reaso
 Also, in cryptography Alice and Bob are already commonly used names. So there's some shared understanding in the community that Alice is the name of a theoretical entity.
 
 Also when George got a name people started liking him a lot more, talking positively about him, making quips about him. It's just more fun to give the inanimate object a name. Or a personality, oh George doesn't like that repo! I'm sure Alice would agree that things are a lot more interesting when inanimate objects have names and personalities.
+
+References:
+
+- https://www.alice.org/about/
+  - > **Why is it called Alice?**
+    > 
+    > “This is one of my favorite questions. It always lets me know the question asker is thinking in the correct direction. After all, the ability to name something is a tremendous power, and in this case, there’s a terrific reason.
+    >
+    > Alice pays homage to Lewis Carroll, author of Alice’s Adventures in Wonderland and Through the Looking Glass. Carroll was a mathematician, novelist, and photographer. Most important, he could do intellectually difficult things but also realized the most powerful thing was to be able to communicate clearly and in an entertaining way. This inspires our efforts to make something as complex as computer programming easy and fun.
+    >
+    > The name is also a very practical choice. The artwork associated with the Alice books is now in the public domain, its copyright having lapsed. Also, the name “Alice” has several other advantages:
+    >
+    > – It is easy to spell.
+    >
+    > – It is easy to pronounce.
+    >
+    > – It shows up near the top of alphabetical lists.”
+    >
+    >  Randy Pausch
