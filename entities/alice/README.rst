@@ -24,7 +24,7 @@ of the software / entity analysis trinity to identifify patterns which
 help us most effectively communicate so as to reach critical velocity.
 
 .. image:: https://user-images.githubusercontent.com/5950433/188203911-3586e1af-a1f6-434a-8a9a-a1795d7a7ca3.svg
-    :target: https://github.com/intel/dffml/edit/alice/entities/alice
+    :target: https://github.com/intel/dffml/blob/alice/entities/alice
     :alt: Software Analysis Trinity diagram showing Human Intent, Static Analysis, and Dynamic Analysis to represent the soul of the software / entity and the process taken to improve it
 
 Dependencies
@@ -143,10 +143,10 @@ shouldi
     Tutorial on how we made this: https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0001_coach_alice/0001_down_the_dependency_rabbit_hole_again.md
 
 Alice's initial functionality is based around
-https://intel.github.io/dffml/shouldi.html
+https://intel.github.io/dffml/main/shouldi.html
 
 We provide Alice specific overlays
-(covered in https://intel.github.io/dffml/examples/dataflows.html) which enable
+(covered in https://intel.github.io/dffml/main/examples/dataflows.html) which enable
 Alice to provide us with additional information on top of what shouldi already
 gives us.
 
