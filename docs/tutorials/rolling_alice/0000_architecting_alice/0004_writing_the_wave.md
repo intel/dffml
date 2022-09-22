@@ -19,7 +19,31 @@ that she can be the most helpful possible.
 
 We'll be using text to a speech to text model from OpenAI known
 as Whisper provide Alice with additional context / input data.
-In future tutorials we'll leverage what we teach Alice here
+In future tutorials we'll leverage what we teach Alice here.
+
+- Context
+  - This tutorial is how we enabled Alice to hear us and
+    transcribe our verbal communication to text for further
+    analysis and control.
+  - We are doing this so we can talk to Alice while we develop
+    to provide her with more context about our process and
+    enable her to communicate that to future devs or eventually
+    devs working in parallel.
+- Goals
+  - Teach Alice to transcribe speech to text.
+- Actions
+  - We're going to write an operation that streams output of
+    transcription to other operations.
+- Future work
+  - We'll later implement operations which combine our shell
+    recordings with our audio transcriptions to help us creat
+    tutorials just by hacking in the shell and explaining our
+    process!
+- References
+  - This tutorial is covered in `Writing the Wave: Teaching Alice to Listen` **TODO** Update with link to recording once made.
+  - The resulting commit from completion of this tutorial was: **TODO** Update with link to operations added.
+- Feedback
+  - Please provide feedback / thoughts for extension / improvement about this tutorial in the following discussion thread: https://github.com/intel/dffml/discussions/1413
 
 ## The Time is Come for Thee to Reap
 
