@@ -181,7 +181,7 @@ knowledge contained in it for easy reference and use later.
 
 ### RSS feed us the Audio file please and thank you
 
-[![hack-the-planet](https://img.shields.io/badge/hack%20the-planet-blue)](https://github.com/intel/dffml/discussions/1406#discussioncomment-3711548)
+[![hack-the-planet](https://img.shields.io/badge/hack%20the-planet-blue)](https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0000_easter_eggs.md#hack-the-planet-)
 
 From the webpage we found a RSS URL for the podcast.
 
@@ -225,7 +225,7 @@ $ file alan-watts-gnosticism.m4a
 alan-watts-gnosticism.m4a: ISO Media, MP4 Base Media v1 [IS0 14496-12:2003]
 ```
 
-[![write-the-docs](https://img.shields.io/badge/write%20the-docs-success)](https://github.com/intel/dffml/discussions/1406#discussioncomment-3711548)
+[![write-the-docs](https://img.shields.io/badge/write%20the-docs-success)](https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0000_easter_eggs.md#write-the-docs-)
 
 Calculate the SHA, when we wrote the docs for this we ran the following
 command to calculate a cryptographic hash of the contents of the file.
@@ -243,7 +243,7 @@ $ sha384sum alan-watts-gnosticism.m4a
 db9504a15b19bac100093fffe69ce2ab6dd7ed017978c7afcf6ff70db0f288c56b470224e4bcc8b23b927029de13d60a  alan-watts-gnosticism.m4a
 ```
 
-[![mindset-security](https://img.shields.io/badge/mindset-security-critical)](https://github.com/intel/dffml/discussions/1406#discussioncomment-3711548)
+[![mindset-security](https://img.shields.io/badge/mindset-security-critical)](https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0000_easter_eggs.md#mindset-security-)
 
 Verify the contents are as expected, you can check the output of the
 previous command to make sure the hash you see matches these docs. You
@@ -329,7 +329,7 @@ threads so as to make them concurrent.
 > - References
 >   - https://github.com/intel/dffml/issues/245
 
-[![use-the-source](https://img.shields.io/badge/use%20the-source-blueviolet)](https://github.com/intel/dffml/discussions/1406#discussioncomment-3711548)
+[![use-the-source](https://img.shields.io/badge/use%20the-source-blueviolet)](https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0000_easter_eggs.md#use-the-source-)
 
 There is an example within the DFFML source code which we can pull
 from, if only we could find it first...
