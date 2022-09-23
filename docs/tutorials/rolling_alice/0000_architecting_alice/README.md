@@ -1,6 +1,8 @@
 # [Rolling Alice: Volume 0: Introduction and Context](https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0000_architecting_alice)
 
-> Introduction and Context to tutorial series - Started May 2022
+> Introduction and Context to tutorial series - Started May 2022.
+>
+> Check here for overview and status updates: https://www.youtube.com/playlist?list=PLtzAOVTpO2jZltVwl3dSEeQllKWZ0YU39
 
 Together we'll build Alice the AI software architect. We'll be successful when Alice successfully maintains a codebase as the only maintainer for a year. Debugging issues, writing fixes, reviewing code, accepting pull requests, refactoring the code base post PR merge, dealing with vulnerabilities, cutting releases, maintaining release branches, and completing development work in alignment with the plugin's universal blueprint. She will modify, submit pull requests to, and track upstreaming of patches to her dependencies to achieve the cleanest architecture possible. We'll interact with her as we would any other remote developer.
 
