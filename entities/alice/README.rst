@@ -23,9 +23,8 @@ Alice, our AI, will help us hit critical velocity. She sits at the intesection
 of the software / entity analysis trinity to identifify patterns which
 help us most effectively communicate so as to reach critical velocity.
 
-.. image:: https://user-images.githubusercontent.com/5950433/188203911-3586e1af-a1f6-434a-8a9a-a1795d7a7ca3.svg
-    :target: https://github.com/intel/dffml/blob/alice/entities/alice
-    :alt: Software Analysis Trinity diagram showing Human Intent, Static Analysis, and Dynamic Analysis to represent the soul of the software / entity and the process taken to improve it
+For more information about Alice's architecture and conceptual foundations see
+https://github.com/intel/dffml/tree/alice/docs/tutorials/rolling_alice/0000_architecting_alice
 
 Dependencies
 ************
