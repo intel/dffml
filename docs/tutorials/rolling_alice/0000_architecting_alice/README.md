@@ -92,6 +92,7 @@ graph BT
 - Open Architecture
   - Universal Blueprint
   - Standard architecture we use to describe anything. Provides the ability to use / reference domain specific architectures as needed to define architecture of whole.
+  - https://github.com/intel/dffml/blob/alice/docs/arch/0009-Open-Architecture.rst
 - Think
   - Come up with new data flows and system context input
 - Thoughts
