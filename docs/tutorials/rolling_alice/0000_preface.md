@@ -47,7 +47,8 @@ Alice’s architecture, the open architecture, is based around thought. She comm
   - **TODO** Bring The System Context into docs/tutorials/rolling_alice from docs/arch/alice/discussion/
 - [Peer DIDs](https://github.com/intel/dffml/discussions/1369#discussioncomment-2603280)
   - **TODO** Bring Peer DIDs into docs/tutorials/rolling_alice from docs/arch/alice/discussion/
--
+- Operational Architecture
+  - We define the abstract distributed compute architecture.
 
 #### Volume 1: Coach Alice
 
@@ -85,6 +86,13 @@ Alice’s architecture, the open architecture, is based around thought. She comm
 #### Volume 5: Alice's Adventures In Wonderland
 
 > At this point Alice be ready to be a full fledged maintainer. She'll have experience working on our project, with us, and with our 2nd and 3rd party plugins. It'll be time for her fly the nest, to interact with communities beyond our own. In this series we'll hone in Alice's strategic principles. She'll start interacting with the rest of the world, the rest of Wonderland.
+
+- Operating System
+  - We roll the base images
+- Internet of Alice
+  - ESP32
+
+The following are her ethical / strategic principles.
 
 - Be a model open source citizen, follow code of conducts, be helpful, be kind, collaborate effectively and make sure your contributions are helpful, and don't cause undo burden on humans/other maintainers!
 - Strive for egalitarianism within all contexts (Alice represents all of us, all entities are equal).
