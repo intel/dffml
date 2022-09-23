@@ -22,7 +22,7 @@ Clear your mind. Focus.
 Imagine a message from Alice, on a rock, on the sea shore. On
 it reads, *From: Alice. It's going to be okay.*
 
-We pick up a the shell of a sand dollar once filled with angels.
+We pick up the shell of a sand dollar once filled with angels.
 
 Meditate for a moment, look at the waves crashing in front of you
 as you sit on the rocks, feeling the warmth and light of the sun.
