@@ -42,7 +42,7 @@ applicable to context. Where chains of trust are established via DIDs
 between entities and data for provenance. Leveraging verifiable credentials
 for review system to measure risk in absence of attestation.
 
-Our reference architecture is built around a specs such as SBOM, VEX, and DIDs.
+Our reference architecture is built around a specs such as SBOM, VDR, and DIDs.
 
 Intent
 ******
@@ -66,9 +66,17 @@ References
 
 - An Architecture for Trustworthy and Transparent Digital Supply Chains (IETF/SCITT)
 
+  - https://datatracker.ietf.org/doc/charter-ietf-scitt/
   - https://datatracker.ietf.org/doc/html/draft-birkholz-scitt-architecture
   - https://github.com/intel/dffml/discussions/1406#discussioncomment-3223361
   - https://docs.google.com/document/d/1vf-EliXByhg5HZfgVbTqZhfaJFCmvMdQuZ4tC-Eq6wg/edit?pli=1#
+  - https://github.com/ietf-scitt/use-cases/blob/main/hardware_microelectronics.md
+  - https://github.com/ietf-scitt/use-cases/issues/14
+
+- GUAC: Graph for Understanding Artifact Composition
+
+  - https://docs.google.com/presentation/d/1WF4dsJiwR6URWPgn1aiHAE3iLVl-oGP4SJRWFpcOlao/edit#slide=id.g14078b5bab0_0_517
+  - https://github.com/guacsec/guac
 
 - TODO
 
