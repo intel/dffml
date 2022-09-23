@@ -1,4 +1,5 @@
 import copy
+import textwrap
 import collections
 from typing import Dict, Any, NamedTuple, List
 
@@ -20,6 +21,15 @@ from ..util.data import traverse_get
 class GroupBySpec(NamedTuple):
     group: Definition
     by: Definition
+    nostrict: bool = field(
+        textwrap.dedent(
+            """
+            Do not raise DefinitionNotInContext or
+            NoInputsWithDefinitionInContext if definitions are not found.
+            """
+        ).strip(),
+        default=False,
+    )
 
     @classmethod
     async def resolve(
@@ -33,7 +43,13 @@ class GroupBySpec(NamedTuple):
         exported = copy.deepcopy(exported)
         # Look up the definiton for the group and by fields
         for convert in ["group", "by"]:
-            exported[convert] = await ictx.definition(ctx, exported[convert])
+            try:
+                exported[convert] = await ictx.definition(ctx, exported[convert])
+            except:
+                if exported.get("nostrict", False):
+                    exported[convert] = None
+                else:
+                    raise
         return cls(**exported)
 
 
@@ -65,6 +81,16 @@ class GroupBy(OperationImplementationContext):
             want = {}
             # Group each requested output
             for output_name, output in outputs.items():
+                # If nostrict resulted in failure to resolve defs, ignore
+                if (
+                    output.nostrict
+                    and (
+                        output.group is None
+                        or output.by is None
+                    )
+                ):
+                    self.logger.debug("Skipping nostrict on %r", output)
+                    continue
                 # Create an array for this output data
                 want[output_name] = []
                 # Create an ordered dict which will be keyed off of and ordered
