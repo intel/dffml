@@ -89,6 +89,14 @@ graph BT
     end
 ```
 
+### Entity Analysis Trinity
+
+We leverage the Entity Analysis Trinity to help us bridge the gap between
+our technical activities and processes and the conceptual model we are
+following as we analyze the softare / system / entity over it's lifecycle.
+
+![Entity Analysis Trinity](https://user-images.githubusercontent.com/5950433/188203911-3586e1af-a1f6-434a-8a9a-a1795d7a7ca3.svg)
+
 ### Terminology
 
 - Open Architecture
