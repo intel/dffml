@@ -23,3 +23,6 @@ OverlayGitHub                                  = alice.please.contribute.recomme
 [dffml.overlays.alice.please.contribute.recommended_community_standards.code_of_conduct]
 OverlayGit                                     = alice.please.contribute.recommended_community_standards.recommended_community_standards:OverlayGit
 OverlayGitHub                                  = alice.please.contribute.recommended_community_standards.recommended_community_standards:OverlayGitHub
+
+[dffml.overlays.alice.shouldi.contribute]
+OverlayCICDLibrary                             = alice.shouldi.contribute.cicd
