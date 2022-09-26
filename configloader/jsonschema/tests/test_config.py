@@ -48,6 +48,9 @@ class MainModel(BaseModel):
 
     class Config:
         title = 'Main'
+        schema_extra = {
+            "$schema": "https://intel.github.io/dffml/manifest-format-name.0.0.2.schema.json",
+        }
 
 
 @config
