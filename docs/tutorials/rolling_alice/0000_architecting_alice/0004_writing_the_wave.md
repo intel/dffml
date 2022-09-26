@@ -1,19 +1,5 @@
 # Volume 0: Chapter 4: Writing the Wave
 
-> This tutorial was written by echoing examples to the shell, then code
-> blocking the relevant console commands. We're going to use what we build
-> here to allow tutorial writers to either speak the echo commands and we'll 
-> later insert them into the asciinema recordings we scrape the commands and 
-> outputs from. We could also use the date on the filename we record too plus
-> the offsets to calculate point in time for a given recording. asciicast
-> recordings have new content with a time delta stamp from the last read/write,
-> we probably need to ensure recording are not made with `--idle-time-limit`
-> for this. If we can get streaming working for the lines of asciinema output,
-> critical piece here is ensuring writes are flushed on each line asciinema
-> side, pretty sure this is the case but we need to check. Then we could
-> potentially run these updates markdown comments realtime, Alice doing it
-> sitting alongside of course.
-
 We want Alice to be as easy to communicate with as possible so
 that she can be the most helpful possible.
 
@@ -388,3 +374,31 @@ https://github.com/intel/dffml/blob/9f06bae59e954e5fe0845d416500d8418b5907bf/fea
   - [ ] Stream output
     - [ ] Fix
     - [ ] Configurable yield break points (via overlay based replacement of op? or config at a minimum similar to `\n` on `StreamReader.readline()`)
+
+## Vision
+
+This tutorial was written by echoing examples to the shell, then code
+blocking the relevant console commands. We're going to use what we build
+here to allow tutorial writers to either speak the echo commands and we'll 
+later insert them into the asciinema recordings we scrape the commands and 
+outputs from. We could also use the date on the filename we record too plus
+the offsets to calculate point in time for a given recording. asciicast
+recordings have new content with a time delta stamp from the last read/write,
+we probably need to ensure recording are not made with `--idle-time-limit`
+for this. If we can get streaming working for the lines of asciinema output,
+critical piece here is ensuring writes are flushed on each line asciinema
+side, pretty sure this is the case but we need to check. Then we could
+potentially run these updates markdown comments realtime, Alice doing it
+sitting alongside of course.
+
+```mermaid
+graph TD
+    bash_shell_prompt_command --> herstory
+    alice_shell --> herstory
+    herstory --> ipynb
+    radio_free_alice --> audio_stream
+    audio_stream --> transcript
+    transcript --> ipynb
+    ipynb --> sphinx_build
+    sphinx_build --> intuitive_doc_editing_gsoc_project
+```
