@@ -83,7 +83,7 @@ Install latest known working version
 
 .. code-block:: console
 
-    $ export ALICE_STATE_OF_ART=5c270666976d3dff572f727bacf1a75770d0057f
+    $ export ALICE_STATE_OF_ART=98335d941116e76bbf4e07422adc2b5061e47934
     $ python -m pip install \
         "https://github.com/intel/dffml/archive/${ALICE_STATE_OF_ART}.zip#egg=dffml" \
         "https://github.com/intel/dffml/archive/${ALICE_STATE_OF_ART}.zip#egg=dffml-feature-git&subdirectory=feature/git" \
