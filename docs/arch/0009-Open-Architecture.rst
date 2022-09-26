@@ -43,6 +43,10 @@ between entities and data for provenance. Leveraging verifiable credentials
 for review system to measure risk in absence of attestation.
 
 Our reference architecture is built around a specs such as SBOM, VDR, and DIDs.
+We leverage the concept of a Manifest to talk about a node within the graph.
+A manifest is any document which is aligned with the guidelines within the
+`Manifest ADR <https://github.com/intel/dffml/blob/alice/docs/arch/0008-Manifest.md>`_.
+A DID doc is an example of an instance of a manifest.
 
 Intent
 ******
@@ -58,6 +62,10 @@ Intent
 
 References
 **********
+
+- Manifests
+
+  - https://github.com/intel/dffml/blob/alice/docs/arch/0008-Manifest.md
 
 - Living Threat Models
 
