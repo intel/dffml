@@ -1,11 +1,14 @@
 import sys
+import json
 import pathlib
+import tempfile
 import platform
 import itertools
-from typing import Dict
+from typing import Dict, NewType
 
 import dffml
 
+import dffml_feature_git.feature.definitions
 import dffml_feature_git.feature.operations
 
 from . import operations
@@ -46,6 +49,30 @@ async def ensure_tokei(self) -> str:
     )
     self.parent.stack.enter_context(dffml.prepend_to_path(tokei))
     return tokei.joinpath("tokei")
+
+
+GitHubRepoID = NewType("GitHubRepoID", str)
+
+
+@dffml.op
+async def github_repo_id_to_clone_url(
+    self, repo_id: GitHubRepoID,
+) -> dffml_feature_git.feature.definitions.URLType:
+    """
+    Convert GitHub Integer Repository ID to Clonable URL.
+    """
+    with tempfile.TemporaryDirectory() as tempdir:
+        # Write out the API query response to a file
+        api_response_contents_path = pathlib.Path(tempdir, "contents")
+        with open(api_response_contents_path , "wb") as stdout:
+            await dffml.run_command(
+                ["gh", "api", f"https://api.github.com/repositories/{repo_id}"],
+                stdout=stdout,
+            )
+            stdout.seek(0)
+        # Parse in the response body as JSON
+        repository = json.loads(api_response_contents_path.read_text())
+    return repository["clone_url"]
 
 
 COLLECTOR_DATAFLOW = dffml.DataFlow(
