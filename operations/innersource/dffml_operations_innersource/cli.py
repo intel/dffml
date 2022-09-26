@@ -98,8 +98,7 @@ COLLECTOR_DATAFLOW = dffml.DataFlow(
     },
 )
 COLLECTOR_DATAFLOW.seed = [
-    dffml.Input(value=1, definition=COLLECTOR_DATAFLOW.definitions["quarters"]),
-    # dffml.Input(value=10, definition=COLLECTOR_DATAFLOW.definitions["quarters"]),
+    dffml.Input(value=10, definition=COLLECTOR_DATAFLOW.definitions["quarters"]),
     dffml.Input(
         value=True, definition=COLLECTOR_DATAFLOW.definitions["no_git_branch_given"],
     ),
@@ -165,6 +164,14 @@ COLLECTOR_DATAFLOW.operations[
     conditions=[ensure_tokei.op.outputs["result"]]
 )
 COLLECTOR_DATAFLOW.update(auto_flow=True)
+# Operations which should take inputs from other operations in flow and seed
+# MUST have their input flow modified to add the seed origin to the allowlist.
+for operation_name, (input_name, origins) in [
+    (dffml_feature_git.feature.operations.clone_git_repo.op.name, ("URL", ["seed",])),
+    (dffml_feature_git.feature.operations.check_if_valid_git_repository_URL.op.name, ("URL", ["seed",])),
+]:
+    COLLECTOR_DATAFLOW.flow[operation_name].inputs[input_name].extend(origins)
+COLLECTOR_DATAFLOW.update_by_origin()
 
 
 import copy
