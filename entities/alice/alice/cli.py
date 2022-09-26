@@ -46,7 +46,6 @@ for (new_class_name, dffml_cli_class), field_modifications in {
         dffml_operations_innersource.cli.InnerSourceCLI.run.records._set,
     ): {
         "dataflow": {"default_factory": lambda: ALICE_COLLECTOR_DATAFLOW},
-        "no_echo": {"default": True},
     },
 }.items():
     # Create a derived class
