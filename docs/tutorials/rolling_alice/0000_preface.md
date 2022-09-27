@@ -41,12 +41,17 @@ Alice’s architecture, the open architecture, is based around thought. She comm
 - [Peace at Last](https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0000_architecting_alice/0001_peace_at_last.md)
 - [She's arriving when?](https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0000_architecting_alice/0002_shes_ariving_when.md)
 - [A Shell for a Ghost](https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0000_architecting_alice/0003_a_shell_for_a_ghost.md)
-- [Traveler of the Edge](https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0001_coach_alice/0004_traveler_of_the_edge.md)
-  - **TODO** Traveler of the Edge is in the wrong directory. It should be in Architecting Alice.
+- [Writing the Wave](https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0000_architecting_alice/0004_writing_the_wave.md)
 - [The System Context](https://github.com/intel/dffml/discussions/1369#discussioncomment-2603280)
   - **TODO** Bring The System Context into docs/tutorials/rolling_alice from docs/arch/alice/discussion/
 - [Peer DIDs](https://github.com/intel/dffml/discussions/1369#discussioncomment-2603280)
   - **TODO** Bring Peer DIDs into docs/tutorials/rolling_alice from docs/arch/alice/discussion/
+- [OS DecentrAlice](https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0000_architecting_alice/0006_os_decentralice.md)
+  - We roll the image
+  - **TODO** Move from draft location: https://github.com/intel/dffml/discussions/1406#discussioncomment-3720703
+- Internet of Alice
+  - ESP32
+- [Traveler of the Edge](https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0000_architecting_alice/0007_traveler_of_the_edge.md)
 - Operational Architecture
   - We define the abstract distributed compute architecture.
 
@@ -62,6 +67,7 @@ Alice’s architecture, the open architecture, is based around thought. She comm
   - Using what we learned from "A Shell for a Ghost", we put Alice in JypterLite as a followon to Intuitive and Accessable Documenation Editing GSOC 2022 Project by Claire.
   - Extend to VS Code via a mechanism similar to their language server interface
 - [An Open Book](https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0001_coach_alice/0005_ask_alice.md)
+
 
 #### Volume 2: Alice and the Art of Strategy
 
@@ -86,11 +92,6 @@ Alice’s architecture, the open architecture, is based around thought. She comm
 #### Volume 5: Alice's Adventures In Wonderland
 
 > At this point Alice be ready to be a full fledged maintainer. She'll have experience working on our project, with us, and with our 2nd and 3rd party plugins. It'll be time for her fly the nest, to interact with communities beyond our own. In this series we'll hone in Alice's strategic principles. She'll start interacting with the rest of the world, the rest of Wonderland.
-
-- Operating System
-  - We roll the base images
-- Internet of Alice
-  - ESP32
 
 The following are her ethical / strategic principles.
 
