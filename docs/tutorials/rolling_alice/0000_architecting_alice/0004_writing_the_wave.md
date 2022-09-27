@@ -52,7 +52,7 @@ we're sure to have permissions to write here.
 
 ```console
 $ mkdir -p ~/.local/bin/
-$ mv $(echo ffmpeg-* | grep -v tar.xz)/{ffmpeg,ffprobe,qt-faststart} ~/.local/bin/
+$ mv $(ls | grep ffmpeg- | grep -v tar.xz)/{ffmpeg,ffprobe,qt-faststart} ~/.local/bin/
 ```
 
 Add the directory to your `PATH` to ensure you can run the binaries
