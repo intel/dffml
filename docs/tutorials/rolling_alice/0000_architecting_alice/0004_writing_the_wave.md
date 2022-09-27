@@ -52,7 +52,7 @@ we're sure to have permissions to write here.
 
 ```console
 $ mkdir -p ~/.local/bin/
-$ mv ffmpeg-5.1.1-amd64-static/{ffmpeg,ffprobe,qt-faststart} ~/.local/bin/
+$ mv $(echo ffmpeg-*)/{ffmpeg,ffprobe,qt-faststart} ~/.local/bin/
 ```
 
 Add the directory to your `PATH` to ensure you can run the binaries
