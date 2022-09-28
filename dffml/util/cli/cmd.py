@@ -382,6 +382,8 @@ class CMD(object):
                     cls.failed_to_load_cli_cmd_from_entrypoint(entrypoint, repr(i))
                     continue
                 if issubclass(loaded, cls):
+                    # TODO(alice) Detect data flow / system context
+                    # and auto convert to run record set style CLI command.
                     setattr(entrypoint_cli_cmd_cls, i.name, loaded)
         except:
             cls.failed_to_load_cli_cmd_from_entrypoint(entrypoint, None)
