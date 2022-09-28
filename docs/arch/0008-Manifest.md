@@ -19,6 +19,12 @@ References:
 
   - https://www.schemastore.org/json/
 
+- Credential Manifest
+
+  - Aligned concept
+
+  - https://identity.foundation/credential-manifest/
+
 - Manifest Shim (parser and validator for manifests)
 
   - https://github.com/intel/dffml/pull/1273
