@@ -70,6 +70,21 @@ Securing the software supply chain is becoming about securing the supply chain o
 
 Anything accessible via the Open Architecture methodology as a proxy can be used to combine external/internal work with programmatic application of context and organizationally aware modifications to those components as they are sourced from an SBOM. This allows us to apply policy universally across static and dynamic analysis. This will allow us to apply techniques such as RBAC based on programming languague agnostic descriptions of policy at any level of granularity at analysis or runtime.
 
+### Supply Chain Security
+
+> CI/CD that goes really fast is effectivly distributed compute.
+
+> [@lorenc_dan](https://twitter.com/lorenc_dan/status/1575090434333810688)
+>
+> This is the same as banks trading credit default swaps in the early 2000's without understanding the underlying credit risk.
+> Software is tight knit and most orgs are using the same OSS, magnifying the risks, which are now existential to the industry and national security.
+
+Holistic context aware risk analysis requires an understanding of a system's architecture, behavoir, and deployment relavent policy.
+
+The [Open Architecture](https://github.com/intel/dffml/blob/alice/docs/arch/0009-Open-Architecture.rst) effort is looking at software description via manifests and data flows (DAGs) with additional metadata added for deployment threat modeling. Dynamic context aware overlays are then used to enable deployment specific analysis, synthesis, and runtime evaluation.
+
+Leveraging the Open Architecture methodology we decouple the description of the system from the underlying execution environment. In the context of discussion around distributed compute we leverage holsitic risk analaysis during compute contract proposal and negotiation.
+
 ## RFCv1 Announcement
 
 Here is the first version of Alice aka the Open Architecture and this pull request is a Request For Comments https://github.com/intel/dffml/tree/alice/docs/tutorials/rolling_alice Please Review and provide any and all technical or conceptual feedback! This is also a call for participation if anyone would like to get involved and contribute please comment in the linked pull request or reach out to me directly. Looking forward to working with you all!
