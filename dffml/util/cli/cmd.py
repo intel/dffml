@@ -9,10 +9,14 @@ import inspect
 import asyncio
 import datetime
 import argparse
+import traceback
 import dataclasses
 from typing import Dict, Any
 import dataclasses
 
+import pkg_resources
+
+from .log import LOGGER
 from ...record import Record
 from ...feature import Feature
 
@@ -341,3 +345,44 @@ class CMD(object):
         graph TD
         """
         return subclass(cls, new_class_name, field_modifications)
+
+
+    CLI_CMD_FROM_ENTRYPOINT_LOGGER = LOGGER.getChild("CMD.from_entrypoint")
+
+
+    @classmethod
+    def failed_to_load_cli_cmd_from_entrypoint(cls, entrypoint: str, loading_what: str):
+        """
+        Sometimes weird dependency issues show up and prevent us from loading
+        anything. We log the traceback in that case.
+        """
+        cls.CLI_CMD_FROM_ENTRYPOINT_LOGGER.error(
+            "Error while loading entrypoint %s: %s: %s",
+            entrypoint,
+            loading_what,
+            traceback.format_exc(),
+        )
+
+
+    @classmethod
+    def from_entrypoint(cls, name: str, entrypoint: str):
+        """
+        Loads dffml.cli_cmd_from_entrypoint.cli entrypoint and creates a CMD class
+        incorporating all of the loaded CLI versions of cli_cmd_from_entrypoint as
+        subcommands.
+        """
+
+        entrypoint_cli_cmd_cls = type(name, (cls,), {})
+
+        try:
+            for i in pkg_resources.iter_entry_points(entrypoint):
+                try:
+                    loaded = i.load()
+                except:
+                    cls.failed_to_load_cli_cmd_from_entrypoint(entrypoint, repr(i))
+                    continue
+                if issubclass(loaded, cls):
+                    setattr(entrypoint_cli_cmd_cls, i.name, loaded)
+        except:
+            cls.failed_to_load_cli_cmd_from_entrypoint(entrypoint, None)
+        return entrypoint_cli_cmd_cls
