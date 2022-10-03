@@ -161,6 +161,7 @@ class AlicePleaseContributeCLI(dffml.CMD):
 class AlicePleaseCLI(dffml.CMD):
 
     contribute = AlicePleaseContributeCLI
+    create = dffml.CMD.from_entrypoint("AlicePleaseCreateCLI", "alice.please.create")
 
 
 class AliceVersionCLI(dffml.CMD):
