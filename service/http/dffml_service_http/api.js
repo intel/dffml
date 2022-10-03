@@ -237,3 +237,81 @@ class DFFMLHTTPAPI {
     return new DFFMLHTTPAPIScorer(this);
   }
 }
+
+
+// INCOMING TRANSMISSION .... Pasting from devtools, instructsions on how to
+// create scripts in devtools for ad-hoc application to active pages see bellow
+// screenshot showing how to add new script.
+//
+// .. image:: https://user-images.githubusercontent.com/5950433/193603965-65dc5299-7128-4b19-89e8-21f71b765b67.png
+//
+// -------------------------------- BEGIN ALICE --------------------------------
+
+class AliceConfig {
+    
+}
+
+class AliceContext {
+  async run() {
+    // The parent is the child is the parent (this.alice = this.parent);
+    this.alice.console.log('DOM fully loaded and parsed');
+  }
+}
+
+class Alice {
+  async aenter() {
+    // Async Context Entry as an iterator
+    // References:
+    // - PEP 343 – The "with" Statement - https://peps.python.org/pep-0343/
+    // References:
+    // - Enter the Machine - PANTyRAiD
+    // - MartyParty - Skukuza
+    // Upstream: https://javascript.info/async-iterators-generators#async-iterables
+    return [Symbol.asyncIterator]() {
+      return {
+        current: this.from,
+        last: this.to,
+
+        async next() { // (2)
+
+          // note: we can use "await" inside the async next:
+          await new Promise(resolve => setTimeout(resolve, 1000)); // (3)
+
+          if (this.current <= this.last) {
+            return { done: false, value: this.current++ };
+          } else {
+            return { done: true };
+          }
+        }
+      };
+    }
+  }
+}
+
+window.addEventListener('DOMContentLoaded', (event) => {
+  // We use let because it is block-scoped which helps prevent
+  // missunderstanding clourse intent when reading code.
+  let alice = new Alice(
+    {
+      window: window,
+    },
+  );
+
+  alice.aenter((alicectx) => {
+    alicectx.enter((alicectx) => {
+    });
+  });
+
+  // TODO Package Alice into a Chrome extension and she can update docs as
+  // we surf the web.
+
+  (async () => {
+    for await (let alicectx of alice) { // (4)
+      alert(value); // 1,2,3,4,5
+    }
+  })();
+});
+
+// References:
+// - https://linuxhandbook.com/vim-indentation-tab-spaces/
+/* vim: autoindent expandtab tabstop=2 shiftwidth=2 */
