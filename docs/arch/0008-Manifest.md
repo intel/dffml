@@ -1,13 +1,39 @@
 # Manifest
 
-Manifests allow us to focus less on code and more on data.
+The concept of a manifest allow us to focus less on code and more on data.
 By focusing on the data going into and out of systems. We can achieve standard
 documentation of processes via a standard interface (manifests).
+This is primarily to assist with the documentation of systems so as to
+facilitate understanding of how to create more ideal interaction patterns
+between them. We use the concept of a manifest as a shared methodology
+of documenation and understanding.
 
-Our manifests can be thought of as ways to provide a config class with it's
-parameters or ways to provide an operation with it's inputs.
+Adopting the concept of a Manifest, allows us to adopt many underlying
+implmentations for what is being documented (similar to our operation /
+operation implemenation compartmentalization, such as a function
+implementation and it's prototype if you were in the C langague).
 
-Similar to an OpenAPIv3 spec.
+- Anything which has the following is considered a manifest
+
+  - Documenation which tells you want data is involved and why (intent)
+
+  - Schema telling you what the data should look like (at least at the top
+    level for that data structure).
+
+Data blobs can be refered to as a "manifest instance" or "instance of
+a manifest".
+
+By making the manifest a concept we adopt, we can classify anything which
+provides the minimally needed information to facilitate cross domain
+knowledge transfer as a manifest. By aligning on the concept of a manifest
+we build the foundataions for a more complex interactions to take place.
+These interactions can be architected via abitrary construction potentially
+with remixing of multiple manifest formats executed via arbitrary underlying
+implementations.
+
+Within DFFML operations can be thought of as manifests, running an operation
+requires the inputs, which we would label conceptually as an instance of a
+manifest.
 
 References:
 
@@ -19,9 +45,9 @@ References:
 
   - https://www.schemastore.org/json/
 
-- Credential Manifest
+- Aligned concepts
 
-  - Aligned concept
+  - OpenAPIv3 spec
 
   - https://identity.foundation/credential-manifest/
 
