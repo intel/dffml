@@ -1,0 +1,29 @@
+name: "Alice: Async Comms"
+# References
+# - https://gist.github.com/pdxjohnny/9f3dc18f0a42d3107aaa2363331d8faa#file-intel_dffml_alice_async_comms-json-L8
+# - https://github.com/marketplace/actions/github-graphql-api-query
+# - https://docs.github.com/en/graphql/guides/using-the-graphql-api-for-discussions#adddiscussioncomment
+# - https://learn.microsoft.com/en-us/microsoftteams/platform/webhooks-and-connectors/how-to/connectors-creating
+# - https://github.com/Textualize/rich/blob/84e628655a2981ee90413ca3f35001ec3954161d/.github/workflows/readmechanged.yml#L1-L24 (MIT)
+
+on:
+  cron: '0 6 * * *'
+
+jobs:
+  posts:
+    name: Create Async Comms Posts in Relevant Locations
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Post engineering log entry
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          TITLE: "Engineering Logs"
+          DISCUSSIONID: 'D_kwDOCOlgGM4AQHvL'
+        run: |
+          set -x
+
+          BODY="# $(date +%4Y-%m-%d) ${TITLE}"
+
+          # Source: https://github.com/Textualize/rich/blob/84e628655a2981ee90413ca3f35001ec3954161d/.github/workflows/readmechanged.yml (MIT)
+          gh api graphql -H 'GraphQL-Features: discussions_api' -f body="$BODY" -F discussionId="$DISCUSSIONID" -f query='mutation($body: String!, $discussionId: ID!){addDiscussionComment(input:{body: $body , discussionId: $discussionId}){comment{id}}}'
