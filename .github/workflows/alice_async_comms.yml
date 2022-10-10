@@ -7,7 +7,9 @@ name: "Alice: Async Comms"
 # - https://github.com/Textualize/rich/blob/84e628655a2981ee90413ca3f35001ec3954161d/.github/workflows/readmechanged.yml#L1-L24 (MIT)
 
 on:
-  cron: '0 6 * * *'
+  schedule:
+  - cron:  '0 6 * * *'
+
 
 jobs:
   posts:
