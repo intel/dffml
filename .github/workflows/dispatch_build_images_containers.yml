@@ -13,6 +13,6 @@ on:
 
 jobs:
   build:
-    uses: ".github/workflows/build_images_containers.yml@main"
+    uses: "./.github/workflows/build_images_containers.yml"
     with:
       manifests: "${{ github.event.inputs.manifests }}"
