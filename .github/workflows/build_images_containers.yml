@@ -67,7 +67,7 @@ jobs:
       - name: Wrap list of manifests in include
         id: set-matrix
         env:
-          MANIFESTS: "${{ github.event.inputs.manifests }}"
+          MANIFESTS: "${{ toJSON(inputs.manifests) }}"
         shell: python -u {0}
         run: |
           import os
