@@ -42,6 +42,7 @@ Alice’s architecture, the open architecture, is based around thought. She comm
 - [She's arriving when?](https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0000_architecting_alice/0002_shes_ariving_when.md)
 - [A Shell for a Ghost](https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0000_architecting_alice/0003_a_shell_for_a_ghost.md)
 - [Writing the Wave](https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0000_architecting_alice/0004_writing_the_wave.md)
+- [Stream of Consciousness](https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0000_architecting_alice/0005_stream_of_consciousness.md)
 - [The System Context](https://github.com/intel/dffml/discussions/1369#discussioncomment-2603280)
   - **TODO** Bring The System Context into docs/tutorials/rolling_alice from docs/arch/alice/discussion/
 - [Peer DIDs](https://github.com/intel/dffml/discussions/1369#discussioncomment-2603280)
