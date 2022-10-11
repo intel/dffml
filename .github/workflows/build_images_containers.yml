@@ -62,7 +62,7 @@ jobs:
     strategy:
       fail-fast: false
       max-parallel: 40
-      matrix: ${{ fromJson( join(["{\"include\":", github.event.inputs.manifests, "}"], '') ) }}
+      matrix: ${{ fromJson( format('{{"include": {0}}}', github.event.inputs.manifests) ) }}
     steps:
       - name: Build image
         env:
