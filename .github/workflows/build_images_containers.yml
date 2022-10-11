@@ -64,7 +64,8 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: 3.9
-      - id: set-matrix
+      - name: Wrap list of manifests in include
+        id: set-matrix
         env:
           MANIFESTS: "${{ github.event.inputs.manifests }}"
         shell: python -u {0}
@@ -72,7 +73,7 @@ jobs:
           import os
           import json
 
-          print("::set-output name=matrix::" + json.dumps({"include": json.loads(os.environ["MANIFESTS"]}))
+          print("::set-output name=matrix::" + json.dumps({"include": json.loads(os.environ["MANIFESTS"])})
 
   build:
     needs: matrix
