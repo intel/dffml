@@ -4,6 +4,8 @@
 # - https://github.com/slsa-framework/slsa/blob/main/docs/get-started.md
 # - https://github.com/slsa-framework/github-actions-demo
 # - https://github.blog/2022-04-07-slsa-3-compliance-with-github-actions/
+# - https://docs.github.com/en/actions/learn-github-actions/expressions#fromjson
+# - https://stackoverflow.com/questions/66381595/trying-to-parse-json-output-in-a-github-action
 # - https://github.com/GoogleContainerTools/kaniko#kaniko-build-contexts
 #   - Git Repository
 # - https://github.com/GoogleContainerTools/kaniko#debug-image
@@ -60,24 +62,15 @@ jobs:
     strategy:
       fail-fast: false
       max-parallel: 40
-      matrix:
-        manifest: ${{fromJson(github.event.inputs.manifests)}}
+      matrix: ${{ fromJson( join(["{\"include\":", github.event.inputs.manifests, "}"], '') ) }}
     steps:
-      - name: Parse manifest
-        id: manifest
-        run: |
-          # Source: https://stackoverflow.com/questions/61919141/read-json-file-in-github-actions
-          echo "::set-output name=image_name::${{fromJson(matrix.manifest).branch}}"
-          echo "::set-output name=dockerfile::${{fromJson(matrix.manifest).commit}}"
-          echo "::set-output name=image_name::${{fromJson(matrix.manifest).image_name}}"
-          echo "::set-output name=dockerfile::${{fromJson(matrix.manifest).dockerfile}}"
       - name: Build image
         env:
           OWNER: "${{ github.owner }}"
           REPOSITORY: "${{ github.repository }}"
-          BRANCH: "${{ steps.manifest.outputs.branch }}"
-          COMMIT: "${{ steps.manifest.outputs.commit }}"
-          IMAGE_NAME: "${{ steps.manifest.outputs.image_name }}"
-          DOCKERFILE: "${{ steps.manifest.outputs.dockerfile }}"
+          BRANCH: "${{ matrix.branch }}"
+          COMMIT: "${{ matrix.commit }}"
+          IMAGE_NAME: "${{ matrix.image_name }}"
+          DOCKERFILE: "${{ matrix.dockerfile }}"
         run: |
           /kaniko/executor --dockerfile "${DOCKERFILE}" --context "git://github.com/${OWNER}/${REPOSITORY}.git#refs/heads/${BRANCH}#${COMMIT}"
