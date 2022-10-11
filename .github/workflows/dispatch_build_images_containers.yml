@@ -1,0 +1,20 @@
+# References:
+# - https://docs.github.com/en/actions/learn-github-actions/contexts#github-context
+# - https://docs.github.com/en/actions/using-workflows/reusing-workflows#calling-a-reusable-workflow
+# TODO
+# - Pin reusable workflow to commit
+name: "Build: Images: Containers"
+
+on:
+  workflow_dispatch:
+    inputs:
+      manifests:
+        required: true
+        type: string
+        decsription: "https://github.com/intel/dffml/tree/alice/schema/dffml/image/container/build/0.0.1.schema.json"
+
+jobs:
+  build:
+    uses: "${{ github.repository }}/.github/workflows/build_images_containers.yml@main"
+    with:
+      manifests: "${{ github.event.inputs.manifests }}"
