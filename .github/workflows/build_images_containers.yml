@@ -55,14 +55,34 @@ on:
         description: 'https://github.com/intel/dffml/tree/alice/schema/dffml/image/container/build/0.0.1.schema.json'
 
 jobs:
+  matrix:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+      - id: set-matrix
+        env:
+          MANIFESTS: "${{ github.event.inputs.manifests }}"
+        shell: python -u {0}
+        run: |
+          import os
+          import json
+
+          print("::set-output name=matrix::" + json.dumps({"include": json.loads(os.environ["MANIFESTS"]}))
+
   build:
+    needs: matrix
     name: Build container images
     runs-on: ubuntu-latest
     container: gcr.io/kaniko-project/executor:latest
     strategy:
       fail-fast: false
       max-parallel: 40
-      matrix: ${{ fromJson(github.event.inputs.manifests) }}
+      matrix: ${{ fromJSON(needs.matrix.outputs.matrix) }}
     steps:
       - name: Build image
         env:
