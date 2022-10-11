@@ -1,0 +1,83 @@
+# References:
+# - https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#onworkflow_call
+# - https://docs.github.com/en/actions/using-workflows/reusing-workflows
+# - https://github.com/slsa-framework/slsa/blob/main/docs/get-started.md
+# - https://github.com/slsa-framework/github-actions-demo
+# - https://github.blog/2022-04-07-slsa-3-compliance-with-github-actions/
+# - https://github.com/GoogleContainerTools/kaniko#kaniko-build-contexts
+#   - Git Repository
+# - https://github.com/GoogleContainerTools/kaniko#debug-image
+#   - `$ docker run -it --entrypoint=/busybox/sh gcr.io/kaniko-project/executor:debug`
+#
+# Example usage:
+#
+# inputs.json
+#
+#   {
+#     "manifests": "[{\"image_name\": \"dffml-base\", \"dockerfile\": \"Dockerfile\", \"branch\": \"alice\", \"commit\": \"9a0d2311bc9c8925e9387efc6f999c0434989015\"}]",
+#   }
+#
+# Enable SSO on token
+#
+#   $ export GH_ACCESS_TOKEN=$(grep oauth_token < ~/.config/gh/hosts.yml | sed -e 's/    oauth_token: //g')
+#
+# Dispatch the workflow via curl
+#
+#   $ curl -v -X POST \
+#       -H "Accept: application/vnd.github.v3+json" \
+#       -H "Authorization: token $GH_ACCESS_TOKEN" \
+#       https://api.github.com/repos/intel/dffml/actions/workflows/dispatch_build_images_containers.yml/dispatches \
+#       -d "$(echo '[{"branch": "alice", "commit": "9a0d2311bc9c8925e9387efc6f999c0434989015", "image_name": "alice-base", "dockerfile": "entities/alice/dockerfiles/base.Dockerfile"}]' | python -c 'import pathlib, json, sys; print(json.dumps({"ref": "main", "inputs": {"manifests": sys.stdin.read().strip()}}))')"
+#
+# Get the run id of the last dispatched workflow
+#
+#   $ gh run list -w dispatch_build_images_containers.yml -L 1 | grep workflow_dispatch | awk '{print $(NF-2)}'
+#   3293874395
+#
+# Watch the workflow run
+#
+#   $ gh run watch --exit-status $(gh run list -w dispatch_build_images_containers.yml -L 1 | grep workflow_dispatch | awk '{print $(NF-2)}')
+#
+# In the event of a failure
+#
+#   $ gh run view --exit-status --log $(gh run list -w dispatch_build_images_containers.yml -L 1 | grep workflow_dispatch | awk '{print $(NF-2)}')
+#
+name: "Build: Images: Containers (Reusable)"
+
+on:
+  workflow_call:
+    inputs:
+      manifests:
+        required: true
+        type: string
+        decsription: 'https://github.com/intel/dffml/tree/alice/schema/dffml/image/container/build/0.0.1.schema.json'
+
+jobs:
+  build:
+    name: Build container images
+    runs-on: ubuntu-latest
+    container: gcr.io/kaniko-project/executor:latest
+    strategy:
+      fail-fast: false
+      max-parallel: 40
+      matrix:
+        manifest: ${{fromJson(github.event.inputs.manifests)}}
+    steps:
+      - name: Parse manifest
+        id: manifest
+        run: |
+          # Source: https://stackoverflow.com/questions/61919141/read-json-file-in-github-actions
+          echo "::set-output name=image_name::${{fromJson(matrix.manifest).branch}}"
+          echo "::set-output name=dockerfile::${{fromJson(matrix.manifest).commit}}"
+          echo "::set-output name=image_name::${{fromJson(matrix.manifest).image_name}}"
+          echo "::set-output name=dockerfile::${{fromJson(matrix.manifest).dockerfile}}"
+      - name: Build image
+        env:
+          OWNER: "${{ github.owner }}"
+          REPOSITORY: "${{ github.repository }}"
+          BRANCH: "${{ steps.manifest.outputs.branch }}"
+          COMMIT: "${{ steps.manifest.outputs.commit }}"
+          IMAGE_NAME: "${{ steps.manifest.outputs.image_name }}"
+          DOCKERFILE: "${{ steps.manifest.outputs.dockerfile }}"
+        run: |
+          /kaniko/executor --dockerfile "${DOCKERFILE}" --context "git://github.com/${OWNER}/${REPOSITORY}.git#refs/heads/${BRANCH}#${COMMIT}"
