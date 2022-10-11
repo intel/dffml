@@ -23,6 +23,8 @@ print the message "Alice Online" and "Bob Online" to each side.
     sending and receiving dataflow.
 - Future work
   - Notifications to other systems
+  - Webrtc overlays
+  - SSI DWN if running in OS DecentAlice
   - Extend for further use in pull model dev methodology
 - References
   - This tutorial is covered in `Stream of Consciousness: Collective Thought` **TODO** Update with link to recording once made.
