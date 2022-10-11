@@ -2,7 +2,7 @@
 
 In this tutorial we use dataflow as class to build Input, Redundancy,
 Lock, Operation, and Operation Implementation Networks which interact
-with ActiveMQ and Redis. These will enable us to overlay them on
+with webhook endpoints. These will enable us to overlay them on
 Alice's process local memory resident implementations to facilitate
 a shared stream of consciousness.
 
