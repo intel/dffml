@@ -31,11 +31,7 @@ Alice is an architecture for code that will write and maintain itself based off 
 
 This universal blueprint (system context) is an integral part of creating a shared language for meaning and intent between humans and an Artificial General Intelligence. The goal is to provide an architecture and implementation for independent entities which act in accordance with guiding strategic plans/blueprints. This architecture must be safe and secure by default, scalable, and easily extensible.
 
-- InnerSource is where we learn what Alice should consider to be quality code
-
-- CI/CD is where we learn how Alice can run and deploy code
-
-- Supply Chain Security is how we learn how Alice can create a compute network suitable for various edge deployment scenarios. Edge deployment scenarios being the usage of all assets she has at her disposal. This is where she'll be comprehending security.
+We focus on Supply Chain Security because it will help us create a compute network suitable for various edge deployment scenarios. Edge deployment scenarios being the usage of all assets she has at her disposal. Supply Chain Security is also where she'll gain comprehension of security via intent, dynamic analysis, metrics collection, creation, and evaluation of provenance.
 
 The end goal is to create a software architect, Alice. She will consult on existing projects to provide analysis of their architectures and properties such as maintainability, provide guidance for developer workstream prioritization to achieve strategic business goals, and write and maintain codebases herself, accepting contributions from external contributors.
 
