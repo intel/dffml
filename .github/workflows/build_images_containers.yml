@@ -16,7 +16,7 @@
 # inputs.json
 #
 #   {
-#     "manifests": "{\"include\": [{\"image_name\": \"dffml-base\", \"dockerfile\": \"Dockerfile\", \"branch\": \"alice\", \"commit\": \"9a0d2311bc9c8925e9387efc6f999c0434989015\"}]}",
+#     "manifests": "[{\"image_name\": \"dffml-base\", \"dockerfile\": \"Dockerfile\", \"branch\": \"alice\", \"commit\": \"9a0d2311bc9c8925e9387efc6f999c0434989015\"}]",
 #   }
 #
 # Enable SSO on token
@@ -29,7 +29,7 @@
 #       -H "Accept: application/vnd.github.v3+json" \
 #       -H "Authorization: token $GH_ACCESS_TOKEN" \
 #       https://api.github.com/repos/intel/dffml/actions/workflows/dispatch_build_images_containers.yml/dispatches \
-#       -d "$(echo '{"include": [{"branch": "alice", "commit": "9a0d2311bc9c8925e9387efc6f999c0434989015", "image_name": "alice-base", "dockerfile": "entities/alice/dockerfiles/base.Dockerfile"}]}' | python -c 'import pathlib, json, sys; print(json.dumps({"ref": "main", "inputs": {"manifests": sys.stdin.read().strip()}}))')"
+#       -d "$(echo '[{"branch": "main", "commit": "1a4d03b5bb5ecbc343430b6e725250cee24ccd21", "image_name": "dffml-base", "dockerfile": "Dockerfile"}]' | python -c 'import pathlib, json, sys; print(json.dumps({"ref": "main", "inputs": {"manifests": sys.stdin.read().strip()}}))')"
 #
 # Get the run id of the last dispatched workflow
 #
@@ -73,7 +73,7 @@ jobs:
           import os
           import json
 
-          print("::set-output name=matrix::" + json.dumps({"include": json.loads(os.environ["MANIFESTS"])})
+          print("::set-output name=matrix::" + json.dumps({"include": json.loads(os.environ["MANIFESTS"])}))
 
   build:
     needs: matrix
