@@ -1,0 +1,76 @@
+# References:
+# - https://docs.github.com/en/actions/learn-github-actions/contexts#github-context
+# - https://docs.github.com/en/actions/using-workflows/reusing-workflows#calling-a-reusable-workflow
+# - https://github.com/intel/dffml/blob/main/.github/workflows/dispatch_build_images_containers.yml
+name: "DFFML: Build: Images: Containers"
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "Dockerfile"
+
+jobs:
+  manifest:
+    runs-on: ubuntu-latest
+    outputs:
+      manifest: ${{ steps.create-manifest-instance.outputs.manifest }}
+    steps:
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+      - name: Build manifest from changed dockerfiles
+        id: create-manifest-instance
+        env:
+          PREFIX: "Dockerfile"
+          OWNER_REPOSITORY: ${{ github.repository }}
+          BRANCH: ${{ github.ref_name }}
+          COMPARE_URL: ${{ github.event.push.repository.compare_url }}
+          GH_ACCESS_TOKEN: ${{ github.token }}
+        shell: python -u {0}
+        run: |
+          import os
+          import json
+          import pathlib
+          import urllib.request
+
+          owner, repository = os.environ["OWNER_REPOSITORY"].split("/", maxsplit=1)
+
+          with urllib.request.urlopen(
+              urllib.request.Request(
+                  os.environ["COMPARE_URL"],
+                  headers={
+                      "Authorization": "bearer " + os.environ["GH_ACCESS_TOKEN"],
+                  },
+              )
+          ) as response:
+              response_json = json.load(response)
+
+          # Build the most recent commit
+          commit = response_json["commits"][-1]["sha"]
+
+          manifest = list([
+              {
+                  "image_name": pathlib.Path(compare_file["filename"]).stem,
+                  "dockerfile": compare_file["filename"],
+                  "owner": owner,
+                  "repository": repository,
+                  "branch": os.environ["BRANCH"],
+                  "commit": commit,
+              }
+              for compare_file in response_json["files"]
+              if compare_file["filename"].startswith(os.environ["PREFIX"])
+          ])
+
+          print(json.dumps(manifest, sort_keys=True, indent=4))
+          print("::set-output name=matrix::" + json.dumps({"include": manifest}))
+
+  build:
+    needs: manifest
+    uses: "./.github/workflows/build_images_containers.yml"
+    with:
+      manifests: "${{ needs.manifest.outputs.manifest }}"
+    secrets:
+      GH_ACCESS_TOKEN: ${{ github.token }}
