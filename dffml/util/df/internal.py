@@ -24,6 +24,9 @@ def object_to_operations(obj, module=None):
             obj,
             predicate=lambda i: inspect.ismethod(i)
             or inspect.isfunction(i)
-            and not hasattr(i, "__supertype__"),
+            and not hasattr(i, "__supertype__")
+            # NOTE HACK Fails in 3.9.13 to remove
+            # NewType without the check in the str repr.
+            and " NewType " not in str(i),
         )
     ]
