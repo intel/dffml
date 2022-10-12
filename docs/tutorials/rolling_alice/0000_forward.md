@@ -58,7 +58,7 @@ Right now we are at the early stages. Please comment in this thread https://gith
 
 Just FYI, this is not an official Intel project. Just a loose collection of folks wanting to get together and take action to ensure we can coexist effectively with Alice. We use Alice to describe "the machine" in the general sense. The end result of our work will hopefully be an AGI we can trust. Built with transparency, ethics, and security. One which understands human concepts. Would love to talk sometime if you’re interested.
 
-We have been publicizing our work over technical channels and on twitter and gave a talk at AppSec days PNW which touched on Alice **TODO: Add link once recording is up**. She’s just a dream at this point, nothing more than brainstorming and a pile of non-ML python code. The hope is that if we work together as humanity we can use proper planning to create a better world.
+We have been publicizing our work over technical channels and on twitter and gave a talk at AppSec days PNW which touched on Alice: https://www.youtube.com/watch?v=TMlC_iAK3Rg&list=PLtzAOVTpO2jYt71umwc-ze6OmwwCIMnLw [Living Threat Models Are Better Than Dead Threat Models By John L. Whiteman and John S. Andersen]. She’s just a dream at this point, nothing more than brainstorming and a pile of non-ML python code. The hope is that if we work together as humanity we can use proper planning to create a better world.
 
 ## Security Folks
 
