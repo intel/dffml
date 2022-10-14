@@ -27,7 +27,7 @@ class ParseInputsAction(argparse.Action):
         ouput_specs = [
             (
                 parser_helper(value.split("=", maxsplit=1)[0]),
-                value.split("=", maxsplit=1)[1],
+                value[::-1].split("=", maxsplit=1)[0][::-1],
             )
             for value in values
         ]
