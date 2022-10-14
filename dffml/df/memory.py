@@ -1461,6 +1461,13 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
     async def __aexit__(self, exc_type, exc_value, traceback):
         await self._stack.aclose()
 
+    @asynccontextmanager
+    async def modify_dataflow(
+        self,
+    ) -> AsyncContextManager:
+        # TODO Not sure what should be here yet
+        yield
+
     async def initialize_dataflow(self, dataflow: DataFlow) -> None:
         """
         Initialize a DataFlow by preforming the following steps.
