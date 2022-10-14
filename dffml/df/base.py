@@ -1105,6 +1105,14 @@ class BaseOrchestratorContext(BaseDataFlowObjectContext):
         along with their operations as they are generated.
         """
 
+    @abc.abstractmethod
+    async def modify_dataflow(
+        self,
+    ) -> AsyncContextManager:
+        """
+        Take nessicary actions to support modification of config.dataflow
+        """
+
 
 @base_entry_point("dffml.orchestrator", "orchestrator")
 class BaseOrchestrator(BaseDataFlowObject):
