@@ -7,6 +7,7 @@ import collections.abc
 import pkg_resources
 from typing import (
     AsyncIterator,
+    AsyncContextManager,
     Dict,
     List,
     Tuple,
