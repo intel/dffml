@@ -444,6 +444,7 @@ def parser_helper(value):
     try:
         return ast.literal_eval(value)
     except:
-        if "," in value:
+        # TODO Remove this logic
+        if "," in value and "://" not in value:
             return list(map(parser_helper, filter(bool, value.split(","))))
         return value
