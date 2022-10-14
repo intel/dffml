@@ -1,10 +1,11 @@
 import pathlib
+import importlib
 import contextlib
 from typing import List, Dict, Any, Union
 
 from ..base import BaseConfig
-from ..df.base import BaseOrchestrator, OperationImplementation
-from ..df.types import DataFlow, Input, Operation, Stage
+from ..df.base import BaseOrchestrator, OperationImplementation, opimp_in
+from ..df.types import DataFlow, Input, Operation, Stage, FailedToLoadOperation
 from ..df.exceptions import DefinitionNotFoundInDataFlow
 from ..df.memory import (
     MemoryOrchestrator,
@@ -109,7 +110,10 @@ class Create(CMD):
                     )
                 )
             else:
-                operations += [Operation.load(operation)]
+                try:
+                    operations += [Operation.load(operation)]
+                except FailedToLoadOperation:
+                    operations += opimp_in(importlib.import_module(operation))
         async with self.configloader(BaseConfig()) as configloader:
             async with configloader() as loader:
                 dataflow = DataFlow(
@@ -372,6 +376,8 @@ class RunSingle(CMD):
     async def get_dataflow(self, dataflow_path):
         if isinstance(dataflow_path, DataFlow):
             return dataflow_path
+        if not isinstance(dataflow_path, pathlib.Path):
+            dataflow_path = pathlib.Path(dataflow_path)
 
         config_cls = self.configloader
         if config_cls is None:
