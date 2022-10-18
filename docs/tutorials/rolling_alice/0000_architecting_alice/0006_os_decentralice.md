@@ -130,6 +130,13 @@ pdxjohnny@fedora-s-4vcpu-8gb-sfo3-01 ~ $
 
 ![image](https://user-images.githubusercontent.com/5950433/195766172-7898c5ce-de9a-48cc-a2d4-331a7e614dd3.png)
 
+[![mindset-security](https://img.shields.io/badge/mindset-security-critical)](https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0000_easter_eggs.md#mindset-security-)
+
+- Why it's a time traveling Python 3.10.7! It says it's from the UNIX epoch!
+  - This is due to trying to make builds reproducable, meaning "bit for bit" if rebuilt later.
+    - https://twitter.com/lorenc_dan/status/1570855501356998657?s=20&t=90RQmd1IPUv103XgHakE7A
+    - https://github.com/intel/dffml/blob/b892cfab9bd152c47a709e8708491c95b8c3ec8e/tests/util/test_net.py#L18-L44
+
 ```console
 [root@osdecentralice-latest-1665722921-s-4vcpu-8gb-sfo3-01 ~]# chroot /wolfi /usr/bin/python
 Python 3.10.7 (main, Jan  1 1970, 00:00:00) [GCC 12.2.0] on linux
