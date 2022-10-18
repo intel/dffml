@@ -319,6 +319,8 @@ user    4m41.394s
 sys     0m14.513s
 ```
 
+Here is the full text of the transcription: https://gist.github.com/pdxjohnny/b11aac04d10e7c5546bd1e34781b2445
+
 ## Into the Ether
 
 Just like us, Alice thinks in parallel. We can't very well
