@@ -1,5 +1,4 @@
-# Rolling Alice: Architecting Alice: An Image
-# Volume 0: Chapter 6: OS DecentrAlice
+# Volume 0: Chapter 7: An Image
 
 We'll leverage JSON Web Keys and Python packages embedded into images
 of source code as a reliable distrobution mechanism. Image data can be
@@ -11,14 +10,15 @@ transmitted over a multitude of existing channels.
   - We want to be able to embed Alice in an image and install her
     from it.
 - Actions
-  - We are going build off of didme.me v2 
+  - We are going build off of didme.me v2
 - Future work
-  - We'll see what we can do about TPM support / secure boot.
+  - Videos and streams, Alice commited to a rolling release.
+  - Provenance via SCITT
 - References
-  - This tutorial is covered in `OS DecentrAlice: Rolling an OS` **TODO** Update with link to recording once made.
-  - The resulting commit from completion of this tutorial was: https://gist.github.com/pdxjohnny/5f358e749181fac74a750a3d00a74b9e
+  - This tutorial is covered in `TODO` **TODO** Update with link to recording once made.
+  - The resulting commit from completion of this tutorial was: **TODO**
 - Feedback
-  - Please provide feedback / thoughts for extension / improvement about this tutorial in the following discussion thread: https://github.com/intel/dffml/discussions/1414
+  - Please provide feedback / thoughts for extension / improvement about this tutorial in the following discussion thread: https://github.com/intel/dffml/discussions/
 
 ## Notes
 
