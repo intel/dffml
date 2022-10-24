@@ -4,6 +4,8 @@ We'll leverage JSON Web Keys and Python packages embedded into images
 of source code as a reliable distrobution mechanism. Image data can be
 transmitted over a multitude of existing channels.
 
+![alice-image-manifest-svg-draft](https://satori-syntax-highlighter.vercel.app/api/highlighter?code=upstream%3A%20%22did%3Aweb%3Agithub.com%3Aintel%3Adffml%3Aentites%3Aalice%22&background=%23E36FB7&lang=yaml&fontSize=16)
+
 - Context
   - We need a way to distribute software anywhere and everywhere.
 - Goals
