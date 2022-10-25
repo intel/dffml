@@ -88,3 +88,23 @@ Leveraging the Open Architecture methodology we decouple the description of the 
 ## RFCv1 Announcement
 
 Here is the first version of Alice aka the Open Architecture and this pull request is a Request For Comments https://github.com/intel/dffml/tree/alice/docs/tutorials/rolling_alice Please Review and provide any and all technical or conceptual feedback! This is also a call for participation if anyone would like to get involved and contribute please comment in the linked pull request or reach out to me directly. Looking forward to working with you all!
+
+## Alignment
+
+> If we use, to achieve our purposes, a mechanical agency with whose
+> operation we cannot interfere effectively … we had better be quite
+> sure that the purpose put into the machine is the purpose which we
+> really desire. [Norbert Wiener]
+
+- References
+  - https://en.wikipedia.org/wiki/AI_alignment#Research_problems_and_approaches
+
+### Convey
+
+> Definition of "convey": "To communicate; to make known; to portray." [Wiktionary]
+> Synonyms of "convey": transport
+
+We are working on the Thought Communication Protocol and associated
+analysis methodologies (Alice, Open Architecture) so as to enable
+iterative alignment of your AI instances to your strategic principles.
+Enabling your AI to convey your way.
