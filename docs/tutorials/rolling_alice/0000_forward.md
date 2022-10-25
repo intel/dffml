@@ -91,10 +91,10 @@ Here is the first version of Alice aka the Open Architecture and this pull reque
 
 ## Alignment
 
-> If we use, to achieve our purposes, a mechanical agency with whose
+> "If we use, to achieve our purposes, a mechanical agency with whose
 > operation we cannot interfere effectively … we had better be quite
 > sure that the purpose put into the machine is the purpose which we
-> really desire. [Norbert Wiener]
+> really desire." [Norbert Wiener]
 
 - References
   - https://en.wikipedia.org/wiki/AI_alignment#Research_problems_and_approaches
@@ -108,3 +108,18 @@ We are working on the Thought Communication Protocol and associated
 analysis methodologies (Alice, Open Architecture) so as to enable
 iterative alignment of your AI instances to your strategic principles.
 Enabling your AI to convey your way.
+
+One of the considerations in our new shared threat model is the way AI conveys
+information to us. In the future, automating communication channels (notes ->
+phone call) will be the task of AI messengers. If the messenger paints a picture
+worth a thousand words, we must ensure our target audiance is seeing the words
+that best communicate the message we want them to get, aka, what's the point?
+We also want to make sure that if we aren't able to describe the point, if we
+have a misscommunication, that our AI has facilities baked in to avoid that
+from being a really bad misscommunication.
+
+From our shared threat model perspective, we must ensure we have methodolgies
+and tooling baked into AI deployment infra. This way we ensure the AI does not
+become missaligned with human concepts once it outgrows them. We must ensure
+we can detect, prevent, and course correct from minipulation over any duration
+of time from any number of agents.
