@@ -59,8 +59,7 @@ then run an update for the delta, then save back to cache. This way
 we can avoid running the full download for larger repos. Small repos
 we can examine past runs to estimate size and just clone every time
 to avoid resource usage of caching. This will building on our Architecting Alice
-Webhook Based Distributed Compute leveraging Jenkins and the Manifest concept,
-as well as the shim.
+Webhook Based Distributed Compute leveraging the Manifest concept.
 
 In Coach Alice we'll also see how we can use this distributed stream
 of consciousness to assist with developer communication. We can enable
@@ -84,9 +83,11 @@ dependencies. Registration involves plugin based configurable callbacks.
   - [intel/dffml#1016: docs: arch: 2nd and 3rd party plugins](https://github.com/intel/dffml/pull/1061#discussion_r819930461)
     - https://github.com/intel/dffml/pull/1061/files/a7b2b0585862bda883be5f475a50945f91043b2f#diff-c7d7828822f15922ed830bb6f3148edc97c291c809836b1a1808165d36bd8c9dR227-R229
   - [intel/dffml#1207: docs: arch: Inventory](https://github.com/intel/dffml/pull/1207)
-  - https://activemq.apache.org/python
-    - For Python support we recommend the [Python Stomp Client](http://stomp.github.io/implementations.html)
-    - https://stomp.github.io/implementations.html
+  - [IETF SCITT OpenSSF Metrics Use Case](https://github.com/pdxjohnny/use-cases/blob/openssf_metrics/openssf_metrics.md)
+    - We'll be feeding in CVE details via metrics and retriggering
+      downstream validation (rebuild and redistributed) via stream of
+      consciousness. See inventory and 2nd and 3rd party Architecture
+      Design Record pull requests for more details.
 - TODO
   - [ ] `dffml-service-http` modify request handler code to pass request and app
         to dataflow. Improve passing of flows on start and improve teardown if
