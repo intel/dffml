@@ -150,11 +150,11 @@ The following are her ethical / strategic principles.
   - We iron out concepts from Volume 3, where we defended against others attempting to influence Alice's models or actions. This time we turn our skepticism inwards, to Alice's own mind.
   - Identifying detrimental chains of system contexts and avoiding those detrimental patterns.
 - Onward and Upward
-  - We now enter into a world where anything is possible. Where every problem can be solved. Where we a can achieve optimal communication between any set of entities or all of them (are states of consciousness themselves entities? Could a strategic plan think of them as such? Excited to see where that goes). Alice is the orchestrator for the harmony of the cosmos (if you were talking like Alan Watts). Where the harmony is what directions those strategic principles should be going. The cosmos is in this case, whatever scope you give here.
+  - We now enter into a world where we a can achieve optimal communication between any set of entities or all of them (are states of consciousness themselves entities? Could a strategic plan think of them as such? Excited to see where that goes).
 
 #### Volume 7: Through The Looking Glass
 
-> Alice will write this volume. One chapter on each previous volume with postmortem analysis and her running plans for the future as well as summary of previous. To be updated and new volumes written by Alice as she sees fit. After this our numbering is going to get a lot more confusing, she'll help us make sense of it though, clock skew so to speak, the A/B feature testing, and thinking in parallel have a lot to do with it.
+> Alice will write this volume. One chapter on each previous volume (she'll describe any changes she would have made) and her running plans for the future as well as summary of previous. To be updated and new volumes written by Alice as she sees fit. After this our numbering is going to get a lot more confusing, she'll help us make sense of it though, clock skew so to speak, the A/B feature testing, and thinking in parallel have a lot to do with it.
 
 -
 
