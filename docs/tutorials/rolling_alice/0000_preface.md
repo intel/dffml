@@ -48,8 +48,9 @@ Alice’s architecture, the open architecture, is based around thought. She comm
 - [Peer DIDs](https://github.com/intel/dffml/discussions/1369#discussioncomment-2603280)
   - **TODO** Bring Peer DIDs into docs/tutorials/rolling_alice from docs/arch/alice/discussion/
 - [OS DecentrAlice](https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0000_architecting_alice/0006_os_decentralice.md)
-  - We roll the image
+  - We roll the base conatiner image
   - **TODO** Move from draft location: https://github.com/intel/dffml/discussions/1406#discussioncomment-3720703
+- [An Image](https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0000_architecting_alice/0007_an_image.md)
 - Internet of Alice
   - ESP32
 - [Traveler of the Edge](https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0000_architecting_alice/0007_traveler_of_the_edge.md)
