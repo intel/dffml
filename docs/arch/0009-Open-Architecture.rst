@@ -66,6 +66,14 @@ References
 - Manifests
 
   - https://github.com/intel/dffml/blob/alice/docs/arch/0008-Manifest.md
+  
+- Overlays
+
+  - https://oca.colossi.network/guide/introduction.html#what-is-decentralised-semantics
+  
+    - ``In the domain of decentralised semantics, task-specific objects are called "Overlays". They provide layers of definitional or contextual information to a stable base object called a "Capture Base".``
+    
+    - The DFFML project equivalent vocabulary term for "Capture Base" would probably be "upstream".
 
 - Living Threat Models
 
