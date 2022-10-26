@@ -20,7 +20,7 @@ transmitted over a multitude of existing channels.
   - This tutorial is covered in `TODO` **TODO** Update with link to recording once made.
   - The resulting commit from completion of this tutorial was: **TODO**
 - Feedback
-  - Please provide feedback / thoughts for extension / improvement about this tutorial in the following discussion thread: https://github.com/intel/dffml/discussions/
+  - Please provide feedback / thoughts for extension / improvement about this tutorial in the following discussion thread: https://github.com/intel/dffml/discussions/1419
 
 ## Notes
 
