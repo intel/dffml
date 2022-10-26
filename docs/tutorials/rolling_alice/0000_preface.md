@@ -84,6 +84,10 @@ Alice’s architecture, the open architecture, is based around thought. She comm
 
 - Defense against mind control
   - We explore how to best protect Alice from data she consumes which aims to paint strategic plan outputs to be in a certain light, when the reality is the underlying data is not in line. This is related to our trading without currency. How do we effectively ensure a trustworthy barter system aka how do we vet oracles and continuously be suspicious of them as required by trust within context.
+- Thought Arbitrage
+  - References
+    - Decentralised Finance and Automated Market Making: Execution and Speculation
+    - https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4144743
 
 #### Volume 4: Alice and the Health of the Ecosystem
 
