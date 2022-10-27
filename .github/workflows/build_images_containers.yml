@@ -85,13 +85,22 @@ jobs:
       max-parallel: 40
       matrix: ${{ fromJSON(needs.matrix.outputs.matrix) }}
     steps:
+     - uses: actions/checkout@v3
+        with:
+          repository: '${{ github.owner }}/${{ github.repository }}'
+          # The branch, tag or SHA to checkout. When checking out the repository that
+          # triggered a workflow, this defaults to the reference or SHA for that event.
+          # Otherwise, uses the default branch.
+          ref: '${{ matrix.branch }}'
+          COMMIT: "${{ matrix.commit }}"
+          token: ''
+          persist-credentials: false
+          fetch-depth: 1
+          lfs: true
+          submodules: true
       - name: Build image
         env:
-          OWNER: "${{ github.owner }}"
-          REPOSITORY: "${{ github.repository }}"
-          BRANCH: "${{ matrix.branch }}"
-          COMMIT: "${{ matrix.commit }}"
           IMAGE_NAME: "${{ matrix.image_name }}"
           DOCKERFILE: "${{ matrix.dockerfile }}"
         run: |
-          /kaniko/executor --dockerfile "${DOCKERFILE}" --context "git://github.com/${OWNER}/${REPOSITORY}.git#refs/heads/${BRANCH}#${COMMIT}"
+           docker build -t "${IMAGE_NAME}" -f "${DOCKERFILE}" .
