@@ -94,6 +94,14 @@ References
   - https://docs.google.com/presentation/d/1WF4dsJiwR6URWPgn1aiHAE3iLVl-oGP4SJRWFpcOlao/edit#slide=id.g14078b5bab0_0_517
   - https://github.com/guacsec/guac
 
+- DIDs
+  
+  - https://github.com/pdxjohnny/pdxjohnny.github.io/blob/dev/content/posts/2022-03-02-did-twitter-space.md
+
+  - https://github.com/WebOfTrustInfo/rwot5-boston/blob/master/topics-and-advance-readings/did-primer.md
+  
+  - https://github.com/SmithSamuelM/Papers/blob/master/whitepapers/A_DID_for_everything.pdf
+
 - TODO
 
   - Add content from discussion thread
