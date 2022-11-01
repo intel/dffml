@@ -122,6 +122,39 @@ def contributing_present(self, repo: git_repository_checked_out.spec) -> bool:
     )
 
 
+# TODO Check compliance with RFC 9116
+@dffml.op(inputs={"repo": git_repository_checked_out,},)
+def security_present(self, repo: git_repository_checked_out.spec) -> bool:
+    return any(
+        [
+            pathlib.Path(repo.directory, "SECURITY.md").is_file(),
+            pathlib.Path(repo.directory, "SECURITY.rst").is_file(),
+            pathlib.Path(repo.directory, "SECURITY.txt").is_file(),
+            pathlib.Path(repo.directory, "security.txt").is_file(),
+        ]
+    )
+
+
+@dffml.op(inputs={"repo": git_repository_checked_out,},)
+def support_present(self, repo: git_repository_checked_out.spec) -> bool:
+    return any(
+        [
+            pathlib.Path(repo.directory, "SUPPORT.md").is_file(),
+            pathlib.Path(repo.directory, "SUPPORT.rst").is_file(),
+        ]
+    )
+
+
+@dffml.op(inputs={"repo": git_repository_checked_out,},)
+def code_of_conduct_present(self, repo: git_repository_checked_out.spec) -> bool:
+    return any(
+        [
+            pathlib.Path(repo.directory, "CODE_OF_CONDUCT.md").is_file(),
+            pathlib.Path(repo.directory, "CODE_OF_CONDUCT.rst").is_file(),
+        ]
+    )
+
+
 # TODO Auto definition code which is about to undergo refactor will fix up this
 # oddness with typing and half abilty to have auto inputs with types.
 @dffml.op(inputs={}, outputs={"result": quarter_start_date})
