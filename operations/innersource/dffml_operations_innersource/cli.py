@@ -156,6 +156,26 @@ COLLECTOR_DATAFLOW.seed = [
                 "by": "quarter",
                 "nostrict": True,
             },
+            operations.security_present.op.outputs["result"].name: {
+                "group": operations.security_present.op.outputs["result"].name,
+                "by": "quarter",
+                "nostrict": True,
+            },
+            operations.support_present.op.outputs["result"].name: {
+                "group": operations.support_present.op.outputs["result"].name,
+                "by": "quarter",
+                "nostrict": True,
+            },
+            operations.code_of_conduct_present.op.outputs["result"].name: {
+                "group": operations.code_of_conduct_present.op.outputs["result"].name,
+                "by": "quarter",
+                "nostrict": True,
+            },
+            operations.contributing_present.op.outputs["result"].name: {
+                "group": operations.contributing_present.op.outputs["result"].name,
+                "by": "quarter",
+                "nostrict": True,
+            },
         },
         definition=COLLECTOR_DATAFLOW.definitions["group_by_spec"],
     ),
