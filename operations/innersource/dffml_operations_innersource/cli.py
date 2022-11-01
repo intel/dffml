@@ -111,6 +111,7 @@ COLLECTOR_DATAFLOW.seed = [
                 .outputs["present"]
                 .name,
                 "by": "quarter",
+                "nostrict": True,
             },
             COLLECTOR_DATAFLOW.operations["git_repo_author_lines_for_dates"]
             .outputs["author_lines"]
@@ -121,16 +122,19 @@ COLLECTOR_DATAFLOW.seed = [
                 .outputs["author_lines"]
                 .name,
                 "by": "quarter",
+                "nostrict": True,
             },
             "commit_shas": {
                 "group": COLLECTOR_DATAFLOW.operations["git_repo_commit_from_date"]
                 .outputs["commit"]
                 .name,
                 "by": "quarter",
+                "nostrict": True,
             },
             operations.contributing_present.op.outputs["result"].name: {
                 "group": operations.contributing_present.op.outputs["result"].name,
                 "by": "quarter",
+                "nostrict": True,
             },
             operations.action_yml_files.op.outputs["result"].name: {
                 "group": operations.action_yml_files.op.outputs["result"].name,
