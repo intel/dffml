@@ -153,6 +153,7 @@ altough a distinct concept itself.
   
 - Concuptual docs on data flow execution
 
+  - https://github.com/intel/dffml/blob/alice/docs/about.rst#what-is-key-objective-of-dataflows
   - https://intel.github.io/dffml/main/concepts/dataflow.html
   
 - Misc. References
