@@ -112,8 +112,14 @@ def action_yml_files(self, repo: git_repository_checked_out.spec) -> dict:
     }
 
 
+FileContributingPresent = NewType("FileContributingPresent", bool)
+FileCodeOfConductPresent = NewType("FileCodeOfConductPresent", bool)
+FileSecurityPresent = NewType("FileSecurityPresent", bool)
+FileSupportPresent = NewType("FileSupportPresent", bool)
+
+
 @dffml.op(inputs={"repo": git_repository_checked_out,},)
-def contributing_present(self, repo: git_repository_checked_out.spec) -> bool:
+def contributing_present(self, repo: git_repository_checked_out.spec) -> FileContributingPresent:
     return any(
         [
             pathlib.Path(repo.directory, "CONTRIBUTING.md").is_file(),
@@ -124,7 +130,7 @@ def contributing_present(self, repo: git_repository_checked_out.spec) -> bool:
 
 # TODO Check compliance with RFC 9116
 @dffml.op(inputs={"repo": git_repository_checked_out,},)
-def security_present(self, repo: git_repository_checked_out.spec) -> bool:
+def security_present(self, repo: git_repository_checked_out.spec) -> FileSecurityPresent:
     return any(
         [
             pathlib.Path(repo.directory, "SECURITY.md").is_file(),
@@ -136,7 +142,7 @@ def security_present(self, repo: git_repository_checked_out.spec) -> bool:
 
 
 @dffml.op(inputs={"repo": git_repository_checked_out,},)
-def support_present(self, repo: git_repository_checked_out.spec) -> bool:
+def support_present(self, repo: git_repository_checked_out.spec) -> FileSupportPresent:
     return any(
         [
             pathlib.Path(repo.directory, "SUPPORT.md").is_file(),
@@ -146,7 +152,7 @@ def support_present(self, repo: git_repository_checked_out.spec) -> bool:
 
 
 @dffml.op(inputs={"repo": git_repository_checked_out,},)
-def code_of_conduct_present(self, repo: git_repository_checked_out.spec) -> bool:
+def code_of_conduct_present(self, repo: git_repository_checked_out.spec) -> FileCodeOfConductPresent:
     return any(
         [
             pathlib.Path(repo.directory, "CODE_OF_CONDUCT.md").is_file(),
