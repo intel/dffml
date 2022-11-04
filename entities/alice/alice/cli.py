@@ -25,6 +25,7 @@ THREATS_MD_DATAFLOW = dffml.DataFlow()
 from .please.contribute.recommended_community_standards.recommended_community_standards import (
     AlicePleaseContributeRecommendedCommunityStandards,
 )
+from .please.log.todos.todos import AlicePleaseLogTodosDataFlow
 from .please.contribute.recommended_community_standards.cli import DFFMLCLICMD
 
 
@@ -158,10 +159,55 @@ class AlicePleaseContributeCLI(dffml.CMD):
         unittest.TestCase().assertEqual(content_should_be, content_was)
 
 
+AlicePleaseLogTodosCLIDataFlow = dffml.DataFlow(
+    *itertools.chain(
+        *[
+            dffml.object_to_operations(cls)
+            for cls in [
+                AlicePleaseLogTodosDataFlow,
+                *dffml.Overlay.load(
+                    entrypoint="dffml.overlays.alice.please.log.todos"
+                ),
+            ]
+        ]
+    )
+)
+# AlicePleaseLogTodosCLIDataFlow = dffml.DataFlow._fromdict(
+#     **AlicePleaseLogTodosCLIDataFlow.export(),
+# )
+# AlicePleaseLogTodosCLIDataFlow.update(auto_flow=True)
+
+
+@dffml.config
+class AlicePleaseLogTodosCLIConfig:
+    repos: List[str] = dffml.field(
+        "Repos to log todos in", default_factory=lambda: [],
+    )
+    dataflow: List[str] = dffml.field(
+        "DataFlow", default_factory=lambda: AlicePleaseLogTodosCLIDataFlow,
+    )
+
+
+class AlicePleaseLogTodosCLI(dffml.CMD):
+
+    CONFIG = AlicePleaseLogTodosCLIConfig
+
+    async def run(self):
+        async for ctx, results in dffml.run(
+            self.dataflow, [dffml.Input(value=self, definition=DFFMLCLICMD)],
+        ):
+            print((await ctx.handle()).as_string(), results)
+
+
+class AlicePleaseLogCLI(dffml.CMD):
+
+    todos = AlicePleaseLogTodosCLI
+
+
 class AlicePleaseCLI(dffml.CMD):
 
     contribute = AlicePleaseContributeCLI
-    create = dffml.CMD.from_entrypoint("AlicePleaseCreateCLI", "alice.please.create")
+    log = AlicePleaseLogCLI
 
 
 class AliceVersionCLI(dffml.CMD):

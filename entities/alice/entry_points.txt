@@ -26,3 +26,7 @@ OverlayGitHub                                  = alice.please.contribute.recomme
 
 [dffml.overlays.alice.shouldi.contribute]
 OverlayCICDLibrary                             = alice.shouldi.contribute.cicd
+
+[dffml.overlays.alice.please.log.todos]
+OverlayCLI                                     = alice.please.log.todos.todos:OverlayCLI
+OverlayRecommendedCommunityStandards           = alice.please.log.todos.todos:AlicePleaseLogTodosDataFlowRecommendedCommnuityStandardsGitHubIssues
