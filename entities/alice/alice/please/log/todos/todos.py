@@ -273,3 +273,36 @@ class AlicePleaseLogTodosDataFlowRecommendedCommnuityStandardsGitHubIssues:
                 logger=self.logger,
             )
         }
+
+    SecurityIssueURL = NewType("SecurityIssueURL", str)
+    DEFAULT_SECURITY_ISSUE_TITLE: str = "Recommended Community Standard: SECURITY"
+    DEFAULT_SECURITY_ISSUE_BODY: str = "References:\n- https://docs.github.com/articles/about-securitys/"
+
+    @dffml.op(
+        inputs={
+            "repo": dffml_feature_git.feature.definitions.git_repository_checked_out,
+            "file_present": dffml_operations_innersource.operations.FileSecurityPresent,
+            "title": dffml.Definition(name="SecurityIssueTitle", primitive="string", default=DEFAULT_SECURITY_ISSUE_TITLE),
+            "body": dffml.Definition(name="SecurityIssueBody", primitive="string", default=DEFAULT_SECURITY_ISSUE_BODY),
+        },
+        outputs={
+            "issue_url": SecurityIssueURL,
+        },
+    )
+    async def gh_issue_create_security(
+        self,
+        repo: dffml_feature_git.feature.definitions.git_repository_checked_out.spec,
+        file_present: dffml_operations_innersource.operations.FileSecurityPresent,
+        title,
+        body,
+    ) -> SecurityIssueURL:
+        if file_present:
+            return
+        return {
+            "issue_url": await gh_issue_create(
+                repo.URL,
+                title,
+                body,
+                logger=self.logger,
+            )
+        }
