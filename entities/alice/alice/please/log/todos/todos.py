@@ -83,21 +83,20 @@ class AlicePleaseLogTodosDataFlow:
 
 
 class OverlayCLI:
-    DFFMLCLICMD = NewType("dffml.util.cli.CMD", object)
     CLIRunOnRepo = NewType("CLIRunOnRepo", str)
 
     def cli_is_meant_on_this_repo(
         self,
-        cmd: DFFMLCLICMD,
+        cmd: dffml.DFFMLCLICMD,
     ) -> "CLIRunOnRepo":
-        if cmd.repos:
+        if cmd.keys:
             return
         return os.getcwd()
 
     async def cli_has_repos(
-        cmd: DFFMLCLICMD,
+        cmd: dffml.DFFMLCLICMD,
     ) -> AsyncIterator["CLIRunOnRepo"]:
-        for repo in cmd.repos:
+        for repo in cmd.keys:
             yield repo
 
     async def cli_run_on_repo(
