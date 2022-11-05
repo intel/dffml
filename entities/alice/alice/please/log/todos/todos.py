@@ -172,7 +172,9 @@ class AlicePleaseLogTodosDataFlowRecommendedCommnuityStandardsGitHubIssues:
     SupportIssueBody = NewType("SupportIssueBody", str)
     SupportIssueURL = NewType("SupportIssueURL", str)
 
-    # NOTE dffml.op requires name set in overlay classes for now
+    # TODO(188) Unify Definition.spec and NewType (git_repository_checked_out).
+    # Unification should result in dropping the @op decorator, auto defined
+    # op inputs/outputs will fully operational when unification is complete.
     @dffml.op(
         inputs={
             "repo": dffml_feature_git.feature.definitions.git_repository_checked_out,
