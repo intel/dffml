@@ -32,6 +32,22 @@ from .please.log.todos.todos import AlicePleaseLogTodosDataFlow
 ALICE_COLLECTOR_DATAFLOW = dffml_operations_innersource.cli.COLLECTOR_DATAFLOW
 
 
+
+AlicePleaseLogTodosCLIDataFlow = dffml.DataFlow(
+    *itertools.chain(
+        *[
+            dffml.object_to_operations(cls)
+            for cls in [
+                AlicePleaseLogTodosDataFlow,
+                *dffml.Overlay.load(
+                    entrypoint="dffml.overlays.alice.please.log.todos"
+                ),
+            ]
+        ]
+    )
+)
+
+
 # NOTE When CLI and operations are merged: All this is the same stuff that will
 # happen to Operation config_cls structures. We need a more ergonomic API to
 # obsucre the complexity dataclasses introduces when modifying fields/defaults
@@ -46,6 +62,15 @@ for (new_class_name, dffml_cli_class), field_modifications in {
         dffml_operations_innersource.cli.InnerSourceCLI.run.records._set,
     ): {
         "dataflow": {"default_factory": lambda: ALICE_COLLECTOR_DATAFLOW},
+    },
+    (
+        "AlicePleaseLogTodosCLI",
+        dffml.cli.dataflow.RunRecordSet,
+    ): {
+        "passcmd": {"default": True},
+        "dataflow": {"default_factory": lambda: AlicePleaseLogTodosCLIDataFlow},
+        "record_def": {"default": AlicePleaseLogTodosCLIDataFlow.definitions["URL"].name},
+        "sources": {"default_factory": lambda: dffml.Sources()},
     },
 }.items():
     # Create a derived class
@@ -156,46 +181,6 @@ class AlicePleaseContributeCLI(dffml.CMD):
         ).lstrip()
 
         unittest.TestCase().assertEqual(content_should_be, content_was)
-
-
-AlicePleaseLogTodosCLIDataFlow = dffml.DataFlow(
-    *itertools.chain(
-        *[
-            dffml.object_to_operations(cls)
-            for cls in [
-                AlicePleaseLogTodosDataFlow,
-                *dffml.Overlay.load(
-                    entrypoint="dffml.overlays.alice.please.log.todos"
-                ),
-            ]
-        ]
-    )
-)
-# AlicePleaseLogTodosCLIDataFlow = dffml.DataFlow._fromdict(
-#     **AlicePleaseLogTodosCLIDataFlow.export(),
-# )
-# AlicePleaseLogTodosCLIDataFlow.update(auto_flow=True)
-
-
-@dffml.config
-class AlicePleaseLogTodosCLIConfig:
-    repos: List[str] = dffml.field(
-        "Repos to log todos in", default_factory=lambda: [],
-    )
-    dataflow: List[str] = dffml.field(
-        "DataFlow", default_factory=lambda: AlicePleaseLogTodosCLIDataFlow,
-    )
-
-
-class AlicePleaseLogTodosCLI(dffml.CMD):
-
-    CONFIG = AlicePleaseLogTodosCLIConfig
-
-    async def run(self):
-        async for ctx, results in dffml.run(
-            self.dataflow, [dffml.Input(value=self, definition=DFFMLCLICMD)],
-        ):
-            print((await ctx.handle()).as_string(), results)
 
 
 class AlicePleaseLogCLI(dffml.CMD):
