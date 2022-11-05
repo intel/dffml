@@ -26,7 +26,6 @@ from .please.contribute.recommended_community_standards.recommended_community_st
     AlicePleaseContributeRecommendedCommunityStandards,
 )
 from .please.log.todos.todos import AlicePleaseLogTodosDataFlow
-from .please.contribute.recommended_community_standards.cli import DFFMLCLICMD
 
 
 # TODO Make this use the overlay stuff on runtime instead of on module load.
@@ -131,7 +130,7 @@ class AlicePleaseContributeCLI(dffml.CMD):
         # TODO(alice) ctx is the system context, so it will have an orchestartor
         # property on it with the orchestrator which is yielding these results.
         async for ctx, results in dffml.run(
-            self.DATAFLOW, [dffml.Input(value=self, definition=DFFMLCLICMD,),],
+            self.DATAFLOW, [dffml.Input(value=self, definition=dffml.DFFMLCLICMD,),],
         ):
             print((await ctx.handle()).as_string(), results)
 
