@@ -72,6 +72,7 @@ class AlicePleaseLogTodosDataFlow:
             ["git", "log", "-n", "1", "--format=%H"],
             logger=self.logger,
             events=[dffml.Subprocess.STDOUT],
+            cwd=repo.directory,
         ):
             return {
                 "repo": dffml_feature_git.feature.definitions.git_repository_checked_out.spec(
