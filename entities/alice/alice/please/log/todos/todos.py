@@ -168,9 +168,10 @@ class OverlayCLI:
 # : dffml_operations_innersource.operations.FileCodeOfConductPresent,
 # : dffml_operations_innersource.operations.FileSecurityPresent,
 class AlicePleaseLogTodosDataFlowRecommendedCommnuityStandardsGitHubIssues:
-    SupportIssueTitle = NewType("SupportIssueTitle", str)
-    SupportIssueBody = NewType("SupportIssueBody", str)
     SupportIssueURL = NewType("SupportIssueURL", str)
+
+    DEFAULT_SUPPORT_ISSUE_TITLE: str = "Recommended Community Standard: SUPPORT"
+    DEFAULT_SUPPORT_ISSUE_BODY: str = "References:\n- https://docs.github.com/articles/about-supports/"
 
     # TODO(188) Unify Definition.spec and NewType (git_repository_checked_out).
     # Unification should result in dropping the @op decorator, auto defined
@@ -179,8 +180,8 @@ class AlicePleaseLogTodosDataFlowRecommendedCommnuityStandardsGitHubIssues:
         inputs={
             "repo": dffml_feature_git.feature.definitions.git_repository_checked_out,
             "file_present": dffml_operations_innersource.operations.FileSupportPresent,
-            # "title": SupportIssueTitle,
-            # "body": SupportIssueBody,
+            "title": dffml.Definition(name="SupportIssueTitle", primitive="string", default=DEFAULT_SUPPORT_ISSUE_TITLE),
+            "body": dffml.Definition(name="SupportIssueBody", primitive="string", default=DEFAULT_SUPPORT_ISSUE_BODY),
         },
         outputs={
             "issue_url": SupportIssueURL,
@@ -190,15 +191,11 @@ class AlicePleaseLogTodosDataFlowRecommendedCommnuityStandardsGitHubIssues:
         self,
         repo: dffml_feature_git.feature.definitions.git_repository_checked_out.spec,
         file_present: dffml_operations_innersource.operations.FileSupportPresent,
-        # title: Optional[SupportIssueTitle] = "Recommended Community Standard: SUPPORT",
-        # body: Optional[
-        #     SupportIssueBody
-        # ] = "References:\n- https://docs.github.com/articles/about-supports/",
+        title,
+        body,
     ) -> SupportIssueURL:
         if file_present:
             return
-        title = "Recommended Community Standard: SUPPORT"
-        body = "References:\n- https://docs.github.com/articles/about-supports/"
         return {
             "issue_url": await gh_issue_create(
                 repo.URL,
