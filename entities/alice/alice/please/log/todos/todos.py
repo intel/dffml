@@ -36,6 +36,7 @@ class AlicePleaseLogTodosDataFlow:
         dffml_feature_git.feature.operations.check_if_valid_git_repository_URL
     )
     clone_git_repo = dffml_feature_git.feature.operations.clone_git_repo
+    readme_present = dffml_operations_innersource.operations.readme_present
     contributing_present = dffml_operations_innersource.operations.contributing_present
     security_present = dffml_operations_innersource.operations.security_present
     support_present = dffml_operations_innersource.operations.support_present
@@ -288,6 +289,39 @@ class AlicePleaseLogTodosDataFlowRecommendedCommnuityStandardsGitHubIssues:
         title,
         body,
     ) -> SecurityIssueURL:
+        if file_present:
+            return
+        return {
+            "issue_url": await gh_issue_create(
+                repo.URL,
+                title,
+                body,
+                logger=self.logger,
+            )
+        }
+
+    ReadmeIssueURL = NewType("ReadmeIssueURL", str)
+    DEFAULT_README_ISSUE_TITLE: str = "Recommended Community Standard: README"
+    DEFAULT_README_ISSUE_BODY: str = "References:\n- https://docs.github.com/articles/about-readmes/"
+
+    @dffml.op(
+        inputs={
+            "repo": dffml_feature_git.feature.definitions.git_repository_checked_out,
+            "file_present": dffml_operations_innersource.operations.FileReadmePresent,
+            "title": dffml.Definition(name="ReadmeIssueTitle", primitive="string", default=DEFAULT_README_ISSUE_TITLE),
+            "body": dffml.Definition(name="ReadmeIssueBody", primitive="string", default=DEFAULT_README_ISSUE_BODY),
+        },
+        outputs={
+            "issue_url": ReadmeIssueURL,
+        },
+    )
+    async def gh_issue_create_readme(
+        self,
+        repo: dffml_feature_git.feature.definitions.git_repository_checked_out.spec,
+        file_present: dffml_operations_innersource.operations.FileReadmePresent,
+        title,
+        body,
+    ) -> ReadmeIssueURL:
         if file_present:
             return
         return {
