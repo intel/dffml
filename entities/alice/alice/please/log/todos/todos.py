@@ -163,13 +163,8 @@ class OverlayCLI:
                 )
 
 
-# : dffml_operations_innersource.operations.FileReadmePresent
-# : dffml_operations_innersource.operations.FileContributingPresent,
-# : dffml_operations_innersource.operations.FileCodeOfConductPresent,
-# : dffml_operations_innersource.operations.FileSecurityPresent,
 class AlicePleaseLogTodosDataFlowRecommendedCommnuityStandardsGitHubIssues:
     SupportIssueURL = NewType("SupportIssueURL", str)
-
     DEFAULT_SUPPORT_ISSUE_TITLE: str = "Recommended Community Standard: SUPPORT"
     DEFAULT_SUPPORT_ISSUE_BODY: str = "References:\n- https://docs.github.com/articles/about-supports/"
 
@@ -242,9 +237,6 @@ class AlicePleaseLogTodosDataFlowRecommendedCommnuityStandardsGitHubIssues:
     DEFAULT_CONTRIBUTING_ISSUE_TITLE: str = "Recommended Community Standard: CONTRIBUTING"
     DEFAULT_CONTRIBUTING_ISSUE_BODY: str = "References:\n- https://docs.github.com/articles/about-contributings/"
 
-    # TODO(188) Unify Definition.spec and NewType (git_repository_checked_out).
-    # Unification should result in dropping the @op decorator, auto defined
-    # op inputs/outputs will fully operational when unification is complete.
     @dffml.op(
         inputs={
             "repo": dffml_feature_git.feature.definitions.git_repository_checked_out,
