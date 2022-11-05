@@ -237,3 +237,39 @@ class AlicePleaseLogTodosDataFlowRecommendedCommnuityStandardsGitHubIssues:
                 logger=self.logger,
             )
         }
+
+    ContributingIssueURL = NewType("ContributingIssueURL", str)
+    DEFAULT_CONTRIBUTING_ISSUE_TITLE: str = "Recommended Community Standard: CONTRIBUTING"
+    DEFAULT_CONTRIBUTING_ISSUE_BODY: str = "References:\n- https://docs.github.com/articles/about-contributings/"
+
+    # TODO(188) Unify Definition.spec and NewType (git_repository_checked_out).
+    # Unification should result in dropping the @op decorator, auto defined
+    # op inputs/outputs will fully operational when unification is complete.
+    @dffml.op(
+        inputs={
+            "repo": dffml_feature_git.feature.definitions.git_repository_checked_out,
+            "file_present": dffml_operations_innersource.operations.FileContributingPresent,
+            "title": dffml.Definition(name="ContributingIssueTitle", primitive="string", default=DEFAULT_CONTRIBUTING_ISSUE_TITLE),
+            "body": dffml.Definition(name="ContributingIssueBody", primitive="string", default=DEFAULT_CONTRIBUTING_ISSUE_BODY),
+        },
+        outputs={
+            "issue_url": ContributingIssueURL,
+        },
+    )
+    async def gh_issue_create_contributing(
+        self,
+        repo: dffml_feature_git.feature.definitions.git_repository_checked_out.spec,
+        file_present: dffml_operations_innersource.operations.FileContributingPresent,
+        title,
+        body,
+    ) -> ContributingIssueURL:
+        if file_present:
+            return
+        return {
+            "issue_url": await gh_issue_create(
+                repo.URL,
+                title,
+                body,
+                logger=self.logger,
+            )
+        }
