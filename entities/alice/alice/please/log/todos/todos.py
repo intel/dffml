@@ -204,3 +204,36 @@ class AlicePleaseLogTodosDataFlowRecommendedCommnuityStandardsGitHubIssues:
                 logger=self.logger,
             )
         }
+
+    CodeOfConductIssueURL = NewType("CodeOfConductIssueURL", str)
+    DEFAULT_CODE_OF_CONDUCT_ISSUE_TITLE: str = "Recommended Community Standard: CODE_OF_CONDUCT"
+    DEFAULT_CODE_OF_CONDUCT_ISSUE_BODY: str = "References:\n- https://docs.github.com/articles/about-code_of_conducts/"
+
+    @dffml.op(
+        inputs={
+            "repo": dffml_feature_git.feature.definitions.git_repository_checked_out,
+            "file_present": dffml_operations_innersource.operations.FileCodeOfConductPresent,
+            "title": dffml.Definition(name="CodeOfConductIssueTitle", primitive="string", default=DEFAULT_CODE_OF_CONDUCT_ISSUE_TITLE),
+            "body": dffml.Definition(name="CodeOfConductIssueBody", primitive="string", default=DEFAULT_CODE_OF_CONDUCT_ISSUE_BODY),
+        },
+        outputs={
+            "issue_url": CodeOfConductIssueURL,
+        },
+    )
+    async def gh_issue_create_code_of_conduct(
+        self,
+        repo: dffml_feature_git.feature.definitions.git_repository_checked_out.spec,
+        file_present: dffml_operations_innersource.operations.FileCodeOfConductPresent,
+        title,
+        body,
+    ) -> CodeOfConductIssueURL:
+        if file_present:
+            return
+        return {
+            "issue_url": await gh_issue_create(
+                repo.URL,
+                title,
+                body,
+                logger=self.logger,
+            )
+        }
