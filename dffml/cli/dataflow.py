@@ -18,7 +18,7 @@ from ..configloader.json import JSONConfigLoader
 from ..source.source import SubsetSources, Sources
 from ..util.data import merge, split_dot_seperated, traverse_set
 from ..util.entrypoint import load
-from ..util.cli.cmd import CMD, CMDOutputOverride
+from ..util.cli.cmd import CMD, CMDOutputOverride, DFFMLCLICMD
 from ..util.cli.cmds import (
     SourcesCMD,
     KeysCMD,
@@ -167,6 +167,9 @@ class RunCMDConfig:
         "Skip running DataFlow if a record already contains these features",
         default_factory=lambda: [],
     )
+    passcmd: bool = field(
+        "Pass the instance DFFML.CLI command to the flow", default=False,
+    )
     no_update: bool = field(
         "Update record with sources", default=False,
     )
@@ -252,6 +255,14 @@ class RunAllRecords(RunCMD):
                         Input(
                             value=record.key,
                             definition=dataflow.definitions[self.record_def],
+                        )
+                    )
+
+                if self.passcmd:
+                    record_inputs.append(
+                        Input(
+                            value=self,
+                            definition=DFFMLCLICMD,
                         )
                     )
 
