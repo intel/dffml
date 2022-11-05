@@ -112,10 +112,22 @@ def action_yml_files(self, repo: git_repository_checked_out.spec) -> dict:
     }
 
 
+FileReadmePresent = NewType("FileReadmePresent", bool)
 FileContributingPresent = NewType("FileContributingPresent", bool)
 FileCodeOfConductPresent = NewType("FileCodeOfConductPresent", bool)
 FileSecurityPresent = NewType("FileSecurityPresent", bool)
 FileSupportPresent = NewType("FileSupportPresent", bool)
+
+
+@dffml.op(inputs={"repo": git_repository_checked_out,},)
+def readme_present(self, repo: git_repository_checked_out.spec) -> FileReadmePresent:
+    return any(
+        [
+            path
+            for path in pathlib.Path(repo.directory).iterdir()
+            if "readme" == path.stem.lower()
+        ]
+    )
 
 
 @dffml.op(inputs={"repo": git_repository_checked_out,},)

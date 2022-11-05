@@ -156,6 +156,11 @@ COLLECTOR_DATAFLOW.seed = [
                 "by": "quarter",
                 "nostrict": True,
             },
+            operations.readme_present.op.outputs["result"].name: {
+                "group": operations.readme_present.op.outputs["result"].name,
+                "by": "quarter",
+                "nostrict": True,
+            },
             operations.security_present.op.outputs["result"].name: {
                 "group": operations.security_present.op.outputs["result"].name,
                 "by": "quarter",
