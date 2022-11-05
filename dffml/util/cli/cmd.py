@@ -11,7 +11,7 @@ import datetime
 import argparse
 import traceback
 import dataclasses
-from typing import Dict, Any
+from typing import Dict, Any, NewType
 import dataclasses
 
 import pkg_resources
@@ -388,3 +388,6 @@ class CMD(object):
         except:
             cls.failed_to_load_cli_cmd_from_entrypoint(entrypoint, None)
         return entrypoint_cli_cmd_cls
+
+
+DFFMLCLICMD = NewType("dffml.util.cli.CMD", CMD)
