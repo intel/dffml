@@ -69,10 +69,12 @@ References
   
 - Overlays
 
+  - https://intel.github.io/dffml/main/examples/dataflows.html#combining-operations
+
   - https://oca.colossi.network/guide/introduction.html#what-is-decentralised-semantics
-  
+
     - ``In the domain of decentralised semantics, task-specific objects are called "Overlays". They provide layers of definitional or contextual information to a stable base object called a "Capture Base".``
-    
+
     - The DFFML project equivalent vocabulary term for "Capture Base" would probably be "upstream".
 
 - Living Threat Models
