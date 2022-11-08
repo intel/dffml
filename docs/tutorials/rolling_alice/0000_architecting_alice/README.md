@@ -125,7 +125,6 @@ Alice is going to be held to very high standards. We should expect this list to 
   - Alice, spin up ABC helm charts and visualize the cluster (viewing in an AR headset)
   - Alice, let's talk about the automating classification web app included in the example.
     - Alice, give us an overview of the threats on our database, deploy the prod backup to a new environment. Attempt to exploit known threats and come up with new ones for the next 2 weeks. Submit a report and presentation with your findings. Begin work on issues found as you find them.
-  - What are our biggest tome syncs between issue creation to delivery of fix to associated users?
 - We should be able to see Alice think and understand her trains of thought
   - If Alice is presenting and she estimates thinking of the correct solution will take longer than a reasonable time her next word is expected by to keep regular conversational cadence, she should either offer to brainstorm, work through it and wait until it makes sense to respond, maybe there are situations where the output is related to saving someone's life, then maybe she interupts as soon as she's done thinking. Provided she didn't detect that the train of thought which was being spoken about by others was not of higher prioritiy than her own (with regards to lifesaving metrics).
 
