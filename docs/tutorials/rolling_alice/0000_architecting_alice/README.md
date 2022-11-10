@@ -130,7 +130,7 @@ Alice is going to be held to very high standards. We should expect this list to 
 
 ### Alice's Understanding of Software Engineering
 
-We'll teach Alice what she needs to know about software engineering though our InnerSource series. She'll follow the best practices outlined there. She'll understand a codebase's health in part using InnerSource metric collectors.
+We'll teach Alice what she needs to know about software engineering though our InnerSource series. She'll follow the best practices outlined there. She'll understand a codebase's health in part using [InnerSource metric collectors](https://intel.github.io/dffml/main/examples/innersource/swportal.html).
 
 Alice will see problems and look for solutions. Problems are gaps between the present system capabilities and desired system capabilities or interpretations of outputs of strategic plans which are unfavorable by the strategic decision maker or the prioritizer.
 
