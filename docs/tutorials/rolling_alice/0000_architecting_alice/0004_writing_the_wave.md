@@ -105,62 +105,19 @@ text to speech code / model called Whisper.
   - If pytorch/troch fails to download try downloading and installing separately it to see if that helps.
     - https://github.com/intel/dffml/discussions/1406#discussioncomment-3710985
 
+Always update your package management utilities before installing Python packages!
+
+```console
+$ pip install --upgrade pip setuptools wheel
+```
+
 Check their page for the most up to date information on how to install it.
 
 ```console
-$ pip install git+https://github.com/openai/whisper.git
-Defaulting to user installation because normal site-packages is not writeable
-Collecting git+https://github.com/openai/whisper.git
-  Cloning https://github.com/openai/whisper.git to /tmp/pip-req-build-1x3f7bij
-  Running command git clone --filter=blob:none --quiet https://github.com/openai/whisper.git /tmp/pip-req-build-1x3f7bij
-o  Resolved https://github.com/openai/whisper.git to commit e90b8fa7e845ae184ed9aa0babcf3cde6f16719e
-  Preparing metadata (setup.py) ... done
-Collecting numpy
-  Using cached numpy-1.23.3-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (17.1 MB)
-Requirement already satisfied: torch in ./.local/lib/python3.9/site-packages (from whisper==1.0) (1.12.1)
-Collecting tqdm
-  Downloading tqdm-4.64.1-py2.py3-none-any.whl (78 kB)
-     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 78.5/78.5 kB 11.1 MB/s eta 0:00:00
-Collecting more_itertools
-  Downloading more_itertools-8.14.0-py3-none-any.whl (52 kB)
-     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 52.2/52.2 kB 18.7 MB/s eta 0:00:00
-Collecting transformers>=4.19.0
-  Downloading transformers-4.22.1-py3-none-any.whl (4.9 MB)
-     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 4.9/4.9 MB 22.8 MB/s eta 0:00:00
-Collecting ffmpeg-python==0.2.0
-  Downloading ffmpeg_python-0.2.0-py3-none-any.whl (25 kB)
-Collecting future
-  Downloading future-0.18.2.tar.gz (829 kB)
-     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 829.2/829.2 kB 51.4 MB/s eta 0:00:00
-  Preparing metadata (setup.py) ... done
-Requirement already satisfied: packaging>=20.0 in ./.local/lib/python3.9/site-packages (from transformers>=4.19.0->whisper==1.0) (21.3)
-Requirement already satisfied: pyyaml>=5.1 in ./.local/lib/python3.9/site-packages (from transformers>=4.19.0->whisper==1.0) (6.0)
-Collecting tokenizers!=0.11.3,<0.13,>=0.11.1
-  Downloading tokenizers-0.12.1-cp39-cp39-manylinux_2_12_x86_64.manylinux2010_x86_64.whl (6.6 MB)
-     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 6.6/6.6 MB 23.8 MB/s eta 0:00:00
-Requirement already satisfied: regex!=2019.12.17 in ./.local/lib/python3.9/site-packages (from transformers>=4.19.0->whisper==1.0) (2022.7.25)
-Collecting filelock
-  Downloading filelock-3.8.0-py3-none-any.whl (10 kB)
-Requirement already satisfied: requests in ./.local/lib/python3.9/site-packages (from transformers>=4.19.0->whisper==1.0) (2.28.1)
-Collecting huggingface-hub<1.0,>=0.9.0
-  Downloading huggingface_hub-0.9.1-py3-none-any.whl (120 kB)
-     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 120.7/120.7 kB 15.8 MB/s eta 0:00:00
-Requirement already satisfied: typing-extensions in ./.local/lib/python3.9/site-packages (from torch->whisper==1.0) (4.3.0)
-Requirement already satisfied: pyparsing!=3.0.5,>=2.0.2 in ./.local/lib/python3.9/site-packages (from packaging>=20.0->transformers>=4.19.0->whisper==1.0) (3.0.9)
-Requirement already satisfied: charset-normalizer<3,>=2 in ./.local/lib/python3.9/site-packages (from requests->transformers>=4.19.0->whisper==1.0) (2.1.0)
-Requirement already satisfied: idna<4,>=2.5 in ./.local/lib/python3.9/site-packages (from requests->transformers>=4.19.0->whisper==1.0) (3.3)
-Requirement already satisfied: certifi>=2017.4.17 in ./.local/lib/python3.9/site-packages (from requests->transformers>=4.19.0->whisper==1.0) (2022.6.15)
-Requirement already satisfied: urllib3<1.27,>=1.21.1 in ./.local/lib/python3.9/site-packages (from requests->transformers>=4.19.0->whisper==1.0) (1.26.11)
-Building wheels for collected packages: whisper, future
-  Building wheel for whisper (setup.py) ... done
-  Created wheel for whisper: filename=whisper-1.0-py3-none-any.whl size=1173962 sha256=2972ec82594a159a312f32a82c755a0aa9d896d2fbcfe4e517d2df89d0ac9dc4
-  Stored in directory: /tmp/pip-ephem-wheel-cache-42cy9_3c/wheels/fe/03/29/e7919208d11b4ab32972cb448bb84a9a675d92cd52c9a48341
-  Building wheel for future (setup.py) ... done
-  Created wheel for future: filename=future-0.18.2-py3-none-any.whl size=491058 sha256=8cd76024b97611296081328e7fbcfe960b3b533abba60af5bf5e1ecdd959070d
-  Stored in directory: /home/coder/.cache/pip/wheels/2f/a0/d3/4030d9f80e6b3be787f19fc911b8e7aa462986a40ab1e4bb94
+$ pip install https://github.com/openai/whisper/archive/refs/heads/main.zip
 Successfully built whisper future
-Installing collected packages: tokenizers, tqdm, numpy, more_itertools, future, filelock, huggingface-hub, ffmpeg-python, transformers, whisper
-Successfully installed ffmpeg-python-0.2.0 filelock-3.8.0 future-0.18.2 huggingface-hub-0.9.1 more_itertools-8.14.0 numpy-1.23.3 tokenizers-0.12.1 tqdm-4.64.1 transformers-4.22.1 whisper-1.0
+Installing collected packages: tokenizers, urllib3, typing-extensions, tqdm, regex, pyyaml, pyparsing, nvidia-cuda-runtime-cu11, nvidia-cuda-nvrtc-cu11, nvidia-cublas-cu11, numpy, more-itertools, idna, future, filelock, charset-normalizer, certifi, requests, packaging, nvidia-cudnn-cu11, ffmpeg-python, torch, huggingface-hub, transformers, whisper
+Successfully installed certifi-2022.9.24 charset-normalizer-2.1.1 ffmpeg-python-0.2.0 filelock-3.8.0 future-0.18.2 huggingface-hub-0.10.1 idna-3.4 more-itertools-9.0.0 numpy-1.23.4 nvidia-cublas-cu11-11.10.3.66 nvidia-cuda-nvrtc-cu11-11.7.99 nvidia-cuda-runtime-cu11-11.7.99 nvidia-cudnn-cu11-8.5.0.96 packaging-21.3 pyparsing-3.0.9 pyyaml-6.0 regex-2022.10.31 requests-2.28.1 tokenizers-0.13.2 torch-1.13.0 tqdm-4.64.1 transformers-4.24.0 typing-extensions-4.4.0 urllib3-1.26.12 whisper-1.0
 ```
 
 The model downloads on first load, so we need a one off python
