@@ -102,6 +102,14 @@ So, if you synthesize data flow, you may lose things like event emissions of inp
 
 If you give Monty Python a computer, they’ll want to search for the Holy Grail. If they want to search for the Holy Grail, they might find the system context. If they find the system context, they’ll know that the Holy Grail is the Trinity is the system context: the upstream, the overlay, and the orchestrator.
 
+## System Context 
+
+- References
+  - https://github.com/intel/dffml/blob/alice/docs/arch/0008-Manifest.md
+  - https://github.com/intel/dffml/blob/alice/docs/arch/0009-Open-Architecture.rst
+  - https://github.com/microsoft/scitt-ccf-ledger/blob/main/pyscitt/pyscitt/did.py
+  - https://scitt.io/distributing-with-oci-scitt.html
+
 ```mermaid
 graph TD
     subgraph pki[Public Key Infrastructure]
