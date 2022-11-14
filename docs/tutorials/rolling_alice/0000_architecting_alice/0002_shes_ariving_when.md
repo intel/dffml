@@ -179,7 +179,8 @@ If you give Monty Python a computer, they’ll want to search for the Holy Grail
   - https://github.com/intel/dffml/blob/alice/docs/arch/0009-Open-Architecture.rst
   - https://github.com/microsoft/scitt-ccf-ledger/blob/main/pyscitt/pyscitt/did.py
   - https://scitt.io/distributing-with-oci-scitt.html
-  - [Data Flow Execution](#dffmls-data-flow-execution-model)
+  - [Data Flow Execution: One possible implementation approach](#dffmls-current-working-data-flow-execution-model)
+  - https://github.com/intel/dffml/tree/alice/docs/tutorials/rolling_alice/0000_architecting_alice#what-is-alice
 
 ```mermaid
 graph TD
