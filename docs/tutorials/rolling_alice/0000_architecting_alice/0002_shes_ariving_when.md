@@ -277,6 +277,7 @@ $ ./scitt-emulator.sh client verify-receipt --claim claim.cose --receipt claim.r
   - Next stop, serialization / federation with Alice / Open Architecture serialization data flow as SCITT service.
 - References
   - [Architecting Alice: She's Arriving When?: System Context](#system-context)
+  - [`alice shouldi contribute`](https://github.com/intel/dffml/tree/alice/entities/alice#contribute)
   - [Coach Alice: Our Open Source Guide](https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/0001_coach_alice/0002_our_open_source_guide.md)
 
 [![asciicast](https://asciinema.org/a/537643.svg)](https://asciinema.org/a/537643)
