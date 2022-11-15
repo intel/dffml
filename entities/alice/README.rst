@@ -1,10 +1,12 @@
 Alice
 #####
 
-See https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/
-for more information on Alice.
+For more information on who / what Alice is, her architecture, strategic principles,
+and conceptual foundations, please reference the tutorial series on how we built
+her and how you can extend her:
+`Rolling Alice: Architecting Alice: Introduction and Context <https://github.com/intel/dffml/tree/alice/docs/tutorials/rolling_alice/0000_architecting_alice>`_.
 
-Here is the most recent 5 minute
+Alice is a work in progress. Here is the most recent 5 minute
 `Status Update <https://www.youtube.com/watch?v=THKMfJpPt8I&list=PLtzAOVTpO2jZltVwl3dSEeQllKWZ0YU39>`_
 which covers what Alice is for the uninitiatied, where are we progress wise,
 and how to get involved.
@@ -22,9 +24,6 @@ quality given the assets at our disposal (contributors, compute, etc.).
 Alice, our AI, will help us hit critical velocity. She sits at the intesection
 of the software / entity analysis trinity to identifify patterns which
 help us most effectively communicate so as to reach critical velocity.
-
-For more information about Alice's architecture and conceptual foundations see
-https://github.com/intel/dffml/tree/alice/docs/tutorials/rolling_alice/0000_architecting_alice
 
 Dependencies
 ************
