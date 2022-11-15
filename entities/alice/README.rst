@@ -2,7 +2,7 @@ Alice
 #####
 
 See https://github.com/intel/dffml/blob/alice/docs/tutorials/rolling_alice/
-for more information on Alice. She is our developer helper.
+for more information on Alice.
 
 Here is the most recent 5 minute
 `Status Update <https://www.youtube.com/watch?v=THKMfJpPt8I&list=PLtzAOVTpO2jZltVwl3dSEeQllKWZ0YU39>`_
