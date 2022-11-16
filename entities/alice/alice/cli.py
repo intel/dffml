@@ -27,6 +27,8 @@ from .please.contribute.recommended_community_standards.recommended_community_st
 )
 from .please.log.todos.todos import AlicePleaseLogTodosDataFlow
 
+from .threats.vulns.serve.nvdstyle import NVDStyleHTTPHandler
+
 
 # TODO Make this use the overlay stuff on runtime instead of on module load.
 ALICE_COLLECTOR_DATAFLOW = dffml_operations_innersource.cli.COLLECTOR_DATAFLOW
@@ -84,8 +86,18 @@ for (new_class_name, dffml_cli_class), field_modifications in {
     )
 
 
+class AliceThreatsVulnsServeNVDStyleCLI(dffml.CMD):
+    async def run(self):
+        import httptest
+
+        with httptest.Server(NVDStyleHTTPHandler) as ts:
+            print(ts.url())
+            sys.stdout.buffer.flush()
+            input()
+
+
 class AliceThreatsVulnsServeCLI(dffml.CMD):
-    pass
+    nvdstyle = AliceThreatsVulnsServeNVDStyleCLI
 
 
 class AliceThreatsVulnsCLI(dffml.CMD):
