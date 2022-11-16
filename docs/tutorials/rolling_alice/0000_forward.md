@@ -85,6 +85,10 @@ The [Open Architecture](https://github.com/intel/dffml/blob/alice/docs/arch/0009
 
 Leveraging the Open Architecture methodology we decouple the description of the system from the underlying execution environment. In the context of discussion around distributed compute we leverage holsitic risk analaysis during compute contract proposal and negotiation.
 
+## Machine Learning
+
+See https://github.com/pdxjohnny/use-cases/blob/openssf_metrics/openssf_metrics.md **TODO** vendor
+
 ## RFCv1 Announcement
 
 Here is the first version of Alice aka the Open Architecture and this pull request is a Request For Comments https://github.com/intel/dffml/tree/alice/docs/tutorials/rolling_alice Please Review and provide any and all technical or conceptual feedback! This is also a call for participation if anyone would like to get involved and contribute please comment in the linked pull request or reach out to me directly. Looking forward to working with you all!
