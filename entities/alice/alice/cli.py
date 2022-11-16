@@ -84,6 +84,11 @@ for (new_class_name, dffml_cli_class), field_modifications in {
     )
 
 
+class AliceThreatsCLI(dffml.CMD):
+
+    markdown = AliceThreatsMd
+
+
 class ShouldiCLI(dffml.CMD):
 
     # TODO Overlay dataflow so that upstream shouldi install is used as part of
@@ -280,6 +285,6 @@ class AliceCLI(dffml.CMD):
     CLI_FORMATTER_CLASS = argparse.RawDescriptionHelpFormatter
 
     shouldi = ShouldiCLI
-    threats = AliceThreatsMd
+    threats = AliceThreatsCLI
     please = AlicePleaseCLI
     version = AliceVersionCLI
