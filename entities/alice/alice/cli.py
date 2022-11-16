@@ -84,8 +84,12 @@ for (new_class_name, dffml_cli_class), field_modifications in {
     )
 
 
-class AliceThreatsVulnsCLI(dffml.CMD):
+class AliceThreatsVulnsServeCLI(dffml.CMD):
     pass
+
+
+class AliceThreatsVulnsCLI(dffml.CMD):
+    serve = AliceThreatsVulnsServeCLI
 
 
 class AliceThreatsCLI(dffml.CMD):
