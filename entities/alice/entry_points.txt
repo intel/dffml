@@ -30,3 +30,4 @@ OverlayCICDLibrary                             = alice.shouldi.contribute.cicd
 [dffml.overlays.alice.please.log.todos]
 OverlayCLI                                     = alice.please.log.todos.todos:OverlayCLI
 OverlayRecommendedCommunityStandards           = alice.please.log.todos.todos:AlicePleaseLogTodosDataFlowRecommendedCommnuityStandardsGitHubIssues
+GitHubRepoID                                   = operations.innersource.dffml_operations_innersource.cli:github_repo_id_to_clone_url
